@@ -1,73 +1,370 @@
 {
   "Actor": {
-    "types": ["character", "npc"],
+    "types": ["giJoe", "powerRanger", "npc", "threat", "vehicle", "zord", "megaformZord"],
     "templates": {
-      "base": {
+      "common": {
+        "conditioning": 0,
+        "description": "",
         "health": {
-          "value": 10,
+          "value": 4,
           "min": 0,
-          "max": 10
+          "max": 4
         },
-        "power": {
-          "value": 5,
-          "min": 0,
-          "max": 5
+        "initiative": 0,
+        "movement": {
+          "aerial": 0,
+          "aerialMin": null,
+          "ground": 45,
+          "swim": 0
         },
-        "biography": ""
-      }
-    },
-    "character": {
-      "templates": ["base"],
-      "attributes": {
-        "level": {
-          "value": 1
+        "name": "",
+        "size": "common",
+        "skills": {
+          "strength": {
+            "athletics": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "brawn": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "intimidation": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "might": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            }
+          },
+          "speed": {
+            "acrobatics": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "driving": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "finesse": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "infiltration": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "targeting": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            }
+          },
+          "smarts": {
+            "alertness": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "culture": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "science": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "survival": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "technology": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            }
+          },
+          "social": {
+            "animal handling": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "deception": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "performance": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "persuasion": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            },
+            "streetwise": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": 0,
+              "specializations": []
+            }
+          }
         }
       },
-      "abilities": {
-        "str": {
-          "value": 10
+      "character": {
+        "background": {
+          "influences": [{
+            "bond": "",
+            "hangUp": null,
+            "name": "",
+            "perk": ""
+          }],
+          "origin": {
+            "description": "",
+            "name": ""
+          },
+          "pronouns": "",
+          "role": ""
         },
-        "dex": {
-          "value": 10
+        "bonuses": {
+          "speed": 0,
+          "smarts": 0,
+          "social": 0
         },
-        "con": {
-          "value": 10
+        "essences": {
+          "smarts": 3,
+          "social": 3,
+          "speed": 3,
+          "strength": 3
         },
-        "int": {
-          "value": 10
-        },
-        "wis": {
-          "value": 10
-        },
-        "cha": {
-          "value": 10
+        "level": 1,
+        "notes": ""
+      },
+      "creature": {
+        "languages": []
+      },
+      "machine": {
+        "canHover": false,
+        "defenses": {
+          "toughness": {
+            "usesDrivers": false,
+            "value": 10
+          },
+          "evasion": {
+            "usesDrivers": false,
+            "value": 10
+          },
+          "willpower": {
+            "usesDrivers": true,
+            "value": null
+          },
+          "cleverness": {
+            "usesDrivers": true,
+            "value": null
+          }
+        }
+      },
+      "zordBase": {
+        "armor": 0,
+        "essences": {
+          "strength": {
+            "usesDrivers": false,
+            "value": 3
+          },
+          "speed": {
+            "usesDrivers": false,
+            "value": 3
+          },
+          "smarts": {
+            "usesDrivers": true,
+            "value": null
+          },
+          "social": {
+            "usesDrivers": true,
+            "value": null
+          }
         }
       }
     },
+    "powerRanger": {
+      "templates": ["common", "creature", "character"]
+    },
+    "gijoe": {
+      "templates": ["common", "creature", "character"]
+    },
     "npc": {
-      "templates": ["base"],
-      "cr": 0
+      "templates": ["common", "creature", "character"]
+    },
+    "threat": {
+      "templates": ["common", "creature"],
+      "customSkills": [{
+        "name": "",
+        "isSpecialized": false,
+        "shift": 0
+      }],
+      "defenses": {
+        "toughness": 10,
+        "evasion": 10,
+        "willpower": 10,
+        "cleverness": 10
+      },
+      "hangUps": [{
+        "description": "",
+        "name": ""
+      }],
+      "powers": [{
+        "actionType": "",
+        "description": "",
+        "charges":  null,
+        "cost": null,
+        "limited": false,
+        "name": ""
+      }],
+      "threatLevel": 0
+    },
+    "vehicle": {
+      "templates": ["common", "machine"],
+      "crew": {
+        "description": "",
+        "numDrivers": 1,
+        "numPassengers": 0
+      },
+      "firepoints": [{
+        "description": "",
+        "value": 1
+      }],
+      "threatLevel": 0
+    },
+    "zord": {
+      "templates": ["common", "machine", "zordBase"],
+      "Iscombiner": true,
+      "prerequisites": [],
+      "ranger": ""
+    },
+    "megaformZord": {
+      "templates": ["common", "machine", "zordBase"],
+      "health": null
     }
   },
   "Item": {
-    "types": ["item", "feature", "spell"],
-    "templates": {
-      "base": {
-        "description": ""
+    "types": ["weapon", "armor", "gear", "perk", "power", "trait", "feature", "megaformTrait"],
+    "templates":{
+      "itemDescription": {
+        "name": "",
+        "value": ""
       }
     },
-    "item": {
-      "templates": ["base"],
+    "armor": {
+      "templates": ["itemDescription"],
+      "availability": "standard",
+      "classification": "light",
+      "effect": 1,
+      "trait": "deflective"
+    },
+    "gear": {
+      "templates": ["itemDescription"],
+      "effectArea": null,
+      "effectShape": null,
+      "lightRange": {
+        "bright": null,
+        "dim": null
+      },
       "quantity": 1,
-      "weight": 0,
-      "formula": "d20 + @str.mod + ceil(@lvl / 2)"
+      "toughness": null
+    },
+    "weapon": {
+      "templates": ["itemDescription"],
+      "availability": "standard",
+      "classifications": [{
+        "skill": "",
+        "size": "",
+        "style": ""
+      }],
+      "effects": {
+        "charges": null,
+        "custom": "",
+        "damages": [{
+          "element": "",
+          "value": 1
+        }],
+        "hands": 1,
+        "radius": null,
+        "target": null,
+        "shift": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        }
+      },
+      "requirements": {
+        "custom": null,
+        "skill": null,
+        "shift": null
+      },
+      "traits": []
+    },
+    "zordCombiner": {
+      "templates": ["itemDescription"],
+      "colorSpectrum": "",
+      "health": {
+        "max": 8,
+        "min": 0,
+        "value": 8
+      },
+      "ranger": "",
+      "skillNotes": ""
+    },
+    "perk": {
+      "templates": ["itemDescription"],
+      "origin": "generalPerk"
+    },
+    "power": {
+      "templates": ["itemDescription"],
+      "origin": "gridPower"
+    },
+    "trait": {
+      "templates": ["itemDescription"]
     },
     "feature": {
-      "templates": ["base"]
+      "templates": ["itemDescription"]
     },
-    "spell": {
-      "templates": ["base"],
-      "spellLevel": 1
+    "megaformTrait": {
+      "templates": ["itemDescription"]
     }
   }
 }
