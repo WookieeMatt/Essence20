@@ -7,4 +7,14 @@
     </div>
   </header>
 
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body">
+    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'E20.Source' }}"/>
+    <input type="text" name="data.prerequisite" value="{{data.prerequisite}}" placeholder="{{ localize 'E20.Prerequisite' }}"/>
+
+    <div class="tab flexrow active" data-group="primary" data-tab="description">
+      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+    </div>
+  </section>
+
 </form>
