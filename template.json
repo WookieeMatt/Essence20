@@ -248,7 +248,7 @@
       "powers": [{
         "actionType": "",
         "description": "",
-        "charges":  null,
+        "numCharges":  null,
         "cost": null,
         "limited": false,
         "name": ""
@@ -280,7 +280,7 @@
     }
   },
   "Item": {
-    "types": ["weapon", "armor", "gear", "perk", "power", "trait", "feature", "megaformTrait"],
+    "types": ["armor", "gear", "weapon", "weaponUpgrade", "zordCombiner", "perk", "power", "trait", "feature", "megaformTrait"],
     "templates":{
       "itemDescription": {
         "name": "",
@@ -308,28 +308,28 @@
     "weapon": {
       "templates": ["itemDescription"],
       "availability": "standard",
-      "classifications": [{
-        "skill": "",
-        "size": "",
-        "style": ""
-      }],
       "effects": {
-        "charges": null,
+        "numCharges": null,
+        "classification": {
+          "skill": "",
+          "size": "",
+          "style": ""
+        },
         "custom": "",
         "damages": [{
           "element": "",
           "value": 1
         }],
-        "hands": 1,
+        "numHands": 1,
+        "numTargets": 1,
         "radius": null,
-        "target": null,
-        "shift": 0,
         "range": {
           "min": null,
           "reachMultiplier": 1,
           "long": null,
           "value": null
-        }
+        },
+        "shift": 0
       },
       "requirements": {
         "custom": null,
@@ -337,6 +337,12 @@
         "shift": null
       },
       "traits": []
+    },
+    "weaponUpgrade": {
+      "templates": ["itemDescription"],
+      "availability": "standard",
+      "benefit": "benefit",
+      "prerequisite": null
     },
     "zordCombiner": {
       "templates": ["itemDescription"],
@@ -351,7 +357,8 @@
     },
     "perk": {
       "templates": ["itemDescription"],
-      "origin": "generalPerk"
+      "origin": "generalPerk",
+      "prerequisite": null
     },
     "power": {
       "templates": ["itemDescription"],

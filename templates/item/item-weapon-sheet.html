@@ -7,4 +7,43 @@
     </div>
   </header>
 
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body">
+    <input type="text" name="data.availability" value="{{data.availability}}" placeholder="{{ localize 'E20.Availability' }}"/>
+    <input type="number" name="data.numCharges" value="{{data.numCharges}}" placeholder="{{ localize 'E20.Charges' }}"/>
+    <input type="number" name="data.shift" value="{{data.shift}}" placeholder="{{ localize 'E20.Shift' }}"/>
+
+    <input type="text" name="data.classification.skill" value="{{data.classification.skill}}" placeholder="{{ localize 'E20.Skill' }}"/>
+    <input type="text" name="data.classification.size" value="{{data.classification.size}}" placeholder="{{ localize 'E20.Size' }}"/>
+    <input type="text" name="data.classification.style" value="{{data.classification.style}}" placeholder="{{ localize 'E20.Style' }}"/>
+
+    <input type="text" name="data.custom" value="{{data.custom}}" placeholder="{{ localize 'E20.Custom' }}"/>
+
+    <h3>{{localize 'E20.Damages'}}</h3>
+    {{#each data.damages}}
+      <h4>Damage stats would show here</h4>
+    {{else}}
+      <h4>Need a button here to add damages</h4>
+    {{/each}}
+
+    <input type="number" name="data.numHands" value="{{data.numHands}}" placeholder="{{ localize 'E20.NumHands' }}"/>
+    <input type="number" name="data.numTargets" value="{{data.numTargets}}" placeholder="{{ localize 'E20.NumTargets' }}"/>
+    <input type="number" name="data.radius" value="{{data.radius}}" placeholder="{{ localize 'E20.Radius' }}"/>
+
+    <h3>{{localize 'E20.Range'}}</h3>
+    <input type="number" name="data.min" value="{{data.min}}" placeholder="{{ localize 'E20.Min' }}"/>
+    <input type="number" name="data.reachMultiplier" value="{{data.reachMultiplier}}" placeholder="{{ localize 'E20.ReachMultiplier' }}"/>
+    <input type="number" name="data.long" value="{{data.long}}" placeholder="{{ localize 'E20.Long' }}"/>
+    <input type="number" name="data.value" value="{{data.value}}" placeholder="{{ localize 'E20.Value' }}"/>
+
+    <h3>{{localize 'E20.Requirements'}}</h3>
+    <input type="text" name="data.requirements.custom" value="{{data.requirements.custom}}" placeholder="{{ localize 'E20.Custom' }}"/>
+    <input type="text" name="data.requirements.skill" value="{{data.requirements.skill}}" placeholder="{{ localize 'E20.Skill' }}"/>
+    <input type="number" name="data.requirements.shift" value="{{data.requirements.shift}}" placeholder="{{ localize 'E20.Shift' }}"/>
+
+    <div class="tab flexrow active" data-group="primary" data-tab="description">
+      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+    </div>
+  </section>
+
 </form>

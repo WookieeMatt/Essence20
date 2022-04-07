@@ -18,5 +18,32 @@
   "BOILERPLATE.EffectEdit": "Edit Effect",
   "BOILERPLATE.EffectDelete": "Delete Effect",
 
-  "BOILERPLATE.Add": "Add"
+  "BOILERPLATE.Add": "Add",
+
+  "E20.Availability": "Availability",
+  "E20.Benefit": "Benefit",
+  "E20.Charges": "Charges",
+  "E20.Classification": "Classification",
+  "E20.ColorSpectrum": "Color Spectrum",
+  "E20.Custom": "Custom",
+  "E20.Damages": "Damages",
+  "E20.Effect": "Effect",
+  "E20.Effects": "Effects",
+  "E20.Long": "Long",
+  "E20.Min": "Min",
+  "E20.NumHands": "Hands",
+  "E20.NumTargets": "Targets",
+  "E20.Prerequisite": "Prerequisite",
+  "E20.Radius": "Radius",
+  "E20.Range": "Range",
+  "E20.Ranger": "Ranger",
+  "E20.ReachMultiplier": "Reach Multiplier",
+  "E20.Requirements": "Requirements",
+  "E20.Shift": "Shift",
+  "E20.Size": "Size",
+  "E20.Skill": "Skill",
+  "E20.Style": "Style",
+  "E20.Source": "Source",
+  "E20.Trait": "Trait",
+  "E20.Value": "Value"
 }
