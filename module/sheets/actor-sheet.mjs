@@ -68,9 +68,9 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareCharacterData(context) {
     // Handle ability scores.
-    for (let [k, v] of Object.entries(context.data.abilities)) {
-      v.label = game.i18n.localize(CONFIG.BOILERPLATE.abilities[k]) ?? k;
-    }
+    // for (let [k, v] of Object.entries(context.data.abilities)) {
+    //   v.label = game.i18n.localize(CONFIG.BOILERPLATE.abilities[k]) ?? k;
+    // }
   }
 
   /**
@@ -82,44 +82,44 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
-    const gear = [];
-    const features = [];
-    const spells = {
-      0: [],
-      1: [],
-      2: [],
-      3: [],
-      4: [],
-      5: [],
-      6: [],
-      7: [],
-      8: [],
-      9: []
-    };
+    // const gear = [];
+    // const features = [];
+    // const spells = {
+    //   0: [],
+    //   1: [],
+    //   2: [],
+    //   3: [],
+    //   4: [],
+    //   5: [],
+    //   6: [],
+    //   7: [],
+    //   8: [],
+    //   9: []
+    // };
 
-    // Iterate through items, allocating to containers
-    for (let i of context.items) {
-      i.img = i.img || DEFAULT_TOKEN;
-      // Append to gear.
-      if (i.type === 'item') {
-        gear.push(i);
-      }
-      // Append to features.
-      else if (i.type === 'feature') {
-        features.push(i);
-      }
-      // Append to spells.
-      else if (i.type === 'spell') {
-        if (i.data.spellLevel != undefined) {
-          spells[i.data.spellLevel].push(i);
-        }
-      }
-    }
+    // // Iterate through items, allocating to containers
+    // for (let i of context.items) {
+    //   i.img = i.img || DEFAULT_TOKEN;
+    //   // Append to gear.
+    //   if (i.type === 'item') {
+    //     gear.push(i);
+    //   }
+    //   // Append to features.
+    //   else if (i.type === 'feature') {
+    //     features.push(i);
+    //   }
+    //   // Append to spells.
+    //   else if (i.type === 'spell') {
+    //     if (i.data.spellLevel != undefined) {
+    //       spells[i.data.spellLevel].push(i);
+    //     }
+    //   }
+    // }
 
-    // Assign and return
-    context.gear = gear;
-    context.features = features;
-    context.spells = spells;
+    // // Assign and return
+    // context.gear = gear;
+    // context.features = features;
+    // context.spells = spells;
   }
 
   /* -------------------------------------------- */
