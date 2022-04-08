@@ -9,7 +9,13 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <input type="text" name="data.colorSpectrum" value="{{data.colorSpectrum}}" placeholder="{{ localize 'E20.ColorSpectrum' }}"/>
+    <select name="data.colorSpectrum">
+      {{#select data.colorSpectrum}}
+      {{#each config.rangers as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
 
     {{!-- "flex-group-center" is also defined in the _grid.scss file
     and it will add a small amount of padding, a border, and will
@@ -23,8 +29,8 @@
       </div>
     </div>
 
-    <input type="text" name="data.ranger" value="{{data.ranger}}" placeholder="{{ localize 'E20.Ranger' }}"/>
-    <input type="text" name="data.skillNotes" value="{{data.skillNotes}}" placeholder="{{ localize 'E20.SkillNotes' }}"/>
+    <input type="text" name="data.ranger" value="{{data.ranger}}" placeholder="{{ localize 'E20.ranger' }}"/>
+    <input type="text" name="data.skillNotes" value="{{data.skillNotes}}" placeholder="{{ localize 'E20.skillNotes' }}"/>
   </section>
 
 </form>

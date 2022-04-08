@@ -7,4 +7,27 @@
     </div>
   </header>
 
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body">
+    <input type="number" name="data.effectArea" value="{{data.effectArea}}" placeholder="{{ localize 'E20.effectArea' }}"/>
+
+    <select name="data.effectShape">
+      {{#select data.effectShape}}
+      {{#each config.effectShapes as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+
+    <input type="number" name="data.lightRange.bright" value="{{data.lightRange.bright}}" placeholder="{{ localize 'E20.lightRange.bright' }}"/>
+    <input type="number" name="data.lightRange.dim" value="{{data.lightRange.dim}}" placeholder="{{ localize 'E20.lightRange.dim' }}"/>
+
+    <input type="number" name="data.quantity" value="{{data.quantity}}" placeholder="{{ localize 'E20.quantity' }}"/>
+    <input type="number" name="data.toughness" value="{{data.toughness}}" placeholder="{{ localize 'E20.toughness' }}"/>
+
+    <div class="tab flexrow active" data-group="primary" data-tab="description">
+      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+    </div>
+  </section>
+
 </form>

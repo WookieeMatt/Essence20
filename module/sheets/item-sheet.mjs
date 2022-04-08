@@ -32,6 +32,9 @@ export class Essence20ItemSheet extends ItemSheet {
     // Retrieve base data structure.
     const context = super.getData();
 
+    // Make all the Essence20 consts accessible
+    context.config = CONFIG.E20;
+
     // Use a safe clone of the item data for further operations.
     const itemData = context.item.data;
 
@@ -45,7 +48,7 @@ export class Essence20ItemSheet extends ItemSheet {
     // Add the actor's data to context.data for easier access, as well as flags.
     context.data = itemData.data;
     context.flags = itemData.flags;
-
+console.log(context);
     return context;
   }
 

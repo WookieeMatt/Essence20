@@ -9,10 +9,35 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <input type="text" name="data.availability" value="{{data.availability}}" placeholder="{{ localize 'E20.Availability' }}"/>
-    <input type="text" name="data.classification" value="{{data.classification}}" placeholder="{{ localize 'E20.Classification' }}"/>
-    <input type="text" name="data.trait" value="{{data.trait}}" placeholder="{{ localize 'E20.Trait' }}"/>
-    <input type="number" name="data.effect" value="{{data.effect}}" placeholder="{{ localize 'E20.Effect' }}"/>
+    <select name="data.availability">
+      {{#select data.availability}}
+      {{#each config.availabilities as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+
+    <select name="data.classification">
+      {{#select data.classification}}
+      {{#each config.armorClassifications as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+
+    <select name="data.trait">
+      {{#select data.trait}}
+      {{#each config.armorTraits as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+
+    <input type="number" name="data.effect" value="{{data.effect}}" placeholder="{{ localize 'E20.effect' }}"/>
+
+    <div class="tab flexrow active" data-group="primary" data-tab="description">
+      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
+    </div>
   </section>
 
 </form>
