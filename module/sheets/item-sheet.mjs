@@ -48,7 +48,7 @@ export class Essence20ItemSheet extends ItemSheet {
     // Add the actor's data to context.data for easier access, as well as flags.
     context.data = itemData.data;
     context.flags = itemData.flags;
-console.log(context);
+
     return context;
   }
 
