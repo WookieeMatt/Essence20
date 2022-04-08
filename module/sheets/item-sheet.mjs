@@ -32,6 +32,9 @@ export class Essence20ItemSheet extends ItemSheet {
     // Retrieve base data structure.
     const context = super.getData();
 
+    // Make all the Essence20 consts accessible
+    context.config = CONFIG.E20;
+
     // Use a safe clone of the item data for further operations.
     const itemData = context.item.data;
 
