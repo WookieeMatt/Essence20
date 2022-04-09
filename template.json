@@ -220,7 +220,12 @@
       }
     },
     "powerRanger": {
-      "templates": ["common", "creature", "character"]
+      "templates": ["common", "creature", "character"],
+      "personalPower": {
+        "max": 2,
+        "min": 0,
+        "value": 2
+      }
     },
     "giJoe": {
       "templates": ["common", "creature", "character"]
