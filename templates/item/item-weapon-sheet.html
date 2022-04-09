@@ -13,13 +13,32 @@
       {{/select}}
     </select>
 
+    <select name="data.classification.skill">
+      {{#select data.classification.skill}}
+      {{#each config.weaponSkills as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+
+    <select name="data.classification.size">
+      {{#select data.classification.size}}
+      {{#each config.weaponSizes as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+
+    <select name="data.classification.style">
+      {{#select data.classification.style}}
+      {{#each config.weaponStyles as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+
     <input type="number" name="data.numCharges" value="{{data.numCharges}}" placeholder="{{ localize 'E20.charges' }}"/>
     <input type="number" name="data.shift" value="{{data.shift}}" placeholder="{{ localize 'E20.shift' }}"/>
-
-    <input type="text" name="data.classification.skill" value="{{data.classification.skill}}" placeholder="{{ localize 'E20.skill' }}"/>
-    <input type="text" name="data.classification.size" value="{{data.classification.size}}" placeholder="{{ localize 'E20.size' }}"/>
-    <input type="text" name="data.classification.style" value="{{data.classification.style}}" placeholder="{{ localize 'E20.style' }}"/>
-
     <input type="text" name="data.custom" value="{{data.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
 
     <h3>{{localize 'E20.damages'}}</h3>

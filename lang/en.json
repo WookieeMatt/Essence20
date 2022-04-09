@@ -5,11 +5,13 @@
     "charges": "Charges",
     "classification": "Classification",
     "colorSpectrum": "Color Spectrum",
+    "conditioning": "Conditioning",
     "custom": "Custom",
     "damages": "Damages",
     "effect": "Effect",
     "effectArea": "Effect Area/Length/Radius",
     "effectShape": "Effect Shape",
+    "initiative": "Initiative",
     "long": "Long",
     "min": "Min",
     "numHands": "Hands",
@@ -129,6 +131,13 @@
     "lightRange": {
       "bright": "Bright Range",
       "dim": "Dim Range"
+    },
+
+    "movement": {
+      "aerial": "Aerial",
+      "aerialMin": "Aerial Min",
+      "ground": "Ground",
+      "swim": "Swim"
     },
 
     "rangers": {
