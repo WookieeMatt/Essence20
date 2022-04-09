@@ -1,20 +1,15 @@
 <form class="{{cssClass}}" autocomplete="off">
 
-  <header class="sheet-header">
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-    <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-    </div>
-  </header>
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/item-header.html"}}
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
     <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'E20.source' }}"/>
     <input type="text" name="data.prerequisite" value="{{data.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}"/>
 
-    <div class="tab flexrow active" data-group="primary" data-tab="description">
-      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-    </div>
+    {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/item-description.html"}}
   </section>
 
 </form>
