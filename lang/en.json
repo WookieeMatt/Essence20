@@ -5,13 +5,11 @@
     "charges": "Charges",
     "classification": "Classification",
     "colorSpectrum": "Color Spectrum",
-    "conditioning": "Conditioning",
     "custom": "Custom",
     "damages": "Damages",
     "effect": "Effect",
     "effectArea": "Effect Area/Length/Radius",
     "effectShape": "Effect Shape",
-    "initiative": "Initiative",
     "long": "Long",
     "min": "Min",
     "numHands": "Hands",
@@ -133,13 +131,6 @@
       "dim": "Dim Range"
     },
 
-    "movement": {
-      "aerial": "Aerial",
-      "aerialMin": "Aerial Min",
-      "ground": "Ground",
-      "swim": "Swim"
-    },
-
     "rangers": {
       "black": "Black Ranger",
       "blue": "Blue Ranger",
@@ -148,22 +139,6 @@
       "red": "Red Ranger",
       "yellow": "Yellow Ranger",
       "white": "White Ranger"
-    },
-
-    "shifts": {
-      "criticalSuccess": "Critical Success",
-      "autoSuccess": "Auto Success",
-      "3d6": "3d6",
-      "2d8": "2d8",
-      "d12": "d12",
-      "d10": "d10",
-      "d8": "d8",
-      "d6": "d6",
-      "d4": "d4",
-      "d2": "d2",
-      "d20": "d20",
-      "autoFail": "Auto Fail",
-      "fumble": "Fumble"
     },
     
     "weaponSizes": {

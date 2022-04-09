@@ -24,25 +24,25 @@
             "athletics": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "brawn": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "intimidation": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "might": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             }
           },
@@ -50,31 +50,31 @@
             "acrobatics": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "driving": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "finesse": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "infiltration": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "targeting": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             }
           },
@@ -82,31 +82,31 @@
             "alertness": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "culture": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "science": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "survival": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "technology": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             }
           },
@@ -114,31 +114,31 @@
             "animal handling": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "deception": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "performance": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "persuasion": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             },
             "streetwise": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
+              "shift": 0,
               "specializations": []
             }
           }
@@ -233,7 +233,7 @@
       "customSkills": [{
         "name": "",
         "isSpecialized": false,
-        "shift": "d20"
+        "shift": 0
       }],
       "defenses": {
         "toughness": 10,
@@ -329,7 +329,7 @@
           "long": null,
           "value": null
         },
-        "shift": "d20"
+        "shift": 0
       },
       "requirements": {
         "custom": null,
