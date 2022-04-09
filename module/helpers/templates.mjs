@@ -7,10 +7,8 @@
   return loadTemplates([
 
     // Actor partials.
-    "systems/essence20/templates/actor/parts/actor-features.html",
-    "systems/essence20/templates/actor/parts/actor-items.html",
-    "systems/essence20/templates/actor/parts/actor-spells.html",
-    "systems/essence20/templates/actor/parts/actor-effects.html",
+    "systems/essence20/templates/actor/parts/actor-header.html",
+    "systems/essence20/templates/actor/parts/actor-common-stats.html",
 
     // Item partials.
     "systems/essence20/templates/item/parts/item-description.html",
