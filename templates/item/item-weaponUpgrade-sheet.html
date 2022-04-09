@@ -20,9 +20,8 @@
     <input type="text" name="data.benefit" value="{{data.benefit}}" placeholder="{{ localize 'E20.benefit' }}"/>
     <input type="text" name="data.prerequisite" value="{{data.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}"/>
 
-    <div class="tab flexrow active" data-group="primary" data-tab="description">
-      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-    </div>
+    {{!-- Description Section --}}
+		{{> "systems/essence20/templates/item/parts/item-description.html"}}
   </section>
 
 </form>

@@ -48,9 +48,8 @@
     <input type="text" name="data.requirements.skill" value="{{data.requirements.skill}}" placeholder="{{ localize 'E20.skill' }}"/>
     <input type="number" name="data.requirements.shift" value="{{data.requirements.shift}}" placeholder="{{ localize 'E20.shift' }}"/>
 
-    <div class="tab flexrow active" data-group="primary" data-tab="description">
-      {{editor content=data.description target="data.description" button=true owner=owner editable=editable}}
-    </div>
+    {{!-- Description Section --}}
+		{{> "systems/essence20/templates/item/parts/item-description.html"}}
   </section>
 
 </form>
