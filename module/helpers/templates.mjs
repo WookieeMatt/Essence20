@@ -14,5 +14,6 @@
 
     // Item partials.
     "systems/essence20/templates/item/parts/item-description.html",
+    "systems/essence20/templates/item/parts/item-header.html",
   ]);
 };
