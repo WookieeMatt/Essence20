@@ -40,12 +40,42 @@ E20.lightRange = {
   dim: "Dim",
 },
 
+E20.movement = {
+  aerial: "E20.movement.aerial",
+  aerialMin: "E20.movement.aerialMin",
+  ground: "E20.movement.ground",
+  swim: "E20.movement.swim",
+},
+
 E20.rangers = {
-  black: "Black Ranger",
-  blue: "Blue Ranger",
-  green: "Green Ranger",
-  pink: "Pink Ranger",
-  red: "Red Ranger",
-  yellow: "Yellow Ranger",
-  white: "White Ranger",
+  black: "E20.movement.black",
+  blue: "E20.movement.blue",
+  green: "E20.movement.green",
+  pink: "E20.movement.pink",
+  red: "Red RE20.movement.red",
+  yellow: "E20.movement.yellow",
+  white: "E20.movement.white",
+},
+
+E20.weaponSizes = {
+  integrated: "E20.weaponSizes.integrated",
+  sidearm: "E20.weaponSizes.sidearm",
+  medium: "E20.weaponSizes.medium",
+  long: "E20.weaponSizes.long",
+  heavy: "E20.weaponSizes.heavy",
+},
+
+E20.weaponSkills = {
+  athletics: "E20.essenceSkills.strength.athletics",
+  might: "E20.essenceSkills.strength.might",
+  finesse: "E20.essenceSkills.speed.finesse",
+  targeting: "E20.essenceSkills.speed.targeting",
+  technology: "E20.essenceSkills.smarts.technology",
+},
+
+E20.weaponStyles = {
+  melee: "E20.weaponStyles.melee",
+  energy: "E20.weaponStyles.energy",
+  explosive: "E20.weaponStyles.explosive",
+  projectile: "E20.weaponStyles.projectile",
 }
