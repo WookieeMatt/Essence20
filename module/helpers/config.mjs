@@ -57,6 +57,34 @@ E20.rangers = {
   white: "E20.movement.white",
 },
 
+E20.shifts = {
+  "criticalSuccess": "E20.shifts.criticalSuccess",
+  "autoSuccess": "E20.shifts.autoSuccess",
+  "3d6": "E20.shifts.3d6",
+  "2d8": "E20.shifts.2d8",
+  "d12": "E20.shifts.d12",
+  "d10": "E20.shifts.d10",
+  "d8": "E20.shifts.d8",
+  "d6": "E20.shifts.d6",
+  "d4": "E20.shifts.d4",
+  "d2": "E20.shifts.d2",
+  "d20": "E20.shifts.d20",
+  "autoFail": "E20.shifts.autoFail",
+  "fumble": "E20.shifts.fumble",
+},
+
+E20.weaponRequirementShifts = {
+  "none": "",
+  "d2": "E20.shifts.d2",
+  "d4": "E20.shifts.d4",
+  "d6": "E20.shifts.d6",
+  "d8": "E20.shifts.d8",
+  "d10": "E20.shifts.d10",
+  "d12": "E20.shifts.d12",
+  "2d8": "E20.shifts.2d8",
+  "3d6": "E20.shifts.3d6",
+},
+
 E20.weaponSizes = {
   integrated: "E20.weaponSizes.integrated",
   sidearm: "E20.weaponSizes.sidearm",
@@ -71,6 +99,11 @@ E20.weaponSkills = {
   finesse: "E20.essenceSkills.speed.finesse",
   targeting: "E20.essenceSkills.speed.targeting",
   technology: "E20.essenceSkills.smarts.technology",
+},
+
+E20.weaponRequirementSkills = {
+  none: "",
+  ...E20.weaponSkills,
 },
 
 E20.weaponStyles = {
