@@ -6,9 +6,9 @@
         "conditioning": 0,
         "description": "",
         "health": {
-          "value": 4,
+          "max": 4,
           "min": 0,
-          "max": 4
+          "value": 4
         },
         "initiative": 0,
         "movement": {
@@ -222,7 +222,7 @@
     "powerRanger": {
       "templates": ["common", "creature", "character"]
     },
-    "gijoe": {
+    "giJoe": {
       "templates": ["common", "creature", "character"]
     },
     "npc": {
