@@ -16,3 +16,43 @@ center all of its child elements content and text. --}}
 <input type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" placeholder="{{ localize 'E20.movement.aerialMin' }}"/>
 <input type="number" name="system.movement.ground" value="{{system.movement.ground}}" placeholder="{{ localize 'E20.movement.ground' }}"/>
 <input type="number" name="system.movement.swim" value="{{system.movement.swim}}" placeholder="{{ localize 'E20.movement.swim' }}"/>
+
+<input type="text" name="system.pronouns" value="{{system.pronouns}}" placeholder="{{ localize 'E20.pronouns' }}"/>
+<input type="text" name="system.role" value="{{system.role}}" placeholder="{{ localize 'E20.role' }}"/>
+
+<h3>{{localize 'E20.background'}}</h3>
+  {{#each system.influences as |influence|}}
+    <input type="text" name="influence.bond" value="{{influence.bond}}" placeholder="{{ localize 'E20.bond' }}"/>
+    <input type="text" name="influence.hangUp" value="{{influence.hangUp}}" placeholder="{{ localize 'E20.hangUp' }}"/>
+    <input type="text" name="influence.name" value="{{influence.name}}" placeholder="{{ localize 'E20.name' }}"/>
+    <input type="text" name="influence.perk" value="{{influence.perk}}" placeholder="{{ localize 'E20.perk' }}"/>
+  {{else}}
+    <h4>Need a button here to add influences</h4>
+  {{/each}}
+
+  <h4>{{localize 'E20.origin'}}</h4>
+    <input type="text" name="system.description" value="{{system.description}}" placeholder="{{ localize 'E20.description' }}"/>
+    <input type="text" name="system.name" value="{{system.name}}" placeholder="{{ localize 'E20.name' }}"/>
+
+<h3>{{localize 'E20.bonuses'}}</h3>
+  {{#each system.bonuses as |bonus essence|}}
+    <input type="number" name="system.bonuses.{{essence}}" value="{{bonus}}" placeholder="{{ localize (concat 'E20.essences.' essence) }}"/>
+  {{/each}}
+
+<h3>{{localize 'E20.essencesLabel'}}</h3>
+  {{#each system.essences as |value essence|}}
+    <input type="number" name="system.essences.{{essence}}" value="{{value}}" placeholder="{{ localize (concat 'E20.essences.' essence) }}"/>
+  {{/each}}
+
+<h3>{{localize 'E20.skills'}}</h3>
+{{#each system.skills as |skills essence|}}
+  <h4>{{localize (concat 'E20.essences.' essence)}}</h4>
+  {{#each skills as |fields skill|}}
+    <h5>{{localize (concat 'E20.essenceSkills.' essence '.' skill)}}</h5>
+    <input type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}" placeholder="{{ localize 'E20.modifier' }}"/>
+    <input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
+    <select name="system.skills.{{essence}}.{{skill}}.shift">
+      {{selectOptions @root.config.shifts selected=fields.shift localize=true}}
+    </select>
+  {{/each}}
+{{/each}}
