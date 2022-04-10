@@ -10,7 +10,6 @@ export class Essence20ActorSheet extends ActorSheet {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
       classes: ["essence20", "sheet", "actor"],
-      template: "systems/essence20/templates/actor/actor-sheet.html",
       width: 600,
       height: 600,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "features" }]
@@ -32,11 +31,14 @@ export class Essence20ActorSheet extends ActorSheet {
     // editable, the items array, and the effects array.
     const context = super.getData();
 
-    // Use a safe clone of the actor data for further operations.
-    const actorData = this.actor.data.toObject(false);
+    // Make all the Essence20 consts accessible
+    context.config = CONFIG.E20;
 
-    // Add the actor's data to context.data for easier access, as well as flags.
-    context.data = actorData.data;
+    // Use a safe clone of the actor data for further operations.
+    const actorData = this.actor.toObject(false);
+
+    // Add the actor's system data to context for easier access, as well as flags.
+    context.system = actorData.system;
     context.flags = actorData.flags;
 
     // Prepare character data and items.
