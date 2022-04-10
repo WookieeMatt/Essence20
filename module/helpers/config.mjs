@@ -73,6 +73,27 @@ E20.shifts = {
   "fumble": "E20.shifts.fumble",
 },
 
+E20.skills ={
+  athletics: "E20.essenceSkills.strength.athletics",
+  brawn: "E20.essenceSkills.strength.brawn",
+  intimidation: "E20.essenceSkills.strength.intimidation",
+  might: "E20.essenceSkills.strength.might",
+  acrobatics: "E20.essenceSkills.speed.acrobatics",
+  driving: "E20.essenceSkills.speed.driving",
+  finesse: "E20.essenceSkills.speed.finesse",
+  infiltration: "E20.essenceSkills.speed.infiltration",
+  alertness: "E20.essenceSkills.smarts.alertness",
+  culture: "E20.essenceSkills.smarts.culture",
+  science: "E20.essenceSkills.smarts.science",
+  survival: "E20.essenceSkills.smarts.survival",
+  technology: "E20.essenceSkills.smarts.technology",
+  animalHandling: "E20.essenceSkills.social.animalHandling",
+  deception: "E20.essenceSkills.social.deception",
+  performance: "E20.essenceSkills.social.performance",
+  persuasion: "E20.essenceSkills.social.persuasion",
+  streetwise: "E20.essenceSkills.social.streetwise",
+}
+
 E20.weaponRequirementShifts = {
   "none": "",
   "d2": "E20.shifts.d2",

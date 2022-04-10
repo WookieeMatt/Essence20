@@ -17,129 +17,109 @@
           "ground": 45,
           "swim": 0
         },
-        "name": "",
         "size": "common",
         "skills": {
           "strength": {
             "athletics": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "brawn": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "intimidation": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "might": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             }
           },
           "speed": {
             "acrobatics": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "driving": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "finesse": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "infiltration": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "targeting": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             }
           },
           "smarts": {
             "alertness": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "culture": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "science": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "survival": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "technology": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             }
           },
           "social": {
             "animalHandling": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "deception": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "performance": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "persuasion": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             },
             "streetwise": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20",
-              "specializations": []
+              "shift": "d20"
             }
           }
         }
@@ -285,10 +265,9 @@
     }
   },
   "Item": {
-    "types": ["armor", "gear", "weapon", "weaponUpgrade", "zordCombiner", "perk", "power", "trait", "feature", "megaformTrait"],
+    "types": ["armor", "gear", "weapon", "weaponUpgrade", "zordCombiner", "perk", "power", "trait", "feature", "megaformTrait", "specialization"],
     "templates":{
       "itemDescription": {
-        "name": "",
         "value": ""
       }
     },
@@ -377,6 +356,9 @@
     },
     "megaformTrait": {
       "templates": ["itemDescription"]
+    },
+    "specialization": {
+      "skill": ""
     }
   }
 }

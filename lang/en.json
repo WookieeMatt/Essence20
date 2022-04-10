@@ -1,5 +1,6 @@
 {
   "E20": {
+    "addSpecialization": "Add Specialization",
     "availability": "Availability",
     "background": "Background",
     "benefit": "Benefit",
@@ -42,6 +43,7 @@
     "size": "Size",
     "skill": "Skill",
     "skills": "Skills",
+    "specializations": "Specializations",
     "style": "Style",
     "source": "Source",
     "trait": "Trait",
