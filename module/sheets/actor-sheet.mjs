@@ -41,16 +41,20 @@ export class Essence20ActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
-    // Prepare character data and items.
-    if (actorData.type == 'character') {
-      this._prepareItems(context);
-      this._prepareCharacterData(context);
-    }
+    // // Prepare character data and items.
+    // if (actorData.type == 'character') {
+    //   this._prepareItems(context);
+    //   this._prepareCharacterData(context);
+    // }
 
-    // Prepare NPC data and items.
-    if (actorData.type == 'npc') {
-      this._prepareItems(context);
-    }
+    // // Prepare NPC data and items.
+    // if (actorData.type == 'npc') {
+    //   this._prepareItems(context);
+    // }
+
+    // Might need to filter like above eventually
+    this._prepareItems(context);
+    this._prepareCharacterData(context);
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
@@ -84,6 +88,7 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
+    const specializations = {};
     // const gear = [];
     // const features = [];
     // const spells = {
@@ -100,8 +105,17 @@ export class Essence20ActorSheet extends ActorSheet {
     // };
 
     // // Iterate through items, allocating to containers
-    // for (let i of context.items) {
-    //   i.img = i.img || DEFAULT_TOKEN;
+    for (let i of context.items) {
+      i.img = i.img || DEFAULT_TOKEN;
+      // Append to skill specializations
+      if (i.type === 'specialization') {
+        const skill = i.data.skill;
+        if (specializations[skill]) {
+          specializations[skill].push(i);
+        } else {
+          specializations[skill] = [i];
+        }
+      }
     //   // Append to gear.
     //   if (i.type === 'item') {
     //     gear.push(i);
@@ -116,9 +130,10 @@ export class Essence20ActorSheet extends ActorSheet {
     //       spells[i.data.spellLevel].push(i);
     //     }
     //   }
-    // }
+    }
 
-    // // Assign and return
+    // Assign and return
+    context.specializations = specializations;
     // context.gear = gear;
     // context.features = features;
     // context.spells = spells;
@@ -151,6 +166,9 @@ export class Essence20ActorSheet extends ActorSheet {
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
+
+    // Edit specialization name inline
+    html.find(".inline-edit").change(this._onSpecializationEdit.bind(this));
 
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
@@ -195,6 +213,21 @@ export class Essence20ActorSheet extends ActorSheet {
     // Finally, create the item!
     return await Item.create(itemData, {parent: this.actor});
   }
+
+  /**
+   * Handle editing specialization names inline
+   * @param {Event} event   The originating click event
+   * @private
+   */
+   async _onSpecializationEdit(event) {
+    event.preventDefault();
+      let element = event.currentTarget;
+      let itemId = element.closest(".item").dataset.itemId;
+      let item = this.actor.items.get(itemId);
+      let field = element.dataset.field;
+
+      return item.update({ [field]: element.value });
+   }
 
   /**
    * Handle clickable rolls.
