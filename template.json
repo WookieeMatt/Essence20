@@ -111,7 +111,7 @@
             }
           },
           "social": {
-            "animal handling": {
+            "animalHandling": {
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20",
