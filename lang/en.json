@@ -1,6 +1,8 @@
 {
   "E20": {
+    "actionType": "Action Type",
     "addInfluence": "Add Influence",
+    "addPower": "Add Power",
     "addSpecialization": "Add Specialization",
     "availability": "Availability",
     "background": "Background",
@@ -11,6 +13,7 @@
     "classification": "Classification",
     "colorSpectrum": "Color Spectrum",
     "conditioning": "Conditioning",
+    "cost": "Cost",
     "custom": "Custom",
     "damages": "Damages",
     "defensesStr": "Defenses",
@@ -25,6 +28,7 @@
     "initiative": "Initiative",
     "influences": "Influences",
     "isCombiner": "Combiner?",
+    "limited": "Limited?",
     "long": "Long",
     "min": "Min",
     "modifier": "Modifier",
@@ -36,6 +40,7 @@
     "origin": "Origin",
     "perk": "Perk",
     "personalPower": "Personal Power",
+    "powers": "Powers",
     "prerequisite": "Prerequisite",
     "pronouns": "Pronouns",
     "quantity": "Quantity",
