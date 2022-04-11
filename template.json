@@ -226,10 +226,10 @@
         "willpower": 10,
         "cleverness": 10
       },
-      "hangUps": [{
+      "hangUp": {
         "description": "",
         "name": ""
-      }],
+      },
       "powers": [{
         "actionType": "",
         "description": "",
