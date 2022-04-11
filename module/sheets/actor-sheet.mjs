@@ -89,6 +89,7 @@ export class Essence20ActorSheet extends ActorSheet {
   _prepareItems(context) {
     // Initialize containers.
     const specializations = {};
+    const influences = [];
     // const gear = [];
     // const features = [];
     // const spells = {
@@ -116,6 +117,10 @@ export class Essence20ActorSheet extends ActorSheet {
           specializations[skill] = [i];
         }
       }
+      // Append to influences.
+      if (i.type === 'influence') {
+        influences.push(i);
+      }
     //   // Append to gear.
     //   if (i.type === 'item') {
     //     gear.push(i);
@@ -134,6 +139,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Assign and return
     context.specializations = specializations;
+    context.influences = influences;
     // context.gear = gear;
     // context.features = features;
     // context.spells = spells;
@@ -168,7 +174,7 @@ export class Essence20ActorSheet extends ActorSheet {
     });
 
     // Edit specialization name inline
-    html.find(".inline-edit").change(this._onSpecializationEdit.bind(this));
+    html.find(".inline-edit").change(this._onInlineEdit.bind(this));
 
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
@@ -219,7 +225,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-   async _onSpecializationEdit(event) {
+   async _onInlineEdit(event) {
     event.preventDefault();
       let element = event.currentTarget;
       let itemId = element.closest(".item").dataset.itemId;

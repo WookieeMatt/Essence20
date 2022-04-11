@@ -21,13 +21,21 @@ center all of its child elements content and text. --}}
 <input type="text" name="system.role" value="{{system.role}}" placeholder="{{ localize 'E20.role' }}"/>
 
 <h3>{{localize 'E20.background'}}</h3>
-  {{#each system.influences as |influence|}}
-    <input type="text" name="influence.bond" value="{{influence.bond}}" placeholder="{{ localize 'E20.bond' }}"/>
-    <input type="text" name="influence.hangUp" value="{{influence.hangUp}}" placeholder="{{ localize 'E20.hangUp' }}"/>
-    <input type="text" name="influence.name" value="{{influence.name}}" placeholder="{{ localize 'E20.name' }}"/>
-    <input type="text" name="influence.perk" value="{{influence.perk}}" placeholder="{{ localize 'E20.perk' }}"/>
-  {{else}}
-    <h4>Need a button here to add influences</h4>
+  <a class="item-create" data-type="influence" title="{{ localize 'E20.addInfluence' }}">
+    <i class="fas fa-plus"></i>
+  </a>
+  {{#each @root.influences as |influence|}}
+    <li class="item flexrow" data-item-id="{{influence._id}}">
+      <div class="item-name">
+        <input class="inline-edit" data-field="name" type="text" name="influence.{{@index}}.name" value="{{influence.name}}" placeholder="{{ localize 'E20.name' }}"/>
+        <input class="inline-edit" data-field="data.bond" type="text" name="influence.{{@index}}.bond" value="{{influence.data.bond}}" placeholder="{{ localize 'E20.bond' }}"/>
+        <input class="inline-edit" data-field="data.hangUp" type="text" name="influence.{{@index}}.hangUp" value="{{influence.system.hangUp}}" placeholder="{{ localize 'E20.hangUp' }}"/>
+        <input class="inline-edit" data-field="data.perk" type="text" name="influence.{{@index}}.perk" value="{{influence.data.perk}}" placeholder="{{ localize 'E20.perk' }}"/>
+      </div>
+      <div class="item-controls">
+        <a class="item-control item-delete" title="Delete Influence"><i class="fas fa-trash"></i></a>
+      </div>
+    </li>
   {{/each}}
 
   <h4>{{localize 'E20.origin'}}</h4>
@@ -67,7 +75,7 @@ center all of its child elements content and text. --}}
           <input class="inline-edit" data-field="name" type="text" name="{{skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         </div>
         <div class="item-controls">
-          <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
+          <a class="item-control item-delete" title="Delete Specialization"><i class="fas fa-trash"></i></a>
         </div>
       </li>
     {{/each}}
