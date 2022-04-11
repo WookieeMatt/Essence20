@@ -5,6 +5,13 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
+    <span>{{localize 'E20.threatLevel'}}</span><input type="number" name="system.threatLevel" value="{{system.threatLevel}}"/>
+
+    <h3>{{localize 'E20.defensesStr'}}</h3>
+      {{#each system.defenses as |value defense|}}
+      <span>{{localize (lookup E20.defenses defense)}}</span><input type="number" name="system.defenses.{{defense}}" value="{{value}}"/>
+      {{/each}}
+
     {{> "systems/essence20/templates/actor/parts/actor-common.html"}}
   </section>
 </form>
