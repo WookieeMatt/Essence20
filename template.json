@@ -265,7 +265,7 @@
     }
   },
   "Item": {
-    "types": ["armor", "gear", "weapon", "weaponUpgrade", "zordCombiner", "perk", "power", "trait", "feature", "megaformTrait", "specialization"],
+    "types": ["armor", "gear", "weapon", "weaponUpgrade", "zordCombiner", "perk", "power", "trait", "feature", "megaformTrait", "influence", "specialization"],
     "templates":{
       "itemDescription": {
         "value": ""
@@ -356,6 +356,11 @@
     },
     "megaformTrait": {
       "templates": ["itemDescription"]
+    },
+    "influence": {
+      "bond": "",
+      "hangUp": null,
+      "perk": ""
     },
     "specialization": {
       "skill": ""
