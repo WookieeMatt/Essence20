@@ -17,41 +17,6 @@ center all of its child elements content and text. --}}
 <input type="number" name="system.movement.ground" value="{{system.movement.ground}}" placeholder="{{ localize 'E20.movement.ground' }}"/>
 <input type="number" name="system.movement.swim" value="{{system.movement.swim}}" placeholder="{{ localize 'E20.movement.swim' }}"/>
 
-<input type="text" name="system.pronouns" value="{{system.pronouns}}" placeholder="{{ localize 'E20.pronouns' }}"/>
-<input type="text" name="system.role" value="{{system.role}}" placeholder="{{ localize 'E20.role' }}"/>
-
-<h3>{{localize 'E20.background'}}</h3>
-  <a class="item-create" data-type="influence" title="{{ localize 'E20.addInfluence' }}">
-    <i class="fas fa-plus"></i>
-  </a>
-  {{#each @root.influences as |influence|}}
-    <li class="item flexrow" data-item-id="{{influence._id}}">
-      <div class="item-name">
-        <input class="inline-edit" data-field="name" type="text" name="influence.{{@index}}.name" value="{{influence.name}}" placeholder="{{ localize 'E20.name' }}"/>
-        <input class="inline-edit" data-field="data.bond" type="text" name="influence.{{@index}}.bond" value="{{influence.data.bond}}" placeholder="{{ localize 'E20.bond' }}"/>
-        <input class="inline-edit" data-field="data.hangUp" type="text" name="influence.{{@index}}.hangUp" value="{{influence.system.hangUp}}" placeholder="{{ localize 'E20.hangUp' }}"/>
-        <input class="inline-edit" data-field="data.perk" type="text" name="influence.{{@index}}.perk" value="{{influence.data.perk}}" placeholder="{{ localize 'E20.perk' }}"/>
-      </div>
-      <div class="item-controls">
-        <a class="item-control item-delete" title="Delete Influence"><i class="fas fa-trash"></i></a>
-      </div>
-    </li>
-  {{/each}}
-
-  <h4>{{localize 'E20.origin'}}</h4>
-    <input type="text" name="system.description" value="{{system.description}}" placeholder="{{ localize 'E20.description' }}"/>
-    <input type="text" name="system.name" value="{{system.name}}" placeholder="{{ localize 'E20.name' }}"/>
-
-<h3>{{localize 'E20.bonuses'}}</h3>
-  {{#each system.bonuses as |bonus essence|}}
-    <input type="number" name="system.bonuses.{{essence}}" value="{{bonus}}" placeholder="{{ localize (concat 'E20.essences.' essence) }}"/>
-  {{/each}}
-
-<h3>{{localize 'E20.essencesLabel'}}</h3>
-  {{#each system.essences as |value essence|}}
-    <input type="number" name="system.essences.{{essence}}" value="{{value}}" placeholder="{{ localize (concat 'E20.essences.' essence) }}"/>
-  {{/each}}
-
 <h3>{{localize 'E20.skills'}}</h3>
 {{#each system.skills as |skills essence|}}
   <h4>{{localize (concat 'E20.essences.' essence)}}</h4>

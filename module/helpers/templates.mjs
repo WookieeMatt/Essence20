@@ -9,6 +9,7 @@
     // Actor partials.
     "systems/essence20/templates/actor/parts/actor-header.html",
     "systems/essence20/templates/actor/parts/actor-common.html",
+    "systems/essence20/templates/actor/parts/actor-character.html",
 
     // Item partials.
     "systems/essence20/templates/item/parts/item-description.html",
