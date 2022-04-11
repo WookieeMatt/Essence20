@@ -23,6 +23,7 @@
     "health": "Health",
     "initiative": "Initiative",
     "influences": "Influences",
+    "isCombiner": "Combiner?",
     "long": "Long",
     "min": "Min",
     "modifier": "Modifier",

@@ -5,6 +5,10 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
+    <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}"/>
+    <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ranger' }}"/>
+    <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}}/>
+
     {{> "systems/essence20/templates/actor/parts/actor-common.html"}}
   </section>
 </form>
