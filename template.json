@@ -306,10 +306,10 @@
           "style": ""
         },
         "custom": "",
-        "damages": [{
+        "damage": {
           "element": "",
           "value": 1
-        }],
+        },
         "numHands": 1,
         "numTargets": 1,
         "radius": null,

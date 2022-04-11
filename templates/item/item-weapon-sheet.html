@@ -49,11 +49,14 @@
     <input type="text" name="data.custom" value="{{data.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
 
     <h3>{{localize 'E20.damages'}}</h3>
-    {{#each data.damages}}
-      <h4>Damage stats would show here</h4>
-    {{else}}
-      <h4>Need a button here to add damages</h4>
-    {{/each}}
+    <input type="number" name="data.damage.value" value="{{data.damage.value}}"/>
+    <select name="data.damage.element">
+      {{#select data.damage.element}}
+      {{#each config.elements as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
 
     <input type="number" name="data.numHands" value="{{data.numHands}}"/>
     <input type="number" name="data.numTargets" value="{{data.numTargets}}"/>

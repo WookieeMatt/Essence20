@@ -98,16 +98,6 @@
       "titanic": "Titanic"
     },
 
-    "damageTypes": {
-      "acid": "Acid",
-      "cold": "Cold",
-      "electric": "Electric",
-      "energy": "Energy",
-      "fire": "Fire",
-      "laser": "Laser",
-      "sonic": "Sonic"
-    },
-
     "defenses": {
       "cleverness": "Cleverness",
       "evasion": "Evasion",
@@ -119,6 +109,16 @@
       "circle": "Circle",
       "cone": "Cone",
       "square": "Square"
+    },
+
+    "elements": {
+      "acid": "Acid",
+      "cold": "Cold",
+      "electric": "Electric",
+      "energy": "Energy",
+      "fire": "Fire",
+      "laser": "Laser",
+      "sonic": "Sonic"
     },
 
     "essences": {
