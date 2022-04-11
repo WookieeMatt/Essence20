@@ -1,6 +1,4 @@
-{{!-- "flex-group-center" is also defined in the _grid.scss file
-and it will add a small amount of padding, a border, and will
-center all of its child elements content and text. --}}
+{{!-- Health --}}
 <div class="resource flex-group-center">
   <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
   <div class="resource-content flexrow flex-center flex-between">
@@ -10,19 +8,21 @@ center all of its child elements content and text. --}}
   </div>
 </div>
 
-<input type="number" name="system.conditioning" value="{{system.conditioning}}" placeholder="{{ localize 'E20.conditioning' }}"/>
-<input type="number" name="system.initiative" value="{{system.initiative}}" placeholder="{{ localize 'E20.initiative' }}"/>
-<input type="number" name="system.movement.aerial" value="{{system.movement.aerial}}" placeholder="{{ localize 'E20.movement.aerial' }}"/>
-<input type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" placeholder="{{ localize 'E20.movement.aerialMin' }}"/>
-<input type="number" name="system.movement.ground" value="{{system.movement.ground}}" placeholder="{{ localize 'E20.movement.ground' }}"/>
-<input type="number" name="system.movement.swim" value="{{system.movement.swim}}" placeholder="{{ localize 'E20.movement.swim' }}"/>
+{{!-- General stats --}}
+<span>{{localize 'E20.conditioning'}}</span><input type="number" name="system.conditioning" value="{{system.conditioning}}"/>
+<span>{{localize 'E20.initiative'}}</span><input type="number" name="system.initiative" value="{{system.initiative}}"/>
+<span>{{localize 'E20.movement.aerial'}}</span><input type="number" name="system.movement.aerial" value="{{system.movement.aerial}}"/>
+<span>{{localize 'E20.movement.aerialMin'}}</span><input type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}"/>
+<span>{{localize 'E20.movement.ground'}}</span><input type="number" name="system.movement.ground" value="{{system.movement.ground}}"/>
+<span>{{localize 'E20.movement.swim'}}</span><input type="number" name="system.movement.swim" value="{{system.movement.swim}}"/>
 
+{{!-- Skills --}}
 <h3>{{localize 'E20.skills'}}</h3>
 {{#each system.skills as |skills essence|}}
   <h4>{{localize (concat 'E20.essences.' essence)}}</h4>
   {{#each skills as |fields skill|}}
     <h5>{{localize (concat 'E20.essenceSkills.' essence '.' skill)}}</h5>
-    <input type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}" placeholder="{{ localize 'E20.modifier' }}"/>
+    <span>{{localize 'E20.modifier'}}</span><input type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
     <input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
     <select name="system.skills.{{essence}}.{{skill}}.shift">
       {{selectOptions @root.config.shifts selected=fields.shift localize=true}}
@@ -31,6 +31,8 @@ center all of its child elements content and text. --}}
     <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.addSpecialization' }}">
       <i class="fas fa-plus"></i>
     </a>
+
+    {{!-- Specializations for skill --}}
     {{#each (lookup @root.specializations skill) as |specialization|}}
       <li class="item flexrow" data-item-id="{{specialization._id}}">
         <div class="item-name">
