@@ -12,6 +12,12 @@
       <span>{{localize (lookup E20.defenses defense)}}</span><input type="number" name="system.defenses.{{defense}}" value="{{value}}"/>
       {{/each}}
 
+    <h3>{{localize 'E20.hangUp'}}</h3>
+    <input type="text" name="system.hangup.name" value="{{system.hangup.name}}"/>
+    <div class="tab flexrow active" data-group="primary">
+      {{editor content=system.hangup.description target="system.hangup.description" button=true owner=owner editable=editable}}
+    </div>
+
     {{> "systems/essence20/templates/actor/parts/actor-common.html"}}
   </section>
 </form>
