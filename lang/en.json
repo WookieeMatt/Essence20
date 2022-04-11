@@ -18,6 +18,7 @@
     "effectArea": "Effect Area/Length/Radius",
     "effectShape": "Effect Shape",
     "essencesLabel": "Essences",
+    "firepoints": "Firepoints",
     "hangUp": "Hang Up",
     "health": "Health",
     "initiative": "Initiative",
@@ -26,6 +27,8 @@
     "min": "Min",
     "modifier": "Modifier",
     "name": "Name",
+    "numDrivers": "Drivers",
+    "numPassengers": "Passengers",
     "numHands": "Hands",
     "numTargets": "Targets",
     "origin": "Origin",
@@ -47,8 +50,9 @@
     "specializations": "Specializations",
     "style": "Style",
     "source": "Source",
-    "trait": "Trait",
+    "threatLevel": "Threat Level",
     "toughness": "Toughness",
+    "trait": "Trait",
     "value": "Value",
 
     "armorClassifications": {

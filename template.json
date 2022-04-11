@@ -247,10 +247,10 @@
         "numDrivers": 1,
         "numPassengers": 0
       },
-      "firepoints": [{
+      "firepoints": {
         "description": "",
         "value": 1
-      }],
+      },
       "threatLevel": 0
     },
     "zord": {
