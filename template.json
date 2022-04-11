@@ -230,14 +230,6 @@
         "description": "",
         "name": ""
       },
-      "powers": [{
-        "actionType": "",
-        "description": "",
-        "numCharges":  null,
-        "cost": null,
-        "limited": false,
-        "name": ""
-      }],
       "threatLevel": 0
     },
     "vehicle": {
@@ -265,7 +257,21 @@
     }
   },
   "Item": {
-    "types": ["armor", "gear", "weapon", "weaponUpgrade", "zordCombiner", "perk", "power", "trait", "feature", "megaformTrait", "influence", "specialization"],
+    "types": [
+      "armor",
+      "gear",
+      "weapon",
+      "weaponUpgrade",
+      "zordCombiner",
+      "threatPower",
+      "perk",
+      "power",
+      "trait",
+      "feature",
+      "megaformTrait",
+      "influence",
+      "specialization"
+    ],
     "templates":{
       "itemDescription": {
         "value": ""
@@ -338,6 +344,12 @@
       },
       "ranger": "",
       "skillNotes": ""
+    },
+    "threatPower": {
+      "actionType": "",
+      "charges":  null,
+      "cost": null,
+      "limited": false
     },
     "perk": {
       "templates": ["itemDescription"],
