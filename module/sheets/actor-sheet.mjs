@@ -90,6 +90,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Initialize containers.
     const specializations = {};
     const influences = [];
+    const threatPowers = [];
     // const gear = [];
     // const features = [];
     // const spells = {
@@ -121,6 +122,11 @@ export class Essence20ActorSheet extends ActorSheet {
       if (i.type === 'influence') {
         influences.push(i);
       }
+
+      // Append to threatPowers.
+      if (i.type === 'threatPower') {
+        threatPowers.push(i);
+      }
     //   // Append to gear.
     //   if (i.type === 'item') {
     //     gear.push(i);
@@ -140,6 +146,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Assign and return
     context.specializations = specializations;
     context.influences = influences;
+    context.threatPowers = threatPowers;
     // context.gear = gear;
     // context.features = features;
     // context.spells = spells;
