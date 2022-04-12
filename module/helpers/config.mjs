@@ -26,9 +26,19 @@ E20.effectShapes = {
   circle: "Circle",
   cone: "Cone",
   square: "Square",
-}
+};
 
- E20.essences = {
+E20.elements = {
+  acid: "Acid",
+  cold: "Cold",
+  electric: "Electric",
+  energy: "Energy",
+  fire: "Fire",
+  laser: "Laser",
+  sonic: "Sonic"
+};
+
+E20.essences = {
   strength: "E20.essences.strength",
   speed: "E20.essences.speed",
   smarts: "E20.essences.smarts",
@@ -38,14 +48,14 @@ E20.effectShapes = {
 E20.lightRange = {
   bright: "Bright",
   dim: "Dim",
-},
+};
 
 E20.movement = {
   aerial: "E20.movement.aerial",
   aerialMin: "E20.movement.aerialMin",
   ground: "E20.movement.ground",
   swim: "E20.movement.swim",
-},
+};
 
 E20.rangers = {
   black: "E20.movement.black",
@@ -55,7 +65,7 @@ E20.rangers = {
   red: "Red RE20.movement.red",
   yellow: "E20.movement.yellow",
   white: "E20.movement.white",
-},
+};
 
 E20.shifts = {
   "criticalSuccess": "E20.shifts.criticalSuccess",
@@ -71,7 +81,7 @@ E20.shifts = {
   "d20": "E20.shifts.d20",
   "autoFail": "E20.shifts.autoFail",
   "fumble": "E20.shifts.fumble",
-},
+};
 
 E20.skills ={
   athletics: "E20.essenceSkills.strength.athletics",
@@ -92,7 +102,7 @@ E20.skills ={
   performance: "E20.essenceSkills.social.performance",
   persuasion: "E20.essenceSkills.social.persuasion",
   streetwise: "E20.essenceSkills.social.streetwise",
-}
+};
 
 E20.weaponRequirementShifts = {
   "none": "",
@@ -104,7 +114,7 @@ E20.weaponRequirementShifts = {
   "d12": "E20.shifts.d12",
   "2d8": "E20.shifts.2d8",
   "3d6": "E20.shifts.3d6",
-},
+};
 
 E20.weaponSizes = {
   integrated: "E20.weaponSizes.integrated",
@@ -112,7 +122,7 @@ E20.weaponSizes = {
   medium: "E20.weaponSizes.medium",
   long: "E20.weaponSizes.long",
   heavy: "E20.weaponSizes.heavy",
-},
+};
 
 E20.weaponSkills = {
   athletics: "E20.essenceSkills.strength.athletics",
@@ -120,16 +130,16 @@ E20.weaponSkills = {
   finesse: "E20.essenceSkills.speed.finesse",
   targeting: "E20.essenceSkills.speed.targeting",
   technology: "E20.essenceSkills.smarts.technology",
-},
+};
 
 E20.weaponRequirementSkills = {
   none: "",
   ...E20.weaponSkills,
-},
+};
 
 E20.weaponStyles = {
   melee: "E20.weaponStyles.melee",
   energy: "E20.weaponStyles.energy",
   explosive: "E20.weaponStyles.explosive",
   projectile: "E20.weaponStyles.projectile",
-}
+};

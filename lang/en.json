@@ -9,7 +9,6 @@
     "benefit": "Benefit",
     "bond": "Bond",
     "bonuses": "Bonuses",
-    "charges": "Charges",
     "classification": "Classification",
     "colorSpectrum": "Color Spectrum",
     "conditioning": "Conditioning",
@@ -33,9 +32,10 @@
     "min": "Min",
     "modifier": "Modifier",
     "name": "Name",
+    "numCharges": "Charges",
     "numDrivers": "Drivers",
-    "numPassengers": "Passengers",
     "numHands": "Hands",
+    "numPassengers": "Passengers",
     "numTargets": "Targets",
     "origin": "Origin",
     "perk": "Perk",
@@ -60,6 +60,7 @@
     "threatLevel": "Threat Level",
     "toughness": "Toughness",
     "trait": "Trait",
+    "traits": "Traits",
     "value": "Value",
 
     "armorClassifications": {
@@ -98,16 +99,6 @@
       "titanic": "Titanic"
     },
 
-    "damageTypes": {
-      "acid": "Acid",
-      "cold": "Cold",
-      "electric": "Electric",
-      "energy": "Energy",
-      "fire": "Fire",
-      "laser": "Laser",
-      "sonic": "Sonic"
-    },
-
     "defenses": {
       "cleverness": "Cleverness",
       "evasion": "Evasion",
@@ -119,6 +110,16 @@
       "circle": "Circle",
       "cone": "Cone",
       "square": "Square"
+    },
+
+    "elements": {
+      "acid": "Acid",
+      "cold": "Cold",
+      "electric": "Electric",
+      "energy": "Energy",
+      "fire": "Fire",
+      "laser": "Laser",
+      "sonic": "Sonic"
     },
 
     "essences": {

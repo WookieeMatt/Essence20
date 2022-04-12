@@ -266,7 +266,6 @@
       "threatPower",
       "perk",
       "power",
-      "trait",
       "feature",
       "megaformTrait",
       "influence",
@@ -306,10 +305,10 @@
           "style": ""
         },
         "custom": "",
-        "damages": [{
+        "damage": {
           "element": "",
           "value": 1
-        }],
+        },
         "numHands": 1,
         "numTargets": 1,
         "radius": null,
@@ -326,7 +325,7 @@
         "skill": null,
         "shift": null
       },
-      "traits": []
+      "traits": ""
     },
     "weaponUpgrade": {
       "templates": ["itemDescription"],
@@ -359,9 +358,6 @@
     "power": {
       "templates": ["itemDescription"],
       "source": "gridPower"
-    },
-    "trait": {
-      "templates": ["itemDescription"]
     },
     "feature": {
       "templates": ["itemDescription"]
