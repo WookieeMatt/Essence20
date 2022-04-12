@@ -38,6 +38,7 @@ export class Essence20Actor extends Actor {
     this._prepareCharacterData(actorData);
     this._prepareNpcData(actorData);
     this._preparePowerRangerData(actorData);
+    this._prepareGiJoeData(actorData);
   }
 
   /**
@@ -68,6 +69,24 @@ export class Essence20Actor extends Actor {
   }
 
   /**
+   * Prepare GI JOE type specific data.
+   */
+   _prepareGiJoeData(actorData) {
+    if (actorData.type !== 'giJoe') return;
+
+    const data = actorData.data;
+
+    const defenses = {
+      toughness: CONFIG.E20.defenseBase + data.essences.strength + data.bonuses.toughness + data.armor,
+      evasion: CONFIG.E20.defenseBase + data.essences.speed + data.bonuses.evasion,
+      willpower: CONFIG.E20.defenseBase + data.essences.smarts +  data.bonuses.willpower,
+      cleverness: CONFIG.E20.defenseBase + data.essences.social +  data.bonuses.cleverness,
+    };
+
+    data.defenses = defenses;
+  }
+
+  /**
    * Prepare Power Ranger type specific data.
    */
    _preparePowerRangerData(actorData) {
@@ -76,10 +95,10 @@ export class Essence20Actor extends Actor {
     const data = actorData.data;
     const defenses = {};
     const unmorphed = {
-      toughness: 10 + data.essences.strength,
-      evasion: 10 + data.essences.speed,
-      willpower: 10 + data.essences.smarts,
-      cleverness: 10 + data.essences.social,
+      toughness: CONFIG.E20.defenseBase + data.essences.strength,
+      evasion: CONFIG.E20.defenseBase + data.essences.speed,
+      willpower: CONFIG.E20.defenseBase + data.essences.smarts,
+      cleverness: CONFIG.E20.defenseBase + data.essences.social,
     };
     const morphed = {
       toughness: unmorphed.toughness + data.bonuses.toughness + data.armor,
