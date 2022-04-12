@@ -54,7 +54,6 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Might need to filter like above eventually
     this._prepareItems(context);
-    this._prepareCharacterData(context);
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
@@ -88,8 +87,9 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
-    const specializations = {};
+    const armors = [];
     const influences = [];
+    const specializations = {};
     const threatPowers = [];
 
     // // Iterate through items, allocating to containers
@@ -97,20 +97,23 @@ export class Essence20ActorSheet extends ActorSheet {
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
       switch(itemType) {
+        case 'armor':
+          armors.push(i);
+        case 'influence':
+          influences.push(i);
         case 'specialization':
           const skill = i.data.skill;
           const existingSkillSpecializations = specializations[skill];
           existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
-        case 'influence':
-          influences.push(i);
         case 'threatPower':
           threatPowers.push(i);
       };
     }
 
     // Assign and return
-    context.specializations = specializations;
+    context.armors = armors;
     context.influences = influences;
+    context.specializations = specializations;
     context.threatPowers = threatPowers;
   }
 

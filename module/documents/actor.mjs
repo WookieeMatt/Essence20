@@ -37,6 +37,7 @@ export class Essence20Actor extends Actor {
     // things organized.
     this._prepareCharacterData(actorData);
     this._prepareNpcData(actorData);
+    this._preparePowerRangerData(actorData);
   }
 
   /**
@@ -64,6 +65,33 @@ export class Essence20Actor extends Actor {
     // // Make modifications to data here. For example:
     // const data = actorData.data;
     // data.xp = (data.cr * data.cr) * 100;
+  }
+
+  /**
+   * Prepare Power Ranger type specific data.
+   */
+   _preparePowerRangerData(actorData) {
+    if (actorData.type !== 'powerRanger') return;
+
+    const data = actorData.data;
+    const defenses = {};
+    const unmorphed = {
+      toughness: 10 + data.essences.strength,
+      evasion: 10 + data.essences.speed,
+      willpower: 10 + data.essences.smarts,
+      cleverness: 10 + data.essences.social,
+    };
+    const morphed = {
+      toughness: unmorphed.toughness + data.bonuses.toughness + data.armor,
+      evasion: unmorphed.evasion + data.bonuses.evasion,
+      willpower: unmorphed.willpower +  data.bonuses.willpower,
+      cleverness: unmorphed.cleverness +  data.bonuses.cleverness,
+    };
+
+    data.defenses = {
+      morphed,
+      unmorphed,
+    };
   }
 
   /**
