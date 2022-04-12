@@ -32,3 +32,40 @@
   {{#each system.essences as |value essence|}}
   <span>{{localize (concat 'E20.essences.' essence)}}</span><input type="number" name="system.essences.{{essence}}" value="{{value}}"/>
   {{/each}}
+
+<h3>{{localize 'E20.armor'}}</h3>
+<a class="item-create" data-type="armor" title="{{ localize 'E20.addArmor' }}">
+  <i class="fas fa-plus"></i>
+</a>
+{{#each @root.armors as |armor|}}
+  <li class="item flexrow" data-item-id="{{armor._id}}">
+    <div class="item-name">
+      <input class="inline-edit" data-field="name" type="text" name="armor.{{@index}}.name" value="{{armor.name}}" placeholder="{{ localize 'E20.name' }}"/>
+      <select class="inline-edit" data-field="data.availability" name="armors.{{@index}}.availability">
+        {{#select armor.data.availability}}
+        {{#each @root.config.availabilities as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      <select class="inline-edit" data-field="data.classification" name="armors.{{@index}}.classification">
+        {{#select armor.data.classification}}
+        {{#each @root.config.armorClassifications as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      <select class="inline-edit" data-field="data.trait" name="armors.{{@index}}.trait">
+        {{#select armor.data.trait}}
+        {{#each @root.config.armorTraits as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      <input class="inline-edit" data-field="data.effect" type="text" name="armor.{{@index}}.effect" value="{{armor.data.effect}}" placeholder="{{ localize 'E20.effect' }}"/>
+    </div>
+    <div class="item-controls">
+      <a class="item-control item-delete" title="{{localize 'E20.deleteArmor'}}"><i class="fas fa-trash"></i></a>
+    </div>
+  </li>
+{{/each}}
