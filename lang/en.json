@@ -9,7 +9,6 @@
     "benefit": "Benefit",
     "bond": "Bond",
     "bonuses": "Bonuses",
-    "charges": "Charges",
     "classification": "Classification",
     "colorSpectrum": "Color Spectrum",
     "conditioning": "Conditioning",
@@ -33,9 +32,10 @@
     "min": "Min",
     "modifier": "Modifier",
     "name": "Name",
+    "numCharges": "Charges",
     "numDrivers": "Drivers",
-    "numPassengers": "Passengers",
     "numHands": "Hands",
+    "numPassengers": "Passengers",
     "numTargets": "Targets",
     "origin": "Origin",
     "perk": "Perk",
@@ -60,6 +60,7 @@
     "threatLevel": "Threat Level",
     "toughness": "Toughness",
     "trait": "Trait",
+    "traits": "Traits",
     "value": "Value",
 
     "armorClassifications": {
