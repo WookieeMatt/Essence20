@@ -91,65 +91,27 @@ export class Essence20ActorSheet extends ActorSheet {
     const specializations = {};
     const influences = [];
     const threatPowers = [];
-    // const gear = [];
-    // const features = [];
-    // const spells = {
-    //   0: [],
-    //   1: [],
-    //   2: [],
-    //   3: [],
-    //   4: [],
-    //   5: [],
-    //   6: [],
-    //   7: [],
-    //   8: [],
-    //   9: []
-    // };
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
-      // Append to skill specializations
-      if (i.type === 'specialization') {
-        const skill = i.data.skill;
-        if (specializations[skill]) {
-          specializations[skill].push(i);
-        } else {
-          specializations[skill] = [i];
-        }
-      }
-      // Append to influences.
-      if (i.type === 'influence') {
-        influences.push(i);
-      }
-
-      // Append to threatPowers.
-      if (i.type === 'threatPower') {
-        threatPowers.push(i);
-      }
-    //   // Append to gear.
-    //   if (i.type === 'item') {
-    //     gear.push(i);
-    //   }
-    //   // Append to features.
-    //   else if (i.type === 'feature') {
-    //     features.push(i);
-    //   }
-    //   // Append to spells.
-    //   else if (i.type === 'spell') {
-    //     if (i.data.spellLevel != undefined) {
-    //       spells[i.data.spellLevel].push(i);
-    //     }
-    //   }
+      const itemType = i.type;
+      switch(itemType) {
+        case 'specialization':
+          const skill = i.data.skill;
+          const existingSkillSpecializations = specializations[skill];
+          existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
+        case 'influence':
+          influences.push(i);
+        case 'threatPower':
+          threatPowers.push(i);
+      };
     }
 
     // Assign and return
     context.specializations = specializations;
     context.influences = influences;
     context.threatPowers = threatPowers;
-    // context.gear = gear;
-    // context.features = features;
-    // context.spells = spells;
   }
 
   /* -------------------------------------------- */
