@@ -1,12 +1,14 @@
 <form class="{{cssClass}}" autocomplete="off">
 
+  <section class="armor-sheet-body">
+    <div class="outer-circle">
+      <div class="inner-circle">
+
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/item-header.html"}}
 
   {{!-- Item Sheet Body --}}
-  <section class="armor-sheet-body">
-    <div class="outer-circle">
-      <div class="inner-circle">
+  
         <div>
           <select name="data.availability">
             {{#select data.availability}}

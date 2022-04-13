@@ -8,6 +8,10 @@
   font-weight: bold;
 }
 
+.window-app .window-content {
+  background: none;
+}
+
 .rollable:hover,
 .rollable:focus {
   color: #000;
@@ -266,6 +270,7 @@
   flex: 0 0 100px;
   height: 100px;
   margin-right: 10px;
+  border: none;
 }
 
 .essence20 .sheet-header .header-fields {
@@ -342,7 +347,7 @@ select {
   color: white;
 }
 
-input[type="number"] {
+.essence20 input[type="number"], input[type="text"] {
   color: white;
 }
 
@@ -371,11 +376,11 @@ input[type="number"] {
 
 .essence20 .outer-circle {
   position: relative;
-  height: 75%;
+  height: 100%;
   width: 100%;
   background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
   border-radius: 7%;
-  animation: rotate 1.5s linear infinite;
+  animation: rotate 3s linear infinite;
 }
 
 .essence20 .inner-circle {
