@@ -1,12 +1,20 @@
 <form class="{{cssClass}}" autocomplete="off">
 
-  {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/item-header.html"}}
+  <section class="feature-sheet-body">
+    <div class="outer-border">
+      <div class="inner-border">
 
-  {{!-- Item Sheet Body --}}
-  <section class="sheet-body">
-    {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/item-description.html"}}
+        {{!-- Item Sheet Header --}}
+        {{> "systems/essence20/templates/item/parts/item-header.html"}}
+
+        {{!-- Item Sheet Body --}}
+
+        <div class="feature-description">
+          {{!-- Description Section --}}
+          {{> "systems/essence20/templates/item/parts/item-description.html"}}
+        </div>
+      </div>
+    </div>
   </section>
 
 </form>

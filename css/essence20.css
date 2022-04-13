@@ -9,7 +9,7 @@
 }
 
 .window-app .window-content {
-  background: none;
+  background: rgb(78, 78, 78);
 }
 
 .rollable:hover,
@@ -378,7 +378,7 @@ select {
   position: relative;
   height: 100%;
   width: 100%;
-  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  background: linear-gradient(to bottom right, black, red, pink, blue, green, yellow);
   border-radius: 7%;
   animation: rotate 3s linear infinite;
 }
@@ -404,6 +404,37 @@ select {
   }
 }
 
+    /* Feature Sheet Styling */
+
+.essence20 .feature-sheet-body,
+.essence20 .feature-sheet-body .tab,
+.essence20 .feature-sheet-body .tab .editor {
+  height: 100%;
+}
+
+.essence20 .feature-description {
+  color: white;
+}
+
+.essence20 .outer-border {
+  display: flex;
+  flex-shrink: 0;
+  height: 95%;
+  width: 95%;
+  background-image: linear-gradient(to bottom right, black, red, pink, blue, green, yellow);
+  border-radius: 7%;
+}
+
+.essence20 .inner-border {	
+  height: 95%;
+  width: 95%;
+  background: black;
+  background-size: cover;
+  margin: auto;
+  border-radius: 7%;
+}
+
+    /* Generic Item Sheet Styling */
 .essence20 .items-list {
   list-style: none;
   margin: 0;
@@ -440,6 +471,10 @@ select {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
+}
+
+.essence20 h1, .essence20 h2, .essence20 h3, .essence20 h4 {
+  color: white;
 }
 
 .essence20 .items-list .item-controls {
