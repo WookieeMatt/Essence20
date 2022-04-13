@@ -5,31 +5,33 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <select name="data.availability">
-      {{#select data.availability}}
-      {{#each config.availabilities as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
+    <div>
+      <select name="data.availability">
+        {{#select data.availability}}
+        {{#each config.availabilities as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
 
-    <select name="data.classification">
-      {{#select data.classification}}
-      {{#each config.armorClassifications as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
+      <select name="data.classification">
+        {{#select data.classification}}
+        {{#each config.armorClassifications as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
 
-    <select name="data.trait">
-      {{#select data.trait}}
-      {{#each config.armorTraits as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
+      <select name="data.trait">
+        {{#select data.trait}}
+        {{#each config.armorTraits as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
 
-    <input type="number" name="data.effect" value="{{data.effect}}"/>
+    <span>{{localize 'E20.effect'}}</span><input type="number" name="data.effect" value="{{data.effect}}"/>
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.html"}}

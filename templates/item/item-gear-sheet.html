@@ -7,6 +7,7 @@
   <section class="sheet-body">
     <input type="number" name="data.effectArea" value="{{data.effectArea}}" placeholder="{{ localize 'E20.effectArea' }}"/>
 
+    <span>{{localize 'E20.effectShape'}}</span>
     <select name="data.effectShape">
       {{#select data.effectShape}}
       {{#each config.effectShapes as |name type|}}
@@ -15,11 +16,12 @@
       {{/select}}
     </select>
 
-    <input type="number" name="data.lightRange.bright" value="{{data.lightRange.bright}}"/>
-    <input type="number" name="data.lightRange.dim" value="{{data.lightRange.dim}}"/>
+    <h3>{{localize 'E20.lightRangeStr'}}</h3>
+    <span>{{localize 'E20.lightRange.bright'}}</span><input type="number" name="data.lightRange.bright" value="{{data.lightRange.bright}}"/>
+    <span>{{localize 'E20.lightRange.dim'}}</span><input type="number" name="data.lightRange.dim" value="{{data.lightRange.dim}}"/>
 
-    <input type="number" name="data.quantity" value="{{data.quantity}}"/>
-    <input type="number" name="data.toughness" value="{{data.toughness}}"/>
+    <span>{{localize 'E20.quantity'}}</span><input type="number" name="data.quantity" value="{{data.quantity}}"/>
+    <span>{{localize 'E20.toughness'}}</span><input type="number" name="data.toughness" value="{{data.toughness}}"/>
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.html"}}
