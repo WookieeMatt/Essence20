@@ -1,5 +1,7 @@
 export const E20 = {};
 
+E20.defenseBase = 10;
+
 E20.armorClassifications = {
   non: "E20.armorClassifications.non",
   light: "E20.armorClassifications.light",

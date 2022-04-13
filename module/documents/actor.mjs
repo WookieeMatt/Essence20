@@ -37,6 +37,8 @@ export class Essence20Actor extends Actor {
     // things organized.
     this._prepareCharacterData(actorData);
     this._prepareNpcData(actorData);
+    this._preparePowerRangerData(actorData);
+    this._prepareGiJoeData(actorData);
   }
 
   /**
@@ -64,6 +66,50 @@ export class Essence20Actor extends Actor {
     // // Make modifications to data here. For example:
     // const data = actorData.data;
     // data.xp = (data.cr * data.cr) * 100;
+  }
+
+  /**
+   * Prepare GI JOE type specific data.
+   */
+   _prepareGiJoeData(actorData) {
+    if (actorData.type !== 'giJoe') return;
+    const data = actorData.data;
+
+    const defenses = {
+      toughness: CONFIG.E20.defenseBase + data.essences.strength + data.bonuses.toughness, // Armor added in sheet
+      evasion: CONFIG.E20.defenseBase + data.essences.speed + data.bonuses.evasion,
+      willpower: CONFIG.E20.defenseBase + data.essences.smarts +  data.bonuses.willpower,
+      cleverness: CONFIG.E20.defenseBase + data.essences.social +  data.bonuses.cleverness,
+    };
+
+    data.defenses = defenses;
+  }
+
+  /**
+   * Prepare Power Ranger type specific data.
+   */
+   _preparePowerRangerData(actorData) {
+    if (actorData.type !== 'powerRanger') return;
+
+    const data = actorData.data;
+    const defenses = {};
+    const unmorphed = {
+      toughness: CONFIG.E20.defenseBase + data.essences.strength,
+      evasion: CONFIG.E20.defenseBase + data.essences.speed,
+      willpower: CONFIG.E20.defenseBase + data.essences.smarts,
+      cleverness: CONFIG.E20.defenseBase + data.essences.social,
+    };
+    const morphed = {
+      toughness: unmorphed.toughness + data.bonuses.toughness, // Armor added in sheet
+      evasion: unmorphed.evasion + data.bonuses.evasion,
+      willpower: unmorphed.willpower +  data.bonuses.willpower,
+      cleverness: unmorphed.cleverness +  data.bonuses.cleverness,
+    };
+
+    data.defenses = {
+      morphed,
+      unmorphed,
+    };
   }
 
   /**

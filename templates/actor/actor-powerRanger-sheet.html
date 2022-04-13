@@ -5,9 +5,19 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
-    {{!-- "flex-group-center" is also defined in the _grid.scss file
-    and it will add a small amount of padding, a border, and will
-    center all of its child elements content and text. --}}
+    <h3>{{localize 'E20.defensesStr'}}</h3>
+    <div>{{localize 'E20.defenses.toughness'}}: {{sum system.defenses.unmorphed.toughness equippedArmorEffect}}</div>
+    <div>{{localize 'E20.defenses.evasion'}}: {{system.defenses.unmorphed.evasion}}</div>
+    <div>{{localize 'E20.defenses.willpower'}}: {{system.defenses.unmorphed.willpower}}</div>
+    <div>{{localize 'E20.defenses.cleverness'}}: {{system.defenses.unmorphed.cleverness}}</div>
+
+    <h3>{{localize 'E20.morphedDefenses'}}</h3>
+    <div>{{localize 'E20.defenses.toughness'}}: {{system.defenses.morphed.toughness}}</div>
+    <div>{{localize 'E20.defenses.evasion'}}: {{system.defenses.morphed.evasion}}</div>
+    <div>{{localize 'E20.defenses.willpower'}}: {{system.defenses.morphed.willpower}}</div>
+    <div>{{localize 'E20.defenses.cleverness'}}: {{system.defenses.morphed.cleverness}}</div>
+
+    {{!-- Personal Power --}}
     <div class="resource flex-group-center">
       <label for="system.personalPower.value" class="resource-label">{{localize 'E20.personalPower'}}</label>
       <div class="resource-content flexrow flex-center flex-between">
@@ -20,4 +30,5 @@
     {{> "systems/essence20/templates/actor/parts/actor-common.html"}}
     {{> "systems/essence20/templates/actor/parts/actor-character.html"}}
   </section>
+
 </form>
