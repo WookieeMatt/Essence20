@@ -4,37 +4,44 @@
   {{> "systems/essence20/templates/item/parts/item-header.html"}}
 
   {{!-- Item Sheet Body --}}
-  <section class="sheet-body">
-    <div>
-      <select name="data.availability">
-        {{#select data.availability}}
-        {{#each config.availabilities as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
+  <section class="armor-sheet-body">
+    <div class="outer-circle">
+      <div class="inner-circle">
+        <div>
+          <select name="data.availability">
+            {{#select data.availability}}
+            {{#each config.availabilities as |name type|}}
+            <option value="{{type}}">{{localize name}}</option>
+            {{/each}}
+            {{/select}}
+          </select>
 
-      <select name="data.classification">
-        {{#select data.classification}}
-        {{#each config.armorClassifications as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
+          <select name="data.classification">
+            {{#select data.classification}}
+            {{#each config.armorClassifications as |name type|}}
+            <option value="{{type}}">{{localize name}}</option>
+            {{/each}}
+            {{/select}}
+          </select>
 
-      <select name="data.trait">
-        {{#select data.trait}}
-        {{#each config.armorTraits as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
+          <select name="data.trait">
+            {{#select data.trait}}
+            {{#each config.armorTraits as |name type|}}
+            <option value="{{type}}">{{localize name}}</option>
+            {{/each}}
+            {{/select}}
+          </select>
+        </div>
+
+        <span class="armor-effect">{{localize 'E20.effect'}}</span><input type="number" name="data.effect"
+          value="{{data.effect}}" />
+
+        <div class="armor-description">
+          {{!-- Description Section --}}
+          {{> "systems/essence20/templates/item/parts/item-description.html"}}
+        </div>
+      </div>
     </div>
-
-    <span>{{localize 'E20.effect'}}</span><input type="number" name="data.effect" value="{{data.effect}}"/>
-
-    {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/item-description.html"}}
   </section>
 
 </form>

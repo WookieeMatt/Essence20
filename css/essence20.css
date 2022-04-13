@@ -1,10 +1,15 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+
 /* Global styles */
 .window-app {
-  font-family: "Roboto", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-family: "Comic Neue", cursive;
+  font-weight: bold;
 }
 
-.rollable:hover, .rollable:focus {
+.rollable:hover,
+.rollable:focus {
   color: #000;
   text-shadow: 0 0 10px red;
   cursor: pointer;
@@ -318,7 +323,7 @@
   font-weight: bold;
 }
 
-.essence20 .items-header > * {
+.essence20 .items-header>* {
   font-size: 14px;
   text-align: center;
 }
@@ -330,6 +335,68 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+/* ARMOR SHEET DETAILING */
+select {
+  color: white;
+}
+
+input[type="number"] {
+  color: white;
+}
+
+.essence20 .armor-effect {
+  color: white;
+}
+
+.essence20 .armor-description {
+  color: white;
+}
+
+.essence20 .description-tab .editor {
+  color: white;
+  height: 100px;
+}
+
+.sheet .editor-content {
+  color: white;
+}
+
+.essence20 .armor-sheet-body,
+.essence20 .armor-sheet-body .tab,
+.essence20 .armor-sheet-body .tab .editor {
+  height: 100%;
+}
+
+.essence20 .outer-circle {
+  position: relative;
+  height: 75%;
+  width: 100%;
+  background: linear-gradient(#14ffe9, #ffeb3b, #ff00e0);
+  border-radius: 7%;
+  animation: rotate 1.5s linear infinite;
+}
+
+.essence20 .inner-circle {
+  height: 95%;
+  width: 95%;
+  position: absolute;
+  background: black;
+  top: 10px;
+  left: 10px;
+  border-radius: 7%;
+  z-index: 9;
+}
+
+@keyframes rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    filter: hue-rotate(360deg);
+  }
 }
 
 .essence20 .items-list {
@@ -363,7 +430,8 @@
   display: flex;
 }
 
-.essence20 .items-list .item-name h3, .essence20 .items-list .item-name h4 {
+.essence20 .items-list .item-name h3,
+.essence20 .items-list .item-name h4 {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
@@ -432,7 +500,7 @@
   font-weight: bold;
 }
 
-.essence20 .items-list .items-header > * {
+.essence20 .items-list .items-header>* {
   font-size: 12px;
   text-align: center;
 }
