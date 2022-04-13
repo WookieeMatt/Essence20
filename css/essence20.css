@@ -1,10 +1,19 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+
 /* Global styles */
 .window-app {
-  font-family: "Roboto", sans-serif;
+  /* font-family: "Roboto", sans-serif; */
+  font-family: "Comic Neue", cursive;
+  font-weight: bold;
 }
 
-.rollable:hover, .rollable:focus {
+.window-app .window-content {
+  background: rgb(78, 78, 78);
+}
+
+.rollable:hover,
+.rollable:focus {
   color: #000;
   text-shadow: 0 0 10px red;
   cursor: pointer;
@@ -261,6 +270,7 @@
   flex: 0 0 100px;
   height: 100px;
   margin-right: 10px;
+  border: none;
 }
 
 .essence20 .sheet-header .header-fields {
@@ -318,7 +328,7 @@
   font-weight: bold;
 }
 
-.essence20 .items-header > * {
+.essence20 .items-header>* {
   font-size: 14px;
   text-align: center;
 }
@@ -332,6 +342,99 @@
   display: flex;
 }
 
+/* ARMOR SHEET DETAILING */
+select {
+  color: white;
+}
+
+.essence20 input[type="number"], input[type="text"] {
+  color: white;
+}
+
+.essence20 .armor-effect {
+  color: white;
+}
+
+.essence20 .armor-description {
+  color: white;
+}
+
+.essence20 .description-tab .editor {
+  color: white;
+  height: 100px;
+}
+
+.sheet .editor-content {
+  color: white;
+}
+
+.essence20 .armor-sheet-body,
+.essence20 .armor-sheet-body .tab,
+.essence20 .armor-sheet-body .tab .editor {
+  height: 100%;
+}
+
+.essence20 .outer-circle {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to bottom right, black, red, pink, blue, green, yellow);
+  border-radius: 7%;
+  animation: rotate 3s linear infinite;
+}
+
+.essence20 .inner-circle {
+  height: 95%;
+  width: 95%;
+  position: absolute;
+  background: black;
+  top: 10px;
+  left: 10px;
+  border-radius: 7%;
+  z-index: 9;
+}
+
+@keyframes rotate {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+    /* Feature Sheet Styling */
+
+.essence20 .feature-sheet-body,
+.essence20 .feature-sheet-body .tab,
+.essence20 .feature-sheet-body .tab .editor {
+  height: 100%;
+}
+
+.essence20 .feature-description {
+  color: white;
+}
+
+.essence20 .outer-border {
+  display: flex;
+  flex-shrink: 0;
+  height: 95%;
+  width: 95%;
+  background-image: linear-gradient(to bottom right, black, red, pink, blue, green, yellow);
+  border-radius: 7%;
+}
+
+.essence20 .inner-border {	
+  height: 95%;
+  width: 95%;
+  background: black;
+  background-size: cover;
+  margin: auto;
+  border-radius: 7%;
+}
+
+    /* Generic Item Sheet Styling */
 .essence20 .items-list {
   list-style: none;
   margin: 0;
@@ -363,10 +466,15 @@
   display: flex;
 }
 
-.essence20 .items-list .item-name h3, .essence20 .items-list .item-name h4 {
+.essence20 .items-list .item-name h3,
+.essence20 .items-list .item-name h4 {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
+}
+
+.essence20 h1, .essence20 h2, .essence20 h3, .essence20 h4 {
+  color: white;
 }
 
 .essence20 .items-list .item-controls {
@@ -432,7 +540,7 @@
   font-weight: bold;
 }
 
-.essence20 .items-list .items-header > * {
+.essence20 .items-list .items-header>* {
   font-size: 12px;
   text-align: center;
 }
