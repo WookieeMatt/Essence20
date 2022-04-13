@@ -88,6 +88,7 @@ export class Essence20ActorSheet extends ActorSheet {
   _prepareItems(context) {
     // Initialize containers.
     const armors = [];
+    let equippedArmorEffect = 0;
     const influences = [];
     const specializations = {};
     const threatPowers = [];
@@ -98,6 +99,9 @@ export class Essence20ActorSheet extends ActorSheet {
       const itemType = i.type;
       switch(itemType) {
         case 'armor':
+          if (i.data.equipped) {
+            equippedArmorEffect += i.data.effect;
+          }
           armors.push(i);
         case 'influence':
           influences.push(i);
@@ -112,6 +116,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Assign and return
     context.armors = armors;
+    context.equippedArmorEffect = equippedArmorEffect;
     context.influences = influences;
     context.specializations = specializations;
     context.threatPowers = threatPowers;

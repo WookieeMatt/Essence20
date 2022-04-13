@@ -6,7 +6,7 @@
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
     <h3>{{localize 'E20.defensesStr'}}</h3>
-    <div>{{localize 'E20.defenses.toughness'}}: {{system.defenses.unmorphed.toughness}}</div>
+    <div>{{localize 'E20.defenses.toughness'}}: {{sum system.defenses.unmorphed.toughness equippedArmorEffect}}</div>
     <div>{{localize 'E20.defenses.evasion'}}: {{system.defenses.unmorphed.evasion}}</div>
     <div>{{localize 'E20.defenses.willpower'}}: {{system.defenses.unmorphed.willpower}}</div>
     <div>{{localize 'E20.defenses.cleverness'}}: {{system.defenses.unmorphed.cleverness}}</div>

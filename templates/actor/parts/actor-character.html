@@ -63,6 +63,8 @@
         {{/select}}
       </select>
       <input class="inline-edit" data-field="data.effect" type="text" name="armor.{{@index}}.effect" value="{{armor.data.effect}}" placeholder="{{ localize 'E20.effect' }}"/>
+      <span>{{localize 'E20.equipped'}}</span>
+      <input class="inline-edit" data-field="data.equipped" type="checkbox" name="armor.equipped" {{checked armor.data.equipped}}/>
     </div>
     <div class="item-controls">
       <a class="item-control item-delete" title="{{localize 'E20.deleteArmor'}}"><i class="fas fa-trash"></i></a>

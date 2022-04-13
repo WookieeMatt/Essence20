@@ -25,6 +25,7 @@
     "effect": "Effect",
     "effectArea": "Effect Area/Length/Radius",
     "effectShape": "Effect Shape",
+    "equipped": "Equipped?",
     "essencesLabel": "Essences",
     "firepoints": "Firepoints",
     "hangUp": "Hang Up",

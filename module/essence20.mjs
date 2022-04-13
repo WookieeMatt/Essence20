@@ -67,6 +67,16 @@ Handlebars.registerHelper('toLowerCase', function(str) {
   return str.toLowerCase();
 });
 
+Handlebars.registerHelper('sum', function() {
+  var total = 0;
+  for (var arg in arguments) {
+    if (typeof arguments[arg] == 'number') {
+      total += arguments[arg];
+    }
+  }
+  return total;
+});
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */

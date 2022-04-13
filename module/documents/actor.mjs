@@ -73,11 +73,10 @@ export class Essence20Actor extends Actor {
    */
    _prepareGiJoeData(actorData) {
     if (actorData.type !== 'giJoe') return;
-
     const data = actorData.data;
 
     const defenses = {
-      toughness: CONFIG.E20.defenseBase + data.essences.strength + data.bonuses.toughness + data.armor,
+      toughness: CONFIG.E20.defenseBase + data.essences.strength + data.bonuses.toughness, // Armor added in sheet
       evasion: CONFIG.E20.defenseBase + data.essences.speed + data.bonuses.evasion,
       willpower: CONFIG.E20.defenseBase + data.essences.smarts +  data.bonuses.willpower,
       cleverness: CONFIG.E20.defenseBase + data.essences.social +  data.bonuses.cleverness,
@@ -101,7 +100,7 @@ export class Essence20Actor extends Actor {
       cleverness: CONFIG.E20.defenseBase + data.essences.social,
     };
     const morphed = {
-      toughness: unmorphed.toughness + data.bonuses.toughness + data.armor,
+      toughness: unmorphed.toughness + data.bonuses.toughness, // Armor added in sheet
       evasion: unmorphed.evasion + data.bonuses.evasion,
       willpower: unmorphed.willpower +  data.bonuses.willpower,
       cleverness: unmorphed.cleverness +  data.bonuses.cleverness,
