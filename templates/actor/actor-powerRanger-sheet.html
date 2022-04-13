@@ -17,6 +17,22 @@
     <div>{{localize 'E20.defenses.willpower'}}: {{system.defenses.morphed.willpower}}</div>
     <div>{{localize 'E20.defenses.cleverness'}}: {{system.defenses.morphed.cleverness}}</div>
 
+    <h3>{{localize 'E20.powers'}}</h3>
+    <a class="item-create" data-type="power" title="{{ localize 'E20.addPower' }}">
+      <i class="fas fa-plus"></i>
+    </a>
+    {{#each @root.powers as |power|}}
+    <li class="item flexrow" data-item-id="{{power._id}}">
+      <div class="item-name">
+        <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name" value="{{power.name}}" placeholder="{{ localize 'E20.name' }}"/>
+        <input class="inline-edit" data-field="data.description" type="text" name="power.{{@index}}.description" value="{{power.data.description}}" placeholder="{{ localize 'E20.description' }}"/>
+      </div>
+      <div class="item-controls">
+        <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i class="fas fa-trash"></i></a>
+      </div>
+    </li>
+  {{/each}}
+
     {{!-- Personal Power --}}
     <div class="resource flex-group-center">
       <label for="system.personalPower.value" class="resource-label">{{localize 'E20.personalPower'}}</label>
