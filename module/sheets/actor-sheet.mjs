@@ -90,6 +90,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const armors = [];
     let equippedArmorEffect = 0;
     const influences = [];
+    const powers = [];
     const specializations = {};
     const threatPowers = [];
 
@@ -105,6 +106,8 @@ export class Essence20ActorSheet extends ActorSheet {
           armors.push(i);
         case 'influence':
           influences.push(i);
+        case 'power':
+          powers.push(i);
         case 'specialization':
           const skill = i.data.skill;
           const existingSkillSpecializations = specializations[skill];
@@ -118,6 +121,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.armors = armors;
     context.equippedArmorEffect = equippedArmorEffect;
     context.influences = influences;
+    context.powers = powers;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
   }
