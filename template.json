@@ -140,9 +140,10 @@
           "role": ""
         },
         "bonuses": {
+          "cleverness": 0,
           "evasion": 0,
-          "willpower": 0,
-          "cleverness": 0
+          "toughness": 0,
+          "willpower": 0
         },
         "essences": {
           "smarts": 3,
@@ -281,6 +282,7 @@
       "availability": "standard",
       "classification": "light",
       "effect": 1,
+      "equipped": false,
       "trait": "deflective"
     },
     "gear": {
