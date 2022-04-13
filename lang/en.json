@@ -33,6 +33,7 @@
     "initiative": "Initiative",
     "influences": "Influences",
     "isCombiner": "Combiner?",
+    "lightRangeStr": "Light Range",
     "limited": "Limited?",
     "long": "Long",
     "min": "Min",
@@ -167,8 +168,8 @@
     },
 
     "lightRange": {
-      "bright": "Bright Range",
-      "dim": "Dim Range"
+      "bright": "Bright",
+      "dim": "Dim"
     },
 
     "movement": {

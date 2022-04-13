@@ -60,13 +60,13 @@ E20.movement = {
 };
 
 E20.rangers = {
-  black: "E20.movement.black",
-  blue: "E20.movement.blue",
-  green: "E20.movement.green",
-  pink: "E20.movement.pink",
-  red: "Red RE20.movement.red",
-  yellow: "E20.movement.yellow",
-  white: "E20.movement.white",
+  black: "E20.rangers.black",
+  blue: "E20.rangers.blue",
+  green: "E20.rangers.green",
+  pink: "E20.rangers.pink",
+  red: "E20.rangers.red",
+  yellow: "E20.rangers.yellow",
+  white: "E20.rangers.white",
 };
 
 E20.shifts = {
