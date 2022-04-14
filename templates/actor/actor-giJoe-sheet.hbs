@@ -1,7 +1,7 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
   {{!-- Actor Sheet Header --}}
-  {{> "systems/essence20/templates/actor/parts/actor-header.html"}}
+  {{> "systems/essence20/templates/actor/parts/actor-header.hbs"}}
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
@@ -11,7 +11,7 @@
     <div>{{localize 'E20.defenses.willpower'}}: {{system.defenses.willpower}}</div>
     <div>{{localize 'E20.defenses.cleverness'}}: {{system.defenses.cleverness}}</div>
 
-    {{> "systems/essence20/templates/actor/parts/actor-common.html"}}
-    {{> "systems/essence20/templates/actor/parts/actor-character.html"}}
+    {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/actor-character.hbs"}}
   </section>
 </form>

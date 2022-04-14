@@ -1,7 +1,7 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
   {{!-- Actor Sheet Header --}}
-  {{> "systems/essence20/templates/actor/parts/actor-header.html"}}
+  {{> "systems/essence20/templates/actor/parts/actor-header.hbs"}}
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
@@ -37,6 +37,6 @@
     <input type="text" name="system.hangup.name" value="{{system.hangup.name}}"/>
     <textarea name="system.hangup.description" placeholder="{{localize 'E20.description'}}">{{system.hangup.description}}</textarea>
 
-    {{> "systems/essence20/templates/actor/parts/actor-common.html"}}
+    {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
   </section>
 </form>

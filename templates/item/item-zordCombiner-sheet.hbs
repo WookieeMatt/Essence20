@@ -1,7 +1,7 @@
 <form class="{{cssClass}}" autocomplete="off">
 
   {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/item-header.html"}}
+  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
@@ -26,7 +26,7 @@
     <input type="text" name="data.skillNotes" value="{{data.skillNotes}}" placeholder="{{ localize 'E20.skillNotes' }}"/>
 
     {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/item-description.html"}}
+    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
   </section>
 
 </form>
