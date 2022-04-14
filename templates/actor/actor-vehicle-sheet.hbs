@@ -1,11 +1,11 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
 
   {{!-- Actor Sheet Header --}}
-  {{> "systems/essence20/templates/actor/parts/actor-header.html"}}
+  {{> "systems/essence20/templates/actor/parts/actor-header.hbs"}}
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
-    {{> "systems/essence20/templates/actor/parts/actor-common.html"}}
+    {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
     <span>{{localize 'E20.threatLevel'}}</span><input type="number" name="system.threatLevel" value="{{system.threatLevel}}"/>
 
     <h3>Crew</h3>
