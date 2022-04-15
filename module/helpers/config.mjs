@@ -2,6 +2,9 @@ export const E20 = {};
 
 E20.defenseBase = 10;
 
+E20.rollingFor = "E20.rollingFor",
+
+
 E20.armorClassifications = {
   non: "E20.armorClassifications.non",
   light: "E20.armorClassifications.light",
@@ -85,7 +88,19 @@ E20.shifts = {
   "fumble": "E20.shifts.fumble",
 };
 
-E20.skills ={
+E20.rollableShifts = [
+  "3d6",
+  "2d8",
+  "d12",
+  "d10",
+  "d8",
+  "d6",
+  "d4",
+  "d2",
+  "d20",
+];
+
+E20.skills = {
   athletics: "E20.essenceSkills.strength.athletics",
   brawn: "E20.essenceSkills.strength.brawn",
   intimidation: "E20.essenceSkills.strength.intimidation",
@@ -105,6 +120,28 @@ E20.skills ={
   persuasion: "E20.essenceSkills.social.persuasion",
   streetwise: "E20.essenceSkills.social.streetwise",
 };
+
+E20.skillToEssence = {
+  athletics: "strength",
+  brawn: "strength",
+  intimidation: "strength",
+  might: "strength",
+  acrobatics: "speed",
+  driving: "speed",
+  finesse: "speed",
+  infiltration: "speed",
+  targeting: "speed",
+  alertness: "smarts",
+  culture: "smarts",
+  science: "smarts",
+  survival: "smarts",
+  technology: "smarts",
+  animalHandling: "social",
+  deception: "social",
+  performance: "social",
+  persuasion: "social",
+  streetwise: "social"
+},
 
 E20.weaponRequirementShifts = {
   "none": "",
