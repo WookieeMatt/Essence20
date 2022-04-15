@@ -228,7 +228,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
 
-    // Handle item rolls.
+    // Handle type-specific rolls.
     if (dataset.rollType) {
       if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
@@ -237,6 +237,9 @@ export class Essence20ActorSheet extends ActorSheet {
       }
       else if (dataset.rollType == 'skill') {
         this._rollSkill(dataset);
+      }
+      else if (dataset.rollType == 'specialization') {
+        this._rollSpecialization(dataset);
       }
     }
 
@@ -259,18 +262,60 @@ export class Essence20ActorSheet extends ActorSheet {
    * @private
    */
   _rollSkill(dataset) {
+    // Create roll label
     const rolledSkill = dataset.skill;
     const rolledSkillStr = game.i18n.localize(CONFIG.E20.skills[rolledSkill]);
     const rollingForStr = game.i18n.localize(CONFIG.E20.rollingFor)
     let label = `${rollingForStr} ${rolledSkillStr}`;
 
+    // Create roll formula
     const actorSkillData = this.actor.getRollData().skills;
     const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
-    const shift = actorSkillData[rolledEssence][rolledSkill].shift;
+    const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
-    const formula = shift == 'd20' ? 'd20' : `d20 + ${shift} + ${modifier}`;
-    let roll = new Roll(formula, this.actor.getRollData());
+    const formula = skillShift == 'd20'
+      ? `d20 + ${modifier}`
+      : `d20 + ${skillShift} + ${modifier}`;
 
+    let roll = new Roll(formula, this.actor.getRollData());
+    roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      flavor: label,
+      rollMode: game.settings.get('core', 'rollMode'),
+    });
+
+    return roll;
+  }
+
+  /**
+   * Handle specialization rolls.
+   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
+   * @private
+   */
+   _rollSpecialization(dataset) {
+    // Create roll label
+    const rolledSkill = dataset.skill;
+    const rolledSpecialization = dataset.specialization;
+    const rollingForStr = game.i18n.localize(CONFIG.E20.rollingFor)
+    let label = `${rollingForStr} ${rolledSpecialization}`;
+
+    // Create roll formula
+    const actorSkillData = this.actor.getRollData().skills;
+    const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
+    const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
+    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
+
+    let formula = '';
+    for (const shift of CONFIG.E20.rollableShifts) {
+      // Keep adding dice until you reach your shift level
+      formula += shift + ' + ';
+      if (shift == skillShift) {
+        break;
+      }
+    }
+    formula += modifier;
+
+    let roll = new Roll(formula, this.actor.getRollData());
     roll.toMessage({
       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
       flavor: label,
