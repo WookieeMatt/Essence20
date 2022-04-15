@@ -1,7 +1,10 @@
 <header class="sheet-header">
-  <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+  <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
   <div class="pr-header-fields">
-    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-    <input class="pronouns" type="text" value="{{character.background.pronouns}}" placeholder="Pronouns"/>
+    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+    <div class="pr-details-fields">
+      <input name="pronouns" type="text" value="{{actor.pronouns}}" placeholder="Pronouns" />
+    </div>
   </div>
 </header>
+{{log this}}
