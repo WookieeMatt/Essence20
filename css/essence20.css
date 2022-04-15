@@ -279,6 +279,12 @@
   flex: 1;
 }
 
+.essence20 .sheet-header .pr-header-fields {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
 .essence20 .sheet-header h1.charname {
   height: 50px;
   padding: 0px;
