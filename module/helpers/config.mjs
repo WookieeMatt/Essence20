@@ -96,6 +96,22 @@ E20.shifts = {
   "fumble": "E20.shifts.fumble",
 };
 
+E20.shiftList = [
+  "criticalSuccess",
+  "autoSuccess",
+  "3d6",
+  "2d8",
+  "d12",
+  "d10",
+  "d8",
+  "d6",
+  "d4",
+  "d2",
+  "d20",
+  "autoFail",
+  "fumble",
+];
+
 E20.rollableShifts = [
   "d2",
   "d4",

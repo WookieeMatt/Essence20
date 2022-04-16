@@ -19,14 +19,21 @@ export function rollSkill(dataset, skillRollOptions, actor) {
   const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
   const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
 
-  if (!_handleAutofail(skillShift, label, actor)) {
+  // Apply the skill roll options dialog shifts to the roller's normal shift
+  const optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
+  const skillShiftIndex = CONFIG.E20.shiftList.findIndex(s => s == skillShift);
+  const finalShiftIndex = Math.max(0, Math.min(CONFIG.E20.shiftList.length - 1, skillShiftIndex - optionsShiftTotal));
+  const finalShift = CONFIG.E20.shiftList[finalShiftIndex];
+
+  if (!_handleAutofail(finalShift, label, actor)) {
     const edge = skillRollOptions.edge;
     const snag = skillRollOptions.snag;
     const operands = [];
     operands.push(_getd20Operand(edge, snag));
 
-    if (skillShift != 'd20') {
-      operands.push(skillShift);
+    // We already have the d20 operand, now apply bonus die if needed
+    if (finalShift != 'd20') {
+      operands.push(finalShift);
     }
 
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
@@ -217,8 +224,8 @@ export async function getSkillRollOptions() {
  */
 function _processSkillRollOptions(form) {
   return {
-    shiftUp: form.shiftUp.value,
-    shiftDown: form.shiftDown.value,
+    shiftUp: parseInt(form.shiftUp.value),
+    shiftDown: parseInt(form.shiftDown.value),
     snag: form.snag.checked,
     edge: form.edge.checked,
   }
