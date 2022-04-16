@@ -1,5 +1,5 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
-import {getSkillRollOptions, rollSkill, rollSpecialization} from "../dice.mjs";
+import {getSkillRollOptions, rollSkill} from "../dice.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -240,9 +240,6 @@ export class Essence20ActorSheet extends ActorSheet {
       }
       else if (dataset.rollType == 'skill') {
         rollSkill(dataset, skillRollOptions, this.actor);
-      }
-      else if (dataset.rollType == 'specialization') {
-        rollSpecialization(dataset, skillRollOptions, this.actor);
       }
     }
 

@@ -1,16 +1,18 @@
 /**
- * Handle skill rolls.
+ * Handle skill and specialization rolls.
  * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
  * @param {Object} skillRollOptions   The result of getSkillRollOptions()
  * @param {Actor} actor   The actor performing the roll
  * @private
  */
-export function rollSkill(dataset, skillRollOptions, actor) {
+ export function rollSkill(dataset, skillRollOptions, actor) {
   let roll = null;
 
   // Create roll label
   const rolledSkill = dataset.skill;
-  const rolledSkillStr = game.i18n.localize(CONFIG.E20.skills[rolledSkill]);
+  const rolledSkillStr = dataset.specialization
+    ? dataset.specialization
+    : game.i18n.localize(CONFIG.E20.skills[rolledSkill]);
   const rollingForStr = game.i18n.localize(CONFIG.E20.rollingFor)
   let label = `${rollingForStr} ${rolledSkillStr}`;
 
@@ -31,62 +33,24 @@ export function rollSkill(dataset, skillRollOptions, actor) {
     const operands = [];
     operands.push(_getd20Operand(edge, snag));
 
-    // We already have the d20 operand, now apply bonus die if needed
+    // We already have the d20 operand, now apply bonus dice if needed
     if (finalShift != 'd20') {
-      operands.push(finalShift);
-    }
-
-    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
-    operands.push(modifier);
-    const formula = _arrayToFormula(operands);
-
-    let roll = new Roll(formula, actor.getRollData());
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: label + _getEdgeSnagText(edge, snag),
-      rollMode: game.settings.get('core', 'rollMode'),
-    });
-  }
-
-  return roll;
-}
-
-/**
- * Handle specialization rolls.
- * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
- * @param {Object} skillRollOptions   The result of getSkillRollOptions()
- * @param {Actor} actor   The actor performing the roll
- */
-export function rollSpecialization(dataset, skillRollOptions, actor) {
-  let roll = null;
-
-  // Create roll label
-  const rolledSkill = dataset.skill;
-  const rolledSpecialization = dataset.specialization;
-  const rollingForStr = game.i18n.localize(CONFIG.E20.rollingFor)
-  let label = `${rollingForStr} ${rolledSpecialization}`;
-
-  // Create roll formula
-  const actorSkillData = actor.getRollData().skills;
-  const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
-  const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
-
-  if (!_handleAutofail(skillShift, label, actor)) {
-    const edge = skillRollOptions.edge;
-    const snag = skillRollOptions.snag;
-    const operands = [];
-    operands.push(_getd20Operand(edge, snag))
-
-    if (skillShift != 'd20') {
-      // Keep adding dice until you reach your shift level
-      for (const shift of CONFIG.E20.rollableShifts) {
-        operands.push(shift);
-        if (shift == skillShift) {
-          break;
+      if (dataset.specialization) {
+        // For specializations, keep adding dice until you reach your shift level
+        for (const shift of CONFIG.E20.rollableShifts) {
+          operands.push(shift);
+          if (shift == finalShift) {
+            break;
+          }
         }
+      }
+      else {
+        // For non-specialized, just add the single bonus die
+        operands.push(finalShift);
       }
     }
 
+    // Include the skill modifier and generate final formula
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
     operands.push(modifier);
     const formula = _arrayToFormula(operands);
@@ -98,8 +62,6 @@ export function rollSpecialization(dataset, skillRollOptions, actor) {
       rollMode: game.settings.get('core', 'rollMode'),
     });
   }
-
-  return roll;
 }
 
 /**
