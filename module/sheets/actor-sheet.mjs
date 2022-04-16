@@ -1,5 +1,5 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
-import {GetSkillRollOptions} from "../dice.mjs";
+import {getSkillRollOptions, rollSkill, rollSpecialization} from "../dice.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -231,7 +231,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (dataset.rollType) {
-      const skillRollOptions = await GetSkillRollOptions();
+      const skillRollOptions = await getSkillRollOptions();
 
       if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
@@ -239,10 +239,10 @@ export class Essence20ActorSheet extends ActorSheet {
         if (item) return item.roll();
       }
       else if (dataset.rollType == 'skill') {
-        this._rollSkill(dataset, skillRollOptions);
+        rollSkill(dataset, skillRollOptions, this.actor);
       }
       else if (dataset.rollType == 'specialization') {
-        this._rollSpecialization(dataset, skillRollOptions);
+        rollSpecialization(dataset, skillRollOptions, this.actor);
       }
     }
 
@@ -258,183 +258,4 @@ export class Essence20ActorSheet extends ActorSheet {
       return roll;
     }
   }
-
-  /**
-   * Handle skill rolls.
-   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
-   * @private
-   */
-  _rollSkill(dataset, skillRollOptions) {
-    let roll = null;
-
-    // Create roll label
-    const rolledSkill = dataset.skill;
-    const rolledSkillStr = game.i18n.localize(CONFIG.E20.skills[rolledSkill]);
-    const rollingForStr = game.i18n.localize(CONFIG.E20.rollingFor)
-    let label = `${rollingForStr} ${rolledSkillStr}`;
-
-    // Create roll formula
-    const actorSkillData = this.actor.getRollData().skills;
-    const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
-    const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
-
-    if (!this._handleAutofail(skillShift, label)) {
-      const edge = skillRollOptions.edge;
-      const snag = skillRollOptions.snag;
-      const operands = [];
-      operands.push(this._getd20Operand(edge, snag));
-
-      if (skillShift != 'd20') {
-        operands.push(skillShift);
-      }
-
-      const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
-      operands.push(modifier);
-      const formula = this._arrayToFormula(operands);
-
-      let roll = new Roll(formula, this.actor.getRollData());
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label + this._getEdgeSnagText(edge, snag),
-        rollMode: game.settings.get('core', 'rollMode'),
-      });
-    }
-
-    return roll;
-  }
-
-  /**
-   * Handle specialization rolls.
-   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
-   * @private
-   */
-   _rollSpecialization(dataset, skillRollOptions) {
-    let roll = null;
-
-    // Create roll label
-    const rolledSkill = dataset.skill;
-    const rolledSpecialization = dataset.specialization;
-    const rollingForStr = game.i18n.localize(CONFIG.E20.rollingFor)
-    let label = `${rollingForStr} ${rolledSpecialization}`;
-
-    // Create roll formula
-    const actorSkillData = this.actor.getRollData().skills;
-    const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
-    const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
-
-    if (!this._handleAutofail(skillShift, label)) {
-      const edge = skillRollOptions.edge;
-      const snag = skillRollOptions.snag;
-      const operands = [];
-      operands.push(this._getd20Operand(edge, snag))
-
-      if (skillShift != 'd20') {
-        // Keep adding dice until you reach your shift level
-        for (const shift of CONFIG.E20.rollableShifts) {
-          operands.push(shift);
-          if (shift == skillShift) {
-            break;
-          }
-        }
-      }
-
-      const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
-      operands.push(modifier);
-      const formula = this._arrayToFormula(operands);
-
-      let roll = new Roll(formula, this.actor.getRollData());
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label + this._getEdgeSnagText(edge, snag),
-        rollMode: game.settings.get('core', 'rollMode'),
-      });
-    }
-
-    return roll;
-  }
-
-  /**
-   * Handle rolls that automatically fail.
-   * @param {String} skillShift   The shift of the skill being rolled.
-   * @param {String} label   The label generated so far for the roll, which will be appended to.
-   * @returns {Boolean}   True if autofail occurs and false otherwise.
-   * @private
-   */
-  _handleAutofail(skillShift, label) {
-    let autofailed = false;
-
-    if (CONFIG.E20.automaticShifts.includes(skillShift)) {
-      const chatData = {
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      };
-      switch(skillShift) {
-        case 'autoFail':
-          label += ` ${game.i18n.localize(CONFIG.E20.autoFail)}`;
-          break;
-        case 'fumble':
-          label += ` ${game.i18n.localize(CONFIG.E20.autoFailFumble)}`;
-          break;
-      }
-      chatData.content = label;
-      ChatMessage.create(chatData);
-      autofailed = true;
-    }
-
-    return autofailed;
-  }
-
-  /**
-   * Returns the d20 portion of skill roll formula.
-   * @param {Boolean} edge   If the roll is using an Edge.
-   * @param {Boolean} snag   If the roll is using a snag.
-   * @returns {String}   The d20 portion of skill roll formula.
-   * @private
-   */
-  _getd20Operand(edge, snag) {
-    // Edge and Snag cancel eachother out
-    if (edge == snag) {
-      return 'd20';
-    }
-    else {
-      return edge ? '2d20kh' : '2d20kl';
-    }
-  }
-
-  /**
-   * Returns the d20 portion of skill roll formula.
-   * @param {Boolean} edge   If the roll is using an Edge.
-   * @param {Boolean} snag   If the roll is using a snag.
-   * @returns {String}   The ' with an Edge/Snag' text of the roll label.
-   * @private
-   */
-   _getEdgeSnagText(edge, snag) {
-     let result = "";
-
-     // Edge and Snag cancel eachother out
-    if (edge != snag) {
-      const withAnEdge = game.i18n.localize(CONFIG.E20.withAnEdge)
-      const withASnag = game.i18n.localize(CONFIG.E20.withASnag)
-      result = edge ? ` ${withAnEdge}` : ` ${withASnag}`;
-    }
-
-    return result;
-  }
-
-  /**
-   * Converts given operands into a formula.
-   * @param {Array<String>} edge   The operands to be used in the formula.
-   * @returns {String}   The resultant formula.
-   * @private
-   */
-    _arrayToFormula(operands) {
-    let result = "";
-    const len = operands.length;
-
-    for (let i=0; i < len; i+=1) {
-      const operand = operands[i];
-      result += i == len - 1 ? operand : `${operand} +`;
-    }
-
-    return result;
- }
 }
