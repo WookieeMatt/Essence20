@@ -262,6 +262,8 @@ export class Essence20ActorSheet extends ActorSheet {
    * @private
    */
   _rollSkill(dataset) {
+    let roll = null;
+
     // Create roll label
     const rolledSkill = dataset.skill;
     const rolledSkillStr = game.i18n.localize(CONFIG.E20.skills[rolledSkill]);
@@ -272,17 +274,20 @@ export class Essence20ActorSheet extends ActorSheet {
     const actorSkillData = this.actor.getRollData().skills;
     const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
     const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
-    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
-    const formula = skillShift == 'd20'
-      ? `d20 + ${modifier}`
-      : `d20 + ${skillShift} + ${modifier}`;
 
-    let roll = new Roll(formula, this.actor.getRollData());
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: label,
-      rollMode: game.settings.get('core', 'rollMode'),
-    });
+    if (!this._handleAutofail(skillShift, label)) {
+      const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
+      const formula = skillShift == 'd20'
+        ? `d20 + ${modifier}`
+        : `d20 + ${skillShift} + ${modifier}`;
+
+      let roll = new Roll(formula, this.actor.getRollData());
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label,
+        rollMode: game.settings.get('core', 'rollMode'),
+      });
+    }
 
     return roll;
   }
@@ -293,6 +298,8 @@ export class Essence20ActorSheet extends ActorSheet {
    * @private
    */
    _rollSpecialization(dataset) {
+    let roll = null;
+
     // Create roll label
     const rolledSkill = dataset.skill;
     const rolledSpecialization = dataset.specialization;
@@ -305,23 +312,55 @@ export class Essence20ActorSheet extends ActorSheet {
     const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
 
-    let formula = '';
-    for (const shift of CONFIG.E20.rollableShifts) {
-      // Keep adding dice until you reach your shift level
-      formula += shift + ' + ';
-      if (shift == skillShift) {
-        break;
+    if (!this._handleAutofail(skillShift, label)) {
+      let formula = '';
+      for (const shift of CONFIG.E20.rollableShifts) {
+        // Keep adding dice until you reach your shift level
+        formula += shift + ' + ';
+        if (shift == skillShift) {
+          break;
+        }
       }
-    }
-    formula += modifier;
+      formula += modifier;
 
-    let roll = new Roll(formula, this.actor.getRollData());
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-      flavor: label,
-      rollMode: game.settings.get('core', 'rollMode'),
-    });
+      let roll = new Roll(formula, this.actor.getRollData());
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label,
+        rollMode: game.settings.get('core', 'rollMode'),
+      });
+    }
 
     return roll;
   }
+
+    /**
+   * Handle rolls that automatically fail.
+   * @param {String} skillShift   The shift of the skill being rolled.
+   * @param {String} label   The label generated so far for the roll, which will be appended to.
+   * @returns {Boolean}   True if autofail occurs and false otherwise.
+   * @private
+   */
+    _handleAutofail(skillShift, label) {
+      let autofailed = false;
+
+      if (CONFIG.E20.automaticShifts.includes(skillShift)) {
+        const chatData = {
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        };
+        switch(skillShift) {
+          case 'autoFail':
+            label += ' automatically fails';
+            break;
+          case 'fumble':
+            label += ' automatically fails and fumbles'
+            break;
+        }
+        chatData.content = label;
+        ChatMessage.create(chatData);
+        autofailed = true;
+      }
+
+      return autofailed;
+    }
 }

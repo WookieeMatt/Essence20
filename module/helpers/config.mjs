@@ -4,7 +4,6 @@ E20.defenseBase = 10;
 
 E20.rollingFor = "E20.rollingFor",
 
-
 E20.armorClassifications = {
   non: "E20.armorClassifications.non",
   light: "E20.armorClassifications.light",
@@ -26,6 +25,11 @@ E20.availabilities = {
   unique: "E20.availabilities.unique",
   theoretical: "E20.availabilities.theoretical",
 };
+
+E20.automaticShifts = [
+  "autoFail",
+  "fumble",
+];
 
 E20.effectShapes = {
   circle: "Circle",
