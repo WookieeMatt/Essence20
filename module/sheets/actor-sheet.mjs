@@ -161,7 +161,9 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Rollable abilities.
-    html.find('.rollable').click(this._onRoll.bind(this));
+    if (this.actor.isOwner) {
+      html.find('.rollable').click(this._onRoll.bind(this));
+    }
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -226,12 +228,18 @@ export class Essence20ActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
 
-    // Handle item rolls.
+    // Handle type-specific rolls.
     if (dataset.rollType) {
       if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
         if (item) return item.roll();
+      }
+      else if (dataset.rollType == 'skill') {
+        this._rollSkill(dataset);
+      }
+      else if (dataset.rollType == 'specialization') {
+        this._rollSpecialization(dataset);
       }
     }
 
@@ -248,4 +256,111 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  /**
+   * Handle skill rolls.
+   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
+   * @private
+   */
+  _rollSkill(dataset) {
+    let roll = null;
+
+    // Create roll label
+    const rolledSkill = dataset.skill;
+    const rolledSkillStr = game.i18n.localize(CONFIG.E20.skills[rolledSkill]);
+    const rollingForStr = game.i18n.localize(CONFIG.E20.rollingFor)
+    let label = `${rollingForStr} ${rolledSkillStr}`;
+
+    // Create roll formula
+    const actorSkillData = this.actor.getRollData().skills;
+    const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
+    const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
+
+    if (!this._handleAutofail(skillShift, label)) {
+      const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
+      const formula = skillShift == 'd20'
+        ? `d20 + ${modifier}`
+        : `d20 + ${skillShift} + ${modifier}`;
+
+      let roll = new Roll(formula, this.actor.getRollData());
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label,
+        rollMode: game.settings.get('core', 'rollMode'),
+      });
+    }
+
+    return roll;
+  }
+
+  /**
+   * Handle specialization rolls.
+   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
+   * @private
+   */
+   _rollSpecialization(dataset) {
+    let roll = null;
+
+    // Create roll label
+    const rolledSkill = dataset.skill;
+    const rolledSpecialization = dataset.specialization;
+    const rollingForStr = game.i18n.localize(CONFIG.E20.rollingFor)
+    let label = `${rollingForStr} ${rolledSpecialization}`;
+
+    // Create roll formula
+    const actorSkillData = this.actor.getRollData().skills;
+    const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
+    const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
+    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
+
+    if (!this._handleAutofail(skillShift, label)) {
+      let formula = '';
+      for (const shift of CONFIG.E20.rollableShifts) {
+        // Keep adding dice until you reach your shift level
+        formula += shift + ' + ';
+        if (shift == skillShift) {
+          break;
+        }
+      }
+      formula += modifier;
+
+      let roll = new Roll(formula, this.actor.getRollData());
+      roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        flavor: label,
+        rollMode: game.settings.get('core', 'rollMode'),
+      });
+    }
+
+    return roll;
+  }
+
+    /**
+   * Handle rolls that automatically fail.
+   * @param {String} skillShift   The shift of the skill being rolled.
+   * @param {String} label   The label generated so far for the roll, which will be appended to.
+   * @returns {Boolean}   True if autofail occurs and false otherwise.
+   * @private
+   */
+    _handleAutofail(skillShift, label) {
+      let autofailed = false;
+
+      if (CONFIG.E20.automaticShifts.includes(skillShift)) {
+        const chatData = {
+          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+        };
+        switch(skillShift) {
+          case 'autoFail':
+            label += ' automatically fails';
+            break;
+          case 'fumble':
+            label += ' automatically fails and fumbles'
+            break;
+        }
+        chatData.content = label;
+        ChatMessage.create(chatData);
+        autofailed = true;
+      }
+
+      return autofailed;
+    }
 }

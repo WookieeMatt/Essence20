@@ -16,12 +16,12 @@
 <span>{{localize 'E20.movement.ground'}}</span><input type="number" name="system.movement.ground" value="{{system.movement.ground}}"/>
 <span>{{localize 'E20.movement.swim'}}</span><input type="number" name="system.movement.swim" value="{{system.movement.swim}}"/>
 
-{{!-- Skills --}}
+{{!-- Essences/Skills --}}
 <h3>{{localize 'E20.skills'}}</h3>
 {{#each system.skills as |skills essence|}}
   <h4>{{localize (concat 'E20.essences.' essence)}}</h4>
   {{#each skills as |fields skill|}}
-    <h5>{{localize (concat 'E20.essenceSkills.' essence '.' skill)}}</h5>
+    <div><a class="rollable" data-roll-type="skill" data-skill="{{skill}}">{{localize (concat 'E20.essenceSkills.' essence '.' skill)}}</a></div>
     <span>{{localize 'E20.modifier'}}</span><input type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
     <input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
     <select name="system.skills.{{essence}}.{{skill}}.shift">
@@ -29,7 +29,7 @@
     </select>
 
     {{!-- Specializations for skill --}}
-    <div>{{localize 'E20.specializations'}}</div>
+    <span>{{localize 'E20.specializations'}}</span>
     <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.addSpecialization' }}">
       <i class="fas fa-plus"></i>
     </a>
@@ -37,7 +37,7 @@
       <li class="item flexrow" data-item-id="{{specialization._id}}">
         <div class="item-name">
           <div class="item-image">
-            <a class="rollable" data-roll-type="specialization"><i class="fas fa-dice-d20"></i></a>
+            <a class="rollable" data-roll-type="specialization" data-skill="{{skill}}" data-specialization="{{specialization.name}}"><i class="fas fa-dice-d20"></i></a>
           </div>
           <input class="inline-edit" data-field="name" type="text" name="{{skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         </div>
