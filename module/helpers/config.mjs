@@ -32,19 +32,19 @@ E20.automaticShifts = [
 ];
 
 E20.effectShapes = {
-  circle: "Circle",
-  cone: "Cone",
-  square: "Square",
+  circle: "E20.effectShapes.circle",
+  cone: "E20.effectShapes.cone",
+  square: "E20.effectShapes.square",
 };
 
 E20.elements = {
-  acid: "Acid",
-  cold: "Cold",
-  electric: "Electric",
-  energy: "Energy",
-  fire: "Fire",
-  laser: "Laser",
-  sonic: "Sonic"
+  acid: "E20.elements.acid",
+  cold: "E20.elements.cold",
+  electric: "E20.elements.electric",
+  energy: "E20.elements.energy",
+  fire: "E20.elements.fire",
+  laser: "E20.elements.laser",
+  sonic: "E20.elements.sonic"
 };
 
 E20.essences = {
@@ -55,8 +55,8 @@ E20.essences = {
 };
 
 E20.lightRange = {
-  bright: "Bright",
-  dim: "Dim",
+  bright: "E20.lightRange.bright",
+  dim: "E20.lightRange.dim",
 };
 
 E20.movement = {
