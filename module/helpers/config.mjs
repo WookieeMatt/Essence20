@@ -2,6 +2,8 @@ export const E20 = {};
 
 E20.defenseBase = 10;
 
+E20.rollingFor = "E20.rollingFor",
+
 E20.armorClassifications = {
   non: "E20.armorClassifications.non",
   light: "E20.armorClassifications.light",
@@ -24,20 +26,25 @@ E20.availabilities = {
   theoretical: "E20.availabilities.theoretical",
 };
 
+E20.automaticShifts = [
+  "autoFail",
+  "fumble",
+];
+
 E20.effectShapes = {
-  circle: "Circle",
-  cone: "Cone",
-  square: "Square",
+  circle: "E20.effectShapes.circle",
+  cone: "E20.effectShapes.cone",
+  square: "E20.effectShapes.square",
 };
 
 E20.elements = {
-  acid: "Acid",
-  cold: "Cold",
-  electric: "Electric",
-  energy: "Energy",
-  fire: "Fire",
-  laser: "Laser",
-  sonic: "Sonic"
+  acid: "E20.elements.acid",
+  cold: "E20.elements.cold",
+  electric: "E20.elements.electric",
+  energy: "E20.elements.energy",
+  fire: "E20.elements.fire",
+  laser: "E20.elements.laser",
+  sonic: "E20.elements.sonic"
 };
 
 E20.essences = {
@@ -48,8 +55,8 @@ E20.essences = {
 };
 
 E20.lightRange = {
-  bright: "Bright",
-  dim: "Dim",
+  bright: "E20.lightRange.bright",
+  dim: "E20.lightRange.dim",
 };
 
 E20.movement = {
@@ -85,7 +92,19 @@ E20.shifts = {
   "fumble": "E20.shifts.fumble",
 };
 
-E20.skills ={
+E20.rollableShifts = [
+  "d20",
+  "d2",
+  "d4",
+  "d6",
+  "d8",
+  "d10",
+  "d12",
+  "2d8",
+  "3d6",
+];
+
+E20.skills = {
   athletics: "E20.essenceSkills.strength.athletics",
   brawn: "E20.essenceSkills.strength.brawn",
   intimidation: "E20.essenceSkills.strength.intimidation",
@@ -105,6 +124,28 @@ E20.skills ={
   persuasion: "E20.essenceSkills.social.persuasion",
   streetwise: "E20.essenceSkills.social.streetwise",
 };
+
+E20.skillToEssence = {
+  athletics: "strength",
+  brawn: "strength",
+  intimidation: "strength",
+  might: "strength",
+  acrobatics: "speed",
+  driving: "speed",
+  finesse: "speed",
+  infiltration: "speed",
+  targeting: "speed",
+  alertness: "smarts",
+  culture: "smarts",
+  science: "smarts",
+  survival: "smarts",
+  technology: "smarts",
+  animalHandling: "social",
+  deception: "social",
+  performance: "social",
+  persuasion: "social",
+  streetwise: "social"
+},
 
 E20.weaponRequirementShifts = {
   "none": "",
