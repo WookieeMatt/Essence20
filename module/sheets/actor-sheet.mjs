@@ -1,4 +1,5 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
+import {GetSkillRollOptions} from "../dice.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -223,23 +224,25 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-  _onRoll(event) {
+  async _onRoll(event) {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
 
     // Handle type-specific rolls.
     if (dataset.rollType) {
+      const skillRollOptions = await GetSkillRollOptions();
+
       if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
         if (item) return item.roll();
       }
       else if (dataset.rollType == 'skill') {
-        this._rollSkill(dataset);
+        this._rollSkill(dataset, skillRollOptions);
       }
       else if (dataset.rollType == 'specialization') {
-        this._rollSpecialization(dataset);
+        this._rollSpecialization(dataset, skillRollOptions);
       }
     }
 
@@ -261,7 +264,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
    * @private
    */
-  _rollSkill(dataset) {
+  _rollSkill(dataset, skillRollOptions) {
     let roll = null;
 
     // Create roll label
@@ -276,15 +279,18 @@ export class Essence20ActorSheet extends ActorSheet {
     const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
 
     if (!this._handleAutofail(skillShift, label)) {
+      const edge = skillRollOptions.edge;
+      const snag = skillRollOptions.snag;
+      const d20Formula = this._getd20Formula(edge, snag);
       const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
       const formula = skillShift == 'd20'
-        ? `d20 + ${modifier}`
-        : `d20 + ${skillShift} + ${modifier}`;
+        ? `${d20Formula} + ${modifier}`
+        : `${d20Formula} + ${skillShift} + ${modifier}`;
 
       let roll = new Roll(formula, this.actor.getRollData());
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label,
+        flavor: label + this._getEdgeSnagText(edge, snag),
         rollMode: game.settings.get('core', 'rollMode'),
       });
     }
@@ -297,7 +303,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event
    * @private
    */
-   _rollSpecialization(dataset) {
+   _rollSpecialization(dataset, skillRollOptions) {
     let roll = null;
 
     // Create roll label
@@ -313,6 +319,9 @@ export class Essence20ActorSheet extends ActorSheet {
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
 
     if (!this._handleAutofail(skillShift, label)) {
+      const edge = skillRollOptions.edge;
+      const snag = skillRollOptions.snag;
+
       let formula = '';
       for (const shift of CONFIG.E20.rollableShifts) {
         // Keep adding dice until you reach your shift level
@@ -326,7 +335,7 @@ export class Essence20ActorSheet extends ActorSheet {
       let roll = new Roll(formula, this.actor.getRollData());
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label,
+        flavor: label + this._getEdgeSnagText(edge, snag),
         rollMode: game.settings.get('core', 'rollMode'),
       });
     }
@@ -334,33 +343,70 @@ export class Essence20ActorSheet extends ActorSheet {
     return roll;
   }
 
-    /**
+  /**
    * Handle rolls that automatically fail.
    * @param {String} skillShift   The shift of the skill being rolled.
    * @param {String} label   The label generated so far for the roll, which will be appended to.
    * @returns {Boolean}   True if autofail occurs and false otherwise.
    * @private
    */
-    _handleAutofail(skillShift, label) {
-      let autofailed = false;
+  _handleAutofail(skillShift, label) {
+    let autofailed = false;
 
-      if (CONFIG.E20.automaticShifts.includes(skillShift)) {
-        const chatData = {
-          speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        };
-        switch(skillShift) {
-          case 'autoFail':
-            label += ' automatically fails';
-            break;
-          case 'fumble':
-            label += ' automatically fails and fumbles'
-            break;
-        }
-        chatData.content = label;
-        ChatMessage.create(chatData);
-        autofailed = true;
+    if (CONFIG.E20.automaticShifts.includes(skillShift)) {
+      const chatData = {
+        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+      };
+      switch(skillShift) {
+        case 'autoFail':
+          label += ` ${game.i18n.localize(CONFIG.E20.autoFail)}`;
+          break;
+        case 'fumble':
+          label += ` ${game.i18n.localize(CONFIG.E20.autoFailFumble)}`;
+          break;
       }
-
-      return autofailed;
+      chatData.content = label;
+      ChatMessage.create(chatData);
+      autofailed = true;
     }
+
+    return autofailed;
+  }
+
+  /**
+   * Returns the d20 portion of skill roll formula.
+   * @param {Boolean} edge   If the roll is using an Edge.
+   * @param {Boolean} snag   If the roll is using a snag.
+   * @returns {String}   The d20 portion of skill roll formula.
+   * @private
+   */
+  _getd20Formula(edge, snag) {
+    // Edge and Snag cancel eachother out
+    if (edge == snag) {
+      return 'd20';
+    }
+    else {
+      return edge ? '2d20kh' : '2d20kl';
+    }
+  }
+
+  /**
+   * Returns the d20 portion of skill roll formula.
+   * @param {Boolean} edge   If the roll is using an Edge.
+   * @param {Boolean} snag   If the roll is using a snag.
+   * @returns {String}   The ' with an Edge/Snag' text of the roll label.
+   * @private
+   */
+   _getEdgeSnagText(edge, snag) {
+     let result = "";
+
+     // Edge and Snag cancel eachother out
+    if (edge != snag) {
+      const withAnEdge = game.i18n.localize(CONFIG.E20.withAnEdge)
+      const withASnag = game.i18n.localize(CONFIG.E20.withASnag)
+      result = edge ? ` ${withAnEdge}` : ` ${withASnag}`;
+    }
+
+    return result;
+  }
 }
