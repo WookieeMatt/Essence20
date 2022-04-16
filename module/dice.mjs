@@ -6,8 +6,6 @@
  * @private
  */
  export function rollSkill(dataset, skillRollOptions, actor) {
-  let roll = null;
-
   // Create roll label
   const rolledSkill = dataset.skill;
   const rolledSkillStr = dataset.specialization
@@ -27,41 +25,43 @@
   const finalShiftIndex = Math.max(0, Math.min(CONFIG.E20.shiftList.length - 1, skillShiftIndex - optionsShiftTotal));
   const finalShift = CONFIG.E20.shiftList[finalShiftIndex];
 
-  if (!_handleAutofail(finalShift, label, actor)) {
-    const edge = skillRollOptions.edge;
-    const snag = skillRollOptions.snag;
-    const operands = [];
-    operands.push(_getd20Operand(edge, snag));
+  if (_handleAutofail(finalShift, label, actor)) {
+    return;
+  }
 
-    // We already have the d20 operand, now apply bonus dice if needed
-    if (finalShift != 'd20') {
-      if (dataset.specialization) {
-        // For specializations, keep adding dice until you reach your shift level
-        for (const shift of CONFIG.E20.rollableShifts) {
-          operands.push(shift);
-          if (shift == finalShift) {
-            break;
-          }
+  const edge = skillRollOptions.edge;
+  const snag = skillRollOptions.snag;
+  const operands = [];
+  operands.push(_getd20Operand(edge, snag));
+
+  // We already have the d20 operand, now apply bonus dice if needed
+  if (finalShift != 'd20') {
+    if (dataset.specialization) {
+      // For specializations, keep adding dice until you reach your shift level
+      for (const shift of CONFIG.E20.rollableShifts) {
+        operands.push(shift);
+        if (shift == finalShift) {
+          break;
         }
       }
-      else {
-        // For non-specialized, just add the single bonus die
-        operands.push(finalShift);
-      }
     }
-
-    // Include the skill modifier and generate final formula
-    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
-    operands.push(modifier);
-    const formula = _arrayToFormula(operands);
-
-    let roll = new Roll(formula, actor.getRollData());
-    roll.toMessage({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      flavor: label + _getEdgeSnagText(edge, snag),
-      rollMode: game.settings.get('core', 'rollMode'),
-    });
+    else {
+      // For non-specialized, just add the single bonus die
+      operands.push(finalShift);
+    }
   }
+
+  // Include the skill modifier and generate final formula
+  const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
+  operands.push(modifier);
+  const formula = _arrayToFormula(operands);
+
+  let roll = new Roll(formula, actor.getRollData());
+  roll.toMessage({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    flavor: label + _getEdgeSnagText(edge, snag),
+    rollMode: game.settings.get('core', 'rollMode'),
+  });
 }
 
 /**
@@ -169,7 +169,7 @@ export async function getSkillRollOptions() {
         },
         cancel: {
           label: "Cancel",
-          callback: html => resolve({canceled: true}),
+          callback: html => resolve({cancelled: true}),
         },
       },
       default: "normal",
