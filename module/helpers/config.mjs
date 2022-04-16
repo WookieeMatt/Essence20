@@ -2,7 +2,11 @@ export const E20 = {};
 
 E20.defenseBase = 10;
 
-E20.rollingFor = "E20.rollingFor",
+E20.rollingFor = "E20.rollingFor";
+E20.withAnEdge = "E20.withAnEdge";
+E20.withASnag = "E20.withASnag";
+E20.autoFail = "E20.autoFail";
+E20.autoFailFumble = "E20.autoFailFumble";
 
 E20.armorClassifications = {
   non: "E20.armorClassifications.non",
@@ -92,8 +96,23 @@ E20.shifts = {
   "fumble": "E20.shifts.fumble",
 };
 
-E20.rollableShifts = [
+E20.shiftList = [
+  "criticalSuccess",
+  "autoSuccess",
+  "3d6",
+  "2d8",
+  "d12",
+  "d10",
+  "d8",
+  "d6",
+  "d4",
+  "d2",
   "d20",
+  "autoFail",
+  "fumble",
+];
+
+E20.rollableShifts = [
   "d2",
   "d4",
   "d6",
