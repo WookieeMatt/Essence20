@@ -97,7 +97,6 @@ E20.shifts = {
 };
 
 E20.rollableShifts = [
-  "d20",
   "d2",
   "d4",
   "d6",

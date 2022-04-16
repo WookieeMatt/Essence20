@@ -281,11 +281,16 @@ export class Essence20ActorSheet extends ActorSheet {
     if (!this._handleAutofail(skillShift, label)) {
       const edge = skillRollOptions.edge;
       const snag = skillRollOptions.snag;
-      const d20Formula = this._getd20Formula(edge, snag);
+      const operands = [];
+      operands.push(this._getd20Operand(edge, snag));
+
+      if (skillShift != 'd20') {
+        operands.push(skillShift);
+      }
+
       const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
-      const formula = skillShift == 'd20'
-        ? `${d20Formula} + ${modifier}`
-        : `${d20Formula} + ${skillShift} + ${modifier}`;
+      operands.push(modifier);
+      const formula = this._arrayToFormula(operands);
 
       let roll = new Roll(formula, this.actor.getRollData());
       roll.toMessage({
@@ -316,21 +321,26 @@ export class Essence20ActorSheet extends ActorSheet {
     const actorSkillData = this.actor.getRollData().skills;
     const rolledEssence = CONFIG.E20.skillToEssence[rolledSkill];
     const skillShift = actorSkillData[rolledEssence][rolledSkill].shift;
-    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
 
     if (!this._handleAutofail(skillShift, label)) {
       const edge = skillRollOptions.edge;
       const snag = skillRollOptions.snag;
+      const operands = [];
+      operands.push(this._getd20Operand(edge, snag))
 
-      let formula = '';
-      for (const shift of CONFIG.E20.rollableShifts) {
+      if (skillShift != 'd20') {
         // Keep adding dice until you reach your shift level
-        formula += shift + ' + ';
-        if (shift == skillShift) {
-          break;
+        for (const shift of CONFIG.E20.rollableShifts) {
+          operands.push(shift);
+          if (shift == skillShift) {
+            break;
+          }
         }
       }
-      formula += modifier;
+
+      const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
+      operands.push(modifier);
+      const formula = this._arrayToFormula(operands);
 
       let roll = new Roll(formula, this.actor.getRollData());
       roll.toMessage({
@@ -380,7 +390,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @returns {String}   The d20 portion of skill roll formula.
    * @private
    */
-  _getd20Formula(edge, snag) {
+  _getd20Operand(edge, snag) {
     // Edge and Snag cancel eachother out
     if (edge == snag) {
       return 'd20';
@@ -409,4 +419,22 @@ export class Essence20ActorSheet extends ActorSheet {
 
     return result;
   }
+
+  /**
+   * Converts given operands into a formula.
+   * @param {Array<String>} edge   The operands to be used in the formula.
+   * @returns {String}   The resultant formula.
+   * @private
+   */
+    _arrayToFormula(operands) {
+    let result = "";
+    const len = operands.length;
+
+    for (let i=0; i < len; i+=1) {
+      const operand = operands[i];
+      result += i == len - 1 ? operand : `${operand} +`;
+    }
+
+    return result;
+ }
 }
