@@ -6,6 +6,14 @@
         {{!-- Actor Sheet Header --}}
         {{> "systems/essence20/templates/actor/parts/actor-pr-header.hbs"}}
 
+        <nav class="sheet-navigation tabs" data-group="primary">
+        <a class="item" data-tab="skills"> {{ localize "E20.skills" }}</a>
+        <a class="item" data-tab="combat">{{ localize "E20.combat" }}</a>
+        <a class="item" data-tab="powers">{{ localize "E20.powers" }}</a>
+        <a class="item" data-tab="origin">{{ localize "E20.origin" }}</a>
+        <a class="item" data-tab="notes">{{ localize "E20.notes" }}</a>
+        </nav>
+
         {{!-- Actor Sheet Body --}}
         <section class="sheet-body">
           <h3>{{localize 'E20.defensesStr'}}</h3>
