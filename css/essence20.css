@@ -6,11 +6,13 @@
   /* font-family: "Roboto", sans-serif; */
   font-family: "Comic Neue", cursive;
   font-weight: bold;
+  color: white;
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
   background: none;
+  color: white;
 }
 
 .sheet {
