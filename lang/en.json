@@ -5,6 +5,8 @@
     "addPower": "Add Power",
     "addSpecialization": "Add Specialization",
     "armor": "Armor",
+    "autoFail": "automatically fails",
+    "autoFailFumble": "automatically fails and fumbles",
     "availability": "Availability",
     "background": "Background",
     "benefit": "Benefit",
@@ -73,6 +75,8 @@
     "toughness": "Toughness",
     "trait": "Trait",
     "traits": "Traits",
+    "withAnEdge": "with an Edge",
+    "withASnag": "with a Snag",
     "value": "Value",
 
     "armorClassifications": {
