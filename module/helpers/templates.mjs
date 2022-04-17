@@ -12,6 +12,8 @@
     "systems/essence20/templates/actor/parts/actor-tf-header.hbs",
     "systems/essence20/templates/actor/parts/actor-common.hbs",
     "systems/essence20/templates/actor/parts/actor-character.hbs",
+    "systems/essence20/templates/actor/parts/actor-defenses.hbs",
+    "systems/essence20/templates/actor/parts/actor-powers.hbs",
 
     // Item partials.
     "systems/essence20/templates/item/parts/item-description.hbs",
