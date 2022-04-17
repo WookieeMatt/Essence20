@@ -138,13 +138,13 @@ function _getEdgeSnagText(edge, snag) {
  * @returns {String}   The resultant formula.
  * @private
  */
-function _arrayToFormula(operands) {
+export function _arrayToFormula(operands) {
   let result = "";
   const len = operands.length;
 
   for (let i=0; i < len; i+=1) {
     const operand = operands[i];
-    result += i == len - 1 ? operand : `${operand} +`;
+    result += i == len - 1 ? operand : `${operand} + `;
   }
 
   return result;
