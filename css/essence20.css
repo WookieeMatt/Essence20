@@ -272,6 +272,7 @@
   margin-bottom: 10px;
 }
 
+/* PR Sheet Styling */
 .essence20 .sheet-header .profile-img {
   -webkit-box-flex: 0;
   /* -ms-flex: 0 0 100px; */
@@ -357,6 +358,32 @@
   font-weight: bold;
 }
 
+.essence20 .origin-entries .origin-notes .editor {
+  color: white;
+}
+
+.essence20 .origin-title {
+  color: white;
+}
+
+.essence20 .notes-title {
+  color: white;
+}
+
+.essence20 .editor {
+  position: relative;
+  min-height: 100px;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: inherit;
+}
+
+.essence20 .editor-content {
+  color: white;
+  font-size: 16px;
+}
+
+/* ITEMS */
 .essence20 .items-header {
   height: 28px;
   margin: 2px 0;
@@ -404,10 +431,6 @@ input[type="text"] {
 .essence20 .description-tab .editor {
   color: white;
   height: 100px;
-}
-
-.sheet .editor-content {
-  color: white;
 }
 
 .essence20 .armor-sheet-body,
@@ -494,7 +517,7 @@ input[type="text"] {
   background-size: cover;
   margin: auto;
   border-radius: 7%;
-  overflow-y:auto;
+  overflow-y: auto;
 }
 
 .essence20 .item {
