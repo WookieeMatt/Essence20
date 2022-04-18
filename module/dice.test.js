@@ -2,11 +2,15 @@ import {Dice} from "./dice.mjs";
 import {E20} from "./helpers/config.mjs";
 import {jest} from '@jest/globals'
 
+class Mocki18n {
+  localize(text) { return text; }
+}
+
 const chatMessage = jest.mock();
 chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
-const dice = new Dice((text) => text, E20, chatMessage);
+const dice = new Dice(new Mocki18n, E20, chatMessage);
 
 /* _getSkillRollLabel */
 describe("_getSkillRollLabel", () => {

@@ -8,7 +8,7 @@ import {Dice} from "../dice.mjs";
 export class Essence20ActorSheet extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
-    this._dice = new Dice(game.i18n.localize, CONFIG.E20, ChatMessage);
+    this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
   }
 
   /** @override */
