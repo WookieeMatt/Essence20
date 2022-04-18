@@ -25,11 +25,11 @@ export class Dice {
         content: html,
         buttons: {
           normal: {
-            label: "Roll",
+            label: this._i18n.localize(this._config.roll),
             callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
           },
           cancel: {
-            label: "Cancel",
+            label: this._i18n.localize(this._config.cancel),
             callback: html => resolve({cancelled: true}),
           },
         },
