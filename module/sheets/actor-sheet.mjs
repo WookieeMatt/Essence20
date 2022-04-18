@@ -1,11 +1,15 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
-import {getSkillRollOptions, rollSkill} from "../dice.mjs";
+import {Dice} from "../dice.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
 export class Essence20ActorSheet extends ActorSheet {
+  constructor(actor, options) {
+    super(actor, options);
+    this._dice = new Dice(game.i18n.localize, CONFIG.E20, ChatMessage);
+  }
 
   /** @override */
   static get defaultOptions() {
@@ -231,7 +235,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (dataset.rollType) {
-      const skillRollOptions = await getSkillRollOptions();
+      const skillRollOptions = await this._dice.getSkillRollOptions();
 
       if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
@@ -239,7 +243,7 @@ export class Essence20ActorSheet extends ActorSheet {
         if (item) return item.roll();
       }
       else if (dataset.rollType == 'skill') {
-        rollSkill(dataset, skillRollOptions, this.actor);
+        this._dice.rollSkill(dataset, skillRollOptions, this.actor);
       }
     }
 
