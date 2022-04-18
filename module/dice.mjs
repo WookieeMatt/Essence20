@@ -17,12 +17,11 @@ export class Dice {
    */
   async getSkillRollOptions() {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-
     const html = await renderTemplate(template, {});
 
     return new Promise(resolve => {
       const data = {
-        title: game.i18n.format("Configure your skill roll"),
+        title: this._i18n.localize(this._config.rollDialogTitle),
         content: html,
         buttons: {
           normal: {
