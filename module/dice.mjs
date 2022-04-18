@@ -1,11 +1,12 @@
 export class Dice {
   /**
    * Dice constructor.
-   * @param {Function} localize   The function to use for text localization
+   * @param {i18n} i18n   The i18n to use for text localization.
    * @param {Object} config   The config to use for constants.
+   * @param {ChatMessage} chatMessage   The ChatMessage to use.
    */
-  constructor(localize, config, chatMessage) {
-    this._localize = localize;
+  constructor(i18n, config, chatMessage) {
+    this._i18n = i18n;
     this._config = config;
     this._chatMessage = chatMessage;
   }
@@ -78,7 +79,7 @@ export class Dice {
     let roll = new Roll(formula, actor.getRollData());
     roll.toMessage({
       speaker: this._chatMessage.getSpeaker({ actor }),
-      flavor: label + this._getEdgeSnagText(edge, snag),
+      flavor: label + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag),
       rollMode: game.settings.get('core', 'rollMode'),
     });
   }
@@ -93,8 +94,8 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = dataset.specialization
       ? dataset.specialization
-      : this._localize(this._config.skills[rolledSkill]);
-    const rollingForStr = this._localize(this._config.rollingFor)
+      : this._i18n.localize(this._config.skills[rolledSkill]);
+    const rollingForStr = this._i18n.localize(this._config.rollingFor)
     return `${rollingForStr} ${rolledSkillStr}`;
   }
 
@@ -131,10 +132,10 @@ export class Dice {
       };
       switch(skillShift) {
         case 'autoFail':
-          label += ` ${this._localize(this._config.autoFail)}`;
+          label += ` ${this._i18n.localize(this._config.autoFail)}`;
           break;
         case 'fumble':
-          label += ` ${this._localize(this._config.autoFailFumble)}`;
+          label += ` ${this._i18n.localize(this._config.autoFailFumble)}`;
           break;
       }
       chatData.content = label;
@@ -174,8 +175,8 @@ export class Dice {
 
     // Edge and Snag cancel eachother out
     if (edge != snag) {
-      const withAnEdge = this._localize(this._config.withAnEdge)
-      const withASnag = this._localize(this._config.withASnag)
+      const withAnEdge = this._i18n.localize(this._config.withAnEdge)
+      const withASnag = this._i18n.localize(this._config.withASnag)
       result = edge ? ` ${withAnEdge}` : ` ${withASnag}`;
     }
 
@@ -236,5 +237,4 @@ export class Dice {
 
     return this._arrayToFormula(operands);
   }
-
 }
