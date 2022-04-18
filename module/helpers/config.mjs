@@ -30,9 +30,14 @@ E20.availabilities = {
   theoretical: "E20.availabilities.theoretical",
 };
 
-E20.automaticShifts = [
+E20.autoFailShifts = [
   "autoFail",
   "fumble",
+];
+
+E20.autoSuccessShifts = [
+  "criticalSuccess",
+  "autoSuccess",
 ];
 
 E20.effectShapes = {
