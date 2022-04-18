@@ -14,7 +14,7 @@
     "systems/essence20/templates/actor/parts/actor-character.hbs",
     "systems/essence20/templates/actor/parts/actor-defenses.hbs",
     "systems/essence20/templates/actor/parts/actor-powers.hbs",
-    "systems/essence20/templates/actor/parts/actor-origin.hbs",
+    "systems/essence20/templates/actor/parts/actor-background.hbs",
     "systems/essence20/templates/actor/parts/actor-notes.hbs",
 
     // Item partials.
