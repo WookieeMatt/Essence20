@@ -21,8 +21,8 @@
   "gridUnits": "ft",
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
-  "url": "",
-  "manifest": "",
-  "download": "",
+  "url": "https://github.com/WookieeMatt/Essence20",
+  "manifest": "https://github.com/WookieeMatt/Essence20/releases/download/v0.5-Graphix-Branch/system.json",
+  "download": "https://github.com/WookieeMatt/Essence20/releases/download/v0.5-Graphix-Branch/Essence20-graphix.zip",
   "license": "LICENSE.txt"
 }
