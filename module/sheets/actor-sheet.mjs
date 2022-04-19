@@ -65,7 +65,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
-
+console.log(context);
     return context;
   }
 
@@ -109,16 +109,21 @@ export class Essence20ActorSheet extends ActorSheet {
             equippedArmorEffect += i.data.effect;
           }
           armors.push(i);
+          break;
         case 'influence':
           influences.push(i);
+          break;
         case 'power':
           powers.push(i);
+          break;
         case 'specialization':
           const skill = i.data.skill;
           const existingSkillSpecializations = specializations[skill];
           existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
+          break;
         case 'threatPower':
           threatPowers.push(i);
+          break;
       };
     }
 
