@@ -7,6 +7,9 @@ E20.withAnEdge = "E20.withAnEdge";
 E20.withASnag = "E20.withASnag";
 E20.autoFail = "E20.autoFail";
 E20.autoFailFumble = "E20.autoFailFumble";
+E20.rollDialogTitle = "E20.rollDialogTitle";
+E20.cancel = "E20.cancel";
+E20.roll = "E20.roll";
 
 E20.armorClassifications = {
   non: "E20.armorClassifications.non",
@@ -30,9 +33,14 @@ E20.availabilities = {
   theoretical: "E20.availabilities.theoretical",
 };
 
-E20.automaticShifts = [
+E20.autoFailShifts = [
   "autoFail",
   "fumble",
+];
+
+E20.autoSuccessShifts = [
+  "criticalSuccess",
+  "autoSuccess",
 ];
 
 E20.effectShapes = {

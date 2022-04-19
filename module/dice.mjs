@@ -17,20 +17,19 @@ export class Dice {
    */
   async getSkillRollOptions() {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-
     const html = await renderTemplate(template, {});
 
     return new Promise(resolve => {
       const data = {
-        title: game.i18n.format("Configure your skill roll"),
+        title: this._i18n.localize(this._config.rollDialogTitle),
         content: html,
         buttons: {
           normal: {
-            label: "Roll",
+            label: this._i18n.localize(this._config.roll),
             callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
           },
           cancel: {
-            label: "Cancel",
+            label: this._i18n.localize(this._config.cancel),
             callback: html => resolve({cancelled: true}),
           },
         },
@@ -67,10 +66,14 @@ export class Dice {
     const rolledEssence = this._config.skillToEssence[rolledSkill];
     const actorSkillData = actor.getRollData().skills;
     const initialShift = actorSkillData[rolledEssence][rolledSkill].shift;
-    const finalShift = this._getFinalShift(skillRollOptions, initialShift);
+    let finalShift = this._getFinalShift(skillRollOptions, initialShift);
 
-    if (this._handleAutofail(finalShift, label, actor)) {
+    if (this._handleAutoFail(finalShift, label, actor)) {
       return;
+    }
+
+    if (this._config.autoSuccessShifts.includes(finalShift)) {
+      finalShift = this._config.rollableShifts[this._config.rollableShifts.length - 1];
     }
 
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
@@ -123,10 +126,10 @@ export class Dice {
    * @returns {Boolean}   True if autofail occurs and false otherwise.
    * @private
    */
-  _handleAutofail(skillShift, label, actor) {
-    let autofailed = false;
+  _handleAutoFail(skillShift, label, actor) {
+    let autoFailed = false;
 
-    if (this._config.automaticShifts.includes(skillShift)) {
+    if (this._config.autoFailShifts.includes(skillShift)) {
       const chatData = {
         speaker: this._chatMessage.getSpeaker({ actor }),
       };
@@ -140,10 +143,10 @@ export class Dice {
       }
       chatData.content = label;
       this._chatMessage.create(chatData);
-      autofailed = true;
+      autoFailed = true;
     }
 
-    return autofailed;
+    return autoFailed;
   }
 
   /**
