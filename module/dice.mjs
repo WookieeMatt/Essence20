@@ -167,7 +167,7 @@ export class Dice {
   }
 
   /**
-   * Returns the d20 portion of skill roll formula.
+   * Creates the Edge/Snag text of the skill roll label.
    * @param {Boolean} edge   If the roll is using an Edge.
    * @param {Boolean} snag   If the roll is using a Snag.
    * @returns {String}   The ' with an Edge/Snag' text of the roll label.

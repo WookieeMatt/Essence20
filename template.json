@@ -10,7 +10,7 @@
           "min": 0,
           "value": 4
         },
-        "initiative": 0,
+        "initiative": "d20",
         "movement": {
           "aerial": 0,
           "aerialMin": null,
