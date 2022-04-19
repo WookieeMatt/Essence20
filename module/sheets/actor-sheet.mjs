@@ -237,7 +237,10 @@ export class Essence20ActorSheet extends ActorSheet {
     if (dataset.rollType) {
       const skillRollOptions = await this._dice.getSkillRollOptions();
 
-      if (dataset.rollType == 'item') {
+      if (skillRollOptions.cancelled) {
+        return;
+      }
+      else if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
         if (item) return item.roll();
@@ -245,18 +248,6 @@ export class Essence20ActorSheet extends ActorSheet {
       else if (dataset.rollType == 'skill') {
         this._dice.rollSkill(dataset, skillRollOptions, this.actor);
       }
-    }
-
-    // Handle rolls that supply the formula directly.
-    if (dataset.roll) {
-      let label = dataset.label ? `[ability] ${dataset.label}` : '';
-      let roll = new Roll(dataset.roll, this.actor.getRollData());
-      roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-        flavor: label,
-        rollMode: game.settings.get('core', 'rollMode'),
-      });
-      return roll;
     }
   }
 }
