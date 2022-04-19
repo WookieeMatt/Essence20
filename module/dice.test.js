@@ -89,14 +89,14 @@ describe("_getFinalShift", () => {
   });
 });
 
-/* _handleAutofail */
-describe("_handleAutofail", () => {
+/* _handleAutoFail */
+describe("_handleAutoFail", () => {
   test("non-auto fail", () => {
     const skillShift = 'd20';
     const label = '';
     const actor = jest.mock();
 
-    expect(dice._handleAutofail(skillShift, label, actor)).toBe(false);
+    expect(dice._handleAutoFail(skillShift, label, actor)).toBe(false);
     expect(chatMessage.getSpeaker).not.toHaveBeenCalled();
     expect(chatMessage.create).not.toHaveBeenCalled();
   });
@@ -106,7 +106,7 @@ describe("_handleAutofail", () => {
     const label = '';
     const actor = jest.mock();
 
-    expect(dice._handleAutofail(skillShift, label, actor)).toBe(true);
+    expect(dice._handleAutoFail(skillShift, label, actor)).toBe(true);
     expect(chatMessage.getSpeaker).toHaveBeenCalled();
     expect(chatMessage.create).toHaveBeenCalledWith({content: " E20.autoFail", speaker: {}});
   });
@@ -116,7 +116,7 @@ describe("_handleAutofail", () => {
     const label = '';
     const actor = jest.mock();
 
-    expect(dice._handleAutofail(skillShift, label, actor)).toBe(true);
+    expect(dice._handleAutoFail(skillShift, label, actor)).toBe(true);
     expect(chatMessage.getSpeaker).toHaveBeenCalled();
     expect(chatMessage.create).toHaveBeenCalledWith({content: " E20.autoFailFumble", speaker: {}});
   });
