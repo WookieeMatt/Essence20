@@ -10,7 +10,6 @@ E20.autoFailFumble = "E20.autoFailFumble";
 E20.rollDialogTitle = "E20.rollDialogTitle";
 E20.cancel = "E20.cancel";
 E20.roll = "E20.roll";
-E20.isRollingInitiative ="E20.isRollingInitiative";
 
 E20.armorClassifications = {
   non: "E20.armorClassifications.non",
