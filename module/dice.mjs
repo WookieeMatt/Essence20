@@ -240,19 +240,4 @@ export class Dice {
 
     return this._arrayToFormula(operands);
   }
-
-  /**
-   * Handle initiative rolls.
-   * @param {Actor} actor   The actor performing the roll.
-   */
-  rollInitiative(actor) {
-    const initiative = actor.system.initiative;
-    const formula = initiative == 'd20' ? 'd20' : `d20 + ${initiative}`;
-    let roll = new Roll(formula, actor.getRollData());
-    roll.toMessage({
-      speaker: this._chatMessage.getSpeaker({ actor }),
-      flavor: `${actor.name} ${this._i18n.localize(this._config.isRollingInitiative)}`,
-      rollMode: game.settings.get('core', 'rollMode'),
-    });
-  }
 }

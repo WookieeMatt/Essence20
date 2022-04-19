@@ -68,7 +68,7 @@ E20.essences = {
 };
 
 E20.initiativeShifts = {
-  "d20": "E20.shifts.d20",
+  "0": "0",
   "d2": "E20.shifts.d2",
   "d4": "E20.shifts.d4",
   "d6": "E20.shifts.d6",

@@ -8,11 +8,15 @@
   </div>
 </div>
 
+{{!-- Initiative --}}
+<div>
+  <span>{{localize 'E20.initiative'}}</span>
+  <select name="system.initiative">
+    {{selectOptions @root.config.initiativeShifts selected=system.initiative localize=true}}
+  </select>
+</div>
+
 {{!-- General stats --}}
-<div><a class="rollable" data-roll-type="initiative" >{{localize 'E20.initiative'}}</a></div>
-<select name="system.initiative">
-  {{selectOptions @root.config.initiativeShifts selected=system.initiative localize=true}}
-</select>
 <span>{{localize 'E20.conditioning'}}</span><input type="number" name="system.conditioning" value="{{system.conditioning}}"/>
 <span>{{localize 'E20.movement.aerial'}}</span><input type="number" name="system.movement.aerial" value="{{system.movement.aerial}}"/>
 <span>{{localize 'E20.movement.aerialMin'}}</span><input type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}"/>
