@@ -10,6 +10,7 @@ E20.autoFailFumble = "E20.autoFailFumble";
 E20.rollDialogTitle = "E20.rollDialogTitle";
 E20.cancel = "E20.cancel";
 E20.roll = "E20.roll";
+E20.isRollingInitiative ="E20.isRollingInitiative";
 
 E20.armorClassifications = {
   non: "E20.armorClassifications.non",
@@ -64,6 +65,18 @@ E20.essences = {
   speed: "E20.essences.speed",
   smarts: "E20.essences.smarts",
   social: "E20.essences.social",
+};
+
+E20.initiativeShifts = {
+  "d20": "E20.shifts.d20",
+  "d2": "E20.shifts.d2",
+  "d4": "E20.shifts.d4",
+  "d6": "E20.shifts.d6",
+  "d8": "E20.shifts.d8",
+  "d10": "E20.shifts.d10",
+  "d12": "E20.shifts.d12",
+  "2d8": "E20.shifts.2d8",
+  "3d6": "E20.shifts.3d6",
 };
 
 E20.lightRange = {

@@ -167,7 +167,7 @@ export class Dice {
   }
 
   /**
-   * Returns the d20 portion of skill roll formula.
+   * Creates the Edge/Snag text of the skill roll label.
    * @param {Boolean} edge   If the roll is using an Edge.
    * @param {Boolean} snag   If the roll is using a Snag.
    * @returns {String}   The ' with an Edge/Snag' text of the roll label.
@@ -239,5 +239,20 @@ export class Dice {
     operands.push(modifier);
 
     return this._arrayToFormula(operands);
+  }
+
+  /**
+   * Handle initiative rolls.
+   * @param {Actor} actor   The actor performing the roll.
+   */
+  rollInitiative(actor) {
+    const initiative = actor.system.initiative;
+    const formula = initiative == 'd20' ? 'd20' : `d20 + ${initiative}`;
+    let roll = new Roll(formula, actor.getRollData());
+    roll.toMessage({
+      speaker: this._chatMessage.getSpeaker({ actor }),
+      flavor: `${actor.name} ${this._i18n.localize(this._config.isRollingInitiative)}`,
+      rollMode: game.settings.get('core', 'rollMode'),
+    });
   }
 }

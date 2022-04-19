@@ -240,6 +240,11 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (dataset.rollType) {
+      if (dataset.rollType == 'initiative') {
+        this._dice.rollInitiative(this.actor);
+        return;
+      }
+
       const skillRollOptions = await this._dice.getSkillRollOptions();
 
       if (skillRollOptions.cancelled) {

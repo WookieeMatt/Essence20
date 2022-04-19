@@ -37,6 +37,7 @@
     "initiative": "Initiative",
     "influences": "Influences",
     "isCombiner": "Combiner?",
+    "isRollingInitiative": "is rolling initiative",
     "level": "LEVEL",
     "lightRangeStr": "Light Range",
     "limited": "Limited?",
