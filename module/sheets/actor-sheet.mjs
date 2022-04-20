@@ -98,6 +98,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const powers = [];
     const specializations = {};
     const threatPowers = [];
+    const weapons = [];
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -124,6 +125,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'threatPower':
           threatPowers.push(i);
           break;
+        case 'weapon':
+          weapons.push(i);
+          break;
       };
     }
 
@@ -134,6 +138,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.powers = powers;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
+    context.weapons = weapons;
   }
 
   /* -------------------------------------------- */
