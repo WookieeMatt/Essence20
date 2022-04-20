@@ -210,14 +210,14 @@ describe("_arrayToFormula", () => {
 
   test("two operands", () => {
     const operands = ['1', '2'];
-    const expected = '1 + 2';
+    const expected = '1,2';
 
     expect(dice._arrayToFormula(operands)).toEqual(expected);
   });
 
   test("three operands", () => {
     const operands = ['1', '2', '3'];
-    const expected = '1 + 2 + 3';
+    const expected = '1,2,3';
 
     expect(dice._arrayToFormula(operands)).toEqual(expected);
   });
@@ -259,7 +259,7 @@ describe("_getFormula", () => {
     }
     const finalShift = 'd6';
     const modifier = 0;
-    const expected = 'd20 + d2 + d4 + d6 + 0';
+    const expected = 'd20 + {d2,d4,d6}kh + 0';
 
     expect(dice._getFormula(isSpecialized, skillRollOptions, finalShift, modifier)).toEqual(expected);
   });
