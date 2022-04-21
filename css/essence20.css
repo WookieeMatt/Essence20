@@ -563,6 +563,30 @@ input[type="text"] {
   width: 565px;
 }
 
+.essence20 .defenses-container {
+  list-style: none;
+  margin: 18px;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  transform: rotate(2deg);
+  border: 1px solid #b5b1b1;
+  box-shadow: 3px 3px 0 #4a4848;
+  width: 565px;
+}
+
+.essence20 .morphed-container {
+  float: right;
+}
+
+.essence20 .defenses-section {
+
+}
+
 .essence20 .items-list .item-list {
   list-style: none;
   margin: 0;
