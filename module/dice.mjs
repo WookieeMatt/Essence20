@@ -198,7 +198,7 @@ export class Dice {
 
     for (let i=0; i < len; i+=1) {
       const operand = operands[i];
-      result += i == len - 1 ? operand : `${operand} + `;
+      result += i == len - 1 ? operand : `${operand},`;
     }
 
     return result;
@@ -216,28 +216,27 @@ export class Dice {
   _getFormula(isSpecialized, skillRollOptions, finalShift, modifier) {
     const edge = skillRollOptions.edge;
     const snag = skillRollOptions.snag;
-    const operands = [];
-    operands.push(this._getd20Operand(edge, snag));
+    const shiftOperands = [];
+    let formula = this._getd20Operand(edge, snag);
 
     // We already have the d20 operand, now apply bonus dice if needed
     if (finalShift != 'd20') {
       if (isSpecialized) {
         // For specializations, keep adding dice until you reach your shift level
         for (const shift of this._config.rollableShifts) {
-          operands.push(shift);
+          shiftOperands.push(shift);
           if (shift == finalShift) {
             break;
           }
         }
+        formula += ` + {${this._arrayToFormula(shiftOperands)}}kh`;
       }
       else {
         // For non-specialized, just add the single bonus die
-        operands.push(finalShift);
+        formula += ` + ${finalShift}`;
       }
     }
 
-    operands.push(modifier);
-
-    return this._arrayToFormula(operands);
+    return `${formula} + ${modifier}`;
   }
 }
