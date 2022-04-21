@@ -299,29 +299,27 @@
     "weapon": {
       "templates": ["itemDescription"],
       "availability": "standard",
-      "effects": {
-        "numCharges": null,
-        "classification": {
-          "skill": "",
-          "size": "",
-          "style": ""
-        },
-        "custom": "",
-        "damage": {
-          "element": "",
-          "value": 1
-        },
-        "numHands": 1,
-        "numTargets": 1,
-        "radius": null,
-        "range": {
-          "min": null,
-          "reachMultiplier": 1,
-          "long": null,
-          "value": null
-        },
-        "shift": "d20"
+      "numCharges": null,
+      "classification": {
+        "skill": "athletics",
+        "size": "medium",
+        "style": "melee"
       },
+      "custom": "",
+      "damage": {
+        "element": "energy",
+        "value": 1
+      },
+      "numHands": 1,
+      "numTargets": 1,
+      "radius": null,
+      "range": {
+        "min": null,
+        "reachMultiplier": 1,
+        "long": null,
+        "value": null
+      },
+      "shift": "d20",
       "requirements": {
         "custom": null,
         "skill": null,
