@@ -1,0 +1,57 @@
+<div class="items-container">
+  <ol class="items-list">
+    <li class="items flexrow">
+      <div class="flexrow">
+        <div class="item-name flexrow item-info">{{localize 'E20.armor'}}</div>
+        <div class="item-controls">
+          <a class="item-create" data-type="armor" title="{{ localize 'E20.addArmor' }}"><i class="fas fa-plus"></i>
+          </a>
+        </div>
+      </div>
+    </li>
+  </ol>
+  {{#each @root.armors as |armor|}}
+  <ol class="items-list">
+    <li class="item flexrow" data-item-id="{{armor._id}}" style="margin-left: 0px;">
+      <div class="item-name" style="width: 64px;">
+        <input class="inline-edit" data-field="name" type="text" name="armor.{{@index}}.name" value="{{armor.name}}" placeholder="{{ localize 'E20.name' }}"/>
+      </div>
+      <div class="item-name" style="width: 95px;">
+        <select class="inline-edit" data-field="data.availability" name="armors.{{@index}}.availability">
+          {{#select armor.data.availability}}
+          {{#each @root.config.availabilities as |name type|}}
+          <option value="{{type}}">{{localize name}}</option>
+          {{/each}}
+          {{/select}}
+        </select>
+      </div>
+      <div class="item-name" style="width: 95px;">
+        <select class="inline-edit" data-field="data.classification" name="armors.{{@index}}.classification">
+          {{#select armor.data.classification}}
+          {{#each @root.config.armorClassifications as |name type|}}
+          <option value="{{type}}">{{localize name}}</option>
+          {{/each}}
+          {{/select}}
+        </select>
+      </div>
+      <div class="item-name" style="width: 89px;">
+        <select class="inline-edit" data-field="data.trait" name="armors.{{@index}}.trait">
+          {{#select armor.data.trait}}
+          {{#each @root.config.armorTraits as |name type|}}
+          <option value="{{type}}">{{localize name}}</option>
+          {{/each}}
+          {{/select}}
+        </select>
+      </div>
+      <div class="item-name" style="width: 116px;">
+        <input class="inline-edit" data-field="data.effect" type="text" name="armor.{{@index}}.effect" value="{{armor.data.effect}}" placeholder="{{ localize 'E20.effect' }}" style="width: 60px;"/>
+        <div class="item-name" style="width: 114px;">{{localize 'E20.equipped'}}</div>
+        <input class="inline-edit" data-field="data.equipped" type="checkbox" name="armor.equipped" style="margin-left: 0px; margin-right: 0px" armor.data.equipped}}/>
+      </div>
+      <div class="item-controls">
+        <a class="item-control item-delete" title="{{localize 'E20.deleteArmor'}}"><i class="fas fa-trash"></i></a>
+      </div>
+    </li>
+  {{/each}}
+  </ol>
+</div>

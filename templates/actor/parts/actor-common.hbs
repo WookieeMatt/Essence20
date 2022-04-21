@@ -23,26 +23,6 @@
 <span>{{localize 'E20.movement.ground'}}</span><input type="number" name="system.movement.ground" value="{{system.movement.ground}}"/>
 <span>{{localize 'E20.movement.swim'}}</span><input type="number" name="system.movement.swim" value="{{system.movement.swim}}"/>
 
-{{!-- Gear --}}
-<section class="item-list">
-  <h3>{{localize 'E20.gear'}}</h3>
-  <a class="item-create" data-type="gear" title="{{ localize 'E20.addGear' }}">
-    <i class="fas fa-plus"></i>
-  </a>
-  {{#each @root.gears as |gear|}}
-    <li class="item flexrow" data-item-id="{{gear._id}}">
-      <div class="item-name">
-        <div>{{gear.name}}</div>
-        <div>{{gear.system.description}}</div>
-      </div>
-      <div class="item-controls">
-        <a class="item-control item-edit" title="{{localize 'E20.editGear'}}"><i class="fas fa-edit"></i></a>
-        <a class="item-control item-delete" title="{{localize 'E20.deleteGear'}}"><i class="fas fa-trash"></i></a>
-      </div>
-    </li>
-  {{/each}}
-</section>
-
 {{!-- Essences/Skills --}}
 <h3>{{localize 'E20.skills'}}</h3>
 {{#each system.skills as |skills essence|}}
