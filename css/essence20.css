@@ -20,6 +20,14 @@
   max-height: 620px;
 }
 
+::-webkit-scrollbar-thumb {
+  visibility: hidden;
+}
+
+.window-app .window-resizable-handle {
+  visibility: hidden;
+}
+
 .rollable:hover,
 .rollable:focus {
   color: #000;
