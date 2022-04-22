@@ -10,9 +10,9 @@
       </div>
     </li>
   </ol>
-    {{#each @root.gears as |gear|}}
   <ol class="items-list">
-    <li class="items flexrow" data-item-id="{{gear._id}}" style="margin-left: 20px;">
+    {{#each @root.gears as |gear|}}
+    <li class="item flexrow" data-item-id="{{gear._id}}" style="margin-left: 20px;">
       <div class="item-name">
         <div>{{gear.name}}</div>
         <div>{{gear.system.description}}</div>
