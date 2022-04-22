@@ -20,9 +20,9 @@
   max-height: 620px;
 }
 
-::-webkit-scrollbar-thumb {
+/* ::-webkit-scrollbar-thumb {
   visibility: hidden;
-}
+} */
 
 .window-app .window-resizable-handle {
   visibility: hidden;
@@ -528,7 +528,7 @@ input[type="text"] {
 .essence20 .pr-inner-border {
   /*  height: 545px;
   width: 560px; */
-  height: 620px;
+  height: 528px;
   width: 620px;
   background-image: url("../assets/mastadon.jpg");
   /* background: black; */

@@ -16,7 +16,7 @@ export class Essence20ActorSheet extends ActorSheet {
     return mergeObject(super.defaultOptions, {
       classes: ["essence20", "sheet", "actor"],
       width: 620,
-      height: 620,
+      height: 574,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }]
     });
   }
