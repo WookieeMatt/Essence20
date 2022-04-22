@@ -10,9 +10,9 @@
       </div>
     </li>
     </ol>
-    {{#each @root.weapons as |weapon|}}
   <ol class="items-list">
-    <li class="items flexrow" data-item-id="{{weapon._id}}" style="margin-left: 20px;">
+    {{#each @root.weapons as |weapon|}}
+    <li class="item flexrow" data-item-id="{{weapon._id}}" style="margin-left: 20px;">
       <div class="item-name">
         <div class="item-image">
           <a class="rollable" data-roll-type="skill" data-skill="{{weapon.system.classification.skill}}"><i class="fas fa-dice-d20"></i></a>
