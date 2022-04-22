@@ -17,6 +17,8 @@
     "systems/essence20/templates/actor/parts/actor-background.hbs",
     "systems/essence20/templates/actor/parts/actor-notes.hbs",
     "systems/essence20/templates/actor/parts/actor-weapons.hbs",
+    "systems/essence20/templates/actor/parts/actor-gear.hbs",
+    "systems/essence20/templates/actor/parts/actor-armor.hbs",
 
     // Item partials.
     "systems/essence20/templates/item/parts/item-description.hbs",

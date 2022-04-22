@@ -1,0 +1,27 @@
+<div class="items-container">
+  <ol class="items-list">
+    <li class="items flexrow">
+      <div class="flexrow">
+        <div class="item-name flexrow item-info">{{localize 'E20.gear'}}</div>
+        <div class="item-controls">
+          <a class="item-create" data-type="gear" title="{{ localize 'E20.addGear' }}"><i class="fas fa-plus"></i>
+          </a>
+        </div>
+      </div>
+    </li>
+  </ol>
+  <ol class="items-list">
+    {{#each @root.gears as |gear|}}
+    <li class="item flexrow" data-item-id="{{gear._id}}" style="margin-left: 20px;">
+      <div class="item-name">
+        <div>{{gear.name}}</div>
+        <div>{{gear.system.description}}</div>
+      </div>
+      <div class="items-controls">
+        <a class="item-control item-edit" title="{{localize 'E20.editGear'}}"><i class="fas fa-edit"></i></a>
+        <a class="item-control item-delete" title="{{localize 'E20.deleteGear'}}"><i class="fas fa-trash"></i></a>
+      </div>
+    </li>
+    {{/each}}
+  </ol>
+</div>
