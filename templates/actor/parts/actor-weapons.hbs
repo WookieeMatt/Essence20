@@ -17,9 +17,10 @@
         <div class="item-image">
           <a class="rollable" data-roll-type="skill" data-skill="{{weapon.system.classification.skill}}"><i class="fas fa-dice-d20"></i></a>
         </div>
-        <div>{{weapon.name}}</div>
-        <div>{{localize 'E20.damage'}}: {{weapon.system.damage.value}} {{localize (concat 'E20.elements.'
-          weapon.system.damage.element)}}</div>
+        <div style="display:block">
+          <div>{{weapon.name}}</div>
+          <div>{{localize 'E20.damage'}}: {{weapon.system.damage}} {{localize (concat 'E20.elements.' weapon.system.element)}}</div>
+        </div>
       </div>
       <div class="item-controls">
         <a class="item-control item-edit" title="{{localize 'E20.editWeapon'}}"><i class="fas fa-edit"></i></a>

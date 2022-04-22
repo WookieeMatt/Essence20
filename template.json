@@ -299,17 +299,15 @@
     "weapon": {
       "templates": ["itemDescription"],
       "availability": "standard",
-      "numCharges": null,
       "classification": {
         "skill": "athletics",
         "size": "medium",
         "style": "melee"
       },
       "custom": "",
-      "damage": {
-        "element": "energy",
-        "value": 1
-      },
+      "damage": 1,
+      "element": "energy",
+      "numCharges": null,
       "numHands": 1,
       "numTargets": 1,
       "radius": null,
@@ -319,12 +317,12 @@
         "long": null,
         "value": null
       },
-      "shift": "d20",
       "requirements": {
         "custom": null,
         "skill": null,
         "shift": null
       },
+      "shift": "d20",
       "traits": ""
     },
     "weaponUpgrade": {
