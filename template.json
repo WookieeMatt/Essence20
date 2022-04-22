@@ -307,6 +307,7 @@
       "custom": "",
       "damage": 1,
       "element": "energy",
+      "equipped": true,
       "numCharges": null,
       "numHands": 1,
       "numTargets": 1,

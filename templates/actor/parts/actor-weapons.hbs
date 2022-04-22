@@ -18,6 +18,7 @@
           <a class="rollable" data-roll-type="skill" data-skill="{{weapon.system.classification.skill}}"><i class="fas fa-dice-d20"></i></a>
         </div>
         <div style="display:block">
+          <input class="inline-edit" data-field="data.equipped" type="checkbox" name="weapon.{{@index}}.equipped" style="margin-left: 0px; margin-right: 0px" {{checked weapon.system.equipped}}/>
           <div>{{weapon.name}}</div>
           <div>{{localize 'E20.damage'}}: {{weapon.system.damage}} {{localize (concat 'E20.elements.' weapon.system.element)}}</div>
         </div>
