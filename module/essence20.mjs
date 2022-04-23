@@ -69,8 +69,12 @@ Handlebars.registerHelper('toLowerCase', function(str) {
 Handlebars.registerHelper('sum', function() {
   var total = 0;
   for (var arg in arguments) {
-    if (typeof arguments[arg] == 'number') {
-      total += arguments[arg];
+    let newValue = arguments[arg];
+    if (typeof newValue == 'number') {
+      total += newValue;
+    }
+    else if (typeof newValue == 'string') {
+      total += parseInt(newValue);
     }
   }
   return total;
