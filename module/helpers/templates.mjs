@@ -7,6 +7,7 @@
   return loadTemplates([
 
     // Actor partials.
+    "systems/essence20/templates/actor/parts/actor-base-header.hbs",
     "systems/essence20/templates/actor/parts/actor-gijoe-header.hbs",
     "systems/essence20/templates/actor/parts/actor-pr-header.hbs",
     "systems/essence20/templates/actor/parts/actor-tf-header.hbs",
