@@ -600,12 +600,13 @@ input[type="text"] {
   transform: rotate(2deg);
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
-  width: 65%;
+  width: 25vw;
 }
 
 .essence20 .initiative-container {
   list-style: none;
-  margin: 18px;
+  margin-top: 4px;
+  margin-bottom: 18px;
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -616,7 +617,7 @@ input[type="text"] {
   transform: rotate(2deg);
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
-  width: 65%;
+  width: 25vw;
   float: right;
 }
 
@@ -633,7 +634,30 @@ input[type="text"] {
   transform: rotate(2deg);
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
-  width: 95%;
+  width: 25vw;
+}
+
+.essence20 .skills-container {
+  list-style: none;
+  margin: 25px;
+  margin-left: 40px;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transform: rotate(0deg);
+  border: 1px solid #b5b1b1;
+  box-shadow: 3px 3px 0 #4a4848;
+  width: 28vw;
+  height: 45vh;
+}
+
+.essence20 .skills-label {
+  font-size: 2em;
+  margin-left: 220px;
 }
 
 .essence20 .morphed-container {
