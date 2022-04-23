@@ -108,7 +108,7 @@ export class Essence20ActorSheet extends ActorSheet {
       switch(itemType) {
         case 'armor':
           if (i.data.equipped) {
-            equippedArmorEffect += i.data.effect;
+            equippedArmorEffect += parseInt(i.data.effect);
           }
           armors.push(i);
           break;
