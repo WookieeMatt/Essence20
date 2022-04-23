@@ -108,7 +108,7 @@ export class Essence20ActorSheet extends ActorSheet {
       switch(itemType) {
         case 'armor':
           if (i.data.equipped) {
-            equippedArmorEffect += i.data.effect;
+            equippedArmorEffect += parseInt(i.data.effect);
           }
           armors.push(i);
           break;
@@ -234,8 +234,9 @@ export class Essence20ActorSheet extends ActorSheet {
       let itemId = element.closest(".item").dataset.itemId;
       let item = this.actor.items.get(itemId);
       let field = element.dataset.field;
+      let newValue = element.type == 'checkbox' ? element.checked : element.value;
 
-      return item.update({ [field]: element.value });
+      return item.update({ [field]: newValue });
    }
 
   /**
