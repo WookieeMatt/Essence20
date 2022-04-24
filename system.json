@@ -2,7 +2,7 @@
   "name": "essence20",
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion": "10",
   "author": "WookieeChan, potato",
