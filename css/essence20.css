@@ -249,12 +249,6 @@
 }
 
 /* Styles limited to essence20 sheets */
-.essence20 {
-  /* ----------------------------------------- */
-  /*  Items Lists                              */
-  /* ----------------------------------------- */
-  /* Example style for Essence20 (can be removed if not needed) */
-}
 
 .essence20 .item-form {
   font-family: "Comic Neue", cursive;
@@ -576,7 +570,6 @@ input[type="text"] {
   margin: 18px;
   padding: 0;
   overflow-y: auto;
-  scrollbar-width: thin;
   color: white;
   display: flex;
   flex-direction: row;
@@ -587,12 +580,15 @@ input[type="text"] {
   width: 95%;
 }
 
+.essence20 .defense-container {
+  margin-left: 20px;
+}
+
 .essence20 .health-container {
   list-style: none;
   margin: 18px;
   padding: 0;
   overflow-y: auto;
-  scrollbar-width: thin;
   color: white;
   display: flex;
   flex-direction: row;
@@ -608,9 +604,7 @@ input[type="text"] {
   margin-top: 4px;
   margin-bottom: 18px;
   padding: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  color: white;
+  overflow-y: auto;color: white;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -626,7 +620,6 @@ input[type="text"] {
   margin: 18px;
   padding: 0;
   overflow-y: auto;
-  scrollbar-width: thin;
   color: white;
   display: flex;
   flex-direction: row;
@@ -639,9 +632,29 @@ input[type="text"] {
 
 .essence20 .skills-container {
   list-style: none;
-  margin: 25px;
-  margin-left: 40px;
+  overflow-y: auto;
+  color: white;
+  transform: rotate(0deg);
+  scrollbar-width: thin;
+  border: 1px solid #b5b1b1;
+  box-shadow: 3px 3px 0 #4a4848;
+  height: 45vh;
+}
+
+.essence20 .skillscontainer {
+  list-style: none;
+  overflow-y: auto;
+  color: white;
+  display: grid;
+  grid-column: span 2 / span 2;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
   padding: 0;
+}
+
+.essence20 .bonus-container {
+  list-style: none;
   overflow-y: auto;
   scrollbar-width: thin;
   color: white;
@@ -651,21 +664,44 @@ input[type="text"] {
   transform: rotate(0deg);
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
-  width: 28vw;
-  height: 45vh;
 }
 
 .essence20 .skills-label {
   font-size: 2em;
-  margin-left: 220px;
+  margin-left: 100px;
+  margin-bottom: 0px;
 }
 
 .essence20 .morphed-container {
   float: right;
 }
 
-.essence20 .defenses-section {
+.essence20 .skill-name {
+  font-size: 1.5em;
+  color: white;
+}
 
+.essence20 .skill-roll {
+  font-size: 1.25em;
+  color: white;
+}
+
+.essence20 .spec-label {
+  font-size: 1.25em;
+  color: white;
+}
+
+.essence20 .skill-mod-label {
+  color: white;
+}
+
+.essence20 .skill-mod {
+  color: white;
+  width: 20px;
+}
+
+.essence20 .shift-select {
+  color: white;
 }
 
 .essence20 .items-list .item-list {
