@@ -1,0 +1,29 @@
+<div class="skill-roll">
+  <a class="rollable" data-roll-type="skill" data-skill="{{skill}}">{{localize (concat 'E20.essenceSkills.' essence '.' skill)}}</a>
+</div>
+<span class="skill-mod-label">{{localize 'E20.mod'}}</span>
+<input class="skill-mod" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
+<label for="system.skills.essence" class="skill-mod-label">{{localize 'E20.spec'}}</label>
+<input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
+<select class="shift-select" name="system.skills.{{essence}}.{{skill}}.shift">
+  {{selectOptions @root.config.shifts selected=fields.shift localize=true}}
+</select>
+
+<h3 class="spec-label">{{localize 'E20.specializations'}}</h3>
+<a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.addSpecialization' }}">
+  <i class="fas fa-plus"></i>
+</a>
+
+{{#each (lookup @root.specializations skill) as |specialization|}}
+  <li class="item flexrow" data-item-id="{{specialization._id}}">
+    <div class="item-name">
+      <div class="item-image">
+        <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-specialization="{{specialization.name}}"><i class="fas fa-dice-d20"></i></a>
+      </div>
+      <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
+    </div>
+    <div class="item-controls">
+      <a class="item-control item-delete" title="{{localize 'E20.deleteSpecialization'}}"><i class="fas fa-trash"></i></a>
+    </div>
+  </li>
+{{/each}}
