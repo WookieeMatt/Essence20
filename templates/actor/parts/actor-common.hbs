@@ -3,9 +3,9 @@
   <div class="resource flex-group-center">
     <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
     <div class="resource-content flexrow flex-center flex-between">
-      <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+      <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
       <span> / </span>
-      <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+      <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
     </div>
   </div>
 </div>
@@ -19,37 +19,43 @@
 
 {{!-- General stats --}}
 <div class="stats-container">
-  <span>{{localize 'E20.conditioning'}}</span><input type="number" name="system.conditioning" value="{{system.conditioning}}"/>
-  <span>{{localize 'E20.movement.aerial'}}</span><input type="number" name="system.movement.aerial" value="{{system.movement.aerial}}"/>
-  <span>{{localize 'E20.movement.aerialMin'}}</span><input type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}"/>
-  <span>{{localize 'E20.movement.ground'}}</span><input type="number" name="system.movement.ground" value="{{system.movement.ground}}"/>
-  <span>{{localize 'E20.movement.swim'}}</span><input type="number" name="system.movement.swim" value="{{system.movement.swim}}"/>
+  <span>{{localize 'E20.conditioning'}}</span><input type="number" name="system.conditioning" value="{{system.conditioning}}" />
+  <span>{{localize 'E20.movement.aerial'}}</span><input type="number" name="system.movement.aerial" value="{{system.movement.aerial}}" />
+  <span>{{localize 'E20.movement.aerialMin'}}</span><input type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" />
+  <span>{{localize 'E20.movement.ground'}}</span><input type="number" name="system.movement.ground" value="{{system.movement.ground}}" />
+  <span>{{localize 'E20.movement.swim'}}</span><input type="number" name="system.movement.swim" value="{{system.movement.swim}}" />
 </div>
 
 {{!-- Essences/Skills --}}
+{{> "systems/essence20/templates/actor/parts/actor-character.hbs"}}
+<h3 class="skills-label">{{localize 'E20.skills'}}</h3>
 <div class="skillscontainer">
-  {{> "systems/essence20/templates/actor/parts/actor-character.hbs"}}
-    <div class="skills-container">
-      <h3 class="skills-label">{{localize 'E20.skills'}}</h3>
 
-      <h4 class="skill-name">{{localize 'E20.essences.strength'}}</h4>
-      {{#each system.skills.strength as |fields skill|}}
-        {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill=skill fields=fields}}
-      {{/each}}
+  <div class="skills-container">
+    <h4 class="skill-name">{{localize 'E20.essences.strength'}}</h4>
+    {{#each system.skills.strength as |fields skill|}}
+    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill=skill fields=fields}}
+    {{/each}}
+  </div>
 
-      <h4 class="skill-name">{{localize 'E20.essences.speed'}}</h4>
-      {{#each system.skills.speed as |fields skill|}}
-        {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='speed' skill=skill fields=fields}}
-      {{/each}}
+  <div class="skills-container">
+    <h4 class="skill-name">{{localize 'E20.essences.speed'}}</h4>
+    {{#each system.skills.speed as |fields skill|}}
+    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='speed' skill=skill fields=fields}}
+    {{/each}}
+  </div>
 
-      <h4 class="skill-name">{{localize 'E20.essences.smarts'}}</h4>
-      {{#each system.skills.smarts as |fields skill|}}
-        {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='smarts' skill=skill fields=fields}}
-      {{/each}}
+  <div class="skills-container">
+    <h4 class="skill-name">{{localize 'E20.essences.smarts'}}</h4>
+    {{#each system.skills.smarts as |fields skill|}}
+    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='smarts' skill=skill fields=fields}}
+    {{/each}}
+  </div>
 
-      <h4 class="skill-name">{{localize 'E20.essences.social'}}</h4>
-      {{#each system.skills.social as |fields skill|}}
-        {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=fields}}
-      {{/each}}
-    </div>
+  <div class="skills-container">
+    <h4 class="skill-name">{{localize 'E20.essences.social'}}</h4>
+    {{#each system.skills.social as |fields skill|}}
+    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=fields}}
+    {{/each}}
+  </div>
 </div>

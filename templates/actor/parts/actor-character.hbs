@@ -1,11 +1,20 @@
-<div class="bonus-container">
+<div class="essence-label">
   <h3>{{localize 'E20.essencesLabel'}}</h3>
-  {{#each system.essences as |value essence|}}
-  <span>{{localize (concat 'E20.essences.' essence)}}</span><input type="number" name="system.essences.{{essence}}" value="{{value}}"/>
-  {{/each}}
-  
-  <h3>{{localize 'E20.bonuses'}}</h3>
-  {{#each system.bonuses as |bonus essence|}}
-  <span>{{localize (concat 'E20.defenses.' essence)}}</span><input type="number" name="system.bonuses.{{essence}}" value="{{bonus}}"/>
-  {{/each}}
 </div>
+
+<div class="bonus-container" style="margin-bottom: 10px;">
+  
+  <div class="essences">
+    {{#each system.essences as |value essence|}}
+    <span>{{localize (concat 'E20.essences.' essence)}}</span><input class="essence-input" type="number" name="system.essences.{{essence}}" value="{{value}}" />
+    {{/each}}
+  </div>
+</div>
+{{!-- <div class="bonus-container">
+  <div class="bonuses">
+    <h3>{{localize 'E20.bonuses'}}</h3>
+    {{!-- {{#each system.bonuses as |bonus essence|}}
+    {{!-- <span>{{localize (concat 'E20.defenses.' essence)}}</span><input type="number" name="system.bonuses.{{essence}}" value="{{bonus}}" />
+    {{!-- {{/each}}
+  {{!-- </div> --}}
+{{!-- </div> --}}
