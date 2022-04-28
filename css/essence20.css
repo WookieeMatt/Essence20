@@ -659,17 +659,29 @@ input[type="text"] {
   scrollbar-width: thin;
   color: white;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
   transform: rotate(0deg);
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
 }
 
+.essence20 .essences {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: auto;
+}
+
+.essence20 .bonuses {
+  display: flex;
+  flex-direction: row;
+}
+
 .essence20 .skills-label {
   font-size: 2em;
-  margin-left: 100px;
   margin-bottom: 0px;
+  display: flex;
+  justify-content: center;
 }
 
 .essence20 .morphed-container {
@@ -679,6 +691,8 @@ input[type="text"] {
 .essence20 .skill-name {
   font-size: 1.5em;
   color: white;
+  justify-content: center;
+  display: flex;
 }
 
 .essence20 .skill-roll {
