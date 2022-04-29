@@ -2,13 +2,19 @@
   <h3>{{localize 'E20.essencesLabel'}}</h3>
 </div>
 
-<div class="bonus-container" style="margin-bottom: 10px;">
-  
+<div class="bonus-container grid-2col" style="margin-bottom: 10px;">
   <div class="essences">
     {{#each system.essences as |value essence|}}
-    <span>{{localize (concat 'E20.essences.' essence)}}</span><input class="essence-input" type="number" name="system.essences.{{essence}}" value="{{value}}" />
+    <span class="essences-skill">{{localize (concat 'E20.essences.' essence)}}</span><input class="essence-input" type="number" name="system.essences.{{essence}}" value="{{value}}" />
     {{/each}}
   </div>
+  <div class="stats-container">
+  <span>{{localize 'E20.conditioning'}}</span><input class="essence-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
+  <span>{{localize 'E20.movement.aerial'}}</span><input class="essence-input" type="number" name="system.movement.aerial" value="{{system.movement.aerial}}" />
+  <span>{{localize 'E20.movement.aerialMin'}}</span><input class="essence-input" type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" />
+  <span>{{localize 'E20.movement.ground'}}</span><input class="essence-input" type="number" name="system.movement.ground" value="{{system.movement.ground}}" />
+  <span>{{localize 'E20.movement.swim'}}</span><input class="essence-input" type="number" name="system.movement.swim" value="{{system.movement.swim}}" />
+</div>
 </div>
 {{!-- <div class="bonus-container">
   <div class="bonuses">
