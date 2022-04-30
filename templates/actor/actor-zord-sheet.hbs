@@ -5,10 +5,32 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
-    <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}"/>
-    <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ranger' }}"/>
-    <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}}/>
+    <div class="tab skills" data-group="primary" data-tab="skills">
+      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}" />
+      <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ranger' }}" />
+      <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
 
-    {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
+      <nav class="sheet-tabs tabs" data-group="primary">
+        <a class="item" data-tab="skills"> {{ localize "E20.skills" }}</a>
+        <a class="item" data-tab="combat">{{ localize "E20.combat" }}</a>
+        <a class="item" data-tab="gear">{{ localize "E20.gear" }}</a>
+        <a class="item" data-tab="powers">{{ localize "E20.powers" }}</a>
+        <a class="item" data-tab="background">{{ localize "E20.background" }}</a>
+        <a class="item" data-tab="notes">{{ localize "E20.notes" }}</a>
+      </nav>
+
+      {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
+    </div>
+
+    {{!-- Origin Tab --}}
+    <div class="tab background" data-group="primary" data-tab="background">
+      {{> "systems/essence20/templates/actor/parts/actor-background.hbs"}}
+    </div>
+
+    {{!-- Notes Tab --}}
+    <div class="tab notes" data-group="primary" data-tab="notes">
+      {{> "systems/essence20/templates/actor/parts/actor-notes.hbs"}}
+    </div>
+
   </section>
 </form>

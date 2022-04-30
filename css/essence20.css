@@ -15,10 +15,26 @@
   color: white;
 }
 
-/* .sheet {
-  max-width: 620px;
-  max-height: 620px;
-} */
+.sheet {
+  min-width: 620px;
+  min-height: 620px;
+} 
+
+.dialog .dialog-buttons button.default {
+  color: white;
+}
+
+.dialog .dialog-buttons button {
+  color: white;
+}
+
+.dialog .dialog-buttons {
+  color: white;
+}
+
+#module-management .package-list .package-title {
+  color: white;
+}
 
 /* ::-webkit-scrollbar-thumb {
   visibility: hidden;
