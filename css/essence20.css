@@ -36,14 +36,6 @@
   color: white;
 }
 
-/* ::-webkit-scrollbar-thumb {
-  visibility: hidden;
-} */
-
-/* .window-app .window-resizable-handle {
-  visibility: hidden;
-} */
-
 .rollable:hover,
 .rollable:focus {
   color: #000;
@@ -654,6 +646,10 @@ form .notes, form .hint {
   box-shadow: 3px 3px 0 #4a4848;
   width: 25vw;
 } */
+
+.essence20 .zord-header {
+  
+}
 
 .essence20 .stats-container {
   display: grid;
