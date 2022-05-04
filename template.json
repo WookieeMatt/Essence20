@@ -329,7 +329,7 @@
     "weaponUpgrade": {
       "templates": ["itemDescription"],
       "availability": "standard",
-      "benefit": "benefit",
+      "benefit": "",
       "prerequisite": null
     },
     "zordCombiner": {
