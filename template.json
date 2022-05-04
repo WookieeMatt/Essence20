@@ -351,12 +351,12 @@
     },
     "perk": {
       "templates": ["itemDescription"],
-      "source": "generalPerk",
+      "source": "",
       "prerequisite": null
     },
     "power": {
       "templates": ["itemDescription"],
-      "source": "gridPower"
+      "source": ""
     },
     "feature": {
       "templates": ["itemDescription"]
