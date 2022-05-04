@@ -329,7 +329,7 @@
     "weaponUpgrade": {
       "templates": ["itemDescription"],
       "availability": "standard",
-      "benefit": "benefit",
+      "benefit": "",
       "prerequisite": null
     },
     "zordCombiner": {
@@ -351,12 +351,12 @@
     },
     "perk": {
       "templates": ["itemDescription"],
-      "source": "generalPerk",
+      "source": "",
       "prerequisite": null
     },
     "power": {
       "templates": ["itemDescription"],
-      "source": "gridPower"
+      "source": ""
     },
     "feature": {
       "templates": ["itemDescription"]
