@@ -1,4 +1,27 @@
 {
+  "ACTOR": {
+    "TypeGijoe": "GI JOE",
+    "TypePowerranger": "Power Ranger",
+    "TypeNpc": "NPC",
+    "TypeThreat": "Threat",
+    "TypeVehicle": "Vehicle",
+    "TypeZord": "Zord",
+    "TypeMegaformzord": "Megaform Zord"
+  },
+  "ITEM": {
+    "TypeArmor": "Armor",
+    "TypeGear": "Gear",
+    "TypeWeapon": "Weapon",
+    "TypeWeaponupgrade": "Weapon Upgrade",
+    "TypeZordcombiner": "Zord Combiner",
+    "TypeThreatpower": "Threat Power",
+    "TypePerk": "Perk",
+    "TypePower": "Power",
+    "TypeFeature": "Feature",
+    "TypeMegaformtrait": "Megaform Trait",
+    "TypeInfluence": "Influence",
+    "TypeSpecialization": "Specialization"
+  },
   "E20": {
     "actionType": "Action Type",
     "addInfluence": "Add Influence",
