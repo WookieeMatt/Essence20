@@ -268,7 +268,7 @@
       "perk",
       "power",
       "feature",
-      "megaformTrait",
+      "trait",
       "influence",
       "specialization"
     ],
@@ -361,7 +361,7 @@
     "feature": {
       "templates": ["itemDescription"]
     },
-    "megaformTrait": {
+    "trait": {
       "templates": ["itemDescription"]
     },
     "influence": {
