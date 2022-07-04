@@ -17,5 +17,21 @@
     <input type="text" name="system.firepoints.description" value="{{system.firepoints.description}}" placeholder="{{ localize 'E20.description' }}"/>
     <span>{{localize 'E20.firepoints'}}</span><input type="number" name="system.firepoints.value" value="{{system.firepoints.value}}"/>
 
+    {{!-- Traits --}}
+    <h3>{{localize 'E20.traits'}}</h3>
+    <a class="item-create" data-type="trait" title="{{ localize 'E20.addTrait' }}">
+        <i class="fas fa-plus"></i>
+    </a>
+    {{#each @root.traits as |trait|}}
+    <li class="item flexrow" data-item-id="{{trait._id}}">
+        <div class="item-name">
+            <input class="inline-edit" data-field="name" type="text" name="trait.{{@index}}.name" value="{{trait.name}}" placeholder="{{ localize 'E20.name' }}"/>
+            <textarea class="inline-edit" data-field="data.description" name="trait.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{trait.data.description}}</textarea>
+        </div>
+        <div class="item-controls">
+            <a class="item-control item-delete" title="{{localize 'E20.deleteTrait'}}"><i class="fas fa-trash"></i></a>
+        </div>
+    </li>
+    {{/each}}
   </section>
 </form>

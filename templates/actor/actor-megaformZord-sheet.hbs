@@ -6,5 +6,22 @@
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
     {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
+
+    {{!-- Megaform Zord Traits --}}
+    <h3>{{localize 'E20.traits'}}</h3>
+    <a class="item-create" data-type="megaformTrait" title="{{ localize 'E20.addTrait' }}">
+        <i class="fas fa-plus"></i>
+    </a>
+    {{#each @root.megaformTraits as |megaformTrait|}}
+    <li class="item flexrow" data-item-id="{{megaformTrait._id}}">
+        <div class="item-name">
+            <input class="inline-edit" data-field="name" type="text" name="megaformTrait.{{@index}}.name" value="{{megaformTrait.name}}" placeholder="{{ localize 'E20.name' }}"/>
+            <textarea class="inline-edit" data-field="data.description" name="megaformTrait.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{megaformTrait.data.description}}</textarea>
+        </div>
+        <div class="item-controls">
+            <a class="item-control item-delete" title="{{localize 'E20.deleteTrait'}}"><i class="fas fa-trash"></i></a>
+        </div>
+    </li>
+    {{/each}}
   </section>
 </form>
