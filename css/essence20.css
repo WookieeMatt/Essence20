@@ -698,6 +698,15 @@ input[type="text"] {
   flex-wrap: nowrap;
 }
 
+.essence20 .gear-label {
+  font-size: 2em;
+  margin-bottom: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
 .essence20 .morphed-container {
   float: right;
 }
