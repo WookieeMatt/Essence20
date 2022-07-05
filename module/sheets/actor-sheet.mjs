@@ -94,11 +94,13 @@ export class Essence20ActorSheet extends ActorSheet {
     // Initialize containers.
     const armors = [];
     let equippedArmorEffect = 0;
+    const features = []; // Used by Zords
     const gears = [];
     const influences = [];
-    const powers = [];
+    const powers = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
+    const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
 
     // // Iterate through items, allocating to containers
@@ -111,6 +113,9 @@ export class Essence20ActorSheet extends ActorSheet {
             equippedArmorEffect += parseInt(i.data.effect);
           }
           armors.push(i);
+          break;
+        case 'feature':
+          features.push(i);
           break;
         case 'gear':
           gears.push(i);
@@ -129,6 +134,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'threatPower':
           threatPowers.push(i);
           break;
+        case 'trait':
+          traits.push(i);
+          break;
         case 'weapon':
           weapons.push(i);
           break;
@@ -139,10 +147,12 @@ export class Essence20ActorSheet extends ActorSheet {
     context.armors = armors;
     context.equippedArmorEffect = equippedArmorEffect;
     context.influences = influences;
+    context.features = features;
     context.gears = gears;
     context.powers = powers;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
+    context.traits = traits;
     context.weapons = weapons;
   }
 
