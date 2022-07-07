@@ -22,6 +22,7 @@
     "systems/essence20/templates/actor/parts/actor-armor.hbs",
     "systems/essence20/templates/actor/parts/actor-essence-skills.hbs",
     "systems/essence20/templates/actor/parts/actor-traits.hbs",
+    "systems/essence20/templates/actor/parts/actor-zord-features.hbs",
 
     // Item partials.
     "systems/essence20/templates/item/parts/item-description.hbs",
