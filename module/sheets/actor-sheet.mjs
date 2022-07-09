@@ -261,7 +261,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (dataset.rollType) {
-      const skillRollOptions = await this._dice.getSkillRollOptions();
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
       if (skillRollOptions.cancelled) {
         return;
