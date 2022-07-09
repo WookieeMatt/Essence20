@@ -97,6 +97,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const features = []; // Used by Zords
     const gears = [];
     const influences = [];
+    const perks = []; // Used by PCs
     const powers = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
@@ -122,6 +123,9 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
         case 'influence':
           influences.push(i);
+          break;
+        case 'perk':
+          perks.push(i);
           break;
         case 'power':
           powers.push(i);
@@ -149,6 +153,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.influences = influences;
     context.features = features;
     context.gears = gears;
+    context.perks = perks;
     context.powers = powers;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
