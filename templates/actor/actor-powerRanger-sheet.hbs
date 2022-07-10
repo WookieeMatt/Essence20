@@ -11,6 +11,7 @@
         <a class="item" data-tab="combat">{{ localize "E20.combat" }}</a>
         <a class="item" data-tab="gear">{{ localize "E20.gear" }}</a>
         <a class="item" data-tab="powers">{{ localize "E20.powers" }}</a>
+        <a class="item" data-tab="perks">{{ localize "E20.perks" }}</a>
         <a class="item" data-tab="background">{{ localize "E20.background" }}</a>
         <a class="item" data-tab="notes">{{ localize "E20.notes" }}</a>
       </nav>
@@ -39,6 +40,11 @@
         {{!-- Powers Tab --}}
         <div class="tab powers" data-group="primary" data-tab="powers">
           {{> "systems/essence20/templates/actor/parts/actor-powers.hbs"}}
+        </div>
+
+        {{!-- Perks Tab --}}
+        <div class="tab perks" data-group="primary" data-tab="perks">
+          {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
         </div>
 
         {{!-- Origin Tab --}}
