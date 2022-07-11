@@ -306,7 +306,6 @@
       },
       "custom": "",
       "damage": 1,
-      "element": "energy",
       "equipped": true,
       "numCharges": null,
       "numHands": 1,
@@ -324,7 +323,7 @@
         "shift": null
       },
       "shift": "d20",
-      "traits": ""
+      "trait": ""
     },
     "weaponUpgrade": {
       "templates": ["itemDescription"],
