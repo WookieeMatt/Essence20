@@ -97,6 +97,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const features = []; // Used by Zords
     const gears = [];
     const influences = [];
+    const perks = []; // Used by PCs
     const powers = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
@@ -122,6 +123,9 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
         case 'influence':
           influences.push(i);
+          break;
+        case 'perk':
+          perks.push(i);
           break;
         case 'power':
           powers.push(i);
@@ -149,6 +153,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.influences = influences;
     context.features = features;
     context.gears = gears;
+    context.perks = perks;
     context.powers = powers;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
@@ -261,18 +266,22 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (dataset.rollType) {
-      const skillRollOptions = await this._dice.getSkillRollOptions();
-
-      if (skillRollOptions.cancelled) {
-        return;
-      }
-      else if (dataset.rollType == 'item') {
+      if (dataset.rollType == 'item') {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
         if (item) return item.roll();
       }
       else if (dataset.rollType == 'skill') {
+        const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
+
+        if (skillRollOptions.cancelled) {
+          return;
+        }
+
         this._dice.rollSkill(dataset, skillRollOptions, this.actor);
+      }
+      else if (dataset.rollType == 'initiative') {
+        this.actor.rollInitiative({createCombatants: true});
       }
     }
   }
