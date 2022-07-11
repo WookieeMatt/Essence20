@@ -13,11 +13,12 @@ export class Dice {
 
   /**
    * Displays the dialog used for skill and specialization rolls.
+   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @returns {Promise<Dialog>}   The dialog to be displayed.
    */
-  async getSkillRollOptions() {
+  async getSkillRollOptions(dataset) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const html = await renderTemplate(template, {});
+    const html = await renderTemplate(template, {specialized: !!dataset.specialization});
 
     return new Promise(resolve => {
       const data = {
@@ -51,6 +52,7 @@ export class Dice {
       shiftDown: parseInt(form.shiftDown.value),
       snag: form.snag.checked,
       edge: form.edge.checked,
+      specialized: form.specialized.checked,
     }
   }
 
@@ -77,7 +79,8 @@ export class Dice {
     }
 
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
-    const formula = this._getFormula(!!dataset.specialization, skillRollOptions, finalShift, modifier);
+    const formula = this._getFormula(
+      !!dataset.specialization || skillRollOptions.specialized, skillRollOptions, finalShift, modifier);
 
     let roll = new Roll(formula, actor.getRollData());
     roll.toMessage({

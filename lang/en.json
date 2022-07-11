@@ -26,6 +26,7 @@
     "actionType": "Action Type",
     "addInfluence": "Add Influence",
     "addFeature": "Add Feature",
+    "addPerk": "Add Perk",
     "addPower": "Add Power",
     "addSpecialization": "Add Specialization",
     "addTrait": "Add Trait",
@@ -53,6 +54,7 @@
     "deleteTrait": "Delete Trait",
     "deleteGear": "Delete Gear",
     "deleteInfluence": "Delete Influence",
+    "deletePerk": "Delete Perk",
     "deletePower": "Delete Power",
     "deleteSpecialization": "Delete Specialization",
     "description": "Description",
@@ -89,6 +91,7 @@
     "numTargets": "Targets",
     "origin": "ORIGIN",
     "perk": "Perk",
+    "perks": "PERKS",
     "personalPower": "Personal Power",
     "powers": "POWERS",
     "prerequisite": "Prerequisite",
@@ -168,16 +171,6 @@
       "circle": "Circle",
       "cone": "Cone",
       "square": "Square"
-    },
-
-    "elements": {
-      "acid": "Acid",
-      "cold": "Cold",
-      "electric": "Electric",
-      "energy": "Energy",
-      "fire": "Fire",
-      "laser": "Laser",
-      "sonic": "Sonic"
     },
 
     "essences": {
@@ -268,6 +261,40 @@
       "energy": "Energy",
       "explosive": "Explosive",
       "projectile": "Projectile"
+    },
+
+    "weaponTraits": {
+      "acid": "Acid",
+      "amphibious": "Amphibious",
+      "antiTank": "Anti-Tank",
+      "aquatic": "Aquatic",
+      "area": "Area",
+      "armorPiercing": "Armor Piercing",
+      "ballistic": "Ballistic",
+      "blunt": "Blunt",
+      "cold": "Cold",
+      "consumable": "Consumable",
+      "cover": "Cover",
+      "electric": "Electric",
+      "energy": "Energy",
+      "fire": "Fire",
+      "grapple": "Grapple",
+      "indirect": "Indirect",
+      "intimidating": "Intimidating",
+      "laser": "Laser",
+      "maneuver": "Maneuver",
+      "mounted": "Mounted",
+      "multipleTargets": "Multiple Targets",
+      "poison": "Poison",
+      "psychic": "Psychic",
+      "seeking": "Seeking",
+      "sharp": "Sharp",
+      "silent": "Silent",
+      "sonic": "Sonic",
+      "spot": "Spot",
+      "stun": "Stun",
+      "trip": "Trip",
+      "wrecker": "Wrecker"
     }
   }
 }
