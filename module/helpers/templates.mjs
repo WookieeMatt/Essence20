@@ -6,22 +6,25 @@
  export const preloadHandlebarsTemplates = async function() {
   return loadTemplates([
 
-    // Actor partials.
+    // Actor partials - Headers
     "systems/essence20/templates/actor/parts/actor-base-header.hbs",
     "systems/essence20/templates/actor/parts/actor-gijoe-header.hbs",
     "systems/essence20/templates/actor/parts/actor-pr-header.hbs",
     "systems/essence20/templates/actor/parts/actor-tf-header.hbs",
-    "systems/essence20/templates/actor/parts/actor-common.hbs",
-    "systems/essence20/templates/actor/parts/actor-character.hbs",
-    "systems/essence20/templates/actor/parts/actor-defenses.hbs",
-    "systems/essence20/templates/actor/parts/actor-powers.hbs",
-    "systems/essence20/templates/actor/parts/actor-background.hbs",
-    "systems/essence20/templates/actor/parts/actor-notes.hbs",
-    "systems/essence20/templates/actor/parts/actor-weapons.hbs",
-    "systems/essence20/templates/actor/parts/actor-gear.hbs",
+
+    // Actor partials - Misc
     "systems/essence20/templates/actor/parts/actor-armor.hbs",
+    "systems/essence20/templates/actor/parts/actor-background.hbs",
+    "systems/essence20/templates/actor/parts/actor-character.hbs",
+    "systems/essence20/templates/actor/parts/actor-common.hbs",
+    "systems/essence20/templates/actor/parts/actor-defenses.hbs",
     "systems/essence20/templates/actor/parts/actor-essence-skills.hbs",
+    "systems/essence20/templates/actor/parts/actor-gear.hbs",
+    "systems/essence20/templates/actor/parts/actor-notes.hbs",
+    "systems/essence20/templates/actor/parts/actor-perks.hbs",
+    "systems/essence20/templates/actor/parts/actor-powers.hbs",
     "systems/essence20/templates/actor/parts/actor-traits.hbs",
+    "systems/essence20/templates/actor/parts/actor-weapons.hbs",
     "systems/essence20/templates/actor/parts/actor-zord-features.hbs",
 
     // Item partials.
