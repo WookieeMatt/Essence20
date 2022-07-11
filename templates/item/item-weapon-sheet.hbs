@@ -50,21 +50,21 @@
     <span>{{localize 'E20.numCharges'}}</span><input type="number" name="data.numCharges" value="{{data.numCharges}}"/>
     <input type="text" name="data.custom" value="{{data.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
 
-    <h3>{{localize 'E20.damages'}}</h3>
-    <input type="number" name="data.damage.value" value="{{data.damage.value}}"/>
-    <select name="data.damage.element">
-      {{#select data.damage.element}}
-      {{#each config.elements as |name type|}}
+    <h3>{{localize 'E20.damage'}}</h3>
+    <input type="number" name="data.damage" value="{{data.damage}}"/>
+    <select name="data.trait">
+      {{#select data.trait}}
+      {{#each config.weaponTraits as |name type|}}
       <option value="{{type}}">{{localize name}}</option>
       {{/each}}
       {{/select}}
     </select>
 
-    <input type="text" name="data.traits" value="{{data.traits}}" placeholder="{{ localize 'E20.traits' }}"/>
-
-    <span>{{localize 'E20.numHands'}}</span><input type="number" name="data.numHands" value="{{data.numHands}}"/>
-    <span>{{localize 'E20.numTargets'}}</span><input type="number" name="data.numTargets" value="{{data.numTargets}}"/>
-    <span>{{localize 'E20.radius'}}</span><input type="number" name="data.radius" value="{{data.radius}}"/>
+    <div>
+      <span>{{localize 'E20.numHands'}}</span><input type="number" name="data.numHands" value="{{data.numHands}}"/>
+      <span>{{localize 'E20.numTargets'}}</span><input type="number" name="data.numTargets" value="{{data.numTargets}}"/>
+      <span>{{localize 'E20.radius'}}</span><input type="number" name="data.radius" value="{{data.radius}}"/>
+    </div>
 
     <h3>{{localize 'E20.range'}}</h3>
     <span>{{localize 'E20.min'}}</span><input type="number" name="data.range.min" value="{{data.min}}"/>

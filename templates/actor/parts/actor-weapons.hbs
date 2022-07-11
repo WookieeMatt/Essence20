@@ -20,7 +20,7 @@
         <div style="display:block">
           <input class="inline-edit" data-field="data.equipped" type="checkbox" name="weapon.{{@index}}.equipped" style="margin-left: 0px; margin-right: 0px" {{checked weapon.system.equipped}}/>
           <div>{{weapon.name}}</div>
-          <div>{{localize 'E20.damage'}}: {{weapon.system.damage}} {{localize (concat 'E20.elements.' weapon.system.element)}}</div>
+          <div>{{localize 'E20.damage'}}: {{weapon.system.damage}} {{localize (concat 'E20.weaponTraits.' weapon.system.trait)}}</div>
         </div>
       </div>
       <div class="item-controls">
