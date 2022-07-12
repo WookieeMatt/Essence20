@@ -298,6 +298,7 @@
     },
     "weapon": {
       "templates": ["itemDescription"],
+      "alternateEffects": "",
       "availability": "standard",
       "classification": {
         "skill": "athletics",
@@ -305,7 +306,7 @@
         "style": "melee"
       },
       "custom": "",
-      "damage": 1,
+      "effect": "",
       "equipped": true,
       "numCharges": null,
       "numHands": 1,
@@ -322,8 +323,7 @@
         "skill": null,
         "shift": null
       },
-      "shift": "d20",
-      "trait": ""
+      "shift": "d20"
     },
     "weaponUpgrade": {
       "templates": ["itemDescription"],
