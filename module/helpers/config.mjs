@@ -56,16 +56,6 @@ E20.effectShapes = {
   square: "E20.effectShapes.square",
 };
 
-E20.elements = {
-  acid: "E20.elements.acid",
-  cold: "E20.elements.cold",
-  electric: "E20.elements.electric",
-  energy: "E20.elements.energy",
-  fire: "E20.elements.fire",
-  laser: "E20.elements.laser",
-  sonic: "E20.elements.sonic"
-};
-
 E20.essences = {
   strength: "E20.essences.strength",
   speed: "E20.essences.speed",
@@ -232,3 +222,37 @@ E20.weaponStyles = {
   explosive: "E20.weaponStyles.explosive",
   projectile: "E20.weaponStyles.projectile",
 };
+
+E20.weaponTraits = {
+  acid: "E20.weaponTraits.acid",
+  amphibious: "E20.weaponTraits.amphibious",
+  antiTank: "E20.weaponTraits.antiTank",
+  aquatic: "E20.weaponTraits.aquatic",
+  area: "E20.weaponTraits.area",
+  armorPiercing: "E20.weaponTraits.armorPiercing",
+  ballistic: "E20.weaponTraits.ballistic",
+  blunt: "E20.weaponTraits.blunt",
+  cold: "E20.weaponTraits.cold",
+  consumable: "E20.weaponTraits.consumable",
+  cover: "E20.weaponTraits.cover",
+  electric: "E20.weaponTraits.electric",
+  energy: "E20.weaponTraits.energy",
+  fire: "E20.weaponTraits.fire",
+  grapple: "E20.weaponTraits.grapple",
+  indirect: "E20.weaponTraits.indirect",
+  intimidating: "E20.weaponTraits.intimidating",
+  laser: "E20.weaponTraits.laser",
+  maneuver: "E20.weaponTraits.maneuver",
+  mounted: "E20.weaponTraits.mounted",
+  multipleTargets: "E20.weaponTraits.multipleTargets",
+  poison: "E20.weaponTraits.poison",
+  psychic: "E20.weaponTraits.psychic",
+  seeking: "E20.weaponTraits.seeking",
+  sharp: "E20.weaponTraits.sharp",
+  silent: "E20.weaponTraits.silent",
+  sonic: "E20.weaponTraits.sonic",
+  spot: "E20.weaponTraits.spot",
+  stun: "E20.weaponTraits.stun",
+  trip: "E20.weaponTraits.trip",
+  wrecker: "E20.weaponTraits.wrecker",
+}

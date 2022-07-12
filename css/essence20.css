@@ -11,8 +11,12 @@
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  background: black;
-  color: white;
+  background: rgb(66, 66, 66);
+  color: rgb(211, 207, 207);
+}
+
+.window-app .window-content button {
+  color:rgb(211, 207, 207);
 }
 
 .sheet {
@@ -21,19 +25,19 @@
 } 
 
 .dialog .dialog-buttons button.default {
-  color: white;
+  color: rgb(211, 207, 207);
 }
 
 .dialog .dialog-buttons button {
-  color: white;
+  color: rgb(211, 207, 207);
 }
 
 .dialog .dialog-buttons {
-  color: white;
+  color: rgb(211, 207, 207);
 }
 
 #module-management .package-list .package-title {
-  color: white;
+  color: rgb(211, 207, 207);
 }
 
 .rollable:hover,
@@ -603,7 +607,7 @@ form .notes, form .hint {
 
 .essence20 .health-container {
   list-style: none;
-  margin: 18px;
+  margin-top: 10px; 
   padding: 0;
   overflow-y: auto;
   color: white;
@@ -614,22 +618,25 @@ form .notes, form .hint {
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
   width: 25vw;
+  grid-area: health-container;
 }
 
 .essence20 .initiative-container {
   list-style: none;
-  margin-top: 4px;
-  margin-bottom: 18px;
+  margin-top: 4px; 
+  margin-bottom: 18px; 
   padding: 0;
-  overflow-y: auto;color: white;
+  overflow-y: auto;
+  color: white;
   display: flex;
-  flex-direction: row;
-  justify-content: center;
+  flex-direction: row; 
+  justify-content: center; 
   /* transform: rotate(2deg); */
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
   width: 25vw;
-  float: right;
+  /* float: right; */
+  /* grid-area: initiative-container; */
 }
 
 /* .essence20 .stats-container {
@@ -647,13 +654,44 @@ form .notes, form .hint {
   width: 25vw;
 } */
 
+.essence20 .common-container{
+  display: grid;
+  grid-template-columns: repeat(2fr, 1fr);
+  grid-gap: 10px;
+  grid-template-areas: 
+  "common-container-1 common-container-2"
+  "common-container-1 common-container-2";
+}
+
+.essence20 .common-container-1{
+  grid-area: common-container-1;
+}
+
+.essence20 .common-container-2{
+  grid-area: common-container-2;
+}
+
+.essence20 .common-container-3{
+  grid-area: common-container-3;
+}
+
+.essence20 .common-label-1 {
+  font-size: 2em;
+  /* margin-top: 70px;*/
+  margin-bottom: 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
 .essence20 .zord-header {
   
 }
 
 .essence20 .stats-container {
   display: grid;
-  align-content: center;
+  align-content: left;
   justify-content: space-around;
   justify-items: center;
   margin-bottom: auto; 
@@ -667,7 +705,7 @@ form .notes, form .hint {
   scrollbar-width: thin;
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
-  height: 45vh;
+  /* height: 60vh; */
 }
 
 .essence20 .skillscontainer {
@@ -687,15 +725,15 @@ form .notes, form .hint {
   overflow-y: auto;
   scrollbar-width: thin;
   color: white;
-  /* display: flex;
+  display: flex;
   flex-direction: row;
-  justify-content: flex-start; */
+  justify-content: flex-start; 
   transform: rotate(0deg);
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
   width: fit-content;
-  justify-content: center;
-  margin-left: 135px;
+  justify-content: left;
+  /* margin-left: 135px; */
 }
 
 .essence20 .essences {
@@ -715,12 +753,14 @@ form .notes, form .hint {
   font-size: 2em;
   margin-bottom: 0px;
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   justify-content: center;
 }
 
 .essence20 .essence-label {
   font-size: 2em;
-  margin-top: 70px;
+  /* margin-top: 70px;*/
   margin-bottom: 0px;
   display: flex;
   flex-direction: row;

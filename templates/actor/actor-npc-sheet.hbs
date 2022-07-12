@@ -22,11 +22,6 @@
       <h3>{{localize 'E20.threatLevel'}}<h3>
       <input type="number" name="system.threatLevel" value="{{system.threatLevel}}"/>
 
-      <h3>{{localize 'E20.defensesStr'}}</h3>
-      {{#each system.defenses as |value defense|}}
-        <span>{{localize (concat 'E20.defenses.' defense)}}</span><input type="number" name="system.defenses.{{defense}}" value="{{value}}"/>
-      {{/each}}
-
       <h3>{{localize 'E20.hangUp'}}</h3>
       <input type="text" name="system.hangup.name" value="{{system.hangup.name}}"/>
       <textarea name="system.hangup.description" placeholder="{{localize 'E20.description'}}">{{system.hangup.description}}</textarea>
