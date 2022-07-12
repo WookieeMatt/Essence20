@@ -43,6 +43,13 @@ E20.autoSuccessShifts = [
   "autoSuccess",
 ];
 
+E20.defenses = {
+  cleverness: "E20.defenses.cleverness",
+  evasion: "E20.defenses.evasion",
+  toughness: "E20.defenses.toughness",
+  willpower: "E20.defenses.willpower",
+};
+
 E20.effectShapes = {
   circle: "E20.effectShapes.circle",
   cone: "E20.effectShapes.cone",

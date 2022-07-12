@@ -1,19 +1,18 @@
 <div class="defenses-section">
     <div class="defenses-container flexrow">
-    <div class="defense-container">
+      <div class="defense-container">
         <h3>{{localize 'E20.defensesStr'}}</h3>
-        <div>{{localize 'E20.defenses.toughness'}}: {{system.defenses.unmorphed.toughness}}</div>
-        <div>{{localize 'E20.defenses.evasion'}}: {{system.defenses.unmorphed.evasion}}</div>
-        <div>{{localize 'E20.defenses.willpower'}}: {{system.defenses.unmorphed.willpower}}</div>
-        <div>{{localize 'E20.defenses.cleverness'}}: {{system.defenses.unmorphed.cleverness}}</div>
-    </div>
-    <div class="morphed-container">
+        {{#each system.defenses.unmorphed as |value defense|}}
+          <div>{{localize (concat 'E20.defenses.' defense)}}: {{value}}</div>
+        {{/each}}
+      </div>
+
+      <div class="morphed-container">
         <h3>{{localize 'E20.morphedDefenses'}}</h3>
-        <div>{{localize 'E20.defenses.toughness'}}: {{sum system.defenses.morphed.toughness equippedArmorEffect}}
-        </div>
-        <div>{{localize 'E20.defenses.evasion'}}: {{system.defenses.morphed.evasion}}</div>
-        <div>{{localize 'E20.defenses.willpower'}}: {{system.defenses.morphed.willpower}}</div>
-        <div>{{localize 'E20.defenses.cleverness'}}: {{system.defenses.morphed.cleverness}}</div>
-    </div>
+        {{#each system.defenses.morphed as |value defense|}}
+          <div>{{localize (concat 'E20.defenses.' defense)}}: {{value}}</div>
+        {{/each}}
+        <div>{{localize 'E20.defenses.toughness'}} + {{equippedArmorEffect}} {{localize 'E20.armor'}}: {{sum system.defenses.morphed.toughness equippedArmorEffect}}</div>
+      </div>
     </div>
 </div>
