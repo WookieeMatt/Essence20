@@ -1,6 +1,6 @@
 {
   "Actor": {
-    "types": ["giJoe", "powerRanger", "npc", "threat", "vehicle", "zord", "megaformZord"],
+    "types": ["giJoe", "powerRanger", "npc", "vehicle", "zord", "megaformZord"],
     "templates": {
       "common": {
         "conditioning": 0,
@@ -212,10 +212,7 @@
       "templates": ["common", "creature", "character"]
     },
     "npc": {
-      "templates": ["common", "creature", "character"]
-    },
-    "threat": {
-      "templates": ["common", "creature"],
+      "templates": ["common", "creature", "character"],
       "customSkills": [{
         "name": "",
         "isSpecialized": false,
