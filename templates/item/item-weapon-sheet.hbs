@@ -50,15 +50,11 @@
     <span>{{localize 'E20.numCharges'}}</span><input type="number" name="data.numCharges" value="{{data.numCharges}}"/>
     <input type="text" name="data.custom" value="{{data.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
 
-    <h3>{{localize 'E20.damage'}}</h3>
-    <input type="number" name="data.damage" value="{{data.damage}}"/>
-    <select name="data.trait">
-      {{#select data.trait}}
-      {{#each config.weaponTraits as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
+    <h3>{{localize 'E20.effect'}}</h3>
+    <input type="text" name="data.effect" value="{{data.effect}}" placeholder="{{ localize 'E20.effect' }}"/>
+
+    <h3>{{localize 'E20.alternateEffects'}}</h3>
+    <input type="text" name="data.alternateEffects" value="{{data.alternateEffects}}" placeholder="{{ localize 'E20.alternateEffects' }}"/>
 
     <div>
       <span>{{localize 'E20.numHands'}}</span><input type="number" name="data.numHands" value="{{data.numHands}}"/>
