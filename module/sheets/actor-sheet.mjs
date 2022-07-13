@@ -266,9 +266,15 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (dataset.rollType) {
-      if (dataset.rollType == 'item') {
+      if (['item', 'power'].includes(dataset.rollType)) {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
+
+        // If a Power is being used, decrement Personal Power
+        if (dataset.rollType == 'power') {
+          await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
+        }
+
         if (item) return item.roll();
       }
       else if (dataset.rollType == 'skill') {
