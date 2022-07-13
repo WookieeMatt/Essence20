@@ -283,6 +283,26 @@ export class Essence20ActorSheet extends ActorSheet {
       else if (dataset.rollType == 'initiative') {
         this.actor.rollInitiative({createCombatants: true});
       }
+      else if (dataset.rollType == 'influence') {
+        const itemId = element.closest('.item').dataset.itemId;
+        const item = this.actor.items.get(itemId);
+
+        // Initialize chat data.
+        const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+        const rollMode = game.settings.get('core', 'rollMode');
+        const label = `[${item.type}] ${item.name}`;
+
+        let content = `Bond: ${item.system.bond || 'None'} <br>`;
+        content += `Hang Up: ${item.system.hangUp || 'None'} <br>`;
+        content += `Perk: ${item.system.perk || 'None'}`;
+
+        ChatMessage.create({
+          speaker: speaker,
+          rollMode: rollMode,
+          flavor: label,
+          content: content,
+        });
+      }
     }
   }
 }

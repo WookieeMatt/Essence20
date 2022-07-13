@@ -1,23 +1,26 @@
 <div class="origin-info">
-  <div class="background flexrow">
-    <h3>{{localize 'E20.background'}}</h3>
-    <a class="item-create" data-type="influence" title="{{ localize 'E20.addInfluence' }}">
-      <i class="fas fa-plus"></i>
-    </a>
-    {{#each @root.influences as |influence|}}
-    <li class="item flexrow" data-item-id="{{influence._id}}">
-      <div class="item-name">
-        <input class="inline-edit" data-field="name" type="text" name="influence.{{@index}}.name" value="{{influence.name}}" placeholder="{{ localize 'E20.name' }}" />
-        <input class="inline-edit" data-field="data.bond" type="text" name="influence.{{@index}}.bond" value="{{influence.data.bond}}" placeholder="{{ localize 'E20.bond' }}" />
-        <input class="inline-edit" data-field="data.hangUp" type="text" name="influence.{{@index}}.hangUp" value="{{influence.data.hangUp}}" placeholder="{{ localize 'E20.hangUp' }}" />
-        <input class="inline-edit" data-field="data.perk" type="text" name="influence.{{@index}}.perk" value="{{influence.data.perk}}" placeholder="{{ localize 'E20.perk' }}" />
-      </div>
-      <div class="item-controls">
-        <a class="item-control item-delete" title="{{localize 'E20.deleteInfluence'}}"><i class="fas fa-trash"></i></a>
-      </div>
-    </li>
-    {{/each}}
+  <h3>{{localize 'E20.background'}}</h3>
+  <a class="item-create" data-type="influence" title="{{ localize 'E20.addInfluence' }}">
+    <i class="fas fa-plus"></i>
+  </a>
+
+  {{#each @root.influences as |influence|}}
+  <div class="item" data-item-id="{{influence._id}}">
+    <div class="item-image">
+      <a class="rollable" data-roll-type="influence"><i class="fas fa-dice-d20"></i></a>
+    </div>
+    <div class="item-name">
+      <input class="inline-edit" data-field="name" type="text" name="influence.{{@index}}.name" value="{{influence.name}}" placeholder="{{ localize 'E20.name' }}" />
+    </div>
+      <input class="inline-edit" data-field="data.bond" type="text" name="influence.{{@index}}.bond" value="{{influence.data.bond}}" placeholder="{{ localize 'E20.bond' }}" />
+      <input class="inline-edit" data-field="data.hangUp" type="text" name="influence.{{@index}}.hangUp" value="{{influence.data.hangUp}}" placeholder="{{ localize 'E20.hangUp' }}" />
+      <input class="inline-edit" data-field="data.perk" type="text" name="influence.{{@index}}.perk" value="{{influence.data.perk}}" placeholder="{{ localize 'E20.perk' }}" />
+    <div class="item-controls">
+      <a class="item-control item-delete" title="{{localize 'E20.deleteInfluence'}}"><i class="fas fa-trash"></i></a>
+    </div>
   </div>
+  {{/each}}
+
   <hr>
   <div class="origin-entries origin-notes flexcol">
     <h3 class="origin-title">{{ localize "E20.origin" }}</h3>
