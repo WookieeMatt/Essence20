@@ -93,11 +93,14 @@ export class Essence20ActorSheet extends ActorSheet {
   _prepareItems(context) {
     // Initialize containers.
     const armors = [];
+    const bonds = [];
     let equippedArmorEffect = 0;
     const features = []; // Used by Zords
-    const gears = [];
+    const hangUps = [];
     const influences = [];
+    const gears = [];
     const generalPerks = []; // Used by PCs
+    const perks = [];
     const powers = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
@@ -115,17 +118,23 @@ export class Essence20ActorSheet extends ActorSheet {
           }
           armors.push(i);
           break;
+        case 'bond':
+          bonds.push(i);
+          break;
         case 'feature':
           features.push(i);
           break;
         case 'gear':
           gears.push(i);
           break;
-        case 'influence':
-          influences.push(i);
-          break;
         case 'generalPerk':
           generalPerks.push(i);
+          break;
+        case 'hangUp':
+          hangUps.push(i);
+          break;
+        case 'perk':
+          perks.push(i);
           break;
         case 'power':
           powers.push(i);
@@ -149,11 +158,14 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Assign and return
     context.armors = armors;
+    context.bonds = bonds;
     context.equippedArmorEffect = equippedArmorEffect;
     context.influences = influences;
     context.features = features;
     context.gears = gears;
     context.generalPerks = generalPerks;
+    context.hangUps = hangUps;
+    context.perks = perks;
     context.powers = powers;
     context.specializations = specializations;
     context.threatPowers = threatPowers;

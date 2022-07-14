@@ -126,12 +126,6 @@
       },
       "character": {
         "background": {
-          "influences": [{
-            "bond": "",
-            "hangUp": null,
-            "name": "",
-            "perk": ""
-          }],
           "origin": {
             "description": "",
             "name": ""
@@ -266,7 +260,9 @@
       "power",
       "feature",
       "trait",
-      "influence",
+      "bond",
+      "hangUp",
+      "perk",
       "specialization"
     ],
     "templates":{
@@ -360,12 +356,9 @@
     "trait": {
       "templates": ["itemDescription"]
     },
-    "influence": {
-      "bond": "",
-      "hangUp": null,
-      "perk": ""
-    },
-    "specialization": {
-    }
+    "bond": {},
+    "hangUp": {},
+    "perk": {},
+    "specialization": {}
   }
 }

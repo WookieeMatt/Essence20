@@ -1,24 +1,56 @@
 <div class="origin-info">
-  <h3>{{localize 'E20.background'}}</h3>
-  <a class="item-create" data-type="influence" title="{{ localize 'E20.addInfluence' }}">
+  <h3>{{localize 'E20.bonds'}}</h3>
+  <a class="item-create" data-type="bond" title="{{ localize 'E20.addBond' }}">
     <i class="fas fa-plus"></i>
   </a>
+  {{#each @root.bonds as |bond|}}
+    <div class="item" data-item-id="{{bond._id}}">
+      <div class="item-image">
+        <a class="rollable" data-roll-type="bond"><i class="fas fa-dice-d20"></i></a>
+      </div>
+      <div class="item-name">
+        <input class="inline-edit" data-field="name" type="text" name="bond.{{@index}}.name" value="{{bond.name}}" placeholder="{{ localize 'E20.name' }}" />
+      </div>
+      <div class="item-controls">
+        <a class="item-control item-delete" title="{{localize 'E20.deleteBond'}}"><i class="fas fa-trash"></i></a>
+      </div>
+    </div>
+  {{/each}}
 
-  {{#each @root.influences as |influence|}}
-  <div class="item" data-item-id="{{influence._id}}">
-    <div class="item-image">
-      <a class="rollable" data-roll-type="influence"><i class="fas fa-dice-d20"></i></a>
+  <h3>{{localize 'E20.hangUps'}}</h3>
+  <a class="item-create" data-type="hangUp" title="{{ localize 'E20.addHangUp' }}">
+    <i class="fas fa-plus"></i>
+  </a>
+  {{#each @root.hangUps as |hangUp|}}
+    <div class="item" data-item-id="{{hangUp._id}}">
+      <div class="item-image">
+        <a class="rollable" data-roll-type="hangUp"><i class="fas fa-dice-d20"></i></a>
+      </div>
+      <div class="item-name">
+        <input class="inline-edit" data-field="name" type="text" name="hangUp.{{@index}}.name" value="{{hangUp.name}}" placeholder="{{ localize 'E20.name' }}" />
+      </div>
+      <div class="item-controls">
+        <a class="item-control item-delete" title="{{localize 'E20.deleteHangUp'}}"><i class="fas fa-trash"></i></a>
+      </div>
     </div>
-    <div class="item-name">
-      <input class="inline-edit" data-field="name" type="text" name="influence.{{@index}}.name" value="{{influence.name}}" placeholder="{{ localize 'E20.name' }}" />
+  {{/each}}
+
+  <h3>{{localize 'E20.perks'}}</h3>
+  <a class="item-create" data-type="perk" title="{{ localize 'E20.addPerk' }}">
+    <i class="fas fa-plus"></i>
+  </a>
+  {{#each @root.perks as |perk|}}
+    <div class="item" data-item-id="{{perk._id}}">
+      <div class="item-image">
+        <a class="rollable" data-roll-type="perk"><i class="fas fa-dice-d20"></i></a>
+      </div>
+      <div class="item-name">
+        <input class="inline-edit" data-field="name" type="text" name="perk.{{@index}}.name" value="{{perk.name}}" placeholder="{{ localize 'E20.name' }}" />
+      </div>
+      <div class="item-controls">
+        <a class="item-control item-delete" title="{{localize 'E20.deletePerk'}}"><i class="fas fa-trash"></i></a>
+      </div>
     </div>
-      <input class="inline-edit" data-field="data.bond" type="text" name="influence.{{@index}}.bond" value="{{influence.data.bond}}" placeholder="{{ localize 'E20.bond' }}" />
-      <input class="inline-edit" data-field="data.hangUp" type="text" name="influence.{{@index}}.hangUp" value="{{influence.data.hangUp}}" placeholder="{{ localize 'E20.hangUp' }}" />
-      <input class="inline-edit" data-field="data.perk" type="text" name="influence.{{@index}}.perk" value="{{influence.data.perk}}" placeholder="{{ localize 'E20.perk' }}" />
-    <div class="item-controls">
-      <a class="item-control item-delete" title="{{localize 'E20.deleteInfluence'}}"><i class="fas fa-trash"></i></a>
-    </div>
-  </div>
   {{/each}}
 
   <hr>
