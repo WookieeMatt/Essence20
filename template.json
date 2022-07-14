@@ -262,7 +262,7 @@
       "weaponUpgrade",
       "zordCombiner",
       "threatPower",
-      "perk",
+      "generalPerk",
       "power",
       "feature",
       "trait",
@@ -345,7 +345,7 @@
       "cost": null,
       "limited": false
     },
-    "perk": {
+    "generalPerk": {
       "templates": ["itemDescription"],
       "source": "",
       "prerequisite": null

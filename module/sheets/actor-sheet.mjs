@@ -97,7 +97,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const features = []; // Used by Zords
     const gears = [];
     const influences = [];
-    const perks = []; // Used by PCs
+    const generalPerks = []; // Used by PCs
     const powers = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
@@ -124,8 +124,8 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'influence':
           influences.push(i);
           break;
-        case 'perk':
-          perks.push(i);
+        case 'generalPerk':
+          generalPerks.push(i);
           break;
         case 'power':
           powers.push(i);
@@ -153,7 +153,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.influences = influences;
     context.features = features;
     context.gears = gears;
-    context.perks = perks;
+    context.generalPerks = generalPerks;
     context.powers = powers;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
@@ -289,7 +289,7 @@ export class Essence20ActorSheet extends ActorSheet {
       else if (dataset.rollType == 'initiative') {
         this.actor.rollInitiative({createCombatants: true});
       }
-      else if (['influence', 'perk'].includes(dataset.rollType)) {
+      else if (['influence', 'generalPerk'].includes(dataset.rollType)) {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
 
@@ -305,7 +305,7 @@ export class Essence20ActorSheet extends ActorSheet {
           content += `Hang Up: ${item.system.hangUp || 'None'} <br>`;
           content += `Perk: ${item.system.perk || 'None'}`;
         }
-        else { // Perk
+        else { // General Perk
           content += `Source: ${item.system.source || 'None'} <br>`;
           content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
           content += `Description: ${item.system.description || 'None'}`;

@@ -22,7 +22,7 @@
     "systems/essence20/templates/actor/parts/actor-gear.hbs",
     "systems/essence20/templates/actor/parts/actor-notes.hbs",
     "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs",
-    "systems/essence20/templates/actor/parts/actor-perks.hbs",
+    "systems/essence20/templates/actor/parts/actor-general-perks.hbs",
     "systems/essence20/templates/actor/parts/actor-powers.hbs",
     "systems/essence20/templates/actor/parts/actor-threat-powers.hbs",
     "systems/essence20/templates/actor/parts/actor-traits.hbs",
