@@ -22,7 +22,7 @@
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
   "url": "https://github.com/WookieeMatt/Essence20",
-  "manifest": "https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json",
+  "manifest": "https://raw.githubusercontent.com/WookieeMatt/Essence20/beta/system.json",
   "download": "https://github.com/WookieeMatt/Essence20/archive/refs/tags/beta.zip",
   "license": "LICENSE.txt"
 }
