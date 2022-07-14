@@ -6,7 +6,7 @@
   {{#each @root.bonds as |bond|}}
     <div class="item" data-item-id="{{bond._id}}">
       <div class="item-image">
-        <a class="rollable" data-roll-type="bond"><i class="fas fa-dice-d20"></i></a>
+        <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
       </div>
       <div class="item-name">
         <input class="inline-edit" data-field="name" type="text" name="bond.{{@index}}.name" value="{{bond.name}}" placeholder="{{ localize 'E20.name' }}" />
@@ -24,7 +24,7 @@
   {{#each @root.hangUps as |hangUp|}}
     <div class="item" data-item-id="{{hangUp._id}}">
       <div class="item-image">
-        <a class="rollable" data-roll-type="hangUp"><i class="fas fa-dice-d20"></i></a>
+        <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
       </div>
       <div class="item-name">
         <input class="inline-edit" data-field="name" type="text" name="hangUp.{{@index}}.name" value="{{hangUp.name}}" placeholder="{{ localize 'E20.name' }}" />
@@ -42,7 +42,7 @@
   {{#each @root.perks as |perk|}}
     <div class="item" data-item-id="{{perk._id}}">
       <div class="item-image">
-        <a class="rollable" data-roll-type="perk"><i class="fas fa-dice-d20"></i></a>
+        <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
       </div>
       <div class="item-name">
         <input class="inline-edit" data-field="name" type="text" name="perk.{{@index}}.name" value="{{perk.name}}" placeholder="{{ localize 'E20.name' }}" />
