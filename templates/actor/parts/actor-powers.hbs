@@ -1,4 +1,14 @@
 <div class="powers-section">
+        {{!-- Personal Power --}}
+    <div class="resource flex-group-center">
+        <label for="system.personalPower.value" class="resource-label">{{localize 'E20.personalPower'}}</label>
+        <div class="resource-content flexrow flex-center flex-between">
+            <input type="number" name="system.personalPower.value" value="{{system.personalPower.value}}" />
+            <span> / </span>
+            <input type="number" name="system.personalPower.max" value="{{system.personalPower.max}}" />
+        </div>
+    </div>
+
     <h3>{{localize 'E20.powers'}}</h3>
     <a class="item-create" data-type="power" title="{{ localize 'E20.addPower' }}">
         <i class="fas fa-plus"></i>
@@ -19,13 +29,4 @@
     </li>
     {{/each}}
 
-    {{!-- Personal Power --}}
-    <div class="resource flex-group-center">
-        <label for="system.personalPower.value" class="resource-label">{{localize 'E20.personalPower'}}</label>
-        <div class="resource-content flexrow flex-center flex-between">
-            <input type="number" name="system.personalPower.value" value="{{system.personalPower.value}}" />
-            <span> / </span>
-            <input type="number" name="system.personalPower.max" value="{{system.personalPower.max}}" />
-        </div>
-    </div>
 </div>
