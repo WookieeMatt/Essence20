@@ -17,8 +17,8 @@
         <input class="inline-edit" data-field="name" type="text" name="armor.{{@index}}.name" value="{{armor.name}}" placeholder="{{ localize 'E20.name' }}"/>
       </div>
       <div class="item-name" style="width: 95px;">
-        <select class="inline-edit" data-field="data.availability" name="armors.{{@index}}.availability">
-          {{#select armor.data.availability}}
+        <select class="inline-edit" data-field="system.availability" name="armors.{{@index}}.availability">
+          {{#select armor.system.availability}}
           {{#each @root.config.availabilities as |name type|}}
           <option value="{{type}}">{{localize name}}</option>
           {{/each}}
@@ -26,8 +26,8 @@
         </select>
       </div>
       <div class="item-name" style="width: 95px;">
-        <select class="inline-edit" data-field="data.classification" name="armors.{{@index}}.classification">
-          {{#select armor.data.classification}}
+        <select class="inline-edit" data-field="system.classification" name="armors.{{@index}}.classification">
+          {{#select armor.system.classification}}
           {{#each @root.config.armorClassifications as |name type|}}
           <option value="{{type}}">{{localize name}}</option>
           {{/each}}
@@ -35,8 +35,8 @@
         </select>
       </div>
       <div class="item-name" style="width: 89px;">
-        <select class="inline-edit" data-field="data.trait" name="armors.{{@index}}.trait">
-          {{#select armor.data.trait}}
+        <select class="inline-edit" data-field="system.trait" name="armors.{{@index}}.trait">
+          {{#select armor.system.trait}}
           {{#each @root.config.armorTraits as |name type|}}
           <option value="{{type}}">{{localize name}}</option>
           {{/each}}
@@ -44,9 +44,9 @@
         </select>
       </div>
       <div class="item-name" style="width: 116px;">
-        <input class="inline-edit" data-field="data.effect" type="text" name="armor.{{@index}}.effect" value="{{armor.data.effect}}" data-dtype="Number" style="width: 60px;"/>
+        <input class="inline-edit" data-field="system.effect" type="text" name="armor.{{@index}}.effect" value="{{armor.system.effect}}" data-dtype="Number" style="width: 60px;"/>
         <div class="item-name" style="width: 114px;">{{localize 'E20.equipped'}}</div>
-        <input class="inline-edit" data-field="data.equipped" type="checkbox" name="armor.{{@index}}.equipped" style="margin-left: 0px; margin-right: 0px" {{checked armor.data.equipped}}/>
+        <input class="inline-edit" data-field="system.equipped" type="checkbox" name="armor.{{@index}}.equipped" style="margin-left: 0px; margin-right: 0px" {{checked armor.system.equipped}}/>
       </div>
       <div class="item-controls">
         <a class="item-control item-delete" title="{{localize 'E20.deleteArmor'}}"><i class="fas fa-trash"></i></a>
