@@ -110,14 +110,12 @@ export class Dice {
    * Create weapon roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @returns {String}   The resultant roll label.
-   * @param {Item} weapon   The weapon being used, if any.
+   * @param {Item} weapon   The weapon being used.
    * @private
    */
    _getWeaponRollLabel(dataset, weapon) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = dataset.specialization
-      ? dataset.specialization
-      : this._i18n.localize(this._config.skills[rolledSkill]);
+    const rolledSkillStr = this._i18n.localize(this._config.skills[rolledSkill]);
     const attackRollStr = this._i18n.localize(this._config.attackRoll)
 
     let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})<br>`;
