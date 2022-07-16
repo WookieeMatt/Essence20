@@ -117,10 +117,13 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._i18n.localize(this._config.skills[rolledSkill]);
     const attackRollStr = this._i18n.localize(this._config.attackRoll)
+    const effectStr = this._i18n.localize(this._config.effect)
+    const alternateEffectsStr = this._i18n.localize(this._config.alternateEffects)
+    const noneStr = this._i18n.localize(this._config.none)
 
     let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})<br>`;
-    label += `<b>Effect</b> - ${weapon.system.effect || 'None'}<br>`;
-    label += `<b>Alternate Effects</b> - ${weapon.system.alternateEffects || 'None'}`;
+    label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
+    label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}`;
 
     return label;
   }

@@ -49,8 +49,8 @@ describe("_getWeaponRollLabel", () => {
     };
     const expected =
      "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.strength.athletics)<br>" +
-     "<b>Effect</b> - Some effect<br>" +
-     "<b>Alternate Effects</b> - Some alternate effects";
+     "<b>E20.effect</b> - Some effect<br>" +
+     "<b>E20.alternateEffects</b> - Some alternate effects";
 
     expect(dice._getWeaponRollLabel(dataset, weapon)).toEqual(expected);
   });
@@ -68,8 +68,8 @@ describe("_getWeaponRollLabel", () => {
     };
     const expected =
      "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.strength.athletics)<br>" +
-     "<b>Effect</b> - None<br>" +
-     "<b>Alternate Effects</b> - None";
+     "<b>E20.effect</b> - E20.none<br>" +
+     "<b>E20.alternateEffects</b> - E20.none";
 
     expect(dice._getWeaponRollLabel(dataset, weapon)).toEqual(expected);
   });
