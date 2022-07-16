@@ -275,64 +275,68 @@ export class Essence20ActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
+    const rollType = dataset.rollType;
+
+    if (!rollType) {
+      return;
+    }
 
     // Handle type-specific rolls.
-    if (dataset.rollType) {
-      if (['item', 'power'].includes(dataset.rollType)) {
-        const itemId = element.closest('.item').dataset.itemId;
-        const item = this.actor.items.get(itemId);
+    if (['item', 'power'].includes(rollType)) {
+      const itemId = element.closest('.item').dataset.itemId;
+      const item = this.actor.items.get(itemId);
 
-        // If a Power is being used, decrement Personal Power
-        if (dataset.rollType == 'power') {
-          await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
-        }
-
-        if (item) return item.roll();
+      // If a Power is being used, decrement Personal Power
+      if (rollType == 'power') {
+        await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
       }
-      else if (dataset.rollType == 'skill') {
-        const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
-        if (skillRollOptions.cancelled) {
-          return;
-        }
+      if (item) return item.roll();
+    }
+    else if (rollType == 'skill') {
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
-        this._dice.rollSkill(dataset, skillRollOptions, this.actor);
+      if (skillRollOptions.cancelled) {
+        return;
       }
-      else if (dataset.rollType == 'weapon') {
-        const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
-        if (skillRollOptions.cancelled) {
-          return;
-        }
+      this._dice.rollSkill(dataset, skillRollOptions, this.actor);
+    }
+    else if (rollType == 'weapon') {
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
-        const itemId = element.closest('.item').dataset.itemId;
-        const weapon = this.actor.items.get(itemId);
-
-        this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
+      if (skillRollOptions.cancelled) {
+        return;
       }
-      else if (dataset.rollType == 'initiative') {
-        this.actor.rollInitiative({createCombatants: true});
-      }
-      else if (dataset.rollType == 'generalPerk') {
-        const itemId = element.closest('.item').dataset.itemId;
-        const item = this.actor.items.get(itemId);
 
-        // Initialize chat data.
-        const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-        const rollMode = game.settings.get('core', 'rollMode');
-        const label = `[${item.type}] ${item.name}`;
+      const itemId = element.closest('.item').dataset.itemId;
+      const weapon = this.actor.items.get(itemId);
 
-        let content = `Source: ${item.system.source || 'None'} <br>`;
-          content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
-          content += `Description: ${item.system.description || 'None'}`;
+      this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
+    }
+    else if (rollType == 'initiative') {
+      this.actor.rollInitiative({createCombatants: true});
+    }
+    else if (rollType == 'generalPerk') {
+      this.rollTypeToFunction['generalPerk'](element);
+      const itemId = element.closest('.item').dataset.itemId;
+      const item = this.actor.items.get(itemId);
 
-        ChatMessage.create({
-          speaker: speaker,
-          rollMode: rollMode,
-          flavor: label,
-          content: content,
-        });
-      }
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${item.type}] ${item.name}`;
+
+      let content = `Source: ${item.system.source || 'None'} <br>`;
+        content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
+        content += `Description: ${item.system.description || 'None'}`;
+
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: content,
+      });
     }
   }
 }
