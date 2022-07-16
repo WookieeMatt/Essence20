@@ -313,7 +313,7 @@ export class Essence20ActorSheet extends ActorSheet {
       else if (dataset.rollType == 'initiative') {
         this.actor.rollInitiative({createCombatants: true});
       }
-      else if (['influence', 'generalPerk'].includes(dataset.rollType)) {
+      else if (dataset.rollType == 'generalPerk') {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
 
@@ -322,18 +322,9 @@ export class Essence20ActorSheet extends ActorSheet {
         const rollMode = game.settings.get('core', 'rollMode');
         const label = `[${item.type}] ${item.name}`;
 
-        let content = '';
-
-        if (dataset.rollType == 'influence') {
-          content += `Bond: ${item.system.bond || 'None'} <br>`;
-          content += `Hang Up: ${item.system.hangUp || 'None'} <br>`;
-          content += `Perk: ${item.system.perk || 'None'}`;
-        }
-        else { // General Perk
-          content += `Source: ${item.system.source || 'None'} <br>`;
+        let content = `Source: ${item.system.source || 'None'} <br>`;
           content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
           content += `Description: ${item.system.description || 'None'}`;
-        }
 
         ChatMessage.create({
           speaker: speaker,
