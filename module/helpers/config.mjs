@@ -2,6 +2,7 @@ export const E20 = {};
 
 E20.defenseBase = 10;
 
+E20.attackRoll = "E20.attackRoll";
 E20.rollingFor = "E20.rollingFor";
 E20.withAnEdge = "E20.withAnEdge";
 E20.withASnag = "E20.withASnag";
