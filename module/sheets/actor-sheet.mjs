@@ -23,7 +23,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/essence20/templates/actor/actor-${this.actor.data.type}-sheet.hbs`;
+    return `systems/essence20/templates/actor/actor-${this.actor.type}-sheet.hbs`;
   }
 
   /* -------------------------------------------- */
@@ -113,8 +113,8 @@ export class Essence20ActorSheet extends ActorSheet {
       const itemType = i.type;
       switch(itemType) {
         case 'armor':
-          if (i.data.equipped) {
-            equippedArmorEffect += parseInt(i.data.effect);
+          if (i.system.equipped) {
+            equippedArmorEffect += parseInt(i.system.effect);
           }
           armors.push(i);
           break;
@@ -140,7 +140,7 @@ export class Essence20ActorSheet extends ActorSheet {
           powers.push(i);
           break;
         case 'specialization':
-          const skill = i.data.skill;
+          const skill = i.system.skill;
           const existingSkillSpecializations = specializations[skill];
           existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
           break;
