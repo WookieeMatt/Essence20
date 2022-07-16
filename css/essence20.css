@@ -1144,3 +1144,32 @@ form .notes, form .hint {
 .essence20 .effects .item .effect-controls {
   border: none;
 }
+
+/* --- NPC Sheet Styling --- */
+
+.essence20 .npc-sheet-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+}
+
+.essence20 .npc-sheet-header-1 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: none;
+  justify-content: center;
+}
+
+.essence20 .npc-health-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: none;
+  justify-content: center;
+}
+
+.essence20 .npc-ablities {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
