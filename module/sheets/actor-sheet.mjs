@@ -93,11 +93,14 @@ export class Essence20ActorSheet extends ActorSheet {
   _prepareItems(context) {
     // Initialize containers.
     const armors = [];
+    const bonds = [];
     let equippedArmorEffect = 0;
     const features = []; // Used by Zords
-    const gears = [];
+    const hangUps = [];
     const influences = [];
-    const perks = []; // Used by PCs
+    const gears = [];
+    const generalPerks = []; // Used by PCs
+    const perks = [];
     const powers = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
@@ -115,14 +118,20 @@ export class Essence20ActorSheet extends ActorSheet {
           }
           armors.push(i);
           break;
+        case 'bond':
+          bonds.push(i);
+          break;
         case 'feature':
           features.push(i);
           break;
         case 'gear':
           gears.push(i);
           break;
-        case 'influence':
-          influences.push(i);
+        case 'generalPerk':
+          generalPerks.push(i);
+          break;
+        case 'hangUp':
+          hangUps.push(i);
           break;
         case 'perk':
           perks.push(i);
@@ -149,10 +158,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Assign and return
     context.armors = armors;
+    context.bonds = bonds;
     context.equippedArmorEffect = equippedArmorEffect;
     context.influences = influences;
     context.features = features;
     context.gears = gears;
+    context.generalPerks = generalPerks;
+    context.hangUps = hangUps;
     context.perks = perks;
     context.powers = powers;
     context.specializations = specializations;
@@ -289,7 +301,7 @@ export class Essence20ActorSheet extends ActorSheet {
       else if (dataset.rollType == 'initiative') {
         this.actor.rollInitiative({createCombatants: true});
       }
-      else if (['influence', 'perk'].includes(dataset.rollType)) {
+      else if (['influence', 'generalPerk'].includes(dataset.rollType)) {
         const itemId = element.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
 
@@ -305,7 +317,7 @@ export class Essence20ActorSheet extends ActorSheet {
           content += `Hang Up: ${item.system.hangUp || 'None'} <br>`;
           content += `Perk: ${item.system.perk || 'None'}`;
         }
-        else { // Perk
+        else { // General Perk
           content += `Source: ${item.system.source || 'None'} <br>`;
           content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
           content += `Description: ${item.system.description || 'None'}`;

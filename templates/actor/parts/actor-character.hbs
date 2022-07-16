@@ -1,26 +1,20 @@
-<div class="essence-label">
-  <h3>{{localize 'E20.essencesLabel'}}</h3>
-</div>
-
 <div class="bonus-container">
   <div class="essences">
     {{#each system.essences as |value essence|}}
     <span class="essences-skill">{{localize (concat 'E20.essences.' essence)}}</span><input class="essence-input" type="number" name="system.essences.{{essence}}" value="{{value}}" />
     {{/each}}
-  </div>
-  <div class="stats-container">
-  <span>{{localize 'E20.conditioning'}}</span><input class="essence-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
-  <span>{{localize 'E20.movement.aerial'}}</span><input class="essence-input" type="number" name="system.movement.aerial" value="{{system.movement.aerial}}" />
-  <span>{{localize 'E20.movement.aerialMin'}}</span><input class="essence-input" type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" />
-  <span>{{localize 'E20.movement.ground'}}</span><input class="essence-input" type="number" name="system.movement.ground" value="{{system.movement.ground}}" />
-  <span>{{localize 'E20.movement.swim'}}</span><input class="essence-input" type="number" name="system.movement.swim" value="{{system.movement.swim}}" />
+   </div>
+  <div class="defense-container-1">
+      <h3>{{localize 'E20.defensesStr'}}</h3>
+      {{#each system.defenses.unmorphed as |value defense|}}
+        <div>{{localize (concat 'E20.defenses.' defense)}}: {{value}}</div>
+      {{/each}}
+    </div>
+  <div class="morphed-container">
+        <h3>{{localize 'E20.morphedDefenses'}}</h3>
+        {{#each system.defenses.morphed as |value defense|}}
+          <div>{{localize (concat 'E20.defenses.' defense)}}: {{value}}</div>
+        {{/each}}
+        <div>{{localize 'E20.defenses.toughness'}} + {{equippedArmorEffect}} {{localize 'E20.armor'}}: {{sum system.defenses.morphed.toughness equippedArmorEffect}}</div>
+      </div>
 </div>
-</div>
-{{!-- <div class="bonus-container">
-  <div class="bonuses">
-    <h3>{{localize 'E20.bonuses'}}</h3>
-    {{!-- {{#each system.bonuses as |bonus essence|}}
-    {{!-- <span>{{localize (concat 'E20.defenses.' essence)}}</span><input type="number" name="system.bonuses.{{essence}}" value="{{bonus}}" />
-    {{!-- {{/each}}
-  {{!-- </div> --}}
-{{!-- </div> --}}

@@ -126,12 +126,6 @@
       },
       "character": {
         "background": {
-          "influences": [{
-            "bond": "",
-            "hangUp": null,
-            "name": "",
-            "perk": ""
-          }],
           "origin": {
             "description": "",
             "name": ""
@@ -262,16 +256,18 @@
       "weaponUpgrade",
       "zordCombiner",
       "threatPower",
-      "perk",
+      "generalPerk",
       "power",
       "feature",
       "trait",
-      "influence",
+      "bond",
+      "hangUp",
+      "perk",
       "specialization"
     ],
     "templates":{
       "itemDescription": {
-        "value": ""
+        "description": ""
       }
     },
     "armor": {
@@ -345,7 +341,7 @@
       "cost": null,
       "limited": false
     },
-    "perk": {
+    "generalPerk": {
       "templates": ["itemDescription"],
       "source": "",
       "prerequisite": null
@@ -360,12 +356,15 @@
     "trait": {
       "templates": ["itemDescription"]
     },
-    "influence": {
-      "bond": "",
-      "hangUp": null,
-      "perk": ""
+    "bond": {
+      "templates": ["itemDescription"]
     },
-    "specialization": {
-    }
+    "hangUp": {
+      "templates": ["itemDescription"]
+    },
+    "perk": {
+      "templates": ["itemDescription"]
+    },
+    "specialization": {}
   }
 }
