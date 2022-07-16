@@ -2,7 +2,7 @@
   "name": "essence20",
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "1.2.8",
+  "version": "1.2.9",
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion": "10",
   "author": "WookieeChan, potato",
@@ -22,7 +22,7 @@
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
   "url": "https://github.com/WookieeMatt/Essence20",
-  "manifest": "https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json",
-  "download": "https://github.com/WookieeMatt/Essence20/releases/download/v0.8.1/Essence20-0.8.1.zip",
+  "manifest": "https://raw.githubusercontent.com/WookieeMatt/Essence20/beta/system.json",
+  "download": "https://github.com/WookieeMatt/Essence20/releases/download/beta/Essence20-beta.zip",
   "license": "LICENSE.txt"
 }
