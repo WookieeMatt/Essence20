@@ -15,20 +15,21 @@
         <i class="fas fa-plus"></i>
     </a>
     <div>
-    {{#each @root.powers as |power|}}
-    <li class="item flexrow" data-item-id="{{power._id}}">
-        <div class="item-name">
-          <div class="item-image">
-            <a class="rollable" data-roll-type="power"><img src="{{power.img}}" title="{{power.name}}" width="24" height="24"/></a>
-          </div>
-          <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name" value="{{power.name}}" placeholder="{{ localize 'E20.name' }}"/>
-          <textarea class="inline-edit" data-field="system.description" name="power.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{power.system.description}}</textarea>
-        </div>
-        <div class="item-controls">
-            <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i class="fas fa-trash"></i></a>
-        </div>
-    </li>
-    {{/each}}
+        {{#each @root.powers as |power|}}
+        <li class="item flexrow" data-item-id="{{power._id}}">
+            <div class="item-name">
+            <div class="item-image">
+                <a class="rollable" data-roll-type="power"><img src="{{power.img}}" title="{{power.name}}" width="24" height="24"/></a>
+            </div>
+            <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name" value="{{power.name}}" placeholder="{{ localize 'E20.name' }}"/>
+            <textarea class="inline-edit" data-field="data.description" name="power.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{power.data.description}}</textarea>
+            </div>
+            <div class="item-controls">
+                <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i class="fas fa-trash"></i></a>
+            </div>
+        </li>
+        {{/each}}
+
     </div>
 </div>
 

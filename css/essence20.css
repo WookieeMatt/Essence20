@@ -16,13 +16,17 @@
 }
 
 .window-app .window-content button {
-  color:rgb(211, 207, 207);
+  color: #d3cfcf;
+  background: rgb(66, 66, 66);
+  border-color: #0a0a0a;
+  border-radius: 20px;
+  box-shadow: 4px 4px 0 #0a0a0a;
 }
 
 .sheet {
   min-width: 620px;
   min-height: 620px;
-} 
+}
 
 .dialog .dialog-buttons button.default {
   color: rgb(211, 207, 207);
@@ -195,6 +199,22 @@
   grid-column-end: span 12;
 }
 
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+
+
 .flex-group-center,
 .flex-group-left,
 .flex-group-right {
@@ -260,6 +280,20 @@
   text-align: center;
 }
 
+/* -- Jornal page styling -- */
+.journal-entry-pages {
+  color: rgb(163, 163, 163);
+  border: 10px #c9c7b8;
+  /*background-color: blue;*/
+}
+
+.window-content .journal-sheet-container .editable {
+  background: #10024e;
+  border-radius: 10px white;
+}
+
+
+
 /* Styles limited to essence20 sheets */
 
 .essence20 .item-form {
@@ -300,6 +334,7 @@
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
+  grid-area: npc-grid-2;
 }
 
 .essence20 .sheet-header .pr-header-fields {
@@ -444,7 +479,8 @@ input[type="text"] {
   text-align: center;
 }
 
-form .notes, form .hint {
+form .notes,
+form .hint {
   color: white;
 }
 
@@ -611,7 +647,7 @@ form .notes, form .hint {
   width: fit-content;
   justify-content: left;
   width: 95%;
- /* --Gradient for testing --
+  /* --Gradient for testing --
  border: 3px solid transparent;
   background-image: linear-gradient(#0a178880, #4251df),
   linear-gradient(120deg, rgb(70, 70, 70), rgb(207, 207, 207), rgb(70, 70, 70));
@@ -638,21 +674,21 @@ form .notes, form .hint {
 .essence20 .health-container {
   list-style: none;
   margin-top: 10px;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
   padding: 4px;
   overflow-y: auto;
   color: white;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background: #03129c80;  
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 50px;
-  box-shadow: 4px 4px 0 #0a0a0a; 
+  box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
   grid-area: health-container;
- /* -- below here is for a gradient i was testing and may re-implement based on total votes-- */
- /* border: 3px solid transparent;
+  /* -- below here is for a gradient i was testing and may re-implement based on total votes-- */
+  /* border: 3px solid transparent;
   background-image: linear-gradient(#0a178880, #4251df),
   linear-gradient(120deg, rgb(70, 70, 70), rgb(207, 207, 207), rgb(70, 70, 70));
   background-origin: border-box;
@@ -663,29 +699,29 @@ form .notes, form .hint {
 
 .essence20 .initiative-container {
   list-style: none;
-  margin-top: 10px; 
-  margin-bottom: 10px; 
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: 4px;
   overflow-y: auto;
   color: white;
   display: flex;
-  flex-direction: row; 
-  justify-content: center; 
+  flex-direction: row;
+  justify-content: center;
   /* -- below here is for a gradient i was testing and may re-implement based on total votes-- */
   /* border: 3px solid transparent;
   background-image: linear-gradient(#0a178880, #4251df),
   linear-gradient(120deg, rgb(70, 70, 70), rgb(207, 207, 207), rgb(70, 70, 70));
   background-origin: border-box;
   background-clip: content-box, border-box;*/
-  background: #03129c80;  
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
-  grid-area: initiative-container; 
+  grid-area: initiative-container;
 }
 
-.essence20 .initiative-dropdown{
+.essence20 .initiative-dropdown {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -693,7 +729,7 @@ form .notes, form .hint {
   padding-bottom: 4px;
 }
 
- .essence20 .stats-container {
+.essence20 .stats-container {
   list-style: none;
   margin-top: 10px;
   padding: 0;
@@ -702,32 +738,32 @@ form .notes, form .hint {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background: #03129c80;  
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
-} 
+}
 
-.essence20 .common-container{
+.essence20 .common-container {
   display: grid;
   grid-template-columns: repeat(2fr, 1fr);
   grid-gap: 5px;
-  grid-template-areas: 
-  "common-container-1 common-container-2"
-  "common-container-1 common-container-2";
+  grid-template-areas:
+    "common-container-1 common-container-2"
+    "common-container-1 common-container-2";
   padding-bottom: 15px;
 }
 
-.essence20 .common-container-1{
+.essence20 .common-container-1 {
   grid-area: common-container-1;
 }
 
-.essence20 .common-container-2{
+.essence20 .common-container-2 {
   grid-area: common-container-2;
 }
 
-.essence20 .common-container-3{
+.essence20 .common-container-3 {
   grid-area: common-container-3;
 }
 
@@ -755,7 +791,7 @@ form .notes, form .hint {
   align-content: left;
   justify-content: space-around;
   justify-items: center;
-  margin-bottom: auto; 
+  margin-bottom: auto;
 }
 
 .essence20 .skills-container {
@@ -786,7 +822,7 @@ form .notes, form .hint {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #03129c80;  
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -805,27 +841,27 @@ form .notes, form .hint {
   padding: 0;
 }
 
-.essence20 .powers-section{
+.essence20 .powers-section {
   list-style: none;
   margin-top: 10px;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
   padding: 4px;
   overflow-y: auto;
   color: white;
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background: #03129c80;  
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 50px;
-  box-shadow: 4px 4px 0 #0a0a0a; 
+  box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
 }
 
-.essence20 .powers-section-1{
+.essence20 .powers-section-1 {
   list-style: none;
   margin-top: 10px;
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
   padding: 4px;
   padding-left: 20px;
   overflow-y: auto;
@@ -833,64 +869,49 @@ form .notes, form .hint {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #03129c80;  
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a; 
+  box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
-  }
+}
 
-.essence20 .perks-section{
+
+.essence20 .origin-bonds {
   list-style: none;
   margin-top: 10px;
-  margin-bottom: 10px; 
-  padding: 4px;
-  padding-left: 20px;
+  margin-right: 3px;
+  padding: 8px;
   overflow-y: auto;
   color: white;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #03129c80;  
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a; 
+  box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
-  }
+  height: fit-content;
+}
 
-  .essence20 .origin-bonds {
-    list-style: none;
-    margin-top: 10px;
-    margin-right: 3px;
-    padding: 8px;
-    overflow-y: auto;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: #03129c80;  
-    border: 4px solid #b5b1b1;
-    border-radius: 25px;
-    box-shadow: 4px 4px 0 #0a0a0a;
-    width: 100%;
-  } 
-
-  .essence20 .origin-hangups {
-    list-style: none;
-    margin-top: 10px;
-    margin-right: 3px;
-    padding: 8px;
-    overflow-y: auto;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: #03129c80;  
-    border: 4px solid #b5b1b1;
-    border-radius: 25px;
-    box-shadow: 4px 4px 0 #0a0a0a;
-    width: 100%;
-  } 
+.essence20 .origin-hangups {
+  list-style: none;
+  margin-top: 10px;
+  margin-right: 3px;
+  padding: 8px;
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #03129c80;
+  border: 4px solid #b5b1b1;
+  border-radius: 25px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+  height: fit-content;
+}
 
 .essence20 .origin-perks {
   list-style: none;
@@ -901,12 +922,30 @@ form .notes, form .hint {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #03129c80;  
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
-} 
+  height: fit-content;
+}
+
+.essence20 .ranger-perks {
+  list-style: none;
+  margin-top: 10px;
+  padding: 8px;
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #03129c80;
+  border: 4px solid #b5b1b1;
+  border-radius: 25px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+  height: fit-content;
+}
 
 .essence20 .origin-info {
   display: flex;
@@ -922,7 +961,7 @@ form .notes, form .hint {
   color: white;
   display: flex;
   flex-direction: row;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   transform: rotate(0deg);
   background: #0a178880;
   border: 3px solid #b5b1b1;
@@ -938,7 +977,7 @@ form .notes, form .hint {
   align-content: center;
   justify-content: space-around;
   justify-items: center;
-  margin-bottom: auto;  
+  margin-bottom: auto;
 }
 
 .essence20 .bonuses {
@@ -967,13 +1006,13 @@ form .notes, form .hint {
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  justify-content: center;  
+  justify-content: center;
   background: #0a178880;
   border: 4px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
-  
+
 }
 
 .essence20 .morphed-container {
@@ -1143,4 +1182,208 @@ form .notes, form .hint {
 
 .essence20 .effects .item .effect-controls {
   border: none;
+}
+
+/* --- NPC Sheet Styling --- */
+
+.essence20 .npc-sheet-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+}
+
+.essence20 .npc-sheet-header-1 {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: none;
+  justify-content: center;
+}
+
+.essence20 .npc-health-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: none;
+  justify-content: center;
+}
+
+
+
+.essence20 .npc-powers {
+  list-style: none;
+  margin-top: 10px;
+  margin-right: 3px;
+  padding: 8px;
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #03129c80;
+  border: 4px solid #b5b1b1;
+  border-radius: 25px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+  height: fit-content;
+}
+
+.essence20 .npc-perks {
+  list-style: none;
+  margin-top: 10px;
+  margin-right: 3px;
+  padding: 8px;
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #03129c80;
+  border: 4px solid #b5b1b1;
+  border-radius: 25px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+  height: fit-content;
+}
+
+.essence20 .npc-traits {
+  list-style: none;
+  margin-top: 10px;
+  margin-right: 3px;
+  padding: 8px;
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #03129c80;
+  border: 4px solid #b5b1b1;
+  border-radius: 25px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+  height: fit-content;
+}
+
+.essence20 .npc-hangup {
+  list-style: none;
+  margin-top: 10px;
+  margin-right: 3px;
+  padding: 8px;
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #03129c80;
+  border: 4px solid #b5b1b1;
+  border-radius: 25px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+  height: fit-content;
+}
+
+.essence20 .npc-defenses {
+  list-style: none;
+  margin-top: 10px;
+  margin-right: 3px;
+  padding: 8px;
+  overflow-y: auto;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  height: fit-content;
+  grid-area: npc-stat-1;
+}
+
+.essence20 .npc-defenses-container {
+  background: #03129c80;
+  border: 4px solid #b5b1b1;
+  border-radius: 25px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.essence20 .npc-abilities {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  height: fit-content;
+  gap: 2px 5px;
+  grid-template-areas:
+    "ability-1 ability-1 ability-2 ability-2"
+    "ability-1 ability-1 ability-2 ability-2"
+    "ability-1 ability-1 ability-2 ability-2";
+}
+
+.essence20 .npc-ablities-1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  grid-area: ability-1;
+}
+
+.essence20 .npc-ablities-2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  grid-area: ability-2;
+}
+
+.essence20 .npc-stats-container {
+  background: #03129c80;
+  border: 4px solid #b5b1b1;
+  border-radius: 25px;
+  padding: 8px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  height: fit-content;
+  width: 100%;
+  grid-area: npc-stat-2;
+}
+
+.essence20 .npc-stats-container-1 {
+  display: flex;
+  flex-direction: column;
+}
+
+.essence20 .npc-stats-container-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 2px 5px;
+  grid-template-areas:
+    "npc-stat-1 npc-stat-1"
+    "npc-stat-2 npc-stat-2";
+}
+
+.essence20 .npc-sheet-container-2 {
+  grid-area: npc-stat-1;
+}
+
+.essence20 .chip {
+  border-radius: 10px;
+  border: 3px solid;
+  border-style: outset;
+  /*border-color:  rgb(0, 0, 0);*/
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 2px;
+  margin-right: 3px;
+  background-color: #4a4848;
+  width: fit-content;
+  height: fit-content;
+  text-size-adjust: 8;
+  /*box-shadow: 2px 2px 0 #0a0a0a;*/
+}
+
+.essence20 .chip-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
