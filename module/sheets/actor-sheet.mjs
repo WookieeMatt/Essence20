@@ -23,7 +23,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/essence20/templates/actor/actor-${this.actor.data.type}-sheet.hbs`;
+    return `systems/essence20/templates/actor/actor-${this.actor.type}-sheet.hbs`;
   }
 
   /* -------------------------------------------- */
@@ -113,8 +113,8 @@ export class Essence20ActorSheet extends ActorSheet {
       const itemType = i.type;
       switch(itemType) {
         case 'armor':
-          if (i.data.equipped) {
-            equippedArmorEffect += parseInt(i.data.effect);
+          if (i.system.equipped) {
+            equippedArmorEffect += parseInt(i.system.effect);
           }
           armors.push(i);
           break;
@@ -140,7 +140,7 @@ export class Essence20ActorSheet extends ActorSheet {
           powers.push(i);
           break;
         case 'specialization':
-          const skill = i.data.skill;
+          const skill = i.system.skill;
           const existingSkillSpecializations = specializations[skill];
           existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
           break;
@@ -275,61 +275,68 @@ export class Essence20ActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
+    const rollType = dataset.rollType;
+
+    if (!rollType) {
+      return;
+    }
 
     // Handle type-specific rolls.
-    if (dataset.rollType) {
-      if (['item', 'power'].includes(dataset.rollType)) {
-        const itemId = element.closest('.item').dataset.itemId;
-        const item = this.actor.items.get(itemId);
+    if (['item', 'power'].includes(rollType)) {
+      const itemId = element.closest('.item').dataset.itemId;
+      const item = this.actor.items.get(itemId);
 
-        // If a Power is being used, decrement Personal Power
-        if (dataset.rollType == 'power') {
-          await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
-        }
-
-        if (item) return item.roll();
+      // If a Power is being used, decrement Personal Power
+      if (rollType == 'power') {
+        await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
       }
-      else if (dataset.rollType == 'skill') {
-        const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
-        if (skillRollOptions.cancelled) {
-          return;
-        }
+      if (item) return item.roll();
+    }
+    else if (rollType == 'skill') {
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
-        this._dice.rollSkill(dataset, skillRollOptions, this.actor);
+      if (skillRollOptions.cancelled) {
+        return;
       }
-      else if (dataset.rollType == 'initiative') {
-        this.actor.rollInitiative({createCombatants: true});
+
+      this._dice.rollSkill(dataset, skillRollOptions, this.actor);
+    }
+    else if (rollType == 'weapon') {
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
+
+      if (skillRollOptions.cancelled) {
+        return;
       }
-      else if (['influence', 'generalPerk'].includes(dataset.rollType)) {
-        const itemId = element.closest('.item').dataset.itemId;
-        const item = this.actor.items.get(itemId);
 
-        // Initialize chat data.
-        const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-        const rollMode = game.settings.get('core', 'rollMode');
-        const label = `[${item.type}] ${item.name}`;
+      const itemId = element.closest('.item').dataset.itemId;
+      const weapon = this.actor.items.get(itemId);
 
-        let content = '';
+      this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
+    }
+    else if (rollType == 'initiative') {
+      this.actor.rollInitiative({createCombatants: true});
+    }
+    else if (rollType == 'generalPerk') {
+      this.rollTypeToFunction['generalPerk'](element);
+      const itemId = element.closest('.item').dataset.itemId;
+      const item = this.actor.items.get(itemId);
 
-        if (dataset.rollType == 'influence') {
-          content += `Bond: ${item.system.bond || 'None'} <br>`;
-          content += `Hang Up: ${item.system.hangUp || 'None'} <br>`;
-          content += `Perk: ${item.system.perk || 'None'}`;
-        }
-        else { // General Perk
-          content += `Source: ${item.system.source || 'None'} <br>`;
-          content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
-          content += `Description: ${item.system.description || 'None'}`;
-        }
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${item.type}] ${item.name}`;
 
-        ChatMessage.create({
-          speaker: speaker,
-          rollMode: rollMode,
-          flavor: label,
-          content: content,
-        });
-      }
+      let content = `Source: ${item.system.source || 'None'} <br>`;
+        content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
+        content += `Description: ${item.system.description || 'None'}`;
+
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: content,
+      });
     }
   }
 }

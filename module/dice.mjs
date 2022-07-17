@@ -61,9 +61,10 @@ export class Dice {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} weapon   The weapon being used, if any.
    */
-  rollSkill(dataset, skillRollOptions, actor) {
-    let label = this._getSkillRollLabel(dataset);
+  rollSkill(dataset, skillRollOptions, actor, weapon) {
+    let label = weapon ? this._getWeaponRollLabel(dataset, weapon) : this._getSkillRollLabel(dataset);
     const rolledSkill = dataset.skill;
     const rolledEssence = this._config.skillToEssence[rolledSkill];
     const actorSkillData = actor.getRollData().skills;
@@ -103,6 +104,28 @@ export class Dice {
       : this._i18n.localize(this._config.skills[rolledSkill]);
     const rollingForStr = this._i18n.localize(this._config.rollingFor)
     return `${rollingForStr} ${rolledSkillStr}`;
+  }
+
+  /**
+   * Create weapon roll label.
+   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @returns {String}   The resultant roll label.
+   * @param {Item} weapon   The weapon being used.
+   * @private
+   */
+   _getWeaponRollLabel(dataset, weapon) {
+    const rolledSkill = dataset.skill;
+    const rolledSkillStr = this._i18n.localize(this._config.skills[rolledSkill]);
+    const attackRollStr = this._i18n.localize(this._config.attackRoll)
+    const effectStr = this._i18n.localize(this._config.effect)
+    const alternateEffectsStr = this._i18n.localize(this._config.alternateEffects)
+    const noneStr = this._i18n.localize(this._config.none)
+
+    let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})<br>`;
+    label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
+    label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}`;
+
+    return label;
   }
 
   /**
