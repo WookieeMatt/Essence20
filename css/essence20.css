@@ -199,6 +199,22 @@
   grid-column-end: span 12;
 }
 
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+
+
 .flex-group-center,
 .flex-group-left,
 .flex-group-right {
@@ -1347,4 +1363,26 @@ form .notes, form .hint {
 
 .essence20 .npc-sheet-container-2 {
   grid-area: npc-stat-1;
+}
+
+.essence20 .chip{
+  border-radius: 10px;
+  border: 3px solid;
+  border-style: outset;
+  /*border-color:  rgb(0, 0, 0);*/
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 2px;
+  margin-right: 3px;
+  background-color: #4a4848;
+  width: fit-content;
+  height: fit-content;
+  text-size-adjust: 8;
+  /*box-shadow: 2px 2px 0 #0a0a0a;*/
+}
+
+.essence20 .chip-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
