@@ -13,45 +13,29 @@
   {{#each @root.armors as |armor|}}
   <ol class="items-list">
     <li class="item flexrow" data-item-id="{{armor._id}}" style="margin-left: 0px;">
-      <div class="item-name" style="width: 64px;">
-        <input class="inline-edit" data-field="name" type="text" name="armor.{{@index}}.name" value="{{armor.name}}" placeholder="{{ localize 'E20.name' }}"/>
-      </div>
-      <div class="item-name" style="width: 95px;">
-        <select class="inline-edit" data-field="system.availability" name="armors.{{@index}}.availability">
-          {{#select armor.system.availability}}
-          {{#each @root.config.availabilities as |name type|}}
-          <option value="{{type}}">{{localize name}}</option>
-          {{/each}}
-          {{/select}}
-        </select>
-      </div>
-      <div class="item-name" style="width: 95px;">
-        <select class="inline-edit" data-field="system.classification" name="armors.{{@index}}.classification">
-          {{#select armor.system.classification}}
-          {{#each @root.config.armorClassifications as |name type|}}
-          <option value="{{type}}">{{localize name}}</option>
-          {{/each}}
-          {{/select}}
-        </select>
-      </div>
-      <div class="item-name" style="width: 89px;">
-        <select class="inline-edit" data-field="system.trait" name="armors.{{@index}}.trait">
-          {{#select armor.system.trait}}
-          {{#each @root.config.armorTraits as |name type|}}
-          <option value="{{type}}">{{localize name}}</option>
-          {{/each}}
-          {{/select}}
-        </select>
-      </div>
-      <div class="item-name" style="width: 116px;">
-        <input class="inline-edit" data-field="system.effect" type="text" name="armor.{{@index}}.effect" value="{{armor.system.effect}}" data-dtype="Number" style="width: 60px;"/>
-        <div class="item-name" style="width: 114px;">{{localize 'E20.equipped'}}</div>
-        <input class="inline-edit" data-field="system.equipped" type="checkbox" name="armor.{{@index}}.equipped" style="margin-left: 0px; margin-right: 0px" {{checked armor.system.equipped}}/>
-      </div>
+      <details>
+        <summary class="flexrow">
+          <input class="inline-edit" data-field="data.equipped" type="checkbox" name="armor.{{@index}}.equipped"
+            {{checked armor.data.equipped}} />
+          {{armor.name}}
+        </summary>
+        <div class="expand-details">
+          <span>{{{armor.system.description}}}</span>
+          <div class="chip-section">
+            <div class="chip">
+              {{localize (concat 'E20.availabilities.' armor.system.availability)}}
+            </div>
+            <div class="chip">
+              {{localize (concat 'E20.armorClassifications.' armor.system.classification)}}
+            </div>
+          </div>
+        </div>
+      </details>
       <div class="item-controls">
+        <a class="item-control item-edit" title="{{localize 'E20.editArmor'}}"><i class="fas fa-edit"></i></a>
         <a class="item-control item-delete" title="{{localize 'E20.deleteArmor'}}"><i class="fas fa-trash"></i></a>
       </div>
     </li>
-  {{/each}}
+    {{/each}}
   </ol>
 </div>
