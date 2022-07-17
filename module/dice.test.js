@@ -34,6 +34,47 @@ describe("_getSkillRollLabel", () => {
   });
 });
 
+/* _getWeaponRollLabel */
+describe("_getWeaponRollLabel", () => {
+  test("weapon roll", () => {
+    const dataset = {
+      skill: 'athletics',
+    };
+    const weapon = {
+      name: 'Zeo Power Clubs',
+      system: {
+        effect: "Some effect",
+        alternateEffects: "Some alternate effects",
+      },
+    };
+    const expected =
+     "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.strength.athletics)<br>" +
+     "<b>E20.effect</b> - Some effect<br>" +
+     "<b>E20.alternateEffects</b> - Some alternate effects";
+
+    expect(dice._getWeaponRollLabel(dataset, weapon)).toEqual(expected);
+  });
+
+  test("no effects", () => {
+    const dataset = {
+      skill: 'athletics',
+    };
+    const weapon = {
+      name: 'Zeo Power Clubs',
+      system: {
+        effect: "",
+        alternateEffects: "",
+      },
+    };
+    const expected =
+     "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.strength.athletics)<br>" +
+     "<b>E20.effect</b> - E20.none<br>" +
+     "<b>E20.alternateEffects</b> - E20.none";
+
+    expect(dice._getWeaponRollLabel(dataset, weapon)).toEqual(expected);
+  });
+});
+
 /* _getFinalShift */
 describe("_getFinalShift", () => {
   const initialShift = 'd20';
