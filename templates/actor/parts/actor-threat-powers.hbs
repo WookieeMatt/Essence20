@@ -7,12 +7,12 @@
   <li class="item flexrow" data-item-id="{{power._id}}">
     <div class="item-name">
       <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name" value="{{power.name}}" placeholder="{{ localize 'E20.name' }}"/>
-      <input class="inline-edit" data-field="data.actionType" type="text" name="power.{{@index}}.actionType" value="{{power.data.actionType}}" placeholder="{{ localize 'E20.actionType' }}"/>
-      <input class="inline-edit" data-field="data.charges" type="number" name="power.{{@index}}.charges" value="{{power.data.charges}}" placeholder="{{ localize 'E20.numCharges' }}"/>
-      <input class="inline-edit" data-field="data.cost" type="number" name="power.{{@index}}.cost" value="{{power.data.cost}}" placeholder="{{ localize 'E20.cost' }}"/>
-      <textarea class="inline-edit" data-field="data.description" name="power.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{power.data.description}}</textarea>
+      <input class="inline-edit" data-field="system.actionType" type="text" name="power.{{@index}}.actionType" value="{{power.system.actionType}}" placeholder="{{ localize 'E20.actionType' }}"/>
+      <input class="inline-edit" data-field="system.charges" type="number" name="power.{{@index}}.charges" value="{{power.system.charges}}" placeholder="{{ localize 'E20.numCharges' }}"/>
+      <input class="inline-edit" data-field="system.cost" type="number" name="power.{{@index}}.cost" value="{{power.system.cost}}" placeholder="{{ localize 'E20.cost' }}"/>
+      <textarea class="inline-edit" data-field="system.description" name="power.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{power.system.description}}</textarea>
       <span>{{localize 'E20.limited'}}</span>
-        <input class="inline-edit" data-field="data.limited" type="checkbox" name="power.limited" {{checked power.data.limited}}/>
+        <input class="inline-edit" data-field="system.limited" type="checkbox" name="power.limited" {{checked power.system.limited}}/>
     </div>
     <div class="item-controls">
       <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i class="fas fa-trash"></i></a>
