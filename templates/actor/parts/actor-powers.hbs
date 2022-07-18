@@ -15,10 +15,8 @@
   <span class="resource flex-group-center">
     <h1>{{localize 'E20.powers'}}</h1>
   </span>
-  <a class="item-create" data-type="power" title="{{ localize 'E20.addPower' }}">
-    <i class="fas fa-plus"></i>
-  </a>
-  <div>
+  <a class="item-create" data-type="power" title="{{ localize 'E20.addPower' }}"><i class="fas fa-plus"></i></a>
+  <ol class="items-list">
     {{#each @root.powers as |power|}}
       <li class="item flexrow" data-item-id="{{power._id}}">
         <details>
@@ -38,5 +36,5 @@
         </div>
       </li>
     {{/each}}
-  </div>
+  </ol>
 </div>

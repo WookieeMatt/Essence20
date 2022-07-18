@@ -4,12 +4,11 @@
       <div class="flexrow">
         <div class="item-name flexrow">{{localize 'E20.weapons'}}</div>
         <div class="item-controls">
-          <a class="item-create" data-type="weapon" title="{{ localize 'E20.addWeapon' }}"><i class="fas fa-plus"></i>
-          </a>
+          <a class="item-create" data-type="weapon" title="{{ localize 'E20.addWeapon' }}"><i class="fas fa-plus"></i></a>
         </div>
       </div>
     </li>
-    </ol>
+  </ol>
   <ol class="items-list">
     {{#each @root.weapons as |weapon|}}
       <li class="item flexrow" data-item-id="{{weapon._id}}">
