@@ -16,6 +16,9 @@
           {{item.name}}
         </summary>
         <div class="expand-details">
+          {{#> additional-expand-details item=item}}
+            {{!-- Custom expanded details here --}}
+          {{/additional-expand-details}}
           <div>{{{item.system.description}}}</div>
         </div>
       </details>
