@@ -15,6 +15,9 @@
       <li class="item flexrow" data-item-id="{{weapon._id}}">
         <details>
           <summary class="flexrow">
+            <div class="item-image">
+              <a class="rollable" data-roll-type="weapon" data-skill="{{weapon.system.classification.skill}}"><i class="fas fa-dice-d20"></i></a>
+            </div>
             <input class="inline-edit" data-field="system.equipped" type="checkbox" name="weapon.{{@index}}.equipped" {{checked weapon.system.equipped}}/>
             {{weapon.name}}
           </summary>
