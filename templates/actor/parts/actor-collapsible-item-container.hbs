@@ -11,7 +11,10 @@
       <details>
         <summary class="flexrow">
           <div class="item-image">
-            <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
+            {{#> roll-button item=item}}
+              {{!-- Custom roll button here, or use default below --}}
+              <a class="rollable" data-roll-type={{item.type}}><i class="fas fa-dice-d20"></i></a>
+            {{/roll-button}}
           </div>
           {{item.name}}
         </summary>
