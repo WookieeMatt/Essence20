@@ -1,10 +1,10 @@
 <div class="collapsible-item-container">
-  <span class="resource flex-group-center">
-    <h3>{{localize title}}</h3>
-  </span>
-  <a class="item-create" data-type={{dataType}} title="{{ localize 'E20.add' }}">
-    <i class="fas fa-plus"></i>
-  </a>
+  <div class="resource flex-group-center">
+    {{localize title}}
+    <a class="item-create" data-type={{dataType}} title="{{ localize 'E20.add' }}">
+      <i class="fas fa-plus"></i>
+    </a>
+  </div>
   <ol class="items-list">
     {{#each items as |item|}}
     <li class="item flexrow" data-item-id="{{item._id}}">
