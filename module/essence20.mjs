@@ -80,6 +80,10 @@ Handlebars.registerHelper('sum', function() {
   return total;
 });
 
+Handlebars.registerHelper('isdefined', function (value) {
+  return value !== undefined;
+});
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */

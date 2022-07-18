@@ -16,6 +16,9 @@
               <a class="rollable" data-roll-type={{item.type}}><i class="fas fa-dice-d20"></i></a>
             {{/roll-button}}
           </div>
+          {{#if (isdefined item.system.equipped)}}
+            <input class="inline-edit" data-field="system.equipped" type="checkbox" name="armor.{{@index}}.equipped" {{checked item.system.equipped}} />
+          {{/if}}
           {{item.name}}
         </summary>
         <div class="expand-details">
