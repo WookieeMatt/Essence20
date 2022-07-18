@@ -1,5 +1,5 @@
-import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
-import {Dice} from "../dice.mjs";
+import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { Dice } from "../dice.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -106,12 +106,13 @@ export class Essence20ActorSheet extends ActorSheet {
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
+    const zordCombiners = [];
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
-      switch(itemType) {
+      switch (itemType) {
         case 'armor':
           if (i.data.equipped) {
             equippedArmorEffect += parseInt(i.data.effect);
@@ -153,6 +154,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'weapon':
           weapons.push(i);
           break;
+        case 'zordCombiner':
+          zordCombiners.push(i);
+          break;
       };
     }
 
@@ -171,6 +175,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.threatPowers = threatPowers;
     context.traits = traits;
     context.weapons = weapons;
+    context.zordCombiners = zordCombiners;
   }
 
   /* -------------------------------------------- */
@@ -247,7 +252,7 @@ export class Essence20ActorSheet extends ActorSheet {
     delete itemData.data["type"];
 
     // Finally, create the item!
-    return await Item.create(itemData, {parent: this.actor});
+    return await Item.create(itemData, { parent: this.actor });
   }
 
   /**
@@ -255,16 +260,16 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-   async _onInlineEdit(event) {
+  async _onInlineEdit(event) {
     event.preventDefault();
-      let element = event.currentTarget;
-      let itemId = element.closest(".item").dataset.itemId;
-      let item = this.actor.items.get(itemId);
-      let field = element.dataset.field;
-      let newValue = element.type == 'checkbox' ? element.checked : element.value;
+    let element = event.currentTarget;
+    let itemId = element.closest(".item").dataset.itemId;
+    let item = this.actor.items.get(itemId);
+    let field = element.dataset.field;
+    let newValue = element.type == 'checkbox' ? element.checked : element.value;
 
-      return item.update({ [field]: newValue });
-   }
+    return item.update({ [field]: newValue });
+  }
 
   /**
    * Handle clickable rolls.
@@ -299,7 +304,7 @@ export class Essence20ActorSheet extends ActorSheet {
         this._dice.rollSkill(dataset, skillRollOptions, this.actor);
       }
       else if (dataset.rollType == 'initiative') {
-        this.actor.rollInitiative({createCombatants: true});
+        this.actor.rollInitiative({ createCombatants: true });
       }
       else if (['influence', 'generalPerk'].includes(dataset.rollType)) {
         const itemId = element.closest('.item').dataset.itemId;

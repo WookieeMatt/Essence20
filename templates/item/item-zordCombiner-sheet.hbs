@@ -16,14 +16,15 @@
     <div class="resource flex-group-center">
       <label for="data.health.value" class="resource-label">Health</label>
       <div class="resource-content flexrow flex-center flex-between">
-        <input type="text" name="data.health.value" value="{{data.health.value}}" data-dtype="Number"/>
+        <input type="text" name="data.health.value" value="{{data.health.value}}" data-dtype="Number" />
         <span> / </span>
-        <input type="text" name="data.health.max" value="{{data.health.max}}" data-dtype="Number"/>
+        <input type="text" name="data.health.max" value="{{data.health.max}}" data-dtype="Number" />
       </div>
     </div>
 
-    <input type="text" name="data.ranger" value="{{data.ranger}}" placeholder="{{ localize 'E20.ranger' }}"/>
-    <input type="text" name="data.skillNotes" value="{{data.skillNotes}}" placeholder="{{ localize 'E20.skillNotes' }}"/>
+    <input type="text" name="data.ranger" value="{{data.ranger}}" placeholder="{{ localize 'E20.ranger' }}" />
+    <input type="text" name="data.skillNotes" value="{{data.skillNotes}}"
+      placeholder="{{ localize 'E20.skillNotes' }}" />
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}

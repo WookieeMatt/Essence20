@@ -13,7 +13,7 @@
     "TypeGear": "Gear",
     "TypeWeapon": "Weapon",
     "TypeWeaponupgrade": "Weapon Upgrade",
-    "TypeZordcombiner": "Zord Combiner",
+    "TypeZordcombiner": "Zord Component",
     "TypeThreatpower": "Threat Power",
     "TypePerk": "Perk",
     "TypePower": "Power",
@@ -125,19 +125,19 @@
     "withAnEdge": "with an Edge",
     "withASnag": "with a Snag",
     "value": "Value",
-
+    "zordCombiner": "Zord Component",
+    "addzordCombiner": "Add a Zord Componenet",
+    "deletezordCombiner": "Remove Zord Component",
     "armorClassifications": {
       "non": "Non Armor",
       "light": "Light",
       "medium": "Medium",
       "heavy": "Heavy"
     },
-
     "armorTraits": {
       "deflective": "Deflective",
       "silent": "Silent"
     },
-
     "availabilities": {
       "automatic": "Automatic",
       "standard": "Standard",
@@ -147,7 +147,6 @@
       "unique": "Unique",
       "theoretical": "Theoretical"
     },
-
     "creatureSizes": {
       "small": "Small",
       "common": "Common",
@@ -161,27 +160,23 @@
       "extended3": "Extended III",
       "titanic": "Titanic"
     },
-
     "defenses": {
       "cleverness": "Cleverness",
       "evasion": "Evasion",
       "toughness": "Toughness",
       "willpower": "Willpower"
     },
-
     "effectShapes": {
       "circle": "Circle",
       "cone": "Cone",
       "square": "Square"
     },
-
     "essences": {
       "strength": "Strength",
       "speed": "Speed",
       "social": "Social",
       "smarts": "Smarts"
     },
-
     "essenceSkills": {
       "strength": {
         "athletics": "Athletics",
@@ -211,19 +206,16 @@
         "streetwise": "Streetwise"
       }
     },
-
     "lightRange": {
       "bright": "Bright",
       "dim": "Dim"
     },
-
     "movement": {
       "aerial": "Aerial",
       "aerialMin": "Aerial Min",
       "ground": "Ground",
       "swim": "Swim"
     },
-
     "rangers": {
       "black": "Black Ranger",
       "blue": "Blue Ranger",
@@ -233,7 +225,6 @@
       "yellow": "Yellow Ranger",
       "white": "White Ranger"
     },
-
     "shifts": {
       "criticalSuccess": "Critical Success",
       "autoSuccess": "Auto Success",
@@ -249,7 +240,6 @@
       "autoFail": "Auto Fail",
       "fumble": "Fumble"
     },
-    
     "weaponSizes": {
       "integrated": "Integrated",
       "sidearm": "Sidearm",
@@ -257,14 +247,12 @@
       "long": "Long",
       "heavy": "Heavy"
     },
-
     "weaponStyles": {
       "melee": "Melee",
       "energy": "Energy",
       "explosive": "Explosive",
       "projectile": "Projectile"
     },
-
     "weaponTraits": {
       "acid": "Acid",
       "amphibious": "Amphibious",

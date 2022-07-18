@@ -2,45 +2,58 @@
   <div class="sheet-header">
 
     {{!-- Actor Sheet Header --}}
-    <span class="resource flex-group-center">{{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}</span>
+    <span class="resource flex-group-center">{{>
+      "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}</span>
     <div class="pr-header-fields">
       <div class="resource flex-group-center">
         <h3>{{localize 'E20.threatLevel'}}</h3>
-        <input type="number" name="system.threatLevel" value="{{system.threatLevel}}"/>
+        <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
       </div>
-        <div class="npc-health-container">
-          <div class="resource flex-group-center">
-            <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
-            <div class="resource-content flexrow flex-center flex-between">
-              <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-              <span>/</span>
-              <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
-            </div>
+      <div class="npc-health-container">
+        <div class="resource flex-group-center">
+          <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
+          <div class="resource-content flexrow flex-center flex-between">
+            <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
+            <span>/</span>
+            <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
           </div>
-        </div>        
-    </div>   
+        </div>
+      </div>
+    </div>
   </div>
-<div class="npc-sheet-container-1">
-  {{!-- NPC Defenses --}}
-  <div class="npc-sheet-container-2">
-    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-  </div>
+  <div class="npc-sheet-container-1">
+    {{!-- NPC Defenses --}}
+    <div class="npc-sheet-container-2">
+      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+    </div>
 
-  <div class="npc-stats-container">
-        <div class="npc-stats-container-1">
-        <span class="resource flex-group-center"><h3>{{localize 'E20.movement.aerial'}}</h3></span><input class="essence-input" type="number" name="system.movement.aerial" value="{{system.movement.aerial}}" />
-        </div>
-        <div class="npc-stats-container-1">
-        <span class="resource flex-group-center"><h3>{{localize 'E20.movement.aerialMin'}}</h3></span><input class="essence-input" type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" />
-        </div>
-        <div class="npc-stats-container-1">
-        <span class="resource flex-group-center"><h3>{{localize 'E20.movement.ground'}}</h3></span><input class="essence-input" type="number" name="system.movement.ground" value="{{system.movement.ground}}" />
-        </div>
-        <div class="npc-stats-container-1">
-        <span class="resource flex-group-center"><h3>{{localize 'E20.movement.swim'}}</h3></span><input class="essence-input" type="number" name="system.movement.swim" value="{{system.movement.swim}}" />
-        </div>
+    <div class="npc-stats-container">
+      <div class="npc-stats-container-1">
+        <span class="resource flex-group-center">
+          <h3>{{localize 'E20.movement.aerial'}}</h3>
+        </span><input class="essence-input" type="number" name="system.movement.aerial"
+          value="{{system.movement.aerial}}" />
+      </div>
+      <div class="npc-stats-container-1">
+        <span class="resource flex-group-center">
+          <h3>{{localize 'E20.movement.aerialMin'}}</h3>
+        </span><input class="essence-input" type="number" name="system.movement.aerialMin"
+          value="{{system.movement.aerialMin}}" />
+      </div>
+      <div class="npc-stats-container-1">
+        <span class="resource flex-group-center">
+          <h3>{{localize 'E20.movement.ground'}}</h3>
+        </span><input class="essence-input" type="number" name="system.movement.ground"
+          value="{{system.movement.ground}}" />
+      </div>
+      <div class="npc-stats-container-1">
+        <span class="resource flex-group-center">
+          <h3>{{localize 'E20.movement.swim'}}</h3>
+        </span><input class="essence-input" type="number" name="system.movement.swim"
+          value="{{system.movement.swim}}" />
+      </div>
+    </div>
   </div>
-</div>
 
   {{!-- Need to add Skills ass dropdowns or hidable --}}
 
@@ -51,58 +64,64 @@
         {{> "systems/essence20/templates/actor/parts/actor-general-perks.hbs"}}
       </div>
 
-      <div class="npc-powers">
-        <span class="resource flex-group-center"><h1>{{localize 'E20.powers'}}</h1></span>
-          <a class="item-create" data-type="power" title="{{ localize 'E20.addPower' }}">
-              <i class="fas fa-plus"></i>
-          </a>
-          <div>
-              {{#each @root.powers as |power|}}
-              <li class="item flexrow" data-item-id="{{power._id}}">
-                  <div class="item-name">
-                  <div class="item-image">
-                      <a class="rollable" data-roll-type="power"><img src="{{power.img}}" title="{{power.name}}" width="24" height="24"/></a>
-                  </div>
-                  <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name" value="{{power.name}}" placeholder="{{ localize 'E20.name' }}"/>
-                  <textarea class="inline-edit" data-field="data.description" name="power.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{power.data.description}}</textarea>
-                  </div>
-                  <div class="item-controls">
-                      <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i class="fas fa-trash"></i></a>
-                  </div>
-              </li>
-              {{/each}}
-          </div>
-      </div>
-     </div> 
-
-     <div class="npc-abilities-2">
       <div class="npc-hangup">
-          <span class="resource flex-group-center"><h2>{{localize 'E20.hangUps'}}</h2></span>
-          <a class="item-create" data-type="hangUp" title="{{ localize 'E20.addHangUp' }}">
-            <i class="fas fa-plus"></i>
-          </a>
-          {{#each @root.hangUps as |hangUp|}}
-            <div class="item" data-item-id="{{hangUp._id}}">
-              <div class="item-image">
-                <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
-              </div>
-              <div class="item-name">
-                <input class="inline-edit" data-field="name" type="text" name="hangUp.{{@index}}.name" value="{{hangUp.name}}" placeholder="{{ localize 'E20.name' }}" />
-              </div>
-              <div class="item-controls">
-                <a class="item-control item-delete" title="{{localize 'E20.deleteHangUp'}}"><i class="fas fa-trash"></i></a>
-              </div>
-            </div>
-          {{/each}}
+        <span class="resource flex-group-center">
+          <h2>{{localize 'E20.hangUps'}}</h2>
+        </span>
+        <a class="item-create" data-type="hangUp" title="{{ localize 'E20.addHangUp' }}">
+          <i class="fas fa-plus"></i>
+        </a>
+        {{#each @root.hangUps as |hangUp|}}
+        <div class="item" data-item-id="{{hangUp._id}}">
+          <div class="item-image">
+            <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
+          </div>
+          <div class="item-name">
+            <input class="inline-edit" data-field="name" type="text" name="hangUp.{{@index}}.name"
+              value="{{hangUp.name}}" placeholder="{{ localize 'E20.name' }}" />
+          </div>
+          <div class="item-controls">
+            <a class="item-control item-delete" title="{{localize 'E20.deleteHangUp'}}"><i class="fas fa-trash"></i></a>
+          </div>
+        </div>
+        {{/each}}
       </div>
-      <div class="npc-traits">
-        {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
-      </div>
-     </div> 
     </div>
 
-   <div class="npc-weapons">
+    <div class="npc-abilities-2">
+      <div class="npc-powers">
+        <span class="resource flex-group-center">
+          <h1>{{localize 'E20.powers'}}</h1>
+        </span>
+        <a class="item-create" data-type="power" title="{{ localize 'E20.addPower' }}">
+          <i class="fas fa-plus"></i>
+        </a>
+        <div>
+          {{#each @root.powers as |power|}}
+          <li class="item flexrow" data-item-id="{{power._id}}">
+            <div class="item-name">
+              <div class="item-image">
+                <a class="rollable" data-roll-type="power"><img src="{{power.img}}" title="{{power.name}}" width="24"
+                    height="24" /></a>
+              </div>
+              <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name"
+                value="{{power.name}}" placeholder="{{ localize 'E20.name' }}" />
+              <textarea class="inline-edit" data-field="data.description" name="power.{{@index}}.description"
+                placeholder="{{localize 'E20.description'}}">{{power.data.description}}</textarea>
+            </div>
+            <div class="item-controls">
+              <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i
+                  class="fas fa-trash"></i></a>
+            </div>
+          </li>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="npc-weapons">
     {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-  </div> 
+  </div>
 
 </form>
