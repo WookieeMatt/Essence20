@@ -65,8 +65,7 @@
     <h3>{{localize 'E20.conditioning'}}</h3>
     <input class="essence-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
     {{#each system.skills.strength as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill=skill
-    fields=fields}}
+    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill=skill fields=fields}}
     {{/each}}
   </div>
 
