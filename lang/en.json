@@ -27,6 +27,7 @@
   },
   "E20": {
     "actionType": "Action Type",
+    "add": "Add",
     "addInfluence": "Add Influence",
     "addFeature": "Add Feature",
     "addPerk": "Add Perk",
@@ -54,6 +55,7 @@
     "custom": "Custom",
     "damages": "Damages",
     "defensesStr": "Defenses",
+    "delete": "Delete",
     "deleteArmor": "Delete Armor",
     "deleteFeature": "Delete Feature",
     "deleteTrait": "Delete Trait",
@@ -63,6 +65,7 @@
     "deletePower": "Delete Power",
     "deleteSpecialization": "Delete Specialization",
     "description": "Description",
+    "edit": "Edit",
     "editGear": "Edit Gear",
     "editWeapon": "Edit Weapon",
     "effect": "Effect",

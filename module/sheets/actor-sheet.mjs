@@ -282,18 +282,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Handle type-specific rolls.
-    if (['item', 'power'].includes(rollType)) {
-      const itemId = element.closest('.item').dataset.itemId;
-      const item = this.actor.items.get(itemId);
-
-      // If a Power is being used, decrement Personal Power
-      if (rollType == 'power') {
-        await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
-      }
-
-      if (item) return item.roll();
-    }
-    else if (rollType == 'skill') {
+    if (rollType == 'skill') {
       const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
       if (skillRollOptions.cancelled) {
@@ -318,7 +307,6 @@ export class Essence20ActorSheet extends ActorSheet {
       this.actor.rollInitiative({createCombatants: true});
     }
     else if (rollType == 'generalPerk') {
-      this.rollTypeToFunction['generalPerk'](element);
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);
 
@@ -337,6 +325,17 @@ export class Essence20ActorSheet extends ActorSheet {
         flavor: label,
         content: content,
       });
+    }
+    else { // Handle any other roll type
+      const itemId = element.closest('.item').dataset.itemId;
+      const item = this.actor.items.get(itemId);
+
+      // If a Power is being used, decrement Personal Power
+      if (rollType == 'power') {
+        await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
+      }
+
+      if (item) return item.roll();
     }
   }
 }
