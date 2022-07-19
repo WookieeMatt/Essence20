@@ -1,5 +1,5 @@
 <div class="collapsible-item-container">
-  <div class="resource flex-group-center">
+  <div class="flex-group-center">
     {{localize title}}
     <a class="item-create" data-type={{dataType}} title="{{ localize 'E20.add' }}">
       <i class="fas fa-plus"></i>
@@ -10,16 +10,20 @@
     <li class="item flexrow" data-item-id="{{item._id}}">
       <details>
         <summary class="flexrow">
-          <div class="item-image">
+          <div class="item-image" style="flex-grow: 0;">
             {{#> roll-button item=item}}
               {{!-- Custom roll button here, or use default below --}}
               <a class="rollable" data-roll-type={{item.type}}><i class="fas fa-dice-d20"></i></a>
             {{/roll-button}}
           </div>
           {{#if (isdefined item.system.equipped)}}
-            <input class="inline-edit" data-field="system.equipped" type="checkbox" name="armor.{{@index}}.equipped" {{checked item.system.equipped}} />
+            <div style="flex-grow: 0;">
+              <input class="inline-edit" data-field="system.equipped" type="checkbox" name="armor.{{@index}}.equipped" {{checked item.system.equipped}} />
+            </div>
           {{/if}}
-          {{item.name}}
+          <div>
+            {{item.name}}
+          </div>
         </summary>
         <div class="expand-details">
           {{#> additional-expand-details item=item}}
