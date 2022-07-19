@@ -21,12 +21,22 @@
   <div class="common-container-2">
     {{!-- Movement --}}
     <div class="stats-container">
-      {{#each system.movement as |value type|}}
-      <div class="flexrow flex-between">
-        <div>{{localize (concat 'E20.movement.' type)}}</div>
-        <div><input class="essence-input" type="number" name="{{type}}" value="{{value}}" /></div>
+      <div class="flexrow flex-group-center">
+        <div>{{localize 'E20.movement.ground'}}</div>
+        <div><input class="essence-input" type="number" name="system.movement.ground" value="{{system.movement.ground}}" /></div>
       </div>
-      {{/each}}
+      <div class="flexrow flex-group-center">
+        <div>{{localize 'E20.movement.swim'}}</div>
+        <div><input class="essence-input" type="number" name="system.movement.swim" value="{{system.movement.swim}}" /></div>
+      </div>
+      <div class="flexrow flex-group-center">
+        <div>{{localize 'E20.movement.aerial'}}</div>
+        <div><input class="essence-input" type="number" name="system.movement.aerial" value="{{system.movement.aerial}}" /></div>
+      </div>
+      <div class="flexrow flex-group-center">
+        <div>{{localize 'E20.movement.aerialMin'}}</div>
+        <div><input class="essence-input" type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" /></div>
+      </div>
     </div>
     {{!-- Health --}}
     <div class="health-container">
