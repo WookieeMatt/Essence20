@@ -19,15 +19,14 @@
   </div>
 
   <div class="common-container-2">
-    <div class="stats-container flex-group-center flexrow">
-      <span>{{localize 'E20.movement.aerial'}}</span><input class="essence-input" type="number"
-        name="system.movement.aerial" value="{{system.movement.aerial}}" />
-      <span>{{localize 'E20.movement.aerialMin'}}</span><input class="essence-input" type="number"
-        name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" />
-      <span>{{localize 'E20.movement.ground'}}</span><input class="essence-input" type="number"
-        name="system.movement.ground" value="{{system.movement.ground}}" />
-      <span>{{localize 'E20.movement.swim'}}</span><input class="essence-input" type="number"
-        name="system.movement.swim" value="{{system.movement.swim}}" />
+    {{!-- Movement --}}
+    <div class="stats-container">
+      {{#each system.movement as |value type|}}
+      <div class="flexrow flex-between">
+        <div>{{localize (concat 'E20.movement.' type)}}</div>
+        <div><input class="essence-input" type="number" name="{{type}}" value="{{value}}" /></div>
+      </div>
+      {{/each}}
     </div>
     {{!-- Health --}}
     <div class="health-container">
@@ -46,8 +45,8 @@
 <div class="skills-label-container">
   <h3 class="skills-label">{{localize 'E20.skills'}}</h3>
 </div>
-<div class="skillscontainer">
 
+<div class="skillscontainer">
   <div class="skills-container">
     <div class="flexrow">
       <h4 class="skill-name">{{localize 'E20.essences.strength'}}</h4>
