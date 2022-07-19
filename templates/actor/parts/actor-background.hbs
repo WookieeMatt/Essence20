@@ -1,67 +1,14 @@
 <div class="origin-entries origin-notes flexcol">
-   <span class="resource flex-group-center"><h3 class="origin-title">{{ localize "E20.origin" }}</h3></span>
-    {{editor content=system.origins target="system.origins" button=true owner=owner editable=editable}}
+  <span class="resource flex-group-center">
+    <h3 class="origin-title">{{ localize "E20.origin" }}</h3>
+  </span>
+  {{editor content=system.origins target="system.origins" button=true owner=owner editable=editable}}
 </div>
+
 <hr>
+
 <div class="origin-info">
-  <div class="origin-bonds">
-      <span class="resource flex-group-center"><h3>{{localize 'E20.bonds'}}</h3></span>
-      <a class="item-create" data-type="bond" title="{{ localize 'E20.addBond' }}">
-        <i class="fas fa-plus"></i>
-      </a>
-      {{#each @root.bonds as |bond|}}
-        <div class="item" data-item-id="{{bond._id}}">
-          <div class="item-image">
-            <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
-          </div>
-          <div class="item-name">
-            <input class="inline-edit" data-field="name" type="text" name="bond.{{@index}}.name" value="{{bond.name}}" placeholder="{{ localize 'E20.name' }}" />
-          </div>
-          <textarea class="inline-edit" data-field="system.description" name="bond.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{bond.system.description}}</textarea>
-          <div class="item-controls">
-            <a class="item-control item-delete" title="{{localize 'E20.deleteBond'}}"><i class="fas fa-trash"></i></a>
-          </div>
-        </div>
-      {{/each}}
-    </div>
-  <div class="origin-hangups">
-    <span class="resource flex-group-center"><h3>{{localize 'E20.hangUps'}}</h3></span>
-    <a class="item-create" data-type="hangUp" title="{{ localize 'E20.addHangUp' }}">
-      <i class="fas fa-plus"></i>
-    </a>
-    {{#each @root.hangUps as |hangUp|}}
-      <div class="item" data-item-id="{{hangUp._id}}">
-        <div class="item-image">
-          <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
-        </div>
-        <div class="item-name">
-          <input class="inline-edit" data-field="name" type="text" name="hangUp.{{@index}}.name" value="{{hangUp.name}}" placeholder="{{ localize 'E20.name' }}" />
-        </div>
-        <textarea class="inline-edit" data-field="system.description" name="hangUp.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{hangUp.system.description}}</textarea>
-        <div class="item-controls">
-          <a class="item-control item-delete" title="{{localize 'E20.deleteHangUp'}}"><i class="fas fa-trash"></i></a>
-        </div>
-      </div>
-    {{/each}}
-  </div>
-  <div class="origin-perks">
-    <span class="resource flex-group-center"><h3>{{localize 'E20.perks'}}</h3></span>
-    <a class="item-create" data-type="perk" title="{{ localize 'E20.addPerk' }}">
-      <i class="fas fa-plus"></i>
-    </a>
-    {{#each @root.perks as |perk|}}
-      <div class="item" data-item-id="{{perk._id}}">
-        <div class="item-image">
-          <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
-        </div>
-        <div class="item-name">
-          <input class="inline-edit" data-field="name" type="text" name="perk.{{@index}}.name" value="{{perk.name}}" placeholder="{{ localize 'E20.name' }}" />
-        </div>
-        <textarea class="inline-edit" data-field="system.description" name="perk.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{perk.system.description}}</textarea>
-        <div class="item-controls">
-          <a class="item-control item-delete" title="{{localize 'E20.deletePerk'}}"><i class="fas fa-trash"></i></a>
-        </div>
-      </div>
-    {{/each}}
-  </div>  
+  {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.bonds' dataType='bond'}}
+  {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.hangUps' dataType='hangUp'}}
+  {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.perks title='E20.perks' dataType='perk'}}
 </div>
