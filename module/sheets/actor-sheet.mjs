@@ -326,7 +326,7 @@ export class Essence20ActorSheet extends ActorSheet {
         content: content,
       });
     }
-    else {
+    else { // Handle any other roll type
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);
 
