@@ -477,6 +477,7 @@ input[type="text"] {
 .essence20 .essence-input[type="number"] {
   color: white;
   text-align: center;
+  max-width: 20px;
 }
 
 form .notes,
@@ -986,8 +987,6 @@ form .hint {
 .essence20 .skill-name {
   font-size: 1.5em;
   color: white;
-  justify-content: center;
-  display: flex;
 }
 
 .essence20 .skill-roll {
