@@ -5,18 +5,18 @@
   </select>
 </div>
 
-<div style="margin-left: 10px;">
+<div style="margin-left: 10px; margin-right: 10px;">
   {{!-- Mod and Spec inputs --}}
-  <span>
-    <label for="system.skills.{{essence}}.{{skill}}.modifier" class="skill-mod-label">{{localize 'E20.mod'}}</label>
+  <div>
+    <span for="system.skills.{{essence}}.{{skill}}.modifier" class="skill-mod-label">{{localize 'E20.mod'}}</span>
     <input style="width: 20px;" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
-    <label for="system.skills.{{essence}}.{{skill}}.isSpecialized" class="skill-mod-label">{{localize 'E20.spec'}}</label>
+    <span for="system.skills.{{essence}}.{{skill}}.isSpecialized" class="skill-mod-label">{{localize 'E20.spec'}}</span>
     <input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
-  </span>
+  </div>
 
   {{!-- Specializations header --}}
-  <div style="align-items: center;">
-    <span class="spec-label" style="flex-grow: 0;">{{localize 'E20.specializations'}}</span>
+  <div style="align-items: center; margin-top: 5px; margin-bottom: 5px;">
+    <span class="skill-mod-label" style="flex-grow: 0;">{{localize 'E20.specializations'}}</span>
     <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.addSpecialization' }}">
       <i class="fas fa-plus"></i>
     </a>
@@ -39,4 +39,5 @@
     {{/each}}
   </ol>
 </div>
+
 <hr>
