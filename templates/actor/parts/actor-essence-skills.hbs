@@ -1,7 +1,7 @@
 {{!-- Skill header and shift selector --}}
 <div class="flexrow flex-between skill-roll" style="align-items: center;">
   <a class="rollable" data-roll-type="skill" data-skill="{{skill}}">{{localize (concat 'E20.essenceSkills.' essence '.' skill)}}</a>
-  <select class="shift-select" name="system.skills.{{essence}}.{{skill}}.shift">
+  <select class="shift-select" style="margin-right: 5px;" name="system.skills.{{essence}}.{{skill}}.shift">
     {{selectOptions @root.config.shifts selected=fields.shift localize=true}}
   </select>
 </div>
