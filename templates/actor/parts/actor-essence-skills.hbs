@@ -11,12 +11,14 @@
 
 <div style="margin-left: 10px; margin-right: 10px;">
   {{!-- Mod and Spec inputs --}}
+  {{#ifEquals @root.actor.type 'npc'}}
   <div>
     <span for="system.skills.{{essence}}.{{skill}}.modifier" class="skill-mod-label">{{localize 'E20.mod'}}</span>
     <input style="width: 20px;" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
     <span for="system.skills.{{essence}}.{{skill}}.isSpecialized" class="skill-mod-label">{{localize 'E20.spec'}}</span>
     <input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
   </div>
+  {{/ifEquals}}
 
   {{!-- Specializations header --}}
   <div style="align-items: center; margin-top: 5px; margin-bottom: 5px;">
