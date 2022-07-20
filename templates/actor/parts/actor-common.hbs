@@ -58,21 +58,21 @@
 
 <div class="skillscontainer">
   <div class="skills-container">
-    <div style="text-align: center; margin: 10px;">
+    <div style="text-align: center; margin-top: 5px;">
       <span class="skill-name" style="vertical-align:middle">{{localize 'E20.essences.strength'}}</span>
       <input class="essence-input" style="vertical-align:middle" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
+    </div>
+    <div style="text-align: center; margin: 5px;">
+      <span style="text-align:right;">{{localize 'E20.conditioning'}}</span>
+      <input class="essence-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
     </div>
     {{#each system.skills.strength as |fields skill|}}
     {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill=skill fields=fields}}
     {{/each}}
-    <div style="text-align: center;">
-      <span style="text-align:right;">{{localize 'E20.conditioning'}}</span>
-      <input class="essence-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
-    </div>
   </div>
 
   <div class="skills-container">
-    <div style="text-align: center; margin: 10px;">
+    <div style="text-align: center; margin-top: 5px;">
       <span class="skill-name" style="vertical-align:middle">{{localize 'E20.essences.speed'}}</span>
       <input class="essence-input" style="vertical-align:middle" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
     </div>
@@ -82,7 +82,7 @@
   </div>
 
   <div class="skills-container">
-    <div style="text-align: center; margin: 10px;">
+    <div style="text-align: center; margin-top: 5px;">
       <span class="skill-name" style="vertical-align:middle">{{localize 'E20.essences.smarts'}}</span>
       <input class="essence-input" style="vertical-align:middle" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" />
     </div>
@@ -92,7 +92,7 @@
   </div>
 
   <div class="skills-container">
-    <div style="text-align: center; margin: 10px;">
+    <div style="text-align: center; margin-top: 5px;">
       <span class="skill-name" style="vertical-align:middle">{{localize 'E20.essences.social'}}</span>
       <input class="essence-input" style="vertical-align:middle" type="number" name="system.essences.social" value="{{system.essences.social}}" />
     </div>
