@@ -1,7 +1,7 @@
 <div class="common-container">
   <div class="common-container-1">
-    {{!-- Essences/Skills --}}
     {{> "systems/essence20/templates/actor/parts/actor-character.hbs"}}
+
     {{!-- Initiative --}}
     <div class="initiative-container">
       <div class="initiative-header">
@@ -57,6 +57,7 @@
 </div>
 
 <div class="skillscontainer">
+  {{!-- Strength --}}
   <div class="skills-container">
     <div class="essence-header">
       <span class="essence-label">{{localize 'E20.essences.strength'}}</span>
@@ -71,6 +72,7 @@
     {{/each}}
   </div>
 
+  {{!-- Speed --}}
   <div class="skills-container">
     <div class="essence-header">
       <span class="essence-label">{{localize 'E20.essences.speed'}}</span>
@@ -81,6 +83,7 @@
     {{/each}}
   </div>
 
+  {{!-- Smarts --}}
   <div class="skills-container">
     <div class="essence-header">
       <span class="essence-label">{{localize 'E20.essences.smarts'}}</span>
@@ -91,6 +94,7 @@
     {{/each}}
   </div>
 
+  {{!-- Social --}}
   <div class="skills-container">
     <div class="essence-header">
       <span class="essence-label">{{localize 'E20.essences.social'}}</span>
