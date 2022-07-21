@@ -12,7 +12,7 @@
     <select class="shift-select" style="margin-top: 5px;" name="system.skills.{{essence}}.{{skill}}.shift">
       {{selectOptions @root.config.shifts selected=fields.shift localize=true}}
     </select>
-    <span for="system.skills.{{essence}}.{{skill}}.modifier" class="skill-mod-label">+</span>
+    <span for="system.skills.{{essence}}.{{skill}}.modifier">+</span>
     <input class="essence-input" style="width: 20px;" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
     {{#ifEquals @root.actor.type 'npc'}}
     <input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
@@ -30,8 +30,8 @@
   {{!-- Specializations list --}}
   <ol class="items-list"></ol>
     {{#each (lookup @root.specializations skill) as |specialization i|}}
-    <li class="item flexrow" style="margin-top: 5px;" data-item-id="{{specialization._id}}">
-      <div class="flexrow">
+    <li class="item" style="margin-top: 5px;" data-item-id="{{specialization._id}}">
+      <div class="flexrow" style="align-items: center; gap: 5px;">
         <div class="item-image" style="flex-grow: 0;">
           <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-specialization="{{specialization.name}}"><i class="fas fa-dice-d20"></i></a>
         </div>
