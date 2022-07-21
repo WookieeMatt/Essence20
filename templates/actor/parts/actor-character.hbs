@@ -1,9 +1,4 @@
 <div class="bonus-container">
-  <div class="essences">
-    {{#each system.essences as |value essence|}}
-    <span class="essences-skill">{{localize (concat 'E20.essences.' essence)}}</span><input class="essence-input" type="number" name="system.essences.{{essence}}" value="{{value}}" />
-    {{/each}}
-   </div>
   <div class="defense-container-1">
       <h3>{{localize 'E20.defensesStr'}}</h3>
       {{#each system.defenses.unmorphed as |value defense|}}

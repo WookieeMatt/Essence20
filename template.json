@@ -299,7 +299,7 @@
     ],
     "templates": {
       "itemDescription": {
-        "value": ""
+        "description": ""
       }
     },
     "armor": {
@@ -406,9 +406,15 @@
         "itemDescription"
       ]
     },
-    "bond": {},
-    "hangUp": {},
-    "perk": {},
+    "bond": {
+      "templates": ["itemDescription"]
+    },
+    "hangUp": {
+      "templates": ["itemDescription"]
+    },
+    "perk": {
+      "templates": ["itemDescription"]
+    },
     "specialization": {}
   }
 }

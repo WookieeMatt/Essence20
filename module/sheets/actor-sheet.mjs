@@ -309,6 +309,7 @@ export class Essence20ActorSheet extends ActorSheet {
       this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
     }
     else if (rollType == 'initiative') {
+
       this.actor.rollInitiative({ createCombatants: true });
     }
     else if (rollType == 'generalPerk') {
@@ -323,6 +324,7 @@ export class Essence20ActorSheet extends ActorSheet {
       let content = `Source: ${item.system.source || 'None'} <br>`;
       content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
       content += `Description: ${item.system.description || 'None'}`;
+
 
       ChatMessage.create({
         speaker: speaker,

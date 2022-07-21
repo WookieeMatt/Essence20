@@ -6,16 +6,22 @@
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
     {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
-    <span>{{localize 'E20.threatLevel'}}</span><input type="number" name="system.threatLevel" value="{{system.threatLevel}}"/>
+    <span>{{localize 'E20.threatLevel'}}</span><input type="number" name="system.threatLevel"
+      value="{{system.threatLevel}}" />
 
     <h3>Crew</h3>
-    <input type="text" name="system.crew.description" value="{{system.crew.description}}" placeholder="{{ localize 'E20.description' }}"/>
-    <span>{{localize 'E20.numDrivers'}}</span><input type="number" name="system.crew.numDrivers" value="{{system.crew.numDrivers}}"/>
-    <span>{{localize 'E20.numPassengers'}}</span><input type="number" name="system.crew.numPassengers" value="{{system.crew.numPassengers}}"/>
+    <input type="text" name="system.crew.description" value="{{system.crew.description}}"
+      placeholder="{{ localize 'E20.description' }}" />
+    <span>{{localize 'E20.numDrivers'}}</span><input type="number" name="system.crew.numDrivers"
+      value="{{system.crew.numDrivers}}" />
+    <span>{{localize 'E20.numPassengers'}}</span><input type="number" name="system.crew.numPassengers"
+      value="{{system.crew.numPassengers}}" />
 
     <h3>Firepoints</h3>
-    <input type="text" name="system.firepoints.description" value="{{system.firepoints.description}}" placeholder="{{ localize 'E20.description' }}"/>
-    <span>{{localize 'E20.firepoints'}}</span><input type="number" name="system.firepoints.value" value="{{system.firepoints.value}}"/>
+    <input type="text" name="system.firepoints.description" value="{{system.firepoints.description}}"
+      placeholder="{{ localize 'E20.description' }}" />
+    <span>{{localize 'E20.firepoints'}}</span><input type="number" name="system.firepoints.value"
+      value="{{system.firepoints.value}}" />
 
     {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
   </section>

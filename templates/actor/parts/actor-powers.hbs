@@ -1,34 +1,18 @@
+{{!-- Personal Power --}}
 <div class="powers-section">
-        {{!-- Personal Power --}}
-    <div class="resource flex-group-center">
-        <label for="system.personalPower.value" class="resource-label">{{localize 'E20.personalPower'}}</label>
-        <div class="resource-content flexrow flex-center flex-between">
-            <input type="number" name="system.personalPower.value" value="{{system.personalPower.value}}" />
-            <span> / </span>
-            <input type="number" name="system.personalPower.max" value="{{system.personalPower.max}}" />
-        </div>
+  <div class="resource flex-group-center">
+    <label for="system.personalPower.value" class="resource-label">{{localize 'E20.personalPower'}}</label>
+    <div class="resource-content flexrow flex-center flex-between">
+      <input type="number" name="system.personalPower.value" value="{{system.personalPower.value}}" />
+      <span> / </span>
+      <input type="number" name="system.personalPower.max" value="{{system.personalPower.max}}" />
     </div>
-</div>
-<div class="powers-section-1">
-   <span class="resource flex-group-center"><h1>{{localize 'E20.powers'}}</h1></span>
-    <a class="item-create" data-type="power" title="{{ localize 'E20.addPower' }}">
-        <i class="fas fa-plus"></i>
-    </a>
-    <div>
-        {{#each @root.powers as |power|}}
-        <li class="item flexrow" data-item-id="{{power._id}}">
-            <div class="item-name">
-            <div class="item-image">
-                <a class="rollable" data-roll-type="power"><img src="{{power.img}}" title="{{power.name}}" width="24" height="24"/></a>
-            </div>
-            <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name" value="{{power.name}}" placeholder="{{ localize 'E20.name' }}"/>
-            <textarea class="inline-edit" data-field="data.description" name="power.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{power.data.description}}</textarea>
-            </div>
-            <div class="item-controls">
-                <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i class="fas fa-trash"></i></a>
-            </div>
-        </li>
-        {{/each}}
-    </div>
+  </div>
 </div>
 
+{{!-- Powers --}}
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.powers' dataType='power'}}
+  {{#*inline "additional-expand-details" item}}
+    <div>{{localize 'E20.source'}}: {{item.system.source}}</div>
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
