@@ -1,27 +1,27 @@
 {{!-- Skill header and shift selector --}}
-<div class="flexrow skill-roll" style="align-items: center; flex-wrap: nowrap; background-color: #2436D4; margin-top: 5px">
-  <span class="item-image" style="flex-grow: 0; margin-right: 5px;">
+<div class="flexrow skill-header">
+  <span class="skill-roll">
     <a class="rollable" data-roll-type="skill" data-skill="{{skill}}"><i class="fas fa-dice-d20"></i></a>
   </span>
-  <span style="white-space: nowrap; overflow: hidden;">{{localize (concat 'E20.essenceSkills.' essence '.' skill)}}</span>
+  <span class="skill-name">{{localize (concat 'E20.essenceSkills.' essence '.' skill)}}</span>
 </div>
 
-<div style="margin-left: 10px; margin-right: 10px;">
+<div class="skill-body">
   {{!-- Mod and Spec inputs --}}
   <div>
-    <select class="shift-select" style="margin-top: 5px;" name="system.skills.{{essence}}.{{skill}}.shift">
+    <select class="shift-select" name="system.skills.{{essence}}.{{skill}}.shift">
       {{selectOptions @root.config.shifts selected=fields.shift localize=true}}
     </select>
     <span for="system.skills.{{essence}}.{{skill}}.modifier">+</span>
-    <input class="essence-input" style="width: 20px;" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
+    <input class="one-digit-input" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
     {{#ifEquals @root.actor.type 'npc'}}
     <input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
     {{/ifEquals}}
   </div>
 
   {{!-- Specializations header --}}
-  <div style="align-items: center; margin-top: 5px;">
-    <span class="skill-mod-label" style="flex-grow: 0;">{{localize 'E20.specializations'}}</span>
+  <div class="specializations-header">
+    <span>{{localize 'E20.specializations'}}</span>
     <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.addSpecialization' }}">
       <i class="fas fa-plus"></i>
     </a>
@@ -30,15 +30,15 @@
   {{!-- Specializations list --}}
   <ol class="items-list"></ol>
     {{#each (lookup @root.specializations skill) as |specialization i|}}
-    <li class="item" style="margin-top: 5px;" data-item-id="{{specialization._id}}">
+    <li style="margin-top: 5px;" data-item-id="{{specialization._id}}">
       <div class="flexrow" style="align-items: center; gap: 5px;">
-        <div class="item-image" style="flex-grow: 0;">
+        <span style="flex-grow: 0;">
           <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-specialization="{{specialization.name}}"><i class="fas fa-dice-d20"></i></a>
-        </div>
+        </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
-        <div class="item-controls" style="flex-grow: 0;">
+        <span style="flex-grow: 0;">
           <a class="item-control item-delete" title="{{localize 'E20.deleteSpecialization'}}"><i class="fas fa-trash"></i></a>
-        </div>
+        </span>
       </div>
     </li>
     {{/each}}
