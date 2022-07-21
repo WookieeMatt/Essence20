@@ -1,11 +1,52 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+  <header>
+    {{!-- Actor Sheet Header --}}
+    {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
+    <div class="zord-header">
+      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
+        placeholder="{{ localize 'E20.prerequisite' }}" />
+      <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ranger' }}" />
+      <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
+    </div>
 
-  {{!-- Actor Sheet Header --}}
-  {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
-
+  </header>
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
-    {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
-    {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
+    <div class="zord-sheet-grid">
+      <div class="zord-container-1">
+        <div>
+          {{> "systems/essence20/templates/actor/parts/actor-zord-movement.hbs"}}
+        </div>
+        <div class="zord-health-container">
+          <div class="resource flex-group-center">
+            <h3>{{localize 'E20.health'}}</h3>
+            <div class="resource-content flexrow flex-center flex-between">
+              <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
+              <span>/</span>
+              <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flexcol">
+        <div class="zord-container-2">
+          {{> "systems/essence20/templates/actor/parts/actor-zord-skills.hbs"}}
+        </div>
+        <div class="zord-container-1">
+          <div class="zord-features">
+            {{> "systems/essence20/templates/actor/parts/actor-zord-features.hbs"}}
+          </div>
+          <div class="npc-traits">
+            {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
+          </div>
+        </div>
+      </div>
+      <div class="zord-weapons">
+        {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+      </div>
+      <div class="zord-features">
+        {{> "systems/essence20/templates/actor/parts/actor-zordcombiner.hbs"}}
+      </div>
+    </div>
   </section>
 </form>

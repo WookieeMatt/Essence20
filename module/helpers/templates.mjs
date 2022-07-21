@@ -3,7 +3,7 @@
  * Pre-loaded templates are compiled and cached for fast access when rendering
  * @return {Promise}
  */
- export const preloadHandlebarsTemplates = async function() {
+export const preloadHandlebarsTemplates = async function () {
   return loadTemplates([
 
     // Actor partials - Headers
@@ -29,6 +29,9 @@
     "systems/essence20/templates/actor/parts/actor-traits.hbs",
     "systems/essence20/templates/actor/parts/actor-weapons.hbs",
     "systems/essence20/templates/actor/parts/actor-zord-features.hbs",
+    "systems/essence20/templates/actor/parts/actor-zord-skills.hbs",
+    "systems/essence20/templates/actor/parts/actor-zord-movement.hbs",
+    "systems/essence20/templates/actor/parts/actor-zordcombiner.hbs",
 
     // Item partials.
     "systems/essence20/templates/item/parts/item-description.hbs",
