@@ -1,6 +1,13 @@
 {
   "Actor": {
-    "types": ["giJoe", "powerRanger", "npc", "vehicle", "zord", "megaformZord"],
+    "types": [
+      "giJoe",
+      "powerRanger",
+      "npc",
+      "vehicle",
+      "zord",
+      "megaformZord"
+    ],
     "templates": {
       "common": {
         "conditioning": 0,
@@ -195,7 +202,11 @@
       }
     },
     "powerRanger": {
-      "templates": ["common", "creature", "character"],
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ],
       "personalPower": {
         "max": 2,
         "min": 0,
@@ -203,15 +214,25 @@
       }
     },
     "giJoe": {
-      "templates": ["common", "creature", "character"]
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ]
     },
     "npc": {
-      "templates": ["common", "creature", "character"],
-      "customSkills": [{
-        "name": "",
-        "isSpecialized": false,
-        "shift": "d20"
-      }],
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ],
+      "customSkills": [
+        {
+          "name": "",
+          "isSpecialized": false,
+          "shift": "d20"
+        }
+      ],
       "defenses": {
         "toughness": 10,
         "evasion": 10,
@@ -225,7 +246,10 @@
       "threatLevel": 0
     },
     "vehicle": {
-      "templates": ["common", "machine"],
+      "templates": [
+        "common",
+        "machine"
+      ],
       "crew": {
         "description": "",
         "numDrivers": 1,
@@ -238,13 +262,21 @@
       "threatLevel": 0
     },
     "zord": {
-      "templates": ["common", "machine", "zordBase"],
+      "templates": [
+        "common",
+        "machine",
+        "zordBase"
+      ],
       "Iscombiner": true,
       "prerequisites": [],
       "ranger": ""
     },
     "megaformZord": {
-      "templates": ["common", "machine", "zordBase"],
+      "templates": [
+        "common",
+        "machine",
+        "zordBase"
+      ],
       "health": null
     }
   },
@@ -265,13 +297,15 @@
       "perk",
       "specialization"
     ],
-    "templates":{
+    "templates": {
       "itemDescription": {
         "description": ""
       }
     },
     "armor": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "availability": "standard",
       "classification": "light",
       "effect": 1,
@@ -279,7 +313,9 @@
       "trait": "deflective"
     },
     "gear": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "effectArea": null,
       "effectShape": null,
       "lightRange": {
@@ -290,7 +326,9 @@
       "toughness": null
     },
     "weapon": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "alternateEffects": "",
       "availability": "standard",
       "classification": {
@@ -319,13 +357,17 @@
       "shift": "d20"
     },
     "weaponUpgrade": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "availability": "standard",
       "benefit": "",
       "prerequisite": null
     },
     "zordCombiner": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "colorSpectrum": "",
       "health": {
         "max": 8,
@@ -337,24 +379,32 @@
     },
     "threatPower": {
       "actionType": "",
-      "charges":  null,
+      "charges": null,
       "cost": null,
       "limited": false
     },
     "generalPerk": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "source": "",
       "prerequisite": null
     },
     "power": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "source": ""
     },
     "feature": {
-      "templates": ["itemDescription"]
+      "templates": [
+        "itemDescription"
+      ]
     },
     "trait": {
-      "templates": ["itemDescription"]
+      "templates": [
+        "itemDescription"
+      ]
     },
     "bond": {
       "templates": ["itemDescription"]

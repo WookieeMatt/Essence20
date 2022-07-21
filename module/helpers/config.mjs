@@ -260,3 +260,4 @@ E20.weaponTraits = {
   trip: "E20.weaponTraits.trip",
   wrecker: "E20.weaponTraits.wrecker",
 }
+
