@@ -44,6 +44,10 @@
   color: rgb(211, 207, 207);
 }
 
+.item-button-container {
+  flex-grow: 0;
+}
+
 .rollable:hover,
 .rollable:focus {
   color: #000;
@@ -1011,9 +1015,18 @@ form .hint {
   width: 100%;
 }
 
-.essence20 .essence-label {
+.essence20 .essence-header {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.essence20 .essence-header .essence-label {
   font-size: 2em;
-  vertical-align:middle;
+  vertical-align: middle;
+}
+
+.essence20 .essence-header .conditioning-label {
+  text-align: right;
 }
 
 .essence20 .morphed-container {
@@ -1049,6 +1062,15 @@ form .hint {
 
 .essence20 .skill-body .shift-select {
   margin-top: 5px;
+}
+
+.essence20 .skill-body .specializations-list {
+  margin-top: 5px;
+}
+
+.essence20 .skill-body .specializations-list .specializations-item {
+  align-items: center;
+  gap: 5px;
 }
 
 .essence20 .skill-body .specializations-header {

@@ -30,13 +30,13 @@
   {{!-- Specializations list --}}
   <ol class="items-list"></ol>
     {{#each (lookup @root.specializations skill) as |specialization i|}}
-    <li style="margin-top: 5px;" data-item-id="{{specialization._id}}">
-      <div class="flexrow" style="align-items: center; gap: 5px;">
-        <span style="flex-grow: 0;">
+    <li class="specializations-list" data-item-id="{{specialization._id}}">
+      <div class="flexrow specializations-item">
+        <span class="item-button-container">
           <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-specialization="{{specialization.name}}"><i class="fas fa-dice-d20"></i></a>
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
-        <span style="flex-grow: 0;">
+        <span class="item-button-container">
           <a class="item-control item-delete" title="{{localize 'E20.deleteSpecialization'}}"><i class="fas fa-trash"></i></a>
         </span>
       </div>
