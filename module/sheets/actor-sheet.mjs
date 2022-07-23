@@ -128,7 +128,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
-    const zordCombiners = [];
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -176,9 +175,6 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'weapon':
           weapons.push(i);
           break;
-        case 'zordCombiner':
-          zordCombiners.push(i);
-          break;
       };
     }
 
@@ -197,7 +193,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.threatPowers = threatPowers;
     context.traits = traits;
     context.weapons = weapons;
-    context.zordCombiners = zordCombiners;
   }
 
   /* -------------------------------------------- */
