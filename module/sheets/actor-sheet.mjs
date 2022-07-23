@@ -66,7 +66,29 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
+    // Prepare Zords for MFZs
+    this._prepareZords(context);
+
     return context;
+  }
+
+  /**
+   * Prepare Zords for MFZs.
+   *
+   * @param {Object} context The actor data to prepare.
+   *
+   * @return {undefined}
+   */
+  _prepareZords(context) {
+    if (this.actor.type == 'megaformZord') {
+      let zords = [];
+
+      for (let zordId of this.actor.system.zordIds) {
+        zords.push(game.actors.get(zordId));
+      }
+
+      context.zords = zords;
+    }
   }
 
   /**
@@ -86,7 +108,7 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Organize and classify Items for Character sheets.
    *
-   * @param {Object} actorData The actor to prepare.
+   * @param {Object} context The actor data to prepare.
    *
    * @return {undefined}
    */
