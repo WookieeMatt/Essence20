@@ -228,6 +228,9 @@ export class Essence20ActorSheet extends ActorSheet {
       li.slideUp(200, () => this.render(false));
     });
 
+    // Delete Zord from MFZ
+    html.find('.zord-delete').click(this._onZordDelete.bind(this));
+
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
 
@@ -397,5 +400,20 @@ export class Essence20ActorSheet extends ActorSheet {
     } else {
       return false;
     }
+  }
+
+  /**
+   * Handle deleting Zords from MFZs
+   * @param {Event} event   The originating click event
+   * @private
+   */
+   async _onZordDelete(event) {
+    const li = $(event.currentTarget).parents(".zord");
+    const zordId = li.data("zordId");
+    let zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
+    this.actor.update({
+        "system.zordIds": zordIds,
+    });
+    li.slideUp(200, () => this.render(false));
   }
 }
