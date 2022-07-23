@@ -386,12 +386,12 @@ export class Essence20ActorSheet extends ActorSheet {
       const zordIds = duplicate(this.actor.system.zordIds);
 
       // Can't contain duplicate Zords
-      // if (!zordIds.includes(sourceActor.id)) {
+      if (!zordIds.includes(sourceActor.id)) {
         zordIds.push(sourceActor.id);
         await this.actor.update({
           "system.zordIds": zordIds
         }).then(this.render(false));
-      // }
+      }
     } else {
       return false;
     }
