@@ -345,4 +345,35 @@ export class Essence20ActorSheet extends ActorSheet {
       if (item) return item.roll();
     }
   }
+
+  /**
+   * Handle dropping of an Actor data onto another Actor sheet
+   * @param {DragEvent} event            The concluding DragEvent which contains drop data
+   * @param {object} data                The data transfer extracted from the event
+   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
+   *                                     not permitted.
+   * @override
+   */
+  async _onDropActor(event, data) {
+    if (!this.actor.isOwner) return false;
+
+    // Get the target actor
+    let sourceActor = await fromUuid(data.uuid);
+    if (!sourceActor) return false;
+
+    // Handles dropping Zords onto Megaform Zords
+    if (this.actor.type == 'megaformZord' && sourceActor.type == 'zord') {
+      const zordIds = duplicate(this.actor.system.zordIds);
+
+      // Can't contain duplicate Zords
+      // if (!zordIds.includes(sourceActor.id)) {
+        zordIds.push(sourceActor.id);
+        await this.actor.update({
+          "system.zordIds": zordIds
+        }).then(this.render(false));
+      // }
+    } else {
+      return false;
+    }
+  }
 }

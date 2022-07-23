@@ -277,7 +277,8 @@
         "machine",
         "zordBase"
       ],
-      "health": null
+      "health": null,
+      "zordIds": []
     }
   },
   "Item": {
