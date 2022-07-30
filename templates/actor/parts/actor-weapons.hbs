@@ -3,7 +3,18 @@
     <div>{{localize 'E20.effect'}}: {{item.system.effect}}</div>
     <div>{{localize 'E20.alternateEffects'}}: {{item.system.alternateEffects}}</div>
   {{/inline}}
+
   {{#*inline "roll-button" item}}
     <a class="rollable" data-roll-type="weapon" data-skill="{{item.system.classification.skill}}"><i class="fas fa-dice-d20"></i></a>
   {{/inline}}
+
+  {{#*inline "chips" item}}
+  <span class="chip" name="chip.weapon.availability">{{localize (concat 'E20.availabilities.' item.system.availability)}}</span>
+  <span class="chip" name="chip.weapon.classification.skill">{{localize (concat 'E20.essenceSkills.' item.system.classification.skill)}}</span>
+  <span class="chip" name="chip.weapon.classification.size">{{localize (concat 'E20.weaponSizes.' item.system.classification.size)}}</span>
+  <span class="chip" name="chip.weapon.classification.style">{{localize (concat 'E20.weaponStyles.' item.system.classification.style)}}</span>
+  <span class="chip" name="chip.weapon.numHands">{{localize 'E20.numHands'}}: {{item.system.numHands}}</span>
+  <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.numTargets'}}: {{item.system.numTargets}}</span>
+  {{/inline}}
+
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}

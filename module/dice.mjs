@@ -101,7 +101,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = dataset.specialization
       ? dataset.specialization
-      : this._i18n.localize(this._config.skills[rolledSkill]);
+      : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const rollingForStr = this._i18n.localize(this._config.rollingFor)
     return `${rollingForStr} ${rolledSkillStr}`;
   }
@@ -115,7 +115,7 @@ export class Dice {
    */
    _getWeaponRollLabel(dataset, weapon) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = this._i18n.localize(this._config.skills[rolledSkill]);
+    const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const attackRollStr = this._i18n.localize(this._config.attackRoll)
     const effectStr = this._i18n.localize(this._config.effect)
     const alternateEffectsStr = this._i18n.localize(this._config.alternateEffects)

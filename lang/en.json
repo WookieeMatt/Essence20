@@ -190,33 +190,25 @@
       "smarts": "Smarts"
     },
     "essenceSkills": {
-      "strength": {
-        "athletics": "Athletics",
-        "brawn": "Brawn",
-        "intimidation": "Intimidation",
-        "might": "Might"
-      },
-      "speed": {
-        "acrobatics": "Acrobatics",
-        "driving": "Driving",
-        "finesse": "Finesse",
-        "infiltration": "Infiltration",
-        "targeting": "Targeting"
-      },
-      "smarts": {
-        "alertness": "Alertness",
-        "culture": "Culture",
-        "science": "Science",
-        "survival": "Survival",
-        "technology": "Technology"
-      },
-      "social": {
-        "animalHandling": "Animal Handling",
-        "deception": "Deception",
-        "performance": "Performance",
-        "persuasion": "Persuasion",
-        "streetwise": "Streetwise"
-      }
+      "athletics": "Athletics",
+      "brawn": "Brawn",
+      "intimidation": "Intimidation",
+      "might": "Might",
+      "acrobatics": "Acrobatics",
+      "driving": "Driving",
+      "finesse": "Finesse",
+      "infiltration": "Infiltration",
+      "targeting": "Targeting",
+      "alertness": "Alertness",
+      "culture": "Culture",
+      "science": "Science",
+      "survival": "Survival",
+      "technology": "Technology",
+      "animalHandling": "Animal Handling",
+      "deception": "Deception",
+      "performance": "Performance",
+      "persuasion": "Persuasion",
+      "streetwise": "Streetwise"
     },
     "lightRange": {
       "bright": "Bright",
