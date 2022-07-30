@@ -2,5 +2,7 @@
   {{#*inline "chips" item}}
   <span class="chip" name="chip.armor.availability">{{localize (concat 'E20.availabilities.' item.system.availability)}}</span>
   <span class="chip" name="chip.armor.classification">{{localize (concat 'E20.armorClassifications.' item.system.classification)}}</span>
+  <span class="chip" name="chip.armor.effect">{{localize 'E20.effect'}}: {{item.system.effect}}</span>
+  <span class="chip" name="chip.armor.trait">{{localize (concat 'E20.armorTraits.' item.system.trait)}}</span>
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
