@@ -217,6 +217,13 @@ export class Essence20ActorSheet extends ActorSheet {
       html.find('.rollable').click(this._onRoll.bind(this));
     }
 
+    // Open and collapse Item content
+      html.find('.accordion-label').click(ev => {
+      const el = ev.currentTarget;
+      const parent = $(el).parents('.accordion-wrapper');
+      parent.toggleClass('open');
+    });
+
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = ev => this._onDragStart(ev);

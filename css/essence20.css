@@ -892,6 +892,24 @@ form .hint {
   height: fit-content;
 }
 
+/* Content toggle open/close. */
+.accordion-content {
+  display: none;
+}
+
+.open .accordion-content {
+  display: block;
+}
+
+/* Chevron icon. */
+.accordion-icon {
+  transition: all ease-in-out 0.25s;
+}
+
+.open .accordion-icon {
+  transform: rotate(180deg);
+}
+
 .essence20 .origin-bonds {
   list-style: none;
   margin-top: 10px;
