@@ -14,11 +14,21 @@ export class Dice {
   /**
    * Displays the dialog used for skill and specialization rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Actor} actor   The actor performing the roll.
    * @returns {Promise<Dialog>}   The dialog to be displayed.
    */
-  async getSkillRollOptions(dataset) {
+  async getSkillRollOptions(dataset, actor) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const html = await renderTemplate(template, {specialized: !!dataset.specialization});
+    const rolledSkill = dataset.skill;
+    const rolledEssence = this._config.skillToEssence[rolledSkill];
+    const rolledShift = actor.system.skills[rolledEssence][rolledSkill].shift
+    const html = await renderTemplate(
+      template,
+      {
+        specialized: !!dataset.specialization,
+        snag: this._config.shiftList.indexOf('d20') == this._config.shiftList.indexOf(rolledShift),
+      }
+    );
 
     return new Promise(resolve => {
       const data = {
