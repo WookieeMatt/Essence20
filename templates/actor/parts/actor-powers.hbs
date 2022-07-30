@@ -12,7 +12,9 @@
 
 {{!-- Powers --}}
 {{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.powers' dataType='power'}}
-  {{#*inline "additional-expand-details" item}}
-    <div>{{localize 'E20.source'}}: {{item.system.source}}</div>
+  {{#*inline "chips" item}}
+  {{#if item.system.source}}
+  <span class="chip" name="chip.source">{{item.system.source}}</span>
+  {{/if}}
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
