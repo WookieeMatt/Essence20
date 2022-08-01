@@ -66,7 +66,29 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
+    // Prepare Zords for MFZs
+    this._prepareZords(context);
+
     return context;
+  }
+
+  /**
+   * Prepare Zords for MFZs.
+   *
+   * @param {Object} context The actor data to prepare.
+   *
+   * @return {undefined}
+   */
+  _prepareZords(context) {
+    if (this.actor.type == 'megaformZord') {
+      let zords = [];
+
+      for (let zordId of this.actor.system.zordIds) {
+        zords.push(game.actors.get(zordId));
+      }
+
+      context.zords = zords;
+    }
   }
 
   /**
@@ -86,7 +108,7 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Organize and classify Items for Character sheets.
    *
-   * @param {Object} actorData The actor to prepare.
+   * @param {Object} context The actor data to prepare.
    *
    * @return {undefined}
    */
@@ -106,7 +128,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
-    const zordCombiners = [];
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -154,9 +175,6 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'weapon':
           weapons.push(i);
           break;
-        case 'zordCombiner':
-          zordCombiners.push(i);
-          break;
       };
     }
 
@@ -175,7 +193,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.threatPowers = threatPowers;
     context.traits = traits;
     context.weapons = weapons;
-    context.zordCombiners = zordCombiners;
   }
 
   /* -------------------------------------------- */
@@ -205,6 +222,9 @@ export class Essence20ActorSheet extends ActorSheet {
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
+
+    // Delete Zord from MFZ
+    html.find('.zord-delete').click(this._onZordDelete.bind(this));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
@@ -344,5 +364,51 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (item) return item.roll();
     }
+  }
+
+  /**
+   * Handle dropping of an Actor data onto another Actor sheet
+   * @param {DragEvent} event            The concluding DragEvent which contains drop data
+   * @param {object} data                The data transfer extracted from the event
+   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
+   *                                     not permitted.
+   * @override
+   */
+  async _onDropActor(event, data) {
+    if (!this.actor.isOwner) return false;
+
+    // Get the target actor
+    let sourceActor = await fromUuid(data.uuid);
+    if (!sourceActor) return false;
+
+    // Handles dropping Zords onto Megaform Zords
+    if (this.actor.type == 'megaformZord' && sourceActor.type == 'zord') {
+      const zordIds = duplicate(this.actor.system.zordIds);
+
+      // Can't contain duplicate Zords
+      if (!zordIds.includes(sourceActor.id)) {
+        zordIds.push(sourceActor.id);
+        await this.actor.update({
+          "system.zordIds": zordIds
+        }).then(this.render(false));
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Handle deleting Zords from MFZs
+   * @param {Event} event   The originating click event
+   * @private
+   */
+   async _onZordDelete(event) {
+    const li = $(event.currentTarget).parents(".zord");
+    const zordId = li.data("zordId");
+    let zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
+    this.actor.update({
+        "system.zordIds": zordIds,
+    });
+    li.slideUp(200, () => this.render(false));
   }
 }

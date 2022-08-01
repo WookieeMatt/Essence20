@@ -1,20 +1,20 @@
 <span class="flex-group-center">
-    <h1>{{localize 'E20.zordCombiner'}}</h1>
+  <h1>{{localize 'E20.zordCombiner'}}</h1>
 </span>
 <a class="item-create" data-type="zordCombiner" title="{{ localize 'E20.addzordCombiner' }}">
-    <i class="fas fa-plus"></i>
+  <i class="fas fa-plus"></i>
 </a>
-{{#each @root.zordCombiners as |zordCombiner|}}
-<li class="item flexrow" data-item-id="{{zordCombiner._id}}">
-    <div class="item-name">
-        <input class="inline-edit" data-field="name" type="text" name="zordCombiner.{{@index}}.name"
-            value="{{zordCombiner.name}}" placeholder="{{ localize 'E20.name' }}" />
-        <textarea class="inline-edit" data-field="data.description" name="zordCombiner.{{@index}}.description"
-            placeholder="{{localize 'E20.description'}}">{{zordCombiner.system.description}}</textarea>
-    </div>
-    <div class="item-controls">
-        <a class="item-control item-delete" title="{{localize 'E20.deletezordCombiner'}}"><i
-                class="fas fa-trash"></i></a>
-    </div>
+
+{{#each @root.zords as |zord|}}
+<li class="zord flexrow" data-zord-id="{{zord._id}}">
+  <div class="item-name">
+    <input class="inline-edit" data-field="name" type="text" name="zord.{{@index}}.name" value="{{zord.name}}"
+      placeholder="{{ localize 'E20.name' }}" />
+    <textarea class="inline-edit" data-field="data.description" name="zord.{{@index}}.description"
+      placeholder="{{localize 'E20.description'}}">{{zord.system.description}}</textarea>
+  </div>
+  <div class="item-controls">
+    <a class="item-control zord-delete" title="{{localize 'E20.deletezordCombiner'}}"><i class="fas fa-trash"></i></a>
+  </div>
 </li>
 {{/each}}
