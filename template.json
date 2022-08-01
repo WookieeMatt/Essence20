@@ -277,7 +277,8 @@
         "machine",
         "zordBase"
       ],
-      "health": null
+      "health": null,
+      "zordIds": []
     }
   },
   "Item": {
@@ -286,7 +287,6 @@
       "gear",
       "weapon",
       "weaponUpgrade",
-      "zordCombiner",
       "threatPower",
       "generalPerk",
       "power",
@@ -363,19 +363,6 @@
       "availability": "standard",
       "benefit": "",
       "prerequisite": null
-    },
-    "zordCombiner": {
-      "templates": [
-        "itemDescription"
-      ],
-      "colorSpectrum": "",
-      "health": {
-        "max": 8,
-        "min": 0,
-        "value": 8
-      },
-      "ranger": "",
-      "skillNotes": ""
     },
     "threatPower": {
       "actionType": "",
