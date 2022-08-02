@@ -1,18 +1,34 @@
-<div class="defenses-section">
-    <div class="defenses-container flexrow">
-      <div class="defense-container">
-        <h3>{{localize 'E20.defensesStr'}}</h3>
-        {{#each system.defenses.unmorphed as |value defense|}}
-          <div>{{localize (concat 'E20.defenses.' defense)}}: {{value}}</div>
-        {{/each}}
-      </div>
-
-      <div class="morphed-container">
-        <h3>{{localize 'E20.morphedDefenses'}}</h3>
+<div class="bonus-container">
+  <table class="tg">
+    <thead>
+      <tr>
+        <th class="tg-0lax">
+          <span>{{localize 'E20.armor'}}: </span>
+          <span>{{equippedArmorEffect}}</span>
+        </th>
         {{#each system.defenses.morphed as |value defense|}}
-          <div>{{localize (concat 'E20.defenses.' defense)}}: {{value}}</div>
+        <th class="tg-0lax">
+          <span>{{localize (concat 'E20.defenses.' defense)}} +</span>
+          <span>
+            <input class="one-digit-input" type="number" name={{concat 'system.bonuses.' defense}} value="{{lookup @root.system.bonuses defense}}" />
+          </span>
+        </th>
         {{/each}}
-        <div>{{localize 'E20.defenses.toughness'}} + {{equippedArmorEffect}} {{localize 'E20.armor'}}: {{sum system.defenses.morphed.toughness equippedArmorEffect}}</div>
-      </div>
-    </div>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="tg-0lax">Unmorphed</td>
+        {{#each system.defenses.unmorphed as |value defense|}}
+        <td class="tg-0lax">{{value}}
+        {{/each}}
+      </tr>
+      <tr>
+        <td class="tg-0lax">Morphed</td>
+        {{#each system.defenses.morphed as |value defense|}}
+        <td class="tg-0lax">{{value}}
+        {{/each}}
+      </tr>
+    </tbody>
+  </table>
 </div>
