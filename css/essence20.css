@@ -657,19 +657,6 @@ form .hint {
   width: 95%;
 }
 
-.essence20 .defense-container {
-  margin-left: 20px;
-}
-
-.essence20 .defense-container-1 {
-  padding-left: 5px;
-  padding-right: 5px;
-  display: flex;
-  flex-direction: column;
-  /*justify-content: center;*/
-  width: 50%;
-}
-
 .essence20 .health-container {
   list-style: none;
   margin-top: 10px;
@@ -987,7 +974,7 @@ form .hint {
   justify-content: space-evenly;
 }
 
-.essence20 .bonus-container {
+.essence20 .defense-container {
   list-style: none;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -1518,17 +1505,17 @@ form .hint {
   width: 100%;  
 }*/
 
-.essence20 .bonus-container tr:nth-child(even) {
+.essence20 .defense-container tr:nth-child(even) {
   background-color: inherit;
 }
 
-.essence20 .bonus-container .tg {
+.essence20 .defense-container .tg {
   border-collapse: collapse;
   border-spacing: 0;
   border-style: hidden;
 }
 
-.essence20 .bonus-container .tg td {
+.essence20 .defense-container .tg td {
   border-color: black;
   border-style: solid;
   border-width: 1px;
@@ -1539,7 +1526,7 @@ form .hint {
   word-break: normal;
 }
 
-.essence20 .bonus-container .tg th {
+.essence20 .defense-container .tg th {
   border-color: black;
   border-style: solid;
   border-width: 1px;
@@ -1551,7 +1538,7 @@ form .hint {
   word-break: normal;
 }
 
-.essence20 .bonus-container .tg .tg-0lax {
+.essence20 .defense-container .tg .tg-0lax {
   border-color: inherit;
   text-align: center;
   vertical-align: middle;
