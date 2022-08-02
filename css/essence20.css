@@ -1505,6 +1505,11 @@ form .hint {
   width: 100%;  
 }*/
 
+.essence20 .defense-container table thead {
+  background-color: inherit;
+  border-bottom: #b5b1b1;
+}
+
 .essence20 .defense-container tr:nth-child(even) {
   background-color: inherit;
 }
@@ -1519,7 +1524,8 @@ form .hint {
   border-color: black;
   border-style: solid;
   border-width: 1px;
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: normal;
   overflow: hidden;
   padding: 10px 5px;
   word-break: normal;
@@ -1529,8 +1535,7 @@ form .hint {
   border-color: black;
   border-style: solid;
   border-width: 1px;
-  font-size: 14px;
-  font-weight: normal;
+  font-size: 16px;
   overflow: hidden;
   padding: 10px 5px;
   word-break: normal;
