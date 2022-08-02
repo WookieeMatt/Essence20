@@ -18,7 +18,7 @@ describe("_getSkillRollLabel", () => {
     const dataset = {
       skill: 'athletics',
     };
-    const expected = "E20.rollingFor E20.essenceSkills.strength.athletics";
+    const expected = "E20.rollingFor E20.essenceSkills.athletics";
 
     expect(dice._getSkillRollLabel(dataset)).toEqual(expected);
   });
@@ -48,7 +48,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.strength.athletics)<br>" +
+     "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.athletics)<br>" +
      "<b>E20.effect</b> - Some effect<br>" +
      "<b>E20.alternateEffects</b> - Some alternate effects";
 
@@ -67,7 +67,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.strength.athletics)<br>" +
+     "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.athletics)<br>" +
      "<b>E20.effect</b> - E20.none<br>" +
      "<b>E20.alternateEffects</b> - E20.none";
 
