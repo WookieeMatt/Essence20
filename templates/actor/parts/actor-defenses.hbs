@@ -29,15 +29,19 @@
     {{!-- Body --}}
     <tbody>
       <tr>
-        <td class="tg-0lax">{{ localize 'E20.unmorphed'}}</td>
+        <td class="tg-0lax">{{localize 'E20.unmorphed'}}</td>
         {{#each system.defenses.unmorphed as |value defense|}}
-        <td class="tg-0lax">{{value}}
+        <td class="tg-0lax">{{value}}</td>
         {{/each}}
       </tr>
       <tr>
-        <td class="tg-0lax">{{ localize 'E20.morphed'}}</td>
+        <td class="tg-0lax">{{localize 'E20.morphed'}}</td>
         {{#each system.defenses.morphed as |value defense|}}
-        <td class="tg-0lax">{{value}}
+          {{#ifEquals defense 'toughness'}}
+          <td class="tg-0lax">{{sum value @root.equippedArmorEffect}}</td>
+          {{else}}
+          <td class="tg-0lax">{{value}}</td>
+          {{/ifEquals}}
         {{/each}}
       </tr>
     </tbody>
