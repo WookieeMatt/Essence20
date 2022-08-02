@@ -2,10 +2,13 @@
   <table class="tg">
     <thead>
       <tr>
+        {{!-- Armor --}}
         <th class="tg-0lax">
           <span>{{localize 'E20.armor'}}: </span>
           <span>{{equippedArmorEffect}}</span>
         </th>
+
+        {{!-- Defense headers --}}
         {{#each system.defenses.morphed as |value defense|}}
         <th class="tg-0lax">
           <span>{{localize (concat 'E20.defenses.' defense)}}</span>
@@ -22,15 +25,17 @@
         {{/each}}
       </tr>
     </thead>
+
+    {{!-- Body --}}
     <tbody>
       <tr>
-        <td class="tg-0lax">Unmorphed</td>
+        <td class="tg-0lax">{{ localize 'E20.unmorphed'}}</td>
         {{#each system.defenses.unmorphed as |value defense|}}
         <td class="tg-0lax">{{value}}
         {{/each}}
       </tr>
       <tr>
-        <td class="tg-0lax">Morphed</td>
+        <td class="tg-0lax">{{ localize 'E20.morphed'}}</td>
         {{#each system.defenses.morphed as |value defense|}}
         <td class="tg-0lax">{{value}}
         {{/each}}
