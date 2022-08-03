@@ -3,11 +3,11 @@
     <thead>
       <tr>
         {{!-- Armor --}}
-        <th class="tg-0lax">{{localize 'E20.defensesStr'}}</th>
+        <th class="tg-td">{{localize 'E20.defensesStr'}}</th>
 
         {{!-- Defense headers --}}
         {{#each system.defenses.morphed as |value defense|}}
-        <th class="tg-0lax">
+        <th class="tg-td">
           <span>{{localize (concat 'E20.defenses.' defense)}}</span>
           <span>
             {{#ifEquals ../bonusDisplayType 'input'}}
@@ -22,24 +22,29 @@
     {{!-- Body --}}
     <tbody>
       <tr>
-        <td class="tg-0lax">{{localize 'E20.unmorphed'}}</td>
-        {{#each system.defenses.unmorphed as |value defense|}}
-        <td class="tg-0lax">{{value}}</td>
+        <td class="tg-td">{{localize 'E20.unmorphed'}}</td>
+        {{#each system.essences as |value essence|}}
+        <td class="tg-td">
+          <span title="10 {{localize 'E20.base'}} + {{value}} {{localize 'E20.essenceLabel'}}">
+            {{sum 10 value}}
+          </span>
+        </td>
         {{/each}}
       </tr>
+
       <tr>
-        <td class="tg-0lax">{{localize 'E20.morphed'}}</td>
+        <td class="tg-td">{{localize 'E20.morphed'}}</td>
         {{#each system.defenses.morphed as |value defense|}}
           {{#ifEquals defense 'toughness'}}
-          <td class="tg-0lax tooltip">
-            <span title="{{value}} + {{@root.system.bonuses.toughness}} Bonus + {{@root.equippedArmorEffect}} Armor">
+          <td class="tg-td">
+            <span title="{{value}} {{localize 'E20.unmorphed'}} + {{@root.system.bonuses.toughness}} {{localize 'E20.bonus'}} + {{@root.equippedArmorEffect}} {{localize 'E20.armor'}}">
               {{sum value @root.equippedArmorEffect}}
             </span>
           </td>
           {{else}}
-          <td class="tg-0lax tooltip">
-            <span title="{{value}} + {{lookup @root.system.bonuses defense}} Bonus">
-              {{sum value @root.system.bonuses.toughness}}
+          <td class="tg-td">
+            <span title="{{value}} {{localize 'E20.unmorphed'}} + {{lookup @root.system.bonuses defense}} {{localize 'E20.bonus'}}">
+              {{value}}
             </span>
           </td>
           {{/ifEquals}}
