@@ -25,7 +25,7 @@
         <td class="tg-td">{{localize 'E20.unmorphed'}}</td>
         {{#each system.essences as |value essence|}}
         <td class="tg-td">
-          <span title="10 {{localize 'E20.base'}} + {{value}} {{localize 'E20.essenceLabel'}}">
+          <span title="10 {{localize 'E20.base'}} + {{value}} {{localize (concat 'E20.essences.' essence)}}">
             {{sum 10 value}}
           </span>
         </td>
@@ -34,17 +34,17 @@
 
       <tr>
         <td class="tg-td">{{localize 'E20.morphed'}}</td>
-        {{#each system.defenses.morphed as |value defense|}}
+        {{#each system.defenses.unmorphed as |value defense|}}
           {{#ifEquals defense 'toughness'}}
           <td class="tg-td">
             <span title="{{value}} {{localize 'E20.unmorphed'}} + {{@root.system.bonuses.toughness}} {{localize 'E20.bonus'}} + {{@root.equippedArmorEffect}} {{localize 'E20.armor'}}">
-              {{sum value @root.equippedArmorEffect}}
+              {{sum value @root.system.bonuses.toughness @root.equippedArmorEffect}}
             </span>
           </td>
           {{else}}
           <td class="tg-td">
             <span title="{{value}} {{localize 'E20.unmorphed'}} + {{lookup @root.system.bonuses defense}} {{localize 'E20.bonus'}}">
-              {{value}}
+              {{sum value (lookup @root.system.bonuses defense)}}
             </span>
           </td>
           {{/ifEquals}}
