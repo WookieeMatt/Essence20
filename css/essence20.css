@@ -476,16 +476,17 @@ option {
 .essence20 input[type="number"],
 input[type="text"] {
   color: white;
-  text-align: center;
   vertical-align: middle;
 }
 
 .essence20 .one-digit-input[type="number"] {
   max-width: 20px;
+  text-align: center;
 }
 
 .essence20 .two-digit-input[type="number"] {
   max-width: 40px;
+  text-align: center;
 }
 
 form .notes,
