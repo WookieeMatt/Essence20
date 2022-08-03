@@ -12,10 +12,6 @@
           <span>
             {{#ifEquals ../bonusDisplayType 'input'}}
             +<input class="one-digit-input" type="number" name={{concat 'system.bonuses.' defense}} value="{{lookup @root.system.bonuses defense}}" />
-            {{else}}
-              {{#if (lookup @root.system.bonuses defense)}}
-              +{{lookup @root.system.bonuses defense}}
-              {{/if}}
             {{/ifEquals}}
           </span>
         </th>
