@@ -86,7 +86,6 @@ E20.lightRange = {
 
 E20.movement = {
   aerial: "E20.movement.aerial",
-  aerialMin: "E20.movement.aerialMin",
   ground: "E20.movement.ground",
   swim: "E20.movement.swim",
 };
@@ -260,4 +259,3 @@ E20.weaponTraits = {
   trip: "E20.weaponTraits.trip",
   wrecker: "E20.weaponTraits.wrecker",
 }
-

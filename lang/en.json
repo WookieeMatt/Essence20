@@ -216,7 +216,6 @@
     },
     "movement": {
       "aerial": "Aerial",
-      "aerialMin": "Aerial Min",
       "ground": "Ground",
       "swim": "Swim"
     },
