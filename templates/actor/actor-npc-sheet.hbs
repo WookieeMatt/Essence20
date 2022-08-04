@@ -101,4 +101,24 @@
     {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
   </div>
 
+  <div class="skills-container accordion-wrapper">
+    <div class="flex-group-center accordion-label">
+      <span>Skills</span>
+      <a class="item-control"><i class="accordion-icon fas fa-chevron-down"></i></a>
+    </div>
+
+    {{#each system.skills as |skills essence|}}
+      {{#each skills as |fields skill|}}
+        {{#ifEquals fields.shift 'd20'}}
+        <div class="accordion-content">
+        {{else}}
+        <div>
+        {{/ifEquals}}
+
+        {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence=essence skill=skill fields=fields}}
+        </div>
+      {{/each}}
+    {{/each}}
+  </div>
+
 </form>
