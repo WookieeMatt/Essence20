@@ -10,14 +10,16 @@
 
 <div class="skill-body">
   {{!-- Mod and Spec inputs --}}
-  <div>
-    <select class="shift-select" name="system.skills.{{essence}}.{{skill}}.shift">
+  <div class="shift-select">
+    <select name="system.skills.{{essence}}.{{skill}}.shift">
       {{selectOptions @root.config.shifts selected=fields.shift localize=true}}
     </select>
     <span for="system.skills.{{essence}}.{{skill}}.modifier">+</span>
     <input class="one-digit-input" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
+
     {{#ifEquals @root.actor.type 'npc'}}
-    <input type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
+    <span class="specialized-label">{{localize 'E20.specialized'}}:</span>
+    <input class="specialized-checkbox" type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
     {{/ifEquals}}
   </div>
 

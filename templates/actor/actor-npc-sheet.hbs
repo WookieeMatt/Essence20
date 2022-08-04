@@ -1,6 +1,5 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
   <div class="sheet-header">
-
     {{!-- Actor Sheet Header --}}
     <span class="resource flex-group-center">
       {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
@@ -22,6 +21,7 @@
       </div>
     </div>
   </div>
+
   <div class="npc-sheet-container-1">
     {{!-- NPC Defenses --}}
     <div class="npc-sheet-container-2">
@@ -30,15 +30,11 @@
 
     <div>
       {{> "systems/essence20/templates/actor/parts/actor-zord-movement.hbs"}}
-
     </div>
   </div>
 
-  {{!-- Need to add Skills ass dropdowns or hidable --}}
-
   <div class="npc-abilities">
     <div class="npc-abilities-1">
-
       {{> "systems/essence20/templates/actor/parts/actor-general-perks.hbs"}}
 
       <div class="npc-hangup">
@@ -109,11 +105,11 @@
 
     {{#each system.skills as |skills essence|}}
       {{#each skills as |fields skill|}}
-        {{#ifEquals fields.shift 'd20'}}
-        <div class="accordion-content">
-        {{else}}
+        {{#if (lookup @root.displayedNpcSkills skill)}}
         <div>
-        {{/ifEquals}}
+        {{else}}
+        <div class="accordion-content">
+        {{/if}}
 
         {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence=essence skill=skill fields=fields}}
         </div>

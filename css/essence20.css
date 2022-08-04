@@ -1070,6 +1070,18 @@ form .hint {
   margin-top: 5px;
 }
 
+.essence20 .skill-body .shift-select > * {
+  vertical-align: middle;
+}
+
+.essence20 .skill-body .shift-select .specialized-label {
+  margin-left: 5px;
+}
+
+.essence20 .skill-body .shift-select .specialized-checkbox {
+  margin-left: 2px;
+}
+
 .essence20 .skill-body .specializations-list {
   margin-top: 5px;
 }
