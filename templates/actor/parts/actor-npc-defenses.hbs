@@ -1,15 +1,13 @@
 <div class="npc-defenses-section">
     <div class="npc-defenses-container">
-      
       <div class="npc-defenses">
-          {{#each system.defenses as |value defense|}}
-           <div class="resource flexcol">
-            <span class="resource flex-group-center">{{localize (concat 'E20.defenses.' defense)}}: </span>
-            <input type="number" name="system.defenses.{{defense}}" value="{{value}}"/>
-          </div>
-          {{/each}}
+        {{#each system.defenses as |value defense|}}
+          <div class="resource flexcol">
+          <span class="resource flex-group-center">{{localize (concat 'E20.defenses.' defense)}}: </span>
+          <input type="number" name="system.defenses.{{defense}}" value="{{value}}"/>
+        </div>
+        {{/each}}
       </div>
-      {{/each}}
     </div>
   </div>
 </div>
