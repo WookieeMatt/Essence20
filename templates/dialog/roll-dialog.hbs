@@ -1,22 +1,21 @@
 <form>
   <div>
-    <label>Shift up</label>
+    <label>{{localize 'E20.shiftUp'}}</label>
     <input type="number" name="shiftUp" value=0 />
   </div>
   <div>
-    <label>Shift down</label>
+    <label>{{localize 'E20.shiftDown'}}</label>
     <input type="number" name="shiftDown" value=0 />
   </div>
   <div>
-    <input type="checkbox" name="snag" {{checked snag}} />
-    <label>Snag</label>
+    <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}}/> {{localize 'E20.snag'}}
+    <input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}}/> {{localize 'E20.normal'}}
+    <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}}/> {{localize 'E20.edge'}}
   </div>
   <div>
-    <input type="checkbox" name="edge" />
-    <label>Edge</label>
-  </div>
-  <div>
-    <input type="checkbox" name="specialized" {{checked specialized}} />
-    <label>Specialized</label>
+    <label>
+      <input type="checkbox" name="specialized" {{checked specialized}} />
+      <span>{{localize 'E20.specialized'}}</span>
+    </label>
   </div>
 </form>

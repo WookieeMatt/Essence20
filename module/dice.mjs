@@ -22,11 +22,14 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = this._config.skillToEssence[rolledSkill];
     const rolledShift = actor.system.skills[rolledEssence][rolledSkill].shift
+    const snag = this._config.shiftList.indexOf('d20') == this._config.shiftList.indexOf(rolledShift);
     const html = await renderTemplate(
       template,
       {
         specialized: !!dataset.specialization,
-        snag: this._config.shiftList.indexOf('d20') == this._config.shiftList.indexOf(rolledShift),
+        snag,
+        edge: false,
+        normal: !snag
       }
     );
 
@@ -60,8 +63,8 @@ export class Dice {
     return {
       shiftUp: parseInt(form.shiftUp.value),
       shiftDown: parseInt(form.shiftDown.value),
-      snag: form.snag.checked,
-      edge: form.edge.checked,
+      snag: form.snagEdge.value == 'snag',
+      edge: form.snagEdge.value == 'edge',
       specialized: form.specialized.checked,
     }
   }
@@ -195,6 +198,8 @@ export class Dice {
   _getd20Operand(edge, snag) {
     // Edge and Snag cancel eachother out
     if (edge == snag) {
+      console.log(edge);
+      console.log(snag);
       return 'd20';
     }
     else {
