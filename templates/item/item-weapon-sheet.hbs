@@ -6,40 +6,40 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
     <div>
-      <select name="data.availability">
-        {{#select data.availability}}
+      <select name="system.availability">
+        {{#select system.availability}}
         {{#each config.availabilities as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
         {{/select}}
       </select>
 
-      <select name="data.classification.skill">
-        {{#select data.classification.skill}}
+      <select name="system.classification.skill">
+        {{#select system.classification.skill}}
         {{#each config.weaponSkills as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
         {{/select}}
       </select>
 
-      <select name="data.classification.size">
-        {{#select data.classification.size}}
+      <select name="system.classification.size">
+        {{#select system.classification.size}}
         {{#each config.weaponSizes as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
         {{/select}}
       </select>
 
-      <select name="data.classification.style">
-        {{#select data.classification.style}}
+      <select name="system.classification.style">
+        {{#select system.classification.style}}
         {{#each config.weaponStyles as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
         {{/select}}
       </select>
 
-      <select name="data.shift">
-        {{#select data.shift}}
+      <select name="system.shift">
+        {{#select system.shift}}
         {{#each config.shifts as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
@@ -47,38 +47,38 @@
       </select>
     </div>
 
-    <span>{{localize 'E20.numCharges'}}</span><input type="number" name="data.numCharges" value="{{data.numCharges}}"/>
-    <input type="text" name="data.custom" value="{{data.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
+    <span>{{localize 'E20.numCharges'}}</span><input type="number" name="system.numCharges" value="{{system.numCharges}}"/>
+    <input type="text" name="system.custom" value="{{system.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
 
     <h3>{{localize 'E20.effect'}}</h3>
-    <input type="text" name="data.effect" value="{{data.effect}}" placeholder="{{ localize 'E20.effect' }}"/>
+    <input type="text" name="system.effect" value="{{system.effect}}" placeholder="{{ localize 'E20.effect' }}"/>
 
     <h3>{{localize 'E20.alternateEffects'}}</h3>
-    <input type="text" name="data.alternateEffects" value="{{data.alternateEffects}}" placeholder="{{ localize 'E20.alternateEffects' }}"/>
+    <input type="text" name="system.alternateEffects" value="{{system.alternateEffects}}" placeholder="{{ localize 'E20.alternateEffects' }}"/>
 
     <div>
-      <span>{{localize 'E20.numHands'}}</span><input type="number" name="data.numHands" value="{{data.numHands}}"/>
-      <span>{{localize 'E20.numTargets'}}</span><input type="number" name="data.numTargets" value="{{data.numTargets}}"/>
-      <span>{{localize 'E20.radius'}}</span><input type="number" name="data.radius" value="{{data.radius}}"/>
+      <span>{{localize 'E20.numHands'}}</span><input type="number" name="system.numHands" value="{{system.numHands}}"/>
+      <span>{{localize 'E20.numTargets'}}</span><input type="number" name="system.numTargets" value="{{system.numTargets}}"/>
+      <span>{{localize 'E20.radius'}}</span><input type="number" name="system.radius" value="{{system.radius}}"/>
     </div>
 
     <h3>{{localize 'E20.range'}}</h3>
-    <span>{{localize 'E20.min'}}</span><input type="number" name="data.range.min" value="{{data.range.min}}"/>
-    <span>{{localize 'E20.reachMultiplier'}}</span><input type="number" name="data.range.reachMultiplier" value="{{data.range.reachMultiplier}}"/>
-    <span>{{localize 'E20.long'}}</span><input type="number" name="data.range.long" value="{{data.range.long}}"/>
-    <span>{{localize 'E20.value'}}</span><input type="number" name="data.range.value" value="{{data.range.value}}"/>
+    <span>{{localize 'E20.min'}}</span><input type="number" name="system.range.min" value="{{system.range.min}}"/>
+    <span>{{localize 'E20.reachMultiplier'}}</span><input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"/>
+    <span>{{localize 'E20.long'}}</span><input type="number" name="system.range.long" value="{{system.range.long}}"/>
+    <span>{{localize 'E20.value'}}</span><input type="number" name="system.range.value" value="{{system.range.value}}"/>
 
     <h3>{{localize 'E20.requirements'}}</h3>
-    <input type="text" name="data.requirements.custom" value="{{data.requirements.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
-    <select name="data.skill">
-      {{#select data.skill}}
+    <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
+    <select name="system.skill">
+      {{#select system.skill}}
       {{#each config.weaponRequirementSkills as |name type|}}
       <option value="{{type}}">{{localize name}}</option>
       {{/each}}
       {{/select}}
     </select>
-    <select name="data.requirements.shift">
-      {{#select data.shift}}
+    <select name="system.requirements.shift">
+      {{#select system.shift}}
       {{#each config.weaponRequirementShifts as |name type|}}
       <option value="{{type}}">{{localize name}}</option>
       {{/each}}
