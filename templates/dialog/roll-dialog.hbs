@@ -1,10 +1,10 @@
-<form>
+<form class="roll-dialog">
   <div>
-    <label>{{localize 'E20.shiftUp'}}</label>
+    {{localize 'E20.shiftUp'}}
     <input type="number" name="shiftUp" value=0 />
   </div>
   <div>
-    <label>{{localize 'E20.shiftDown'}}</label>
+    {{localize 'E20.shiftDown'}}
     <input type="number" name="shiftDown" value=0 />
   </div>
   <div>
@@ -13,9 +13,7 @@
     <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}}/> {{localize 'E20.edge'}}
   </div>
   <div>
-    <label>
-      <input type="checkbox" name="specialized" {{checked specialized}} />
-      <span>{{localize 'E20.specialized'}}</span>
-    </label>
+    <input type="checkbox" name="specialized" {{checked specialized}} />
+    <span>{{localize 'E20.specialized'}}</span>
   </div>
 </form>
