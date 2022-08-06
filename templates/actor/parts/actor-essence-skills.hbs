@@ -32,7 +32,7 @@
   {{!-- Specializations list --}}
   <ol class="items-list"></ol>
     {{#each (lookup @root.specializations skill) as |specialization i|}}
-    <li class="specializations-list" data-item-id="{{specialization._id}}">
+    <li class="item specializations-list" data-item-id="{{specialization._id}}">
       <div class="flexrow specializations-item">
         <span class="item-button-container">
           <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-specialization="{{specialization.name}}"><i class="fas fa-dice-d20"></i></a>
