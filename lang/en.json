@@ -46,10 +46,12 @@
     "autoFailFumble": "automatically fails and fumbles",
     "availability": "Availability",
     "background": "BACKGROUND",
+    "base": "Base",
     "benefit": "Benefit",
     "bond": "Bond",
     "bonds": "BONDS",
     "bonuses": "Bonuses",
+    "bonus": "Bonus",
     "cancel": "Cancel",
     "classification": "Classification",
     "colorSpectrum": "Color Spectrum",
@@ -77,6 +79,7 @@
     "effectShape": "Effect Shape",
     "equipped": "Equipped?",
     "essencesLabel": "Essences",
+    "essenceLabel": "Essence",
     "statLabel": "Important",
     "features": "Features",
     "firepoints": "Firepoints",
@@ -94,7 +97,7 @@
     "min": "Min",
     "mod": "MOD",
     "modifier": "Modifier",
-    "morphedDefenses": "Morphed Defenses",
+    "morphed": "Morphed",
     "name": "NAME",
     "none": "None",
     "notes": "NOTES",
@@ -137,6 +140,7 @@
     "withAnEdge": "with an Edge",
     "withASnag": "with a Snag",
     "value": "Value",
+    "unmorphed": "Unmorphed",
     "zordCombiner": "Zord Component",
     "addzordCombiner": "Add a Zord Componenet",
     "deletezordCombiner": "Remove Zord Component",
@@ -190,33 +194,25 @@
       "smarts": "Smarts"
     },
     "essenceSkills": {
-      "strength": {
-        "athletics": "Athletics",
-        "brawn": "Brawn",
-        "intimidation": "Intimidation",
-        "might": "Might"
-      },
-      "speed": {
-        "acrobatics": "Acrobatics",
-        "driving": "Driving",
-        "finesse": "Finesse",
-        "infiltration": "Infiltration",
-        "targeting": "Targeting"
-      },
-      "smarts": {
-        "alertness": "Alertness",
-        "culture": "Culture",
-        "science": "Science",
-        "survival": "Survival",
-        "technology": "Technology"
-      },
-      "social": {
-        "animalHandling": "Animal Handling",
-        "deception": "Deception",
-        "performance": "Performance",
-        "persuasion": "Persuasion",
-        "streetwise": "Streetwise"
-      }
+      "athletics": "Athletics",
+      "brawn": "Brawn",
+      "intimidation": "Intimidation",
+      "might": "Might",
+      "acrobatics": "Acrobatics",
+      "driving": "Driving",
+      "finesse": "Finesse",
+      "infiltration": "Infiltration",
+      "targeting": "Targeting",
+      "alertness": "Alertness",
+      "culture": "Culture",
+      "science": "Science",
+      "survival": "Survival",
+      "technology": "Technology",
+      "animalHandling": "Animal Handling",
+      "deception": "Deception",
+      "performance": "Performance",
+      "persuasion": "Persuasion",
+      "streetwise": "Streetwise"
     },
     "lightRange": {
       "bright": "Bright",

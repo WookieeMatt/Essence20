@@ -14,11 +14,21 @@ export class Dice {
   /**
    * Displays the dialog used for skill and specialization rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Actor} actor   The actor performing the roll.
    * @returns {Promise<Dialog>}   The dialog to be displayed.
    */
-  async getSkillRollOptions(dataset) {
+  async getSkillRollOptions(dataset, actor) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const html = await renderTemplate(template, {specialized: !!dataset.specialization});
+    const rolledSkill = dataset.skill;
+    const rolledEssence = this._config.skillToEssence[rolledSkill];
+    const rolledShift = actor.system.skills[rolledEssence][rolledSkill].shift
+    const html = await renderTemplate(
+      template,
+      {
+        specialized: !!dataset.specialization,
+        snag: this._config.shiftList.indexOf('d20') == this._config.shiftList.indexOf(rolledShift),
+      }
+    );
 
     return new Promise(resolve => {
       const data = {
@@ -101,7 +111,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = dataset.specialization
       ? dataset.specialization
-      : this._i18n.localize(this._config.skills[rolledSkill]);
+      : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const rollingForStr = this._i18n.localize(this._config.rollingFor)
     return `${rollingForStr} ${rolledSkillStr}`;
   }
@@ -115,7 +125,7 @@ export class Dice {
    */
    _getWeaponRollLabel(dataset, weapon) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = this._i18n.localize(this._config.skills[rolledSkill]);
+    const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const attackRollStr = this._i18n.localize(this._config.attackRoll)
     const effectStr = this._i18n.localize(this._config.effect)
     const alternateEffectsStr = this._i18n.localize(this._config.alternateEffects)
