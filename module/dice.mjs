@@ -198,8 +198,6 @@ export class Dice {
   _getd20Operand(edge, snag) {
     // Edge and Snag cancel eachother out
     if (edge == snag) {
-      console.log(edge);
-      console.log(snag);
       return 'd20';
     }
     else {
