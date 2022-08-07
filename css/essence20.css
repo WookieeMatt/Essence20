@@ -1556,3 +1556,11 @@ form .hint {
   text-align: center;
   vertical-align: middle;
 }
+
+.roll-dialog div {
+  margin-bottom: 10px;
+}
+
+.roll-dialog div label > *{
+  vertical-align: middle;
+}
