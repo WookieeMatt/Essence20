@@ -11,7 +11,7 @@
     {{#each items as |item|}}
     <li class="item accordion-wrapper" data-item-id="{{item._id}}">
       {{!-- Item label and buttons --}}
-      <div class="flexrow">
+      <div class="flexrow item-label">
         <div class="item-image" style="flex-grow: 0;">
           {{#> roll-button item=item}}
           {{!-- Custom roll button here, or use default below --}}

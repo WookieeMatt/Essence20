@@ -1204,6 +1204,10 @@ form .hint {
   text-align: left;
 }
 
+.essence20 .item-label {
+  align-items: center;
+}
+
 .essence20 .item-formula {
   -webkit-box-flex: 0;
   -ms-flex: 0 0 200px;
