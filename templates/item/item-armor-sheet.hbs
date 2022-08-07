@@ -10,24 +10,24 @@
   {{!-- Item Sheet Body --}}
   
         <div>
-          <select name="data.availability">
-            {{#select data.availability}}
+          <select name="system.availability">
+            {{#select system.availability}}
             {{#each config.availabilities as |name type|}}
             <option value="{{type}}">{{localize name}}</option>
             {{/each}}
             {{/select}}
           </select>
 
-          <select name="data.classification">
-            {{#select data.classification}}
+          <select name="system.classification">
+            {{#select system.classification}}
             {{#each config.armorClassifications as |name type|}}
             <option value="{{type}}">{{localize name}}</option>
             {{/each}}
             {{/select}}
           </select>
 
-          <select name="data.trait">
-            {{#select data.trait}}
+          <select name="system.trait">
+            {{#select system.trait}}
             {{#each config.armorTraits as |name type|}}
             <option value="{{type}}">{{localize name}}</option>
             {{/each}}
@@ -35,8 +35,8 @@
           </select>
         </div>
 
-        <span class="armor-effect">{{localize 'E20.effect'}}</span><input type="number" name="data.effect"
-          value="{{data.effect}}" />
+        <span class="armor-effect">{{localize 'E20.effect'}}</span><input type="number" name="system.effect"
+          value="{{system.effect}}" />
 
         <div class="armor-description">
           {{!-- Description Section --}}

@@ -5,10 +5,10 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <span>{{localize 'E20.charges'}}</span><input type="number" name="data.charges" value="{{data.charges}}"/>
-    <span>{{localize 'E20.cost'}}</span><input type="number" name="data.cost" value="{{data.cost}}"/>
-    <span>{{localize 'E20.limited'}}</span><input type="checkbox" name="data.limited" {{checked data.limited}}/>
-    <span>{{localize 'E20.actionType'}}</span><input type="text" name="data.actionType" value="{{data.actionType}}" placeholder="{{ localize 'E20.actionType' }}"/>
+    <span>{{localize 'E20.charges'}}</span><input type="number" name="system.charges" value="{{system.charges}}"/>
+    <span>{{localize 'E20.cost'}}</span><input type="number" name="system.cost" value="{{system.cost}}"/>
+    <span>{{localize 'E20.limited'}}</span><input type="checkbox" name="system.limited" {{checked system.limited}}/>
+    <span>{{localize 'E20.actionType'}}</span><input type="text" name="system.actionType" value="{{system.actionType}}" placeholder="{{ localize 'E20.actionType' }}"/>
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
