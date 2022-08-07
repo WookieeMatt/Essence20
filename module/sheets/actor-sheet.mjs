@@ -46,12 +46,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
-    // // Prepare character data and items.
-    // if (actorData.type == 'character') {
-    //   this._prepareItems(context);
-    //   this._prepareCharacterData(context);
-    // }
-
     // // Prepare NPC data and items.
     // if (actorData.type == 'npc') {
     //   this._prepareItems(context);
@@ -59,6 +53,11 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Might need to filter like above eventually
     this._prepareItems(context);
+
+    // Prepare npc data and items.
+    if (actorData.type == 'npc') {
+      this._prepareDisplayedNpcSkills(context);
+    }
 
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
@@ -70,6 +69,35 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prepareZords(context);
 
     return context;
+  }
+
+  /**
+   * Prepare skills that are always displayed for NPCs.
+   *
+   * @param {Object} context The actor data to prepare.
+   *
+   * @return {undefined}
+   */
+   _prepareDisplayedNpcSkills(context) {
+    if (this.actor.type == 'npc') {
+      let displayedNpcSkills = {};
+
+      // Include any skill that have specializations
+      for (let skill in context.specializations) {
+        displayedNpcSkills[skill] = true;
+      }
+
+      // Include any skills not d20, are specialized, or have a modifier
+      for (let [_, skills] of Object.entries(context.system.skills)) {
+        for (let [skill, fields] of Object.entries(skills)) {
+          if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
+            displayedNpcSkills[skill] = true;
+          }
+        }
+      }
+
+      context.displayedNpcSkills = displayedNpcSkills;
+    }
   }
 
   /**

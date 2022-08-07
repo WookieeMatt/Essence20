@@ -1,6 +1,5 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   <div class="sheet-header">
-
     {{!-- Actor Sheet Header --}}
     <span class="resource flex-group-center">
       {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
@@ -22,6 +21,7 @@
       </div>
     </div>
   </div>
+
   <div class="npc-sheet-container-1">
     {{!-- NPC Defenses --}}
     <div class="npc-sheet-container-2">
@@ -30,18 +30,13 @@
 
     <div>
       {{> "systems/essence20/templates/actor/parts/actor-zord-movement.hbs"}}
-
     </div>
   </div>
 
-  {{!-- Need to add Skills ass dropdowns or hidable --}}
-
   <div class="npc-abilities">
     <div class="npc-abilities-1">
+      {{> "systems/essence20/templates/actor/parts/actor-general-perks.hbs"}}
 
-      <div class="npc-perks">
-        {{> "systems/essence20/templates/actor/parts/actor-general-perks.hbs"}}
-      </div>
       <div class="npc-hangup">
         <span class="resource flex-group-center">
           <h2>{{localize 'E20.hangUps'}}</h2>
@@ -100,6 +95,26 @@
 
   <div class="npc-weapons">
     {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+  </div>
+
+  <div class="skills-container accordion-wrapper">
+    <div class="flex-group-center accordion-label">
+      <span>Skills</span>
+      <a class="item-control"><i class="accordion-icon fas fa-chevron-down"></i></a>
+    </div>
+
+    {{#each system.skills as |skills essence|}}
+      {{#each skills as |fields skill|}}
+        {{#if (lookup @root.displayedNpcSkills skill)}}
+        <div>
+        {{else}}
+        <div class="accordion-content">
+        {{/if}}
+
+        {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence=essence skill=skill fields=fields}}
+        </div>
+      {{/each}}
+    {{/each}}
   </div>
 
 </form>
