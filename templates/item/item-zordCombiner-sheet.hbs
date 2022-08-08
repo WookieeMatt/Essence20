@@ -5,8 +5,8 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <select name="data.colorSpectrum">
-      {{#select data.colorSpectrum}}
+    <select name="system.colorSpectrum">
+      {{#select system.colorSpectrum}}
       {{#each config.rangers as |name type|}}
       <option value="{{type}}">{{localize name}}</option>
       {{/each}}
@@ -14,16 +14,16 @@
     </select>
 
     <div class="resource flex-group-center">
-      <label for="data.health.value" class="resource-label">Health</label>
+      <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
       <div class="resource-content flexrow flex-center flex-between">
-        <input type="text" name="data.health.value" value="{{data.health.value}}" data-dtype="Number" />
+        <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
         <span> / </span>
-        <input type="text" name="data.health.max" value="{{data.health.max}}" data-dtype="Number" />
+        <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
       </div>
     </div>
 
-    <input type="text" name="data.ranger" value="{{data.ranger}}" placeholder="{{ localize 'E20.ranger' }}" />
-    <input type="text" name="data.skillNotes" value="{{data.skillNotes}}"
+    <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ranger' }}" />
+    <input type="text" name="system.skillNotes" value="{{system.skillNotes}}"
       placeholder="{{ localize 'E20.skillNotes' }}" />
 
     {{!-- Description Section --}}

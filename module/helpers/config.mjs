@@ -207,11 +207,11 @@ E20.weaponSizes = {
 };
 
 E20.weaponSkills = {
-  athletics: "E20.essenceSkills.strength.athletics",
-  might: "E20.essenceSkills.strength.might",
-  finesse: "E20.essenceSkills.speed.finesse",
-  targeting: "E20.essenceSkills.speed.targeting",
-  technology: "E20.essenceSkills.smarts.technology",
+  athletics: "E20.essenceSkills.athletics",
+  might: "E20.essenceSkills.might",
+  finesse: "E20.essenceSkills.finesse",
+  targeting: "E20.essenceSkills.targeting",
+  technology: "E20.essenceSkills.technology",
 };
 
 E20.weaponRequirementSkills = {

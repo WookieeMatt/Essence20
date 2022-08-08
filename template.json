@@ -146,10 +146,10 @@
           "willpower": 0
         },
         "essences": {
-          "smarts": 3,
-          "social": 3,
+          "strength": 3,
           "speed": 3,
-          "strength": 3
+          "social": 3,
+          "smarts": 3
         },
         "level": 1,
         "notes": ""
