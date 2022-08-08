@@ -16,11 +16,26 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "gulp": "^4.0.2",
     "gulp-autoprefixer": "^7.0.1",
-    "gulp-sass": "^4.1.0",
     "gulp-sourcemaps": "^2.6.5",
     "jest": "^27.5.1"
   },
-  "type": "module"
+  "type": "module",
+  "main": "gulpfile.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WookieeMatt/Essence20.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WookieeMatt/Essence20/issues"
+  },
+  "homepage": "https://github.com/WookieeMatt/Essence20#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.54.3"
+  }
 }
