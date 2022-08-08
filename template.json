@@ -295,7 +295,8 @@
       "bond",
       "hangUp",
       "perk",
-      "specialization"
+      "specialization",
+      "megaformTrait"
     ],
     "templates": {
       "itemDescription": {
@@ -402,6 +403,9 @@
     "perk": {
       "templates": ["itemDescription"]
     },
-    "specialization": {}
+    "specialization": {},
+    "megaformTrait": {
+      "templates": ["itemDescription"]
+    }
   }
 }

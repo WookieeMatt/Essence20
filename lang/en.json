@@ -15,7 +15,6 @@
     "TypeGear": "Gear",
     "TypeWeapon": "Weapon",
     "TypeWeaponupgrade": "Weapon Upgrade",
-    "TypeZordcombiner": "Zord Component",
     "TypeThreatpower": "Threat Power",
     "TypeGeneralperk": "General Perk",
     "TypeHangup": "Hang Up",
@@ -23,11 +22,7 @@
     "TypePerk": "Perk",
     "TypePower": "Power",
     "TypeSpecialization": "Specialization",
-    "TypeThreatpower": "Threat Power",
-    "TypeTrait": "Trait",
-    "TypeWeapon": "Weapon",
-    "TypeWeaponupgrade": "Weapon Upgrade",
-    "TypeZordcombiner": "Zord Combiner"
+    "TypeTrait": "Trait"
   },
   "E20": {
     "actionType": "Action Type",
