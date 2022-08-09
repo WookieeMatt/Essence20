@@ -144,9 +144,7 @@
     "withASnag": "with a Snag",
     "value": "Value",
     "unmorphed": "Unmorphed",
-    "zordCombiner": "Zord Component",
-    "addzordCombiner": "Add a Zord Componenet",
-    "deletezordCombiner": "Remove Zord Component",
+    "combinerParticipants": "Combiner Participants",
     "armorClassifications": {
       "non": "Non Armor",
       "light": "Light",
