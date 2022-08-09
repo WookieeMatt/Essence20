@@ -11,7 +11,7 @@
     {{#each items as |item|}}
     <li class="item accordion-wrapper" data-item-id="{{item._id}}">
       {{!-- Item label and buttons --}}
-      <div class="flexrow accordion-label">
+      <div class="flexrow item-label">
         <div class="item-image" style="flex-grow: 0;">
           {{#> roll-button item=item}}
           {{!-- Custom roll button here, or use default below --}}
@@ -30,7 +30,7 @@
         <div class="item-controls">
           <a class="item-control item-edit" title="{{localize 'E20.edit'}}"><i class="fas fa-edit"></i></a>
           <a class="item-control item-delete" title="{{localize 'E20.delete'}}"><i class="fas fa-trash"></i></a>
-          <a class="item-control"><i class="accordion-icon fas fa-chevron-down"></i></a>
+          <a class="item-control accordion-label"><i class="accordion-icon fas fa-chevron-down"></i></a>
         </div>
       </div>
 
@@ -42,9 +42,11 @@
 
         <div>{{{item.system.description}}}</div>
 
+        <div class="chip-section">
         {{#> chips item=item}}
         {{!-- Custom chips here --}}
         {{/chips}}
+        </div>
       </div>
     </li>
     {{/each}}
