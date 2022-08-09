@@ -1,1 +1,11 @@
 {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.generalPerks title='E20.perks' dataType='generalPerk'}}
+
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.resources title='E20.resources' dataType='resource'}}
+  {{#*inline "item-label" item}}
+    {{item.name}}
+    <input class="one-digit-input inline-edit" data-field="system.uses.value" type="number" name="item.system.uses.value" value="{{item.system.uses.value}}"/>
+    /
+    <input class="one-digit-input inline-edit" data-field="system.uses.max" type="number" name="item.system.uses.max" value="{{item.system.uses.max}}"/>
+  </span>
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
