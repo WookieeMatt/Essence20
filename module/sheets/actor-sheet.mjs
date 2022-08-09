@@ -149,8 +149,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const hangUps = [];
     const influences = [];
     const gears = [];
-    const generalPerks = []; // Used by PCs
-    const perks = [];
+    const perks = []; // Used by PCs
     const powers = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
@@ -176,9 +175,6 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
         case 'gear':
           gears.push(i);
-          break;
-        case 'generalPerk':
-          generalPerks.push(i);
           break;
         case 'hangUp':
           hangUps.push(i);
@@ -213,9 +209,8 @@ export class Essence20ActorSheet extends ActorSheet {
     context.influences = influences;
     context.features = features;
     context.gears = gears;
-    context.generalPerks = generalPerks;
-    context.hangUps = hangUps;
     context.perks = perks;
+    context.hangUps = hangUps;
     context.powers = powers;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
@@ -367,7 +362,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
       this.actor.rollInitiative({ createCombatants: true });
     }
-    else if (rollType == 'generalPerk') {
+    else if (rollType == 'perk') {
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);
 
