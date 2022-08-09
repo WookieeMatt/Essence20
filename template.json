@@ -404,9 +404,6 @@
       "templates": ["itemDescription"]
     },
     "specialization": {},
-    "megaformTrait": {
-      "templates": ["itemDescription"]
-    },
     "resource": {
       "templates": ["itemDescription"],
       "uses": {
