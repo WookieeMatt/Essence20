@@ -17,6 +17,7 @@
   "private": true,
   "dependencies": {
     "gulp-autoprefixer": "^7.0.1",
+    "gulp-less": "^5.0.0",
     "gulp-sourcemaps": "^2.6.5",
     "jest": "^27.5.1"
   },
