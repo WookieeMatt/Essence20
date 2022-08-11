@@ -1,3 +1,12 @@
+import { registerSettings } from "./settings.js";
+
+export let i18n = key => {
+    return game.i18n.localize(key);
+};
+export let setting = key => {
+    return game.settings.get("essence20", key);
+};
+
 export class StoryPoints extends Application {
   tokenname = '';
   tokenstat = '';
@@ -21,3 +30,7 @@ export class StoryPoints extends Application {
     });
   }
 }
+
+Hooks.on('init', () => {
+  registerSettings();
+});
