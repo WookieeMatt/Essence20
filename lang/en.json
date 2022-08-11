@@ -301,5 +301,44 @@
       "trip": "Trip",
       "wrecker": "Wrecker"
     }
+  },
+  "STORY_POINTS": {
+    "SetToDead": "Set Character to Dead",
+    "HurtCharacter": "Hurt the selected Character",
+    "HealCharacter": "Heal the selected Character",
+    "HealFully": "Fully Heal the selected Character",
+    "toggledialog": "Toggle AlwaysHP Dialog",
+    "Multiple": "Multiple",
+  
+    "alwaysshow": "Always show",
+    "dontshow": "Don't show",
+    "allowtoggle": "Allow toggling",
+  
+    "everyone": "Everyone",
+    "gm": "GM Only",
+    "players": "Player Only",
+  
+    "resourcename.name": "Resource to change",
+    "resourcename.hint": "Most systems use attributes.hp, but if the system you use doesn't, or if you'd rather use a different property, you can set it here.",
+    "add-defeated.name": "Set defeated status on zero HP",
+    "add-defeated.hint": "When pressing the button(skull) to drop the HP to zero, also set the defeated status",
+    "show-dialog.name": "Show the Window",
+    "show-dialog.hint": "Just in case you'd rather not see the dialog, if you're on a small display",
+    "gm-only.name": "GM Only",
+    "gm-only.hint": "Only show the dialog for the Gamesmaster",
+    "double-click.name": "Allow Double-Click",
+    "double-click.hint": "Double-clicking the down or up arrows will fully heal or completely drain.  Add this if you can't right click the skull or heart.",
+    "clear-savingthrows.name": "Clear Death Saving Throws",
+    "clear-savingthrows.hint": "Clear death saving throws automatically when healed",
+    "clear-after-enter.name": "Clear After Applying",
+    "clear-after-enter.hint": "Clear the text box after apply damage, uncheck this if you still want to keep the last value entered",
+    "show-option.name": "Window Show Options",
+    "show-option.hint": "Change how the Always HP window is shown",
+    "load-option.name": "Load Option",
+    "allow-bar-click.name": "Allow Bar Click",
+    "allow-bar-click.hint": "Hover over and click on the HP bar to alter the attribute",
+  
+    "DeathSavingThrowFail": "Death Savingthrow, Fail",
+    "DeathSavingThrowPass": "Death Savingthrow, Pass"
   }
 }

@@ -7,6 +7,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { E20 } from "./helpers/config.mjs";
+import { StoryPoints } from "./story-points.js";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -45,6 +46,10 @@ Hooks.once('init', async function() {
 
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
+});
+
+Hooks.on('ready', () => {
+  game.StoryPoints = new StoryPoints().render(true);
 });
 
 /* -------------------------------------------- */

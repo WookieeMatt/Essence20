@@ -7,8 +7,8 @@
   "compatibleCoreVersion": "10",
   "author": "WookieeChan, potato",
   "esmodules": ["module/essence20.mjs"],
-  "styles": ["css/essence20.css"],
-  "scripts": [],
+  "styles": ["css/essence20.css", "css/story-points.css"],
+  "scripts": ["module/story-points.js"],
   "packs": [],
   "languages": [
     {

@@ -1,0 +1,227 @@
+#storypoints-container {
+  height: auto;
+  width: 300px;
+  border-radius: 5px;
+  background: url(../../../ui/denim075.png) repeat;
+  color: rgba(255, 255, 255, .87);
+  box-shadow: 0 0 20px #000;
+  border: 1px solid #000;
+  position: fixed;
+  z-index: 29;
+  overflow: hidden;
+  flex-direction: column;
+  display: flex !important;
+}
+
+#storypoints-container.loading {
+  display: none !important;
+}
+
+#storypoints-header {
+  flex: 0 0 27px;
+}
+
+#storypoints-move-handle {
+  padding-left: 5px;
+  padding-top: 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 0px;
+  border-bottom: 2px solid #782e22;
+  min-height: 27px;
+}
+
+.storypoints-content {
+  flex: 0 0 30px;
+  padding-top: 2px;
+  text-align: center;
+}
+
+#storypoints-hp {
+  width: 75px;
+  text-align: center;
+  background: url(../../../ui/parchment.jpg) repeat;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.storypoints-btn {
+  line-height: 24px;
+  width: 30px;
+  text-align: center;
+  /*background: rgba(255, 255, 240, 0.8);
+    border: 1px solid #999;
+    box-shadow: 0 0 2px #FFF inset;
+    */
+  border-radius: 3px;
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.death-savingthrow {
+  display: none;
+  width: 40px;
+}
+
+.death-savingthrow>div {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #808080;
+  background-color: #C0C0C0;
+  border-radius: 100%;
+  display: inline-block;
+}
+
+.death-savingthrow>div.active {
+  border: 1px solid red;
+  background-color: #ff6400;
+}
+
+.death-savingthrow.save>div.active {
+  border: 1px solid #15838d;
+  background-color: rgb(77, 208, 225);
+}
+
+#storypoints-btn-fullheal {
+  line-height: 21px;
+}
+
+#storypoints-btn-fullheal i {
+  padding-top: 6px;
+}
+
+.bad-ones {
+
+  border: 1px solid red;
+  border-bottom: 1px solid #ff6400;
+  box-shadow: 0 0 10px #ff6400;
+}
+
+.bad-ones i {
+  color: red;
+}
+
+.good-ones {
+  border: 1px solid rgb(77, 208, 225);
+  box-shadow: 0 0 10px rgb(77, 208, 225);
+}
+
+.good-ones i {
+  color: rgb(77, 208, 225);
+}
+
+#always-hp .window-content {
+  background: none;
+  padding: 2px 0px;
+  border-top: 2px solid #782e22;
+  overflow-y: hidden;
+}
+
+#always-hp .window-title {
+  height: 100%;
+}
+
+#always-hp .window-header> :not(h4) {
+  display: none !important;
+}
+
+#always-hp .window-header .character-name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  white-space: nowrap;
+  width: 100%;
+  height: 100%;
+}
+
+#always-hp .window-header .character-name .count {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5)
+}
+
+#always-hp .window-header .token-stats {
+  font-size: 12px;
+  flex-grow: 0;
+  text-align: right;
+  flex-wrap: nowrap;
+  padding-top: 2px;
+  height: 20px;
+}
+
+#always-hp.minimized .window-header .token-stats {
+  margin-top: 4px;
+}
+
+#always-hp .window-header .token-stats:empty {
+  display: none;
+}
+
+#always-hp .window-header .token-stats .stat {
+  display: inline-block;
+  padding: 0.25em 0.4em;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+  color: #fff;
+  background-color: #6c757d;
+}
+
+#always-hp .window-header .token-stats .stat.temp {
+  background-color: #17a2b8;
+}
+
+#always-hp .resource {
+  position: absolute;
+  width: calc(100% + 4px);
+  height: 10px;
+  left: 0px;
+  top: 22px;
+  border: 2px solid rgba(0, 0, 0, 0.9);
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin-left: -2px;
+}
+
+#always-hp .resource .bar {
+  border: 1px solid solid rgba(0, 0, 0, 0.8);
+  border-radius: 2px;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+#always-hp .resource .bar-change {
+  display: none;
+  width: 75px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+#always-hp .resource:hover .bar-change {
+  display: inline-block;
+}
+
+#always-hp .resource .temp-bar {
+  background-color: #66ccff;
+  border-radius: 2px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  height: 4px;
+}
