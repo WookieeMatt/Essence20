@@ -6,6 +6,10 @@ export let setting = key => {
   return game.settings.get("essence20", key);
 };
 
+/* -------------------------------------------- */
+/*  Story Points Tracker Dialog                 */
+/* -------------------------------------------- */
+
 export class StoryPoints extends Application {
   gmPoints = game.settings.get('essence20', 'gm-points');
   storyPoints = game.settings.get('essence20', 'story-points');
@@ -94,6 +98,10 @@ export class StoryPoints extends Application {
   }
 }
 
+/* -------------------------------------------- */
+/*  Hooks                                       */
+/* -------------------------------------------- */
+
 Hooks.on('init', () => {
   registerSettings();
 });
@@ -115,6 +123,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
       toggle: true,
       active: setting('show-dialog'),
       onClick: toggled => {
+        game.settings.set('essence20', 'show-dialog', toggled);
         if (toggled) {
           if (!game.StoryPoints) {
             game.StoryPoints = new StoryPoints().render(true);

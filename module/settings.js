@@ -1,8 +1,4 @@
 export const registerSettings = function () {
-  let i18n = key => {
-    return game.i18n.localize(key);
-  };
-
   let systemName = "essence20";
 
   const debouncedReload = foundry.utils.debounce(function () { window.location.reload(); }, 100);
@@ -47,8 +43,6 @@ export const registerSettings = function () {
   /*  System state                                */
   /* -------------------------------------------- */
   game.settings.register(systemName, "show-dialog", {
-    name: i18n("ALWAYSHP.show-dialog.name"),
-    hint: i18n("ALWAYSHP.show-dialog.hint"),
     scope: "client",
     default: true,
     type: Boolean,
