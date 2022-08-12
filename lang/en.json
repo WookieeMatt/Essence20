@@ -314,7 +314,13 @@
       "storyPoints": "Story Points",
 
       "gmPointSpent": "A GM Point has been spent!",
-      "storyPointSpent": "A Story Point has been spent!"
+      "storyPointSpent": "A Story Point has been spent!",
+
+      "show-option.name": "Window Show Options",
+      "show-option.hint": "Change how the Story Points window is shown",
+      "load-option.name": "Load Option",
+
+      "title": "Story Points Tracker"
     }
   }
 }

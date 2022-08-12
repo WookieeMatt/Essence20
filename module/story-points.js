@@ -17,7 +17,7 @@ export class StoryPoints extends Application {
       resizable: false,
       top: pos?.top || 60,
       left: pos?.left || (($('#board').width / 2) - 150),
-      storyPoints: 0,
+      title: i18n('E20.STORY_POINTS.title'),
     });
   }
 

@@ -8,19 +8,19 @@ export const registerSettings = function () {
   const debouncedReload = foundry.utils.debounce(function () { window.location.reload(); }, 100);
 
   let showoptions = {
-    'on': game.i18n.localize("STORY_POINTS.alwaysshow"),
-    'off': game.i18n.localize("STORY_POINTS.dontshow"),
-    'toggle': game.i18n.localize("STORY_POINTS.allowtoggle"),
+    'on': game.i18n.localize("E20.STORY_POINTS.alwaysshow"),
+    'off': game.i18n.localize("E20.STORY_POINTS.dontshow"),
+    'toggle': game.i18n.localize("E20.STORY_POINTS.allowtoggle"),
   };
 
   let loadoptions = {
-    'everyone': game.i18n.localize("STORY_POINTS.everyone"),
-    'gm': game.i18n.localize("STORY_POINTS.gm"),
-    'players': game.i18n.localize("STORY_POINTS.players"),
+    'everyone': game.i18n.localize("E20.STORY_POINTS.everyone"),
+    'gm': game.i18n.localize("E20.STORY_POINTS.gm"),
+    'players': game.i18n.localize("E20.STORY_POINTS.players"),
   };
 
   game.settings.register(systemName, "load-option", {
-    name: game.i18n.localize("STORY_POINTS.load-option.name"),
+    name: game.i18n.localize("E20.STORY_POINTS.load-option.name"),
     scope: "world",
     config: true,
     default: "everyone",
@@ -30,8 +30,8 @@ export const registerSettings = function () {
   });
 
   game.settings.register(systemName, "show-option", {
-    name: game.i18n.localize("STORY_POINTS.show-option.name"),
-    hint: game.i18n.localize("STORY_POINTS.show-option.hint"),
+    name: game.i18n.localize("E20.STORY_POINTS.show-option.name"),
+    hint: game.i18n.localize("E20.STORY_POINTS.show-option.hint"),
     scope: "client",
     config: true,
     default: "toggle",
