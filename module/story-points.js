@@ -116,8 +116,8 @@ Hooks.on('ready', () => {
   // Create hook that helps with persisting dialog position
   let oldDragMouseUp = Draggable.prototype._onDragMouseUp;
   Draggable.prototype._onDragMouseUp = function (event) {
-      Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
-      return oldDragMouseUp.call(this, event);
+    Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
+    return oldDragMouseUp.call(this, event);
   }
 });
 
@@ -133,7 +133,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
     tokenControls.tools.push({
       name: "toggleDialog",
       title: "E20.STORY_POINTS.toggleDialog",
-      icon: "fas fa-briefcase-medical",
+      icon: "fas fa-circle-s",
       toggle: true,
       active: setting('show-dialog'),
       onClick: toggled => {
