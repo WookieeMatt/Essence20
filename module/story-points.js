@@ -2,6 +2,9 @@ import { registerSettings } from "./settings.js";
 export let i18n = key => {
   return game.i18n.localize(key);
 };
+export let setting = key => {
+  return game.settings.get("essence20", key);
+};
 
 export class StoryPoints extends Application {
   gmPoints = game.settings.get('essence20', 'gm-points');
@@ -82,8 +85,46 @@ export class StoryPoints extends Application {
 
     ChatMessage.create(messageData);
   }
+
+  async close(options) {
+    if (options?.properClose) {
+      super.close(options);
+      game.StoryPoints = null;
+    }
+  }
 }
 
 Hooks.on('init', () => {
   registerSettings();
+});
+
+Hooks.on('ready', () => {
+  if ((setting("show-option") == 'on' || (setting("show-option") == 'toggle' && setting("show-dialog")))
+    && (setting("load-option") == 'everyone' || (setting("load-option") == 'gm' == game.user.isGM))) {
+    game.StoryPoints = new StoryPoints().render(true);
+  }
+});
+
+Hooks.on("getSceneControlButtons", (controls) => {
+  if (setting("show-option") == 'toggle' && (setting("load-option") == 'everyone' || (setting("load-option") == 'gm' == game.user.isGM))) {
+    let tokenControls = controls.find(control => control.name === "token")
+    tokenControls.tools.push({
+      name: "toggleDialog",
+      title: "E20.STORY_POINTS.toggleDialog",
+      icon: "fas fa-briefcase-medical",
+      toggle: true,
+      active: setting('show-dialog'),
+      onClick: toggled => {
+        if (toggled) {
+          if (!game.StoryPoints) {
+            game.StoryPoints = new StoryPoints().render(true);
+          }
+        } else {
+          if (game.StoryPoints) {
+            game.StoryPoints.close({ properClose: true });
+          }
+        }
+      }
+    });
+  }
 });

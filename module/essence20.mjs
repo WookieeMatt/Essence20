@@ -7,13 +7,12 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { E20 } from "./helpers/config.mjs";
-import { StoryPoints } from "./story-points.js";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 
-Hooks.once('init', async function() {
+Hooks.once('init', async function () {
 
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
@@ -48,16 +47,12 @@ Hooks.once('init', async function() {
   return preloadHandlebarsTemplates();
 });
 
-Hooks.on('ready', () => {
-  game.StoryPoints = new StoryPoints().render(true);
-});
-
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
 
 // If you need to add Handlebars helpers, here are a few useful examples:
-Handlebars.registerHelper('concat', function() {
+Handlebars.registerHelper('concat', function () {
   var outStr = '';
   for (var arg in arguments) {
     if (typeof arguments[arg] != 'object') {
@@ -67,11 +62,11 @@ Handlebars.registerHelper('concat', function() {
   return outStr;
 });
 
-Handlebars.registerHelper('toLowerCase', function(str) {
+Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
 });
 
-Handlebars.registerHelper('sum', function() {
+Handlebars.registerHelper('sum', function () {
   var total = 0;
   for (var arg in arguments) {
     let newValue = arguments[arg];
@@ -89,7 +84,7 @@ Handlebars.registerHelper('isdefined', function (value) {
   return value !== undefined;
 });
 
-Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
+Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });
 
@@ -97,7 +92,7 @@ Handlebars.registerHelper('ifEquals', function(arg1, arg2, options) {
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once("ready", async function() {
+Hooks.once("ready", async function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
 });

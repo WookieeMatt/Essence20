@@ -19,6 +19,9 @@ export const registerSettings = function () {
     'players': game.i18n.localize("E20.STORY_POINTS.players"),
   };
 
+  /* -------------------------------------------- */
+  /*  Config settings                             */
+  /* -------------------------------------------- */
   game.settings.register(systemName, "load-option", {
     name: game.i18n.localize("E20.STORY_POINTS.load-option.name"),
     scope: "world",
@@ -38,6 +41,18 @@ export const registerSettings = function () {
     type: String,
     choices: showoptions,
     onChange: debouncedReload
+  });
+
+  /* -------------------------------------------- */
+  /*  System state                                */
+  /* -------------------------------------------- */
+  game.settings.register(systemName, "show-dialog", {
+    name: i18n("ALWAYSHP.show-dialog.name"),
+    hint: i18n("ALWAYSHP.show-dialog.hint"),
+    scope: "client",
+    default: true,
+    type: Boolean,
+    config: false
   });
 
   game.settings.register(systemName, "gm-points", {

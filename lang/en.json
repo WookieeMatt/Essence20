@@ -320,7 +320,9 @@
       "show-option.hint": "Change how the Story Points window is shown",
       "load-option.name": "Load Option",
 
-      "title": "Story Points Tracker"
+      "title": "Story Points Tracker",
+
+      "toggleDialog": "Toggle Story Points Tracker Dialog"
     }
   }
 }
