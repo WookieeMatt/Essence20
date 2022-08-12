@@ -38,7 +38,7 @@
   text-align: center;
 }
 
-#storypoints-input {
+#storypoints-input, #gmpoints-input {
   width: 75px;
   text-align: center;
   background: url(../../../ui/parchment.jpg) repeat;

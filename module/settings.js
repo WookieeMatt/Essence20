@@ -40,8 +40,14 @@ export const registerSettings = function () {
     onChange: debouncedReload
   });
 
+  game.settings.register(systemName, "gm-points", {
+    scope: "global",
+    default: 0,
+    type: Number,
+    config: false
+  });
+
   game.settings.register(systemName, "story-points", {
-    name: "story-points",
     scope: "global",
     default: 0,
     type: Number,

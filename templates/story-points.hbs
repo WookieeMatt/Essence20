@@ -1,15 +1,21 @@
 <div class="storypoints-content">
-  <span>Story Points</span>
-  <div class="resource" style="display:none;">
-    <div class="bar"></div>
-    <div class="bar-change"></div>
-    <div class="temp-bar"></div>
-  </div>
-  <div id="storypoints-btn-hurt" class="storypoints-btn bad-ones" title="{{localize 'STORYPOINTS.HurtCharacter'}}">
+  <span>{{localize 'E20.STORY_POINTS.gmPoints'}}</span>
+  <div id="gmpoints-btn-hurt" class="storypoints-btn bad-ones">
     <i class="fas fa-angle-double-down"></i>
   </div>
-  <input id="storypoints-input" type="number" value="{{storyPoints}}" disabled/>
-  <div id="storypoints-btn-heal" class="storypoints-btn good-ones" title="{{localize 'STORYPOINTS.HealCharacter'}}">
+  <input id="gmpoints-input" type="number" value="{{gmPoints}}" disabled />
+  <div id="gmpoints-btn-heal" class="storypoints-btn good-ones">
+    <i class="fas fa-angle-double-up"></i>
+  </div>
+</div>
+
+<div class="storypoints-content">
+  <span>{{localize 'E20.STORY_POINTS.storyPoints'}}</span>
+  <div id="storypoints-btn-hurt" class="storypoints-btn bad-ones">
+    <i class="fas fa-angle-double-down"></i>
+  </div>
+  <input id="storypoints-input" type="number" value="{{storyPoints}}" disabled />
+  <div id="storypoints-btn-heal" class="storypoints-btn good-ones">
     <i class="fas fa-angle-double-up"></i>
   </div>
 </div>
