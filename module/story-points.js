@@ -15,7 +15,7 @@ export class StoryPoints extends Application {
   storyPoints = game.settings.get('essence20', 'story-points');
 
   static get defaultOptions() {
-    let pos = null;
+    let pos = game.user.getFlag("essence20", "storypointsPos");
     return mergeObject(super.defaultOptions, {
       id: "story-points",
       template: "./systems/essence20/templates/story-points.hbs",
@@ -107,12 +107,26 @@ Hooks.on('init', () => {
 });
 
 Hooks.on('ready', () => {
+  // Display the dialog if settings permit
   if ((setting("show-option") == 'on' || (setting("show-option") == 'toggle' && setting("show-dialog")))
     && (setting("load-option") == 'everyone' || (setting("load-option") == 'gm' == game.user.isGM))) {
     game.StoryPoints = new StoryPoints().render(true);
   }
+
+  // Create hook that helps with persisting dialog position
+  let oldDragMouseUp = Draggable.prototype._onDragMouseUp;
+  Draggable.prototype._onDragMouseUp = function (event) {
+      Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
+      return oldDragMouseUp.call(this, event);
+  }
 });
 
+// Persists dialog position when moved by the user
+Hooks.on('dragEndStoryPoints', (app) => {
+  game.user.setFlag("essence20", "storypointsPos", { left: app.position.left, top: app.position.top });
+})
+
+// Init the button in the controls for toggling the dialog
 Hooks.on("getSceneControlButtons", (controls) => {
   if (setting("show-option") == 'toggle' && (setting("load-option") == 'everyone' || (setting("load-option") == 'gm' == game.user.isGM))) {
     let tokenControls = controls.find(control => control.name === "token")
