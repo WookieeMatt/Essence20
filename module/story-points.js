@@ -38,41 +38,51 @@ export class StoryPoints extends Application {
 
   // Handles changing GM Points to given value
   changeGmPoints(value) {
-    this.gmPoints = value;
-    $('#gmpoints-input', this.element).val(value);
-    game.settings.set('essence20', 'gm-points', value);
+    this.gmPoints = Math.max(0, value);
+    $('#gmpoints-input', this.element).val(this.gmPoints);
+    game.settings.set('essence20', 'gm-points', this.gmPoints);
   }
 
   // Handles changing Story Points to given value
   changeStoryPoints(value) {
-    this.storyPoints = value;
-    $('#storypoints-input', this.element).val(value);
-    game.settings.set('essence20', 'story-points', value);
+    this.storyPoints = Math.max(0, value);
+    $('#storypoints-input', this.element).val(this.storyPoints);
+    game.settings.set('essence20', 'story-points', this.storyPoints);
   }
 
   activateListeners(html) {
     super.activateListeners(html);
 
-    // GM Point clicks
+    // GM Points changes
     html.find('#gmpoints-btn-hurt').click(ev => {
       ev.preventDefault();
-      this.changeGmPoints(Math.max(0, this.gmPoints - 1));
+      this.changeGmPoints(this.gmPoints - 1);
       this.sendMessage(`${i18n("E20.STORY_POINTS.gmPointSpent")}`);
     });
     html.find('#gmpoints-btn-heal').click(ev => {
       ev.preventDefault();
       this.changeGmPoints(this.gmPoints + 1);
     });
+    html.find('#gmpoints-input').focusout(ev => {
+      ev.preventDefault();
+      let value = $('#gmpoints-input', this.element).val();
+      this.changeGmPoints(value);
+    });
 
-    // Story Point clicks
+    // Story Points changes
     html.find('#storypoints-btn-hurt').click(ev => {
       ev.preventDefault();
-      this.changeStoryPoints(Math.max(0, this.storyPoints - 1));
+      this.changeStoryPoints(this.storyPoints - 1);
       this.sendMessage(`${i18n("E20.STORY_POINTS.storyPointSpent")}`);
     });
     html.find('#storypoints-btn-heal').click(ev => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints + 1);
+    });
+    html.find('#storypoints-input').focusout(ev => {
+      ev.preventDefault();
+      let value = $('#storypoints-input', this.element).val();
+      this.changeStoryPoints(value);
     });
   }
 
