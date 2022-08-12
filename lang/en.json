@@ -311,7 +311,10 @@
       "players": "Player Only",
   
       "gmPoints": "GM Points",
-      "storyPoints": "Story Points"
+      "storyPoints": "Story Points",
+
+      "gmPointSpent": "A GM Point has been spent!",
+      "storyPointSpent": "A Story Point has been spent!"
     }
   }
 }
