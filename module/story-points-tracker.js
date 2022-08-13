@@ -96,16 +96,18 @@ export class StoryPointsTracker extends Application {
 
   // Outputs given message to chat
   sendMessage(content) {
-    const speaker = ChatMessage.getSpeaker({ user: game.user.id });
+    if (setting('sptMessage')) {
+      const speaker = ChatMessage.getSpeaker({ user: game.user.id });
 
-    let messageData = {
-      user: game.user.id,
-      speaker: speaker,
-      type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-      content,
-    };
+      let messageData = {
+        user: game.user.id,
+        speaker: speaker,
+        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        content,
+      };
 
-    ChatMessage.create(messageData);
+      ChatMessage.create(messageData);
+    }
   }
 
   // Handles clicking Close button or toggling in toolbar

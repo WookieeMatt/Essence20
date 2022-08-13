@@ -42,6 +42,15 @@ export const registerSettings = function () {
     onChange: debouncedReload
   });
 
+  game.settings.register(systemName, "sptMessage", {
+    name: game.i18n.localize("E20.STORY_POINTS.options.message.name"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+    onChange: debouncedReload
+  });
+
   /* -------------------------------------------- */
   /*  System state                                */
   /* -------------------------------------------- */

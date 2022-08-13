@@ -323,7 +323,7 @@
       "options": {
         "show.name": "Dialog display behavior",
         "access.name": "Who can access the SPT?",
-        "writePermission.name": "Players can modify Story Points"
+        "message.name": "Display chat messages"
       }
     }
   }
