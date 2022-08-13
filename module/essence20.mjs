@@ -110,11 +110,11 @@ Hooks.once("ready", async function () {
  */
 async function createItemMacro(data, slot) {
   if (data.type !== "Item") return;
-  if (!("data" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
-  const item = data.data;
+  if (!("uuid" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
+  const item = await fromUuid(data.uuid);
 
   // Create the macro command
-  const command = `game.essence20.rollItemMacro("${item.name}");`;
+  const command = `game.essence20.rollItemMacro("${item.uuid}");`;
   let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
   if (!macro) {
     macro = await Macro.create({
@@ -130,17 +130,16 @@ async function createItemMacro(data, slot) {
 }
 
 /**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
- * @param {string} itemName
+ * Roll and Item Macro.
+ * @param {string} itemUuid
  * @return {Promise}
  */
-function rollItemMacro(itemName) {
+async function rollItemMacro(itemUuid) {
   const speaker = ChatMessage.getSpeaker();
   let actor;
   if (speaker.token) actor = game.actors.tokens[speaker.token];
   if (!actor) actor = game.actors.get(speaker.actor);
-  const item = actor ? actor.items.find(i => i.name === itemName) : null;
+  const item = actor ? await fromUuid(itemUuid) : null;
   if (!item) return ui.notifications.warn(`Your controlled Actor does not have an item named ${itemName}`);
 
   // Trigger the item roll
