@@ -62,12 +62,12 @@ export class StoryPointsTracker extends Application {
     super.activateListeners(html);
 
     // GM Points changes
-    html.find('#gm-points-btn-hurt').click(ev => {
+    html.find('#gm-points-btn-dec').click(ev => {
       ev.preventDefault();
       this.changeGmPoints(this.gmPoints - 1);
       this.sendMessage(`${i18n("E20.STORY_POINTS.gmPointSpent")}`);
     });
-    html.find('#gm-points-btn-heal').click(ev => {
+    html.find('#gm-points-btn-inc').click(ev => {
       ev.preventDefault();
       this.changeGmPoints(this.gmPoints + 1);
     });
@@ -78,12 +78,12 @@ export class StoryPointsTracker extends Application {
     });
 
     // Story Points changes
-    html.find('#story-points-btn-hurt').click(ev => {
+    html.find('#story-points-btn-dec').click(ev => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints - 1);
       this.sendMessage(`${i18n("E20.STORY_POINTS.storyPointSpent")}`);
     });
-    html.find('#story-points-btn-heal').click(ev => {
+    html.find('#story-points-btn-inc').click(ev => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints + 1);
     });
