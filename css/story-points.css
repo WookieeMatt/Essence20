@@ -21,10 +21,6 @@
   flex: 0 0 27px;
 }
 
-#story-points .window-header > a {
-  display: none !important;
-}
-
 #story-points-move-handle {
   padding-left: 5px;
   padding-top: 5px;

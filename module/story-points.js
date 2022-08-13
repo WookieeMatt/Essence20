@@ -121,11 +121,18 @@ export class StoryPoints extends Application {
     ChatMessage.create(messageData);
   }
 
+  // Handles clicking Close button or toggling in toolbar
   async close(options) {
-    if (options?.properClose) {
-      super.close(options);
-      game.StoryPoints = null;
-    }
+    // Deactivate in toolbar
+    let toggleDialogControl = ui.controls.controls
+      .find(control => control.name === "token").tools
+      .find(control => control.name === "toggleDialog");
+    toggleDialogControl.active = false;
+    toggleDialogControl.onClick(true)
+    ui.controls.render();
+
+    super.close(options);
+    game.StoryPoints = null;
   }
 }
 
@@ -175,7 +182,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
           }
         } else {
           if (game.StoryPoints) {
-            game.StoryPoints.close({ properClose: true });
+            game.StoryPoints.close();
           }
         }
       }
