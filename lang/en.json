@@ -324,6 +324,11 @@
         "show.name": "Dialog display behavior",
         "access.name": "Who can access the SPT?",
         "message.name": "Display chat messages"
+      },
+
+      "roll": {
+        "button": "Roll major scene GM Points",
+        "flavor": "Rolling for major scene GM Points!"
       }
     }
   }

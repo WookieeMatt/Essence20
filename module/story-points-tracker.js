@@ -77,6 +77,21 @@ export class StoryPointsTracker extends Application {
       this.changeGmPoints(value);
     });
 
+    // Roll new major scene GM Points
+    html.find('#major-scene-points-button').click(async (ev) => {
+      ev.preventDefault();
+      const user = game.user;
+      if (user.isGM) {
+        let roll = new Roll('d2 + 1');
+        await roll.toMessage({
+          speaker: game.user.name,
+          flavor: `${i18n("E20.STORY_POINTS.roll.flavor")}`,
+          rollMode: game.settings.get('core', 'rollMode'),
+        });
+        this.changeGmPoints(this.gmPoints + roll.total);
+      }
+    });
+
     // Story Points changes
     html.find('#story-points-btn-dec').click(ev => {
       ev.preventDefault();
