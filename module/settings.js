@@ -62,14 +62,14 @@ export const registerSettings = function () {
   });
 
   game.settings.register(systemName, "sptGmPoints", {
-    scope: "global",
+    scope: "world",
     default: 0,
     type: Number,
     config: false
   });
 
   game.settings.register(systemName, "sptStoryPoints", {
-    scope: "global",
+    scope: "world",
     default: 0,
     type: Number,
     config: false
