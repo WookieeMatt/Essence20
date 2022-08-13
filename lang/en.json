@@ -302,9 +302,9 @@
       "wrecker": "Wrecker"
     },
     "STORY_POINTS": {
-      "alwaysshow": "Always show",
-      "dontshow": "Don't show",
-      "allowtoggle": "Allow toggling",
+      "alwaysShow": "Always show",
+      "dontShow": "Don't show",
+      "allowToggle": "Allow toggling",
     
       "everyone": "Everyone",
       "gm": "GM Only",
@@ -316,9 +316,9 @@
       "gmPointSpent": "A GM Point has been spent!",
       "storyPointSpent": "A Story Point has been spent!",
 
-      "show-option.name": "Window Show Options",
-      "show-option.hint": "Change how the Story Points window is shown",
-      "load-option.name": "Load Option",
+      "showOption.name": "Window Show Options",
+      "loadOption.name": "Load Option",
+      "modifyStoryPointsOption.name": "Players can modify Story Points",
 
       "title": "Story Points Tracker",
 

@@ -36,18 +36,31 @@ export class StoryPoints extends Application {
     };
   }
 
+  // Returns true if the current user is able to modify Story Points and false otherwise
+  get canChangeStoryPoints() {
+    return game.user.isGM || (setting("modify-story-points-option"));
+  }
+
   // Handles changing GM Points to given value
   changeGmPoints(value) {
-    this.gmPoints = Math.max(0, value);
-    $('#gmpoints-input', this.element).val(this.gmPoints);
-    game.settings.set('essence20', 'gm-points', this.gmPoints);
+    if (game.user.isGM) {
+      this.gmPoints = Math.max(0, value);
+      $('#gmpoints-input', this.element).val(this.gmPoints);
+      game.settings.set('essence20', 'gm-points', this.gmPoints);
+    } else {
+      $('#gmpoints-input', this.element).val(this.gmPoints);
+    }
   }
 
   // Handles changing Story Points to given value
   changeStoryPoints(value) {
-    this.storyPoints = Math.max(0, value);
-    $('#storypoints-input', this.element).val(this.storyPoints);
-    game.settings.set('essence20', 'story-points', this.storyPoints);
+    if (this.canChangeStoryPoints) {
+      this.storyPoints = Math.max(0, value);
+      $('#storypoints-input', this.element).val(this.storyPoints);
+      game.settings.set('essence20', 'story-points', this.storyPoints);
+    } else {
+      $('#storypoints-input', this.element).val(this.storyPoints);
+    }
   }
 
   activateListeners(html) {
@@ -56,12 +69,16 @@ export class StoryPoints extends Application {
     // GM Points changes
     html.find('#gmpoints-btn-hurt').click(ev => {
       ev.preventDefault();
-      this.changeGmPoints(this.gmPoints - 1);
-      this.sendMessage(`${i18n("E20.STORY_POINTS.gmPointSpent")}`);
+      if (game.user.isGM) {
+        this.changeGmPoints(this.gmPoints - 1);
+        this.sendMessage(`${i18n("E20.STORY_POINTS.gmPointSpent")}`);
+      }
     });
     html.find('#gmpoints-btn-heal').click(ev => {
       ev.preventDefault();
-      this.changeGmPoints(this.gmPoints + 1);
+      if (game.user.isGM) {
+        this.changeGmPoints(this.gmPoints + 1);
+      }
     });
     html.find('#gmpoints-input').focusout(ev => {
       ev.preventDefault();
@@ -72,12 +89,16 @@ export class StoryPoints extends Application {
     // Story Points changes
     html.find('#storypoints-btn-hurt').click(ev => {
       ev.preventDefault();
-      this.changeStoryPoints(this.storyPoints - 1);
-      this.sendMessage(`${i18n("E20.STORY_POINTS.storyPointSpent")}`);
+      if (this.canChangeStoryPoints) {
+        this.changeStoryPoints(this.storyPoints - 1);
+        this.sendMessage(`${i18n("E20.STORY_POINTS.storyPointSpent")}`);
+      }
     });
     html.find('#storypoints-btn-heal').click(ev => {
       ev.preventDefault();
-      this.changeStoryPoints(this.storyPoints + 1);
+      if (this.canChangeStoryPoints) {
+        this.changeStoryPoints(this.storyPoints + 1);
+      }
     });
     html.find('#storypoints-input').focusout(ev => {
       ev.preventDefault();
