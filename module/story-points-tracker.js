@@ -33,6 +33,7 @@ export class StoryPointsTracker extends Application {
     return {
       gmPoints: this.gmPoints,
       storyPoints: this.storyPoints,
+      isGm: game.user.isGM,
     };
   }
 

@@ -1,5 +1,6 @@
 <div class="story-points-content">
   <div class="story-points-label">{{localize 'E20.STORY_POINTS.gmPoints'}}</div>
+  {{#if isGm}}
   <div id="gm-points-btn-dec" class="story-points-btn bad-ones">
     <i class="fas fa-angle-double-down"></i>
   </div>
@@ -7,10 +8,14 @@
   <div id="gm-points-btn-inc" class="story-points-btn good-ones">
     <i class="fas fa-angle-double-up"></i>
   </div>
+  {{else}}
+  <input id="gm-points-input" type="number" value="{{gmPoints}}" disabled/>
+  {{/if}}
 </div>
 
 <div class="story-points-content">
   <div class="story-points-label">{{localize 'E20.STORY_POINTS.storyPoints'}}</div>
+  {{#if isGm}}
   <div id="story-points-btn-dec" class="story-points-btn bad-ones">
     <i class="fas fa-angle-double-down"></i>
   </div>
@@ -18,8 +23,13 @@
   <div id="story-points-btn-inc" class="story-points-btn good-ones">
     <i class="fas fa-angle-double-up"></i>
   </div>
+  {{else}}
+  <input id="story-points-input" type="number" value="{{storyPoints}}" disabled/>
+  {{/if}}
 </div>
 
+{{#if isGm}}
 <div style="text-align: center; margin-top: 10px;">
   <a id="major-scene-points-button">{{localize 'E20.STORY_POINTS.roll.button'}}</a>
 </div>
+{{/if}}
