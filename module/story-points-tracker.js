@@ -36,11 +36,6 @@ export class StoryPointsTracker extends Application {
     };
   }
 
-  // Returns true if the current user is able to modify Story Points and false otherwise
-  get canChangeStoryPoints() {
-    return game.user.isGM || (setting("sptWritePermission"));
-  }
-
   // Handles changing GM Points to given value
   changeGmPoints(value) {
     if (game.user.isGM) {
@@ -54,7 +49,7 @@ export class StoryPointsTracker extends Application {
 
   // Handles changing Story Points to given value
   changeStoryPoints(value) {
-    if (this.canChangeStoryPoints) {
+    if (game.user.isGM) {
       this.storyPoints = Math.max(0, value);
       $('#story-points-input', this.element).val(this.storyPoints);
       game.settings.set('essence20', 'sptStoryPoints', this.storyPoints);
@@ -69,16 +64,12 @@ export class StoryPointsTracker extends Application {
     // GM Points changes
     html.find('#gm-points-btn-hurt').click(ev => {
       ev.preventDefault();
-      if (game.user.isGM) {
-        this.changeGmPoints(this.gmPoints - 1);
-        this.sendMessage(`${i18n("E20.STORY_POINTS.gmPointSpent")}`);
-      }
+      this.changeGmPoints(this.gmPoints - 1);
+      this.sendMessage(`${i18n("E20.STORY_POINTS.gmPointSpent")}`);
     });
     html.find('#gm-points-btn-heal').click(ev => {
       ev.preventDefault();
-      if (game.user.isGM) {
-        this.changeGmPoints(this.gmPoints + 1);
-      }
+      this.changeGmPoints(this.gmPoints + 1);
     });
     html.find('#gm-points-input').focusout(ev => {
       ev.preventDefault();
@@ -89,16 +80,12 @@ export class StoryPointsTracker extends Application {
     // Story Points changes
     html.find('#story-points-btn-hurt').click(ev => {
       ev.preventDefault();
-      if (this.canChangeStoryPoints) {
-        this.changeStoryPoints(this.storyPoints - 1);
-        this.sendMessage(`${i18n("E20.STORY_POINTS.storyPointSpent")}`);
-      }
+      this.changeStoryPoints(this.storyPoints - 1);
+      this.sendMessage(`${i18n("E20.STORY_POINTS.storyPointSpent")}`);
     });
     html.find('#story-points-btn-heal').click(ev => {
       ev.preventDefault();
-      if (this.canChangeStoryPoints) {
-        this.changeStoryPoints(this.storyPoints + 1);
-      }
+      this.changeStoryPoints(this.storyPoints + 1);
     });
     html.find('#story-points-input').focusout(ev => {
       ev.preventDefault();

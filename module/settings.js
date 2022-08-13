@@ -8,15 +8,15 @@ export const registerSettings = function () {
   /* -------------------------------------------- */
 
   const SHOW_OPTIONS = {
-    'on': game.i18n.localize("E20.STORY_POINTS.alwaysShow"),
-    'off': game.i18n.localize("E20.STORY_POINTS.dontShow"),
-    'toggle': game.i18n.localize("E20.STORY_POINTS.allowToggle"),
+    on: game.i18n.localize("E20.STORY_POINTS.alwaysShow"),
+    off: game.i18n.localize("E20.STORY_POINTS.dontShow"),
+    toggle: game.i18n.localize("E20.STORY_POINTS.allowToggle"),
   };
 
   const ACCESS_OPTIONS = {
-    'everyone': game.i18n.localize("E20.STORY_POINTS.everyone"),
-    'gm': game.i18n.localize("E20.STORY_POINTS.gm"),
-    'players': game.i18n.localize("E20.STORY_POINTS.players"),
+    everyone: game.i18n.localize("E20.STORY_POINTS.everyone"),
+    gm: game.i18n.localize("E20.STORY_POINTS.gm"),
+    players: game.i18n.localize("E20.STORY_POINTS.players"),
   };
 
   /* -------------------------------------------- */
@@ -29,15 +29,6 @@ export const registerSettings = function () {
     default: "everyone",
     type: String,
     choices: ACCESS_OPTIONS,
-    onChange: debouncedReload
-  });
-
-  game.settings.register(systemName, "sptWritePermission", {
-    name: game.i18n.localize("E20.STORY_POINTS.options.writePermission.name"),
-    scope: "world",
-    config: true,
-    default: true,
-    type: Boolean,
     onChange: debouncedReload
   });
 
