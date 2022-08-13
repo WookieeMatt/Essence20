@@ -11,8 +11,8 @@ export let setting = key => {
 /* -------------------------------------------- */
 
 export class StoryPointsTracker extends Application {
-  gmPoints = game.settings.get('essence20', 'gm-points');
-  storyPoints = game.settings.get('essence20', 'story-points');
+  gmPoints = game.settings.get('essence20', 'sptGmPoints');
+  storyPoints = game.settings.get('essence20', 'sptStoryPoints');
 
   static get defaultOptions() {
     let pos = game.user.getFlag("essence20", "storyPointsTrackerPos");
@@ -38,7 +38,7 @@ export class StoryPointsTracker extends Application {
 
   // Returns true if the current user is able to modify Story Points and false otherwise
   get canChangeStoryPoints() {
-    return game.user.isGM || (setting("modify-story-points-option"));
+    return game.user.isGM || (setting("sptWritePermission"));
   }
 
   // Handles changing GM Points to given value
@@ -46,7 +46,7 @@ export class StoryPointsTracker extends Application {
     if (game.user.isGM) {
       this.gmPoints = Math.max(0, value);
       $('#gm-points-input', this.element).val(this.gmPoints);
-      game.settings.set('essence20', 'gm-points', this.gmPoints);
+      game.settings.set('essence20', 'sptGmPoints', this.gmPoints);
     } else {
       $('#gm-points-input', this.element).val(this.gmPoints);
     }
@@ -57,7 +57,7 @@ export class StoryPointsTracker extends Application {
     if (this.canChangeStoryPoints) {
       this.storyPoints = Math.max(0, value);
       $('#story-points-input', this.element).val(this.storyPoints);
-      game.settings.set('essence20', 'story-points', this.storyPoints);
+      game.settings.set('essence20', 'sptStoryPoints', this.storyPoints);
     } else {
       $('#story-points-input', this.element).val(this.storyPoints);
     }
@@ -122,16 +122,21 @@ export class StoryPointsTracker extends Application {
   }
 
   // Handles clicking Close button or toggling in toolbar
-  async close(options) {
+  async close() {
     // Deactivate in toolbar
     let toggleDialogControl = ui.controls.controls
       .find(control => control.name === "token").tools
       .find(control => control.name === "toggleDialog");
     toggleDialogControl.active = false;
-    toggleDialogControl.onClick(true)
+    toggleDialogControl.onClick(false)
     ui.controls.render();
 
-    super.close(options);
+    this.closeSpt();
+  }
+
+  // Helper close method that's called after toggling off in the toolbar
+  closeSpt() {
+    super.close();
     game.StoryPointsTracker = null;
   }
 }
@@ -146,8 +151,8 @@ Hooks.on('init', () => {
 
 Hooks.on('ready', () => {
   // Display the dialog if settings permit
-  if ((setting("show-option") == 'on' || (setting("show-option") == 'toggle' && setting("show-dialog")))
-    && (setting("load-option") == 'everyone' || (setting("load-option") == 'gm' == game.user.isGM))) {
+  if ((setting("sptShow") == 'on' || (setting("sptShow") == 'toggle' && setting("sptToggleState")))
+    && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
     game.StoryPointsTracker = new StoryPointsTracker().render(true);
   }
 
@@ -166,24 +171,23 @@ Hooks.on('dragEndStoryPointsTracker', (app) => {
 
 // Init the button in the controls for toggling the dialog
 Hooks.on("getSceneControlButtons", (controls) => {
-  if (setting("show-option") == 'toggle' && (setting("load-option") == 'everyone' || (setting("load-option") == 'gm' == game.user.isGM))) {
+  if (setting("sptShow") == 'toggle' && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
     let tokenControls = controls.find(control => control.name === "token")
     tokenControls.tools.push({
       name: "toggleDialog",
       title: "E20.STORY_POINTS.toggleDialog",
       icon: "fas fa-circle-s",
       toggle: true,
-      active: setting('show-dialog'),
+      active: setting('sptToggleState'),
       onClick: toggled => {
-        game.settings.set('essence20', 'show-dialog', toggled);
         if (toggled) {
           if (!game.StoryPointsTracker) {
+            game.settings.set('essence20', 'sptToggleState', true);
             game.StoryPointsTracker = new StoryPointsTracker().render(true);
           }
         } else {
-          if (game.StoryPointsTracker) {
-            game.StoryPointsTracker.close();
-          }
+          game.settings.set('essence20', 'sptToggleState', false);
+          game.StoryPointsTracker.closeSpt();
         }
       }
     });

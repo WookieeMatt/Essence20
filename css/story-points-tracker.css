@@ -17,23 +17,7 @@
   display: none !important;
 }
 
-#story-points-header {
-  flex: 0 0 27px;
-}
-
-#story-points-move-handle {
-  padding-left: 5px;
-  padding-top: 5px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  margin-bottom: 0px;
-  border-bottom: 2px solid #782e22;
-  min-height: 27px;
-}
-
 .story-points-content {
-  flex: 0 0 30px;
   padding-top: 2px;
   text-align: center;
 }
@@ -60,14 +44,6 @@
   display: inline-block;
   vertical-align: top;
   cursor: pointer;
-}
-
-#story-points-btn-fullheal {
-  line-height: 21px;
-}
-
-#story-points-btn-fullheal i {
-  padding-top: 6px;
 }
 
 .bad-ones {

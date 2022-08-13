@@ -3,13 +3,17 @@ export const registerSettings = function () {
 
   const debouncedReload = foundry.utils.debounce(function () { window.location.reload(); }, 100);
 
-  let showoptions = {
+  /* -------------------------------------------- */
+  /*  Story Points Tracker settings               */
+  /* -------------------------------------------- */
+
+  const SHOW_OPTIONS = {
     'on': game.i18n.localize("E20.STORY_POINTS.alwaysShow"),
     'off': game.i18n.localize("E20.STORY_POINTS.dontShow"),
     'toggle': game.i18n.localize("E20.STORY_POINTS.allowToggle"),
   };
 
-  let loadoptions = {
+  const ACCESS_OPTIONS = {
     'everyone': game.i18n.localize("E20.STORY_POINTS.everyone"),
     'gm': game.i18n.localize("E20.STORY_POINTS.gm"),
     'players': game.i18n.localize("E20.STORY_POINTS.players"),
@@ -18,18 +22,18 @@ export const registerSettings = function () {
   /* -------------------------------------------- */
   /*  Config settings                             */
   /* -------------------------------------------- */
-  game.settings.register(systemName, "load-option", {
-    name: game.i18n.localize("E20.STORY_POINTS.loadOption.name"),
+  game.settings.register(systemName, "sptAccess", {
+    name: game.i18n.localize("E20.STORY_POINTS.options.access.name"),
     scope: "world",
     config: true,
     default: "everyone",
     type: String,
-    choices: loadoptions,
+    choices: ACCESS_OPTIONS,
     onChange: debouncedReload
   });
 
-  game.settings.register(systemName, "modify-story-points-option", {
-    name: game.i18n.localize("E20.STORY_POINTS.modifyStoryPointsOption.name"),
+  game.settings.register(systemName, "sptWritePermission", {
+    name: game.i18n.localize("E20.STORY_POINTS.options.writePermission.name"),
     scope: "world",
     config: true,
     default: true,
@@ -37,34 +41,34 @@ export const registerSettings = function () {
     onChange: debouncedReload
   });
 
-  game.settings.register(systemName, "show-option", {
-    name: game.i18n.localize("E20.STORY_POINTS.showOption.name"),
+  game.settings.register(systemName, "sptShow", {
+    name: game.i18n.localize("E20.STORY_POINTS.options.show.name"),
     scope: "client",
     config: true,
     default: "toggle",
     type: String,
-    choices: showoptions,
+    choices: SHOW_OPTIONS,
     onChange: debouncedReload
   });
 
   /* -------------------------------------------- */
   /*  System state                                */
   /* -------------------------------------------- */
-  game.settings.register(systemName, "show-dialog", {
+  game.settings.register(systemName, "sptToggleState", {
     scope: "client",
     default: true,
     type: Boolean,
     config: false
   });
 
-  game.settings.register(systemName, "gm-points", {
+  game.settings.register(systemName, "sptGmPoints", {
     scope: "global",
     default: 0,
     type: Number,
     config: false
   });
 
-  game.settings.register(systemName, "story-points", {
+  game.settings.register(systemName, "sptStoryPoints", {
     scope: "global",
     default: 0,
     type: Number,

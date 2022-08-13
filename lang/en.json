@@ -316,13 +316,15 @@
       "gmPointSpent": "A GM Point has been spent!",
       "storyPointSpent": "A Story Point has been spent!",
 
-      "showOption.name": "Window Show Options",
-      "loadOption.name": "Load Option",
-      "modifyStoryPointsOption.name": "Players can modify Story Points",
-
       "title": "Story Points Tracker",
 
-      "toggleDialog": "Toggle Story Points Tracker Dialog"
+      "toggleDialog": "Toggle Story Points Tracker Dialog",
+
+      "options": {
+        "show.name": "Dialog display behavior",
+        "access.name": "Who can access the SPT?",
+        "writePermission.name": "Players can modify Story Points"
+      }
     }
   }
 }
