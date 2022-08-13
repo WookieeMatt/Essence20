@@ -1,4 +1,4 @@
-#storypoints-container {
+#story-points-container {
   height: auto;
   width: 300px;
   border-radius: 5px;
@@ -13,11 +13,11 @@
   display: flex !important;
 }
 
-#storypoints-container.loading {
+#story-points-container.loading {
   display: none !important;
 }
 
-#storypoints-header {
+#story-points-header {
   flex: 0 0 27px;
 }
 
@@ -32,19 +32,19 @@
   min-height: 27px;
 }
 
-.storypoints-content {
+.story-points-content {
   flex: 0 0 30px;
   padding-top: 2px;
   text-align: center;
 }
 
-.storypoints-label {
+.story-points-label {
   text-align: left;
   display: inline-block;
   width: 80px;
 }
 
-#storypoints-input, #gmpoints-input {
+#story-points-input, #gm-points-input {
   width: 75px;
   text-align: center;
   background: url(../../../ui/parchment.jpg) repeat;
@@ -52,7 +52,7 @@
   font-weight: bold;
 }
 
-.storypoints-btn {
+.story-points-btn {
   line-height: 24px;
   width: 30px;
   text-align: center;
@@ -62,11 +62,11 @@
   cursor: pointer;
 }
 
-#storypoints-btn-fullheal {
+#story-points-btn-fullheal {
   line-height: 21px;
 }
 
-#storypoints-btn-fullheal i {
+#story-points-btn-fullheal i {
   padding-top: 6px;
 }
 

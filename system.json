@@ -6,8 +6,8 @@
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion": "10",
   "author": "WookieeChan, potato",
-  "esmodules": ["module/essence20.mjs", "module/story-points.js"],
-  "styles": ["css/essence20.css", "css/story-points.css"],
+  "esmodules": ["module/essence20.mjs", "module/story-points-tracker.js"],
+  "styles": ["css/essence20.css", "css/story-points-tracker.css"],
   "scripts": ["module/settings.js"],
   "packs": [],
   "languages": [
