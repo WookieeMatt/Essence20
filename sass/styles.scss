@@ -1,11 +1,12 @@
-@import 'assets/global-window';
+@use 'assets' as v;
+@use 'actors';
 
-$padding: 6px;
+
 
 nav {
   ul {
     margin: 0;
-    padding: $padding;
+    padding: v.$padding;
     list-style: none;
   }
 
@@ -13,7 +14,6 @@ nav {
 
   a {
     display: block;
-    padding: $padding 12px;
-    text-decoration: none;
+    padding: v.$padding 12px;
   }
 }

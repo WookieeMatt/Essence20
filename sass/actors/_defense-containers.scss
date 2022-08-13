@@ -1,0 +1,32 @@
+@use '../assets/variables' as v;
+
+.essence20 .defenses-container {
+  list-style: none;
+  margin: 18px;
+  padding: v.$padding;
+  overflow-y: auto;
+  color: v.$textcolor1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: v.$background-b;
+  border: v.$border;
+  border-radius: 15px;
+  box-shadow: v.$boxshadow;
+  width: fit-content;
+  justify-content: left;
+  width: 95%;
+}
+
+.essence20 .defense-container {
+  margin-left: 20px;
+}
+
+.essence20 .defense-container-1 {
+  padding-left: v.$padding;
+  padding-right: v.$padding;
+  display: flex;
+  flex-direction: column;
+  /*justify-content: center;*/
+  width: 50%;
+}

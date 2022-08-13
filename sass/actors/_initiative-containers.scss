@@ -1,0 +1,27 @@
+@use '../assets/variables' as v;
+
+.essence20 .initiative-container {
+  list-style: none;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 4px;
+  overflow-y: auto;
+  color: v.$textcolor1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: v.$background-b;
+  border: v.$border;
+  border-radius: 50px;
+  box-shadow: v.$boxshadow;
+  width: 100%;
+  grid-area: initiative-container;
+}
+
+.essence20 .initiative-dropdown {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 15px;
+  padding-bottom: v.$padding;
+}

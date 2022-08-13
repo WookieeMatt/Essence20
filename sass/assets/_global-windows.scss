@@ -1,19 +1,21 @@
+@use '../assets/variables' as v;
+
 /* Global styles */
 .window-app {
   /* font-family: "Roboto", sans-serif; */
   font-family: "Comic Neue", cursive;
   font-weight: bold;
-  color: white;
+  color: v.$textcolor1;
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  background: rgb(66, 66, 66);
-  color: rgb(211, 207, 207);
+  background: v.$textcolor1;
+  color: v.$textcolor1;
 }
 
 .window-app .window-content button {
-  color: #d3cfcf;
+  color: v.$textcolor1;
   background: rgb(66, 66, 66);
   border-color: #0a0a0a;
   border-radius: 20px;
@@ -26,19 +28,19 @@
 }
 
 .dialog .dialog-buttons button.default {
-  color: rgb(211, 207, 207);
+  color: v.$textcolor1;
 }
 
 .dialog .dialog-buttons button {
-  color: rgb(211, 207, 207);
+  color: v.$textcolor1;
 }
 
 .dialog .dialog-buttons {
-  color: rgb(211, 207, 207);
+  color: v.$textcolor1;
 }
 
 #module-management .package-list .package-title {
-  color: rgb(211, 207, 207);
+  color: v.$textcolor1;
 }
 
 .item-button-container {
