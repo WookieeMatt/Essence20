@@ -44,11 +44,11 @@ export class Dice {
           },
           cancel: {
             label: this._i18n.localize(this._config.cancel),
-            callback: html => resolve({cancelled: true}),
+            callback: html => resolve({ cancelled: true }),
           },
         },
         default: "normal",
-        close: () => resolve({cancelled: true}),
+        close: () => resolve({ cancelled: true }),
       };
       new Dialog(data, null).render(true);
     });
@@ -77,7 +77,9 @@ export class Dice {
    * @param {Item} weapon   The weapon being used, if any.
    */
   rollSkill(dataset, skillRollOptions, actor, weapon) {
-    let label = weapon ? this._getWeaponRollLabel(dataset, weapon) : this._getSkillRollLabel(dataset);
+    let label = weapon
+      ? this._getWeaponRollLabel(dataset, skillRollOptions, weapon)
+      : this._getSkillRollLabel(dataset, skillRollOptions);
     const rolledSkill = dataset.skill;
     const rolledEssence = this._config.skillToEssence[rolledSkill];
     const actorSkillData = actor.getRollData().skills;
@@ -99,7 +101,7 @@ export class Dice {
     let roll = new Roll(formula, actor.getRollData());
     roll.toMessage({
       speaker: this._chatMessage.getSpeaker({ actor }),
-      flavor: label + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag),
+      flavor: label,
       rollMode: game.settings.get('core', 'rollMode'),
     });
   }
@@ -107,26 +109,28 @@ export class Dice {
   /**
    * Create skill roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @returns {String}   The resultant roll label.
    * @private
    */
-  _getSkillRollLabel(dataset) {
+  _getSkillRollLabel(dataset, skillRollOptions) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = dataset.specialization
       ? dataset.specialization
       : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const rollingForStr = this._i18n.localize(this._config.rollingFor)
-    return `${rollingForStr} ${rolledSkillStr}`;
+    return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
 
   /**
    * Create weapon roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @returns {String}   The resultant roll label.
    * @param {Item} weapon   The weapon being used.
    * @private
    */
-   _getWeaponRollLabel(dataset, weapon) {
+  _getWeaponRollLabel(dataset, skillRollOptions, weapon) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const attackRollStr = this._i18n.localize(this._config.attackRoll)
@@ -134,7 +138,8 @@ export class Dice {
     const alternateEffectsStr = this._i18n.localize(this._config.alternateEffects)
     const noneStr = this._i18n.localize(this._config.none)
 
-    let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})<br>`;
+    let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`
+    label += ` ${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
     label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}`;
 
@@ -172,7 +177,7 @@ export class Dice {
       const chatData = {
         speaker: this._chatMessage.getSpeaker({ actor }),
       };
-      switch(skillShift) {
+      switch (skillShift) {
         case 'autoFail':
           label += ` ${this._i18n.localize(this._config.autoFail)}`;
           break;
@@ -235,7 +240,7 @@ export class Dice {
     let result = '';
     const len = operands.length;
 
-    for (let i=0; i < len; i+=1) {
+    for (let i = 0; i < len; i += 1) {
       const operand = operands[i];
       result += i == len - 1 ? operand : `${operand},`;
     }
