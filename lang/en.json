@@ -21,6 +21,7 @@
     "TypeMegaformtrait": "Megaform Trait",
     "TypePerk": "Perk",
     "TypePower": "Power",
+    "TypeResource": "Resource",
     "TypeSpecialization": "Specialization",
     "TypeTrait": "Trait"
   },
@@ -54,6 +55,7 @@
     "conditioning": "CONDITIONING",
     "cost": "Cost",
     "combat": "COMBAT",
+    "combinerParticipants": "Combiner Participants",
     "custom": "Custom",
     "damages": "Damages",
     "defensesStr": "Defenses",
@@ -118,6 +120,7 @@
     "ranger": "Ranger",
     "reachMultiplier": "Reach Multiplier",
     "requirements": "Requirements",
+    "resources": "RESOURCES",
     "role": "ROLE",
     "roll": "Roll",
     "rollingFor": "Rolling for",
@@ -144,7 +147,7 @@
     "withASnag": "with a Snag",
     "value": "Value",
     "unmorphed": "Unmorphed",
-    "combinerParticipants": "Combiner Participants",
+    "uses": "Uses",
     "armorClassifications": {
       "non": "Non Armor",
       "light": "Light",
@@ -294,6 +297,36 @@
       "stun": "Stun",
       "trip": "Trip",
       "wrecker": "Wrecker"
+    },
+    "STORY_POINTS": {
+      "alwaysShow": "Always show",
+      "dontShow": "Don't show",
+      "allowToggle": "Allow toggling",
+    
+      "everyone": "Everyone",
+      "gm": "GM Only",
+      "players": "Player Only",
+  
+      "gmPoints": "GM Points",
+      "storyPoints": "Story Points",
+
+      "gmPointSpent": "A GM Point has been spent!",
+      "storyPointSpent": "A Story Point has been spent!",
+
+      "title": "Story Points Tracker",
+
+      "toggleDialog": "Toggle Story Points Tracker Dialog",
+
+      "options": {
+        "show.name": "Dialog display behavior",
+        "access.name": "Who can access the SPT?",
+        "message.name": "Display chat messages"
+      },
+
+      "roll": {
+        "button": "Roll major scene GM Points",
+        "flavor": "Rolling for major scene GM Points!"
+      }
     }
   }
 }

@@ -34,63 +34,11 @@
   </div>
 
   <div class="npc-abilities">
-    <div class="npc-abilities-1">
-      {{> "systems/essence20/templates/actor/parts/actor-general-perks.hbs"}}
+    {{!-- Hang-ups --}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.hangUps' dataType='hangUp'}}
 
-      <div class="npc-hangup">
-        <span class="resource flex-group-center">
-          <h2>{{localize 'E20.hangUps'}}</h2>
-        </span>
-        <a class="item-create" data-type="hangUp" title="{{ localize 'E20.addHangUp' }}">
-          <i class="fas fa-plus"></i>
-        </a>
-        {{#each @root.hangUps as |hangUp|}}
-        <div class="item" data-item-id="{{hangUp._id}}">
-          <div class="item-image">
-            <a class="rollable" data-roll-type="item"><i class="fas fa-dice-d20"></i></a>
-          </div>
-          <div class="item-name">
-            <input class="inline-edit" data-field="name" type="text" name="hangUp.{{@index}}.name"
-              value="{{hangUp.name}}" placeholder="{{ localize 'E20.name' }}" />
-          </div>
-          <div class="item-controls">
-            <a class="item-control item-delete" title="{{localize 'E20.deleteHangUp'}}"><i class="fas fa-trash"></i></a>
-          </div>
-        </div>
-        {{/each}}
-      </div>
-    </div>
-
-    <div class="npc-abilities-2">
-      <div class="npc-powers">
-        <span class="resource flex-group-center">
-          <h1>{{localize 'E20.powers'}}</h1>
-        </span>
-        <a class="item-create" data-type="power" title="{{ localize 'E20.addPower' }}">
-          <i class="fas fa-plus"></i>
-        </a>
-        <div>
-          {{#each @root.powers as |power|}}
-          <li class="item flexrow" data-item-id="{{power._id}}">
-            <div class="item-name">
-              <div class="item-image">
-                <a class="rollable" data-roll-type="power"><img src="{{power.img}}" title="{{power.name}}" width="24"
-                    height="24" /></a>
-              </div>
-              <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name"
-                value="{{power.name}}" placeholder="{{ localize 'E20.name' }}" />
-              <textarea class="inline-edit" data-field="system.description" name="power.{{@index}}.description"
-                placeholder="{{localize 'E20.description'}}">{{power.system.description}}</textarea>
-            </div>
-            <div class="item-controls">
-              <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i
-                  class="fas fa-trash"></i></a>
-            </div>
-          </li>
-          {{/each}}
-        </div>
-      </div>
-    </div>
+    {{!-- Threat Powers --}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers title='E20.powers' dataType='threatPower'}}
   </div>
 
   <div class="npc-weapons">

@@ -153,6 +153,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const megaformTraits = [];
     const perks = [];
     const powers = []; // Used by PCs
+    const resources = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
@@ -193,6 +194,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'power':
           powers.push(i);
           break;
+        case 'resource':
+          resources.push(i);
+          break;
         case 'specialization':
           const skill = i.system.skill;
           const existingSkillSpecializations = specializations[skill];
@@ -222,6 +226,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.megaformTraits = megaformTraits;
     context.perks = perks;
     context.powers = powers;
+    context.resources = resources;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
     context.traits = traits;
@@ -355,51 +360,18 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       this._dice.rollSkill(dataset, skillRollOptions, this.actor);
-    }
-    else if (rollType == 'weapon') {
-      const skillRollOptions = await this._dice.getSkillRollOptions(dataset, this.actor);
-
-      if (skillRollOptions.cancelled) {
-        return;
-      }
-
-      const itemId = element.closest('.item').dataset.itemId;
-      const weapon = this.actor.items.get(itemId);
-
-      this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
-    }
-    else if (rollType == 'initiative') {
-
+    } else if (rollType == 'initiative') {
       this.actor.rollInitiative({ createCombatants: true });
-    }
-    else if (rollType == 'generalPerk') {
+    } else { // Handle items
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);
 
-      // Initialize chat data.
-      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-      const rollMode = game.settings.get('core', 'rollMode');
-      const label = `[${item.type}] ${item.name}`;
-
-      let content = `Source: ${item.system.source || 'None'} <br>`;
-      content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
-      content += `Description: ${item.system.description || 'None'}`;
-
-
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: content,
-      });
-    }
-    else { // Handle any other roll type
-      const itemId = element.closest('.item').dataset.itemId;
-      const item = this.actor.items.get(itemId);
-
-      // If a Power is being used, decrement Personal Power
       if (rollType == 'power') {
+        // If a Power is being used, decrement Personal Power
         await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
+      } else if (rollType == 'resource') {
+        // If a Resource is being used, decrement uses
+        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
 
       if (item) return item.roll();
