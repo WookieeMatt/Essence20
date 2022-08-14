@@ -24,7 +24,7 @@ export class StoryPointsTracker extends Application {
       resizable: false,
       top: pos?.top || 60,
       left: pos?.left || (($('#board').width / 2) - 150),
-      title: i18n('E20.STORY_POINTS.title'),
+      title: i18n('E20.spt.title'),
     });
   }
 
@@ -67,7 +67,7 @@ export class StoryPointsTracker extends Application {
     html.find('#gm-points-btn-dec').click(ev => {
       ev.preventDefault();
       this.changeGmPoints(this.gmPoints - 1);
-      this.sendMessage(`${i18n("E20.STORY_POINTS.gmPointSpent")}`);
+      this.sendMessage(`${i18n("E20.spt.spend.gmPoint")}`);
     });
     html.find('#gm-points-btn-inc').click(ev => {
       ev.preventDefault();
@@ -87,7 +87,7 @@ export class StoryPointsTracker extends Application {
         let roll = new Roll('d2 + 1');
         await roll.toMessage({
           speaker: game.user.name,
-          flavor: `${i18n("E20.STORY_POINTS.roll.flavor")}`,
+          flavor: `${i18n("E20.spt.roll.flavor")}`,
           rollMode: game.settings.get('core', 'rollMode'),
         });
         this.changeGmPoints(this.gmPoints + roll.total);
@@ -98,7 +98,7 @@ export class StoryPointsTracker extends Application {
     html.find('#story-points-btn-dec').click(ev => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints - 1);
-      this.sendMessage(`${i18n("E20.STORY_POINTS.storyPointSpent")}`);
+      this.sendMessage(`${i18n("E20.spt.spend.storyPoint")}`);
     });
     html.find('#story-points-btn-inc').click(ev => {
       ev.preventDefault();
@@ -181,7 +181,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
     let tokenControls = controls.find(control => control.name === "token")
     tokenControls.tools.push({
       name: "toggleDialog",
-      title: "E20.STORY_POINTS.toggleDialog",
+      title: "E20.spt.toggleDialog",
       icon: "fas fa-circle-s",
       toggle: true,
       active: setting('sptToggleState'),

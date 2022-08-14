@@ -301,35 +301,35 @@
       "trip": "Trip",
       "wrecker": "Wrecker"
     },
-    "STORY_POINTS": {
-      "alwaysShow": "Always show",
-      "dontShow": "Don't show",
-      "allowToggle": "Allow toggling",
-    
-      "everyone": "Everyone",
-      "gm": "GM Only",
-      "players": "Player Only",
-  
-      "gmPoints": "GM Points",
-      "storyPoints": "Story Points",
-
-      "gmPointSpent": "A GM Point has been spent!",
-      "storyPointSpent": "A Story Point has been spent!",
-
+    "spt": {
       "title": "Story Points Tracker",
-
       "toggleDialog": "Toggle Story Points Tracker Dialog",
-
       "options": {
         "show.name": "Dialog display behavior",
         "access.name": "Who can access the SPT?",
         "message.name": "Display chat messages",
         "gmPointsArePublic.name": "Display GM Points to Players"
       },
-
+      "points": {
+        "gm": "GM Points",
+        "story": "Story Points"
+      },
       "roll": {
         "button": "Roll major scene GM Points",
         "flavor": "Rolling for major scene GM Points!"
+      },
+      "show": {
+        "always": "Always show",
+        "never": "Never show",
+        "toggle": "Allow toggling"
+      },
+      "spend": {
+        "gmPoint": "A GM Point has been spent!",
+        "storyPoint": "A Story Point has been spent!"
+      },
+      "users": {
+        "everyone": "Everyone",
+        "gm": "GM Only"
       }
     }
   }
