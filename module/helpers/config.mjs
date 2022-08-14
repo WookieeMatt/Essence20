@@ -207,19 +207,6 @@ E20.weaponSizes = {
   heavy: "E20.weaponSizes.heavy",
 };
 
-E20.weaponSkills = {
-  athletics: "E20.essenceSkills.athletics",
-  might: "E20.essenceSkills.might",
-  finesse: "E20.essenceSkills.finesse",
-  targeting: "E20.essenceSkills.targeting",
-  technology: "E20.essenceSkills.technology",
-};
-
-E20.weaponRequirementSkills = {
-  none: "",
-  ...E20.weaponSkills,
-};
-
 E20.weaponStyles = {
   melee: "E20.weaponStyles.melee",
   energy: "E20.weaponStyles.energy",
