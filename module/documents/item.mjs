@@ -1,8 +1,15 @@
+import { Dice } from "../dice.mjs";
+
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
  */
 export class Essence20Item extends Item {
+  constructor(item, options) {
+    super(item, options);
+    this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
+  }
+
   /**
    * Augment the basic Item data model with additional dynamic data.
    */
@@ -27,39 +34,67 @@ export class Essence20Item extends Item {
 
   /**
    * Handle clickable rolls.
-   * @param {Event} event   The originating click event
+   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @private
    */
-  async roll() {
-    // Initialize chat data.
-    const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-    const rollMode = game.settings.get('core', 'rollMode');
-    const label = `[${this.type}] ${this.name}`;
+  async roll(dataset) {
+    if (this.type == 'generalPerk') {
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${this.type}] ${this.name}`;
 
-    // If there's no roll data, send a chat message.
-    if (!this.system.formula) {
+      let content = `Source: ${this.system.source || 'None'} <br>`;
+      content += `Prerequisite: ${this.system.prerequisite || 'None'} <br>`;
+      content += `Description: ${this.system.description || 'None'}`;
+
       ChatMessage.create({
         speaker: speaker,
         rollMode: rollMode,
         flavor: label,
-        content: this.system.description ?? ''
+        content: content,
       });
-    }
-    // Otherwise, create a roll and send a chat message from it.
-    else {
-      // Retrieve roll data.
-      const rollData = this.getRollData();
+    } else if (this.type == 'weapon') {
+      const dataset = { skill: this.system.classification.skill };
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset, this.actor);
 
-      // Invoke the roll and submit it to chat.
-      const roll = new Roll(rollData.item.formula, rollData);
-      // If you need to store the value first, uncomment the next line.
-      // let result = await roll.roll({async: true});
-      roll.toMessage({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-      });
-      return roll;
+      if (skillRollOptions.cancelled) {
+        return;
+      }
+
+      const weapon = this.actor.items.get(this._id);
+      this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
+    } else {
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${this.type}] ${this.name}`;
+
+      // If there's no roll data, send a chat message.
+      if (!this.system.formula) {
+        ChatMessage.create({
+          speaker: speaker,
+          rollMode: rollMode,
+          flavor: label,
+          content: this.system.description ?? ''
+        });
+      }
+      // Otherwise, create a roll and send a chat message from it.
+      else {
+        // Retrieve roll data.
+        const rollData = this.getRollData();
+
+        // Invoke the roll and submit it to chat.
+        const roll = new Roll(rollData.item.formula, rollData);
+        // If you need to store the value first, uncomment the next line.
+        // let result = await roll.roll({async: true});
+        roll.toMessage({
+          speaker: speaker,
+          rollMode: rollMode,
+          flavor: label,
+        });
+        return roll;
+      }
     }
   }
 }

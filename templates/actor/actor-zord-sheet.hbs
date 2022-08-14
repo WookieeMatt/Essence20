@@ -13,28 +13,17 @@
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
     <div class="zord-sheet-grid">
-      <div class="zord-container-1">
-        <div>
-          {{> "systems/essence20/templates/actor/parts/actor-zord-movement.hbs"}}
-        </div>
-        <div class="zord-health-container">
-          <div class="resource flex-group-center">
-            <h3>{{localize 'E20.health'}}</h3>
-            <div class="resource-content flexrow flex-center flex-between">
-              <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-              <span>/</span>
-              <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
-            </div>
-          </div>
-        </div>
-      </div>
+      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
+
       <div class="flexcol">
         <div class="zord-container-2">
           {{> "systems/essence20/templates/actor/parts/actor-zord-skills.hbs"}}
         </div>
-        <div class="zord-features">
-          {{> "systems/essence20/templates/actor/parts/actor-zord-features.hbs"}}
-        </div>
+
+      {{!-- Features --}}
+      {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
+
       </div>
       <div class="zord-weapons">
         {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
