@@ -1,0 +1,18 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body">
+    <span>{{localize 'E20.uses'}}
+      <input class="one-digit-input" type="number" name="system.uses.value" value="{{system.uses.value}}"/>
+      /
+      <input class="one-digit-input" type="number" name="system.uses.max" value="{{system.uses.max}}"/>
+    </span>
+
+    {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+  </section>
+
+</form>

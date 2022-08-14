@@ -11,11 +11,11 @@
   </div>
   <div>
     {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill='brawn'
-    fields=fields}}
+    fields=system.skills.strength.brawn}}
   </div>
   <div>
     {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill='might'
-    fields=fields}}
+    fields=system.skills.strength.might}}
   </div>
 </div>
 <div class="zord-spd-container">
@@ -39,7 +39,7 @@
     </div>
     <div>
       {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='speed' skill='driving'
-      fields=fields}}
+      fields=system.skills.speed.driving}}
     </div>
   </div>
 </div>

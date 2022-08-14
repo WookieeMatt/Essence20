@@ -1,0 +1,67 @@
+#story-points-container {
+  height: auto;
+  width: 300px;
+  border-radius: 5px;
+  background: url(../../../ui/denim075.png) repeat;
+  color: rgba(255, 255, 255, .87);
+  box-shadow: 0 0 20px #000;
+  border: 1px solid #000;
+  position: fixed;
+  z-index: 29;
+  overflow: hidden;
+  flex-direction: column;
+  display: flex !important;
+}
+
+#story-points-container.loading {
+  display: none !important;
+}
+
+.story-points-content {
+  padding-top: 2px;
+  text-align: center;
+}
+
+.story-points-label {
+  text-align: left;
+  display: inline-block;
+  width: 80px;
+}
+
+#story-points-input, #gm-points-input {
+  width: 75px;
+  text-align: center;
+  background: url(../../../ui/parchment.jpg) repeat;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.story-points-btn {
+  line-height: 24px;
+  width: 30px;
+  text-align: center;
+  border-radius: 3px;
+  display: inline-block;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.bad-ones {
+
+  border: 1px solid red;
+  border-bottom: 1px solid #ff6400;
+  box-shadow: 0 0 10px #ff6400;
+}
+
+.bad-ones i {
+  color: red;
+}
+
+.good-ones {
+  border: 1px solid rgb(77, 208, 225);
+  box-shadow: 0 0 10px rgb(77, 208, 225);
+}
+
+.good-ones i {
+  color: rgb(77, 208, 225);
+}
