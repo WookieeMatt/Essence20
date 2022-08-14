@@ -139,7 +139,7 @@ export class Dice {
     const noneStr = this._i18n.localize(this._config.none)
 
     let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`
-    label += ` ${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
+    label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
     label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}`;
 
