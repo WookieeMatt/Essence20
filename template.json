@@ -303,7 +303,8 @@
       "bond",
       "hangUp",
       "perk",
-      "specialization"
+      "specialization",
+      "resource"
     ],
     "templates": {
       "itemDescription": {
@@ -410,6 +411,13 @@
     "perk": {
       "templates": ["itemDescription"]
     },
-    "specialization": {}
+    "specialization": {},
+    "resource": {
+      "templates": ["itemDescription"],
+      "uses": {
+        "max": 0,
+        "value": 0
+      }
+    }
   }
 }

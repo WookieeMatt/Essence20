@@ -152,6 +152,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const generalPerks = []; // Used by PCs
     const perks = [];
     const powers = []; // Used by PCs
+    const resources = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
@@ -189,6 +190,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'power':
           powers.push(i);
           break;
+        case 'resource':
+          resources.push(i);
+          break;
         case 'specialization':
           const skill = i.system.skill;
           const existingSkillSpecializations = specializations[skill];
@@ -217,6 +221,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.hangUps = hangUps;
     context.perks = perks;
     context.powers = powers;
+    context.resources = resources;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
     context.traits = traits;
@@ -356,9 +361,12 @@ export class Essence20ActorSheet extends ActorSheet {
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);
 
-      // If a Power is being used, decrement Personal Power
       if (rollType == 'power') {
+        // If a Power is being used, decrement Personal Power
         await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
+      } else if (rollType == 'resource') {
+        // If a Resource is being used, decrement uses
+        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
 
       if (item) return item.roll();
