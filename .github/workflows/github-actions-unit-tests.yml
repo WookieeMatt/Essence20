@@ -16,6 +16,5 @@ jobs:
         with:
           node-version: 17.9.x
           cache: npm
-      - run: npm ci
       - run: npm test
       - run: echo "🍏 This job's status is ${{ job.status }}."
