@@ -20,10 +20,9 @@
         <div class="zord-container-2">
           {{> "systems/essence20/templates/actor/parts/actor-zord-skills.hbs"}}
         </div>
-
-      {{!-- Features --}}
-      {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
-
+        <div class="zord-features">
+          {{> "systems/essence20/templates/actor/parts/actor-zord-features.hbs"}}
+        </div>
       </div>
       <div class="zord-weapons">
         {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
