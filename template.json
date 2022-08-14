@@ -302,7 +302,8 @@
       "trait",
       "bond",
       "hangUp",
-      "specialization"
+      "specialization",
+      "resource"
     ],
     "templates": {
       "itemDescription": {
@@ -406,6 +407,13 @@
     "hangUp": {
       "templates": ["itemDescription"]
     },
-    "specialization": {}
+    "specialization": {},
+    "resource": {
+      "templates": ["itemDescription"],
+      "uses": {
+        "max": 0,
+        "value": 0
+      }
+    }
   }
 }

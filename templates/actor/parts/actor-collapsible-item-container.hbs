@@ -25,7 +25,10 @@
         </div>
         {{/if}}
         <div>
+          {{#> item-label item=item}}
+          {{!-- Custom item label here, or use default below --}}
           {{item.name}}
+          {{/item-label}}
         </div>
         <div class="item-controls">
           <a class="item-control item-edit" title="{{localize 'E20.edit'}}"><i class="fas fa-edit"></i></a>
