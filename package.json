@@ -3,10 +3,6 @@
   "version": "1.0.0",
   "description": "CSS compiler for the Essence20 system",
   "scripts": {
-    "build": "gulp build",
-    "compile": "gulp css",
-    "watch": "gulp",
-    "gulp": "gulp",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest"
   },
   "browserslist": [
@@ -16,10 +12,6 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
-    "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^2.6.5",
     "jest": "^27.5.1"
   },
   "type": "module"
