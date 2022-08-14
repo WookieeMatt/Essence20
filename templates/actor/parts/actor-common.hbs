@@ -1,8 +1,6 @@
 <div class="common-container">
+  {{!-- Initiative --}}
   <div class="common-container-1">
-    {{> "systems/essence20/templates/actor/parts/actor-defenses.hbs"}}
-
-    {{!-- Initiative --}}
     <div class="initiative-container">
       <div class="initiative-header">
         <span>{{localize 'E20.initiative'}}</span>
@@ -18,8 +16,8 @@
     </div>
   </div>
 
+  {{!-- Movement --}}
   <div class="common-container-2">
-    {{!-- Movement --}}
     <div class="stats-container">
       <div class="flexrow flex-group-center">
         <div>{{localize 'E20.movement.ground'}}</div>
@@ -38,7 +36,10 @@
         <div><input class="two-digit-input" type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" /></div>
       </div>
     </div>
-    {{!-- Health --}}
+  </div>
+
+  {{!-- Health --}}
+  <div class="common-container-3">
     <div class="health-container">
       <div class="resource flex-group-center">
         <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>

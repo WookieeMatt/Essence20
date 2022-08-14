@@ -234,10 +234,18 @@
         }
       ],
       "defenses": {
-        "toughness": 10,
-        "evasion": 10,
-        "willpower": 10,
-        "cleverness": 10
+        "toughness": {
+          "value": 10
+        },
+        "evasion": {
+          "value": 10
+        },
+        "willpower": {
+          "value": null
+        },
+        "cleverness": {
+          "value": null
+        }
       },
       "hangUp": {
         "description": "",
