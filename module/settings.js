@@ -32,6 +32,15 @@ export const registerSettings = function () {
     onChange: debouncedReload
   });
 
+  game.settings.register(systemName, "sptGmPointsArePublic", {
+    name: game.i18n.localize("E20.STORY_POINTS.options.gmPointsArePublic.name"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+    onChange: debouncedReload
+  });
+
   game.settings.register(systemName, "sptShow", {
     name: game.i18n.localize("E20.STORY_POINTS.options.show.name"),
     scope: "client",

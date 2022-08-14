@@ -34,6 +34,7 @@ export class StoryPointsTracker extends Application {
       gmPoints: this.gmPoints,
       storyPoints: this.storyPoints,
       isGm: game.user.isGM,
+      gmPointsArePublic: game.user.isGM || setting('sptGmPointsArePublic'),
     };
   }
 

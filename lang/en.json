@@ -323,7 +323,8 @@
       "options": {
         "show.name": "Dialog display behavior",
         "access.name": "Who can access the SPT?",
-        "message.name": "Display chat messages"
+        "message.name": "Display chat messages",
+        "gmPointsArePublic.name": "Display GM Points to Players"
       },
 
       "roll": {
