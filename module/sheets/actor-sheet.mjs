@@ -55,7 +55,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prepareItems(context);
 
     // Prepare npc data and items.
-    if (actorData.type == 'npc') {
+    if (['npc', 'zord', 'megaformZord', 'vehicle'].includes(actorData.type)) {
       this._prepareDisplayedNpcSkills(context);
     }
 
@@ -79,25 +79,23 @@ export class Essence20ActorSheet extends ActorSheet {
    * @return {undefined}
    */
    _prepareDisplayedNpcSkills(context) {
-    if (this.actor.type == 'npc') {
-      let displayedNpcSkills = {};
+    let displayedNpcSkills = {};
 
-      // Include any skill that have specializations
-      for (let skill in context.specializations) {
-        displayedNpcSkills[skill] = true;
-      }
+    // Include any skill that have specializations
+    for (let skill in context.specializations) {
+      displayedNpcSkills[skill] = true;
+    }
 
-      // Include any skills not d20, are specialized, or have a modifier
-      for (let [_, skills] of Object.entries(context.system.skills)) {
-        for (let [skill, fields] of Object.entries(skills)) {
-          if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
-            displayedNpcSkills[skill] = true;
-          }
+    // Include any skills not d20, are specialized, or have a modifier
+    for (let [_, skills] of Object.entries(context.system.skills)) {
+      for (let [skill, fields] of Object.entries(skills)) {
+        if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
+          displayedNpcSkills[skill] = true;
         }
       }
-
-      context.displayedNpcSkills = displayedNpcSkills;
     }
+
+    context.displayedNpcSkills = displayedNpcSkills;
   }
 
   /**
