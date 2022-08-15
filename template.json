@@ -20,7 +20,6 @@
         "initiative": "d20",
         "movement": {
           "aerial": 0,
-          "aerialMin": null,
           "ground": 45,
           "swim": 0
         },
@@ -303,6 +302,7 @@
       "bond",
       "hangUp",
       "specialization",
+      "megaformTrait",
       "resource"
     ],
     "templates": {
@@ -408,6 +408,9 @@
       "templates": ["itemDescription"]
     },
     "specialization": {},
+    "megaformTrait": {
+      "templates": ["itemDescription"]
+    },
     "resource": {
       "templates": ["itemDescription"],
       "uses": {

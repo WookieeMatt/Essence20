@@ -180,6 +180,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'hangUp':
           hangUps.push(i);
           break;
+        case 'megaformTrait':
+          megaformTraits.push(i);
+          break;
         case 'perk':
           perks.push(i);
           break;
