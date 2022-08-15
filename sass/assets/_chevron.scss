@@ -1,0 +1,17 @@
+/* Content toggle open/close. */
+.essence20 .accordion-content {
+  display: none;
+}
+
+.essence20 .open .accordion-content {
+  display: block;
+}
+
+/* Chevron icon. */
+.essence20 .accordion-icon {
+  transition: all ease-in-out 0.25s;
+}
+
+.essence20 .open .accordion-icon {
+  transform: rotate(180deg);
+}

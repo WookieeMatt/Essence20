@@ -1,0 +1,102 @@
+
+.essence20 .skill-header {
+  font-size: 1.25em;
+  align-items: center;
+  flex-wrap: nowrap;
+  background-color: #2436D4;
+  margin-top: 5px;
+}
+
+.essence20 .skill-header .skill-roll {
+  flex-grow: 0;
+  margin-right: 5px;
+}
+
+.essence20 .skill-header .skill-name {
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.essence20 .skill-roll {
+  font-size: 1.25em;
+}
+
+.essence20 .skill-body {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.essence20 .skill-body .shift-select {
+  margin-top: 5px;
+}
+
+.essence20 .skill-body .shift-select > * {
+  vertical-align: middle;
+}
+
+.essence20 .skill-body .shift-select .specialized-label {
+  margin-left: 5px;
+}
+
+.essence20 .skill-body .shift-select .specialized-checkbox {
+  margin-left: 2px;
+}
+
+.essence20 .skill-body .specializations-list {
+  margin-top: 5px;
+}
+
+.essence20 .skill-body .specializations-list .specializations-item {
+  align-items: center;
+  gap: 5px;
+}
+
+.essence20 .skill-body .specializations-header {
+  align-items: center;
+  margin-top: 5px;
+}
+
+.essence20 .skills-label {
+  font-size: 2em;
+  margin-bottom: 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  background: #0a178880;
+  border: 3px solid #b5b1b1;
+  border-radius: 50px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+}
+
+.essence20 .skills-container {
+  list-style: none;
+  overflow-y: auto;
+  color: white;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  transform: rotate(0deg);
+  scrollbar-width: thin;
+  border: 1px solid #b5b1b1;
+  box-shadow: 3px 3px 0 #4a4848;
+  background: #0a178880;
+  border: 3px solid #b5b1b1;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+  justify-content: left;
+}
+
+
+
+.essence20 .skillscontainer {
+  list-style: none;
+  overflow-y: auto;
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 10px 0;
+  padding: 0;
+}
