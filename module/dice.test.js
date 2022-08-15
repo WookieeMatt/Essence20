@@ -18,9 +18,39 @@ describe("_getSkillRollLabel", () => {
     const dataset = {
       skill: 'athletics',
     };
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+    }
     const expected = "E20.rollingFor E20.essenceSkills.athletics";
 
-    expect(dice._getSkillRollLabel(dataset)).toEqual(expected);
+    expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
+  });
+
+  test("skill roll with Edge", () => {
+    const dataset = {
+      skill: 'athletics',
+    };
+    const skillRollOptions = {
+      edge: true,
+      snag: false,
+    }
+    const expected = "E20.rollingFor E20.essenceSkills.athletics E20.withAnEdge";
+
+    expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
+  });
+
+  test("skill roll with Snag", () => {
+    const dataset = {
+      skill: 'athletics',
+    };
+    const skillRollOptions = {
+      edge: false,
+      snag: true,
+    }
+    const expected = "E20.rollingFor E20.essenceSkills.athletics E20.withASnag";
+
+    expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
 
   test("specialization roll", () => {
@@ -28,9 +58,13 @@ describe("_getSkillRollLabel", () => {
       skill: 'athletics',
       specialization: "Foo Specialization",
     };
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+    }
     const expected = "E20.rollingFor Foo Specialization";
 
-    expect(dice._getSkillRollLabel(dataset)).toEqual(expected);
+    expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
 });
 
@@ -40,6 +74,10 @@ describe("_getWeaponRollLabel", () => {
     const dataset = {
       skill: 'athletics',
     };
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+    }
     const weapon = {
       name: 'Zeo Power Clubs',
       system: {
@@ -52,13 +90,63 @@ describe("_getWeaponRollLabel", () => {
      "<b>E20.effect</b> - Some effect<br>" +
      "<b>E20.alternateEffects</b> - Some alternate effects";
 
-    expect(dice._getWeaponRollLabel(dataset, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+  });
+
+  test("weapon roll with Edge", () => {
+    const dataset = {
+      skill: 'athletics',
+    };
+    const skillRollOptions = {
+      edge: true,
+      snag: false,
+    }
+    const weapon = {
+      name: 'Zeo Power Clubs',
+      system: {
+        effect: "Some effect",
+        alternateEffects: "Some alternate effects",
+      },
+    };
+    const expected =
+     "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.athletics) E20.withAnEdge<br>" +
+     "<b>E20.effect</b> - Some effect<br>" +
+     "<b>E20.alternateEffects</b> - Some alternate effects";
+
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+  });
+
+  test("weapon roll with Snag", () => {
+    const dataset = {
+      skill: 'athletics',
+    };
+    const skillRollOptions = {
+      edge: false,
+      snag: true,
+    }
+    const weapon = {
+      name: 'Zeo Power Clubs',
+      system: {
+        effect: "Some effect",
+        alternateEffects: "Some alternate effects",
+      },
+    };
+    const expected =
+     "<b>E20.attackRoll</b> - Zeo Power Clubs (E20.essenceSkills.athletics) E20.withASnag<br>" +
+     "<b>E20.effect</b> - Some effect<br>" +
+     "<b>E20.alternateEffects</b> - Some alternate effects";
+
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
 
   test("no effects", () => {
     const dataset = {
       skill: 'athletics',
     };
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+    }
     const weapon = {
       name: 'Zeo Power Clubs',
       system: {
@@ -71,7 +159,7 @@ describe("_getWeaponRollLabel", () => {
      "<b>E20.effect</b> - E20.none<br>" +
      "<b>E20.alternateEffects</b> - E20.none";
 
-    expect(dice._getWeaponRollLabel(dataset, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
 });
 
