@@ -79,8 +79,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @return {undefined}
    */
   _prepareDisplayedNpcSkills(context) {
-    if (this.actor.type == 'npc') {
-      let displayedNpcSkills = {};
+    let displayedNpcSkills = {};
 
     // Include any skill that have specializations
     for (let skill in context.specializations) {
