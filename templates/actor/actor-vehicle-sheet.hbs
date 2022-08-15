@@ -5,7 +5,10 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
+    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
     {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+
     <span>{{localize 'E20.threatLevel'}}</span><input type="number" name="system.threatLevel"
       value="{{system.threatLevel}}" />
 

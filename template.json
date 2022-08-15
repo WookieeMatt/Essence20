@@ -20,7 +20,6 @@
         "initiative": "d20",
         "movement": {
           "aerial": 0,
-          "aerialMin": null,
           "ground": 45,
           "swim": 0
         },
@@ -147,10 +146,10 @@
           "willpower": 0
         },
         "essences": {
-          "smarts": 3,
-          "social": 3,
+          "strength": 3,
           "speed": 3,
-          "strength": 3
+          "social": 3,
+          "smarts": 3
         },
         "level": 1,
         "notes": ""
@@ -234,10 +233,18 @@
         }
       ],
       "defenses": {
-        "toughness": 10,
-        "evasion": 10,
-        "willpower": 10,
-        "cleverness": 10
+        "toughness": {
+          "value": 10
+        },
+        "evasion": {
+          "value": 10
+        },
+        "willpower": {
+          "value": null
+        },
+        "cleverness": {
+          "value": null
+        }
       },
       "hangUp": {
         "description": "",
@@ -277,7 +284,8 @@
         "machine",
         "zordBase"
       ],
-      "health": null
+      "health": null,
+      "zordIds": []
     }
   },
   "Item": {
@@ -286,16 +294,16 @@
       "gear",
       "weapon",
       "weaponUpgrade",
-      "zordCombiner",
       "threatPower",
-      "generalPerk",
+      "perk",
       "power",
       "feature",
       "trait",
       "bond",
       "hangUp",
-      "perk",
-      "specialization"
+      "specialization",
+      "megaformTrait",
+      "resource"
     ],
     "templates": {
       "itemDescription": {
@@ -353,8 +361,7 @@
         "custom": null,
         "skill": null,
         "shift": null
-      },
-      "shift": "d20"
+      }
     },
     "weaponUpgrade": {
       "templates": [
@@ -364,26 +371,13 @@
       "benefit": "",
       "prerequisite": null
     },
-    "zordCombiner": {
-      "templates": [
-        "itemDescription"
-      ],
-      "colorSpectrum": "",
-      "health": {
-        "max": 8,
-        "min": 0,
-        "value": 8
-      },
-      "ranger": "",
-      "skillNotes": ""
-    },
     "threatPower": {
       "actionType": "",
       "charges": null,
       "cost": null,
       "limited": false
     },
-    "generalPerk": {
+    "perk": {
       "templates": [
         "itemDescription"
       ],
@@ -412,9 +406,16 @@
     "hangUp": {
       "templates": ["itemDescription"]
     },
-    "perk": {
+    "specialization": {},
+    "megaformTrait": {
       "templates": ["itemDescription"]
     },
-    "specialization": {}
+    "resource": {
+      "templates": ["itemDescription"],
+      "uses": {
+        "max": 0,
+        "value": 0
+      }
+    }
   }
 }

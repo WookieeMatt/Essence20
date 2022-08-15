@@ -1,8 +1,6 @@
 <div class="common-container">
+  {{!-- Initiative --}}
   <div class="common-container-1">
-    {{> "systems/essence20/templates/actor/parts/actor-character.hbs"}}
-
-    {{!-- Initiative --}}
     <div class="initiative-container">
       <div class="initiative-header">
         <span>{{localize 'E20.initiative'}}</span>
@@ -18,8 +16,8 @@
     </div>
   </div>
 
+  {{!-- Movement --}}
   <div class="common-container-2">
-    {{!-- Movement --}}
     <div class="stats-container">
       <div class="flexrow flex-group-center">
         <div>{{localize 'E20.movement.ground'}}</div>
@@ -31,14 +29,13 @@
       </div>
       <div class="flexrow flex-group-center">
         <div>{{localize 'E20.movement.aerial'}}</div>
-        <div><input class="two-digit-input" type="number" name="system.movement.aerial" value="{{system.movement.aerial}}" /></div>
-      </div>
-      <div class="flexrow flex-group-center">
-        <div>{{localize 'E20.movement.aerialMin'}}</div>
-        <div><input class="two-digit-input" type="number" name="system.movement.aerialMin" value="{{system.movement.aerialMin}}" /></div>
+        <div><input class="two-digit-input" type="text" name="system.movement.aerial" value="{{system.movement.aerial}}" /></div>
       </div>
     </div>
-    {{!-- Health --}}
+  </div>
+
+  {{!-- Health --}}
+  <div class="common-container-3">
     <div class="health-container">
       <div class="resource flex-group-center">
         <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
@@ -49,59 +46,5 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="skills-label-container">
-  <h3 class="skills-label">{{localize 'E20.skills'}}</h3>
-</div>
-
-<div class="skillscontainer">
-  {{!-- Strength --}}
-  <div class="skills-container">
-    <div class="essence-header">
-      <span class="essence-label">{{localize 'E20.essences.strength'}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
-    </div>
-    <div class="essence-header">
-      <span>{{localize 'E20.conditioning'}}</span>
-      <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
-    </div>
-    {{#each system.skills.strength as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill=skill fields=fields}}
-    {{/each}}
-  </div>
-
-  {{!-- Speed --}}
-  <div class="skills-container">
-    <div class="essence-header">
-      <span class="essence-label">{{localize 'E20.essences.speed'}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
-    </div>
-    {{#each system.skills.speed as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='speed' skill=skill fields=fields}}
-    {{/each}}
-  </div>
-
-  {{!-- Smarts --}}
-  <div class="skills-container">
-    <div class="essence-header">
-      <span class="essence-label">{{localize 'E20.essences.smarts'}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" />
-    </div>
-    {{#each system.skills.smarts as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='smarts' skill=skill fields=fields}}
-    {{/each}}
-  </div>
-
-  {{!-- Social --}}
-  <div class="skills-container">
-    <div class="essence-header">
-      <span class="essence-label">{{localize 'E20.essences.social'}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.social" value="{{system.essences.social}}" />
-    </div>
-    {{#each system.skills.social as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=fields}}
-    {{/each}}
   </div>
 </div>

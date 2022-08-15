@@ -46,12 +46,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
-    // // Prepare character data and items.
-    // if (actorData.type == 'character') {
-    //   this._prepareItems(context);
-    //   this._prepareCharacterData(context);
-    // }
-
     // // Prepare NPC data and items.
     // if (actorData.type == 'npc') {
     //   this._prepareItems(context);
@@ -60,13 +54,67 @@ export class Essence20ActorSheet extends ActorSheet {
     // Might need to filter like above eventually
     this._prepareItems(context);
 
+    // Prepare npc data and items.
+    if (['npc', 'zord', 'megaformZord', 'vehicle'].includes(actorData.type)) {
+      this._prepareDisplayedNpcSkills(context);
+    }
+
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
 
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
+    // Prepare Zords for MFZs
+    this._prepareZords(context);
+
     return context;
+  }
+
+  /**
+   * Prepare skills that are always displayed for NPCs.
+   *
+   * @param {Object} context The actor data to prepare.
+   *
+   * @return {undefined}
+   */
+  _prepareDisplayedNpcSkills(context) {
+    let displayedNpcSkills = {};
+
+    // Include any skill that have specializations
+    for (let skill in context.specializations) {
+      displayedNpcSkills[skill] = true;
+    }
+
+    // Include any skills not d20, are specialized, or have a modifier
+    for (let [_, skills] of Object.entries(context.system.skills)) {
+      for (let [skill, fields] of Object.entries(skills)) {
+        if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
+          displayedNpcSkills[skill] = true;
+        }
+      }
+    }
+
+    context.displayedNpcSkills = displayedNpcSkills;
+  }
+
+  /**
+   * Prepare Zords for MFZs.
+   *
+   * @param {Object} context The actor data to prepare.
+   *
+   * @return {undefined}
+   */
+  _prepareZords(context) {
+    if (this.actor.type == 'megaformZord') {
+      let zords = [];
+
+      for (let zordId of this.actor.system.zordIds) {
+        zords.push(game.actors.get(zordId));
+      }
+
+      context.zords = zords;
+    }
   }
 
   /**
@@ -86,7 +134,7 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Organize and classify Items for Character sheets.
    *
-   * @param {Object} actorData The actor to prepare.
+   * @param {Object} context The actor data to prepare.
    *
    * @return {undefined}
    */
@@ -99,14 +147,13 @@ export class Essence20ActorSheet extends ActorSheet {
     const hangUps = [];
     const influences = [];
     const gears = [];
-    const generalPerks = []; // Used by PCs
-    const perks = [];
+    const perks = []; // Used by PCs
     const powers = []; // Used by PCs
+    const resources = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
-    const zordCombiners = [];
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -128,17 +175,20 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'gear':
           gears.push(i);
           break;
-        case 'generalPerk':
-          generalPerks.push(i);
-          break;
         case 'hangUp':
           hangUps.push(i);
+          break;
+        case 'megaformTrait':
+          megaformTraits.push(i);
           break;
         case 'perk':
           perks.push(i);
           break;
         case 'power':
           powers.push(i);
+          break;
+        case 'resource':
+          resources.push(i);
           break;
         case 'specialization':
           const skill = i.system.skill;
@@ -154,9 +204,6 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'weapon':
           weapons.push(i);
           break;
-        case 'zordCombiner':
-          zordCombiners.push(i);
-          break;
       };
     }
 
@@ -167,15 +214,14 @@ export class Essence20ActorSheet extends ActorSheet {
     context.influences = influences;
     context.features = features;
     context.gears = gears;
-    context.generalPerks = generalPerks;
-    context.hangUps = hangUps;
     context.perks = perks;
+    context.hangUps = hangUps;
     context.powers = powers;
+    context.resources = resources;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
     context.traits = traits;
     context.weapons = weapons;
-    context.zordCombiners = zordCombiners;
   }
 
   /* -------------------------------------------- */
@@ -206,6 +252,9 @@ export class Essence20ActorSheet extends ActorSheet {
       li.slideUp(200, () => this.render(false));
     });
 
+    // Delete Zord from MFZ
+    html.find('.zord-delete').click(this._onZordDelete.bind(this));
+
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
 
@@ -216,6 +265,13 @@ export class Essence20ActorSheet extends ActorSheet {
     if (this.actor.isOwner) {
       html.find('.rollable').click(this._onRoll.bind(this));
     }
+
+    // Open and collapse Item content
+    html.find('.accordion-label').click(ev => {
+      const el = ev.currentTarget;
+      const parent = $(el).parents('.accordion-wrapper');
+      parent.toggleClass('open');
+    });
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -288,61 +344,76 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (rollType == 'skill') {
-      const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset, this.actor);
 
       if (skillRollOptions.cancelled) {
         return;
       }
 
       this._dice.rollSkill(dataset, skillRollOptions, this.actor);
-    }
-    else if (rollType == 'weapon') {
-      const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
-
-      if (skillRollOptions.cancelled) {
-        return;
-      }
-
-      const itemId = element.closest('.item').dataset.itemId;
-      const weapon = this.actor.items.get(itemId);
-
-      this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
-    }
-    else if (rollType == 'initiative') {
-
+    } else if (rollType == 'initiative') {
       this.actor.rollInitiative({ createCombatants: true });
-    }
-    else if (rollType == 'generalPerk') {
+    } else { // Handle items
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);
 
-      // Initialize chat data.
-      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-      const rollMode = game.settings.get('core', 'rollMode');
-      const label = `[${item.type}] ${item.name}`;
-
-      let content = `Source: ${item.system.source || 'None'} <br>`;
-      content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
-      content += `Description: ${item.system.description || 'None'}`;
-
-
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: content,
-      });
-    }
-    else { // Handle any other roll type
-      const itemId = element.closest('.item').dataset.itemId;
-      const item = this.actor.items.get(itemId);
-
-      // If a Power is being used, decrement Personal Power
       if (rollType == 'power') {
-        await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
+        // If a Power is being used, decrement Personal Power
+        await this.actor.update({
+          'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1)
+        });
+      } else if (rollType == 'resource') {
+        // If a Resource is being used, decrement uses
+        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
 
       if (item) return item.roll();
     }
+  }
+
+  /**
+   * Handle dropping of an Actor data onto another Actor sheet
+   * @param {DragEvent} event            The concluding DragEvent which contains drop data
+   * @param {object} data                The data transfer extracted from the event
+   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
+   *                                     not permitted.
+   * @override
+   */
+  async _onDropActor(event, data) {
+    if (!this.actor.isOwner) return false;
+
+    // Get the target actor
+    let sourceActor = await fromUuid(data.uuid);
+    if (!sourceActor) return false;
+
+    // Handles dropping Zords onto Megaform Zords
+    if (this.actor.type == 'megaformZord' && sourceActor.type == 'zord') {
+      const zordIds = duplicate(this.actor.system.zordIds);
+
+      // Can't contain duplicate Zords
+      if (!zordIds.includes(sourceActor.id)) {
+        zordIds.push(sourceActor.id);
+        await this.actor.update({
+          "system.zordIds": zordIds
+        }).then(this.render(false));
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Handle deleting Zords from MFZs
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  async _onZordDelete(event) {
+    const li = $(event.currentTarget).parents(".zord");
+    const zordId = li.data("zordId");
+    let zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
+    this.actor.update({
+      "system.zordIds": zordIds,
+    });
+    li.slideUp(200, () => this.render(false));
   }
 }

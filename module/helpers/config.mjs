@@ -86,7 +86,6 @@ E20.lightRange = {
 
 E20.movement = {
   aerial: "E20.movement.aerial",
-  aerialMin: "E20.movement.aerialMin",
   ground: "E20.movement.ground",
   swim: "E20.movement.swim",
 };
@@ -144,25 +143,25 @@ E20.rollableShifts = [
   "3d6",
 ];
 
-E20.skills = {
-  athletics: "E20.essenceSkills.strength.athletics",
-  brawn: "E20.essenceSkills.strength.brawn",
-  intimidation: "E20.essenceSkills.strength.intimidation",
-  might: "E20.essenceSkills.strength.might",
-  acrobatics: "E20.essenceSkills.speed.acrobatics",
-  driving: "E20.essenceSkills.speed.driving",
-  finesse: "E20.essenceSkills.speed.finesse",
-  infiltration: "E20.essenceSkills.speed.infiltration",
-  alertness: "E20.essenceSkills.smarts.alertness",
-  culture: "E20.essenceSkills.smarts.culture",
-  science: "E20.essenceSkills.smarts.science",
-  survival: "E20.essenceSkills.smarts.survival",
-  technology: "E20.essenceSkills.smarts.technology",
-  animalHandling: "E20.essenceSkills.social.animalHandling",
-  deception: "E20.essenceSkills.social.deception",
-  performance: "E20.essenceSkills.social.performance",
-  persuasion: "E20.essenceSkills.social.persuasion",
-  streetwise: "E20.essenceSkills.social.streetwise",
+E20.essenceSkills = {
+  athletics: "E20.essenceSkills.athletics",
+  brawn: "E20.essenceSkills.brawn",
+  intimidation: "E20.essenceSkills.intimidation",
+  might: "E20.essenceSkills.might",
+  acrobatics: "E20.essenceSkills.acrobatics",
+  driving: "E20.essenceSkills.driving",
+  finesse: "E20.essenceSkills.finesse",
+  infiltration: "E20.essenceSkills.infiltration",
+  alertness: "E20.essenceSkills.alertness",
+  culture: "E20.essenceSkills.culture",
+  science: "E20.essenceSkills.science",
+  survival: "E20.essenceSkills.survival",
+  technology: "E20.essenceSkills.technology",
+  animalHandling: "E20.essenceSkills.animalHandling",
+  deception: "E20.essenceSkills.deception",
+  performance: "E20.essenceSkills.performance",
+  persuasion: "E20.essenceSkills.persuasion",
+  streetwise: "E20.essenceSkills.streetwise",
 };
 
 E20.skillToEssence = {
@@ -207,19 +206,6 @@ E20.weaponSizes = {
   heavy: "E20.weaponSizes.heavy",
 };
 
-E20.weaponSkills = {
-  athletics: "E20.essenceSkills.strength.athletics",
-  might: "E20.essenceSkills.strength.might",
-  finesse: "E20.essenceSkills.speed.finesse",
-  targeting: "E20.essenceSkills.speed.targeting",
-  technology: "E20.essenceSkills.smarts.technology",
-};
-
-E20.weaponRequirementSkills = {
-  none: "",
-  ...E20.weaponSkills,
-};
-
 E20.weaponStyles = {
   melee: "E20.weaponStyles.melee",
   energy: "E20.weaponStyles.energy",
@@ -260,4 +246,3 @@ E20.weaponTraits = {
   trip: "E20.weaponTraits.trip",
   wrecker: "E20.weaponTraits.wrecker",
 }
-

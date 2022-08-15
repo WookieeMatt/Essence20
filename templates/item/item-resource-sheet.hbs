@@ -5,7 +5,11 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'E20.source' }}"/>
+    <span>{{localize 'E20.uses'}}
+      <input class="one-digit-input" type="number" name="system.uses.value" value="{{system.uses.value}}"/>
+      /
+      <input class="one-digit-input" type="number" name="system.uses.max" value="{{system.uses.max}}"/>
+    </span>
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}

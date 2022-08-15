@@ -473,19 +473,19 @@ option {
   background-color: #4a4848;
 }
 
-.essence20 input[type="number"],
-input[type="text"] {
+.essence20 input[type="number"], input[type="text"] {
   color: white;
-  text-align: center;
   vertical-align: middle;
 }
 
-.essence20 .one-digit-input[type="number"] {
+.essence20 .one-digit-input {
   max-width: 20px;
+  text-align: center;
 }
 
-.essence20 .two-digit-input[type="number"] {
+.essence20 .two-digit-input {
   max-width: 40px;
+  text-align: center;
 }
 
 form .notes,
@@ -657,19 +657,6 @@ form .hint {
   width: 95%;
 }
 
-.essence20 .defense-container {
-  margin-left: 20px;
-}
-
-.essence20 .defense-container-1 {
-  padding-left: 5px;
-  padding-right: 5px;
-  display: flex;
-  flex-direction: column;
-  /*justify-content: center;*/
-  width: 50%;
-}
-
 .essence20 .health-container {
   list-style: none;
   margin-top: 10px;
@@ -746,11 +733,10 @@ form .hint {
 
 .essence20 .common-container {
   display: grid;
-  grid-template-columns: repeat(2fr, 1fr);
+  grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 5px;
   grid-template-areas:
-    "common-container-1 common-container-2"
-    "common-container-1 common-container-2";
+    "common-container-1 common-container-2 common-container-3";
   padding-bottom: 15px;
 }
 
@@ -892,6 +878,29 @@ form .hint {
   height: fit-content;
 }
 
+/* Content toggle open/close. */
+.essence20 .accordion-content {
+  display: none;
+}
+
+.essence20 .open .accordion-content {
+  display: block;
+}
+
+/* Chevron icon. */
+.essence20 .accordion-icon {
+  transition: all ease-in-out 0.25s;
+}
+
+.essence20 .open .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.essence20 .chip-section {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .essence20 .origin-bonds {
   list-style: none;
   margin-top: 10px;
@@ -969,7 +978,7 @@ form .hint {
   justify-content: space-evenly;
 }
 
-.essence20 .bonus-container {
+.essence20 .defense-container {
   list-style: none;
   overflow-y: auto;
   scrollbar-width: thin;
@@ -1062,6 +1071,18 @@ form .hint {
 
 .essence20 .skill-body .shift-select {
   margin-top: 5px;
+}
+
+.essence20 .skill-body .shift-select > * {
+  vertical-align: middle;
+}
+
+.essence20 .skill-body .shift-select .specialized-label {
+  margin-left: 5px;
+}
+
+.essence20 .skill-body .shift-select .specialized-checkbox {
+  margin-left: 2px;
 }
 
 .essence20 .skill-body .specializations-list {
@@ -1191,6 +1212,10 @@ form .hint {
 .essence20 .items-list .items-header .item-name {
   padding-left: 5px;
   text-align: left;
+}
+
+.essence20 .item-label {
+  align-items: center;
 }
 
 .essence20 .item-formula {
@@ -1499,3 +1524,53 @@ form .hint {
   height: fit-content;
   width: 100%;  
 }*/
+
+.essence20 .defense-container table thead {
+  background-color: inherit;
+  border-bottom: #b5b1b1;
+}
+
+.essence20 .defense-container tr:nth-child(even) {
+  background-color: inherit;
+}
+
+.essence20 .defense-container .tg {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-style: hidden;
+}
+
+.essence20 .defense-container .tg td {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 15px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.essence20 .defense-container .tg th {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 16px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.essence20 .defense-container .tg .tg-td {
+  border-color: inherit;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.roll-dialog div {
+  margin-bottom: 10px;
+}
+
+.roll-dialog div label > *{
+  vertical-align: middle;
+}
