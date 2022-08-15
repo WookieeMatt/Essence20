@@ -1642,17 +1642,4 @@ form .hint {
   font-weight: bold;
 }
 
-nav ul {
-  margin: 0;
-  padding: 6px;
-  list-style: none;
-}
-nav li {
-  display: inline-block;
-}
-nav a {
-  display: block;
-  padding: 6px 12px;
-}
-
 /*# sourceMappingURL=essence20.css.map */
