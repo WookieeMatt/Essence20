@@ -15,7 +15,6 @@
     "TypeGear": "Gear",
     "TypeWeapon": "Weapon",
     "TypeWeaponupgrade": "Weapon Upgrade",
-    "TypeZordcombiner": "Zord Component",
     "TypeThreatpower": "Threat Power",
     "TypeGeneralperk": "General Perk",
     "TypeHangup": "Hang Up",
@@ -24,11 +23,7 @@
     "TypePower": "Power",
     "TypeResource": "Resource",
     "TypeSpecialization": "Specialization",
-    "TypeThreatpower": "Threat Power",
-    "TypeTrait": "Trait",
-    "TypeWeapon": "Weapon",
-    "TypeWeaponupgrade": "Weapon Upgrade",
-    "TypeZordcombiner": "Zord Combiner"
+    "TypeTrait": "Trait"
   },
   "E20": {
     "actionType": "Action Type",
@@ -58,7 +53,8 @@
     "classification": "Classification",
     "colorSpectrum": "Color Spectrum",
     "conditioning": "Conditioning",
-    "cost": "Cost",
+    "cost": "Cost",   
+    "combinerParticipants": "Combiner Participants",
     "combat": "Combat",
     "custom": "Custom",
     "damages": "Damages",
@@ -96,6 +92,7 @@
     "lightRangeStr": "Light Range",
     "limited": "Limited?",
     "long": "Long",
+    "megaformTraits": "Megaform Traits",
     "min": "Min",
     "mod": "Mod",
     "modifier": "Modifier",
@@ -150,9 +147,6 @@
     "value": "Value",
     "unmorphed": "Unmorphed",
     "uses": "Uses",
-    "zordCombiner": "Zord Component",
-    "addzordCombiner": "Add a Zord Componenet",
-    "deletezordCombiner": "Remove Zord Component",
     "armorClassifications": {
       "non": "Non Armor",
       "light": "Light",
