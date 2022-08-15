@@ -8,22 +8,21 @@ export const registerSettings = function () {
   /* -------------------------------------------- */
 
   const SHOW_OPTIONS = {
-    on: game.i18n.localize("E20.STORY_POINTS.alwaysShow"),
-    off: game.i18n.localize("E20.STORY_POINTS.dontShow"),
-    toggle: game.i18n.localize("E20.STORY_POINTS.allowToggle"),
+    on: game.i18n.localize("E20.spt.show.always"),
+    off: game.i18n.localize("E20.spt.show.never"),
+    toggle: game.i18n.localize("E20.spt.show.toggle"),
   };
 
   const ACCESS_OPTIONS = {
-    everyone: game.i18n.localize("E20.STORY_POINTS.everyone"),
-    gm: game.i18n.localize("E20.STORY_POINTS.gm"),
-    players: game.i18n.localize("E20.STORY_POINTS.players"),
+    everyone: game.i18n.localize("E20.spt.users.everyone"),
+    gm: game.i18n.localize("E20.spt.users.gm"),
   };
 
   /* -------------------------------------------- */
   /*  Config settings                             */
   /* -------------------------------------------- */
   game.settings.register(systemName, "sptAccess", {
-    name: game.i18n.localize("E20.STORY_POINTS.options.access.name"),
+    name: game.i18n.localize("E20.spt.options.access.name"),
     scope: "world",
     config: true,
     default: "everyone",
@@ -32,8 +31,17 @@ export const registerSettings = function () {
     onChange: debouncedReload
   });
 
+  game.settings.register(systemName, "sptGmPointsArePublic", {
+    name: game.i18n.localize("E20.spt.options.gmPointsArePublic.name"),
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+    onChange: debouncedReload
+  });
+
   game.settings.register(systemName, "sptShow", {
-    name: game.i18n.localize("E20.STORY_POINTS.options.show.name"),
+    name: game.i18n.localize("E20.spt.options.show.name"),
     scope: "client",
     config: true,
     default: "toggle",
@@ -43,7 +51,7 @@ export const registerSettings = function () {
   });
 
   game.settings.register(systemName, "sptMessage", {
-    name: game.i18n.localize("E20.STORY_POINTS.options.message.name"),
+    name: game.i18n.localize("E20.spt.options.message.name"),
     scope: "world",
     config: true,
     default: true,
