@@ -295,13 +295,12 @@
       "weapon",
       "weaponUpgrade",
       "threatPower",
-      "generalPerk",
+      "perk",
       "power",
       "feature",
       "trait",
       "bond",
       "hangUp",
-      "perk",
       "specialization",
       "megaformTrait",
       "resource"
@@ -379,7 +378,7 @@
       "cost": null,
       "limited": false
     },
-    "generalPerk": {
+    "perk": {
       "templates": [
         "itemDescription"
       ],
@@ -406,9 +405,6 @@
       "templates": ["itemDescription"]
     },
     "hangUp": {
-      "templates": ["itemDescription"]
-    },
-    "perk": {
       "templates": ["itemDescription"]
     },
     "specialization": {},
