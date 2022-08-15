@@ -20,7 +20,6 @@
         "initiative": "d20",
         "movement": {
           "aerial": 0,
-          "aerialMin": null,
           "ground": 45,
           "swim": 0
         },
@@ -296,14 +295,14 @@
       "weapon",
       "weaponUpgrade",
       "threatPower",
-      "generalPerk",
+      "perk",
       "power",
       "feature",
       "trait",
       "bond",
       "hangUp",
-      "perk",
       "specialization",
+      "megaformTrait",
       "resource"
     ],
     "templates": {
@@ -379,7 +378,7 @@
       "cost": null,
       "limited": false
     },
-    "generalPerk": {
+    "perk": {
       "templates": [
         "itemDescription"
       ],
@@ -408,10 +407,10 @@
     "hangUp": {
       "templates": ["itemDescription"]
     },
-    "perk": {
+    "specialization": {},
+    "megaformTrait": {
       "templates": ["itemDescription"]
     },
-    "specialization": {},
     "resource": {
       "templates": ["itemDescription"],
       "uses": {

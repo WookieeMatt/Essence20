@@ -29,14 +29,13 @@
     </div>
 
     <div>
-      {{> "systems/essence20/templates/actor/parts/actor-zord-movement.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/actor-npc-movement.hbs"}}
     </div>
   </div>
 
   <div class="npc-abilities">
     {{!-- Hang-ups --}}
     {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.hangUps' dataType='hangUp'}}
-
     {{!-- Threat Powers --}}
     {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers title='E20.powers' dataType='threatPower'}}
   </div>

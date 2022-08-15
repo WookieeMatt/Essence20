@@ -78,8 +78,9 @@ export class Essence20ActorSheet extends ActorSheet {
    *
    * @return {undefined}
    */
-   _prepareDisplayedNpcSkills(context) {
-    let displayedNpcSkills = {};
+  _prepareDisplayedNpcSkills(context) {
+    if (this.actor.type == 'npc') {
+      let displayedNpcSkills = {};
 
     // Include any skill that have specializations
     for (let skill in context.specializations) {
@@ -147,8 +148,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const hangUps = [];
     const influences = [];
     const gears = [];
-    const generalPerks = []; // Used by PCs
-    const perks = [];
+    const perks = []; // Used by PCs
     const powers = []; // Used by PCs
     const resources = []; // Used by PCs
     const specializations = {};
@@ -176,11 +176,11 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'gear':
           gears.push(i);
           break;
-        case 'generalPerk':
-          generalPerks.push(i);
-          break;
         case 'hangUp':
           hangUps.push(i);
+          break;
+        case 'megaformTrait':
+          megaformTraits.push(i);
           break;
         case 'perk':
           perks.push(i);
@@ -215,9 +215,8 @@ export class Essence20ActorSheet extends ActorSheet {
     context.influences = influences;
     context.features = features;
     context.gears = gears;
-    context.generalPerks = generalPerks;
-    context.hangUps = hangUps;
     context.perks = perks;
+    context.hangUps = hangUps;
     context.powers = powers;
     context.resources = resources;
     context.specializations = specializations;
@@ -269,7 +268,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Open and collapse Item content
-      html.find('.accordion-label').click(ev => {
+    html.find('.accordion-label').click(ev => {
       const el = ev.currentTarget;
       const parent = $(el).parents('.accordion-wrapper');
       parent.toggleClass('open');
@@ -361,7 +360,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (rollType == 'power') {
         // If a Power is being used, decrement Personal Power
-        await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
+        await this.actor.update({
+          'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1)
+        });
       } else if (rollType == 'resource') {
         // If a Resource is being used, decrement uses
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
@@ -407,12 +408,12 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-   async _onZordDelete(event) {
+  async _onZordDelete(event) {
     const li = $(event.currentTarget).parents(".zord");
     const zordId = li.data("zordId");
     let zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
     this.actor.update({
-        "system.zordIds": zordIds,
+      "system.zordIds": zordIds,
     });
     li.slideUp(200, () => this.render(false));
   }
