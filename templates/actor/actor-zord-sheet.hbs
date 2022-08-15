@@ -8,8 +8,8 @@
       <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ranger' }}" />
       <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
     </div>
-
   </header>
+
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
     <div class="zord-sheet-grid">
@@ -17,13 +17,10 @@
       {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
 
       <div class="flexcol">
-        <div class="zord-container-2">
-          {{> "systems/essence20/templates/actor/parts/actor-zord-skills.hbs"}}
-        </div>
-
-      {{!-- Features --}}
-      {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
-
+        {{!-- Skills --}}
+        {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+        {{!-- Features --}}
+        {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
       </div>
       <div class="zord-weapons">
         {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
