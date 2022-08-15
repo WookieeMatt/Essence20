@@ -20,7 +20,6 @@
         "initiative": "d20",
         "movement": {
           "aerial": 0,
-          "aerialMin": null,
           "ground": 45,
           "swim": 0
         },
