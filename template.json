@@ -361,7 +361,8 @@
         "custom": null,
         "skill": null,
         "shift": null
-      }
+      },
+      "upgrades": ""
     },
     "weaponUpgrade": {
       "templates": [
