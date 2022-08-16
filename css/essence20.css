@@ -397,6 +397,11 @@
 }
 
 .essence20 .sheet-header {
+  background-color: rgba(3, 18, 156, 0.5019607843);
+  border: 5px solid #b5b1b1;
+  box-shadow: 4px 4px 0 black;
+  padding: 6px;
+  border-radius: 25px;
   -webkit-box-flex: 0;
   -ms-flex: 0 auto;
   flex: 0 auto;
@@ -423,7 +428,8 @@
   flex: inherit;
   height: 100px;
   margin-right: 10px;
-  border: none;
+  border: 5px solid #b5b1b1;
+  border-radius: 15px;
 }
 
 .essence20 .sheet-header .header-fields {
@@ -524,7 +530,7 @@
   flex-direction: column;
   justify-content: space-between;
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
   width: fit-content;
@@ -700,7 +706,7 @@
   flex-direction: row;
   justify-content: center;
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
   width: fit-content;
@@ -793,7 +799,7 @@
   flex-direction: row;
   justify-content: center;
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 black;
   width: 100%;
@@ -832,7 +838,7 @@
 
 .essence20 .zord-features {
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   margin-top: 10px;
   border-radius: 25px;
   padding: 6px;
@@ -855,7 +861,7 @@
   flex-direction: row;
   justify-content: center;
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 black;
   width: 100%;
@@ -871,7 +877,7 @@
 
 .essence20 .zord-health-container {
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   border-radius: 25px;
   padding: 8px;
   box-shadow: 4px 4px 0 black;
@@ -1096,7 +1102,7 @@
   flex-direction: row;
   justify-content: center;
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 black;
   width: 100%;
@@ -1113,7 +1119,7 @@
 /*-- NPC --*/
 .essence20 .npc-stats-container {
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   border-radius: 25px;
   padding: 6px;
   box-shadow: 4px 4px 0 black;
@@ -1141,7 +1147,7 @@
 /*-- Zord --*/
 .essence20 .zord-stats-container {
   background: rgba(3, 18, 156, 0.5019607843);
-  border: 5px solid #0a0a0a;
+  border: 5px solid #b5b1b1;
   border-radius: 25px;
   padding: 6px;
   box-shadow: 4px 4px 0 black;
