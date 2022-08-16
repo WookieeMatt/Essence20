@@ -13,19 +13,30 @@
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
     <div class="zord-sheet-grid">
-      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
 
       <div class="flexcol">
+        <div class="flexrow">
+          {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
+          {{> "systems/essence20/templates/actor/parts/actor-pc-movement.hbs"}}
+          <div class="stats-container">
+            <div class="flexrow flex-group-center">
+              <span class="essence-label">{{localize 'E20.essences.strength'}}</span>
+              <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
+            </div>
+            <div class="flexrow flex-group-center">
+              <span class="essence-label">{{localize 'E20.essences.speed'}}</span>
+              <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
+            </div>
+          </div>
+        </div>
+
+        {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
         {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
         
         <div class="zord-container-1">
           {{!-- Features --}}
           {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
-
-          <div class="npc-traits">
-            {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
-          </div>
+          {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
         </div>
       </div>
       <div class="zord-weapons">

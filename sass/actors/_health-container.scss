@@ -1,38 +1,8 @@
 @use '../assets/variables' as v;
 
-.essence20 .health-container {
-  list-style: none;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: v.$padding;
-  overflow-y: auto;
-  color: v.$textcolor1;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background: v.$background-b;
-  border: v.$border;
-  border-radius: 50px;
-  box-shadow: v.$boxshadow;
-  width: 100%;
-  grid-area: health-container;
-}
-
 .essence20 .npc-health-container {
   display: flex;
   flex-direction: row;
   flex-wrap: none;
   justify-content: center;
-}
-
-.essence20 .zord-health-container {
-  background: v.$background-b;
-  border: v.$border;
-  border-radius: 25px;
-  padding: 8px;
-  box-shadow: v.$boxshadow;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  height: fit-content;
 }
