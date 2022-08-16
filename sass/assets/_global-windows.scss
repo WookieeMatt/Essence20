@@ -1,0 +1,53 @@
+/* Global styles */
+.window-app {
+  /* font-family: "Roboto", sans-serif; */
+  font-family: "Comic Neue", cursive;
+  font-weight: bold;
+  color: white;
+}
+
+.window-app .window-content {
+  /* background: rgb(78, 78, 78); */
+  background: rgb(66, 66, 66);
+  color: rgb(211, 207, 207);
+}
+
+.window-app .window-content button {
+  color: #d3cfcf;
+  background: rgb(66, 66, 66);
+  border-color: #0a0a0a;
+  border-radius: 20px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+}
+
+.sheet {
+  min-width: 620px;
+  min-height: 620px;
+}
+
+.dialog .dialog-buttons button.default {
+  color: rgb(211, 207, 207);
+}
+
+.dialog .dialog-buttons button {
+  color: rgb(211, 207, 207);
+}
+
+.dialog .dialog-buttons {
+  color: rgb(211, 207, 207);
+}
+
+#module-management .package-list .package-title {
+  color: rgb(211, 207, 207);
+}
+
+.item-button-container {
+  flex-grow: 0;
+}
+
+.rollable:hover,
+.rollable:focus {
+  color: #000;
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}

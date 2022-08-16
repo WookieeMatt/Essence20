@@ -1,0 +1,21 @@
+.essence20 .essence-header {
+  text-align: center;
+  margin-top: 5px;
+}
+
+.essence20 .essence-header .essence-label {
+  font-size: 2em;
+  vertical-align: middle;
+}
+
+.essence20 .essence-header .conditioning-label {
+  text-align: right;
+}
+
+.essence20 .essences {
+  display: grid;
+  align-content: center;
+  justify-content: space-around;
+  justify-items: center;
+  margin-bottom: auto;
+}

@@ -1,20 +1,32 @@
 <span class="flex-group-center">
-  <h1>{{localize 'E20.zordCombiner'}}</h1>
+  <h1>{{localize 'E20.combinerParticipants'}}</h1>
 </span>
-<a class="item-create" data-type="zordCombiner" title="{{ localize 'E20.addzordCombiner' }}">
-  <i class="fas fa-plus"></i>
-</a>
 
-{{#each @root.zords as |zord|}}
-<li class="zord flexrow" data-zord-id="{{zord._id}}">
-  <div class="item-name">
-    <input class="inline-edit" data-field="name" type="text" name="zord.{{@index}}.name" value="{{zord.name}}"
-      placeholder="{{ localize 'E20.name' }}" />
-    <textarea class="inline-edit" data-field="system.description" name="zord.{{@index}}.description"
-      placeholder="{{localize 'E20.description'}}">{{zord.system.description}}</textarea>
-  </div>
-  <div class="item-controls">
-    <a class="item-control zord-delete" title="{{localize 'E20.deletezordCombiner'}}"><i class="fas fa-trash"></i></a>
-  </div>
-</li>
-{{/each}}
+<ol class="items-list">
+  {{#each @root.zords as |zord|}}
+  <li class="zord item" data-zord-id="{{zord._id}}">
+    <div class="flexrow" style="align-items:center;">
+      <div style="white-space: nowrap;">{{ localize 'E20.name' }}: {{zord.name}}</div>
+      <div class="item-controls">
+        <a class="item-control zord-delete" title="{{localize 'E20.deletezordCombiner'}}"><i class="fas fa-trash"></i></a>
+      </div>
+    </div>
+    <div>
+      {{ localize 'E20.health' }}: <input class="two-digit-input" type="number" name="zord.system.health" value="{{zord.system.health.value}}" />
+    </div>
+    <div>
+      <span>{{ localize 'E20.ranger' }}: {{zord.system.ranger}}</span>
+    </div>
+    <div>
+      <div>{{ localize 'E20.megaformTraits' }}</div>
+      <ul>
+        {{#each zord.items as |item|}}
+        {{#ifEquals item.type 'megaformTrait'}}
+        <li>{{item.name}}</li>
+        {{/ifEquals}}
+        {{/each}}
+      </ul>
+    </div>
+  </li>
+  {{/each}}
+</ol>

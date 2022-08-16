@@ -29,40 +29,18 @@
     </div>
 
     <div>
-      {{> "systems/essence20/templates/actor/parts/actor-zord-movement.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/actor-npc-movement.hbs"}}
     </div>
   </div>
 
   <div class="npc-abilities">
     {{!-- Hang-ups --}}
     {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.hangUps' dataType='hangUp'}}
-
     {{!-- Threat Powers --}}
     {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers title='E20.powers' dataType='threatPower'}}
   </div>
 
-  <div class="npc-weapons">
-    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-  </div>
-
-  <div class="skills-container accordion-wrapper">
-    <div class="flex-group-center accordion-label">
-      <span>Skills</span>
-      <a class="item-control"><i class="accordion-icon fas fa-chevron-down"></i></a>
-    </div>
-
-    {{#each system.skills as |skills essence|}}
-      {{#each skills as |fields skill|}}
-        {{#if (lookup @root.displayedNpcSkills skill)}}
-        <div>
-        {{else}}
-        <div class="accordion-content">
-        {{/if}}
-
-        {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence=essence skill=skill fields=fields}}
-        </div>
-      {{/each}}
-    {{/each}}
-  </div>
+  {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
 
 </form>

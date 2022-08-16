@@ -1,0 +1,93 @@
+@use '../assets/variables' as v;
+
+.essence20 .defenses-container {
+  list-style: none;
+  margin: 18px;
+  padding: v.$padding;
+  overflow-y: auto;
+  color: v.$textcolor1;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background: v.$background-b;
+  border: v.$border;
+  border-radius: 15px;
+  box-shadow: v.$boxshadow;
+  width: fit-content;
+  justify-content: left;
+  width: 95%;
+}
+
+.essence20 .defense-container {
+  margin-left: 20px;
+}
+
+.essence20 .defense-container-1 {
+  padding-left: v.$padding;
+  padding-right: v.$padding;
+  display: flex;
+  flex-direction: column;
+  /*justify-content: center;*/
+  width: 50%;
+}
+
+.essence20 .defense-container table thead {
+  background-color: inherit;
+  border-bottom: #b5b1b1;
+}
+
+.essence20 .defense-container tr:nth-child(even) {
+  background-color: inherit;
+}
+
+.essence20 .defense-container .tg {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-style: hidden;
+}
+
+.essence20 .defense-container .tg td {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 15px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.essence20 .defense-container .tg th {
+  border-color: black;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 16px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.essence20 .defense-container .tg .tg-td {
+  border-color: inherit;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.essence20 .defense-container {
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  margin-top: 10px;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  transform: rotate(0deg);
+  background: #0a178880;
+  border: 3px solid #b5b1b1;
+  border-radius: 25px;
+  box-shadow: 4px 4px 0 #0a0a0a;
+  width: 100%;
+  justify-content: center;
+  /* margin-left: 135px; */
+}

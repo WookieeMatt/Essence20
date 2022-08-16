@@ -86,7 +86,6 @@ E20.lightRange = {
 
 E20.movement = {
   aerial: "E20.movement.aerial",
-  aerialMin: "E20.movement.aerialMin",
   ground: "E20.movement.ground",
   swim: "E20.movement.swim",
 };
@@ -207,19 +206,6 @@ E20.weaponSizes = {
   heavy: "E20.weaponSizes.heavy",
 };
 
-E20.weaponSkills = {
-  athletics: "E20.essenceSkills.athletics",
-  might: "E20.essenceSkills.might",
-  finesse: "E20.essenceSkills.finesse",
-  targeting: "E20.essenceSkills.targeting",
-  technology: "E20.essenceSkills.technology",
-};
-
-E20.weaponRequirementSkills = {
-  none: "",
-  ...E20.weaponSkills,
-};
-
 E20.weaponStyles = {
   melee: "E20.weaponStyles.melee",
   energy: "E20.weaponStyles.energy",
@@ -260,4 +246,3 @@ E20.weaponTraits = {
   trip: "E20.weaponTraits.trip",
   wrecker: "E20.weaponTraits.wrecker",
 }
-

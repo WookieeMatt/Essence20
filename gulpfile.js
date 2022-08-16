@@ -1,7 +1,7 @@
 const gulp = require('gulp');
 const prefix = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 
 /* ----------------------------------------- */
 /*  Compile Sass
@@ -13,7 +13,7 @@ function handleError(err) {
   this.emit('end');
 }
 
-const SYSTEM_SCSS = ["scss/**/*.scss"];
+const SYSTEM_SCSS = ["sass/*.scss"];
 function compileScss() {
   // Configure options for sass output. For example, 'expanded' or 'nested'
   let options = {
