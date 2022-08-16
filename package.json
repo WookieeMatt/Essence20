@@ -21,7 +21,7 @@
     "gulp-sourcemaps": "^2.6.5",
     "jest": "^27.5.1"
   },
-  "type": "none",
+  "type": "module",
   "main": "gulpfile.js",
   "directories": {
     "lib": "lib"
