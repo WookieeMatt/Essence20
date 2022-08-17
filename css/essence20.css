@@ -100,7 +100,6 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 5px;
   grid-template-areas: "common-container-1 common-container-2 common-container-3";
-  padding-bottom: 15px;
 }
 
 .essence20 .common-container-1 {
@@ -627,6 +626,7 @@
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
   justify-content: left;
+  min-width: 195px;
 }
 
 .essence20 .skillscontainer {
@@ -706,10 +706,6 @@
   width: fit-content;
   justify-content: left;
   width: 95%;
-}
-
-.essence20 .defense-container {
-  margin-left: 20px;
 }
 
 .essence20 .defense-container-1 {
@@ -1177,13 +1173,6 @@
   width: 100%;
 }
 
-/*.essence20 .zord-weapons {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: fit-content;
-  width: 100%;  
-}*/
 /* ARMOR SHEET DETAILING */
 select {
   color: white;
