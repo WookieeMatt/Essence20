@@ -87,7 +87,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -123,7 +123,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: rgba(10, 23, 136, 0.5019607843);
+  background: #0a178880;
   border: 4px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -204,13 +204,13 @@
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  background: rgb(66, 66, 66);
-  color: rgb(211, 207, 207);
+  background: #424242;
+  color: #d3cfcf;
 }
 
 .window-app .window-content button {
   color: #d3cfcf;
-  background: rgb(66, 66, 66);
+  background: #424242;
   border-color: #0a0a0a;
   border-radius: 20px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -222,19 +222,19 @@
 }
 
 .dialog .dialog-buttons button.default {
-  color: rgb(211, 207, 207);
+  color: #d3cfcf;
 }
 
 .dialog .dialog-buttons button {
-  color: rgb(211, 207, 207);
+  color: #d3cfcf;
 }
 
 .dialog .dialog-buttons {
-  color: rgb(211, 207, 207);
+  color: #d3cfcf;
 }
 
 #module-management .package-list .package-title {
-  color: rgb(211, 207, 207);
+  color: #d3cfcf;
 }
 
 .item-button-container {
@@ -513,7 +513,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -525,7 +525,7 @@
   padding: 5px;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -610,7 +610,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: rgba(10, 23, 136, 0.5019607843);
+  background: #0a178880;
   border: 3px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -627,7 +627,7 @@
   scrollbar-width: thin;
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
-  background: rgba(10, 23, 136, 0.5019607843);
+  background: #0a178880;
   border: 3px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -671,7 +671,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -689,7 +689,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -701,7 +701,7 @@
   margin: 18px;
   padding: 6px;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -779,7 +779,7 @@
   flex-direction: row;
   justify-content: flex-start;
   transform: rotate(0deg);
-  background: rgba(10, 23, 136, 0.5019607843);
+  background: #0a178880;
   border: 3px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -887,6 +887,7 @@
   height: fit-content;
 }
 
+
 .essence20 .notes-title {
   color: white;
   font-size: 16px;
@@ -923,7 +924,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -941,7 +942,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -959,7 +960,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -977,7 +978,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -1001,7 +1002,7 @@
 }
 
 .essence20 .npc-defenses-container {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -1035,7 +1036,7 @@
 }
 
 .essence20 .npc-stats-container {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   padding: 8px;
@@ -1097,7 +1098,7 @@
   margin-top: 10px;
   padding: 6px;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -1178,20 +1179,8 @@
   grid-area: zord-grid-1;
 }
 
-.essence20 .zord-health-container {
-  background: rgba(3, 18, 156, 0.5019607843);
-  border: 4px solid #b5b1b1;
-  border-radius: 25px;
-  padding: 8px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  height: fit-content;
-}
-
 .essence20 .zord-stats-container {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   padding: 8px;
@@ -1204,7 +1193,7 @@
 }
 
 .essence20 .zord-container-2 {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   margin-top: 5px;
@@ -1230,7 +1219,7 @@
 }
 
 .essence20 .zord-features {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   margin-top: 10px;
   border-radius: 25px;
@@ -1241,122 +1230,6 @@
   justify-content: center;
   height: fit-content;
   width: 100%;
-}
-
-/*.essence20 .zord-weapons {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: fit-content;
-  width: 100%;  
-}*/
-/* ARMOR SHEET DETAILING */
-select {
-  color: white;
-}
-
-option {
-  background-color: #4a4848;
-}
-
-.essence20 input[type=number], input[type=text] {
-  color: white;
-  vertical-align: middle;
-}
-
-.essence20 .one-digit-input {
-  max-width: 20px;
-  text-align: center;
-}
-
-.essence20 .two-digit-input {
-  max-width: 40px;
-  text-align: center;
-}
-
-form .notes,
-form .hint {
-  color: white;
-}
-
-.essence20 .span {
-  color: white;
-}
-
-.essence20 .armor-effect {
-  color: white;
-}
-
-.essence20 .armor-description {
-  color: white;
-}
-
-.essence20 .description-tab .editor {
-  color: white;
-  height: 100px;
-}
-
-.essence20 .armor-sheet-body,
-.essence20 .armor-sheet-body .tab,
-.essence20 .armor-sheet-body .tab .editor {
-  height: 100%;
-}
-
-.essence20 .outer-circle {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(to bottom right, black, red, pink, blue, green, yellow);
-  border-radius: 7%;
-  animation: rotate 3s linear infinite;
-}
-
-.essence20 .inner-circle {
-  height: 95%;
-  width: 95%;
-  position: absolute;
-  background: black;
-  top: 10px;
-  left: 10px;
-  border-radius: 7%;
-  z-index: 9;
-}
-
-@keyframes rotate {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-/* Feature Sheet Styling */
-.essence20 .feature-sheet-body,
-.essence20 .feature-sheet-body .tab,
-.essence20 .feature-sheet-body .tab .editor {
-  height: 100%;
-}
-
-.essence20 .feature-description {
-  color: white;
-}
-
-.essence20 .outer-border {
-  display: flex;
-  flex-shrink: 0;
-  height: 95%;
-  width: 95%;
-  background-image: linear-gradient(to bottom right, black, red, pink, blue, green, yellow);
-  border-radius: 7%;
-}
-
-.essence20 .inner-border {
-  height: 95%;
-  width: 95%;
-  background: black;
-  background-size: cover;
-  margin: auto;
-  border-radius: 7%;
 }
 
 .essence20 .item {
@@ -1386,7 +1259,7 @@ form .hint {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: rgba(10, 23, 136, 0.5019607843);
+  background: #0a178880;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -1533,7 +1406,7 @@ form .hint {
 
 /* -- Jornal page styling -- */
 .journal-entry-pages {
-  color: rgb(163, 163, 163);
+  color: #a3a3a3;
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
@@ -1553,7 +1426,7 @@ form .hint {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -1571,7 +1444,7 @@ form .hint {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -1588,7 +1461,7 @@ form .hint {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -1612,7 +1485,7 @@ form .hint {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
@@ -1627,25 +1500,40 @@ form .hint {
   color: white;
 }
 
-.essence20 .ranger-perks {
-  list-style: none;
-  margin-top: 10px;
-  padding: 8px;
-  overflow-y: auto;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
-  border: 4px solid #b5b1b1;
-  border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
-  height: fit-content;
-}
-
 .essence20 .resource-label {
   font-weight: bold;
+}
+
+select {
+  color: white;
+}
+
+option {
+  background-color: #4a4848;
+}
+
+.essence20 input[type=number], input[type=text] {
+  color: white;
+  vertical-align: middle;
+}
+
+.essence20 .one-digit-input {
+  max-width: 20px;
+  text-align: center;
+}
+
+.essence20 .two-digit-input {
+  max-width: 40px;
+  text-align: center;
+}
+
+form .notes,
+form .hint {
+  color: white;
+}
+
+.essence20 .span {
+  color: white;
 }
 
 /*# sourceMappingURL=essence20.css.map */

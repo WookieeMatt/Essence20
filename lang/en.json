@@ -18,6 +18,7 @@
     "TypeThreatpower": "Threat Power",
     "TypeHangup": "Hang Up",
     "TypeMegaformtrait": "Megaform Trait",
+    "TypeOrigin": "Origin",
     "TypePerk": "Perk",
     "TypePower": "Power",
     "TypeResource": "Resource",
@@ -105,7 +106,6 @@
     "numHands": "Hands",
     "numPassengers": "Passengers",
     "numTargets": "Targets",
-    "origin": "Origin",
     "perk": "Perk",
     "perks": "Perks",
     "personalPower": "Personal Power",
@@ -145,6 +145,7 @@
     "withASnag": "with a Snag",
     "value": "Value",
     "unmorphed": "Unmorphed",
+    "upgrades": "Upgrades",
     "uses": "Uses",
     "armorClassifications": {
       "non": "Non Armor",
@@ -224,6 +225,18 @@
       "aerial": "Aerial",
       "ground": "Ground",
       "swim": "Swim"
+    },
+    "origin": {
+      "benefit": {
+        "name": "Benefit Name",
+        "description": "Benefit Description"
+      },
+      "bonusSkillLevels": "Bonus Skill Levels",
+      "essenceIncreaseOptions": "Essence Increase Options",
+      "groundMovement": "Ground Movement",
+      "origin": "Origin",
+      "languages": "Languages",
+      "startingHealth": "Starting Health"
     },
     "rangers": {
       "black": "Black Ranger",

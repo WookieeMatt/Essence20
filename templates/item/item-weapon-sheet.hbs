@@ -5,7 +5,8 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <div>
+    <div class="flexrow">
+      <label>{{localize 'E20.availability'}}</label>
       <select name="system.availability">
         {{#select system.availability}}
         {{#each config.availabilities as |name type|}}
@@ -13,7 +14,10 @@
         {{/each}}
         {{/select}}
       </select>
+    </div>
 
+    <div class="flexrow">
+      <label>{{localize 'E20.skill'}}</label>
       <select name="system.classification.skill">
         {{#select system.classification.skill}}
         {{#each config.essenceSkills as |name type|}}
@@ -21,7 +25,10 @@
         {{/each}}
         {{/select}}
       </select>
+    </div>
 
+    <div class="flexrow">
+      <label>{{localize 'E20.size'}}</label>
       <select name="system.classification.size">
         {{#select system.classification.size}}
         {{#each config.weaponSizes as |name type|}}
@@ -29,7 +36,10 @@
         {{/each}}
         {{/select}}
       </select>
+    </div>
 
+    <div class="flexrow">
+      <label>{{localize 'E20.style'}}</label>
       <select name="system.classification.style">
         {{#select system.classification.style}}
         {{#each config.weaponStyles as |name type|}}
@@ -39,43 +49,72 @@
       </select>
     </div>
 
-    <span>{{localize 'E20.numCharges'}}</span><input type="number" name="system.numCharges" value="{{system.numCharges}}"/>
-    <input type="text" name="system.custom" value="{{system.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
-
-    <h3>{{localize 'E20.effect'}}</h3>
-    <input type="text" name="system.effect" value="{{system.effect}}" placeholder="{{ localize 'E20.effect' }}"/>
-
-    <h3>{{localize 'E20.alternateEffects'}}</h3>
-    <input type="text" name="system.alternateEffects" value="{{system.alternateEffects}}" placeholder="{{ localize 'E20.alternateEffects' }}"/>
-
-    <div>
-      <span>{{localize 'E20.numHands'}}</span><input type="number" name="system.numHands" value="{{system.numHands}}"/>
-      <span>{{localize 'E20.numTargets'}}</span><input type="number" name="system.numTargets" value="{{system.numTargets}}"/>
-      <span>{{localize 'E20.radius'}}</span><input type="number" name="system.radius" value="{{system.radius}}"/>
+    <div class="flexrow">
+      <label>{{localize 'E20.numCharges'}}</label>
+      <input type="number" name="system.numCharges" value="{{system.numCharges}}" />
+      <input type="text" name="system.custom" value="{{system.custom}}" placeholder="{{ localize 'E20.custom' }}" />
     </div>
 
-    <h3>{{localize 'E20.range'}}</h3>
-    <span>{{localize 'E20.min'}}</span><input type="number" name="system.range.min" value="{{system.range.min}}"/>
-    <span>{{localize 'E20.reachMultiplier'}}</span><input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"/>
-    <span>{{localize 'E20.long'}}</span><input type="number" name="system.range.long" value="{{system.range.long}}"/>
-    <span>{{localize 'E20.value'}}</span><input type="number" name="system.range.value" value="{{system.range.value}}"/>
+    <div class="flexrow">
+      <label>{{localize 'E20.effect'}}</label>
+      <input type="text" name="system.effect" value="{{system.effect}}" />
+    </div>
 
-    <h3>{{localize 'E20.requirements'}}</h3>
-    <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}" placeholder="{{ localize 'E20.custom' }}"/>
-    <select name="system.requirements.skill">
-      {{#select system.requirements.skill}}
-      {{#each config.essenceSkills as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    <select name="system.requirements.shift">
-      {{#select system.requirements.shift}}
-      {{#each config.weaponRequirementShifts as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
+    <div class="flexrow">
+      <label>{{localize 'E20.alternateEffects'}}</label>
+      <input type="text" name="system.alternateEffects" value="{{system.alternateEffects}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.upgrades'}}</label>
+      <input type="text" name="system.upgrades" value="{{system.upgrades}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.numHands'}}</label>
+      <input type="text" name="system.numHands" value="{{system.numHands}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.numTargets'}}</label>
+      <input type="number" name="system.numTargets" value="{{system.numTargets}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.radius'}}</label>
+      <input type="number" name="system.radius" value="{{system.radius}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.range'}}</label>
+      <input type="number" name="system.range.min" value="{{system.range.min}}" placeholder="{{localize 'E20.min'}}" />
+      <input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"
+        placeholder="{{localize 'E20.reachMultiplier'}}" />
+      <input type="number" name="system.range.long" value="{{system.range.long}}"
+        placeholder="{{localize 'E20.long'}}" />
+      <input type="number" name="system.range.value" value="{{system.range.value}}"
+        placeholder="{{localize 'E20.value'}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.requirements'}}</label>
+      <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
+        placeholder="{{ localize 'E20.custom' }}" />
+      <select name="system.requirements.skill">
+        {{#select system.requirements.skill}}
+        {{#each config.essenceSkills as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      <select name="system.requirements.shift">
+        {{#select system.requirements.shift}}
+        {{#each config.weaponRequirementShifts as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}

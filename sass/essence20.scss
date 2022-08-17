@@ -5,3 +5,35 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+
+select {
+  color: white;
+}
+
+option {
+  background-color: #4a4848;
+}
+
+.essence20 input[type="number"], input[type="text"] {
+  color: white;
+  vertical-align: middle;
+}
+
+.essence20 .one-digit-input {
+  max-width: 20px;
+  text-align: center;
+}
+
+.essence20 .two-digit-input {
+  max-width: 40px;
+  text-align: center;
+}
+
+form .notes,
+form .hint {
+  color: white;
+}
+
+.essence20 .span {
+  color: white;
+}

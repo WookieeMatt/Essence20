@@ -1,50 +1,16 @@
 <div class="common-container">
   {{!-- Initiative --}}
   <div class="common-container-1">
-    <div class="initiative-container">
-      <div class="initiative-header">
-        <span>{{localize 'E20.initiative'}}</span>
-        <div class="initiative-dropdown">
-          <select name="system.initiative">
-            {{selectOptions @root.config.initiativeShifts selected=system.initiative localize=true}}
-          </select>
-          <div class="item-image">
-            <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
+    {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
   </div>
 
   {{!-- Movement --}}
   <div class="common-container-2">
-    <div class="stats-container">
-      <div class="flexrow flex-group-center">
-        <div>{{localize 'E20.movement.ground'}}</div>
-        <div><input class="two-digit-input" type="number" name="system.movement.ground" value="{{system.movement.ground}}" /></div>
-      </div>
-      <div class="flexrow flex-group-center">
-        <div>{{localize 'E20.movement.swim'}}</div>
-        <div><input class="two-digit-input" type="number" name="system.movement.swim" value="{{system.movement.swim}}" /></div>
-      </div>
-      <div class="flexrow flex-group-center">
-        <div>{{localize 'E20.movement.aerial'}}</div>
-        <div><input class="two-digit-input" type="text" name="system.movement.aerial" value="{{system.movement.aerial}}" /></div>
-      </div>
-    </div>
+    {{> "systems/essence20/templates/actor/parts/actor-pc-movement.hbs"}}
   </div>
 
   {{!-- Health --}}
   <div class="common-container-3">
-    <div class="health-container">
-      <div class="resource flex-group-center">
-        <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
-        <div class="resource-content flexrow flex-center flex-between">
-          <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-          <span>/</span>
-          <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
-        </div>
-      </div>
-    </div>
+    {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
   </div>
 </div>

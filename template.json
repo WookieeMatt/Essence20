@@ -132,10 +132,6 @@
       },
       "character": {
         "background": {
-          "origin": {
-            "description": "",
-            "name": ""
-          },
           "pronouns": "",
           "role": ""
         },
@@ -303,7 +299,8 @@
       "hangUp",
       "specialization",
       "megaformTrait",
-      "resource"
+      "resource",
+      "origin"
     ],
     "templates": {
       "itemDescription": {
@@ -361,7 +358,8 @@
         "custom": null,
         "skill": null,
         "shift": null
-      }
+      },
+      "upgrades": ""
     },
     "weaponUpgrade": {
       "templates": [
@@ -415,6 +413,18 @@
       "uses": {
         "max": 0,
         "value": 0
+      }
+    },
+    "origin": {
+      "templates": ["itemDescription"],
+      "essenceIncreaseOptions": "",
+      "startingHealth": "",
+      "bonusSkillLevels": "",
+      "groundMovement": "",
+      "languages": "",
+      "benefit" : {
+        "name": "",
+        "description": ""
       }
     }
   }
