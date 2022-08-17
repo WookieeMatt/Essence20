@@ -1,48 +1,51 @@
 <form class="{{cssClass}}" autocomplete="off">
 
-  <section class="armor-sheet-body">
-    <div class="outer-circle">
-      <div class="inner-circle">
+  <section>
+    {{!-- Item Sheet Header --}}
+    {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
-  {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+    {{!-- Item Sheet Body --}}
+    <div class="flexrow">
+      <label>{{localize 'E20.availability'}}</label>
+      <select name="system.availability">
+        {{#select system.availability}}
+        {{#each config.availabilities as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
 
-  {{!-- Item Sheet Body --}}
-  
-        <div>
-          <select name="system.availability">
-            {{#select system.availability}}
-            {{#each config.availabilities as |name type|}}
-            <option value="{{type}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
-          </select>
+    <div class="flexrow">
+      <label>{{localize 'E20.classification'}}</label>
+      <select name="system.classification">
+        {{#select system.classification}}
+        {{#each config.armorClassifications as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
 
-          <select name="system.classification">
-            {{#select system.classification}}
-            {{#each config.armorClassifications as |name type|}}
-            <option value="{{type}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
-          </select>
+    <div class="flexrow">
+      <label>{{localize 'E20.trait'}}</label>
+      <select name="system.trait">
+        {{#select system.trait}}
+        {{#each config.armorTraits as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
 
-          <select name="system.trait">
-            {{#select system.trait}}
-            {{#each config.armorTraits as |name type|}}
-            <option value="{{type}}">{{localize name}}</option>
-            {{/each}}
-            {{/select}}
-          </select>
-        </div>
+    <div class="flexrow">
+      <div>{{localize 'E20.effect'}}</div>
+      <input type="number" name="system.effect" value="{{system.effect}}" />
+    </div>
 
-        <span class="armor-effect">{{localize 'E20.effect'}}</span><input type="number" name="system.effect"
-          value="{{system.effect}}" />
-
-        <div class="armor-description">
-          {{!-- Description Section --}}
-          {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
-        </div>
-      </div>
+    {{!-- Description Section --}}
+    <div class="armor-description">
+      {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
     </div>
   </section>
 
