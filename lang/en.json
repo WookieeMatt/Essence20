@@ -105,7 +105,6 @@
     "numHands": "Hands",
     "numPassengers": "Passengers",
     "numTargets": "Targets",
-    "origin": "Origin",
     "perk": "Perk",
     "perks": "Perks",
     "personalPower": "Personal Power",
@@ -224,6 +223,18 @@
       "aerial": "Aerial",
       "ground": "Ground",
       "swim": "Swim"
+    },
+    "origin": {
+      "benefit": {
+        "name": "Benefit Name",
+        "description": "Benefit Description"
+      },
+      "bonusSkillLevels": "Bonus Skill Levels",
+      "essenceIncreaseOptions": "Essence Increase Options",
+      "groundMovement": "Ground Movement",
+      "origin": "Origin",
+      "languages": "Languages",
+      "startingHealth": "Starting Health"
     },
     "rangers": {
       "black": "Black Ranger",
