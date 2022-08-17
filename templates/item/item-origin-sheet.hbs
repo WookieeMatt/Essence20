@@ -1,0 +1,19 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body">
+    {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+
+    <span>{{localize 'E20.origin.essenceIncreaseOptions'}}</span><input type="text" name="system.essenceIncreaseOptions" value="{{system.essenceIncreaseOptions}}"/>
+    <span>{{localize 'E20.origin.startingHealth'}}</span><input type="text" name="system.startingHealth" value="{{system.startingHealth}}"/>
+    <span>{{localize 'E20.origin.bonusSkillLevels'}}</span><input type="text" name="system.bonusSkillLevels" value="{{system.bonusSkillLevels}}"/>
+    <span>{{localize 'E20.origin.groundMovement'}}</span><input type="text" name="system.groundMovement" value="{{system.groundMovement}}"/>
+    <span>{{localize 'E20.origin.languages'}}</span><input type="text" name="system.languages" value="{{system.languages}}"/>
+    <span>{{localize 'E20.origin.benefit.name'}}</span><input type="text" name="system.benefit.name" value="{{system.benefit.name}}"/>
+    <span>{{localize 'E20.origin.benefit.description'}}</span><input type="text" name="system.benefit.description" value="{{system.benefit.description}}"/>
+  </section>
+</form>
