@@ -22,29 +22,10 @@
   text-align: center;
 }
 
-/* Content toggle open/close. */
-.essence20 .accordion-content {
-  display: none;
-}
-
-.essence20 .open .accordion-content {
-  display: block;
-}
-
-/* Chevron icon. */
-.essence20 .accordion-icon {
-  transition: all ease-in-out 0.25s;
-}
-
-.essence20 .open .accordion-icon {
-  transform: rotate(180deg);
-}
-
 .essence20 .chip {
   border-radius: 10px;
   border: 3px solid;
   border-style: outset;
-  /*border-color:  rgb(0, 0, 0);*/
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 2px;
@@ -53,7 +34,6 @@
   width: fit-content;
   height: fit-content;
   text-size-adjust: 8;
-  /*box-shadow: 2px 2px 0 #0a0a0a;*/
 }
 
 .essence20 .chip-section {
@@ -95,19 +75,22 @@
   height: fit-content;
 }
 
-.essence20 .common-label-1 {
-  font-size: 2em;
-  /* margin-top: 70px;*/
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: center;
-  background: #0a178880;
-  border: 4px solid #b5b1b1;
-  border-radius: 50px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
+/* Content toggle open/close. */
+.essence20 .accordion-content {
+  display: none;
+}
+
+.essence20 .open .accordion-content {
+  display: block;
+}
+
+/* Chevron icon. */
+.essence20 .accordion-icon {
+  transition: all ease-in-out 0.25s;
+}
+
+.essence20 .open .accordion-icon {
+  transform: rotate(180deg);
 }
 
 .essence20 .editor {
@@ -493,25 +476,6 @@
   justify-content: space-between;
 }
 
-.essence20 .items-container {
-  list-style: none;
-  margin: 18px;
-  padding: 5px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  color: #c7c4c4;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: #03129c80;
-  border: 5px solid #0a0a0a;
-  border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
-  width: fit-content;
-  justify-content: left;
-  width: 95%;
-}
-
 .roll-dialog div {
   margin-bottom: 10px;
 }
@@ -653,24 +617,6 @@
   width: 100%;
 }
 
-.essence20 .powers-section-1 {
-  list-style: none;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  padding: 4px;
-  padding-left: 20px;
-  overflow-y: auto;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #03129c80;
-  border: 4px solid #b5b1b1;
-  border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
-}
-
 .essence20 .defense-container table thead {
   background-color: inherit;
   border-bottom: #b5b1b1;
@@ -755,7 +701,6 @@
   font-size: 16px;
 }
 
-/* --- NPC Sheet Styling --- */
 .essence20 .npc-sheet-header {
   display: flex;
   flex-direction: column;
@@ -776,78 +721,6 @@
   justify-content: center;
 }
 
-.essence20 .npc-powers {
-  list-style: none;
-  margin-top: 10px;
-  margin-right: 3px;
-  padding: 8px;
-  overflow-y: auto;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #03129c80;
-  border: 4px solid #b5b1b1;
-  border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
-  height: fit-content;
-}
-
-.essence20 .npc-perks {
-  list-style: none;
-  margin-top: 10px;
-  margin-right: 3px;
-  padding: 8px;
-  overflow-y: auto;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #03129c80;
-  border: 4px solid #b5b1b1;
-  border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
-  height: fit-content;
-}
-
-.essence20 .npc-traits {
-  list-style: none;
-  margin-top: 10px;
-  margin-right: 3px;
-  padding: 8px;
-  overflow-y: auto;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #03129c80;
-  border: 4px solid #b5b1b1;
-  border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
-  height: fit-content;
-}
-
-.essence20 .npc-hangup {
-  list-style: none;
-  margin-top: 10px;
-  margin-right: 3px;
-  padding: 8px;
-  overflow-y: auto;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #03129c80;
-  border: 4px solid #b5b1b1;
-  border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
-  height: fit-content;
-}
-
 .essence20 .npc-defenses {
   list-style: none;
   margin-right: 3px;
@@ -865,33 +738,6 @@
   box-shadow: 4px 4px 0 #0a0a0a;
 }
 
-/* Power Rangers Character Sheet */
-.essence20 .pr-outer-border {
-  display: flex;
-  flex-shrink: 0;
-  height: 620px;
-  width: 612px;
-}
-
-.essence20 .pr-inner-border {
-  height: 528px;
-  width: 620px;
-  background-image: url("../assets/mastadon.jpg");
-  background-size: cover;
-  margin: auto;
-  overflow-y: auto;
-}
-
-.essence20 .morphed-container {
-  float: right;
-}
-
-.essence20 .bonuses {
-  display: flex;
-  flex-direction: row;
-}
-
-/*-- Player --*/
 .essence20 .stats-container {
   list-style: none;
   padding: 6px;
@@ -920,7 +766,6 @@
   gap: 10px;
 }
 
-/* ----- ZORD SHEET STYLING ---- */
 /* ----- ZORD SHEET STYLING ---- */
 .essence20 .zord-combiners {
   background: #03129c80;
