@@ -74,8 +74,7 @@
   list-style: none;
   overflow-y: auto;
   color: white;
-  padding-left: 5px;
-  padding-bottom: 5px;
+  padding: 8px;
   transform: rotate(0deg);
   scrollbar-width: thin;
   border: 1px solid #b5b1b1;
@@ -86,7 +85,9 @@
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
   justify-content: left;
-  min-width: 195px;
+  min-width: 205px;
+  flex-grow: 0;
+  flex-basis: auto;
 }
 
 .essence20 .skillscontainer {
