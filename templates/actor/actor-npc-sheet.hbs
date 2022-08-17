@@ -22,20 +22,29 @@
     </div>
   </div>
 
-  {{!-- NPC Defenses --}}
-  {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+  {{!-- Actor Sheet Body --}}
+  <section class="sheet-body flexcol" style="gap: 10px;">
+    {{!-- NPC Defenses --}}
+    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
 
-  {{!-- Movement --}}
-  {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+    {{!-- Movement --}}
+    {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
 
-  <div class="npc-abilities">
     {{!-- Hang-ups --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.hangUps' dataType='hangUp'}}
-    {{!-- Threat Powers --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers title='E20.powers' dataType='threatPower'}}
-  </div>
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps
+    title='E20.hangUps' dataType='hangUp'}}
 
-  {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
-  {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-  {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+    {{!-- Threat Powers --}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers
+    title='E20.powers' dataType='threatPower'}}
+
+    {{!-- Perks --}}
+    {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
+
+    {{!-- Weapons --}}
+    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+
+    {{!-- Skills --}}
+    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+  </section>
 </form>
