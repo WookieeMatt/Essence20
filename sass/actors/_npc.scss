@@ -97,7 +97,6 @@
 
 .essence20 .npc-defenses {
   list-style: none;
-  margin-top: 10px;
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
@@ -174,8 +173,4 @@
   grid-template-areas:
     "npc-stat-1 npc-stat-1"
     "npc-stat-2 npc-stat-2";
-}
-
-.essence20 .npc-sheet-container-2 {
-  grid-area: npc-stat-1;
 }

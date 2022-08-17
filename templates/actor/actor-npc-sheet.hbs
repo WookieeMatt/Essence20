@@ -22,16 +22,11 @@
     </div>
   </div>
 
-  <div class="npc-sheet-container-1">
-    {{!-- NPC Defenses --}}
-    <div class="npc-sheet-container-2">
-      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-    </div>
+  {{!-- NPC Defenses --}}
+  {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
 
-    <div>
-      {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
-    </div>
-  </div>
+  {{!-- Movement --}}
+  {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
 
   <div class="npc-abilities">
     {{!-- Hang-ups --}}

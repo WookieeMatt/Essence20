@@ -79,8 +79,6 @@
 
 .essence20 .collapsible-item-container {
   list-style: none;
-  margin-top: 10px;
-  margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
   color: white;
@@ -617,7 +615,6 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  margin: 10px 0;
   padding: 0;
 }
 
@@ -671,33 +668,6 @@
   width: 100%;
 }
 
-.essence20 .defenses-container {
-  list-style: none;
-  margin: 18px;
-  padding: 6px;
-  overflow-y: auto;
-  color: #c7c4c4;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background: #03129c80;
-  border: 5px solid #0a0a0a;
-  border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
-  width: fit-content;
-  justify-content: left;
-  width: 95%;
-}
-
-.essence20 .defense-container-1 {
-  padding-left: 6px;
-  padding-right: 6px;
-  display: flex;
-  flex-direction: column;
-  /*justify-content: center;*/
-  width: 50%;
-}
-
 .essence20 .defense-container table thead {
   background-color: inherit;
   border-bottom: #b5b1b1;
@@ -738,25 +708,6 @@
   border-color: inherit;
   text-align: center;
   vertical-align: middle;
-}
-
-.essence20 .defense-container {
-  list-style: none;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  margin-top: 10px;
-  color: white;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  transform: rotate(0deg);
-  background: #0a178880;
-  border: 3px solid #b5b1b1;
-  border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
-  justify-content: center;
-  /* margin-left: 135px; */
 }
 
 .essence20 .initiative-dropdown {
@@ -910,7 +861,6 @@
 
 .essence20 .npc-defenses {
   list-style: none;
-  margin-top: 10px;
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
@@ -984,10 +934,6 @@
   grid-template-areas: "npc-stat-1 npc-stat-1" "npc-stat-2 npc-stat-2";
 }
 
-.essence20 .npc-sheet-container-2 {
-  grid-area: npc-stat-1;
-}
-
 /* Power Rangers Character Sheet */
 .essence20 .pr-outer-border {
   display: flex;
@@ -1017,7 +963,6 @@
 /*-- Player --*/
 .essence20 .stats-container {
   list-style: none;
-  margin-top: 10px;
   padding: 6px;
   overflow-y: auto;
   color: #c7c4c4;
