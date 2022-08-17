@@ -1,10 +1,10 @@
 <form class="{{cssClass}}" autocomplete="off">
 
-  <section>
-    {{!-- Item Sheet Header --}}
-    {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
-    {{!-- Item Sheet Body --}}
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body">
     <div class="flexrow">
       <label>{{localize 'E20.availability'}}</label>
       <select name="system.availability">
