@@ -95,25 +95,6 @@
   height: fit-content;
 }
 
-.essence20 .common-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 5px;
-  grid-template-areas: "common-container-1 common-container-2 common-container-3";
-}
-
-.essence20 .common-container-1 {
-  grid-area: common-container-1;
-}
-
-.essence20 .common-container-2 {
-  grid-area: common-container-2;
-}
-
-.essence20 .common-container-3 {
-  grid-area: common-container-3;
-}
-
 .essence20 .common-label-1 {
   font-size: 2em;
   /* margin-top: 70px;*/
@@ -1048,14 +1029,6 @@
   border-radius: 25px;
   box-shadow: 4px 4px 0 black;
   width: 100%;
-}
-
-.essence20 .stats-container {
-  display: grid;
-  align-content: left;
-  justify-content: space-around;
-  justify-items: center;
-  margin-bottom: auto;
 }
 
 /*-- NPC --*/
