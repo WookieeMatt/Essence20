@@ -1449,4 +1449,36 @@
   font-weight: bold;
 }
 
+select {
+  color: white;
+}
+
+option {
+  background-color: #4a4848;
+}
+
+.essence20 input[type=number], input[type=text] {
+  color: white;
+  vertical-align: middle;
+}
+
+.essence20 .one-digit-input {
+  max-width: 20px;
+  text-align: center;
+}
+
+.essence20 .two-digit-input {
+  max-width: 40px;
+  text-align: center;
+}
+
+form .notes,
+form .hint {
+  color: white;
+}
+
+.essence20 .span {
+  color: white;
+}
+
 /*# sourceMappingURL=essence20.css.map */
