@@ -147,6 +147,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const hangUps = [];
     const influences = [];
     const gears = [];
+    const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
     const resources = []; // Used by PCs
@@ -181,6 +182,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'megaformTrait':
           megaformTraits.push(i);
           break;
+        case 'origin':
+          origins.push(i);
+          break;
         case 'perk':
           perks.push(i);
           break;
@@ -214,6 +218,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.influences = influences;
     context.features = features;
     context.gears = gears;
+    context.origins = origins;
     context.perks = perks;
     context.hangUps = hangUps;
     context.powers = powers;

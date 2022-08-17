@@ -1,11 +1,13 @@
-<div class="origin-entries origin-notes flexcol">
-  <span class="resource flex-group-center">
-    <h3 class="origin-title">{{ localize "E20.origin" }}</h3>
-  </span>
-  {{editor system.origins target="system.origins" button=true owner=owner editable=editable}}
-</div>
-
-<hr>
+{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.origins title='E20.origin.origin' dataType='origin'}}
+  {{#*inline "additional-expand-details" item}}
+    <div>{{localize 'E20.origin.essenceIncreaseOptions'}}: {{item.system.essenceIncreaseOptions}}</div>
+    <div>{{localize 'E20.origin.startingHealth'}}: {{item.system.startingHealth}}</div>
+    <div>{{localize 'E20.origin.bonusSkillLevels'}}: {{item.system.bonusSkillLevels}}</div>
+    <div>{{localize 'E20.origin.groundMovement'}}: {{item.system.groundMovement}}</div>
+    <div>{{localize 'E20.origin.benefit.name'}}: {{item.system.benefit.name}}</div>
+    <div>{{localize 'E20.origin.benefit.description'}}: {{item.system.benefit.description}}</div>
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
 
 <div class="origin-info">
   {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.bonds' dataType='bond'}}

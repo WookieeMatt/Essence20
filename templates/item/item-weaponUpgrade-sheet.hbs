@@ -5,16 +5,27 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <select name="system.availability">
-      {{#select system.availability}}
-      {{#each config.availabilities as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
+    <div class="flexrow">
+      <label>{{localize 'E20.availability'}}</label>
+      <select name="system.availability">
+        {{#select system.availability}}
+        {{#each config.availabilities as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    </div>
 
-    <input type="text" name="system.benefit" value="{{system.benefit}}" placeholder="{{ localize 'E20.benefit' }}"/>
-    <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}"/>
+    <div class="flexrow">
+      <label>{{localize 'E20.benefit'}}</label>
+      <input type="text" name="system.benefit" value="{{system.benefit}}" placeholder="{{ localize 'E20.benefit' }}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.prerequisite'}}</label>
+      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
+        placeholder="{{ localize 'E20.prerequisite' }}" />
+    </div>
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
