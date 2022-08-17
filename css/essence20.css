@@ -1177,122 +1177,6 @@
   width: 100%;
 }
 
-/*.essence20 .zord-weapons {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: fit-content;
-  width: 100%;  
-}*/
-/* ARMOR SHEET DETAILING */
-select {
-  color: white;
-}
-
-option {
-  background-color: #4a4848;
-}
-
-.essence20 input[type=number], input[type=text] {
-  color: white;
-  vertical-align: middle;
-}
-
-.essence20 .one-digit-input {
-  max-width: 20px;
-  text-align: center;
-}
-
-.essence20 .two-digit-input {
-  max-width: 40px;
-  text-align: center;
-}
-
-form .notes,
-form .hint {
-  color: white;
-}
-
-.essence20 .span {
-  color: white;
-}
-
-.essence20 .armor-effect {
-  color: white;
-}
-
-.essence20 .armor-description {
-  color: white;
-}
-
-.essence20 .description-tab .editor {
-  color: white;
-  height: 100px;
-}
-
-.essence20 .armor-sheet-body,
-.essence20 .armor-sheet-body .tab,
-.essence20 .armor-sheet-body .tab .editor {
-  height: 100%;
-}
-
-.essence20 .outer-circle {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  background: linear-gradient(to bottom right, black, red, pink, blue, green, yellow);
-  border-radius: 7%;
-  animation: rotate 3s linear infinite;
-}
-
-.essence20 .inner-circle {
-  height: 95%;
-  width: 95%;
-  position: absolute;
-  background: black;
-  top: 10px;
-  left: 10px;
-  border-radius: 7%;
-  z-index: 9;
-}
-
-@keyframes rotate {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
-/* Feature Sheet Styling */
-.essence20 .feature-sheet-body,
-.essence20 .feature-sheet-body .tab,
-.essence20 .feature-sheet-body .tab .editor {
-  height: 100%;
-}
-
-.essence20 .feature-description {
-  color: white;
-}
-
-.essence20 .outer-border {
-  display: flex;
-  flex-shrink: 0;
-  height: 95%;
-  width: 95%;
-  background-image: linear-gradient(to bottom right, black, red, pink, blue, green, yellow);
-  border-radius: 7%;
-}
-
-.essence20 .inner-border {
-  height: 95%;
-  width: 95%;
-  background: black;
-  background-size: cover;
-  margin: auto;
-  border-radius: 7%;
-}
-
 .essence20 .item {
   color: white;
 }
@@ -1561,25 +1445,40 @@ form .hint {
   color: white;
 }
 
-.essence20 .ranger-perks {
-  list-style: none;
-  margin-top: 10px;
-  padding: 8px;
-  overflow-y: auto;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background: #03129c80;
-  border: 4px solid #b5b1b1;
-  border-radius: 25px;
-  box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
-  height: fit-content;
-}
-
 .essence20 .resource-label {
   font-weight: bold;
+}
+
+select {
+  color: white;
+}
+
+option {
+  background-color: #4a4848;
+}
+
+.essence20 input[type=number], input[type=text] {
+  color: white;
+  vertical-align: middle;
+}
+
+.essence20 .one-digit-input {
+  max-width: 20px;
+  text-align: center;
+}
+
+.essence20 .two-digit-input {
+  max-width: 40px;
+  text-align: center;
+}
+
+form .notes,
+form .hint {
+  color: white;
+}
+
+.essence20 .span {
+  color: white;
 }
 
 /*# sourceMappingURL=essence20.css.map */

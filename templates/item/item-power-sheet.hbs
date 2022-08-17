@@ -5,7 +5,10 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body">
-    <input type="text" name="system.source" value="{{system.source}}" placeholder="{{ localize 'E20.source' }}"/>
+    <div class="flexrow">
+      <label>{{localize 'E20.source'}}</label>
+      <input type="text" name="system.source" value="{{system.source}}" />
+    </div>
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
