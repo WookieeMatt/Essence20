@@ -872,15 +872,10 @@
   justify-content: center;
   width: 100%;
   height: fit-content;
-  grid-area: npc-stat-1;
-}
-
-.essence20 .npc-defenses-container {
   background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 25px;
   box-shadow: 4px 4px 0 #0a0a0a;
-  width: 100%;
 }
 
 /* Power Rangers Character Sheet */
@@ -922,48 +917,6 @@
   border: 5px solid #0a0a0a;
   border-radius: 25px;
   box-shadow: 4px 4px 0 black;
-  width: 100%;
-}
-
-/*-- NPC --*/
-.essence20 .npc-stats-container {
-  background: #03129c80;
-  border: 5px solid #0a0a0a;
-  border-radius: 25px;
-  padding: 6px;
-  box-shadow: 4px 4px 0 black;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  height: fit-content;
-  width: 100%;
-  grid-area: npc-stat-2;
-}
-
-.essence20 .npc-stats-container-1 {
-  display: flex;
-  flex-direction: column;
-}
-
-.essence20 .npc-stats-container-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 2px 5px;
-  grid-template-areas: "npc-stat-1 npc-stat-1" "npc-stat-2 npc-stat-2";
-}
-
-/*-- Zord --*/
-.essence20 .zord-stats-container {
-  background: #03129c80;
-  border: 5px solid #0a0a0a;
-  border-radius: 25px;
-  padding: 6px;
-  box-shadow: 4px 4px 0 black;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  height: fit-content;
   width: 100%;
 }
 
