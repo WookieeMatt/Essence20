@@ -1,13 +1,11 @@
-<div class="stats-container">
-  <div>
-    <span>{{localize 'E20.initiative'}}</span>
-    <div class="initiative-dropdown">
-      <select name="system.initiative">
-        {{selectOptions @root.config.initiativeShifts selected=system.initiative localize=true}}
-      </select>
-      <div class="item-image">
-        <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
-      </div>
+<div class="stats-container" style="min-width: fit-content; text-align: center;">
+  <span>{{localize 'E20.initiative'}}</span>
+  <div class="initiative-dropdown flex-group-center">
+    <select name="system.initiative">
+      {{selectOptions @root.config.initiativeShifts selected=system.initiative localize=true}}
+    </select>
+    <div class="item-image">
+      <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
     </div>
   </div>
 </div>

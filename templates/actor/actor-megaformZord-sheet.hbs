@@ -12,7 +12,7 @@
   
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol" style="gap: 10px;">
-    <div class="flexrow" style="gap: 10px; flex-grow: 0;">
+    <div class="flexrow" style="gap: 10px; flex-grow: 0; flex-wrap: nowrap;">
       {{!-- Initiative --}}
       {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
 
@@ -20,7 +20,7 @@
       {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
 
       {{!-- Strength/Speed --}}
-      <div class="stats-container">
+      <div class="stats-container" style="min-width: fit-content; text-align: center;">
         <div class="flexrow flex-group-center">
           <span class="essence-label">{{localize 'E20.essences.strength'}}</span>
           <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />

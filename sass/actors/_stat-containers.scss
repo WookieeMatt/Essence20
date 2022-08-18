@@ -5,12 +5,10 @@
   padding: v.$padding;
   overflow-y: auto;
   color: v.$textcolor1;
-  display: flex;
-  flex-direction: row;
+  flex-basis: auto;
   justify-content: center;
   background: v.$background-b;
   border: v.$border;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
-  width: 100%;
 }
