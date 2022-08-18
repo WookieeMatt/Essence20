@@ -206,18 +206,14 @@
     "movementTypeAerial": "Aerial",
     "movementTypeGround": "Ground",
     "movementTypeSwim": "Swim",
-    "origin": {
-      "benefit": {
-        "name": "Benefit Name",
-        "description": "Benefit Description"
-      },
-      "bonusSkillLevels": "Bonus Skill Levels",
-      "essenceIncreaseOptions": "Essence Increase Options",
-      "groundMovement": "Ground Movement",
-      "origin": "Origin",
-      "languages": "Languages",
-      "startingHealth": "Starting Health"
-    },
+    "originBenefitName": "Benefit Name",
+    "originBenefitDescription": "Benefit Description",
+    "originBonusSkillLevels": "Bonus Skill Levels",
+    "originEssenceIncreaseOptions": "Essence Increase Options",
+    "originGroundMovement": "Ground Movement",
+    "origin": "Origin",
+    "originLanguages": "Languages",
+    "originStartingHealth": "Starting Health",
     "rangers": {
       "black": "Black Ranger",
       "blue": "Blue Ranger",
