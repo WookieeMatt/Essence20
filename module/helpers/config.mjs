@@ -246,3 +246,17 @@ E20.weaponTraits = {
   trip: "E20.weaponTraits.trip",
   wrecker: "E20.weaponTraits.wrecker",
 }
+
+E20.creatureSizes = {
+  small: "E20.creatureSizeSmall",
+  common: "E20.creatureSizeCommon",
+  large: "E20.creatureSizeLarge",
+  long: "E20.creatureSizeLong",
+  huge: "E20.creatureSizeHuge",
+  extended: "E20.creatureSizeExtended",
+  gigantic: "E20.creatureSizeGigantic",
+  extended2: "E20.creatureSizeExtended2",
+  towering: "E20.creatureSizeTowering",
+  extended3: "E20.creatureSizeExtended3",
+  titanic: "E20.creatureSizeTitanic"
+};
