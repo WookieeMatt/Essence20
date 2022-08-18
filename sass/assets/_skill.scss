@@ -1,3 +1,4 @@
+@use '../assets/variables' as v;
 
 .essence20 .skill-header {
   font-size: 1.25em;
@@ -74,21 +75,21 @@
   list-style: none;
   overflow-y: auto;
   color: white;
-  padding-left: 5px;
-  padding-bottom: 5px;
+  padding: 8px;
   transform: rotate(0deg);
   scrollbar-width: thin;
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
   background: #0a178880;
   border: 3px solid #b5b1b1;
-  border-radius: 15px;
+  border-radius: v.$border-radius;
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
   justify-content: left;
+  min-width: 205px;
+  flex-grow: 0;
+  flex-basis: auto;
 }
-
-
 
 .essence20 .skillscontainer {
   list-style: none;
@@ -97,6 +98,5 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;
-  margin: 10px 0;
   padding: 0;
 }

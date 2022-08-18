@@ -1,12 +1,12 @@
 {
   "Actor": {
     "types": [
-      "giJoe",
       "powerRanger",
+      "megaformZord",
       "npc",
       "vehicle",
       "zord",
-      "megaformZord"
+      "giJoe"
     ],
     "templates": {
       "common": {
@@ -208,12 +208,14 @@
         "value": 2
       }
     },
-    "giJoe": {
+    "megaformZord": {
       "templates": [
         "common",
-        "creature",
-        "character"
-      ]
+        "machine",
+        "zordBase"
+      ],
+      "health": null,
+      "zordIds": []
     },
     "npc": {
       "templates": [
@@ -274,33 +276,31 @@
       "prerequisites": [],
       "ranger": ""
     },
-    "megaformZord": {
+    "giJoe": {
       "templates": [
         "common",
-        "machine",
-        "zordBase"
-      ],
-      "health": null,
-      "zordIds": []
+        "creature",
+        "character"
+      ]
     }
   },
   "Item": {
     "types": [
       "armor",
+      "bond",
+      "feature",
       "gear",
-      "weapon",
-      "weaponUpgrade",
-      "threatPower",
+      "hangUp",
+      "megaformTrait",
+      "origin",
       "perk",
       "power",
-      "feature",
-      "trait",
-      "bond",
-      "hangUp",
-      "specialization",
-      "megaformTrait",
       "resource",
-      "origin"
+      "specialization",
+      "threatPower",
+      "trait",
+      "weapon",
+      "weaponUpgrade"
     ],
     "templates": {
       "itemDescription": {
@@ -317,6 +317,14 @@
       "equipped": false,
       "trait": "deflective"
     },
+    "bond": {
+      "templates": ["itemDescription"]
+    },
+    "feature": {
+      "templates": [
+        "itemDescription"
+      ]
+    },
     "gear": {
       "templates": [
         "itemDescription"
@@ -329,6 +337,56 @@
       },
       "quantity": 1,
       "toughness": null
+    },
+    "hangUp": {
+      "templates": ["itemDescription"]
+    },
+    "megaformTrait": {
+      "templates": ["itemDescription"]
+    },
+    "origin": {
+      "templates": ["itemDescription"],
+      "essenceIncreaseOptions": "",
+      "startingHealth": "",
+      "bonusSkillLevels": "",
+      "groundMovement": "",
+      "languages": "",
+      "benefit" : {
+        "name": "",
+        "description": ""
+      }
+    },
+    "perk": {
+      "templates": [
+        "itemDescription"
+      ],
+      "source": "",
+      "prerequisite": null
+    },
+    "power": {
+      "templates": [
+        "itemDescription"
+      ],
+      "source": ""
+    },
+    "resource": {
+      "templates": ["itemDescription"],
+      "uses": {
+        "max": 0,
+        "value": 0
+      }
+    },
+    "specialization": {},
+    "threatPower": {
+      "actionType": "",
+      "charges": null,
+      "cost": null,
+      "limited": false
+    },
+    "trait": {
+      "templates": [
+        "itemDescription"
+      ]
     },
     "weapon": {
       "templates": [
@@ -368,64 +426,6 @@
       "availability": "standard",
       "benefit": "",
       "prerequisite": null
-    },
-    "threatPower": {
-      "actionType": "",
-      "charges": null,
-      "cost": null,
-      "limited": false
-    },
-    "perk": {
-      "templates": [
-        "itemDescription"
-      ],
-      "source": "",
-      "prerequisite": null
-    },
-    "power": {
-      "templates": [
-        "itemDescription"
-      ],
-      "source": ""
-    },
-    "feature": {
-      "templates": [
-        "itemDescription"
-      ]
-    },
-    "trait": {
-      "templates": [
-        "itemDescription"
-      ]
-    },
-    "bond": {
-      "templates": ["itemDescription"]
-    },
-    "hangUp": {
-      "templates": ["itemDescription"]
-    },
-    "specialization": {},
-    "megaformTrait": {
-      "templates": ["itemDescription"]
-    },
-    "resource": {
-      "templates": ["itemDescription"],
-      "uses": {
-        "max": 0,
-        "value": 0
-      }
-    },
-    "origin": {
-      "templates": ["itemDescription"],
-      "essenceIncreaseOptions": "",
-      "startingHealth": "",
-      "bonusSkillLevels": "",
-      "groundMovement": "",
-      "languages": "",
-      "benefit" : {
-        "name": "",
-        "description": ""
-      }
     }
   }
 }

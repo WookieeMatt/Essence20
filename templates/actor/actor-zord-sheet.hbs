@@ -1,6 +1,6 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
-  <header>
-    {{!-- Actor Sheet Header --}}
+  {{!-- Actor Sheet Header --}}
+  <header class="sheet-header">
     {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
     <div class="zord-header">
       <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
@@ -11,23 +11,20 @@
   </header>
 
   {{!-- Actor Sheet Body --}}
-  <section class="sheet-body">
-    <div class="zord-sheet-grid">
-      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
-
-      <div class="flexcol">
-        {{!-- Skills --}}
-        {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
-        {{!-- Features --}}
-        {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
-      </div>
-      <div class="zord-weapons">
-        {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-      </div>
-    </div>
-
-    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits title='E20.megaformTraits' dataType='megaformTrait'}}
-
+  <section class="sheet-body flexcol">
+    {{!-- Defenses --}}
+    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+    {{!-- Common --}}
+    {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
+    {{!-- Skills --}}
+    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+    {{!-- Features --}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features
+    title='E20.features' dataType='feature'}}
+    {{!-- Weapons --}}
+    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+    {{!-- Megaform Traits --}}
+    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits
+    title='E20.megaformTraits' dataType='megaformTrait'}}
   </section>
 </form>
