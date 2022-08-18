@@ -5,17 +5,23 @@
       {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
     </span>
     <div class="pr-header-fields">
-      <div class="resource flex-group-center">
-        <h3>{{localize 'E20.threatLevel'}}</h3>
-        <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
+      <div class="header-fields flex-group-center">
+        <label for="name" class="resource-label">{{localize 'E20.name'}}</label>
+        <h2 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h2>
       </div>
-      <div class="npc-health-container">
+      <div class="flexrow">
         <div class="resource flex-group-center">
-          <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
-          <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-            <span>/</span>
-            <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
+          {{localize 'E20.threatLevel'}}
+          <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
+        </div>
+        <div class="npc-health-container">
+          <div class="resource flex-group-center">
+            <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
+            <div class="resource-content flexrow flex-center flex-between">
+              <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
+              <span>/</span>
+              <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
+            </div>
           </div>
         </div>
       </div>
@@ -35,12 +41,15 @@
 
   <div class="npc-abilities">
     {{!-- Hang-ups --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.hangUps' dataType='hangUp'}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps
+    title='E20.hangUps' dataType='hangUp'}}
     {{!-- Threat Powers --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers title='E20.powers' dataType='threatPower'}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers
+    title='E20.powers' dataType='threatPower'}}
   </div>
 
   {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
   {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
   {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+
 </form>

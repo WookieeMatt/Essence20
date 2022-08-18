@@ -1,10 +1,11 @@
+@use '../assets/variables' as v;
+
 /* --- NPC Sheet Styling --- */
 
 .essence20 .npc-sheet-header {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
 }
 
 .essence20 .npc-sheet-header-1 {
