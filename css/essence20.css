@@ -617,6 +617,11 @@
   width: 100%;
 }
 
+.essence20 .defense-container {
+  flex-grow: 0;
+  flex-basis: auto;
+}
+
 .essence20 .defense-container table thead {
   background-color: inherit;
   border-bottom: #b5b1b1;
@@ -657,6 +662,11 @@
   border-color: inherit;
   text-align: center;
   vertical-align: middle;
+}
+
+.essence20 .initiative {
+  min-width: fit-content;
+  text-align: center;
 }
 
 .essence20 .initiative-dropdown {

@@ -1,5 +1,10 @@
 @use '../assets/variables' as v;
 
+.essence20 .initiative {
+  min-width: fit-content;
+  text-align: center;
+}
+
 .essence20 .initiative-dropdown {
   display: flex;
   flex-direction: row;

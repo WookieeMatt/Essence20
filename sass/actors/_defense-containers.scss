@@ -1,5 +1,10 @@
 @use '../assets/variables' as v;
 
+.essence20 .defense-container {
+  flex-grow: 0;
+  flex-basis: auto;
+}
+
 .essence20 .defense-container table thead {
   background-color: inherit;
   border-bottom: #b5b1b1;
