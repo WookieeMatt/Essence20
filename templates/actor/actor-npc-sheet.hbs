@@ -1,6 +1,6 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+  {{!-- Actor Sheet Header --}}
   <div class="sheet-header">
-    {{!-- Actor Sheet Header --}}
     <span class="resource flex-group-center">
       {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
     </span>
@@ -28,28 +28,23 @@
     </div>
   </div>
 
-  <div class="npc-sheet-container-1">
+  {{!-- Actor Sheet Body --}}
+  <section class="sheet-body flexcol">
     {{!-- NPC Defenses --}}
-    <div class="npc-sheet-container-2">
-      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-    </div>
-
-    <div>
-      {{> "systems/essence20/templates/actor/parts/actor-npc-movement.hbs"}}
-    </div>
-  </div>
-
-  <div class="npc-abilities">
+    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+    {{!-- Movement --}}
+    {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
     {{!-- Hang-ups --}}
     {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps
     title='E20.hangUps' dataType='hangUp'}}
     {{!-- Threat Powers --}}
     {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers
     title='E20.powers' dataType='threatPower'}}
-  </div>
-
-  {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
-  {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-  {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
-
+    {{!-- Perks --}}
+    {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
+    {{!-- Weapons --}}
+    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+    {{!-- Skills --}}
+    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+  </section>
 </form>

@@ -8,43 +8,41 @@
       <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ranger' }}" />
       <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
     </div>
-
   </header>
+  
   {{!-- Actor Sheet Body --}}
-  <section class="sheet-body">
-    <div class="zord-sheet-grid">
+  <section class="sheet-body flexcol">
+    <div class="flexrow stats-row">
+      {{!-- Initiative --}}
+      {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
 
-      <div class="flexcol">
-        <div class="flexrow">
-          {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
-          {{> "systems/essence20/templates/actor/parts/actor-pc-movement.hbs"}}
-          <div class="stats-container">
-            <div class="flexrow flex-group-center">
-              <span class="essence-label">{{localize 'E20.essences.strength'}}</span>
-              <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
-            </div>
-            <div class="flexrow flex-group-center">
-              <span class="essence-label">{{localize 'E20.essences.speed'}}</span>
-              <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
-            </div>
-          </div>
-        </div>
+      {{!-- Movement --}}
+      {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
 
-        {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-        {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
-        
-        <div class="zord-container-1">
-          {{!-- Features --}}
-          {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
-          {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
+      {{!-- Strength/Speed --}}
+      <div class="stats-container" style="min-width: fit-content; text-align: center;">
+        <div class="flexrow flex-group-center">
+          <span class="essence-label">{{localize 'E20.essences.strength'}}</span>
+          <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
         </div>
-      </div>
-      <div class="zord-weapons">
-        {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-      </div>
-      <div class="zord-features">
-        {{> "systems/essence20/templates/actor/parts/actor-zordcombiner.hbs"}}
+        <div class="flexrow flex-group-center">
+          <span class="essence-label">{{localize 'E20.essences.speed'}}</span>
+          <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
+        </div>
       </div>
     </div>
+
+    {{!-- Defenses --}}
+    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+    {{!-- Skills --}}
+    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+    {{!-- Features --}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
+    {{!-- Traits --}}
+    {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
+    {{!-- Weapons --}}
+    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+    {{!-- Combiners --}}
+    {{> "systems/essence20/templates/actor/parts/actor-zordcombiner.hbs"}}
   </section>
 </form>

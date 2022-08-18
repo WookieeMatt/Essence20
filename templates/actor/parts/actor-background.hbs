@@ -1,3 +1,4 @@
+{{!-- Origin --}}
 {{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.origins title='E20.origin.origin' dataType='origin'}}
   {{#*inline "additional-expand-details" item}}
     <div>{{localize 'E20.origin.essenceIncreaseOptions'}}: {{item.system.essenceIncreaseOptions}}</div>
@@ -9,7 +10,8 @@
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
 
-<div class="origin-info">
-  {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.bonds' dataType='bond'}}
-  {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.hangUps' dataType='hangUp'}}
-</div>
+{{!-- Bonds --}}
+{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.bonds' dataType='bond'}}
+
+{{!-- Hang Ups --}}
+{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.hangUps' dataType='hangUp'}}

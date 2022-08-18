@@ -12,22 +12,3 @@
   flex-direction: column;
   justify-content: space-between;
 }
-
-.essence20 .items-container {
-  list-style: none;
-  margin: 18px;
-  padding: 5px;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  color: v.$textcolor1;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: v.$background-b;
-  border: v.$border;
-  border-radius: 15px;
-  box-shadow: v.$boxshadow;
-  width: fit-content;
-  justify-content: left;
-  width: 95%;
-}
