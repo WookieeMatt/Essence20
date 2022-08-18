@@ -10,12 +10,11 @@
   {{/inline}}
 
   {{#*inline "chips" item}}
-  <span class="chip" name="chip.weapon.availability">{{localize (concat 'config.availabilities.' item.system.availability)}}</span>
-  <span class="chip" name="chip.weapon.classification.skill">{{localize (concat 'E20.essenceSkills.' item.system.classification.skill)}}</span>
-  <span class="chip" name="chip.weapon.classification.size">{{localize (concat 'E20.weaponSizes.' item.system.classification.size)}}</span>
-  <span class="chip" name="chip.weapon.classification.style">{{localize (concat 'E20.weaponStyles.' item.system.classification.style)}}</span>
+  <span class="chip" name="chip.weapon.availability">{{localize (lookup @root.config.availabilities item.system.availability)}}</span>
+  <span class="chip" name="chip.weapon.classification.skill">{{localize (lookup @root.config.essenceSkills item.system.classification.skill)}}</span>
+  <span class="chip" name="chip.weapon.classification.size">{{localize (lookup @root.config.weaponSizes item.system.classification.size)}}</span>
+  <span class="chip" name="chip.weapon.classification.style">{{localize (lookup @root.config.weaponStyles item.system.classification.style)}}</span>
   <span class="chip" name="chip.weapon.numHands">{{localize 'E20.numHands'}}: {{item.system.numHands}}</span>
   <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.numTargets'}}: {{item.system.numTargets}}</span>
   {{/inline}}
-
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
