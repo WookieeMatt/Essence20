@@ -12,3 +12,9 @@
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
 }
+
+.essence20 .stats-row {
+  gap: 10px;
+  flex-grow: 0;
+  flex-wrap: nowrap;
+}

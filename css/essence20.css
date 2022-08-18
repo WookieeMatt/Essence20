@@ -754,6 +754,12 @@
   box-shadow: 4px 4px 0 black;
 }
 
+.essence20 .stats-row {
+  gap: 10px;
+  flex-grow: 0;
+  flex-wrap: nowrap;
+}
+
 .essence20 .sheet-tabs {
   -webkit-box-flex: 0;
   -ms-flex: 0;
