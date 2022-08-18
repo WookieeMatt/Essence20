@@ -1,3 +1,5 @@
+@use '../assets/variables' as v;
+
 /* Style the button that is used to open and close the collapsible content */
 .collapsible {
   background-color: #eee;
@@ -23,7 +25,7 @@
   justify-content: center;
   background: #03129c80;
   border: 4px solid #b5b1b1;
-  border-radius: 25px;
+  border-radius: v.$border-radius;
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
   height: fit-content;

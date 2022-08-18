@@ -10,7 +10,7 @@
   justify-content: center;
   background: v.$background-b;
   border: v.$border;
-  border-radius: 25px;
+  border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
   width: 100%;
 }

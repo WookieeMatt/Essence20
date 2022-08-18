@@ -1,3 +1,4 @@
+@use '../assets/variables' as v;
 
 .essence20 .skill-header {
   font-size: 1.25em;
@@ -81,7 +82,7 @@
   box-shadow: 3px 3px 0 #4a4848;
   background: #0a178880;
   border: 3px solid #b5b1b1;
-  border-radius: 15px;
+  border-radius: v.$border-radius;
   box-shadow: 4px 4px 0 #0a0a0a;
   width: 100%;
   justify-content: left;
