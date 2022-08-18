@@ -201,10 +201,8 @@
     "essenceSkillPerformance": "Performance",
     "essenceSkillPersuasion": "Persuasion",
     "essenceSkillStreetwise": "Streetwise",
-    "lightRange": {
-      "bright": "Bright",
-      "dim": "Dim"
-    },
+    "lightRangeBright": "Bright",
+    "lightRangeDim": "Dim",
     "movement": {
       "aerial": "Aerial",
       "ground": "Ground",

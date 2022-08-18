@@ -79,9 +79,9 @@ E20.initiativeShifts = {
   "3d6": "E20.shifts.3d6",
 };
 
-E20.lightRange = {
-  bright: "E20.lightRange.bright",
-  dim: "E20.lightRange.dim",
+E20.lightRanges = {
+  bright: "E20.lightRangeBright",
+  dim: "E20.lightRangeDim",
 };
 
 E20.movement = {
