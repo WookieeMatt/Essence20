@@ -25,7 +25,7 @@
         <td class="tg-td">{{localize 'E20.unmorphed'}}</td>
         {{#each system.essences as |value essence|}}
         <td class="tg-td">
-          <span title="10 {{localize 'E20.base'}} + {{value}} {{localize (concat 'E20.essences.' essence)}}">
+          <span title="10 {{localize 'E20.base'}} + {{value}} {{localize (lookup @root.config.essences essence)}}">
             {{sum 10 value}}
           </span>
         </td>

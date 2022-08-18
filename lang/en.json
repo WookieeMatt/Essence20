@@ -175,17 +175,13 @@
     "defenseEvasion": "Evasion",
     "defenseToughness": "Toughness",
     "defenseWillpower": "Willpower",
-    "effectShapes": {
-      "circle": "Circle",
-      "cone": "Cone",
-      "square": "Square"
-    },
-    "essences": {
-      "strength": "Strength",
-      "speed": "Speed",
-      "social": "Social",
-      "smarts": "Smarts"
-    },
+    "effectShapeCircle": "Circle",
+    "effectShapeCone": "Cone",
+    "effectShapeSquare": "Square",
+    "essenceStrength": "Strength",
+    "essenceSpeed": "Speed",
+    "essenceSocial": "Social",
+    "essenceSmarts": "Smarts",
     "essenceSkills": {
       "athletics": "Athletics",
       "brawn": "Brawn",

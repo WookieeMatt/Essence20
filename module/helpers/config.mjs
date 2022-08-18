@@ -55,16 +55,16 @@ E20.defenses = {
 };
 
 E20.effectShapes = {
-  circle: "E20.effectShapes.circle",
-  cone: "E20.effectShapes.cone",
-  square: "E20.effectShapes.square",
+  circle: "E20.effectShapeCircle",
+  cone: "E20.effectShapeCone",
+  square: "E20.effectShapeSquare",
 };
 
 E20.essences = {
-  strength: "E20.essences.strength",
-  speed: "E20.essences.speed",
-  smarts: "E20.essences.smarts",
-  social: "E20.essences.social",
+  strength: "E20.essenceStrength",
+  speed: "E20.essenceSpeed",
+  smarts: "E20.essenceSocial",
+  social: "E20.essenceSmarts",
 };
 
 E20.initiativeShifts = {
