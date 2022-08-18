@@ -1,8 +1,8 @@
 <form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-
   {{!-- Actor Sheet Header --}}
   {{> "systems/essence20/templates/actor/parts/actor-pr-header.hbs"}}
 
+  {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="skills"> {{ localize "E20.skills" }}</a>
     <a class="item" data-tab="combat">{{ localize "E20.combat" }}</a>
@@ -67,7 +67,5 @@
     <div class="tab notes" data-group="primary" data-tab="notes">
       {{> "systems/essence20/templates/actor/parts/actor-notes.hbs"}}
     </div>
-
   </section>
-
 </form>
