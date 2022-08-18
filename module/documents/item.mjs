@@ -38,7 +38,8 @@ export class Essence20Item extends Item {
    * @private
    */
   async roll(dataset) {
-    if (this.type == 'generalPerk') {
+    console.log('here');
+    if (this.type == 'perk') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
