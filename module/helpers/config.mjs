@@ -48,10 +48,10 @@ E20.autoSuccessShifts = [
 ];
 
 E20.defenses = {
-  cleverness: "E20.defenses.cleverness",
-  evasion: "E20.defenses.evasion",
-  toughness: "E20.defenses.toughness",
-  willpower: "E20.defenses.willpower",
+  cleverness: "E20.defenseCleverness",
+  evasion: "E20.defenseEvasion",
+  toughness: "E20.defenseToughness",
+  willpower: "E20.defenseWillpower",
 };
 
 E20.effectShapes = {

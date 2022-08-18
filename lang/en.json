@@ -171,12 +171,10 @@
     "creatureSizeExtended3": "Extended III",
     "creatureSizeTowering": "Towering",
     "creatureSizeTitanic": "Titanic",
-    "defenses": {
-      "cleverness": "Cleverness",
-      "evasion": "Evasion",
-      "toughness": "Toughness",
-      "willpower": "Willpower"
-    },
+    "defenseCleverness": "Cleverness",
+    "defenseEvasion": "Evasion",
+    "defenseToughness": "Toughness",
+    "defenseWillpower": "Willpower",
     "effectShapes": {
       "circle": "Circle",
       "cone": "Cone",

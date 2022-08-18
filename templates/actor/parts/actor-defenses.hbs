@@ -7,7 +7,7 @@
         {{!-- Defense headers --}}
         {{#each system.defenses.morphed as |value defense|}}
         <th class="tg-td">
-          <span>{{localize (concat 'E20.defenses.' defense)}}</span>
+          <span>{{localize (lookup @root.config.defenses defense)}}</span>
           <span>
             {{#ifEquals ../bonusDisplayType 'input'}}
             +<input class="one-digit-input" type="number" name={{concat 'system.bonuses.' defense}} value="{{lookup @root.system.bonuses defense}}" />
