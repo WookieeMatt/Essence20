@@ -11,22 +11,18 @@
   </header>
 
   {{!-- Actor Sheet Body --}}
-  <section class="sheet-body">
-    <div class="zord-sheet-grid">
-      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
-
-      <div class="flexcol">
-        {{!-- Skills --}}
-        {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
-        {{!-- Features --}}
-        {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
-      </div>
-      <div class="zord-weapons">
-        {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-      </div>
-    </div>
-
+  <section class="sheet-body flexcol">
+    {{!-- Defenses --}}
+    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+    {{!-- Common --}}
+    {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
+    {{!-- Skills --}}
+    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+    {{!-- Features --}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
+    {{!-- Weapons --}}
+    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+    {{!-- Megaform Traits --}}
     {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits title='E20.megaformTraits' dataType='megaformTrait'}}
 
   </section>
