@@ -153,15 +153,13 @@
     "armorClassificationNon": "Non Armor",
     "armorTraitDeflective": "Deflective",
     "armorTraitSilent": "Silent",
-    "availabilities": {
-      "automatic": "Automatic",
-      "standard": "Standard",
-      "limited": "Limited",
-      "restricted": "Restricted",
-      "prototype": "Prototype",
-      "unique": "Unique",
-      "theoretical": "Theoretical"
-    },
+    "availabilityAutomatic": "Automatic",
+    "availabilityStandard": "Standard",
+    "availabilityLimited": "Limited",
+    "availabilityRestricted": "Restricted",
+    "availabilityPrototype": "Prototype",
+    "availabilityUnique": "Unique",
+    "availabilityTheoretical": "Theoretical",
     "creatureSizes": {
       "small": "Small",
       "common": "Common",

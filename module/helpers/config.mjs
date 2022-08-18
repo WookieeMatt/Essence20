@@ -28,13 +28,13 @@ E20.armorTraits = {
 };
 
 E20.availabilities = {
-  automatic: "E20.availabilities.automatic",
-  standard: "E20.availabilities.standard",
-  limited: "E20.availabilities.limited",
-  restricted: "E20.availabilities.restricted",
-  prototype: "E20.availabilities.prototype",
-  unique: "E20.availabilities.unique",
-  theoretical: "E20.availabilities.theoretical",
+  automatic: "E20.availabilityAutomatic",
+  standard: "E20.availabilityStandard",
+  limited: "E20.availabilityLimited",
+  restricted: "E20.availabilityRestricted",
+  prototype: "E20.availabilityPrototype",
+  unique: "E20.availabilityUnique",
+  theoretical: "E20.availabilityTheoretical",
 };
 
 E20.autoFailShifts = [
