@@ -1,6 +1,6 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   {{!-- Actor Sheet Header --}}
-  <header>
+  <header class="sheet-header">
     {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
     <div class="zord-header">
       <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
@@ -19,10 +19,12 @@
     {{!-- Skills --}}
     {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
     {{!-- Features --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.features' dataType='feature'}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features
+    title='E20.features' dataType='feature'}}
     {{!-- Weapons --}}
     {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
     {{!-- Megaform Traits --}}
-    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits title='E20.megaformTraits' dataType='megaformTrait'}}
+    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits
+    title='E20.megaformTraits' dataType='megaformTrait'}}
   </section>
 </form>
