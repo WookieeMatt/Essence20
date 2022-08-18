@@ -16,15 +16,15 @@ E20.withAnEdge = "E20.withAnEdge";
 E20.withASnag = "E20.withASnag";
 
 E20.armorClassifications = {
-  non: "E20.armorClassifications.non",
-  light: "E20.armorClassifications.light",
-  medium: "E20.armorClassifications.medium",
-  heavy: "E20.armorClassifications.heavy",
+  non: "E20.armorClassificationNon",
+  light: "E20.armorClassificationLight",
+  medium: "E20.armorClassificationMedium",
+  heavy: "E20.armorClassificationHeavy",
 };
 
 E20.armorTraits = {
-  deflective: "E20.armorTraits.deflective",
-  silent: "E20.armorTraits.silent",
+  deflective: "E20.armorTraitDeflective",
+  silent: "E20.armorTraitSilent",
 };
 
 E20.availabilities = {

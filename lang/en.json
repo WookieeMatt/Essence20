@@ -147,16 +147,12 @@
     "unmorphed": "Unmorphed",
     "upgrades": "Upgrades",
     "uses": "Uses",
-    "armorClassifications": {
-      "non": "Non Armor",
-      "light": "Light",
-      "medium": "Medium",
-      "heavy": "Heavy"
-    },
-    "armorTraits": {
-      "deflective": "Deflective",
-      "silent": "Silent"
-    },
+    "armorClassificationHeavy": "Heavy",
+    "armorClassificationLight": "Light",
+    "armorClassificationMedium": "Medium",
+    "armorClassificationNon": "Non Armor",
+    "armorTraitDeflective": "Deflective",
+    "armorTraitSilent": "Silent",
     "availabilities": {
       "automatic": "Automatic",
       "standard": "Standard",
