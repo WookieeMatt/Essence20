@@ -84,10 +84,10 @@ E20.lightRanges = {
   dim: "E20.lightRangeDim",
 };
 
-E20.movement = {
-  aerial: "E20.movement.aerial",
-  ground: "E20.movement.ground",
-  swim: "E20.movement.swim",
+E20.movementTypes = {
+  aerial: "E20.movementTypeAerial",
+  ground: "E20.movementTypeGround",
+  swim: "E20.movementTypeSwim",
 };
 
 E20.rangers = {

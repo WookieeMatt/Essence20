@@ -203,11 +203,9 @@
     "essenceSkillStreetwise": "Streetwise",
     "lightRangeBright": "Bright",
     "lightRangeDim": "Dim",
-    "movement": {
-      "aerial": "Aerial",
-      "ground": "Ground",
-      "swim": "Swim"
-    },
+    "movementTypeAerial": "Aerial",
+    "movementTypeGround": "Ground",
+    "movementTypeSwim": "Swim",
     "origin": {
       "benefit": {
         "name": "Benefit Name",
