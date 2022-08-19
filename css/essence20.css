@@ -182,7 +182,7 @@
 
 .sheet {
   min-width: fit-content;
-  min-height: 620px;
+  min-height: fit-content;
 }
 
 .actor {
