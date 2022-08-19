@@ -1,5 +1,7 @@
+@use '../assets/variables' as v;
+
 .essence20 .item {
-  color: white;
+  color: v.$textcolor1;
 }
 
 /* Generic Item Sheet Styling */
@@ -9,7 +11,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: white;
+  color: v.$textcolor1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -72,8 +74,8 @@
   -ms-flex-align: center;
   align-items: center;
   padding: 0 2px;
-  border-bottom: 1px solid #c9c7b8;
-  color: white;
+  border-bottom: v.$border;
+  color: v.$textcolor1;
 }
 
 .essence20 .items-list .item:last-child {
@@ -96,8 +98,8 @@
 
 .essence20 .items-list .item-prop {
   text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
+  border-left: v.$border;
+  border-right: v.$border;
   font-size: 12px;
 }
 
@@ -108,8 +110,8 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
+  background: v.$background-b;
+  border: v.$border;
   font-weight: bold;
 }
 
@@ -138,8 +140,8 @@
 .essence20 .effects .item .effect-duration,
 .essence20 .effects .item .effect-controls {
   text-align: center;
-  border-left: 1px solid #c9c7b8;
-  border-right: 1px solid #c9c7b8;
+  border-left: v.$border;
+  border-right: v.$border;
   font-size: 12px;
 }
 
@@ -149,4 +151,16 @@
 
 .essence20 .item-form {
   font-family: "Comic Neue", cursive;
+}
+
+.essence20 .item-sheet{
+  background: v.$background-b;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  color: v.$textcolor1;
+  padding: v.$padding;
+}
+
+.essence20 .sheet-body{
+  min-height: auto;
 }
