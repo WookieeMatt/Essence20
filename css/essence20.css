@@ -182,7 +182,6 @@
 
 .sheet {
   min-width: fit-content;
-  min-height: fit-content;
 }
 
 .actor {
@@ -812,18 +811,6 @@
   width: 100%;
 }
 
-.essence20 .armor {
-  background: rgba(3, 18, 156, 0.5019607843);
-  border: 4px solid #b5b1b1;
-  border-radius: 15px;
-  color: rgb(199, 196, 196);
-  padding: 6px;
-}
-
-.essence20 .sheet-body {
-  min-height: auto;
-}
-
 .essence20 .item {
   color: rgb(199, 196, 196);
 }
@@ -975,6 +962,18 @@
 
 .essence20 .item-form {
   font-family: "Comic Neue", cursive;
+}
+
+.essence20 .item-sheet {
+  background: rgba(3, 18, 156, 0.5019607843);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+  color: rgb(199, 196, 196);
+  padding: 6px;
+}
+
+.essence20 .sheet-body {
+  min-height: auto;
 }
 
 /* -- Jornal page styling -- */

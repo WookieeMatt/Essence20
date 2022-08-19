@@ -152,3 +152,15 @@
 .essence20 .item-form {
   font-family: "Comic Neue", cursive;
 }
+
+.essence20 .item-sheet{
+  background: v.$background-b;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  color: v.$textcolor1;
+  padding: v.$padding;
+}
+
+.essence20 .sheet-body{
+  min-height: auto;
+}
