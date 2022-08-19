@@ -1,11 +1,11 @@
 @use '../assets/variables' as v;
 
 .essence20 .zord-combiners {
-  background: #03129c80;
+  background: v.$background-b;
   border: v.$border;
   border-radius: v.$border-radius;
   padding: 8px;
-  box-shadow: 4px 4px 0 #0a0a0a;
+  box-shadow: v.$boxshadow;
   display: flex;
   flex-direction: column;
   justify-content: center;
