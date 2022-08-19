@@ -214,15 +214,13 @@
     "origin": "Origin",
     "originLanguages": "Languages",
     "originStartingHealth": "Starting Health",
-    "rangers": {
-      "black": "Black Ranger",
-      "blue": "Blue Ranger",
-      "green": "Green Ranger",
-      "pink": "Pink Ranger",
-      "red": "Red Ranger",
-      "yellow": "Yellow Ranger",
-      "white": "White Ranger"
-    },
+    "rangerBlack": "Black Ranger",
+    "rangerBlue": "Blue Ranger",
+    "rangerGreen": "Green Ranger",
+    "rangerPink": "Pink Ranger",
+    "rangerRed": "Red Ranger",
+    "rangerYellow": "Yellow Ranger",
+    "rangerWhite": "White Ranger",
     "shifts": {
       "criticalSuccess": "Critical Success",
       "autoSuccess": "Auto Success",
