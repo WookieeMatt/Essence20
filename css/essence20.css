@@ -798,6 +798,25 @@
   gap: 10px;
 }
 
+.essence20 .vehicle-container {
+  list-style: none;
+  overflow-y: auto;
+  color: white;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid #b5b1b1;
+  box-shadow: 3px 3px 0 #4a4848;
+  background: rgba(3, 18, 156, 0.5019607843);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 black;
+  width: 100%;
+  gap: 10px;
+  padding: 6px;
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+
 .essence20 .zord-combiners {
   background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
