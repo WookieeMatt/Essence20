@@ -4,16 +4,43 @@
   {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
   {{!-- Item Sheet Body --}}
-  <section class="sheet-body">
-    {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+  <section class="sheet-body item-sheet">
+    <div class="flexrow">
+      <label>{{localize 'E20.origin.essenceIncreaseOptions'}}</label><input type="text"
+        name="system.essenceIncreaseOptions" value="{{system.essenceIncreaseOptions}}" />
+    </div>
 
-    <span>{{localize 'E20.originEssenceIncreaseOptions'}}</span><input type="text" name="system.essenceIncreaseOptions" value="{{system.essenceIncreaseOptions}}"/>
-    <span>{{localize 'E20.originStartingHealth'}}</span><input type="text" name="system.startingHealth" value="{{system.startingHealth}}"/>
-    <span>{{localize 'E20.originBonusSkillLevels'}}</span><input type="text" name="system.bonusSkillLevels" value="{{system.bonusSkillLevels}}"/>
-    <span>{{localize 'E20.originGroundMovement'}}</span><input type="text" name="system.groundMovement" value="{{system.groundMovement}}"/>
-    <span>{{localize 'E20.originLanguages'}}</span><input type="text" name="system.languages" value="{{system.languages}}"/>
-    <span>{{localize 'E20.originBenefitName'}}</span><input type="text" name="system.benefit.name" value="{{system.benefit.name}}"/>
-    <span>{{localize 'E20.originBenefitDescription'}}</span><input type="text" name="system.benefit.description" value="{{system.benefit.description}}"/>
+    <div class="flexrow">
+      <label>{{localize 'E20.origin.startingHealth'}}</label><input type="text" name="system.startingHealth"
+        value="{{system.startingHealth}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.origin.bonusSkillLevels'}}</label><input type="text" name="system.bonusSkillLevels"
+        value="{{system.bonusSkillLevels}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.origin.groundMovement'}}</label><input type="text" name="system.groundMovement"
+        value="{{system.groundMovement}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.originLanguages'}}</label><input type="text" name="system.languages"
+        value="{{system.languages}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.originBenefitName'}}</label><input type="text" name="system.benefit.name"
+        value="{{system.benefit.name}}" />
+    </div>
+
+    <div class="flexrow">
+      <label>{{localize 'E20.originBenefitDescription'}}</label><input type="text" name="system.benefit.description"
+        value="{{system.benefit.description}}" />
+    </div>
+
+     {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
   </section>
 </form>

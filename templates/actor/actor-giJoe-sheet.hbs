@@ -5,12 +5,13 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body">
-    <h3>{{localize 'E20.defensesStr'}}</h3>
-    <div>{{config.defenses.toughness}}: {{sum system.defenses.toughness equippedArmorEffect}}</div>
-    <div>{{config.defenses.evasion}}: {{system.defenses.evasion}}</div>
-    <div>{{config.defenses.willpower}}: {{system.defenses.willpower}}</div>
-    <div>{{config.defenses.cleverness}}: {{system.defenses.cleverness}}</div>
-
+    <div class="stats-container defense-container">
+      <h3>{{localize 'E20.defensesStr'}}</h3>
+      <div>{{localize config.defenses.toughness}}: {{sum system.defenses.toughness equippedArmorEffect}}</div>
+      <div>{{localize config.defenses.evasion}}: {{system.defenses.evasion}}</div>
+      <div>{{localize config.defenses.willpower}}: {{system.defenses.willpower}}</div>
+      <div>{{localize config.defenses.cleverness}}: {{system.defenses.cleverness}}</div>
+    </div>
     {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
     {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
   </section>

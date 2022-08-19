@@ -1,12 +1,16 @@
+@use '../assets/variables' as v;
+
 .essence20 .editor {
   position: relative;
-  min-height: 100px;
+  min-height: 250px;
   max-height: 100%;
   max-width: 100%;
   overflow: inherit;
 }
 
 .essence20 .editor-content {
-  color: white;
+  color: v.$textcolor1;
+  min-height: fit-content;
   font-size: 16px;
+  padding: 0;
 }

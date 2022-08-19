@@ -47,27 +47,27 @@
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  color: white;
+  color: v.$textcolor1;
 }
 
 .essence20 .sheet-header .pr-details-fields {
   font-family: "Comic Neue", cursive;
-  color: white;
+  color: v.$textcolor1;
 }
 
 .essence20 .sheet-header .pr-details-pronouns {
   font-family: "Comic Neue", cursive;
-  color: white;
+  color: v.$textcolor1;
 }
 
 .essence20 .sheet-header .pr-details-role {
   font-family: "Comic Neue", cursive;
-  color: white;
+  color: v.$textcolor1;
 }
 
 .essence20 .sheet-header .pr-details-level {
   font-family: "Comic Neue", cursive;
-  color: white;
+  color: v.$textcolor1;
 }
 
 .essence20 .sheet-header h1.charname {
@@ -91,8 +91,8 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: rgba(0, 0, 0, 0.05);
-  border: 2px groove #eeede0;
+  background: v.$background-b;
+  border: v.$border;
   font-weight: bold;
 }
 
