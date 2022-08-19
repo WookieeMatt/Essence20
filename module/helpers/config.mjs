@@ -2,19 +2,6 @@ export const E20 = {};
 
 E20.defenseBase = 10;
 
-E20.alternateEffects = "E20.alternateEffects";
-E20.attackRoll = "E20.attackRoll";
-E20.autoFail = "E20.autoFail";
-E20.autoFailFumble = "E20.autoFailFumble";
-E20.cancel = "E20.cancel";
-E20.effect = "E20.effect";
-E20.none = "E20.none";
-E20.roll = "E20.roll";
-E20.rollDialogTitle = "E20.rollDialogTitle";
-E20.rollingFor = "E20.rollingFor";
-E20.withAnEdge = "E20.withAnEdge";
-E20.withASnag = "E20.withASnag";
-
 E20.armorClassifications = {
   non: "E20.armorClassificationNon",
   light: "E20.armorClassificationLight",

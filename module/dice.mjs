@@ -35,15 +35,15 @@ export class Dice {
 
     return new Promise(resolve => {
       const data = {
-        title: this._i18n.localize(this._config.rollDialogTitle),
+        title: this._i18n.localize('E20.rollDialogTitle'),
         content: html,
         buttons: {
           normal: {
-            label: this._i18n.localize(this._config.roll),
+            label: this._i18n.localize('E20.roll'),
             callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
           },
           cancel: {
-            label: this._i18n.localize(this._config.cancel),
+            label: this._i18n.localize('E20.cancel'),
             callback: html => resolve({ cancelled: true }),
           },
         },
@@ -118,7 +118,7 @@ export class Dice {
     const rolledSkillStr = dataset.specialization
       ? dataset.specialization
       : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
-    const rollingForStr = this._i18n.localize(this._config.rollingFor)
+    const rollingForStr = this._i18n.localize('E20.rollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
 
@@ -133,10 +133,10 @@ export class Dice {
   _getWeaponRollLabel(dataset, skillRollOptions, weapon) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
-    const attackRollStr = this._i18n.localize(this._config.attackRoll)
-    const effectStr = this._i18n.localize(this._config.effect)
-    const alternateEffectsStr = this._i18n.localize(this._config.alternateEffects)
-    const noneStr = this._i18n.localize(this._config.none)
+    const attackRollStr = this._i18n.localize('E20.attackRoll')
+    const effectStr = this._i18n.localize('E20.weaponEffect')
+    const alternateEffectsStr = this._i18n.localize('E20.weaponAlternateEffects')
+    const noneStr = this._i18n.localize('E20.none')
 
     let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
@@ -179,10 +179,10 @@ export class Dice {
       };
       switch (skillShift) {
         case 'autoFail':
-          label += ` ${this._i18n.localize(this._config.autoFail)}`;
+          label += ` ${this._i18n.localize('E20.autoFail')}`;
           break;
         case 'fumble':
-          label += ` ${this._i18n.localize(this._config.autoFailFumble)}`;
+          label += ` ${this._i18n.localize('E20.autoFailFumble')}`;
           break;
       }
       chatData.content = label;
@@ -222,8 +222,8 @@ export class Dice {
 
     // Edge and Snag cancel eachother out
     if (edge != snag) {
-      const withAnEdge = this._i18n.localize(this._config.withAnEdge)
-      const withASnag = this._i18n.localize(this._config.withASnag)
+      const withAnEdge = this._i18n.localize('E20.withAnEdge')
+      const withASnag = this._i18n.localize('E20.withASnag')
       result = edge ? ` ${withAnEdge}` : ` ${withASnag}`;
     }
 
