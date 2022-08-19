@@ -200,11 +200,11 @@ E20.weaponRequirementShifts = {
 };
 
 E20.weaponSizes = {
-  integrated: "E20.weaponSizes.integrated",
-  sidearm: "E20.weaponSizes.sidearm",
-  medium: "E20.weaponSizes.medium",
-  long: "E20.weaponSizes.long",
-  heavy: "E20.weaponSizes.heavy",
+  integrated: "E20.weaponSizeIntegrated",
+  sidearm: "E20.weaponSizeSidearm",
+  medium: "E20.weaponSizeMedium",
+  long: "E20.weaponSizeLong",
+  heavy: "E20.weaponSizeHeavy",
 };
 
 E20.weaponStyles = {

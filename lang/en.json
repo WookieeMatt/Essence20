@@ -225,13 +225,11 @@
     "shiftAutoSuccess": "Auto Success",
     "shiftAutoFail": "Auto Fail",
     "shiftFumble": "Fumble",
-    "weaponSizes": {
-      "integrated": "Integrated",
-      "sidearm": "Sidearm",
-      "medium": "Medium",
-      "long": "Long",
-      "heavy": "Heavy"
-    },
+    "weaponSizeIntegrated": "Integrated",
+    "weaponSizeSidearm": "Sidearm",
+    "weaponSizeMedium": "Medium",
+    "weaponSizeLong": "Long",
+    "weaponSizeHeavy": "Heavy",
     "weaponStyles": {
       "melee": "Melee",
       "energy": "Energy",
