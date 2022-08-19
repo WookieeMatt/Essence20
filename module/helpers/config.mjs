@@ -101,19 +101,19 @@ E20.rangers = {
 };
 
 E20.shifts = {
-  "criticalSuccess": "E20.shifts.criticalSuccess",
-  "autoSuccess": "E20.shifts.autoSuccess",
-  "3d6": "E20.shifts.3d6",
-  "2d8": "E20.shifts.2d8",
-  "d12": "E20.shifts.d12",
-  "d10": "E20.shifts.d10",
-  "d8": "E20.shifts.d8",
-  "d6": "E20.shifts.d6",
-  "d4": "E20.shifts.d4",
-  "d2": "E20.shifts.d2",
-  "d20": "E20.shifts.d20",
-  "autoFail": "E20.shifts.autoFail",
-  "fumble": "E20.shifts.fumble",
+  "criticalSuccess": "E20.shiftCriticalSuccess",
+  "autoSuccess": "E20.shiftAutoSuccess",
+  "3d6": "3d6",
+  "2d8": "2d8",
+  "d12": "d12",
+  "d10": "d10",
+  "d8": "d8",
+  "d6": "d6",
+  "d4": "d4",
+  "d2": "d2",
+  "d20": "d20",
+  "autoFail": "E20.shiftAutoFail",
+  "fumble": "E20.shiftFumble",
 };
 
 E20.shiftList = [
