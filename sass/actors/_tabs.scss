@@ -4,7 +4,10 @@
   flex: 0;
 }
 
-.essence20 .sheet-body,
+.essence20 .sheet-body{
+  min-height: fit-content;
+}
+
 .essence20 .sheet-body .tab,
 .essence20 .sheet-body .tab .editor {
   height: 100%;
