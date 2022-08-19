@@ -1,3 +1,4 @@
+@use '../assets/variables' as v;
 .essence20 .sheet-tabs {
   -webkit-box-flex: 0;
   -ms-flex: 0;
@@ -8,5 +9,5 @@
 .essence20 .sheet-body .tab,
 .essence20 .sheet-body .tab .editor {
   height: 100%;
-  gap: 10px
+  gap: 10px;
 }

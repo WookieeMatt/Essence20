@@ -89,6 +89,7 @@
   min-width: 205px;
   flex-grow: 0;
   flex-basis: auto;
+  margin-top: v.$padding;
 }
 
 .essence20 .skillscontainer {
@@ -97,6 +98,15 @@
   color: white;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  border: 1px solid #b5b1b1;
+  box-shadow: 3px 3px 0 #4a4848;
+  background: v.$background-b;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+  width: 100%;
   gap: 10px;
-  padding: 0;
+  padding: v.$padding;
+  margin-bottom: v.$padding;
+  margin-top: v.$padding;
 }
