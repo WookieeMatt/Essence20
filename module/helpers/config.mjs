@@ -208,10 +208,10 @@ E20.weaponSizes = {
 };
 
 E20.weaponStyles = {
-  melee: "E20.weaponStyles.melee",
-  energy: "E20.weaponStyles.energy",
-  explosive: "E20.weaponStyles.explosive",
-  projectile: "E20.weaponStyles.projectile",
+  melee: "E20.weaponStyleMelee",
+  energy: "E20.weaponStyleEnergy",
+  explosive: "E20.weaponStyleExplosive",
+  projectile: "E20.weaponStyleProjectile",
 };
 
 E20.weaponTraits = {

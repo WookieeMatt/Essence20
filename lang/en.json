@@ -230,12 +230,10 @@
     "weaponSizeMedium": "Medium",
     "weaponSizeLong": "Long",
     "weaponSizeHeavy": "Heavy",
-    "weaponStyles": {
-      "melee": "Melee",
-      "energy": "Energy",
-      "explosive": "Explosive",
-      "projectile": "Projectile"
-    },
+    "weaponStyleMelee": "Melee",
+    "weaponStyleEnergy": "Energy",
+    "weaponStyleExplosive": "Explosive",
+    "weaponStyleProjectile": "Projectile",
     "weaponTraits": {
       "acid": "Acid",
       "amphibious": "Amphibious",
