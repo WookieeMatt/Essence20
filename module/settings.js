@@ -8,21 +8,21 @@ export const registerSettings = function () {
   /* -------------------------------------------- */
 
   const SHOW_OPTIONS = {
-    on: game.i18n.localize("E20.spt.show.always"),
-    off: game.i18n.localize("E20.spt.show.never"),
-    toggle: game.i18n.localize("E20.spt.show.toggle"),
+    on: game.i18n.localize("E20.sptShowAlways"),
+    off: game.i18n.localize("E20.sptShowNever"),
+    toggle: game.i18n.localize("E20.sptShowToggle"),
   };
 
   const ACCESS_OPTIONS = {
-    everyone: game.i18n.localize("E20.spt.users.everyone"),
-    gm: game.i18n.localize("E20.spt.users.gm"),
+    everyone: game.i18n.localize("E20.sptUserEveryone"),
+    gm: game.i18n.localize("E20.sptUserGm"),
   };
 
   /* -------------------------------------------- */
   /*  Config settings                             */
   /* -------------------------------------------- */
   game.settings.register(systemName, "sptAccess", {
-    name: game.i18n.localize("E20.spt.options.access.name"),
+    name: game.i18n.localize("E20.sptOptionAccess"),
     scope: "world",
     config: true,
     default: "everyone",
@@ -32,7 +32,7 @@ export const registerSettings = function () {
   });
 
   game.settings.register(systemName, "sptGmPointsArePublic", {
-    name: game.i18n.localize("E20.spt.options.gmPointsArePublic.name"),
+    name: game.i18n.localize("E20.sptOptionGmPointsArePublic"),
     scope: "world",
     config: true,
     default: true,
@@ -41,7 +41,7 @@ export const registerSettings = function () {
   });
 
   game.settings.register(systemName, "sptShow", {
-    name: game.i18n.localize("E20.spt.options.show.name"),
+    name: game.i18n.localize("E20.sptOptionShow"),
     scope: "client",
     config: true,
     default: "toggle",
@@ -51,7 +51,7 @@ export const registerSettings = function () {
   });
 
   game.settings.register(systemName, "sptMessage", {
-    name: game.i18n.localize("E20.spt.options.message.name"),
+    name: game.i18n.localize("E20.sptOptionMessage"),
     scope: "world",
     config: true,
     default: true,

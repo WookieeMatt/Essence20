@@ -265,36 +265,22 @@
     "weaponTraitStun": "Stun",
     "weaponTraitTrip": "Trip",
     "weaponTraitWrecker": "Wrecker",
-    "spt": {
-      "title": "Story Points Tracker",
-      "toggleDialog": "Toggle Story Points Tracker Dialog",
-      "options": {
-        "show.name": "Dialog display behavior",
-        "access.name": "Who can access the SPT?",
-        "message.name": "Display chat messages",
-        "gmPointsArePublic.name": "Display GM Points to Players"
-      },
-      "points": {
-        "gm": "GM Points",
-        "story": "Story Points"
-      },
-      "roll": {
-        "button": "Roll major scene GM Points",
-        "flavor": "Rolling for major scene GM Points!"
-      },
-      "show": {
-        "always": "Always show",
-        "never": "Never show",
-        "toggle": "Allow toggling"
-      },
-      "spend": {
-        "gmPoint": "A GM Point has been spent!",
-        "storyPoint": "A Story Point has been spent!"
-      },
-      "users": {
-        "everyone": "Everyone",
-        "gm": "GM Only"
-      }
-    }
+    "sptTitle": "Story Points Tracker",
+    "sptToggleDialog": "Toggle Story Points Tracker Dialog",
+    "sptOptionShow": "Dialog display behavior",
+    "sptOptionAccess": "Who can access the SPT?",
+    "sptOptionMessage": "Display chat messages",
+    "sptOptionGmPointsArePublic": "Display GM Points to Players",
+    "sptPointsGm": "GM Points",
+    "sptPointsStory": "Story Points",
+    "sptRollButton": "Roll major scene GM Points",
+    "sptRollFlavor": "Rolling for major scene GM Points!",
+    "sptShowAlways": "Always show",
+    "sptShowNever": "Never show",
+    "sptShowToggle": "Allow toggling",
+    "sptSpendGmPoint": "A GM Point has been spent!",
+    "sptSpendStoryPoint": "A Story Point has been spent!",
+    "sptUserEveryone": "Everyone",
+    "sptUserGm": "GM Only"
   }
 }
