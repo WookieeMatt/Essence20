@@ -26,6 +26,9 @@
     "TypeTrait": "Trait"
   },
   "E20": {
+    "weaponUpgradeAvailability": "Availability",
+    "weaponUpgradeBenefit": "Benefit",
+    "weaponUpgradePrerequisite": "Prerequisite",
     "threatPowerCharges": "Charges",
     "threatPowerCost": "Cost",
     "threatPowerLimited": "Limited",

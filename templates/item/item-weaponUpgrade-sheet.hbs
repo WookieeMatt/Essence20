@@ -6,7 +6,7 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     <div class="flexrow">
-      <label>{{localize 'E20.availability'}}</label>
+      <label>{{localize 'E20.weaponUpgradeAvailability'}}</label>
       <select name="system.availability">
         {{#select system.availability}}
         {{#each config.availabilities as |name type|}}
@@ -17,14 +17,13 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.benefit'}}</label>
-      <input type="text" name="system.benefit" value="{{system.benefit}}" placeholder="{{ localize 'E20.benefit' }}" />
+      <label>{{localize 'E20.weaponUpgradeBenefit'}}</label>
+      <input type="text" name="system.benefit" value="{{system.benefit}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.prerequisite'}}</label>
-      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
-        placeholder="{{ localize 'E20.prerequisite' }}" />
+      <label>{{localize 'E20.weaponUpgradePrerequisite'}}</label>
+      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
     </div>
 
     {{!-- Description Section --}}
