@@ -5,6 +5,7 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
+    {{!-- Availability --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.availability'}}
     {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.availability">
@@ -16,6 +17,7 @@
       </select>    {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Skill --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.skill'}}
     {{#*inline "item-field-inputs"}}
     <select class="item-field-inputs" name="system.classification.skill">
@@ -28,6 +30,7 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Size --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.size'}}
     {{#*inline "item-field-inputs"}}
     <select class="item-field-inputs" name="system.classification.size">
@@ -40,6 +43,7 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Style --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.style'}}
     {{#*inline "item-field-inputs"}}
     <select class="item-field-inputs" name="system.classification.style">
@@ -52,6 +56,7 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Charges --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.numCharges'}}
     {{#*inline "item-field-inputs"}}
     <input type="number" name="system.numCharges" value="{{system.numCharges}}" />
@@ -59,42 +64,49 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Effect --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.effect'}}
     {{#*inline "item-field-inputs"}}
     <input class="item-field-inputs" type="text" name="system.effect" value="{{system.effect}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Alternate Effects --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.alternateEffects'}}
     {{#*inline "item-field-inputs"}}
     <input class="item-field-inputs" type="text" name="system.alternateEffects" value="{{system.alternateEffects}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Upgrades --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.upgrades'}}
     {{#*inline "item-field-inputs"}}
     <input class="item-field-inputs" type="text" name="system.upgrades" value="{{system.upgrades}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Hands --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.numHands'}}
     {{#*inline "item-field-inputs"}}
     <input class="item-field-inputs" type="text" name="system.numHands" value="{{system.numHands}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Targets --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.numTargets'}}
     {{#*inline "item-field-inputs"}}
     <input class="item-field-inputs" type="number" name="system.numTargets" value="{{system.numTargets}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Radius --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.radius'}}
     {{#*inline "item-field-inputs"}}
     <input type="number" name="system.radius" value="{{system.radius}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Range --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.range'}}
     {{#*inline "item-field-inputs"}}
     <input type="number" name="system.range.min" value="{{system.range.min}}"
@@ -108,6 +120,7 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Requirements --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.requirements'}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
