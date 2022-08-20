@@ -4,9 +4,9 @@
     {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
     <div class="zord-header">
       <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
-        placeholder="{{ localize 'E20.zordPrerequisite' }}" />
+        placeholder="{{ localize 'E20.ZordPrerequisite' }}" />
       <input type="text" name="system.ranger" value="{{system.ranger}}"
-        placeholder="{{ localize 'E20.zordRanger' }}" />
+        placeholder="{{ localize 'E20.ZordRanger' }}" />
       <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
     </div>
   </header>
@@ -40,7 +40,7 @@
     {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
     {{!-- Features --}}
     {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features
-    title='E20.itemTypeFeaturePlural' dataType='feature'}}
+    title='E20.ItemTypeFeaturePlural' dataType='feature'}}
     {{!-- Traits --}}
     {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
     {{!-- Weapons --}}

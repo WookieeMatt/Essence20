@@ -300,7 +300,7 @@
       "threatPower",
       "trait",
       "weapon",
-      "weaponUpgrade"
+      "WeaponUpgrade"
     ],
     "templates": {
       "itemDescription": {
@@ -330,7 +330,7 @@
         "itemDescription"
       ],
       "effectArea": null,
-      "effectShape": null,
+      "EffectShape": null,
       "lightRange": {
         "bright": null,
         "dim": null
@@ -419,7 +419,7 @@
       },
       "upgrades": ""
     },
-    "weaponUpgrade": {
+    "WeaponUpgrade": {
       "templates": [
         "itemDescription"
       ],

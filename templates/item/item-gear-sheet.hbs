@@ -6,14 +6,14 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     <div class="flexrow">
-      <label>{{localize 'E20.gearEffectArea'}}</label>
+      <label>{{localize 'E20.GearEffectArea'}}</label>
       <input type="number" name="system.effectArea" value="{{system.effectArea}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.gearEffectShape'}}</label>
-      <select name="system.effectShape">
-        {{#select system.effectShape}}
+      <label>{{localize 'E20.GearEffectShape'}}</label>
+      <select name="system.EffectShape">
+        {{#select system.EffectShape}}
         {{#each config.effectShapes as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
@@ -32,12 +32,12 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.gearQuantity'}}</label>
+      <label>{{localize 'E20.GearQuantity'}}</label>
       <input type="number" name="system.quantity" value="{{system.quantity}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.gearToughness'}}</label>
+      <label>{{localize 'E20.GearToughness'}}</label>
       <input type="number" name="system.toughness" value="{{system.toughness}}" />
     </div>
 

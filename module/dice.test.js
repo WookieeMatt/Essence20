@@ -22,7 +22,7 @@ describe("_getSkillRollLabel", () => {
       edge: false,
       snag: false,
     }
-    const expected = "E20.rollRollingFor E20.essenceSkillAthletics";
+    const expected = "E20.RollRollingFor E20.EffectShapeAthletics";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -35,7 +35,7 @@ describe("_getSkillRollLabel", () => {
       edge: true,
       snag: false,
     }
-    const expected = "E20.rollRollingFor E20.essenceSkillAthletics E20.rollWithAnEdge";
+    const expected = "E20.RollRollingFor E20.EffectShapeAthletics E20.RollWithAnEdge";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -48,7 +48,7 @@ describe("_getSkillRollLabel", () => {
       edge: false,
       snag: true,
     }
-    const expected = "E20.rollRollingFor E20.essenceSkillAthletics E20.rollWithASnag";
+    const expected = "E20.RollRollingFor E20.EffectShapeAthletics E20.RollWithASnag";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -62,7 +62,7 @@ describe("_getSkillRollLabel", () => {
       edge: false,
       snag: false,
     }
-    const expected = "E20.rollRollingFor Foo Specialization";
+    const expected = "E20.RollRollingFor Foo Specialization";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -86,9 +86,9 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.rollAttackRoll</b> - Zeo Power Clubs (E20.essenceSkillAthletics)<br>" +
-     "<b>E20.weaponEffect</b> - Some effect<br>" +
-     "<b>E20.weaponAlternateEffects</b> - Some alternate effects";
+     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EffectShapeAthletics)<br>" +
+     "<b>E20.WeaponEffect</b> - Some effect<br>" +
+     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -109,9 +109,9 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.rollAttackRoll</b> - Zeo Power Clubs (E20.essenceSkillAthletics) E20.rollWithAnEdge<br>" +
-     "<b>E20.weaponEffect</b> - Some effect<br>" +
-     "<b>E20.weaponAlternateEffects</b> - Some alternate effects";
+     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EffectShapeAthletics) E20.RollWithAnEdge<br>" +
+     "<b>E20.WeaponEffect</b> - Some effect<br>" +
+     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -132,9 +132,9 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.rollAttackRoll</b> - Zeo Power Clubs (E20.essenceSkillAthletics) E20.rollWithASnag<br>" +
-     "<b>E20.weaponEffect</b> - Some effect<br>" +
-     "<b>E20.weaponAlternateEffects</b> - Some alternate effects";
+     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EffectShapeAthletics) E20.RollWithASnag<br>" +
+     "<b>E20.WeaponEffect</b> - Some effect<br>" +
+     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -155,9 +155,9 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.rollAttackRoll</b> - Zeo Power Clubs (E20.essenceSkillAthletics)<br>" +
-     "<b>E20.weaponEffect</b> - E20.none<br>" +
-     "<b>E20.weaponAlternateEffects</b> - E20.none";
+     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EffectShapeAthletics)<br>" +
+     "<b>E20.WeaponEffect</b> - None<br>" +
+     "<b>E20.WeaponAlternateEffects</b> - None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -237,7 +237,7 @@ describe("_handleAutoFail", () => {
 
     expect(dice._handleAutoFail(skillShift, label, actor)).toBe(true);
     expect(chatMessage.getSpeaker).toHaveBeenCalled();
-    expect(chatMessage.create).toHaveBeenCalledWith({content: " E20.rollAutoFail", speaker: {}});
+    expect(chatMessage.create).toHaveBeenCalledWith({content: " E20.RollAutoFail", speaker: {}});
   });
 
   test("auto fail", () => {
@@ -247,7 +247,7 @@ describe("_handleAutoFail", () => {
 
     expect(dice._handleAutoFail(skillShift, label, actor)).toBe(true);
     expect(chatMessage.getSpeaker).toHaveBeenCalled();
-    expect(chatMessage.create).toHaveBeenCalledWith({content: " E20.rollAutoFailFumble", speaker: {}});
+    expect(chatMessage.create).toHaveBeenCalledWith({content: " E20.RollAutoFailFumble", speaker: {}});
   });
 });
 
@@ -307,7 +307,7 @@ describe("_getEdgeSnagText", () => {
   test("snag true", () => {
     const edge = false;
     const snag = true;
-    const expected = " E20.rollWithASnag";
+    const expected = " E20.RollWithASnag";
 
     expect(dice._getEdgeSnagText(edge, snag)).toEqual(expected);
   });
@@ -315,7 +315,7 @@ describe("_getEdgeSnagText", () => {
   test("edge true", () => {
     const edge = true;
     const snag = false;
-    const expected = " E20.rollWithAnEdge";
+    const expected = " E20.RollWithAnEdge";
 
     expect(dice._getEdgeSnagText(edge, snag)).toEqual(expected);
   });

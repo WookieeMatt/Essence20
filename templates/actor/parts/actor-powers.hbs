@@ -1,7 +1,7 @@
 {{!-- Personal Power --}}
 <div class="powers-section">
   <div class="resource flex-group-center">
-    <label for="system.personalPower.value" class="resource-label">{{localize 'E20.powerRangerPersonalPower'}}</label>
+    <label for="system.personalPower.value" class="resource-label">{{localize 'E20.PowerRangerPersonalPower'}}</label>
     <div class="resource-content flexrow flex-center flex-between">
       <input type="number" name="system.personalPower.value" value="{{system.personalPower.value}}" />
       <span> / </span>
@@ -11,7 +11,7 @@
 </div>
 
 {{!-- Powers --}}
-{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.itemTypePowerPlural' dataType='power'}}
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
   {{#*inline "chips" item}}
   {{#if item.system.source}}
   <span class="chip" name="chip.source">{{item.system.source}}</span>

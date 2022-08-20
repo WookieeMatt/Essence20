@@ -16,15 +16,15 @@
     <input class="one-digit-input" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
 
     {{#ifEquals @root.actor.type 'npc'}}
-    <span class="specialized-label">{{localize 'E20.rollSpecialized'}}:</span>
+    <span class="specialized-label">{{localize 'E20.RollSpecialized'}}:</span>
     <input class="specialized-checkbox" type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
     {{/ifEquals}}
   </div>
 
   {{!-- Specializations header --}}
   <div class="specializations-header">
-    <span>{{localize 'E20.itemTypeSpecializationPlural'}}</span>
-    <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.itemControlAdd' }}">
+    <span>{{localize 'E20.ItemTypeSpecializationPlural'}}</span>
+    <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.ItemControlAdd' }}">
       <i class="fas fa-plus"></i>
     </a>
   </div>
@@ -39,7 +39,7 @@
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         <span class="item-button-container">
-          <a class="item-control item-delete" title="{{localize 'E20.itemControlDelete'}}"><i class="fas fa-trash"></i></a>
+          <a class="item-control item-delete" title="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
         </span>
       </div>
     </li>

@@ -1,18 +1,18 @@
 {{!-- Origin --}}
-{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.origins title='E20.origin' dataType='origin'}}
+{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.origins title='origin' dataType='origin'}}
   {{#*inline "additional-expand-details" item}}
-    <div>{{localize 'E20.originEssenceIncreaseOptions'}}: {{item.system.essenceIncreaseOptions}}</div>
-    <div>{{localize 'E20.originStartingHealth'}}: {{item.system.startingHealth}}</div>
-    <div>{{localize 'E20.originBonusSkillLevels'}}: {{item.system.bonusSkillLevels}}</div>
-    <div>{{localize 'E20.originGroundMovement'}}: {{item.system.groundMovement}}</div>
-    <div>{{localize 'E20.originLanguages'}}: {{item.system.languages}}</div>
-    <div>{{localize 'E20.originBenefitName'}}: {{item.system.benefit.name}}</div>
-    <div>{{localize 'E20.originBenefitDescription'}}: {{item.system.benefit.description}}</div>
+    <div>{{localize 'originEssenceIncreaseOptions'}}: {{item.system.essenceIncreaseOptions}}</div>
+    <div>{{localize 'originStartingHealth'}}: {{item.system.startingHealth}}</div>
+    <div>{{localize 'originBonusSkillLevels'}}: {{item.system.bonusSkillLevels}}</div>
+    <div>{{localize 'originGroundMovement'}}: {{item.system.groundMovement}}</div>
+    <div>{{localize 'originLanguages'}}: {{item.system.languages}}</div>
+    <div>{{localize 'originBenefitName'}}: {{item.system.benefit.name}}</div>
+    <div>{{localize 'originBenefitDescription'}}: {{item.system.benefit.description}}</div>
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
 
 {{!-- Bonds --}}
-{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.itemTypeBondPlural' dataType='bond'}}
+{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.ItemTypeBondPlural' dataType='bond'}}
 
 {{!-- Hang Ups --}}
-{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.itemTypeHangupPlural' dataType='hangUp'}}
+{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.ItemTypeHangupPlural' dataType='hangUp'}}

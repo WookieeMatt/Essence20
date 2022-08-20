@@ -3,25 +3,25 @@ export const E20 = {};
 E20.defenseBase = 10;
 
 E20.armorClassifications = {
-  non: "E20.armorClassificationNon",
-  light: "E20.armorClassificationLight",
-  medium: "E20.armorClassificationMedium",
-  heavy: "E20.armorClassificationHeavy",
+  non: "E20.ArmorClassificationNon",
+  light: "E20.ArmorClassificationLight",
+  medium: "E20.ArmorClassificationMedium",
+  heavy: "E20.ArmorClassificationHeavy",
 };
 
 E20.armorTraits = {
-  deflective: "E20.armorTraitDeflective",
-  silent: "E20.armorTraitSilent",
+  deflective: "E20.ArmorTraitDeflective",
+  silent: "E20.ArmorTraitSilent",
 };
 
 E20.availabilities = {
-  automatic: "E20.availabilityAutomatic",
-  standard: "E20.availabilityStandard",
-  limited: "E20.availabilityLimited",
-  restricted: "E20.availabilityRestricted",
-  prototype: "E20.availabilityPrototype",
-  unique: "E20.availabilityUnique",
-  theoretical: "E20.availabilityTheoretical",
+  automatic: "E20.AvailabilityAutomatic",
+  standard: "E20.AvailabilityStandard",
+  limited: "E20.AvailabilityLimited",
+  restricted: "E20.AvailabilityRestricted",
+  prototype: "E20.AvailabilityPrototype",
+  unique: "E20.AvailabilityUnique",
+  theoretical: "E20.AvailabilityTheoretical",
 };
 
 E20.autoFailShifts = [
@@ -35,23 +35,23 @@ E20.autoSuccessShifts = [
 ];
 
 E20.defenses = {
-  cleverness: "E20.defenseCleverness",
-  evasion: "E20.defenseEvasion",
-  toughness: "E20.defenseToughness",
-  willpower: "E20.defenseWillpower",
+  cleverness: "E20.DefenseCleverness",
+  evasion: "E20.DefenseEvasion",
+  toughness: "E20.DefenseToughness",
+  willpower: "E20.DefenseWillpower",
 };
 
 E20.effectShapes = {
-  circle: "E20.effectShapeCircle",
-  cone: "E20.effectShapeCone",
-  square: "E20.effectShapeSquare",
+  circle: "E20.EffectShapeCircle",
+  cone: "E20.EffectShapeCone",
+  square: "E20.EffectShapeSquare",
 };
 
 E20.essences = {
-  strength: "E20.essenceStrength",
-  speed: "E20.essenceSpeed",
-  smarts: "E20.essenceSocial",
-  social: "E20.essenceSmarts",
+  strength: "E20.EssenceStrength",
+  speed: "E20.EssenceSpeed",
+  smarts: "E20.EssenceSocial",
+  social: "E20.EssenceSmarts",
 };
 
 E20.initiativeShifts = {
@@ -67,29 +67,29 @@ E20.initiativeShifts = {
 };
 
 E20.lightRanges = {
-  bright: "E20.lightRangeBright",
-  dim: "E20.lightRangeDim",
+  bright: "E20.LightRangeBright",
+  dim: "E20.LightRangeDim",
 };
 
 E20.movementTypes = {
-  aerial: "E20.movementTypeAerial",
-  ground: "E20.movementTypeGround",
-  swim: "E20.movementTypeSwim",
+  aerial: "E20.MovementTypeAerial",
+  ground: "E20.MovementTypeGround",
+  swim: "E20.MovementTypeSwim",
 };
 
 E20.rangers = {
-  black: "E20.rangerBlack",
-  blue: "E20.rangerBlue",
-  green: "E20.rangerGreen",
-  pink: "E20.rangerPink",
-  red: "E20.rangerRed",
-  yellow: "E20.rangerYellow",
-  white: "E20.rangerWhite",
+  black: "E20.RangerBlack",
+  blue: "E20.RangerBlue",
+  green: "E20.RangerGreen",
+  pink: "E20.RangerPink",
+  red: "E20.RangerRed",
+  yellow: "E20.RangerYellow",
+  white: "E20.RangerWhite",
 };
 
 E20.shifts = {
-  "criticalSuccess": "E20.shiftCriticalSuccess",
-  "autoSuccess": "E20.shiftAutoSuccess",
+  "criticalSuccess": "E20.ShiftCriticalSuccess",
+  "autoSuccess": "E20.ShiftAutoSuccess",
   "3d6": "3d6",
   "2d8": "2d8",
   "d12": "d12",
@@ -99,8 +99,8 @@ E20.shifts = {
   "d4": "d4",
   "d2": "d2",
   "d20": "d20",
-  "autoFail": "E20.shiftAutoFail",
-  "fumble": "E20.shiftFumble",
+  "autoFail": "E20.ShiftAutoFail",
+  "fumble": "E20.ShiftFumble",
 };
 
 E20.shiftList = [
@@ -131,25 +131,25 @@ E20.rollableShifts = [
 ];
 
 E20.essenceSkills = {
-  athletics: "E20.essenceSkillAthletics",
-  brawn: "E20.essenceSkillBrawn",
-  intimidation: "E20.essenceSkillIntimidation",
-  might: "E20.essenceSkillMight",
-  acrobatics: "E20.essenceSkillAcrobatics",
-  driving: "E20.essenceSkillDriving",
-  finesse: "E20.essenceSkillFinesse",
-  infiltration: "E20.essenceSkillInfiltration",
-  targeting: "E20.essenceSkillTargeting",
-  alertness: "E20.essenceSkillAlertness",
-  culture: "E20.essenceSkillCulture",
-  science: "E20.essenceSkillScience",
-  survival: "E20.essenceSkillSurvival",
-  technology: "E20.essenceSkillTechnology",
-  animalHandling: "E20.essenceSkillAnimalHandling",
-  deception: "E20.essenceSkillDeception",
-  performance: "E20.essenceSkillPerformance",
-  persuasion: "E20.essenceSkillPersuasion",
-  streetwise: "E20.essenceSkillStreetwise",
+  athletics: "E20.EffectShapeAthletics",
+  brawn: "E20.EffectShapeBrawn",
+  intimidation: "E20.EffectShapeIntimidation",
+  might: "E20.EffectShapeMight",
+  acrobatics: "E20.EffectShapeAcrobatics",
+  driving: "E20.EffectShapeDriving",
+  finesse: "E20.EffectShapeFinesse",
+  infiltration: "E20.EffectShapeInfiltration",
+  targeting: "E20.EffectShapeTargeting",
+  alertness: "E20.EffectShapeAlertness",
+  culture: "E20.EffectShapeCulture",
+  science: "E20.EffectShapeScience",
+  survival: "E20.EffectShapeSurvival",
+  technology: "E20.EffectShapeTechnology",
+  animalHandling: "E20.EffectShapeAnimalHandling",
+  deception: "E20.EffectShapeDeception",
+  performance: "E20.EffectShapePerformance",
+  persuasion: "E20.EffectShapePersuasion",
+  streetwise: "E20.EffectShapeStreetwise",
 };
 
 E20.skillToEssence = {
@@ -187,64 +187,64 @@ E20.weaponRequirementShifts = {
 };
 
 E20.weaponSizes = {
-  integrated: "E20.weaponSizeIntegrated",
-  sidearm: "E20.weaponSizeSidearm",
-  medium: "E20.weaponSizeMedium",
-  long: "E20.weaponSizeLong",
-  heavy: "E20.weaponSizeHeavy",
+  integrated: "E20.WeaponSizeIntegrated",
+  sidearm: "E20.WeaponSizeSidearm",
+  medium: "E20.WeaponSizeMedium",
+  long: "E20.WeaponSizeLong",
+  heavy: "E20.WeaponSizeHeavy",
 };
 
 E20.weaponStyles = {
-  melee: "E20.weaponStyleMelee",
-  energy: "E20.weaponStyleEnergy",
-  explosive: "E20.weaponStyleExplosive",
-  projectile: "E20.weaponStyleProjectile",
+  melee: "E20.WeaponStyleMelee",
+  energy: "E20.WeaponStyleEnergy",
+  explosive: "E20.WeaponStyleExplosive",
+  projectile: "E20.WeaponStyleProjectile",
 };
 
 E20.weaponTraits = {
-  acid: "E20.weaponTraitAcid",
-  amphibious: "E20.weaponTraitAmphibious",
-  antiTank: "E20.weaponTraitAntiTank",
-  aquatic: "E20.weaponTraitAquatic",
-  area: "E20.weaponTraitArea",
-  armorPiercing: "E20.weaponTraitArmorPiercing",
-  ballistic: "E20.weaponTraitBallistic",
-  blunt: "E20.weaponTraitBlunt",
-  cold: "E20.weaponTraitCold",
-  consumable: "E20.weaponTraitConsumable",
-  cover: "E20.weaponTraitCover",
-  electric: "E20.weaponTraitElectric",
-  energy: "E20.weaponTraitEnergy",
-  fire: "E20.weaponTraitFire",
-  grapple: "E20.weaponTraitGrapple",
-  indirect: "E20.weaponTraitIndirect",
-  intimidating: "E20.weaponTraitIntimidating",
-  laser: "E20.weaponTraitLaser",
-  maneuver: "E20.weaponTraitManeuver",
-  mounted: "E20.weaponTraitMounted",
-  multipleTargets: "E20.weaponTraitMultipleTargets",
-  poison: "E20.weaponTraitPoison",
-  psychic: "E20.weaponTraitPsychic",
-  seeking: "E20.weaponTraitSeeking",
-  sharp: "E20.weaponTraitSharp",
-  silent: "E20.weaponTraitSilent",
-  sonic: "E20.weaponTraitSonic",
-  spot: "E20.weaponTraitSpot",
-  stun: "E20.weaponTraitStun",
-  trip: "E20.weaponTraitTrip",
-  wrecker: "E20.weaponTraitWrecker",
+  acid: "E20.WeaponTraitAcid",
+  amphibious: "E20.WeaponTraitAmphibious",
+  antiTank: "E20.WeaponTraitAntiTank",
+  aquatic: "E20.WeaponTraitAquatic",
+  area: "E20.WeaponTraitArea",
+  armorPiercing: "E20.WeaponTraitArmorPiercing",
+  ballistic: "E20.WeaponTraitBallistic",
+  blunt: "E20.WeaponTraitBlunt",
+  cold: "E20.WeaponTraitCold",
+  consumable: "E20.WeaponTraitConsumable",
+  cover: "E20.WeaponTraitCover",
+  electric: "E20.WeaponTraitElectric",
+  energy: "E20.WeaponTraitEnergy",
+  fire: "E20.WeaponTraitFire",
+  grapple: "E20.WeaponTraitGrapple",
+  indirect: "E20.WeaponTraitIndirect",
+  intimidating: "E20.WeaponTraitIntimidating",
+  laser: "E20.WeaponTraitLaser",
+  maneuver: "E20.WeaponTraitManeuver",
+  mounted: "E20.WeaponTraitMounted",
+  multipleTargets: "E20.WeaponTraitMultipleTargets",
+  poison: "E20.WeaponTraitPoison",
+  psychic: "E20.WeaponTraitPsychic",
+  seeking: "E20.WeaponTraitSeeking",
+  sharp: "E20.WeaponTraitSharp",
+  silent: "E20.WeaponTraitSilent",
+  sonic: "E20.WeaponTraitSonic",
+  spot: "E20.WeaponTraitSpot",
+  stun: "E20.WeaponTraitStun",
+  trip: "E20.WeaponTraitTrip",
+  wrecker: "E20.WeaponTraitWrecker",
 }
 
 E20.creatureSizes = {
-  small: "E20.creatureSizeSmall",
-  common: "E20.creatureSizeCommon",
-  large: "E20.creatureSizeLarge",
-  long: "E20.creatureSizeLong",
-  huge: "E20.creatureSizeHuge",
-  extended: "E20.creatureSizeExtended",
-  gigantic: "E20.creatureSizeGigantic",
-  extended2: "E20.creatureSizeExtended2",
-  towering: "E20.creatureSizeTowering",
-  extended3: "E20.creatureSizeExtended3",
-  titanic: "E20.creatureSizeTitanic"
+  small: "E20.CreatureSizeSmall",
+  common: "E20.CreatureSizeCommon",
+  large: "E20.CreatureSizeLarge",
+  long: "E20.CreatureSizeLong",
+  huge: "E20.CreatureSizeHuge",
+  extended: "E20.CreatureSizeExtended",
+  gigantic: "E20.CreatureSizeGigantic",
+  extended2: "E20.CreatureSizeExtended2",
+  towering: "E20.CreatureSizeTowering",
+  extended3: "E20.CreatureSizeExtended3",
+  titanic: "E20.CreatureSizeTitanic"
 };

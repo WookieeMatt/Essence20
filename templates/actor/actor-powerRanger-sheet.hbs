@@ -4,13 +4,13 @@
 
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="skills"> {{ localize "E20.tabSkills" }}</a>
-    <a class="item" data-tab="combat">{{ localize "E20.tabCombat" }}</a>
-    <a class="item" data-tab="gear">{{ localize "E20.tabGear" }}</a>
-    <a class="item" data-tab="powers">{{ localize "E20.tabPowers" }}</a>
-    <a class="item" data-tab="perks">{{ localize "E20.tabPerks" }}</a>
-    <a class="item" data-tab="background">{{ localize "E20.tabBackground" }}</a>
-    <a class="item" data-tab="notes">{{ localize "E20.tabNotes" }}</a>
+    <a class="item" data-tab="skills"> {{ localize "E20.TabSkills" }}</a>
+    <a class="item" data-tab="combat">{{ localize "E20.TabCombat" }}</a>
+    <a class="item" data-tab="gear">{{ localize "E20.TabGear" }}</a>
+    <a class="item" data-tab="powers">{{ localize "E20.TabPowers" }}</a>
+    <a class="item" data-tab="perks">{{ localize "E20.TabPerks" }}</a>
+    <a class="item" data-tab="background">{{ localize "E20.TabBackground" }}</a>
+    <a class="item" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
   </nav>
 
   {{!-- Actor Sheet Body --}}
@@ -26,7 +26,7 @@
     <div class="tab combat flexcol" data-group="primary" data-tab="combat">
       {{> "systems/essence20/templates/actor/parts/actor-defenses.hbs" bonusDisplayType='input'}}
       {{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.resources
-      title='E20.itemTypeResourcePlural' dataType='resource'}}
+      title='E20.ItemTypeResourcePlural' dataType='resource'}}
       {{#*inline "item-label" item}}
       {{item.name}}
       <input class="one-digit-input inline-edit" data-field="system.uses.value" type="number"
