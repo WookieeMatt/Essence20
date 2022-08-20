@@ -26,6 +26,10 @@
     "TypeTrait": "Trait"
   },
   "E20": {
+    "armorAvailability": "Availability",
+    "armorClassification": "Classification",
+    "armorTrait": "Trait",
+    "armorEffect": "Effect",
     "tabSkills": "Skills",
     "tabCombat": "Combat",
     "tabGear": "Gear",

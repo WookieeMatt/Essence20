@@ -6,7 +6,7 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     <div class="flexrow">
-      <label>{{localize 'E20.availability'}}</label>
+      <label>{{localize 'E20.armorAvailability'}}</label>
       <select name="system.availability">
         {{#select system.availability}}
         {{#each config.availabilities as |name type|}}
@@ -17,7 +17,7 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.classification'}}</label>
+      <label>{{localize 'E20.armorClassification'}}</label>
       <select name="system.classification">
         {{#select system.classification}}
         {{#each config.armorClassifications as |name type|}}
@@ -28,7 +28,7 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.trait'}}</label>
+      <label>{{localize 'E20.armorTrait'}}</label>
       <select name="system.trait">
         {{#select system.trait}}
         {{#each config.armorTraits as |name type|}}
@@ -39,7 +39,7 @@
     </div>
 
     <div class="flexrow">
-      <div>{{localize 'E20.effect'}}</div>
+      <div>{{localize 'E20.armorEffect'}}</div>
       <input type="number" name="system.effect" value="{{system.effect}}" />
     </div>
 
