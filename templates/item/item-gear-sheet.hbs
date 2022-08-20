@@ -6,15 +6,15 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     <div class="flexrow">
-      <label>{{localize 'E20.effectArea'}}</label>
+      <label>{{localize 'E20.GearEffectArea'}}</label>
       <input type="number" name="system.effectArea" value="{{system.effectArea}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.effectShape'}}</label>
-      <select name="system.effectShape">
-        {{#select system.effectShape}}
-        {{#each config.effectShapes as |name type|}}
+      <label>{{localize 'E20.GearEffectShape'}}</label>
+      <select name="system.EffectShape">
+        {{#select system.EffectShape}}
+        {{#each config.weaponEffectShapes as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
         {{/select}}
@@ -22,22 +22,22 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.lightRange.bright'}}</label>
+      <label>{{localize config.lightRanges.bright}}</label>
       <input type="number" name="system.lightRange.bright" value="{{system.lightRange.bright}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.lightRange.dim'}}</label>
+      <label>{{localize config.lightRanges.dim}}</label>
       <input type="number" name="system.lightRange.dim" value="{{system.lightRange.dim}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.quantity'}}</label>
+      <label>{{localize 'E20.GearQuantity'}}</label>
       <input type="number" name="system.quantity" value="{{system.quantity}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.toughness'}}</label>
+      <label>{{localize 'E20.GearToughness'}}</label>
       <input type="number" name="system.toughness" value="{{system.toughness}}" />
     </div>
 
