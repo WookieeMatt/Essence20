@@ -14,7 +14,7 @@
       <label>{{localize 'E20.GearEffectShape'}}</label>
       <select name="system.EffectShape">
         {{#select system.EffectShape}}
-        {{#each config.effectShapes as |name type|}}
+        {{#each config.weaponEffectShapes as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
         {{/select}}
