@@ -5,11 +5,14 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <span>{{localize 'E20.ResourceUses'}}
-      <input class="one-digit-input" type="number" name="system.uses.value" value="{{system.uses.value}}"/>
-      /
-      <input class="one-digit-input" type="number" name="system.uses.max" value="{{system.uses.max}}"/>
-    </span>
+    {{!-- Uses --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ResourceUses'}}
+    {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.uses.value" value="{{system.uses.value}}"/>
+      <div class="min-max-divider">/</div>
+      <input type="number" name="system.uses.max" value="{{system.uses.max}}"/>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
