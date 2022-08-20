@@ -34,20 +34,20 @@
     {{!-- Trait --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTrait'}}
     {{#*inline "item-field-inputs"}}
-      <select name="system.trait">
-        {{#select system.trait}}
-        {{#each config.armorTraits as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
+    <select name="system.trait">
+      {{#select system.trait}}
+      {{#each config.armorTraits as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Effect --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorEffect'}}
     {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.effect" value="{{system.effect}}" />
+    <input type="number" name="system.effect" value="{{system.effect}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 

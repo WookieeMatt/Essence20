@@ -15,13 +15,13 @@
     {{!-- Effect Shape --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GearEffectShape'}}
     {{#*inline "item-field-inputs"}}
-      <select name="system.EffectShape">
-        {{#select system.EffectShape}}
-        {{#each config.weaponEffectShapes as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
+    <select name="system.EffectShape">
+      {{#select system.EffectShape}}
+      {{#each config.weaponEffectShapes as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
@@ -49,7 +49,7 @@
     {{!-- Toughness --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GearToughness'}}
     {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.toughness" value="{{system.toughness}}" />
+    <input type="number" name="system.toughness" value="{{system.toughness}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
