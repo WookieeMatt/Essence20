@@ -792,10 +792,6 @@
   flex: 0;
 }
 
-.essence20 .sheet-body {
-  min-height: fit-content;
-}
-
 .essence20 .sheet-body .tab,
 .essence20 .sheet-body .tab .editor {
   height: 100%;
@@ -817,8 +813,6 @@
   width: 100%;
   gap: 10px;
   padding: 6px;
-  margin-bottom: 6px;
-  margin-top: 6px;
 }
 
 .essence20 .zord-combiners {
@@ -1042,6 +1036,11 @@ form .hint {
 
 .essence20 .span {
   color: #c7c4c4;
+}
+
+.essence20 .sheet-body {
+  min-height: fit-content;
+  gap: 10px;
 }
 
 /*# sourceMappingURL=essence20.css.map */

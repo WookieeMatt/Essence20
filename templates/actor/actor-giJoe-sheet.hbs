@@ -1,10 +1,10 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
 
   {{!-- Actor Sheet Header --}}
   {{> "systems/essence20/templates/actor/parts/actor-gijoe-header.hbs"}}
 
   {{!-- Actor Sheet Body --}}
-  <section class="sheet-body">
+  <section class="sheet-body flexcol">
     <div class="stats-container defense-container">
       <h3>{{localize 'E20.DefenseTitle'}}</h3>
       <div>{{localize config.defenses.toughness}}: {{sum system.defenses.toughness equippedArmorEffect}}</div>
