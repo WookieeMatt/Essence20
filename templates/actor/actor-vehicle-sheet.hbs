@@ -4,11 +4,11 @@
     {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
     <div class="flex-col">
       <div class="header-fields flex-group-center">
-        <label for="name" class="resource-label">{{localize 'E20.name'}}</label>
+        <label for="name" class="resource-label">{{localize 'E20.actorName'}}</label>
         <h2 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h2>
       </div>
       <div class="resource flex-group-center">
-        {{localize 'E20.threatLevel'}}
+        {{localize 'E20.npcThreatLevel'}}
         <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
       </div>
     </div>
@@ -23,16 +23,16 @@
     <div class="vehicle-container">
       <h3>Crew</h3>
       <input type="text" name="system.crew.description" value="{{system.crew.description}}"
-        placeholder="{{ localize 'E20.description' }}" />
-      <span>{{localize 'E20.numDrivers'}}</span><input type="number" name="system.crew.numDrivers"
+        placeholder="{{ localize 'E20.actorDescription' }}" />
+      <span>{{localize 'E20.vehicleDrivers'}}</span><input type="number" name="system.crew.numDrivers"
         value="{{system.crew.numDrivers}}" />
-      <span>{{localize 'E20.numPassengers'}}</span><input type="number" name="system.crew.numPassengers"
+      <span>{{localize 'E20.vehiclePassengers'}}</span><input type="number" name="system.crew.numPassengers"
         value="{{system.crew.numPassengers}}" />
 
       <h3>Firepoints</h3>
       <input type="text" name="system.firepoints.description" value="{{system.firepoints.description}}"
-        placeholder="{{ localize 'E20.description' }}" />
-      <span>{{localize 'E20.firepoints'}}</span><input type="number" name="system.firepoints.value"
+        placeholder="{{ localize 'E20.actorDescription' }}" />
+      <span>{{localize 'E20.vehicleFirepoints'}}</span><input type="number" name="system.firepoints.value"
         value="{{system.firepoints.value}}" />
     </div>
     {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}

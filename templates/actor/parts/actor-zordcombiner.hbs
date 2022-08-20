@@ -7,16 +7,19 @@
     {{#each @root.zords as |zord|}}
     <li class="zord item" data-zord-id="{{zord._id}}">
       <div class="flexrow" style="align-items:center;">
-        <div style="white-space: nowrap;">{{ localize 'E20.name' }}: {{zord.name}}</div>
+        <div style="white-space: nowrap;">{{ localize 'E20.actorName' }}: {{zord.name}}</div>
         <div class="item-controls">
-          <a class="item-control zord-delete" title="{{localize 'E20.deletezordCombiner'}}"><i class="fas fa-trash"></i></a>
+          <a class="item-control zord-delete" title="{{localize 'E20.deletezordCombiner'}}">
+            <i class="fas fa-trash"></i>
+          </a>
         </div>
       </div>
       <div>
-        {{ localize 'E20.health' }}: <input class="two-digit-input" type="number" name="zord.system.health" value="{{zord.system.health.value}}" />
+        {{ localize 'E20.actorHealth' }}: <input class="two-digit-input" type="number" name="zord.system.health"
+          value="{{zord.system.health.value}}" />
       </div>
       <div>
-        <span>{{ localize 'E20.ranger' }}: {{zord.system.ranger}}</span>
+        <span>{{ localize 'E20.zordRanger' }}: {{zord.system.ranger}}</span>
       </div>
       <div>
         <div>{{ localize 'E20.itemTypeMegaformTraitPlural' }}</div>
