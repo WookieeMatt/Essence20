@@ -3,28 +3,28 @@
   <span class="skill-roll">
     <a class="rollable" data-roll-type="skill" data-skill="{{skill}}"><i class="fas fa-dice-d20"></i></a>
   </span>
-  <span class="skill-name">{{localize (concat 'E20.essenceSkills.' skill)}}</span>
+  <span class="skill-name">{{localize (lookup @root.config.essenceSkills skill)}}</span>
 </div>
 
 <div class="skill-body">
   {{!-- Mod and Spec inputs --}}
   <div class="shift-select">
     <select name="system.skills.{{essence}}.{{skill}}.shift">
-      {{selectOptions @root.config.shifts selected=fields.shift localize=true}}
+      {{selectOptions @root.config.skillShifts selected=fields.shift localize=true}}
     </select>
     <span for="system.skills.{{essence}}.{{skill}}.modifier">+</span>
     <input class="one-digit-input" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
 
     {{#ifEquals @root.actor.type 'npc'}}
-    <span class="specialized-label">{{localize 'E20.specialized'}}:</span>
+    <span class="specialized-label">{{localize 'E20.RollSpecialized'}}:</span>
     <input class="specialized-checkbox" type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
     {{/ifEquals}}
   </div>
 
   {{!-- Specializations header --}}
   <div class="specializations-header">
-    <span>{{localize 'E20.specializations'}}</span>
-    <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.addSpecialization' }}">
+    <span>{{localize 'E20.ItemTypeSpecializationPlural'}}</span>
+    <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.ItemControlAdd' }}">
       <i class="fas fa-plus"></i>
     </a>
   </div>
@@ -39,7 +39,7 @@
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         <span class="item-button-container">
-          <a class="item-control item-delete" title="{{localize 'E20.deleteSpecialization'}}"><i class="fas fa-trash"></i></a>
+          <a class="item-control item-delete" title="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
         </span>
       </div>
     </li>

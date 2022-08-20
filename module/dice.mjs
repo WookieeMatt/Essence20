@@ -22,7 +22,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = this._config.skillToEssence[rolledSkill];
     const rolledShift = actor.system.skills[rolledEssence][rolledSkill].shift
-    const snag = this._config.shiftList.indexOf('d20') == this._config.shiftList.indexOf(rolledShift);
+    const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(rolledShift);
     const html = await renderTemplate(
       template,
       {
@@ -35,15 +35,15 @@ export class Dice {
 
     return new Promise(resolve => {
       const data = {
-        title: this._i18n.localize(this._config.rollDialogTitle),
+        title: this._i18n.localize('E20.RollDialogTitle'),
         content: html,
         buttons: {
           normal: {
-            label: this._i18n.localize(this._config.roll),
+            label: this._i18n.localize('E20.RollDialogRollButton'),
             callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
           },
           cancel: {
-            label: this._i18n.localize(this._config.cancel),
+            label: this._i18n.localize('E20.RollDialogCancelButton'),
             callback: html => resolve({ cancelled: true }),
           },
         },
@@ -91,7 +91,7 @@ export class Dice {
     }
 
     if (this._config.autoSuccessShifts.includes(finalShift)) {
-      finalShift = this._config.rollableShifts[this._config.rollableShifts.length - 1];
+      finalShift = this._config.skillRollableShifts[this._config.skillRollableShifts.length - 1];
     }
 
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
@@ -118,7 +118,7 @@ export class Dice {
     const rolledSkillStr = dataset.specialization
       ? dataset.specialization
       : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
-    const rollingForStr = this._i18n.localize(this._config.rollingFor)
+    const rollingForStr = this._i18n.localize('E20.RollRollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
 
@@ -133,10 +133,10 @@ export class Dice {
   _getWeaponRollLabel(dataset, skillRollOptions, weapon) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
-    const attackRollStr = this._i18n.localize(this._config.attackRoll)
-    const effectStr = this._i18n.localize(this._config.effect)
-    const alternateEffectsStr = this._i18n.localize(this._config.alternateEffects)
-    const noneStr = this._i18n.localize(this._config.none)
+    const attackRollStr = this._i18n.localize('E20.RollAttackRoll')
+    const effectStr = this._i18n.localize('E20.WeaponEffect')
+    const alternateEffectsStr = this._i18n.localize('E20.WeaponAlternateEffects')
+    const noneStr = this._i18n.localize('None')
 
     let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
@@ -156,10 +156,10 @@ export class Dice {
   _getFinalShift(skillRollOptions, initialShift) {
     // Apply the skill roll options dialog shifts to the roller's normal shift
     const optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
-    const initialShiftIndex = this._config.shiftList.findIndex(s => s == initialShift);
-    const finalShiftIndex = Math.max(0, Math.min(this._config.shiftList.length - 1, initialShiftIndex - optionsShiftTotal));
+    const initialShiftIndex = this._config.skillShiftList.findIndex(s => s == initialShift);
+    const finalShiftIndex = Math.max(0, Math.min(this._config.skillShiftList.length - 1, initialShiftIndex - optionsShiftTotal));
 
-    return this._config.shiftList[finalShiftIndex];
+    return this._config.skillShiftList[finalShiftIndex];
   }
 
   /**
@@ -179,10 +179,10 @@ export class Dice {
       };
       switch (skillShift) {
         case 'autoFail':
-          label += ` ${this._i18n.localize(this._config.autoFail)}`;
+          label += ` ${this._i18n.localize('E20.RollAutoFail')}`;
           break;
         case 'fumble':
-          label += ` ${this._i18n.localize(this._config.autoFailFumble)}`;
+          label += ` ${this._i18n.localize('E20.RollAutoFailFumble')}`;
           break;
       }
       chatData.content = label;
@@ -222,8 +222,8 @@ export class Dice {
 
     // Edge and Snag cancel eachother out
     if (edge != snag) {
-      const withAnEdge = this._i18n.localize(this._config.withAnEdge)
-      const withASnag = this._i18n.localize(this._config.withASnag)
+      const withAnEdge = this._i18n.localize('E20.RollWithAnEdge')
+      const withASnag = this._i18n.localize('E20.RollWithASnag')
       result = edge ? ` ${withAnEdge}` : ` ${withASnag}`;
     }
 
@@ -267,7 +267,7 @@ export class Dice {
     if (finalShift != 'd20') {
       if (isSpecialized) {
         // For specializations, keep adding dice until you reach your shift level
-        for (const shift of this._config.rollableShifts) {
+        for (const shift of this._config.skillRollableShifts) {
           shiftOperands.push(shift);
           if (shift == finalShift) {
             break;

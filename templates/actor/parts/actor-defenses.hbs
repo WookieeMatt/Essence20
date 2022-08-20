@@ -2,15 +2,16 @@
   <table class="tg">
     <thead>
       <tr>
-        <th class="tg-td">{{localize 'E20.defensesStr'}}</th>
+        <th class="tg-td">{{localize 'E20.DefenseTitle'}}</th>
 
         {{!-- Defense headers --}}
         {{#each system.defenses.morphed as |value defense|}}
         <th class="tg-td">
-          <span>{{localize (concat 'E20.defenses.' defense)}}</span>
+          <span>{{localize (lookup @root.config.defenses defense)}}</span>
           <span>
             {{#ifEquals ../bonusDisplayType 'input'}}
-            +<input class="one-digit-input" type="number" name={{concat 'system.bonuses.' defense}} value="{{lookup @root.system.bonuses defense}}" />
+            +<input class="one-digit-input" type="number" name={{concat 'system.bonuses.' defense}}
+              value="{{lookup @root.system.bonuses defense}}" />
             {{/ifEquals}}
           </span>
         </th>
@@ -22,10 +23,11 @@
     <tbody>
       {{!-- Unmorphed row --}}
       <tr>
-        <td class="tg-td">{{localize 'E20.unmorphed'}}</td>
+        <td class="tg-td">{{localize 'E20.DefenseUnmorphed'}}</td>
         {{#each system.essences as |value essence|}}
         <td class="tg-td">
-          <span title="10 {{localize 'E20.base'}} + {{value}} {{localize (concat 'E20.essences.' essence)}}">
+          <span
+            title="10 {{localize 'E20.defenseBase'}} + {{value}} {{localize (lookup @root.config.essences essence)}}">
             {{sum 10 value}}
           </span>
         </td>
@@ -34,23 +36,25 @@
 
       {{!-- Morphed row --}}
       <tr>
-        <td class="tg-td">{{localize 'E20.morphed'}}</td>
+        <td class="tg-td">{{localize 'E20.DefenseMorphed'}}</td>
         {{#each system.defenses.unmorphed as |value defense|}}
-          {{!-- Special case for Toughness to add armor --}}
-          {{#ifEquals defense 'toughness'}}
-          <td class="tg-td">
-            <span title="{{value}} {{localize 'E20.unmorphed'}} + {{@root.system.bonuses.toughness}} {{localize 'E20.bonus'}} + {{@root.equippedArmorEffect}} {{localize 'E20.armor'}}">
-              {{sum value @root.system.bonuses.toughness @root.equippedArmorEffect}}
-            </span>
-          </td>
-          {{else}}
-          {{!-- Remaining Defenses --}}
-          <td class="tg-td">
-            <span title="{{value}} {{localize 'E20.unmorphed'}} + {{lookup @root.system.bonuses defense}} {{localize 'E20.bonus'}}">
-              {{sum value (lookup @root.system.bonuses defense)}}
-            </span>
-          </td>
-          {{/ifEquals}}
+        {{!-- Special case for Toughness to add armor --}}
+        {{#ifEquals defense 'toughness'}}
+        <td class="tg-td">
+          <span
+            title="{{value}} {{localize 'E20.DefenseUnmorphed'}} + {{@root.system.bonuses.toughness}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorEffect}} {{localize 'ITEM.TypeArmor'}}">
+            {{sum value @root.system.bonuses.toughness @root.equippedArmorEffect}}
+          </span>
+        </td>
+        {{else}}
+        {{!-- Remaining Defenses --}}
+        <td class="tg-td">
+          <span
+            title="{{value}} {{localize 'E20.DefenseMorphed'}} + {{lookup @root.system.bonuses defense}} {{localize 'E20.DefenseBonus'}}">
+            {{sum value (lookup @root.system.bonuses defense)}}
+          </span>
+        </td>
+        {{/ifEquals}}
         {{/each}}
       </tr>
     </tbody>

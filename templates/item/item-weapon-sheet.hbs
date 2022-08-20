@@ -6,7 +6,7 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     <div class="flexrow">
-      <label>{{localize 'E20.availability'}}</label>
+      <label>{{localize 'E20.WeaponAvailability'}}</label>
       <select name="system.availability">
         {{#select system.availability}}
         {{#each config.availabilities as |name type|}}
@@ -17,7 +17,7 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.skill'}}</label>
+      <label>{{localize 'E20.WeaponSkill'}}</label>
       <select name="system.classification.skill">
         {{#select system.classification.skill}}
         {{#each config.essenceSkills as |name type|}}
@@ -28,7 +28,7 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.size'}}</label>
+      <label>{{localize 'E20.WeaponSize'}}</label>
       <select name="system.classification.size">
         {{#select system.classification.size}}
         {{#each config.weaponSizes as |name type|}}
@@ -39,7 +39,7 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.style'}}</label>
+      <label>{{localize 'E20.WeaponStyle'}}</label>
       <select name="system.classification.style">
         {{#select system.classification.style}}
         {{#each config.weaponStyles as |name type|}}
@@ -50,56 +50,56 @@
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.numCharges'}}</label>
+      <label>{{localize 'E20.WeaponNumCharges'}}</label>
       <input type="number" name="system.numCharges" value="{{system.numCharges}}" />
-      <input type="text" name="system.custom" value="{{system.custom}}" placeholder="{{ localize 'E20.custom' }}" />
+      <input type="text" name="system.custom" value="{{system.custom}}" placeholder="{{ localize 'E20.WeaponNumChargesCustom' }}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.effect'}}</label>
+      <label>{{localize 'E20.WeaponEffect'}}</label>
       <input type="text" name="system.effect" value="{{system.effect}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.alternateEffects'}}</label>
+      <label>{{localize 'E20.WeaponAlternateEffects'}}</label>
       <input type="text" name="system.alternateEffects" value="{{system.alternateEffects}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.upgrades'}}</label>
+      <label>{{localize 'E20.WeaponUpgrades'}}</label>
       <input type="text" name="system.upgrades" value="{{system.upgrades}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.numHands'}}</label>
+      <label>{{localize 'E20.WeaponHands'}}</label>
       <input type="text" name="system.numHands" value="{{system.numHands}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.numTargets'}}</label>
+      <label>{{localize 'E20.WeaponTargets'}}</label>
       <input type="number" name="system.numTargets" value="{{system.numTargets}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.radius'}}</label>
+      <label>{{localize 'E20.WeaponRadius'}}</label>
       <input type="number" name="system.radius" value="{{system.radius}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.range'}}</label>
-      <input type="number" name="system.range.min" value="{{system.range.min}}" placeholder="{{localize 'E20.min'}}" />
+      <label>{{localize 'E20.WeaponRange'}}</label>
+      <input type="number" name="system.range.min" value="{{system.range.min}}" placeholder="{{localize 'E20.WeaponRangeMin'}}" />
       <input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"
-        placeholder="{{localize 'E20.reachMultiplier'}}" />
+        placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" />
       <input type="number" name="system.range.long" value="{{system.range.long}}"
-        placeholder="{{localize 'E20.long'}}" />
+        placeholder="{{localize 'E20.WeaponRangeLong'}}" />
       <input type="number" name="system.range.value" value="{{system.range.value}}"
-        placeholder="{{localize 'E20.value'}}" />
+        placeholder="{{localize 'E20.WeaponRangeValue'}}" />
     </div>
 
     <div class="flexrow">
-      <label>{{localize 'E20.requirements'}}</label>
+      <label>{{localize 'E20.WeaponRequirements'}}</label>
       <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
-        placeholder="{{ localize 'E20.custom' }}" />
+        placeholder="{{ localize 'E20.WeaponRequirementsCustom' }}" />
       <select name="system.requirements.skill">
         {{#select system.requirements.skill}}
         {{#each config.essenceSkills as |name type|}}

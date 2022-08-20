@@ -1,15 +1,15 @@
 <div class="stats-container" style="flex-grow: 0;">
   <div class="flexrow">
     <div class="resource flexcol">
-      <label class="resource flex-group-center">{{localize 'E20.movement.aerial'}}</label>
+      <label class="resource flex-group-center">{{localize @root.config.movementTypes.aerial}}</label>
       <input style="text-align: center;" type="text" name="system.movement.aerial" value="{{system.movement.aerial}}" />
     </div>
     <div class="resource flexcol">
-      <label class="resource flex-group-center">{{localize 'E20.movement.ground'}}</label>
+      <label class="resource flex-group-center">{{localize @root.config.movementTypes.ground}}</label>
       <input style="text-align: center;" type="number" name="system.movement.ground" value="{{system.movement.ground}}" />
     </div>
     <div class="resource flexcol">
-      <label class="resource flex-group-center">{{localize 'E20.movement.swim'}}</label>
+      <label class="resource flex-group-center">{{localize @root.config.movementTypes.swim}}</label>
       <input style="text-align: center;" type="number" name="system.movement.swim" value="{{system.movement.swim}}" />
     </div>
   </div>

@@ -2,7 +2,7 @@
   <div class="npc-defenses">
     {{#each system.defenses as |fields defense|}}
     <div class="resource flexcol">
-      <label class="resource flex-group-center">{{localize (concat 'E20.defenses.' defense)}}</label>
+      <label class="resource flex-group-center">{{localize (lookup @root.config.defenses defense)}}</label>
       <input type="number" style="text-align: center;" name="system.defenses.{{defense}}.value" value="{{fields.value}}" />
     </div>
     {{/each}}
