@@ -5,25 +5,33 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="flexrow">
-      <label>{{localize 'E20.ThreatPowerCharges'}}</label>
-      <input type="number" name="system.charges" value="{{system.charges}}" />
-    </div>
+    {{!-- Charges --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerCharges'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.charges" value="{{system.charges}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.ThreatPowerCost'}}</label>
-      <input type="number" name="system.cost" value="{{system.cost}}" />
-    </div>
+    {{!-- Cost --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerCost'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.cost" value="{{system.cost}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.ThreatPowerLimited'}}</label>
-      <input type="checkbox" name="system.limited" {{checked system.limited}} />
-    </div>
+    {{!-- Limited --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerLimited'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="checkbox" name="system.limited" {{checked system.limited}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.ThreatPowerActionType'}}</label>
-      <input type="text" name="system.actionType" value="{{system.actionType}}" />
-    </div>
+    {{!-- Action Type --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerActionType'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.actionType" value="{{system.actionType}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
