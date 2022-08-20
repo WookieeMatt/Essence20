@@ -1,4 +1,4 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   <header class="sheet-header">
     {{!-- Actor Sheet Header --}}
     {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
@@ -13,12 +13,12 @@
       </div>
     </div>
   </header>
+
   {{!-- Actor Sheet Body --}}
-  <section class="sheet-body">
+  <section class="sheet-body flexcol">
     {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
     {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
     {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
-
 
     <div class="vehicle-container">
       <h3>Crew</h3>
