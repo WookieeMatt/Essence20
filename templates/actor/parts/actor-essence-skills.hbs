@@ -16,7 +16,7 @@
     <input class="one-digit-input" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
 
     {{#ifEquals @root.actor.type 'npc'}}
-    <span class="specialized-label">{{localize 'E20.specialized'}}:</span>
+    <span class="specialized-label">{{localize 'E20.rollSpecialized'}}:</span>
     <input class="specialized-checkbox" type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
     {{/ifEquals}}
   </div>

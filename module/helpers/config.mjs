@@ -176,14 +176,14 @@ E20.skillToEssence = {
 
 E20.weaponRequirementShifts = {
   "none": "",
-  "d2": "E20.shifts.d2",
-  "d4": "E20.shifts.d4",
-  "d6": "E20.shifts.d6",
-  "d8": "E20.shifts.d8",
-  "d10": "E20.shifts.d10",
-  "d12": "E20.shifts.d12",
-  "2d8": "E20.shifts.2d8",
-  "3d6": "E20.shifts.3d6",
+  "d2": "d2",
+  "d4": "d4",
+  "d6": "d6",
+  "d8": "d8",
+  "d10": "d10",
+  "d12": "d12",
+  "2d8": "2d8",
+  "3d6": "3d6",
 };
 
 E20.weaponSizes = {
