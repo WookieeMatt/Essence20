@@ -39,7 +39,7 @@
           {{!-- Special case for Toughness to add armor --}}
           {{#ifEquals defense 'toughness'}}
           <td class="tg-td">
-            <span title="{{value}} {{localize 'E20.unmorphed'}} + {{@root.system.bonuses.toughness}} {{localize 'E20.bonus'}} + {{@root.equippedArmorEffect}} {{localize 'E20.armor'}}">
+            <span title="{{value}} {{localize 'E20.unmorphed'}} + {{@root.system.bonuses.toughness}} {{localize 'E20.bonus'}} + {{@root.equippedArmorEffect}} {{localize 'ITEM.TypeArmor'}}">
               {{sum value @root.system.bonuses.toughness @root.equippedArmorEffect}}
             </span>
           </td>

@@ -11,7 +11,7 @@
 </div>
 
 {{!-- Powers --}}
-{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.powers' dataType='power'}}
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.itemTypePowerPlural' dataType='power'}}
   {{#*inline "chips" item}}
   {{#if item.system.source}}
   <span class="chip" name="chip.source">{{item.system.source}}</span>

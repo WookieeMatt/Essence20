@@ -26,7 +26,7 @@
     <div class="tab combat flexcol" data-group="primary" data-tab="combat">
       {{> "systems/essence20/templates/actor/parts/actor-defenses.hbs" bonusDisplayType='input'}}
       {{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.resources
-      title='E20.resources' dataType='resource'}}
+      title='E20.itemTypeResourcePlural' dataType='resource'}}
       {{#*inline "item-label" item}}
       {{item.name}}
       <input class="one-digit-input inline-edit" data-field="system.uses.value" type="number"

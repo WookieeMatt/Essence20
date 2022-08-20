@@ -1,4 +1,4 @@
-{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.armors title='E20.armor' dataType='armor'}}
+{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.armors title='E20.itemTypeArmorPlural' dataType='armor'}}
   {{#*inline "chips" item}}
   <span class="chip" name="chip.armor.availability">{{localize (lookup @root.config.availabilities item.system.availability)}}</span>
   <span class="chip" name="chip.armor.classification">{{localize (lookup @root.config.armorClassifications item.system.classification)}}</span>
