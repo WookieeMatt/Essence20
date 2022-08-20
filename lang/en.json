@@ -26,6 +26,10 @@
     "TypeTrait": "Trait"
   },
   "E20": {
+    "gearEffectArea": "Effect Area/Length/Radius",
+    "gearEffectShape": "Effect Shape",
+    "gearQuantity": "Quantity",
+    "gearToughness": "Toughness",
     "armorAvailability": "Availability",
     "armorClassification": "Classification",
     "armorTrait": "Trait",
@@ -76,9 +80,6 @@
     "damages": "Damages",
     "description": "Description",
     "edge": "Edge",
-    "effect": "Effect",
-    "effectArea": "Effect Area/Length/Radius",
-    "effectShape": "Effect Shape",
     "equipped": "Equipped?",
     "essencesLabel": "Essences",
     "essenceLabel": "Essence",
