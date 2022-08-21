@@ -1,9 +1,10 @@
 @use '../assets/variables' as v;
 
 .essence20 .npc-sheet-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: v.$textcolor1;
 }
 
 .essence20 .npc-health-container {
@@ -28,4 +29,11 @@
   border: v.$border;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
+}
+
+.essence20 .npc-vert-center {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: auto;
 }

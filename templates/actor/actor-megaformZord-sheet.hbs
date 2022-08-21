@@ -1,15 +1,23 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
-  <header class="sheet-header">
-    {{!-- Actor Sheet Header --}}
-    {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
-    <div class="zord-header">
-      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
-        placeholder="{{ localize 'E20.ZordPrerequisite' }}" />
-      <input type="text" name="system.ranger" value="{{system.ranger}}"
-        placeholder="{{ localize 'E20.ZordRanger' }}" />
-      <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
+   {{!-- Actor Sheet Header --}}
+    <div class="sheet-header">
+      <span class="resource flex-group-center npc-vert-center">
+        {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
+      </span>
+      <div class="pr-header-fields">
+        <div>
+          <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
+          <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+        </div>
+        <div class="pr-details-fields flexrow-nowrap">
+          <div>
+            <label for="prerequisite" class="resource-label">{{localize 'E20.ZordPrerequisite'}}</label>
+            <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
+              placeholder="{{ localize 'E20.ZordPrerequisite' }}" />
+          </div>
+        </div>
+      </div>
     </div>
-  </header>
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">

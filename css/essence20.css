@@ -61,13 +61,13 @@
   list-style: none;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -102,7 +102,7 @@
 }
 
 .essence20 .editor-content {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   min-height: fit-content;
   font-size: 16px;
   padding: 0;
@@ -116,7 +116,6 @@
   justify-content: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
-  align-items: center;
   text-align: center;
 }
 
@@ -164,18 +163,18 @@
   /* font-family: "Roboto", sans-serif; */
   font-family: "Comic Neue", cursive;
   font-weight: bold;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  background: #424242;
-  color: #c7c4c4;
+  background: rgb(66, 66, 66);
+  color: rgb(199, 196, 196);
 }
 
 .window-app .window-content button {
-  color: #c7c4c4;
-  background: #424242;
+  color: rgb(199, 196, 196);
+  background: rgb(66, 66, 66);
   border-color: black;
   border-radius: 20px;
   box-shadow: 4px 4px 0 black;
@@ -191,19 +190,19 @@
 }
 
 .dialog .dialog-buttons button.default {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .dialog .dialog-buttons button {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .dialog .dialog-buttons {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 #module-management .package-list .package-title {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .item-button-container {
@@ -212,7 +211,7 @@
 
 .rollable:hover,
 .rollable:focus {
-  color: black;
+  color: rgb(0, 0, 0);
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
@@ -366,7 +365,7 @@
 }
 
 .essence20 .sheet-header {
-  background-color: #03129c80;
+  background-color: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   box-shadow: 4px 4px 0 black;
   padding: 6px;
@@ -412,27 +411,27 @@
   -webkit-box-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-header .pr-details-fields {
   font-family: "Comic Neue", cursive;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-header .pr-details-pronouns {
   font-family: "Comic Neue", cursive;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-header .pr-details-role {
   font-family: "Comic Neue", cursive;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-header .pr-details-level {
   font-family: "Comic Neue", cursive;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-header h1.charname {
@@ -456,7 +455,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   font-weight: bold;
 }
@@ -482,7 +481,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -560,7 +559,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 black;
@@ -570,11 +569,11 @@
 .essence20 .skills-container {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   padding: 8px;
   transform: rotate(0deg);
   scrollbar-width: thin;
-  background-color: #03129c80;
+  background-color: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -588,7 +587,7 @@
 .essence20 .skillscontainer {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
@@ -599,7 +598,7 @@
 .essence20 h2,
 .essence20 h3,
 .essence20 h4 {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .tox .tox-editor-container {
@@ -614,13 +613,13 @@
   list-style: none;
   padding: 4px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -725,11 +724,11 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -738,9 +737,10 @@
 }
 
 .essence20 .npc-sheet-header {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .npc-health-container {
@@ -755,26 +755,33 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
   height: fit-content;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
+}
+
+.essence20 .npc-vert-center {
+  display: flex;
+  align-items: center;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .essence20 .stats-container {
   list-style: none;
   padding: 6px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   flex-basis: auto;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -806,7 +813,7 @@
   grid-template-columns: repeat(4, 1fr);
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -816,7 +823,7 @@
 }
 
 .essence20 .zord-combiners {
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   padding: 8px;
@@ -829,7 +836,7 @@
 }
 
 .essence20 .item {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 /* Generic Item Sheet Styling */
@@ -839,7 +846,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -903,7 +910,7 @@
   align-items: center;
   padding: 0 2px;
   border-bottom: 4px solid #b5b1b1;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .items-list .item:last-child {
@@ -938,7 +945,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   font-weight: bold;
 }
@@ -982,17 +989,17 @@
 }
 
 .essence20 .item-sheet {
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   padding: 6px;
   min-height: none;
 }
 
 /* -- Jornal page styling -- */
 .journal-entry-pages {
-  color: #a3a3a3;
+  color: rgb(163, 163, 163);
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
@@ -1031,11 +1038,11 @@ option {
 
 form .notes,
 form .hint {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .span {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-body {
