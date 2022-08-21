@@ -87,22 +87,53 @@ export class Essence20Actor extends Actor {
     if (this.type !== 'powerRanger') return;
 
     const system = this.system;
-    const unmorphed = {
-      toughness: CONFIG.E20.defenseBase + system.essences.strength,
-      evasion: CONFIG.E20.defenseBase + system.essences.speed,
-      willpower: CONFIG.E20.defenseBase + system.essences.smarts,
-      cleverness: CONFIG.E20.defenseBase + system.essences.social,
-    };
-    const morphed = {
-      toughness: unmorphed.toughness + system.bonuses.toughness, // Armor added in sheet
-      evasion: unmorphed.evasion + system.bonuses.evasion,
-      willpower: unmorphed.willpower +  system.bonuses.willpower,
-      cleverness: unmorphed.cleverness +  system.bonuses.cleverness,
-    };
-    system.defenses = {
-      morphed,
-      unmorphed,
-    };
+
+    system.defenses = [
+      {
+        essence: "strength",
+        name: "toughness",
+        morphed: {
+          value: CONFIG.E20.defenseBase + system.essences.strength + system.bonuses.toughness,
+          bonus: system.bonuses.toughness
+        },
+        unmorphed: {
+          value: CONFIG.E20.defenseBase + system.essences.strength,
+        },
+      },
+      {
+        essence: "speed",
+        name: "evasion",
+        morphed: {
+          value: CONFIG.E20.defenseBase + system.essences.speed + system.bonuses.evasion,
+          bonus: system.bonuses.evasion
+        },
+        unmorphed: {
+          value: CONFIG.E20.defenseBase + system.essences.speed,
+        },
+      },
+      {
+        essence: "smarts",
+        name: "cleverness",
+        morphed: {
+          value: CONFIG.E20.defenseBase + system.essences.smarts + system.bonuses.cleverness,
+          bonus: system.bonuses.cleverness
+        },
+        unmorphed: {
+          value: CONFIG.E20.defenseBase + system.essences.smarts,
+        },
+      },
+      {
+        essence: "social",
+        name: "willpower",
+        morphed: {
+          value: CONFIG.E20.defenseBase + system.essences.social + system.bonuses.willpower,
+          bonus: system.bonuses.willpower
+        },
+        unmorphed: {
+          value: CONFIG.E20.defenseBase + system.essences.social,
+        },
+      },
+    ];
   }
 
   /**
