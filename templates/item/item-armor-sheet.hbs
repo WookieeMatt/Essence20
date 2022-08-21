@@ -5,43 +5,51 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="flexrow">
-      <label>{{localize 'E20.ArmorAvailability'}}</label>
-      <select name="system.availability">
-        {{#select system.availability}}
-        {{#each config.availabilities as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Availability --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorAvailability'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.availability">
+      {{#select system.availability}}
+      {{#each config.availabilities as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.ArmorClassification'}}</label>
-      <select name="system.classification">
-        {{#select system.classification}}
-        {{#each config.ArmorClassifications as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Classification --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorClassification'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.classification">
+      {{#select system.classification}}
+      {{#each config.ArmorClassifications as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.ArmorTrait'}}</label>
-      <select name="system.trait">
-        {{#select system.trait}}
-        {{#each config.armorTraits as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Trait --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTrait'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.trait">
+      {{#select system.trait}}
+      {{#each config.armorTraits as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <div>{{localize 'E20.ArmorEffect'}}</div>
-      <input type="number" name="system.effect" value="{{system.effect}}" />
-    </div>
+    {{!-- Effect --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorEffect'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.effect" value="{{system.effect}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}

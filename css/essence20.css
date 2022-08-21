@@ -990,6 +990,15 @@
   min-height: none;
 }
 
+.essence20 .item-field label {
+  flex: 2;
+}
+
+.essence20 .item-field .item-field-inputs {
+  flex: 3;
+  justify-content: flex-end;
+}
+
 /* -- Jornal page styling -- */
 .journal-entry-pages {
   color: #a3a3a3;
@@ -1027,6 +1036,15 @@ option {
 .essence20 .two-digit-input {
   max-width: 40px;
   text-align: center;
+}
+
+.essence20 .min-max-divider {
+  display: flex;
+  flex-grow: 0;
+  flex-basis: auto;
+  width: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 form .notes,

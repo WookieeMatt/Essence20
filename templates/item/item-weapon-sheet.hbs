@@ -5,116 +5,144 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponAvailability'}}</label>
-      <select name="system.availability">
-        {{#select system.availability}}
-        {{#each config.availabilities as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Availability --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponAvailability'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.availability">
+      {{#select system.availability}}
+      {{#each config.availabilities as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponSkill'}}</label>
-      <select name="system.classification.skill">
-        {{#select system.classification.skill}}
-        {{#each config.essenceSkills as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Skill --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponSkill'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.classification.skill">
+      {{#select system.classification.skill}}
+      {{#each config.essenceSkills as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponSize'}}</label>
-      <select name="system.classification.size">
-        {{#select system.classification.size}}
-        {{#each config.weaponSizes as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Size --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponSize'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.classification.size">
+      {{#select system.classification.size}}
+      {{#each config.weaponSizes as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponStyle'}}</label>
-      <select name="system.classification.style">
-        {{#select system.classification.style}}
-        {{#each config.weaponStyles as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Style --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponStyle'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.classification.style">
+      {{#select system.classification.style}}
+      {{#each config.weaponStyles as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponNumCharges'}}</label>
-      <input type="number" name="system.numCharges" value="{{system.numCharges}}" />
-      <input type="text" name="system.custom" value="{{system.custom}}" placeholder="{{ localize 'E20.WeaponNumChargesCustom' }}" />
-    </div>
+    {{!-- Charges --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponNumCharges'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.numCharges" value="{{system.numCharges}}" />
+    <input type="text" name="system.custom" value="{{system.custom}}"
+      placeholder="{{ localize 'E20.WeaponNumChargesCustom' }}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponEffect'}}</label>
-      <input type="text" name="system.effect" value="{{system.effect}}" />
-    </div>
+    {{!-- Effect --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponEffect'}}
+    {{#*inline "item-field-inputs"}}
+    <input class="item-field-inputs" type="text" name="system.effect" value="{{system.effect}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponAlternateEffects'}}</label>
-      <input type="text" name="system.alternateEffects" value="{{system.alternateEffects}}" />
-    </div>
+    {{!-- Alternate Effects --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponAlternateEffects'}}
+    {{#*inline "item-field-inputs"}}
+    <input class="item-field-inputs" type="text" name="system.alternateEffects" value="{{system.alternateEffects}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponUpgrades'}}</label>
-      <input type="text" name="system.upgrades" value="{{system.upgrades}}" />
-    </div>
+    {{!-- Upgrades --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponUpgrades'}}
+    {{#*inline "item-field-inputs"}}
+    <input class="item-field-inputs" type="text" name="system.upgrades" value="{{system.upgrades}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponHands'}}</label>
-      <input type="text" name="system.numHands" value="{{system.numHands}}" />
-    </div>
+    {{!-- Hands --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponHands'}}
+    {{#*inline "item-field-inputs"}}
+    <input class="item-field-inputs" type="text" name="system.numHands" value="{{system.numHands}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponTargets'}}</label>
-      <input type="number" name="system.numTargets" value="{{system.numTargets}}" />
-    </div>
+    {{!-- Targets --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponTargets'}}
+    {{#*inline "item-field-inputs"}}
+    <input class="item-field-inputs" type="number" name="system.numTargets" value="{{system.numTargets}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponRadius'}}</label>
-      <input type="number" name="system.radius" value="{{system.radius}}" />
-    </div>
+    {{!-- Radius --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponRadius'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.radius" value="{{system.radius}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponRange'}}</label>
-      <input type="number" name="system.range.min" value="{{system.range.min}}" placeholder="{{localize 'E20.WeaponRangeMin'}}" />
-      <input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"
-        placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" />
-      <input type="number" name="system.range.long" value="{{system.range.long}}"
-        placeholder="{{localize 'E20.WeaponRangeLong'}}" />
-      <input type="number" name="system.range.value" value="{{system.range.value}}"
-        placeholder="{{localize 'E20.WeaponRangeValue'}}" />
-    </div>
+    {{!-- Range --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponRange'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.range.min" value="{{system.range.min}}"
+      placeholder="{{localize 'E20.WeaponRangeMin'}}" />
+    <input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"
+      placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" />
+    <input type="number" name="system.range.long" value="{{system.range.long}}"
+      placeholder="{{localize 'E20.WeaponRangeLong'}}" />
+    <input type="number" name="system.range.value" value="{{system.range.value}}"
+      placeholder="{{localize 'E20.WeaponRangeValue'}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponRequirements'}}</label>
-      <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
-        placeholder="{{ localize 'E20.WeaponRequirementsCustom' }}" />
-      <select name="system.requirements.skill">
-        {{#select system.requirements.skill}}
-        {{#each config.essenceSkills as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-      <select name="system.requirements.shift">
-        {{#select system.requirements.shift}}
-        {{#each config.weaponRequirementShifts as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Requirements --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponRequirements'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
+      placeholder="{{ localize 'E20.WeaponRequirementsCustom' }}" />
+    <select name="system.requirements.skill">
+      {{#select system.requirements.skill}}
+      {{#each config.essenceSkills as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    <select name="system.requirements.shift">
+      {{#select system.requirements.shift}}
+      {{#each config.weaponRequirementShifts as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}

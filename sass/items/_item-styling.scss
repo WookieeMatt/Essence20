@@ -161,3 +161,12 @@
   padding: v.$padding;
   min-height: none;
 }
+
+.essence20 .item-field label {
+  flex: 2;
+}
+
+.essence20 .item-field .item-field-inputs {
+  flex: 3;
+  justify-content: flex-end;
+}
