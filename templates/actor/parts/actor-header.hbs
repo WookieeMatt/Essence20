@@ -1,0 +1,14 @@
+<header class="sheet-header">
+  <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+  <div class="pr-header-fields">
+    <div>
+      <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+    </div>
+    <div class="flexrow">
+      {{#> secondary-fields}}
+      {{!-- Custom secondary fields here --}}
+      {{/secondary-fields}}
+    </div>
+  </div>
+</header>
