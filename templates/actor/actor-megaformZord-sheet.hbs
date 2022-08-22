@@ -1,11 +1,7 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   {{!-- Actor Sheet Header --}}
-  <div class="sheet-header">
-    <span class="resource flex-group-center npc-vert-center">
-      <div class="npc-image npc-vert-center">
-        <img class="profile-img" src="{{actor.img}}" data-edit="img" />
-      </div>
-    </span>
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
     <div class="pr-header-fields">
       <div>
         <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
@@ -19,7 +15,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </header>
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
