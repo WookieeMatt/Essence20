@@ -1,13 +1,15 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   {{!-- Actor Sheet Header --}}
   <div class="sheet-header">
-    <span class="resource flex-group-center">
-      {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
+    <span class="resource flex-group-center npc-vert-center">
+      <div class="npc-image npc-vert-center">
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" />
+      </div>
     </span>
     <div class="pr-header-fields">
       <div class="header-fields flex-group-center">
         <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
-        <h2 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h2>
+        <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
       </div>
       <div class="flexrow">
         <div class="resource flex-group-center">

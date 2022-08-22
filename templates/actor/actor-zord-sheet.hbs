@@ -2,7 +2,9 @@
   {{!-- Actor Sheet Header --}}
   <div class="sheet-header">
     <span class="resource flex-group-center npc-vert-center">
-    {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
+    <div class="npc-image npc-vert-center">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" />
+    </div>
     </span>
     <div class="pr-header-fields">
       <div>
