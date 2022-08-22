@@ -6,6 +6,16 @@
       <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
     </div>
     <div class="flexrow">
+      <div style="display:flex; flex-direction:column;">
+        <label for="system.size" class="resource-label">{{localize 'E20.ActorSize'}}</label>
+        <select name="system.size">
+          {{#select system.size}}
+          {{#each config.actorSizes as |value size|}}
+          <option value="{{size}}">{{localize value}}</option>
+          {{/each}}
+          {{/select}}
+        </select>
+      </div>
       {{#> secondary-fields}}
       {{!-- Custom secondary fields here --}}
       {{/secondary-fields}}
