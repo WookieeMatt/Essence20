@@ -23,7 +23,7 @@
     {{#*inline "item-field-inputs"}}
     <select name="system.classification">
       {{#select system.classification}}
-      {{#each config.ArmorClassifications as |name type|}}
+      {{#each config.armorClassifications as |name type|}}
       <option value="{{type}}">{{localize name}}</option>
       {{/each}}
       {{/select}}

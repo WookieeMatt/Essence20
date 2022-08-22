@@ -41,6 +41,7 @@
     "ArmorClassificationLight": "Light",
     "ArmorClassificationMedium": "Medium",
     "ArmorClassificationNon": "Non Armor",
+    "ArmorClassificationUltraHeavy": "Ultra Heavy",
     "ArmorEffect": "Effect",
     "ArmorTrait": "Trait",
     "ArmorTraitDeflective": "Deflective",
