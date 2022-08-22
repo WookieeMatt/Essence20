@@ -5,26 +5,32 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponUpgradeAvailability'}}</label>
-      <select name="system.availability">
-        {{#select system.availability}}
-        {{#each config.availabilities as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Availability --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponUpgradeAvailability'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.availability">
+      {{#select system.availability}}
+      {{#each config.availabilities as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponUpgradeBenefit'}}</label>
-      <input type="text" name="system.benefit" value="{{system.benefit}}" />
-    </div>
+    {{!-- Benefit --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponUpgradeBenefit'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.benefit" value="{{system.benefit}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.WeaponUpgradePrerequisite'}}</label>
-      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
-    </div>
+    {{!-- Prerequisite --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponUpgradePrerequisite'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}

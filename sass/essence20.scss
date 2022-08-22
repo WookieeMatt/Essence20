@@ -29,6 +29,15 @@ option {
   text-align: center;
 }
 
+.essence20 .min-max-divider {
+  display: flex;
+  flex-grow: 0;
+  flex-basis: auto;
+  width: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
 form .notes,
 form .hint {
   color: v.$textcolor1;

@@ -5,41 +5,53 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="flexrow">
-      <label>{{localize 'E20.GearEffectArea'}}</label>
-      <input type="number" name="system.effectArea" value="{{system.effectArea}}" />
-    </div>
+    {{!-- Effect Area --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GearEffectArea'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.effectArea" value="{{system.effectArea}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.GearEffectShape'}}</label>
-      <select name="system.EffectShape">
-        {{#select system.EffectShape}}
-        {{#each config.weaponEffectShapes as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
-    </div>
+    {{!-- Effect Shape --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GearEffectShape'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.EffectShape">
+      {{#select system.EffectShape}}
+      {{#each config.weaponEffectShapes as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize config.lightRanges.bright}}</label>
-      <input type="number" name="system.lightRange.bright" value="{{system.lightRange.bright}}" />
-    </div>
+    {{!-- Bright --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label=config.lightRanges.bright}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.lightRange.bright" value="{{system.lightRange.bright}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize config.lightRanges.dim}}</label>
-      <input type="number" name="system.lightRange.dim" value="{{system.lightRange.dim}}" />
-    </div>
+    {{!-- Dim --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label=config.lightRanges.dim}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.lightRange.dim" value="{{system.lightRange.dim}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.GearQuantity'}}</label>
-      <input type="number" name="system.quantity" value="{{system.quantity}}" />
-    </div>
+    {{!-- Dim --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GearQuantity'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.quantity" value="{{system.quantity}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.GearToughness'}}</label>
-      <input type="number" name="system.toughness" value="{{system.toughness}}" />
-    </div>
+    {{!-- Toughness --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GearToughness'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.toughness" value="{{system.toughness}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
