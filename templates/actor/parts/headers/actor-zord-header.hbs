@@ -1,17 +1,16 @@
-{{#>"systems/essence20/templates/actor/parts/actor-header.hbs"}}
+{{#>"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
 {{#*inline "secondary-fields"}}
 <div>
   <label for="prerequisite" class="resource-label">{{localize 'E20.ZordPrerequisite'}}</label>
-  <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
-    placeholder="{{ localize 'E20.ZordPrerequisite' }}" />
+  <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
 </div>
 <div>
   <label for="ranger" class="resource-label">{{ localize 'E20.ZordRanger' }}</label>
-  <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ZordRanger' }}" />
+  <input type="text" name="system.ranger" value="{{system.ranger}}" />
 </div>
 <div class="flexcol">
   <label for="iscombiner" class="resource-label">Combiner</label>
   <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
 </div>
 {{/inline}}
-{{/"systems/essence20/templates/actor/parts/actor-header.hbs"}}
+{{/"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
