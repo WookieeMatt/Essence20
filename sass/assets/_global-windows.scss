@@ -22,14 +22,16 @@
   box-shadow: v.$boxshadow;
 }
 
-.sheet {
+.essence20 .sheet {
   min-width: fit-content;
+  max-width: 55%;
  }
 
 .actor {
   min-width: 860px;
   min-height: auto;
 }
+
 
 .dialog .dialog-buttons button.default {
   color: v.$textcolor1;

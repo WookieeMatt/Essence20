@@ -181,8 +181,9 @@
   box-shadow: 4px 4px 0 black;
 }
 
-.sheet {
+.essence20 .sheet {
   min-width: fit-content;
+  max-width: 55%;
 }
 
 .actor {

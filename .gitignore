@@ -10,3 +10,6 @@ npm-debug.log
 *.lock
 jsconfig.json
 foundry
+
+# SASS
+css/essence20.css.map
