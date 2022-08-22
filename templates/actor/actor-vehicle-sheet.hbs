@@ -1,13 +1,6 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   {{!-- Actor Sheet Header --}}
-  {{#>"systems/essence20/templates/actor/parts/actor-header.hbs"}}
-  {{#*inline "secondary-fields"}}
-  <div>
-    <label for="name" class="resource-label">{{localize 'E20.NpcThreatLevel'}}</label>
-    <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
-  </div>
-  {{/inline}}
-  {{/"systems/essence20/templates/actor/parts/actor-header.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/headers/actor-vehicle-header.hbs"}}
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
