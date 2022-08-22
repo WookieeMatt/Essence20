@@ -6,16 +6,6 @@
     <label for="system.prerequisite" class="resource-label">{{localize 'E20.ZordPrerequisite'}}</label>
     <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
   </div>
-  <div style="display:flex; flex-direction:column;">
-    <label for="system.size" class="resource-label">{{localize 'E20.ZordPrerequisite'}}</label>
-    <select name="system.size">
-      {{#select system.size}}
-      {{#each config.actorSizes as |value size|}}
-      <option value="{{size}}">{{localize value}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-  </div>
   {{/inline}}
   {{/"systems/essence20/templates/actor/parts/actor-header.hbs"}}
 

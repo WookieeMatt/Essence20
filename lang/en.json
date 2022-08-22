@@ -35,6 +35,7 @@
     "ActorName": "Name",
     "ActorPronouns": "Pronouns",
     "ActorRole": "Role",
+    "ActorSize": "Size",
     "ActorSizeCommon": "Common",
     "ActorSizeExtended": "Extended",
     "ActorSizeExtended2": "Extended II",

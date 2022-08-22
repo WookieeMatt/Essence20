@@ -1,18 +1,13 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   {{!-- Actor Sheet Header --}}
-  <header class="sheet-header">
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-    <div class="pr-header-fields">
-      <div class="header-fields flex-group-center">
-        <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
-        <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
-      </div>
-      <div class="resource flex-group-center">
-        {{localize 'E20.NpcThreatLevel'}}
-        <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
-      </div>
-    </div>
-  </header>
+  {{#>"systems/essence20/templates/actor/parts/actor-header.hbs"}}
+  {{#*inline "secondary-fields"}}
+  <div>
+    <label for="name" class="resource-label">{{localize 'E20.NpcThreatLevel'}}</label>
+    <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
+  </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/actor/parts/actor-header.hbs"}}
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
