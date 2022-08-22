@@ -101,6 +101,7 @@ E20.armorClassifications = {
   light: "E20.ArmorClassificationLight",
   medium: "E20.ArmorClassificationMedium",
   heavy: "E20.ArmorClassificationHeavy",
+  ultraHeavy: "E20.ArmorClassificationUltraHeavy",
 };
 
 // Options for Armor trait
