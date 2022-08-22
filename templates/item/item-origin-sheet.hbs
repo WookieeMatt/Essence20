@@ -5,42 +5,56 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="flexrow">
-      <label>{{localize 'E20.OriginEssenceIncreaseOptions'}}</label><input type="text"
-        name="system.essenceIncreaseOptions" value="{{system.essenceIncreaseOptions}}" />
-    </div>
+    {{!-- Essence Increase Options --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceIncreaseOptions'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.essenceIncreaseOptions" value="{{system.essenceIncreaseOptions}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.OriginStartingHealth'}}</label><input type="text" name="system.startingHealth"
-        value="{{system.startingHealth}}" />
-    </div>
+    {{!-- Starting Health --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginStartingHealth'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.startingHealth" value="{{system.startingHealth}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.OriginBonusSkillLevels'}}</label><input type="text" name="system.bonusSkillLevels"
-        value="{{system.bonusSkillLevels}}" />
-    </div>
+    {{!-- Bonus Skill Levels --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBonusSkillLevels'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.bonusSkillLevels" value="{{system.bonusSkillLevels}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.OriginGroundMovement'}}</label><input type="text" name="system.groundMovement"
-        value="{{system.groundMovement}}" />
-    </div>
+    {{!-- Ground Movement --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginGroundMovement'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.groundMovement" value="{{system.groundMovement}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.OriginLanguages'}}</label><input type="text" name="system.languages"
-        value="{{system.languages}}" />
-    </div>
+    {{!-- Languages --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginLanguages'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.languages" value="{{system.languages}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.OriginBenefitName'}}</label><input type="text" name="system.benefit.name"
-        value="{{system.benefit.name}}" />
-    </div>
+    {{!-- Benefit Name --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefitName'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.benefit.name" value="{{system.benefit.name}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    <div class="flexrow">
-      <label>{{localize 'E20.OriginBenefitDescription'}}</label><input type="text" name="system.benefit.description"
-        value="{{system.benefit.description}}" />
-    </div>
+    {{!-- Benefit Description --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefitDescription'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.benefit.description" value="{{system.benefit.description}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-     {{!-- Description Section --}}
+    {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
   </section>
 </form>
