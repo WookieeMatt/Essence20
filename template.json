@@ -272,7 +272,7 @@
         "machine",
         "zordBase"
       ],
-      "Iscombiner": true,
+      "isCombiner": true,
       "prerequisites": [],
       "ranger": ""
     },
@@ -300,7 +300,7 @@
       "threatPower",
       "trait",
       "weapon",
-      "WeaponUpgrade"
+      "weaponUpgrade"
     ],
     "templates": {
       "itemDescription": {
@@ -419,7 +419,7 @@
       },
       "upgrades": ""
     },
-    "WeaponUpgrade": {
+    "weaponUpgrade": {
       "templates": [
         "itemDescription"
       ],
