@@ -330,7 +330,7 @@
         "itemDescription"
       ],
       "effectArea": null,
-      "EffectShape": null,
+      "effectShape": null,
       "lightRange": {
         "bright": null,
         "dim": null
