@@ -1,6 +1,11 @@
 {{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.perks title='E20.ItemTypePerkPlural' dataType='perk'}}
   {{#*inline "additional-expand-details" item}}
   <div>{{localize 'E20.PerkPrerequisite'}}: {{item.system.prerequisite}}</div>
-  <div>{{localize 'E20.PerkSource'}}: {{item.system.source}}</div>
+  {{/inline}}
+
+  {{#*inline "chips" item}}
+  {{#if item.system.source}}
+  <span class="chip" name="chip.source">{{item.system.source}}</span>
+  {{/if}}
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
