@@ -26,6 +26,8 @@
     "TypeTrait": "Trait"
   },
   "E20": {
+    "PerkPrerequisite": "Prerequisite",
+    "PerkSource": "Source",
     "AccordionSkillsTitle": "Skills",
     "ActorConditioning": "Conditioning",
     "ActorDescription": "Description",
