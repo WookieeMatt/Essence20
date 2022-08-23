@@ -36,40 +36,6 @@
   border-radius: 15px;
 }
 
-.essence20 .sheet-header .header-fields {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  grid-area: npc-grid-2;
-}
-
-.essence20 .sheet-header .pr-header-fields {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: v.$textcolor1;
-}
-
-.essence20 .sheet-header .pr-details-fields {
-  font-family: "Comic Neue", cursive;
-  color: v.$textcolor1;
-}
-
-.essence20 .sheet-header .pr-details-pronouns {
-  font-family: "Comic Neue", cursive;
-  color: v.$textcolor1;
-}
-
-.essence20 .sheet-header .pr-details-role {
-  font-family: "Comic Neue", cursive;
-  color: v.$textcolor1;
-}
-
-.essence20 .sheet-header .pr-details-level {
-  font-family: "Comic Neue", cursive;
-  color: v.$textcolor1;
-}
-
 .essence20 .sheet-header h1.charname {
   height: 50px;
   padding: 0px;
@@ -109,4 +75,3 @@
   display: -ms-flexbox;
   display: flex;
 }
-

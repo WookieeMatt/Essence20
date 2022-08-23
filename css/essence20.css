@@ -61,13 +61,13 @@
   list-style: none;
   padding: 8px;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: column;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -102,7 +102,7 @@
 }
 
 .essence20 .editor-content {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   min-height: fit-content;
   font-size: 16px;
   padding: 0;
@@ -164,18 +164,18 @@
   /* font-family: "Roboto", sans-serif; */
   font-family: "Comic Neue", cursive;
   font-weight: bold;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  background: rgb(66, 66, 66);
-  color: rgb(199, 196, 196);
+  background: #424242;
+  color: #c7c4c4;
 }
 
 .window-app .window-content button {
-  color: rgb(199, 196, 196);
-  background: rgb(66, 66, 66);
+  color: #c7c4c4;
+  background: #424242;
   border-color: black;
   border-radius: 20px;
   box-shadow: 4px 4px 0 black;
@@ -192,19 +192,19 @@
 }
 
 .dialog .dialog-buttons button.default {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 .dialog .dialog-buttons button {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 .dialog .dialog-buttons {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 #module-management .package-list .package-title {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 .item-button-container {
@@ -213,7 +213,7 @@
 
 .rollable:hover,
 .rollable:focus {
-  color: rgb(0, 0, 0);
+  color: black;
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
@@ -367,7 +367,7 @@
 }
 
 .essence20 .sheet-header {
-  background-color: rgba(3, 18, 156, 0.5019607843);
+  background-color: #03129c80;
   border: 4px solid #b5b1b1;
   box-shadow: 4px 4px 0 black;
   padding: 6px;
@@ -402,40 +402,6 @@
   border-radius: 15px;
 }
 
-.essence20 .sheet-header .header-fields {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  grid-area: npc-grid-2;
-}
-
-.essence20 .sheet-header .pr-header-fields {
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  color: rgb(199, 196, 196);
-}
-
-.essence20 .sheet-header .pr-details-fields {
-  font-family: "Comic Neue", cursive;
-  color: rgb(199, 196, 196);
-}
-
-.essence20 .sheet-header .pr-details-pronouns {
-  font-family: "Comic Neue", cursive;
-  color: rgb(199, 196, 196);
-}
-
-.essence20 .sheet-header .pr-details-role {
-  font-family: "Comic Neue", cursive;
-  color: rgb(199, 196, 196);
-}
-
-.essence20 .sheet-header .pr-details-level {
-  font-family: "Comic Neue", cursive;
-  color: rgb(199, 196, 196);
-}
-
 .essence20 .sheet-header h1.charname {
   height: 50px;
   padding: 0px;
@@ -457,7 +423,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   font-weight: bold;
 }
@@ -483,7 +449,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -561,7 +527,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 black;
@@ -571,11 +537,11 @@
 .essence20 .skills-container {
   list-style: none;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   padding: 8px;
   transform: rotate(0deg);
   scrollbar-width: thin;
-  background-color: rgba(3, 18, 156, 0.5019607843);
+  background-color: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -589,7 +555,7 @@
 .essence20 .skillscontainer {
   list-style: none;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
@@ -600,7 +566,7 @@
 .essence20 h2,
 .essence20 h3,
 .essence20 h4 {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 .essence20 .tox .tox-editor-container {
@@ -615,13 +581,13 @@
   list-style: none;
   padding: 4px;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: row;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -726,11 +692,11 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -750,13 +716,13 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
   height: fit-content;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -766,10 +732,10 @@
   list-style: none;
   padding: 6px;
   overflow-y: auto;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   flex-basis: auto;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -801,7 +767,7 @@
   grid-template-columns: repeat(4, 1fr);
   border: 1px solid #b5b1b1;
   box-shadow: 3px 3px 0 #4a4848;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -811,7 +777,7 @@
 }
 
 .essence20 .zord-combiners {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   padding: 8px;
@@ -824,7 +790,7 @@
 }
 
 .essence20 .item {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 /* Generic Item Sheet Styling */
@@ -834,7 +800,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -898,7 +864,7 @@
   align-items: center;
   padding: 0 2px;
   border-bottom: 4px solid #b5b1b1;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 .essence20 .items-list .item:last-child {
@@ -933,7 +899,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   font-weight: bold;
 }
@@ -977,10 +943,10 @@
 }
 
 .essence20 .item-sheet {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: #03129c80;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
   padding: 6px;
   min-height: none;
 }
@@ -996,7 +962,7 @@
 
 /* -- Jornal page styling -- */
 .journal-entry-pages {
-  color: rgb(163, 163, 163);
+  color: #a3a3a3;
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
@@ -1044,11 +1010,11 @@ option {
 
 form .notes,
 form .hint {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 .essence20 .span {
-  color: rgb(199, 196, 196);
+  color: #c7c4c4;
 }
 
 .essence20 .sheet-body {

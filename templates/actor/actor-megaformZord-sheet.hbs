@@ -1,21 +1,6 @@
 <form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   {{!-- Actor Sheet Header --}}
-  <header class="sheet-header">
-    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-    <div class="pr-header-fields">
-      <div>
-        <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
-        <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
-      </div>
-      <div class="pr-details-fields flexrow-nowrap">
-        <div>
-          <label for="prerequisite" class="resource-label">{{localize 'E20.ZordPrerequisite'}}</label>
-          <input type="text" name="system.prerequisite" value="{{system.prerequisite}}"
-            placeholder="{{ localize 'E20.ZordPrerequisite' }}" />
-        </div>
-      </div>
-    </div>
-  </header>
+  {{> "systems/essence20/templates/actor/parts/headers/actor-megaformZord-header.hbs"}}
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">

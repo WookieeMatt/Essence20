@@ -269,18 +269,18 @@ E20.lightRanges = {
  ***********************************************/
 
 // Options for Creature size
-E20.creatureSizes = {
-  small: "E20.CreatureSizeSmall",
-  common: "E20.CreatureSizeCommon",
-  large: "E20.CreatureSizeLarge",
-  long: "E20.CreatureSizeLong",
-  huge: "E20.CreatureSizeHuge",
-  extended: "E20.CreatureSizeExtended",
-  gigantic: "E20.CreatureSizeGigantic",
-  extended2: "E20.CreatureSizeExtended2",
-  towering: "E20.CreatureSizeTowering",
-  extended3: "E20.CreatureSizeExtended3",
-  titanic: "E20.CreatureSizeTitanic"
+E20.actorSizes = {
+  small: "E20.ActorSizeSmall",
+  common: "E20.ActorSizeCommon",
+  large: "E20.ActorSizeLarge",
+  long: "E20.ActorSizeLong",
+  huge: "E20.ActorSizeHuge",
+  extended: "E20.ActorSizeExtended",
+  gigantic: "E20.ActorSizeGigantic",
+  extended2: "E20.ActorSizeExtended2",
+  towering: "E20.ActorSizeTowering",
+  extended3: "E20.ActorSizeExtended3",
+  titanic: "E20.ActorSizeTitanic"
 };
 
 // Types of movement used by Actors

@@ -1,0 +1,16 @@
+{{#>"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
+{{#*inline "secondary-fields"}}
+<div>
+  <label for="system.pronouns" class="resource-label">{{localize 'E20.ActorPronouns'}}</label>
+  <input type="text" name="system.pronouns" value="{{system.pronouns}}" />
+</div>
+<div>
+  <label for="system.role" class="resource-label">{{localize 'E20.ActorRole'}}</label>
+  <input type="text" name="system.role" value="{{system.role}}" />
+</div>
+<div>
+  <label for="system.level" class="resource-label">{{localize 'E20.ActorLevel'}}</label>
+  <input type="number" name="system.level" value="{{system.level}}" />
+</div>
+{{/inline}}
+{{/"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
