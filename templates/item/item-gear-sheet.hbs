@@ -17,7 +17,7 @@
     {{#*inline "item-field-inputs"}}
     <select name="system.effectShape">
       {{#select system.effectShape}}
-      {{#each config.weaponEffectShapes as |name type|}}
+      {{#each @root.config.effectShapes as |name type|}}
       <option value="{{type}}">{{localize name}}</option>
       {{/each}}
       {{/select}}
@@ -25,24 +25,11 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    {{!-- Bright --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label=config.lightRanges.bright}}
+    {{!-- Light Range --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GearLightRange'}}
     {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.lightRange.bright" value="{{system.lightRange.bright}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-
-    {{!-- Dim --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label=config.lightRanges.dim}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.lightRange.dim" value="{{system.lightRange.dim}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-
-    {{!-- Dim --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GearQuantity'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.quantity" value="{{system.quantity}}" />
+    <input type="number" name="system.lightRange.bright" value="{{system.lightRange.bright}}" placeholder={{localize "E20.LightRangeBright"}} />
+    <input type="number" name="system.lightRange.dim" value="{{system.lightRange.dim}}" placeholder={{localize "E20.LightRangeDim"}} />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 

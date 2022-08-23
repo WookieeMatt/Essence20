@@ -1,2 +1,20 @@
-{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.gears
-title='E20.ItemTypeGearPlural' dataType='gear'}}
+{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.gears title='E20.ItemTypeGearPlural' dataType='gear'}}
+  {{#*inline "chips" item}}
+  <span class="chip" name="chip.gear.quantity">{{localize 'E20.GearQuantity'}}: {{item.system.quantity}}</span>
+  {{#if item.system.toughness}}
+  <span class="chip" name="chip.gear.toughness">{{localize 'E20.GearToughness'}}: {{item.system.toughness}}</span>
+  {{/if}}
+  {{#if item.system.effectArea}}
+  <span class="chip" name="chip.gear.effectArea">{{localize 'E20.GearEffectArea'}}: {{item.system.effectArea}}</span>
+  {{/if}}
+  {{#if (lookup @root.config.effectShapes item.system.effectShape)}}
+  <span class="chip" name="chip.gear.effectShape">{{localize 'E20.GearEffectShape'}}: {{localize (lookup @root.config.effectShapes item.system.effectShape)}}</span>
+  {{/if}}
+  {{#if item.system.lightRange.bright}}
+  <span class="chip" name="chip.gear.lightRange.bright">{{localize 'E20.LightRangeBright'}}: {{item.system.lightRange.bright}}</span>
+  {{/if}}
+  {{#if item.system.lightRange.dim}}
+  <span class="chip" name="chip.gear.lightRange.dim">{{localize 'E20.LightRangeDim'}}: {{item.system.lightRange.dim}}</span>
+  {{/if}}
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
