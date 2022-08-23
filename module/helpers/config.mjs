@@ -19,13 +19,6 @@ E20.defenses = {
  * Weapons                                      *
  ***********************************************/
 
-// Weapon effect shapes
-E20.weaponEffectShapes = {
-  circle: "E20.EffectShapeCircle",
-  cone: "E20.EffectShapeCone",
-  square: "E20.EffectShapeSquare",
-};
-
 // Shifts required to use a weapon
 E20.weaponRequirementShifts = {
   "none": "",
@@ -256,6 +249,14 @@ E20.availabilities = {
   prototype: "E20.AvailabilityPrototype",
   unique: "E20.AvailabilityUnique",
   theoretical: "E20.AvailabilityTheoretical",
+};
+
+// Effect shapes
+E20.effectShapes = {
+  none: "",
+  circle: "E20.EffectShapeCircle",
+  cone: "E20.EffectShapeCone",
+  square: "E20.EffectShapeSquare",
 };
 
 // Light ranges used by Gear
