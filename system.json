@@ -6,9 +6,9 @@
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion": "10",
   "author": "WookieeChan, potato",
-  "esmodules": ["module/essence20.mjs", "module/story-points-tracker.js"],
+  "esmodules": ["module/essence20.mjs", "module/story-points-tracker.js", "module/settings.js"],
   "styles": ["css/essence20.css", "css/story-points-tracker.css"],
-  "scripts": ["module/settings.js"],
+  "scripts": [],
   "packs": [],
   "languages": [
     {
@@ -21,6 +21,7 @@
   "gridUnits": "ft",
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
+  "socket": true,
   "url": "https://github.com/WookieeMatt/Essence20",
   "manifest": "https://raw.githubusercontent.com/WookieeMatt/Essence20/beta/system.json",
   "download": "https://github.com/WookieeMatt/Essence20/releases/download/beta-1.2.10/Essence20-beta-1.2.10.zip",
