@@ -28,7 +28,7 @@ export const registerSettings = function () {
     default: "everyone",
     type: String,
     choices: ACCESS_OPTIONS,
-    onChange: debouncedReload
+    onChange: debouncedReload,
   });
 
   game.settings.register(systemName, "sptGmPointsArePublic", {
@@ -37,7 +37,7 @@ export const registerSettings = function () {
     config: true,
     default: true,
     type: Boolean,
-    onChange: debouncedReload
+    onChange: debouncedReload,
   });
 
   game.settings.register(systemName, "sptShow", {
@@ -47,7 +47,7 @@ export const registerSettings = function () {
     default: "toggle",
     type: String,
     choices: SHOW_OPTIONS,
-    onChange: debouncedReload
+    onChange: debouncedReload,
   });
 
   game.settings.register(systemName, "sptMessage", {
@@ -56,7 +56,7 @@ export const registerSettings = function () {
     config: true,
     default: true,
     type: Boolean,
-    onChange: debouncedReload
+    onChange: debouncedReload,
   });
 
   /* -------------------------------------------- */
@@ -66,20 +66,20 @@ export const registerSettings = function () {
     scope: "client",
     default: true,
     type: Boolean,
-    config: false
+    config: false,
   });
 
   game.settings.register(systemName, "sptGmPoints", {
     scope: "world",
     default: 0,
     type: Number,
-    config: false
+    config: false,
   });
 
   game.settings.register(systemName, "sptStoryPoints", {
     scope: "world",
     default: 0,
     type: Number,
-    config: false
+    config: false,
   });
 }

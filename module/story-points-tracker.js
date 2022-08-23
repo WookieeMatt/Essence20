@@ -44,6 +44,7 @@ export class StoryPointsTracker extends Application {
       this.gmPoints = Math.max(0, value);
       $('#gm-points-input', this.element).val(this.gmPoints);
       game.settings.set('essence20', 'sptGmPoints', this.gmPoints);
+      this.updateClients();
     } else {
       $('#gm-points-input', this.element).val(this.gmPoints);
     }
@@ -55,9 +56,26 @@ export class StoryPointsTracker extends Application {
       this.storyPoints = Math.max(0, value);
       $('#story-points-input', this.element).val(this.storyPoints);
       game.settings.set('essence20', 'sptStoryPoints', this.storyPoints);
+      this.updateClients();
     } else {
       $('#story-points-input', this.element).val(this.storyPoints);
     }
+  }
+
+  // Called when the GM modifies a point value to update clients/players
+  updateClients() {
+    game.socket.emit('system.essence20', {
+      gmPoints: this.gmPoints,
+      storyPoints: this.storyPoints,
+    });
+  }
+
+  // Called when a client/player receives an update from the GM
+  handleUpdate(data) {
+    this.gmPoints = data.gmPoints;
+    $('#gm-points-input', this.element).val(this.gmPoints);
+    this.storyPoints = data.storyPoints;
+    $('#story-points-input', this.element).val(this.storyPoints);
   }
 
   activateListeners(html) {
@@ -153,6 +171,11 @@ export class StoryPointsTracker extends Application {
 
 Hooks.on('init', () => {
   registerSettings();
+
+  // Clients (players) listen on the socket to update the UI whenever the GM changes values
+  game.socket.on('system.essence20', (data) => {
+    game.StoryPointsTracker.handleUpdate(data);
+  });
 });
 
 Hooks.on('ready', () => {
