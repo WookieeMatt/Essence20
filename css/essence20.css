@@ -751,12 +751,30 @@
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
+  gap: 5px;
 }
 
 .essence20 .sheet-body .tab,
 .essence20 .sheet-body .tab .editor {
   height: 100%;
   gap: 10px;
+}
+
+.essence20 .tabs .item {
+  background: #2233ce80;
+  border: 1px solid;
+  border-radius: 4px 4px 0px 0px;
+  flex: 1;
+}
+
+.essence20 .tabs .active {
+  background: #03129c80;
+  border-bottom: none;
+}
+
+.sheet nav.sheet-tabs {
+  border-top: none;
+  border-bottom: none;
 }
 
 .essence20 .vehicle-container {
