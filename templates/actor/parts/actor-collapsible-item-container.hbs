@@ -39,11 +39,9 @@
 
       {{!-- Item content --}}
       <div class="accordion-content">
-        {{#> additional-expand-details item=item}}
+        {{#> expand-details item=item}}
         {{!-- Custom expanded details here --}}
-        {{/additional-expand-details}}
-
-        <div>{{{item.system.description}}}</div>
+        {{/expand-details}}
 
         <div class="chip-section">
         {{#> chips item=item}}
