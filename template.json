@@ -304,7 +304,11 @@
     ],
     "templates": {
       "itemDescription": {
-        "description": ""
+        "description": "",
+        "source": {
+          "book": "",
+          "page": ""
+        }
       }
     },
     "armor": {
@@ -360,14 +364,12 @@
       "templates": [
         "itemDescription"
       ],
-      "source": "",
       "prerequisite": null
     },
     "power": {
       "templates": [
         "itemDescription"
-      ],
-      "source": ""
+      ]
     },
     "resource": {
       "templates": ["itemDescription"],
