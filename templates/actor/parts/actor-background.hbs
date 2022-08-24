@@ -9,10 +9,22 @@
     <div>{{localize 'E20.OriginBenefitName'}}: {{item.system.benefit.name}}</div>
     <div>{{localize 'E20.OriginBenefitDescription'}}: {{item.system.benefit.description}}</div>
   {{/inline}}
+
+  {{#*inline "additional-expand-details" item}}
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+  {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
 
 {{!-- Bonds --}}
-{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.ItemTypeBondPlural' dataType='bond'}}
+{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.ItemTypeBondPlural' dataType='bond'}}
+  {{#*inline "additional-expand-details" item}}
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
 
 {{!-- Hang Ups --}}
-{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.ItemTypeHangupPlural' dataType='hangUp'}}
+{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.hangUps title='E20.ItemTypeHangupPlural' dataType='hangUp'}}
+  {{#*inline "additional-expand-details" item}}
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
