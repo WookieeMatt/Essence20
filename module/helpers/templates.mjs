@@ -34,6 +34,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/actor-powers.hbs",
     "systems/essence20/templates/actor/parts/actor-traits.hbs",
     "systems/essence20/templates/actor/parts/actor-weapons.hbs",
+    "systems/essence20/templates/actor/parts/actor-zord-common.hbs",
     "systems/essence20/templates/actor/parts/actor-zord-skills.hbs",
     "systems/essence20/templates/actor/parts/actor-zordcombiner.hbs",
 
