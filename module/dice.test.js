@@ -22,7 +22,7 @@ describe("_getSkillRollLabel", () => {
       edge: false,
       snag: false,
     }
-    const expected = "E20.RollRollingFor E20.EffectShapeAthletics";
+    const expected = "E20.RollRollingFor E20.EssenceSkillAthletics";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -35,7 +35,7 @@ describe("_getSkillRollLabel", () => {
       edge: true,
       snag: false,
     }
-    const expected = "E20.RollRollingFor E20.EffectShapeAthletics E20.RollWithAnEdge";
+    const expected = "E20.RollRollingFor E20.EssenceSkillAthletics E20.RollWithAnEdge";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -48,7 +48,7 @@ describe("_getSkillRollLabel", () => {
       edge: false,
       snag: true,
     }
-    const expected = "E20.RollRollingFor E20.EffectShapeAthletics E20.RollWithASnag";
+    const expected = "E20.RollRollingFor E20.EssenceSkillAthletics E20.RollWithASnag";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -86,7 +86,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EffectShapeAthletics)<br>" +
+     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
      "<b>E20.WeaponEffect</b> - Some effect<br>" +
      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
 
@@ -109,7 +109,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EffectShapeAthletics) E20.RollWithAnEdge<br>" +
+     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithAnEdge<br>" +
      "<b>E20.WeaponEffect</b> - Some effect<br>" +
      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
 
@@ -132,7 +132,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EffectShapeAthletics) E20.RollWithASnag<br>" +
+     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithASnag<br>" +
      "<b>E20.WeaponEffect</b> - Some effect<br>" +
      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
 
@@ -155,7 +155,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EffectShapeAthletics)<br>" +
+     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
      "<b>E20.WeaponEffect</b> - None<br>" +
      "<b>E20.WeaponAlternateEffects</b> - None";
 

@@ -19,13 +19,6 @@ E20.defenses = {
  * Weapons                                      *
  ***********************************************/
 
-// Weapon effect shapes
-E20.weaponEffectShapes = {
-  circle: "E20.EffectShapeCircle",
-  cone: "E20.EffectShapeCone",
-  square: "E20.EffectShapeSquare",
-};
-
 // Shifts required to use a weapon
 E20.weaponRequirementShifts = {
   "none": "",
@@ -124,25 +117,25 @@ E20.essences = {
 
 // Actor Essence skills
 E20.essenceSkills = {
-  athletics: "E20.EffectShapeAthletics",
-  brawn: "E20.EffectShapeBrawn",
-  intimidation: "E20.EffectShapeIntimidation",
-  might: "E20.EffectShapeMight",
-  acrobatics: "E20.EffectShapeAcrobatics",
-  driving: "E20.EffectShapeDriving",
-  finesse: "E20.EffectShapeFinesse",
-  infiltration: "E20.EffectShapeInfiltration",
-  targeting: "E20.EffectShapeTargeting",
-  alertness: "E20.EffectShapeAlertness",
-  culture: "E20.EffectShapeCulture",
-  science: "E20.EffectShapeScience",
-  survival: "E20.EffectShapeSurvival",
-  technology: "E20.EffectShapeTechnology",
-  animalHandling: "E20.EffectShapeAnimalHandling",
-  deception: "E20.EffectShapeDeception",
-  performance: "E20.EffectShapePerformance",
-  persuasion: "E20.EffectShapePersuasion",
-  streetwise: "E20.EffectShapeStreetwise",
+  athletics: "E20.EssenceSkillAthletics",
+  brawn: "E20.EssenceSkillBrawn",
+  intimidation: "E20.EssenceSkillIntimidation",
+  might: "E20.EssenceSkillMight",
+  acrobatics: "E20.EssenceSkillAcrobatics",
+  driving: "E20.EssenceSkillDriving",
+  finesse: "E20.EssenceSkillFinesse",
+  infiltration: "E20.EssenceSkillInfiltration",
+  targeting: "E20.EssenceSkillTargeting",
+  alertness: "E20.EssenceSkillAlertness",
+  culture: "E20.EssenceSkillCulture",
+  science: "E20.EssenceSkillScience",
+  survival: "E20.EssenceSkillSurvival",
+  technology: "E20.EssenceSkillTechnology",
+  animalHandling: "E20.EssenceSkillAnimalHandling",
+  deception: "E20.EssenceSkillDeception",
+  performance: "E20.EssenceSkillPerformance",
+  persuasion: "E20.EssenceSkillPersuasion",
+  streetwise: "E20.EssenceSkillStreetwise",
 };
 
 // Maps skills back to their corresponding Essence
@@ -256,6 +249,14 @@ E20.availabilities = {
   prototype: "E20.AvailabilityPrototype",
   unique: "E20.AvailabilityUnique",
   theoretical: "E20.AvailabilityTheoretical",
+};
+
+// Effect shapes
+E20.effectShapes = {
+  none: "",
+  circle: "E20.EffectShapeCircle",
+  cone: "E20.EffectShapeCone",
+  square: "E20.EffectShapeSquare",
 };
 
 // Light ranges used by Gear
