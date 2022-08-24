@@ -111,8 +111,8 @@ E20.armorTraits = {
 E20.essences = {
   strength: "E20.EssenceStrength",
   speed: "E20.EssenceSpeed",
-  smarts: "E20.EssenceSocial",
-  social: "E20.EssenceSmarts",
+  smarts: "E20.EssenceSmarts",
+  social: "E20.EssenceSocial",
 };
 
 // Actor Essence skills
