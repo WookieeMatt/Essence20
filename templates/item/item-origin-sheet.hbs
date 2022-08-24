@@ -1,5 +1,4 @@
 <form class="{{cssClass}}" autocomplete="off">
-
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
@@ -8,35 +7,35 @@
     {{!-- Essence Increase Options --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceIncreaseOptions'}}
     {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.essenceIncreaseOptions" value="{{system.essenceIncreaseOptions}}" />
+    <textarea  rows="5" name="system.essenceIncreaseOptions">{{system.essenceIncreaseOptions}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Starting Health --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginStartingHealth'}}
     {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.startingHealth" value="{{system.startingHealth}}" />
+    <textarea  rows="5" name="system.startingHealth">{{system.startingHealth}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Bonus Skill Levels --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBonusSkillLevels'}}
     {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.bonusSkillLevels" value="{{system.bonusSkillLevels}}" />
+    <textarea  rows="5" name="system.bonusSkillLevels">{{system.bonusSkillLevels}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Ground Movement --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginGroundMovement'}}
     {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.groundMovement" value="{{system.groundMovement}}" />
+    <textarea  rows="5" name="system.groundMovement">{{system.groundMovement}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Languages --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginLanguages'}}
     {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.languages" value="{{system.languages}}" />
+    <textarea  rows="5" name="system.languages">{{system.languages}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
@@ -50,7 +49,7 @@
     {{!-- Benefit Description --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefitDescription'}}
     {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.benefit.description" value="{{system.benefit.description}}" />
+    <textarea  rows="5" name="system.benefit.description">{{system.benefit.description}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 

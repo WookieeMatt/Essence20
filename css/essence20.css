@@ -989,6 +989,11 @@ option {
   vertical-align: middle;
 }
 
+.essence20 textarea {
+  color: white;
+  border: 1px solid #c7c4c4;
+}
+
 .essence20 .one-digit-input {
   max-width: 20px;
   text-align: center;
