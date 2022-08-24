@@ -346,7 +346,8 @@
     },
     "origin": {
       "templates": ["itemDescription"],
-      "essenceIncreaseOptions": "",
+      "essenceAbilityScoreIncreaseOptions": "",
+      "essenceScoreIncreaseOptions": "",
       "startingHealth": "",
       "bonusSkillLevels": "",
       "groundMovement": "",

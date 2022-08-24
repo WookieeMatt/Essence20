@@ -4,17 +4,27 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    {{!-- Essence Increase Options --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceIncreaseOptions'}}
-    {{#*inline "item-field-inputs"}}
-    <textarea rows="5" name="system.essenceIncreaseOptions">{{system.essenceIncreaseOptions}}</textarea>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
 
     {{!-- Starting Health --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginStartingHealth'}}
     {{#*inline "item-field-inputs"}}
     <textarea rows="5" name="system.startingHealth">{{system.startingHealth}}</textarea>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Essence Ability Score Increase Options --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceAbilityScoreIncreaseOptions'}}
+    {{#*inline "item-field-inputs"}}
+    <textarea rows="5" name="system.essenceAbilityScoreIncreaseOptions">{{system.essenceAbilityScoreIncreaseOptions}}</textarea>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Essence Score Increase Options --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceScoreIncreaseOptions'}}
+    {{#*inline "item-field-inputs"}}
+    <textarea rows="5" name="system.essenceScoreIncreaseOptions">{{system.essenceScoreIncreaseOptions}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
@@ -52,8 +62,5 @@
     <textarea rows="5" name="system.benefit.description">{{system.benefit.description}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-
-    {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
   </section>
 </form>
