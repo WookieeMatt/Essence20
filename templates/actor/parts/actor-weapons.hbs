@@ -1,5 +1,5 @@
 {{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.weapons title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
-  {{#*inline "additional-expand-details" item}}
+  {{#*inline "expand-details" item}}
     <div>{{localize 'E20.WeaponEffect'}}: {{item.system.effect}}</div>
     <div>{{localize 'E20.WeaponAlternateEffects'}}: {{item.system.alternateEffects}}</div>
     <div>{{localize 'E20.WeaponUpgrades'}}: {{item.system.upgrades}}</div>

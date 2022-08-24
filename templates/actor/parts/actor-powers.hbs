@@ -12,7 +12,7 @@
 
 {{!-- Powers --}}
 {{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
-  {{#*inline "additional-expand-details" item}}
+  {{#*inline "expand-details" item}}
   <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
   {{/inline}}
 
