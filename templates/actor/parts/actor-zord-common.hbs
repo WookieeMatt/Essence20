@@ -1,0 +1,32 @@
+<div class="flexrow stats-row">
+  {{!-- Initiative --}}
+  {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
+
+  {{!-- Movement --}}
+  {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+
+  {{!-- Strength/Speed --}}
+  <div class="stats-container" style="min-width: fit-content; text-align: center;">
+    <div class="flexrow flex-group-center">
+      <span class="essence-label">{{localize config.essences.strength}}</span>
+      <input class="two-digit-input" type="number" name="system.essences.strength"
+        value="{{system.essences.strength}}" />
+    </div>
+    <div class="flexrow flex-group-center">
+      <span class="essence-label">{{localize config.essences.speed}}</span>
+      <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
+    </div>
+  </div>
+</div>
+
+{{!-- Defenses --}}
+{{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+{{!-- Skills --}}
+{{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+{{!-- Features --}}
+{{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features
+title='E20.ItemTypeFeaturePlural' dataType='feature'}}
+{{!-- Traits --}}
+{{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
+{{!-- Weapons --}}
+{{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}

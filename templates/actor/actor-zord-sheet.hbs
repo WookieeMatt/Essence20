@@ -4,17 +4,9 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    {{!-- Defenses --}}
-    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-    {{!-- Common --}}
-    {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
-    {{!-- Skills --}}
-    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
-    {{!-- Features --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features
-    title='E20.ItemTypeFeaturePlural' dataType='feature'}}
-    {{!-- Weapons --}}
-    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+    {{!-- Zord Common Stats --}}
+    {{> "systems/essence20/templates/actor/parts/actor-zord-common.hbs"}}
+
     {{!-- Megaform Traits --}}
     {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits
     title='E20.ItemTypeMegaformTraitPlural' dataType='megaformTrait'}}
