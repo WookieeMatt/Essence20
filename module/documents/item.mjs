@@ -64,6 +64,11 @@ export class Essence20Item extends Item {
 
       const weapon = this.actor.items.get(this._id);
       this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
+
+      const classFeature = this.actor.items.get(weapon.system.classFeatureId);
+      if (classFeature) {
+        classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
+      }
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
