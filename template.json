@@ -288,6 +288,7 @@
     "types": [
       "armor",
       "bond",
+      "classFeature",
       "feature",
       "gear",
       "hangUp",
@@ -295,7 +296,6 @@
       "origin",
       "perk",
       "power",
-      "resource",
       "specialization",
       "threatPower",
       "trait",
@@ -323,6 +323,13 @@
     },
     "bond": {
       "templates": ["itemDescription"]
+    },
+    "classFeature": {
+      "templates": ["itemDescription"],
+      "uses": {
+        "max": 0,
+        "value": 0
+      }
     },
     "feature": {
       "templates": [
@@ -371,13 +378,6 @@
       "templates": [
         "itemDescription"
       ]
-    },
-    "resource": {
-      "templates": ["itemDescription"],
-      "uses": {
-        "max": 0,
-        "value": 0
-      }
     },
     "specialization": {},
     "threatPower": {
