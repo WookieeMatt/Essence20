@@ -3,4 +3,10 @@ title='E20.ItemTypeTraitPlural' dataType='trait'}}
   {{#*inline "expand-details" item}}
   <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
   {{/inline}}
+
+  {{#*inline "chips" item}}
+  {{#if item.system.source.book}}
+  <span class="chip" name="chip.source.book">{{item.system.source.book}}</span>
+  {{/if}}
+  {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
