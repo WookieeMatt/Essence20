@@ -395,6 +395,7 @@
       "templates": [
         "itemDescription"
       ],
+      "classFeatureId": null,
       "alternateEffects": "",
       "availability": "standard",
       "classification": {

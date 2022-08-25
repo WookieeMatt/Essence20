@@ -155,6 +155,9 @@ export class Essence20ActorSheet extends ActorSheet {
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
+    const classFeaturesById = {
+      "none": null,
+    };
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -193,6 +196,7 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
         case 'classFeature':
           classFeatures.push(i);
+          classFeaturesById[i._id] = i.name;
           break;
         case 'specialization':
           const skill = i.system.skill;
@@ -215,6 +219,8 @@ export class Essence20ActorSheet extends ActorSheet {
     context.equippedArmorEffect = equippedArmorEffect;
     context.armors = armors;
     context.bonds = bonds;
+    context.classFeatures = classFeatures;
+    context.classFeaturesById = classFeaturesById;
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
@@ -222,7 +228,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.origins = origins;
     context.perks = perks;
     context.powers = powers;
-    context.classFeatures = classFeatures;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
     context.traits = traits;
