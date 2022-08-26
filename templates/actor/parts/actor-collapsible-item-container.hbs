@@ -11,7 +11,7 @@
     {{#each items as |item|}}
     <li class="item accordion-wrapper" data-item-id="{{item._id}}">
       {{!-- Item label and buttons --}}
-      <div class="flexrow item-label">
+      <div class="flexrow item-label" style="gap: 5px;">
         <div class="item-image" style="flex-grow: 0;">
           {{#> roll-button item=item}}
           {{!-- Custom roll button here, or use default below --}}
@@ -20,7 +20,7 @@
         </div>
         {{#if (isdefined item.system.equipped)}}
         <div style="flex-grow: 0;">
-          <input class="inline-edit" data-field="system.equipped" type="checkbox" name="armor.{{@index}}.equipped"
+          <input class="inline-edit item-label-checkbox" data-field="system.equipped" type="checkbox" name="armor.{{@index}}.equipped"
             {{checked item.system.equipped}} />
         </div>
         {{/if}}

@@ -93,6 +93,10 @@
   transform: rotate(180deg);
 }
 
+.essence20 .item-label-checkbox {
+  margin: 0;
+}
+
 .essence20 .editor {
   position: relative;
   min-height: 250px;
@@ -209,6 +213,10 @@
 
 .item-button-container {
   flex-grow: 0;
+}
+
+.essence20 .rollable {
+  font-size: 1.25em;
 }
 
 .rollable:hover,
@@ -479,10 +487,6 @@
 .essence20 .skill-header .skill-name {
   white-space: nowrap;
   overflow: hidden;
-}
-
-.essence20 .skill-roll {
-  font-size: 1.25em;
 }
 
 .essence20 .skill-body {
@@ -822,6 +826,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 5px;
 }
 
 .essence20 .items-list .item-list {
@@ -881,7 +886,7 @@
   -ms-flex-align: center;
   align-items: center;
   padding: 0 2px;
-  border-bottom: 4px solid #b5b1b1;
+  border-bottom: 1px solid #b5b1b1;
   color: #c7c4c4;
 }
 
