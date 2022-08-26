@@ -15,7 +15,7 @@
         <div class="item-image" style="flex-grow: 0;">
           {{#> roll-button item=item}}
           {{!-- Custom roll button here, or use default below --}}
-          <a class="rollable" data-roll-type={{item.type}}><i class="fas fa-dice-d20"></i></a>
+          <a class="rollable" data-roll-type={{item.type}}><i class="fas fa-message-lines"></i></a>
           {{/roll-button}}
         </div>
         {{#if (isdefined item.system.equipped)}}
