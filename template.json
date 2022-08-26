@@ -201,12 +201,7 @@
         "common",
         "creature",
         "character"
-      ],
-      "personalPower": {
-        "max": 2,
-        "min": 0,
-        "value": 2
-      }
+      ]
     },
     "megaformZord": {
       "templates": [
@@ -377,7 +372,8 @@
     "power": {
       "templates": [
         "itemDescription"
-      ]
+      ],
+      "classFeatureId": null
     },
     "specialization": {},
     "threatPower": {

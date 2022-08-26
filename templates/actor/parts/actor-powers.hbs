@@ -1,19 +1,18 @@
-{{!-- Personal Power --}}
-<div class="powers-section">
-  <div class="resource flex-group-center">
-    <label for="system.personalPower.value" class="resource-label">{{localize 'E20.PowerRangerPersonalPower'}}</label>
-    <div class="resource-content flexrow flex-center flex-between">
-      <input type="number" name="system.personalPower.value" value="{{system.personalPower.value}}" />
-      <span> / </span>
-      <input type="number" name="system.personalPower.max" value="{{system.personalPower.max}}" />
-    </div>
-  </div>
-</div>
-
 {{!-- Powers --}}
 {{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
   {{#*inline "expand-details" item}}
   <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+  {{/inline}}
+
+  {{#*inline "item-label" item}}
+    <select class="inline-edit" data-field="system.classFeatureId" name="system.classFeature">
+      {{#select item.system.classFeatureId}}
+      {{#each @root.classFeaturesById as |name id|}}
+      <option value="{{id}}">{{name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{item.name}}
   {{/inline}}
 
   {{#*inline "chips" item}}

@@ -368,10 +368,10 @@ export class Essence20ActorSheet extends ActorSheet {
       const item = this.actor.items.get(itemId);
 
       if (rollType == 'power') {
-        // If a Power is being used, decrement Personal Power
-        await this.actor.update({
-          'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1)
-        });
+        const classFeature = this.actor.items.get(item.system.classFeatureId);
+        if (classFeature) {
+          classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
+        }
       } else if (rollType == 'classFeature') {
         // If a Class Feature is being used, decrement uses
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });

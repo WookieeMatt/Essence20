@@ -23,9 +23,9 @@ export class Essence20Item extends Item {
    * Prepare a data object which is passed to any Roll formulas which are created related to this Item
    * @private
    */
-   getRollData() {
+  getRollData() {
     // If present, return the actor's roll data.
-    if ( !this.actor ) return null;
+    if (!this.actor) return null;
     const rollData = this.actor.getRollData();
     rollData.item = foundry.utils.deepClone(this.system);
 
@@ -47,6 +47,25 @@ export class Essence20Item extends Item {
       let content = `Source: ${this.system.source || 'None'} <br>`;
       content += `Prerequisite: ${this.system.prerequisite || 'None'} <br>`;
       content += `Description: ${this.system.description || 'None'}`;
+
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: content,
+      });
+    } else if (this.type == 'power') {
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${this.type}] ${this.name}`;
+      const descriptionStr = game.i18n.localize('E20.ItemDescription');
+      const noneStr = game.i18n.localize('E20.None');
+      const classFeatureStr = game.i18n.localize('ITEM.TypeClassfeature');
+      const classFeatureId = this.system.classFeatureId;
+
+      let content = `<b>${descriptionStr}</b> - ${this.system.description}<br>`;
+      content += `<b>${classFeatureStr}</b> - ${classFeatureId ? this.actor.items.get(classFeatureId).name : noneStr}`;
 
       ChatMessage.create({
         speaker: speaker,
