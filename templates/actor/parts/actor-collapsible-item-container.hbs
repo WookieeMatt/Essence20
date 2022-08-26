@@ -11,17 +11,17 @@
     {{#each items as |item|}}
     <li class="item accordion-wrapper" data-item-id="{{item._id}}">
       {{!-- Item label and buttons --}}
-      <div class="flexrow item-label" style="gap: 5px;">
+      <div class="flexrow item-label">
         <div class="item-image" style="flex-grow: 0;">
           {{#> roll-button item=item}}
           {{!-- Custom roll button here, or use default below --}}
-          <a class="rollable" data-roll-type={{item.type}}><i class="fas fa-message-lines"></i></a>
+          <a class="rollable" data-roll-type={{item.type}} title="{{localize 'E20.ItemRollTitle'}}"><i class="fas fa-message-lines"></i></a>
           {{/roll-button}}
         </div>
         {{#if (isdefined item.system.equipped)}}
         <div style="flex-grow: 0;">
-          <input class="inline-edit item-label-checkbox" data-field="system.equipped" type="checkbox" name="armor.{{@index}}.equipped"
-            {{checked item.system.equipped}} />
+          <input class="inline-edit item-label-checkbox" data-field="system.equipped" type="checkbox"
+            name="armor.{{@index}}.equipped" {{checked item.system.equipped}}/>
         </div>
         {{/if}}
         <div>
@@ -32,7 +32,8 @@
         </div>
         <div class="item-controls">
           <a class="item-control item-edit" title="{{localize 'E20.ItemControlEdit'}}"><i class="fas fa-edit"></i></a>
-          <a class="item-control item-delete" title="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
+          <a class="item-control item-delete" title="{{localize 'E20.ItemControlDelete'}}"><i
+              class="fas fa-trash"></i></a>
           <a class="item-control accordion-label"><i class="accordion-icon fas fa-chevron-down"></i></a>
         </div>
       </div>
@@ -44,9 +45,9 @@
         {{/expand-details}}
 
         <div class="chip-section">
-        {{#> chips item=item}}
-        {{!-- Custom chips here --}}
-        {{/chips}}
+          {{#> chips item=item}}
+          {{!-- Custom chips here --}}
+          {{/chips}}
         </div>
       </div>
     </li>
