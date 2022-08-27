@@ -4,6 +4,9 @@
   <span class="chip" name="chip.armor.classification">{{localize (lookup @root.config.armorClassifications item.system.classification)}}</span>
   <span class="chip" name="chip.armor.effect">{{localize 'E20.WeaponEffect'}}: {{item.system.effect}}</span>
   <span class="chip" name="chip.armor.trait">{{localize (lookup @root.config.armorTraits item.system.trait)}}</span>
+  {{#if item.system.source.book}}
+  <span class="chip" name="chip.source.book">{{item.system.source.book}}</span>
+  {{/if}}
   {{/inline}}
 
   {{#*inline "expand-details" item}}
