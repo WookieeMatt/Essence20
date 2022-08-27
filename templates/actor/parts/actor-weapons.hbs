@@ -7,7 +7,18 @@
   {{/inline}}
 
   {{#*inline "roll-button" item}}
-    <a class="rollable" data-roll-type="weapon" data-skill="{{item.system.classification.skill}}"><i class="fas fa-dice-d20"></i></a>
+    <a class="rollable" data-roll-type="weapon" data-skill="{{item.system.classification.skill}}" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+  {{/inline}}
+
+  {{#*inline "item-label" item}}
+    <select class="inline-edit" data-field="system.classFeatureId" name="system.classFeature">
+      {{#select item.system.classFeatureId}}
+      {{#each @root.classFeaturesById as |name id|}}
+      <option value="{{id}}">{{name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{item.name}}
   {{/inline}}
 
   {{#*inline "chips" item}}

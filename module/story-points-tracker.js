@@ -90,11 +90,13 @@ export class StoryPointsTracker extends Application {
     html.find('#gm-points-btn-inc').click(ev => {
       ev.preventDefault();
       this.changeGmPoints(this.gmPoints + 1);
+      this.sendMessage(`${i18n("E20.SptAddGmPoint")}`);
     });
     html.find('#gm-points-input').focusout(ev => {
       ev.preventDefault();
       let value = $('#gm-points-input', this.element).val();
       this.changeGmPoints(value);
+      this.sendMessage(`${i18n("E20.SptSetGmPoints")} ${value}!`);
     });
 
     // Roll new major scene GM Points
@@ -121,11 +123,13 @@ export class StoryPointsTracker extends Application {
     html.find('#story-points-btn-inc').click(ev => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints + 1);
+      this.sendMessage(`${i18n("E20.SptAddStoryPoint")}`);
     });
     html.find('#story-points-input').focusout(ev => {
       ev.preventDefault();
       let value = $('#story-points-input', this.element).val();
       this.changeStoryPoints(value);
+      this.sendMessage(`${i18n("E20.SptSetStoryPoints")} ${value}!`);
     });
   }
 
