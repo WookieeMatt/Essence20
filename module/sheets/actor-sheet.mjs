@@ -9,6 +9,18 @@ export class Essence20ActorSheet extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
     this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
+
+    // Create Personal Power class feature for Power Rangers
+    if (actor.type == 'powerRanger') {
+      Item.create(
+        {
+          name: game.i18n.localize('E20.PowerRangerPersonalPower'),
+          type: 'classFeature',
+          data: {},
+        },
+        { parent: this.actor }
+      );
+    }
   }
 
   /** @override */
@@ -150,11 +162,14 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
-    const resources = []; // Used by PCs
+    const classFeatures = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
+    const classFeaturesById = {
+      "none": null,
+    };
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -191,8 +206,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'power':
           powers.push(i);
           break;
-        case 'resource':
-          resources.push(i);
+        case 'classFeature':
+          classFeatures.push(i);
+          classFeaturesById[i._id] = i.name;
           break;
         case 'specialization':
           const skill = i.system.skill;
@@ -215,6 +231,8 @@ export class Essence20ActorSheet extends ActorSheet {
     context.equippedArmorEffect = equippedArmorEffect;
     context.armors = armors;
     context.bonds = bonds;
+    context.classFeatures = classFeatures;
+    context.classFeaturesById = classFeaturesById;
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
@@ -222,7 +240,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.origins = origins;
     context.perks = perks;
     context.powers = powers;
-    context.resources = resources;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
     context.traits = traits;
@@ -363,12 +380,12 @@ export class Essence20ActorSheet extends ActorSheet {
       const item = this.actor.items.get(itemId);
 
       if (rollType == 'power') {
-        // If a Power is being used, decrement Personal Power
-        await this.actor.update({
-          'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1)
-        });
-      } else if (rollType == 'resource') {
-        // If a Resource is being used, decrement uses
+        const classFeature = this.actor.items.get(item.system.classFeatureId);
+        if (classFeature) {
+          classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
+        }
+      } else if (rollType == 'classFeature') {
+        // If a Class Feature is being used, decrement uses
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
 

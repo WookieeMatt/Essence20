@@ -88,7 +88,8 @@ describe("_getWeaponRollLabel", () => {
     const expected =
      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
      "<b>E20.WeaponEffect</b> - Some effect<br>" +
-     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
+     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
+     "<b>ITEM.TypeClassfeature</b> - E20.None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -111,7 +112,8 @@ describe("_getWeaponRollLabel", () => {
     const expected =
      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithAnEdge<br>" +
      "<b>E20.WeaponEffect</b> - Some effect<br>" +
-     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
+     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
+     "<b>ITEM.TypeClassfeature</b> - E20.None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -134,7 +136,8 @@ describe("_getWeaponRollLabel", () => {
     const expected =
      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithASnag<br>" +
      "<b>E20.WeaponEffect</b> - Some effect<br>" +
-     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects";
+     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
+     "<b>ITEM.TypeClassfeature</b> - E20.None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -156,8 +159,9 @@ describe("_getWeaponRollLabel", () => {
     };
     const expected =
      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
-     "<b>E20.WeaponEffect</b> - None<br>" +
-     "<b>E20.WeaponAlternateEffects</b> - None";
+     "<b>E20.WeaponEffect</b> - E20.None<br>" +
+     "<b>E20.WeaponAlternateEffects</b> - E20.None<br>" +
+     "<b>ITEM.TypeClassfeature</b> - E20.None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
