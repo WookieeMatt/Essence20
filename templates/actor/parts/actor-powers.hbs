@@ -12,6 +12,10 @@
 
 {{!-- Powers --}}
 {{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
+  {{#*inline "roll-button" item}}
+    <a class="rollable" data-roll-type={{item.type}} title="{{localize 'E20.PowerRollTitle'}}"><i class="fas fa-battery-bolt"></i></a>
+  {{/inline}}
+
   {{#*inline "expand-details" item}}
   <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
   {{/inline}}
