@@ -48,6 +48,13 @@
           {{#> chips item=item}}
           {{!-- Custom chips here --}}
           {{/chips}}
+          {{#if item.system.source.book}}
+            {{#if item.system.source.page}}
+            <span class="chip" name="chip.source.book">{{item.system.source.book}}{{concat ' PG ' item.system.source.page}}</span>
+            {{else}}
+            <span class="chip" name="chip.source.book">{{item.system.source.book}}</span>
+            {{/if}}
+          {{/if}}
         </div>
       </div>
     </li>
