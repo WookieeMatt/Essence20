@@ -9,18 +9,6 @@ export class Essence20ActorSheet extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
     this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
-
-    // Create Personal Power class feature for Power Rangers
-    if (actor.type == 'powerRanger') {
-      Item.create(
-        {
-          name: game.i18n.localize('E20.PowerRangerPersonalPower'),
-          type: 'classFeature',
-          data: {},
-        },
-        { parent: this.actor }
-      );
-    }
   }
 
   /** @override */
