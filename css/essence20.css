@@ -776,6 +776,14 @@
   border-bottom: none;
 }
 
+.essence20 .tabs .item.active {
+  text-shadow: 0 0 10px #00c2ff;
+}
+
+.essence20 a:hover {
+  text-shadow: 0 0 10px #00c2ff;
+}
+
 .sheet nav.sheet-tabs {
   border-top: none;
   border-bottom: none;
