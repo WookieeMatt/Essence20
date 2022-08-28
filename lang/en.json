@@ -114,6 +114,7 @@
     "ItemSource": "Source",
     "ItemSourceBook": "Book",
     "ItemSourcePage": "Page",
+    "ItemToggleEquipped": "Toggle equipped",
     "ItemTypeArmorPlural": "Armor",
     "ItemTypeBondPlural": "Bonds",
     "ItemTypeClassFeaturePlural": "Class Features",

@@ -21,7 +21,7 @@
         {{#if (isdefined item.system.equipped)}}
         <div style="flex-grow: 0;">
           <input class="inline-edit item-label-checkbox" data-field="system.equipped" type="checkbox"
-            name="armor.{{@index}}.equipped" {{checked item.system.equipped}}/>
+            name="armor.{{@index}}.equipped" {{checked item.system.equipped}} title="{{localize 'E20.ItemToggleEquipped'}}"/>
         </div>
         {{/if}}
         <div>
