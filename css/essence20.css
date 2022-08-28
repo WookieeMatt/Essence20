@@ -1,6 +1,5 @@
 /* importing the partials */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap");
 .align-left {
   -webkit-box-pack: start;
   -ms-flex-pack: start;
@@ -165,8 +164,7 @@
 
 /* Global styles */
 .window-app {
-  /* font-family: "Roboto", sans-serif; */
-  font-family: "Comic Neue", cursive;
+  font-family: "Rajdhani", sans-serif;
   font-weight: bold;
   color: #c7c4c4;
 }
@@ -963,10 +961,6 @@
 
 .essence20 .effects .item .effect-controls {
   border: none;
-}
-
-.essence20 .item-form {
-  font-family: "Comic Neue", cursive;
 }
 
 .essence20 .item-sheet {
