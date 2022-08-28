@@ -482,11 +482,13 @@
 .essence20 .skill-header .skill-roll {
   flex-grow: 0;
   margin-right: 5px;
+  margin-left: 5px;
 }
 
 .essence20 .skill-header .skill-name {
   white-space: nowrap;
   overflow: hidden;
+  color: white;
 }
 
 .essence20 .skill-body {
@@ -542,7 +544,6 @@
   list-style: none;
   overflow-y: auto;
   color: #c7c4c4;
-  padding: 8px;
   transform: rotate(0deg);
   scrollbar-width: thin;
   background-color: #03129c80;
@@ -606,6 +607,7 @@
 .essence20 .defense-container table thead {
   background-color: inherit;
   border-bottom: 4px solid #b5b1b1;
+  color: inherit;
 }
 
 .essence20 .defense-container tr:nth-child(even) {
@@ -994,10 +996,6 @@
 .window-content .journal-sheet-container .editable {
   background: #10024e;
   border-radius: 10px white;
-}
-
-.essence20 .resource-label {
-  font-weight: bold;
 }
 
 select {
