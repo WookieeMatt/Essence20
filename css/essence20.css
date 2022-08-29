@@ -480,11 +480,13 @@
 .essence20 .skill-header .skill-roll {
   flex-grow: 0;
   margin-right: 5px;
+  margin-left: 5px;
 }
 
 .essence20 .skill-header .skill-name {
   white-space: nowrap;
   overflow: hidden;
+  color: white;
 }
 
 .essence20 .skill-body {
@@ -540,7 +542,6 @@
   list-style: none;
   overflow-y: auto;
   color: #c7c4c4;
-  padding: 8px;
   transform: rotate(0deg);
   scrollbar-width: thin;
   background-color: #03129c80;
@@ -604,6 +605,7 @@
 .essence20 .defense-container table thead {
   background-color: inherit;
   border-bottom: 4px solid #b5b1b1;
+  color: inherit;
 }
 
 .essence20 .defense-container tr:nth-child(even) {
@@ -614,6 +616,7 @@
   border-collapse: collapse;
   border-spacing: 0;
   border-style: hidden;
+  margin: 0;
 }
 
 .essence20 .defense-container .tg td {
@@ -772,6 +775,14 @@
 .essence20 .tabs .active {
   background: #03129c80;
   border-bottom: none;
+}
+
+.essence20 .tabs .item.active {
+  text-shadow: 0 0 10px #00c2ff;
+}
+
+.essence20 a:hover {
+  text-shadow: 0 0 10px #00c2ff;
 }
 
 .sheet nav.sheet-tabs {
@@ -938,6 +949,7 @@
 .essence20 .item-label {
   align-items: center;
   gap: 5px;
+  margin-bottom: 5px;
 }
 
 .essence20 .item-formula {
@@ -1039,6 +1051,10 @@ form .hint {
 .essence20 .sheet-body {
   min-height: fit-content;
   gap: 10px;
+}
+
+.essence20 table {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 /*# sourceMappingURL=essence20.css.map */
