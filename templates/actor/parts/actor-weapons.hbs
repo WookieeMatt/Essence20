@@ -11,13 +11,17 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
+    {{#ifEquals @root.actor.type 'powerRanger'}}
     <select class="inline-edit" data-field="system.classFeatureId" name="system.classFeature">
       {{#select item.system.classFeatureId}}
+      <option value="" disabled selected hidden>{{localize 'ITEM.TypeClassfeature'}}</option>
       {{#each @root.classFeaturesById as |name id|}}
       <option value="{{id}}">{{name}}</option>
       {{/each}}
       {{/select}}
     </select>
+    {{/ifEquals}}
+
     {{item.name}}
   {{/inline}}
 

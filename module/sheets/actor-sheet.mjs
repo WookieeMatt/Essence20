@@ -155,9 +155,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
-    const classFeaturesById = {
-      "none": null,
-    };
+    const classFeaturesById = {};
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
