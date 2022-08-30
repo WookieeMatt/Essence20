@@ -3,6 +3,24 @@
  * @extends {Actor}
  */
 export class Essence20Actor extends Actor {
+  /** @override */
+  static async create(data, options = {}) {
+    const actor = await super.create(data, options);
+
+    // Create Personal Power as a default class feature for Power Rangers
+    if (data.type == 'powerRanger') {
+      Item.create(
+        {
+          name: game.i18n.localize('E20.PowerRangerPersonalPower'),
+          type: 'classFeature',
+          data: {},
+        },
+        { parent: actor }
+      );
+    }
+
+    return actor;
+  }
 
   /** @override */
   prepareData() {

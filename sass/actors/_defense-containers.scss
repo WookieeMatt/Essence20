@@ -8,6 +8,7 @@
 .essence20 .defense-container table thead {
   background-color: inherit;
   border-bottom: v.$border;
+  color: inherit;
 }
 
 .essence20 .defense-container tr:nth-child(even) {
@@ -18,6 +19,7 @@
   border-collapse: collapse;
   border-spacing: 0;
   border-style: hidden;
+  margin: 0;
 }
 
 .essence20 .defense-container .tg td {

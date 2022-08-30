@@ -2,8 +2,7 @@
 
 /* Global styles */
 .window-app {
-  /* font-family: "Roboto", sans-serif; */
-  font-family: "Comic Neue", cursive;
+  font-family: 'Rajdhani', sans-serif;
   font-weight: bold;
   color: v.$textcolor1;
 }
@@ -51,6 +50,10 @@
 
 .item-button-container {
   flex-grow: 0;
+}
+
+.essence20 .rollable {
+  font-size: 1.25em;
 }
 
 .rollable:hover,

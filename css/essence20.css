@@ -1,6 +1,5 @@
 /* importing the partials */
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap");
 .align-left {
   -webkit-box-pack: start;
   -ms-flex-pack: start;
@@ -93,6 +92,10 @@
   transform: rotate(180deg);
 }
 
+.essence20 .item-label-checkbox {
+  margin: 0;
+}
+
 .essence20 .editor {
   position: relative;
   min-height: 250px;
@@ -161,8 +164,7 @@
 
 /* Global styles */
 .window-app {
-  /* font-family: "Roboto", sans-serif; */
-  font-family: "Comic Neue", cursive;
+  font-family: "Rajdhani", sans-serif;
   font-weight: bold;
   color: #c7c4c4;
 }
@@ -209,6 +211,10 @@
 
 .item-button-container {
   flex-grow: 0;
+}
+
+.essence20 .rollable {
+  font-size: 1.25em;
 }
 
 .rollable:hover,
@@ -474,15 +480,13 @@
 .essence20 .skill-header .skill-roll {
   flex-grow: 0;
   margin-right: 5px;
+  margin-left: 5px;
 }
 
 .essence20 .skill-header .skill-name {
   white-space: nowrap;
   overflow: hidden;
-}
-
-.essence20 .skill-roll {
-  font-size: 1.25em;
+  color: white;
 }
 
 .essence20 .skill-body {
@@ -538,7 +542,6 @@
   list-style: none;
   overflow-y: auto;
   color: #c7c4c4;
-  padding: 8px;
   transform: rotate(0deg);
   scrollbar-width: thin;
   background-color: #03129c80;
@@ -602,6 +605,7 @@
 .essence20 .defense-container table thead {
   background-color: inherit;
   border-bottom: 4px solid #b5b1b1;
+  color: inherit;
 }
 
 .essence20 .defense-container tr:nth-child(even) {
@@ -612,6 +616,7 @@
   border-collapse: collapse;
   border-spacing: 0;
   border-style: hidden;
+  margin: 0;
 }
 
 .essence20 .defense-container .tg td {
@@ -772,6 +777,14 @@
   border-bottom: none;
 }
 
+.essence20 .tabs .item.active {
+  text-shadow: 0 0 10px #00c2ff;
+}
+
+.essence20 a:hover {
+  text-shadow: 0 0 10px #00c2ff;
+}
+
 .sheet nav.sheet-tabs {
   border-top: none;
   border-bottom: none;
@@ -822,6 +835,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 5px;
 }
 
 .essence20 .items-list .item-list {
@@ -881,7 +895,7 @@
   -ms-flex-align: center;
   align-items: center;
   padding: 0 2px;
-  border-bottom: 4px solid #b5b1b1;
+  border-bottom: 1px solid #b5b1b1;
   color: #c7c4c4;
 }
 
@@ -934,6 +948,8 @@
 
 .essence20 .item-label {
   align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
 }
 
 .essence20 .item-formula {
@@ -954,10 +970,6 @@
 
 .essence20 .effects .item .effect-controls {
   border: none;
-}
-
-.essence20 .item-form {
-  font-family: "Comic Neue", cursive;
 }
 
 .essence20 .item-sheet {
@@ -988,10 +1000,6 @@
 .window-content .journal-sheet-container .editable {
   background: #10024e;
   border-radius: 10px white;
-}
-
-.essence20 .resource-label {
-  font-weight: bold;
 }
 
 select {
@@ -1043,6 +1051,10 @@ form .hint {
 .essence20 .sheet-body {
   min-height: fit-content;
   gap: 10px;
+}
+
+.essence20 table {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 /*# sourceMappingURL=essence20.css.map */

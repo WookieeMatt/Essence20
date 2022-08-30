@@ -78,7 +78,7 @@ export class Dice {
    */
   rollSkill(dataset, skillRollOptions, actor, weapon) {
     let label = weapon
-      ? this._getWeaponRollLabel(dataset, skillRollOptions, weapon)
+      ? this._getWeaponRollLabel(dataset, skillRollOptions, weapon, actor)
       : this._getSkillRollLabel(dataset, skillRollOptions);
     const rolledSkill = dataset.skill;
     const rolledEssence = this._config.skillToEssence[rolledSkill];
@@ -130,18 +130,21 @@ export class Dice {
    * @param {Item} weapon   The weapon being used.
    * @private
    */
-  _getWeaponRollLabel(dataset, skillRollOptions, weapon) {
+  _getWeaponRollLabel(dataset, skillRollOptions, weapon, actor) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
-    const attackRollStr = this._i18n.localize('E20.RollAttackRoll')
-    const effectStr = this._i18n.localize('E20.WeaponEffect')
-    const alternateEffectsStr = this._i18n.localize('E20.WeaponAlternateEffects')
-    const noneStr = this._i18n.localize('None')
+    const attackRollStr = this._i18n.localize('E20.RollAttackRoll');
+    const effectStr = this._i18n.localize('E20.WeaponEffect');
+    const alternateEffectsStr = this._i18n.localize('E20.WeaponAlternateEffects');
+    const classFeatureStr = this._i18n.localize('ITEM.TypeClassfeature');
+    const noneStr = this._i18n.localize('E20.None');
+    const classFeatureId = weapon.system.classFeatureId;
 
     let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
-    label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}`;
+    label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}<br>`;
+    label += `<b>${classFeatureStr}</b> - ${classFeatureId ? actor.items.get(classFeatureId).name : noneStr}`;
 
     return label;
   }

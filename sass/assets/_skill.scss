@@ -11,15 +11,13 @@
 .essence20 .skill-header .skill-roll {
   flex-grow: 0;
   margin-right: 5px;
+  margin-left: 5px;
 }
 
 .essence20 .skill-header .skill-name {
   white-space: nowrap;
   overflow: hidden;
-}
-
-.essence20 .skill-roll {
-  font-size: 1.25em;
+  color: white;
 }
 
 .essence20 .skill-body {
@@ -75,7 +73,6 @@
   list-style: none;
   overflow-y: auto;
   color: v.$textcolor1;
-  padding: 8px;
   transform: rotate(0deg);
   scrollbar-width: thin;
   background-color: v.$background-b;

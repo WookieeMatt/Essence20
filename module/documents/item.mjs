@@ -23,9 +23,9 @@ export class Essence20Item extends Item {
    * Prepare a data object which is passed to any Roll formulas which are created related to this Item
    * @private
    */
-   getRollData() {
+  getRollData() {
     // If present, return the actor's roll data.
-    if ( !this.actor ) return null;
+    if (!this.actor) return null;
     const rollData = this.actor.getRollData();
     rollData.item = foundry.utils.deepClone(this.system);
 
@@ -54,6 +54,25 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
+    } else if (this.type == 'power') {
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${this.type}] ${this.name}`;
+      const descriptionStr = game.i18n.localize('E20.ItemDescription');
+      const noneStr = game.i18n.localize('E20.None');
+      const classFeatureStr = game.i18n.localize('ITEM.TypeClassfeature');
+      const classFeatureId = this.system.classFeatureId;
+
+      let content = `<b>${descriptionStr}</b> - ${this.system.description}<br>`;
+      content += `<b>${classFeatureStr}</b> - ${classFeatureId ? this.actor.items.get(classFeatureId).name : noneStr}`;
+
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: content,
+      });
     } else if (this.type == 'weapon') {
       const dataset = { skill: this.system.classification.skill };
       const skillRollOptions = await this._dice.getSkillRollOptions(dataset, this.actor);
@@ -64,6 +83,11 @@ export class Essence20Item extends Item {
 
       const weapon = this.actor.items.get(this._id);
       this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
+
+      const classFeature = this.actor.items.get(weapon.system.classFeatureId);
+      if (classFeature) {
+        classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
+      }
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });

@@ -3,8 +3,7 @@
 @use 'actors';
 @use 'items';
 
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
 
 select {
   color: white;
@@ -55,4 +54,8 @@ form .hint {
 .essence20 .sheet-body {
   min-height: fit-content;
   gap: 10px;
+}
+
+.essence20 table {
+  background-color:rgba(0, 0, 0, 0);
 }

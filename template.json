@@ -201,12 +201,7 @@
         "common",
         "creature",
         "character"
-      ],
-      "personalPower": {
-        "max": 2,
-        "min": 0,
-        "value": 2
-      }
+      ]
     },
     "megaformZord": {
       "templates": [
@@ -277,6 +272,7 @@
     "types": [
       "armor",
       "bond",
+      "classFeature",
       "feature",
       "gear",
       "hangUp",
@@ -284,7 +280,6 @@
       "origin",
       "perk",
       "power",
-      "resource",
       "specialization",
       "threatPower",
       "trait",
@@ -312,6 +307,13 @@
     },
     "bond": {
       "templates": ["itemDescription"]
+    },
+    "classFeature": {
+      "templates": ["itemDescription"],
+      "uses": {
+        "max": 0,
+        "value": 0
+      }
     },
     "feature": {
       "templates": [
@@ -359,14 +361,8 @@
     "power": {
       "templates": [
         "itemDescription"
-      ]
-    },
-    "resource": {
-      "templates": ["itemDescription"],
-      "uses": {
-        "max": 0,
-        "value": 0
-      }
+      ],
+      "classFeatureId": null
     },
     "specialization": {},
     "threatPower": {
@@ -384,6 +380,7 @@
       "templates": [
         "itemDescription"
       ],
+      "classFeatureId": null,
       "alternateEffects": "",
       "availability": "standard",
       "classification": {
