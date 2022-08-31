@@ -20,7 +20,7 @@
         "initiative": "d20",
         "movement": {
           "aerial": 0,
-          "ground": 45,
+          "ground": 30,
           "swim": 0
         },
         "size": "common",
@@ -218,13 +218,6 @@
         "creature",
         "character"
       ],
-      "customSkills": [
-        {
-          "name": "",
-          "isSpecialized": false,
-          "shift": "d20"
-        }
-      ],
       "defenses": {
         "toughness": {
           "value": 10
@@ -238,10 +231,6 @@
         "cleverness": {
           "value": null
         }
-      },
-      "hangUp": {
-        "description": "",
-        "name": ""
       },
       "threatLevel": 0
     },
@@ -268,7 +257,7 @@
         "zordBase"
       ],
       "isCombiner": true,
-      "prerequisites": [],
+      "prerequisite": "",
       "ranger": ""
     },
     "giJoe": {
