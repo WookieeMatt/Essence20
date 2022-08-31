@@ -11,13 +11,10 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    <select class="inline-edit" data-field="system.classFeatureId" name="system.classFeature">
-      {{#select item.system.classFeatureId}}
-      {{#each @root.classFeaturesById as |name id|}}
-      <option value="{{id}}">{{name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
+    {{#ifEquals @root.actor.type 'powerRanger'}}
+      {{>"systems/essence20/templates/actor/parts/actor-class-feature-selector.hbs"}}
+    {{/ifEquals}}
+
     {{item.name}}
   {{/inline}}
 

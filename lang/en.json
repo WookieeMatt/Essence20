@@ -66,6 +66,7 @@
     "AvailabilityTheoretical": "Theoretical",
     "AvailabilityUnique": "Unique",
     "ClassFeatureUses": "Uses",
+    "ClassFeatureNone": "No Class Feature",
     "DefenseBase": "Base",
     "DefenseBonus": "Bonus",
     "DefenseCleverness": "Cleverness",

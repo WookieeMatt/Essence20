@@ -9,13 +9,7 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    <select class="inline-edit" data-field="system.classFeatureId" name="system.classFeature">
-      {{#select item.system.classFeatureId}}
-      {{#each @root.classFeaturesById as |name id|}}
-      <option value="{{id}}">{{name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
+    {{>"systems/essence20/templates/actor/parts/actor-class-feature-selector.hbs"}}
     {{item.name}}
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
