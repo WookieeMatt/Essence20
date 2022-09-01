@@ -40,5 +40,9 @@ Vehicle Sheet
 
 ![image](https://user-images.githubusercontent.com/28365506/187992497-ef0218f4-189d-4c49-a912-bc203261325b.png)
 
+Rolls are done through a single Roll popup
+
+![image](https://user-images.githubusercontent.com/28365506/187993111-044cd172-3dd6-4533-8212-d862a3f67853.png)
+
 
 The Essence20 System is property and Copyright of Hasbro and Renegade Studios. We do not own the rights to this system. 
