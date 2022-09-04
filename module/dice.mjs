@@ -104,7 +104,7 @@ export class Dice {
     for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
       let repeatText = '';
       if (skillRollOptions.timesToRoll > 1) {
-        repeatText = game.i18n.format("E20.RollRepeatText", {
+        repeatText = this._i18n.format("E20.RollRepeatText", {
           index: i + 1,
           total: skillRollOptions.timesToRoll,
         }) + '<br>';
