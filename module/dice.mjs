@@ -110,13 +110,24 @@ export class Dice {
         }) + '<br>';
       }
 
-      let roll = new Roll(formula, actor.getRollData());
-      roll.toMessage({
-        speaker: this._chatMessage.getSpeaker({ actor }),
-        flavor: repeatText + label,
-        rollMode: game.settings.get('core', 'rollMode'),
-      });
+      this._rollSkillHelper(formula, actor, repeatText + label);
     }
+  }
+
+  /**
+   * Executes the skill roll.
+   * @param {String} formula   The formula to be rolled.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {String} flavor   The html to use for the roll message.
+   * @private
+   */
+  _rollSkillHelper(formula, actor, flavor) {
+    let roll = new Roll(formula, actor.getRollData());
+    roll.toMessage({
+      speaker: this._chatMessage.getSpeaker({ actor }),
+      flavor,
+      rollMode: game.settings.get('core', 'rollMode'),
+    });
   }
 
   /**
@@ -139,8 +150,9 @@ export class Dice {
    * Create weapon roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
-   * @returns {String}   The resultant roll label.
    * @param {Item} weapon   The weapon being used.
+   * @param {Actor} actor   The actor performing the roll.
+   * @returns {String}   The resultant roll label.
    * @private
    */
   _getWeaponRollLabel(dataset, skillRollOptions, weapon, actor) {
