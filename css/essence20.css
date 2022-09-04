@@ -1000,7 +1000,7 @@ option {
 
 .essence20 textarea {
   color: white;
-  border: 1px solid #c7c4c4;
+  border: 1px solid var(--color-border-light-tertiary);
 }
 
 .essence20 .one-digit-input {

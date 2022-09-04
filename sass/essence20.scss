@@ -20,7 +20,7 @@ option {
 
 .essence20 textarea {
   color: white;
-  border: 1px solid v.$textcolor1;
+  border: 1px solid var(--color-border-light-tertiary);
 }
 
 .essence20 .one-digit-input {
