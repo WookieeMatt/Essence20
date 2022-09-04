@@ -9,19 +9,20 @@
     {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
 
     <div class="vehicle-container">
-      <h3>Crew</h3>
-      <input type="text" name="system.crew.description" value="{{system.crew.description}}"
-        placeholder="{{ localize 'E20.ActorDescription' }}" />
-      <span>{{localize 'E20.VehicleDrivers'}}</span><input type="number" name="system.crew.numDrivers"
-        value="{{system.crew.numDrivers}}" />
-      <span>{{localize 'E20.VehiclePassengers'}}</span><input type="number" name="system.crew.numPassengers"
-        value="{{system.crew.numPassengers}}" />
+      <span>{{localize 'E20.VehicleCrew'}}</span>
+      <input type="text" name="system.crew.description" value="{{system.crew.description}}" />
 
-      <h3>Firepoints</h3>
-      <input type="text" name="system.firepoints.description" value="{{system.firepoints.description}}"
-        placeholder="{{ localize 'E20.ActorDescription' }}" />
-      <span>{{localize 'E20.VehicleFirepoints'}}</span><input type="number" name="system.firepoints.value"
-        value="{{system.firepoints.value}}" />
+      <span>{{localize 'E20.VehicleFirepoints'}}</span>
+      <input type="number" name="system.firepoints.value" value="{{system.firepoints.value}}" />
+
+      <span>{{localize 'E20.VehicleDrivers'}}</span>
+      <input type="number" name="system.crew.numDrivers" value="{{system.crew.numDrivers}}" />
+
+      <span>{{localize 'E20.VehicleFirepointsDescription'}}</span>
+      <textarea rows="3" name="system.firepoints.description">{{system.firepoints.description}}</textarea>
+
+      <span>{{localize 'E20.VehiclePassengers'}}</span>
+      <input type="number" name="system.crew.numPassengers" value="{{system.crew.numPassengers}}" />
     </div>
     {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
   </section>
