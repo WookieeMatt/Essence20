@@ -61,11 +61,12 @@ export class Dice {
    */
   _processSkillRollOptions(form) {
     return {
-      shiftUp: parseInt(form.shiftUp.value),
-      shiftDown: parseInt(form.shiftDown.value),
-      snag: form.snagEdge.value == 'snag',
       edge: form.snagEdge.value == 'edge',
+      shiftDown: parseInt(form.shiftDown.value),
+      shiftUp: parseInt(form.shiftUp.value),
+      snag: form.snagEdge.value == 'snag',
       specialized: form.specialized.checked,
+      timesToRoll: parseInt(form.timesToRoll.value),
     }
   }
 
@@ -90,6 +91,7 @@ export class Dice {
       return;
     }
 
+    // Auto success rules let the player choose to roll, which uses the best dice pool
     if (this._config.autoSuccessShifts.includes(finalShift)) {
       finalShift = this._config.skillRollableShifts[this._config.skillRollableShifts.length - 1];
     }
@@ -98,12 +100,23 @@ export class Dice {
     const formula = this._getFormula(
       !!dataset.specialization || skillRollOptions.specialized, skillRollOptions, finalShift, modifier);
 
-    let roll = new Roll(formula, actor.getRollData());
-    roll.toMessage({
-      speaker: this._chatMessage.getSpeaker({ actor }),
-      flavor: label,
-      rollMode: game.settings.get('core', 'rollMode'),
-    });
+    // Repeat the roll as many times as specified in the skill roll options dialog
+    for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
+      let repeatText = '';
+      if (skillRollOptions.timesToRoll > 1) {
+        repeatText = game.i18n.format("E20.RollRepeatText", {
+          index: i + 1,
+          total: skillRollOptions.timesToRoll,
+        }) + '<br>';
+      }
+
+      let roll = new Roll(formula, actor.getRollData());
+      roll.toMessage({
+        speaker: this._chatMessage.getSpeaker({ actor }),
+        flavor: repeatText + label,
+        rollMode: game.settings.get('core', 'rollMode'),
+      });
+    }
   }
 
   /**

@@ -170,6 +170,7 @@
     "RollDialogSnag": "Snag",
     "RollDialogTimesToRoll": "Times to roll",
     "RollDialogTitle": "Configure your skill roll",
+    "RollRepeatText": "Roll {index} of {total}",
     "RollRollingFor": "Rolling for",
     "RollSpecialized": "Specialized",
     "RollWithAnEdge": "with an Edge",
