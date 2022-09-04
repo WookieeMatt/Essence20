@@ -8,22 +8,43 @@
     {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
     {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
 
-    <div class="vehicle-container">
-      <span>{{localize 'E20.VehicleCrew'}}</span>
-      <input type="text" name="system.crew.description" value="{{system.crew.description}}" />
-
-      <span>{{localize 'E20.VehicleFirepoints'}}</span>
-      <input type="number" name="system.firepoints.value" value="{{system.firepoints.value}}" />
-
-      <span>{{localize 'E20.VehicleDrivers'}}</span>
-      <input type="number" name="system.crew.numDrivers" value="{{system.crew.numDrivers}}" />
-
-      <span>{{localize 'E20.VehicleFirepointsDescription'}}</span>
-      <textarea rows="3" name="system.firepoints.description">{{system.firepoints.description}}</textarea>
-
-      <span>{{localize 'E20.VehiclePassengers'}}</span>
-      <input type="number" name="system.crew.numPassengers" value="{{system.crew.numPassengers}}" />
+    <div class="stats-container" style="flex-grow: 0;">
+      <div class="flexrow">
+        <div class="resource flexcol">
+          <label class="resource flex-group-center">{{localize 'E20.VehicleCrew'}}</label>
+          <input type="text" style="text-align: center;" name="system.crew.description"
+            value="{{system.crew.description}}" />
+        </div>
+        <div class="resource flexcol">
+          <label class="resource flex-group-center">
+            {{localize 'E20.VehicleFirepoints'}}
+          </label>
+          <input type="number" style="text-align: center;" name="system.firepoints.value"
+            value="{{system.firepoints.value}}" />
+        </div>
+        <div class="resource flexcol">
+          <label class="resource flex-group-center">
+            {{localize 'E20.VehicleDrivers'}}
+          </label>
+          <input type="number" style="text-align: center;" name="system.crew.numDrivers"
+            value="{{system.crew.numDrivers}}" />
+        </div>
+        <div class="resource flexcol">
+          <label class="resource flex-group-center">
+            {{localize 'E20.VehiclePassengers'}}
+          </label>
+          <input type="number" style="text-align: center;" name="system.crew.numPassengers"
+            value="{{system.crew.numPassengers}}" />
+        </div>
+      </div>
+      <div class="flexrow">
+        <textarea rows="3" name="system.firepoints.description"
+          placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">
+          {{system.firepoints.description}}
+        </textarea>
+      </div>
     </div>
+
     {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
   </section>
 </form>
