@@ -31,6 +31,7 @@
     "ActorDescription": "Description",
     "ActorHealth": "Health",
     "ActorInitiative": "Initiative",
+    "ActorLanguages": "Languages",
     "ActorLevel": "Level",
     "ActorName": "Name",
     "ActorPronouns": "Pronouns",

@@ -75,3 +75,13 @@
   display: -ms-flexbox;
   display: flex;
 }
+
+.essence20 .actor-header-size {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+}
+
+.essence20 .pr-header-level {
+  flex-grow: 0;
+}
