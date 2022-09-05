@@ -10,27 +10,8 @@
     {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
     {{!-- Hang-ups --}}
     {{> "systems/essence20/templates/actor/parts/actor-hang-ups.hbs"}}
-
     {{!-- Threat Powers --}}
-    {{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers
-    title='E20.ItemTypeThreatPowerPlural' dataType='threatPower'}}
-      {{#*inline "expand-details" item}}
-      <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-      {{/inline}}
-
-      {{#*inline "chips" item}}
-      {{#if item.system.actionType}}
-      <span class="chip" name="chip.actionType">{{item.system.actionType}}</span>
-      {{/if}}
-      {{#if item.system.cost}}
-      <span class="chip" name="chip.cost">{{localize 'E20.ThreatPowerCost'}}: {{item.system.cost}}</span>
-      {{/if}}
-      {{#if item.system.limited}}
-      <span class="chip" name="chip.limited">{{localize 'E20.ThreatPowerLimited'}}</span>
-      {{/if}}
-      {{/inline}}
-    {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
-
+    {{> "systems/essence20/templates/actor/parts/actor-threat-powers.hbs"}}
     {{!-- Perks --}}
     {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
     {{!-- Weapons --}}
