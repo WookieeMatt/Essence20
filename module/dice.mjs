@@ -61,11 +61,12 @@ export class Dice {
    */
   _processSkillRollOptions(form) {
     return {
-      shiftUp: parseInt(form.shiftUp.value),
-      shiftDown: parseInt(form.shiftDown.value),
-      snag: form.snagEdge.value == 'snag',
       edge: form.snagEdge.value == 'edge',
+      shiftDown: parseInt(form.shiftDown.value),
+      shiftUp: parseInt(form.shiftUp.value),
+      snag: form.snagEdge.value == 'snag',
       specialized: form.specialized.checked,
+      timesToRoll: parseInt(form.timesToRoll.value),
     }
   }
 
@@ -90,6 +91,7 @@ export class Dice {
       return;
     }
 
+    // Auto success rules let the player choose to roll, which uses the best dice pool
     if (this._config.autoSuccessShifts.includes(finalShift)) {
       finalShift = this._config.skillRollableShifts[this._config.skillRollableShifts.length - 1];
     }
@@ -98,10 +100,32 @@ export class Dice {
     const formula = this._getFormula(
       !!dataset.specialization || skillRollOptions.specialized, skillRollOptions, finalShift, modifier);
 
+    // Repeat the roll as many times as specified in the skill roll options dialog
+    for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
+      let repeatText = '';
+      if (skillRollOptions.timesToRoll > 1) {
+        repeatText = this._i18n.format("E20.RollRepeatText", {
+          index: i + 1,
+          total: skillRollOptions.timesToRoll,
+        }) + '<br>';
+      }
+
+      this._rollSkillHelper(formula, actor, repeatText + label);
+    }
+  }
+
+  /**
+   * Executes the skill roll.
+   * @param {String} formula   The formula to be rolled.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {String} flavor   The html to use for the roll message.
+   * @private
+   */
+  _rollSkillHelper(formula, actor, flavor) {
     let roll = new Roll(formula, actor.getRollData());
     roll.toMessage({
       speaker: this._chatMessage.getSpeaker({ actor }),
-      flavor: label,
+      flavor,
       rollMode: game.settings.get('core', 'rollMode'),
     });
   }
@@ -126,8 +150,9 @@ export class Dice {
    * Create weapon roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
-   * @returns {String}   The resultant roll label.
    * @param {Item} weapon   The weapon being used.
+   * @param {Actor} actor   The actor performing the roll.
+   * @returns {String}   The resultant roll label.
    * @private
    */
   _getWeaponRollLabel(dataset, skillRollOptions, weapon, actor) {

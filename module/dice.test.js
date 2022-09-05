@@ -1,9 +1,10 @@
-import {Dice} from "./dice.mjs";
-import {E20} from "./helpers/config.mjs";
-import {jest} from '@jest/globals'
+import { Dice } from "./dice.mjs";
+import { E20 } from "./helpers/config.mjs";
+import { jest } from '@jest/globals'
 
 class Mocki18n {
   localize(text) { return text; }
+  format(text, _) { return text; }
 }
 
 const chatMessage = jest.mock();
@@ -11,6 +12,87 @@ chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
 const dice = new Dice(new Mocki18n, E20, chatMessage);
+
+/* rollSkill */
+describe("rollSkill", () => {
+  const dataset = {
+    skill: 'athletics',
+  };
+  const mockActor = jest.mock();
+
+  test("normal skill roll", () => {
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    }
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'strength': {
+          'athletics': {
+            modifier: '0',
+            shift: 'd20',
+          },
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn()
+
+    dice.rollSkill(dataset, skillRollOptions, mockActor, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
+  });
+
+  test("repeated normal skill roll", () => {
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 2,
+    }
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'strength': {
+          'athletics': {
+            modifier: '0',
+            shift: 'd20',
+          },
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn()
+
+    dice.rollSkill(dataset, skillRollOptions, mockActor, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.EssenceSkillAthletics");
+    expect(dice._rollSkillHelper.mock.calls.length).toBe(2);
+  });
+
+  test("auto success", () => {
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    }
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'strength': {
+          'athletics': {
+            modifier: '0',
+            shift: 'autoSuccess',
+          },
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn()
+
+    dice.rollSkill(dataset, skillRollOptions, mockActor, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
+  });
+});
 
 /* _getSkillRollLabel */
 describe("_getSkillRollLabel", () => {
@@ -86,10 +168,10 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
-     "<b>E20.WeaponEffect</b> - Some effect<br>" +
-     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
-     "<b>ITEM.TypeClassfeature</b> - E20.None";
+      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
+      "<b>E20.WeaponEffect</b> - Some effect<br>" +
+      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
+      "<b>ITEM.TypeClassfeature</b> - E20.None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -110,10 +192,10 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithAnEdge<br>" +
-     "<b>E20.WeaponEffect</b> - Some effect<br>" +
-     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
-     "<b>ITEM.TypeClassfeature</b> - E20.None";
+      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithAnEdge<br>" +
+      "<b>E20.WeaponEffect</b> - Some effect<br>" +
+      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
+      "<b>ITEM.TypeClassfeature</b> - E20.None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -134,10 +216,10 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithASnag<br>" +
-     "<b>E20.WeaponEffect</b> - Some effect<br>" +
-     "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
-     "<b>ITEM.TypeClassfeature</b> - E20.None";
+      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithASnag<br>" +
+      "<b>E20.WeaponEffect</b> - Some effect<br>" +
+      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
+      "<b>ITEM.TypeClassfeature</b> - E20.None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -158,10 +240,10 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-     "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
-     "<b>E20.WeaponEffect</b> - E20.None<br>" +
-     "<b>E20.WeaponAlternateEffects</b> - E20.None<br>" +
-     "<b>ITEM.TypeClassfeature</b> - E20.None";
+      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
+      "<b>E20.WeaponEffect</b> - E20.None<br>" +
+      "<b>E20.WeaponAlternateEffects</b> - E20.None<br>" +
+      "<b>ITEM.TypeClassfeature</b> - E20.None";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
   });
@@ -241,7 +323,7 @@ describe("_handleAutoFail", () => {
 
     expect(dice._handleAutoFail(skillShift, label, actor)).toBe(true);
     expect(chatMessage.getSpeaker).toHaveBeenCalled();
-    expect(chatMessage.create).toHaveBeenCalledWith({content: " E20.RollAutoFail", speaker: {}});
+    expect(chatMessage.create).toHaveBeenCalledWith({ content: " E20.RollAutoFail", speaker: {} });
   });
 
   test("auto fail", () => {
@@ -251,7 +333,7 @@ describe("_handleAutoFail", () => {
 
     expect(dice._handleAutoFail(skillShift, label, actor)).toBe(true);
     expect(chatMessage.getSpeaker).toHaveBeenCalled();
-    expect(chatMessage.create).toHaveBeenCalledWith({content: " E20.RollAutoFailFumble", speaker: {}});
+    expect(chatMessage.create).toHaveBeenCalledWith({ content: " E20.RollAutoFailFumble", speaker: {} });
   });
 });
 

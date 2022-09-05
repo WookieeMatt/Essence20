@@ -8,14 +8,21 @@
     <input type="number" name="shiftDown" value=0 />
   </div>
   <div>
-    <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}}/> {{localize 'E20.RollDialogSnag'}}
-    <input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}}/> {{localize 'E20.RollDialogNormal'}}
-    <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}}/> {{localize 'E20.RollDialogEdge'}}
+    <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize
+    'E20.RollDialogSnag'}}
+    <input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize
+    'E20.RollDialogNormal'}}
+    <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize
+    'E20.RollDialogEdge'}}
   </div>
   <div>
     <label>
       <input type="checkbox" name="specialized" {{checked specialized}} />
       <span>{{localize 'E20.RollSpecialized'}}</span>
     </label>
+  </div>
+  <div>
+    {{localize 'E20.RollDialogTimesToRoll'}}
+    <input type="number" name="timesToRoll" value=1 />
   </div>
 </form>
