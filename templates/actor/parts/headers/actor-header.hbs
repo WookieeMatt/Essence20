@@ -5,8 +5,8 @@
       <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
       <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
     </div>
-    <div class="flexrow" style="gap: 5px;">
-      <div style="display:flex; flex-direction:column;">
+    <div class="flexrow" style="gap: 2px;">
+      <div class="actor-header-size">
         <label for="system.size" class="resource-label">{{localize 'E20.ActorSize'}}</label>
         <select name="system.size">
           {{#select system.size}}

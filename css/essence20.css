@@ -448,6 +448,16 @@
   display: flex;
 }
 
+.essence20 .actor-header-size {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+}
+
+.essence20 .pr-header-level {
+  flex-grow: 0;
+}
+
 /* Generic Item Sheet Styling */
 .essence20 .items-list {
   list-style: none;
@@ -996,6 +1006,10 @@ option {
 .essence20 input[type=number], input[type=text] {
   color: white;
   vertical-align: middle;
+}
+
+.essence20 .centered-input {
+  text-align: center;
 }
 
 .essence20 textarea {
