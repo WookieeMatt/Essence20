@@ -20,6 +20,7 @@
 .story-points-content {
   padding-top: 2px;
   text-align: center;
+  flex-wrap: nowrap;
 }
 
 .story-points-label {
@@ -28,7 +29,8 @@
   width: 80px;
 }
 
-#story-points-input, #gm-points-input {
+#story-points-input,
+#gm-points-input {
   width: 75px;
   text-align: center;
   background: url(../../../ui/parchment.jpg) repeat;
@@ -65,3 +67,12 @@
 .good-ones i {
   color: rgb(77, 208, 225);
 }
+
+#story-points .window-content {
+  background: none;
+  width: 270px;
+  padding: 6px;
+  border-top: 2px solid #782e22;
+  overflow-y: hidden;
+} 
+
