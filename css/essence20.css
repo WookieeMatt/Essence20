@@ -167,18 +167,21 @@
   font-family: "Rajdhani", sans-serif;
   font-weight: bold;
   color: rgb(199, 196, 196);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  background: rgb(66, 66, 66);
   color: rgb(199, 196, 196);
+  border-radius: 15px;
+  background: rgb(66, 66, 66);
 }
 
 .window-app .window-content button {
   color: rgb(199, 196, 196);
   background: rgb(66, 66, 66);
-  border-color: black;
+  border-color: 4px solid #b5b1b1;
   border-radius: 20px;
   box-shadow: 4px 4px 0 black;
 }
@@ -195,14 +198,39 @@
 
 .dialog .dialog-buttons button.default {
   color: rgb(199, 196, 196);
+  background: rgba(3, 18, 156, 0.5019607843);
 }
 
 .dialog .dialog-buttons button {
   color: rgb(199, 196, 196);
+  background: rgba(3, 18, 156, 0.5019607843);
 }
 
 .dialog .dialog-buttons {
   color: rgb(199, 196, 196);
+  padding-top: 6px;
+}
+
+.dialog-content {
+  list-style: none;
+  padding: 6px;
+  overflow-y: none;
+  color: rgb(199, 196, 196);
+  flex-basis: auto;
+  justify-content: center;
+  height: 100%;
+  background: rgba(3, 18, 156, 0.5019607843);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 black;
+}
+
+.dialog input {
+  color: rgb(199, 196, 196);
+}
+
+.app .window-app dialog {
+  background: none;
 }
 
 #module-management .package-list .package-title {
@@ -473,6 +501,7 @@
 
 .roll-dialog div {
   margin-bottom: 10px;
+  height: fit-content;
 }
 
 .roll-dialog div label > * {

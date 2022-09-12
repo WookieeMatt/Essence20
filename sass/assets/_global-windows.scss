@@ -5,18 +5,21 @@
   font-family: 'Rajdhani', sans-serif;
   font-weight: bold;
   color: v.$textcolor1;
+  border: v.$border;
+  border-radius: v.$border-radius;
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  background: rgb(66, 66, 66);
   color: v.$textcolor1;
+  border-radius: v.$border-radius;
+  background: v.$background-n;
 }
 
 .window-app .window-content button {
   color: v.$textcolor1;
   background: rgb(66, 66, 66);
-  border-color: black;
+  border-color: v.$border;
   border-radius: 20px;
   box-shadow: v.$boxshadow;
 }
@@ -34,14 +37,39 @@
 
 .dialog .dialog-buttons button.default {
   color: v.$textcolor1;
+  background: v.$background-b;
 }
 
 .dialog .dialog-buttons button {
   color: v.$textcolor1;
+  background: v.$background-b;
 }
 
 .dialog .dialog-buttons {
   color: v.$textcolor1;
+  padding-top: v.$padding;
+}
+
+.dialog-content {
+  list-style: none;
+  padding: v.$padding;
+  overflow-y: none;
+  color: v.$textcolor1;
+  flex-basis: auto;
+  justify-content: center;
+  height: 100%;
+  background: v.$background-b;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+}
+
+.dialog input{
+  color: v.$textcolor1;
+}
+
+.app .window-app dialog {
+  background: none;
 }
 
 #module-management .package-list .package-title {
