@@ -60,13 +60,13 @@
   list-style: none;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -105,7 +105,7 @@
 }
 
 .essence20 .editor-content {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   min-height: fit-content;
   font-size: 16px;
   padding: 0;
@@ -166,19 +166,22 @@
 .window-app {
   font-family: "Rajdhani", sans-serif;
   font-weight: bold;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  background: #424242;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
+  border-radius: 15px;
+  background: rgb(66, 66, 66);
 }
 
 .window-app .window-content button {
-  color: #c7c4c4;
-  background: #424242;
-  border-color: black;
+  color: rgb(199, 196, 196);
+  background: rgb(66, 66, 66);
+  border-color: 4px solid #b5b1b1;
   border-radius: 20px;
   box-shadow: 4px 4px 0 black;
 }
@@ -194,19 +197,44 @@
 }
 
 .dialog .dialog-buttons button.default {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
+  background: rgba(3, 18, 156, 0.5019607843);
 }
 
 .dialog .dialog-buttons button {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
+  background: rgba(3, 18, 156, 0.5019607843);
 }
 
 .dialog .dialog-buttons {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
+  padding-top: 6px;
+}
+
+.dialog-content {
+  list-style: none;
+  padding: 6px;
+  overflow-y: none;
+  color: rgb(199, 196, 196);
+  flex-basis: auto;
+  justify-content: center;
+  height: 100%;
+  background: rgba(3, 18, 156, 0.5019607843);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 black;
+}
+
+.dialog input {
+  color: rgb(199, 196, 196);
+}
+
+.app .window-app dialog {
+  background: none;
 }
 
 #module-management .package-list .package-title {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .item-button-container {
@@ -219,7 +247,7 @@
 
 .rollable:hover,
 .rollable:focus {
-  color: black;
+  color: rgb(0, 0, 0);
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
@@ -373,7 +401,7 @@
 }
 
 .essence20 .sheet-header {
-  background-color: #03129c80;
+  background-color: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   box-shadow: 4px 4px 0 black;
   padding: 6px;
@@ -429,7 +457,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   font-weight: bold;
 }
@@ -465,7 +493,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -473,6 +501,7 @@
 
 .roll-dialog div {
   margin-bottom: 10px;
+  height: fit-content;
 }
 
 .roll-dialog div label > * {
@@ -541,7 +570,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 black;
@@ -551,10 +580,10 @@
 .essence20 .skills-container {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   transform: rotate(0deg);
   scrollbar-width: thin;
-  background-color: #03129c80;
+  background-color: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -568,7 +597,7 @@
 .essence20 .skillscontainer {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
@@ -579,7 +608,7 @@
 .essence20 h2,
 .essence20 h3,
 .essence20 h4 {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .tox .tox-editor-container {
@@ -594,13 +623,13 @@
   list-style: none;
   padding: 4px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -707,11 +736,11 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -731,13 +760,13 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: row;
   justify-content: center;
   width: 100%;
   height: fit-content;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -747,10 +776,10 @@
   list-style: none;
   padding: 6px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   flex-basis: auto;
   justify-content: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -776,14 +805,14 @@
 }
 
 .essence20 .tabs .item {
-  background: #2233ce80;
+  background: rgba(34, 51, 206, 0.5019607843);
   border: 1px solid;
   border-radius: 4px 4px 0px 0px;
   flex: 1;
 }
 
 .essence20 .tabs .active {
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border-bottom: none;
 }
 
@@ -801,7 +830,7 @@
 }
 
 .essence20 .zord-combiners {
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   padding: 8px;
@@ -814,7 +843,7 @@
 }
 
 .essence20 .item {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 /* Generic Item Sheet Styling */
@@ -824,7 +853,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -889,7 +918,7 @@
   align-items: center;
   padding: 0 2px;
   border-bottom: 1px solid #b5b1b1;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .items-list .item:last-child {
@@ -924,7 +953,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   font-weight: bold;
 }
@@ -966,10 +995,10 @@
 }
 
 .essence20 .item-sheet {
-  background: #03129c80;
+  background: rgba(3, 18, 156, 0.5019607843);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   padding: 6px;
   min-height: none;
 }
@@ -985,7 +1014,7 @@
 
 /* -- Jornal page styling -- */
 .journal-entry-pages {
-  color: #a3a3a3;
+  color: rgb(163, 163, 163);
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
@@ -1038,11 +1067,11 @@ option {
 
 form .notes,
 form .hint {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .span {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-body {

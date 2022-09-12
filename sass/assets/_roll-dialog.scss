@@ -1,7 +1,10 @@
+@use 'variables' as v;
+
 .roll-dialog div {
   margin-bottom: 10px;
+  height: fit-content;
 }
 
-.roll-dialog div label > *{
+.roll-dialog div label>* {
   vertical-align: middle;
 }
