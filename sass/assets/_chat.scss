@@ -1,0 +1,20 @@
+@use 'variables' as v;
+.chat-message {
+  background: v.$background-image-1;
+  opacity: 80;
+  color: v.$textcolor1;
+  border: v.$border;
+  box-shadow: v.$boxshadow;
+}
+
+.chat-message .flavor-text{
+  color: v.$textcolor1;
+}
+
+.chat-message .message-sender{
+  color: v.$textcolor1;
+}
+
+.chat-message .message-metadata{
+  color: v.$textcolor1;
+}
