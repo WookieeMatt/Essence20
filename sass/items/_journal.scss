@@ -1,11 +1,17 @@
+@use '../assets/variables' as v;
 /* -- Jornal page styling -- */
-.journal-entry-pages {
+.window-content .journal-sheet-container .journal-entry-content {
+  background: v.$background-n;
+  //background-size: cover;
   color: rgb(163, 163, 163);
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
 
-.window-content .journal-sheet-container .editable {
-  background: #10024e;
+.window-content .journal-sheet-container {
+  background: v.$background-image-1;
+  background-size: cover;
   border-radius: 10px white;
 }
+
+

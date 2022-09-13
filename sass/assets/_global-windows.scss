@@ -13,12 +13,13 @@
   /* background: rgb(78, 78, 78); */
   color: v.$textcolor1;
   border-radius: v.$border-radius;
-  background: v.$background-n;
+  background: v.$background-image-1;
+  background-size: cover;
 }
 
 .window-app .window-content button {
   color: v.$textcolor1;
-  background: rgb(66, 66, 66);
+  background: v.$background-n;
   border-color: v.$border;
   border-radius: 20px;
   box-shadow: v.$boxshadow;
@@ -37,12 +38,12 @@
 
 .dialog .dialog-buttons button.default {
   color: v.$textcolor1;
-  background: v.$background-b;
+  background: v.$background-n;
 }
 
 .dialog .dialog-buttons button {
   color: v.$textcolor1;
-  background: v.$background-b;
+  background: v.$background-n;
 }
 
 .dialog .dialog-buttons {
@@ -58,7 +59,7 @@
   flex-basis: auto;
   justify-content: center;
   height: 100%;
-  background: v.$background-b;
+  background: v.$background-n;
   border: v.$border;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
@@ -90,3 +91,4 @@
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
+

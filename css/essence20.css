@@ -66,7 +66,7 @@
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -175,12 +175,13 @@
   /* background: rgb(78, 78, 78); */
   color: rgb(199, 196, 196);
   border-radius: 15px;
-  background: rgb(66, 66, 66);
+  background: radial-gradient(farthest-corner at 90% 10%, #1C3B50, #03263C, #040519);
+  background-size: cover;
 }
 
 .window-app .window-content button {
   color: rgb(199, 196, 196);
-  background: rgb(66, 66, 66);
+  background: none;
   border-color: 4px solid #b5b1b1;
   border-radius: 20px;
   box-shadow: 4px 4px 0 black;
@@ -198,12 +199,12 @@
 
 .dialog .dialog-buttons button.default {
   color: rgb(199, 196, 196);
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
 }
 
 .dialog .dialog-buttons button {
   color: rgb(199, 196, 196);
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
 }
 
 .dialog .dialog-buttons {
@@ -219,7 +220,7 @@
   flex-basis: auto;
   justify-content: center;
   height: 100%;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -250,6 +251,26 @@
   color: rgb(0, 0, 0);
   text-shadow: 0 0 10px red;
   cursor: pointer;
+}
+
+.chat-message {
+  background: radial-gradient(farthest-corner at 90% 10%, #1C3B50, #03263C, #040519);
+  opacity: 80;
+  color: rgb(199, 196, 196);
+  border: 4px solid #b5b1b1;
+  box-shadow: 4px 4px 0 black;
+}
+
+.chat-message .flavor-text {
+  color: rgb(199, 196, 196);
+}
+
+.chat-message .message-sender {
+  color: rgb(199, 196, 196);
+}
+
+.chat-message .message-metadata {
+  color: rgb(199, 196, 196);
 }
 
 .grid,
@@ -401,7 +422,7 @@
 }
 
 .essence20 .sheet-header {
-  background-color: rgba(3, 18, 156, 0.5019607843);
+  background-color: none;
   border: 4px solid #b5b1b1;
   box-shadow: 4px 4px 0 black;
   padding: 6px;
@@ -457,7 +478,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   font-weight: bold;
 }
@@ -570,7 +591,7 @@
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 50px;
   box-shadow: 4px 4px 0 black;
@@ -583,7 +604,7 @@
   color: rgb(199, 196, 196);
   transform: rotate(0deg);
   scrollbar-width: thin;
-  background-color: rgba(3, 18, 156, 0.5019607843);
+  background-color: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -612,7 +633,7 @@
 }
 
 .essence20 .tox .tox-editor-container {
-  background: #fff;
+  background: rgb(153, 152, 152);
 }
 
 .essence20 .tox .tox-edit-area {
@@ -629,7 +650,7 @@
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -740,7 +761,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -766,7 +787,7 @@
   justify-content: center;
   width: 100%;
   height: fit-content;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -779,7 +800,7 @@
   color: rgb(199, 196, 196);
   flex-basis: auto;
   justify-content: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
@@ -812,7 +833,7 @@
 }
 
 .essence20 .tabs .active {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border-bottom: none;
 }
 
@@ -830,7 +851,7 @@
 }
 
 .essence20 .zord-combiners {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   padding: 8px;
@@ -953,7 +974,7 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   font-weight: bold;
 }
@@ -995,7 +1016,7 @@
 }
 
 .essence20 .item-sheet {
-  background: rgba(3, 18, 156, 0.5019607843);
+  background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   color: rgb(199, 196, 196);
@@ -1013,14 +1034,16 @@
 }
 
 /* -- Jornal page styling -- */
-.journal-entry-pages {
+.window-content .journal-sheet-container .journal-entry-content {
+  background: none;
   color: rgb(163, 163, 163);
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
 
-.window-content .journal-sheet-container .editable {
-  background: #10024e;
+.window-content .journal-sheet-container {
+  background: radial-gradient(farthest-corner at 90% 10%, #1C3B50, #03263C, #040519);
+  background-size: cover;
   border-radius: 10px white;
 }
 
