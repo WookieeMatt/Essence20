@@ -6,7 +6,7 @@ This is a fan made system for running Essence20 games, such as Power Rangers, GI
 
 Link to Renegade Studios: https://renegadegamestudios.com/blog/introducing-the-essence20-roleplaying-system/
 
-We are currently in an OPEN BETA of the system. Presently only POWER RANGERS is playable but will soon be adding in Transformers and GI Joe. 
+Presently only POWER RANGERS is playable but will soon be adding in Transformers and GI Joe. 
 
 Any issues you encounter please let us know by opening an issue on our GITHUB with images of the issue presented. 
 
