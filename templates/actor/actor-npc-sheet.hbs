@@ -4,19 +4,25 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    {{!-- NPC Defenses --}}
-    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-    {{!-- Movement --}}
-    {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
-    {{!-- Hang-ups --}}
-    {{> "systems/essence20/templates/actor/parts/actor-hang-ups.hbs"}}
-    {{!-- Threat Powers --}}
-    {{> "systems/essence20/templates/actor/parts/actor-threat-powers.hbs"}}
-    {{!-- Perks --}}
-    {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
-    {{!-- Weapons --}}
-    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-    {{!-- Skills --}}
-    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+      {{!-- NPC Defenses --}}
+      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+      {{!-- Movement --}}
+      {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+    <div class="npc-row">
+      <div class="npc-column-1">
+        {{!-- Skills --}}
+        {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+      </div>
+      <div class="npc-column-2">
+        {{!-- Weapons --}}
+        {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+        {{!-- Hang-ups --}}
+        {{> "systems/essence20/templates/actor/parts/actor-hang-ups.hbs"}}
+        {{!-- Threat Powers --}}
+        {{> "systems/essence20/templates/actor/parts/actor-threat-powers.hbs"}}
+        {{!-- Perks --}}
+        {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
+      </div>
+    </div>
   </section>
 </form>

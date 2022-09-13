@@ -23,3 +23,24 @@
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
 }
+
+.essence20 .npc-column-1 {
+  gap: 5px;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.essence20 .npc-column-2 {
+  gap: 5px;
+  width: 60%;
+  display: flex;
+  flex-direction: column; 
+}
+
+.essence20 .npc-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: v.$padding;
+}
