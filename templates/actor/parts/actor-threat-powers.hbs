@@ -1,21 +1,18 @@
-<h3>{{localize 'E20.powers'}}</h3>
-<a class="item-create" data-type="threatPower" title="{{ localize 'E20.addPower' }}">
-  <i class="fas fa-plus"></i>
-</a>
+{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.threatPowers
+title='E20.ItemTypeThreatPowerPlural' dataType='threatPower'}}
+  {{#*inline "expand-details" item}}
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+  {{/inline}}
 
-{{#each threatPowers as |power|}}
-  <li class="item flexrow" data-item-id="{{power._id}}">
-    <div class="item-name">
-      <input class="inline-edit" data-field="name" type="text" name="power.{{@index}}.name" value="{{power.name}}" placeholder="{{ localize 'E20.name' }}"/>
-      <input class="inline-edit" data-field="data.actionType" type="text" name="power.{{@index}}.actionType" value="{{power.data.actionType}}" placeholder="{{ localize 'E20.actionType' }}"/>
-      <input class="inline-edit" data-field="data.charges" type="number" name="power.{{@index}}.charges" value="{{power.data.charges}}" placeholder="{{ localize 'E20.numCharges' }}"/>
-      <input class="inline-edit" data-field="data.cost" type="number" name="power.{{@index}}.cost" value="{{power.data.cost}}" placeholder="{{ localize 'E20.cost' }}"/>
-      <textarea class="inline-edit" data-field="data.description" name="power.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{power.data.description}}</textarea>
-      <span>{{localize 'E20.limited'}}</span>
-        <input class="inline-edit" data-field="data.limited" type="checkbox" name="power.limited" {{checked power.data.limited}}/>
-    </div>
-    <div class="item-controls">
-      <a class="item-control item-delete" title="{{localize 'E20.deletePower'}}"><i class="fas fa-trash"></i></a>
-    </div>
-  </li>
-{{/each}}
+  {{#*inline "chips" item}}
+  {{#if item.system.actionType}}
+  <span class="chip" name="chip.actionType">{{item.system.actionType}}</span>
+  {{/if}}
+  {{#if item.system.cost}}
+  <span class="chip" name="chip.cost">{{localize 'E20.ThreatPowerCost'}}: {{item.system.cost}}</span>
+  {{/if}}
+  {{#if item.system.limited}}
+  <span class="chip" name="chip.limited">{{localize 'E20.ThreatPowerLimited'}}</span>
+  {{/if}}
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}

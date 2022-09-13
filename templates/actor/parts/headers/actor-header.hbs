@@ -1,0 +1,24 @@
+<header class="sheet-header">
+  <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+  <div>
+    <div>
+      <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+    </div>
+    <div class="flexrow" style="gap: 2px;">
+      <div class="actor-header-size">
+        <label for="system.size" class="resource-label">{{localize 'E20.ActorSize'}}</label>
+        <select name="system.size">
+          {{#select system.size}}
+          {{#each config.actorSizes as |value size|}}
+          <option value="{{size}}">{{localize value}}</option>
+          {{/each}}
+          {{/select}}
+        </select>
+      </div>
+      {{#> secondary-fields}}
+      {{!-- Custom secondary fields here --}}
+      {{/secondary-fields}}
+    </div>
+  </div>
+</header>

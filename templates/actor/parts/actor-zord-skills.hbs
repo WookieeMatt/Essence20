@@ -1,0 +1,45 @@
+<div class="zord-str-container">
+  <div>
+    <span class="essences-skill">
+      <h3>{{localize config.essences.strength}}</h3>
+    </span>
+    <input class="essence-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
+  </div>
+  <div>
+    <h3>{{localize 'E20.ActorConditioning'}}</h3>
+    <input class="essence-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
+  </div>
+  <div>
+    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill='brawn'
+    fields=system.skills.strength.brawn}}
+  </div>
+  <div>
+    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill='might'
+    fields=system.skills.strength.might}}
+  </div>
+</div>
+<div class="zord-spd-container">
+  <div>
+    <span class="essences-skill">
+      <h3>{{localize config.essences.speed}}</h3>
+    </span>
+    <input class="essence-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
+  </div>
+  <div>
+    <span>
+      <h3>{{localize 'E20.initiative'}}</h3>
+    </span>
+    <div class="initiative-dropdown">
+      <select name="system.initiative">
+        {{selectOptions @root.config.initiativeShifts selected=system.initiative localize=true}}
+      </select>
+      <div class="item-image">
+        <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
+      </div>
+    </div>
+    <div>
+      {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='speed' skill='driving'
+      fields=system.skills.speed.driving}}
+    </div>
+  </div>
+</div>

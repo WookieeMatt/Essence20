@@ -1,0 +1,37 @@
+<div class="zord-combiners" style="flex-grow: 0;">
+  <span class="flex-group-center">
+    <h1>{{localize 'E20.MegaformZordCombinerParticipants'}}</h1>
+  </span>
+
+  <ol class="items-list">
+    {{#each @root.zords as |zord|}}
+    <li class="zord item" data-zord-id="{{zord._id}}">
+      <div class="flexrow" style="align-items:center;">
+        <div style="white-space: nowrap;">{{ localize 'E20.ActorName' }}: {{zord.name}}</div>
+        <div class="item-controls">
+          <a class="item-control zord-delete" title="{{localize 'E20.deletezordCombiner'}}">
+            <i class="fas fa-trash"></i>
+          </a>
+        </div>
+      </div>
+      <div>
+        {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="zord.system.health"
+          value="{{zord.system.health.value}}" />
+      </div>
+      <div>
+        <span>{{ localize 'E20.ZordRanger' }}: {{zord.system.ranger}}</span>
+      </div>
+      <div>
+        <div>{{ localize 'E20.ItemTypeMegaformTraitPlural' }}</div>
+        <ul>
+          {{#each zord.items as |item|}}
+          {{#ifEquals item.type 'megaformTrait'}}
+          <li>{{item.name}}</li>
+          {{/ifEquals}}
+          {{/each}}
+        </ul>
+      </div>
+    </li>
+    {{/each}}
+  </ol>
+</div>

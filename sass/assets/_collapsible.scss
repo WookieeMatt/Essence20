@@ -1,0 +1,54 @@
+@use '../assets/variables' as v;
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.essence20 .collapsible-item-container {
+  list-style: none;
+  padding: 8px;
+  overflow-y: auto;
+  color: v.$textcolor1;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-basis: auto;
+  justify-content: center;
+  background: v.$background-n;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+  width: 100%;
+  height: fit-content;
+}
+
+/* Content toggle open/close. */
+.essence20 .accordion-content {
+  display: none;
+}
+
+.essence20 .open .accordion-content {
+  display: block;
+}
+
+/* Chevron icon. */
+.essence20 .accordion-icon {
+  transition: all ease-in-out 0.25s;
+}
+
+.essence20 .open .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.essence20 .item-label-checkbox {
+  margin: 0;
+}

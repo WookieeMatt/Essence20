@@ -12,7 +12,7 @@ import { E20 } from "./helpers/config.mjs";
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 
-Hooks.once('init', async function() {
+Hooks.once('init', async function () {
 
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
@@ -52,7 +52,7 @@ Hooks.once('init', async function() {
 /* -------------------------------------------- */
 
 // If you need to add Handlebars helpers, here are a few useful examples:
-Handlebars.registerHelper('concat', function() {
+Handlebars.registerHelper('concat', function () {
   var outStr = '';
   for (var arg in arguments) {
     if (typeof arguments[arg] != 'object') {
@@ -62,11 +62,11 @@ Handlebars.registerHelper('concat', function() {
   return outStr;
 });
 
-Handlebars.registerHelper('toLowerCase', function(str) {
+Handlebars.registerHelper('toLowerCase', function (str) {
   return str.toLowerCase();
 });
 
-Handlebars.registerHelper('sum', function() {
+Handlebars.registerHelper('sum', function () {
   var total = 0;
   for (var arg in arguments) {
     let newValue = arguments[arg];
@@ -80,13 +80,26 @@ Handlebars.registerHelper('sum', function() {
   return total;
 });
 
+Handlebars.registerHelper('isdefined', function (value) {
+  return value !== undefined;
+});
+
+Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
+  return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+});
+
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once("ready", async function() {
+Hooks.once("ready", async function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-  Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
+  Hooks.on("hotbarDrop", (bar, data, slot) => {
+    if (["Item", "ActiveEffect"].includes(data.type)) {
+      createItemMacro(data, slot);
+      return false;
+    }
+  });
 });
 
 /* -------------------------------------------- */
@@ -102,11 +115,11 @@ Hooks.once("ready", async function() {
  */
 async function createItemMacro(data, slot) {
   if (data.type !== "Item") return;
-  if (!("data" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
-  const item = data.data;
+  if (!("uuid" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
+  const item = await fromUuid(data.uuid);
 
   // Create the macro command
-  const command = `game.essence20.rollItemMacro("${item.name}");`;
+  const command = `game.essence20.rollItemMacro("${item._id}", "${item.name}");`;
   let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
   if (!macro) {
     macro = await Macro.create({
@@ -122,17 +135,17 @@ async function createItemMacro(data, slot) {
 }
 
 /**
- * Create a Macro from an Item drop.
- * Get an existing item macro if one exists, otherwise create a new one.
+ * Roll and Item Macro.
+ * @param {string} itemId
  * @param {string} itemName
  * @return {Promise}
  */
-function rollItemMacro(itemName) {
+async function rollItemMacro(itemId, itemName) {
   const speaker = ChatMessage.getSpeaker();
   let actor;
   if (speaker.token) actor = game.actors.tokens[speaker.token];
   if (!actor) actor = game.actors.get(speaker.actor);
-  const item = actor ? actor.items.find(i => i.name === itemName) : null;
+  const item = actor ? actor.items.get(itemId) : null;
   if (!item) return ui.notifications.warn(`Your controlled Actor does not have an item named ${itemName}`);
 
   // Trigger the item roll

@@ -1,0 +1,23 @@
+@use '../assets/variables' as v;
+
+.essence20 .notes-title {
+  color: white;
+  font-size: 16px;
+}
+
+.essence20 .notes-container {
+  list-style: none;
+  margin-right: 3px;
+  padding: 8px;
+  overflow-y: auto;
+  color: v.$textcolor1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: v.$background-n;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+  width: 100%;
+  height: 100%;
+}

@@ -1,0 +1,21 @@
+.essence20 .chip {
+  border-radius: 10px;
+  border: 3px solid;
+  border-style: outset;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 2px;
+  margin-right: 3px;
+  background-color: #4a4848;
+  width: fit-content;
+  height: fit-content;
+  text-size-adjust: 8;
+}
+
+.essence20 .chip-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

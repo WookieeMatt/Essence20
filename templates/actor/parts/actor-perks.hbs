@@ -1,24 +1,6 @@
-<div class="perks-section">
-    <h3>{{localize 'E20.perks'}}</h3>
-    <a class="item-create" data-type="perk" title="{{ localize 'E20.addPerk' }}">
-        <i class="fas fa-plus"></i>
-    </a>
-
-    {{#each @root.perks as |perk|}}
-      <div class="item" data-item-id="{{perk._id}}">
-        <div class="item-image">
-          <a class="rollable" data-roll-type="perk"><i class="fas fa-dice-d20"></i></a>
-        </div>
-        <div class="item-name">
-          <input class="inline-edit" data-field="name" type="text" name="perk.{{@index}}.name" value="{{perk.name}}" placeholder="{{ localize 'E20.name' }}"/>
-        </div>
-          <input class="inline-edit" data-field="data.source" type="text" name="perk.{{@index}}.source" value="{{perk.data.source}}" placeholder="{{ localize 'E20.source' }}"/>
-          <input class="inline-edit" data-field="data.prerequisite" type="text" name="perk.{{@index}}.prerequisite" value="{{perk.data.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}"/>
-          <textarea class="inline-edit" data-field="data.description" name="perk.{{@index}}.description" placeholder="{{localize 'E20.description'}}">{{perk.data.description}}</textarea>
-        </div>
-        <div class="item-controls">
-            <a class="item-control item-delete" title="{{localize 'E20.deletePerk'}}"><i class="fas fa-trash"></i></a>
-        </div>
-      </div>
-    {{/each}}
-</div>
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.perks title='E20.ItemTypePerkPlural' dataType='perk'}}
+  {{#*inline "expand-details" item}}
+  <div>{{localize 'E20.PerkPrerequisite'}}: {{item.system.prerequisite}}</div>
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}

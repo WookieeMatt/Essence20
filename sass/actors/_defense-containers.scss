@@ -1,0 +1,50 @@
+@use '../assets/variables' as v;
+
+.essence20 .defense-container {
+  flex-grow: 0;
+  flex-basis: auto;
+}
+
+.essence20 .defense-container table thead {
+  background-color: inherit;
+  border-bottom: v.$border;
+  color: inherit;
+}
+
+.essence20 .defense-container tr:nth-child(even) {
+  background-color: inherit;
+}
+
+.essence20 .defense-container .tg {
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-style: hidden;
+  margin: 0;
+}
+
+.essence20 .defense-container .tg td {
+  border-color: v.$border;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 15px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.essence20 .defense-container .tg th {
+  border-color: v.$border;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 16px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.essence20 .defense-container .tg .tg-td {
+  border-color: inherit;
+  text-align: center;
+  vertical-align: middle;
+}

@@ -1,0 +1,97 @@
+@use '../assets/variables' as v;
+
+.essence20 .skill-header {
+  font-size: 1.125em;
+  align-items: center;
+  flex-wrap: nowrap;
+  background-color: #2436D4;
+  margin-top: 5px;
+}
+
+.essence20 .skill-header .skill-roll {
+  flex-grow: 0;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.essence20 .skill-header .skill-name {
+  white-space: nowrap;
+  overflow: hidden;
+  color: white;
+}
+
+.essence20 .skill-body {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.essence20 .skill-body .shift-select {
+  margin-top: 5px;
+}
+
+.essence20 .skill-body .shift-select > * {
+  vertical-align: middle;
+}
+
+.essence20 .skill-body .shift-select .specialized-label {
+  margin-left: 5px;
+}
+
+.essence20 .skill-body .shift-select .specialized-checkbox {
+  margin-left: 2px;
+}
+
+.essence20 .skill-body .specializations-list {
+  margin-top: 5px;
+}
+
+.essence20 .skill-body .specializations-list .specializations-item {
+  align-items: center;
+  gap: 5px;
+}
+
+.essence20 .skill-body .specializations-header {
+  align-items: center;
+  margin-top: 5px;
+}
+
+.essence20 .skills-label {
+  font-size: 2em;
+  margin-bottom: 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  background: v.$background-n;
+  border: v.$border;
+  border-radius: 50px;
+  box-shadow: v.$boxshadow;
+  width: 100%;
+}
+
+.essence20 .skills-container {
+  list-style: none;
+  overflow-y: auto;
+  color: v.$textcolor1;
+  transform: rotate(0deg);
+  scrollbar-width: thin;
+  background-color: v.$background-n;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+  width: 100%;
+  justify-content: left;
+  min-width: 200px;
+  flex-grow: 0;
+  flex-basis: auto;
+}
+
+.essence20 .skillscontainer {
+  list-style: none;
+  overflow-y: auto;
+  color: v.$textcolor1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 0;
+}

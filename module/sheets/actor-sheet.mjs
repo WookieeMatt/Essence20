@@ -1,5 +1,5 @@
-import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
-import {Dice} from "../dice.mjs";
+import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { Dice } from "../dice.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -23,7 +23,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/essence20/templates/actor/actor-${this.actor.data.type}-sheet.hbs`;
+    return `systems/essence20/templates/actor/actor-${this.actor.type}-sheet.hbs`;
   }
 
   /* -------------------------------------------- */
@@ -46,12 +46,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
-    // // Prepare character data and items.
-    // if (actorData.type == 'character') {
-    //   this._prepareItems(context);
-    //   this._prepareCharacterData(context);
-    // }
-
     // // Prepare NPC data and items.
     // if (actorData.type == 'npc') {
     //   this._prepareItems(context);
@@ -60,13 +54,67 @@ export class Essence20ActorSheet extends ActorSheet {
     // Might need to filter like above eventually
     this._prepareItems(context);
 
+    // Prepare npc data and items.
+    if (['npc', 'zord', 'megaformZord', 'vehicle'].includes(actorData.type)) {
+      this._prepareDisplayedNpcSkills(context);
+    }
+
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
 
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
+    // Prepare Zords for MFZs
+    this._prepareZords(context);
+
     return context;
+  }
+
+  /**
+   * Prepare skills that are always displayed for NPCs.
+   *
+   * @param {Object} context The actor data to prepare.
+   *
+   * @return {undefined}
+   */
+  _prepareDisplayedNpcSkills(context) {
+    let displayedNpcSkills = {};
+
+    // Include any skill that have specializations
+    for (let skill in context.specializations) {
+      displayedNpcSkills[skill] = true;
+    }
+
+    // Include any skills not d20, are specialized, or have a modifier
+    for (let [_, skills] of Object.entries(context.system.skills)) {
+      for (let [skill, fields] of Object.entries(skills)) {
+        if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
+          displayedNpcSkills[skill] = true;
+        }
+      }
+    }
+
+    context.displayedNpcSkills = displayedNpcSkills;
+  }
+
+  /**
+   * Prepare Zords for MFZs.
+   *
+   * @param {Object} context The actor data to prepare.
+   *
+   * @return {undefined}
+   */
+  _prepareZords(context) {
+    if (this.actor.type == 'megaformZord') {
+      let zords = [];
+
+      for (let zordId of this.actor.system.zordIds) {
+        zords.push(game.actors.get(zordId));
+      }
+
+      context.zords = zords;
+    }
   }
 
   /**
@@ -86,34 +134,42 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Organize and classify Items for Character sheets.
    *
-   * @param {Object} actorData The actor to prepare.
+   * @param {Object} context The actor data to prepare.
    *
    * @return {undefined}
    */
   _prepareItems(context) {
     // Initialize containers.
-    const armors = [];
     let equippedArmorEffect = 0;
+    const armors = [];
+    const bonds = [];
     const features = []; // Used by Zords
     const gears = [];
-    const influences = [];
+    const hangUps = [];
+    const megaformTraits = [];
+    const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
+    const classFeatures = []; // Used by PCs
     const specializations = {};
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
+    const classFeaturesById = {};
 
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
-      switch(itemType) {
+      switch (itemType) {
         case 'armor':
-          if (i.data.equipped) {
-            equippedArmorEffect += parseInt(i.data.effect);
+          if (i.system.equipped) {
+            equippedArmorEffect += parseInt(i.system.effect);
           }
           armors.push(i);
+          break;
+        case 'bond':
+          bonds.push(i);
           break;
         case 'feature':
           features.push(i);
@@ -121,8 +177,14 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'gear':
           gears.push(i);
           break;
-        case 'influence':
-          influences.push(i);
+        case 'hangUp':
+          hangUps.push(i);
+          break;
+        case 'megaformTrait':
+          megaformTraits.push(i);
+          break;
+        case 'origin':
+          origins.push(i);
           break;
         case 'perk':
           perks.push(i);
@@ -130,8 +192,12 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'power':
           powers.push(i);
           break;
+        case 'classFeature':
+          classFeatures.push(i);
+          classFeaturesById[i._id] = i.name;
+          break;
         case 'specialization':
-          const skill = i.data.skill;
+          const skill = i.system.skill;
           const existingSkillSpecializations = specializations[skill];
           existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
           break;
@@ -148,11 +214,16 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Assign and return
-    context.armors = armors;
     context.equippedArmorEffect = equippedArmorEffect;
-    context.influences = influences;
+    context.armors = armors;
+    context.bonds = bonds;
+    context.classFeatures = classFeatures;
+    context.classFeaturesById = classFeaturesById;
     context.features = features;
     context.gears = gears;
+    context.hangUps = hangUps;
+    context.megaformTraits = megaformTraits;
+    context.origins = origins;
     context.perks = perks;
     context.powers = powers;
     context.specializations = specializations;
@@ -189,6 +260,9 @@ export class Essence20ActorSheet extends ActorSheet {
       li.slideUp(200, () => this.render(false));
     });
 
+    // Delete Zord from MFZ
+    html.find('.zord-delete').click(this._onZordDelete.bind(this));
+
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
 
@@ -199,6 +273,13 @@ export class Essence20ActorSheet extends ActorSheet {
     if (this.actor.isOwner) {
       html.find('.rollable').click(this._onRoll.bind(this));
     }
+
+    // Open and collapse Item content
+    html.find('.accordion-label').click(ev => {
+      const el = ev.currentTarget;
+      const parent = $(el).parents('.accordion-wrapper');
+      parent.toggleClass('open');
+    });
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -235,7 +316,7 @@ export class Essence20ActorSheet extends ActorSheet {
     delete itemData.data["type"];
 
     // Finally, create the item!
-    return await Item.create(itemData, {parent: this.actor});
+    return await Item.create(itemData, { parent: this.actor });
   }
 
   /**
@@ -243,16 +324,16 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Event} event   The originating click event
    * @private
    */
-   async _onInlineEdit(event) {
+  async _onInlineEdit(event) {
     event.preventDefault();
-      let element = event.currentTarget;
-      let itemId = element.closest(".item").dataset.itemId;
-      let item = this.actor.items.get(itemId);
-      let field = element.dataset.field;
-      let newValue = element.type == 'checkbox' ? element.checked : element.value;
+    let element = event.currentTarget;
+    let itemId = element.closest(".item").dataset.itemId;
+    let item = this.actor.items.get(itemId);
+    let field = element.dataset.field;
+    let newValue = element.type == 'checkbox' ? element.checked : element.value;
 
-      return item.update({ [field]: newValue });
-   }
+    return item.update({ [field]: newValue });
+  }
 
   /**
    * Handle clickable rolls.
@@ -263,61 +344,84 @@ export class Essence20ActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
+    const rollType = dataset.rollType;
+
+    if (!rollType) {
+      return;
+    }
 
     // Handle type-specific rolls.
-    if (dataset.rollType) {
-      if (['item', 'power'].includes(dataset.rollType)) {
-        const itemId = element.closest('.item').dataset.itemId;
-        const item = this.actor.items.get(itemId);
+    if (rollType == 'skill') {
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset, this.actor);
 
-        // If a Power is being used, decrement Personal Power
-        if (dataset.rollType == 'power') {
-          await this.actor.update({ 'system.personalPower.value': Math.max(0, this.actor.system.personalPower.value - 1) });
-        }
-
-        if (item) return item.roll();
+      if (skillRollOptions.cancelled) {
+        return;
       }
-      else if (dataset.rollType == 'skill') {
-        const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
 
-        if (skillRollOptions.cancelled) {
-          return;
+      this._dice.rollSkill(dataset, skillRollOptions, this.actor);
+    } else if (rollType == 'initiative') {
+      this.actor.rollInitiative({ createCombatants: true });
+    } else { // Handle items
+      const itemId = element.closest('.item').dataset.itemId;
+      const item = this.actor.items.get(itemId);
+
+      if (rollType == 'power') {
+        const classFeature = this.actor.items.get(item.system.classFeatureId);
+        if (classFeature) {
+          classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
         }
-
-        this._dice.rollSkill(dataset, skillRollOptions, this.actor);
+      } else if (rollType == 'classFeature') {
+        // If a Class Feature is being used, decrement uses
+        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
-      else if (dataset.rollType == 'initiative') {
-        this.actor.rollInitiative({createCombatants: true});
-      }
-      else if (['influence', 'perk'].includes(dataset.rollType)) {
-        const itemId = element.closest('.item').dataset.itemId;
-        const item = this.actor.items.get(itemId);
 
-        // Initialize chat data.
-        const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-        const rollMode = game.settings.get('core', 'rollMode');
-        const label = `[${item.type}] ${item.name}`;
-
-        let content = '';
-
-        if (dataset.rollType == 'influence') {
-          content += `Bond: ${item.system.bond || 'None'} <br>`;
-          content += `Hang Up: ${item.system.hangUp || 'None'} <br>`;
-          content += `Perk: ${item.system.perk || 'None'}`;
-        }
-        else { // Perk
-          content += `Source: ${item.system.source || 'None'} <br>`;
-          content += `Prerequisite: ${item.system.prerequisite || 'None'} <br>`;
-          content += `Description: ${item.system.description || 'None'}`;
-        }
-
-        ChatMessage.create({
-          speaker: speaker,
-          rollMode: rollMode,
-          flavor: label,
-          content: content,
-        });
-      }
+      if (item) return item.roll();
     }
+  }
+
+  /**
+   * Handle dropping of an Actor data onto another Actor sheet
+   * @param {DragEvent} event            The concluding DragEvent which contains drop data
+   * @param {object} data                The data transfer extracted from the event
+   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
+   *                                     not permitted.
+   * @override
+   */
+  async _onDropActor(event, data) {
+    if (!this.actor.isOwner) return false;
+
+    // Get the target actor
+    let sourceActor = await fromUuid(data.uuid);
+    if (!sourceActor) return false;
+
+    // Handles dropping Zords onto Megaform Zords
+    if (this.actor.type == 'megaformZord' && sourceActor.type == 'zord') {
+      const zordIds = duplicate(this.actor.system.zordIds);
+
+      // Can't contain duplicate Zords
+      if (!zordIds.includes(sourceActor.id)) {
+        zordIds.push(sourceActor.id);
+        await this.actor.update({
+          "system.zordIds": zordIds
+        }).then(this.render(false));
+      }
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Handle deleting Zords from MFZs
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  async _onZordDelete(event) {
+    const li = $(event.currentTarget).parents(".zord");
+    const zordId = li.data("zordId");
+    let zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
+    this.actor.update({
+      "system.zordIds": zordIds,
+    });
+    li.slideUp(200, () => this.render(false));
   }
 }

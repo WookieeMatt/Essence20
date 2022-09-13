@@ -1,0 +1,39 @@
+@use '../assets/variables' as v;
+
+.essence20 .sheet-tabs {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  gap: 5px;
+}
+
+.essence20 .sheet-body .tab,
+.essence20 .sheet-body .tab .editor {
+  height: 100%;
+  gap: 10px;
+}
+
+.essence20 .tabs .item {
+  background: #2233ce80;
+  border: 1px solid;
+  border-radius: 4px 4px 0px 0px;
+  flex: 1;
+}
+
+.essence20 .tabs .active {
+  background: v.$background-n;
+  border-bottom: none;
+}
+
+.essence20 .tabs .item.active {
+  text-shadow: 0 0 10px #00c2ff;
+}
+
+.essence20 a:hover {
+  text-shadow: 0 0 10px #00c2ff;
+}
+
+.sheet nav.sheet-tabs {
+  border-top: none;
+  border-bottom: none;
+}

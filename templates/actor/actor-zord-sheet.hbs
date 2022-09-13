@@ -1,50 +1,24 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-  <header>
-    {{!-- Actor Sheet Header --}}
-    {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
-    <div class="zord-header">
-      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}" />
-      <input type="text" name="system.ranger" value="{{system.ranger}}" placeholder="{{ localize 'E20.ranger' }}" />
-      <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
-    </div>
-    {{!-- Actor Sheet Body --}}
-    <nav class="sheet-tabs tabs" data-group="primary">
-      <a class="item" data-tab="skills"> {{ localize "E20.skills" }}</a>
-      <a class="item" data-tab="combat">{{ localize "E20.combat" }}</a>
-      <a class="item" data-tab="gear">{{ localize "E20.gear" }}</a>
-      <a class="item" data-tab="background">{{ localize "E20.background" }}</a>
-      <a class="item" data-tab="notes">{{ localize "E20.notes" }}</a>
-    </nav>
-  </header>
-  <section class="sheet-body">
-    {{!-- Skills Tab --}}
-    <div class="tab skills" data-group="primary" data-tab="skills">
-      {{> "systems/essence20/templates/actor/parts/actor-zord-features.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
-    </div>
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+  {{!-- Actor Sheet Header --}}
+  {{> "systems/essence20/templates/actor/parts/headers/actor-zord-header.hbs"}}
 
-    {{!-- Gear Tab --}}
-    <div class="tab gear" data-group="primary" data-tab="gear">
-      {{> "systems/essence20/templates/actor/parts/actor-gear.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/actor-armor.hbs"}}
+  {{!-- Actor Sheet Body --}}
+  <section class="sheet-body flexcol">
+    <div class="sheet-body flexrow">
+      {{!-- Health --}}
+      {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
+      <div class="npc-defenses flex-group-center">
+        <div class="resource flexcol flex-group-center">
+          <span>{{localize 'E20.ActorConditioning'}}</span>
+          <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
+        </div>
+      </div>
     </div>
+    {{!-- Zord Common Stats --}}
+    {{> "systems/essence20/templates/actor/parts/actor-zord-common.hbs"}}
 
-    {{!-- Combat Tab --}}
-    <div class="tab combat" data-group="primary" data-tab="combat">
-      {{> "systems/essence20/templates/actor/parts/actor-defenses.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/actor-armor.hbs"}}
-    </div>
-
-    {{!-- Origin Tab --}}
-    <div class="tab background" data-group="primary" data-tab="background">
-      {{> "systems/essence20/templates/actor/parts/actor-background.hbs"}}
-    </div>
-
-    {{!-- Notes Tab --}}
-    <div class="tab notes" data-group="primary" data-tab="notes">
-      {{> "systems/essence20/templates/actor/parts/actor-notes.hbs"}}
-    </div>
+    {{!-- Megaform Traits --}}
+    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits
+    title='E20.ItemTypeMegaformTraitPlural' dataType='megaformTrait'}}
   </section>
 </form>

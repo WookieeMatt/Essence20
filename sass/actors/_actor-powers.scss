@@ -1,0 +1,18 @@
+@use '../assets/variables' as v;
+
+.essence20 .powers-section {
+  list-style: none;
+  padding: 4px;
+  overflow-y: auto;
+  color: v.$textcolor1;
+  display: flex;
+  flex-direction: row;
+  flex-grow: 0;
+  flex-basis: auto;
+  justify-content: center;
+  background: v.$background-n;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+  width: 100%;
+}

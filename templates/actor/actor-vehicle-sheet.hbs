@@ -1,21 +1,47 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
-
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
   {{!-- Actor Sheet Header --}}
-  {{> "systems/essence20/templates/actor/parts/actor-base-header.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/headers/actor-vehicle-header.hbs"}}
 
   {{!-- Actor Sheet Body --}}
-  <section class="sheet-body">
+  <section class="sheet-body flexcol">
+    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
     {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
-    <span>{{localize 'E20.threatLevel'}}</span><input type="number" name="system.threatLevel" value="{{system.threatLevel}}"/>
+    {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
 
-    <h3>Crew</h3>
-    <input type="text" name="system.crew.description" value="{{system.crew.description}}" placeholder="{{ localize 'E20.description' }}"/>
-    <span>{{localize 'E20.numDrivers'}}</span><input type="number" name="system.crew.numDrivers" value="{{system.crew.numDrivers}}"/>
-    <span>{{localize 'E20.numPassengers'}}</span><input type="number" name="system.crew.numPassengers" value="{{system.crew.numPassengers}}"/>
-
-    <h3>Firepoints</h3>
-    <input type="text" name="system.firepoints.description" value="{{system.firepoints.description}}" placeholder="{{ localize 'E20.description' }}"/>
-    <span>{{localize 'E20.firepoints'}}</span><input type="number" name="system.firepoints.value" value="{{system.firepoints.value}}"/>
+    <div class="stats-container" style="flex-grow: 0;">
+      <div class="flexrow">
+        <div class="resource flexcol">
+          <label class="resource flex-group-center">{{localize 'E20.VehicleCrew'}}</label>
+          <input type="text" class="centered-input" name="system.crew.description"
+            value="{{system.crew.description}}" />
+        </div>
+        <div class="resource flexcol">
+          <label class="resource flex-group-center">
+            {{localize 'E20.VehicleFirepoints'}}
+          </label>
+          <input type="number" class="centered-input" name="system.firepoints.value"
+            value="{{system.firepoints.value}}" />
+        </div>
+        <div class="resource flexcol">
+          <label class="resource flex-group-center">
+            {{localize 'E20.VehicleDrivers'}}
+          </label>
+          <input type="number" class="centered-input" name="system.crew.numDrivers"
+            value="{{system.crew.numDrivers}}" />
+        </div>
+        <div class="resource flexcol">
+          <label class="resource flex-group-center">
+            {{localize 'E20.VehiclePassengers'}}
+          </label>
+          <input type="number" class="centered-input" name="system.crew.numPassengers"
+            value="{{system.crew.numPassengers}}" />
+        </div>
+      </div>
+      <div class="flexrow">
+        <textarea name="system.firepoints.description"
+          placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
+      </div>
+    </div>
 
     {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
   </section>

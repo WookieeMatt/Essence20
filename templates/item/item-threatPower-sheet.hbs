@@ -4,11 +4,34 @@
   {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
   {{!-- Item Sheet Body --}}
-  <section class="sheet-body">
-    <span>{{localize 'E20.charges'}}</span><input type="number" name="data.charges" value="{{data.charges}}"/>
-    <span>{{localize 'E20.cost'}}</span><input type="number" name="data.cost" value="{{data.cost}}"/>
-    <span>{{localize 'E20.limited'}}</span><input type="checkbox" name="data.limited" {{checked data.limited}}/>
-    <span>{{localize 'E20.actionType'}}</span><input type="text" name="data.actionType" value="{{data.actionType}}" placeholder="{{ localize 'E20.actionType' }}"/>
+  <section class="sheet-body item-sheet">
+    {{!-- Charges --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerCharges'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.charges" value="{{system.charges}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Cost --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerCost'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.cost" value="{{system.cost}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Limited --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerLimited'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="checkbox" name="system.limited" {{checked system.limited}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Action Type --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerActionType'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.actionType" value="{{system.actionType}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}

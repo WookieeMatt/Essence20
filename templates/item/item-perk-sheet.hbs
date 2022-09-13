@@ -4,9 +4,13 @@
   {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
   {{!-- Item Sheet Body --}}
-  <section class="sheet-body">
-    <input type="text" name="data.source" value="{{data.source}}" placeholder="{{ localize 'E20.source' }}"/>
-    <input type="text" name="data.prerequisite" value="{{data.prerequisite}}" placeholder="{{ localize 'E20.prerequisite' }}"/>
+  <section class="sheet-body item-sheet">
+    {{!-- Prerequisite --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.PerkPrerequisite'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}

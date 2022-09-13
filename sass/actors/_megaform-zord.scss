@@ -1,0 +1,14 @@
+@use '../assets/variables' as v;
+
+.essence20 .zord-combiners {
+  background: v.$background-n;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  padding: 8px;
+  box-shadow: v.$boxshadow;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: fit-content;
+  width: 100%;
+}

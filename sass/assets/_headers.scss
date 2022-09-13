@@ -1,0 +1,87 @@
+@use '../assets/variables' as v;
+
+.essence20 .sheet-header {
+  background-color: v.$background-n;
+  border: v.$border;
+  box-shadow: v.$boxshadow;
+  padding: v.$padding;
+  border-radius: 25px;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 auto;
+  flex: 0 auto;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+}
+
+/* PR Sheet Headers */
+.essence20 .sheet-header .profile-img {
+  -webkit-box-flex: 0;
+  /* -ms-flex: 0 0 100px; */
+  flex: inherit;
+  height: 100px;
+  margin-right: 10px;
+  border: v.$border;
+  border-radius: 15px;
+}
+
+.essence20 .sheet-header h1.charname {
+  height: 50px;
+  padding: 0px;
+  margin: 5px 0;
+  border-bottom: 0;
+}
+
+.essence20 .sheet-header h1.charname input {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* ITEMS */
+.essence20 .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: v.$background-n;
+  border: v.$border;
+  font-weight: bold;
+}
+
+.essence20 .items-header>* {
+  font-size: 14px;
+  text-align: center;
+}
+
+.essence20 .items-header .item-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.essence20 .actor-header-size {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+}
+
+.essence20 .pr-header-level {
+  flex-grow: 0;
+}

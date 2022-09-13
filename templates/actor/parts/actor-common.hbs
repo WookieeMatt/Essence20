@@ -1,72 +1,10 @@
-<div class="common-container">
-  <div class="common-container-1">
-    {{!-- Essences/Skills --}}
-    {{> "systems/essence20/templates/actor/parts/actor-character.hbs"}}
-  </div>
+<div class="flexrow stats-row">
+  {{!-- Initiative --}}
+  {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
 
-  <div class="common-container-2">
-    <div class="common-label-1">
-        <h3>{{localize 'E20.statLabel'}}</h3>
-      </div>
-      {{!-- Health --}}
-      <div class="health-container">
-        <div class="resource flex-group-center">
-          <label for="system.health.value" class="resource-label">{{localize 'E20.health'}}</label>
-          <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-            <span> / </span>
-            <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
-          </div>
-        </div>
-      </div>
+  {{!-- Movement --}}
+  {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
 
-      {{!-- Initiative --}}
-      <div class="initiative-container">
-        <div class="initiative-header">
-          <span>{{localize 'E20.initiative'}}</span>
-            <div class="initiative-dropdown">
-              <select name="system.initiative">
-                {{selectOptions @root.config.initiativeShifts selected=system.initiative localize=true}}
-              </select>
-              <div class="item-image">
-                  <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
-              </div>
-            </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="skills-label-container">
-  <h3 class="skills-label">{{localize 'E20.skills'}}</h3>
-</div>
-<div class="skillscontainer">
-
-  <div class="skills-container">
-    <h4 class="skill-name">{{localize 'E20.essences.strength'}}</h4>
-    {{#each system.skills.strength as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill=skill fields=fields}}
-    {{/each}}
-  </div>
-
-  <div class="skills-container">
-    <h4 class="skill-name">{{localize 'E20.essences.speed'}}</h4>
-    {{#each system.skills.speed as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='speed' skill=skill fields=fields}}
-    {{/each}}
-  </div>
-
-  <div class="skills-container">
-    <h4 class="skill-name">{{localize 'E20.essences.smarts'}}</h4>
-    {{#each system.skills.smarts as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='smarts' skill=skill fields=fields}}
-    {{/each}}
-  </div>
-
-  <div class="skills-container">
-    <h4 class="skill-name">{{localize 'E20.essences.social'}}</h4>
-    {{#each system.skills.social as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=fields}}
-    {{/each}}
-  </div>
+  {{!-- Health --}}
+  {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
 </div>

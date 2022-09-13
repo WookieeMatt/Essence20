@@ -1,11 +1,10 @@
-<div class="defenses-section">
-    <div class="defenses-container flexrow">
-      <div class="defense-container">
-          <h3>{{localize 'E20.defensesStr'}}</h3>
-          {{#each system.defenses as |value defense|}}
-            <div>{{localize (concat 'E20.defenses.' defense)}}: </div><input type="number" name="system.defenses.{{defense}}" value="{{value}}"/>
-          {{/each}}
-      </div>
+<div style="flex-grow: 0;">
+  <div class="npc-defenses">
+    {{#each system.defenses as |fields defense|}}
+    <div class="resource flexcol">
+      <label class="resource flex-group-center">{{localize (lookup @root.config.defenses defense)}}</label>
+      <input type="number" class="centered-input" name="system.defenses.{{defense}}.value" value="{{fields.value}}" />
     </div>
+    {{/each}}
+  </div>
 </div>
-

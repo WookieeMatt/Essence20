@@ -1,0 +1,94 @@
+@use '../assets/variables' as v;
+
+/* Global styles */
+.window-app {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: bold;
+  color: v.$textcolor1;
+  border: v.$border;
+  border-radius: v.$border-radius;
+}
+
+.window-app .window-content {
+  /* background: rgb(78, 78, 78); */
+  color: v.$textcolor1;
+  border-radius: v.$border-radius;
+  background: v.$background-image-1;
+  background-size: cover;
+}
+
+.window-app .window-content button {
+  color: v.$textcolor1;
+  background: v.$background-n;
+  border-color: v.$border;
+  border-radius: 20px;
+  box-shadow: v.$boxshadow;
+}
+
+.essence20 .sheet {
+  min-width: fit-content;
+  max-width: 55%;
+ }
+
+.actor {
+  min-width: 860px;
+  min-height: auto;
+}
+
+
+.dialog .dialog-buttons button.default {
+  color: v.$textcolor1;
+  background: v.$background-n;
+}
+
+.dialog .dialog-buttons button {
+  color: v.$textcolor1;
+  background: v.$background-n;
+}
+
+.dialog .dialog-buttons {
+  color: v.$textcolor1;
+  padding-top: v.$padding;
+}
+
+.dialog-content {
+  list-style: none;
+  padding: v.$padding;
+  overflow-y: none;
+  color: v.$textcolor1;
+  flex-basis: auto;
+  justify-content: center;
+  height: 100%;
+  background: v.$background-n;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+}
+
+.dialog input{
+  color: v.$textcolor1;
+}
+
+.app .window-app dialog {
+  background: none;
+}
+
+#module-management .package-list .package-title {
+  color: v.$textcolor1;
+}
+
+.item-button-container {
+  flex-grow: 0;
+}
+
+.essence20 .rollable {
+  font-size: 1.25em;
+}
+
+.rollable:hover,
+.rollable:focus {
+  color: v.$textcolor2;
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}
+

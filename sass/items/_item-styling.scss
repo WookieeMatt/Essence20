@@ -1,0 +1,171 @@
+@use '../assets/variables' as v;
+
+.essence20 .item {
+  color: v.$textcolor1;
+}
+
+/* Generic Item Sheet Styling */
+.essence20 .items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: v.$textcolor1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.essence20 .items-list .item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.essence20 .items-list .item-name {
+  -webkit-box-flex: 2;
+  -ms-flex: 2;
+  flex: initial;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-align: left;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 75%;
+}
+
+.essence20 .items-list .item-name h3,
+.essence20 .items-list .item-name h4 {
+  margin: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.essence20 .item-info {
+  display: flex;
+}
+
+.essence20 .items-list .item-controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 100px;
+  flex: 0 0 100px;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.essence20 .items-list .item-controls a {
+  font-size: 12px;
+  text-align: center;
+  margin: 0 6px;
+}
+
+.essence20 .items-list .item {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 0 2px;
+  border-bottom: 1px solid #b5b1b1;
+  color: v.$textcolor1;
+}
+
+.essence20 .items-list .item:last-child {
+  border-bottom: none;
+}
+
+.essence20 .items-list .item .item-name {
+  color: white;
+}
+
+.essence20 .items-list .item .item-name .item-image {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 30px;
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin-right: 5px;
+}
+
+.essence20 .items-list .item-prop {
+  text-align: center;
+  border-left: v.$border;
+  border-right: v.$border;
+  font-size: 12px;
+}
+
+.essence20 .items-list .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: v.$background-n;
+  border: v.$border;
+  font-weight: bold;
+}
+
+.essence20 .items-list .items-header>* {
+  font-size: 12px;
+  text-align: center;
+}
+
+.essence20 .items-list .items-header .item-name {
+  padding-left: 5px;
+  text-align: left;
+}
+
+.essence20 .item-label {
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.essence20 .item-formula {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 200px;
+  flex: 0 0 200px;
+  padding: 0 8px;
+}
+
+.essence20 .effects .item .effect-source,
+.essence20 .effects .item .effect-duration,
+.essence20 .effects .item .effect-controls {
+  text-align: center;
+  border-left: v.$border;
+  border-right: v.$border;
+  font-size: 12px;
+}
+
+.essence20 .effects .item .effect-controls {
+  border: none;
+}
+
+.essence20 .item-sheet{
+  background: v.$background-n;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  color: v.$textcolor1;
+  padding: v.$padding;
+  min-height: none;
+  }
+
+.essence20 .item-field label {
+  flex: 2;
+}
+
+.essence20 .item-field .item-field-inputs {
+  flex: 3;
+  justify-content: flex-end;
+}
