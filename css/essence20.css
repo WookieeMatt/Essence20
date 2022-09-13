@@ -175,7 +175,7 @@
   /* background: rgb(78, 78, 78); */
   color: rgb(199, 196, 196);
   border-radius: 15px;
-  background: url(../assets/dark-blue-background.jpg);
+  background: radial-gradient(farthest-corner at 90% 10%, #1C3B50, #03263C, #040519);
   background-size: cover;
 }
 
@@ -254,7 +254,7 @@
 }
 
 .chat-message {
-  background: url(../assets/dark-blue-background.jpg);
+  background: radial-gradient(farthest-corner at 90% 10%, #1C3B50, #03263C, #040519);
   opacity: 80;
   color: rgb(199, 196, 196);
   border: 4px solid #b5b1b1;
@@ -1042,7 +1042,7 @@
 }
 
 .window-content .journal-sheet-container {
-  background: url(../assets/dark-blue-background.jpg);
+  background: radial-gradient(farthest-corner at 90% 10%, #1C3B50, #03263C, #040519);
   background-size: cover;
   border-radius: 10px white;
 }
