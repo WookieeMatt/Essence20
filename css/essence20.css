@@ -273,6 +273,14 @@
   color: rgb(199, 196, 196);
 }
 
+.chat-message.whisper {
+  background: radial-gradient(farthest-corner at 90% 10%, #1C3B50, #03263C, #040519);
+  opacity: 80;
+  color: rgb(199, 196, 196);
+  border: 4px dashed #b5b1b1;
+  box-shadow: 4px 4px 0 black;
+}
+
 .grid,
 .grid-2col {
   display: grid;

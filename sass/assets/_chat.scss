@@ -18,3 +18,11 @@
 .chat-message .message-metadata{
   color: v.$textcolor1;
 }
+
+.chat-message.whisper {
+  background: v.$background-image-1;
+  opacity: 80;
+  color: v.$textcolor1;
+  border: v.$border2;
+  box-shadow: v.$boxshadow;
+}
