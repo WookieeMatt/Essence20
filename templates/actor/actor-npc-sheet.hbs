@@ -4,10 +4,16 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-      {{!-- NPC Defenses --}}
-      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+    {{!-- NPC Defenses --}}
+    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+
+    <div class="flexrow stats-row">
+      {{!-- Initiative --}}
+      {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
+
       {{!-- Movement --}}
       {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+    </div>
     <div class="npc-row">
       <div class="npc-column-1">
         {{!-- Skills --}}
