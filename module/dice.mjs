@@ -96,7 +96,7 @@ export class Dice {
       finalShift = this._config.skillRollableShifts[this._config.skillRollableShifts.length - 1];
     }
 
-    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier;
+    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier || 0;
     const formula = this._getFormula(
       !!dataset.specialization || skillRollOptions.specialized, skillRollOptions, finalShift, modifier);
 
