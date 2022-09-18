@@ -1,12 +1,12 @@
-<div class="stats-container defense-container">
-  <table class="tg">
-    <thead>
+<div class="stats-container defense-container" style="border-color: {{system.color}};">
+  <table class="tg" style="border-color: {{system.color}};">
+    <thead style="border-color: {{system.color}};">
       <tr>
-        <th class="tg-td">{{localize 'E20.DefenseTitle'}}</th>
+        <th class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseTitle'}}</th>
 
         {{!-- Defense headers --}}
         {{#each system.defenses as |defense|}}
-        <th class="tg-td">
+        <th class="tg-td" style="border-color: {{system.color}};">
           <span>{{localize (lookup @root.config.defenses defense.name)}}</span>
           <span>
             {{#ifEquals ../bonusDisplayType 'input'}}
@@ -23,7 +23,7 @@
     <tbody>
       {{!-- Unmorphed row --}}
       <tr>
-        <td class="tg-td">{{localize 'E20.DefenseUnmorphed'}}</td>
+        <td class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseUnmorphed'}}</td>
         {{#each system.defenses as |defense|}}
         <td class="tg-td">
           <span
@@ -36,11 +36,11 @@
 
       {{!-- Morphed row --}}
       <tr>
-        <td class="tg-td">{{localize 'E20.DefenseMorphed'}}</td>
+        <td class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseMorphed'}}</td>
         {{#each system.defenses as |defense|}}
         {{!-- Special case for Toughness to add armor --}}
         {{#ifEquals defense.name 'toughness'}}
-        <td class="tg-td">
+        <td class="tg-td" style="border-color: {{system.color}};">
           <span
             title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorEffect}} {{localize 'ITEM.TypeArmor'}}">
             {{sum defense.morphed.value @root.equippedArmorEffect}}
@@ -48,7 +48,7 @@
         </td>
         {{else}}
         {{!-- Remaining Defenses --}}
-        <td class="tg-td">
+        <td class="tg-td" style="border-color: {{system.color}};">
           <span
             title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}}">
             {{sum defense.morphed.value}}
