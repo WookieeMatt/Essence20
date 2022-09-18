@@ -515,6 +515,10 @@
   flex-grow: 0;
 }
 
+.essence20 .pr-header-color {
+  flex-grow: 0;
+}
+
 /* Generic Item Sheet Styling */
 .essence20 .items-list {
   list-style: none;
