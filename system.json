@@ -5,7 +5,7 @@
   "version": "2.0.2",
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion": "10",
-  "author": "WookieeChan, potato",
+  "author": "WookieeChan, potato, guswadsworth12",
   "esmodules": ["module/essence20.mjs", "module/story-points-tracker.js", "module/settings.js"],
   "styles": ["css/essence20.css", "css/story-points-tracker.css"],
   "scripts": [],
