@@ -1,4 +1,4 @@
-<div class="collapsible-item-container">
+<div class="collapsible-item-container" style="border-color: {{system.color}};">
   {{!-- Header with + button --}}
   <div class="flex-group-center">
     {{localize title}}
@@ -7,7 +7,7 @@
     </a>
   </div>
 
-  <ol class="items-list">
+  <ol class="items-list" style="border-color: {{system.color}};">
     {{#each items as |item|}}
     <li class="item accordion-wrapper" data-item-id="{{item._id}}">
       {{!-- Item label and buttons --}}
