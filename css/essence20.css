@@ -253,6 +253,10 @@
   cursor: pointer;
 }
 
+.window-app textarea {
+  color: rgb(199, 196, 196);
+}
+
 .chat-message {
   background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
   opacity: 80;
