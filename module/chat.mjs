@@ -16,7 +16,7 @@ export const highlightCriticalSuccessFailure = function (message, html, data) {
       // dieValue is an individual result from the diePool
       if (faces === 20 && dieValue === 1) {
         isFumble = true;
-      } else if (faces > 2 && dieValue === faces) {
+      } else if (faces > 2 && faces != 20 && dieValue === faces) {
         isCrit = true;
         break; // Only one die needs to crit
       }
