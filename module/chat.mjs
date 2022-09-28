@@ -5,10 +5,24 @@ export const highlightCriticalSuccessFailure = function (message, html, data) {
     return;
   }
 
+  const [isCrit, isFumble] = _isCritIsFumble(message.rolls[0].dice);
+
+  // Set roll total class to alter its color
+  if (isCrit && isFumble) {
+    html.find(".dice-total").addClass("crumble");
+  } else if (isCrit) {
+    html.find(".dice-total").addClass("critical");
+  } else if (isFumble) {
+    html.find(".dice-total").addClass("fumble");
+  }
+}
+
+// Helper to determine if the roll was a crit and/or fumble
+export const _isCritIsFumble = function (dice) {
   let isCrit = false;
   let isFumble = false;
 
-  for (let diePool of message.rolls[0].dice) {
+  for (let diePool of dice) {
     // A diePool here is a group of similarly-sided dice, such as d20 or 3d6
     let faces = diePool.faces;
 
@@ -27,12 +41,5 @@ export const highlightCriticalSuccessFailure = function (message, html, data) {
     }
   }
 
-  // Set roll total class to alter its color
-  if (isCrit && isFumble) {
-    html.find(".dice-total").addClass("crumble");
-  } else if (isCrit) {
-    html.find(".dice-total").addClass("critical");
-  } else if (isFumble) {
-    html.find(".dice-total").addClass("fumble");
-  }
+  return [isCrit, isFumble];
 }
