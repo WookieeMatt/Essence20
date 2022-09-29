@@ -7,6 +7,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { E20 } from "./helpers/config.mjs";
+import { highlightCriticalSuccessFailure } from "./chat.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
@@ -89,7 +90,7 @@ Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
 });
 
 /* -------------------------------------------- */
-/*  Ready Hook                                  */
+/*  Misc Hooks                                  */
 /* -------------------------------------------- */
 
 Hooks.once("ready", async function () {
@@ -100,6 +101,10 @@ Hooks.once("ready", async function () {
       return false;
     }
   });
+});
+
+Hooks.on("renderChatMessage", (app, html, data) => {
+  highlightCriticalSuccessFailure(app, html, data);
 });
 
 /* -------------------------------------------- */
