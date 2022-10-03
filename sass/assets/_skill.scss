@@ -4,7 +4,6 @@
   font-size: 1.125em;
   align-items: center;
   flex-wrap: nowrap;
-  background-color: v.$background-b;
   margin-top: 5px;
 }
 
@@ -12,6 +11,7 @@
   flex-grow: 0;
   margin-right: 5px;
   margin-left: 5px;
+  padding-top: 4px;
 }
 
 .essence20 .skill-header .skill-name {

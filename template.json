@@ -133,7 +133,8 @@
       "character": {
         "background": {
           "pronouns": "",
-          "role": ""
+          "role": "",
+          "color": ""
         },
         "bonuses": {
           "cleverness": 0,

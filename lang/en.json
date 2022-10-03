@@ -35,6 +35,7 @@
     "ActorLevel": "Level",
     "ActorName": "Name",
     "ActorPronouns": "Pronouns",
+    "ActorColor": "Color",
     "ActorRole": "Role",
     "ActorSize": "Size",
     "ActorSizeCommon": "Common",
