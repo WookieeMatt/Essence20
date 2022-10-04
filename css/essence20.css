@@ -649,7 +649,7 @@
 }
 
 .essence20 .tox .tox-editor-container {
-  background: white;
+  background: #999898;
 }
 
 .essence20 .tox .tox-edit-area {
@@ -1141,6 +1141,18 @@ form .hint {
 
 .essence20 table {
   background-color: rgba(0, 0, 0, 0);
+}
+
+.dice-total.critical {
+  color: green;
+}
+
+.dice-total.fumble {
+  color: red;
+}
+
+.dice-total.crumble {
+  color: yellow;
 }
 
 /*# sourceMappingURL=essence20.css.map */

@@ -63,3 +63,15 @@ form .hint {
 .essence20 table {
   background-color:rgba(0, 0, 0, 0);
 }
+
+.dice-total.critical {
+  color: green;
+}
+
+.dice-total.fumble {
+  color: red;
+}
+
+.dice-total.crumble {
+  color: yellow;
+}
