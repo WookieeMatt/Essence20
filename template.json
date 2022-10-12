@@ -365,7 +365,11 @@
       ],
       "classFeatureId": null
     },
-    "specialization": {},
+    "specialization": {
+      "isSpecialized": true,
+      "shift": "d20",
+      "skill": "athletics"
+    },
     "threatPower": {
       "actionType": "",
       "charges": null,

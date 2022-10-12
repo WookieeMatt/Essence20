@@ -24,7 +24,7 @@
   {{!-- Specializations header --}}
   <div class="specializations-header">
     <span>{{localize 'E20.ItemTypeSpecializationPlural'}}</span>
-    <a class="item-create" data-type="specialization" data-skill="{{skill}}" title="{{ localize 'E20.ItemControlAdd' }}">
+    <a class="item-create" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" title="{{ localize 'E20.ItemControlAdd' }}">
       <i class="fas fa-plus"></i>
     </a>
   </div>
@@ -35,9 +35,13 @@
     <li class="item specializations-list" data-item-id="{{specialization._id}}">
       <div class="flexrow specializations-item">
         <span class="item-button-container">
-          <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-specialization="{{specialization.name}}"><i class="fas fa-dice-d20"></i></a>
+          <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-specialization="{{specialization.name}}" data-specialized="{{specialization.system.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
+        {{#ifEquals @root.actor.type 'npc'}}
+        <span class="specialized-label" style="flex-grow: 0;">{{localize 'E20.RollSpecialized'}}:</span>
+        <input class="inline-edit specialized-checkbox" type="checkbox" data-field="system.isSpecialized" name="specialization.system.isSpecialized" {{checked specialization.system.isSpecialized}} data-dtype="Boolean"/>
+        {{/ifEquals}}
         <span class="item-button-container">
           <a class="item-control item-delete" title="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
         </span>
