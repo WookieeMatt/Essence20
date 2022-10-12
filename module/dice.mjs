@@ -19,10 +19,7 @@ export class Dice {
    */
   async getSkillRollOptions(dataset, actor) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const rolledSkill = dataset.skill;
-    const rolledEssence = this._config.skillToEssence[rolledSkill];
-    const rolledShift = actor.system.skills[rolledEssence][rolledSkill].shift
-    const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(rolledShift);
+    const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
     const html = await renderTemplate(
       template,
       {
@@ -84,8 +81,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = this._config.skillToEssence[rolledSkill];
     const actorSkillData = actor.getRollData().skills;
-    const initialShift = actorSkillData[rolledEssence][rolledSkill].shift;
-    let finalShift = this._getFinalShift(skillRollOptions, initialShift);
+    let finalShift = this._getFinalShift(skillRollOptions, dataset.shift);
 
     if (this._handleAutoFail(finalShift, label, actor)) {
       return;

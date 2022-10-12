@@ -89,6 +89,10 @@ Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
 });
 
+Handlebars.registerHelper('inArray', function (array, value, options) {
+  return (array.includes(value)) ? options.fn(this) : options.inverse(this);
+});
+
 /* -------------------------------------------- */
 /*  Misc Hooks                                  */
 /* -------------------------------------------- */
