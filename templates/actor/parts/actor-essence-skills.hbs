@@ -1,7 +1,7 @@
 {{!-- Skill header and shift selector --}}
 <div class="flexrow skill-header" style="background-color: {{@root.system.color}}50">
   <span class="skill-roll">
-    <a class="rollable" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}" data-shift="{{fields.shift}}">
+    <a class="rollable" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}" data-shift="{{fields.shift}}" data-specialized="{{fields.isSpecialized}}">
       <i class="fas fa-dice-d20"></i>
     </a>
   </span>
@@ -51,6 +51,13 @@
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         {{#ifEquals @root.actor.type 'npc'}}
+        <select class="inline-edit" data-field="system.shift" name="system.shift">
+          {{#select specialization.system.shift}}
+          {{#each @root.config.skillShifts as |text shift|}}
+          <option value="{{shift}}">{{localize text}}</option>
+          {{/each}}
+          {{/select}}
+        </select>
         <span class="specialized-label" style="flex-grow: 0;">{{localize 'E20.RollSpecialized'}}:</span>
         <input class="inline-edit specialized-checkbox" type="checkbox" data-field="system.isSpecialized" name="specialization.system.isSpecialized" {{checked specialization.system.isSpecialized}} data-dtype="Boolean"/>
         {{/ifEquals}}
