@@ -174,7 +174,7 @@
     "RollDialogTitle": "Configure your skill roll",
     "RollRepeatText": "Roll {index} of {total}",
     "RollRollingFor": "Rolling for",
-    "RollSpecialized": "Specialized",
+    "RollIsSpecialized": "Specialized",
     "RollWithAnEdge": "with an Edge",
     "RollWithASnag": "with a Snag",
     "ShiftAutoFail": "Auto Fail",

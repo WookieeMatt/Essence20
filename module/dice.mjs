@@ -23,7 +23,7 @@ export class Dice {
     const html = await renderTemplate(
       template,
       {
-        specialized: dataset.specialized === 'true',
+        isSpecialized: dataset.isSpecialized === 'true',
         snag,
         edge: false,
         normal: !snag
@@ -62,7 +62,7 @@ export class Dice {
       shiftDown: parseInt(form.shiftDown.value),
       shiftUp: parseInt(form.shiftUp.value),
       snag: form.snagEdge.value == 'snag',
-      specialized: form.specialized.checked,
+      isSpecialized: form.isSpecialized.checked,
       timesToRoll: parseInt(form.timesToRoll.value),
     }
   }
@@ -94,7 +94,7 @@ export class Dice {
 
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier || 0;
     const formula = this._getFormula(
-      !!dataset.specialization || skillRollOptions.specialized, skillRollOptions, finalShift, modifier);
+      !!dataset.specialization || skillRollOptions.isSpecialized, skillRollOptions, finalShift, modifier);
 
     // Repeat the roll as many times as specified in the skill roll options dialog
     for (let i = 0; i < skillRollOptions.timesToRoll; i++) {

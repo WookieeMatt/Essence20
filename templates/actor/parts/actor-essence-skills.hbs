@@ -1,7 +1,7 @@
 {{!-- Skill header and shift selector --}}
 <div class="flexrow skill-header" style="background-color: {{@root.system.color}}50">
   <span class="skill-roll">
-    <a class="rollable" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}" data-shift="{{fields.shift}}" data-specialized="{{fields.isSpecialized}}">
+    <a class="rollable" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}" data-shift="{{fields.shift}}" data-is-specialized="{{fields.isSpecialized}}">
       <i class="fas fa-dice-d20"></i>
     </a>
   </span>
@@ -18,7 +18,7 @@
     <input class="one-digit-input" type="number" name="system.skills.{{essence}}.{{skill}}.modifier" value="{{fields.modifier}}"/>
 
     {{#ifEquals @root.actor.type 'npc'}}
-    <span class="specialized-label">{{localize 'E20.RollSpecialized'}}:</span>
+    <span class="specialized-label">{{localize 'E20.RollIsSpecialized'}}:</span>
     <input class="specialized-checkbox" type="checkbox" name="system.skills.{{essence}}.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
     {{/ifEquals}}
   </div>
@@ -42,23 +42,23 @@
         <span class="item-button-container">
           {{#ifEquals @root.actor.type 'npc'}}
           {{!-- NPCs can have unspecialized specializations, but PCs are always specialized --}}
-          <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}" data-shift="{{specialization.system.shift}}" data-specialized="{{specialization.system.isSpecialized}}">
+          <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}" data-shift="{{specialization.system.shift}}" data-is-specialized="{{specialization.system.isSpecialized}}">
           {{else}}
-          <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}" data-shift="{{../fields.shift}}" data-specialized="true">
+          <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}" data-shift="{{../fields.shift}}" data-is-specialized="true">
           {{/ifEquals}}
             <i class="fas fa-dice-d20"></i>
           </a>
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         {{#ifEquals @root.actor.type 'npc'}}
-        <select class="inline-edit" data-field="system.shift" name="system.shift">
+        <select class="inline-edit" style="flex-grow: 0;" data-field="system.shift" name="system.shift">
           {{#select specialization.system.shift}}
           {{#each @root.config.skillShifts as |text shift|}}
           <option value="{{shift}}">{{localize text}}</option>
           {{/each}}
           {{/select}}
         </select>
-        <span class="specialized-label" style="flex-grow: 0;">{{localize 'E20.RollSpecialized'}}:</span>
+        <span class="specialized-label" style="flex-grow: 0;">{{localize 'E20.RollIsSpecialized'}}:</span>
         <input class="inline-edit specialized-checkbox" type="checkbox" data-field="system.isSpecialized" name="specialization.system.isSpecialized" {{checked specialization.system.isSpecialized}} data-dtype="Boolean"/>
         {{/ifEquals}}
         <span class="item-button-container">
