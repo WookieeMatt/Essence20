@@ -92,9 +92,9 @@ export class Dice {
       finalShift = this._config.skillRollableShifts[this._config.skillRollableShifts.length - 1];
     }
 
-    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier || 0;
-    const formula = this._getFormula(
-      !!dataset.specialization || skillRollOptions.isSpecialized, skillRollOptions, finalShift, modifier);
+    const isSpecialized = dataset.isSpecialized === 'true' || skillRollOptions.isSpecialized;
+    const modifier = isSpecialized ? 0 : actorSkillData[rolledEssence][rolledSkill].modifier || 0;
+    const formula = this._getFormula(isSpecialized, skillRollOptions, finalShift, modifier);
 
     // Repeat the roll as many times as specified in the skill roll options dialog
     for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
@@ -135,8 +135,8 @@ export class Dice {
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = dataset.specialization
-      ? dataset.specialization
+    const rolledSkillStr = dataset.isSpecialized
+      ? dataset.skill
       : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const rollingForStr = this._i18n.localize('E20.RollRollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
