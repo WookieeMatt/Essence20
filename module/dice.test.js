@@ -16,6 +16,8 @@ const dice = new Dice(new Mocki18n, E20, chatMessage);
 /* rollSkill */
 describe("rollSkill", () => {
   const dataset = {
+    isSpecialized: false,
+    shift: 'd20',
     skill: 'athletics',
   };
   const mockActor = jest.mock();
@@ -70,6 +72,10 @@ describe("rollSkill", () => {
   });
 
   test("auto success", () => {
+    const datasetCopy = {
+      ...dataset,
+      shift: 'autoSuccess',
+    }
     const skillRollOptions = {
       edge: false,
       snag: false,
@@ -89,7 +95,7 @@ describe("rollSkill", () => {
     }));
     dice._rollSkillHelper = jest.fn()
 
-    dice.rollSkill(dataset, skillRollOptions, mockActor, null);
+    dice.rollSkill(datasetCopy, skillRollOptions, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
   });
 });
@@ -131,20 +137,6 @@ describe("_getSkillRollLabel", () => {
       snag: true,
     }
     const expected = "E20.RollRollingFor E20.EssenceSkillAthletics E20.RollWithASnag";
-
-    expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
-  });
-
-  test("specialization roll", () => {
-    const dataset = {
-      skill: 'athletics',
-      specialization: "Foo Specialization",
-    };
-    const skillRollOptions = {
-      edge: false,
-      snag: false,
-    }
-    const expected = "E20.RollRollingFor Foo Specialization";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
