@@ -21,9 +21,22 @@
 
     {{!-- Body --}}
     <tbody>
-        {{!-- Morphed row --}}
+      {{!-- Unmorphed row --}}
       <tr>
-        <td class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseValues'}}</td>
+        <td class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseUnmorphed'}}</td>
+        {{#each system.defenses as |defense|}}
+        <td class="tg-td">
+          <span
+            title="{{@root.config.defenseBase}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}}">
+            {{defense.unmorphed.value}}
+          </span>
+        </td>
+        {{/each}}
+      </tr>
+
+      {{!-- Morphed row --}}
+      <tr>
+        <td class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseMorphed'}}</td>
         {{#each system.defenses as |defense|}}
         {{!-- Special case for Toughness to add armor --}}
         {{#ifEquals defense.name 'toughness'}}
