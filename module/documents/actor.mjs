@@ -89,14 +89,34 @@ export class Essence20Actor extends Actor {
     if (this.type !== 'giJoe') return;
 
     const system = this.system;
-    const defenses = {
-      toughness: CONFIG.E20.defenseBase + system.essences.strength + system.bonuses.toughness, // Armor added in sheet
-      evasion: CONFIG.E20.defenseBase + system.essences.speed + system.bonuses.evasion,
-      willpower: CONFIG.E20.defenseBase + system.essences.smarts +  system.bonuses.willpower,
-      cleverness: CONFIG.E20.defenseBase + system.essences.social +  system.bonuses.cleverness,
-    };
-    system.defenses = defenses;
-  }
+
+    system.defenses = [
+      {
+        essence: "strength",
+        name: "toughness",
+        value: CONFIG.E20.defenseBase + system.essences.strength + system.bonuses.toughness,
+        bonus: system.bonuses.toughness
+      },
+      {
+        essence: "speed",
+        name: "evasion",
+        value: CONFIG.E20.defenseBase + system.essences.speed + system.bonuses.evasion,
+        bonus: system.bonuses.evasion
+      },
+      {
+        essence: "smarts",
+        name: "willpower",
+        value: CONFIG.E20.defenseBase + system.essences.smarts + system.bonuses.willpower,
+        bonus: system.bonuses.willpower
+      },
+      {
+        essence: "social",
+        name: "cleverness",
+        value: CONFIG.E20.defenseBase + system.essences.social + system.bonuses.cleverness,
+        bonus: system.bonuses.cleverness
+      }
+    ];     
+    }
 
   /**
    * Prepare Power Ranger type specific data.
