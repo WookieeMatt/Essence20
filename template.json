@@ -6,7 +6,8 @@
       "npc",
       "vehicle",
       "zord",
-      "giJoe"
+      "giJoe",
+      "transformer"
     ],
     "templates": {
       "common": {
@@ -234,6 +235,13 @@
         }
       },
       "threatLevel": 0
+    },
+    "transformer": {
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ]
     },
     "vehicle": {
       "templates": [
