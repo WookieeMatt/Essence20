@@ -165,8 +165,8 @@ export class Essence20ActorSheet extends ActorSheet {
       switch (itemType) {
         case 'armor':
           if (i.system.equipped) {
-            equippedArmorToughness += parseInt(i.system.armorToughness);
-            equippedArmorEvasion += parseInt(i.system.armorEvasion);
+            equippedArmorEvasion += parseInt(i.system.bonusEvasion);
+            equippedArmorToughness += parseInt(i.system.bonusToughness);
           }
           armors.push(i);
           break;

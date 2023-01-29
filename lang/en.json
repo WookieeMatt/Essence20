@@ -68,6 +68,8 @@
     "AvailabilityStandard": "Standard",
     "AvailabilityTheoretical": "Theoretical",
     "AvailabilityUnique": "Unique",
+    "bonusEvasion": "Evasion Bonus",
+    "bonusToughness": "Toughness Bonus",
     "ClassFeatureUses": "Uses",
     "ClassFeatureNone": "No Class Feature",
     "DefenseBase": "Base",
