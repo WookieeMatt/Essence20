@@ -37,6 +37,7 @@
     "ActorName": "Name",
     "ActorPronouns": "Pronouns",
     "ActorColor": "Color",
+    "ActorFaction": "Faction",
     "ActorRole": "Role",
     "ActorSize": "Size",
     "ActorSizeCommon": "Common",

@@ -236,13 +236,6 @@
       },
       "threatLevel": 0
     },
-    "transformer": {
-      "templates": [
-        "common",
-        "creature",
-        "character"
-      ]
-    },
     "vehicle": {
       "templates": [
         "common",
@@ -270,6 +263,13 @@
       "ranger": ""
     },
     "giJoe": {
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ]
+    },
+    "transformer": {
       "templates": [
         "common",
         "creature",

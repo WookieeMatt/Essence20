@@ -53,6 +53,7 @@ export class Essence20Actor extends Actor {
     this._prepareNpcData();
     this._preparePowerRangerData();
     this._prepareGiJoeData();
+    this._prepareTransformerData();
   }
 
   /**
