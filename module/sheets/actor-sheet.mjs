@@ -140,7 +140,8 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
-    let equippedArmorEffect = 0;
+    let equippedArmorToughness = 0;
+    let equippedArmorEvasion = 0;
     const armors = [];
     const bonds = [];
     const features = []; // Used by Zords
@@ -164,7 +165,8 @@ export class Essence20ActorSheet extends ActorSheet {
       switch (itemType) {
         case 'armor':
           if (i.system.equipped) {
-            equippedArmorEffect += parseInt(i.system.effect);
+            equippedArmorToughness += parseInt(i.system.armorToughness);
+            equippedArmorEvasion += parseInt(i.system.armorEvasion);
           }
           armors.push(i);
           break;
@@ -214,7 +216,8 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Assign and return
-    context.equippedArmorEffect = equippedArmorEffect;
+    context.equippedArmorToughness = equippedArmorToughness;
+    context.equippedArmorEvasion = equippedArmorEvasion;
     context.armors = armors;
     context.bonds = bonds;
     context.classFeatures = classFeatures;
