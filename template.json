@@ -301,9 +301,9 @@
         "itemDescription"
       ],
       "availability": "standard",
-      "classification": "light",
       "bonusEvasion": 0,
       "bonusToughness": 0,
+      "classification": "light",
       "equipped": false,
       "trait": "deflective"
     },
