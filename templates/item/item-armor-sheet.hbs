@@ -44,10 +44,17 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    {{!-- Effect --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorEffect'}}
+    {{!-- Toughness --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorToughness'}}
     {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.effect" value="{{system.effect}}" />
+    <input type="number" name="system.armorToughness" value="{{system.armorToughness}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Evasion --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorEvasion'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.armorEvasion" value="{{system.armorEvasion}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
