@@ -42,8 +42,15 @@
         {{#ifEquals defense.name 'toughness'}}
         <td class="tg-td" style="border-color: {{system.color}};">
           <span
-            title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorEffect}} {{localize 'ITEM.TypeArmor'}}">
-            {{sum defense.morphed.value @root.equippedArmorEffect}}
+            title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorToughness}} {{localize 'ITEM.TypeArmor'}}">
+            {{sum defense.morphed.value @root.equippedArmorToughness}}
+          </span>
+        </td>
+        {{else ifEquals defense.name 'evasion'}}
+        <td class="tg-td" style="border-color: {{system.color}};">
+          <span
+            title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorEvasion}} {{localize 'ITEM.TypeArmor'}}">
+            {{sum defense.morphed.value @root.equippedArmorEvasion}}
           </span>
         </td>
         {{else}}
