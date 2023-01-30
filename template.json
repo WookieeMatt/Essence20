@@ -302,8 +302,8 @@
       ],
       "availability": "standard",
       "classification": "light",
-      "toughnessBonus": 1,
-      "evasionBonus": 1,
+      "toughnessBonus": 0,
+      "evasionBonus": 0,
       "equipped": false,
       "trait": "deflective"
     },
