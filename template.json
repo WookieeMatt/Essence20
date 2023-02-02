@@ -307,7 +307,7 @@
       "equipped": false,
       "traits": {
         "computerized": false,
-        "deflection": false,
+        "deflective": false,
         "plating": false,
         "stealth": false
       }
