@@ -305,7 +305,12 @@
       "toughnessBonus": 0,
       "evasionBonus": 0,
       "equipped": false,
-      "trait": "deflective"
+      "traits": {
+        "computerized": false,
+        "deflection": false,
+        "plating": false,
+        "stealth": false
+      }
     },
     "bond": {
       "templates": ["itemDescription"]
