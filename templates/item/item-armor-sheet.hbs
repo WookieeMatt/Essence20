@@ -31,16 +31,12 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    {{!-- Trait --}}
+    {{!-- Traits --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTrait'}}
     {{#*inline "item-field-inputs"}}
-    <select name="system.trait">
-      {{#select system.trait}}
       {{#each config.armorTraits as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+        <input class="inline-edit item-label-checkbox" type="checkbox" name="system.traits.{{type}}" {{checked (lookup @root.system.traits type)}}/>{{localize name}}
       {{/each}}
-      {{/select}}
-    </select>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
