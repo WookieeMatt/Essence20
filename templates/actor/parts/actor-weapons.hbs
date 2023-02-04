@@ -13,6 +13,14 @@
   {{#*inline "item-label" item}}
     {{#ifEquals @root.actor.type 'powerRanger'}}
       {{>"systems/essence20/templates/actor/parts/actor-class-feature-selector.hbs"}}
+    {{else}}
+      {{#ifEquals @root.actor.type 'transformer'}}
+        <label for="system.weaponmode" class="resource-label">{{localize 'E20.ActorWeaponMode'}}</label>
+        <select name="system.weaponmode" id="system.weaponmode">
+          <option value="Alt Mode" selected>Alt Mode</option>
+          <option value=""Bot Mode">Bot Mode</option>
+        </select>
+      {{/ifEquals}}
     {{/ifEquals}}
 
     {{item.name}}
