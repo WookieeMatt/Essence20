@@ -103,7 +103,6 @@ E20.armorTraits = {
   deflective: "E20.ArmorTraitDeflective",
   plating: "E20.ArmorTraitPlating",
   silent: "E20.ArmorTraitSilent",
-
 };
 
 /************************************************
