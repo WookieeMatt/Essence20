@@ -28,7 +28,7 @@
         {{#ifEquals defense.name 'toughness'}}
         <td class="tg-td" style="border-color: {{system.color}};">
           <span
-            title="{{@root.config.defenseBase}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorEffect}} {{localize 'ITEM.TypeArmor'}}">
+            title="{{@root.config.defenseBase}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}} + {{@root.equippedArmorEffect}} {{localize 'ITEM.TypeArmor'}}">
              {{sum defense.value @root.equippedArmorEffect}}
           </span>
         </td>
@@ -36,7 +36,7 @@
         {{!-- Remaining Defenses --}}
         <td class="tg-td" style="border-color: {{system.color}};">
           <span
-            title="{{@root.config.defenseBase}} {{localize 'E20.DefenseBase'}} + + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}} + {{defense.bonus}} {{localize 'E20.DefenseBonus'}}">
+            title="{{@root.config.defenseBase}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}} + {{defense.bonus}} {{localize 'E20.DefenseBonus'}}">
             {{sum defense.value}}
           </span>
         </td>
