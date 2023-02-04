@@ -141,6 +141,7 @@ export class Essence20ActorSheet extends ActorSheet {
   _prepareItems(context) {
     // Initialize containers.
     let equippedArmorEffect = 0;
+    const altmode =[];
     const armors = [];
     const bonds = [];
     const features = []; // Used by Zords

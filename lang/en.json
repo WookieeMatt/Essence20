@@ -6,7 +6,8 @@
     "TypeThreat": "Threat",
     "TypeVehicle": "Vehicle",
     "TypeZord": "Zord",
-    "TypeMegaformzord": "Megaform Zord"
+    "TypeMegaformzord": "Megaform Zord",
+    "TypeTransformer": "Transformer"
   },
   "ITEM": {
     "TypeArmor": "Armor",

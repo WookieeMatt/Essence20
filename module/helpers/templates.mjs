@@ -18,6 +18,7 @@ export const preloadHandlebarsTemplates = async function () {
 
     // Actor partials - Misc
     "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs",
+    "systems/essence20/templates/actor/parts/actor-altmode.hbs",
     "systems/essence20/templates/actor/parts/actor-armor.hbs",
     "systems/essence20/templates/actor/parts/actor-background.hbs",
     "systems/essence20/templates/actor/parts/actor-class-feature-selector.hbs",
@@ -25,7 +26,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs",
     "systems/essence20/templates/actor/parts/actor-common.hbs",
     "systems/essence20/templates/actor/parts/actor-defenses.hbs",
-    "systems/essence20/templates/actor/parts/actor-pr-defenses.hbs",
+    "systems/essence20/templates/actor/parts/actor-defenses-pr.hbs",
     "systems/essence20/templates/actor/parts/actor-essence-skills.hbs",
     "systems/essence20/templates/actor/parts/actor-gear.hbs",
     "systems/essence20/templates/actor/parts/actor-hang-ups.hbs",

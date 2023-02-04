@@ -304,6 +304,11 @@
         }
       }
     },
+    "altmode": {
+      "crew": 0,
+      "altmodeMovement": 0,
+      "altmodeSize": "common"
+    },
     "armor": {
       "templates": [
         "itemDescription"
