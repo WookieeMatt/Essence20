@@ -7,24 +7,23 @@ export const migrateWorld = async function() {
   const version = game.system.version;
   ui.notifications.info(game.i18n.format("MIGRATION.begin", {version}), {permanent: true});
 
-  /* Leaving this here in case we need to migrate Actors later
   // Migrate World Actors
   const actors = game.actors.map(a => [a, true])
     .concat(Array.from(game.actors.invalidDocumentIds).map(id => [game.actors.getInvalid(id), false]));
-  for ( const [actor, valid] of actors ) {
+  for (const [actor, valid] of actors) {
     try {
       const source = valid ? actor.toObject() : game.data.actors.find(a => a._id === actor.id);
-      const updateData = migrateActorData(source, migrationData);
-      if ( !foundry.utils.isEmpty(updateData) ) {
+      const updateData = migrateActorData(source);
+      if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Actor document ${actor.name}`);
+        console.log(updateData);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
       }
     } catch(err) {
-      err.message = `Failed dnd5e system migration for Actor ${actor.name}: ${err.message}`;
+      err.message = `Failed essence20 system migration for Actor ${actor.name}: ${err.message}`;
       console.error(err);
     }
   }
-  */
 
   // Migrate World Items
   const items = game.items.map(i => [i, true])
@@ -89,6 +88,45 @@ export const migrateWorld = async function() {
   // Set the migration as complete
   game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
+};
+
+/* -------------------------------------------- */
+/*  Document Type Migration Helpers             */
+/* -------------------------------------------- */
+
+/**
+ * Migrate a single Actor document to incorporate latest data model changes
+ * Return an Object of updateData to be applied
+ * @param {object} actor            The actor data object to update
+ * @returns {object}                The updateData to apply
+ */
+export const migrateActorData = function(actor) {
+  const updateData = {};
+
+  // Migrate Owned Items
+  if (!actor.items) {
+    return updateData;
+  }
+
+  const items = actor.items.reduce((arr, i) => {
+    // Migrate the Owned Item
+    const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
+    let itemUpdate = migrateItemData(itemData);
+
+    // Update the Owned Item
+    if (!foundry.utils.isEmpty(itemUpdate)) {
+      itemUpdate._id = itemData._id;
+      arr.push(foundry.utils.expandObject(itemUpdate));
+    }
+
+    return arr;
+  }, []);
+
+  if (items.length > 0) {
+    updateData.items = items;
+  }
+
+  return updateData;
 };
 
 /**
