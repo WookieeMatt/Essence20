@@ -8,13 +8,45 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
+import { migrateWorld } from "./module/migration.mjs";
+
+function registerSystemSettings() {
+  game.settings.register("essence20", "systemMigrationVersion", {
+    config: false,
+    scope: "world",
+    type: String,
+    default: "",
+  })
+}
+
+/**
+ * Runs a system migration if required
+ * @type {String}
+ */
+function runMigrations() {
+  if (!game.user.isGM) {
+    return;
+  }
+
+  // Get the current version, or set it if not present
+  const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
+  const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
+  if (!currentVersion && totalDocuments === 0) {
+    return game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  }
+
+  // Perform the migration, if needed
+  const NEEDS_MIGRATION_VERSION = "0.0.1" // Put this in game.system.flags? See dnd5e
+  if (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
+    migrateWorld();
+  }
+}
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 
 Hooks.once('init', async function () {
-
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.essence20 = {
@@ -37,6 +69,9 @@ Hooks.once('init', async function () {
   // Define custom Document classes
   CONFIG.Actor.documentClass = Essence20Actor;
   CONFIG.Item.documentClass = Essence20Item;
+
+  // Register System Settings
+  registerSystemSettings();
 
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);
@@ -98,6 +133,8 @@ Handlebars.registerHelper('inArray', function (array, value, options) {
 /* -------------------------------------------- */
 
 Hooks.once("ready", async function () {
+  runMigrations();
+
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => {
     if (["Item", "ActiveEffect"].includes(data.type)) {
