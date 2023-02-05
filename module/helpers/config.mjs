@@ -301,3 +301,16 @@ E20.rangers = {
   yellow: "E20.RangerYellow",
   white: "E20.RangerWhite",
 };
+
+//Options for Transformers Factions
+E20.transformerFaction = {
+  autobots: "E20.Autobots",
+  decepticons: "E20.Decepticons"
+}
+
+// Options for Transformer Modes
+E20.transformerMode = {
+  altMode: "E20.AltMode",
+  botMode: "E20.BotMode",
+  bothMode: "E20.BothMode"
+}

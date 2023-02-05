@@ -176,6 +176,7 @@
           }
         }
       },
+      
       "zordBase": {
         "armor": 0,
         "essences": {
@@ -197,6 +198,17 @@
           }
         }
       }
+    },
+    "altModeDefense": {
+      "cleverness": 0,
+      "evasion": 0,
+      "toughness": 0,
+      "willpower": 0
+    },
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 0
     },
     "powerRanger": {
       "templates": [
@@ -271,10 +283,18 @@
     },
     "transformer": {
       "templates": [
+        "altModeDefense",
+        "altModeMovement",
         "common",
         "creature",
         "character"
-      ]
+      ],
+      "altModeCrew":0,
+      "altModeFirepoints": 0,
+      "altModeSize": "common",
+      "externalHardpoints": 2,
+      "transformerFaction": "autobots",
+      "internalHarpoints": 2
     }
   },
   "Item": {
@@ -302,13 +322,7 @@
           "book": "",
           "page": null
         }
-      }
-    },
-    "altmode": {
-      "crew": 0,
-      "altmodeMovement": 0,
-      "altmodeSize": "common"
-    },
+      },
     "armor": {
       "templates": [
         "itemDescription"
@@ -424,6 +438,7 @@
         "skill": null,
         "shift": null
       },
+      "tranformerMode": "botMode",
       "upgrades": ""
     },
     "weaponUpgrade": {
@@ -435,4 +450,5 @@
       "prerequisite": null
     }
   }
+}
 }
