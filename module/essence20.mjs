@@ -27,7 +27,6 @@ function runMigrations() {
   if (!game.user.isGM) {
     return;
   }
-  game.settings.set("essence20", "systemMigrationVersion", "0.0.0");
   const NEEDS_MIGRATION_VERSION = game.system.flags.needsMigrationVersion
 
   // Get the current version, or set it if not present
@@ -38,10 +37,10 @@ function runMigrations() {
     return game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   } else if (!currentVersion || isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
     // Perform the migration, if needed
-    console.log(`Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION}`);
-    // migrateWorld();
+    console.log(`Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`);
+    migrateWorld();
   } else {
-    console.log(`Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION}`);
+    console.log(`Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION} and doesn't require migration`);
   }
 }
 

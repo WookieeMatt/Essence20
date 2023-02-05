@@ -35,6 +35,7 @@ export const migrateWorld = async function() {
       const updateData = migrateItemData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
+        console.log(updateData);
         await item.update(updateData, {enforceTypes: false, diff: valid});
       }
     } catch(err) {
@@ -99,10 +100,11 @@ export const migrateWorld = async function() {
  export function migrateItemData(item) {
   const updateData = {};
 
+  // Armor trait -> traits migration
   if (item.type == "armor") {
     const trait = item.system.trait;
     if (trait && !item.system.traits[trait]) {
-      updateData[`item.system.traits.${trait}`] = true;
+      updateData[`system.traits`] = {[trait]: true};
     }
   }
 
