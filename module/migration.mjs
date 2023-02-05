@@ -43,7 +43,7 @@ export const migrateWorld = async function() {
     }
   }
 
-  /* Leaving this here in case we need to migrate Actors later
+  /* Leaving this here in case we need to migrate Macros later
   // Migrate World Macros
   for ( const m of game.macros ) {
     try {
@@ -59,7 +59,7 @@ export const migrateWorld = async function() {
   }
   */
 
-  /* Leaving this here in case we need to migrate Actors later
+  /* Leaving this here in case we need to migrate Actor Override Tokens later
   // Migrate Actor Override Tokens
   for ( let s of game.scenes ) {
     try {
@@ -79,11 +79,11 @@ export const migrateWorld = async function() {
   */
 
   // Migrate World Compendium Packs
-  // for ( let p of game.packs ) {
-  //   if ( p.metadata.packageType !== "world" ) continue;
-  //   if ( !["Actor", "Item", "Scene"].includes(p.documentName) ) continue;
-  //   await migrateCompendium(p);
-  // }
+  for (let p of game.packs) {
+    if (p.metadata.packageType !== "world") continue;
+    if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
+    await migrateCompendium(p);
+  }
 
   // Set the migration as complete
   game.settings.set("essence20", "systemMigrationVersion", game.system.version);
@@ -148,3 +148,54 @@ export const migrateActorData = function(actor) {
 
   return updateData;
 }
+
+/**
+ * Apply migration rules to all Documents within a single Compendium pack
+ * @param {CompendiumCollection} pack  Pack to be migrated.
+ * @returns {Promise}
+ */
+export const migrateCompendium = async function(pack) {
+  const documentName = pack.documentName;
+  if ( !["Actor", "Item", "Scene"].includes(documentName) ) return;
+
+  // Unlock the pack for editing
+  const wasLocked = pack.locked;
+  await pack.configure({locked: false});
+
+  // Begin by requesting server-side data model migration and get the migrated content
+  await pack.migrate();
+  const documents = await pack.getDocuments();
+
+  // Iterate over compendium entries - applying fine-tuned migration functions
+  for ( let doc of documents ) {
+    let updateData = {};
+    try {
+      switch (documentName) {
+        case "Actor":
+          updateData = migrateActorData(doc.toObject());
+          break;
+        case "Item":
+          updateData = migrateItemData(doc.toObject());
+          break;
+        case "Scene":
+          // updateData = migrateSceneData(doc.toObject());
+          break;
+      }
+
+      // Save the entry, if data was changed
+      if ( foundry.utils.isEmpty(updateData) ) continue;
+      await doc.update(updateData);
+      console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
+    }
+
+    // Handle migration failures
+    catch(err) {
+      err.message = `Failed dnd5e system migration for document ${doc.name} in pack ${pack.collection}: ${err.message}`;
+      console.error(err);
+    }
+  }
+
+  // Apply the original locked status for the pack
+  await pack.configure({locked: wasLocked});
+  console.log(`Migrated all ${documentName} documents from Compendium ${pack.collection}`);
+};
