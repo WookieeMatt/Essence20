@@ -29,11 +29,11 @@ export const migrateWorld = async function() {
   // Migrate World Items
   const items = game.items.map(i => [i, true])
     .concat(Array.from(game.items.invalidDocumentIds).map(id => [game.items.getInvalid(id), false]));
-  for ( const [item, valid] of items ) {
+  for (const [item, valid] of items) {
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
       const updateData = migrateItemData(source);
-      if ( !foundry.utils.isEmpty(updateData) ) {
+      if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
         await item.update(updateData, {enforceTypes: false, diff: valid});
       }
@@ -102,14 +102,8 @@ export const migrateWorld = async function() {
   if (item.type == "armor") {
     const trait = item.system.trait;
     if (trait && !item.system.traits[trait]) {
-      updateData["item.system.traits[trait]"] = true; // will this work?
+      updateData[`item.system.traits.${trait}`] = true;
     }
-  }
-
-  // Migrate embedded effects
-  if ( item.effects ) {
-    const effects = migrateEffects(item);
-    if ( effects.length > 0 ) updateData.effects = effects;
   }
 
   return updateData;

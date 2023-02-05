@@ -8,7 +8,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
-import { migrateWorld } from "./module/migration.mjs";
+import { migrateWorld } from "./migration.mjs";
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -27,18 +27,21 @@ function runMigrations() {
   if (!game.user.isGM) {
     return;
   }
+  game.settings.set("essence20", "systemMigrationVersion", "0.0.0");
+  const NEEDS_MIGRATION_VERSION = game.system.flags.needsMigrationVersion
 
   // Get the current version, or set it if not present
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
   const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
   if (!currentVersion && totalDocuments === 0) {
+    console.log("No documents to migrate");
     return game.settings.set("essence20", "systemMigrationVersion", game.system.version);
-  }
-
-  // Perform the migration, if needed
-  const NEEDS_MIGRATION_VERSION = "0.0.1" // Put this in game.system.flags? See dnd5e
-  if (isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
-    migrateWorld();
+  } else if (!currentVersion || isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
+    // Perform the migration, if needed
+    console.log(`Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION}`);
+    // migrateWorld();
+  } else {
+    console.log(`Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION}`);
   }
 }
 
