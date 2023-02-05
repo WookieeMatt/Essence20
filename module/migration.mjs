@@ -138,11 +138,17 @@ export const migrateActorData = function(actor) {
  export function migrateItemData(item) {
   const updateData = {};
 
-  // Armor trait -> traits migration
   if (item.type == "armor") {
+    // Armor trait -> traits migration
     const trait = item.system.trait;
     if (trait && !item.system.traits[trait]) {
       updateData[`system.traits`] = {[trait]: true};
+    }
+
+    // Armor effect -> bonusToughness migration
+    const effect = item.system.effect;
+    if (effect && !item.system.bonusToughness) {
+      updateData[`system.bonusToughness`] = effect;
     }
   }
 

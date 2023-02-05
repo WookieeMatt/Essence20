@@ -27,6 +27,7 @@ function runMigrations() {
   if (!game.user.isGM) {
     return;
   }
+
   const NEEDS_MIGRATION_VERSION = game.system.flags.needsMigrationVersion
 
   // Get the current version, or set it if not present
