@@ -304,13 +304,13 @@ E20.rangers = {
 
 //Options for Transformers Factions
 E20.transformerFaction = {
-  autobots: "E20.Autobots",
-  decepticons: "E20.Decepticons"
+  autobots: "E20.FactionAutobots",
+  decepticons: "E20.FactionDecepticons"
 }
 
 // Options for Transformer Modes
 E20.transformerMode = {
-  altMode: "E20.AltMode",
-  botMode: "E20.BotMode",
-  bothMode: "E20.BothMode"
+  modeAltMode: "E20.ModeAltMode",
+  modeBotMode: "E20.ModeBotMode",
+  modeAny: "E20.ModeAny"
 }

@@ -199,17 +199,7 @@
         }
       }
     },
-    "altModeDefense": {
-      "cleverness": 0,
-      "evasion": 0,
-      "toughness": 0,
-      "willpower": 0
-    },
-    "altModeMovement": {
-      "aerial": 0,
-      "aquatic": 0,
-      "ground": 0
-    },
+   
     "powerRanger": {
       "templates": [
         "common",
@@ -289,6 +279,17 @@
         "creature",
         "character"
       ],
+      "altModeDefense": {
+        "cleverness": 0,
+        "evasion": 0,
+        "toughness": 0,
+        "willpower": 0
+      },
+      "altModeMovement": {
+        "aerial": 0,
+        "aquatic": 0,
+        "ground": 0
+      },
       "altModeCrew":0,
       "altModeFirepoints": 0,
       "altModeSize": "common",

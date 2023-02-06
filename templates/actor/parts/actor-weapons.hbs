@@ -13,10 +13,8 @@
   {{#*inline "item-label" item}}
     {{#ifEquals @root.actor.type 'powerRanger'}}
       {{>"systems/essence20/templates/actor/parts/actor-class-feature-selector.hbs"}}
-    {{else}}
-      {{#ifEquals @root.actor.type 'transformer'}}
+    {{else ifEquals @root.actor.type 'transformer'}}
         {{>"systems/essence20/templates/actor/parts/actor-hardpoint-selector.hbs"}}
-      {{/ifEquals}}
     {{/ifEquals}}
 
     {{item.name}}
