@@ -1,29 +1,12 @@
 {{!-- Origin --}}
-{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.origins title='E20.Origin' dataType='origin'}}
+{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.altmode title='E20.altMode' dataType='altMode'}}
   {{#*inline "expand-details" item}}
-    <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-    <div>{{localize 'E20.OriginStartingHealth'}}: {{item.system.startingHealth}}</div>
-    <div>{{localize 'E20.OriginEssenceAbilityScoreIncreaseOptions'}}: {{item.system.essenceAbilityScoreIncreaseOptions}}</div>
-    <div>{{localize 'E20.OriginEssenceScoreIncreaseOptions'}}: {{item.system.essenceScoreIncreaseOptions}}</div>
-    <div>{{localize 'E20.OriginBonusSkillLevels'}}: {{item.system.bonusSkillLevels}}</div>
-    <div>{{localize 'E20.OriginGroundMovement'}}: {{item.system.groundMovement}}</div>
-    <div>{{localize 'E20.OriginLanguages'}}: {{item.system.languages}}</div>
-    <div>{{localize 'E20.OriginBenefitName'}}: {{item.system.benefit.name}}</div>
-    <div>{{localize 'E20.OriginBenefitDescription'}}: {{item.system.benefit.description}}</div>
+    <div>{{localize 'E20.AltModeMovement.Aerial'}}: {{item.system.altModeMovement.aerial}}</div>
+    <div>{{localize 'E20.AltModeMovement.Aquatic'}}: {{item.system.altModeMovement.aquatic}}</div>
+    <div>{{localize 'E20.AltModeMovement.Ground'}}: {{item.system.altModeMovement.ground}}</div>
+    <div>{{localize 'E20.AltModeSize'}}: {{item.system.altModesize}}</div>
+    <div>{{localize 'E20.AltModeCrew'}}: {{item.system.altModeCrew}}</div>
+    <div>{{localize 'E20.AltModeFirepoints'}}: {{item.system.altModeFirepoints}}</div>
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
 
-<div>
-  <label for="system.altModeCrew" class="resource-label"> {{localize 'E20.AltModeCrew'}}</label>
-  <input class="inline-edit" data-field="system.altModeCrew" name="system.altModeCrew" type="text" value="{{system.altModeCrew}}"/>
-</div>
-<div>
-  <label for="system.altModesize" class="resource-label">{{localize 'E20.AltModeSize'}}</label>
-  <select name="system.altModesize">
-    {{#select system.altModesize}}
-    {{#each config.actorSizes as |value size|}}
-      <option value="{{size}}">{{localize value}}</option>
-    {{/each}}
-    {{/select}}
-  </select>
-</div>
