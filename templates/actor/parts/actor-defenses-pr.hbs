@@ -42,16 +42,23 @@
         {{#ifEquals defense.name 'toughness'}}
         <td class="tg-td" style="border-color: {{system.color}};">
           <span
-            title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorEffect}} {{localize 'ITEM.TypeArmor'}}">
-            {{sum defense.morphed.value @root.equippedArmorEffect}}
+            title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorToughness}} {{localize 'ITEM.TypeArmor'}}">
+            {{sum defense.morphed.value @root.equippedArmorToughness}}
+          </span>
+        </td>
+        {{else ifEquals defense.name 'evasion'}}
+        <td class="tg-td" style="border-color: {{system.color}};">
+          <span
+            title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}} + {{@root.equippedArmorEvasion}} {{localize 'ITEM.TypeArmor'}}">
+            {{sum defense.morphed.value @root.equippedArmorEvasion}}
           </span>
         </td>
         {{else}}
         {{!-- Remaining Defenses --}}
         <td class="tg-td" style="border-color: {{system.color}};">
           <span
-            title="{{@root.config.defenseBase}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}}">
-            {{sum defense.morphed.value}}
+            title="{{defense.unmorphed.value}} {{localize 'E20.DefenseUnmorphed'}} + {{defense.morphed.bonus}} {{localize 'E20.DefenseBonus'}}">
+            {{defense.morphed.value}}
           </span>
         </td>
         {{/ifEquals}}
