@@ -323,7 +323,7 @@
           "page": null
         }
       },
-    "altmode": {
+    "altMode": {
       "templates": [
         "itemDescription"
       ],
