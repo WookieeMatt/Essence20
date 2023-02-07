@@ -273,8 +273,6 @@
     },
     "transformer": {
       "templates": [
-        "altModeDefense",
-        "altModeMovement",
         "common",
         "creature",
         "character"
@@ -300,6 +298,7 @@
   },
   "Item": {
     "types": [
+      "altMode",
       "armor",
       "bond",
       "classFeature",
@@ -324,6 +323,19 @@
           "page": null
         }
       },
+    "altmode": {
+      "templates": [
+        "itemDescription"
+      ],
+      "crew": 0,
+      "firepoints": 0,
+      "movement": {
+        "aerial": 0,
+        "aquatic": 0,
+        "ground": 0
+      },
+      "size": "common"
+    },
     "armor": {
       "templates": [
         "itemDescription"
