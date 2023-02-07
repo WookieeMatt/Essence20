@@ -31,23 +31,31 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    {{!-- Trait --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTrait'}}
+    {{!-- Traits --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTraits'}}
     {{#*inline "item-field-inputs"}}
-    <select name="system.trait">
-      {{#select system.trait}}
+      <div class="flexcol">
       {{#each config.armorTraits as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+        <div class="flexrow">
+          <input class="inline-edit item-label-checkbox" type="checkbox" name="system.traits.{{type}}" {{checked (lookup @root.system.traits type)}}/>
+          <span class="armor-trait-checkbox-label">{{localize name}}</span>
+        </div>
       {{/each}}
-      {{/select}}
-    </select>
+      </div>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-    {{!-- Effect --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorEffect'}}
+    {{!-- Toughness --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorBonusToughness'}}
     {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.effect" value="{{system.effect}}" />
+    <input type="number" name="system.bonusToughness" value="{{system.bonusToughness}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Evasion --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorBonusEvasion'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.bonusEvasion" value="{{system.bonusEvasion}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 

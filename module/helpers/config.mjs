@@ -99,7 +99,9 @@ E20.armorClassifications = {
 
 // Options for Armor trait
 E20.armorTraits = {
+  computerized: "E20.ArmorTraitComputerized",
   deflective: "E20.ArmorTraitDeflective",
+  plating: "E20.ArmorTraitPlating",
   silent: "E20.ArmorTraitSilent",
 };
 
