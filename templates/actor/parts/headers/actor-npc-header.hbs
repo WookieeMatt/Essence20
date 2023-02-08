@@ -1,18 +1,9 @@
 {{#>"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
 {{#*inline "secondary-fields"}}
-<div class="resource">
+<div class="resource2">
   <label for="name" class="resource-label">{{localize 'E20.NpcThreatLevel'}}</label>
   <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
 </div>
-<div class="npc-health-container">
-  <div class="resource flex-group-center">
-    <label for="system.health.value" class="resource-label">{{localize 'E20.ActorHealth'}}</label>
-    <div class="resource-content flexrow flex-center flex-between">
-      <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-      <span>/</span>
-      <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
-    </div>
-  </div>
-</div>
+{{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
 {{/inline}}
 {{/"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
