@@ -35,7 +35,6 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/actor-initiative.hbs",
     "systems/essence20/templates/actor/parts/actor-mode-selector.hbs",
     "systems/essence20/templates/actor/parts/actor-movement.hbs",
-    "systems/essence20/templates/actor/parts/actor-movement-altmode.hbs",
     "systems/essence20/templates/actor/parts/actor-notes.hbs",
     "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs",
     "systems/essence20/templates/actor/parts/actor-pc-skills.hbs",

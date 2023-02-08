@@ -277,12 +277,6 @@
         "creature",
         "character"
       ],
-      "altModeDefense": {
-        "cleverness": 0,
-        "evasion": 0,
-        "toughness": 0,
-        "willpower": 0
-      },
       "altModeMovement": {
         "aerial": 0,
         "aquatic": 0,
