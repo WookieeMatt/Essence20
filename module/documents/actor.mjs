@@ -19,6 +19,18 @@ export class Essence20Actor extends Actor {
       );
     }
 
+    // Create Personal Power as a default class feature for Power Rangers
+    if (data.type == 'transformer') {
+      Item.create(
+        {
+          name: game.i18n.localize('E20.TransformerEnergon'),
+          type: 'classFeature',
+          data: {},
+        },
+        { parent: actor }
+      );
+    }
+
     return actor;
   }
 

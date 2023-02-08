@@ -291,6 +291,7 @@
       "altModeCrew":0,
       "altModeFirepoints": 0,
       "altModeSize": "common",
+      "energon": 0,
       "externalHardpoints": 2,
       "transformerFaction": "autobots",
       "internalHarpoints": 2
