@@ -4,16 +4,28 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    {{!-- NPC Defenses --}}
-    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-
-    <div class="flexrow stats-row">
-      {{!-- Initiative --}}
-      {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
-
-      {{!-- Movement --}}
-      {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+    <div class="npc-row">
+      <div class="npc-column-1">
+        {{!-- NPC Essence Scores --}}
+        {{> "systems/essence20/templates/actor/parts/actor-npc-essence-scores.hbs"}}
+      </div>
+      <div class="npc-column-2">
+        {{!-- NPC Defenses --}}
+        {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+      </div>
     </div>
+
+    <div class="npc-row">
+      <div class="npc-column-1">
+        {{!-- Initiative --}}
+        {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
+      </div>
+      <div class="npc-column-2">
+        {{!-- Movement --}}
+        {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+      </div>
+    </div>
+
     <div class="npc-row">
       <div class="npc-column-1">
         {{!-- Skills --}}
