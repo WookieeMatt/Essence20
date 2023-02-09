@@ -277,14 +277,6 @@
         "creature",
         "character"
       ],
-      "altModeMovement": {
-        "aerial": 0,
-        "aquatic": 0,
-        "ground": 0
-      },
-      "altModeCrew":0,
-      "altModeFirepoints": 0,
-      "altModeSize": "common",
       "energon": 0,
       "externalHardpoints": 2,
       "transformerFaction": "autobots",
@@ -452,7 +444,6 @@
         "skill": null,
         "shift": null
       },
-      "tranformerMode": "botMode",
       "upgrades": ""
     },
     "weaponUpgrade": {

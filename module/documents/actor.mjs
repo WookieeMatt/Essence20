@@ -19,7 +19,7 @@ export class Essence20Actor extends Actor {
       );
     }
 
-    // Create Personal Power as a default class feature for Power Rangers
+    // Create Energon as a default class feature for Transformers
     if (data.type == 'transformer') {
       Item.create(
         {
