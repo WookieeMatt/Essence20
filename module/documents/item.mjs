@@ -65,11 +65,10 @@ export class Essence20Item extends Item {
       const classFeatureId = this.system.classFeatureId;
 
       let content = `<b>${descriptionStr}</b> - ${this.system.description}<br>`;
-      
-      if (this.actor.type = "vehicle"){
-      }else{
-      content += `<b>${classFeatureStr}</b> - ${classFeatureId ? this.actor.items.get(classFeatureId).name : noneStr}`;
+      if (this.actor.type !== "vehicle"){
+        content += `<b>${classFeatureStr}</b> - ${classFeatureId ? this.actor.items.get(classFeatureId).name : noneStr}`;
       }
+
       ChatMessage.create({
         speaker: speaker,
         rollMode: rollMode,
