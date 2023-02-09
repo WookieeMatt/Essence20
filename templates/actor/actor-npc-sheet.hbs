@@ -35,7 +35,6 @@
         </div>
       </div>
 
-
       <div class="npc-row">
         <div class="npc-column-1">
           {{!-- Skills --}}
@@ -50,9 +49,14 @@
           {{> "systems/essence20/templates/actor/parts/actor-threat-powers.hbs"}}
           {{!-- Perks --}}
           {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
+
+          {{!-- Gear --}}
+          {{> "systems/essence20/templates/actor/parts/actor-gear.hbs"}}
         </div>
       </div>
     </div>
+
+    {{!-- Notes Tab --}}
     <div class="tab notes" data-group="primary" data-tab="notes">
       {{> "systems/essence20/templates/actor/parts/actor-notes.hbs"}}
     </div>
