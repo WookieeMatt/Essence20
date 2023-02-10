@@ -67,6 +67,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare Zords for MFZs
     this._prepareZords(context);
+    
     return context;
   }
 

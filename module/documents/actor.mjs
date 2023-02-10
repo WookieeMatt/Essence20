@@ -186,9 +186,10 @@ export class Essence20Actor extends Actor {
       },
     ];
   }
+
 /**
-   * Prepare Transformers type specific data.
-   */
+ * Prepare Transformers type specific data.
+ */
 _prepareTransformerData() {
   if (this.type !== 'transformer') return;
 

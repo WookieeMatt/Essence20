@@ -175,8 +175,7 @@
             "value": null
           }
         }
-      },
-      
+      },  
       "zordBase": {
         "armor": 0,
         "essences": {
@@ -279,8 +278,8 @@
       ],
       "energon": 0,
       "externalHardpoints": 2,
-      "transformerFaction": "autobots",
-      "internalHarpoints": 2
+      "internalHarpoints": 2,
+      "transformerFaction": "autobots"
     }
   },
   "Item": {
@@ -309,6 +308,7 @@
           "book": "",
           "page": null
         }
+      }    
       },
     "altMode": {
       "templates": [
@@ -453,7 +453,6 @@
       "availability": "standard",
       "benefit": "",
       "prerequisite": null
-    }
+    } 
   }
-}
 }
