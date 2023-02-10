@@ -10,6 +10,8 @@ Presently only POWER RANGERS is playable but will soon be adding in Transformers
 
 Any issues you encounter please let us know by opening an issue on our GITHUB with images of the issue presented. 
 
+For support please join our discord: https://discord.gg/74QYVA355W 
+
 Manifest URL: https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json
 
 Features Currently IN the System:

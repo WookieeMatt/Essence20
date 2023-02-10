@@ -164,10 +164,10 @@ export class Essence20Actor extends Actor {
       },
       {
         essence: "smarts",
-        name: "cleverness",
+        name: "willpower",
         morphed: {
-          value: CONFIG.E20.defenseBase + system.essences.smarts + system.bonuses.cleverness,
-          bonus: system.bonuses.cleverness
+          value: CONFIG.E20.defenseBase + system.essences.smarts + system.bonuses.willpower,
+          bonus: system.bonuses.willpower
         },
         unmorphed: {
           value: CONFIG.E20.defenseBase + system.essences.smarts,
@@ -175,10 +175,10 @@ export class Essence20Actor extends Actor {
       },
       {
         essence: "social",
-        name: "willpower",
+        name: "cleverness",
         morphed: {
-          value: CONFIG.E20.defenseBase + system.essences.social + system.bonuses.willpower,
-          bonus: system.bonuses.willpower
+          value: CONFIG.E20.defenseBase + system.essences.social + system.bonuses.cleverness,
+          bonus: system.bonuses.cleverness
         },
         unmorphed: {
           value: CONFIG.E20.defenseBase + system.essences.social,
