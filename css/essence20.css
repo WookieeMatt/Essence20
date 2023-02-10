@@ -795,7 +795,7 @@
 .essence20 .npc-defenses {
   list-style: none;
   margin-right: 3px;
-  padding: 8px;
+  padding: 6px;
   overflow-y: auto;
   color: rgb(199, 196, 196);
   display: flex;
