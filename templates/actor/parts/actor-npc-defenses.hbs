@@ -1,5 +1,5 @@
-<div style="flex-grow: 0;">
-  <div class="npc-defenses">
+<div class="stats-container " style="flex-grow: 0; height: 100%;">
+  <div class="flexrow">
     {{#each system.defenses as |fields defense|}}
     <div class="resource flexcol">
       <label class="resource flex-group-center">{{localize (lookup @root.config.defenses defense)}}</label>
