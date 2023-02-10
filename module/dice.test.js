@@ -102,7 +102,7 @@ describe("rollSkill", () => {
   test("specialized skill roll", () => {
     const datasetCopy = {
       ...dataset,
-      isSpecialized: true,
+      isSpecialized: "true",
       specializationName: 'Foo Specialization',
     }
     const skillRollOptions = {
@@ -173,7 +173,7 @@ describe("_getSkillRollLabel", () => {
   test("specialized skill roll", () => {
     const dataset = {
       skill: 'athletics',
-      isSpecialized: true,
+      isSpecialized: "true",
       specializationName: 'Foo Specialization'
     };
     const skillRollOptions = {
