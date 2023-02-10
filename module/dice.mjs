@@ -81,7 +81,8 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = this._config.skillToEssence[rolledSkill];
     const actorSkillData = actor.getRollData().skills;
-    let finalShift = this._getFinalShift(skillRollOptions, dataset.shift);
+    const initialShift = actorSkillData[rolledEssence][rolledSkill].shift
+    let finalShift = this._getFinalShift(skillRollOptions, initialShift);
 
     if (this._handleAutoFail(finalShift, label, actor)) {
       return;
