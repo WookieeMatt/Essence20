@@ -19,6 +19,18 @@ export class Essence20Actor extends Actor {
       );
     }
 
+    // Create Energon as a default class feature for Transformers
+    if (data.type == 'transformer') {
+      Item.create(
+        {
+          name: game.i18n.localize('E20.TransformerEnergon'),
+          type: 'classFeature',
+          data: {},
+        },
+        { parent: actor }
+      );
+    }
+
     return actor;
   }
 
@@ -53,6 +65,7 @@ export class Essence20Actor extends Actor {
     this._prepareNpcData();
     this._preparePowerRangerData();
     this._prepareGiJoeData();
+    this._prepareTransformerData();
   }
 
   /**
@@ -174,6 +187,42 @@ export class Essence20Actor extends Actor {
     ];
   }
 
+/**
+ * Prepare Transformers type specific data.
+ */
+  _prepareTransformerData() {
+    if (this.type !== 'transformer') return;
+
+    const system = this.system;
+
+    system.defenses = [
+      {
+        essence: "strength",
+        name: "toughness",
+        value: CONFIG.E20.defenseBase + system.essences.strength + system.bonuses.toughness,
+        bonus: system.bonuses.toughness
+      },
+      {
+        essence: "speed",
+        name: "evasion",
+        value: CONFIG.E20.defenseBase + system.essences.speed + system.bonuses.evasion,
+        bonus: system.bonuses.evasion
+      },
+      {
+        essence: "smarts",
+        name: "willpower",
+        value: CONFIG.E20.defenseBase + system.essences.smarts + system.bonuses.willpower,
+        bonus: system.bonuses.willpower
+      },
+      {
+        essence: "social",
+        name: "cleverness",
+        value: CONFIG.E20.defenseBase + system.essences.social + system.bonuses.cleverness,
+        bonus: system.bonuses.cleverness
+      }
+    ];     
+  }
+  
   /**
    * Override getRollData() that's supplied to rolls.
    */

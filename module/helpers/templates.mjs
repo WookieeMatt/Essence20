@@ -12,11 +12,13 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/headers/actor-megaformZord-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-npc-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-pr-header.hbs",
+    "systems/essence20/templates/actor/parts/headers/actor-transformer-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-vehicle-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-zord-header.hbs",
 
     // Actor partials - Misc
     "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs",
+    "systems/essence20/templates/actor/parts/actor-alt-mode.hbs",
     "systems/essence20/templates/actor/parts/actor-armor.hbs",
     "systems/essence20/templates/actor/parts/actor-background.hbs",
     "systems/essence20/templates/actor/parts/actor-class-feature-selector.hbs",
@@ -30,6 +32,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/actor-hang-ups.hbs",
     "systems/essence20/templates/actor/parts/actor-health.hbs",
     "systems/essence20/templates/actor/parts/actor-initiative.hbs",
+    "systems/essence20/templates/actor/parts/actor-mode-selector.hbs",
     "systems/essence20/templates/actor/parts/actor-movement.hbs",
     "systems/essence20/templates/actor/parts/actor-notes.hbs",
     "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs",

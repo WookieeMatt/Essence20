@@ -67,7 +67,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare Zords for MFZs
     this._prepareZords(context);
-
+    
     return context;
   }
 
@@ -140,6 +140,7 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
+    const altModes = [];
     const armors = [];
     const bonds = [];
     const features = []; // Used by Zords
@@ -163,6 +164,9 @@ export class Essence20ActorSheet extends ActorSheet {
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
       switch (itemType) {
+        case 'altMode':
+          altModes.push(i);
+          break;
         case 'armor':
           if (i.system.equipped) {
             equippedArmorEvasion += parseInt(i.system.bonusEvasion);
@@ -216,6 +220,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Assign and return
+    context.altModes = altModes;
     context.armors = armors;
     context.bonds = bonds;
     context.classFeatures = classFeatures;
