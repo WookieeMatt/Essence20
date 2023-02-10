@@ -19,14 +19,11 @@ export class Dice {
    */
   async getSkillRollOptions(dataset, actor) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const rolledSkill = dataset.skill;
-    const rolledEssence = this._config.skillToEssence[rolledSkill];
-    const rolledShift = actor.system.skills[rolledEssence][rolledSkill].shift
-    const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(rolledShift);
+    const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
     const html = await renderTemplate(
       template,
       {
-        specialized: !!dataset.specialization,
+        isSpecialized: dataset.isSpecialized === 'true',
         snag,
         edge: false,
         normal: !snag
@@ -65,7 +62,7 @@ export class Dice {
       shiftDown: parseInt(form.shiftDown.value),
       shiftUp: parseInt(form.shiftUp.value),
       snag: form.snagEdge.value == 'snag',
-      specialized: form.specialized.checked,
+      isSpecialized: form.isSpecialized.checked,
       timesToRoll: parseInt(form.timesToRoll.value),
     }
   }
@@ -78,13 +75,20 @@ export class Dice {
    * @param {Item} weapon   The weapon being used, if any.
    */
   rollSkill(dataset, skillRollOptions, actor, weapon) {
-    let label = weapon
-      ? this._getWeaponRollLabel(dataset, skillRollOptions, weapon, actor)
-      : this._getSkillRollLabel(dataset, skillRollOptions);
     const rolledSkill = dataset.skill;
-    const rolledEssence = this._config.skillToEssence[rolledSkill];
     const actorSkillData = actor.getRollData().skills;
-    const initialShift = actorSkillData[rolledEssence][rolledSkill].shift;
+    const rolledEssence = dataset.essence || this._config.skillToEssence[rolledSkill];
+    const initialShift = dataset.shift || actorSkillData[rolledEssence][rolledSkill].shift;
+    const completeDataset = {
+      ...dataset,
+      // Weapon partial can't populate these easily
+      essence : rolledEssence,
+      shift: initialShift,
+    }
+
+    let label = weapon
+      ? this._getWeaponRollLabel(completeDataset, skillRollOptions, weapon, actor)
+      : this._getSkillRollLabel(completeDataset, skillRollOptions);
     let finalShift = this._getFinalShift(skillRollOptions, initialShift);
 
     if (this._handleAutoFail(finalShift, label, actor)) {
@@ -96,9 +100,9 @@ export class Dice {
       finalShift = this._config.skillRollableShifts[this._config.skillRollableShifts.length - 1];
     }
 
+    const isSpecialized = dataset.isSpecialized === 'true' || skillRollOptions.isSpecialized;
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier || 0;
-    const formula = this._getFormula(
-      !!dataset.specialization || skillRollOptions.specialized, skillRollOptions, finalShift, modifier);
+    const formula = this._getFormula(isSpecialized, skillRollOptions, finalShift, modifier);
 
     // Repeat the roll as many times as specified in the skill roll options dialog
     for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
@@ -139,8 +143,8 @@ export class Dice {
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = dataset.specialization
-      ? dataset.specialization
+    const rolledSkillStr = dataset.isSpecialized === 'true'
+      ? dataset.specializationName
       : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const rollingForStr = this._i18n.localize('E20.RollRollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);

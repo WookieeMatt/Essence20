@@ -1,0 +1,62 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+   
+    {{!-- Alt Mode Movement Aerial --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.AltModeMovementAerial'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.altModeMovement.aerial" value="{{system.altModeMovement.aerial}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    
+    {{!-- Alt Mode Crew --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.AltModeMovementAquatic'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.altModeMovement.aquatic" value="{{system.altModeMovement.aquatic}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    
+    {{!-- Alt Mode Crew --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.AltModeMovementGround'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.altModeMovement.ground" value="{{system.altModeMovement.ground}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    
+    {{!-- Alt Mode Size --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.AltModeSize'}}
+    {{#*inline "item-field-inputs"}}
+      <select name="system.altModesize">
+        {{#select system.altModesize}}
+        {{#each config.actorSizes as |value size|}}
+          <option value="{{size}}">{{localize value}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Alt Mode Crew --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.AltModeCrew'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.altModeCrew" value="{{system.altModeCrew}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Alt Mode Firepoints --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.AltModeFirepoints'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.altModeFirepoints" value="{{system.altModeFirepoints}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    
+    {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+  </section>
+
+</form>
+

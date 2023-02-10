@@ -99,7 +99,9 @@ E20.armorClassifications = {
 
 // Options for Armor trait
 E20.armorTraits = {
+  computerized: "E20.ArmorTraitComputerized",
   deflective: "E20.ArmorTraitDeflective",
+  plating: "E20.ArmorTraitPlating",
   silent: "E20.ArmorTraitSilent",
 };
 
@@ -301,3 +303,16 @@ E20.rangers = {
   yellow: "E20.RangerYellow",
   white: "E20.RangerWhite",
 };
+
+//Options for Transformers Factions
+E20.transformerFaction = {
+  autobots: "E20.FactionAutobots",
+  decepticons: "E20.FactionDecepticons"
+}
+
+// Options for Transformer Modes
+E20.transformerMode = {
+  modeAltMode: "E20.ModeAltMode",
+  modeBotMode: "E20.ModeBotMode",
+  modeAny: "E20.ModeAny"
+}

@@ -6,7 +6,8 @@
       "npc",
       "vehicle",
       "zord",
-      "giJoe"
+      "giJoe",
+      "transformer"
     ],
     "templates": {
       "common": {
@@ -233,6 +234,7 @@
           "value": null
         }
       },
+      "notes": "",
       "threatLevel": 0
     },
     "vehicle": {
@@ -267,10 +269,22 @@
         "creature",
         "character"
       ]
+    },
+    "transformer": {
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ],
+      "energon": 0,
+      "externalHardpoints": 2,
+      "internalHarpoints": 2,
+      "transformerFaction": "autobots"
     }
   },
   "Item": {
     "types": [
+      "altMode",
       "armor",
       "bond",
       "classFeature",
@@ -296,21 +310,44 @@
         }
       }
     },
+    "altMode": {
+      "templates": [
+        "itemDescription"
+      ],
+      "crew": 0,
+      "firepoints": 0,
+      "movement": {
+        "aerial": 0,
+        "aquatic": 0,
+        "ground": 0
+      },
+      "size": "common"
+    },
     "armor": {
       "templates": [
         "itemDescription"
       ],
       "availability": "standard",
+      "bonusEvasion": 0,
+      "bonusToughness": 0,
       "classification": "light",
-      "effect": 1,
       "equipped": false,
-      "trait": "deflective"
+      "traits": {
+        "computerized": false,
+        "deflective": false,
+        "plating": false,
+        "stealth": false
+      }
     },
     "bond": {
-      "templates": ["itemDescription"]
+      "templates": [
+        "itemDescription"
+      ]
     },
     "classFeature": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "uses": {
         "max": 0,
         "value": 0
@@ -335,20 +372,26 @@
       "toughness": null
     },
     "hangUp": {
-      "templates": ["itemDescription"]
+      "templates": [
+        "itemDescription"
+      ]
     },
     "megaformTrait": {
-      "templates": ["itemDescription"]
+      "templates": [
+        "itemDescription"
+      ]
     },
     "origin": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "essenceAbilityScoreIncreaseOptions": "",
       "essenceScoreIncreaseOptions": "",
       "startingHealth": "",
       "bonusSkillLevels": "",
       "groundMovement": "",
       "languages": "",
-      "benefit" : {
+      "benefit": {
         "name": "",
         "description": ""
       }
@@ -365,7 +408,11 @@
       ],
       "classFeatureId": null
     },
-    "specialization": {},
+    "specialization": {
+      "isSpecialized": true,
+      "shift": "d20",
+      "skill": "athletics"
+    },
     "threatPower": {
       "actionType": "",
       "charges": null,

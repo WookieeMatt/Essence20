@@ -16,6 +16,12 @@
   <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
   <input type="text" name="system.languages" value="{{system.languages}}" />
 </div>
+<div style="display:inline-block;margin-right:20px;">
+  <label for="system.transformerFaction" class="resource-label">{{localize 'E20.ActorFaction'}}</label>
+   <select name="system.transformerFaction" id="system.transformerFaction">
+    {{selectOptions @root.config.transformerFaction selected=system.transformerFaction localize=true}}
+  </select>
+</div>
 <div class="pr-header-level">
   <label for="system.level" class="resource-label">{{localize 'E20.ActorLevel'}}</label>
   <input class="centered-input" style="width: 100%;" type="number" name="system.level" value="{{system.level}}" />

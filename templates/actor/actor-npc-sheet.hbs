@@ -2,33 +2,70 @@
   {{!-- Actor Sheet Header --}}
   {{> "systems/essence20/templates/actor/parts/headers/actor-npc-header.hbs"}}
 
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="altmode">{{ localize "E20.TabAltMode" }}</a>   
+    <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
+  </nav>
+
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    {{!-- NPC Defenses --}}
-    {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+    {{!-- Main Tab --}}
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
+      <div class="npc-row">
+        <div class="npc-column-2">
+          {{!-- NPC Essence Scores --}}
+          {{> "systems/essence20/templates/actor/parts/actor-npc-essence-scores.hbs"}}
 
-    <div class="flexrow stats-row">
-      {{!-- Initiative --}}
-      {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
+          {{!-- NPC Defenses --}}
+          {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+        </div>
+        <div class="npc-column-1">
+          {{!-- NPC-Health --}}
+          <div class="npc-health-container stats-container">
+            <div class="resource flex-group-center">
+              <label for="system.health.value" class="resource-label">{{localize 'E20.ActorHealth'}}</label>
+              <div class="resource-content flexrow flex-center flex-between">
+                <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
+                <span>/</span>
+                <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
+              </div>
+            </div>
+          </div>
+          {{!-- Movement --}}
+          {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+        </div>
+      </div>
 
-      {{!-- Movement --}}
-      {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+      <div class="npc-row">
+        <div class="npc-column-1">
+          {{!-- Skills --}}
+          {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
+        </div>
+        <div class="npc-column-2">
+          {{!-- Weapons --}}
+          {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+          {{!-- Hang-ups --}}
+          {{> "systems/essence20/templates/actor/parts/actor-hang-ups.hbs"}}
+          {{!-- Threat Powers --}}
+          {{> "systems/essence20/templates/actor/parts/actor-threat-powers.hbs"}}
+          {{!-- Perks --}}
+          {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
+          {{!-- Gear --}}
+          {{> "systems/essence20/templates/actor/parts/actor-gear.hbs"}}
+        </div>
+      </div>
     </div>
-    <div class="npc-row">
-      <div class="npc-column-1">
-        {{!-- Skills --}}
-        {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
-      </div>
-      <div class="npc-column-2">
-        {{!-- Weapons --}}
-        {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-        {{!-- Hang-ups --}}
-        {{> "systems/essence20/templates/actor/parts/actor-hang-ups.hbs"}}
-        {{!-- Threat Powers --}}
-        {{> "systems/essence20/templates/actor/parts/actor-threat-powers.hbs"}}
-        {{!-- Perks --}}
-        {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
-      </div>
+
+    {{!-- Alt Mode Tab --}}
+    <div class="tab altmode" data-group="primary" data-tab="altmode">
+      {{> "systems/essence20/templates/actor/parts/actor-alt-mode.hbs"}}
+    </div> 
+
+    {{!-- Notes Tab --}}
+    <div class="tab notes" data-group="primary" data-tab="notes">
+      {{> "systems/essence20/templates/actor/parts/actor-notes.hbs"}}
     </div>
   </section>
 </form>

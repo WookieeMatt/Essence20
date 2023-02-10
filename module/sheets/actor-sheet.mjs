@@ -67,7 +67,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare Zords for MFZs
     this._prepareZords(context);
-
+    
     return context;
   }
 
@@ -140,7 +140,7 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
-    let equippedArmorEffect = 0;
+    const altModes = [];
     const armors = [];
     const bonds = [];
     const features = []; // Used by Zords
@@ -156,15 +156,21 @@ export class Essence20ActorSheet extends ActorSheet {
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
     const classFeaturesById = {};
-
+    let equippedArmorEvasion = 0;
+    let equippedArmorToughness = 0;
+    
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
       switch (itemType) {
+        case 'altMode':
+          altModes.push(i);
+          break;
         case 'armor':
           if (i.system.equipped) {
-            equippedArmorEffect += parseInt(i.system.effect);
+            equippedArmorEvasion += parseInt(i.system.bonusEvasion);
+            equippedArmorToughness += parseInt(i.system.bonusToughness);
           }
           armors.push(i);
           break;
@@ -214,11 +220,13 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Assign and return
-    context.equippedArmorEffect = equippedArmorEffect;
+    context.altModes = altModes;
     context.armors = armors;
     context.bonds = bonds;
     context.classFeatures = classFeatures;
     context.classFeaturesById = classFeaturesById;
+    context.equippedArmorEvasion = equippedArmorEvasion;
+    context.equippedArmorToughness = equippedArmorToughness;
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
