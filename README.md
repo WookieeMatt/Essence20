@@ -18,13 +18,10 @@ Story Point Tracker - This Will display all Story points to all players and GM.
 
 Sheets Available: GI Joe, Transformer, Power Ranger, NPC, Vehicle, Zord, and Megazord. 
 
+POWER RANGERS SECTION
 Power Ranger sheet
 
 ![Foundry_Virtual_Tabletop_Ha8tVICd2E](https://user-images.githubusercontent.com/28365506/189994252-05227853-ea7f-4d55-b9f2-0858a1b3fb36.gif)
-
-NPC Sheet
-
-![image](https://user-images.githubusercontent.com/28365506/189994378-9931e34e-6ebd-47d7-9c66-3c2c6e5f285f.png)
 
 Zord Sheet
 
@@ -35,6 +32,19 @@ MegaZord Sheet
 ![image](https://user-images.githubusercontent.com/28365506/189998518-56f02e65-98b0-4117-b1a4-642e1ae032e2.png)
 
 Zords can be dropped onto Megazords in order to add them to the Megazord sheet. 
+
+GI JOE SECTION
+GI Joe Sheet
+![Foundry_Virtual_Tabletop_Ac4f9aMywK](https://user-images.githubusercontent.com/28365506/218191768-70e22ad3-97dc-40e0-97c3-ccce2c5d4c79.gif)
+
+TRANSFORMERS SECTION
+Transformers Sheet
+![Foundry_Virtual_Tabletop_0l9OOsv3pl](https://user-images.githubusercontent.com/28365506/218191983-6497c149-fcbf-42c0-a383-598fe9f775aa.gif)
+
+UNIVERSAL Sheets
+NPC Sheet
+
+![Foundry_Virtual_Tabletop_kVrdFzdNik](https://user-images.githubusercontent.com/28365506/218191333-552b68b4-bc94-4213-8175-3bb1a9f6579b.gif)
 
 Vehicle Sheet
 
