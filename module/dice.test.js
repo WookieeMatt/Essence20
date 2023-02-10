@@ -102,7 +102,7 @@ describe("rollSkill", () => {
   test("specialized skill roll", () => {
     const datasetCopy = {
       ...dataset,
-      isSpecialized: true,
+      isSpecialized: "true",
       specializationName: 'Foo Specialization',
     }
     const skillRollOptions = {
@@ -126,6 +126,34 @@ describe("rollSkill", () => {
 
     dice.rollSkill(datasetCopy, skillRollOptions, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization");
+  });
+
+  test("normal weapon skill roll", () => {
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    }
+    const weaponRollDataset = {
+      skill: 'athletics',
+      // shift not passed in for Weapons
+    }
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'strength': {
+          'athletics': {
+            modifier: '0',
+            shift: 'd20',
+          },
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn()
+
+    dice.rollSkill(weaponRollDataset, skillRollOptions, mockActor, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
   });
 });
 
@@ -173,7 +201,7 @@ describe("_getSkillRollLabel", () => {
   test("specialized skill roll", () => {
     const dataset = {
       skill: 'athletics',
-      isSpecialized: true,
+      isSpecialized: "true",
       specializationName: 'Foo Specialization'
     };
     const skillRollOptions = {
