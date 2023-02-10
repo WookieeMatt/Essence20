@@ -12,16 +12,31 @@
   <section class="sheet-body flexcol">
     {{!-- Main Tab --}}
     <div class="tab main flexcol" data-group="primary" data-tab="main">
-      {{!-- NPC Defenses --}}
-      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+      <div class="npc-row">
+        <div class="npc-column-2">
+          {{!-- NPC Essence Scores --}}
+          {{> "systems/essence20/templates/actor/parts/actor-npc-essence-scores.hbs"}}
 
-      <div class="flexrow stats-row">
-        {{!-- Initiative --}}
-        {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
-
-        {{!-- Movement --}}
-        {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+          {{!-- NPC Defenses --}}
+          {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+        </div>
+        <div class="npc-column-1">
+          {{!-- NPC-Health --}}
+          <div class="npc-health-container stats-container">
+            <div class="resource flex-group-center">
+              <label for="system.health.value" class="resource-label">{{localize 'E20.ActorHealth'}}</label>
+              <div class="resource-content flexrow flex-center flex-between">
+                <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
+                <span>/</span>
+                <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
+              </div>
+            </div>
+          </div>
+          {{!-- Movement --}}
+          {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
+        </div>
       </div>
+
       <div class="npc-row">
         <div class="npc-column-1">
           {{!-- Skills --}}
