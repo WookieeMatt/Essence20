@@ -6,8 +6,6 @@ This is a fan made system for running Essence20 games, such as Power Rangers, GI
 
 Link to Renegade Studios: https://renegadegamestudios.com/blog/introducing-the-essence20-roleplaying-system/
 
-Presently only POWER RANGERS is playable but will soon be adding in Transformers and GI Joe. 
-
 Any issues you encounter please let us know by opening an issue on our GITHUB with images of the issue presented. 
 
 For support please join our discord: https://discord.gg/74QYVA355W 
@@ -18,7 +16,7 @@ Features Currently IN the System:
 
 Story Point Tracker - This Will display all Story points to all players and GM.
 
-Sheets Available: Power Ranger, NPC, Vehicle, Zord, and Megazord. 
+Sheets Available: GI Joe, Transformer, Power Ranger, NPC, Vehicle, Zord, and Megazord. 
 
 Power Ranger sheet
 
