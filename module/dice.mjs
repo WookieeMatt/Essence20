@@ -76,11 +76,12 @@ export class Dice {
    */
   rollSkill(dataset, skillRollOptions, actor, weapon) {
     const rolledSkill = dataset.skill;
-    const initialShift = dataset.shift;
+    const actorSkillData = actor.getRollData().skills;
     const rolledEssence = dataset.essence || this._config.skillToEssence[rolledSkill];
+    const initialShift = dataset.shift || actorSkillData[rolledEssence][rolledSkill].shift;
     const completeDataset = {
       ...dataset,
-      // Weapon item template can't populate these
+      // Weapon partial can't populate these easily
       essence : rolledEssence,
       shift: initialShift,
     }
@@ -100,7 +101,6 @@ export class Dice {
     }
 
     const isSpecialized = dataset.isSpecialized === 'true' || skillRollOptions.isSpecialized;
-    const actorSkillData = actor.getRollData().skills;
     const modifier = actorSkillData[rolledEssence][rolledSkill].modifier || 0;
     const formula = this._getFormula(isSpecialized, skillRollOptions, finalShift, modifier);
 
