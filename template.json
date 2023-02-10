@@ -175,7 +175,7 @@
             "value": null
           }
         }
-      },  
+      },
       "zordBase": {
         "armor": 0,
         "essences": {
@@ -198,7 +198,6 @@
         }
       }
     },
-   
     "powerRanger": {
       "templates": [
         "common",
@@ -308,7 +307,7 @@
           "book": "",
           "page": null
         }
-      }    
+      }
     },
     "altMode": {
       "templates": [
@@ -340,10 +339,14 @@
       }
     },
     "bond": {
-      "templates": ["itemDescription"]
+      "templates": [
+        "itemDescription"
+      ]
     },
     "classFeature": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "uses": {
         "max": 0,
         "value": 0
@@ -368,20 +371,26 @@
       "toughness": null
     },
     "hangUp": {
-      "templates": ["itemDescription"]
+      "templates": [
+        "itemDescription"
+      ]
     },
     "megaformTrait": {
-      "templates": ["itemDescription"]
+      "templates": [
+        "itemDescription"
+      ]
     },
     "origin": {
-      "templates": ["itemDescription"],
+      "templates": [
+        "itemDescription"
+      ],
       "essenceAbilityScoreIncreaseOptions": "",
       "essenceScoreIncreaseOptions": "",
       "startingHealth": "",
       "bonusSkillLevels": "",
       "groundMovement": "",
       "languages": "",
-      "benefit" : {
+      "benefit": {
         "name": "",
         "description": ""
       }
@@ -453,6 +462,6 @@
       "availability": "standard",
       "benefit": "",
       "prerequisite": null
-    } 
+    }
   }
 }
