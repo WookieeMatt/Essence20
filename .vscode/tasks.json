@@ -9,6 +9,13 @@
       "type": "shell",
       "command": "sass sass/essence20.scss css/essence20.css",
       "group": "build"
+    },
+    {
+      "type": "npm",
+      "script": "sass",
+      "problemMatcher": [],
+      "label": "npm: sass",
+      "detail": "npx sass -s compressed ./sass/*.scss ./css/*.css"
     }
   ]
 }

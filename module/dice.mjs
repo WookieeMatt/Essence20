@@ -75,13 +75,21 @@ export class Dice {
    * @param {Item} weapon   The weapon being used, if any.
    */
   rollSkill(dataset, skillRollOptions, actor, weapon) {
-    let label = weapon
-      ? this._getWeaponRollLabel(dataset, skillRollOptions, weapon, actor)
-      : this._getSkillRollLabel(dataset, skillRollOptions);
     const rolledSkill = dataset.skill;
-    const rolledEssence = this._config.skillToEssence[rolledSkill];
     const actorSkillData = actor.getRollData().skills;
-    let finalShift = this._getFinalShift(skillRollOptions, dataset.shift);
+    const rolledEssence = dataset.essence || this._config.skillToEssence[rolledSkill];
+    const initialShift = dataset.shift || actorSkillData[rolledEssence][rolledSkill].shift;
+    const completeDataset = {
+      ...dataset,
+      // Weapon partial can't populate these easily
+      essence : rolledEssence,
+      shift: initialShift,
+    }
+
+    let label = weapon
+      ? this._getWeaponRollLabel(completeDataset, skillRollOptions, weapon, actor)
+      : this._getSkillRollLabel(completeDataset, skillRollOptions);
+    let finalShift = this._getFinalShift(skillRollOptions, initialShift);
 
     if (this._handleAutoFail(finalShift, label, actor)) {
       return;
@@ -135,7 +143,7 @@ export class Dice {
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = dataset.isSpecialized
+    const rolledSkillStr = dataset.isSpecialized === 'true'
       ? dataset.specializationName
       : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const rollingForStr = this._i18n.localize('E20.RollRollingFor')
