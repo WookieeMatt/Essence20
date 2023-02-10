@@ -47,8 +47,8 @@ NPC Sheet
 ![Foundry_Virtual_Tabletop_kVrdFzdNik](https://user-images.githubusercontent.com/28365506/218191333-552b68b4-bc94-4213-8175-3bb1a9f6579b.gif)
 
 Vehicle Sheet
+![Foundry_Virtual_Tabletop_tTPijO4rxP](https://user-images.githubusercontent.com/28365506/218192562-b93435b7-dc34-4916-be1d-2b93aa0e3384.gif)
 
-![image](https://user-images.githubusercontent.com/28365506/187992497-ef0218f4-189d-4c49-a912-bc203261325b.png)
 
 Rolls are done through a single Roll popup
 
