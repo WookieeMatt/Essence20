@@ -13,13 +13,13 @@
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Game System --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTraits'}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GameSystem'}}
     {{#*inline "item-field-inputs"}}
       <div class="flexcol">
       {{#each config.gameSystem as |name type|}}
         <div class="flexrow">
-          <input class="inline-edit item-label-checkbox" type="checkbox" name="system.gameSystem .{{type}}" {{checked (lookup @root.system.gameSystem type)}}/>
-          <span class="armor-trait-checkbox-label">{{localize name}}</span>
+          <input class="inline-edit item-label-checkbox" type="checkbox" name="system.gameSystem.{{type}}" {{checked (lookup @root.system.gameSystem type)}}/>
+          <span>{{localize name}}</span>
         </div>
       {{/each}}
       </div>
