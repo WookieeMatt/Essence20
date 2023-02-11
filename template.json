@@ -134,8 +134,7 @@
       "character": {
         "background": {
           "pronouns": "",
-          "role": "",
-          "color": ""
+          "role": ""
         },
         "bonuses": {
           "cleverness": 0,
@@ -143,6 +142,7 @@
           "toughness": 0,
           "willpower": 0
         },
+        "color": "#000000",
         "essences": {
           "strength": 3,
           "speed": 3,
