@@ -400,7 +400,9 @@
       "templates": [
         "itemDescription"
       ],
-      "prerequisite": null
+      "game": "Any",
+      "prerequisite": null,
+      "type": "General"
     },
     "power": {
       "templates": [

@@ -12,6 +12,32 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+    {{!-- Game System --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.GameSystem'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.gameSystem">
+      {{#select system.gameSystem}}
+      {{#each config.gameSystem as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+    {{!-- Perk Type --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.PerkType'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.perkType">
+      {{#select system.perkType}}
+      {{#each config.perkType as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
   </section>
