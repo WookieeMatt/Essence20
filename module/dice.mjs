@@ -52,6 +52,16 @@ export class Dice {
   }
 
   /**
+   * Handles rolling initiative.
+   */
+  async handleInitiativeRoll(actor) {
+    const skillRollOptions = await this.getSkillRollOptions({ shift: actor.system.initiative}, this.actor);
+    const finalShift = this._getFinalShift(skillRollOptions, actor.system.initiative)
+    actor.system.initiativeFormula = this._getFormula(false, skillRollOptions, finalShift, actor.system.initiativeModifier);
+    actor.rollInitiative({ createCombatants: true });
+  }
+
+  /**
    * Processes options for the skill and specialization roll dialog.
    * @returns {Object}   The processed roll options.
    * @private

@@ -368,7 +368,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
       this._dice.rollSkill(dataset, skillRollOptions, this.actor);
     } else if (rollType == 'initiative') {
-      this.actor.rollInitiative({ createCombatants: true });
+      this._dice.handleInitiativeRoll(this.actor);
     } else { // Handle items
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);

@@ -19,6 +19,8 @@
           "value": 4
         },
         "initiative": "d20",
+        "initiativeFormula": "d20",
+        "initiativeModifier": 0,
         "movement": {
           "aerial": 0,
           "ground": 30,
