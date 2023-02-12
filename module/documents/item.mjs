@@ -76,15 +76,22 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weapon') {
-      const dataset = { skill: this.system.classification.skill };
-      const skillRollOptions = await this._dice.getSkillRollOptions(dataset, this.actor);
+      const skill = this.system.classification.skill;
+      const essence = CONFIG.E20.skillToEssence[skill];
+      const shift = this.actor.system.skills[essence][skill].shift
+      const weaponDataset = {
+        ...dataset,
+        shift,
+        skill,
+      };
+
+      const skillRollOptions = await this._dice.getSkillRollOptions(weaponDataset);
 
       if (skillRollOptions.cancelled) {
         return;
       }
 
-      const weapon = this.actor.items.get(this._id);
-      this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
+      this._dice.rollSkill(weaponDataset, skillRollOptions, this.actor, this);
 
       const classFeature = this.actor.items.get(weapon.system.classFeatureId);
       if (classFeature) {
