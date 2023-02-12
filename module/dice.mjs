@@ -53,6 +53,7 @@ export class Dice {
 
   /**
    * Handles rolling initiative.
+   * @param {Actor} actor   The actor performing the roll.
    */
   async handleInitiativeRoll(actor) {
     const skillRollOptions = await this.getSkillRollOptions({ shift: actor.system.initiative}, this.actor);
