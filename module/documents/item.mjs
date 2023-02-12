@@ -78,22 +78,17 @@ export class Essence20Item extends Item {
     } else if (this.type == 'weapon') {
       const skill = this.system.classification.skill;
       const essence = CONFIG.E20.skillToEssence[skill];
-      const shift = this.actor.system.skills[essence][skill].shift
+      const shift = this.actor.system.skills[essence][skill].shift;
       const weaponDataset = {
         ...dataset,
         shift,
         skill,
       };
 
-      const skillRollOptions = await this._dice.getSkillRollOptions(weaponDataset);
+      this._dice.handleWeaponRoll(weaponDataset, this.actor, this);
 
-      if (skillRollOptions.cancelled) {
-        return;
-      }
-
-      this._dice.rollSkill(weaponDataset, skillRollOptions, this.actor, this);
-
-      const classFeature = this.actor.items.get(weapon.system.classFeatureId);
+      // Decrement class feature, if applicable
+      const classFeature = this.actor.items.get(this.system.classFeatureId);
       if (classFeature) {
         classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
       }

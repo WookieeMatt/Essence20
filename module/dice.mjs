@@ -150,6 +150,20 @@ export class Dice {
   }
 
   /**
+   * Handles rolling weapons.
+   * @param {Actor} actor   The actor performing the roll.
+   */
+  async handleWeaponRoll(dataset, weapon, actor) {
+      const skillRollOptions = await this.getSkillRollOptions(dataset);
+
+      if (skillRollOptions.cancelled) {
+        return;
+      }
+
+      this.rollSkill(dataset, skillRollOptions, actor, weapon);
+  }
+
+  /**
    * Create weapon roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
