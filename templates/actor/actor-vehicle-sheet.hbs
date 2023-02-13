@@ -13,28 +13,29 @@
     {{!-- Main Tab --}}
     <div class="tab main flexcol" data-group="primary" data-tab="main">
       <div class="npc-row">
-        <div class="npc-column-1">
-          {{!--NPC Defenses--}}
+        {{!--NPC Defenses--}}
+        <div class="npc-column" style="width: 40%;">
           {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
         </div>
 
-        <div class="npc-column-2">
-          {{!--Firepoint Descriptions--}}
+        {{!--Firepoint Descriptions--}}
+        <div class="npc-column" style="width: 60%;">
           <div class="stats-container flexcol">
             <textarea name="system.firepoints.description"
               placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
           </div>
         </div>
       </div>
+
       {{!--Common Details--}}
       {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
 
       <div class="npc-row">
-        <div class="npc-column-1">
+        <div class="npc-column skills vehicle">
           {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
         </div>
 
-        <div class="npc-column-2">
+        <div class="npc-column items vehicle">
           {{!--NPC Weapons--}}
           {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
           {{!--NPC Traits--}}
