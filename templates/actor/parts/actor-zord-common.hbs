@@ -24,15 +24,18 @@
 {{!-- Defenses --}}
 {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
 <div class="npc-row">
-  <div class="npc-column-1">
+  <div class="npc-column skills">
     {{!-- Skills --}}
     {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
   </div>
-  <div class="npc-column-2">
+  <div class="npc-column items">
     {{!-- Weapons --}}
     {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
     {{!-- Features --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features
-    title='E20.ItemTypeFeaturePlural' dataType='feature'}}
+    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.ItemTypeFeaturePlural' dataType='feature'}}
+    {{!-- Megaform Traits --}}
+    {{#ifEquals @root.actor.type 'zord'}}
+    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits title='E20.ItemTypeMegaformTraitPlural' dataType='megaformTrait'}}
+    {{/ifEquals}}
   </div>
 </div>
