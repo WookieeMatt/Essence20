@@ -33,6 +33,7 @@
   width: fit-content;
   height: fit-content;
   text-size-adjust: 8;
+  white-space: nowrap;
 }
 
 .essence20 .chip-section {
@@ -41,6 +42,8 @@
   justify-content: flex-start;
   margin-top: 10px;
   margin-bottom: 10px;
+  flex-wrap: wrap;
+  row-gap: 3px;
 }
 
 /* Style the button that is used to open and close the collapsible content */
@@ -626,7 +629,6 @@
   box-shadow: 4px 4px 0 black;
   width: 100%;
   justify-content: left;
-  min-width: 200px;
   flex-grow: 0;
   flex-basis: auto;
 }
@@ -821,24 +823,35 @@
 }
 
 .essence20 .npc-column.skills {
-  min-width: 290px;
-  max-width: 50%;
+  width: 50%;
 }
 
 .essence20 .npc-column.items {
-  flex-grow: 1;
+  width: 50%;
 }
 
 .essence20 .npc-column.defenses {
   width: 60%;
 }
 
-.essence20 .npc-column.firepoints {
-  width: 60%;
-}
-
 .essence20 .npc-column.health {
   width: 40%;
+}
+
+.essence20 .npc-column.skills.vehicle {
+  width: 22%;
+}
+
+.essence20 .npc-column.items.vehicle {
+  width: 78%;
+}
+
+.essence20 .npc-column.skills.zord {
+  width: 22%;
+}
+
+.essence20 .npc-column.items.zord {
+  width: 78%;
 }
 
 .essence20 .stats-container {

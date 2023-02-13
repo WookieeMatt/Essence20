@@ -36,12 +36,11 @@
 }
 
 .essence20 .npc-column.skills {
-  min-width: 290px;
-  max-width: 50%;
+  width: 50%;
 }
 
 .essence20 .npc-column.items {
-  flex-grow: 1;
+  width: 50%;
 }
 
 .essence20 .npc-column.defenses {
@@ -50,4 +49,20 @@
 
 .essence20 .npc-column.health {
   width: 40%;
+}
+
+.essence20 .npc-column.skills.vehicle {
+  width: 22%;
+}
+
+.essence20 .npc-column.items.vehicle {
+  width: 78%;
+}
+
+.essence20 .npc-column.skills.zord {
+  width: 22%;
+}
+
+.essence20 .npc-column.items.zord {
+  width: 78%;
 }
