@@ -22,17 +22,8 @@
           {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
         </div>
         <div class="npc-column health">
-          {{!-- NPC-Health --}}
-          <div class="npc-health-container stats-container" style="border-color: {{system.color}};">
-            <div class="resource flex-group-center">
-              <label for="system.health.value" class="resource-label">{{localize 'E20.ActorHealth'}}</label>
-              <div class="resource-content flexrow flex-center flex-between">
-                <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-                <span>/</span>
-                <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
-              </div>
-            </div>
-          </div>
+          {{!-- Health --}}
+          {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
           {{!-- Movement --}}
           {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
         </div>
