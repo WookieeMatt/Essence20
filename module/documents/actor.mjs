@@ -240,7 +240,7 @@ export class Essence20Actor extends Actor {
    * Prepare character roll data.
    */
   _getCharacterRollData(data) {
-    data.initiativeFormula = data.initiative == 'd20' ? 'd20' : `d20 + ${data.initiative}`;
+    data.initiativeFormula = data.initiative.shift == 'd20' ? 'd20' : `d20 + ${data.initiative.shift}`;
   }
 
   /**
