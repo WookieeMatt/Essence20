@@ -31,16 +31,15 @@
       {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
 
       <div class="npc-row">
+        {{!-- Skills --}}
         <div class="npc-column skills vehicle">
           {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
         </div>
 
+        {{!-- Items --}}
         <div class="npc-column items vehicle">
-          {{!--NPC Weapons--}}
           {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-          {{!--NPC Traits--}}
           {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
-          {{!-- Powers --}}
           {{> "systems/essence20/templates/actor/parts/actor-powers.hbs"}}
         </div>
       </div>
