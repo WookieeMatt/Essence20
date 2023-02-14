@@ -757,11 +757,8 @@
   margin-bottom: auto;
 }
 
-.essence20 .npc-health-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: none;
-  justify-content: center;
+.essence20 .health-container {
+  min-width: fit-content;
 }
 
 .essence20 .notes-title {
@@ -784,13 +781,6 @@
   box-shadow: 4px 4px 0 black;
   width: 100%;
   height: 100%;
-}
-
-.essence20 .npc-health-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: none;
-  justify-content: center;
 }
 
 .essence20 .npc-row {
