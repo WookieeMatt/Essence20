@@ -1,15 +1,16 @@
 .essence20 .essence-header {
   text-align: center;
   margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.essence20 .essence-header.strength {
+  margin-bottom: 0;
 }
 
 .essence20 .essence-header .essence-label {
   font-size: 1.5em;
   vertical-align: middle;
-}
-
-.essence20 .essence-header .conditioning-label {
-  text-align: right;
 }
 
 .essence20 .essences {

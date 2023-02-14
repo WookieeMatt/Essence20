@@ -552,7 +552,6 @@
   font-size: 1.125em;
   align-items: center;
   flex-wrap: nowrap;
-  margin-top: 5px;
 }
 
 .essence20 .skill-header .skill-roll {
@@ -739,15 +738,16 @@
 .essence20 .essence-header {
   text-align: center;
   margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.essence20 .essence-header.strength {
+  margin-bottom: 0;
 }
 
 .essence20 .essence-header .essence-label {
   font-size: 1.5em;
   vertical-align: middle;
-}
-
-.essence20 .essence-header .conditioning-label {
-  text-align: right;
 }
 
 .essence20 .essences {
@@ -852,6 +852,27 @@
 
 .essence20 .npc-column.items.zord {
   width: 78%;
+}
+
+.essence20 .skill-separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.essence20 .skill-separator::before,
+.essence20 .skill-separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #b5b1b1;
+}
+
+.essence20 .skill-separator:not(:empty)::before {
+  margin-right: 0.25em;
+}
+
+.essence20 .skill-separator:not(:empty)::after {
+  margin-left: 0.25em;
 }
 
 .essence20 .stats-container {
