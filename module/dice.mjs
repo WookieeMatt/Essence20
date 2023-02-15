@@ -14,10 +14,9 @@ export class Dice {
   /**
    * Displays the dialog used for skill and specialization rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
-   * @param {Actor} actor   The actor performing the roll.
    * @returns {Promise<Dialog>}   The dialog to be displayed.
    */
-  async getSkillRollOptions(dataset, actor) {
+  async getSkillRollOptions(dataset) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
     const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
     const html = await renderTemplate(
@@ -148,6 +147,20 @@ export class Dice {
       : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const rollingForStr = this._i18n.localize('E20.RollRollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
+  }
+
+  /**
+   * Handles rolling weapons.
+   * @param {Actor} actor   The actor performing the roll.
+   */
+  async handleWeaponRoll(dataset, weapon, actor) {
+      const skillRollOptions = await this.getSkillRollOptions(dataset);
+
+      if (skillRollOptions.cancelled) {
+        return;
+      }
+
+      this.rollSkill(dataset, skillRollOptions, actor, weapon);
   }
 
   /**
