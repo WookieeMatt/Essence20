@@ -1,9 +1,9 @@
 <div style="flex-grow: 0;">
   <div class="npc-defenses" style="border-color: {{system.color}};">
-    {{#each system.essences as |score skill|}}
+    {{#each @root.config.essences as |name essence|}}
     <div class="resource flexcol">
-      <label class="resource flex-group-center">{{localize (lookup @root.config.essences skill)}}</label>
-      <input type="number" class="centered-input" name="system.essences.{{skill}}" value="{{score}}" />
+      <label class="resource flex-group-center">{{localize name}}</label>
+      <input type="number" class="centered-input" name="system.essences.{{essence}}" value="{{lookup @root.system.essences essence}}" />
     </div>
     {{/each}}
   </div>
