@@ -44,3 +44,24 @@
 .essence20 .npc-column.items.zord {
   width: 78%;
 }
+
+.essence20 .skill-separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.essence20 .skill-separator::before,
+.essence20 .skill-separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #b5b1b1;
+}
+
+.essence20 .skill-separator:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.essence20 .skill-separator:not(:empty)::after {
+  margin-left: .25em;
+}
