@@ -14,16 +14,16 @@
     {{!-- Main Tab --}}
     <div class="tab main flexcol" data-group="primary" data-tab="main">
       <div class="npc-row">
-        <div class="npc-column-2">
+        <div class="npc-column defenses">
           {{!-- NPC Essence Scores --}}
           {{> "systems/essence20/templates/actor/parts/actor-npc-essence-scores.hbs"}}
 
           {{!-- NPC Defenses --}}
           {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
         </div>
-        <div class="npc-column-1">
+        <div class="npc-column health">
           {{!-- NPC-Health --}}
-          <div class="npc-health-container stats-container">
+          <div class="npc-health-container stats-container" style="border-color: {{system.color}};">
             <div class="resource flex-group-center">
               <label for="system.health.value" class="resource-label">{{localize 'E20.ActorHealth'}}</label>
               <div class="resource-content flexrow flex-center flex-between">
@@ -39,11 +39,11 @@
       </div>
 
       <div class="npc-row">
-        <div class="npc-column-1">
+        <div class="npc-column skills">
           {{!-- Skills --}}
           {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
         </div>
-        <div class="npc-column-2">
+        <div class="npc-column items">
           {{!-- Weapons --}}
           {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
           {{!-- Hang-ups --}}

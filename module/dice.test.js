@@ -136,10 +136,16 @@ describe("rollSkill", () => {
       shiftDown: 0,
       timesToRoll: 1,
     }
-    const weaponRollDataset = {
-      skill: 'athletics',
-      // shift not passed in for Weapons
-    }
+    const weapon = {
+      name: 'Zeo Power Clubs',
+      system: {
+        alternateEffects: "Some alternate effects",
+        classification: {
+          skill: "athletics",
+        },
+        effect: "Some effect",
+      },
+    };
     mockActor.getRollData = jest.fn(() => ({
       skills: {
         'strength': {
@@ -152,8 +158,8 @@ describe("rollSkill", () => {
     }));
     dice._rollSkillHelper = jest.fn()
 
-    dice.rollSkill(weaponRollDataset, skillRollOptions, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
+    dice.rollSkill(dataset, skillRollOptions, mockActor, weapon);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br><b>E20.WeaponEffect</b> - Some effect<br><b>E20.WeaponAlternateEffects</b> - Some alternate effects<br><b>ITEM.TypeClassfeature</b> - E20.None");
   });
 });
 
