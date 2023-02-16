@@ -97,7 +97,7 @@
     "DefenseValues": "Values",
     "DefenseWillpower": "Willpower",
     "Duration": "Duration",
-    "EffectAdd": "+Add",
+    "EffectAdd": "Add",
     "EffectCreate": "Create Effect",
     "EffectDelete": "Delete Effect",
     "EffectDisable": "Disable Effect",

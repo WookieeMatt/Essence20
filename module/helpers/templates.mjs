@@ -50,6 +50,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/actor-vehicle-crew.hbs",
 
     // Item partials.
+    "systems/essence20/templates/item/parts/item-active-effects.hbs",
     "systems/essence20/templates/item/parts/item-description.hbs",
     "systems/essence20/templates/item/parts/item-header.hbs",
     "systems/essence20/templates/item/parts/item-sheet-field.hbs",
