@@ -9,7 +9,6 @@
 
 .essence20 .npc-defenses {
   list-style: none;
-  margin-right: 3px;
   padding: v.$padding;
   overflow-y: auto;
   color: v.$textcolor1;
@@ -23,23 +22,47 @@
   box-shadow: v.$boxshadow;
 }
 
-.essence20 .npc-column-1 {
-  gap: 5px;
-  width: 40%;
-  display: flex;
-  flex-direction: column;
-}
-
-.essence20 .npc-column-2 {
-  gap: 5px;
-  width: 60%;
-  display: flex;
-  flex-direction: column; 
-}
-
 .essence20 .npc-row {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   gap: v.$padding;
+}
+
+.essence20 .npc-column {
+  gap: 6px;
+  display: flex;
+  flex-direction: column;
+}
+
+.essence20 .npc-column.skills {
+  width: 50%;
+}
+
+.essence20 .npc-column.items {
+  width: 50%;
+}
+
+.essence20 .npc-column.defenses {
+  width: 60%;
+}
+
+.essence20 .npc-column.health {
+  width: 40%;
+}
+
+.essence20 .npc-column.skills.vehicle {
+  width: 22%;
+}
+
+.essence20 .npc-column.items.vehicle {
+  width: 78%;
+}
+
+.essence20 .npc-column.skills.zord {
+  width: 22%;
+}
+
+.essence20 .npc-column.items.zord {
+  width: 78%;
 }

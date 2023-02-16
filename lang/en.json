@@ -10,6 +10,7 @@
     "TypeTransformer": "Transformer"
   },
   "ITEM": {
+    "TypeAltmode": "Alt Mode",
     "TypeArmor": "Armor",
     "TypeBond": "Bond",
     "TypeClassfeature": "Class Feature",
