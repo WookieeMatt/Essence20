@@ -146,8 +146,8 @@
         "essences": {
           "strength": 3,
           "speed": 3,
-          "social": 3,
-          "smarts": 3
+          "smarts": 3,
+          "social": 3
         },
         "level": 1,
         "notes": ""
@@ -227,10 +227,10 @@
         "evasion": {
           "value": 10
         },
-        "willpower": {
+        "cleverness": {
           "value": null
         },
-        "cleverness": {
+        "willpower": {
           "value": null
         }
       },
