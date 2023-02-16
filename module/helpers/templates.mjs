@@ -53,5 +53,6 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/parts/item-description.hbs",
     "systems/essence20/templates/item/parts/item-header.hbs",
     "systems/essence20/templates/item/parts/item-sheet-field.hbs",
+    "systems/essence20/templates/item/parts/item-active-effects.hbs",
   ]);
 };
