@@ -14,15 +14,14 @@
     <div class="tab main flexcol" data-group="primary" data-tab="main">
       <div class="npc-row">
         {{!--NPC Defenses--}}
-        <div class="npc-column" style="width: 40%;">
+        <div class="npc-defenses">
           {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
         </div>
 
         {{!--Firepoint Descriptions--}}
-        <div class="npc-column" style="width: 60%;">
-          <div class="stats-container flexcol">
-            <textarea name="system.firepoints.description"
-              placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
+        <div class="npc-firepoints">
+          <div class="stats-container">
+            <textarea name="system.firepoints.description" placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
           </div>
         </div>
       </div>
@@ -32,12 +31,12 @@
 
       <div class="npc-row">
         {{!-- Skills --}}
-        <div class="npc-column skills vehicle">
+        <div class="npc-skills vehicle">
           {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
         </div>
 
         {{!-- Items --}}
-        <div class="npc-column items vehicle">
+        <div class="npc-items vehicle">
           {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
           {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
           {{> "systems/essence20/templates/actor/parts/actor-powers.hbs"}}
