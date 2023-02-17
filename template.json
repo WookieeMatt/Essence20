@@ -227,10 +227,10 @@
         "evasion": {
           "value": 10
         },
-        "cleverness": {
+        "willpower": {
           "value": null
         },
-        "willpower": {
+        "cleverness": {
           "value": null
         }
       },
