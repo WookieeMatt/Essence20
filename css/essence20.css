@@ -790,12 +790,6 @@
   gap: 6px;
 }
 
-.essence20 .npc-column {
-  gap: 6px;
-  display: flex;
-  flex-direction: column;
-}
-
 .essence20 .npc-items {
   width: 50%;
   display: flex;
@@ -821,6 +815,20 @@
 
 .essence20 .npc-firepoints {
   width: 60%;
+}
+
+.essence20 .firepoints-input {
+  border: none;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+}
+
+.essence20 .stats-container.firepoints {
+  max-height: 60px;
+  overflow: hidden;
 }
 
 .essence20 .npc-skills {

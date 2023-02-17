@@ -20,8 +20,9 @@
 
         {{!--Firepoint Descriptions--}}
         <div class="npc-firepoints">
-          <div class="stats-container">
-            <textarea name="system.firepoints.description" placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
+          <div class="stats-container firepoints">
+            <textarea class="firepoints-input" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+             name="system.firepoints.description" placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
           </div>
         </div>
       </div>
