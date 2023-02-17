@@ -63,7 +63,7 @@
   list-style: none;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   flex-grow: 0;
@@ -108,7 +108,7 @@
 }
 
 .essence20 .editor-content {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   min-height: fit-content;
   font-size: 16px;
   padding: 0;
@@ -169,21 +169,21 @@
 .window-app {
   font-family: "Rajdhani", sans-serif;
   font-weight: bold;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border-radius: 15px;
   background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
   background-size: cover;
 }
 
 .window-app .window-content button {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   background: none;
   border-color: 4px solid #b5b1b1;
   border-radius: 20px;
@@ -201,17 +201,17 @@
 }
 
 .dialog .dialog-buttons button.default {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   background: none;
 }
 
 .dialog .dialog-buttons button {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   background: none;
 }
 
 .dialog .dialog-buttons {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   padding-top: 6px;
 }
 
@@ -219,7 +219,7 @@
   list-style: none;
   padding: 6px;
   overflow-y: none;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   flex-basis: auto;
   justify-content: center;
   height: 100%;
@@ -230,7 +230,7 @@
 }
 
 .dialog input {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .app .window-app dialog {
@@ -238,7 +238,7 @@
 }
 
 #module-management .package-list .package-title {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .item-button-container {
@@ -251,39 +251,39 @@
 
 .rollable:hover,
 .rollable:focus {
-  color: black;
+  color: rgb(0, 0, 0);
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
 
 .window-app textarea {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .chat-message {
   background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
   opacity: 80;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border: 4px solid #b5b1b1;
   box-shadow: 4px 4px 0 black;
 }
 
 .chat-message .flavor-text {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .chat-message .message-sender {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .chat-message .message-metadata {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .chat-message.whisper {
   background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
   opacity: 80;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border: 4px dashed #b5b1b1;
   box-shadow: 4px 4px 0 black;
 }
@@ -533,7 +533,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -619,7 +619,7 @@
 .essence20 .skills-container {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   transform: rotate(0deg);
   scrollbar-width: thin;
   background-color: none;
@@ -635,7 +635,7 @@
 .essence20 .skillscontainer {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
@@ -646,11 +646,11 @@
 .essence20 h2,
 .essence20 h3,
 .essence20 h4 {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .tox .tox-editor-container {
-  background: white;
+  background: rgb(255, 255, 255);
 }
 
 .essence20 .tox .tox-edit-area {
@@ -661,7 +661,7 @@
   list-style: none;
   padding: 4px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
@@ -724,7 +724,6 @@
 }
 
 .essence20 .initiative {
-  min-width: fit-content;
   text-align: center;
 }
 
@@ -758,11 +757,8 @@
   margin-bottom: auto;
 }
 
-.essence20 .npc-health-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: none;
-  justify-content: center;
+.essence20 .health-container {
+  min-width: fit-content;
 }
 
 .essence20 .notes-title {
@@ -775,7 +771,7 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -787,28 +783,6 @@
   height: 100%;
 }
 
-.essence20 .npc-health-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: none;
-  justify-content: center;
-}
-
-.essence20 .npc-defenses {
-  list-style: none;
-  padding: 6px;
-  overflow-y: auto;
-  color: #c7c4c4;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  background: none;
-  border: 4px solid #b5b1b1;
-  border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
-}
-
 .essence20 .npc-row {
   display: flex;
   flex-direction: row;
@@ -816,41 +790,64 @@
   gap: 6px;
 }
 
-.essence20 .npc-column {
-  gap: 6px;
+.essence20 .npc-items {
+  width: 50%;
   display: flex;
   flex-direction: column;
+  gap: 6px;
 }
 
-.essence20 .npc-column.skills {
-  width: 50%;
-}
-
-.essence20 .npc-column.items {
-  width: 50%;
-}
-
-.essence20 .npc-column.defenses {
+.essence20 .npc-defenses {
   width: 60%;
 }
 
-.essence20 .npc-column.health {
+.essence20 .npc-essence-scores {
+  width: 60%;
+}
+
+.essence20 .npc-health {
   width: 40%;
 }
 
-.essence20 .npc-column.skills.vehicle {
+.essence20 .npc-movement {
+  width: 40%;
+}
+
+.essence20 .npc-firepoints {
+  width: 60%;
+}
+
+.essence20 .firepoints-input {
+  border: none;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+}
+
+.essence20 .stats-container.firepoints {
+  max-height: 60px;
+  overflow: hidden;
+}
+
+.essence20 .npc-skills {
+  width: 50%;
+}
+
+.essence20 .npc-skills.vehicle {
   width: 22%;
 }
 
-.essence20 .npc-column.items.vehicle {
+.essence20 .npc-items.vehicle {
   width: 78%;
 }
 
-.essence20 .npc-column.skills.zord {
+.essence20 .npc-skills.zord {
   width: 22%;
 }
 
-.essence20 .npc-column.items.zord {
+.essence20 .npc-items.zord {
   width: 78%;
 }
 
@@ -878,8 +875,9 @@
 .essence20 .stats-container {
   list-style: none;
   padding: 6px;
+  height: 100%;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   flex-basis: auto;
   justify-content: center;
   background: none;
@@ -951,7 +949,7 @@
 }
 
 .essence20 .item {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 /* Generic Item Sheet Styling */
@@ -961,7 +959,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1026,7 +1024,7 @@
   align-items: center;
   padding: 0 2px;
   border-bottom: 1px solid #b5b1b1;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .items-list .item:last-child {
@@ -1106,7 +1104,7 @@
   background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   padding: 6px;
   min-height: none;
 }
@@ -1123,7 +1121,7 @@
 /* -- Jornal page styling -- */
 .window-content .journal-sheet-container .journal-entry-content {
   background: none;
-  color: #a3a3a3;
+  color: rgb(163, 163, 163);
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
@@ -1177,11 +1175,11 @@ option {
 
 form .notes,
 form .hint {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .span {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-body {

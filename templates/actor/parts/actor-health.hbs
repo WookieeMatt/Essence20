@@ -1,10 +1,10 @@
-<div class="stats-container" style="border-color: {{system.color}}; flex-grow: 0;">
-  <div class="resource flex-group-center">
-    <label for="system.health.value" class="resource-label">{{localize 'E20.ActorHealth'}}</label>
-    <div class="resource-content flexrow flex-center flex-between">
-      <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
+<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+  <div class="flexcol flex-group-center" style="height: 90%;">
+    <label>{{localize 'E20.ActorHealth'}}</label>
+    <div class="flexrow" style="align-items: center;">
+      <input class="centered-input" type="number" name="system.health.value" value="{{system.health.value}}" />
       <span>/</span>
-      <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
+      <input class="centered-input" type="number" name="system.health.max" value="{{system.health.max}}" />
     </div>
   </div>
 </div>

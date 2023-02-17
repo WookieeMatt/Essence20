@@ -1,27 +1,5 @@
 @use '../assets/variables' as v;
 
-.essence20 .npc-health-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: none;
-  justify-content: center;
-}
-
-.essence20 .npc-defenses {
-  list-style: none;
-  padding: v.$padding;
-  overflow-y: auto;
-  color: v.$textcolor1;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  width: 100%;
-  background: v.$background-n;
-  border: v.$border;
-  border-radius: v.$border-radius;
-  box-shadow: v.$boxshadow;
-}
-
 .essence20 .npc-row {
   display: flex;
   flex-direction: row;
@@ -29,41 +7,66 @@
   gap: v.$padding;
 }
 
-.essence20 .npc-column {
-  gap: 6px;
+.essence20 .npc-items {
+  width: 50%;
   display: flex;
   flex-direction: column;
+  gap: v.$padding;
 }
 
-.essence20 .npc-column.skills {
-  width: 50%;
-}
-
-.essence20 .npc-column.items {
-  width: 50%;
-}
-
-.essence20 .npc-column.defenses {
+.essence20 .npc-defenses {
   width: 60%;
 }
 
-.essence20 .npc-column.health {
+.essence20 .npc-essence-scores {
+  width: 60%;
+}
+
+.essence20 .npc-health {
   width: 40%;
 }
 
-.essence20 .npc-column.skills.vehicle {
+.essence20 .npc-movement {
+  width: 40%;
+}
+
+.essence20 .npc-firepoints {
+  width: 60%;
+}
+
+.essence20 .firepoints-input {
+  border: none;
+  outline: none;
+
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+
+  resize: none;
+}
+
+.essence20 .stats-container.firepoints {
+  max-height: 60px;
+  overflow: hidden;
+}
+
+.essence20 .npc-skills {
+  width: 50%;
+}
+
+.essence20 .npc-skills.vehicle {
   width: 22%;
 }
 
-.essence20 .npc-column.items.vehicle {
+.essence20 .npc-items.vehicle {
   width: 78%;
 }
 
-.essence20 .npc-column.skills.zord {
+.essence20 .npc-skills.zord {
   width: 22%;
 }
 
-.essence20 .npc-column.items.zord {
+.essence20 .npc-items.zord {
   width: 78%;
 }
 

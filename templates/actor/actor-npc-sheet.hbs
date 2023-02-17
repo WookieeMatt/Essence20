@@ -5,7 +5,7 @@
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
-    <a class="item" style="border-color: {{system.color}};" data-tab="altmode">{{ localize "E20.TabAltMode" }}</a>   
+    <a class="item" style="border-color: {{system.color}};" data-tab="altmode">{{ localize "E20.TabAltMode" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
   </nav>
 
@@ -14,45 +14,38 @@
     {{!-- Main Tab --}}
     <div class="tab main flexcol" data-group="primary" data-tab="main">
       <div class="npc-row">
-        <div class="npc-column defenses">
+        <div class="npc-essence-scores">
           {{!-- NPC Essence Scores --}}
           {{> "systems/essence20/templates/actor/parts/actor-npc-essence-scores.hbs"}}
-
+        </div>
+        <div class="npc-health">
+          {{!-- Health --}}
+          {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
+        </div>
+      </div>
+      <div class="npc-row">
+        <div class="npc-defenses">
           {{!-- NPC Defenses --}}
           {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
         </div>
-        <div class="npc-column health">
-          {{!-- NPC-Health --}}
-          <div class="npc-health-container stats-container" style="border-color: {{system.color}};">
-            <div class="resource flex-group-center">
-              <label for="system.health.value" class="resource-label">{{localize 'E20.ActorHealth'}}</label>
-              <div class="resource-content flexrow flex-center flex-between">
-                <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number" />
-                <span>/</span>
-                <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number" />
-              </div>
-            </div>
-          </div>
+        <div class="npc-movement">
           {{!-- Movement --}}
           {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
         </div>
       </div>
 
       <div class="npc-row">
-        <div class="npc-column skills">
-          {{!-- Skills --}}
+        {{!-- Skills --}}
+        <div class="npc-skills">
           {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
         </div>
-        <div class="npc-column items">
-          {{!-- Weapons --}}
+
+        {{!-- Items --}}
+        <div class="npc-items">
           {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-          {{!-- Hang-ups --}}
           {{> "systems/essence20/templates/actor/parts/actor-hang-ups.hbs"}}
-          {{!-- Threat Powers --}}
           {{> "systems/essence20/templates/actor/parts/actor-threat-powers.hbs"}}
-          {{!-- Perks --}}
           {{> "systems/essence20/templates/actor/parts/actor-perks.hbs"}}
-          {{!-- Gear --}}
           {{> "systems/essence20/templates/actor/parts/actor-gear.hbs"}}
         </div>
       </div>
@@ -61,7 +54,7 @@
     {{!-- Alt Mode Tab --}}
     <div class="tab altmode" data-group="primary" data-tab="altmode">
       {{> "systems/essence20/templates/actor/parts/actor-alt-mode.hbs"}}
-    </div> 
+    </div>
 
     {{!-- Notes Tab --}}
     <div class="tab notes" data-group="primary" data-tab="notes">
