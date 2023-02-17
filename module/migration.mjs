@@ -103,11 +103,11 @@ export const migrateActorData = function(actor) {
   const updateData = {};
 
   // Migrate initiative
-  if (typeof actor.initiative == "string") {
+  if (typeof actor.system.initiative == "string") {
     updateData[`system.initiative`] = {
       "formula": "", // This will populate after the actor's first initiative roll
       "modifier": 0,
-      "shift": actor.initiative
+      "shift": actor.system.initiative
     };
   }
 
