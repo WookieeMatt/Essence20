@@ -4,17 +4,12 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    <div class="sheet-body flexrow">
+    <div class="npc-row">
+      {{!-- Defenses --}}
+      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+
       {{!-- Health --}}
       {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
-
-      {{!-- Conditioning --}}
-      <div class="stats-container flex-group-center">
-        <div class="resource flexcol flex-group-center">
-          <span>{{localize 'E20.ActorConditioning'}}</span>
-          <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
-        </div>
-      </div>
     </div>
 
     {{!-- Zord Common Stats --}}
