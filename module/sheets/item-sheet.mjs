@@ -1,8 +1,8 @@
+import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 export class Essence20ItemSheet extends ItemSheet {
 
   /** @override */
@@ -45,13 +45,13 @@ export class Essence20ItemSheet extends ItemSheet {
     if (actor) {
       context.rollData = actor.getRollData();
     }
+    
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.object.effects);
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
     context.flags = itemData.flags;
-    
 
     return context;
   }
