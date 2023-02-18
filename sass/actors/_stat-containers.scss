@@ -3,7 +3,6 @@
 .essence20 .stats-container {
   list-style: none;
   padding: v.$padding;
-  height: 100%;
   overflow-y: auto;
   color: v.$textcolor1;
   flex-basis: auto;
@@ -12,6 +11,7 @@
   border: v.$border;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
+  min-height: 72px;
 }
 
 .essence20 .stats-row {

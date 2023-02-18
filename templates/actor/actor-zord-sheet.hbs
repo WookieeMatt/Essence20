@@ -5,11 +5,14 @@
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
     <div class="npc-row">
-      {{!-- Defenses --}}
-      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
-
-      {{!-- Health --}}
-      {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
+      <div class="npc-defenses">
+        {{!-- Defenses --}}
+        {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+      </div>
+      <div class="npc-health">
+        {{!-- Health --}}
+        {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
+      </div>
     </div>
 
     {{!-- Zord Common Stats --}}
