@@ -7,6 +7,10 @@
     {{#each @root.zords as |zord|}}
     <div class="zord item stats-container" style="max-width: fit-content; flex-grow: 0; border-color: {{system.color}};"
       data-zord-id="{{zord._id}}">
+      <div style="text-align: center;">
+        <img class="zord-img" src="{{zord.img}}" data-edit="img" title="{{zord.name}}" />
+      </div>
+
       <div class="flexrow" style="align-items:center; gap: 6px;">
         <div style="white-space: nowrap;">{{ localize 'E20.ActorName' }}: {{zord.name}}</div>
         <div class="item-controls">
@@ -15,15 +19,18 @@
           </a>
         </div>
       </div>
+
       <div>
         {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="zord.system.health"
           value="{{zord.system.health.value}}" />
       </div>
+
       <div>
         <span>{{ localize 'E20.ZordRanger' }}: {{zord.system.ranger}}</span>
       </div>
+
       <div>
-        <div>{{ localize 'E20.ItemTypeMegaformTraitPlural' }}</div>
+        <div>{{ localize 'E20.ItemTypeMegaformTraitPlural' }}:</div>
         <ul>
           {{#each zord.items as |item|}}
           {{#ifEquals item.type 'megaformTrait'}}
@@ -32,6 +39,7 @@
           {{/each}}
         </ul>
       </div>
+
     </div>
     {{/each}}
   </div>

@@ -943,6 +943,14 @@
   width: 100%;
 }
 
+.essence20 .zord-img {
+  -webkit-box-flex: 0;
+  /* -ms-flex: 0 0 100px; */
+  flex: inherit;
+  height: 50px;
+  margin-right: 10px;
+}
+
 .essence20 .armor-trait-checkbox-label {
   flex-grow: 0;
   margin-left: 5px;
