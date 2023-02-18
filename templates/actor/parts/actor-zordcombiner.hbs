@@ -3,10 +3,11 @@
     <h1>{{localize 'E20.MegaformZordCombinerParticipants'}}</h1>
   </span>
 
-  <ol class="items-list">
+  <div class="flexrow" style="gap: 6px;">
     {{#each @root.zords as |zord|}}
-    <li class="zord item" data-zord-id="{{zord._id}}">
-      <div class="flexrow" style="align-items:center;">
+    <div class="zord item stats-container" style="max-width: fit-content; flex-grow: 0; border-color: {{system.color}};"
+      data-zord-id="{{zord._id}}">
+      <div class="flexrow" style="align-items:center; gap: 6px;">
         <div style="white-space: nowrap;">{{ localize 'E20.ActorName' }}: {{zord.name}}</div>
         <div class="item-controls">
           <a class="item-control zord-delete" title="{{localize 'E20.deletezordCombiner'}}">
@@ -31,7 +32,7 @@
           {{/each}}
         </ul>
       </div>
-    </li>
+    </div>
     {{/each}}
-  </ol>
+  </div>
 </div>
