@@ -19,7 +19,10 @@ export const preloadHandlebarsTemplates = async function () {
     // Actor partials - Misc
     "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs",
     "systems/essence20/templates/actor/parts/actor-alt-mode.hbs",
-    "systems/essence20/templates/actor/parts/actor-armor.hbs",
+    "systems/essence20/templates/actor/parts/armor/armor.hbs",
+    "systems/essence20/templates/actor/parts/armor/chips.hbs",
+    "systems/essence20/templates/actor/parts/armor/details.hbs",
+    "systems/essence20/templates/actor/parts/armor/chat.hbs",
     "systems/essence20/templates/actor/parts/actor-background.hbs",
     "systems/essence20/templates/actor/parts/actor-class-feature-selector.hbs",
     "systems/essence20/templates/actor/parts/actor-class-features.hbs",

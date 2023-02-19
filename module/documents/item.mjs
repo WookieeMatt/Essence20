@@ -75,6 +75,24 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
+    } else if (this.type == 'armor') {
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${this.type}] ${this.name}`;
+
+      const template = 'systems/essence20/templates/actor/parts/armor/chat.hbs';
+      const templateData = {
+        config: CONFIG.E20,
+        item: this,
+      }
+
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: await renderTemplate(template, templateData),
+      });
     } else if (this.type == 'weapon') {
       const skill = this.system.classification.skill;
       const essence = CONFIG.E20.skillToEssence[skill];
