@@ -5,7 +5,7 @@
 
   <div class="flexrow" style="gap: 6px;">
     {{#each @root.zords as |zord|}}
-    <div class="zord item stats-container" style="max-width: fit-content; flex-grow: 0; border-color: {{system.color}};"
+    <div class="zord item stats-container" style="max-width: fit-content; flex-grow: 0; border-color: {{zord.system.color}};"
       data-zord-id="{{zord._id}}">
       <div style="text-align: center;">
         <img class="zord-img" src="{{zord.img}}" data-edit="img" title="{{zord.name}}" />
