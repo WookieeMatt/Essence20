@@ -83,7 +83,7 @@ export class Essence20Item extends Item {
       const rollMode = game.settings.get('core', 'rollMode');
       const label = `[${this.type}] ${this.name}`;
 
-      const template = `systems/essence20/templates/actor/parts/${this.type}/details.hbs`;
+      const template = `systems/essence20/templates/actor/parts/items/${this.type}/details.hbs`;
       const templateData = {
         config: CONFIG.E20,
         item: this,
