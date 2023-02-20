@@ -28,21 +28,25 @@
         "skills": {
           "strength": {
             "athletics": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "brawn": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "intimidation": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "might": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
@@ -50,26 +54,31 @@
           },
           "speed": {
             "acrobatics": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "driving": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "finesse": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "infiltration": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "targeting": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
@@ -77,26 +86,31 @@
           },
           "smarts": {
             "alertness": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "culture": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "science": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "survival": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "technology": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
@@ -104,26 +118,31 @@
           },
           "social": {
             "animalHandling": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "deception": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "performance": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "persuasion": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
             },
             "streetwise": {
+              "bonusShift": 0,
               "isSpecialized": false,
               "modifier": 0,
               "shift": "d20"
