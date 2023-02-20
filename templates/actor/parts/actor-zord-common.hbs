@@ -36,7 +36,7 @@
     {{> "systems/essence20/templates/actor/parts/feature/container.hbs"}}
     {{!-- Megaform Traits --}}
     {{#ifEquals @root.actor.type 'zord'}}
-    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits title='E20.ItemTypeMegaformTraitPlural' dataType='megaformTrait'}}
+    {{> "systems/essence20/templates/actor/parts/megaformTrait/container.hbs"}}
     {{/ifEquals}}
   </div>
 </div>
