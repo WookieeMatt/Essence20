@@ -107,29 +107,33 @@ export class Essence20Actor extends Actor {
       {
         essence: "strength",
         name: "toughness",
-        value: CONFIG.E20.defenseBase + system.essences.strength + system.bonuses.toughness,
+        base: 10,
+        value: system.defenses.toughness.base + system.essences.strength + system.bonuses.toughness,
         bonus: system.bonuses.toughness
       },
       {
         essence: "speed",
         name: "evasion",
-        value: CONFIG.E20.defenseBase + system.essences.speed + system.bonuses.evasion,
+        base: 10,
+        value: system.defenses.evasion.base + system.essences.speed + system.bonuses.evasion,
         bonus: system.bonuses.evasion
       },
       {
         essence: "smarts",
         name: "willpower",
-        value: CONFIG.E20.defenseBase + system.essences.smarts + system.bonuses.willpower,
+        base: 10,
+        value: system.defenses.willpower.base + system.essences.smarts + system.bonuses.willpower,
         bonus: system.bonuses.willpower
       },
       {
         essence: "social",
         name: "cleverness",
-        value: CONFIG.E20.defenseBase + system.essences.social + system.bonuses.cleverness,
+        base: 10,
+        value: system.defenses.cleverness.base + system.essences.social + system.bonuses.cleverness,
         bonus: system.bonuses.cleverness
       }
-    ];     
-    }
+    ];  
+  }
 
   /**
    * Prepare Power Ranger type specific data.
