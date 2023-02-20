@@ -1,9 +1,6 @@
-{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.gears title='E20.ItemTypeGearPlural' dataType='gear'}}
-  {{#*inline "expand-details" item}}
-  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-  {{/inline}}
+<div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
-  {{#*inline "chips" item}}
+<div class="chip-section">
   <span class="chip" name="chip.gear.quantity">{{localize 'E20.GearQuantity'}}: {{item.system.quantity}}</span>
   {{#if item.system.toughness}}
   <span class="chip" name="chip.gear.toughness">{{localize 'E20.GearToughness'}}: {{item.system.toughness}}</span>
@@ -20,5 +17,4 @@
   {{#if item.system.lightRange.dim}}
   <span class="chip" name="chip.gear.lightRange.dim">{{localize 'E20.LightRangeDim'}}: {{item.system.lightRange.dim}}</span>
   {{/if}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
+</div>
