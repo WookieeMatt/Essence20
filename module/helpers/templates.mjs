@@ -41,6 +41,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/megaformTrait/details.hbs",
     "systems/essence20/templates/actor/parts/bond/container.hbs",
     "systems/essence20/templates/actor/parts/bond/details.hbs",
+    "systems/essence20/templates/actor/parts/origin/container.hbs",
+    "systems/essence20/templates/actor/parts/origin/details.hbs",
     "systems/essence20/templates/actor/parts/actor-health.hbs",
     "systems/essence20/templates/actor/parts/actor-initiative.hbs",
     "systems/essence20/templates/actor/parts/actor-mode-selector.hbs",
