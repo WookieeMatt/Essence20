@@ -75,7 +75,7 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
-    } else if (['altMode', 'armor', 'classFeature', 'gear', 'hangUp'].includes(this.type)) {
+    } else if (['altMode', 'armor', 'classFeature', 'gear', 'hangUp', 'trait'].includes(this.type)) {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
