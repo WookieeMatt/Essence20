@@ -23,7 +23,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/armor/container.hbs",
     "systems/essence20/templates/actor/parts/armor/details.hbs",
     "systems/essence20/templates/actor/parts/actor-background.hbs",
-    "systems/essence20/templates/actor/parts/actor-class-feature-selector.hbs",
+    "systems/essence20/templates/actor/parts/classFeature/selector.hbs",
     "systems/essence20/templates/actor/parts/classFeature/container.hbs",
     "systems/essence20/templates/actor/parts/classFeature/details.hbs",
     "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs",
