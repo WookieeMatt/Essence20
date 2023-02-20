@@ -14,11 +14,7 @@
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
 
 {{!-- Bonds --}}
-{{#> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.bonds title='E20.ItemTypeBondPlural' dataType='bond'}}
-  {{#*inline "expand-details" item}}
-  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
+{{> "systems/essence20/templates/actor/parts/bond/container.hbs"}}
 
 {{!-- Hang Ups --}}
 {{> "systems/essence20/templates/actor/parts/hangUp/container.hbs"}}
