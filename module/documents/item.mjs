@@ -1,5 +1,7 @@
 import { Dice } from "../dice.mjs";
 
+const STANDARD_CHAT_CARD_ITEMS = ['altMode', 'armor', 'bond', 'classFeature', 'feature', 'gear', 'hangUp', 'megaformTrait', 'origin', 'threatPower', 'trait'];
+
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -75,7 +77,7 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
-    } else if (['altMode', 'armor', 'bond', 'classFeature', 'feature', 'gear', 'hangUp', 'megaformTrait', 'origin', 'threatPower', 'trait'].includes(this.type)) {
+    } else if (STANDARD_CHAT_CARD_ITEMS.includes(this.type)) {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
