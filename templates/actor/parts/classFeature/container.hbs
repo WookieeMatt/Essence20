@@ -1,5 +1,4 @@
-{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.classFeatures
-title='E20.ItemTypeClassFeaturePlural' dataType='classFeature'}}
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.classFeatures title='E20.ItemTypeClassFeaturePlural' dataType='classFeature'}}
   {{#*inline "item-label" item}}
   {{item.name}}
   <input class="one-digit-input inline-edit" data-field="system.uses.value" type="number"
@@ -11,6 +10,6 @@ title='E20.ItemTypeClassFeaturePlural' dataType='classFeature'}}
 
   {{/inline}}
   {{#*inline "expand-details" item}}
-  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+    {{> "systems/essence20/templates/actor/parts/classFeature/details.hbs"}}
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
