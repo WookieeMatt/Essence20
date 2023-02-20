@@ -33,7 +33,7 @@
     {{!-- Weapons --}}
     {{> "systems/essence20/templates/actor/parts/weapon/container.hbs"}}
     {{!-- Features --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.ItemTypeFeaturePlural' dataType='feature'}}
+    {{> "systems/essence20/templates/actor/parts/feature/container.hbs"}}
     {{!-- Megaform Traits --}}
     {{#ifEquals @root.actor.type 'zord'}}
     {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits title='E20.ItemTypeMegaformTraitPlural' dataType='megaformTrait'}}
