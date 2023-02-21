@@ -19,12 +19,12 @@ export class Dice {
   async getSkillRollOptions(dataset) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
     const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
-    const shiftUp = 0;
-    const shiftDown = 0;
+    var shiftUp = 0;
+    var shiftDown = 0;
     if (dataset.bonusShift >= 0){
-      shiftUp == dataset.bonusShift;            
+      shiftUp = dataset.bonusShift;
     }else{
-      shiftDown == dataset.bonusShift;
+      shiftDown =  dataset.bonusShift;
     }
     const html = await renderTemplate(
       template,
