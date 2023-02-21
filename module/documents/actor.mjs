@@ -144,44 +144,44 @@ export class Essence20Actor extends Actor {
         essence: "strength",
         name: "toughness",
         morphed: {
-          value: CONFIG.E20.defenseBase + system.essences.strength + system.bonuses.toughness,
+          value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
           bonus: system.bonuses.toughness
         },
         unmorphed: {
-          value: CONFIG.E20.defenseBase + system.essences.strength,
+          value: system.base.toughness + system.essences.strength,
         },
       },
       {
         essence: "speed",
         name: "evasion",
         morphed: {
-          value: CONFIG.E20.defenseBase + system.essences.speed + system.bonuses.evasion,
+          value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
           bonus: system.bonuses.evasion
         },
         unmorphed: {
-          value: CONFIG.E20.defenseBase + system.essences.speed,
+          value: system.base.evasion + system.essences.speed,
         },
       },
       {
         essence: "smarts",
         name: "willpower",
         morphed: {
-          value: CONFIG.E20.defenseBase + system.essences.smarts + system.bonuses.willpower,
+          value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
           bonus: system.bonuses.willpower
         },
         unmorphed: {
-          value: CONFIG.E20.defenseBase + system.essences.smarts,
+          value: system.base.willpower + system.essences.smarts,
         },
       },
       {
         essence: "social",
         name: "cleverness",
         morphed: {
-          value: CONFIG.E20.defenseBase + system.essences.social + system.bonuses.cleverness,
+          value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
           bonus: system.bonuses.cleverness
         },
         unmorphed: {
-          value: CONFIG.E20.defenseBase + system.essences.social,
+          value: system.base.cleverness + system.essences.social,
         },
       },
     ];
@@ -199,25 +199,25 @@ export class Essence20Actor extends Actor {
       {
         essence: "strength",
         name: "toughness",
-        value: CONFIG.E20.defenseBase + system.essences.strength + system.bonuses.toughness,
+        value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
         bonus: system.bonuses.toughness
       },
       {
         essence: "speed",
         name: "evasion",
-        value: CONFIG.E20.defenseBase + system.essences.speed + system.bonuses.evasion,
+        value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
         bonus: system.bonuses.evasion
       },
       {
         essence: "smarts",
         name: "willpower",
-        value: CONFIG.E20.defenseBase + system.essences.smarts + system.bonuses.willpower,
+        value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
         bonus: system.bonuses.willpower
       },
       {
         essence: "social",
         name: "cleverness",
-        value: CONFIG.E20.defenseBase + system.essences.social + system.bonuses.cleverness,
+        value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
         bonus: system.bonuses.cleverness
       }
     ];     
