@@ -21,11 +21,8 @@ export class Dice {
     const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
     var shiftUp = 0;
     var shiftDown = 0;
-    if (dataset.bonusShift >= 0){
-      shiftUp = dataset.bonusShift;
-    }else{
-      shiftDown =  dataset.bonusShift;
-    }
+    shiftUp = dataset.upshift;
+    shiftDown =  dataset.downshift;
     const html = await renderTemplate(
       template,
       {
