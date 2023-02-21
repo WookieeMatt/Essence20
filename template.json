@@ -136,6 +136,12 @@
           "pronouns": "",
           "role": ""
         },
+        "base": {
+          "cleverness": 10,
+          "evasion": 10,
+          "toughness": 10,
+          "willpower": 10
+        },
         "bonuses": {
           "cleverness": 0,
           "evasion": 0,
