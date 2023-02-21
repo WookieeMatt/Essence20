@@ -4,9 +4,6 @@ export const E20 = {};
  * Defense                                      *
  ***********************************************/
 
-// Baseline value for defenses
-E20.defenseBase = 10;
-
 // Essence-based defenses
 E20.defenses = {
   cleverness: "E20.DefenseCleverness",
