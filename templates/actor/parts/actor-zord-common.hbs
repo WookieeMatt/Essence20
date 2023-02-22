@@ -8,7 +8,7 @@
   {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
 
   {{!-- Strength/Speed --}}
-  <div class="stats-container" style="min-width: fit-content; text-align: center;">
+  <div class="stats-container" style="min-width: fit-content; text-align: center; border-color: {{system.color}};">
     <div class="flexrow flex-group-center">
       <span class="essence-label">{{localize config.essences.strength}}</span>
       <input class="two-digit-input" type="number" name="system.essences.strength"
