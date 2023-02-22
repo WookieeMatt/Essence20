@@ -29,12 +29,12 @@
 
   <div class="npc-items zord">
     {{!-- Weapons --}}
-    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
     {{!-- Features --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features title='E20.ItemTypeFeaturePlural' dataType='feature'}}
+    {{> "systems/essence20/templates/actor/parts/items/feature/container.hbs"}}
     {{!-- Megaform Traits --}}
     {{#ifEquals @root.actor.type 'zord'}}
-    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits title='E20.ItemTypeMegaformTraitPlural' dataType='megaformTrait'}}
+    {{> "systems/essence20/templates/actor/parts/items/megaformTrait/container.hbs"}}
     {{/ifEquals}}
   </div>
 </div>

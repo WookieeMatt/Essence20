@@ -1,5 +1,7 @@
 import { Dice } from "../dice.mjs";
 
+const STANDARD_CHAT_CARD_ITEMS = ['altMode', 'armor', 'bond', 'classFeature', 'feature', 'gear', 'hangUp', 'megaformTrait', 'origin', 'threatPower', 'trait'];
+
 /**
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
@@ -74,6 +76,24 @@ export class Essence20Item extends Item {
         rollMode: rollMode,
         flavor: label,
         content: content,
+      });
+    } else if (STANDARD_CHAT_CARD_ITEMS.includes(this.type)) {
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${this.type}] ${this.name}`;
+
+      const template = `systems/essence20/templates/actor/parts/items/${this.type}/details.hbs`;
+      const templateData = {
+        config: CONFIG.E20,
+        item: this,
+      }
+
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: await renderTemplate(template, templateData),
       });
     } else if (this.type == 'weapon') {
       const skill = this.system.classification.skill;
