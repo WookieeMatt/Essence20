@@ -142,7 +142,10 @@
 }
 
 .essence20 .effects .item .effect-source,
-.essence20 .effects .item .effect-duration,
+.essence20 .effects .item .effect-duration {
+  align-items: center;
+}
+
 .essence20 .effects .item .effect-controls {
   text-align: center;
   border-left: v.$border;
