@@ -8,7 +8,11 @@
   <label for="ranger" class="resource-label">{{ localize 'E20.ZordRanger' }}</label>
   <input type="text" name="system.ranger" value="{{system.ranger}}" />
 </div>
-<div class="flexcol">
+<div>
+  <label for="conditioning" class="resource-label">{{ localize 'E20.ActorConditioning' }}</label>
+  <input type="number" name="system.conditioning" value="{{system.conditioning}}" />
+</div>
+<div class="flexcol flex-group-center" style="flex-grow: 0;">
   <label for="iscombiner" class="resource-label">{{localize 'E20.MegaformZordCombiner'}}</label>
   <input type="checkbox" name="system.isCombiner" {{checked system.isCombiner}} />
 </div>
