@@ -493,6 +493,8 @@
   background: none;
   border: 4px solid #b5b1b1;
   font-weight: bold;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 black;
 }
 
 .essence20 .items-header > * {
@@ -972,6 +974,8 @@
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
+  padding-top: 10px;
+  padding-bottom: 4px;
 }
 
 .essence20 .items-list .item {
