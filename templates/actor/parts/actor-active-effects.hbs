@@ -1,8 +1,8 @@
 <div class="stats-container defense-container" style="border-color: {{system.color}};">
-  <ol class="items-list effects-list">
+  <ol class="items-list effects-list" style="border-color: {{@root.system.color}};">
   {{#each effects as |section sid|}}
   {{#unless section.hidden}}
-    <li class="items-header flexrow" data-effect-type="{{section.type}}">
+    <li class="items-header flexrow" style="border-color: {{@root.system.color}};" data-effect-type="{{section.type}}">
       <div class="item-name effect-name flexrow">{{localize section.label}}</div>
       <div class="effect-source">{{localize "E20.ItemSource"}}</div>
       <div class="effect-source">{{localize "E20.ActiveEffectDuration"}}</div>
