@@ -975,7 +975,7 @@
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
-  padding-top: 5px;
+  padding-top: 10px;
   padding-bottom: 10px;
 }
 
@@ -1017,13 +1017,13 @@
   height: 28px;
   margin: 2px 0;
   padding: 0;
-  padding-bottom: 5px;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
   background: none;
   border: 4px solid #b5b1b1;
   font-weight: bold;
+  flex-wrap: nowrap;
 }
 
 .essence20 .items-list .items-header > * {
