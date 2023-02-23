@@ -11,7 +11,7 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="tab skills flexcol" data-group="primary" data-tab="main">
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
       {{!-- Prerequisite --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.PerkPrerequisite'}}
       {{#*inline "item-field-inputs"}}
@@ -22,7 +22,7 @@
       {{!-- Description Section --}}
       {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
     </div>
-    <div class="tab skills flexcol" data-group="primary" data-tab="effects">
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{!-- Effects Section --}}
       {{> "systems/essence20/templates/item/parts/item-active-effects.hbs"}}
     </div>
