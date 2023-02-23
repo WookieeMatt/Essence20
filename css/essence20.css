@@ -928,7 +928,6 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  -box-sizing: border box;
 }
 
 .essence20 .items-list .item-name {
@@ -975,7 +974,7 @@
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
-  padding-top: 10px;
+  padding-top: 5px;
   padding-bottom: 10px;
 }
 
@@ -1017,6 +1016,7 @@
   height: 28px;
   margin: 2px 0;
   padding: 0;
+  padding-bottom: 5px;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
