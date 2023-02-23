@@ -2,7 +2,7 @@
 {{#each effects as |section sid|}}
 {{#unless section.hidden}}
   <li class="items-header flexrow" data-effect-type="{{section.type}}">
-    <h3 class="item-name effect-name flexrow">{{localize section.label}}</h3>
+    <div class="item-name effect-name flexrow">{{localize section.label}}</div>
     <div class="effect-source">{{localize "E20.ItemSource"}}</div>
     <div class="effect-source">{{localize "E20.ActiveEffectDuration"}}</div>
     <div class="item-controls effect-controls flexrow">
