@@ -3,8 +3,8 @@
 {{#unless section.hidden}}
   <li class="items-header flexrow" data-effect-type="{{section.type}}">
     <div class="item-name effect-name flexrow">{{localize section.label}}</div>
-    <div class="effect-source">{{localize "E20.ItemSource"}}</div>
-    <div class="effect-source">{{localize "E20.ActiveEffectDuration"}}</div>
+    <div>{{localize "E20.ItemSource"}}</div>
+    <div>{{localize "E20.ActiveEffectDuration"}}</div>
     <div class="item-controls effect-controls flexrow">
       {{#if @root.editable}}
         <a class="effect-control" data-action="create" data-tooltip="E20.ActiveEffectCreate">
@@ -28,8 +28,8 @@
         <img class="item-image" src="{{effect.icon}}"/>
         <h4>{{effect.label}}</h4>
       </div>
-      <div class="effect-source">{{effect.sourceName}}</div>
-      <div class="effect-duration">{{effect.duration.label}}</div>
+      <div>{{effect.sourceName}}</div>
+      <div>{{effect.duration.label}}</div>
       <div class="item-controls effect-controls flexrow">
         {{#if @root.editable}}
           <a class="effect-control" data-action="toggle"
