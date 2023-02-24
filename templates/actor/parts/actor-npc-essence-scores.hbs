@@ -1,5 +1,5 @@
 <div style="flex-grow: 0;">
-  <div class="npc-defenses">
+  <div class="npc-defenses" style="border-color: {{system.color}};">
     {{#each system.essences as |score skill|}}
     <div class="resource flexcol">
       <label class="resource flex-group-center">{{localize (lookup @root.config.essences skill)}}</label>
