@@ -117,6 +117,13 @@ E20.essences = {
   social: "E20.EssenceSocial",
 };
 
+//Origin Essence Names
+E20.originEssences = {
+  none: "e20EssenceNone",
+  any: "E20.EssenceAny",
+  ...E20.essences,
+}
+
 // Actor Essence skills
 E20.essenceSkills = {
   athletics: "E20.EssenceSkillAthletics",
@@ -139,6 +146,13 @@ E20.essenceSkills = {
   persuasion: "E20.EssenceSkillPersuasion",
   streetwise: "E20.EssenceSkillStreetwise",
 };
+
+// Origin Essence Skills
+E20.originEssenceSkills = {
+  conditioning: "E20.EssenceSkillCondtioning",
+  initative: "E20.EssenceSkillInitiative",
+  ...E20.essenceSkills,
+}
 
 // Maps skills back to their corresponding Essence
 E20.skillToEssence = {
