@@ -52,13 +52,28 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
-      {{!-- Ground Movement --}}
-      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginGroundMovement'}}
+      {{!-- Movement 1--}}
+      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginMovement1'}}
       {{#*inline "item-field-inputs"}}
-      <textarea rows="5" name="system.groundMovement">{{system.groundMovement}}</textarea>
+      <input type="text" name="system.originMovementDistance1" value="{{system.originMovementDistance1}}" />
+      ft
+      <select name="system.originMovementType1" id="system.originMovementType1">
+        {{selectOptions @root.config.movementTypes selected=system.MovementType1 localize=true}}
+      </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
+      {{!-- Movement 2--}}
+      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginMovement2'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.originMovementDistance2" value="{{system.originMovementDistance2}}" />
+      ft
+      <select name="system.originMovementType2" id="system.originMovementType2">
+        {{selectOptions @root.config.movementTypes selected=system.MovementType2 localize=true}}
+      </select> 
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+      
       {{!-- Languages --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginLanguages'}}
       {{#*inline "item-field-inputs"}}
