@@ -1048,7 +1048,10 @@
   padding: 0 8px;
 }
 
-.essence20 .effects .item .effect-source,
+.essence20 .effects .item .effect-source {
+  text-align: center;
+}
+
 .essence20 .effects .item .effect-duration {
   text-align: center;
 }
