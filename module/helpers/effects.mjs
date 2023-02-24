@@ -22,7 +22,7 @@
     case "delete":
       return effect.delete();
     case "toggle":
-      return effect.update({disabled: !effect.data.disabled});
+      return effect.update({disabled: !effect.disabled});
   }
 }
 
