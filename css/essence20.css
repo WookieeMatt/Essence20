@@ -496,6 +496,8 @@
   background: none;
   border: 4px solid #b5b1b1;
   font-weight: bold;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 black;
 }
 
 .essence20 .items-header > * {
@@ -967,7 +969,7 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 75%;
+  width: 35%;
 }
 
 .essence20 .items-list .item-name h3,
@@ -997,6 +999,8 @@
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .essence20 .items-list .item {
@@ -1043,6 +1047,7 @@
   background: none;
   border: 4px solid #b5b1b1;
   font-weight: bold;
+  flex-wrap: nowrap;
 }
 
 .essence20 .items-list .items-header > * {
@@ -1068,8 +1073,14 @@
   padding: 0 8px;
 }
 
-.essence20 .effects .item .effect-source,
-.essence20 .effects .item .effect-duration,
+.essence20 .effects .item .effect-source {
+  text-align: center;
+}
+
+.essence20 .effects .item .effect-duration {
+  text-align: center;
+}
+
 .essence20 .effects .item .effect-controls {
   text-align: center;
   border-left: 4px solid #b5b1b1;
