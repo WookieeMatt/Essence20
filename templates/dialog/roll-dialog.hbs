@@ -1,11 +1,11 @@
 <form class="roll-dialog">
    <div>
       {{localize 'E20.RollDialogShiftUp'}}
-      <input type="number" name="shiftUp" value=0 />
+      <input type="number" name="shiftUp" value={{shiftUp}} />
     </div>
     <div>
       {{localize 'E20.RollDialogShiftDown'}}
-      <input type="number" name="shiftDown" value=0 />
+      <input type="number" name="shiftDown" value={{shiftDown}} />
     </div>
     <div>
       <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize

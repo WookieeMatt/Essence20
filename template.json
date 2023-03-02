@@ -30,103 +30,141 @@
             "athletics": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "brawn": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "intimidation": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "might": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             }
           },
           "speed": {
             "acrobatics": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "driving": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "finesse": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "infiltration": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "targeting": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             }
           },
           "smarts": {
             "alertness": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "culture": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "science": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "survival": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "technology": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             }
           },
           "social": {
             "animalHandling": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "deception": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "performance": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "persuasion": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "streetwise": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             }
           }
         }
