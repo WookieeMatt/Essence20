@@ -186,12 +186,12 @@
           "toughness": 0,
           "willpower": 0
         },
-        "color": "#000000",
+        "color": "#b5b1b1",
         "essences": {
           "strength": 3,
           "speed": 3,
-          "social": 3,
-          "smarts": 3
+          "smarts": 3,
+          "social": 3
         },
         "level": 1,
         "notes": ""
