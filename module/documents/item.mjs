@@ -99,10 +99,14 @@ export class Essence20Item extends Item {
       const skill = this.system.classification.skill;
       const essence = CONFIG.E20.skillToEssence[skill];
       const shift = this.actor.system.skills[essence][skill].shift;
+      const upshift = this.actor.system.skills[essence][skill].shiftUp;
+      const downshift = this.actor.system.skills[essence][skill].shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,
         skill,
+        upshift,
+        downshift,
       };
 
       this._dice.handleWeaponRoll(weaponDataset, this.actor, this);
