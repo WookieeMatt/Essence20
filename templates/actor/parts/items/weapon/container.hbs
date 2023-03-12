@@ -1,0 +1,19 @@
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.weapons title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
+  {{#*inline "expand-details" item}}
+    {{> "systems/essence20/templates/actor/parts/items/weapon/details.hbs"}}
+  {{/inline}}
+
+  {{#*inline "roll-button" item}}
+    <a class="rollable" data-roll-type="weapon" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+  {{/inline}}
+
+  {{#*inline "item-label" item}}
+    {{#ifEquals @root.actor.type 'powerRanger'}}
+      {{>"systems/essence20/templates/actor/parts/items/classFeature/selector.hbs"}}
+    {{else ifEquals @root.actor.type 'transformer'}}
+      {{>"systems/essence20/templates/actor/parts/actor-mode-selector.hbs"}}
+    {{/ifEquals}}
+
+    {{item.name}}
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}

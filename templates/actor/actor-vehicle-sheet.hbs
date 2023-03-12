@@ -14,33 +14,33 @@
     <div class="tab main flexcol" data-group="primary" data-tab="main">
       <div class="npc-row">
         {{!--NPC Defenses--}}
-        <div class="npc-column" style="width: 40%;">
+        <div class="npc-defenses">
           {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
         </div>
 
         {{!--Firepoint Descriptions--}}
-        <div class="npc-column" style="width: 60%;">
-          <div class="stats-container flexcol">
-            <textarea name="system.firepoints.description"
-              placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
+        <div class="npc-firepoints">
+          <div class="stats-container firepoints">
+            <textarea class="firepoints-input" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+             name="system.firepoints.description" placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
           </div>
         </div>
       </div>
+
       {{!--Common Details--}}
       {{> "systems/essence20/templates/actor/parts/actor-common.hbs"}}
 
       <div class="npc-row">
-        <div class="npc-column skills vehicle">
+        {{!-- Skills --}}
+        <div class="npc-skills vehicle">
           {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
         </div>
 
-        <div class="npc-column items vehicle">
-          {{!--NPC Weapons--}}
-          {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
-          {{!--NPC Traits--}}
-          {{> "systems/essence20/templates/actor/parts/actor-traits.hbs"}}
-          {{!-- Powers --}}
-          {{> "systems/essence20/templates/actor/parts/actor-powers.hbs"}}
+        {{!-- Items --}}
+        <div class="npc-items vehicle">
+          {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
+          {{> "systems/essence20/templates/actor/parts/items/trait/container.hbs"}}
+          {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}
         </div>
       </div>
     </div>
