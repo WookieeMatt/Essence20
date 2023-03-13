@@ -22,6 +22,8 @@ export class Dice {
     const html = await renderTemplate(
       template,
       {
+        shiftUp: dataset.upshift,
+        shiftDown: dataset.downshift,
         isSpecialized: dataset.isSpecialized === 'true',
         snag,
         edge: false,
