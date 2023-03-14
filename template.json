@@ -474,7 +474,7 @@
       "tier": null,
       "circle": null,
       "cost": 0,
-      "duration": 0,
+      "duration": "",
       "range": 0
     },
     "threatPower": {

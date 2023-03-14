@@ -15,8 +15,8 @@
       {{!-- Spell Tier --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.SpellTier'}}
       {{#*inline "item-field-inputs"}}
-      <select name="system.spellTier">
-        {{#select system.spellTier}}
+      <select name="system.tier">
+        {{#select system.tier}}
         {{#each config.spellTiers as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
@@ -28,8 +28,8 @@
       {{!-- Spell Circle --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.SpellCircle'}}
       {{#*inline "item-field-inputs"}}
-      <select name="system.spellCricle">
-        {{#select system.SpellCircle}}
+      <select name="system.circle">
+        {{#select system.circle}}
         {{#each config.spellCircles as |name type|}}
         <option value="{{type}}">{{localize name}}</option>
         {{/each}}
@@ -41,21 +41,21 @@
       {{!-- Cost --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.SpellCost'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.spellCost" value="{{system.spellCost}}" />
+      <input type="number" name="system.cost" value="{{system.cost}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
       {{!-- Duration --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.SpellDuration'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.spellDuration" value="{{system.spellDuration}}" />
+      <input type="number" name="system.duration" value="{{system.duration}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
     
       {{!-- Range --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.SpellRange'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.spellRange" value="{{system.spellRange}}" />
+      <input type="number" name="system.range" value="{{system.range}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 

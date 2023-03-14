@@ -270,17 +270,17 @@ E20.lightRanges = {
 
 // Options for Spell Tiers
 E20.spellTiers = {
-  elementary: "E20.spellTiersElementary",
-  superior: "E20.spellTiersSuperior",
-  virtuoso: "E20.spellTiersVirtuoso",
+  elementary: "E20.SpellTierElementary",
+  superior: "E20.SpellTierSuperior",
+  virtuoso: "E20.SpellTierVirtuoso",
 };
 
 //Options for Spell Circles
 E20.spellCircles = {
-  aid: "E20.spellCirclesAid",
-  beam: "E20.spellCirclesBeam",
-  enchantment: "E20.spellCirclesEnchantment",
-  utility: "E20.spellCirclesUtility",
+  aid: "E20.SpellCircleAid",
+  beam: "E20.SpellCircleBeam",
+  enchantment: "E20.SpellCircleEnchantment",
+  utility: "E20.SpellCircleUtility",
 };
 
 /************************************************
