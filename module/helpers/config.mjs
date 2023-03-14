@@ -265,6 +265,25 @@ E20.lightRanges = {
 };
 
 /************************************************
+ * Spells                                       *
+ ***********************************************/
+
+// Options for Spell Tiers
+E20.spellTiers = {
+  elementary: "E20.spellTiersElementary",
+  superior: "E20.spellTiersSuperior",
+  virtuoso: "E20.spellTiersVirtuoso",
+};
+
+//Options for Spell Circles
+E20.spellCircles = {
+  aid: "E20.spellCirclesAid",
+  beam: "E20.spellCirclesBeam",
+  enchantment: "E20.spellCirclesEnchantment",
+  utility: "E20.spellCirclesUtility",
+};
+
+/************************************************
  * Actors                                       *
  ***********************************************/
 

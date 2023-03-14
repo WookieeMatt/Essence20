@@ -1,6 +1,6 @@
 import { Dice } from "../dice.mjs";
 
-const STANDARD_CHAT_CARD_ITEMS = ['altMode', 'armor', 'bond', 'classFeature', 'feature', 'gear', 'hangUp', 'megaformTrait', 'origin', 'threatPower', 'trait'];
+const STANDARD_CHAT_CARD_ITEMS = ['altMode', 'armor', 'bond', 'classFeature', 'feature', 'gear', 'hangUp', 'megaformTrait', 'origin', 'spell', 'threatPower', 'trait'];
 
 /**
  * Extend the basic Item with some very simple modifications.

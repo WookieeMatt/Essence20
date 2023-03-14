@@ -212,6 +212,7 @@
     "ShiftAutoSuccess": "Auto Success",
     "ShiftCriticalSuccess": "Critical Success",
     "ShiftFumble": "Fumble",
+    "SpellCost": "Cost: ↓",
     "SptOptionAccess": "Who can access the SPT?",
     "SptOptionGmPointsArePublic": "Display GM Points to Players",
     "SptOptionMessage": "Display chat messages",
