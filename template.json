@@ -19,7 +19,11 @@
           "min": 0,
           "value": 4
         },
-        "initiative": "d20",
+        "initiative": {
+          "formula": "2d20kl + 0",
+          "modifier": 0,
+          "shift": "d20"
+        },
         "movement": {
           "aerial": 0,
           "ground": 30,

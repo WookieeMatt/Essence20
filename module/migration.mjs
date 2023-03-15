@@ -1,4 +1,3 @@
-
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @returns {Promise}      A Promise which resolves once the migration is completed
@@ -102,6 +101,15 @@ export const migrateWorld = async function() {
  */
 export const migrateActorData = function(actor) {
   const updateData = {};
+
+  // Migrate initiative
+  if (typeof actor.system.initiative == "string") {
+    updateData[`system.initiative`] = {
+      "formula": "", // This will populate after the actor's first initiative roll
+      "modifier": 0,
+      "shift": actor.system.initiative
+    };
+  }
 
   // Migrate Owned Items
   if (!actor.items) {
