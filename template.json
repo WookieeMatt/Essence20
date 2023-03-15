@@ -349,6 +349,7 @@
       "perk",
       "power",
       "specialization",
+      "spell",
       "threatPower",
       "trait",
       "weapon",
@@ -465,6 +466,16 @@
       "isSpecialized": true,
       "shift": "d20",
       "skill": "athletics"
+    },
+    "spell": {
+      "templates": [
+        "itemDescription"
+      ],
+      "tier": null,
+      "circle": null,
+      "cost": 0,
+      "duration": "",
+      "range": 0
     },
     "threatPower": {
       "actionType": "",
