@@ -66,7 +66,7 @@ export class Essence20Actor extends Actor {
     this._preparePowerRangerData();
     this._prepareGiJoeData();
     this._prepareTransformerData();
-    this._prepareMyLittlePonyData();
+    this._preparePonyData();
   }
 
   /**
@@ -224,8 +224,8 @@ export class Essence20Actor extends Actor {
     ];     
   }
 
-  _prepareMyLittlePonyData() {
-    if (this.type !== 'myLittlePony') return;
+  _preparePonyData() {
+    if (this.type !== 'pony') return;
 
     const system = this.system;
 

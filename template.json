@@ -8,7 +8,7 @@
       "zord",
       "giJoe",
       "transformer",
-      "myLittlePony"
+      "pony"
     ],
     "templates": {
       "common": {
@@ -330,7 +330,7 @@
       "internalHarpoints": 2,
       "transformerFaction": "autobots"
     },
-    "myLittlePony": {
+    "pony": {
       "templates": [
         "common",
         "creature",
