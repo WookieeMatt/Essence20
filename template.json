@@ -7,7 +7,8 @@
       "vehicle",
       "zord",
       "giJoe",
-      "transformer"
+      "transformer",
+      "pony"
     ],
     "templates": {
       "common": {
@@ -328,7 +329,15 @@
       "externalHardpoints": 2,
       "internalHarpoints": 2,
       "transformerFaction": "autobots"
+    },
+    "pony": {
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ]
     }
+
   },
   "Item": {
     "types": [
@@ -344,6 +353,7 @@
       "perk",
       "power",
       "specialization",
+      "spell",
       "threatPower",
       "trait",
       "weapon",
@@ -460,6 +470,16 @@
       "isSpecialized": true,
       "shift": "d20",
       "skill": "athletics"
+    },
+    "spell": {
+      "templates": [
+        "itemDescription"
+      ],
+      "tier": null,
+      "circle": null,
+      "cost": 0,
+      "duration": "",
+      "range": 0
     },
     "threatPower": {
       "actionType": "",
