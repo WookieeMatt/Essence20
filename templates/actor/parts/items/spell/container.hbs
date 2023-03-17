@@ -1,0 +1,16 @@
+{{#each system.skills.any as |fields skill|}}
+{{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='any' skill='spellcasting' fields=fields}}
+{{/each}}
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.spells title='E20.ItemTypeSpellPlural' dataType='spell'}}
+  {{#*inline "roll-button" item}}
+    <a class="rollable" data-roll-type={{item.type}} title="{{localize 'E20.SpellRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+  {{/inline}}
+
+  {{#*inline "expand-details" item}}
+    {{> "systems/essence20/templates/actor/parts/items/spell/details.hbs"}}
+  {{/inline}}
+
+  {{#*inline "item-label" item}}
+    {{item.name}}
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}

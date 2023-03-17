@@ -108,6 +108,7 @@ E20.armorTraits = {
 
 // Essence names
 E20.essences = {
+  any: "E20.EssenceAny",
   strength: "E20.EssenceStrength",
   speed: "E20.EssenceSpeed",
   smarts: "E20.EssenceSmarts",
@@ -134,6 +135,7 @@ E20.essenceSkills = {
   deception: "E20.EssenceSkillDeception",
   performance: "E20.EssenceSkillPerformance",
   persuasion: "E20.EssenceSkillPersuasion",
+  spellcasting: "E20.EssenceSkillSpellcasting",
   streetwise: "E20.EssenceSkillStreetwise",
 };
 
@@ -157,6 +159,7 @@ E20.skillToEssence = {
   deception: "social",
   performance: "social",
   persuasion: "social",
+  spellcasting: "any",
   streetwise: "social"
 },
 
