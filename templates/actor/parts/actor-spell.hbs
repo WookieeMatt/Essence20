@@ -1,0 +1,9 @@
+{{!-- Spellcasting Skill --}}
+<div class="skills-container">
+  {{#each system.skills.any as |fields skill|}}
+  {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='any' skill='spellcasting' fields=fields}}
+  {{/each}}
+</div>
+
+{{!-- Spells --}}
+{{> "systems/essence20/templates/actor/parts/items/spell/container.hbs"}}
