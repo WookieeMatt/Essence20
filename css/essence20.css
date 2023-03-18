@@ -973,6 +973,7 @@
 .essence20 .armor-trait-checkbox-label {
   flex-grow: 0;
   margin-left: 5px;
+  white-space: nowrap;
 }
 
 .essence20 .item {
