@@ -332,3 +332,12 @@ E20.transformerMode = {
   modeBotMode: "E20.ModeBotMode",
   modeAny: "E20.ModeAny"
 }
+
+/************************************************
+ * Settings                                     *
+ ***********************************************/
+
+E20.pointsNameOptions = {
+  story: "E20.SptNameStory",
+  friendship: "E20.SptNameFriendship",
+};
