@@ -7,7 +7,8 @@
     "TypeVehicle": "Vehicle",
     "TypeZord": "Zord",
     "TypeMegaformzord": "Megaform Zord",
-    "TypeTransformer": "Transformer"
+    "TypeTransformer": "Transformer",
+    "TypePony": "Pony"
   },
   "ITEM": {
     "TypeAltmode": "Alt Mode",
@@ -25,6 +26,7 @@
     "TypePerk": "Perk",
     "TypePower": "Power",
     "TypeSpecialization": "Specialization",
+    "TypeSpell": "Spell",
     "TypeTrait": "Trait"
   },
   "MIGRATION": {
@@ -212,6 +214,18 @@
     "ShiftAutoSuccess": "Auto Success",
     "ShiftCriticalSuccess": "Critical Success",
     "ShiftFumble": "Fumble",
+    "SpellCircle": "Circle",
+    "SpellCircleAid": "Aid",
+    "SpellCircleBeam": "Beam",
+    "SpellCircleEnchantment": "Enchantment",
+    "SpellCircleUtility": "Utility",
+    "SpellCost": "Cost: ↓",
+    "SpellDuration": "Duration",
+    "SpellRange": "Range",
+    "SpellTier": "Tier",
+    "SpellTierElementary": "Elementary",
+    "SpellTierSuperior": "Superior",
+    "SpellTierVirtuoso": "Virtuoso",
     "SptNameFriendship": "Friendship",
     "SptNameStory": "Story",
     "SptOptionAccess": "Who can access the SPT?",

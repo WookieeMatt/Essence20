@@ -66,6 +66,7 @@ export class Essence20Actor extends Actor {
     this._preparePowerRangerData();
     this._prepareGiJoeData();
     this._prepareTransformerData();
+    this._preparePonyData();
   }
 
   /**
@@ -192,6 +193,39 @@ export class Essence20Actor extends Actor {
  */
   _prepareTransformerData() {
     if (this.type !== 'transformer') return;
+
+    const system = this.system;
+
+    system.defenses = [
+      {
+        essence: "strength",
+        name: "toughness",
+        value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
+        bonus: system.bonuses.toughness
+      },
+      {
+        essence: "speed",
+        name: "evasion",
+        value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
+        bonus: system.bonuses.evasion
+      },
+      {
+        essence: "smarts",
+        name: "willpower",
+        value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
+        bonus: system.bonuses.willpower
+      },
+      {
+        essence: "social",
+        name: "cleverness",
+        value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
+        bonus: system.bonuses.cleverness
+      }
+    ];     
+  }
+
+  _preparePonyData() {
+    if (this.type !== 'pony') return;
 
     const system = this.system;
 
