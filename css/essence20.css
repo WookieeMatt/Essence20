@@ -970,6 +970,16 @@
   color: black;
 }
 
+.essence20 .spellcasting {
+  width: 35%;
+  float: left;
+}
+
+.essence20 .spells {
+  width: 75%;
+  float: left;
+}
+
 .essence20 .armor-trait-checkbox-label {
   flex-grow: 0;
   margin-left: 5px;
