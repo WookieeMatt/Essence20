@@ -1,10 +1,13 @@
 {{!-- Spellcasting Skill --}}
-<div class="skills-container spellcasting">
-  {{#each system.skills.any as |fields skill|}}
-  {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='any' skill='spellcasting' fields=fields}}
-  {{/each}}
-</div>
-<div class="spells">
-{{!-- Spells --}}
-{{> "systems/essence20/templates/actor/parts/items/spell/container.hbs"}}
+<div class="flexrow stats-row">
+  <div class="skills-container spellcasting">
+    {{#each system.skills.any as |fields skill|}}
+    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='any' skill='spellcasting'
+    fields=fields}}
+    {{/each}}
+  </div>
+  <div class="spells">
+    {{!-- Spells --}}
+    {{> "systems/essence20/templates/actor/parts/items/spell/container.hbs"}}
+  </div>
 </div>
