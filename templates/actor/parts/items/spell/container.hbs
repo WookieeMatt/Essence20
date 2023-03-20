@@ -1,6 +1,6 @@
-{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.spells title='E20.ItemTypeSpellPlural' dataType='spell'}}
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.spells title="E20.ItemTypeSpellPlural" dataType="spell"}}
   {{#*inline "roll-button" item}}
-    <a class="rollable" data-roll-type={{item.type}} title="{{localize 'E20.SpellRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+    <a class="rollable" data-roll-type="skill" data-skill="spellcasting" data-downshift={{item.system.cost}} title="{{localize 'E20.SpellRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
   {{/inline}}
 
   {{#*inline "expand-details" item}}
