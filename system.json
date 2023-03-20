@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -31,7 +31,7 @@
   "id": "essence20",
   "authors": [
     {
-      "name": "WookieeChan, potato, guswadsworth12",
+      "name": "WookieeChan, potato, guswadsworth12, jfranklin3000",
       "flags": {}
     }
   ],
@@ -40,6 +40,6 @@
     "verified": "10"
   },
   "flags": {
-    "needsMigrationVersion": "2.0.4"
+    "needsMigrationVersion": "3.0.3"
   }
 }

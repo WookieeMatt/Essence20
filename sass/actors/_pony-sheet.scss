@@ -1,0 +1,13 @@
+@use '../assets/variables' as v;
+
+.essence20 .pony{
+  /* background: rgb(78, 78, 78); */
+  color: v.$textcolor1;
+  border-radius: v.$border-radius;
+  background: v.$background-purple;
+  background-size: cover;
+}
+
+.essence20 .pony-text{
+  color: black;
+}

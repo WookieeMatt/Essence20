@@ -4,9 +4,6 @@ export const E20 = {};
  * Defense                                      *
  ***********************************************/
 
-// Baseline value for defenses
-E20.defenseBase = 10;
-
 // Essence-based defenses
 E20.defenses = {
   cleverness: "E20.DefenseCleverness",
@@ -282,6 +279,25 @@ E20.lightRanges = {
 };
 
 /************************************************
+ * Spells                                       *
+ ***********************************************/
+
+// Options for Spell Tiers
+E20.spellTiers = {
+  elementary: "E20.SpellTierElementary",
+  superior: "E20.SpellTierSuperior",
+  virtuoso: "E20.SpellTierVirtuoso",
+};
+
+//Options for Spell Circles
+E20.spellCircles = {
+  aid: "E20.SpellCircleAid",
+  beam: "E20.SpellCircleBeam",
+  enchantment: "E20.SpellCircleEnchantment",
+  utility: "E20.SpellCircleUtility",
+};
+
+/************************************************
  * Actors                                       *
  ***********************************************/
 
@@ -330,3 +346,12 @@ E20.transformerMode = {
   modeBotMode: "E20.ModeBotMode",
   modeAny: "E20.ModeAny"
 }
+
+/************************************************
+ * Settings                                     *
+ ***********************************************/
+
+E20.pointsNameOptions = {
+  story: "E20.SptNameStory",
+  friendship: "E20.SptNameFriendship",
+};

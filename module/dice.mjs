@@ -22,6 +22,8 @@ export class Dice {
     const html = await renderTemplate(
       template,
       {
+        shiftUp: dataset.upshift || 0,
+        shiftDown: dataset.downshift || 0,
         isSpecialized: dataset.isSpecialized === 'true',
         snag,
         edge: false,
@@ -48,6 +50,17 @@ export class Dice {
       };
       new Dialog(data, null).render(true);
     });
+  }
+
+  /**
+   * Handles rolling initiative.
+   * @param {Actor} actor   The actor performing the roll.
+   */
+  async handleInitiativeRoll(actor) {
+    const skillRollOptions = await this.getSkillRollOptions({ shift: actor.system.initiative.shift}, this.actor);
+    const finalShift = this._getFinalShift(skillRollOptions, actor.system.initiative.shift)
+    actor.system.initiative.formula = this._getFormula(false, skillRollOptions, finalShift, actor.system.initiative.modifier);
+    actor.rollInitiative({ createCombatants: true });
   }
 
   /**
