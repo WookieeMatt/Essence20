@@ -31,6 +31,15 @@
         },
         "size": "common",
         "skills": {
+          "any": {
+            "spellcasting": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
+            }
+          },
           "strength": {
             "athletics": {
               "isSpecialized": false,

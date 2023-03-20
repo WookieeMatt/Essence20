@@ -7,7 +7,7 @@
     <a class="item" style="border-color: {{system.color}};" data-tab="skills"> {{ localize "E20.TabSkills" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="combat">{{ localize "E20.TabCombat" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="gear">{{ localize "E20.TabGear" }}</a>
-    <a class="item" style="border-color: {{system.color}};" data-tab="powers">{{ localize "E20.TabPowers" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="spells">{{ localize "E20.TabSpells" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="perks">{{ localize "E20.TabPerks" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="background">{{ localize "E20.TabBackground" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
@@ -40,9 +40,9 @@
       {{> "systems/essence20/templates/actor/parts/items/armor/container.hbs"}}
     </div>
 
-     {{!-- Powers Tab --}}
-    <div class="tab powers flexcol" data-group="primary" data-tab="powers">
-      {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}
+    {{!-- Spells Tab --}}
+    <div class="tab spells flexcol" data-group="primary" data-tab="spells">
+      {{> "systems/essence20/templates/actor/parts/actor-spells.hbs"}}
     </div>
 
     {{!-- Perks Tab --}}
