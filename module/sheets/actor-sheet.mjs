@@ -388,7 +388,7 @@ export class Essence20ActorSheet extends ActorSheet {
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
 
-      if (item) return item.roll();
+      if (item) return item.roll(dataset);
     }
   }
 
