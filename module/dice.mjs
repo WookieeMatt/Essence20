@@ -84,9 +84,9 @@ export class Dice {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {Actor} actor   The actor performing the roll.
-   * @param {Item} weapon   The weapon being used, if any.
+   * @param {Item} item   The item being used, if any.
    */
-  rollSkill(dataset, skillRollOptions, actor, weapon) {
+  rollSkill(dataset, skillRollOptions, actor, item) {
     const rolledSkill = dataset.skill;
     const actorSkillData = actor.getRollData().skills;
     const rolledEssence = dataset.essence || this._config.skillToEssence[rolledSkill];
@@ -98,9 +98,19 @@ export class Dice {
       shift: initialShift,
     }
 
-    let label = weapon
-      ? this._getWeaponRollLabel(completeDataset, skillRollOptions, weapon, actor)
-      : this._getSkillRollLabel(completeDataset, skillRollOptions);
+    let label = '';
+
+    switch(item?.type) {
+      case 'weapon':
+        label = this._getWeaponRollLabel(completeDataset, skillRollOptions, actor, item);
+        break;
+      case 'spell':
+        label = this._getSpellRollLabel(skillRollOptions, item);
+        break;
+      default:
+        label = this._getSkillRollLabel(completeDataset, skillRollOptions);
+    }
+
     let finalShift = this._getFinalShift(skillRollOptions, initialShift);
 
     if (this._handleAutoFail(finalShift, label, actor)) {
@@ -163,32 +173,34 @@ export class Dice {
   }
 
   /**
-   * Handles rolling weapons.
+   * Handles rolling items that require skill rolls.
+   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Item} item   The weapon being used.
    * @param {Actor} actor   The actor performing the roll.
    */
-  async handleWeaponRoll(dataset, weapon, actor) {
+  async handleSkillItemRoll(dataset, actor, item) {
       const skillRollOptions = await this.getSkillRollOptions(dataset);
 
       if (skillRollOptions.cancelled) {
         return;
       }
 
-      this.rollSkill(dataset, skillRollOptions, actor, weapon);
+      this.rollSkill(dataset, skillRollOptions, actor, item);
   }
 
   /**
    * Create weapon roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
-   * @param {Item} weapon   The weapon being used.
    * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} weapon   The weapon being used.
    * @returns {String}   The resultant roll label.
    * @private
    */
-  _getWeaponRollLabel(dataset, skillRollOptions, weapon, actor) {
+  _getWeaponRollLabel(dataset, skillRollOptions, actor, weapon) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
-    const attackRollStr = this._i18n.localize('E20.RollAttackRoll');
+    const attackRollStr = this._i18n.localize('E20.RollTypeAttack');
     const effectStr = this._i18n.localize('E20.WeaponEffect');
     const alternateEffectsStr = this._i18n.localize('E20.WeaponAlternateEffects');
     const classFeatureStr = this._i18n.localize('ITEM.TypeClassfeature');
@@ -200,6 +212,26 @@ export class Dice {
     label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
     label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}<br>`;
     label += `<b>${classFeatureStr}</b> - ${classFeatureId ? actor.items.get(classFeatureId).name : noneStr}`;
+
+    return label;
+  }
+
+  /**
+   * Create spell roll label.
+   * @param {Object} skillRollOptions   The result of getSkillRollOptions().
+   * @param {Item} spell   The spell being used.
+   * @returns {String}   The resultant roll label.
+   * @private
+   */
+  _getSpellRollLabel(skillRollOptions, spell) {
+    const rolledSkillStr = this._i18n.localize('E20.EssenceSkillSpellcasting');
+    const spellRollStr = this._i18n.localize('E20.RollTypeSpell');
+    const descStr = this._i18n.localize('E20.ItemDescription');
+    const noneStr = this._i18n.localize('E20.None');
+
+    let label = `<b>${spellRollStr}</b> - ${spell.name} (${rolledSkillStr})`
+    label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
+    label += `<b>${descStr}</b> - ${spell.system.description || noneStr}<br>`;
 
     return label;
   }

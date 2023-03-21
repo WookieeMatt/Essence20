@@ -1,6 +1,6 @@
 import { Dice } from "../dice.mjs";
 
-const STANDARD_CHAT_CARD_ITEMS = ['altMode', 'armor', 'bond', 'classFeature', 'feature', 'gear', 'hangUp', 'megaformTrait', 'origin', 'spell', 'threatPower', 'trait'];
+const STANDARD_CHAT_CARD_ITEMS = ['altMode', 'armor', 'bond', 'classFeature', 'feature', 'gear', 'hangUp', 'megaformTrait', 'origin', 'threatPower', 'trait'];
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -109,13 +109,27 @@ export class Essence20Item extends Item {
         downshift,
       };
 
-      this._dice.handleWeaponRoll(weaponDataset, this.actor, this);
+      this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
 
       // Decrement class feature, if applicable
       const classFeature = this.actor.items.get(this.system.classFeatureId);
       if (classFeature) {
         classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
       }
+    } else if (this.type == 'spell') {
+      const essence = 'any';
+      const skill = 'spellcasting';
+      const shift = this.actor.system.skills.any.spellcasting.shift;
+      const downshift = this.system.cost;
+      const spellDataset = {
+        ...dataset,
+        essence,
+        shift,
+        skill,
+        downshift,
+      };
+
+      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
