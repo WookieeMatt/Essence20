@@ -102,7 +102,7 @@ export class Dice {
 
     switch(item?.type) {
       case 'weapon':
-        label = this._getWeaponRollLabel(completeDataset, skillRollOptions, item, actor);
+        label = this._getWeaponRollLabel(completeDataset, skillRollOptions, actor, item);
         break;
       case 'spell':
         label = this._getSpellRollLabel(skillRollOptions, item);
@@ -175,10 +175,10 @@ export class Dice {
   /**
    * Handles rolling items that require skill rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
-   * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The weapon being used.
+   * @param {Actor} actor   The actor performing the roll.
    */
-  async handleSkillItemRoll(dataset, item, actor) {
+  async handleSkillItemRoll(dataset, actor, item) {
       const skillRollOptions = await this.getSkillRollOptions(dataset);
 
       if (skillRollOptions.cancelled) {
@@ -192,12 +192,12 @@ export class Dice {
    * Create weapon roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
-   * @param {Item} weapon   The weapon being used.
    * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} weapon   The weapon being used.
    * @returns {String}   The resultant roll label.
    * @private
    */
-  _getWeaponRollLabel(dataset, skillRollOptions, weapon, actor) {
+  _getWeaponRollLabel(dataset, skillRollOptions, actor, weapon) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
     const attackRollStr = this._i18n.localize('E20.RollTypeAttack');

@@ -109,7 +109,7 @@ export class Essence20Item extends Item {
         downshift,
       };
 
-      this._dice.handleSkillItemRoll(weaponDataset, this, this.actor);
+      this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
 
       // Decrement class feature, if applicable
       const classFeature = this.actor.items.get(this.system.classFeatureId);
@@ -129,7 +129,7 @@ export class Essence20Item extends Item {
         downshift,
       };
 
-      this._dice.handleSkillItemRoll(spellDataset, this, this.actor);
+      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });

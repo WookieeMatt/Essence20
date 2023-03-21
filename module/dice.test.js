@@ -138,6 +138,7 @@ describe("rollSkill", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         alternateEffects: "Some alternate effects",
         classification: {
@@ -232,6 +233,7 @@ describe("_getWeaponRollLabel", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         effect: "Some effect",
         alternateEffects: "Some alternate effects",
@@ -243,7 +245,7 @@ describe("_getWeaponRollLabel", () => {
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
   });
 
   test("weapon roll with Edge", () => {
@@ -256,6 +258,7 @@ describe("_getWeaponRollLabel", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         effect: "Some effect",
         alternateEffects: "Some alternate effects",
@@ -267,7 +270,7 @@ describe("_getWeaponRollLabel", () => {
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
   });
 
   test("weapon roll with Snag", () => {
@@ -280,6 +283,7 @@ describe("_getWeaponRollLabel", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         effect: "Some effect",
         alternateEffects: "Some alternate effects",
@@ -291,7 +295,7 @@ describe("_getWeaponRollLabel", () => {
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
   });
 
   test("no effects", () => {
@@ -304,6 +308,7 @@ describe("_getWeaponRollLabel", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         effect: "",
         alternateEffects: "",
@@ -315,7 +320,7 @@ describe("_getWeaponRollLabel", () => {
       "<b>E20.WeaponAlternateEffects</b> - E20.None<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
   });
 });
 
