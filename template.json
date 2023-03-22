@@ -484,11 +484,12 @@
       "templates": [
         "itemDescription"
       ],
-      "tier": null,
       "circle": null,
       "cost": 0,
       "duration": "",
-      "range": 0
+      "isSpecialized": false,
+      "range": 0,
+      "tier": null
     },
     "threatPower": {
       "actionType": "",
