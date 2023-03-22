@@ -146,6 +146,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const features = []; // Used by Zords
     const gears = [];
     const hangUps = [];
+    const magicBaubles = [];
     const megaformTraits = [];
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
@@ -187,6 +188,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'hangUp':
           hangUps.push(i);
           break;
+        case 'magicBauble':
+          magicBaubles.push(i);
+          break;  
         case 'megaformTrait':
           megaformTraits.push(i);
           break;
@@ -234,6 +238,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
+    context.magicBaubles = magicBaubles;
     context.megaformTraits = megaformTraits;
     context.origins = origins;
     context.perks = perks;
