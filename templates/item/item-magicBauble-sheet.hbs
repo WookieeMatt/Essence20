@@ -9,8 +9,8 @@
     {{!-- Magic Bauble Spellcasting --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.MagicBaubleSpellcastingShift'}}
     {{#*inline "item-field-inputs"}}
-    <select name="system.magicBaubleSpellcastingShift">
-      {{#select system.magicBaubleSpellcastingShift}}
+    <select name="system.spellcastingShift">
+      {{#select system.spellcastingShift}}
       {{#each config.skillShifts as |name type|}}
       <option value="{{type}}">{{localize name}}</option>
       {{/each}}
@@ -22,14 +22,14 @@
      {{!-- Duration Section --}}
      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.MagicBaubleDuration'}}
      {{#*inline "item-field-inputs"}}
-     <input type="text" name="system.magicBaubleDuration" value="{{system.magicBaubleDuration}}" />
+     <input type="text" name="system.duration" value="{{system.duration}}" />
      {{/inline}}
      {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
      {{!-- Range Section --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.MagicBaubleRange'}}
     {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.magicBaubleRange" value="{{system.magicBaubleRange}}" />
+    <input type="text" name="system.range" value="{{system.range}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}     
 

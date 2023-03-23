@@ -448,9 +448,9 @@
       "templates": [
         "itemDescription"
       ],
-      "magicBaubleDuration": "",
-      "magicBaubleRange": "",
-      "magicBaubleSpellcastingShift": "d2"
+      "duration": "",
+      "range": "",
+      "spellcastingShift": "d2"
     },
     "megaformTrait": {
       "templates": [
