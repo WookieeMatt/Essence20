@@ -396,9 +396,9 @@ describe("_getMagicBaubleRollLabel", () => {
         description: "Some description",
       },
     };
-    const expected = "<b>E20.RollTypeSpell</b> - Healer's Salve (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
+    const expected = "<b>E20.RollTypeMagicBauble</b> - Healer's Salve (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
 
-    expect(dice._getSpellRollLabel(skillRollOptions, spell)).toEqual(expected);
+    expect(dice._getSpellRollLabel(skillRollOptions, magicBauble)).toEqual(expected);
   });
 });
 
