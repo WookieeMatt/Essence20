@@ -134,13 +134,11 @@ export class Essence20Item extends Item {
       const essence = 'any';
       const skill = 'spellcasting';
       const shift = this.system.magicBaubleSpellcastingShift;
-      const downshift = 0;
       const spellDataset = {
         ...dataset,
         essence,
         shift,
         skill,
-        downshift,
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);

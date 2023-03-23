@@ -1,7 +1,7 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
 <div class="chip-section">
-  <span class="chip" name="chip.spell.magicBaubleSpellcastingShift">{{localize 'E20.MagicBaubleSpellcastingShift'}}: {{item.system.magicBaubleSpellcastingShift}}</span>
+  <span class="chip" name="chip.spell.magicBaubleSpellcastingShift">{{localize 'E20.MagicBaubleSpellcastingShift'}}: {{localize (lookup @root.config.skillShifts item.system.magicBaubleSpellcastingShift)}}</span>
   {{#if item.system.magicBaubleDuration}}
   <span class="chip" name="chip.spell.magicBaubleDuration">{{localize 'E20.MagicBaubleDuration'}}: {{item.system.magicBaubleDuration}}</span>
   {{/if}}
