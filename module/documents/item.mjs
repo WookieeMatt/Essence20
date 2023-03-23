@@ -133,7 +133,7 @@ export class Essence20Item extends Item {
     } else if (this.type == 'magicBauble') {
       const essence = 'any';
       const skill = 'spellcasting';
-      const shift = this.system.magicBaubleSpellcastingShift;
+      const shift = this.system.spellcastingShift;
       const spellDataset = {
         ...dataset,
         essence,
