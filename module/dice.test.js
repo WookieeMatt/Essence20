@@ -382,6 +382,26 @@ describe("_getSpellRollLabel", () => {
   });
 });
 
+/* _getMagicBaubleRollLabel */
+describe("_getMagicBaubleRollLabel", () => {
+  test("magic bauble roll", () => {
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+    }
+    const magicBauble = {
+      name: "Healer's Salve",
+      type: 'magic bauble',
+      system: {
+        description: "Some description",
+      },
+    };
+    const expected = "<b>E20.RollTypeMagicBauble</b> - Healer's Salve (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
+
+    expect(dice._getMagicBaubleRollLabel(skillRollOptions, magicBauble)).toEqual(expected);
+  });
+});
+
 /* _getFinalShift */
 describe("_getFinalShift", () => {
   const initialShift = 'd20';

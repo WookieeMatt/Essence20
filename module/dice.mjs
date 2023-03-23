@@ -105,7 +105,10 @@ export class Dice {
         label = this._getWeaponRollLabel(completeDataset, skillRollOptions, actor, item);
         break;
       case 'spell':
-        label = this._getSpellRollLabel(skillRollOptions, item);
+          label = this._getSpellRollLabel(skillRollOptions, item);
+          break;
+      case 'magicBauble':
+        label = this._getMagicBaubleRollLabel(skillRollOptions, item);
         break;
       default:
         label = this._getSkillRollLabel(completeDataset, skillRollOptions);
@@ -232,6 +235,19 @@ export class Dice {
     let label = `<b>${spellRollStr}</b> - ${spell.name} (${rolledSkillStr})`
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${descStr}</b> - ${spell.system.description || noneStr}<br>`;
+
+    return label;
+  }
+
+  _getMagicBaubleRollLabel(skillRollOptions, magicBauble) {
+    const rolledSkillStr = this._i18n.localize('E20.EssenceSkillSpellcasting');
+    const magicBaubleRollStr = this._i18n.localize('E20.RollTypeMagicBauble');
+    const descStr = this._i18n.localize('E20.ItemDescription');
+    const noneStr = this._i18n.localize('E20.None');
+
+    let label = `<b>${magicBaubleRollStr}</b> - ${magicBauble.name} (${rolledSkillStr})`
+    label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
+    label += `<b>${descStr}</b> - ${magicBauble.system.description || noneStr}<br>`;
 
     return label;
   }

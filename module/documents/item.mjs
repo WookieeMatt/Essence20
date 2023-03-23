@@ -130,6 +130,18 @@ export class Essence20Item extends Item {
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
+    } else if (this.type == 'magicBauble') {
+      const essence = 'any';
+      const skill = 'spellcasting';
+      const shift = this.system.spellcastingShift;
+      const spellDataset = {
+        ...dataset,
+        essence,
+        shift,
+        skill,
+      };
+
+      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
