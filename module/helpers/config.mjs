@@ -115,7 +115,7 @@ E20.armorTraits = {
   bulwark: "E20.ArmorTraitBulwark",
   computerized: "E20.ArmorTraitComputerized",
   deflective: "E20.ArmorTraitDeflective",
-  enhancSkill: "E20.ArmorTraitEnhanceSkill",
+  enhanceSkill: "E20.ArmorTraitEnhanceSkill",
   enviroSealed: "E20.ArmorTraitEnviroSealed",
   exoFrame: "E20.ArmorTraitExoFrame",
   modular: "E20.ArmorTraitModular",
