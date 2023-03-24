@@ -401,10 +401,17 @@
       "classification": "light",
       "equipped": false,
       "traits": {
-        "computerized": false,
+        "bulwark": false,
+        "computerized": false, 
         "deflective": false,
+        "enhanceSkill": false,
+        "enviroSealed": false,
+        "exoFrame": false,
+        "modular": false,
         "plating": false,
-        "stealth": false
+        "regal": false,
+        "silent": false,
+        "xenotech": false
       }
     },
     "bond": {
