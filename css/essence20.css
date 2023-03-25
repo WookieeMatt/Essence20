@@ -907,6 +907,10 @@
   gap: 10px;
 }
 
+.essence20 .sheet-body.item-sheet .tab {
+  gap: 0px;
+}
+
 .essence20 .tabs .item {
   background: #5f5f5f;
   border: 1px solid;
