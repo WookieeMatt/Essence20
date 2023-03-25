@@ -1,0 +1,39 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+
+    {{!-- Magic Bauble Spellcasting --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.MagicBaubleSpellcastingShift'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.spellcastingShift">
+      {{#select system.spellcastingShift}}
+      {{#each config.skillShifts as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+     {{!-- Duration Section --}}
+     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.MagicBaubleDuration'}}
+     {{#*inline "item-field-inputs"}}
+     <input type="text" name="system.duration" value="{{system.duration}}" />
+     {{/inline}}
+     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
+     {{!-- Range Section --}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.MagicBaubleRange'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.range" value="{{system.range}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}     
+
+     {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+  </section>
+</form>

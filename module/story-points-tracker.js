@@ -1,9 +1,16 @@
 import { registerSettings } from "./settings.js";
+
 export let i18n = key => {
   return game.i18n.localize(key);
 };
+export let i18nf = (key, vars) => {
+  return game.i18n.format(key, vars);
+};
 export let setting = key => {
   return game.settings.get("essence20", key);
+};
+export let getPointsName = plural => {
+  return `${i18n(CONFIG.E20.pointsNameOptions[setting('sptPointsName')])} ${i18n(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
 };
 
 /* -------------------------------------------- */
@@ -24,7 +31,7 @@ export class StoryPointsTracker extends Application {
       resizable: false,
       top: pos?.top || 60,
       left: pos?.left || (($('#board').width / 2) - 150),
-      title: i18n('E20.SptTitle'),
+      title: i18nf('E20.SptTitle', {name: getPointsName(false)}),
     });
   }
 
@@ -35,6 +42,7 @@ export class StoryPointsTracker extends Application {
       storyPoints: this.storyPoints,
       isGm: game.user.isGM,
       gmPointsArePublic: game.user.isGM || setting('sptGmPointsArePublic'),
+      pointsName: getPointsName(true),
     };
   }
 
@@ -118,18 +126,18 @@ export class StoryPointsTracker extends Application {
     html.find('#story-points-btn-dec').click(ev => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints - 1);
-      this.sendMessage(`${i18n("E20.SptSpendStoryPoint")}`);
+      this.sendMessage(`${i18nf("E20.SptSpendStoryPoint", {name: getPointsName(false)})}`);
     });
     html.find('#story-points-btn-inc').click(ev => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints + 1);
-      this.sendMessage(`${i18n("E20.SptAddStoryPoint")}`);
+      this.sendMessage(`${i18nf("E20.SptAddStoryPoint", {name: getPointsName(false)})}`);
     });
     html.find('#story-points-input').focusout(ev => {
       ev.preventDefault();
       let value = $('#story-points-input', this.element).val();
       this.changeStoryPoints(value);
-      this.sendMessage(`${i18n("E20.SptSetStoryPoints")} ${value}!`);
+      this.sendMessage(`${i18nf("E20.SptSetStoryPoints", {name: getPointsName(true)})} ${value}!`);
     });
   }
 
@@ -208,7 +216,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
     let tokenControls = controls.find(control => control.name === "token")
     tokenControls.tools.push({
       name: "toggleDialog",
-      title: "E20.SptToggleDialog",
+      title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
       icon: "fas fa-circle-s",
       toggle: true,
       active: setting('sptToggleState'),

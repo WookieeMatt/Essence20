@@ -146,12 +146,14 @@ export class Essence20ActorSheet extends ActorSheet {
     const features = []; // Used by Zords
     const gears = [];
     const hangUps = [];
+    const magicBaubles = [];
     const megaformTraits = [];
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
     const classFeatures = []; // Used by PCs
     const specializations = {};
+    const spells = [];
     const threatPowers = [];
     const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
@@ -186,6 +188,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'hangUp':
           hangUps.push(i);
           break;
+        case 'magicBauble':
+          magicBaubles.push(i);
+          break;  
         case 'megaformTrait':
           megaformTraits.push(i);
           break;
@@ -197,6 +202,9 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
         case 'power':
           powers.push(i);
+          break;
+        case 'spell':
+          spells.push(i);
           break;
         case 'classFeature':
           classFeatures.push(i);
@@ -230,10 +238,12 @@ export class Essence20ActorSheet extends ActorSheet {
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
+    context.magicBaubles = magicBaubles;
     context.megaformTraits = megaformTraits;
     context.origins = origins;
     context.perks = perks;
     context.powers = powers;
+    context.spells = spells;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
     context.traits = traits;
@@ -368,7 +378,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
       this._dice.rollSkill(dataset, skillRollOptions, this.actor);
     } else if (rollType == 'initiative') {
-      this.actor.rollInitiative({ createCombatants: true });
+      this._dice.handleInitiativeRoll(this.actor);
     } else { // Handle items
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);
@@ -383,7 +393,7 @@ export class Essence20ActorSheet extends ActorSheet {
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
 
-      if (item) return item.roll();
+      if (item) return item.roll(dataset);
     }
   }
 

@@ -138,6 +138,7 @@ describe("rollSkill", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         alternateEffects: "Some alternate effects",
         classification: {
@@ -159,7 +160,45 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn()
 
     dice.rollSkill(dataset, skillRollOptions, mockActor, weapon);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br><b>E20.WeaponEffect</b> - Some effect<br><b>E20.WeaponAlternateEffects</b> - Some alternate effects<br><b>ITEM.TypeClassfeature</b> - E20.None");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br><b>E20.WeaponEffect</b> - Some effect<br><b>E20.WeaponAlternateEffects</b> - Some alternate effects<br><b>ITEM.TypeClassfeature</b> - E20.None");
+  });
+
+  test("normal spell skill roll", () => {
+    const dataset = {
+      isSpecialized: false,
+      shift: 'd20',
+      skill: 'spellcasting',
+      essence: 'any',
+    };
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    }
+    const spell = {
+      name: 'Barreling Beam',
+      type: 'spell',
+      system: {
+        description: "Some description",
+      },
+    };
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'any': {
+          'spellcasting': {
+            cost: '0',
+            modifier: '0',
+            shift: 'd20',
+          },
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn()
+
+    dice.rollSkill(dataset, skillRollOptions, mockActor, spell);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
   });
 });
 
@@ -232,18 +271,19 @@ describe("_getWeaponRollLabel", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         effect: "Some effect",
         alternateEffects: "Some alternate effects",
       },
     };
     const expected =
-      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
       "<b>E20.WeaponEffect</b> - Some effect<br>" +
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
   });
 
   test("weapon roll with Edge", () => {
@@ -256,18 +296,19 @@ describe("_getWeaponRollLabel", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         effect: "Some effect",
         alternateEffects: "Some alternate effects",
       },
     };
     const expected =
-      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithAnEdge<br>" +
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithAnEdge<br>" +
       "<b>E20.WeaponEffect</b> - Some effect<br>" +
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
   });
 
   test("weapon roll with Snag", () => {
@@ -280,18 +321,19 @@ describe("_getWeaponRollLabel", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         effect: "Some effect",
         alternateEffects: "Some alternate effects",
       },
     };
     const expected =
-      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithASnag<br>" +
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithASnag<br>" +
       "<b>E20.WeaponEffect</b> - Some effect<br>" +
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
   });
 
   test("no effects", () => {
@@ -304,18 +346,59 @@ describe("_getWeaponRollLabel", () => {
     }
     const weapon = {
       name: 'Zeo Power Clubs',
+      type: 'weapon',
       system: {
         effect: "",
         alternateEffects: "",
       },
     };
     const expected =
-      "<b>E20.RollAttackRoll</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
       "<b>E20.WeaponEffect</b> - E20.None<br>" +
       "<b>E20.WeaponAlternateEffects</b> - E20.None<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
+  });
+});
+
+/* _getSpellRollLabel */
+describe("_getSpellRollLabel", () => {
+  test("spell roll", () => {
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+    }
+    const spell = {
+      name: 'Barreling Beam',
+      type: 'spell',
+      system: {
+        description: "Some description",
+      },
+    };
+    const expected = "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
+
+    expect(dice._getSpellRollLabel(skillRollOptions, spell)).toEqual(expected);
+  });
+});
+
+/* _getMagicBaubleRollLabel */
+describe("_getMagicBaubleRollLabel", () => {
+  test("magic bauble roll", () => {
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+    }
+    const magicBauble = {
+      name: "Healer's Salve",
+      type: 'magic bauble',
+      system: {
+        description: "Some description",
+      },
+    };
+    const expected = "<b>E20.RollTypeMagicBauble</b> - Healer's Salve (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
+
+    expect(dice._getMagicBaubleRollLabel(skillRollOptions, magicBauble)).toEqual(expected);
   });
 });
 

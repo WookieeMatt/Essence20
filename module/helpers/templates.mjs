@@ -10,6 +10,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/headers/actor-gijoe-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-megaformZord-header.hbs",
+    "systems/essence20/templates/actor/parts/headers/actor-pony-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-npc-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-pr-header.hbs",
     "systems/essence20/templates/actor/parts/headers/actor-transformer-header.hbs",
@@ -18,6 +19,8 @@ export const preloadHandlebarsTemplates = async function () {
 
     // Actor partials - Misc
     "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs",
+    "systems/essence20/templates/actor/parts/actor-active-effects.hbs",
+    "systems/essence20/templates/actor/parts/actor-alt-mode.hbs",
     "systems/essence20/templates/actor/parts/actor-background.hbs",
     "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs",
     "systems/essence20/templates/actor/parts/actor-common.hbs",
@@ -32,8 +35,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs",
     "systems/essence20/templates/actor/parts/actor-npc-essence-scores.hbs",
     "systems/essence20/templates/actor/parts/actor-pc-skills.hbs",
+    "systems/essence20/templates/actor/parts/actor-spells.hbs",
     "systems/essence20/templates/actor/parts/actor-zord-common.hbs",
-    "systems/essence20/templates/actor/parts/actor-zord-skills.hbs",
     "systems/essence20/templates/actor/parts/actor-zordcombiner.hbs",
     "systems/essence20/templates/actor/parts/actor-vehicle-crew.hbs",
 
@@ -53,6 +56,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/gear/details.hbs",
     "systems/essence20/templates/actor/parts/items/hangUp/container.hbs",
     "systems/essence20/templates/actor/parts/items/hangUp/details.hbs",
+    "systems/essence20/templates/actor/parts/items/magicBauble/container.hbs",
+    "systems/essence20/templates/actor/parts/items/magicBauble/details.hbs",
     "systems/essence20/templates/actor/parts/items/megaformTrait/container.hbs",
     "systems/essence20/templates/actor/parts/items/megaformTrait/details.hbs",
     "systems/essence20/templates/actor/parts/items/origin/container.hbs",
@@ -61,6 +66,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/perk/details.hbs",
     "systems/essence20/templates/actor/parts/items/power/container.hbs",
     "systems/essence20/templates/actor/parts/items/power/details.hbs",
+    "systems/essence20/templates/actor/parts/items/spell/container.hbs",
+    "systems/essence20/templates/actor/parts/items/spell/details.hbs",
     "systems/essence20/templates/actor/parts/items/threatPower/container.hbs",
     "systems/essence20/templates/actor/parts/items/threatPower/details.hbs",
     "systems/essence20/templates/actor/parts/items/trait/container.hbs",
@@ -72,5 +79,6 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/parts/item-description.hbs",
     "systems/essence20/templates/item/parts/item-header.hbs",
     "systems/essence20/templates/item/parts/item-sheet-field.hbs",
+    "systems/essence20/templates/item/parts/item-active-effects.hbs",
   ]);
 };

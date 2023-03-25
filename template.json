@@ -7,7 +7,8 @@
       "vehicle",
       "zord",
       "giJoe",
-      "transformer"
+      "transformer",
+      "pony"
     ],
     "templates": {
       "common": {
@@ -18,7 +19,11 @@
           "min": 0,
           "value": 4
         },
-        "initiative": "d20",
+        "initiative": {
+          "formula": "2d20kl + 0",
+          "modifier": 0,
+          "shift": "d20"
+        },
         "movement": {
           "aerial": 0,
           "ground": 30,
@@ -26,107 +31,154 @@
         },
         "size": "common",
         "skills": {
+          "any": {
+            "spellcasting": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
+            }
+          },
           "strength": {
             "athletics": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "brawn": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "intimidation": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "might": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             }
           },
           "speed": {
             "acrobatics": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "driving": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "finesse": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "infiltration": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "targeting": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             }
           },
           "smarts": {
             "alertness": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "culture": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "science": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "survival": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "technology": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             }
           },
           "social": {
             "animalHandling": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "deception": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "performance": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "persuasion": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             },
             "streetwise": {
               "isSpecialized": false,
               "modifier": 0,
-              "shift": "d20"
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
             }
           }
         }
@@ -135,6 +187,12 @@
         "background": {
           "pronouns": "",
           "role": ""
+        },
+        "base": {
+          "cleverness": 10,
+          "evasion": 10,
+          "toughness": 10,
+          "willpower": 10
         },
         "bonuses": {
           "cleverness": 0,
@@ -280,7 +338,15 @@
       "externalHardpoints": 2,
       "internalHarpoints": 2,
       "transformerFaction": "autobots"
+    },
+    "pony": {
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ]
     }
+
   },
   "Item": {
     "types": [
@@ -291,11 +357,13 @@
       "feature",
       "gear",
       "hangUp",
+      "magicBauble",
       "megaformTrait",
       "origin",
       "perk",
       "power",
       "specialization",
+      "spell",
       "threatPower",
       "trait",
       "weapon",
@@ -333,10 +401,17 @@
       "classification": "light",
       "equipped": false,
       "traits": {
-        "computerized": false,
+        "bulwark": false,
+        "computerized": false, 
         "deflective": false,
+        "enhanceSkill": false,
+        "enviroSealed": false,
+        "exoFrame": false,
+        "modular": false,
         "plating": false,
-        "stealth": false
+        "regal": false,
+        "silent": false,
+        "xenotech": false
       }
     },
     "bond": {
@@ -376,6 +451,14 @@
         "itemDescription"
       ]
     },
+    "magicBauble": {
+      "templates": [
+        "itemDescription"
+      ],
+      "duration": "",
+      "range": "",
+      "spellcastingShift": "d2"
+    },
     "megaformTrait": {
       "templates": [
         "itemDescription"
@@ -412,6 +495,17 @@
       "isSpecialized": true,
       "shift": "d20",
       "skill": "athletics"
+    },
+    "spell": {
+      "templates": [
+        "itemDescription"
+      ],
+      "circle": null,
+      "cost": 0,
+      "duration": "",
+      "isSpecialized": false,
+      "range": 0,
+      "tier": null
     },
     "threatPower": {
       "actionType": "",

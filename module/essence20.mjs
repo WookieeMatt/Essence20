@@ -1,5 +1,6 @@
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
+import { Essence20Combatant } from "./documents/combatant.mjs";
 import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
 import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
@@ -54,6 +55,7 @@ Hooks.once('init', async function () {
   // accessible in global contexts.
   game.essence20 = {
     Essence20Actor,
+    Essence20Combatant,
     Essence20Item,
     rollItemMacro
   };
@@ -71,6 +73,7 @@ Hooks.once('init', async function () {
 
   // Define custom Document classes
   CONFIG.Actor.documentClass = Essence20Actor;
+  CONFIG.Combatant.documentClass = Essence20Combatant;
   CONFIG.Item.documentClass = Essence20Item;
 
   // Register System Settings
