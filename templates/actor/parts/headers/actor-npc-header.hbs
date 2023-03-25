@@ -1,8 +1,12 @@
 {{#>"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
 {{#*inline "secondary-fields"}}
-<div class="resource">
-  <label for="name" class="resource-label">{{localize 'E20.NpcThreatLevel'}}</label>
+<div>
+  <label for="threatLevel" class="resource-label">{{localize 'E20.NpcThreatLevel'}}</label>
   <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
+</div>
+<div>
+  <label for="conditioning" class="resource-label">{{ localize 'E20.ActorConditioning' }}</label>
+  <input type="number" name="system.conditioning" value="{{system.conditioning}}" />
 </div>
 {{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
 {{/inline}}
