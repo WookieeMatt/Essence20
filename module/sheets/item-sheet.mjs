@@ -46,7 +46,7 @@ export class Essence20ItemSheet extends ItemSheet {
     if (actor) {
       context.rollData = actor.getRollData();
     }
-    
+
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.object.effects);
 
@@ -65,11 +65,53 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
-      html.find(".effect-control").click(ev => {
-        if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.");
-          onManageActiveEffect(ev, this.item);
-        });
-        
+    html.find(".effect-control").click(ev => {
+      if (this.item.isOwned) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.");
+      onManageActiveEffect(ev, this.item);
+    });
+
+    html.find(".trait-selector").click(ev => {
+      onManageSelectTrait(ev, this.item);
+    });
+
     // Roll handlers, click handlers, etc. would go here.
   }
+}
+
+/**
+ * Manage Active Effect instances through the Actor Sheet via effect control buttons.
+ * @param {MouseEvent} event      The left-click event on the effect control
+ * @param {Actor|Item} owner      The owning document which manages this effect
+ */
+export async function onManageSelectTrait(event, owner) {
+  event.preventDefault();
+  const a = event.currentTarget;
+  const li = a.closest("li");
+  const template = "systems/essence20/templates/dialog/trait-selector.hbs"
+  const html = await renderTemplate(
+    template,
+    {
+      traits: owner.system.traits,
+    },
+  );
+
+  return new Promise(resolve => {
+    const data = {
+      title: 'E20.TraitDialogTitle',
+      content: html,
+      buttons: {
+        normal: {
+          label: 'E20.TraitDialogConfirmButton',
+          callback: html => resolve({ cancelled: true }),
+        },
+        cancel: {
+          label: 'E20.TraitDialogCancelButton',
+          callback: html => resolve({ cancelled: true }),
+        },
+      },
+      default: "normal",
+      close: () => resolve({ cancelled: true }),
+    };
+    new Dialog(data, null).render(true);
+  });
 }
