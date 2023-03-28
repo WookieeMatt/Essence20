@@ -1,8 +1,8 @@
-<form class="roll-dialog">
+<form>
   {{#each traits as |selected name|}}
-  <div class="flexrow">
+  <div class="flexrow" style="align-items: center;">
     <input class="item-label-checkbox" type="checkbox" name="system.traits.{{name}}" {{checked selected}} />
-    <span class="armor-trait-checkbox-label">{{localize name}}</span>
+    <span class="armor-trait-checkbox-label">{{localize (lookup @root.configTraits name)}}</span>
   </div>
   {{/each}}
 </form>
