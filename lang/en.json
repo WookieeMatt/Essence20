@@ -240,6 +240,7 @@
     "SpellCost": "Cost",
     "SpellDuration": "Duration",
     "SpellRange": "Range",
+    "SpellRollTitle": "Perform This Spell",
     "SpellTier": "Tier",
     "SpellTierElementary": "Elementary",
     "SpellTierSuperior": "Superior",
