@@ -181,6 +181,11 @@
               "shiftUp": 0
             }
           }
+        },
+        "stun": {
+          "max": 4,
+          "min": 0,
+          "value": 0
         }
       },
       "character": {
