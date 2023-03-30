@@ -297,12 +297,6 @@ E20.perkType = {
   origin: "E20.PerkOrigin",
   role: "E20.PerkRole"
 };
-// Game Types
-E20.gameSystem = {
-  powerRangers: "E20.GameSystemPowerRangers",
-  giJoe: "E20.GameSystemGIJoe",
-  transformers: "E20.GameSystemTransformers"
-};
 
 
 /************************************************

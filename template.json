@@ -483,7 +483,6 @@
       "templates": [
         "itemDescription"
       ],
-      "game": "Any",
       "prerequisite": null,
       "type": "General"
     },
