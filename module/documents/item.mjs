@@ -96,9 +96,9 @@ export class Essence20Item extends Item {
     } else if (this.type == 'weapon') {
       const skill = this.system.classification.skill;
       const essence = CONFIG.E20.skillToEssence[skill];
-      const shift = this.actor.system.skills[essence][skill].shift;
-      const upshift = this.actor.system.skills[essence][skill].shiftUp;
-      const downshift = this.actor.system.skills[essence][skill].shiftDown;
+      const shift = this.actor.system.skills[skill].shift;
+      const upshift = this.actor.system.skills[skill].shiftUp;
+      const downshift = this.actor.system.skills[skill].shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,
@@ -117,7 +117,7 @@ export class Essence20Item extends Item {
     } else if (this.type == 'spell') {
       const essence = 'any';
       const skill = 'spellcasting';
-      const shift = this.actor.system.skills.any.spellcasting.shift;
+      const shift = this.actor.system.skills.spellcasting.shift;
       const downshift = this.system.cost;
       const spellDataset = {
         ...dataset,

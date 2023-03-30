@@ -31,155 +31,265 @@
         },
         "size": "common",
         "skills": {
-          "any": {
-            "spellcasting": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            }
+          "acrobatics": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": true,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
           },
-          "strength": {
-            "athletics": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
+          "alertness": {
+            "essence": {
+              "smarts": true,
+              "social": false,
+              "speed": false,
+              "strength": false
             },
-            "brawn": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            },
-            "intimidation": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            },
-            "might": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            }
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
           },
-          "speed": {
-            "acrobatics": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
+          "animalHandling": {
+            "essence": {
+              "smarts": false,
+              "social": true,
+              "speed": false,
+              "strength": false
             },
-            "driving": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            },
-            "finesse": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            },
-            "infiltration": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            },
-            "targeting": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            }
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
           },
-          "smarts": {
-            "alertness": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
+          "athletics": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": false,
+              "strength": true
             },
-            "culture": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            },
-            "science": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            },
-            "survival": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            },
-            "technology": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            }
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
           },
-          "social": {
-            "animalHandling": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
+          "brawn": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": false,
+              "strength": true
             },
-            "deception": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "culture": {
+            "essence": {
+              "smarts": true,
+              "social": false,
+              "speed": false,
+              "strength": false
             },
-            "performance": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "deception": {
+            "essence": {
+              "smarts": false,
+              "social": true,
+              "speed": false,
+              "strength": false
             },
-            "persuasion": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "driving": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": true,
+              "strength": false
             },
-            "streetwise": {
-              "isSpecialized": false,
-              "modifier": 0,
-              "shift": "d20",
-              "shiftDown": 0,
-              "shiftUp": 0
-            }
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "finesse": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": true,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "infiltration": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": true,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "intimidation": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": false,
+              "strength": true
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "might": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": false,
+              "strength": true
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "performance": {
+            "essence": {
+              "smarts": false,
+              "social": true,
+              "speed": false,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "persuasion": {
+            "essence": {
+              "smarts": false,
+              "social": true,
+              "speed": false,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "science": {
+            "essence": {
+              "smarts": true,
+              "social": false,
+              "speed": false,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "spellcasting": {
+            "essence": {
+              "smarts": true,
+              "social": true,
+              "speed": true,
+              "strength": true
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "streetwise": {
+            "essence": {
+              "smarts": false,
+              "social": true,
+              "speed": false,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "survival": {
+            "essence": {
+              "smarts": true,
+              "social": false,
+              "speed": false,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "targeting": {
+            "essence": {
+              "smarts": false,
+              "social": false,
+              "speed": true,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
+          },
+          "technology": {
+            "essence": {
+              "smarts": true,
+              "social": false,
+              "speed": false,
+              "strength": false
+            },
+            "isSpecialized": false,
+            "modifier": 0,
+            "shift": "d20",
+            "shiftDown": 0,
+            "shiftUp": 0
           }
         }
       },
