@@ -400,11 +400,7 @@
       "templates": [
         "itemDescription"
       ],
-      "gameSystem": {
-        "giJoe": false,
-        "powerRanger": false,
-        "transformer": false
-      },
+      "game": "Any",
       "prerequisite": null,
       "type": "General"
     },
