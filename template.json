@@ -448,7 +448,7 @@
     },
     "hangUp": {
       "templates": [
-        "itemDescription"
+        "itemDescription"        
       ]
     },
     "magicBauble": {

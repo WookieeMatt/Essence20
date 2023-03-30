@@ -21,6 +21,44 @@
   ],
   "gridDistance": 5,
   "gridUnits": "ft",
+  "packs": [
+    {
+      "name": "Power Ranger Core Rulebook Hang-Ups",
+      "label": "Power Ranger CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/prhangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "GI Joe Core Rulebook Hang-Ups",
+      "label": "GI Joe CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/gijoehangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "My Little Pony Core Rulebook Hang-Ups",
+      "label": "My Little Pony CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/mlphangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "Transformers Core Rulebook Hang-Ups",
+      "label": "Transformers CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/tfhangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    }
+  ],  
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "power",
   "socket": true,
