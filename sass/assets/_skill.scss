@@ -4,7 +4,6 @@
   font-size: 1.125em;
   align-items: center;
   flex-wrap: nowrap;
-  margin-top: 5px;
 }
 
 .essence20 .skill-header .skill-roll {
@@ -81,7 +80,6 @@
   box-shadow: v.$boxshadow;
   width: 100%;
   justify-content: left;
-  min-width: 200px;
   flex-grow: 0;
   flex-basis: auto;
 }

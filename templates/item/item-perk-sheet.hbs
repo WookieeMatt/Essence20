@@ -3,30 +3,16 @@
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
+    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+  </nav>
+
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    {{!-- Prerequisite --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.PerkPrerequisite'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-
-    {{!-- Game System --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTraits'}}
-    {{#*inline "item-field-inputs"}}
-      <div class="flexcol">
-      {{#each config.gameSystem as |name type|}}
-        <div class="flexrow">
-          <input class="inline-edit item-label-checkbox" type="checkbox" name="system.gameSystem .{{type}}" {{checked (lookup @root.system.gameSystem type)}}/>
-          <span class="armor-trait-checkbox-label">{{localize name}}</span>
-        </div>
-      {{/each}}
-      </div>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-
-    {{!-- Perk Type --}}
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
+          {{!-- Perk Type --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.PerkType'}}
     {{#*inline "item-field-inputs"}}
     <select class="item-field-inputs" name="system.perkType">
@@ -38,9 +24,13 @@
     </select>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-
-    {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+    </div>
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{!-- Effects Section --}}
+      {{> "systems/essence20/templates/item/parts/item-active-effects.hbs"}}
+    </div>
   </section>
 
 </form>

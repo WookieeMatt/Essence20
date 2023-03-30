@@ -1,4 +1,4 @@
-.essence20 .chip {
+.chip {
   border-radius: 10px;
   border: 3px solid;
   border-style: outset;
@@ -10,12 +10,15 @@
   width: fit-content;
   height: fit-content;
   text-size-adjust: 8;
+  white-space: nowrap;
 }
 
-.essence20 .chip-section {
+.chip-section {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
   margin-top: 10px;
   margin-bottom: 10px;
+  flex-wrap: wrap;
+  row-gap: 3px;
 }

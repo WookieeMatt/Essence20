@@ -11,10 +11,11 @@
   border: v.$border;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
+  min-height: 72px;
 }
 
 .essence20 .stats-row {
-  gap: 10px;
+  gap: 6px;
   flex-grow: 0;
   flex-wrap: nowrap;
 }

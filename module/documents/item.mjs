@@ -38,7 +38,25 @@ export class Essence20Item extends Item {
    * @private
    */
   async roll(dataset) {
-    if (this.type == 'perk') {
+    if (dataset.rollType == 'info') {
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${this.type}] ${this.name}`;
+
+      const template = `systems/essence20/templates/actor/parts/items/${this.type}/details.hbs`;
+      const templateData = {
+        config: CONFIG.E20,
+        item: this,
+      }
+
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: await renderTemplate(template, templateData),
+      });
+    } else if (this.type == 'perk') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
@@ -76,20 +94,52 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weapon') {
-      const dataset = { skill: this.system.classification.skill };
-      const skillRollOptions = await this._dice.getSkillRollOptions(dataset, this.actor);
+      const skill = this.system.classification.skill;
+      const essence = CONFIG.E20.skillToEssence[skill];
+      const shift = this.actor.system.skills[essence][skill].shift;
+      const upshift = this.actor.system.skills[essence][skill].shiftUp;
+      const downshift = this.actor.system.skills[essence][skill].shiftDown;
+      const weaponDataset = {
+        ...dataset,
+        shift,
+        skill,
+        upshift,
+        downshift,
+      };
 
-      if (skillRollOptions.cancelled) {
-        return;
-      }
+      this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
 
-      const weapon = this.actor.items.get(this._id);
-      this._dice.rollSkill(dataset, skillRollOptions, this.actor, weapon);
-
-      const classFeature = this.actor.items.get(weapon.system.classFeatureId);
+      // Decrement class feature, if applicable
+      const classFeature = this.actor.items.get(this.system.classFeatureId);
       if (classFeature) {
         classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
       }
+    } else if (this.type == 'spell') {
+      const essence = 'any';
+      const skill = 'spellcasting';
+      const shift = this.actor.system.skills.any.spellcasting.shift;
+      const downshift = this.system.cost;
+      const spellDataset = {
+        ...dataset,
+        essence,
+        shift,
+        skill,
+        downshift,
+      };
+
+      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
+    } else if (this.type == 'magicBauble') {
+      const essence = 'any';
+      const skill = 'spellcasting';
+      const shift = this.system.spellcastingShift;
+      const spellDataset = {
+        ...dataset,
+        essence,
+        shift,
+        skill,
+      };
+
+      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });

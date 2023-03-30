@@ -1,10 +1,12 @@
-<div class="skills-container accordion-wrapper">
+<div class="skills-container accordion-wrapper" style="border-color: {{system.color}};">
   <div class="flex-group-center accordion-label">
     <span>{{localize 'E20.AccordionSkillsTitle'}}</span>
     <a class="item-control"><i class="accordion-icon fas fa-chevron-down"></i></a>
   </div>
 
   {{#each system.skills as |skills essence|}}
+    <div class="skill-separator">{{localize (lookup @root.config.essences essence)}}</div>
+
     {{#each skills as |fields skill|}}
       {{#if (lookup @root.displayedNpcSkills skill)}}
       <div>

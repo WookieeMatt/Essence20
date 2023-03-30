@@ -8,7 +8,7 @@
   {{> "systems/essence20/templates/actor/parts/actor-movement.hbs"}}
 
   {{!-- Strength/Speed --}}
-  <div class="stats-container" style="min-width: fit-content; text-align: center;">
+  <div class="stats-container" style="min-width: fit-content; text-align: center; border-color: {{system.color}};">
     <div class="flexrow flex-group-center">
       <span class="essence-label">{{localize config.essences.strength}}</span>
       <input class="two-digit-input" type="number" name="system.essences.strength"
@@ -21,18 +21,20 @@
   </div>
 </div>
 
-{{!-- Defenses --}}
-{{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
 <div class="npc-row">
-  <div class="npc-column-1">
+  <div class="npc-skills zord">
     {{!-- Skills --}}
     {{> "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs"}}
   </div>
-  <div class="npc-column-2">
+
+  <div class="npc-items zord">
     {{!-- Weapons --}}
-    {{> "systems/essence20/templates/actor/parts/actor-weapons.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
     {{!-- Features --}}
-    {{> "systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.features
-    title='E20.ItemTypeFeaturePlural' dataType='feature'}}
+    {{> "systems/essence20/templates/actor/parts/items/feature/container.hbs"}}
+    {{!-- Megaform Traits --}}
+    {{#ifEquals @root.actor.type 'zord'}}
+    {{> "systems/essence20/templates/actor/parts/items/megaformTrait/container.hbs"}}
+    {{/ifEquals}}
   </div>
 </div>

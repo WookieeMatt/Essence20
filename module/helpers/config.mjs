@@ -4,9 +4,6 @@ export const E20 = {};
  * Defense                                      *
  ***********************************************/
 
-// Baseline value for defenses
-E20.defenseBase = 10;
-
 // Essence-based defenses
 E20.defenses = {
   cleverness: "E20.DefenseCleverness",
@@ -36,6 +33,7 @@ E20.weaponRequirementShifts = {
 E20.weaponSizes = {
   integrated: "E20.WeaponSizeIntegrated",
   sidearm: "E20.WeaponSizeSidearm",
+  light: "E20.WeaponSizeLight",
   medium: "E20.WeaponSizeMedium",
   long: "E20.WeaponSizeLong",
   heavy: "E20.WeaponSizeHeavy",
@@ -60,28 +58,43 @@ E20.weaponTraits = {
   ballistic: "E20.WeaponTraitBallistic",
   blunt: "E20.WeaponTraitBlunt",
   cold: "E20.WeaponTraitCold",
+  combined: " E20.WeaponTraitCombined",
+  computerized: "E20.WeaponTraitComputerized",
   consumable: "E20.WeaponTraitConsumable",
   cover: "E20.WeaponTraitCover",
+  defend: "E20.WeaponTraitDefend",
   electric: "E20.WeaponTraitElectric",
+  electromagnetic: "E20.WeaponTraitElectormagnetic",
   energy: "E20.WeaponTraitEnergy",
   fire: "E20.WeaponTraitFire",
   grapple: "E20.WeaponTraitGrapple",
+  inaccurate: "E20.WeaponTraitInaccurate",
   indirect: "E20.WeaponTraitIndirect",
+  inertial: "E20.WeaponTraitInertial",
   intimidating: "E20.WeaponTraitIntimidating",
   laser: "E20.WeaponTraitLaser",
   maneuver: "E20.WeaponTraitManeuver",
+  martialArts: "E20.WeaponTraitMartialArts",
   mounted: "E20.WeaponTraitMounted",
   multipleTargets: "E20.WeaponTraitMultipleTargets",
   poison: "E20.WeaponTraitPoison",
+  powerWeapon: "E20.WeaponTraitPowerWeapon",
   psychic: "E20.WeaponTraitPsychic",
+  reload: "E20.WeaponTraitReload",
   seeking: "E20.WeaponTraitSeeking",
   sharp: "E20.WeaponTraitSharp",
+  shove: "E20.WeaponTraitShove",
   silent: "E20.WeaponTraitSilent",
+  sniper: "E20.WeaponTraitSniper",
   sonic: "E20.WeaponTraitSonic",
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
   trip: "E20.WeaponTraitTrip",
+  vehicular: "E20.WeaponTraitVehicular",
+  versatile: "E20.WeaponTraitVersatile",
+  void: "E20.WeaponTraitVoid",
   wrecker: "E20.WeaponTraitWrecker",
+  xenotech: "E20.WeaponTraitXenotech",
 }
 
 /************************************************
@@ -99,10 +112,17 @@ E20.armorClassifications = {
 
 // Options for Armor trait
 E20.armorTraits = {
+  bulwark: "E20.ArmorTraitBulwark",
   computerized: "E20.ArmorTraitComputerized",
   deflective: "E20.ArmorTraitDeflective",
+  enhanceSkill: "E20.ArmorTraitEnhanceSkill",
+  enviroSealed: "E20.ArmorTraitEnviroSealed",
+  exoFrame: "E20.ArmorTraitExoFrame",
+  modular: "E20.ArmorTraitModular",
   plating: "E20.ArmorTraitPlating",
+  regal: "E20.ArmorTraitRegal",
   silent: "E20.ArmorTraitSilent",
+  xenotech: "E20.ArmorTraitXenotech",
 };
 
 /************************************************
@@ -111,6 +131,7 @@ E20.armorTraits = {
 
 // Essence names
 E20.essences = {
+  any: "E20.EssenceAny",
   strength: "E20.EssenceStrength",
   speed: "E20.EssenceSpeed",
   smarts: "E20.EssenceSmarts",
@@ -137,6 +158,7 @@ E20.essenceSkills = {
   deception: "E20.EssenceSkillDeception",
   performance: "E20.EssenceSkillPerformance",
   persuasion: "E20.EssenceSkillPersuasion",
+  spellcasting: "E20.EssenceSkillSpellcasting",
   streetwise: "E20.EssenceSkillStreetwise",
 };
 
@@ -160,6 +182,7 @@ E20.skillToEssence = {
   deception: "social",
   performance: "social",
   persuasion: "social",
+  spellcasting: "any",
   streetwise: "social"
 },
 
@@ -283,6 +306,25 @@ E20.gameSystem = {
 
 
 /************************************************
+ * Spells                                       *
+ ***********************************************/
+
+// Options for Spell Tiers
+E20.spellTiers = {
+  elementary: "E20.SpellTierElementary",
+  superior: "E20.SpellTierSuperior",
+  virtuoso: "E20.SpellTierVirtuoso",
+};
+
+//Options for Spell Circles
+E20.spellCircles = {
+  aid: "E20.SpellCircleAid",
+  beam: "E20.SpellCircleBeam",
+  enchantment: "E20.SpellCircleEnchantment",
+  utility: "E20.SpellCircleUtility",
+};
+
+/************************************************
  * Actors                                       *
  ***********************************************/
 
@@ -331,3 +373,12 @@ E20.transformerMode = {
   modeBotMode: "E20.ModeBotMode",
   modeAny: "E20.ModeAny"
 }
+
+/************************************************
+ * Settings                                     *
+ ***********************************************/
+
+E20.pointsNameOptions = {
+  story: "E20.SptNameStory",
+  friendship: "E20.SptNameFriendship",
+};

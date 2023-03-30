@@ -2,12 +2,27 @@
   {{!-- Actor Sheet Header --}}
   {{> "systems/essence20/templates/actor/parts/headers/actor-megaformZord-header.hbs"}}
 
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="combiners">{{ localize "E20.TabCombiners" }}</a>
+  </nav>
+
+  <hr style="border-color: {{system.color}};" />
+
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    {{!-- Zord Common Stats --}}
-    {{> "systems/essence20/templates/actor/parts/actor-zord-common.hbs"}}
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
+      {{!-- Defenses --}}
+      {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
 
-    {{!-- Combiners --}}
-    {{> "systems/essence20/templates/actor/parts/actor-zordcombiner.hbs"}}
+      {{!-- Zord Common Stats --}}
+      {{> "systems/essence20/templates/actor/parts/actor-zord-common.hbs"}}
+    </div>
+
+    <div class="tab combiners flexcol" data-group="primary" data-tab="combiners">
+      {{!-- Combiners --}}
+      {{> "systems/essence20/templates/actor/parts/actor-zordcombiner.hbs"}}
+    </div>
   </section>
 </form>

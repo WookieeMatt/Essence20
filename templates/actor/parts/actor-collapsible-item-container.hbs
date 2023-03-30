@@ -13,10 +13,12 @@
       {{!-- Item label and buttons --}}
       <div class="flexrow item-label">
         <div class="item-image" style="flex-grow: 0;">
-          {{#> roll-button item=item}}
-          {{!-- Custom roll button here, or use default below --}}
-          <a class="rollable" data-roll-type={{item.type}} title="{{localize 'E20.ItemRollTitle'}}"><i class="fas fa-message-lines"></i></a>
-          {{/roll-button}}
+          <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
+            <a class="rollable" data-roll-type="info" title="{{localize 'E20.ItemRollTitle'}}"><i class="fas fa-message-lines"></i></a>
+            {{#> roll-button item=item}}
+            {{!-- Custom roll button here --}}
+            {{/roll-button}}
+          </div>
         </div>
         {{#if (isdefined item.system.equipped)}}
         <div style="flex-grow: 0;">
@@ -44,18 +46,16 @@
         {{!-- Custom expanded details here --}}
         {{/expand-details}}
 
-        <div class="chip-section">
-          {{#> chips item=item}}
-          {{!-- Custom chips here --}}
-          {{/chips}}
-          {{#if item.system.source.book}}
-            {{#if item.system.source.page}}
-            <span class="chip" name="chip.source.book">{{item.system.source.book}}{{concat ' PG ' item.system.source.page}}</span>
-            {{else}}
-            <span class="chip" name="chip.source.book">{{item.system.source.book}}</span>
-            {{/if}}
+        {{#> chips item=item}}
+        {{!-- Custom chips here --}}
+        {{/chips}}
+        {{#if item.system.source.book}}
+          {{#if item.system.source.page}}
+          <span class="chip" name="chip.source.book">{{item.system.source.book}}{{concat ' PG ' item.system.source.page}}</span>
+          {{else}}
+          <span class="chip" name="chip.source.book">{{item.system.source.book}}</span>
           {{/if}}
-        </div>
+        {{/if}}
       </div>
     </li>
     {{/each}}

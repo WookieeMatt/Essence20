@@ -1,10 +1,8 @@
-<div class="stats-container" style="flex-grow: 0; height: 100%;">
-  <div class="flexrow">
-    {{#each system.defenses as |fields defense|}}
-    <div class="resource flexcol">
-      <label class="resource flex-group-center">{{localize (lookup @root.config.defenses defense)}}</label>
-      <input type="number" class="centered-input" name="system.defenses.{{defense}}.value" value="{{fields.value}}" />
-    </div>
-    {{/each}}
+<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+  {{#each system.defenses as |fields defense|}}
+  <div class="flexcol">
+    <label>{{localize (lookup @root.config.defenses defense)}}</label>
+    <input class="centered-input" type="number" name="system.defenses.{{defense}}.value" value="{{fields.value}}" />
   </div>
+  {{/each}}
 </div>

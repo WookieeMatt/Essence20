@@ -4,21 +4,18 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    <div class="sheet-body flexrow">
-      {{!-- Health --}}
-      {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
-      <div class="npc-defenses flex-group-center">
-        <div class="resource flexcol flex-group-center">
-          <span>{{localize 'E20.ActorConditioning'}}</span>
-          <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
-        </div>
+    <div class="npc-row">
+      <div class="npc-defenses">
+        {{!-- Defenses --}}
+        {{> "systems/essence20/templates/actor/parts/actor-npc-defenses.hbs"}}
+      </div>
+      <div class="npc-health">
+        {{!-- Health --}}
+        {{> "systems/essence20/templates/actor/parts/actor-health.hbs"}}
       </div>
     </div>
+
     {{!-- Zord Common Stats --}}
     {{> "systems/essence20/templates/actor/parts/actor-zord-common.hbs"}}
-
-    {{!-- Megaform Traits --}}
-    {{>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.megaformTraits
-    title='E20.ItemTypeMegaformTraitPlural' dataType='megaformTrait'}}
   </section>
 </form>
