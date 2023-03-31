@@ -483,7 +483,8 @@
       "templates": [
         "itemDescription"
       ],
-      "prerequisite": null
+      "prerequisite": null,
+      "type": "general"
     },
     "power": {
       "templates": [
