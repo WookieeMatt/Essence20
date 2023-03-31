@@ -285,6 +285,8 @@
     "ThreatPowerCharges": "Charges",
     "ThreatPowerCost": "Cost",
     "ThreatPowerLimited": "Limited",
+    "TraitSelectorSpecial": "Special (Split with Semi-Colon)",
+    "TraitSelectorUpdate": "Update",
     "TransformerEnergon": "Energon",
     "VehicleCrew": "Crew",
     "VehicleDrivers": "Drivers",
