@@ -11,8 +11,7 @@
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="tab main flexcol" data-group="primary" data-tab="main">     
-      
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
       {{!-- Perk Type --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.PerkType'}}
       {{#*inline "item-field-inputs"}}
@@ -32,6 +31,7 @@
       <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+
       {{!-- Description Section --}}
       {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
     </div>
