@@ -150,7 +150,20 @@ export const migrateActorData = function(actor) {
     // Armor trait -> traits migration
     const trait = item.system.trait;
     if (trait && !item.system.traits[trait]) {
-      updateData[`system.traits`] = {[trait]: true};
+      updateData[`system.traits`] = [trait];
+    }
+
+    // Armor traits string->bool object -> string list migration
+    const traits = item.system.traits;
+    if (traits && traits.constructor == Object) {
+      const traitsArray = [];
+      for (let [trait, traitIsEnabled] of Object.entries(traits)) {
+        if (traitIsEnabled) {
+          traitsArray.push(trait);
+        }
+      }
+
+      updateData[`system.traits`] = traitsArray;
     }
 
     // Armor effect -> bonusToughness migration

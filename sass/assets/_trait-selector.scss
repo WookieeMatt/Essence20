@@ -1,0 +1,14 @@
+@use 'variables' as v;
+
+.trait-selector .trait-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.trait-selector .trait-list li ol.trait-list {
+  margin-left: 1.5em;
+}
+.trait-selector input[type="text"] {
+  height: 24px;
+  margin: 2px;
+}

@@ -405,19 +405,7 @@
       "bonusToughness": 0,
       "classification": "light",
       "equipped": false,
-      "traits": {
-        "bulwark": false,
-        "computerized": false, 
-        "deflective": false,
-        "enhanceSkill": false,
-        "enviroSealed": false,
-        "exoFrame": false,
-        "modular": false,
-        "plating": false,
-        "regal": false,
-        "silent": false,
-        "xenotech": false
-      }
+      "traits": []
     },
     "bond": {
       "templates": [
