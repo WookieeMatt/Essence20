@@ -1,0 +1,13 @@
+{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.magicBaubles title="E20.ItemTypeMagicBaublePlural" dataType="magicBauble"}}
+  {{#*inline "roll-button" item}}
+    <a class="rollable" data-roll-type="magicBauble"  title="{{localize 'E20.MagicBaubleTitle'}}"><i class="fas fa-dice-d20"></i></a>
+  {{/inline}}
+
+  {{#*inline "expand-details" item}}
+    {{> "systems/essence20/templates/actor/parts/items/magicBauble/details.hbs"}}
+  {{/inline}}
+
+  {{#*inline "item-label" item}}
+    {{item.name}}
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}

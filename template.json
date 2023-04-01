@@ -31,6 +31,15 @@
         },
         "size": "common",
         "skills": {
+          "any": {
+            "spellcasting": {
+              "isSpecialized": false,
+              "modifier": 0,
+              "shift": "d20",
+              "shiftDown": 0,
+              "shiftUp": 0
+            }
+          },
           "strength": {
             "athletics": {
               "isSpecialized": false,
@@ -172,6 +181,11 @@
               "shiftUp": 0
             }
           }
+        },
+        "stun": {
+          "max": 4,
+          "min": 0,
+          "value": 0
         }
       },
       "character": {
@@ -348,6 +362,7 @@
       "feature",
       "gear",
       "hangUp",
+      "magicBauble",
       "megaformTrait",
       "origin",
       "perk",
@@ -391,10 +406,17 @@
       "classification": "light",
       "equipped": false,
       "traits": {
-        "computerized": false,
+        "bulwark": false,
+        "computerized": false, 
         "deflective": false,
+        "enhanceSkill": false,
+        "enviroSealed": false,
+        "exoFrame": false,
+        "modular": false,
         "plating": false,
-        "stealth": false
+        "regal": false,
+        "silent": false,
+        "xenotech": false
       }
     },
     "bond": {
@@ -433,6 +455,14 @@
       "templates": [
         "itemDescription"
       ]
+    },
+    "magicBauble": {
+      "templates": [
+        "itemDescription"
+      ],
+      "duration": "",
+      "range": "",
+      "spellcastingShift": "d2"
     },
     "megaformTrait": {
       "templates": [
@@ -483,7 +513,8 @@
       "templates": [
         "itemDescription"
       ],
-      "prerequisite": null
+      "prerequisite": null,
+      "type": "general"
     },
     "power": {
       "templates": [
@@ -500,11 +531,12 @@
       "templates": [
         "itemDescription"
       ],
-      "tier": null,
       "circle": null,
       "cost": 0,
       "duration": "",
-      "range": 0
+      "isSpecialized": false,
+      "range": 0,
+      "tier": null
     },
     "threatPower": {
       "actionType": "",

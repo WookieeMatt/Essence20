@@ -3,7 +3,7 @@
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
 
-    {{!-- Tabs --}}
+  {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
     <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
@@ -48,14 +48,14 @@
       {{!-- Duration --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.SpellDuration'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.duration" value="{{system.duration}}" />
+      <input type="text" name="system.duration" value="{{system.duration}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
     
       {{!-- Range --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.SpellRange'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.range" value="{{system.range}}" />
+      <input type="text" name="system.range" value="{{system.range}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
@@ -66,5 +66,6 @@
       {{!-- Effects Section --}}
       {{> "systems/essence20/templates/item/parts/item-active-effects.hbs"}}
     </div>
-  </section>  
+  </section>
+
 </form>

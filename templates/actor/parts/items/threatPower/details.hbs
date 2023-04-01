@@ -1,11 +1,13 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
-{{#if item.system.actionType}}
-<span class="chip" name="chip.actionType">{{item.system.actionType}}</span>
-{{/if}}
-{{#if item.system.cost}}
-<span class="chip" name="chip.cost">{{localize 'E20.ThreatPowerCost'}}: {{item.system.cost}}</span>
-{{/if}}
-{{#if item.system.limited}}
-<span class="chip" name="chip.limited">{{localize 'E20.ThreatPowerLimited'}}</span>
-{{/if}}
+<div class="chip-section">
+  {{#if item.system.actionType}}
+  <span class="chip" name="chip.actionType">{{item.system.actionType}}</span>
+  {{/if}}
+  {{#if item.system.cost}}
+  <span class="chip" name="chip.cost">{{localize 'E20.ThreatPowerCost'}}: {{item.system.cost}}</span>
+  {{/if}}
+  {{#if item.system.limited}}
+  <span class="chip" name="chip.limited">{{localize 'E20.ThreatPowerLimited'}}</span>
+  {{/if}}
+</div>
