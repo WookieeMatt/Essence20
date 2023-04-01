@@ -1,2 +1,10 @@
-<div>{{localize 'E20.PerkPrerequisite'}}: {{item.system.prerequisite}}</div>
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+
+<div class="chip-section">
+  {{#if item.system.prerequisite}}
+  <span class="chip" name="chip.perk.prerequisite">{{localize 'E20.PerkPrerequisite'}}: {{item.system.prerequisite}}</span>
+  {{/if}}
+  {{#if item.system.type}}
+  <span class="chip" name="chip.perk.type">{{localize 'E20.PerkType'}}: {{localize (lookup @root.config.perkType item.system.type)}}</span>
+  {{/if}}
+</div>
