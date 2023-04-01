@@ -9,7 +9,7 @@ export default class TraitSelector extends DocumentSheet {
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "trait-selector",
       classes: ["essence20", "trait-selector", "subconfig"],
-      title: "Actor Trait Selection",
+      title: game.i18n.localize("E20.TraitSelectorTitle"),
       template: "systems/essence20/templates/dialog/trait-selector.hbs",
       width: 320,
       height: "auto",
