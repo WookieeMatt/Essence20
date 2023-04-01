@@ -60,7 +60,7 @@
     }
   ],  
   "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "power",
+  "secondaryTokenAttribute": "stun",
   "socket": true,
   "url": "https://github.com/WookieeMatt/Essence20",
   "manifest": "https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json",

@@ -181,6 +181,11 @@
               "shiftUp": 0
             }
           }
+        },
+        "stun": {
+          "max": 4,
+          "min": 0,
+          "value": 0
         }
       },
       "character": {
@@ -483,7 +488,8 @@
       "templates": [
         "itemDescription"
       ],
-      "prerequisite": null
+      "prerequisite": null,
+      "type": "general"
     },
     "power": {
       "templates": [
