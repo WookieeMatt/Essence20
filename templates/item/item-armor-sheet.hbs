@@ -33,10 +33,13 @@
 
     {{!-- Traits --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTraits'}}
-    {{#*inline "item-field-inputs"}}
+    {{#*inline "item-field-edit"}}
       <a class="trait-selector" style="flex-grow: 0;" data-options="armor" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
+    {{/inline}}
+
+    {{#*inline "item-field-inputs"}}
       <div class="chip-section">
         {{#each item.system.traits as |trait|}}
         <span class="chip" name="chip.armor.traits.{{type}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
