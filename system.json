@@ -23,10 +23,10 @@
   "gridUnits": "ft",
   "packs": [
     {
-      "name": "Power Ranger Core Rulebook Hang-Ups",
-      "label": "Power Ranger CRB Hang-Ups",
+      "name": "Across the Stars Hang-Ups",
+      "label": "Across the Stars Hang-Ups",
       "system": "essence20",
-      "path": "packs/prhangups.db",
+      "path": "packs/atshangups.db",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -45,6 +45,33 @@
       "label": "My Little Pony CRB Hang-Ups",
       "system": "essence20",
       "path": "packs/mlphangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "Power Ranger Core Rulebook Hang-Ups",
+      "label": "Power Ranger CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/prhangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "Power Ranger Core Rulebook Perks",
+      "label": "Power Ranger CRB Perks",
+      "system": "essence20",
+      "path": "packs/prperks.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "Sgt Slaughter Sourcebook Hang-Ups",
+      "label": "Sgt Slaughter Sourcebook Hang-Ups",
+      "system": "essence20",
+      "path": "packs/ssshangups.db",
       "type": "Item",
       "private": false,
       "flags": {}
