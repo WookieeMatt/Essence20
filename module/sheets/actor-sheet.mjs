@@ -59,8 +59,6 @@ export class Essence20ActorSheet extends ActorSheet {
       this._prepareDisplayedNpcSkills(context);
     }
 
-    this._prepareSkills(context);
-
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
 
@@ -71,16 +69,6 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prepareZords(context);
 
     return context;
-  }
-
-  _prepareSkills () {
-    const smarts = ["athletics", "brawn", "intimidation", "might"];
-    const speed = ["acrobatics", "driving", "finesse", "infiltration", "targeting"];
-    const social = ["alertness", "culture", "science", "survival", "technology"];
-    const strength = ["animalHandling", "deception", "performance", "persuasion", "streetwise"];
-    const skillsByEssence = [smarts, speed, social, strength];
-
-    context.skillsByEssence = skillsByEssence;
   }
 
   /**

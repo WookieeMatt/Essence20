@@ -9,8 +9,8 @@
       <span>{{localize 'E20.ActorConditioning'}}</span>
       <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
     </div>
-    {{#each skillsByEssence.strength as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='strength' skill=skill fields=fields}}
+    {{#each @root.config.skillsByEssence.strength as |skill|}}
+      {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
     {{/each}}
   </div>
 
@@ -20,8 +20,8 @@
       <span class="essence-label">{{localize config.essences.speed}}</span>
       <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
     </div>
-    {{#each skillsByEssence.speed as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='speed' skill=skill fields=fields}}
+    {{#each @root.config.skillsByEssence.speed as |skill|}}
+      {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
     {{/each}}
   </div>
 
@@ -31,8 +31,8 @@
       <span class="essence-label">{{localize config.essences.smarts}}</span>
       <input class="two-digit-input" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" />
     </div>
-    {{#each skillsByEssence.smarts as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='smarts' skill=skill fields=fields}}
+   {{#each @root.config.skillsByEssence.smarts as |skill|}}
+      {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
     {{/each}}
   </div>
 
@@ -42,8 +42,8 @@
       <span class="essence-label">{{localize config.essences.social}}</span>
       <input class="two-digit-input" type="number" name="system.essences.social" value="{{system.essences.social}}" />
     </div>
-    {{#each skillsByEssence.social as |fields skill|}}
-    {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=fields}}
+    {{#each @root.config.skillsByEssence.social as |skill|}}
+      {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
     {{/each}}
   </div>
 </div>
