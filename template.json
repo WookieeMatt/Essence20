@@ -359,6 +359,7 @@
       "armor",
       "bond",
       "classFeature",
+      "contact",
       "feature",
       "gear",
       "hangUp",
@@ -420,6 +421,14 @@
         "max": 0,
         "value": 0
       }
+    },
+    "contact": {
+      "templates": [
+        "itemDescription"
+      ],
+      "gainingTheContact": "",
+      "allegiancePoints": 0,
+      "perks": ""
     },
     "feature": {
       "templates": [
