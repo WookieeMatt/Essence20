@@ -54,11 +54,9 @@ describe("rollSkill", () => {
     }
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
