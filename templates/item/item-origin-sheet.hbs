@@ -26,7 +26,7 @@
       </div>
       <div>
         {{!-- Origin Essences --}}
-        {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssences'}}
+        {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceScoreIncrease'}}
         {{#*inline "item-field-edit"}}
           <a class="trait-selector" style="flex-grow: 0;" data-options="essence" data-target="system.origin.essence" title="{{localize 'E20.TraitSelector'}}">
             <i class="fas fa-edit"></i>
@@ -45,7 +45,7 @@
       
       <div>
         {{!-- Origin Skills --}}
-        {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginSkills'}}
+        {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginSkill'}}
         {{#*inline "item-field-edit"}}
           <a class="trait-selector" style="flex-grow: 0;" data-options="skill" data-target="system.origin.skills" title="{{localize 'E20.TraitSelector'}}">
             <i class="fas fa-edit"></i>
@@ -62,7 +62,7 @@
         {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
       </div>
       {{!-- Base Aerial Movement--}}
-      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBaseAerialMovement'}}
+      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.BaseAerialMovement'}}
       {{#*inline "item-field-inputs"}}
       <input type="text" name="system.origin.baseAerialMovement" value="{{system.origin.baseAerialMovement}}" />
       {{/inline}}
@@ -76,7 +76,7 @@
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
             {{!-- Base Aquatic Movement --}}
-      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBaseGroundMovement'}}
+      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.BaseGroundMovement'}}
       {{#*inline "item-field-inputs"}}
       <input type="text" name="system.origin.baseGroundMovement" value="{{system.origin.baseGroundMovement}}" />
       {{/inline}}
