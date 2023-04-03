@@ -299,6 +299,14 @@ E20.lightRanges = {
   dim: "E20.LightRangeDim",
 };
 
+// Perk types
+E20.perkType = {
+  general: "E20.PerkGeneral",
+  influence: "E20.PerkInfluence",
+  origin: "E20.PerkOrigin",
+  role: "E20.PerkRole"
+};
+
 /************************************************
  * Spells                                       *
  ***********************************************/

@@ -22,7 +22,7 @@
   "gridDistance": 5,
   "gridUnits": "ft",
   "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "power",
+  "secondaryTokenAttribute": "stun",
   "socket": true,
   "url": "https://github.com/WookieeMatt/Essence20",
   "manifest": "https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json",
@@ -40,6 +40,6 @@
     "verified": "10"
   },
   "flags": {
-    "needsMigrationVersion": "3.0.3"
+    "needsMigrationVersion": "3.1.0"
   }
 }

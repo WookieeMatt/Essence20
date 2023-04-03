@@ -291,6 +291,11 @@
             "shiftDown": 0,
             "shiftUp": 0
           }
+        },
+        "stun": {
+          "max": 4,
+          "min": 0,
+          "value": 0
         }
       },
       "character": {
@@ -510,19 +515,7 @@
       "bonusToughness": 0,
       "classification": "light",
       "equipped": false,
-      "traits": {
-        "bulwark": false,
-        "computerized": false, 
-        "deflective": false,
-        "enhanceSkill": false,
-        "enviroSealed": false,
-        "exoFrame": false,
-        "modular": false,
-        "plating": false,
-        "regal": false,
-        "silent": false,
-        "xenotech": false
-      }
+      "traits": []
     },
     "bond": {
       "templates": [
@@ -593,7 +586,8 @@
       "templates": [
         "itemDescription"
       ],
-      "prerequisite": null
+      "prerequisite": null,
+      "type": "general"
     },
     "power": {
       "templates": [
