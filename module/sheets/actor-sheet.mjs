@@ -87,11 +87,9 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Include any skills not d20, are specialized, or have a modifier
-    for (let [_, skills] of Object.entries(context.system.skills)) {
-      for (let [skill, fields] of Object.entries(skills)) {
-        if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
-          displayedNpcSkills[skill] = true;
-        }
+    for (let [skill, fields] of Object.entries(context.system.skills)) {
+      if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
+        displayedNpcSkills[skill] = true;
       }
     }
 
