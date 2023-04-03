@@ -56,8 +56,10 @@ export class Dice {
    * Handles rolling initiative.
    * @param {Actor} actor   The actor performing the roll.
    */
-  async handleInitiativeRoll(actor) {
-    const skillRollOptions = await this.getSkillRollOptions({ shift: actor.system.initiative.shift}, this.actor);
+  async handleInitiativeRoll(dataset, actor) {
+    let datasetcontainer = dataset;
+    datasetcontainer.shift = actor.system.initiative.shift;
+    const skillRollOptions = await this.getSkillRollOptions(datasetcontainer, this.actor);
     const finalShift = this._getFinalShift(skillRollOptions, actor.system.initiative.shift)
     actor.system.initiative.formula = this._getFormula(false, skillRollOptions, finalShift, actor.system.initiative.modifier);
     actor.rollInitiative({ createCombatants: true });
