@@ -22,7 +22,9 @@
         "initiative": {
           "formula": "2d20kl + 0",
           "modifier": 0,
-          "shift": "d20"
+          "shift": "d20",
+          "shiftDown": 0,
+          "shiftUp": 0
         },
         "movement": {
           "aerial": 0,
