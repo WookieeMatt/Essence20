@@ -2,9 +2,7 @@
   <span>{{localize 'E20.ActorInitiative'}}</span>
   <div class="initiative-dropdown flex-group-center">
     <div class="item-image">
-      <a class="rollable" data-roll-type="initiative">
-        <i class="fas fa-dice-d20"></i>
-      </a>
+      <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
     </div>
     <select name="system.initiative.shift">
       {{selectOptions @root.config.initiativeShifts selected=system.initiative.shift localize=true}}
