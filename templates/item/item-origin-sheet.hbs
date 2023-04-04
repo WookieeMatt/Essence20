@@ -23,8 +23,8 @@
 
       {{#*inline "item-field-inputs"}}
         <div class="chip-section">
-          {{#each item.system.origin.essence as |name|}}
-          <span class="chip" name="chip.origin.essence.{{type}}">{{localize (lookup @root.config.essences name)}}</span>
+          {{#each item.system.essences as |name|}}
+          <span class="chip" name="chip.essences.{{type}}">{{localize (lookup @root.config.essences name)}}</span>
           {{/each}}
         </div>
       {{/inline}}
@@ -42,8 +42,8 @@
 
       {{#*inline "item-field-inputs"}}
         <div class="chip-section">
-          {{#each item.system.origin.skills as |name|}}
-          <span class="chip" name="chip.origin.skills.{{type}}">{{localize (lookup @root.config.essenceSkills name)}}</span>
+          {{#each item.system.skills as |name|}}
+          <span class="chip" name="chip.skills.{{type}}">{{localize (lookup @root.config.essenceSkills name)}}</span>
           {{/each}}
         </div>
       {{/inline}}
