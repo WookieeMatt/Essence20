@@ -463,7 +463,7 @@
       ],
       "essences": [],
       "skills": [],
-      "startingHealth": "",
+      "startingHealth": 0,
       "bonusSkillLevels": "",
       "groundMovement": "",
       "languages": "",
