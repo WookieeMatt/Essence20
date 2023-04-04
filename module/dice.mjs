@@ -369,7 +369,7 @@ export class Dice {
    * @returns {String}   The resultant shift.
    * @private
    */
-  _getFormula(isSpecialized, skillRollOptions, finalShift, modifier) {
+  _getFormula(isSpecialized, skillRollOptions, finalShift, modifier) { 
     const edge = skillRollOptions.edge;
     const snag = skillRollOptions.snag;
     const shiftOperands = [];
