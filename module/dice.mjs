@@ -262,7 +262,7 @@ export class Dice {
    * Create final shift from actor skill shift + skill roll options.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {String} initialShift   The initial shift of the skill being rolled.
-   * @param {Object} shiftList   The result of getSkillRollOptions().
+   * @param {Object} shiftList   The list of available shifts to use for this roll.
    * @returns {String}   The resultant shift.
    * @private
    */
