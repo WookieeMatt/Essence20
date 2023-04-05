@@ -215,6 +215,19 @@ E20.initiativeShifts = {
   "3d6": "3d6",
 };
 
+// Shifts that are available for rolling initiative in list form
+E20.initiativeShiftList = [
+  "d20",
+  "d2",
+  "d4",
+  "d6",
+  "d8",
+  "d10",
+  "d12",
+  "2d8",
+  "3d6",
+];
+
 // Shifts that are available for rolling skills and require making a roll
 E20.skillRollableShifts = [
   "d2",

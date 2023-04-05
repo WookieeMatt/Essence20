@@ -64,7 +64,7 @@ export class Dice {
     };
 
     const skillRollOptions = await this.getSkillRollOptions(dataset);
-    const finalShift = this._getFinalShift(skillRollOptions, actor.system.initiative.shift)
+    const finalShift = this._getFinalShift(skillRollOptions, actor.system.initiative.shift, this._config.initiativeShiftList)
     actor.system.initiative.formula = this._getFormula(skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier);
     actor.rollInitiative({ createCombatants: true });
   }
@@ -262,16 +262,19 @@ export class Dice {
    * Create final shift from actor skill shift + skill roll options.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {String} initialShift   The initial shift of the skill being rolled.
+   * @param {Object} shiftList   The result of getSkillRollOptions().
    * @returns {String}   The resultant shift.
    * @private
    */
-  _getFinalShift(skillRollOptions, initialShift) {
+  _getFinalShift(skillRollOptions, initialShift, shiftList=this._config.skillShiftList) {
     // Apply the skill roll options dialog shifts to the roller's normal shift
-    const optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
-    const initialShiftIndex = this._config.skillShiftList.findIndex(s => s == initialShift);
-    const finalShiftIndex = Math.max(0, Math.min(this._config.skillShiftList.length - 1, initialShiftIndex - optionsShiftTotal));
+    const initialShiftIndex = shiftList.findIndex(s => s == initialShift);
+    const finalShiftIndex = Math.max(
+      0,
+      Math.min(shiftList.length - 1, initialShiftIndex + skillRollOptions.shiftUp - skillRollOptions.shiftDown)
+    );
 
-    return this._config.skillShiftList[finalShiftIndex];
+    return shiftList[finalShiftIndex];
   }
 
   /**
