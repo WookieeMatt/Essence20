@@ -32,7 +32,7 @@
         "size": "common",
         "skills": {
           "acrobatics": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": true,
@@ -45,7 +45,7 @@
             "shiftUp": 0
           },
           "alertness": {
-            "essence": {
+            "essences": {
               "smarts": true,
               "social": false,
               "speed": false,
@@ -58,7 +58,7 @@
             "shiftUp": 0
           },
           "animalHandling": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": true,
               "speed": false,
@@ -71,7 +71,7 @@
             "shiftUp": 0
           },
           "athletics": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": false,
@@ -84,7 +84,7 @@
             "shiftUp": 0
           },
           "brawn": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": false,
@@ -97,7 +97,7 @@
             "shiftUp": 0
           },
           "culture": {
-            "essence": {
+            "essences": {
               "smarts": true,
               "social": false,
               "speed": false,
@@ -110,7 +110,7 @@
             "shiftUp": 0
           },
           "deception": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": true,
               "speed": false,
@@ -123,7 +123,7 @@
             "shiftUp": 0
           },
           "driving": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": true,
@@ -136,7 +136,7 @@
             "shiftUp": 0
           },
           "finesse": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": true,
@@ -149,7 +149,7 @@
             "shiftUp": 0
           },
           "infiltration": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": true,
@@ -162,7 +162,7 @@
             "shiftUp": 0
           },
           "intimidation": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": false,
@@ -175,7 +175,7 @@
             "shiftUp": 0
           },
           "might": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": false,
@@ -188,7 +188,7 @@
             "shiftUp": 0
           },
           "performance": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": true,
               "speed": false,
@@ -201,7 +201,7 @@
             "shiftUp": 0
           },
           "persuasion": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": true,
               "speed": false,
@@ -214,7 +214,7 @@
             "shiftUp": 0
           },
           "science": {
-            "essence": {
+            "essences": {
               "smarts": true,
               "social": false,
               "speed": false,
@@ -227,7 +227,7 @@
             "shiftUp": 0
           },
           "spellcasting": {
-            "essence": {
+            "essences": {
               "smarts": true,
               "social": true,
               "speed": true,
@@ -240,7 +240,7 @@
             "shiftUp": 0
           },
           "streetwise": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": true,
               "speed": false,
@@ -253,7 +253,7 @@
             "shiftUp": 0
           },
           "survival": {
-            "essence": {
+            "essences": {
               "smarts": true,
               "social": false,
               "speed": false,
@@ -266,7 +266,7 @@
             "shiftUp": 0
           },
           "targeting": {
-            "essence": {
+            "essences": {
               "smarts": false,
               "social": false,
               "speed": true,
@@ -279,7 +279,7 @@
             "shiftUp": 0
           },
           "technology": {
-            "essence": {
+            "essences": {
               "smarts": true,
               "social": false,
               "speed": false,
