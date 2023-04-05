@@ -191,8 +191,7 @@ E20.skillsByEssence = {
   "strength": ["athletics", "brawn", "intimidation", "might"],
   "speed":  ["acrobatics", "driving", "finesse", "infiltration", "targeting"],
   "smarts": ["alertness", "culture", "science", "survival", "technology"],
-    "social": ["animalHandling", "deception", "performance", "persuasion", "streetwise"]
-  
+  "social": ["animalHandling", "deception", "performance", "persuasion", "streetwise"]
 };
 
 /************************************************
