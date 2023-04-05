@@ -140,9 +140,10 @@ E20.essences = {
 
 //Origin Essence Names
 E20.originEssences = {
-  none: "e20EssenceNone",
-  any: "E20.EssenceAny",
-  ...E20.essences,
+  strength: "E20.EssenceStrength",
+  speed: "E20.EssenceSpeed",
+  smarts: "E20.EssenceSmarts",
+  social: "E20.EssenceSocial",
 }
 
 // Actor Essence skills
