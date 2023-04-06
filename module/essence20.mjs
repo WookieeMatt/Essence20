@@ -82,7 +82,7 @@ const statusEffects = [
     id: 'unconscious',
     label: 'E20.StatusUnconscious'
   }
-]; 
+];
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -141,7 +141,7 @@ Hooks.once('init', async function () {
    * @type {String}
    */
   CONFIG.Combat.initiative = {
-    formula: "@initiativeFormula",
+    formula: "@initiative.formula",
   };
 
   // Define custom Document classes

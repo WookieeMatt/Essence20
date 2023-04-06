@@ -63,11 +63,13 @@ export class Dice {
       downshift: actor.system.initiative.shiftDown,
     };
 
-    const skillRollOptions = await this.getSkillRollOptions(dataset);
+    const skillRollOptions = await this.getSkillRollOptions(dataset, this.actor);
     const finalShift = this._getFinalShift(
       skillRollOptions, actor.system.initiative.shift, this._config.initiativeShiftList)
-    actor.system.initiative.formula = this._getFormula(
-      skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier);
+    await actor.update({
+      "system.initiative.formula": this._getFormula(
+        skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier),
+    });
     actor.rollInitiative({ createCombatants: true });
   }
 
