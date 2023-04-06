@@ -1,28 +1,25 @@
 <form class="roll-dialog">
-   <div>
-      {{localize 'E20.RollDialogShiftUp'}}
-      <input type="number" name="shiftUp" value={{shiftUp}} />
-    </div>
-    <div>
-      {{localize 'E20.RollDialogShiftDown'}}
-      <input type="number" name="shiftDown" value={{shiftDown}} />
-    </div>
-    <div>
-      <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize
-      'E20.RollDialogSnag'}}
-      <input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize
-      'E20.RollDialogNormal'}}
-      <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize
-      'E20.RollDialogEdge'}}
-    </div>
-    <div>
-      <label>
-        <input type="checkbox" name="isSpecialized" {{checked isSpecialized}} />
-        <span>{{localize 'E20.RollIsSpecialized'}}</span>
-      </label>
-    </div>
-    <div>
-      {{localize 'E20.RollDialogTimesToRoll'}}
-      <input type="number" name="timesToRoll" value=1 />
-    </div>
-  </form>
+  <div>
+    {{localize 'E20.RollDialogShiftUp'}}
+    <input type="number" name="shiftUp" value={{shiftUp}} />
+  </div>
+  <div>
+    {{localize 'E20.RollDialogShiftDown'}}
+    <input type="number" name="shiftDown" value={{shiftDown}} />
+  </div>
+  <div>
+    <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize 'E20.RollDialogSnag'}}
+    <input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize 'E20.RollDialogNormal'}}
+    <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}
+  </div>
+  <div>
+    <label>
+      <input type="checkbox" name="isSpecialized" {{checked isSpecialized}} />
+      <span>{{localize 'E20.RollIsSpecialized'}}</span>
+    </label>
+  </div>
+  <div>
+    {{localize 'E20.RollDialogTimesToRoll'}}
+    <input type="number" name="timesToRoll" value=1 />
+  </div>
+</form>

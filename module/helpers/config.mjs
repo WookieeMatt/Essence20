@@ -215,6 +215,19 @@ E20.initiativeShifts = {
   "3d6": "3d6",
 };
 
+// Shifts that are available for rolling initiative in list form
+E20.initiativeShiftList = [
+  "3d6",
+  "2d8",
+  "d12",
+  "d10",
+  "d8",
+  "d6",
+  "d4",
+  "d2",
+  "d20",
+];
+
 // Shifts that are available for rolling skills and require making a roll
 E20.skillRollableShifts = [
   "d2",
@@ -288,6 +301,14 @@ E20.effectShapes = {
 E20.lightRanges = {
   bright: "E20.LightRangeBright",
   dim: "E20.LightRangeDim",
+};
+
+// Perk types
+E20.perkType = {
+  general: "E20.PerkGeneral",
+  influence: "E20.PerkInfluence",
+  origin: "E20.PerkOrigin",
+  role: "E20.PerkRole"
 };
 
 /************************************************

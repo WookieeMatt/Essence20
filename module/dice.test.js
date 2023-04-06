@@ -436,6 +436,27 @@ describe("_getFinalShift", () => {
     expect(dice._getFinalShift(skillRollOptions, initialShift)).toEqual(expected);
   });
 
+  test("shifting down the lowest shift", () => {
+    const skillRollOptions = {
+      shiftUp: 0,
+      shiftDown: 1,
+    }
+    const expected = 'd20';
+    const shiftList = ['d2', 'd20'];
+    expect(dice._getFinalShift(skillRollOptions, initialShift, shiftList)).toEqual(expected);
+  });
+
+  test("shifting up the highest shift", () => {
+    const skillRollOptions = {
+      shiftUp: 1,
+      shiftDown: 0,
+    }
+    const initialShift = 'd2';
+    const expected = 'd2';
+    const shiftList = ['d2', 'd20'];
+    expect(dice._getFinalShift(skillRollOptions, initialShift, shiftList)).toEqual(expected);
+  });
+
   test("equal shifts cancelling", () => {
     const skillRollOptions = {
       shiftUp: 1,
