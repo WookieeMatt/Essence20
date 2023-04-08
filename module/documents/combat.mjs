@@ -7,7 +7,9 @@ export class Essence20Combat extends Combat {
     this._dice = new Dice(E20, ChatMessage);
   }
 
-  /** Roll initiative for PCs and NPCs using their prepared roll methods */
+  /**
+  * @override
+  */
   async rollInitiative(ids, options) {
     const combatants = ids.flatMap(
       (id) => this.combatants.get(id) ?? []
