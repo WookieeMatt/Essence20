@@ -70,7 +70,7 @@ export class Dice {
       "system.initiative.formula": this._getFormula(
         skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier),
     });
-    actor.rollInitiative({ createCombatants: true });
+    // actor.rollInitiative({ createCombatants: true });
   }
 
   /**
