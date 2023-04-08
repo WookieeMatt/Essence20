@@ -6,9 +6,9 @@ export class Dice {
    * @param {i18n} i18n   The i18n to use for text localization.
    */
   constructor(config, chatMessage, i18n=null) {
-    this._i18n = i18n;
     this._config = config;
     this._chatMessage = chatMessage;
+    this._i18n = i18n;
   }
 
   /**
@@ -63,10 +63,10 @@ export class Dice {
   }
 
   /**
-   * Handles rolling initiative.
+   * Prepares the given actor for rolling initiative.
    * @param {Actor} actor   The actor performing the roll.
    */
-  async handleInitiativeRoll(actor) {
+  async prepareInitiativeRoll(actor) {
     const dataset = {
       shift: actor.system.initiative.shift,
       upshift: actor.system.initiative.shiftUp,

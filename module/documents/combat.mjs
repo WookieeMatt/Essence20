@@ -16,7 +16,7 @@ export class Essence20Combat extends Combat {
     );
 
     for (let combatant of combatants) {
-      await this._dice.handleInitiativeRoll(combatant.actor);
+      await this._dice.prepareInitiativeRoll(combatant.actor);
       await super.rollInitiative([combatant.id], options);
     }
   }
