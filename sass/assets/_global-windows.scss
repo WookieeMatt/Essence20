@@ -35,6 +35,9 @@
   min-height: auto;
 }
 
+.directory-list .actor {
+  min-width: fit-content;
+}
 
 .dialog .dialog-buttons button.default {
   color: v.$textcolor1;
@@ -94,4 +97,9 @@
 
 .window-app textarea {
   color: v.$textcolor1;
+}
+
+.essence20 .actor .powerRanger {
+  min-width: 860px;
+  min-width: auto;
 }
