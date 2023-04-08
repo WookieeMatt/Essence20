@@ -1,9 +1,12 @@
 import { Dice } from "../dice.mjs";
 import { E20 } from "../helpers/config.mjs";
 
-const DICE = new Dice(E20, ChatMessage);
-
 export class Essence20Combat extends Combat {
+  constructor(data, context) {
+    super(data, context);
+    this._dice = new Dice(E20, ChatMessage);
+  }
+
   /** Roll initiative for PCs and NPCs using their prepared roll methods */
   async rollInitiative(ids, options) {
     const combatants = ids.flatMap(
@@ -11,7 +14,7 @@ export class Essence20Combat extends Combat {
     );
 
     for (let combatant of combatants) {
-      await DICE.handleInitiativeRoll(combatant.actor);
+      await this._dice.handleInitiativeRoll(combatant.actor);
       await super.rollInitiative([combatant.id], options);
     }
   }
