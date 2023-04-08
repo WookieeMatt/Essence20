@@ -82,7 +82,7 @@ const statusEffects = [
     id: 'unconscious',
     label: 'E20.StatusUnconscious'
   }
-]; 
+];
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -102,7 +102,7 @@ function runMigrations() {
     return;
   }
 
-  const NEEDS_MIGRATION_VERSION = game.system.flags.needsMigrationVersion
+  const NEEDS_MIGRATION_VERSION = "4.0.0"
 
   // Get the current version, or set it if not present
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");

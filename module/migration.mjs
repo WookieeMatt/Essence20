@@ -85,7 +85,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
@@ -110,6 +110,25 @@ export const migrateActorData = function(actor) {
       "shift": actor.system.initiative
     };
   }
+
+  //Migrate Skills
+  if (actor.system.skills.strength) {
+    const essences = actor.system.skills
+    for (let i=1; i<essences.length; i++ ){
+      const skills = eval(`actor.system.${essences[i]}`);
+      for (let j=1; j<skills.length; i++) {
+        console.log(eval(`actor.system.${essences[i]}.${skills[j]}`))
+        updateData [`system.skills.${skills[j]}`] ={
+          "isSpecialized": actor.system[essences[i]][skills[j]].isSpecialized,
+          "modifier": actor.system[essences[i]][skills[j]].modifier,
+          "shift": actor.system[essences[i]][skills[j]].shift,
+          "shiftDown": actor.system[essences[i]][skills[j]].shiftDown,
+          "shiftUp": actor.system[essences[i]][skills[j]].shiftUp
+        }
+      }
+    }
+  }
+
 
   // Migrate Owned Items
   if (!actor.items) {
