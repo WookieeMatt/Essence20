@@ -14,19 +14,25 @@ export class Dice {
   /**
    * Localizes the given text.
    * @param {String} text   The text to localize.
+   * @param {Object} fmtVars   Optional formatting variables.
    * @returns {String}   The localized text.
    * @private
    */
-  _localize(text) {
-    return this._i18n ? this._i18n.localize(text) : game.i18n.localize(text);
+  _localize(text, fmtVars=null) {
+    if (fmtVars) {
+      return this._i18n ? this._i18n.format(text, fmtVars) : game.i18n.format(text, fmtVars);
+    } else {
+      return this._i18n ? this._i18n.localize(text) : game.i18n.localize(text);
+    }
   }
 
   /**
    * Displays the dialog used for skill and specialization rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Actor} actor   The actor performing the roll.
    * @returns {Promise<Dialog>}   The dialog to be displayed.
    */
-  async getSkillRollOptions(dataset) {
+  async getSkillRollOptions(dataset, actor) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
     const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
     const html = await renderTemplate(
@@ -43,7 +49,7 @@ export class Dice {
 
     return new Promise(resolve => {
       const data = {
-        title: this._localize('E20.RollDialogTitle'),
+        title: this._localize('E20.RollDialogTitle', {actor: actor.name}),
         content: html,
         buttons: {
           normal: {
@@ -73,7 +79,7 @@ export class Dice {
       downshift: actor.system.initiative.shiftDown,
     };
 
-    const skillRollOptions = await this.getSkillRollOptions(dataset, this.actor);
+    const skillRollOptions = await this.getSkillRollOptions(dataset, actor);
     const finalShift = this._getFinalShift(
       skillRollOptions, actor.system.initiative.shift, this._config.initiativeShiftList)
     await actor.update({
@@ -201,7 +207,7 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    */
   async handleSkillItemRoll(dataset, actor, item) {
-      const skillRollOptions = await this.getSkillRollOptions(dataset);
+      const skillRollOptions = await this.getSkillRollOptions(dataset, actor);
 
       if (skillRollOptions.cancelled) {
         return;
