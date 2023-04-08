@@ -1,7 +1,7 @@
 import { Dice } from "../dice.mjs";
 import { E20 } from "../helpers/config.mjs";
 
-const DICE = new Dice(game.i18n, E20, ChatMessage);
+const DICE = new Dice(E20, ChatMessage);
 
 export class Essence20Combat extends Combat {
   /** Roll initiative for PCs and NPCs using their prepared roll methods */
@@ -11,7 +11,7 @@ export class Essence20Combat extends Combat {
     );
 
     for (let combatant of combatants) {
-      DICE.handleInitiativeRoll(combatant.actor);
+      await DICE.handleInitiativeRoll(combatant.actor);
       await super.rollInitiative([combatant.id], options);
     }
   }
