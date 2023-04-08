@@ -5,50 +5,51 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     {{!-- Starting Health --}}
-    <div>
-      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginStartingHealth'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.startingHealth" value="{{system.startingHealth}}" />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-    </div>
-    <div>
-      {{!-- Origin Essences --}}
-      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceScoreIncrease'}}
-      {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="essence" data-target="system.essences" title="{{localize 'E20.TraitSelector'}}">
-          <i class="fas fa-edit"></i>
-        </a>
-      {{/inline}}
-
-      {{#*inline "item-field-inputs"}}
-        <div class="chip-section">
+        {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginStartingHealth'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="number" class="flex-group-right" name="system.startingHealth" value="{{system.startingHealth}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    
+        {{!-- Origin Essences --}}
+         {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceScoreIncrease'}}
+        
+         {{#*inline "item-field-edit"}}
+          <a class="trait-selector" style="flex-grow: 0;" data-options="essence" data-target="system.essences"
+            title="{{localize 'E20.TraitSelector'}}">
+            <i class="fas fa-edit"></i>
+             </a>
+          {{/inline}}        
+      
+      
+        {{#*inline "item-field-inputs"}}
+        <div class="flex-group-right chip-section">
           {{#each item.system.essences as |name|}}
           <span class="chip" name="chip.essences.{{type}}">{{localize (lookup @root.config.essences name)}}</span>
           {{/each}}
         </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-    </div>
-      
-    <div>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+     
+
       {{!-- Origin Skills --}}
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginSkill'}}
       {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="skill" data-target="system.skills" title="{{localize 'E20.TraitSelector'}}">
-          <i class="fas fa-edit"></i>
-        </a>
+      <a class="trait-selector" style="flex-grow: 0;" data-options="skill" data-target="system.skills"
+        title="{{localize 'E20.TraitSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
       {{/inline}}
 
       {{#*inline "item-field-inputs"}}
-        <div class="chip-section">
-          {{#each item.system.skills as |name|}}
-          <span class="chip" name="chip.skills.{{type}}">{{localize (lookup @root.config.essenceSkills name)}}</span>
-          {{/each}}
-        </div>
+      <div class="flex-group-right chip-section">
+        {{#each item.system.skills as |name|}}
+        <span class="chip" name="chip.skills.{{type}}">{{localize (lookup @root.config.essenceSkills name)}}</span>
+        {{/each}}
+      </div>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-    </div>
+    
     {{!-- Base Aerial Movement--}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.BaseAerialMovement'}}
     {{#*inline "item-field-inputs"}}
@@ -69,11 +70,11 @@
     <input type="text" name="system.baseGroundMovement" value="{{system.baseGroundMovement}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-      
+
     {{!-- Languages --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginLanguages'}}
     {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.languages" value="{{system.languages}}"/>
+    <input type="text" name="system.languages" value="{{system.languages}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
@@ -90,7 +91,7 @@
     <textarea rows="5" name="system.benefit.description">{{system.benefit.description}}</textarea>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-    
+
     {{!--Description--}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
   </section>
