@@ -18,7 +18,7 @@ export class Dice {
    * @private
    */
   _localize(text) {
-    return this._i18n ? this._localize(text) : game.i18n.localize(text);
+    return this._i18n ? this._i18n.localize(text) : game.i18n.localize(text);
   }
 
   /**
