@@ -71,4 +71,22 @@ export class Essence20ItemSheet extends ItemSheet {
       onManageSelectTrait(ev, this.item);
     });
   }
+
+  // async _onDrop(event, data) {
+  //   console.log ("Got Here");
+  //   if (!this.actor.isOwner) return false;
+
+  //   // Get the target actor
+  //   let sourceItem = await fromUuid(data.uuid);
+  //   if (!sourceItem) return false;
+
+  //   // Handles dropping Zords onto Megaform Zords
+  //   if (this.item.type == "perk") {
+  //     console.log("Got Here!");
+
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
 }
