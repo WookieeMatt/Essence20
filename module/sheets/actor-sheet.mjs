@@ -8,7 +8,7 @@ import { Dice } from "../dice.mjs";
 export class Essence20ActorSheet extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
-    this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
+    this._dice = new Dice(CONFIG.E20, ChatMessage);
   }
 
   /** @override */
@@ -383,7 +383,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
       this._dice.rollSkill(dataset, skillRollOptions, this.actor);
     } else if (rollType == 'initiative') {
-      this._dice.handleInitiativeRoll(this.actor);
+      this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);

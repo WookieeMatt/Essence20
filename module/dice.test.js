@@ -11,7 +11,7 @@ const chatMessage = jest.mock();
 chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
-const dice = new Dice(new Mocki18n, E20, chatMessage);
+const dice = new Dice(E20, chatMessage, new Mocki18n);
 
 /* rollSkill */
 describe("rollSkill", () => {

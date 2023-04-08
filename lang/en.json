@@ -230,7 +230,7 @@
     "RollDialogShiftUp": "Shift up",
     "RollDialogSnag": "Snag",
     "RollDialogTimesToRoll": "Times to roll",
-    "RollDialogTitle": "Configure your skill roll",
+    "RollDialogTitle": "{actor} skill roll",
     "RollIsSpecialized": "Specialized",
     "RollRepeatText": "Roll {index} of {total}",
     "RollRollingFor": "Rolling for",
