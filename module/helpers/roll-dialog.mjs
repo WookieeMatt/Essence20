@@ -1,11 +1,11 @@
+import { E20 } from "./config.mjs";
+
 export class RollDialog {
   /**
    * RollDialog constructor.
    * @param {i18n} i18n   The i18n to use for text localization.
-   * @param {Object} config   The config to use for constants.
    */
-  constructor(config, i18n=null) {
-    this._config = config;
+  constructor(i18n=null) {
     this._i18n = i18n;
   }
 
@@ -32,7 +32,7 @@ export class RollDialog {
    */
   async getSkillRollOptions(dataset, actor) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
+    const snag = E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(dataset.shift);
     const html = await renderTemplate(
       template,
       {

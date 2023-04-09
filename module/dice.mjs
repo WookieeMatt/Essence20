@@ -1,13 +1,13 @@
+import { E20 } from "./helpers/config.mjs";
+
 export class Dice {
   /**
    * Dice constructor.
-   * @param {Object} config   The config to use for constants.
    * @param {ChatMessage} chatMessage   The ChatMessage to use.
    * @param {RollDialog} rollDialog   The RollDialog to use.
    * @param {i18n} i18n   The i18n to use for text localization.
    */
-  constructor(config, chatMessage, rollDialog, i18n=null) {
-    this._config = config;
+  constructor(chatMessage, rollDialog, i18n=null) {
     this._chatMessage = chatMessage;
     this._rollDialog = rollDialog;
     this._i18n = i18n;
@@ -41,7 +41,7 @@ export class Dice {
 
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);
     const finalShift = this._getFinalShift(
-      skillRollOptions, actor.system.initiative.shift, this._config.initiativeShiftList)
+      skillRollOptions, actor.system.initiative.shift, E20.initiativeShiftList)
     await actor.update({
       "system.initiative.formula": this._getFormula(
         skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier),
@@ -58,7 +58,7 @@ export class Dice {
   rollSkill(dataset, skillRollOptions, actor, item) {
     const rolledSkill = dataset.skill;
     const actorSkillData = actor.getRollData().skills;
-    const rolledEssence = dataset.essence || this._config.skillToEssence[rolledSkill];
+    const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const initialShift = dataset.shift || actorSkillData[rolledEssence][rolledSkill].shift;
     const completeDataset = {
       ...dataset,
@@ -90,8 +90,8 @@ export class Dice {
     }
 
     // Auto success rules let the player choose to roll, which uses the best dice pool
-    if (this._config.autoSuccessShifts.includes(finalShift)) {
-      finalShift = this._config.skillRollableShifts[this._config.skillRollableShifts.length - 1];
+    if (E20.autoSuccessShifts.includes(finalShift)) {
+      finalShift = E20.skillRollableShifts[E20.skillRollableShifts.length - 1];
     }
 
     const isSpecialized = dataset.isSpecialized === 'true' || skillRollOptions.isSpecialized;
@@ -139,7 +139,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = dataset.isSpecialized === 'true'
       ? dataset.specializationName
-      : this._localize(this._config.essenceSkills[rolledSkill]);
+      : this._localize(E20.essenceSkills[rolledSkill]);
     const rollingForStr = this._localize('E20.RollRollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
@@ -171,7 +171,7 @@ export class Dice {
    */
   _getWeaponRollLabel(dataset, skillRollOptions, actor, weapon) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = this._localize(this._config.essenceSkills[rolledSkill]);
+    const rolledSkillStr = this._localize(E20.essenceSkills[rolledSkill]);
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
     const alternateEffectsStr = this._localize('E20.WeaponAlternateEffects');
@@ -229,7 +229,7 @@ export class Dice {
    * @returns {String}   The resultant shift.
    * @private
    */
-  _getFinalShift(skillRollOptions, initialShift, shiftList=this._config.skillShiftList) {
+  _getFinalShift(skillRollOptions, initialShift, shiftList=E20.skillShiftList) {
     // Apply the skill roll options dialog shifts to the roller's normal shift
     const optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
     const initialShiftIndex = shiftList.findIndex(s => s == initialShift);
@@ -252,7 +252,7 @@ export class Dice {
   _handleAutoFail(skillShift, label, actor) {
     let autoFailed = false;
 
-    if (this._config.autoFailShifts.includes(skillShift)) {
+    if (E20.autoFailShifts.includes(skillShift)) {
       const chatData = {
         speaker: this._chatMessage.getSpeaker({ actor }),
       };
@@ -346,7 +346,7 @@ export class Dice {
     if (finalShift != 'd20') {
       if (isSpecialized) {
         // For specializations, keep adding dice until you reach your shift level
-        for (const shift of this._config.skillRollableShifts) {
+        for (const shift of E20.skillRollableShifts) {
           shiftOperands.push(shift);
           if (shift == finalShift) {
             break;

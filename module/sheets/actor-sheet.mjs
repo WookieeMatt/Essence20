@@ -9,7 +9,7 @@ import { RollDialog } from "../helpers/roll-dialog.mjs";
 export class Essence20ActorSheet extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
-    this._dice = new Dice(CONFIG.E20, ChatMessage, new RollDialog(CONFIG.E20));
+    this._dice = new Dice(ChatMessage, new RollDialog());
   }
 
   /** @override */

@@ -1,5 +1,4 @@
 import { Dice } from "./dice.mjs";
-import { E20 } from "./helpers/config.mjs";
 import { jest } from '@jest/globals'
 
 class Mocki18n {
@@ -12,7 +11,7 @@ chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
 const rollDialog = jest.mock();
-const dice = new Dice(E20, chatMessage, rollDialog, new Mocki18n);
+const dice = new Dice(chatMessage, rollDialog, new Mocki18n);
 
 /* rollSkill */
 describe("rollSkill", () => {
