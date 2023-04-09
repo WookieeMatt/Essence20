@@ -112,15 +112,12 @@ export const migrateActorData = function(actor) {
   }
 
   //Migrate Skills
-  console.log("Got Here");
   if (actor.system.skills.strength) {
     console.log("running skills migration");
     const skillsForEssences = actor.system.skills
-    console.log(skillsForEssences);
     for (const [essence, skillsForEssence] of Object.entries(skillsForEssences)) {
       for (const [skill, fields] of Object.entries(skillsForEssence)) {
-        console.log(fields)
-        updateData [`system.skills[skill]`] = {
+        updateData [`system.skills.${skill}`] = {
           "isSpecialized": fields.isSpecialized,
           "modifier": fields.modifier,
           "shift": fields.shift,
@@ -129,6 +126,7 @@ export const migrateActorData = function(actor) {
         }
       }
     }
+    console.log (updateData);
   }
 
 
