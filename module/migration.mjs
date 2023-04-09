@@ -85,7 +85,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
@@ -114,7 +114,7 @@ export const migrateActorData = function(actor) {
   //Migrate Skills
   if (actor.system.skills.strength) {
     const skillsForEssences = actor.system.skills
-    const essenceList = ["strength", "speed", "smarts", "social"];
+    const essenceList = ["any", "strength", "speed", "smarts", "social"];
     let newSkills = {};
     for (const [essence, skillsForEssence] of Object.entries(skillsForEssences)) {
       if (essenceList.includes(essence)) {
