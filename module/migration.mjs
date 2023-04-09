@@ -17,6 +17,11 @@ export const migrateWorld = async function() {
         console.log(`Migrating Actor document ${actor.name}`);
         console.log(updateData);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
+        await actor.update({"system.skills.-=strength": null});
+        await actor.update({"system.skills.-=smarts": null});
+        await actor.update({"system.skills.-=social": null});
+        await actor.update({"system.skills.-=speed": null});
+        await actor.update({"system.skills.-=any": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Actor ${actor.name}: ${err.message}`;
@@ -85,7 +90,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
