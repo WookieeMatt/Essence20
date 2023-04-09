@@ -114,9 +114,10 @@ export const migrateActorData = function(actor) {
   //Migrate Skills
   if (actor.system.skills.strength) {
     const skillsForEssences = actor.system.skills
+    const essenceList = ["strength", "speed", "smarts", "social"];
     let newSkills = {};
     for (const [essence, skillsForEssence] of Object.entries(skillsForEssences)) {
-      if (essence == "strength" || "speed" || "smarts" || "social"){
+      if (essenceList.includes(essence)) {
         for (const [skill, fields] of Object.entries(skillsForEssence)) {
           newSkills[skill] = {
             "isSpecialized": fields.isSpecialized,
