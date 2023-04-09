@@ -6,12 +6,48 @@ class Mocki18n {
   format(text, _) { return text; }
 }
 
+class MockRollDialog {
+  getSkillRollOptions(dataset, actor) {
+    return {
+      edge: false,
+      shiftDown: 0,
+      shiftUp: 0,
+      snag: false,
+      isSpecialized: false,
+      timesToRoll: 1,
+    }
+  }
+}
+
 const chatMessage = jest.mock();
 chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
-const rollDialog = jest.mock();
-const dice = new Dice(chatMessage, rollDialog, new Mocki18n);
+const rollDialog = new MockRollDialog();
+const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
+
+/* prepareInitiativeRoll */
+describe("prepareInitiativeRoll", () => {
+  const mockActor = jest.mock();
+
+  test("normal initiative roll", async () => {
+    mockActor.system = {};
+    mockActor.system.initiative = {
+      formula: "2d20kl + 0",
+      modifier: 0,
+      shift: "d20",
+      shiftDown: 0,
+      shiftUp: 0
+    };
+
+    mockActor.update = jest.fn();
+    await dice.prepareInitiativeRoll(mockActor);
+
+    expect(mockActor.update).toHaveBeenCalledWith({
+      "system.initiative.formula": "d20 + 0",
+    });
+  });
+});
 
 /* rollSkill */
 describe("rollSkill", () => {
@@ -40,7 +76,7 @@ describe("rollSkill", () => {
         },
       },
     }));
-    dice._rollSkillHelper = jest.fn()
+    dice._rollSkillHelper = jest.fn();
 
     dice.rollSkill(dataset, skillRollOptions, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
