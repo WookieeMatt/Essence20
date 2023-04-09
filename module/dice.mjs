@@ -3,11 +3,13 @@ export class Dice {
    * Dice constructor.
    * @param {Object} config   The config to use for constants.
    * @param {ChatMessage} chatMessage   The ChatMessage to use.
+   * @param {RollDialog} rollDialog   The RollDialog to use.
    * @param {i18n} i18n   The i18n to use for text localization.
    */
-  constructor(config, chatMessage, i18n=null) {
+  constructor(config, chatMessage, rollDialog, i18n=null) {
     this._config = config;
     this._chatMessage = chatMessage;
+    this._rollDialog = rollDialog;
     this._i18n = i18n;
   }
 
@@ -27,48 +29,6 @@ export class Dice {
   }
 
   /**
-   * Displays the dialog used for skill and specialization rolls.
-   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
-   * @param {Actor} actor   The actor performing the roll.
-   * @returns {Promise<Dialog>}   The dialog to be displayed.
-   */
-  async getSkillRollOptions(dataset, actor) {
-    const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
-    const html = await renderTemplate(
-      template,
-      {
-        shiftUp: dataset.upshift || 0,
-        shiftDown: dataset.downshift || 0,
-        isSpecialized: dataset.isSpecialized === 'true',
-        snag,
-        edge: false,
-        normal: !snag
-      }
-    );
-
-    return new Promise(resolve => {
-      const data = {
-        title: this._localize('E20.RollDialogTitle', {actor: actor.name}),
-        content: html,
-        buttons: {
-          normal: {
-            label: this._localize('E20.RollDialogRollButton'),
-            callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
-          },
-          cancel: {
-            label: this._localize('E20.RollDialogCancelButton'),
-            callback: html => resolve({ cancelled: true }),
-          },
-        },
-        default: "normal",
-        close: () => resolve({ cancelled: true }),
-      };
-      new Dialog(data, null).render(true);
-    });
-  }
-
-  /**
    * Prepares the given actor for rolling initiative.
    * @param {Actor} actor   The actor performing the roll.
    */
@@ -79,29 +39,13 @@ export class Dice {
       downshift: actor.system.initiative.shiftDown,
     };
 
-    const skillRollOptions = await this.getSkillRollOptions(dataset, actor);
+    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);
     const finalShift = this._getFinalShift(
       skillRollOptions, actor.system.initiative.shift, this._config.initiativeShiftList)
     await actor.update({
       "system.initiative.formula": this._getFormula(
         skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier),
     });
-  }
-
-  /**
-   * Processes options for the skill and specialization roll dialog.
-   * @returns {Object}   The processed roll options.
-   * @private
-   */
-  _processSkillRollOptions(form) {
-    return {
-      edge: form.snagEdge.value == 'edge',
-      shiftDown: parseInt(form.shiftDown.value),
-      shiftUp: parseInt(form.shiftUp.value),
-      snag: form.snagEdge.value == 'snag',
-      isSpecialized: form.isSpecialized.checked,
-      timesToRoll: parseInt(form.timesToRoll.value),
-    }
   }
 
   /**
@@ -207,13 +151,13 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    */
   async handleSkillItemRoll(dataset, actor, item) {
-      const skillRollOptions = await this.getSkillRollOptions(dataset, actor);
+    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset);
 
-      if (skillRollOptions.cancelled) {
-        return;
-      }
+    if (skillRollOptions.cancelled) {
+      return;
+    }
 
-      this.rollSkill(dataset, skillRollOptions, actor, item);
+    this.rollSkill(dataset, skillRollOptions, actor, item);
   }
 
   /**
