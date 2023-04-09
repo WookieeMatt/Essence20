@@ -40,12 +40,19 @@ export class Dice {
     };
 
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);
+
+    if (skillRollOptions.cancelled) {
+      return false;
+    }
+
     const finalShift = this._getFinalShift(
       skillRollOptions, actor.system.initiative.shift, E20.initiativeShiftList)
     await actor.update({
       "system.initiative.formula": this._getFormula(
         skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier),
     });
+
+    return true;
   }
 
   /**
