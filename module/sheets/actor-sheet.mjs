@@ -8,7 +8,7 @@ import { Dice } from "../dice.mjs";
 export class Essence20ActorSheet extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
-    this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
+    this._dice = new Dice(CONFIG.E20, ChatMessage);
   }
 
   /** @override */
@@ -67,7 +67,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare Zords for MFZs
     this._prepareZords(context);
-    
+
     return context;
   }
 
@@ -143,9 +143,11 @@ export class Essence20ActorSheet extends ActorSheet {
     const altModes = [];
     const armors = [];
     const bonds = [];
+    const contacts = [];
     const features = []; // Used by Zords
     const gears = [];
     const hangUps = [];
+    const magicBaubles = [];
     const megaformTraits = [];
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
@@ -159,7 +161,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const classFeaturesById = {};
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
-    
+
     // // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
@@ -178,6 +180,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'bond':
           bonds.push(i);
           break;
+        case 'contact':
+          contacts.push(i);
+          break;
         case 'feature':
           features.push(i);
           break;
@@ -186,6 +191,9 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
         case 'hangUp':
           hangUps.push(i);
+          break;
+        case 'magicBauble':
+          magicBaubles.push(i);
           break;
         case 'megaformTrait':
           megaformTraits.push(i);
@@ -227,6 +235,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.altModes = altModes;
     context.armors = armors;
     context.bonds = bonds;
+    context.contacts = contacts;
     context.classFeatures = classFeatures;
     context.classFeaturesById = classFeaturesById;
     context.equippedArmorEvasion = equippedArmorEvasion;
@@ -234,6 +243,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
+    context.magicBaubles = magicBaubles;
     context.megaformTraits = megaformTraits;
     context.origins = origins;
     context.perks = perks;
@@ -373,7 +383,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
       this._dice.rollSkill(dataset, skillRollOptions, this.actor);
     } else if (rollType == 'initiative') {
-      this._dice.handleInitiativeRoll(this.actor);
+      this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);
@@ -388,7 +398,7 @@ export class Essence20ActorSheet extends ActorSheet {
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
 
-      if (item) return item.roll();
+      if (item) return item.roll(dataset);
     }
   }
 
