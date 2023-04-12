@@ -1,22 +1,38 @@
 export class Dice {
   /**
    * Dice constructor.
-   * @param {i18n} i18n   The i18n to use for text localization.
    * @param {Object} config   The config to use for constants.
    * @param {ChatMessage} chatMessage   The ChatMessage to use.
+   * @param {i18n} i18n   The i18n to use for text localization.
    */
-  constructor(i18n, config, chatMessage) {
-    this._i18n = i18n;
+  constructor(config, chatMessage, i18n=null) {
     this._config = config;
     this._chatMessage = chatMessage;
+    this._i18n = i18n;
+  }
+
+  /**
+   * Localizes the given text.
+   * @param {String} text   The text to localize.
+   * @param {Object} fmtVars   Optional formatting variables.
+   * @returns {String}   The localized text.
+   * @private
+   */
+  _localize(text, fmtVars=null) {
+    if (fmtVars) {
+      return this._i18n ? this._i18n.format(text, fmtVars) : game.i18n.format(text, fmtVars);
+    } else {
+      return this._i18n ? this._i18n.localize(text) : game.i18n.localize(text);
+    }
   }
 
   /**
    * Displays the dialog used for skill and specialization rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Actor} actor   The actor performing the roll.
    * @returns {Promise<Dialog>}   The dialog to be displayed.
    */
-  async getSkillRollOptions(dataset) {
+  async getSkillRollOptions(dataset, actor) {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
     const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
     const html = await renderTemplate(
@@ -33,15 +49,15 @@ export class Dice {
 
     return new Promise(resolve => {
       const data = {
-        title: this._i18n.localize('E20.RollDialogTitle'),
+        title: this._localize('E20.RollDialogTitle', {actor: actor.name}),
         content: html,
         buttons: {
           normal: {
-            label: this._i18n.localize('E20.RollDialogRollButton'),
+            label: this._localize('E20.RollDialogRollButton'),
             callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
           },
           cancel: {
-            label: this._i18n.localize('E20.RollDialogCancelButton'),
+            label: this._localize('E20.RollDialogCancelButton'),
             callback: html => resolve({ cancelled: true }),
           },
         },
@@ -53,14 +69,23 @@ export class Dice {
   }
 
   /**
-   * Handles rolling initiative.
+   * Prepares the given actor for rolling initiative.
    * @param {Actor} actor   The actor performing the roll.
    */
-  async handleInitiativeRoll(actor) {
-    const skillRollOptions = await this.getSkillRollOptions({ shift: actor.system.initiative.shift}, this.actor);
-    const finalShift = this._getFinalShift(skillRollOptions, actor.system.initiative.shift)
-    actor.system.initiative.formula = this._getFormula(false, skillRollOptions, finalShift, actor.system.initiative.modifier);
-    actor.rollInitiative({ createCombatants: true });
+  async prepareInitiativeRoll(actor) {
+    const dataset = {
+      shift: actor.system.initiative.shift,
+      upshift: actor.system.initiative.shiftUp,
+      downshift: actor.system.initiative.shiftDown,
+    };
+
+    const skillRollOptions = await this.getSkillRollOptions(dataset, actor);
+    const finalShift = this._getFinalShift(
+      skillRollOptions, actor.system.initiative.shift, this._config.initiativeShiftList)
+    await actor.update({
+      "system.initiative.formula": this._getFormula(
+        skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier),
+    });
   }
 
   /**
@@ -170,8 +195,8 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = dataset.isSpecialized === 'true'
       ? dataset.specializationName
-      : this._i18n.localize(this._config.essenceSkills[rolledSkill]);
-    const rollingForStr = this._i18n.localize('E20.RollRollingFor')
+      : this._localize(this._config.essenceSkills[rolledSkill]);
+    const rollingForStr = this._localize('E20.RollRollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
 
@@ -182,7 +207,7 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    */
   async handleSkillItemRoll(dataset, actor, item) {
-      const skillRollOptions = await this.getSkillRollOptions(dataset);
+      const skillRollOptions = await this.getSkillRollOptions(dataset, actor);
 
       if (skillRollOptions.cancelled) {
         return;
@@ -202,12 +227,12 @@ export class Dice {
    */
   _getWeaponRollLabel(dataset, skillRollOptions, actor, weapon) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = this._i18n.localize(this._config.essenceSkills[rolledSkill]);
-    const attackRollStr = this._i18n.localize('E20.RollTypeAttack');
-    const effectStr = this._i18n.localize('E20.WeaponEffect');
-    const alternateEffectsStr = this._i18n.localize('E20.WeaponAlternateEffects');
-    const classFeatureStr = this._i18n.localize('ITEM.TypeClassfeature');
-    const noneStr = this._i18n.localize('E20.None');
+    const rolledSkillStr = this._localize(this._config.essenceSkills[rolledSkill]);
+    const attackRollStr = this._localize('E20.RollTypeAttack');
+    const effectStr = this._localize('E20.WeaponEffect');
+    const alternateEffectsStr = this._localize('E20.WeaponAlternateEffects');
+    const classFeatureStr = this._localize('ITEM.TypeClassfeature');
+    const noneStr = this._localize('E20.None');
     const classFeatureId = weapon.system.classFeatureId;
 
     let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`
@@ -227,10 +252,10 @@ export class Dice {
    * @private
    */
   _getSpellRollLabel(skillRollOptions, spell) {
-    const rolledSkillStr = this._i18n.localize('E20.EssenceSkillSpellcasting');
-    const spellRollStr = this._i18n.localize('E20.RollTypeSpell');
-    const descStr = this._i18n.localize('E20.ItemDescription');
-    const noneStr = this._i18n.localize('E20.None');
+    const rolledSkillStr = this._localize('E20.EssenceSkillSpellcasting');
+    const spellRollStr = this._localize('E20.RollTypeSpell');
+    const descStr = this._localize('E20.ItemDescription');
+    const noneStr = this._localize('E20.None');
 
     let label = `<b>${spellRollStr}</b> - ${spell.name} (${rolledSkillStr})`
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
@@ -240,10 +265,10 @@ export class Dice {
   }
 
   _getMagicBaubleRollLabel(skillRollOptions, magicBauble) {
-    const rolledSkillStr = this._i18n.localize('E20.EssenceSkillSpellcasting');
-    const magicBaubleRollStr = this._i18n.localize('E20.RollTypeMagicBauble');
-    const descStr = this._i18n.localize('E20.ItemDescription');
-    const noneStr = this._i18n.localize('E20.None');
+    const rolledSkillStr = this._localize('E20.EssenceSkillSpellcasting');
+    const magicBaubleRollStr = this._localize('E20.RollTypeMagicBauble');
+    const descStr = this._localize('E20.ItemDescription');
+    const noneStr = this._localize('E20.None');
 
     let label = `<b>${magicBaubleRollStr}</b> - ${magicBauble.name} (${rolledSkillStr})`
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
@@ -256,16 +281,20 @@ export class Dice {
    * Create final shift from actor skill shift + skill roll options.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {String} initialShift   The initial shift of the skill being rolled.
+   * @param {Object} shiftList   The list of available shifts to use for this roll.
    * @returns {String}   The resultant shift.
    * @private
    */
-  _getFinalShift(skillRollOptions, initialShift) {
+  _getFinalShift(skillRollOptions, initialShift, shiftList=this._config.skillShiftList) {
     // Apply the skill roll options dialog shifts to the roller's normal shift
     const optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
-    const initialShiftIndex = this._config.skillShiftList.findIndex(s => s == initialShift);
-    const finalShiftIndex = Math.max(0, Math.min(this._config.skillShiftList.length - 1, initialShiftIndex - optionsShiftTotal));
+    const initialShiftIndex = shiftList.findIndex(s => s == initialShift);
+    const finalShiftIndex = Math.max(
+      0,
+      Math.min(shiftList.length - 1, initialShiftIndex - optionsShiftTotal)
+    );
 
-    return this._config.skillShiftList[finalShiftIndex];
+    return shiftList[finalShiftIndex];
   }
 
   /**
@@ -285,10 +314,10 @@ export class Dice {
       };
       switch (skillShift) {
         case 'autoFail':
-          label += ` ${this._i18n.localize('E20.RollAutoFail')}`;
+          label += ` ${this._localize('E20.RollAutoFail')}`;
           break;
         case 'fumble':
-          label += ` ${this._i18n.localize('E20.RollAutoFailFumble')}`;
+          label += ` ${this._localize('E20.RollAutoFailFumble')}`;
           break;
       }
       chatData.content = label;
@@ -328,8 +357,8 @@ export class Dice {
 
     // Edge and Snag cancel eachother out
     if (edge != snag) {
-      const withAnEdge = this._i18n.localize('E20.RollWithAnEdge')
-      const withASnag = this._i18n.localize('E20.RollWithASnag')
+      const withAnEdge = this._localize('E20.RollWithAnEdge')
+      const withASnag = this._localize('E20.RollWithASnag')
       result = edge ? ` ${withAnEdge}` : ` ${withASnag}`;
     }
 

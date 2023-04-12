@@ -11,7 +11,7 @@ const chatMessage = jest.mock();
 chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
-const dice = new Dice(new Mocki18n, E20, chatMessage);
+const dice = new Dice(E20, chatMessage, new Mocki18n);
 
 /* rollSkill */
 describe("rollSkill", () => {
@@ -422,6 +422,27 @@ describe("_getFinalShift", () => {
     const expected = 'autoFail';
 
     expect(dice._getFinalShift(skillRollOptions, initialShift)).toEqual(expected);
+  });
+
+  test("shifting down the lowest shift", () => {
+    const skillRollOptions = {
+      shiftUp: 0,
+      shiftDown: 1,
+    }
+    const expected = 'd20';
+    const shiftList = ['d2', 'd20'];
+    expect(dice._getFinalShift(skillRollOptions, initialShift, shiftList)).toEqual(expected);
+  });
+
+  test("shifting up the highest shift", () => {
+    const skillRollOptions = {
+      shiftUp: 1,
+      shiftDown: 0,
+    }
+    const initialShift = 'd2';
+    const expected = 'd2';
+    const shiftList = ['d2', 'd20'];
+    expect(dice._getFinalShift(skillRollOptions, initialShift, shiftList)).toEqual(expected);
   });
 
   test("equal shifts cancelling", () => {

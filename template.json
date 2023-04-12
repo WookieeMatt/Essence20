@@ -22,7 +22,9 @@
         "initiative": {
           "formula": "2d20kl + 0",
           "modifier": 0,
-          "shift": "d20"
+          "shift": "d20",
+          "shiftDown": 0,
+          "shiftUp": 0
         },
         "movement": {
           "aerial": 0,
@@ -469,6 +471,7 @@
       "armor",
       "bond",
       "classFeature",
+      "contact",
       "feature",
       "gear",
       "hangUp",
@@ -530,6 +533,14 @@
         "max": 0,
         "value": 0
       }
+    },
+    "contact": {
+      "templates": [
+        "itemDescription"
+      ],
+      "gainingTheContact": "",
+      "allegiancePoints": 0,
+      "perks": ""
     },
     "feature": {
       "templates": [
