@@ -71,6 +71,34 @@ export class Essence20ActorSheet extends ActorSheet {
     return context;
   }
 
+  /* -------------------------------------------- */
+  /* Crossover Button for Character Sheets        */
+  /* -------------------------------------------- */
+  _getHeaderButtons() {
+    let buttons = super._getHeaderButtons();
+    // Token Configuration
+    if (this.actor.isOwner) {
+      buttons = [
+        {
+          label: game.i18n.localize('E20.Crossover'),
+          class: 'configure-actor',
+          icon: 'fas fa-cog',
+          onclick: (ev) => this._onConfigureEntity(ev),
+        },
+        ...buttons,
+      ];
+    }
+    return buttons;
+  }
+
+_onConfigureEntity(event) {
+  event.preventDefault();
+  new Essence20Crossover(this.actor).render(true);
+}
+
+/**
+
+
   /**
    * Prepare skills that are always displayed for NPCs.
    *
