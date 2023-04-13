@@ -17,6 +17,11 @@ export const migrateWorld = async function() {
         console.log(`Migrating Actor document ${actor.name}`);
         console.log(updateData);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
+        await actor.update({"system.skills.-=strength": null});
+        await actor.update({"system.skills.-=smarts": null});
+        await actor.update({"system.skills.-=social": null});
+        await actor.update({"system.skills.-=speed": null});
+        await actor.update({"system.skills.-=any": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Actor ${actor.name}: ${err.message}`;
@@ -110,6 +115,28 @@ export const migrateActorData = function(actor) {
       "shift": actor.system.initiative
     };
   }
+
+  //Migrate Skills
+  if (actor.system.skills.strength) {
+    const skillsForEssences = actor.system.skills
+    const essenceList = ["any", "strength", "speed", "smarts", "social"];
+    let newSkills = {};
+    for (const [essence, skillsForEssence] of Object.entries(skillsForEssences)) {
+      if (essenceList.includes(essence)) {
+        for (const [skill, fields] of Object.entries(skillsForEssence)) {
+          newSkills[skill] = {
+            "isSpecialized": fields.isSpecialized,
+            "modifier": fields.modifier,
+            "shift": fields.shift,
+            "shiftDown": fields.shiftDown,
+           "shiftUp": fields.shiftUp
+          }
+        }
+      }
+    }
+    updateData[`system.skills`] = newSkills;
+  }
+
 
   // Migrate Owned Items
   if (!actor.items) {

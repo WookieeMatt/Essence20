@@ -40,6 +40,6 @@
     "verified": "10"
   },
   "flags": {
-    "needsMigrationVersion": "3.1.0"
+    "needsMigrationVersion": "3.1.2"
   }
 }

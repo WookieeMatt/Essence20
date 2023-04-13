@@ -32,11 +32,9 @@ describe("rollSkill", () => {
     }
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
@@ -56,11 +54,9 @@ describe("rollSkill", () => {
     }
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
@@ -85,11 +81,9 @@ describe("rollSkill", () => {
     }
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'autoSuccess',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'autoSuccess',
         },
       },
     }));
@@ -114,11 +108,9 @@ describe("rollSkill", () => {
     }
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
@@ -149,11 +141,9 @@ describe("rollSkill", () => {
     };
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
@@ -186,12 +176,10 @@ describe("rollSkill", () => {
     };
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'any': {
-          'spellcasting': {
-            cost: '0',
-            modifier: '0',
-            shift: 'd20',
-          },
+        'spellcasting': {
+          cost: '0',
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));

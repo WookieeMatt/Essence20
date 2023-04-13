@@ -115,7 +115,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const actorSkillData = actor.getRollData().skills;
     const rolledEssence = dataset.essence || this._config.skillToEssence[rolledSkill];
-    const initialShift = dataset.shift || actorSkillData[rolledEssence][rolledSkill].shift;
+    const initialShift = dataset.shift || actorSkillData[rolledSkill].shift;
     const completeDataset = {
       ...dataset,
       // Weapon partial can't populate these easily
@@ -151,7 +151,7 @@ export class Dice {
     }
 
     const isSpecialized = dataset.isSpecialized === 'true' || skillRollOptions.isSpecialized;
-    const modifier = actorSkillData[rolledEssence][rolledSkill].modifier || 0;
+    const modifier = actorSkillData[rolledSkill].modifier || 0;
     const formula = this._getFormula(isSpecialized, skillRollOptions, finalShift, modifier);
 
     // Repeat the roll as many times as specified in the skill roll options dialog
