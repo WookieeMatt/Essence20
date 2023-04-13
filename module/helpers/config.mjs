@@ -201,6 +201,14 @@ E20.skillToEssence = {
   streetwise: "social"
 },
 
+E20.skillsByEssence = {
+  "any": ["spellcasting"],
+  "strength": ["athletics", "brawn", "intimidation", "might"],
+  "speed":  ["acrobatics", "driving", "finesse", "infiltration", "targeting"],
+  "smarts": ["alertness", "culture", "science", "survival", "technology"],
+  "social": ["animalHandling", "deception", "performance", "persuasion", "streetwise"]
+};
+
 /************************************************
  * Rolls                                        *
  ***********************************************/
@@ -229,6 +237,19 @@ E20.initiativeShifts = {
   "2d8": "2d8",
   "3d6": "3d6",
 };
+
+// Shifts that are available for rolling initiative in list form
+E20.initiativeShiftList = [
+  "3d6",
+  "2d8",
+  "d12",
+  "d10",
+  "d8",
+  "d6",
+  "d4",
+  "d2",
+  "d20",
+];
 
 // Shifts that are available for rolling skills and require making a roll
 E20.skillRollableShifts = [

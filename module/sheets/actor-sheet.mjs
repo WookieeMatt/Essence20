@@ -8,7 +8,7 @@ import { Dice } from "../dice.mjs";
 export class Essence20ActorSheet extends ActorSheet {
   constructor(actor, options) {
     super(actor, options);
-    this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
+    this._dice = new Dice(CONFIG.E20, ChatMessage);
   }
 
   /** @override */
@@ -87,11 +87,9 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Include any skills not d20, are specialized, or have a modifier
-    for (let [_, skills] of Object.entries(context.system.skills)) {
-      for (let [skill, fields] of Object.entries(skills)) {
-        if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
-          displayedNpcSkills[skill] = true;
-        }
+    for (let [skill, fields] of Object.entries(context.system.skills)) {
+      if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
+        displayedNpcSkills[skill] = true;
       }
     }
 
@@ -375,7 +373,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (rollType == 'skill') {
-      const skillRollOptions = await this._dice.getSkillRollOptions(dataset);
+      const skillRollOptions = await this._dice.getSkillRollOptions(dataset, this.actor);
 
       if (skillRollOptions.cancelled) {
         return;
@@ -383,7 +381,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
       this._dice.rollSkill(dataset, skillRollOptions, this.actor);
     } else if (rollType == 'initiative') {
-      this._dice.handleInitiativeRoll(this.actor);
+      this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
       const itemId = element.closest('.item').dataset.itemId;
       const item = this.actor.items.get(itemId);

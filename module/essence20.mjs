@@ -1,5 +1,6 @@
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
+import { Essence20Combat } from "./documents/combat.mjs";
 import { Essence20Combatant } from "./documents/combatant.mjs";
 import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
@@ -82,7 +83,7 @@ const statusEffects = [
     id: 'unconscious',
     label: 'E20.StatusUnconscious'
   }
-]; 
+];
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -128,6 +129,7 @@ Hooks.once('init', async function () {
   // accessible in global contexts.
   game.essence20 = {
     Essence20Actor,
+    Essence20Combat,
     Essence20Combatant,
     Essence20Item,
     rollItemMacro
@@ -141,11 +143,12 @@ Hooks.once('init', async function () {
    * @type {String}
    */
   CONFIG.Combat.initiative = {
-    formula: "@initiativeFormula",
+    formula: "@initiative.formula",
   };
 
   // Define custom Document classes
   CONFIG.Actor.documentClass = Essence20Actor;
+  CONFIG.Combat.documentClass = Essence20Combat;
   CONFIG.Combatant.documentClass = Essence20Combatant;
   CONFIG.Item.documentClass = Essence20Item;
   CONFIG.statusEffects = foundry.utils.deepClone(statusEffects);
