@@ -201,7 +201,7 @@
     "NpcThreatLevel": "Threat Level",
     "Origin": "Origin",
     "OriginBenefitDescription": "Benefit Description",
-    "OriginBenefitName": "Benefit Name",
+    "OriginBenefit": "Origin Benefit",
     "OriginEssenceScoreIncrease": "Essence Score Increase",
     "OriginSkill": "Origin Skill",
     "OriginLanguages": "Languages",

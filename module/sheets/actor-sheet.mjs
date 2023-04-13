@@ -440,6 +440,7 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onZordDelete(event) {
     const li = $(event.currentTarget).parents(".zord");
+    console.log(li);
     const zordId = li.data("zordId");
     let zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
     this.actor.update({

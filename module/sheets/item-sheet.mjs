@@ -37,6 +37,8 @@ export class Essence20ItemSheet extends ItemSheet {
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
 
+    this._preparePerks(context);
+
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
     let actor = this.object?.parent ?? null;
@@ -54,6 +56,17 @@ export class Essence20ItemSheet extends ItemSheet {
     return context;
   }
 
+
+  _preparePerks(context) {
+    if (this.item.type == 'origin') {
+      let originPerkIds = [];
+
+      for (let originPerkId of this.item.system.originPerkIds) {
+        originPerkIds.push(game.items.get(originPerkId));
+      }
+      context.originPerkIds = originPerkIds;
+    }
+  }
   /* -------------------------------------------- */
 
   /** @override */
@@ -70,23 +83,48 @@ export class Essence20ItemSheet extends ItemSheet {
     html.find(".trait-selector").click(ev => {
       onManageSelectTrait(ev, this.item);
     });
+
+    this.form.ondrop = (event) => this._onDrop(event);
+
+    // Delete Origin Perks from Origns
+    html.find('.originPerk-delete').click(this._onOriginPerkDelete.bind(this));
   }
 
-  // async _onDrop(event, data) {
-  //   console.log ("Got Here");
-  //   if (!this.actor.isOwner) return false;
+  async _onDrop (event) {
+    const data = TextEditor.getDragEventData(event);
+    const droppedItem = fromUuidSync(data.uuid);
+    const targetItem = this.item;
+    if (targetItem.type  == "origin") {
+      if (droppedItem.type == "perk"){
+        const originPerkIds = duplicate(this.item.system.originPerkIds);
 
-  //   // Get the target actor
-  //   let sourceItem = await fromUuid(data.uuid);
-  //   if (!sourceItem) return false;
+      // Can't contain duplicate Origin Perks
+      if (!originPerkIds.includes(droppedItem.id)) {
+        originPerkIds.push(droppedItem.id);
+        await this.item.update({
+          "system.originPerkIds": originPerkIds
+        }).then(this.render(false));
+      }
+      } else {
+        return
+      }
+    } else {
+      return;
+    }
+  }
 
-  //   // Handles dropping Zords onto Megaform Zords
-  //   if (this.item.type == "perk") {
-  //     console.log("Got Here!");
-
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
+  async _onOriginPerkDelete(event) {
+    const li = $(event.currentTarget).parents(".origin");
+    console.log(li);
+    const originPerkId = li.data("originPerkIds");
+    console.log(originPerkId);
+    let originPerkIds = this.item.system.originPerkIds.filter(x => x !== originPerkId);
+    console.log(originPerkIds);
+    this.item.update({
+      "system.originPerkIds": originPerkId,
+    });
+    li.slideUp(200, () => this.render(false));
+  }
 }
+
+
