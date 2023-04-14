@@ -551,14 +551,8 @@
       "templates": [
         "itemDescription"
       ],
-      "effectArea": null,
-      "effectShape": null,
-      "lightRange": {
-        "bright": null,
-        "dim": null
-      },
       "quantity": 1,
-      "toughness": null
+      "type": ""
     },
     "hangUp": {
       "templates": [
