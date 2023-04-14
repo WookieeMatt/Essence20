@@ -172,7 +172,7 @@ E20.essenceSkills = {
 
 // Origin Essence Skills
 E20.originEssenceSkills = {
-  conditioning: "E20.EssenceSkillCondtioning",
+  conditioning: "E20.EssenceSkillConditioning",
   initative: "E20.EssenceSkillInitiative",
   ...E20.essenceSkills,
 }
