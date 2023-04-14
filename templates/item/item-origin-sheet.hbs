@@ -83,7 +83,7 @@
       {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefit'}}
       {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
       {{#each @root.originPerkIds as |originPerk|}}
-      <div class="flex-group-right  originPerk">
+      <div class="flex-group-right  originPerk" data-originPerk-id="{{originPerk._id}}">
         <ul>
           <li>{{originPerk.name}}
           <div class="item-controls">
