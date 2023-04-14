@@ -114,14 +114,15 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   async _onOriginPerkDelete(event) {
-    const li = $(event.currentTarget).parents(".origin");
+    console.log(event.currentTarget);
+    const li = $(event.currentTarget).parents(".originPerk");
     console.log(li);
-    const originPerkId = li.data("originPerkIds");
+    const originPerkId = li.data("originPerkId");
     console.log(originPerkId);
     let originPerkIds = this.item.system.originPerkIds.filter(x => x !== originPerkId);
     console.log(originPerkIds);
     this.item.update({
-      "system.originPerkIds": originPerkId,
+      "system.originPerkIds": [],
     });
     li.slideUp(200, () => this.render(false));
   }
