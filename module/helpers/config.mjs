@@ -320,6 +320,7 @@ E20.gearType = {
   kits: "E20.GearKits",
   medical: "E20.GearMedical",
   military: "E20.GearMilitary",
+  other: "E20.GearOther",
   security: "E20.GearSecurity",
   support: "E20.GearSupport",
   tools: "E20.GearTools"
