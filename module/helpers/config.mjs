@@ -311,6 +311,20 @@ E20.perkType = {
   role: "E20.PerkRole"
 };
 
+// Perk types
+E20.gearType = {
+  clothes: "E20.GearClothes",
+  computers: "E20.GearComputers",
+  exploration: "E20.GearExploration",
+  hazard: "E20.GearHazard",
+  kits: "E20.GearKits",
+  medical: "E20.GearMedical",
+  military: "E20.GearMilitary",
+  security: "E20.GearSecurity",
+  support: "E20.GearSupport",
+  tools: "E20.GearTools"
+};
+
 /************************************************
  * Spells                                       *
  ***********************************************/
