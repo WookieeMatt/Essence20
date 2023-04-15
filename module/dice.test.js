@@ -1,30 +1,33 @@
 import { Dice } from "./dice.mjs";
 import { jest } from '@jest/globals'
 
-class Mocki18n {
-  localize(text) { return text; }
-  format(text, _) { return text; }
-}
-
-class MockRollDialog {
-  getSkillRollOptions(dataset, actor) {
-    return {
-      edge: false,
-      shiftDown: 0,
-      shiftUp: 0,
-      snag: false,
-      isSpecialized: false,
-      timesToRoll: 1,
-    }
-  }
-}
+/* Setup Mocks */
 
 const chatMessage = jest.mock();
 chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
-const rollDialog = new MockRollDialog();
+
+const rollDialog = jest.mock()
+rollDialog.getSkillRollOptions = jest.fn();
+rollDialog.getSkillRollOptions.mockReturnValue({
+    edge: false,
+    shiftDown: 0,
+    shiftUp: 0,
+    snag: false,
+    isSpecialized: false,
+    timesToRoll: 1,
+  }
+);
+
+class Mocki18n {
+  localize(text) { return text; }
+  format(text, _) { return text; }
+}
+
 const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
+
+/* Begin Tests */
 
 /* prepareInitiativeRoll */
 describe("prepareInitiativeRoll", () => {
@@ -33,18 +36,28 @@ describe("prepareInitiativeRoll", () => {
   test("normal initiative roll", async () => {
     mockActor.system = {};
     mockActor.system.initiative = {
-      formula: "2d20kl + 0",
+      formula: "",
       modifier: 0,
       shift: "d20",
       shiftDown: 0,
       shiftUp: 0
     };
 
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      edge: false,
+      shiftDown: 0,
+      shiftUp: 0,
+      snag: true, // Because d20 shift
+      isSpecialized: false,
+      timesToRoll: 1,
+    }
+  );
+
     mockActor.update = jest.fn();
     await dice.prepareInitiativeRoll(mockActor);
 
     expect(mockActor.update).toHaveBeenCalledWith({
-      "system.initiative.formula": "d20 + 0",
+      "system.initiative.formula": "2d20kl + 0",
     });
   });
 });
