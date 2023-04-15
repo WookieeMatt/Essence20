@@ -58,11 +58,16 @@ export class Dice {
   /**
    * Handle skill and specialization rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
-   * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The item being used, if any.
    */
-  rollSkill(dataset, skillRollOptions, actor, item) {
+  async rollSkill(dataset, actor, item) {
+    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset);
+
+    if (skillRollOptions.cancelled) {
+      return;
+    }
+
     const rolledSkill = dataset.skill;
     const actorSkillData = actor.getRollData().skills;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
