@@ -418,7 +418,7 @@ export class Essence20ActorSheet extends ActorSheet {
       if (!sourceItem) return false;
       if (sourceItem.type == 'origin') {
         await this._showOriginEssenceDialog(sourceItem);
-        await this._originStatUpdate(sourceItem);
+
       }
     }
   };
@@ -476,15 +476,19 @@ export class Essence20ActorSheet extends ActorSheet {
   async _showOriginSkillDialog(origin, options) {
     const essences = Object.keys(options);
     const choices = {};
+    let selectedEssence = "";
+    let selectedSkills = "";
     for (const skill of origin.system.skills) {
       const essence = CONFIG.E20.skillToEssence[skill];
       if (options[essence] && essences.includes(essence)) {
+        selectedEssence = essence;
         choices[skill] = {
           chosen: false,
           label: CONFIG.E20.essenceSkills[skill],
         };
       }
     }
+    selectedSkills = choices;
 
     new Dialog(
       {
@@ -495,21 +499,33 @@ export class Essence20ActorSheet extends ActorSheet {
         buttons: {
           save: {
             label: "Accept",
-            callback: () => console.log('done') // TODO: Update actor here
+            callback: html => this._originStatUpdate(origin, selectedEssence, selectedSkills, this._rememberOptions(html))
           }
         },
       },
     ).render(true);
   }
 
-  async _originStatUpdate (sourceItem) {
-    console.log("Got Here");
+  async _originStatUpdate (origin, essence, skills, options) {
+    const skillOptions = Object.keys(options);
+    let selectedSkill = "";
+    for (let i =0; i < skillOptions.length; i++) {
+      if (options[skillOptions[i]]) {
+        selectedSkill = skillOptions[i];
+      }
+    }
+    let essenceValue = this.actor.system.essences[essence] + 1;
+    const currentShift = this.actor.system.skills[selectedSkill].shift;
+    let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
     await this.actor.update({
-
-      "system.health.max": sourceItem.system.startingHealth,
-      "system.movement.aerial": sourceItem.system.baseAerialMovement,
-      "system.movement.swim": sourceItem.system.baseAquaticMovement,
-      "system.movement.ground": sourceItem.system.baseGroundMovement
+      "system.essences$[essence]": essenceValue,
+      "system.skills$[selectedSkill]": newShift,
+      "system.health.max": origin.system.startingHealth,
+      "system.movement.aerial": origin.system.baseAerialMovement,
+      "system.movement.swim": origin.system.baseAquaticMovement,
+      "system.movement.ground": origin.system.baseGroundMovement,
+      "system.originEssencesIncrease": essence,
+      "system.originSkillsIncrease": selectedSkill
     });
   }
 
@@ -545,7 +561,13 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   async _onOriginDelete(event) {
+    let essence = this.actor.system.originEssencesIncrease;
+    let essenceValue = this.actor.system.essences[essence] + 1;
+    let selectedSkill = thisactor.system.originSkillsIncrease;
+    const currentShift = this.actor.system.skills[selectedSkill].shift;
+    let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
     await this.actor.update({
+
       "system.health.max": 0,
       "system.movement.aerial": 0,
       "system.movement.swim": 0,
