@@ -2,7 +2,7 @@
   {{#each choices as |choice key|}}
   <li>
     <label class="checkbox">
-      <input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
+      <input type="radio" name="choices" id={{key}} data-dtype="Boolean" {{checked choice.chosen}}>
       {{localize choice.label}}
     </label>
   </li>

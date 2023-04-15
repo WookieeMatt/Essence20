@@ -435,6 +435,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     new Dialog(
       {
+        title: "Select Essence Score Increase Option",
         content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
           choices,
         }),
@@ -457,7 +458,7 @@ export class Essence20ActorSheet extends ActorSheet {
   _rememberOptions(html) {
     const options = {};
     html.find("input").each((i, el) => {
-      options[el.name] = el.checked;
+      options[el.id] = el.checked;
     });
     return options;
   };
@@ -483,6 +484,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     new Dialog(
       {
+        title: "Select Origin Bonus Skill",
         content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
           choices,
         }),
