@@ -62,7 +62,7 @@ export class Dice {
    * @param {Item} item   The item being used, if any.
    */
   async rollSkill(dataset, actor, item) {
-    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset);
+    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);
 
     if (skillRollOptions.cancelled) {
       return;
@@ -163,13 +163,7 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    */
   async handleSkillItemRoll(dataset, actor, item) {
-    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset);
-
-    if (skillRollOptions.cancelled) {
-      return;
-    }
-
-    this.rollSkill(dataset, skillRollOptions, actor, item);
+    this.rollSkill(dataset, actor, item);
   }
 
   /**
