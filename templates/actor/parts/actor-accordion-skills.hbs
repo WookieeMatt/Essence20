@@ -4,17 +4,17 @@
     <a class="item-control"><i class="accordion-icon fas fa-chevron-down"></i></a>
   </div>
 
-  {{#each system.skills as |skills essence|}}
+  {{#each @root.config.skillsByEssence as |skills essence|}}
     <div class="skill-separator">{{localize (lookup @root.config.essences essence)}}</div>
 
-    {{#each skills as |fields skill|}}
+    {{#each skills as |skill|}}
       {{#if (lookup @root.displayedNpcSkills skill)}}
       <div>
       {{else}}
       <div class="accordion-content">
       {{/if}}
 
-      {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence=essence skill=skill fields=fields}}
+      {{> "systems/essence20/templates/actor/parts/actor-essence-skills.hbs" essence=essence skill=skill fields=(lookup @root.system.skills skill)}}
       </div>
     {{/each}}
   {{/each}}
