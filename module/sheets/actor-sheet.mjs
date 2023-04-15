@@ -514,12 +514,7 @@ export class Essence20ActorSheet extends ActorSheet {
         selectedSkill = skillOptions[i];
       }
     }
-    let currentItems = [];
-    currentItems.push(this.actor.items);
-    console.log(origin.system.originPerkIds[0]);
-    const originPerk = await fromUuid("b3NK82SwGVXmmGan");
-    currentItems.push(originPerk)
-    console.log(currentItems);
+    this._originPerkCreate(origin)
     let essenceValue = this.actor.system.essences[essence] + 1;
     const currentShift = this.actor.system.skills[selectedSkill].shift;
     let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
@@ -528,7 +523,6 @@ export class Essence20ActorSheet extends ActorSheet {
     await this.actor.update({
       [essenceString]: essenceValue,
       [skillString]: newShift,
-      // "items": currentItems,
       "system.health.max": origin.system.startingHealth,
       "system.movement.aerial": origin.system.baseAerialMovement,
       "system.movement.swim": origin.system.baseAquaticMovement,
@@ -536,6 +530,22 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.originEssencesIncrease": essence,
       "system.originSkillsIncrease": selectedSkill
     });
+  }
+
+  async _originPerkCreate(origin){
+    const data = game.items.get(origin.system.originPerkIds[0]);
+    const type = "perk";
+    const name = data.name;
+    const itemData = {
+      name: name,
+      type: type,
+      data: data
+    };
+    // Remove the type from the dataset since it's in the itemData.type prop.
+    delete itemData.data["type"];
+    delete itemData.data["name"];
+
+    return await Item.create(itemData, { parent: this.actor });
   }
 
   /**
