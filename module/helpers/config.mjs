@@ -202,11 +202,11 @@ E20.skillToEssence = {
 },
 
 E20.skillsByEssence = {
-  "any": ["spellcasting"],
-  "strength": ["athletics", "brawn", "intimidation", "might"],
-  "speed":  ["acrobatics", "driving", "finesse", "infiltration", "targeting"],
-  "smarts": ["alertness", "culture", "science", "survival", "technology"],
-  "social": ["animalHandling", "deception", "performance", "persuasion", "streetwise"]
+  any: ["spellcasting"],
+  strength: ["athletics", "brawn", "intimidation", "might"],
+  speed:  ["acrobatics", "driving", "finesse", "infiltration", "targeting"],
+  smarts: ["alertness", "culture", "science", "survival", "technology"],
+  social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"]
 };
 
 /************************************************
