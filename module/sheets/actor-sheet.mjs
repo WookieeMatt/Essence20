@@ -517,9 +517,11 @@ export class Essence20ActorSheet extends ActorSheet {
     let essenceValue = this.actor.system.essences[essence] + 1;
     const currentShift = this.actor.system.skills[selectedSkill].shift;
     let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+    const essenceString = `system.essences.${essence}`;
+    const skillString = `system.skills.${selectedSkill}.shift`;
     await this.actor.update({
-      "system.essences$[essence]": essenceValue,
-      "system.skills$[selectedSkill]": newShift,
+      essenceString: essenceValue,
+      skillString: newShift,
       "system.health.max": origin.system.startingHealth,
       "system.movement.aerial": origin.system.baseAerialMovement,
       "system.movement.swim": origin.system.baseAquaticMovement,
@@ -562,12 +564,15 @@ export class Essence20ActorSheet extends ActorSheet {
 
   async _onOriginDelete(event) {
     let essence = this.actor.system.originEssencesIncrease;
-    let essenceValue = this.actor.system.essences[essence] + 1;
-    let selectedSkill = thisactor.system.originSkillsIncrease;
+    let essenceValue = this.actor.system.essences[essence] - 1;
+    let selectedSkill = this.actor.system.originSkillsIncrease;
     const currentShift = this.actor.system.skills[selectedSkill].shift;
-    let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+    let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
+    const essenceString = `system.essences.${essence}`;
+    const skillString = `system.skills.${selectedSkill}.shift`;
     await this.actor.update({
-
+      essenceString: essenceValue,
+      skillString: newShift,
       "system.health.max": 0,
       "system.movement.aerial": 0,
       "system.movement.swim": 0,
