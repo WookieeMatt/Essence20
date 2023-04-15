@@ -400,18 +400,91 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-  async testDialog(options) {
-    console.log(options)
+  /**
+   * Handle dropping an Item onto an Actor.
+   * @param {DragEvent} event            The concluding DragEvent which contains drop data
+   * @param {object} data                The data transfer extracted from the event
+   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
+   *                                     not permitted.
+   * @override
+   */
+  async _onDropItem(event, data) {
+    const item = super._onDropItem(event, data);
+    if (item) {
+      let sourceItem = await fromUuid(data.uuid);
+      if (!sourceItem) return false;
+      if (sourceItem.type == 'origin') {
+        this._showOriginEssenceDialog(sourceItem)
+      }
+    }
+  };
+
+  /**
+   * Displays a dialog for selecting an Essence for the given Origin.
+   * @param {Object} origin   The Origin
+   * @private
+   */
+  async _showOriginEssenceDialog(origin) {
+    const choices = {};
+    for (const essence of origin.system.essences) {
+      choices[essence] = {
+        chosen: false,
+        label: CONFIG.E20.originEssences[essence],
+      }
+    }
+
     new Dialog(
       {
         content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
-          // TODO: Generate these from options param
-          choices: {
-            athletics: {chosen: false, label: 'Athletics'},
-            brawn: {chosen: false, label: 'Brawn'},
-            intimidation: {chosen: false, label: 'Intimidation'},
-            might: {chosen: false, label: 'Might'},
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: "Accept",
+            callback: html => this._showOriginSkillDialog(origin, this._rememberOptions(html))
           }
+        },
+      },
+    ).render(true);
+  }
+
+  /**
+   * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
+   * @param {HTML} html   The html of the dialog upon submission
+   * @returns {Object>}  The dialog inputs and their submitted values
+   * @private
+   */
+  _rememberOptions(html) {
+    const options = {};
+    html.find("input").each((i, el) => {
+      options[el.name] = el.checked;
+    });
+    return options;
+  };
+
+  /**
+   * Displays a dialog for selecting a Skill for the given Origin.
+   * @param {Object} origin   The Origin
+   * @param {Object} options   The options resulting from _showOriginEssenceDialog()
+   * @private
+   */
+  async _showOriginSkillDialog(origin, options) {
+    const essences = Object.keys(options);
+    const choices = {};
+    for (const skill of origin.system.skills) {
+      const essence = CONFIG.E20.skillToEssence[skill];
+      if (options[essence] && essences.includes(essence)) {
+        choices[skill] = {
+          chosen: false,
+          label: CONFIG.E20.essenceSkills[skill],
+        };
+      }
+    }
+
+    new Dialog(
+      {
+        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+          choices,
         }),
         buttons: {
           save: {
@@ -422,45 +495,6 @@ export class Essence20ActorSheet extends ActorSheet {
       },
     ).render(true);
   }
-
-  // Returns values of inputs upon submission
-  rememberOptions(html) {
-    const options = {};
-    html.find("input").each((i, el) => {
-      options[el.name] = el.checked;
-    });
-    return options;
-  };
-
-  async _onDropItem(event, data) {
-    const item = super._onDropItem(event, data);
-    if (item) {
-      let sourceItem = await fromUuid(data.uuid);
-      if (!sourceItem) return false;
-      if (sourceItem.type == 'origin') {
-        new Dialog(
-          {
-            content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
-              // Generate these from the item/origin
-              choices: {
-                any: {chosen: false, label: 'Any'},
-                strength: {chosen: false, label: 'Strength'},
-                speed: {chosen: false, label: 'Speed'},
-                smarts: {chosen: false, label: 'Smarts'},
-                social: {chosen: false, label: 'Social'},
-              },
-            }),
-            buttons: {
-              save: {
-                label: "Accept",
-                callback: html => this.testDialog(this.rememberOptions(html))
-              }
-            },
-          },
-        ).render(true);
-      }
-    }
-  };
 
   /**
    * Handle dropping of an Actor data onto another Actor sheet
