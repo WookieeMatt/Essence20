@@ -400,6 +400,68 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  async testDialog(options) {
+    console.log(options)
+    new Dialog(
+      {
+        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+          // TODO: Generate these from options param
+          choices: {
+            athletics: {chosen: false, label: 'Athletics'},
+            brawn: {chosen: false, label: 'Brawn'},
+            intimidation: {chosen: false, label: 'Intimidation'},
+            might: {chosen: false, label: 'Might'},
+          }
+        }),
+        buttons: {
+          save: {
+            label: "Accept",
+            callback: () => console.log('done') // TODO: Update actor here
+          }
+        },
+      },
+    ).render(true);
+  }
+
+  // Returns values of inputs upon submission
+  rememberOptions(html) {
+    const options = {};
+    html.find("input").each((i, el) => {
+      options[el.name] = el.checked;
+    });
+    return options;
+  };
+
+  async _onDropItem(event, data) {
+    const item = super._onDropItem(event, data);
+    if (item) {
+      let sourceItem = await fromUuid(data.uuid);
+      if (!sourceItem) return false;
+      if (sourceItem.type == 'origin') {
+        new Dialog(
+          {
+            content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+              // Generate these from the item/origin
+              choices: {
+                any: {chosen: false, label: 'Any'},
+                strength: {chosen: false, label: 'Strength'},
+                speed: {chosen: false, label: 'Speed'},
+                smarts: {chosen: false, label: 'Smarts'},
+                social: {chosen: false, label: 'Social'},
+              },
+            }),
+            buttons: {
+              save: {
+                label: "Accept",
+                callback: html => this.testDialog(this.rememberOptions(html))
+              }
+            },
+          },
+        ).render(true);
+      }
+    }
+  };
+
   /**
    * Handle dropping of an Actor data onto another Actor sheet
    * @param {DragEvent} event            The concluding DragEvent which contains drop data
