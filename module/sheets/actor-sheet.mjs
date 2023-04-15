@@ -514,14 +514,21 @@ export class Essence20ActorSheet extends ActorSheet {
         selectedSkill = skillOptions[i];
       }
     }
+    let currentItems = [];
+    currentItems.push(this.actor.items);
+    console.log(origin.system.originPerkIds[0]);
+    const originPerk = await fromUuid("b3NK82SwGVXmmGan");
+    currentItems.push(originPerk)
+    console.log(currentItems);
     let essenceValue = this.actor.system.essences[essence] + 1;
     const currentShift = this.actor.system.skills[selectedSkill].shift;
     let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
     const essenceString = `system.essences.${essence}`;
     const skillString = `system.skills.${selectedSkill}.shift`;
     await this.actor.update({
-      essenceString: essenceValue,
-      skillString: newShift,
+      [essenceString]: essenceValue,
+      [skillString]: newShift,
+      // "items": currentItems,
       "system.health.max": origin.system.startingHealth,
       "system.movement.aerial": origin.system.baseAerialMovement,
       "system.movement.swim": origin.system.baseAquaticMovement,
@@ -571,8 +578,8 @@ export class Essence20ActorSheet extends ActorSheet {
     const essenceString = `system.essences.${essence}`;
     const skillString = `system.skills.${selectedSkill}.shift`;
     await this.actor.update({
-      essenceString: essenceValue,
-      skillString: newShift,
+      [essenceString]: essenceValue,
+      [skillString]: newShift,
       "system.health.max": 0,
       "system.movement.aerial": 0,
       "system.movement.swim": 0,
