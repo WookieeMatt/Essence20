@@ -277,6 +277,9 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       const item = this.actor.items.get(li.data("itemId"));
+      if(item.type == "origin") {
+        this._onOriginDelete(item);
+      }
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
@@ -414,7 +417,8 @@ export class Essence20ActorSheet extends ActorSheet {
       let sourceItem = await fromUuid(data.uuid);
       if (!sourceItem) return false;
       if (sourceItem.type == 'origin') {
-        this._showOriginEssenceDialog(sourceItem)
+        await this._showOriginEssenceDialog(sourceItem);
+        await this._originStatUpdate(sourceItem);
       }
     }
   };
@@ -498,6 +502,17 @@ export class Essence20ActorSheet extends ActorSheet {
     ).render(true);
   }
 
+  async _originStatUpdate (sourceItem) {
+    console.log("Got Here");
+    await this.actor.update({
+
+      "system.health.max": sourceItem.system.startingHealth,
+      "system.movement.aerial": sourceItem.system.baseAerialMovement,
+      "system.movement.swim": sourceItem.system.baseAquaticMovement,
+      "system.movement.ground": sourceItem.system.baseGroundMovement
+    });
+  }
+
   /**
    * Handle dropping of an Actor data onto another Actor sheet
    * @param {DragEvent} event            The concluding DragEvent which contains drop data
@@ -527,6 +542,17 @@ export class Essence20ActorSheet extends ActorSheet {
     } else {
       return false;
     }
+  }
+
+  async _onOriginDelete(event) {
+    await this.actor.update({
+      "system.health.max": 0,
+      "system.movement.aerial": 0,
+      "system.movement.swim": 0,
+      "system.movement.ground": 0,
+      "system.originEssencesIncrease": "",
+      "system.originSkillsIncrease": ""
+    });
   }
 
   /**
