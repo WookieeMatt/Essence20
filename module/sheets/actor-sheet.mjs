@@ -554,12 +554,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
   async _originPerkCreate(origin){
     const data = game.items.get(origin.system.originPerkIds[0]);
+    console.log(data.system);
     const type = "perk";
     const name = data.name;
     const itemData = {
       name: name,
       type: type,
-      data: data
+      data: data.system
     };
     // Remove the type from the dataset since it's in the itemData.type prop.
 
