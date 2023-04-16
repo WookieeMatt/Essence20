@@ -19,9 +19,9 @@ export class Essence20ItemSheet extends ItemSheet {
 
   /** @override */
   get template() {
-    const path = "systems/essence20/templates/item";
+    const path = "systems/essence20/templates/item/sheets";
     // Return a unique item sheet by type, like `weapon-sheet.hbs`.
-    return `${path}/item-${this.item.type}-sheet.hbs`;
+    return `${path}/${this.item.type}.hbs`;
   }
 
   /* -------------------------------------------- */
