@@ -419,6 +419,7 @@ export class Essence20ActorSheet extends ActorSheet {
       if (sourceItem.type == 'origin') {
         for (let actorItems of this.actor.items) {
           if(actorItems.type == 'origin') {
+            ui.notifications.error(game.i18n.format("Characters can only have one Origin"));
             return false
           }
         }
@@ -486,11 +487,10 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const skill of origin.system.skills) {
       const essence = CONFIG.E20.skillToEssence[skill];
       if (options[essence] && essences.includes(essence)) {
-        console.log("Got Here 3");
         selectedEssence = essence;
         choices[skill] = {
           chosen: false,
-          label: CONFIG.E20.essenceSkills[skill],
+          label: CONFIG.E20.originEssenceSkills[skill],
         };
       }
     }
