@@ -516,10 +516,10 @@ export class Essence20ActorSheet extends ActorSheet {
     }
     this._originPerkCreate(origin)
     let essenceValue = this.actor.system.essences[essence] + 1;
+    const essenceString = `system.essences.${essence}`;
     let skillString = "";
     let currentShift = "";
     let newShift = "";
-    const essenceString = `system.essences.${essence}`;
     if (selectedSkill == "initiative"){
       skillString = `system.${selectedSkill}.shift`;
       currentShift = this.actor.system[selectedSkill].shift;
@@ -594,11 +594,24 @@ export class Essence20ActorSheet extends ActorSheet {
 
     let essence = this.actor.system.originEssencesIncrease;
     let essenceValue = this.actor.system.essences[essence] - 1;
+    let skillString = "";
+    let currentShift = "";
+    let newShift = "";
     let selectedSkill = this.actor.system.originSkillsIncrease;
-    const currentShift = this.actor.system.skills[selectedSkill].shift;
-    let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
+    if (selectedSkill == "initiative"){
+      skillString = `system.${selectedSkill}.shift`;
+      currentShift = this.actor.system[selectedSkill].shift;
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
+    } else if (selectedSkill == "conditioning"){
+      skillString = `system.${selectedSkill}`;
+      currentShift = this.actor.system[selectedSkill];
+      newShift = currentShift - 1;
+    } else {
+      currentShift = this.actor.system.skills[selectedSkill].shift;
+      skillString = `system.skills.${selectedSkill}.shift`;
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
+    }
     const essenceString = `system.essences.${essence}`;
-    const skillString = `system.skills.${selectedSkill}.shift`;
     const data = game.items.get(origin.system.originPerkIds[0]);
     console.log(data);
     await this.actor.update({
