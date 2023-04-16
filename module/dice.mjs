@@ -1,13 +1,15 @@
+import { E20 } from "./helpers/config.mjs";
+
 export class Dice {
   /**
    * Dice constructor.
-   * @param {Object} config   The config to use for constants.
    * @param {ChatMessage} chatMessage   The ChatMessage to use.
+   * @param {RollDialog} rollDialog   The RollDialog to use.
    * @param {i18n} i18n   The i18n to use for text localization.
    */
-  constructor(config, chatMessage, i18n=null) {
-    this._config = config;
+  constructor(chatMessage, rollDialog, i18n=null) {
     this._chatMessage = chatMessage;
+    this._rollDialog = rollDialog;
     this._i18n = i18n;
   }
 
@@ -27,48 +29,6 @@ export class Dice {
   }
 
   /**
-   * Displays the dialog used for skill and specialization rolls.
-   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
-   * @param {Actor} actor   The actor performing the roll.
-   * @returns {Promise<Dialog>}   The dialog to be displayed.
-   */
-  async getSkillRollOptions(dataset, actor) {
-    const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const snag = this._config.skillShiftList.indexOf('d20') == this._config.skillShiftList.indexOf(dataset.shift);
-    const html = await renderTemplate(
-      template,
-      {
-        shiftUp: dataset.upshift || 0,
-        shiftDown: dataset.downshift || 0,
-        isSpecialized: dataset.isSpecialized === 'true',
-        snag,
-        edge: false,
-        normal: !snag
-      }
-    );
-
-    return new Promise(resolve => {
-      const data = {
-        title: this._localize('E20.RollDialogTitle', {actor: actor.name}),
-        content: html,
-        buttons: {
-          normal: {
-            label: this._localize('E20.RollDialogRollButton'),
-            callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
-          },
-          cancel: {
-            label: this._localize('E20.RollDialogCancelButton'),
-            callback: html => resolve({ cancelled: true }),
-          },
-        },
-        default: "normal",
-        close: () => resolve({ cancelled: true }),
-      };
-      new Dialog(data, null).render(true);
-    });
-  }
-
-  /**
    * Prepares the given actor for rolling initiative.
    * @param {Actor} actor   The actor performing the roll.
    */
@@ -79,42 +39,38 @@ export class Dice {
       downshift: actor.system.initiative.shiftDown,
     };
 
-    const skillRollOptions = await this.getSkillRollOptions(dataset, actor);
+    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);
+
+    if (skillRollOptions.cancelled) {
+      return false;
+    }
+
     const finalShift = this._getFinalShift(
-      skillRollOptions, actor.system.initiative.shift, this._config.initiativeShiftList)
+      skillRollOptions, actor.system.initiative.shift, E20.initiativeShiftList)
     await actor.update({
       "system.initiative.formula": this._getFormula(
         skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier),
     });
-  }
 
-  /**
-   * Processes options for the skill and specialization roll dialog.
-   * @returns {Object}   The processed roll options.
-   * @private
-   */
-  _processSkillRollOptions(form) {
-    return {
-      edge: form.snagEdge.value == 'edge',
-      shiftDown: parseInt(form.shiftDown.value),
-      shiftUp: parseInt(form.shiftUp.value),
-      snag: form.snagEdge.value == 'snag',
-      isSpecialized: form.isSpecialized.checked,
-      timesToRoll: parseInt(form.timesToRoll.value),
-    }
+    return true;
   }
 
   /**
    * Handle skill and specialization rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
-   * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The item being used, if any.
    */
-  rollSkill(dataset, skillRollOptions, actor, item) {
+  async rollSkill(dataset, actor, item) {
+    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);
+
+    if (skillRollOptions.cancelled) {
+      return;
+    }
+
     const rolledSkill = dataset.skill;
     const actorSkillData = actor.getRollData().skills;
-    const rolledEssence = dataset.essence || this._config.skillToEssence[rolledSkill];
+    const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const initialShift = dataset.shift || actorSkillData[rolledSkill].shift;
     const completeDataset = {
       ...dataset,
@@ -146,8 +102,8 @@ export class Dice {
     }
 
     // Auto success rules let the player choose to roll, which uses the best dice pool
-    if (this._config.autoSuccessShifts.includes(finalShift)) {
-      finalShift = this._config.skillRollableShifts[this._config.skillRollableShifts.length - 1];
+    if (E20.autoSuccessShifts.includes(finalShift)) {
+      finalShift = E20.skillRollableShifts[E20.skillRollableShifts.length - 1];
     }
 
     const isSpecialized = dataset.isSpecialized === 'true' || skillRollOptions.isSpecialized;
@@ -195,7 +151,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = dataset.isSpecialized === 'true'
       ? dataset.specializationName
-      : this._localize(this._config.essenceSkills[rolledSkill]);
+      : this._localize(E20.essenceSkills[rolledSkill]);
     const rollingForStr = this._localize('E20.RollRollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
@@ -207,13 +163,7 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    */
   async handleSkillItemRoll(dataset, actor, item) {
-      const skillRollOptions = await this.getSkillRollOptions(dataset, actor);
-
-      if (skillRollOptions.cancelled) {
-        return;
-      }
-
-      this.rollSkill(dataset, skillRollOptions, actor, item);
+    this.rollSkill(dataset, actor, item);
   }
 
   /**
@@ -227,7 +177,7 @@ export class Dice {
    */
   _getWeaponRollLabel(dataset, skillRollOptions, actor, weapon) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = this._localize(this._config.essenceSkills[rolledSkill]);
+    const rolledSkillStr = this._localize(E20.essenceSkills[rolledSkill]);
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
     const alternateEffectsStr = this._localize('E20.WeaponAlternateEffects');
@@ -285,7 +235,7 @@ export class Dice {
    * @returns {String}   The resultant shift.
    * @private
    */
-  _getFinalShift(skillRollOptions, initialShift, shiftList=this._config.skillShiftList) {
+  _getFinalShift(skillRollOptions, initialShift, shiftList=E20.skillShiftList) {
     // Apply the skill roll options dialog shifts to the roller's normal shift
     const optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
     const initialShiftIndex = shiftList.findIndex(s => s == initialShift);
@@ -308,7 +258,7 @@ export class Dice {
   _handleAutoFail(skillShift, label, actor) {
     let autoFailed = false;
 
-    if (this._config.autoFailShifts.includes(skillShift)) {
+    if (E20.autoFailShifts.includes(skillShift)) {
       const chatData = {
         speaker: this._chatMessage.getSpeaker({ actor }),
       };
@@ -402,7 +352,7 @@ export class Dice {
     if (finalShift != 'd20') {
       if (isSpecialized) {
         // For specializations, keep adding dice until you reach your shift level
-        for (const shift of this._config.skillRollableShifts) {
+        for (const shift of E20.skillRollableShifts) {
           shiftOperands.push(shift);
           if (shift == finalShift) {
             break;
