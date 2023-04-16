@@ -50,8 +50,7 @@ describe("prepareInitiativeRoll", () => {
       snag: true, // Because d20 shift
       isSpecialized: false,
       timesToRoll: 1,
-    }
-  );
+    });
 
     mockActor.update = jest.fn();
     await dice.prepareInitiativeRoll(mockActor);
