@@ -24,7 +24,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/essence20/templates/actor/actor-${this.actor.type}-sheet.hbs`;
+    return `systems/essence20/templates/actor/sheets/${this.actor.type}.hbs`;
   }
 
   /* -------------------------------------------- */
