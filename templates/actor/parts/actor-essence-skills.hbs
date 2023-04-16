@@ -1,7 +1,11 @@
 {{!-- Skill header and shift selector --}}
 <div class="flexrow skill-header" style="background-color: {{@root.system.color}}50">
   <span class="skill-roll">
-    <a class="rollable" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}" data-upshift ="{{fields.shiftUp}}" data-downshift ="{{fields.shiftDown}}" data-shift="{{fields.shift}}" data-is-specialized="{{fields.isSpecialized}}">
+    <a
+      class="rollable" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}"
+      data-shiftUp ="{{fields.shiftUp}}" data-shiftDown ="{{fields.shiftDown}}"
+      data-shift="{{fields.shift}}" data-is-specialized="{{fields.isSpecialized}}"
+    >
       <i class="fas fa-dice-d20"></i>
     </a>
   </span>
@@ -42,9 +46,18 @@
         <span class="item-button-container">
           {{#ifEquals @root.actor.type 'npc'}}
           {{!-- NPCs can have unspecialized specializations, but PCs are always specialized --}}
-          <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}" data-upshift ="{{../fields.shiftUp}}" data-downshift ="{{../fields.shiftDown}}" data-shift="{{specialization.system.shift}}" data-specialization-name="{{specialization.name}}" data-is-specialized="{{specialization.system.isSpecialized}}">
+          <a
+            class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}"
+            data-shiftUp ="{{../fields.shiftUp}}" data-shiftDown ="{{../fields.shiftDown}}"
+            data-shift="{{specialization.system.shift}}" data-specialization-name="{{specialization.name}}"
+            data-is-specialized="{{specialization.system.isSpecialized}}"
+          >
           {{else}}
-          <a class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}" data-upshift ="{{../fields.shiftDown}}" data-downshift ="{{../fields.shiftDown}}" data-shift="{{../fields.shift}}" data-specialization-name="{{specialization.name}}" data-is-specialized="true">
+          <a
+            class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}"
+            data-shiftUp ="{{../fields.shiftDown}}" data-shiftDown ="{{../fields.shiftDown}}"
+            data-shift="{{../fields.shift}}" data-specialization-name="{{specialization.name}}" data-is-specialized="true"
+          >
           {{/ifEquals}}
             <i class="fas fa-dice-d20"></i>
           </a>
