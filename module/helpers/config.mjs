@@ -173,7 +173,7 @@ E20.essenceSkills = {
 // Origin Essence Skills
 E20.originEssenceSkills = {
   conditioning: "E20.EssenceSkillConditioning",
-  initative: "E20.EssenceSkillInitiative",
+  initiative: "E20.EssenceSkillInitiative",
   ...E20.essenceSkills,
 }
 
@@ -181,12 +181,14 @@ E20.originEssenceSkills = {
 E20.skillToEssence = {
   athletics: "strength",
   brawn: "strength",
+  conditioning: "strength",
   intimidation: "strength",
   might: "strength",
   acrobatics: "speed",
   driving: "speed",
   finesse: "speed",
   infiltration: "speed",
+  initiative: "speed",
   targeting: "speed",
   alertness: "smarts",
   culture: "smarts",

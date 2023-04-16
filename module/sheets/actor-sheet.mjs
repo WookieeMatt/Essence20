@@ -481,6 +481,7 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const skill of origin.system.skills) {
       const essence = CONFIG.E20.skillToEssence[skill];
       if (options[essence] && essences.includes(essence)) {
+        console.log("Got Here 3");
         selectedEssence = essence;
         choices[skill] = {
           chosen: false,
@@ -537,6 +538,7 @@ export class Essence20ActorSheet extends ActorSheet {
       [essenceString]: essenceValue,
       [skillString]: newShift,
       "system.health.max": origin.system.startingHealth,
+      "system.health.value": origin.system.startingHealth,
       "system.movement.aerial": origin.system.baseAerialMovement,
       "system.movement.swim": origin.system.baseAquaticMovement,
       "system.movement.ground": origin.system.baseGroundMovement,
@@ -618,6 +620,7 @@ export class Essence20ActorSheet extends ActorSheet {
       [essenceString]: essenceValue,
       [skillString]: newShift,
       "system.health.max": 0,
+      "system.health.value": 0,
       "system.movement.aerial": 0,
       "system.movement.swim": 0,
       "system.movement.ground": 0,
