@@ -417,6 +417,12 @@ export class Essence20ActorSheet extends ActorSheet {
       let sourceItem = await fromUuid(data.uuid);
       if (!sourceItem) return false;
       if (sourceItem.type == 'origin') {
+        for (let actorItems of this.actor.items) {
+          console.log(actorItems.type)
+          if (actorItems.type == "origin") {
+            return false;
+          }
+        }
         await this._showOriginEssenceDialog(sourceItem);
 
       }
