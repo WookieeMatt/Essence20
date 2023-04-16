@@ -542,8 +542,6 @@ export class Essence20ActorSheet extends ActorSheet {
       data: data
     };
     // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.data["type"];
-    delete itemData.data["name"];
 
     return await Item.create(itemData, { parent: this.actor });
   }
@@ -579,7 +577,8 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-  async _onOriginDelete(event) {
+  async _onOriginDelete(item) {
+    console.log(item);
     let essence = this.actor.system.originEssencesIncrease;
     let essenceValue = this.actor.system.essences[essence] - 1;
     let selectedSkill = this.actor.system.originSkillsIncrease;
@@ -587,6 +586,8 @@ export class Essence20ActorSheet extends ActorSheet {
     let newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
     const essenceString = `system.essences.${essence}`;
     const skillString = `system.skills.${selectedSkill}.shift`;
+    const originPerk = this.actor.items.get(item.system.originPerkIds[0]);
+    originPerk.delete();
     await this.actor.update({
       [essenceString]: essenceValue,
       [skillString]: newShift,
