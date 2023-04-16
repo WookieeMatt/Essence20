@@ -1,4 +1,4 @@
-{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.magicBaubles title="E20.ItemTypeMagicBaublePlural" dataType="magicBauble"}}
+{{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.magicBaubles title="E20.ItemTypeMagicBaublePlural" dataType="magicBauble"}}
   {{#*inline "roll-button" item}}
     <a class="rollable" data-roll-type="magicBauble"  title="{{localize 'E20.MagicBaubleTitle'}}"><i class="fas fa-dice-d20"></i></a>
   {{/inline}}
@@ -10,4 +10,4 @@
   {{#*inline "item-label" item}}
     {{item.name}}
   {{/inline}}
-{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
+{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

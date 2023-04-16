@@ -1,4 +1,4 @@
-{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.weapons title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
+{{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.weapons title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
   {{#*inline "expand-details" item}}
     {{> "systems/essence20/templates/actor/parts/items/weapon/details.hbs"}}
   {{/inline}}
@@ -11,9 +11,9 @@
     {{#ifEquals @root.actor.type 'powerRanger'}}
       {{>"systems/essence20/templates/actor/parts/items/classFeature/selector.hbs"}}
     {{else ifEquals @root.actor.type 'transformer'}}
-      {{>"systems/essence20/templates/actor/parts/actor-mode-selector.hbs"}}
+      {{>"systems/essence20/templates/actor/parts/misc/mode-selector.hbs"}}
     {{/ifEquals}}
 
     {{item.name}}
   {{/inline}}
-{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
+{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
