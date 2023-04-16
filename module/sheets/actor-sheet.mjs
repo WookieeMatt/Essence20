@@ -412,14 +412,19 @@ export class Essence20ActorSheet extends ActorSheet {
    * @override
    */
   async _onDropItem(event, data) {
-    const item = super._onDropItem(event, data);
-    if (item) {
+    console.log(data);
+    if (data.type == 'Item') {
       let sourceItem = await fromUuid(data.uuid);
       if (!sourceItem) return false;
       if (sourceItem.type == 'origin') {
+        for (let actorItems of this.actor.items) {
+          if(actorItems.type == 'origin') {
+            return false
+          }
+        }
         await this._showOriginEssenceDialog(sourceItem);
-
       }
+      const item = super._onDropItem(event, data);
     }
   };
 
