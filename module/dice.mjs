@@ -35,8 +35,8 @@ export class Dice {
   async prepareInitiativeRoll(actor) {
     const dataset = {
       shift: actor.system.initiative.shift,
-      upshift: actor.system.initiative.shiftUp,
-      downshift: actor.system.initiative.shiftDown,
+      shiftUp: actor.system.initiative.shiftUp,
+      shiftDown: actor.system.initiative.shiftDown,
     };
 
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);

@@ -36,8 +36,8 @@ export class RollDialog {
     const html = await renderTemplate(
       template,
       {
-        shiftUp: dataset.upshift || 0,
-        shiftDown: dataset.downshift || 0,
+        shiftUp: dataset.shiftUp || 0,
+        shiftDown: dataset.shiftDown || 0,
         isSpecialized: dataset.isSpecialized === 'true',
         snag,
         edge: false,

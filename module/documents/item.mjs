@@ -98,14 +98,14 @@ export class Essence20Item extends Item {
       const skill = this.system.classification.skill;
       const essence = CONFIG.E20.skillToEssence[skill];
       const shift = this.actor.system.skills[skill].shift;
-      const upshift = this.actor.system.skills[skill].shiftUp;
-      const downshift = this.actor.system.skills[skill].shiftDown;
+      const shiftUp = this.actor.system.skills[skill].shiftUp;
+      const shiftDown = this.actor.system.skills[skill].shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,
         skill,
-        upshift,
-        downshift,
+        shiftUp,
+        shiftDown,
       };
 
       this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
@@ -119,13 +119,13 @@ export class Essence20Item extends Item {
       const essence = 'any';
       const skill = 'spellcasting';
       const shift = this.actor.system.skills.spellcasting.shift;
-      const downshift = this.system.cost;
+      const shiftDown = this.system.cost;
       const spellDataset = {
         ...dataset,
         essence,
         shift,
         skill,
-        downshift,
+        shiftDown,
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
