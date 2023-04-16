@@ -1,7 +1,7 @@
 <form class="{{cssClass}}" autocomplete="off">
 
   {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
@@ -13,7 +13,7 @@
   <section class="sheet-body item-sheet">
     <div class="tab main flexcol" data-group="primary" data-tab="main">
       {{!-- Perk Type --}}
-      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.PerkType'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkType'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.perkType">
         {{#select system.perkType}}
@@ -23,21 +23,21 @@
       {{/select}}
       </select>
       {{/inline}}
-      {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-      
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
       {{!-- Prerequisite --}}
-      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.PerkPrerequisite'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkPrerequisite'}}
       {{#*inline "item-field-inputs"}}
       <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
       {{/inline}}
-      {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
     </div>
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{!-- Effects Section --}}
-      {{> "systems/essence20/templates/item/parts/item-active-effects.hbs"}}
+      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
     </div>
   </section>
 

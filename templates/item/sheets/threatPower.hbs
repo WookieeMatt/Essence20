@@ -1,40 +1,40 @@
 <form class="{{cssClass}}" autocomplete="off">
 
   {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     {{!-- Charges --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerCharges'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ThreatPowerCharges'}}
     {{#*inline "item-field-inputs"}}
     <input type="number" name="system.charges" value="{{system.charges}}" />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Cost --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerCost'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ThreatPowerCost'}}
     {{#*inline "item-field-inputs"}}
     <input type="number" name="system.cost" value="{{system.cost}}" />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Limited --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerLimited'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ThreatPowerLimited'}}
     {{#*inline "item-field-inputs"}}
     <input type="checkbox" name="system.limited" {{checked system.limited}} />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Action Type --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ThreatPowerActionType'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ThreatPowerActionType'}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.actionType" value="{{system.actionType}}" />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+    {{> "systems/essence20/templates/item/parts/description.hbs"}}
   </section>
 
 </form>
