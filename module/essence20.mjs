@@ -12,79 +12,6 @@ import { E20 } from "./helpers/config.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { migrateWorld } from "./migration.mjs";
 
-const statusEffects = [
-  {
-    icon: 'systems/essence20/assets/icons/status_asleep.svg',
-    id: 'asleep',
-    label: 'E20.StatusAsleep'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_blinded.svg',
-    id: 'blinded',
-    label: 'E20.StatusBlinded'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_deafened.svg',
-    id: 'deafened',
-    label: 'E20.StatusDeafened'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_defeated.svg',
-    id: 'defeated',
-    label: 'E20.StatusDefeated'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_frightened.svg',
-    id: 'frightened',
-    label: 'E20.StatusFrightened'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_grappled.svg',
-    id: 'grappled',
-    label: 'E20.StatusGrappled'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_immobilized.svg',
-    id: 'immobilized',
-    label: 'E20.StatusImmobilized'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_impaired.svg',
-    id: 'Impaired',
-    label: 'E20.StatusImpaired'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_invisible.svg',
-    id: 'invisible',
-    label: 'E20.StatusInvisible'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_mesmerized.svg',
-    id: 'mesmerized',
-    label: 'E20.StatusMesmerized'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_prone.svg',
-    id: 'prone',
-    label: 'E20.StatusProne'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_restrained.svg',
-    id: 'restrained',
-    label: 'E20.StatusRestrained'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_stunned.svg',
-    id: 'stunned',
-    label: 'E20.StatusStunned'
-  },
-  {
-    icon: 'systems/essence20/assets/icons/status_unconscious.svg',
-    id: 'unconscious',
-    label: 'E20.StatusUnconscious'
-  }
-];
-
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
     config: false,
@@ -151,7 +78,7 @@ Hooks.once('init', async function () {
   CONFIG.Combat.documentClass = Essence20Combat;
   CONFIG.Combatant.documentClass = Essence20Combatant;
   CONFIG.Item.documentClass = Essence20Item;
-  CONFIG.statusEffects = foundry.utils.deepClone(statusEffects);
+  CONFIG.statusEffects = foundry.utils.deepClone(E20.statusEffects);
 
   // Register System Settings
   registerSystemSettings();
