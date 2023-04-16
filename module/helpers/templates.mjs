@@ -7,15 +7,15 @@ export const preloadHandlebarsTemplates = async function () {
   return loadTemplates([
 
     // Actor partials - Headers
-    "systems/essence20/templates/actor/parts/headers/actor-gijoe-header.hbs",
-    "systems/essence20/templates/actor/parts/headers/actor-header.hbs",
-    "systems/essence20/templates/actor/parts/headers/actor-megaformZord-header.hbs",
-    "systems/essence20/templates/actor/parts/headers/actor-pony-header.hbs",
-    "systems/essence20/templates/actor/parts/headers/actor-npc-header.hbs",
-    "systems/essence20/templates/actor/parts/headers/actor-pr-header.hbs",
-    "systems/essence20/templates/actor/parts/headers/actor-transformer-header.hbs",
-    "systems/essence20/templates/actor/parts/headers/actor-vehicle-header.hbs",
-    "systems/essence20/templates/actor/parts/headers/actor-zord-header.hbs",
+    "systems/essence20/templates/actor/parts/headers/gijoe.hbs",
+    "systems/essence20/templates/actor/parts/headers/header.hbs",
+    "systems/essence20/templates/actor/parts/headers/megaformZord.hbs",
+    "systems/essence20/templates/actor/parts/headers/pony.hbs",
+    "systems/essence20/templates/actor/parts/headers/npc.hbs",
+    "systems/essence20/templates/actor/parts/headers/pr.hbs",
+    "systems/essence20/templates/actor/parts/headers/transformer.hbs",
+    "systems/essence20/templates/actor/parts/headers/vehicle.hbs",
+    "systems/essence20/templates/actor/parts/headers/zord.hbs",
 
     // Actor partials - Misc
     "systems/essence20/templates/actor/parts/actor-accordion-skills.hbs",
