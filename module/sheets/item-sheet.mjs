@@ -1,6 +1,27 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 
+function indexFromUuid(uuid) {
+  const parts = uuid.split(".");
+  let index;
+
+  // Compendium Documents
+  if ( parts[0] === "Compendium" ) {
+    const [, scope, packName, id] = parts;
+    const pack = game.packs.get(`${scope}.${packName}`);
+    index = pack?.index.get(id);
+  }
+
+  // World Documents
+  else if ( parts.length < 3 ) {
+    const [docName, id] = parts;
+    const collection = CONFIG[docName].collection.instance;
+    index = collection.get(id);
+  }
+
+  return index || null;
+}
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -92,19 +113,29 @@ export class Essence20ItemSheet extends ItemSheet {
 
   async _onDrop (event) {
     const data = TextEditor.getDragEventData(event);
-    const droppedItem = fromUuidSync(data.uuid);
+    const droppedItem = indexFromUuid(data.uuid);
+    const parts = data.uuid.split(".");
     const targetItem = this.item;
     if (targetItem.type  == "origin") {
       if (droppedItem.type == "perk"){
         const originPerkIds = duplicate(this.item.system.originPerkIds);
 
       // Can't contain duplicate Origin Perks
-      if (!originPerkIds.includes(droppedItem.id)) {
-        originPerkIds.push(droppedItem.id);
-        await this.item.update({
-          "system.originPerkIds": originPerkIds
-        }).then(this.render(false));
-      }
+        if ( parts[0] === "Compendium" ) {
+          if (!originPerkIds.includes(droppedItem._id)) {
+           originPerkIds.push(droppedItem._id);
+            await this.item.update({
+              "system.originPerkIds": originPerkIds
+            }).then(this.render(false));
+          }
+        } else {
+          if (!originPerkIds.includes(droppedItem.id)) {
+            originPerkIds.push(droppedItem.id);
+             await this.item.update({
+               "system.originPerkIds": originPerkIds
+             }).then(this.render(false));
+          }
+        }
       } else {
         return
       }
@@ -115,7 +146,6 @@ export class Essence20ItemSheet extends ItemSheet {
 
   async _onOriginPerkDelete(event) {
     const li = $(event.currentTarget).parents(".originPerk");
-    console.log(li);
     const originPerkId = li.data("originperkId");
     console.log(originPerkId);
     let originPerkIds = this.item.system.originPerkIds.filter(x => x !== originPerkId);
