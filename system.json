@@ -86,10 +86,19 @@
       "flags": {}
     },
     {
-      "name": "sgt_slaughter_sourcebook",
+      "name": "sgt_slaughter_sourcebook_origins",
+      "label": "Sgt Slaughter Sourcebook Origins",
+      "system": "essence20",
+      "path": "packs/sssorigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sgt_slaughter_sourcebook_perks",
       "label": "Sgt Slaughter Sourcebook Perks",
       "system": "essence20",
-      "path": "packs/prcrbperks.db",
+      "path": "packs/sssperks.db",
       "type": "Item",
       "private": false,
       "flags": {}

@@ -562,7 +562,6 @@ export class Essence20ActorSheet extends ActorSheet {
         }
       }
     }
-    console.log(data);
     const type = "perk";
     const name = data.name;
     const itemData = {
