@@ -116,7 +116,7 @@ export const migrateActorData = function(actor) {
     };
   }
 
-  //Migrate Skills
+  // Migrate Skills
   if (actor.system.skills.strength) {
     const skillsForEssences = actor.system.skills
     const essenceList = ["any", "strength", "speed", "smarts", "social"];
@@ -129,7 +129,7 @@ export const migrateActorData = function(actor) {
             "modifier": fields.modifier,
             "shift": fields.shift,
             "shiftDown": fields.shiftDown,
-           "shiftUp": fields.shiftUp
+            "shiftUp": fields.shiftUp
           }
         }
       }
@@ -137,6 +137,24 @@ export const migrateActorData = function(actor) {
     updateData[`system.skills`] = newSkills;
   }
 
+  // Migrate Zord/MFZ essence
+  if (["zord", "megaformZord"].includes(actor.type)) {
+    const strength = actor.system.essences.strength;
+    if (typeof strength == 'number') {
+      updateData[`system.essences.strength`] = {
+        usesDrivers: false,
+        value: actor.system.essences.strength,
+      };
+    }
+
+    const speed = actor.system.essences.speed;
+    if (typeof speed == 'number') {
+      updateData[`system.essences.speed`] = {
+        usesDrivers: false,
+        value: actor.system.essences.speed,
+      };
+    }
+  }
 
   // Migrate Owned Items
   if (!actor.items) {

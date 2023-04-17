@@ -12,6 +12,7 @@
     ],
     "templates": {
       "common": {
+        "color": "#b5b1b1",
         "conditioning": 0,
         "description": "",
         "health": {
@@ -317,7 +318,6 @@
           "toughness": 0,
           "willpower": 0
         },
-        "color": "#b5b1b1",
         "essences": {
           "strength": 3,
           "speed": 3,
