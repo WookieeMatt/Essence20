@@ -86,10 +86,28 @@
       "flags": {}
     },
     {
+      "name": "Transformers Core Rulebook Alt Modes",
+      "label": "Transformers Core Rulebook Alt Modes",
+      "system": "essence20",
+      "path": "packs/tfcrbaltmodes.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "Transformers Core Rulebook Origins",
+      "label": "Transformers Core Rulebook Origins",
+      "system": "essence20",
+      "path": "packs/tfcrborigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "Transformers Core Rulebook Perks",
       "label": "Transformers Core Rulebook Perks",
       "system": "essence20",
-      "path": "packs/tfrbperks.db",
+      "path": "packs/tfcrbperks.db",
       "type": "Item",
       "private": false,
       "flags": {}
