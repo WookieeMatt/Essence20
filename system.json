@@ -23,7 +23,16 @@
   "gridUnits": "ft",
   "packs": [
     {
-      "name": "Across the Stars Perks",
+      "name": "across_the_stars_origins",
+      "label": "Across the Stars Origins",
+      "system": "essence20",
+      "path": "packs/atsorigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+        {
+      "name": "across_the_stars_perks ",
       "label": "Across the Stars Perks",
       "system": "essence20",
       "path": "packs/atsperks.db",
@@ -32,7 +41,7 @@
       "flags": {}
     },
     {
-      "name": "GI Joe Core Rulebook Origins",
+      "name": "gi_joe_crb_origins",
       "label": "GI Joe Core Rulebook Origins",
       "system": "essence20",
       "path": "packs/gijcrborigins.db",
@@ -41,7 +50,7 @@
       "flags": {}
     },
     {
-      "name": "GI Joe Core Rulebook Perks",
+      "name": "gi_joe_crb_perks",
       "label": "GI Joe Core Rulebook Perks",
       "system": "essence20",
       "path": "packs/gijcrbperks.db",
@@ -50,7 +59,7 @@
       "flags": {}
     },
     {
-      "name": "My Little Pony Core Rulebook Perks",
+      "name": "mlp_crb_perks",
       "label": "My Little Pony Core Rulebook Perks",
       "system": "essence20",
       "path": "packs/mlpcrbperks.db",
@@ -59,7 +68,7 @@
       "flags": {}
     },
     {
-      "name": "Power Ranger Core Rulebook Origins",
+      "name": "pr_crb_origins",
       "label": "Power Ranger Core Rulebook Origins",
       "system": "essence20",
       "path": "packs/prcrborigins.db",
@@ -68,7 +77,7 @@
       "flags": {}
     },
     {
-      "name": "Power Ranger Core Rulebook Perks",
+      "name": "pr_crb_perks",
       "label": "Power Ranger Core Rulebook Perks",
       "system": "essence20",
       "path": "packs/prcrbperks.db",
@@ -77,7 +86,7 @@
       "flags": {}
     },
     {
-      "name": "Sgt Slaughter Sourcebook Perks",
+      "name": "sgt_slaughter_sourcebook",
       "label": "Sgt Slaughter Sourcebook Perks",
       "system": "essence20",
       "path": "packs/prcrbperks.db",
@@ -86,7 +95,7 @@
       "flags": {}
     },
     {
-      "name": "Transformers Core Rulebook Alt Modes",
+      "name": "tf_crb_altmodes",
       "label": "Transformers Core Rulebook Alt Modes",
       "system": "essence20",
       "path": "packs/tfcrbaltmodes.db",
@@ -95,7 +104,7 @@
       "flags": {}
     },
     {
-      "name": "Transformers Core Rulebook Origins",
+      "name": "tf_crb_origins",
       "label": "Transformers Core Rulebook Origins",
       "system": "essence20",
       "path": "packs/tfcrborigins.db",
@@ -104,7 +113,7 @@
       "flags": {}
     },
     {
-      "name": "Transformers Core Rulebook Perks",
+      "name": "tf_crb_perks",
       "label": "Transformers Core Rulebook Perks",
       "system": "essence20",
       "path": "packs/tfcrbperks.db",

@@ -412,7 +412,6 @@ export class Essence20ActorSheet extends ActorSheet {
    * @override
    */
   async _onDropItem(event, data) {
-    console.log(data);
     if (data.type == 'Item') {
       let sourceItem = await fromUuid(data.uuid);
       if (!sourceItem) return false;
@@ -553,8 +552,17 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   async _originPerkCreate(origin){
-    const data = game.items.get(origin.system.originPerkIds[0]);
-    console.log(data.system);
+    let data = game.items.get(origin.system.originPerkIds[0]);
+    if(!data) {
+      for (let pack of game.packs){
+        const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+        data = compendium.index.get(origin.system.originPerkIds[0]);
+        if (data) {
+          return data
+        }
+      }
+    }
+    console.log(data);
     const type = "perk";
     const name = data.name;
     const itemData = {
