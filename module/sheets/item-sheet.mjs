@@ -81,10 +81,23 @@ export class Essence20ItemSheet extends ItemSheet {
   _preparePerks(context) {
     if (this.item.type == 'origin') {
       let originPerkIds = [];
-
       for (let originPerkId of this.item.system.originPerkIds) {
-        originPerkIds.push(game.items.get(originPerkId));
+        if (game.items.get(originPerkId)){
+          originPerkIds.push(game.items.get(originPerkId));
+        }
       }
+      if (!originPerkIds[0]) {
+        for (let pack of game.packs){
+          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+          let originPerk = compendium.index.get(this.item.system.originPerkIds[0]);
+          console.log(originPerk);
+          if (originPerk) {
+            console.log("Got Here");
+            originPerkIds.push(originPerk);
+          }
+        }
+      }
+      console.log(originPerkIds)
       context.originPerkIds = originPerkIds;
     }
   }
@@ -147,7 +160,6 @@ export class Essence20ItemSheet extends ItemSheet {
   async _onOriginPerkDelete(event) {
     const li = $(event.currentTarget).parents(".originPerk");
     const originPerkId = li.data("originperkId");
-    console.log(originPerkId);
     let originPerkIds = this.item.system.originPerkIds.filter(x => x !== originPerkId);
     this.item.update({
       "system.originPerkIds": originPerkIds,
