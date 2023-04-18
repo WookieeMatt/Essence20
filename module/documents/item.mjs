@@ -1,4 +1,5 @@
 import { Dice } from "../dice.mjs";
+import { RollDialog } from "../helpers/roll-dialog.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -7,7 +8,7 @@ import { Dice } from "../dice.mjs";
 export class Essence20Item extends Item {
   constructor(item, options) {
     super(item, options);
-    this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
+    this._dice = new Dice(ChatMessage, new RollDialog());
   }
 
   /**
@@ -96,15 +97,15 @@ export class Essence20Item extends Item {
     } else if (this.type == 'weapon') {
       const skill = this.system.classification.skill;
       const essence = CONFIG.E20.skillToEssence[skill];
-      const shift = this.actor.system.skills[essence][skill].shift;
-      const upshift = this.actor.system.skills[essence][skill].shiftUp;
-      const downshift = this.actor.system.skills[essence][skill].shiftDown;
+      const shift = this.actor.system.skills[skill].shift;
+      const shiftUp = this.actor.system.skills[skill].shiftUp;
+      const shiftDown = this.actor.system.skills[skill].shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,
         skill,
-        upshift,
-        downshift,
+        shiftUp,
+        shiftDown,
       };
 
       this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
@@ -117,14 +118,14 @@ export class Essence20Item extends Item {
     } else if (this.type == 'spell') {
       const essence = 'any';
       const skill = 'spellcasting';
-      const shift = this.actor.system.skills.any.spellcasting.shift;
-      const downshift = this.system.cost;
+      const shift = this.actor.system.skills.spellcasting.shift;
+      const shiftDown = this.system.cost;
       const spellDataset = {
         ...dataset,
         essence,
         shift,
         skill,
-        downshift,
+        shiftDown,
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
