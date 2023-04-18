@@ -556,7 +556,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if(!data) {
       for (let pack of game.packs){
         const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-        let originPerk = compendium.index.get(origin.system.originPerkIds[0]);
+        let originPerk = await compendium.getDocument(origin.system.originPerkIds[0]);
         if (originPerk) {
           data = originPerk;
         }
