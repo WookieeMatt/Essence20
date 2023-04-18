@@ -57,8 +57,10 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
-
+    console.log(itemData)
     this._preparePerks(context);
+
+
 
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
@@ -72,6 +74,7 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
+    context.system.description = TextEditor.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
 
     return context;
