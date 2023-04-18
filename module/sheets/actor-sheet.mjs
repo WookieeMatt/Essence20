@@ -553,25 +553,18 @@ export class Essence20ActorSheet extends ActorSheet {
 
   async _originPerkCreate(origin){
     let data = game.items.get(origin.system.originPerkIds[0]);
+    let itemEffects = {}
     if(!data) {
       for (let pack of game.packs){
         const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
         let originPerk = await compendium.getDocument(origin.system.originPerkIds[0]);
+        console.log(originPerk);
         if (originPerk) {
           data = originPerk;
         }
       }
     }
-    const type = "perk";
-    const name = data.name;
-    const itemData = {
-      name: name,
-      type: type,
-      data: data.system
-    };
-    // Remove the type from the dataset since it's in the itemData.type prop.
-
-    return await Item.create(itemData, { parent: this.actor });
+    return await Item.create(data, { parent: this.actor });
   }
 
   /**
