@@ -77,7 +77,6 @@ export class Essence20ItemSheet extends ItemSheet {
     return context;
   }
 
-
   _preparePerks(context) {
     if (this.item.type == 'origin') {
       let originPerkIds = [];

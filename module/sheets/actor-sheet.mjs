@@ -606,7 +606,6 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   async _onOriginDelete(origin) {
-
     let essence = this.actor.system.originEssencesIncrease;
     let essenceValue = this.actor.system.essences[essence] - 1;
     let skillString = "";
