@@ -23,7 +23,7 @@
   "gridUnits": "ft",
   "packs": [
     {
-      "name": "Across the Stars Hang-Ups",
+      "name": "across_the_stars_hangups",
       "label": "Across the Stars Hang-Ups",
       "system": "essence20",
       "path": "packs/atshangups.db",
@@ -32,43 +32,34 @@
       "flags": {}
     },
     {
-      "name": "GI Joe Core Rulebook Hang-Ups",
+      "name": "gi_joe_crb_hangups",
       "label": "GI Joe CRB Hang-Ups",
       "system": "essence20",
-      "path": "packs/gijoehangups.db",
+      "path": "packs/gijcrbhangups.db",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "My Little Pony Core Rulebook Hang-Ups",
+      "name": "mlp_crb_hangups",
       "label": "My Little Pony CRB Hang-Ups",
       "system": "essence20",
-      "path": "packs/mlphangups.db",
+      "path": "packs/mlpcrbhangups.db",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "Power Ranger Core Rulebook Hang-Ups",
+      "name": "pr_crb_hangups",
       "label": "Power Ranger CRB Hang-Ups",
       "system": "essence20",
-      "path": "packs/prhangups.db",
+      "path": "packs/prcrbhangups.db",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "Power Ranger Core Rulebook Perks",
-      "label": "Power Ranger CRB Perks",
-      "system": "essence20",
-      "path": "packs/prperks.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "Sgt Slaughter Sourcebook Hang-Ups",
+      "name": "sgt_slaughter_sourcebook_hangups",
       "label": "Sgt Slaughter Sourcebook Hang-Ups",
       "system": "essence20",
       "path": "packs/ssshangups.db",
@@ -77,15 +68,15 @@
       "flags": {}
     },
     {
-      "name": "Transformers Core Rulebook Hang-Ups",
+      "name": "tf_crb_hangups",
       "label": "Transformers CRB Hang-Ups",
       "system": "essence20",
-      "path": "packs/tfhangups.db",
+      "path": "packs/tfcrbhangups.db",
       "type": "Item",
       "private": false,
       "flags": {}
     }
-  ],  
+  ],
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stun",
   "socket": true,
