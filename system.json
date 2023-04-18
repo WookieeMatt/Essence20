@@ -59,6 +59,15 @@
       "flags": {}
     },
     {
+      "name": "mlp_crb_origins",
+      "label": "My Little Pony Core Rulebook Origins",
+      "system": "essence20",
+      "path": "packs/mlpcrborigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "mlp_crb_perks",
       "label": "My Little Pony Core Rulebook Perks",
       "system": "essence20",
