@@ -77,19 +77,16 @@
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Origin Perk --}}
-    <div>
-      {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefit'}}
-      {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
-      {{#each @root.originPerkIds as |originPerk|}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefit' originPerks=@root.originPerkIds}}
+    {{#*inline "item-field-inputs"}}
+    {{#if @root.originPerkIds}}
+    <div class="flexcol">
+      {{#each originPerks as |originPerk|}}
       <div class="flexrow originPerk" data-originPerk-id="{{originPerk._id}}">
         <ul class="items-list">
           <li class="item">
-            <div class="flexrow" style="align-items: center;">
-              <div style="flex-grow: .75;">
-              </div>
-              <div style="flex-grow: 1;">
-                <label style="flex-grow: 0; white-space: nowrap;">{{originPerk.name}}</label>
-              </div>
+            <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
+              <label style="white-space: nowrap; overflow: hidden;">{{originPerk.name}}</label>
               <div class="item-controls">
                 <a class="item-control originPerk-delete flex-right" title="{{localize 'E20.DeleteOriginPerk'}}">
                   <i class="fas fa-trash"></i>
@@ -101,6 +98,11 @@
       </div>
       {{/each}}
     </div>
+    {{else}}
+      <label>None; drag a Perk onto this sheet to add</label>
+    {{/if}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!--Description--}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
