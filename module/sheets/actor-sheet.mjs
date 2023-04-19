@@ -420,7 +420,7 @@ export class Essence20ActorSheet extends ActorSheet {
       if (sourceItem.type == 'origin') {
         for (let actorItem of this.actor.items) {
           if(actorItem.type == 'origin') {
-            ui.notifications.error(game.i18n.format("Characters can only have one Origin"));
+            ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
             return false
           }
         }
@@ -446,13 +446,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
     new Dialog(
       {
-        title: "Select Essence Score Increase Option",
+        title: game.i18n.localize('E20.EssenceIncrease'),
         content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
           choices,
         }),
         buttons: {
           save: {
-            label: "Accept",
+            label: game.i18n.localize('E20.AcceptButton'),
             callback: html => this._showOriginSkillDialog(origin, this._rememberOptions(html))
           }
         },
@@ -499,13 +499,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
     new Dialog(
       {
-        title: "Select Origin Bonus Skill",
+        title: game.i18n.localize('E20.OriginBonusSkill'),
         content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
           choices,
         }),
         buttons: {
           save: {
-            label: "Accept",
+            label: game.i18n.localize('E20.AcceptButton'),
             callback: html => this._originStatUpdate(origin, selectedEssence, this._rememberOptions(html))
           }
         },
@@ -524,11 +524,13 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
     this._originPerkCreate(origin)
-    let essenceValue = this.actor.system.essences[essence] + 1;
+
+    const essenceValue = this.actor.system.essences[essence] + 1;
     const essenceString = `system.essences.${essence}`;
     let skillString = "";
     let currentShift = "";
     let newShift = "";
+
     if (selectedSkill == "initiative"){
       skillString = `system.${selectedSkill}.shift`;
       currentShift = this.actor.system[selectedSkill].shift;
