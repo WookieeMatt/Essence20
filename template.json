@@ -582,17 +582,14 @@
       "templates": [
         "itemDescription"
       ],
+      "baseAerialMovement": 0,
+      "baseAquaticMovement": 0,
+      "baseGroundMovement": 0,
       "essences": [],
-      "skills": [],
-      "startingHealth": 0,
-      "bonusSkillLevels": "",
-      "groundMovement": "",
       "languages": "",
       "originPerkIds": [],
-      "benefit": {
-        "name": "",
-        "description": ""
-      }
+      "skills": [],
+      "startingHealth": 0
     },
     "perk": {
       "templates": [
