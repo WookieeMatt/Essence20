@@ -415,11 +415,11 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onDropItem(event, data) {
     if (data.type == 'Item') {
-      let sourceItem = await fromUuid(data.uuid);
+      const sourceItem = await fromUuid(data.uuid);
       if (!sourceItem) return false;
       if (sourceItem.type == 'origin') {
-        for (let actorItems of this.actor.items) {
-          if(actorItems.type == 'origin') {
+        for (let actorItem of this.actor.items) {
+          if(actorItem.type == 'origin') {
             ui.notifications.error(game.i18n.format("Characters can only have one Origin"));
             return false
           }
@@ -506,14 +506,16 @@ export class Essence20ActorSheet extends ActorSheet {
         buttons: {
           save: {
             label: "Accept",
-            callback: html => this._originStatUpdate(origin, selectedEssence, selectedSkills, this._rememberOptions(html))
+            callback: html => this._originStatUpdate(origin, selectedEssence, this._rememberOptions(html))
           }
         },
       },
     ).render(true);
   }
 
-  async _originStatUpdate (origin, essence, skills, options) {
+
+  //function to set values on the actor sheet from the dropped Origin
+  async _originStatUpdate (origin, essence, options) {
     const skillOptions = Object.keys(options);
     let selectedSkill = "";
     for (let i =0; i < skillOptions.length; i++) {
@@ -540,6 +542,7 @@ export class Essence20ActorSheet extends ActorSheet {
       skillString = `system.skills.${selectedSkill}.shift`;
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
     }
+
     await this.actor.update({
       [essenceString]: essenceValue,
       [skillString]: newShift,
@@ -553,9 +556,9 @@ export class Essence20ActorSheet extends ActorSheet {
     });
   }
 
+  //function to create the originPerk in the Perk Section of the Actor Sheet
   async _originPerkCreate(origin){
     let data = game.items.get(origin.system.originPerkIds[0]);
-    let itemEffects = {}
     if(!data) {
       for (let pack of game.packs){
         const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
@@ -599,12 +602,15 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  //Handle deleting of an Origin from an Actor Sheet
   async _onOriginDelete(origin) {
     let essence = this.actor.system.originEssencesIncrease;
     let essenceValue = this.actor.system.essences[essence] - 1;
+
     let skillString = "";
     let currentShift = "";
     let newShift = "";
+
     let selectedSkill = this.actor.system.originSkillsIncrease;
     if (selectedSkill == "initiative"){
       skillString = `system.${selectedSkill}.shift`;

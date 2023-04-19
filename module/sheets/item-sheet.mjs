@@ -1,6 +1,7 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 
+// function to return an id of an item from a uuid
 function indexFromUuid(uuid) {
   const parts = uuid.split(".");
   let index;
@@ -57,9 +58,7 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
-    this._preparePerks(context);
-
-
+    this._prepareOriginPerks(context);
 
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
@@ -79,7 +78,8 @@ export class Essence20ItemSheet extends ItemSheet {
     return context;
   }
 
-  _preparePerks(context) {
+  //Retireves the attached Origin Perks for display on the sheet
+  _prepareOriginPerks(context) {
     if (this.item.type == 'origin') {
       let originPerkIds = [];
       for (let originPerkId of this.item.system.originPerkIds) {
@@ -122,6 +122,7 @@ export class Essence20ItemSheet extends ItemSheet {
     html.find('.originPerk-delete').click(this._onOriginPerkDelete.bind(this));
   }
 
+  //function to allow for the dropping of items on to other items
   async _onDrop (event) {
     const data = TextEditor.getDragEventData(event);
     const droppedItem = indexFromUuid(data.uuid);
@@ -154,7 +155,7 @@ export class Essence20ItemSheet extends ItemSheet {
       return;
     }
   }
-
+  //function to delete a Perk from an Origin Sheet
   async _onOriginPerkDelete(event) {
     const li = $(event.currentTarget).parents(".originPerk");
     const originPerkId = li.data("originperkId");
