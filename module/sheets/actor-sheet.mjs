@@ -617,8 +617,9 @@ export class Essence20ActorSheet extends ActorSheet {
       skillString = `system.skills.${selectedSkill}.shift`;
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
     }
+
     const essenceString = `system.essences.${essence}`;
-    const data = game.items.get(origin.system.originPerkIds[0]);
+
     await this.actor.update({
       [essenceString]: essenceValue,
       [skillString]: newShift,
