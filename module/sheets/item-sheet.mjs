@@ -166,5 +166,3 @@ export class Essence20ItemSheet extends ItemSheet {
     li.slideUp(200, () => this.render(false));
   }
 }
-
-
