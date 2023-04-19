@@ -277,9 +277,11 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       const item = this.actor.items.get(li.data("itemId"));
-      if(item.type == "origin") {
+
+      if (item.type == "origin") {
         this._onOriginDelete(item);
       }
+
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
