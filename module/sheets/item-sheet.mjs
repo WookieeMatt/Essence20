@@ -57,7 +57,6 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
-    console.log(itemData)
     this._preparePerks(context);
 
 
