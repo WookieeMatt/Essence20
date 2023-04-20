@@ -535,11 +535,11 @@ export class Essence20ActorSheet extends ActorSheet {
 
   //function to set values on the actor sheet from the dropped Origin
   async _originStatUpdate (origin, essence, options) {
-    const skillOptions = Object.keys(options);
     let selectedSkill = "";
-    for (let i =0; i < skillOptions.length; i++) {
-      if (options[skillOptions[i]]) {
-        selectedSkill = skillOptions[i];
+    for (const [skill, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedSkill = skill;
+        break;
       }
     }
     this._originPerkCreate(origin)
