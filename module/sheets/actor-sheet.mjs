@@ -502,20 +502,19 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _showOriginSkillDialog(origin, options) {
     const essences = Object.keys(options);
-    const choices = {};
     let selectedEssence = "";
-    let selectedSkills = "";
+    let selectedSkills = {};
+
     for (const skill of origin.system.skills) {
       const essence = CONFIG.E20.skillToEssence[skill];
-      if (options[essence] && essences.includes(essence)) {
+      if (options[essence]) {
         selectedEssence = essence;
-        choices[skill] = {
+        selectedSkills[skill] = {
           chosen: false,
           label: CONFIG.E20.originEssenceSkills[skill],
         };
       }
     }
-    selectedSkills = choices;
 
     new Dialog(
       {
