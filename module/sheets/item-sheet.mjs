@@ -136,17 +136,16 @@ export class Essence20ItemSheet extends ItemSheet {
         // Can't contain duplicate Origin Perks
         if (parts[0] === "Compendium") {
           if (!originPerkIds.includes(droppedItem._id)) {
-           originPerkIds.push(droppedItem._id);
+            originPerkIds.push(droppedItem._id);
             await this.item.update({
               "system.originPerkIds": originPerkIds
             }).then(this.render(false));
           }
         } else if (!originPerkIds.includes(droppedItem.id)) {
             originPerkIds.push(droppedItem.id);
-             await this.item.update({
-               "system.originPerkIds": originPerkIds
-             }).then(this.render(false));
-          }
+            await this.item.update({
+              "system.originPerkIds": originPerkIds
+            }).then(this.render(false));
         }
       }
     }
