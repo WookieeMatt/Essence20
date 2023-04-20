@@ -87,15 +87,18 @@ export class Essence20ItemSheet extends ItemSheet {
           originPerkIds.push(game.items.get(originPerkId));
         }
       }
-      if (!originPerkIds[0]) {
+
+      if (!originPerkIds.length) {
         for (let pack of game.packs){
           const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
           let originPerk = compendium.index.get(this.item.system.originPerkIds[0]);
+
           if (originPerk) {
             originPerkIds.push(originPerk);
           }
         }
       }
+
       context.originPerkIds = originPerkIds;
     }
   }
