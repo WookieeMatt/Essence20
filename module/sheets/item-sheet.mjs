@@ -128,33 +128,30 @@ export class Essence20ItemSheet extends ItemSheet {
     const droppedItem = indexFromUuid(data.uuid);
     const parts = data.uuid.split(".");
     const targetItem = this.item;
+
     if (targetItem.type  == "origin") {
-      if (droppedItem.type == "perk"){
+      if (droppedItem.type == "perk") {
         const originPerkIds = duplicate(this.item.system.originPerkIds);
 
-      // Can't contain duplicate Origin Perks
-        if ( parts[0] === "Compendium" ) {
+        // Can't contain duplicate Origin Perks
+        if (parts[0] === "Compendium") {
           if (!originPerkIds.includes(droppedItem._id)) {
            originPerkIds.push(droppedItem._id);
             await this.item.update({
               "system.originPerkIds": originPerkIds
             }).then(this.render(false));
           }
-        } else {
-          if (!originPerkIds.includes(droppedItem.id)) {
+        } else if (!originPerkIds.includes(droppedItem.id)) {
             originPerkIds.push(droppedItem.id);
              await this.item.update({
                "system.originPerkIds": originPerkIds
              }).then(this.render(false));
           }
         }
-      } else {
-        return
       }
-    } else {
-      return;
     }
   }
+
   //function to delete a Perk from an Origin Sheet
   async _onOriginPerkDelete(event) {
     const li = $(event.currentTarget).parents(".originPerk");
