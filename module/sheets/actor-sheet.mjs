@@ -196,29 +196,15 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'megaformTrait':
           megaformTraits.push(i);
           break;
-        case 'origin':
-          let skillList = "";
-          let essenceList = "";
-          for (let x = 0; x<i.system.skills.length; x++) {
-            if (x == 0){
-              skillList = game.i18n.localize(CONFIG.E20.originEssenceSkills[i.system.skills[x]]);
-            } else {
-              let nextSkill = game.i18n.localize(CONFIG.E20.originEssenceSkills[i.system.skills[x]]);
-              skillList += `, ${nextSkill}`;
-            }
-          };
-          for (let x = 0; x<i.system.essences.length; x++) {
-            if (x == 0){
-              essenceList = game.i18n.localize(CONFIG.E20.originEssences[i.system.essences[x]]);
-            } else {
-              let nextEssence = game.i18n.localize(CONFIG.E20.originEssences[i.system.essences[x]]);
-              essenceList += `, ${nextEssence}`;
-            }
-          };
-          i.skillsString = skillList;
-          i.essenceString = essenceList;
-          origins.push(i);
-          break;
+          case 'origin':
+            i.skillsString = i.system.skills.map(skill => {
+              return game.i18n.localize(CONFIG.E20.originEssenceSkills[skill]);
+            }).join(", ");
+            i.essenceString = i.system.essences.map(essence => {
+              return game.i18n.localize(CONFIG.E20.originEssences[essence]);
+            }).join(", ");
+            origins.push(i);
+            break;
         case 'perk':
           perks.push(i);
           break;
