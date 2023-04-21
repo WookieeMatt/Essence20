@@ -519,7 +519,13 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
 
-  //function to set values on the actor sheet from the dropped Origin
+  /**
+  * Updates the actor with the information selected for the Origin
+  * @param {Object} origin   The Origin
+  * @param {Object} options   The options resulting from _showOriginSkillDialog()
+  * @param {Object} essence   The essence selected in the _showOriginEssenceDialog()
+  * @private
+  */
   async _originStatUpdate (origin, essence, options) {
     let selectedSkill = "";
     for (const [skill, isSelected] of Object.entries(options)) {
@@ -563,7 +569,11 @@ export class Essence20ActorSheet extends ActorSheet {
     });
   }
 
-  //function to create the originPerk in the Perk Section of the Actor Sheet
+  /**
+  * Creates the Perk from the Origin on the Actor
+  * @param {Object} origin   The Origin
+  * @private
+  */
   async _originPerkCreate(origin){
     let data = game.items.get(origin.system.originPerkIds[0]);
     if(!data) {
@@ -609,7 +619,11 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-  //Handle deleting of an Origin from an Actor Sheet
+  /**
+  * Handle deleting of an Origin from an Actor Sheet
+  * @param {Object} origin   The Origin
+  * @private
+  */
   async _onOriginDelete(origin) {
     let essence = this.actor.system.originEssencesIncrease;
     let essenceValue = this.actor.system.essences[essence] - 1;
