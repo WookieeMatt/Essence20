@@ -130,45 +130,70 @@ export class Essence20Actor extends Actor {
         bonus: system.bonuses.cleverness
       }
     ];
+
     if (system.morphed && system.transformed) {
       if (system.movement.aerial.altmode) {
         system.movement.aerial.total = system.movement.aerial.altmode + system.movement.aerial.bonus + system.movement.aerial.morphed;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altmode){
         system.movement.ground.total = system.movement.ground.altmode + system.movement.ground.bonus + system.movement.ground.morphed;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.altmode){
         system.movement.swim.total = system.movement.swim.altmode + system.movement.swim.bonus + system.movement.swim.morphed;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else if (system.morphed) {
       if (system.movement.aerial.base) {
         system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus + system.movement.aerial.morphed;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
         system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus + system.movement.ground.morphed;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
         system.movement.swim.total = system.movement.ground.base + system.movement.swim.bonus + system.movement.swim.morphed;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else if (system.transformed) {
       if (system.movement.aerial.altmode){
         system.movement.aerial.total = system.movement.aerial.altmode + system.movement.aerial.bonus;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altmode){
         system.movement.ground.total = system.movement.ground.altmode + system.movement.ground.bonus;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.altmode){
         system.movement.swim.total = system.movement.swim.altmode + system.movement.swim.bonus;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else{
       if (system.movement.aerial.base){
         system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
         system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
         system.movement.swim.total = system.movement.swim.base + system.movement.swim.bonus;
+      } else {
+        system.movement.swim.total = 0;
       }
     }
   }
@@ -227,45 +252,70 @@ export class Essence20Actor extends Actor {
         },
       },
     ];
+
     if (system.morphed && system.transformed) {
       if (system.movement.aerial.altmode) {
         system.movement.aerial.total = system.movement.aerial.altmode + system.movement.aerial.bonus + system.movement.aerial.morphed;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altmode){
         system.movement.ground.total = system.movement.ground.altmode + system.movement.ground.bonus + system.movement.ground.morphed;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.altmode){
         system.movement.swim.total = system.movement.swim.altmode + system.movement.swim.bonus + system.movement.swim.morphed;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else if (system.morphed) {
       if (system.movement.aerial.base) {
         system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus + system.movement.aerial.morphed;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
         system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus + system.movement.ground.morphed;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
         system.movement.swim.total = system.movement.ground.base + system.movement.swim.bonus + system.movement.swim.morphed;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else if (system.transformed) {
       if (system.movement.aerial.altmode){
         system.movement.aerial.total = system.movement.aerial.altmode + system.movement.aerial.bonus;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altmode){
         system.movement.ground.total = system.movement.ground.altmode + system.movement.ground.bonus;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.altmode){
         system.movement.swim.total = system.movement.swim.altmode + system.movement.swim.bonus;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else{
       if (system.movement.aerial.base){
         system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
         system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
         system.movement.swim.total = system.movement.swim.base + system.movement.swim.bonus;
+      } else {
+        system.movement.swim.total = 0;
       }
     }
   }
@@ -304,45 +354,70 @@ export class Essence20Actor extends Actor {
         bonus: system.bonuses.cleverness
       }
     ];
+
     if (system.morphed && system.transformed) {
       if (system.movement.aerial.altmode) {
         system.movement.aerial.total = system.movement.aerial.altmode + system.movement.aerial.bonus + system.movement.aerial.morphed;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altmode){
         system.movement.ground.total = system.movement.ground.altmode + system.movement.ground.bonus + system.movement.ground.morphed;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.altmode){
         system.movement.swim.total = system.movement.swim.altmode + system.movement.swim.bonus + system.movement.swim.morphed;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else if (system.morphed) {
       if (system.movement.aerial.base) {
         system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus + system.movement.aerial.morphed;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
         system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus + system.movement.ground.morphed;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
         system.movement.swim.total = system.movement.ground.base + system.movement.swim.bonus + system.movement.swim.morphed;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else if (system.transformed) {
       if (system.movement.aerial.altmode){
         system.movement.aerial.total = system.movement.aerial.altmode + system.movement.aerial.bonus;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altmode){
         system.movement.ground.total = system.movement.ground.altmode + system.movement.ground.bonus;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.altmode){
         system.movement.swim.total = system.movement.swim.altmode + system.movement.swim.bonus;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else{
       if (system.movement.aerial.base){
         system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
         system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
         system.movement.swim.total = system.movement.swim.base + system.movement.swim.bonus;
+      } else {
+        system.movement.swim.total = 0;
       }
     }
   }
@@ -378,45 +453,69 @@ export class Essence20Actor extends Actor {
         bonus: system.bonuses.cleverness
       }
     ];
-    if (system.morphed && system.transformed) {
+       if (system.morphed && system.transformed) {
       if (system.movement.aerial.altmode) {
         system.movement.aerial.total = system.movement.aerial.altmode + system.movement.aerial.bonus + system.movement.aerial.morphed;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altmode){
         system.movement.ground.total = system.movement.ground.altmode + system.movement.ground.bonus + system.movement.ground.morphed;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.altmode){
         system.movement.swim.total = system.movement.swim.altmode + system.movement.swim.bonus + system.movement.swim.morphed;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else if (system.morphed) {
       if (system.movement.aerial.base) {
         system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus + system.movement.aerial.morphed;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
         system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus + system.movement.ground.morphed;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
         system.movement.swim.total = system.movement.ground.base + system.movement.swim.bonus + system.movement.swim.morphed;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else if (system.transformed) {
       if (system.movement.aerial.altmode){
         system.movement.aerial.total = system.movement.aerial.altmode + system.movement.aerial.bonus;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altmode){
         system.movement.ground.total = system.movement.ground.altmode + system.movement.ground.bonus;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.altmode){
         system.movement.swim.total = system.movement.swim.altmode + system.movement.swim.bonus;
+      } else {
+        system.movement.swim.total = 0;
       }
     }else{
       if (system.movement.aerial.base){
         system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus;
+      } else {
+        system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
         system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus;
+      } else {
+        system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
         system.movement.swim.total = system.movement.swim.base + system.movement.swim.bonus;
+      } else {
+        system.movement.swim.total = 0;
       }
     }
   }
