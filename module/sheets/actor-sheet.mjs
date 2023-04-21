@@ -432,7 +432,7 @@ export class Essence20ActorSheet extends ActorSheet {
         }
         await this._showOriginEssenceDialog(sourceItem);
       }
-      const item = super._onDropItem(event, data);
+      super._onDropItem(event, data);
     }
   };
 
@@ -501,7 +501,6 @@ export class Essence20ActorSheet extends ActorSheet {
         };
       }
     }
-    selectedSkills = choices;
 
     new Dialog(
       {
