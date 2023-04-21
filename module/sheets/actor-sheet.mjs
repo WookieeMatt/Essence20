@@ -1,17 +1,10 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { Dice } from "../dice.mjs";
-import { RollDialog } from "../helpers/roll-dialog.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
 export class Essence20ActorSheet extends ActorSheet {
-  constructor(actor, options) {
-    super(actor, options);
-    this._dice = new Dice(ChatMessage, new RollDialog());
-  }
-
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
@@ -374,7 +367,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (rollType == 'skill') {
-      this._dice.rollSkill(dataset, this.actor);
+      this.actor.rollSkill(dataset);
     } else if (rollType == 'initiative') {
       this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
