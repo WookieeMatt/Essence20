@@ -430,9 +430,10 @@ export class Essence20ActorSheet extends ActorSheet {
             return false
           }
         }
-        await this._showOriginEssenceDialog(sourceItem);
+        await this._showOriginEssenceDialog(sourceItem, event, data);
+      } else {
+        super._onDropItem(event, data);
       }
-      super._onDropItem(event, data);
     }
   };
 
@@ -441,7 +442,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Object} origin   The Origin
    * @private
    */
-  async _showOriginEssenceDialog(origin) {
+  async _showOriginEssenceDialog(origin, event, data) {
     const choices = {};
     for (const essence of origin.system.essences) {
       choices[essence] = {
@@ -459,7 +460,7 @@ export class Essence20ActorSheet extends ActorSheet {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._showOriginSkillDialog(origin, this._rememberOptions(html))
+            callback: html => this._showOriginSkillDialog(origin, this._rememberOptions(html), event, data)
           }
         },
       },
@@ -486,7 +487,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Object} options   The options resulting from _showOriginEssenceDialog()
    * @private
    */
-  async _showOriginSkillDialog(origin, options) {
+  async _showOriginSkillDialog(origin, options, event, data) {
     const essences = Object.keys(options);
     const choices = {};
     let selectedEssence = "";
@@ -510,7 +511,7 @@ export class Essence20ActorSheet extends ActorSheet {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._originStatUpdate(origin, selectedEssence, this._rememberOptions(html))
+            callback: html => this._originStatUpdate(origin, selectedEssence, this._rememberOptions(html), event, data)
           }
         },
       },
@@ -525,47 +526,54 @@ export class Essence20ActorSheet extends ActorSheet {
   * @param {Object} essence   The essence selected in the _showOriginEssenceDialog()
   * @private
   */
-  async _originStatUpdate (origin, essence, options) {
-    let selectedSkill = "";
-    for (const [skill, isSelected] of Object.entries(options)) {
-      if (isSelected) {
-        selectedSkill = skill;
-        break;
+  async _originStatUpdate (origin, essence, options, event, data) {
+    if (!essence) {
+    } else {
+      let selectedSkill = "";
+      for (const [skill, isSelected] of Object.entries(options)) {
+        if (isSelected) {
+          selectedSkill = skill;
+          break;
+        }
+      }
+      if (!selectedSkill){
+
+      } else {
+        this._originPerkCreate(origin)
+
+        const essenceValue = this.actor.system.essences[essence] + 1;
+        const essenceString = `system.essences.${essence}`;
+        let skillString = "";
+        let currentShift = "";
+        let newShift = "";
+
+        if (selectedSkill == "initiative"){
+          skillString = `system.${selectedSkill}.shift`;
+          currentShift = this.actor.system[selectedSkill].shift;
+          newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+        } else if (selectedSkill == "conditioning"){
+          skillString = `system.${selectedSkill}`;
+          currentShift = this.actor.system[selectedSkill];
+          newShift = currentShift + 1;
+        } else {
+          currentShift = this.actor.system.skills[selectedSkill].shift;
+          skillString = `system.skills.${selectedSkill}.shift`;
+          newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+        }
+        super._onDropItem(event, data);
+        await this.actor.update({
+          [essenceString]: essenceValue,
+          [skillString]: newShift,
+          "system.health.max": origin.system.startingHealth,
+          "system.health.value": origin.system.startingHealth,
+          "system.movement.aerial": origin.system.baseAerialMovement,
+          "system.movement.swim": origin.system.baseAquaticMovement,
+          "system.movement.ground": origin.system.baseGroundMovement,
+          "system.originEssencesIncrease": essence,
+          "system.originSkillsIncrease": selectedSkill
+        });
       }
     }
-    this._originPerkCreate(origin)
-
-    const essenceValue = this.actor.system.essences[essence] + 1;
-    const essenceString = `system.essences.${essence}`;
-    let skillString = "";
-    let currentShift = "";
-    let newShift = "";
-
-    if (selectedSkill == "initiative"){
-      skillString = `system.${selectedSkill}.shift`;
-      currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
-    } else if (selectedSkill == "conditioning"){
-      skillString = `system.${selectedSkill}`;
-      currentShift = this.actor.system[selectedSkill];
-      newShift = currentShift + 1;
-    } else {
-      currentShift = this.actor.system.skills[selectedSkill].shift;
-      skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
-    }
-
-    await this.actor.update({
-      [essenceString]: essenceValue,
-      [skillString]: newShift,
-      "system.health.max": origin.system.startingHealth,
-      "system.health.value": origin.system.startingHealth,
-      "system.movement.aerial": origin.system.baseAerialMovement,
-      "system.movement.swim": origin.system.baseAquaticMovement,
-      "system.movement.ground": origin.system.baseGroundMovement,
-      "system.originEssencesIncrease": essence,
-      "system.originSkillsIncrease": selectedSkill
-    });
   }
 
   /**
