@@ -90,25 +90,25 @@ export class Essence20ItemSheet extends ItemSheet {
   */
   _prepareOriginPerks(context) {
     if (this.item.type == 'origin') {
-      let originPerkIds = [];
+      let originPerks = [];
       for (let originPerkId of this.item.system.originPerkIds) {
         const originPerk = game.items.get(originPerkId);
         if (originPerk){
-          originPerkIds.push(originPerk);
+          originPerks.push(originPerk);
         }
       }
 
-      if (!originPerkIds.length) {
+      if (!originPerks.length) {
         for (let pack of game.packs){
           const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
           let originPerk = compendium.index.get(this.item.system.originPerkIds[0]);
           if (originPerk) {
-            originPerkIds.push(originPerk);
+            originPerks.push(originPerk);
           }
         }
       }
 
-      context.originPerkIds = originPerkIds;
+      context.originPerks = originPerks;
     }
   }
   /* -------------------------------------------- */

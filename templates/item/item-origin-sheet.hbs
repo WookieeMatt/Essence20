@@ -76,9 +76,9 @@
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Origin Perk --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefit' originPerks=@root.originPerkIds}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefit' originPerks=@root.originPerks}}
     {{#*inline "item-field-inputs"}}
-    {{#if @root.originPerkIds}}
+    {{#if @root.originPerks}}
     <div class="flexcol">
       {{#each originPerks as |originPerk|}}
       <div class="flexrow originPerk" data-originPerk-id="{{originPerk._id}}">
