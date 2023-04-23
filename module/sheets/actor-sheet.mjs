@@ -420,26 +420,32 @@ export class Essence20ActorSheet extends ActorSheet {
    * @override
    */
   async _onDropItem(event, data) {
-    if (data.type == 'Item') {
-      const sourceItem = await fromUuid(data.uuid);
-      if (!sourceItem) return false;
-      if (sourceItem.type == 'origin') {
-        for (let actorItem of this.actor.items) {
-          if(actorItem.type == 'origin') {
-            ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
-            return false
-          }
+    if (data.type != 'Item') {
+      return;
+    }
+
+    const sourceItem = await fromUuid(data.uuid);
+    if (!sourceItem) return false;
+
+    if (sourceItem.type == 'origin') {
+      for (let actorItem of this.actor.items) {
+        if(actorItem.type == 'origin') {
+          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
+          return false
         }
-        await this._showOriginEssenceDialog(sourceItem, event, data);
-      } else {
-        super._onDropItem(event, data);
       }
+
+      await this._showOriginEssenceDialog(sourceItem, event, data);
+    } else {
+      super._onDropItem(event, data);
     }
   };
 
   /**
    * Displays a dialog for selecting an Essence for the given Origin.
-   * @param {Object} origin   The Origin
+   * @param {Object} origin    The Origin
+   * @param {DragEvent} event  The concluding DragEvent which contains drop data
+   * @param {object} data      The data transfer extracted from the event
    * @private
    */
   async _showOriginEssenceDialog(origin, event, data) {
@@ -483,14 +489,17 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Displays a dialog for selecting a Skill for the given Origin.
-   * @param {Object} origin   The Origin
+   * @param {Object} origin    The Origin
    * @param {Object} options   The options resulting from _showOriginEssenceDialog()
+   * @param {DragEvent} event  The concluding DragEvent which contains drop data
+   * @param {object} data      The data transfer extracted from the event
    * @private
    */
   async _showOriginSkillDialog(origin, options, event, data) {
     const essences = Object.keys(options);
     const choices = {};
     let selectedEssence = "";
+
     for (const skill of origin.system.skills) {
       const essence = CONFIG.E20.skillToEssence[skill];
       if (options[essence] && essences.includes(essence)) {
@@ -500,6 +509,11 @@ export class Essence20ActorSheet extends ActorSheet {
           label: CONFIG.E20.originEssenceSkills[skill],
         };
       }
+    }
+
+    if (!selectedEssence) {
+      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoEssence'));
+      return;
     }
 
     new Dialog(
@@ -518,63 +532,65 @@ export class Essence20ActorSheet extends ActorSheet {
     ).render(true);
   }
 
-
   /**
   * Updates the actor with the information selected for the Origin
-  * @param {Object} origin   The Origin
+  * @param {Object} origin    The Origin
   * @param {Object} options   The options resulting from _showOriginSkillDialog()
   * @param {Object} essence   The essence selected in the _showOriginEssenceDialog()
+  * @param {DragEvent} event  The concluding DragEvent which contains drop data
+  * @param {object} data      The data transfer extracted from the event
   * @private
   */
-  async _originStatUpdate (origin, essence, options, event, data) {
-    if (!essence) {
-    } else {
-      let selectedSkill = "";
-      for (const [skill, isSelected] of Object.entries(options)) {
-        if (isSelected) {
-          selectedSkill = skill;
-          break;
-        }
-      }
-      if (!selectedSkill){
-
-      } else {
-        this._originPerkCreate(origin)
-
-        const essenceValue = this.actor.system.essences[essence] + 1;
-        const essenceString = `system.essences.${essence}`;
-        let skillString = "";
-        let currentShift = "";
-        let newShift = "";
-
-        if (selectedSkill == "initiative"){
-          skillString = `system.${selectedSkill}.shift`;
-          currentShift = this.actor.system[selectedSkill].shift;
-          newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
-        } else if (selectedSkill == "conditioning"){
-          skillString = `system.${selectedSkill}`;
-          currentShift = this.actor.system[selectedSkill];
-          newShift = currentShift + 1;
-        } else {
-          currentShift = this.actor.system.skills[selectedSkill].shift;
-          skillString = `system.skills.${selectedSkill}.shift`;
-          newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
-        }
-        super._onDropItem(event, data);
-        await this.actor.update({
-          [essenceString]: essenceValue,
-          [skillString]: newShift,
-          "system.health.max": origin.system.startingHealth,
-          "system.health.value": origin.system.startingHealth,
-          "system.movement.aerial": origin.system.baseAerialMovement,
-          "system.movement.swim": origin.system.baseAquaticMovement,
-          "system.movement.ground": origin.system.baseGroundMovement,
-          "system.originEssencesIncrease": essence,
-          "system.originSkillsIncrease": selectedSkill
-        });
+  async _originStatUpdate(origin, essence, options, event, data) {
+    let selectedSkill = "";
+    for (const [skill, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedSkill = skill;
+        break;
       }
     }
-  }
+
+    if (!selectedSkill){
+      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoSkill'));
+      return;
+    }
+
+    this._originPerkCreate(origin)
+
+    const essenceValue = this.actor.system.essences[essence] + 1;
+    const essenceString = `system.essences.${essence}`;
+    let skillString = "";
+    let currentShift = "";
+    let newShift = "";
+
+    if (selectedSkill == "initiative"){
+      skillString = `system.${selectedSkill}.shift`;
+      currentShift = this.actor.system[selectedSkill].shift;
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+    } else if (selectedSkill == "conditioning"){
+      skillString = `system.${selectedSkill}`;
+      currentShift = this.actor.system[selectedSkill];
+      newShift = currentShift + 1;
+    } else {
+      currentShift = this.actor.system.skills[selectedSkill].shift;
+      skillString = `system.skills.${selectedSkill}.shift`;
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+    }
+
+    super._onDropItem(event, data);
+
+    await this.actor.update({
+      [essenceString]: essenceValue,
+      [skillString]: newShift,
+      "system.health.max": origin.system.startingHealth,
+      "system.health.value": origin.system.startingHealth,
+      "system.movement.aerial": origin.system.baseAerialMovement,
+      "system.movement.swim": origin.system.baseAquaticMovement,
+      "system.movement.ground": origin.system.baseGroundMovement,
+      "system.originEssencesIncrease": essence,
+      "system.originSkillsIncrease": selectedSkill,
+    });
+}
 
   /**
   * Creates the Perk from the Origin on the Actor
