@@ -92,7 +92,7 @@ export class Essence20ItemSheet extends ItemSheet {
     if (this.item.type == 'origin') {
       let originPerkIds = [];
       for (let originPerkId of this.item.system.originPerkIds) {
-        let originPerk = game.items.get(originPerkId);
+        const originPerk = game.items.get(originPerkId);
         if (originPerk){
           originPerkIds.push(originPerk);
         }
