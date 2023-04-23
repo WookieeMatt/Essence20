@@ -6,7 +6,7 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     {{!-- Availability --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponUpgradeAvailability'}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.UpgradeAvailability'}}
     {{#*inline "item-field-inputs"}}
     <select name="system.availability">
       {{#select system.availability}}
@@ -19,14 +19,14 @@
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Benefit --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponUpgradeBenefit'}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.UpgradeBenefit'}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.benefit" value="{{system.benefit}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
 
     {{!-- Prerequisite --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.WeaponUpgradePrerequisite'}}
+    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.UpgradePrerequisite'}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
     {{/inline}}

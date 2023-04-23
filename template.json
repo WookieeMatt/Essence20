@@ -485,7 +485,7 @@
       "threatPower",
       "trait",
       "weapon",
-      "weaponUpgrade"
+      "upgrade"
     ],
     "templates": {
       "itemDescription": {
@@ -659,7 +659,7 @@
       },
       "upgrades": ""
     },
-    "weaponUpgrade": {
+    "upgrade": {
       "templates": [
         "itemDescription"
       ],
