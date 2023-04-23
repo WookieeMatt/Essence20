@@ -92,8 +92,9 @@ export class Essence20ItemSheet extends ItemSheet {
     if (this.item.type == 'origin') {
       let originPerkIds = [];
       for (let originPerkId of this.item.system.originPerkIds) {
-        if (game.items.get(originPerkId)){
-          originPerkIds.push(game.items.get(originPerkId));
+        let originPerk = game.items.get(originPerkId);
+        if (originPerk){
+          originPerkIds.push(originPerk);
         }
       }
 
@@ -101,7 +102,6 @@ export class Essence20ItemSheet extends ItemSheet {
         for (let pack of game.packs){
           const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
           let originPerk = compendium.index.get(this.item.system.originPerkIds[0]);
-
           if (originPerk) {
             originPerkIds.push(originPerk);
           }
