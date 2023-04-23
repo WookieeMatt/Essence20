@@ -8,7 +8,7 @@ export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
 
-    this._accordionSkillsExpanded = false;
+    this._accordionStates = { skills: '' };
   }
 
   /** @override */
@@ -68,7 +68,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare Zords for MFZs
     this._prepareZords(context);
 
-    context.accordionSkillsExpanded = this._accordionSkillsExpanded;
+    context.accordionStates = this._accordionStates;
 
     return context;
   }
@@ -304,13 +304,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
       // Avoid collapsing NPC skills container on rerender
       if (parent.hasClass('skills-container')) {
-        this._accordionSkillsExpanded = !this._accordionSkillsExpanded;
-
-        if (this._accordionSkillsExpanded) {
-          parent.addClass('open');
-        } else {
-          parent.removeClass('open');
-        }
+        const isOpen = this._accordionStates.skills;
+        this._accordionStates.skills = isOpen ? '' : 'open';
+        this.render();
       } else {
         parent.toggleClass('open');
       }
