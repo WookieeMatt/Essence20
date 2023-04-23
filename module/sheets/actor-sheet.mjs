@@ -490,7 +490,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const essences = Object.keys(options);
     const choices = {};
     let selectedEssence = "";
-    let selectedSkills = "";
     for (const skill of origin.system.skills) {
       const essence = CONFIG.E20.skillToEssence[skill];
       if (options[essence] && essences.includes(essence)) {
