@@ -33,14 +33,17 @@
 
     {{!-- Traits --}}
     {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.ArmorTraits'}}
+    {{#*inline "item-field-edit"}}
+      <a class="trait-selector" style="flex-grow: 0;" data-options="armor" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
+    {{/inline}}
+
     {{#*inline "item-field-inputs"}}
-      <div class="flexcol">
-      {{#each config.armorTraits as |name type|}}
-        <div class="flexrow">
-          <input class="inline-edit item-label-checkbox" type="checkbox" name="system.traits.{{type}}" {{checked (lookup @root.system.traits type)}}/>
-          <span class="armor-trait-checkbox-label">{{localize name}}</span>
-        </div>
-      {{/each}}
+      <div class="chip-section">
+        {{#each item.system.traits as |trait|}}
+        <span class="chip" name="chip.armor.traits.{{type}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
+        {{/each}}
       </div>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
@@ -62,4 +65,5 @@
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
   </section>
+
 </form>

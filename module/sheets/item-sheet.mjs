@@ -1,4 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { onManageSelectTrait } from "../helpers/traits.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -19,11 +20,7 @@ export class Essence20ItemSheet extends ItemSheet {
   /** @override */
   get template() {
     const path = "systems/essence20/templates/item";
-    // Return a single sheet for all item types.
-    // return `${path}/item-sheet.hbs`;
-
-    // Alternatively, you could use the following return statement to do a
-    // unique item sheet by type, like `weapon-sheet.hbs`.
+    // Return a unique item sheet by type, like `weapon-sheet.hbs`.
     return `${path}/item-${this.item.type}-sheet.hbs`;
   }
 
@@ -46,7 +43,7 @@ export class Essence20ItemSheet extends ItemSheet {
     if (actor) {
       context.rollData = actor.getRollData();
     }
-    
+
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.object.effects);
 
@@ -65,11 +62,13 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
-      html.find(".effect-control").click(ev => {
-        if ( this.item.isOwned ) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.");
-          onManageActiveEffect(ev, this.item);
-        });
-        
-    // Roll handlers, click handlers, etc. would go here.
+    html.find(".effect-control").click(ev => {
+      if (this.item.isOwned) return ui.notifications.warn("Managing Active Effects within an Owned Item is not currently supported and will be added in a subsequent update.");
+      onManageActiveEffect(ev, this.item);
+    });
+
+    html.find(".trait-selector").click(ev => {
+      onManageSelectTrait(ev, this.item);
+    });
   }
 }

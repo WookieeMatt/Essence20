@@ -18,6 +18,11 @@ export const registerSettings = function () {
     gm: game.i18n.localize("E20.SptUserGm"),
   };
 
+  let POINTS_NAME_OPTIONS = {};
+  for (let [name, str] of Object.entries(CONFIG.E20.pointsNameOptions)) {
+    POINTS_NAME_OPTIONS[name] = game.i18n.localize(str);
+  }
+
   /* -------------------------------------------- */
   /*  Config settings                             */
   /* -------------------------------------------- */
@@ -56,6 +61,16 @@ export const registerSettings = function () {
     config: true,
     default: true,
     type: Boolean,
+    onChange: debouncedReload,
+  });
+
+  game.settings.register(systemName, "sptPointsName", {
+    name: game.i18n.localize("E20.SptOptionPointsName"),
+    scope: "world",
+    config: true,
+    default: POINTS_NAME_OPTIONS.story,
+    type: String,
+    choices: POINTS_NAME_OPTIONS,
     onChange: debouncedReload,
   });
 

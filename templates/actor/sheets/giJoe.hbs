@@ -9,10 +9,7 @@
     <a class="item" style="border-color: {{system.color}};" data-tab="gear">{{ localize "E20.TabGear" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="perks">{{ localize "E20.TabPerks" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="background">{{ localize "E20.TabBackground" }}</a>
-<<<<<<< HEAD
     <a class="item" style="border-color: {{system.color}};" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
-=======
->>>>>>> c6bd99ac5f590e004607ccd8c4aa69cb66b4bf3c
     <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
   </nav>
 
@@ -33,6 +30,7 @@
       {{> "systems/essence20/templates/actor/parts/items/classFeature/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/armor/container.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/items/contact/container.hbs"}}
     </div>
 
     {{!-- Gear Tab --}}
@@ -51,7 +49,7 @@
     <div class="tab background flexcol" data-group="primary" data-tab="background">
       {{> "systems/essence20/templates/actor/parts/actor-background.hbs"}}
     </div>
-    
+
     {{!-- Effects Tab --}}
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{> "systems/essence20/templates/actor/parts/actor-active-effects.hbs"}}

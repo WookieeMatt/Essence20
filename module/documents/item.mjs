@@ -1,6 +1,5 @@
 import { Dice } from "../dice.mjs";
-
-const STANDARD_CHAT_CARD_ITEMS = ['altMode', 'armor', 'bond', 'classFeature', 'feature', 'gear', 'hangUp', 'megaformTrait', 'origin', 'spell', 'threatPower', 'trait'];
+import { RollDialog } from "../helpers/roll-dialog.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -9,7 +8,7 @@ const STANDARD_CHAT_CARD_ITEMS = ['altMode', 'armor', 'bond', 'classFeature', 'f
 export class Essence20Item extends Item {
   constructor(item, options) {
     super(item, options);
-    this._dice = new Dice(game.i18n, CONFIG.E20, ChatMessage);
+    this._dice = new Dice(ChatMessage, new RollDialog());
   }
 
   /**
@@ -40,7 +39,25 @@ export class Essence20Item extends Item {
    * @private
    */
   async roll(dataset) {
-    if (this.type == 'perk') {
+    if (dataset.rollType == 'info') {
+      // Initialize chat data.
+      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
+      const rollMode = game.settings.get('core', 'rollMode');
+      const label = `[${this.type}] ${this.name}`;
+
+      const template = `systems/essence20/templates/actor/parts/items/${this.type}/details.hbs`;
+      const templateData = {
+        config: CONFIG.E20,
+        item: this,
+      }
+
+      ChatMessage.create({
+        speaker: speaker,
+        rollMode: rollMode,
+        flavor: label,
+        content: await renderTemplate(template, templateData),
+      });
+    } else if (this.type == 'perk') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
@@ -77,45 +94,53 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
-    } else if (STANDARD_CHAT_CARD_ITEMS.includes(this.type)) {
-      // Initialize chat data.
-      const speaker = ChatMessage.getSpeaker({ actor: this.actor });
-      const rollMode = game.settings.get('core', 'rollMode');
-      const label = `[${this.type}] ${this.name}`;
-
-      const template = `systems/essence20/templates/actor/parts/items/${this.type}/details.hbs`;
-      const templateData = {
-        config: CONFIG.E20,
-        item: this,
-      }
-
-      ChatMessage.create({
-        speaker: speaker,
-        rollMode: rollMode,
-        flavor: label,
-        content: await renderTemplate(template, templateData),
-      });
     } else if (this.type == 'weapon') {
       const skill = this.system.classification.skill;
       const essence = CONFIG.E20.skillToEssence[skill];
-      const shift = this.actor.system.skills[essence][skill].shift;
-      const upshift = this.actor.system.skills[essence][skill].shiftUp;
-      const downshift = this.actor.system.skills[essence][skill].shiftDown;
+      const shift = this.actor.system.skills[skill].shift;
+      const shiftUp = this.actor.system.skills[skill].shiftUp;
+      const shiftDown = this.actor.system.skills[skill].shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,
         skill,
-        upshift,
-        downshift,
+        shiftUp,
+        shiftDown,
       };
 
-      this._dice.handleWeaponRoll(weaponDataset, this.actor, this);
+      this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
 
       // Decrement class feature, if applicable
       const classFeature = this.actor.items.get(this.system.classFeatureId);
       if (classFeature) {
         classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
       }
+    } else if (this.type == 'spell') {
+      const essence = 'any';
+      const skill = 'spellcasting';
+      const shift = this.actor.system.skills.spellcasting.shift;
+      const shiftDown = this.system.cost;
+      const spellDataset = {
+        ...dataset,
+        essence,
+        shift,
+        skill,
+        shiftDown,
+      };
+
+      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
+    } else if (this.type == 'magicBauble') {
+      const essence = 'any';
+      const skill = 'spellcasting';
+      const shift = this.system.spellcastingShift;
+      const spellDataset = {
+        ...dataset,
+        essence,
+        shift,
+        skill,
+      };
+
+      this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
     } else {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
