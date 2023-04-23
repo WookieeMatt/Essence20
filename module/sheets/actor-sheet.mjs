@@ -5,6 +5,12 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/
  * @extends {ActorSheet}
  */
 export class Essence20ActorSheet extends ActorSheet {
+  constructor(...args) {
+    super(...args);
+
+    this._accordionStates = { skills: '' };
+  }
+
   /** @override */
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
@@ -61,6 +67,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare Zords for MFZs
     this._prepareZords(context);
+
+    context.accordionStates = this._accordionStates;
 
     return context;
   }
@@ -293,7 +301,15 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.accordion-label').click(ev => {
       const el = ev.currentTarget;
       const parent = $(el).parents('.accordion-wrapper');
-      parent.toggleClass('open');
+
+      // Avoid collapsing NPC skills container on rerender
+      if (parent.hasClass('skills-container')) {
+        const isOpen = this._accordionStates.skills;
+        this._accordionStates.skills = isOpen ? '' : 'open';
+        this.render();
+      } else {
+        parent.toggleClass('open');
+      }
     });
 
     // Drag events for macros.
