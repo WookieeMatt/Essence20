@@ -576,16 +576,14 @@
       "templates": [
         "itemDescription"
       ],
-      "essenceAbilityScoreIncreaseOptions": "",
-      "essenceScoreIncreaseOptions": "",
-      "startingHealth": "",
-      "bonusSkillLevels": "",
-      "groundMovement": "",
+      "baseAerialMovement": 0,
+      "baseAquaticMovement": 0,
+      "baseGroundMovement": 0,
+      "essences": [],
       "languages": "",
-      "benefit": {
-        "name": "",
-        "description": ""
-      }
+      "originPerkIds": [],
+      "skills": [],
+      "startingHealth": 0
     },
     "perk": {
       "templates": [
