@@ -1,17 +1,65 @@
 import { Dice } from "./dice.mjs";
-import { E20 } from "./helpers/config.mjs";
 import { jest } from '@jest/globals'
+
+/* Setup Mocks */
+
+const chatMessage = jest.mock();
+chatMessage.getSpeaker = jest.fn();
+chatMessage.getSpeaker.mockReturnValue({});
+chatMessage.create = jest.fn();
+
+const rollDialog = jest.mock()
+rollDialog.getSkillRollOptions = jest.fn();
+rollDialog.getSkillRollOptions.mockReturnValue({
+    edge: false,
+    shiftDown: 0,
+    shiftUp: 0,
+    snag: false,
+    isSpecialized: false,
+    timesToRoll: 1,
+  }
+);
 
 class Mocki18n {
   localize(text) { return text; }
   format(text, _) { return text; }
 }
 
-const chatMessage = jest.mock();
-chatMessage.getSpeaker = jest.fn();
-chatMessage.getSpeaker.mockReturnValue({});
-chatMessage.create = jest.fn();
-const dice = new Dice(E20, chatMessage, new Mocki18n);
+const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
+
+/* Begin Tests */
+
+/* prepareInitiativeRoll */
+describe("prepareInitiativeRoll", () => {
+  const mockActor = jest.mock();
+
+  test("normal initiative roll", async () => {
+    mockActor.system = {};
+    mockActor.system.initiative = {
+      formula: "",
+      modifier: 0,
+      shift: "d20",
+      shiftDown: 0,
+      shiftUp: 0
+    };
+
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      edge: false,
+      shiftDown: 0,
+      shiftUp: 0,
+      snag: true, // Because d20 shift
+      isSpecialized: false,
+      timesToRoll: 1,
+    });
+
+    mockActor.update = jest.fn();
+    await dice.prepareInitiativeRoll(mockActor);
+
+    expect(mockActor.update).toHaveBeenCalledWith({
+      "system.initiative.formula": "2d20kl + 0",
+    });
+  });
+});
 
 /* rollSkill */
 describe("rollSkill", () => {
@@ -22,120 +70,112 @@ describe("rollSkill", () => {
   };
   const mockActor = jest.mock();
 
-  test("normal skill roll", () => {
-    const skillRollOptions = {
+  test("normal skill roll", async () => {
+    rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
       shiftUp: 0,
       shiftDown: 0,
       timesToRoll: 1,
-    }
+    });
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
-    dice._rollSkillHelper = jest.fn()
+    dice._rollSkillHelper = jest.fn();
 
-    dice.rollSkill(dataset, skillRollOptions, mockActor, null);
+    await dice.rollSkill(dataset, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
   });
 
-  test("repeated normal skill roll", () => {
-    const skillRollOptions = {
+  test("repeated normal skill roll", async () => {
+    rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
       shiftUp: 0,
       shiftDown: 0,
       timesToRoll: 2,
-    }
+    });
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
     dice._rollSkillHelper = jest.fn()
 
-    dice.rollSkill(dataset, skillRollOptions, mockActor, null);
+    await dice.rollSkill(dataset, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.EssenceSkillAthletics");
     expect(dice._rollSkillHelper.mock.calls.length).toBe(2);
   });
 
-  test("auto success", () => {
+  test("auto success", async () => {
     const datasetCopy = {
       ...dataset,
       shift: 'autoSuccess',
     }
-    const skillRollOptions = {
+    rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
       shiftUp: 0,
       shiftDown: 0,
       timesToRoll: 1,
-    }
+    });
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'autoSuccess',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'autoSuccess',
         },
       },
     }));
     dice._rollSkillHelper = jest.fn()
 
-    dice.rollSkill(datasetCopy, skillRollOptions, mockActor, null);
+    await dice.rollSkill(datasetCopy, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
   });
 
-  test("specialized skill roll", () => {
+  test("specialized skill roll", async () => {
     const datasetCopy = {
       ...dataset,
       isSpecialized: "true",
       specializationName: 'Foo Specialization',
     }
-    const skillRollOptions = {
+    rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
       shiftUp: 0,
       shiftDown: 0,
       timesToRoll: 1,
-    }
+    });
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
     dice._rollSkillHelper = jest.fn()
 
-    dice.rollSkill(datasetCopy, skillRollOptions, mockActor, null);
+    await dice.rollSkill(datasetCopy, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization");
   });
 
-  test("normal weapon skill roll", () => {
-    const skillRollOptions = {
+  test("normal weapon skill roll", async () => {
+    rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
       shiftUp: 0,
       shiftDown: 0,
       timesToRoll: 1,
-    }
+    });
     const weapon = {
       name: 'Zeo Power Clubs',
       type: 'weapon',
@@ -149,34 +189,32 @@ describe("rollSkill", () => {
     };
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'strength': {
-          'athletics': {
-            modifier: '0',
-            shift: 'd20',
-          },
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
     dice._rollSkillHelper = jest.fn()
 
-    dice.rollSkill(dataset, skillRollOptions, mockActor, weapon);
+    await dice.rollSkill(dataset, mockActor, weapon);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br><b>E20.WeaponEffect</b> - Some effect<br><b>E20.WeaponAlternateEffects</b> - Some alternate effects<br><b>ITEM.TypeClassfeature</b> - E20.None");
   });
 
-  test("normal spell skill roll", () => {
+  test("normal spell skill roll", async () => {
     const dataset = {
       isSpecialized: false,
       shift: 'd20',
       skill: 'spellcasting',
       essence: 'any',
     };
-    const skillRollOptions = {
+    rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
       shiftUp: 0,
       shiftDown: 0,
       timesToRoll: 1,
-    }
+    });
     const spell = {
       name: 'Barreling Beam',
       type: 'spell',
@@ -186,18 +224,16 @@ describe("rollSkill", () => {
     };
     mockActor.getRollData = jest.fn(() => ({
       skills: {
-        'any': {
-          'spellcasting': {
-            cost: '0',
-            modifier: '0',
-            shift: 'd20',
-          },
+        'spellcasting': {
+          cost: '0',
+          modifier: '0',
+          shift: 'd20',
         },
       },
     }));
     dice._rollSkillHelper = jest.fn()
 
-    dice.rollSkill(dataset, skillRollOptions, mockActor, spell);
+    await dice.rollSkill(dataset, mockActor, spell);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
   });
 });
