@@ -1,15 +1,14 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { Dice } from "../dice.mjs";
-import { RollDialog } from "../helpers/roll-dialog.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
 export class Essence20ActorSheet extends ActorSheet {
-  constructor(actor, options) {
-    super(actor, options);
-    this._dice = new Dice(ChatMessage, new RollDialog());
+  constructor(...args) {
+    super(...args);
+
+    this._accordionStates = { skills: '' };
   }
 
   /** @override */
@@ -68,6 +67,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare Zords for MFZs
     this._prepareZords(context);
+
+    context.accordionStates = this._accordionStates;
 
     return context;
   }
@@ -300,7 +301,15 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.accordion-label').click(ev => {
       const el = ev.currentTarget;
       const parent = $(el).parents('.accordion-wrapper');
-      parent.toggleClass('open');
+
+      // Avoid collapsing NPC skills container on rerender
+      if (parent.hasClass('skills-container')) {
+        const isOpen = this._accordionStates.skills;
+        this._accordionStates.skills = isOpen ? '' : 'open';
+        this.render();
+      } else {
+        parent.toggleClass('open');
+      }
     });
 
     // Drag events for macros.
@@ -374,7 +383,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Handle type-specific rolls.
     if (rollType == 'skill') {
-      this._dice.rollSkill(dataset, this.actor);
+      this.actor.rollSkill(dataset);
     } else if (rollType == 'initiative') {
       this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items

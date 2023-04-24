@@ -1,8 +1,16 @@
+import { Dice } from "../dice.mjs";
+import { RollDialog } from "../helpers/roll-dialog.mjs";
+
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
 export class Essence20Actor extends Actor {
+  constructor(...args) {
+    super(...args);
+    this._dice = new Dice(ChatMessage, new RollDialog());
+  }
+
   /** @override */
   static async create(data, options = {}) {
     const actor = await super.create(data, options);
@@ -99,7 +107,7 @@ export class Essence20Actor extends Actor {
   /**
    * Prepare GI JOE type specific data.
    */
-   _prepareGiJoeData() {
+  _prepareGiJoeData() {
     if (this.type !== 'giJoe') return;
 
     const system = this.system;
@@ -129,13 +137,13 @@ export class Essence20Actor extends Actor {
         value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
         bonus: system.bonuses.cleverness
       }
-    ];  
+    ];
   }
 
   /**
    * Prepare Power Ranger type specific data.
    */
-   _preparePowerRangerData() {
+  _preparePowerRangerData() {
     if (this.type !== 'powerRanger') return;
 
     const system = this.system;
@@ -188,9 +196,9 @@ export class Essence20Actor extends Actor {
     ];
   }
 
-/**
- * Prepare Transformers type specific data.
- */
+  /**
+   * Prepare Transformers type specific data.
+   */
   _prepareTransformerData() {
     if (this.type !== 'transformer') return;
 
@@ -221,7 +229,7 @@ export class Essence20Actor extends Actor {
         value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
         bonus: system.bonuses.cleverness
       }
-    ];     
+    ];
   }
 
   _preparePonyData() {
@@ -254,9 +262,9 @@ export class Essence20Actor extends Actor {
         value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
         bonus: system.bonuses.cleverness
       }
-    ];     
+    ];
   }
-  
+
   /**
    * Override getRollData() that's supplied to rolls.
    */
@@ -287,4 +295,10 @@ export class Essence20Actor extends Actor {
     // Process additional NPC data here.
   }
 
+  /**
+   * Perform a skill roll.
+   */
+  rollSkill(dataset) {
+    this._dice.rollSkill(dataset, this);
+  }
 }
