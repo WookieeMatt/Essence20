@@ -91,7 +91,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
