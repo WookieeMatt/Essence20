@@ -429,6 +429,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     const sourceItem = await fromUuid(data.uuid);
+    console.log(data);
     if (!sourceItem) return false;
 
     if (sourceItem.type == 'origin') {
@@ -440,6 +441,11 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       await this._showOriginEssenceDialog(sourceItem, event, data);
+    } else if (sourceItem.type == 'perk') {
+      if (sourceItem.movementSelect == true){
+
+      }
+      super._onDropItem(event, data);
     } else {
       super._onDropItem(event, data);
     }
@@ -588,9 +594,9 @@ export class Essence20ActorSheet extends ActorSheet {
       [skillString]: newShift,
       "system.health.max": origin.system.startingHealth,
       "system.health.value": origin.system.startingHealth,
-      "system.movement.aerial": origin.system.baseAerialMovement,
-      "system.movement.swim": origin.system.baseAquaticMovement,
-      "system.movement.ground": origin.system.baseGroundMovement,
+      "system.movement.aerial.base": origin.system.baseAerialMovement,
+      "system.movement.swim.base": origin.system.baseAquaticMovement,
+      "system.movement.ground.base": origin.system.baseGroundMovement,
       "system.originEssencesIncrease": essence,
       "system.originSkillsIncrease": selectedSkill,
     });
@@ -681,9 +687,9 @@ export class Essence20ActorSheet extends ActorSheet {
       [skillString]: newShift,
       "system.health.max": 0,
       "system.health.value": 0,
-      "system.movement.aerial": 0,
-      "system.movement.swim": 0,
-      "system.movement.ground": 0,
+      "system.movement.aerial.base": 0,
+      "system.movement.swim.base": 0,
+      "system.movement.ground.base": 0,
       "system.originEssencesIncrease": "",
       "system.originSkillsIncrease": ""
     });
