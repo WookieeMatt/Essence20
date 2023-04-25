@@ -138,6 +138,14 @@ E20.essences = {
   social: "E20.EssenceSocial",
 };
 
+//Origin Essence Names
+E20.originEssences = {
+  strength: "E20.EssenceStrength",
+  speed: "E20.EssenceSpeed",
+  smarts: "E20.EssenceSmarts",
+  social: "E20.EssenceSocial",
+}
+
 // Actor Essence skills
 E20.essenceSkills = {
   athletics: "E20.EssenceSkillAthletics",
@@ -162,16 +170,25 @@ E20.essenceSkills = {
   streetwise: "E20.EssenceSkillStreetwise",
 };
 
+// Origin Essence Skills
+E20.originEssenceSkills = {
+  conditioning: "E20.EssenceSkillConditioning",
+  initiative: "E20.EssenceSkillInitiative",
+  ...E20.essenceSkills,
+}
+
 // Maps skills back to their corresponding Essence
 E20.skillToEssence = {
   athletics: "strength",
   brawn: "strength",
+  conditioning: "strength",
   intimidation: "strength",
   might: "strength",
   acrobatics: "speed",
   driving: "speed",
   finesse: "speed",
   infiltration: "speed",
+  initiative: "speed",
   targeting: "speed",
   alertness: "smarts",
   culture: "smarts",
@@ -185,6 +202,14 @@ E20.skillToEssence = {
   spellcasting: "any",
   streetwise: "social"
 },
+
+E20.skillsByEssence = {
+  any: ["spellcasting"],
+  strength: ["athletics", "brawn", "intimidation", "might"],
+  speed:  ["acrobatics", "driving", "finesse", "infiltration", "targeting"],
+  smarts: ["alertness", "culture", "science", "survival", "technology"],
+  social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"],
+};
 
 /************************************************
  * Rolls                                        *
@@ -305,10 +330,26 @@ E20.lightRanges = {
 
 // Perk types
 E20.perkType = {
+  faction: "E20.PerkFaction",
   general: "E20.PerkGeneral",
   influence: "E20.PerkInfluence",
   origin: "E20.PerkOrigin",
   role: "E20.PerkRole"
+};
+
+// Gear types
+E20.gearType = {
+  clothes: "E20.GearClothes",
+  computers: "E20.GearComputers",
+  exploration: "E20.GearExploration",
+  hazard: "E20.GearHazard",
+  kits: "E20.GearKits",
+  medical: "E20.GearMedical",
+  military: "E20.GearMilitary",
+  other: "E20.GearOther",
+  security: "E20.GearSecurity",
+  support: "E20.GearSupport",
+  tools: "E20.GearTools"
 };
 
 /************************************************
@@ -388,3 +429,80 @@ E20.pointsNameOptions = {
   story: "E20.SptNameStory",
   friendship: "E20.SptNameFriendship",
 };
+
+/************************************************
+ * Status Effects                               *
+ ***********************************************/
+
+E20.statusEffects = [
+  {
+    icon: 'systems/essence20/assets/icons/status_asleep.svg',
+    id: 'asleep',
+    label: 'E20.StatusAsleep',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_blinded.svg',
+    id: 'blinded',
+    label: 'E20.StatusBlinded',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_deafened.svg',
+    id: 'deafened',
+    label: 'E20.StatusDeafened',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_defeated.svg',
+    id: 'defeated',
+    label: 'E20.StatusDefeated',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_frightened.svg',
+    id: 'frightened',
+    label: 'E20.StatusFrightened',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_grappled.svg',
+    id: 'grappled',
+    label: 'E20.StatusGrappled',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_immobilized.svg',
+    id: 'immobilized',
+    label: 'E20.StatusImmobilized',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_impaired.svg',
+    id: 'Impaired',
+    label: 'E20.StatusImpaired',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_invisible.svg',
+    id: 'invisible',
+    label: 'E20.StatusInvisible',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_mesmerized.svg',
+    id: 'mesmerized',
+    label: 'E20.StatusMesmerized',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_prone.svg',
+    id: 'prone',
+    label: 'E20.StatusProne',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_restrained.svg',
+    id: 'restrained',
+    label: 'E20.StatusRestrained',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_stunned.svg',
+    id: 'stunned',
+    label: 'E20.StatusStunned',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_unconscious.svg',
+    id: 'unconscious',
+    label: 'E20.StatusUnconscious',
+  },
+];

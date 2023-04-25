@@ -17,6 +17,11 @@ export const migrateWorld = async function() {
         console.log(`Migrating Actor document ${actor.name}`);
         console.log(updateData);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
+        await actor.update({"system.skills.-=strength": null});
+        await actor.update({"system.skills.-=smarts": null});
+        await actor.update({"system.skills.-=social": null});
+        await actor.update({"system.skills.-=speed": null});
+        await actor.update({"system.skills.-=any": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Actor ${actor.name}: ${err.message}`;
@@ -35,6 +40,7 @@ export const migrateWorld = async function() {
         console.log(`Migrating Item document ${item.name}`);
         console.log(updateData);
         await item.update(updateData, {enforceTypes: false, diff: valid});
+        await item.update({"system.-=perkType": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Item ${item.name}: ${err.message}`;
@@ -111,6 +117,46 @@ export const migrateActorData = function(actor) {
     };
   }
 
+  // Migrate Skills
+  if (actor.system.skills.strength) {
+    const skillsForEssences = actor.system.skills
+    const essenceList = ["any", "strength", "speed", "smarts", "social"];
+    let newSkills = {};
+    for (const [essence, skillsForEssence] of Object.entries(skillsForEssences)) {
+      if (essenceList.includes(essence)) {
+        for (const [skill, fields] of Object.entries(skillsForEssence)) {
+          newSkills[skill] = {
+            "isSpecialized": fields.isSpecialized,
+            "modifier": fields.modifier,
+            "shift": fields.shift,
+            "shiftDown": fields.shiftDown,
+            "shiftUp": fields.shiftUp
+          }
+        }
+      }
+    }
+    updateData[`system.skills`] = newSkills;
+  }
+
+  // Migrate Zord/MFZ essence
+  if (["zord", "megaformZord"].includes(actor.type)) {
+    const strength = actor.system.essences.strength;
+    if (typeof strength == 'number') {
+      updateData[`system.essences.strength`] = {
+        usesDrivers: false,
+        value: actor.system.essences.strength,
+      };
+    }
+
+    const speed = actor.system.essences.speed;
+    if (typeof speed == 'number') {
+      updateData[`system.essences.speed`] = {
+        usesDrivers: false,
+        value: actor.system.essences.speed,
+      };
+    }
+  }
+
   // Migrate Owned Items
   if (!actor.items) {
     return updateData;
@@ -170,6 +216,11 @@ export const migrateActorData = function(actor) {
     const effect = item.system.effect;
     if (effect && !item.system.bonusToughness) {
       updateData[`system.bonusToughness`] = effect;
+    }
+  } else if (item.type == "perk") {
+    if (item.system.perkType) {
+      const perkType = item.system.perkType;
+      updateData[`system.type`] = perkType;
     }
   }
 

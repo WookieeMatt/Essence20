@@ -21,6 +21,179 @@
   ],
   "gridDistance": 5,
   "gridUnits": "ft",
+  "packs": [
+    {
+      "name": "across_the_stars_hangups",
+      "label": "Across the Stars Hang-Ups",
+      "system": "essence20",
+      "path": "packs/atshangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "across_the_stars_origins",
+      "label": "Across the Stars Origins",
+      "system": "essence20",
+      "path": "packs/atsorigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+        {
+      "name": "across_the_stars_perks ",
+      "label": "Across the Stars Perks",
+      "system": "essence20",
+      "path": "packs/atsperks.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "gi_joe_crb_hangups",
+      "label": "GI Joe CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/gijcrbhangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "gi_joe_crb_origins",
+      "label": "GI Joe Core Rulebook Origins",
+      "system": "essence20",
+      "path": "packs/gijcrborigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "gi_joe_crb_perks",
+      "label": "GI Joe Core Rulebook Perks",
+      "system": "essence20",
+      "path": "packs/gijcrbperks.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "mlp_crb_hangups",
+      "label": "My Little Pony CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/mlpcrbhangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "mlp_crb_origins",
+      "label": "My Little Pony Core Rulebook Origins",
+      "system": "essence20",
+      "path": "packs/mlpcrborigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "mlp_crb_perks",
+      "label": "My Little Pony Core Rulebook Perks",
+      "system": "essence20",
+      "path": "packs/mlpcrbperks.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "pr_crb_hangups",
+      "label": "Power Ranger CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/prcrbhangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "pr_crb_origins",
+      "label": "Power Ranger Core Rulebook Origins",
+      "system": "essence20",
+      "path": "packs/prcrborigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "pr_crb_perks",
+      "label": "Power Ranger Core Rulebook Perks",
+      "system": "essence20",
+      "path": "packs/prcrbperks.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sgt_slaughter_sourcebook_hangups",
+      "label": "Sgt Slaughter Sourcebook Hang-Ups",
+      "system": "essence20",
+      "path": "packs/ssshangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sgt_slaughter_sourcebook_origins",
+      "label": "Sgt Slaughter Sourcebook Origins",
+      "system": "essence20",
+      "path": "packs/sssorigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "sgt_slaughter_sourcebook_perks",
+      "label": "Sgt Slaughter Sourcebook Perks",
+      "system": "essence20",
+      "path": "packs/sssperks.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "tf_crb_altmodes",
+      "label": "Transformers Core Rulebook Alt Modes",
+      "system": "essence20",
+      "path": "packs/tfcrbaltmodes.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "tf_crb_hangups",
+      "label": "Transformers CRB Hang-Ups",
+      "system": "essence20",
+      "path": "packs/tfcrbhangups.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "tf_crb_origins",
+      "label": "Transformers Core Rulebook Origins",
+      "system": "essence20",
+      "path": "packs/tfcrborigins.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "tf_crb_perks",
+      "label": "Transformers Core Rulebook Perks",
+      "system": "essence20",
+      "path": "packs/tfcrbperks.db",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    }
+  ],
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stun",
   "socket": true,
@@ -40,6 +213,6 @@
     "verified": "10"
   },
   "flags": {
-    "needsMigrationVersion": "3.1.0"
+    "needsMigrationVersion": "3.1.2"
   }
 }

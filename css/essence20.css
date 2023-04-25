@@ -663,17 +663,17 @@
   padding: 0 8px;
 }
 
-.trait-selector .trait-list {
+.dialog-options {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.trait-selector .trait-list li ol.trait-list {
+.dialog-options li ol.dialog-options {
   margin-left: 1.5em;
 }
 
-.trait-selector input[type=text] {
+.dialog-options input[type=text] {
   height: 24px;
   margin: 2px;
 }
@@ -1183,7 +1183,7 @@
 }
 
 .essence20 .item-field .item-field-inputs {
-  flex: 3;
+  flex: 2;
   justify-content: flex-end;
 }
 
