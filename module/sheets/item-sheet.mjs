@@ -101,7 +101,7 @@ export class Essence20ItemSheet extends ItemSheet {
       if (!originPerks.length) {
         for (let pack of game.packs){
           const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium.index) {
+          if (compendium) {
             let originPerk = compendium.index.get(this.item.system.originPerkIds[0]);
             if (originPerk) {
               originPerks.push(originPerk);
