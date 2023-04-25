@@ -330,6 +330,7 @@ E20.lightRanges = {
 
 // Perk types
 E20.perkType = {
+  faction: "E20.PerkFaction",
   general: "E20.PerkGeneral",
   influence: "E20.PerkInfluence",
   origin: "E20.PerkOrigin",
