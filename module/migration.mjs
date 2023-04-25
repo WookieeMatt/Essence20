@@ -254,7 +254,6 @@ export const migrateCompendium = async function(pack) {
           break;
         case "Item":
           updateData = migrateItemData(doc.toObject());
-
           break;
         case "Scene":
           // updateData = migrateSceneData(doc.toObject());
