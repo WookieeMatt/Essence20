@@ -22,6 +22,7 @@ export const migrateWorld = async function() {
         await actor.update({"system.skills.-=social": null});
         await actor.update({"system.skills.-=speed": null});
         await actor.update({"system.skills.-=any": null});
+
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Actor ${actor.name}: ${err.message}`;
@@ -40,6 +41,7 @@ export const migrateWorld = async function() {
         console.log(`Migrating Item document ${item.name}`);
         console.log(updateData);
         await item.update(updateData, {enforceTypes: false, diff: valid});
+        await item.update({"system.-=perkType": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Item ${item.name}: ${err.message}`;
@@ -90,7 +92,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
@@ -216,6 +218,11 @@ export const migrateActorData = function(actor) {
     if (effect && !item.system.bonusToughness) {
       updateData[`system.bonusToughness`] = effect;
     }
+  } else if (item.type == "perk") {
+    if (item.system.perkType) {
+      const perkType = item.system.perkType;
+      updateData[`system.type`] = perkType;
+    }
   }
 
   return updateData;
@@ -248,6 +255,7 @@ export const migrateCompendium = async function(pack) {
           break;
         case "Item":
           updateData = migrateItemData(doc.toObject());
+
           break;
         case "Scene":
           // updateData = migrateSceneData(doc.toObject());

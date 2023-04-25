@@ -30,7 +30,7 @@ function runMigrations() {
     return;
   }
 
-  const NEEDS_MIGRATION_VERSION = game.system.flags.needsMigrationVersion
+  const NEEDS_MIGRATION_VERSION = 4
 
   // Get the current version, or set it if not present
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
