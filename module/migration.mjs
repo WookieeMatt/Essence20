@@ -22,7 +22,6 @@ export const migrateWorld = async function() {
         await actor.update({"system.skills.-=social": null});
         await actor.update({"system.skills.-=speed": null});
         await actor.update({"system.skills.-=any": null});
-
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Actor ${actor.name}: ${err.message}`;
