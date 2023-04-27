@@ -1,6 +1,16 @@
 {{#>"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
 {{#*inline "secondary-fields"}}
 <div class="actor-header-size">
+  <label for="system.type" class="resource-label">{{localize 'E20.CompanionType'}}</label>
+  <select name="system.type">
+    {{#select system.type}}
+    {{#each config.companionTypes as |value type|}}
+    <option value="{{type}}">{{localize value}}</option>
+    {{/each}}
+    {{/select}}
+  </select>
+</div>
+<div class="actor-header-size">
   <label for="system.availability" class="resource-label">{{localize 'E20.CompanionAvailbaility'}}</label>
   <select name="system.availability">
     {{#select system.availability}}

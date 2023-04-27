@@ -138,7 +138,7 @@ E20.essences = {
   social: "E20.EssenceSocial",
 };
 
-//Origin Essence Names
+// Origin Essence Names
 E20.originEssences = {
   strength: "E20.EssenceStrength",
   speed: "E20.EssenceSpeed",
@@ -411,14 +411,22 @@ E20.rangers = {
 //Options for Transformers Factions
 E20.transformerFaction = {
   autobots: "E20.FactionAutobots",
-  decepticons: "E20.FactionDecepticons"
+  decepticons: "E20.FactionDecepticons",
 }
 
 // Options for Transformer Modes
 E20.transformerMode = {
   modeAltMode: "E20.ModeAltMode",
   modeBotMode: "E20.ModeBotMode",
-  modeAny: "E20.ModeAny"
+  modeAny: "E20.ModeAny",
+}
+
+// Options for Transformer Modes
+E20.companionTypes = {
+  drone: "E20.CompanionTypeDrone",
+  human: "E20.CompanionTypeHuman",
+  miniCon: "E20.CompanionTypeMiniCon",
+  pet: "E20.CompanionTypePet",
 }
 
 /************************************************
