@@ -138,6 +138,14 @@ E20.essences = {
   social: "E20.EssenceSocial",
 };
 
+//Origin Essence Names
+E20.originEssences = {
+  strength: "E20.EssenceStrength",
+  speed: "E20.EssenceSpeed",
+  smarts: "E20.EssenceSmarts",
+  social: "E20.EssenceSocial",
+}
+
 // Actor Essence skills
 E20.essenceSkills = {
   athletics: "E20.EssenceSkillAthletics",
@@ -162,16 +170,25 @@ E20.essenceSkills = {
   streetwise: "E20.EssenceSkillStreetwise",
 };
 
+// Origin Essence Skills
+E20.originEssenceSkills = {
+  conditioning: "E20.EssenceSkillConditioning",
+  initiative: "E20.EssenceSkillInitiative",
+  ...E20.essenceSkills,
+}
+
 // Maps skills back to their corresponding Essence
 E20.skillToEssence = {
   athletics: "strength",
   brawn: "strength",
+  conditioning: "strength",
   intimidation: "strength",
   might: "strength",
   acrobatics: "speed",
   driving: "speed",
   finesse: "speed",
   infiltration: "speed",
+  initiative: "speed",
   targeting: "speed",
   alertness: "smarts",
   culture: "smarts",
@@ -187,11 +204,11 @@ E20.skillToEssence = {
 },
 
 E20.skillsByEssence = {
-  "any": ["spellcasting"],
-  "strength": ["athletics", "brawn", "intimidation", "might"],
-  "speed":  ["acrobatics", "driving", "finesse", "infiltration", "targeting"],
-  "smarts": ["alertness", "culture", "science", "survival", "technology"],
-  "social": ["animalHandling", "deception", "performance", "persuasion", "streetwise"]
+  any: ["spellcasting"],
+  strength: ["athletics", "brawn", "intimidation", "might"],
+  speed:  ["acrobatics", "driving", "finesse", "infiltration", "targeting"],
+  smarts: ["alertness", "culture", "science", "survival", "technology"],
+  social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"],
 };
 
 /************************************************
@@ -313,6 +330,7 @@ E20.lightRanges = {
 
 // Perk types
 E20.perkType = {
+  faction: "E20.PerkFaction",
   general: "E20.PerkGeneral",
   influence: "E20.PerkInfluence",
   origin: "E20.PerkOrigin",
