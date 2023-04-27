@@ -1,18 +1,19 @@
 <form class="{{cssClass}}" autocomplete="off">
   {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/item-header.hbs"}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
+
     {{!-- Starting Health --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginStartingHealth'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginStartingHealth'}}
     {{#*inline "item-field-inputs"}}
     <input type="number" class="flex-group-right" name="system.startingHealth" value="{{system.startingHealth}}" />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Origin Essences --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginEssenceScoreIncrease'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginEssenceScoreIncrease'}}
     {{#*inline "item-field-edit"}}
     <a class="trait-selector" style="flex-grow: 0;" data-options="originEssences" data-target="system.essences"
       title="{{localize 'E20.EssenceSelector'}}">
@@ -27,10 +28,10 @@
       {{/each}}
     </div>
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Origin Skills --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginSkill'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginSkill'}}
     {{#*inline "item-field-edit"}}
     <a class="trait-selector" style="flex-grow: 0;" data-options="originSkills" data-target="system.skills"
       title="{{localize 'E20.SkillSelector'}}">
@@ -45,38 +46,38 @@
       {{/each}}
     </div>
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Base Aerial Movement--}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.BaseAerialMovement'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseAerialMovement'}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.baseAerialMovement" value="{{system.baseAerialMovement}}" />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Base Aquatic Movement --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.BaseAquaticMovement'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseAquaticMovement'}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.baseAquaticMovement" value="{{system.baseAquaticMovement}}" />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Base Aquatic Movement --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.BaseGroundMovement'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseGroundMovement'}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.baseGroundMovement" value="{{system.baseGroundMovement}}" />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Languages --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginLanguages'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginLanguages'}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.languages" value="{{system.languages}}" />
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Origin Perk --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.OriginBenefit' originPerks=@root.originPerks}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginBenefit' originPerks=@root.originPerks}}
     {{#*inline "item-field-inputs"}}
     {{#if @root.originPerks}}
     <div class="flexcol">
@@ -101,9 +102,9 @@
       <label>{{localize 'E20.OriginPerkDrop'}}</label>
     {{/if}}
     {{/inline}}
-    {{/"systems/essence20/templates/item/parts/item-sheet-field.hbs"}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!--Description--}}
-    {{> "systems/essence20/templates/item/parts/item-description.hbs"}}
+    {{> "systems/essence20/templates/item/parts/description.hbs"}}
   </section>
 </form>
