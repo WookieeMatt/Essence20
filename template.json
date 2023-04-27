@@ -556,7 +556,7 @@
     },
     "hangUp": {
       "templates": [
-        "itemDescription"        
+        "itemDescription"
       ]
     },
     "magicBauble": {
@@ -663,6 +663,7 @@
       ],
       "availability": "standard",
       "benefit": "",
+      "type": "armor",
       "prerequisite": null
     }
   }
