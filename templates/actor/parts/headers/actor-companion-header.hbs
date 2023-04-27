@@ -1,0 +1,19 @@
+{{#>"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}
+{{#*inline "secondary-fields"}}
+<div class="actor-header-size">
+  <label for="system.availability" class="resource-label">{{localize 'E20.CompanionAvailbaility'}}</label>
+  <select name="system.availability">
+    {{#select system.availability}}
+    {{#each config.availabilities as |value availability|}}
+    <option value="{{availability}}">{{localize value}}</option>
+    {{/each}}
+    {{/select}}
+  </select>
+</div>
+<div>
+  <label for="conditioning" class="resource-label">{{ localize 'E20.ActorConditioning' }}</label>
+  <input type="number" name="system.conditioning" value="{{system.conditioning}}" />
+</div>
+{{> "systems/essence20/templates/actor/parts/actor-initiative.hbs"}}
+{{/inline}}
+{{/"systems/essence20/templates/actor/parts/headers/actor-header.hbs"}}

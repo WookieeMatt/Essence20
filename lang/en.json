@@ -8,7 +8,8 @@
     "TypeZord": "Zord",
     "TypeMegaformzord": "Megaform Zord",
     "TypeTransformer": "Transformer",
-    "TypePony": "Pony"
+    "TypePony": "Pony",
+    "TypeCompanion": "Companion"
   },
   "ITEM": {
     "TypeAltmode": "Alt Mode",
@@ -111,6 +112,7 @@
     "BaseGroundMovement": "Base Ground Movement",
     "ClassFeatureUses": "Uses",
     "ClassFeatureNone": "No Class Feature",
+    "CompanionAvailbaility": "Availability",
     "ContactAllegiancePoints": "Allegiance Points",
     "ContactGainingTheContact": "Gaining the Contact",
     "ContactPerks": "Perks",
