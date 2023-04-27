@@ -12,6 +12,7 @@
     ],
     "templates": {
       "common": {
+        "color": "#b5b1b1",
         "conditioning": 0,
         "description": "",
         "health": {
@@ -317,7 +318,6 @@
           "toughness": 0,
           "willpower": 0
         },
-        "color": "#b5b1b1",
         "essences": {
           "strength": 3,
           "speed": 3,
@@ -556,7 +556,7 @@
     },
     "hangUp": {
       "templates": [
-        "itemDescription"
+        "itemDescription"        
       ]
     },
     "magicBauble": {
@@ -576,16 +576,14 @@
       "templates": [
         "itemDescription"
       ],
-      "essenceAbilityScoreIncreaseOptions": "",
-      "essenceScoreIncreaseOptions": "",
-      "startingHealth": "",
-      "bonusSkillLevels": "",
-      "groundMovement": "",
+      "baseAerialMovement": 0,
+      "baseAquaticMovement": 0,
+      "baseGroundMovement": 0,
+      "essences": [],
       "languages": "",
-      "benefit": {
-        "name": "",
-        "description": ""
-      }
+      "originPerkIds": [],
+      "skills": [],
+      "startingHealth": 0
     },
     "perk": {
       "templates": [

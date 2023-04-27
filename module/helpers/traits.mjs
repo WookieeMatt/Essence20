@@ -20,6 +20,14 @@ export function onManageSelectTrait(event, owner) {
       options.choices = CONFIG.E20.armorTraits;
       options.valueKey = null;
       break;
+    case "originEssences":
+      options.choices = CONFIG.E20.originEssences
+      options.valueKey = null;
+      break;
+    case "originSkills":
+      options.choices = CONFIG.E20.originEssenceSkills
+      options.valueKey = null;
+      break;
   }
   new TraitSelector(owner, options).render(true);
 }
