@@ -167,6 +167,28 @@ export class Essence20ItemSheet extends ItemSheet {
             }).then(this.render(false));
         }
       }
+    } else if (targetItem.type == "armor") {
+      if (droppedItem.type == "upgrade") {
+        if (droppedItem.system.type = "armor") {
+          const armorUpgradeIds = duplicate(this.item.system.armorUpgradeIds);
+
+        // Can't contain duplicate Origin Perks
+        if (parts[0] === "Compendium") {
+          if (!armorUpgradeIds.includes(droppedItem._id)) {
+            armorUpgradeIds.push(droppedItem._id);
+            await this.item.update({
+              "system.armorUpgradeIds": armorUpgradeIds
+            }).then(this.render(false));
+          }
+        } else if (!armorUpgradeIds.includes(droppedItem.id)) {
+          armorUpgradeIds.push(droppedItem.id);
+            await this.item.update({
+              "system.armorUpgradeIds": armorUpgradeIds
+            }).then(this.render(false));
+        }
+
+        }
+      }
     }
   }
 
