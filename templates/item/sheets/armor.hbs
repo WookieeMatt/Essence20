@@ -1,0 +1,72 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+    {{!-- Availability --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorAvailability'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.availability">
+      {{#select system.availability}}
+      {{#each config.availabilities as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Classification --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorClassification'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.classification">
+      {{#select system.classification}}
+      {{#each config.armorClassifications as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Traits --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraits'}}
+    {{#*inline "item-field-edit"}}
+      <a class="trait-selector" style="flex-grow: 0;" data-options="armor" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
+    {{/inline}}
+
+    {{#*inline "item-field-inputs"}}
+      <div class="chip-section">
+        {{#each item.system.traits as |trait|}}
+        <span class="chip" name="chip.armor.traits.{{type}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
+        {{/each}}
+      </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Toughness --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonusToughness'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.bonusToughness" value="{{system.bonusToughness}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Evasion --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonusEvasion'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.bonusEvasion" value="{{system.bonusEvasion}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Armor Upgrades --}}
+    {{> "systems/essence20/templates/item/parts/upgrades.hbs"}}
+
+    {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/description.hbs"}}
+  </section>
+
+</form>

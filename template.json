@@ -507,8 +507,8 @@
       "spell",
       "threatPower",
       "trait",
-      "weapon",
-      "weaponUpgrade"
+      "upgrade",
+      "weapon"
     ],
     "templates": {
       "itemDescription": {
@@ -536,6 +536,7 @@
       "templates": [
         "itemDescription"
       ],
+      "upgradeIds": [],
       "availability": "standard",
       "bonusEvasion": 0,
       "bonusToughness": 0,
@@ -678,14 +679,15 @@
         "skill": null,
         "shift": null
       },
-      "upgrades": ""
+      "upgradeIds": []
     },
-    "weaponUpgrade": {
+    "upgrade": {
       "templates": [
         "itemDescription"
       ],
       "availability": "standard",
       "benefit": "",
+      "type": "armor",
       "prerequisite": null
     }
   }
