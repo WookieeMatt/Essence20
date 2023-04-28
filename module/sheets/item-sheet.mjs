@@ -65,7 +65,7 @@ export class Essence20ItemSheet extends ItemSheet {
     const itemData = context.item;
     this._prepareOriginPerks(context);
 
-    this._prepareupgrades(context);
+    this._prepareUpgrades(context);
 
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
