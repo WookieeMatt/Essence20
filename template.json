@@ -484,8 +484,8 @@
       "spell",
       "threatPower",
       "trait",
-      "weapon",
-      "upgrade"
+      "upgrade",
+      "weapon"
     ],
     "templates": {
       "itemDescription": {
