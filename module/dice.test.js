@@ -89,7 +89,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics");
   });
 
   test("repeated normal skill roll", async () => {
@@ -111,7 +111,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn()
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.EssenceSkillAthletics");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.SkillAthletics");
     expect(dice._rollSkillHelper.mock.calls.length).toBe(2);
   });
 
@@ -138,7 +138,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn()
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.EssenceSkillAthletics");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics");
   });
 
   test("specialized skill roll", async () => {
@@ -198,7 +198,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn()
 
     await dice.rollSkill(dataset, mockActor, weapon);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br><b>E20.WeaponEffect</b> - Some effect<br><b>E20.WeaponAlternateEffects</b> - Some alternate effects<br><b>ITEM.TypeClassfeature</b> - E20.None");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - Some effect<br><b>E20.WeaponAlternateEffects</b> - Some alternate effects<br><b>ITEM.TypeClassfeature</b> - E20.None");
   });
 
   test("normal spell skill roll", async () => {
@@ -234,7 +234,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn()
 
     await dice.rollSkill(dataset, mockActor, spell);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
   });
 });
 
@@ -248,7 +248,7 @@ describe("_getSkillRollLabel", () => {
       edge: false,
       snag: false,
     }
-    const expected = "E20.RollRollingFor E20.EssenceSkillAthletics";
+    const expected = "E20.RollRollingFor E20.SkillAthletics";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -261,7 +261,7 @@ describe("_getSkillRollLabel", () => {
       edge: true,
       snag: false,
     }
-    const expected = "E20.RollRollingFor E20.EssenceSkillAthletics E20.RollWithAnEdge";
+    const expected = "E20.RollRollingFor E20.SkillAthletics E20.RollWithAnEdge";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -274,7 +274,7 @@ describe("_getSkillRollLabel", () => {
       edge: false,
       snag: true,
     }
-    const expected = "E20.RollRollingFor E20.EssenceSkillAthletics E20.RollWithASnag";
+    const expected = "E20.RollRollingFor E20.SkillAthletics E20.RollWithASnag";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
   });
@@ -314,7 +314,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics)<br>" +
       "<b>E20.WeaponEffect</b> - Some effect<br>" +
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
@@ -339,7 +339,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithAnEdge<br>" +
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics) E20.RollWithAnEdge<br>" +
       "<b>E20.WeaponEffect</b> - Some effect<br>" +
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
@@ -364,7 +364,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics) E20.RollWithASnag<br>" +
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics) E20.RollWithASnag<br>" +
       "<b>E20.WeaponEffect</b> - Some effect<br>" +
       "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
@@ -389,7 +389,7 @@ describe("_getWeaponRollLabel", () => {
       },
     };
     const expected =
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.EssenceSkillAthletics)<br>" +
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics)<br>" +
       "<b>E20.WeaponEffect</b> - E20.None<br>" +
       "<b>E20.WeaponAlternateEffects</b> - E20.None<br>" +
       "<b>ITEM.TypeClassfeature</b> - E20.None";
@@ -412,7 +412,7 @@ describe("_getSpellRollLabel", () => {
         description: "Some description",
       },
     };
-    const expected = "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
+    const expected = "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
 
     expect(dice._getSpellRollLabel(skillRollOptions, spell)).toEqual(expected);
   });
@@ -432,7 +432,7 @@ describe("_getMagicBaubleRollLabel", () => {
         description: "Some description",
       },
     };
-    const expected = "<b>E20.RollTypeMagicBauble</b> - Healer's Salve (E20.EssenceSkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
+    const expected = "<b>E20.RollTypeMagicBauble</b> - Healer's Salve (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>";
 
     expect(dice._getMagicBaubleRollLabel(skillRollOptions, magicBauble)).toEqual(expected);
   });

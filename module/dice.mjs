@@ -202,7 +202,7 @@ export class Dice {
    * @private
    */
   _getSpellRollLabel(skillRollOptions, spell) {
-    const rolledSkillStr = this._localize('E20.EssenceSkillSpellcasting');
+    const rolledSkillStr = this._localize('E20.SkillSpellcasting');
     const spellRollStr = this._localize('E20.RollTypeSpell');
     const descStr = this._localize('E20.ItemDescription');
     const noneStr = this._localize('E20.None');
@@ -215,7 +215,7 @@ export class Dice {
   }
 
   _getMagicBaubleRollLabel(skillRollOptions, magicBauble) {
-    const rolledSkillStr = this._localize('E20.EssenceSkillSpellcasting');
+    const rolledSkillStr = this._localize('E20.SkillSpellcasting');
     const magicBaubleRollStr = this._localize('E20.RollTypeMagicBauble');
     const descStr = this._localize('E20.ItemDescription');
     const noneStr = this._localize('E20.None');
