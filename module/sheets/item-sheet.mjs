@@ -90,7 +90,7 @@ export class Essence20ItemSheet extends ItemSheet {
   * @param {Object} context   The information from the item
   * @private
   */
-  _prepareupgrades(context) {
+  _prepareUpgrades(context) {
     if (this.item.type == 'armor' || this.item.type =='weapon') {
       let upgrades = [];
       for (let upgradeId of this.item.system.upgradeIds) {
