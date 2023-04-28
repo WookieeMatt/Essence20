@@ -86,7 +86,7 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Retireves the attached Armor Upgrades for display on the sheet
+  * Retireves the attached Upgrades for display on the sheet
   * @param {Object} context   The information from the item
   * @private
   */
