@@ -25,7 +25,7 @@ export function onManageSelectTrait(event, owner) {
       options.valueKey = null;
       break;
     case "originSkills":
-      options.choices = CONFIG.E20.originEssenceSkills
+      options.choices = CONFIG.E20.originSkills
       options.valueKey = null;
       break;
   }

@@ -200,7 +200,7 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
           case 'origin':
             i.skillsString = i.system.skills.map(skill => {
-              return game.i18n.localize(CONFIG.E20.originEssenceSkills[skill]);
+              return game.i18n.localize(CONFIG.E20.originSkills[skill]);
             }).join(", ");
             i.essenceString = i.system.essences.map(essence => {
               return game.i18n.localize(CONFIG.E20.originEssences[essence]);
@@ -510,7 +510,7 @@ export class Essence20ActorSheet extends ActorSheet {
         selectedEssence = essence;
         choices[skill] = {
           chosen: false,
-          label: CONFIG.E20.originEssenceSkills[skill],
+          label: CONFIG.E20.originSkills[skill],
         };
       }
     }

@@ -147,7 +147,7 @@ E20.originEssences = {
 }
 
 // Actor Essence skills
-E20.essenceSkills = {
+E20.skills = {
   athletics: "E20.EssenceSkillAthletics",
   brawn: "E20.EssenceSkillBrawn",
   intimidation: "E20.EssenceSkillIntimidation",
@@ -171,10 +171,10 @@ E20.essenceSkills = {
 };
 
 // Origin Essence Skills
-E20.originEssenceSkills = {
+E20.originSkills = {
   conditioning: "E20.EssenceSkillConditioning",
   initiative: "E20.EssenceSkillInitiative",
-  ...E20.essenceSkills,
+  ...E20.skills,
 }
 
 // Maps skills back to their corresponding Essence
