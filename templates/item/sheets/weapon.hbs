@@ -81,7 +81,7 @@
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Upgrades --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.Upgrades'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Upgrades'}}
     {{#*inline "item-field-inputs"}}
     <input class="item-field-inputs" type="text" name="system.upgrades" value="{{system.upgrades}}" />
     {{/inline}}
@@ -143,6 +143,9 @@
     </select>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Weapon Upgrades --}}
+    {{> "systems/essence20/templates/item/parts/upgrades.hbs"}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/description.hbs"}}
