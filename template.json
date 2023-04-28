@@ -484,8 +484,8 @@
       "spell",
       "threatPower",
       "trait",
-      "weapon",
-      "weaponUpgrade"
+      "upgrade",
+      "weapon"
     ],
     "templates": {
       "itemDescription": {
@@ -556,7 +556,7 @@
     },
     "hangUp": {
       "templates": [
-        "itemDescription"        
+        "itemDescription"
       ]
     },
     "magicBauble": {
@@ -657,12 +657,13 @@
       },
       "upgrades": ""
     },
-    "weaponUpgrade": {
+    "upgrade": {
       "templates": [
         "itemDescription"
       ],
       "availability": "standard",
       "benefit": "",
+      "type": "armor",
       "prerequisite": null
     }
   }
