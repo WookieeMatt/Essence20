@@ -91,7 +91,7 @@ export class Essence20ItemSheet extends ItemSheet {
   * @private
   */
   _prepareUpgrades(context) {
-    if (this.item.type == 'armor' || this.item.type =='weapon') {
+    if (['armor', 'weapon'].includes(this.item.type)) {
       let upgrades = [];
       for (let upgradeId of this.item.system.upgradeIds) {
         const upgrade = game.items.get(upgradeId);
