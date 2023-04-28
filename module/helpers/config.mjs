@@ -352,6 +352,13 @@ E20.gearType = {
   tools: "E20.GearTools"
 };
 
+// Upgrade types
+E20.upgradeType = {
+  armor: "E20.UpgradeTypeArmor",
+  drone: "E20.UpgradeTypeDrone",
+  weapon: "E20.UpgradeTypeWeapon",
+};
+
 /************************************************
  * Spells                                       *
  ***********************************************/
