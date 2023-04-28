@@ -81,7 +81,7 @@
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Upgrades --}}
-    {{#> "systems/essence20/templates/item/parts/item-sheet-field.hbs" label='E20.Upgrades'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Upgrades'}}
     {{#*inline "item-field-inputs"}}
     <input class="item-field-inputs" type="text" name="system.upgrades" value="{{system.upgrades}}" />
     {{/inline}}
@@ -141,6 +141,34 @@
       {{/each}}
       {{/select}}
     </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{!-- Armor Upgrades --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradePlural' upgrades=@root.upgrades}}
+    {{#*inline "item-field-inputs"}}
+    {{#if @root.upgrades}}
+    <div class="flexcol">
+      {{#each upgrades as |upgrade|}}
+      <div class="flexrow upgrade" data-upgrade-id="{{upgrade._id}}">
+        <ul class="items-list">
+          <li class="item">
+            <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
+              <label style="white-space: nowrap; overflow: hidden;">{{upgrade.name}}</label>
+              <div class="item-controls">
+                <a class="item-control upgrade-delete flex-right" title="{{localize 'E20.DeleteUpgrade'}}">
+                  <i class="fas fa-trash"></i>
+                </a>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      {{/each}}
+    </div>
+    {{else}}
+      <label>{{localize 'E20.UpgradeDrop'}}</label>
+    {{/if}}
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

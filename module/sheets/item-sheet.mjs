@@ -65,6 +65,8 @@ export class Essence20ItemSheet extends ItemSheet {
     const itemData = context.item;
     this._prepareOriginPerks(context);
 
+    this._prepareupgrades(context);
+
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
     let actor = this.object?.parent ?? null;
@@ -81,6 +83,37 @@ export class Essence20ItemSheet extends ItemSheet {
     context.flags = itemData.flags;
 
     return context;
+  }
+
+  /**
+  * Retireves the attached Armor Upgrades for display on the sheet
+  * @param {Object} context   The information from the item
+  * @private
+  */
+  _prepareupgrades(context) {
+    if (this.item.type == 'armor' || this.item.type =='weapon') {
+      let upgrades = [];
+      for (let upgradeId of this.item.system.upgradeIds) {
+        const upgrade = game.items.get(upgradeId);
+        if (upgrade){
+          upgrades.push(upgrade);
+        }
+      }
+
+      if (!upgrades.length) {
+        for (let pack of game.packs){
+          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+          if (compendium) {
+            let upgrade = compendium.index.get(this.item.system.upgradeIds[0]);
+            if (upgrade) {
+              upgrades.push(upgrade);
+            }
+          }
+        }
+      }
+
+      context.upgrades = upgrades;
+    }
   }
 
   /**
@@ -134,6 +167,10 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Delete Origin Perks from Origns
     html.find('.originPerk-delete').click(this._onOriginPerkDelete.bind(this));
+
+    // Delete Origin Perks from Origns
+    html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
+
   }
 
   /**
@@ -169,30 +206,51 @@ export class Essence20ItemSheet extends ItemSheet {
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
-        if (droppedItem.system.type = "armor") {
-          const armorUpgradeIds = duplicate(this.item.system.armorUpgradeIds);
+        if (droppedItem.system.type == "armor") {
+          const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-        // Can't contain duplicate Origin Perks
+        // Can't contain duplicate Armor Upgrades
         if (parts[0] === "Compendium") {
-          if (!armorUpgradeIds.includes(droppedItem._id)) {
-            armorUpgradeIds.push(droppedItem._id);
+          if (!upgradeIds.includes(droppedItem._id)) {
+            upgradeIds.push(droppedItem._id);
             await this.item.update({
-              "system.armorUpgradeIds": armorUpgradeIds
+              "system.upgradeIds": upgradeIds
             }).then(this.render(false));
           }
-        } else if (!armorUpgradeIds.includes(droppedItem.id)) {
-          armorUpgradeIds.push(droppedItem.id);
+        } else if (!upgradeIds.includes(droppedItem.id)) {
+          upgradeIds.push(droppedItem.id);
             await this.item.update({
-              "system.armorUpgradeIds": armorUpgradeIds
+              "system.upgradeIds": upgradeIds
             }).then(this.render(false));
         }
 
         }
       }
+    } else if (targetItem.type == "weapon") {
+      if (droppedItem.type == "upgrade") {
+        if (droppedItem.system.type == "weapon") {
+          const upgradeIds = duplicate(this.item.system.upgradeIds);
+
+          // Can't contain duplicate Armor Upgrades
+          if (parts[0] === "Compendium") {
+            if (!upgradeIds.includes(droppedItem._id)) {
+              upgradeIds.push(droppedItem._id);
+              await this.item.update({
+                "system.upgradeIds": upgradeIds
+              }).then(this.render(false));
+            }
+          } else if (!upgradeIds.includes(droppedItem.id)) {
+            upgradeIds.push(droppedItem.id);
+            await this.item.update({
+              "system.upgradeIds": upgradeIds
+            }).then(this.render(false));
+          }
+        }
+      }
     }
   }
 
-    /**
+  /**
   * Handle deleting of a Perk from an Origin Sheet
   * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
   * @private
@@ -203,6 +261,21 @@ export class Essence20ItemSheet extends ItemSheet {
     let originPerkIds = this.item.system.originPerkIds.filter(x => x !== originPerkId);
     this.item.update({
       "system.originPerkIds": originPerkIds,
+    });
+    li.slideUp(200, () => this.render(false));
+  }
+
+  /**
+  * Handle deleting of a Perk from an Origin Sheet
+  * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
+  * @private
+  */
+  async _onUpgradeDelete(event) {
+    const li = $(event.currentTarget).parents(".upgrade");
+    const upgradeId = li.data("upgradeId");
+    let upgradeIds = this.item.system.upgradeIds.filter(x => x !== upgradeId);
+    this.item.update({
+      "system.upgradeIds": upgradeIds,
     });
     li.slideUp(200, () => this.render(false));
   }

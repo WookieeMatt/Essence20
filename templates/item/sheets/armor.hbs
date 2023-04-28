@@ -62,19 +62,19 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Origin Perk --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorUpgrades' armorUpgrades=@root.armroUpgrades}}
+    {{!-- Armor Upgrades --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradePlural' upgrades=@root.upgrades}}
     {{#*inline "item-field-inputs"}}
-    {{#if @root.armorUpgrades}}
+    {{#if @root.upgrades}}
     <div class="flexcol">
-      {{#each armorUpgrades as |armorUpgrade|}}
-      <div class="flexrow armorUpgrade" data-armorUpgrade-id="{{armorUpgrade._id}}">
+      {{#each upgrades as |upgrade|}}
+      <div class="flexrow upgrade" data-upgrade-id="{{upgrade._id}}">
         <ul class="items-list">
           <li class="item">
             <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
-              <label style="white-space: nowrap; overflow: hidden;">{{armorUpgrade.name}}</label>
+              <label style="white-space: nowrap; overflow: hidden;">{{upgrade.name}}</label>
               <div class="item-controls">
-                <a class="item-control armorUpgrade-delete flex-right" title="{{localize 'E20.DeleteArmorUpgrade'}}">
+                <a class="item-control upgrade-delete flex-right" title="{{localize 'E20.DeleteUpgrade'}}">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>
@@ -85,7 +85,7 @@
       {{/each}}
     </div>
     {{else}}
-      <label>{{localize 'E20.ArmorUpgradeDrop'}}</label>
+      <label>{{localize 'E20.UpgradeDrop'}}</label>
     {{/if}}
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
