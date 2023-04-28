@@ -170,7 +170,6 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Delete Origin Perks from Origns
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
-
   }
 
   /**
