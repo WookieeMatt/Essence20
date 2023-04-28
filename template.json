@@ -513,6 +513,7 @@
       "templates": [
         "itemDescription"
       ],
+      "upgradeIds": [],
       "availability": "standard",
       "bonusEvasion": 0,
       "bonusToughness": 0,
@@ -655,7 +656,7 @@
         "skill": null,
         "shift": null
       },
-      "upgrades": ""
+      "upgradeIds": []
     },
     "upgrade": {
       "templates": [
