@@ -57,6 +57,23 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+    {{!-- Traits --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTraits'}}
+    {{#*inline "item-field-edit"}}
+      <a class="trait-selector" style="flex-grow: 0;" data-options="weapon" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
+    {{/inline}}
+
+    {{#*inline "item-field-inputs"}}
+      <div class="chip-section">
+        {{#each item.system.traits as |trait|}}
+        <span class="chip" name="chip.weapon.traits.{{type}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
+        {{/each}}
+      </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
     {{!-- Charges --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponNumCharges'}}
     {{#*inline "item-field-inputs"}}

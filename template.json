@@ -656,6 +656,7 @@
         "skill": null,
         "shift": null
       },
+      "traits": [],
       "upgradeIds": []
     },
     "upgrade": {
