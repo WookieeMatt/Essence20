@@ -417,11 +417,12 @@ E20.transformerFactions = {
 preLocalize("transformerFactions");
 
 // Options for Transformer Modes
-E20.transformerMode = {
+E20.transformerModes = {
   modeAltMode: "E20.ModeAltMode",
   modeBotMode: "E20.ModeBotMode",
   modeAny: "E20.ModeAny",
 }
+preLocalize("transformerModes");
 
 // Options for Companion types
 E20.companionTypes = {
