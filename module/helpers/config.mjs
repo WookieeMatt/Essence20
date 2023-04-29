@@ -157,34 +157,34 @@ E20.originEssences = {
 preLocalize("originEssences");
 
 // Actor Essence skills
-E20.essenceSkills = {
-  athletics: "E20.EssenceSkillAthletics",
-  brawn: "E20.EssenceSkillBrawn",
-  intimidation: "E20.EssenceSkillIntimidation",
-  might: "E20.EssenceSkillMight",
-  acrobatics: "E20.EssenceSkillAcrobatics",
-  driving: "E20.EssenceSkillDriving",
-  finesse: "E20.EssenceSkillFinesse",
-  infiltration: "E20.EssenceSkillInfiltration",
-  targeting: "E20.EssenceSkillTargeting",
-  alertness: "E20.EssenceSkillAlertness",
-  culture: "E20.EssenceSkillCulture",
-  science: "E20.EssenceSkillScience",
-  survival: "E20.EssenceSkillSurvival",
-  technology: "E20.EssenceSkillTechnology",
-  animalHandling: "E20.EssenceSkillAnimalHandling",
-  deception: "E20.EssenceSkillDeception",
-  performance: "E20.EssenceSkillPerformance",
-  persuasion: "E20.EssenceSkillPersuasion",
-  spellcasting: "E20.EssenceSkillSpellcasting",
-  streetwise: "E20.EssenceSkillStreetwise",
+E20.skills = {
+  athletics: "E20.SkillAthletics",
+  brawn: "E20.SkillBrawn",
+  intimidation: "E20.SkillIntimidation",
+  might: "E20.SkillMight",
+  acrobatics: "E20.SkillAcrobatics",
+  driving: "E20.SkillDriving",
+  finesse: "E20.SkillFinesse",
+  infiltration: "E20.SkillInfiltration",
+  targeting: "E20.SkillTargeting",
+  alertness: "E20.SkillAlertness",
+  culture: "E20.SkillCulture",
+  science: "E20.SkillScience",
+  survival: "E20.SkillSurvival",
+  technology: "E20.SkillTechnology",
+  animalHandling: "E20.SkillAnimalHandling",
+  deception: "E20.SkillDeception",
+  performance: "E20.SkillPerformance",
+  persuasion: "E20.SkillPersuasion",
+  spellcasting: "E20.SkillSpellcasting",
+  streetwise: "E20.SkillStreetwise",
 };
 
 // Origin Essence Skills
-E20.originEssenceSkills = {
-  conditioning: "E20.EssenceSkillConditioning",
-  initiative: "E20.EssenceSkillInitiative",
-  ...E20.essenceSkills,
+E20.originSkills = {
+  conditioning: "E20.SkillConditioning",
+  initiative: "E20.SkillInitiative",
+  ...E20.skills,
 }
 
 // Maps skills back to their corresponding Essence
