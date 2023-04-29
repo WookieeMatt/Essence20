@@ -441,6 +441,7 @@ E20.pointsNameOptions = {
   story: "E20.SptNameStory",
   friendship: "E20.SptNameFriendship",
 };
+preLocalize("pointsNameOptions");
 
 /************************************************
  * Status Effects                               *
