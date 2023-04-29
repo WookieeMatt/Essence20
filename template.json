@@ -665,6 +665,7 @@
       ],
       "availability": "standard",
       "benefit": "",
+      "traits": [],
       "type": "armor",
       "prerequisite": null
     }

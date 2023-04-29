@@ -222,7 +222,9 @@ export class Essence20ItemSheet extends ItemSheet {
               "system.upgradeIds": upgradeIds
             }).then(this.render(false));
         }
-
+        if (droppedItem.system.traits.length > 0) {
+          targetItem.system.traits.push(droppedItem.system.traits);
+        }
         }
       }
     } else if (targetItem.type == "weapon") {
@@ -243,6 +245,9 @@ export class Essence20ItemSheet extends ItemSheet {
             await this.item.update({
               "system.upgradeIds": upgradeIds
             }).then(this.render(false));
+          }
+          if (droppedItem.system.traits.length > 0) {
+            targetItem.system.traits.push(droppedItem.system.traits);
           }
         }
       }
