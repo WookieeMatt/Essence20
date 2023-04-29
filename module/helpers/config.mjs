@@ -428,7 +428,7 @@ E20.transformerMode = {
   modeAny: "E20.ModeAny",
 }
 
-// Options for Transformer Modes
+// Options for Companion types
 E20.companionTypes = {
   drone: "E20.CompanionTypeDrone",
   human: "E20.CompanionTypeHuman",
