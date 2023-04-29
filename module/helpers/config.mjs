@@ -326,14 +326,6 @@ E20.availabilities = {
 };
 preLocalize("availabilities");
 
-// Effect shapes
-E20.effectShapes = {
-  none: "",
-  circle: "E20.EffectShapeCircle",
-  cone: "E20.EffectShapeCone",
-  square: "E20.EffectShapeSquare",
-};
-
 // Light ranges used by Gear
 E20.lightRanges = {
   bright: "E20.LightRangeBright",
