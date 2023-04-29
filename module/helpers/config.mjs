@@ -41,6 +41,7 @@ E20.weaponSizes = {
   long: "E20.WeaponSizeLong",
   heavy: "E20.WeaponSizeHeavy",
 };
+preLocalize("weaponSizes");
 
 // Options for Weapon style
 E20.weaponStyles = {
