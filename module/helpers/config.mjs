@@ -409,17 +409,6 @@ E20.movementTypes = {
 };
 preLocalize("movementTypes");
 
-// Power Ranger spectrum colors
-E20.rangers = {
-  black: "E20.RangerBlack",
-  blue: "E20.RangerBlue",
-  green: "E20.RangerGreen",
-  pink: "E20.RangerPink",
-  red: "E20.RangerRed",
-  yellow: "E20.RangerYellow",
-  white: "E20.RangerWhite",
-};
-
 //Options for Transformers Factions
 E20.transformerFaction = {
   autobots: "E20.FactionAutobots",
