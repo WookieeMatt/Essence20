@@ -208,23 +208,26 @@ export class Essence20ItemSheet extends ItemSheet {
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-        // Can't contain duplicate Armor Upgrades
-        if (parts[0] === "Compendium") {
-          if (!upgradeIds.includes(droppedItem._id)) {
-            upgradeIds.push(droppedItem._id);
-            await this.item.update({
-              "system.upgradeIds": upgradeIds
-            }).then(this.render(false));
+          // Can't contain duplicate Armor Upgrades
+          if (parts[0] === "Compendium") {
+            if (!upgradeIds.includes(droppedItem._id)) {
+              upgradeIds.push(droppedItem._id);
+              await this.item.update({
+                "system.upgradeIds": upgradeIds
+              }).then(this.render(false));
+            }
+          } else if (!upgradeIds.includes(droppedItem.id)) {
+            upgradeIds.push(droppedItem.id);
+              await this.item.update({
+                "system.upgradeIds": upgradeIds
+              }).then(this.render(false));
           }
-        } else if (!upgradeIds.includes(droppedItem.id)) {
-          upgradeIds.push(droppedItem.id);
-            await this.item.update({
-              "system.upgradeIds": upgradeIds
-            }).then(this.render(false));
-        }
-        if (droppedItem.system.traits.length > 0) {
-          targetItem.system.traits.push(droppedItem.system.traits);
-        }
+          if (droppedItem.system.traits.length > 0) {
+            targetItem.system.traits.push(droppedItem.system.traits);
+          }
+          if (droppedItem.system.armorBonus.value >0) {
+            `targetItem.system.bonus${droppedItem.system.armorBonus.defense}` += droppedItem.system.armorBonus.value;
+          }
         }
       }
     } else if (targetItem.type == "weapon") {
@@ -252,6 +255,7 @@ export class Essence20ItemSheet extends ItemSheet {
         }
       }
     }
+    this.render(true);
   }
 
   /**

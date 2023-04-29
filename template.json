@@ -663,6 +663,10 @@
       "templates": [
         "itemDescription"
       ],
+      "armorBonus": {
+        "defense": "toughness",
+        "value": 0
+      },
       "availability": "standard",
       "benefit": "",
       "traits": [],
