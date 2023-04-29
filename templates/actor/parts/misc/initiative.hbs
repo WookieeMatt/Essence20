@@ -5,7 +5,7 @@
       <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
     </div>
     <select name="system.initiative.shift">
-      {{selectOptions @root.config.initiativeShifts selected=system.initiative.shift localize=true}}
+      {{selectOptions @root.config.initiativeShifts selected=system.initiative.shift}}
     </select>
     <span for="system.initiative.modifier">+</span>
     <input class="one-digit-input" type="number" name="system.initiative.modifier"

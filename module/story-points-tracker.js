@@ -10,7 +10,7 @@ export let setting = key => {
   return game.settings.get("essence20", key);
 };
 export let getPointsName = plural => {
-  return `${i18n(CONFIG.E20.pointsNameOptions[setting('sptPointsName')])} ${i18n(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
+  return `${CONFIG.E20.pointsNameOptions[setting('sptPointsName')]} ${i18n(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
 };
 
 /* -------------------------------------------- */

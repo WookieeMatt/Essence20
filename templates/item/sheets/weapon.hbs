@@ -11,7 +11,7 @@
     <select class="item-field-inputs" name="system.availability">
       {{#select system.availability}}
       {{#each config.availabilities as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+      <option value="{{type}}">{{name}}</option>
       {{/each}}
       {{/select}}
     </select>
@@ -24,7 +24,7 @@
     <select class="item-field-inputs" name="system.classification.skill">
       {{#select system.classification.skill}}
       {{#each config.skills as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+      <option value="{{type}}">{{name}}</option>
       {{/each}}
       {{/select}}
     </select>
@@ -68,7 +68,7 @@
     {{#*inline "item-field-inputs"}}
       <div class="chip-section">
         {{#each item.system.traits as |trait|}}
-        <span class="chip" name="chip.weapon.traits.{{type}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
+        <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
         {{/each}}
       </div>
     {{/inline}}
@@ -140,14 +140,14 @@
     <select name="system.requirements.skill">
       {{#select system.requirements.skill}}
       {{#each config.skills as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+      <option value="{{type}}">{{name}}</option>
       {{/each}}
       {{/select}}
     </select>
     <select name="system.requirements.shift">
       {{#select system.requirements.shift}}
       {{#each config.weaponRequirementShifts as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+      <option value="{{type}}">{{name}}</option>
       {{/each}}
       {{/select}}
     </select>

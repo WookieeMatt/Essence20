@@ -5,7 +5,7 @@
   <select name="system.type">
     {{#select system.type}}
     {{#each config.companionTypes as |value type|}}
-    <option value="{{type}}">{{localize value}}</option>
+    <option value="{{type}}">{{value}}</option>
     {{/each}}
     {{/select}}
   </select>
@@ -15,7 +15,7 @@
   <select name="system.availability">
     {{#select system.availability}}
     {{#each config.availabilities as |value availability|}}
-    <option value="{{availability}}">{{localize value}}</option>
+    <option value="{{availability}}">{{value}}</option>
     {{/each}}
     {{/select}}
   </select>

@@ -4,11 +4,11 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
 <div class="chip-section">
-  <span class="chip" name="chip.weapon.classification">{{localize (lookup @root.config.skills item.system.classification.skill)}} {{localize (lookup @root.config.weaponSizes item.system.classification.size)}} {{localize (lookup @root.config.weaponStyles item.system.classification.style)}}</span>
-  <span class="chip" name="chip.weapon.availability">{{localize (lookup @root.config.availabilities item.system.availability)}}</span>
+  <span class="chip" name="chip.weapon.classification">{{lookup @root.config.skills item.system.classification.skill}} {{lookup @root.config.weaponSizes item.system.classification.size}} {{lookup @root.config.weaponStyles item.system.classification.style}}</span>
+  <span class="chip" name="chip.weapon.availability">{{lookup @root.config.availabilities item.system.availability}}</span>
   <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.system.numHands}}</span>
   <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.system.numTargets}}</span>
   {{#each item.system.traits as |trait|}}
-    <span class="chip" name="chip.weapon.traits.{{type}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
+    <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
   {{/each}}
 </div>

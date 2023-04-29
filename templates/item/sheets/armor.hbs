@@ -11,7 +11,7 @@
     <select name="system.availability">
       {{#select system.availability}}
       {{#each config.availabilities as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+      <option value="{{type}}">{{name}}</option>
       {{/each}}
       {{/select}}
     </select>
@@ -42,7 +42,7 @@
     {{#*inline "item-field-inputs"}}
       <div class="chip-section">
         {{#each item.system.traits as |trait|}}
-        <span class="chip" name="chip.armor.traits.{{type}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
+        <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
         {{/each}}
       </div>
     {{/inline}}
