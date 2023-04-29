@@ -324,6 +324,7 @@ E20.availabilities = {
   unique: "E20.AvailabilityUnique",
   theoretical: "E20.AvailabilityTheoretical",
 };
+preLocalize("availabilities");
 
 // Effect shapes
 E20.effectShapes = {

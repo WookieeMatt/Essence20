@@ -15,7 +15,7 @@
   <select name="system.availability">
     {{#select system.availability}}
     {{#each config.availabilities as |value availability|}}
-    <option value="{{availability}}">{{localize value}}</option>
+    <option value="{{availability}}">{{value}}</option>
     {{/each}}
     {{/select}}
   </select>
