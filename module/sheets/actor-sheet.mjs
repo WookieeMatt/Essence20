@@ -156,7 +156,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const specializations = {};
     const spells = [];
     const threatPowers = [];
-    const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
     const classFeaturesById = {};
     let equippedArmorEvasion = 0;
@@ -228,9 +227,6 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'threatPower':
           threatPowers.push(i);
           break;
-        case 'trait':
-          traits.push(i);
-          break;
         case 'weapon':
           weapons.push(i);
           break;
@@ -257,7 +253,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.spells = spells;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
-    context.traits = traits;
     context.weapons = weapons;
   }
 

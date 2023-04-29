@@ -29,8 +29,7 @@
     "TypePerk": "Perk",
     "TypePower": "Power",
     "TypeSpecialization": "Specialization",
-    "TypeSpell": "Spell",
-    "TypeTrait": "Trait"
+    "TypeSpell": "Spell"
   },
   "MIGRATION": {
     "begin": "Applying Essence20 System Migration for version {version}. Please be patient and do not close your game or shut down your server.",
@@ -202,7 +201,6 @@
     "ItemTypeSpecializationPlural": "Specializations",
     "ItemTypeSpellPlural": "Spells",
     "ItemTypeThreatPowerPlural": "Threat Powers",
-    "ItemTypeTraitPlural": "Traits",
     "ItemTypeWeaponPlural": "Weapons",
     "LightRangeBright": "Bright",
     "LightRangeDim": "Dim",
