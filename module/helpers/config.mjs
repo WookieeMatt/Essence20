@@ -407,6 +407,7 @@ E20.movementTypes = {
   ground: "E20.MovementTypeGround",
   swim: "E20.MovementTypeSwim",
 };
+preLocalize("movementTypes");
 
 // Power Ranger spectrum colors
 E20.rangers = {
