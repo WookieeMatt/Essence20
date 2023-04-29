@@ -154,6 +154,7 @@ E20.originEssences = {
   smarts: "E20.EssenceSmarts",
   social: "E20.EssenceSocial",
 }
+preLocalize("originEssences");
 
 // Actor Essence skills
 E20.essenceSkills = {

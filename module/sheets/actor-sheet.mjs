@@ -198,15 +198,15 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'megaformTrait':
           megaformTraits.push(i);
           break;
-          case 'origin':
-            i.skillsString = i.system.skills.map(skill => {
+        case 'origin':
+          i.skillsString = i.system.skills.map(skill => {
               return game.i18n.localize(CONFIG.E20.originEssenceSkills[skill]);
             }).join(", ");
             i.essenceString = i.system.essences.map(essence => {
-              return game.i18n.localize(CONFIG.E20.originEssences[essence]);
-            }).join(", ");
-            origins.push(i);
-            break;
+            return CONFIG.E20.originEssences[essence];
+          }).join(", ");
+          origins.push(i);
+          break;
         case 'perk':
           perks.push(i);
           break;
