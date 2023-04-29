@@ -101,6 +101,7 @@ E20.weaponTraits = {
   wrecker: "E20.WeaponTraitWrecker",
   xenotech: "E20.WeaponTraitXenotech",
 }
+preLocalize("weaponTraits");
 
 /************************************************
  * Armor                                        *
