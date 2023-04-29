@@ -326,12 +326,6 @@ E20.availabilities = {
 };
 preLocalize("availabilities");
 
-// Light ranges used by Gear
-E20.lightRanges = {
-  bright: "E20.LightRangeBright",
-  dim: "E20.LightRangeDim",
-};
-
 // Perk types
 E20.perkType = {
   faction: "E20.PerkFaction",
