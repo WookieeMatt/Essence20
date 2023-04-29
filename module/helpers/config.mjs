@@ -115,6 +115,7 @@ E20.armorClassifications = {
   heavy: "E20.ArmorClassificationHeavy",
   ultraHeavy: "E20.ArmorClassificationUltraHeavy",
 };
+preLocalize("armorClassifications");
 
 // Options for Armor trait
 E20.armorTraits = {
