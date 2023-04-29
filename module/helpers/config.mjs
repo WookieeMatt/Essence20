@@ -372,13 +372,14 @@ E20.spellTiers = {
 };
 preLocalize("spellTiers");
 
-//Options for Spell Circles
+// Options for Spell Circles
 E20.spellCircles = {
   aid: "E20.SpellCircleAid",
   beam: "E20.SpellCircleBeam",
   enchantment: "E20.SpellCircleEnchantment",
   utility: "E20.SpellCircleUtility",
 };
+preLocalize("spellCircles");
 
 /************************************************
  * Actors                                       *

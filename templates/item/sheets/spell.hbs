@@ -31,7 +31,7 @@
       <select name="system.circle">
         {{#select system.circle}}
         {{#each config.spellCircles as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
+        <option value="{{type}}">{{name}}</option>
         {{/each}}
         {{/select}}
       </select>
