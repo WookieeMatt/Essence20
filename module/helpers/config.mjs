@@ -1,3 +1,5 @@
+import { preLocalize } from "./utils.mjs";
+
 export const E20 = {};
 
 /************************************************
@@ -11,6 +13,7 @@ E20.defenses = {
   toughness: "E20.DefenseToughness",
   willpower: "E20.DefenseWillpower",
 };
+preLocalize("defenses");
 
 /************************************************
  * Weapons                                      *
