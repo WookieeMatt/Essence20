@@ -18,7 +18,7 @@
       <select name="system.tier">
         {{#select system.tier}}
         {{#each config.spellTiers as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
+        <option value="{{type}}">{{name}}</option>
         {{/each}}
         {{/select}}
       </select>

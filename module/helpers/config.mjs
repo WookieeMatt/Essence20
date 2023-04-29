@@ -370,6 +370,7 @@ E20.spellTiers = {
   superior: "E20.SpellTierSuperior",
   virtuoso: "E20.SpellTierVirtuoso",
 };
+preLocalize("spellTiers");
 
 //Options for Spell Circles
 E20.spellCircles = {
