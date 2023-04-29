@@ -12,7 +12,7 @@
     <select name="system.spellcastingShift">
       {{#select system.spellcastingShift}}
       {{#each config.skillShifts as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+      <option value="{{type}}">{{name}}</option>
       {{/each}}
       {{/select}}
     </select>

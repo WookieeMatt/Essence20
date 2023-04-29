@@ -16,7 +16,7 @@
   {{!-- Mod and Spec inputs --}}
   <div class="shift-select">
     <select name="system.skills.{{skill}}.shift">
-      {{selectOptions @root.config.skillShifts selected=fields.shift localize=true}}
+      {{selectOptions @root.config.skillShifts selected=fields.shift}}
     </select>
     <span for="system.skills.{{skill}}.modifier">+</span>
     <input class="one-digit-input" type="number" name="system.skills.{{skill}}.modifier" value="{{fields.modifier}}"/>
@@ -67,7 +67,7 @@
         <select class="inline-edit" style="flex-grow: 0;" data-field="system.shift" name="system.shift">
           {{#select specialization.system.shift}}
           {{#each @root.config.skillShifts as |text shift|}}
-          <option value="{{shift}}">{{localize text}}</option>
+          <option value="{{shift}}">{{text}}</option>
           {{/each}}
           {{/select}}
         </select>

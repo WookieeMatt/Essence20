@@ -291,6 +291,7 @@ E20.skillShifts = {
   "autoFail": "E20.ShiftAutoFail",
   "fumble": "E20.ShiftFumble",
 };
+preLocalize("skillShifts");
 
 // Shifts that are available for rolling skills in list form
 E20.skillShiftList = [
