@@ -222,11 +222,25 @@ export class Essence20ItemSheet extends ItemSheet {
                 "system.upgradeIds": upgradeIds
               }).then(this.render(false));
           }
+
           if (droppedItem.system.traits.length > 0) {
-            targetItem.system.traits.push(droppedItem.system.traits);
+            let traits = targetItem.system.traits;
+            for (let trait of droppedItem.system.traits) {
+              console.log (trait);
+              traits.push(trait);
+            }
+            await this.item.update({
+              "system.traits": traits,
+            }).then(this.render(false));
           }
+
           if (droppedItem.system.armorBonus.value >0) {
-            `targetItem.system.bonus${droppedItem.system.armorBonus.defense}` += droppedItem.system.armorBonus.value;
+            const defenseName = droppedItem.system.armorBonus.defense.charAt(0).toUpperCase() + droppedItem.system.armorBonus.defense.slice(1)
+            const armorString = `system.bonus${defenseName}`;
+            const defense = targetItem.system[`bonus${defenseName}`] += droppedItem.system.armorBonus.value;
+            await this.item.update({
+              [armorString]: defense,
+            }).then(this.render(false));
           }
         }
       }
@@ -250,7 +264,14 @@ export class Essence20ItemSheet extends ItemSheet {
             }).then(this.render(false));
           }
           if (droppedItem.system.traits.length > 0) {
-            targetItem.system.traits.push(droppedItem.system.traits);
+            let traits = targetItem.system.traits;
+            for (let trait of droppedItem.system.traits) {
+              console.log (trait);
+              traits.push(trait);
+            }
+            await this.item.update({
+              "system.traits": traits,
+            }).then(this.render(false));
           }
         }
       }
@@ -281,6 +302,38 @@ export class Essence20ItemSheet extends ItemSheet {
   async _onUpgradeDelete(event) {
     const li = $(event.currentTarget).parents(".upgrade");
     const upgradeId = li.data("upgradeId");
+    let data = game.items.get(upgradeId);
+    if(!data) {
+      for (let pack of game.packs){
+        const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+        let upgrade = await compendium.getDocument(upgradeId);
+        if (upgrade) {
+          data = upgrade;
+        }
+      }
+    }
+
+    if (data.system.traits.length > 0) {
+      let traits = this.item.system.traits;
+      let keptTraits = [];
+      for (let trait of data.system.traits) {
+        keptTraits = traits.filter(x => x !== trait);
+      }
+      await this.item.update({
+        "system.traits": keptTraits,
+      }).then(this.render(false));
+    }
+
+    if (data.system.armorBonus.value > 0) {
+      const defenseName = data.system.armorBonus.defense.charAt(0).toUpperCase() + data.system.armorBonus.defense.slice(1)
+      const armorString = `system.bonus${defenseName}`;
+      const defense = this.item.system[`bonus${defenseName}`] -= data.system.armorBonus.value;
+      await this.item.update({
+        [armorString]: defense,
+      }).then(this.render(false));
+    }
+
+
     let upgradeIds = this.item.system.upgradeIds.filter(x => x !== upgradeId);
     this.item.update({
       "system.upgradeIds": upgradeIds,
