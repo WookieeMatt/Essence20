@@ -145,6 +145,7 @@ E20.essences = {
   smarts: "E20.EssenceSmarts",
   social: "E20.EssenceSocial",
 };
+preLocalize("essences");
 
 // Origin Essence Names
 E20.originEssences = {

@@ -5,7 +5,7 @@
   </div>
 
   {{#each @root.config.skillsByEssence as |skills essence|}}
-    <div class="skill-separator">{{localize (lookup @root.config.essences essence)}}</div>
+    <div class="skill-separator">{{lookup @root.config.essences essence}}</div>
 
     {{#each skills as |skill|}}
       {{#if (lookup @root.displayedNpcSkills skill)}}

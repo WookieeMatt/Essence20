@@ -27,7 +27,7 @@
         {{#each system.defenses as |defense|}}
         <td class="tg-td">
           <span
-            title="{{lookup @root.system.base defense.name}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}}">
+            title="{{lookup @root.system.base defense.name}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{lookup @root.config.essences defense.essence}}">
             {{defense.unmorphed.value}}
           </span>
         </td>

@@ -1,7 +1,7 @@
 <div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
   {{#each system.essences as |score skill|}}
   <div class="flexcol">
-    <label>{{localize (lookup @root.config.essences skill)}}</label>
+    <label>{{lookup @root.config.essences skill}}</label>
     <input class="centered-input" type="number" name="system.essences.{{skill}}" value="{{score}}" />
   </div>
   {{/each}}
