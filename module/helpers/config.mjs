@@ -179,6 +179,7 @@ E20.skills = {
   spellcasting: "E20.SkillSpellcasting",
   streetwise: "E20.SkillStreetwise",
 };
+preLocalize("skills");
 
 // Origin Essence Skills
 E20.originSkills = {
