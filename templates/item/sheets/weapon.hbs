@@ -147,7 +147,7 @@
     <select name="system.requirements.shift">
       {{#select system.requirements.shift}}
       {{#each config.weaponRequirementShifts as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
+      <option value="{{type}}">{{name}}</option>
       {{/each}}
       {{/select}}
     </select>
