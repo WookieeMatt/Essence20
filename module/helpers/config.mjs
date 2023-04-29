@@ -131,6 +131,7 @@ E20.armorTraits = {
   silent: "E20.ArmorTraitSilent",
   xenotech: "E20.ArmorTraitXenotech",
 };
+preLocalize("armorTraits");
 
 /************************************************
  * Essences and Skills                          *

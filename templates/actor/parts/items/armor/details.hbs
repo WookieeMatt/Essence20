@@ -7,7 +7,7 @@
   <span class="chip" name="chip.armor.bonusToughness">{{localize 'E20.ArmorBonusToughness'}}: {{item.system.bonusToughness}}</span>
 
   {{#each item.system.traits as |trait|}}
-  <span class="chip" name="chip.armor.traits.{{type}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
+  <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
   {{/each}}
 
   {{#if item.system.source.book}}
