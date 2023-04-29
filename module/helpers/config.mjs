@@ -431,6 +431,7 @@ E20.companionTypes = {
   miniCon: "E20.CompanionTypeMiniCon",
   pet: "E20.CompanionTypePet",
 }
+preLocalize("companionTypes");
 
 /************************************************
  * Settings                                     *
