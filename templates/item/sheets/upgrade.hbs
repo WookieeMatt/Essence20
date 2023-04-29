@@ -3,7 +3,7 @@
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
-    {{!-- Tabs --}}
+  {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
     <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
@@ -12,19 +12,18 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     <div class="tab main flexcol" data-group="primary" data-tab="main">
-
-    {{!-- Type --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeType'}}
-    {{#*inline "item-field-inputs"}}
-    <select class="item-field-inputs" name="system.type">
-      {{#select system.type}}
-      {{#each config.upgradeType as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Type --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeType'}}
+      {{#*inline "item-field-inputs"}}
+      <select class="item-field-inputs" name="system.type">
+        {{#select system.type}}
+        {{#each config.upgradeTypes as |name type|}}
+        <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Availability --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeAvailability'}}

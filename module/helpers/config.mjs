@@ -353,11 +353,12 @@ E20.gearTypes = {
 preLocalize("gearTypes");
 
 // Upgrade types
-E20.upgradeType = {
+E20.upgradeTypes = {
   armor: "E20.UpgradeTypeArmor",
   drone: "E20.UpgradeTypeDrone",
   weapon: "E20.UpgradeTypeWeapon",
 };
+preLocalize("upgradeTypes");
 
 /************************************************
  * Spells                                       *
