@@ -188,51 +188,16 @@ export class Essence20ItemSheet extends ItemSheet {
       if (droppedItem.type == "perk") {
         const originPerkIds = duplicate(this.item.system.originPerkIds);
 
-        // Can't contain duplicate Origin Perks
-        if (parts[0] === "Compendium") {
-          if (!originPerkIds.includes(droppedItem._id)) {
-            originPerkIds.push(droppedItem._id);
-            await this.item.update({
-              "system.originPerkIds": originPerkIds
-            }).then(this.render(false));
-          }
-        } else if (!originPerkIds.includes(droppedItem.id)) {
-            originPerkIds.push(droppedItem.id);
-            await this.item.update({
-              "system.originPerkIds": originPerkIds
-            }).then(this.render(false));
-        }
+        this._addIfUnique (parts, originPerkIds, droppedItem, "originPerk");
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          // Can't contain duplicate Armor Upgrades
-          if (parts[0] === "Compendium") {
-            if (!upgradeIds.includes(droppedItem._id)) {
-              upgradeIds.push(droppedItem._id);
-              await this.item.update({
-                "system.upgradeIds": upgradeIds
-              }).then(this.render(false));
-            }
-          } else if (!upgradeIds.includes(droppedItem.id)) {
-            upgradeIds.push(droppedItem.id);
-              await this.item.update({
-                "system.upgradeIds": upgradeIds
-              }).then(this.render(false));
-          }
+          this._addIfUnique (parts, upgradeIds, droppedItem, "upgrade");
 
-          if (droppedItem.system.traits.length > 0) {
-            let traits = targetItem.system.traits;
-            for (let trait of droppedItem.system.traits) {
-              console.log (trait);
-              traits.push(trait);
-            }
-            await this.item.update({
-              "system.traits": traits,
-            }).then(this.render(false));
-          }
+          this._addDroppedItemTraits (droppedItem, targetItem);
 
           if (droppedItem.system.armorBonus.value >0) {
             const defenseName = droppedItem.system.armorBonus.defense.charAt(0).toUpperCase() + droppedItem.system.armorBonus.defense.slice(1)
@@ -249,20 +214,10 @@ export class Essence20ItemSheet extends ItemSheet {
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          // Can't contain duplicate Armor Upgrades
-          if (parts[0] === "Compendium") {
-            if (!upgradeIds.includes(droppedItem._id)) {
-              upgradeIds.push(droppedItem._id);
-              await this.item.update({
-                "system.upgradeIds": upgradeIds
-              }).then(this.render(false));
-            }
-          } else if (!upgradeIds.includes(droppedItem.id)) {
-            upgradeIds.push(droppedItem.id);
-            await this.item.update({
-              "system.upgradeIds": upgradeIds
-            }).then(this.render(false));
-          }
+          this._addIfUnique (parts, upgradeIds, droppedItem, "upgrade");
+
+          this._addDroppedItemTraits (droppedItem, targetItem);
+
           if (droppedItem.system.traits.length > 0) {
             let traits = targetItem.system.traits;
             for (let trait of droppedItem.system.traits) {
@@ -278,6 +233,46 @@ export class Essence20ItemSheet extends ItemSheet {
     }
     this.render(true);
   }
+
+  /**
+  * Handle deleting of a Perk from an Origin Sheet
+  * @param {Object} parts passes the parts of the UUID
+  * @param {Object} Ids passes the Id of the item being dropped
+  * @param {Object} droppedItem passes the item that was dropped
+  * @param {Object} parts passes a string defining what the item is
+  *   * @private
+  */
+  async _addIfUnique (parts, Ids, droppedItem, itemType) {
+    const idString = `system.${itemType}Ids`;
+    if (parts[0] === "Compendium") {
+      if (!Ids.includes(droppedItem._id)) {
+        Ids.push(droppedItem._id);
+        await this.item.update({
+          [idString]: Ids
+        }).then(this.render(false));
+      }
+    } else if (!Ids.includes(droppedItem.id)) {
+      Ids.push(droppedItem.id);
+      await this.item.update({
+        [idString]: Ids
+      }).then(this.render(false));
+    }
+  }
+
+  async _addDroppedItemTraits (droppedItem, targetItem) {
+    if (droppedItem.system.traits.length > 0) {
+      let traits = targetItem.system.traits;
+      for (let trait of droppedItem.system.traits) {
+        console.log (trait);
+        traits.push(trait);
+      }
+      await this.item.update({
+        "system.traits": traits,
+      }).then(this.render(false));
+    }
+  }
+
+
 
   /**
   * Handle deleting of a Perk from an Origin Sheet
