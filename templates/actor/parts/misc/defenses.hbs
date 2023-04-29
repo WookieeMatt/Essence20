@@ -7,7 +7,7 @@
         {{!-- Defense headers --}}
         {{#each system.defenses as |defense|}}
         <th class="tg-td" style="border-color: {{system.color}};">
-          <span>{{localize (lookup @root.config.defenses defense.name)}}</span>
+          <span>{{lookup @root.config.defenses defense.name}}</span>
           <span>
             {{#ifEquals ../bonusDisplayType 'input'}}
             +<input class="one-digit-input" type="number" name={{concat 'system.bonuses.' defense.name}}
@@ -28,14 +28,14 @@
         {{#ifEquals defense.name 'toughness'}}
         <td class="tg-td" style="border-color: {{system.color}};">
           <span
-            title="{{lookup @root.system.base defense.name}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}} + {{@root.equippedArmorToughness}} {{localize 'ITEM.TypeArmor'}}">
+            title="{{lookup @root.system.base defense.name}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{lookup @root.config.essences defense.essence}} + {{@root.equippedArmorToughness}} {{localize 'ITEM.TypeArmor'}}">
             {{sum defense.value @root.equippedArmorToughness}}
           </span>
         </td>
         {{else ifEquals defense.name 'evasion'}}
         <td class="tg-td" style="border-color: {{system.color}};">
           <span
-            title="{{lookup @root.system.base defense.name}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}} + {{@root.equippedArmorEvasion}} {{localize 'ITEM.TypeArmor'}}">
+            title="{{lookup @root.system.base defense.name}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{lookup @root.config.essences defense.essence}} + {{@root.equippedArmorEvasion}} {{localize 'ITEM.TypeArmor'}}">
             {{sum defense.value @root.equippedArmorEvasion}}
           </span>
         </td>
@@ -43,7 +43,7 @@
         {{!-- Remaining Defenses --}}
         <td class="tg-td" style="border-color: {{system.color}};">
           <span
-            title="{{lookup @root.system.base defense.name}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{localize (lookup @root.config.essences defense.essence)}} + {{defense.bonus}} {{localize 'E20.DefenseBonus'}}">
+            title="{{lookup @root.system.base defense.name}} {{localize 'E20.DefenseBase'}} + {{lookup @root.system.essences defense.essence}} {{lookup @root.config.essences defense.essence}} + {{defense.bonus}} {{localize 'E20.DefenseBonus'}}">
             {{sum defense.value}}
           </span>
         </td>

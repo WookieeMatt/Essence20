@@ -17,8 +17,8 @@
       {{#*inline "item-field-inputs"}}
       <select name="system.gearType">
         {{#select system.gearType}}
-        {{#each @root.config.gearType as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
+        {{#each @root.config.gearTypes as |name type|}}
+        <option value="{{type}}">{{name}}</option>
         {{/each}}
         {{/select}}
       </select>

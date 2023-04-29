@@ -1,3 +1,5 @@
+import { preLocalize } from "./utils.mjs";
+
 export const E20 = {};
 
 /************************************************
@@ -11,6 +13,7 @@ E20.defenses = {
   toughness: "E20.DefenseToughness",
   willpower: "E20.DefenseWillpower",
 };
+preLocalize("defenses");
 
 /************************************************
  * Weapons                                      *
@@ -38,6 +41,7 @@ E20.weaponSizes = {
   long: "E20.WeaponSizeLong",
   heavy: "E20.WeaponSizeHeavy",
 };
+preLocalize("weaponSizes");
 
 // Options for Weapon style
 E20.weaponStyles = {
@@ -46,6 +50,7 @@ E20.weaponStyles = {
   explosive: "E20.WeaponStyleExplosive",
   projectile: "E20.WeaponStyleProjectile",
 };
+preLocalize("weaponStyles");
 
 // Options for Weapon trait
 E20.weaponTraits = {
@@ -96,6 +101,7 @@ E20.weaponTraits = {
   wrecker: "E20.WeaponTraitWrecker",
   xenotech: "E20.WeaponTraitXenotech",
 }
+preLocalize("weaponTraits");
 
 /************************************************
  * Armor                                        *
@@ -109,6 +115,7 @@ E20.armorClassifications = {
   heavy: "E20.ArmorClassificationHeavy",
   ultraHeavy: "E20.ArmorClassificationUltraHeavy",
 };
+preLocalize("armorClassifications");
 
 // Options for Armor trait
 E20.armorTraits = {
@@ -124,6 +131,7 @@ E20.armorTraits = {
   silent: "E20.ArmorTraitSilent",
   xenotech: "E20.ArmorTraitXenotech",
 };
+preLocalize("armorTraits");
 
 /************************************************
  * Essences and Skills                          *
@@ -137,6 +145,7 @@ E20.essences = {
   smarts: "E20.EssenceSmarts",
   social: "E20.EssenceSocial",
 };
+preLocalize("essences");
 
 // Origin Essence Names
 E20.originEssences = {
@@ -145,37 +154,40 @@ E20.originEssences = {
   smarts: "E20.EssenceSmarts",
   social: "E20.EssenceSocial",
 }
+preLocalize("originEssences");
 
 // Actor Essence skills
-E20.essenceSkills = {
-  athletics: "E20.EssenceSkillAthletics",
-  brawn: "E20.EssenceSkillBrawn",
-  intimidation: "E20.EssenceSkillIntimidation",
-  might: "E20.EssenceSkillMight",
-  acrobatics: "E20.EssenceSkillAcrobatics",
-  driving: "E20.EssenceSkillDriving",
-  finesse: "E20.EssenceSkillFinesse",
-  infiltration: "E20.EssenceSkillInfiltration",
-  targeting: "E20.EssenceSkillTargeting",
-  alertness: "E20.EssenceSkillAlertness",
-  culture: "E20.EssenceSkillCulture",
-  science: "E20.EssenceSkillScience",
-  survival: "E20.EssenceSkillSurvival",
-  technology: "E20.EssenceSkillTechnology",
-  animalHandling: "E20.EssenceSkillAnimalHandling",
-  deception: "E20.EssenceSkillDeception",
-  performance: "E20.EssenceSkillPerformance",
-  persuasion: "E20.EssenceSkillPersuasion",
-  spellcasting: "E20.EssenceSkillSpellcasting",
-  streetwise: "E20.EssenceSkillStreetwise",
+E20.skills = {
+  athletics: "E20.SkillAthletics",
+  brawn: "E20.SkillBrawn",
+  intimidation: "E20.SkillIntimidation",
+  might: "E20.SkillMight",
+  acrobatics: "E20.SkillAcrobatics",
+  driving: "E20.SkillDriving",
+  finesse: "E20.SkillFinesse",
+  infiltration: "E20.SkillInfiltration",
+  targeting: "E20.SkillTargeting",
+  alertness: "E20.SkillAlertness",
+  culture: "E20.SkillCulture",
+  science: "E20.SkillScience",
+  survival: "E20.SkillSurvival",
+  technology: "E20.SkillTechnology",
+  animalHandling: "E20.SkillAnimalHandling",
+  deception: "E20.SkillDeception",
+  performance: "E20.SkillPerformance",
+  persuasion: "E20.SkillPersuasion",
+  spellcasting: "E20.SkillSpellcasting",
+  streetwise: "E20.SkillStreetwise",
 };
+preLocalize("skills");
 
 // Origin Essence Skills
-E20.originEssenceSkills = {
-  conditioning: "E20.EssenceSkillConditioning",
-  initiative: "E20.EssenceSkillInitiative",
-  ...E20.essenceSkills,
+E20.originSkills = {
+  conditioning: "E20.SkillConditioning",
+  initiative: "E20.SkillInitiative",
+  ...E20.skills,
 }
+preLocalize("originSkills");
 
 // Maps skills back to their corresponding Essence
 E20.skillToEssence = {
@@ -281,6 +293,7 @@ E20.skillShifts = {
   "autoFail": "E20.ShiftAutoFail",
   "fumble": "E20.ShiftFumble",
 };
+preLocalize("skillShifts");
 
 // Shifts that are available for rolling skills in list form
 E20.skillShiftList = [
@@ -313,32 +326,20 @@ E20.availabilities = {
   unique: "E20.AvailabilityUnique",
   theoretical: "E20.AvailabilityTheoretical",
 };
-
-// Effect shapes
-E20.effectShapes = {
-  none: "",
-  circle: "E20.EffectShapeCircle",
-  cone: "E20.EffectShapeCone",
-  square: "E20.EffectShapeSquare",
-};
-
-// Light ranges used by Gear
-E20.lightRanges = {
-  bright: "E20.LightRangeBright",
-  dim: "E20.LightRangeDim",
-};
+preLocalize("availabilities");
 
 // Perk types
-E20.perkType = {
+E20.perkTypes = {
   faction: "E20.PerkFaction",
   general: "E20.PerkGeneral",
   influence: "E20.PerkInfluence",
   origin: "E20.PerkOrigin",
   role: "E20.PerkRole"
 };
+preLocalize("perkTypes");
 
 // Gear types
-E20.gearType = {
+E20.gearTypes = {
   clothes: "E20.GearClothes",
   computers: "E20.GearComputers",
   exploration: "E20.GearExploration",
@@ -351,13 +352,15 @@ E20.gearType = {
   support: "E20.GearSupport",
   tools: "E20.GearTools"
 };
+preLocalize("gearTypes");
 
 // Upgrade types
-E20.upgradeType = {
+E20.upgradeTypes = {
   armor: "E20.UpgradeTypeArmor",
   drone: "E20.UpgradeTypeDrone",
   weapon: "E20.UpgradeTypeWeapon",
 };
+preLocalize("upgradeTypes");
 
 /************************************************
  * Spells                                       *
@@ -369,14 +372,16 @@ E20.spellTiers = {
   superior: "E20.SpellTierSuperior",
   virtuoso: "E20.SpellTierVirtuoso",
 };
+preLocalize("spellTiers");
 
-//Options for Spell Circles
+// Options for Spell Circles
 E20.spellCircles = {
   aid: "E20.SpellCircleAid",
   beam: "E20.SpellCircleBeam",
   enchantment: "E20.SpellCircleEnchantment",
   utility: "E20.SpellCircleUtility",
 };
+preLocalize("spellCircles");
 
 /************************************************
  * Actors                                       *
@@ -396,6 +401,7 @@ E20.actorSizes = {
   extended3: "E20.ActorSizeExtended3",
   titanic: "E20.ActorSizeTitanic"
 };
+preLocalize("actorSizes");
 
 // Types of movement used by Actors
 E20.movementTypes = {
@@ -403,30 +409,22 @@ E20.movementTypes = {
   ground: "E20.MovementTypeGround",
   swim: "E20.MovementTypeSwim",
 };
+preLocalize("movementTypes");
 
-// Power Ranger spectrum colors
-E20.rangers = {
-  black: "E20.RangerBlack",
-  blue: "E20.RangerBlue",
-  green: "E20.RangerGreen",
-  pink: "E20.RangerPink",
-  red: "E20.RangerRed",
-  yellow: "E20.RangerYellow",
-  white: "E20.RangerWhite",
-};
-
-//Options for Transformers Factions
-E20.transformerFaction = {
+// Options for Transformers Factions
+E20.transformerFactions = {
   autobots: "E20.FactionAutobots",
   decepticons: "E20.FactionDecepticons",
 }
+preLocalize("transformerFactions");
 
 // Options for Transformer Modes
-E20.transformerMode = {
+E20.transformerModes = {
   modeAltMode: "E20.ModeAltMode",
   modeBotMode: "E20.ModeBotMode",
   modeAny: "E20.ModeAny",
 }
+preLocalize("transformerModes");
 
 // Options for Companion types
 E20.companionTypes = {
@@ -435,6 +433,7 @@ E20.companionTypes = {
   miniCon: "E20.CompanionTypeMiniCon",
   pet: "E20.CompanionTypePet",
 }
+preLocalize("companionTypes");
 
 /************************************************
  * Settings                                     *
@@ -444,6 +443,7 @@ E20.pointsNameOptions = {
   story: "E20.SptNameStory",
   friendship: "E20.SptNameFriendship",
 };
+preLocalize("pointsNameOptions");
 
 /************************************************
  * Status Effects                               *

@@ -17,7 +17,7 @@
   {{!-- Speed --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{localize config.essences.speed}}</span>
+      <span class="essence-label">{{config.essences.speed}}</span>
       <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
     </div>
     {{#each @root.config.skillsByEssence.speed as |skill|}}
@@ -28,7 +28,7 @@
   {{!-- Smarts --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{localize config.essences.smarts}}</span>
+      <span class="essence-label">{{config.essences.smarts}}</span>
       <input class="two-digit-input" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" />
     </div>
    {{#each @root.config.skillsByEssence.smarts as |skill|}}
@@ -39,7 +39,7 @@
   {{!-- Social --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{localize config.essences.social}}</span>
+      <span class="essence-label">{{config.essences.social}}</span>
       <input class="two-digit-input" type="number" name="system.essences.social" value="{{system.essences.social}}" />
     </div>
     {{#each @root.config.skillsByEssence.social as |skill|}}

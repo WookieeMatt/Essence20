@@ -198,15 +198,15 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'megaformTrait':
           megaformTraits.push(i);
           break;
-          case 'origin':
-            i.skillsString = i.system.skills.map(skill => {
-              return game.i18n.localize(CONFIG.E20.originEssenceSkills[skill]);
-            }).join(", ");
-            i.essenceString = i.system.essences.map(essence => {
-              return game.i18n.localize(CONFIG.E20.originEssences[essence]);
-            }).join(", ");
-            origins.push(i);
-            break;
+        case 'origin':
+          i.skillsString = i.system.skills.map(skill => {
+            return CONFIG.E20.originSkills[skill];
+          }).join(", ");
+          i.essenceString = i.system.essences.map(essence => {
+            return CONFIG.E20.originEssences[essence];
+          }).join(", ");
+          origins.push(i);
+          break;
         case 'perk':
           perks.push(i);
           break;
@@ -510,7 +510,7 @@ export class Essence20ActorSheet extends ActorSheet {
         selectedEssence = essence;
         choices[skill] = {
           chosen: false,
-          label: CONFIG.E20.originEssenceSkills[skill],
+          label: CONFIG.E20.originSkills[skill],
         };
       }
     }
