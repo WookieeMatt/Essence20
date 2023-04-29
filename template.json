@@ -8,7 +8,8 @@
       "zord",
       "giJoe",
       "transformer",
-      "pony"
+      "pony",
+      "companion"
     ],
     "templates": {
       "common": {
@@ -462,8 +463,30 @@
         "creature",
         "character"
       ]
+    },
+    "companion": {
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ],
+      "availability": "standard",
+      "defenses": {
+        "toughness": {
+          "value": 10
+        },
+        "evasion": {
+          "value": 10
+        },
+        "willpower": {
+          "value": null
+        },
+        "cleverness": {
+          "value": null
+        }
+      },
+      "type": "pet"
     }
-
   },
   "Item": {
     "types": [
@@ -656,6 +679,7 @@
         "skill": null,
         "shift": null
       },
+      "traits": [],
       "upgradeIds": []
     },
     "upgrade": {
