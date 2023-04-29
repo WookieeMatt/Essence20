@@ -399,6 +399,7 @@ E20.actorSizes = {
   extended3: "E20.ActorSizeExtended3",
   titanic: "E20.ActorSizeTitanic"
 };
+preLocalize("actorSizes");
 
 // Types of movement used by Actors
 E20.movementTypes = {
