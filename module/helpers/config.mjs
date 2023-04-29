@@ -50,6 +50,7 @@ E20.weaponStyles = {
   explosive: "E20.WeaponStyleExplosive",
   projectile: "E20.WeaponStyleProjectile",
 };
+preLocalize("weaponStyles");
 
 // Options for Weapon trait
 E20.weaponTraits = {
