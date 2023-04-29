@@ -8,7 +8,8 @@
     "TypeZord": "Zord",
     "TypeMegaformzord": "Megaform Zord",
     "TypeTransformer": "Transformer",
-    "TypePony": "Pony"
+    "TypePony": "Pony",
+    "TypeCompanion": "Companion"
   },
   "ITEM": {
     "TypeAltmode": "Alt Mode",
@@ -111,6 +112,12 @@
     "BaseGroundMovement": "Base Ground Movement",
     "ClassFeatureUses": "Uses",
     "ClassFeatureNone": "No Class Feature",
+    "CompanionAvailability": "Availability",
+    "CompanionType": "Type",
+    "CompanionTypeDrone": "Drone",
+    "CompanionTypeHuman": "Human",
+    "CompanionTypeMiniCon": "Mini-Con",
+    "CompanionTypePet": "Pet",
     "ContactAllegiancePoints": "Allegiance Points",
     "ContactGainingTheContact": "Gaining the Contact",
     "ContactPerks": "Perks",
@@ -414,6 +421,7 @@
     "WeaponTraitPowerWeapon": "Power Weapon",
     "WeaponTraitPsychic": "Psychic",
     "WeaponTraitReload": "Reload",
+    "WeaponTraits": "Traits",
     "WeaponTraitSeeking": "Seeking",
     "WeaponTraitSharp": "Sharp",
     "WeaponTraitShove": " Shove",
