@@ -327,16 +327,17 @@ E20.availabilities = {
 preLocalize("availabilities");
 
 // Perk types
-E20.perkType = {
+E20.perkTypes = {
   faction: "E20.PerkFaction",
   general: "E20.PerkGeneral",
   influence: "E20.PerkInfluence",
   origin: "E20.PerkOrigin",
   role: "E20.PerkRole"
 };
+preLocalize("perkTypes");
 
 // Gear types
-E20.gearType = {
+E20.gearTypes = {
   clothes: "E20.GearClothes",
   computers: "E20.GearComputers",
   exploration: "E20.GearExploration",
@@ -349,6 +350,7 @@ E20.gearType = {
   support: "E20.GearSupport",
   tools: "E20.GearTools"
 };
+preLocalize("gearTypes");
 
 // Upgrade types
 E20.upgradeType = {
