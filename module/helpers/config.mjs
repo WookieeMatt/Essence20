@@ -409,11 +409,12 @@ E20.movementTypes = {
 };
 preLocalize("movementTypes");
 
-//Options for Transformers Factions
-E20.transformerFaction = {
+// Options for Transformers Factions
+E20.transformerFactions = {
   autobots: "E20.FactionAutobots",
   decepticons: "E20.FactionDecepticons",
 }
+preLocalize("transformerFactions");
 
 // Options for Transformer Modes
 E20.transformerMode = {
