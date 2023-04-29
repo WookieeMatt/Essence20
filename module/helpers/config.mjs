@@ -187,6 +187,7 @@ E20.originSkills = {
   initiative: "E20.SkillInitiative",
   ...E20.skills,
 }
+preLocalize("originSkills");
 
 // Maps skills back to their corresponding Essence
 E20.skillToEssence = {
