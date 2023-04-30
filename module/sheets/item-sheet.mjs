@@ -327,10 +327,25 @@ export class Essence20ItemSheet extends ItemSheet {
     }
 
     if (data.system.traits.length > 0) {
-        let traits = this.item.system.upgradeTraits;
-        let keptTraits = [];
-        for (let trait of data.system.traits) {
-          keptTraits = traits.filter(x => x !== trait);
+        let keptTraits = this.item.system.upgradeTraits;
+        const upgradeIds = this.item.system.upgradeIds;
+        for (let itemTrait of data.system.traits) {
+          let otherItemTrait = false;
+          if(keptTraits.includes(itemTrait)) {
+            for (let id of upgradeIds) {
+              if (upgradeId == id){
+              }else {
+                console.log("Got here");
+                let otherItem = game.items.get(id);
+                if (otherItem.system.traits.includes(itemTrait)) {
+                  otherItemTrait = true
+                }
+              }
+            }
+          }
+          if (otherItemTrait == false) {
+            keptTraits = keptTraits.filter(x => x !== itemTrait);
+          }
         }
         await this.item.update({
           "system.upgradeTraits": keptTraits,
