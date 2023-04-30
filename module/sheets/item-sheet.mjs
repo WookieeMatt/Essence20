@@ -180,7 +180,7 @@ export class Essence20ItemSheet extends ItemSheet {
   //
   async _onDrop (event) {
     const data = TextEditor.getDragEventData(event);
-    const droppedItem = indexFromUuid(data.uuid);
+    let droppedItem = indexFromUuid(data.uuid);
     const parts = data.uuid.split(".");
     const targetItem = this.item;
 
@@ -192,6 +192,18 @@ export class Essence20ItemSheet extends ItemSheet {
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
+        if(!droppedItem.system) {
+          let id = droppedItem._id;
+          for (let pack of game.packs){
+            const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+            if (compendium) {
+              let droppedUpgrade = await compendium.getDocument(id);
+              if (droppedUpgrade) {
+                droppedItem = droppedUpgrade;
+              }
+            }
+          }
+        }
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
@@ -211,6 +223,18 @@ export class Essence20ItemSheet extends ItemSheet {
       }
     } else if (targetItem.type == "weapon") {
       if (droppedItem.type == "upgrade") {
+        if(!droppedItem.system) {
+          let id = droppedItem._id;
+          for (let pack of game.packs){
+            const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+            if (compendium) {
+              let droppedUpgrade = await compendium.getDocument(id);
+              if (droppedUpgrade) {
+                droppedItem = droppedUpgrade;
+              }
+            }
+          }
+        }
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
@@ -319,9 +343,11 @@ export class Essence20ItemSheet extends ItemSheet {
     if(!data) {
       for (let pack of game.packs){
         const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-        let upgrade = await compendium.getDocument(upgradeId);
-        if (upgrade) {
-          data = upgrade;
+        if (compendium) {
+          let upgrade = await compendium.getDocument(upgradeId);
+          if (upgrade) {
+            data = upgrade;
+          }
         }
       }
     }
@@ -336,6 +362,14 @@ export class Essence20ItemSheet extends ItemSheet {
               if (upgradeId == id){
               }else {
                 let otherItem = game.items.get(id);
+                if(!otherItem) {
+                  for (let pack of game.packs){
+                    const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+                    if (compendium) {
+                      otherItem = await compendium.getDocument(id);
+                    }
+                  }
+                }
                 if (otherItem.system.traits.includes(itemTrait)) {
                   otherItemTrait = true
                 }
