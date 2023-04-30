@@ -335,7 +335,6 @@ export class Essence20ItemSheet extends ItemSheet {
             for (let id of upgradeIds) {
               if (upgradeId == id){
               }else {
-                console.log("Got here");
                 let otherItem = game.items.get(id);
                 if (otherItem.system.traits.includes(itemTrait)) {
                   otherItemTrait = true
