@@ -536,13 +536,14 @@
       "templates": [
         "itemDescription"
       ],
-      "upgradeIds": [],
       "availability": "standard",
       "bonusEvasion": 0,
       "bonusToughness": 0,
       "classification": "light",
+      "duplicateTrait": false,
       "equipped": false,
-      "traits": []
+      "traits": [],
+      "upgradeIds": []
     },
     "bond": {
       "templates": [
@@ -662,6 +663,7 @@
         "style": "melee"
       },
       "custom": "",
+      "duplicateTrait": false,
       "effect": "",
       "equipped": true,
       "numCharges": null,
