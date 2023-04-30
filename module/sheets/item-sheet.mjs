@@ -262,12 +262,21 @@ export class Essence20ItemSheet extends ItemSheet {
   async _addDroppedItemTraits (droppedItem, targetItem) {
     if (droppedItem.system.traits.length > 0) {
       let traits = targetItem.system.traits;
+      let duplicate = false;
       for (let trait of droppedItem.system.traits) {
-        console.log (trait);
-        traits.push(trait);
+        let i = traits.length;
+        while (i--) {
+          if (trait === traits[i]) {
+            return duplicate = true;
+          }
+        }
+        if (duplicate == false) {
+          traits.push(trait);
+        }
       }
       await this.item.update({
         "system.traits": traits,
+        "system.duplicateTrait": duplicate,
       }).then(this.render(false));
     }
   }
@@ -309,14 +318,16 @@ export class Essence20ItemSheet extends ItemSheet {
     }
 
     if (data.system.traits.length > 0) {
-      let traits = this.item.system.traits;
-      let keptTraits = [];
-      for (let trait of data.system.traits) {
-        keptTraits = traits.filter(x => x !== trait);
+      if (this.item.system.duplicateTrait == false){
+        let traits = this.item.system.traits;
+        let keptTraits = [];
+        for (let trait of data.system.traits) {
+          keptTraits = traits.filter(x => x !== trait);
+        }
+        await this.item.update({
+          "system.traits": keptTraits,
+        }).then(this.render(false));
       }
-      await this.item.update({
-        "system.traits": keptTraits,
-      }).then(this.render(false));
     }
 
     if (data.system.armorBonus.value > 0) {
