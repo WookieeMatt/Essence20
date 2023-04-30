@@ -258,6 +258,12 @@ export class Essence20ItemSheet extends ItemSheet {
     }
   }
 
+  /**
+  * Handle adding Traits to Items that have Upgrades
+  * @param {Object} targetItem passes the parts that was droppped on to
+  * @param {Object} droppedItem passes the item that was dropped
+  *   * @private
+  */
   async _addDroppedItemTraits (droppedItem, targetItem) {
     if (droppedItem.system.traits.length > 0) {
       let duplicate = false;
@@ -298,7 +304,7 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handle deleting of a Perk from an Origin Sheet
+  * Handle deleting of an Upgrade from a Weapon or Armor Sheet
   * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
   * @private
   */
