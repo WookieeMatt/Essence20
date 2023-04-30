@@ -267,7 +267,7 @@ export class Essence20ItemSheet extends ItemSheet {
   async _addDroppedItemTraits (droppedItem, targetItem) {
     if (droppedItem.system.traits.length > 0) {
       let traits = targetItem.system.traits;
-      let upgradeTraits = [];
+      let upgradeTraits = targetItem.system.upgradeTraits;
       for (let trait of droppedItem.system.traits) {
         let duplicate = false;
         for (let currentTrait of traits){
@@ -275,7 +275,11 @@ export class Essence20ItemSheet extends ItemSheet {
             duplicate = true;
           }
         }
-        console.log(duplicate);
+        for (let currentUpgradeTrait of upgradeTraits) {
+          if (trait === currentUpgradeTrait) {
+            duplicate = true;
+          }
+        }
         if (duplicate == false) {
           upgradeTraits.push(trait);
         }
