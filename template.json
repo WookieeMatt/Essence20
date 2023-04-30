@@ -540,10 +540,10 @@
       "bonusEvasion": 0,
       "bonusToughness": 0,
       "classification": "light",
-      "duplicateTrait": false,
       "equipped": false,
       "traits": [],
-      "upgradeIds": []
+      "upgradeIds": [],
+      "upgradeTraits": []
     },
     "bond": {
       "templates": [
@@ -663,7 +663,6 @@
         "style": "melee"
       },
       "custom": "",
-      "duplicateTrait": false,
       "effect": "",
       "equipped": true,
       "numCharges": null,
@@ -682,7 +681,8 @@
         "shift": null
       },
       "traits": [],
-      "upgradeIds": []
+      "upgradeIds": [],
+      "upgradeTraits": []
     },
     "upgrade": {
       "templates": [

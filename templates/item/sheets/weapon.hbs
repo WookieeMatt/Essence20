@@ -70,6 +70,9 @@
         {{#each item.system.traits as |trait|}}
         <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
         {{/each}}
+        {{#each item.system.upgradeTraits as |trait|}}
+        <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
+        {{/each}}
       </div>
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

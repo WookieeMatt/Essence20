@@ -221,7 +221,6 @@ export class Essence20ItemSheet extends ItemSheet {
           if (droppedItem.system.traits.length > 0) {
             let traits = targetItem.system.traits;
             for (let trait of droppedItem.system.traits) {
-              console.log (trait);
               traits.push(trait);
             }
             await this.item.update({
@@ -263,6 +262,7 @@ export class Essence20ItemSheet extends ItemSheet {
     if (droppedItem.system.traits.length > 0) {
       let duplicate = false;
       let traits = targetItem.system.traits;
+      let upgradeTraits = [];
       for (let trait of droppedItem.system.traits) {
         let i = traits.length;
         while (i--) {
@@ -271,13 +271,11 @@ export class Essence20ItemSheet extends ItemSheet {
           }
         }
         if (duplicate == false) {
-          traits.push(trait);
+          upgradeTraits.push(trait);
         }
       }
-      console.log(duplicate)
       await this.item.update({
-        "system.traits": traits,
-        "system.duplicateTrait": duplicate,
+        "system.upgradeTraits": upgradeTraits,
       }).then(this.render(false));
     }
   }
@@ -319,21 +317,14 @@ export class Essence20ItemSheet extends ItemSheet {
     }
 
     if (data.system.traits.length > 0) {
-      if (this.item.system.duplicateTrait == false){
-        let traits = this.item.system.traits;
+        let traits = this.item.system.upgradeTraits;
         let keptTraits = [];
         for (let trait of data.system.traits) {
           keptTraits = traits.filter(x => x !== trait);
         }
         await this.item.update({
-          "system.traits": keptTraits,
+          "system.upgradeTraits": keptTraits,
         }).then(this.render(false));
-      } else {
-        await this.item.update({
-          "system.duplicateTrait": false,
-        }).then(this.render(false));
-      }
-
     }
 
     if (data.system.armorBonus.value > 0) {
