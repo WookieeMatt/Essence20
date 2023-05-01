@@ -181,14 +181,14 @@ export class Essence20ItemSheet extends ItemSheet {
   async _onDrop (event) {
     const data = TextEditor.getDragEventData(event);
     let droppedItem = indexFromUuid(data.uuid);
-    const parts = data.uuid.split(".");
+    const uuidParts = data.uuid.split(".");
     const targetItem = this.item;
 
     if (targetItem.type  == "origin") {
       if (droppedItem.type == "perk") {
         const originPerkIds = duplicate(this.item.system.originPerkIds);
 
-        this._addIfUnique (parts, originPerkIds, droppedItem, "originPerk");
+        this._addIfUnique(uuidParts, originPerkIds, droppedItem, "originPerk");
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
@@ -258,16 +258,16 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handle deleting of a Perk from an Origin Sheet
-  * @param {Object} parts passes the parts of the UUID
-  * @param {Object} Ids passes the Id of the item being dropped
-  * @param {Object} droppedItem passes the item that was dropped
-  * @param {Object} parts passes a string defining what the item is
+  * Handles validating an item being dropped is unique
+  * @param {Array} parts The parts of the UUID
+  * @param {Array} Ids  The Ids of existing items attached to the target item
+  * @param {Item} droppedItem The item that was dropped
+  * @param {String} itemType  A string defining what the item is
   *   * @private
   */
-  async _addIfUnique (parts, Ids, droppedItem, itemType) {
+  async _addIfUnique (uuidParts, Ids, droppedItem, itemType) {
     const idString = `system.${itemType}Ids`;
-    if (parts[0] === "Compendium") {
+    if (uuidParts[0] === "Compendium") {
       if (!Ids.includes(droppedItem._id)) {
         Ids.push(droppedItem._id);
         await this.item.update({
@@ -284,14 +284,13 @@ export class Essence20ItemSheet extends ItemSheet {
 
   /**
   * Handle adding Traits to Items that have Upgrades
-  * @param {Object} targetItem passes the parts that was droppped on to
-  * @param {Object} droppedItem passes the item that was dropped
+  * @param {Item} droppedItem passes the item that was dropped
   *   * @private
   */
-  async _addDroppedItemTraits (droppedItem, targetItem) {
+  async _addDroppedItemTraits (droppedItem) {
     if (droppedItem.system.traits.length > 0) {
-      let traits = targetItem.system.traits;
-      let upgradeTraits = targetItem.system.upgradeTraits;
+      let traits = this.item.system.traits;
+      let upgradeTraits = this.item.system.upgradeTraits;
       for (let trait of droppedItem.system.traits) {
         let duplicate = false;
         for (let currentTrait of traits){
