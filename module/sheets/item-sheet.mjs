@@ -193,21 +193,12 @@ export class Essence20ItemSheet extends ItemSheet {
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
         if(!droppedItem.system) {
-          let id = droppedItem._id;
-          for (let pack of game.packs){
-            const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-            if (compendium) {
-              let droppedUpgrade = await compendium.getDocument(id);
-              if (droppedUpgrade) {
-                droppedItem = droppedUpgrade;
-              }
-            }
-          }
+          droppedItem = await this._searchCompendium(droppedItem);
         }
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          this._addIfUnique (parts, upgradeIds, droppedItem, "upgrade");
+          this._addIfUnique (uuidParts, upgradeIds, droppedItem, "upgrade");
 
           this._addDroppedItemTraits (droppedItem, targetItem);
 
@@ -224,21 +215,12 @@ export class Essence20ItemSheet extends ItemSheet {
     } else if (targetItem.type == "weapon") {
       if (droppedItem.type == "upgrade") {
         if(!droppedItem.system) {
-          let id = droppedItem._id;
-          for (let pack of game.packs){
-            const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-            if (compendium) {
-              let droppedUpgrade = await compendium.getDocument(id);
-              if (droppedUpgrade) {
-                droppedItem = droppedUpgrade;
-              }
-            }
-          }
+          droppedItem = await this._searchCompendium(droppedItem);
         }
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          this._addIfUnique (parts, upgradeIds, droppedItem, "upgrade");
+          this._addIfUnique (uuidParts, upgradeIds, droppedItem, "upgrade");
 
           this._addDroppedItemTraits (droppedItem, targetItem);
 
@@ -313,7 +295,19 @@ export class Essence20ItemSheet extends ItemSheet {
     }
   }
 
-
+  async _searchCompendium (droppedItem) {
+    let id = droppedItem._id;
+          for (let pack of game.packs){
+            const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+            if (compendium) {
+              let droppedUpgrade = await compendium.getDocument(id);
+              if (droppedUpgrade) {
+                droppedItem = droppedUpgrade;
+              }
+            }
+          }
+    return droppedItem
+  }
 
   /**
   * Handle deleting of a Perk from an Origin Sheet
