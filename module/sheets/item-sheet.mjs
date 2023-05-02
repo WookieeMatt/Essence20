@@ -157,6 +157,10 @@ export class Essence20ItemSheet extends ItemSheet {
     let droppedItem = indexFromUuid(data.uuid);
     const targetItem = this.item;
 
+    if(!droppedItem.system) {
+      droppedItem = await this._searchCompendium(droppedItem);
+    }
+
     if (targetItem.type  == "origin") {
       if (droppedItem.type == "perk") {
         const originPerkIds = duplicate(this.item.system.originPerkIds);
@@ -165,9 +169,7 @@ export class Essence20ItemSheet extends ItemSheet {
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
-        if(!droppedItem.system) {
-          droppedItem = await this._searchCompendium(droppedItem);
-        }
+
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
@@ -187,9 +189,7 @@ export class Essence20ItemSheet extends ItemSheet {
       }
     } else if (targetItem.type == "weapon") {
       if (droppedItem.type == "upgrade") {
-        if(!droppedItem.system) {
-          droppedItem = await this._searchCompendium(droppedItem);
-        }
+
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
