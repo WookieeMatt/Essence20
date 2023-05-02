@@ -251,15 +251,18 @@ export class Essence20ItemSheet extends ItemSheet {
 
   async _searchCompendium(droppedItem) {
     let id = droppedItem._id;
-          for (let pack of game.packs){
-            const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-            if (compendium) {
-              let droppedUpgrade = await compendium.getDocument(id);
-              if (droppedUpgrade) {
-                droppedItem = droppedUpgrade;
-              }
-            }
-          }
+    if (!id) {
+      id = droppedItem;
+    }
+    for (let pack of game.packs){
+      const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+      if (compendium) {
+        let droppedUpgrade = await compendium.getDocument(id);
+        if (droppedUpgrade) {
+          droppedItem = droppedUpgrade;
+        }
+      }
+    }
     return droppedItem
   }
 
@@ -288,17 +291,8 @@ export class Essence20ItemSheet extends ItemSheet {
     const upgradeId = li.data("upgradeId");
     let data = game.items.get(upgradeId);
     if(!data) {
-      for (let pack of game.packs){
-        const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-        if (compendium) {
-          let upgrade = await compendium.getDocument(upgradeId);
-          if (upgrade) {
-            data = upgrade;
-          }
-        }
-      }
+      data = await this._searchCompendium(upgradeId);
     }
-
     if (data.system.traits.length > 0) {
       let keptTraits = this.item.system.upgradeTraits;
       const upgradeIds = this.item.system.upgradeIds;
