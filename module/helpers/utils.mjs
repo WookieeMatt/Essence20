@@ -80,14 +80,14 @@ export function indexFromUuid(uuid) {
   let index;
 
   // Compendium Documents
-  if ( parts[0] === "Compendium" ) {
+  if (parts[0] === "Compendium") {
     const [, scope, packName, id] = parts;
     const pack = game.packs.get(`${scope}.${packName}`);
     index = pack?.index.get(id);
   }
 
   // World Documents
-  else if ( parts.length < 3 ) {
+  else if (parts.length < 3) {
     const [docName, id] = parts;
     const collection = CONFIG[docName].collection.instance;
     index = collection.get(id);

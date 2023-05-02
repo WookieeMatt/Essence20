@@ -151,12 +151,11 @@ export class Essence20ItemSheet extends ItemSheet {
   * @param {DragEvent} event            The concluding DragEvent which contains drop data
   * @private
   */
-  //
   async _onDrop(event) {
     const data = TextEditor.getDragEventData(event);
-    let droppedItem = indexFromUuid(data.uuid);
     const targetItem = this.item;
 
+    let droppedItem = indexFromUuid(data.uuid);
     if(!droppedItem.system) {
       droppedItem = await this._searchCompendium(droppedItem);
     }
@@ -164,20 +163,17 @@ export class Essence20ItemSheet extends ItemSheet {
     if (targetItem.type  == "origin") {
       if (droppedItem.type == "perk") {
         const originPerkIds = duplicate(this.item.system.originPerkIds);
-
         this._addIfUnique(data, originPerkIds, droppedItem, "originPerk");
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
-
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
           this._addIfUnique (data, upgradeIds, droppedItem, "upgrade");
-
           this._addDroppedUpgradeTraits (droppedItem, targetItem);
 
-          if (droppedItem.system.armorBonus.value >0) {
+          if (droppedItem.system.armorBonus.value > 0) {
             const defenseName = droppedItem.system.armorBonus.defense.charAt(0).toUpperCase() + droppedItem.system.armorBonus.defense.slice(1)
             const armorString = `system.bonus${defenseName}`;
             const defense = targetItem.system[`bonus${defenseName}`] += droppedItem.system.armorBonus.value;
@@ -189,14 +185,11 @@ export class Essence20ItemSheet extends ItemSheet {
       }
     } else if (targetItem.type == "weapon") {
       if (droppedItem.type == "upgrade") {
-
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
           this._addIfUnique (data, upgradeIds, droppedItem, "upgrade");
-
           this._addDroppedUpgradeTraits (droppedItem, targetItem);
-
         }
       }
     }
