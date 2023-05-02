@@ -58,12 +58,12 @@
         {{#*inline "item-field-inputs"}}
           <input type="number" name="system.armorBonus.value" value="{{system.armorBonus.value}}" />
           <select name="system.armorBonus.defense">
-        {{#select system.armorBonus.defense}}
-        {{#each config.defenses as |name defense|}}
-        <option value="{{defense}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
+          {{#select system.armorBonus.defense}}
+          {{#each config.defenses as |name defense|}}
+            <option value="{{defense}}">{{localize name}}</option>
+          {{/each}}
+          {{/select}}
+          </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       {{/ifEquals}}

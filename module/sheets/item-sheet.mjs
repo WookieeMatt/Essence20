@@ -1,32 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-
-/**
-* Handle deleting of an Origin from an Actor Sheet
-* @param {Object} uuid   The uuid of an item
-* @returns {Object>} index The id of the item
-* @private
-*/
-function indexFromUuid(uuid) {
-  const parts = uuid.split(".");
-  let index;
-
-  // Compendium Documents
-  if ( parts[0] === "Compendium" ) {
-    const [, scope, packName, id] = parts;
-    const pack = game.packs.get(`${scope}.${packName}`);
-    index = pack?.index.get(id);
-  }
-
-  // World Documents
-  else if ( parts.length < 3 ) {
-    const [docName, id] = parts;
-    const collection = CONFIG[docName].collection.instance;
-    index = collection.get(id);
-  }
-
-  return index || null;
-}
+import { indexFromUuid } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -178,17 +152,16 @@ export class Essence20ItemSheet extends ItemSheet {
   * @private
   */
   //
-  async _onDrop (event) {
+  async _onDrop(event) {
     const data = TextEditor.getDragEventData(event);
     let droppedItem = indexFromUuid(data.uuid);
-    const uuidParts = data.uuid.split(".");
     const targetItem = this.item;
 
     if (targetItem.type  == "origin") {
       if (droppedItem.type == "perk") {
         const originPerkIds = duplicate(this.item.system.originPerkIds);
 
-        this._addIfUnique(uuidParts, originPerkIds, droppedItem, "originPerk");
+        this._addIfUnique(data, originPerkIds, droppedItem, "originPerk");
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
@@ -198,9 +171,9 @@ export class Essence20ItemSheet extends ItemSheet {
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          this._addIfUnique (uuidParts, upgradeIds, droppedItem, "upgrade");
+          this._addIfUnique (data, upgradeIds, droppedItem, "upgrade");
 
-          this._addDroppedItemTraits (droppedItem, targetItem);
+          this._addDroppedUpgradeTraits (droppedItem, targetItem);
 
           if (droppedItem.system.armorBonus.value >0) {
             const defenseName = droppedItem.system.armorBonus.defense.charAt(0).toUpperCase() + droppedItem.system.armorBonus.defense.slice(1)
@@ -220,19 +193,10 @@ export class Essence20ItemSheet extends ItemSheet {
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          this._addIfUnique (uuidParts, upgradeIds, droppedItem, "upgrade");
+          this._addIfUnique (data, upgradeIds, droppedItem, "upgrade");
 
-          this._addDroppedItemTraits (droppedItem, targetItem);
+          this._addDroppedUpgradeTraits (droppedItem, targetItem);
 
-          if (droppedItem.system.traits.length > 0) {
-            let traits = targetItem.system.traits;
-            for (let trait of droppedItem.system.traits) {
-              traits.push(trait);
-            }
-            await this.item.update({
-              "system.traits": traits,
-            }).then(this.render(false));
-          }
         }
       }
     }
@@ -241,51 +205,41 @@ export class Essence20ItemSheet extends ItemSheet {
 
   /**
   * Handles validating an item being dropped is unique
-  * @param {Array} parts The parts of the UUID
-  * @param {Array} Ids  The Ids of existing items attached to the target item
+  * @param {Object} data The data from drop event
   * @param {Item} droppedItem The item that was dropped
   * @param {String} itemType  A string defining what the item is
-  *   * @private
+  * @param {Array} existingIds  The Ids of existing items attached to the target item
+  * @private
   */
-  async _addIfUnique (uuidParts, Ids, droppedItem, itemType) {
+  async _addIfUnique(data, existingIds, droppedItem, itemType) {
+    const uuidParts = data.uuid.split(".");
     const idString = `system.${itemType}Ids`;
     if (uuidParts[0] === "Compendium") {
-      if (!Ids.includes(droppedItem._id)) {
-        Ids.push(droppedItem._id);
+      if (!existingIds.includes(droppedItem._id)) {
+        existingIds.push(droppedItem._id);
         await this.item.update({
-          [idString]: Ids
+          [idString]: existingIds
         }).then(this.render(false));
       }
-    } else if (!Ids.includes(droppedItem.id)) {
-      Ids.push(droppedItem.id);
+    } else if (!existingIds.includes(droppedItem.id)) {
+      existingIds.push(droppedItem.id);
       await this.item.update({
-        [idString]: Ids
+        [idString]: existingIds
       }).then(this.render(false));
     }
   }
 
   /**
-  * Handle adding Traits to Items that have Upgrades
-  * @param {Item} droppedItem passes the item that was dropped
-  *   * @private
+  * Handle adding Traits to Items from a dropped Upgrade
+  * @param {Upgrade} upgrade  The upgrade that was dropped
+  * @private
   */
-  async _addDroppedItemTraits (droppedItem) {
-    if (droppedItem.system.traits.length > 0) {
-      let traits = this.item.system.traits;
+  async _addDroppedUpgradeTraits(upgrade) {
+    if (upgrade.system.traits.length > 0) {
+      let itemTraits = this.item.system.traits;
       let upgradeTraits = this.item.system.upgradeTraits;
-      for (let trait of droppedItem.system.traits) {
-        let duplicate = false;
-        for (let currentTrait of traits){
-          if (trait === currentTrait) {
-            duplicate = true;
-          }
-        }
-        for (let currentUpgradeTrait of upgradeTraits) {
-          if (trait === currentUpgradeTrait) {
-            duplicate = true;
-          }
-        }
-        if (duplicate == false) {
+      for (let trait of upgrade.system.traits) {
+        if (!itemTraits.includes(trait) && !upgradeTraits.includes(trait)) {
           upgradeTraits.push(trait);
         }
       }
@@ -295,7 +249,7 @@ export class Essence20ItemSheet extends ItemSheet {
     }
   }
 
-  async _searchCompendium (droppedItem) {
+  async _searchCompendium(droppedItem) {
     let id = droppedItem._id;
           for (let pack of game.packs){
             const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
@@ -325,7 +279,7 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handle deleting of an Upgrade from a Weapon or Armor Sheet
+  * Handle deleting of an Upgrade from an Item sheet
   * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
   * @private
   */
@@ -346,36 +300,37 @@ export class Essence20ItemSheet extends ItemSheet {
     }
 
     if (data.system.traits.length > 0) {
-        let keptTraits = this.item.system.upgradeTraits;
-        const upgradeIds = this.item.system.upgradeIds;
-        for (let itemTrait of data.system.traits) {
-          let otherItemTrait = false;
-          if(keptTraits.includes(itemTrait)) {
-            for (let id of upgradeIds) {
-              if (upgradeId == id){
-              }else {
-                let otherItem = game.items.get(id);
-                if(!otherItem) {
-                  for (let pack of game.packs){
-                    const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-                    if (compendium) {
-                      otherItem = await compendium.getDocument(id);
-                    }
+      let keptTraits = this.item.system.upgradeTraits;
+      const upgradeIds = this.item.system.upgradeIds;
+
+      for (let itemTrait of data.system.traits) {
+        let isOtherItemTrait = false;
+
+        if(keptTraits.includes(itemTrait)) {
+          for (let id of upgradeIds) {
+            if (upgradeId != id){
+              let otherItem = game.items.get(id);
+              if(!otherItem) {
+                for (let pack of game.packs){
+                  const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+                  if (compendium) {
+                    otherItem = await compendium.getDocument(id);
                   }
                 }
-                if (otherItem.system.traits.includes(itemTrait)) {
-                  otherItemTrait = true
-                }
+              }
+              if (otherItem.system.traits.includes(itemTrait)) {
+                isOtherItemTrait = true
               }
             }
           }
-          if (otherItemTrait == false) {
-            keptTraits = keptTraits.filter(x => x !== itemTrait);
-          }
         }
-        await this.item.update({
-          "system.upgradeTraits": keptTraits,
-        }).then(this.render(false));
+        if (!isOtherItemTrait) {
+          keptTraits = keptTraits.filter(x => x !== itemTrait);
+        }
+      }
+      await this.item.update({
+        "system.upgradeTraits": keptTraits,
+      }).then(this.render(false));
     }
 
     if (data.system.armorBonus.value > 0) {
@@ -386,7 +341,6 @@ export class Essence20ItemSheet extends ItemSheet {
         [armorString]: defense,
       }).then(this.render(false));
     }
-
 
     let upgradeIds = this.item.system.upgradeIds.filter(x => x !== upgradeId);
     this.item.update({
