@@ -155,7 +155,7 @@ export class Essence20ItemSheet extends ItemSheet {
     const data = TextEditor.getDragEventData(event);
     const targetItem = this.item;
 
-    let droppedItem = indexFromUuid(data.uuid);
+    const droppedItem = indexFromUuid(data.uuid);
     if(!droppedItem.system) {
       droppedItem = await this._searchCompendium(droppedItem);
     }
@@ -306,12 +306,13 @@ export class Essence20ItemSheet extends ItemSheet {
         if(keptTraits.includes(deletedItemTrait)) {
           for (let id of upgradeIds) {
             if (upgradeId != id){
-              let otherItem = game.items.get(id);
-              if(!otherItem) {
+              const otherItem = game.items.get(id);
+              if (!otherItem) {
                 otherItem = await this._searchCompendium(droppedItem);
               }
               if (otherItem.system.traits.includes(deletedItemTrait)) {
                 isOtherItemTrait = true
+                break
               }
             }
           }
