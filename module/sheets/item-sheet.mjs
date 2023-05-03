@@ -251,10 +251,7 @@ export class Essence20ItemSheet extends ItemSheet {
   * @private
   */
   async _searchCompendium(item) {
-    let id = item._id;
-    if (!id) {
-      id = item;
-    }
+    let id = item._id || item;
     for (let pack of game.packs){
       const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
       if (compendium) {
