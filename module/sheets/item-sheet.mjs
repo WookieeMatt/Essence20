@@ -163,15 +163,15 @@ export class Essence20ItemSheet extends ItemSheet {
     if (targetItem.type  == "origin") {
       if (droppedItem.type == "perk") {
         const originPerkIds = duplicate(this.item.system.originPerkIds);
-        this._addIfUnique(data, originPerkIds, droppedItem, "originPerk");
+        this._addItemIfUnique(droppedItem, data, originPerkIds, "originPerk");
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          this._addIfUnique (data, upgradeIds, droppedItem, "upgrade");
-          this._addDroppedUpgradeTraits (droppedItem, targetItem);
+          this._addItemIfUnique(droppedItem, data, upgradeIds, "upgrade");
+          this._addDroppedUpgradeTraits(droppedItem);
 
           if (droppedItem.system.armorBonus.value > 0) {
             const defenseName = droppedItem.system.armorBonus.defense.charAt(0).toUpperCase() + droppedItem.system.armorBonus.defense.slice(1)
@@ -188,8 +188,8 @@ export class Essence20ItemSheet extends ItemSheet {
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          this._addIfUnique (data, upgradeIds, droppedItem, "upgrade");
-          this._addDroppedUpgradeTraits (droppedItem, targetItem);
+          this._addItemIfUnique(droppedItem, data, upgradeIds, "upgrade");
+          this._addDroppedUpgradeTraits(droppedItem);
         }
       }
     }
@@ -198,15 +198,17 @@ export class Essence20ItemSheet extends ItemSheet {
 
   /**
   * Handles validating an item being dropped is unique
-  * @param {Object} data The data from drop event
   * @param {Item} droppedItem The item that was dropped
-  * @param {String} itemType  A string defining what the item is
+  * @param {Object} data The data from drop event
   * @param {Array} existingIds  The Ids of existing items attached to the target item
+  * @param {String} itemType  A string defining what the item is
   * @private
   */
-  async _addIfUnique(data, existingIds, droppedItem, itemType) {
+  async _addItemIfUnique(droppedItem, data, existingIds, itemType) {
     const uuidParts = data.uuid.split(".");
+    console.log(droppedItem.type)
     const idString = `system.${itemType}Ids`;
+
     if (uuidParts[0] === "Compendium") {
       if (!existingIds.includes(droppedItem._id)) {
         existingIds.push(droppedItem._id);
@@ -236,27 +238,34 @@ export class Essence20ItemSheet extends ItemSheet {
           upgradeTraits.push(trait);
         }
       }
+
       await this.item.update({
         "system.upgradeTraits": upgradeTraits,
       }).then(this.render(false));
     }
   }
 
-  async _searchCompendium(droppedItem) {
-    let id = droppedItem._id;
+  /**
+  * Handles search of the Compendiums to find the
+  * @param {object or id} item  Either an id or an object to find in the compendium
+  * @private
+  */
+  async _searchCompendium(item) {
+    let id = item._id;
     if (!id) {
-      id = droppedItem;
+      id = item;
     }
     for (let pack of game.packs){
       const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
       if (compendium) {
         let droppedUpgrade = await compendium.getDocument(id);
         if (droppedUpgrade) {
-          droppedItem = droppedUpgrade;
+          item = droppedUpgrade;
         }
       }
     }
-    return droppedItem
+
+    return item
   }
 
   /**
