@@ -231,8 +231,8 @@ export class Essence20ItemSheet extends ItemSheet {
   */
   async _addDroppedUpgradeTraits(upgrade) {
     if (upgrade.system.traits.length > 0) {
-      let itemTraits = this.item.system.traits;
-      let upgradeTraits = this.item.system.upgradeTraits;
+      const itemTraits = this.item.system.traits;
+      const upgradeTraits = this.item.system.upgradeTraits;
       for (let trait of upgrade.system.traits) {
         if (!itemTraits.includes(trait) && !upgradeTraits.includes(trait)) {
           upgradeTraits.push(trait);
@@ -246,12 +246,14 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handles search of the Compendiums to find the
-  * @param {object or id} item  Either an id or an object to find in the compendium
+  * Handles search of the Compendiums to find the item
+  * @param {Item|String} item  Either an ID or an Item to find in the compendium
+  * @returns {Item|String}     The Item if found, or the item param otherwise
   * @private
   */
   async _searchCompendium(item) {
-    let id = item._id || item;
+    const id = item._id || item;
+
     for (let pack of game.packs){
       const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
       if (compendium) {
@@ -288,10 +290,12 @@ export class Essence20ItemSheet extends ItemSheet {
   async _onUpgradeDelete(event) {
     const li = $(event.currentTarget).parents(".upgrade");
     const upgradeId = li.data("upgradeId");
-    let data = game.items.get(upgradeId);
-    if(!data) {
-      data = await this._searchCompendium(upgradeId);
+
+    const data = game.items.get(upgradeId) || await this._searchCompendium(upgradeId);
+    if (!data) {
+      return;
     }
+
     if (data.system.traits.length > 0) {
       let keptTraits = this.item.system.upgradeTraits;
       const upgradeIds = this.item.system.upgradeIds;
@@ -317,10 +321,12 @@ export class Essence20ItemSheet extends ItemSheet {
             }
           }
         }
+
         if (!isOtherItemTrait) {
           keptTraits = keptTraits.filter(x => x !== itemTrait);
         }
       }
+
       await this.item.update({
         "system.upgradeTraits": keptTraits,
       }).then(this.render(false));
