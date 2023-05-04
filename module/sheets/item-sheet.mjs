@@ -155,8 +155,8 @@ export class Essence20ItemSheet extends ItemSheet {
     const data = TextEditor.getDragEventData(event);
     const targetItem = this.item;
 
-    const droppedItem = indexFromUuid(data.uuid);
-    if(!droppedItem.system) {
+    let droppedItem = indexFromUuid(data.uuid);
+    if (!droppedItem.system) {
       droppedItem = await this._searchCompendium(droppedItem);
     }
 
@@ -206,7 +206,6 @@ export class Essence20ItemSheet extends ItemSheet {
   */
   async _addItemIfUnique(droppedItem, data, existingIds, itemType) {
     const uuidParts = data.uuid.split(".");
-    console.log(droppedItem.type)
     const idString = `system.${itemType}Ids`;
 
     if (uuidParts[0] === "Compendium") {
@@ -233,6 +232,7 @@ export class Essence20ItemSheet extends ItemSheet {
     if (upgrade.system.traits.length > 0) {
       const itemTraits = this.item.system.traits;
       const upgradeTraits = this.item.system.upgradeTraits;
+
       for (let trait of upgrade.system.traits) {
         if (!itemTraits.includes(trait) && !upgradeTraits.includes(trait)) {
           upgradeTraits.push(trait);
@@ -254,12 +254,12 @@ export class Essence20ItemSheet extends ItemSheet {
   async _searchCompendium(item) {
     const id = item._id || item;
 
-    for (let pack of game.packs){
+    for (const pack of game.packs){
       const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
       if (compendium) {
-        let droppedUpgrade = await compendium.getDocument(id);
-        if (droppedUpgrade) {
-          item = droppedUpgrade;
+        let  compendiumItem = await compendium.getDocument(id);
+        if (compendiumItem) {
+          item = compendiumItem;
         }
       }
     }
@@ -291,35 +291,36 @@ export class Essence20ItemSheet extends ItemSheet {
     const li = $(event.currentTarget).parents(".upgrade");
     const upgradeId = li.data("upgradeId");
 
-    const deletedItem = game.items.get(upgradeId) || await this._searchCompendium(upgradeId);
-    if (!deletedItem) {
+    const deletedUpgrade = game.items.get(upgradeId) || await this._searchCompendium(upgradeId);
+    if (!deletedUpgrade) {
       return;
     }
 
-    if (deletedItem.system.traits.length > 0) {
+    if (deletedUpgrade.system.traits.length > 0) {
       let keptTraits = this.item.system.upgradeTraits;
       const upgradeIds = this.item.system.upgradeIds;
 
-      for (let deletedItemTrait of deletedItem.system.traits) {
+      for (const deletedUpgradeTrait of deletedUpgrade.system.traits) {
         let isOtherItemTrait = false;
 
-        if(keptTraits.includes(deletedItemTrait)) {
-          for (let id of upgradeIds) {
-            if (upgradeId != id){
+        if(keptTraits.includes(deletedUpgradeTrait)) {
+          for (const id of upgradeIds) {
+            if (upgradeId != id) {
               const otherItem = game.items.get(id);
               if (!otherItem) {
-                otherItem = await this._searchCompendium(droppedItem);
+                otherItem = await this._searchCompendium(id);
               }
-              if (otherItem.system.traits.includes(deletedItemTrait)) {
-                isOtherItemTrait = true
-                break
+
+              if (otherItem.system.traits.includes(deletedUpgradeTrait)) {
+                isOtherItemTrait = true;
+                break;
               }
             }
           }
         }
 
         if (!isOtherItemTrait) {
-          keptTraits = keptTraits.filter(x => x !== deletedItemTrait);
+          keptTraits = keptTraits.filter(x => x !== deletedUpgradeTrait);
         }
       }
 
@@ -328,10 +329,10 @@ export class Essence20ItemSheet extends ItemSheet {
       }).then(this.render(false));
     }
 
-    if (deletedItem.system.armorBonus.value > 0) {
-      const defenseName = deletedItem.system.armorBonus.defense.charAt(0).toUpperCase() + deletedItem.system.armorBonus.defense.slice(1)
+    if (deletedUpgrade.system.armorBonus.value > 0) {
+      const defenseName = deletedUpgrade.system.armorBonus.defense.charAt(0).toUpperCase() + deletedUpgrade.system.armorBonus.defense.slice(1)
       const armorString = `system.bonus${defenseName}`;
-      const defense = this.item.system[`bonus${defenseName}`] -= deletedItem.system.armorBonus.value;
+      const defense = this.item.system[`bonus${defenseName}`] -= deletedUpgrade.system.armorBonus.value;
       await this.item.update({
         [armorString]: defense,
       }).then(this.render(false));
