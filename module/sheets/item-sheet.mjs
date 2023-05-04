@@ -233,7 +233,7 @@ export class Essence20ItemSheet extends ItemSheet {
       const itemTraits = this.item.system.traits;
       const itemUpgradeTraits = this.item.system.upgradeTraits;
 
-      for (let droppedTrait of upgrade.system.traits) {
+      for (const droppedTrait of upgrade.system.traits) {
         if (!itemTraits.includes(droppedTrait) && !itemUpgradeTraits.includes(droppedTrait)) {
           itemUpgradeTraits.push(droppedTrait);
         }
