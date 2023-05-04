@@ -231,16 +231,16 @@ export class Essence20ItemSheet extends ItemSheet {
   async _addDroppedUpgradeTraits(upgrade) {
     if (upgrade.system.traits.length > 0) {
       const itemTraits = this.item.system.traits;
-      const upgradeTraits = this.item.system.upgradeTraits;
+      const itemUpgradeTraits = this.item.system.upgradeTraits;
 
-      for (let trait of upgrade.system.traits) {
-        if (!itemTraits.includes(trait) && !upgradeTraits.includes(trait)) {
-          upgradeTraits.push(trait);
+      for (let droppedTrait of upgrade.system.traits) {
+        if (!itemTraits.includes(droppedTrait) && !itemUpgradeTraits.includes(droppedTrait)) {
+          itemUpgradeTraits.push(droppedTrait);
         }
       }
 
       await this.item.update({
-        "system.upgradeTraits": upgradeTraits,
+        "system.upgradeTraits": itemUpgradeTraits,
       }).then(this.render(false));
     }
   }
@@ -257,7 +257,7 @@ export class Essence20ItemSheet extends ItemSheet {
     for (const pack of game.packs){
       const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
       if (compendium) {
-        let  compendiumItem = await compendium.getDocument(id);
+        let compendiumItem = await compendium.getDocument(id);
         if (compendiumItem) {
           item = compendiumItem;
         }
@@ -303,7 +303,7 @@ export class Essence20ItemSheet extends ItemSheet {
       for (const deletedUpgradeTrait of deletedUpgrade.system.traits) {
         let isOtherItemTrait = false;
 
-        if(keptTraits.includes(deletedUpgradeTrait)) {
+        if (keptTraits.includes(deletedUpgradeTrait)) {
           for (const id of upgradeIds) {
             if (upgradeId != id) {
               const otherItem = game.items.get(id);
