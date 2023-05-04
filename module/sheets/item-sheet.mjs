@@ -257,7 +257,7 @@ export class Essence20ItemSheet extends ItemSheet {
     for (const pack of game.packs){
       const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
       if (compendium) {
-        let compendiumItem = await compendium.getDocument(id);
+        const compendiumItem = await compendium.getDocument(id);
         if (compendiumItem) {
           item = compendiumItem;
         }
