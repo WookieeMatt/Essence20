@@ -435,6 +435,13 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       await this._showOriginEssenceDialog(sourceItem, event, data);
+
+    } else if (sourceItem.type == 'upgrade') {
+        if (sourceItem.system.type == 'armor') {
+          if(this.actor.type == 'transformer' || this.actor.system.canTransform == true) { // this second value is going to come from the Crossover settings
+
+          }
+        }
     } else {
       super._onDropItem(event, data);
     }
