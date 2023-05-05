@@ -1,0 +1,105 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
+    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+  </nav>
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
+      {{!-- Type --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeType'}}
+      {{#*inline "item-field-inputs"}}
+      <select class="item-field-inputs" name="system.type">
+        {{#select system.type}}
+        {{#each config.upgradeTypes as |name type|}}
+        <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Availability --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeAvailability'}}
+      {{#*inline "item-field-inputs"}}
+      <select name="system.availability">
+        {{#select system.availability}}
+        {{#each config.availabilities as |name type|}}
+        <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Prerequisite --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradePrerequisite'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Benefit --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeBenefit'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.benefit" value="{{system.benefit}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Armor Bonus --}}
+      {{#ifEquals item.system.type 'armor'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonus'}}
+        {{#*inline "item-field-inputs"}}
+          <input type="number" name="system.armorBonus.value" value="{{system.armorBonus.value}}" />
+          <select name="system.armorBonus.defense">
+          {{#select system.armorBonus.defense}}
+          {{#each config.defenses as |name defense|}}
+            <option value="{{defense}}">{{localize name}}</option>
+          {{/each}}
+          {{/select}}
+          </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifEquals}}
+
+      {{!-- Traits --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeTraits'}}
+      {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="{{system.type}}" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
+          <i class="fas fa-edit"></i>
+        </a>
+      {{/inline}}
+
+      {{#*inline "item-field-inputs"}}
+        <div class="chip-section">
+        {{#ifEquals item.system.type 'armor'}}
+          {{#each item.system.traits as |trait|}}
+            <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
+          {{/each}}
+        {{else ifEquals item.system.type 'weapon'}}
+          {{#each item.system.traits as |trait|}}
+            <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
+          {{/each}}
+        {{/ifEquals}}
+        </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{!-- Effects Section --}}
+      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
+    </div>
+
+  </section>
+
+</form>

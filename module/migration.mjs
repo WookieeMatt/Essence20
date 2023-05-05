@@ -40,6 +40,7 @@ export const migrateWorld = async function() {
         console.log(`Migrating Item document ${item.name}`);
         console.log(updateData);
         await item.update(updateData, {enforceTypes: false, diff: valid});
+        await item.update({"system.-=perkType": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Item ${item.name}: ${err.message}`;
@@ -215,6 +216,11 @@ export const migrateActorData = function(actor) {
     const effect = item.system.effect;
     if (effect && !item.system.bonusToughness) {
       updateData[`system.bonusToughness`] = effect;
+    }
+  } else if (item.type == "perk") {
+    if (item.system.perkType) {
+      const perkType = item.system.perkType;
+      updateData[`system.type`] = perkType;
     }
   }
 

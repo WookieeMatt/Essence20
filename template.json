@@ -8,7 +8,8 @@
       "zord",
       "giJoe",
       "transformer",
-      "pony"
+      "pony",
+      "companion"
     ],
     "templates": {
       "common": {
@@ -428,7 +429,6 @@
           "value": null
         }
       },
-      "notes": "",
       "threatLevel": 0
     },
     "vehicle": {
@@ -481,8 +481,30 @@
         "creature",
         "character"
       ]
+    },
+    "companion": {
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ],
+      "availability": "standard",
+      "defenses": {
+        "toughness": {
+          "value": 10
+        },
+        "evasion": {
+          "value": 10
+        },
+        "willpower": {
+          "value": null
+        },
+        "cleverness": {
+          "value": null
+        }
+      },
+      "type": "pet"
     }
-
   },
   "Item": {
     "types": [
@@ -502,9 +524,8 @@
       "specialization",
       "spell",
       "threatPower",
-      "trait",
-      "weapon",
-      "weaponUpgrade"
+      "upgrade",
+      "weapon"
     ],
     "templates": {
       "itemDescription": {
@@ -537,7 +558,9 @@
       "bonusToughness": 0,
       "classification": "light",
       "equipped": false,
-      "traits": []
+      "traits": [],
+      "upgradeIds": [],
+      "upgradeTraits": []
     },
     "bond": {
       "templates": [
@@ -575,7 +598,7 @@
     },
     "hangUp": {
       "templates": [
-        "itemDescription"        
+        "itemDescription"
       ]
     },
     "magicBauble": {
@@ -639,11 +662,6 @@
       "cost": null,
       "limited": false
     },
-    "trait": {
-      "templates": [
-        "itemDescription"
-      ]
-    },
     "weapon": {
       "templates": [
         "itemDescription"
@@ -674,14 +692,22 @@
         "skill": null,
         "shift": null
       },
-      "upgrades": ""
+      "traits": [],
+      "upgradeIds": [],
+      "upgradeTraits": []
     },
-    "weaponUpgrade": {
+    "upgrade": {
       "templates": [
         "itemDescription"
       ],
+      "armorBonus": {
+        "defense": "toughness",
+        "value": 0
+      },
       "availability": "standard",
       "benefit": "",
+      "traits": [],
+      "type": "armor",
       "prerequisite": null
     }
   }

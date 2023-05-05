@@ -156,7 +156,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const specializations = {};
     const spells = [];
     const threatPowers = [];
-    const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
     const weapons = [];
     const classFeaturesById = {};
     let equippedArmorEvasion = 0;
@@ -198,15 +197,15 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'megaformTrait':
           megaformTraits.push(i);
           break;
-          case 'origin':
-            i.skillsString = i.system.skills.map(skill => {
-              return game.i18n.localize(CONFIG.E20.originEssenceSkills[skill]);
-            }).join(", ");
-            i.essenceString = i.system.essences.map(essence => {
-              return game.i18n.localize(CONFIG.E20.originEssences[essence]);
-            }).join(", ");
-            origins.push(i);
-            break;
+        case 'origin':
+          i.skillsString = i.system.skills.map(skill => {
+            return CONFIG.E20.originSkills[skill];
+          }).join(", ");
+          i.essenceString = i.system.essences.map(essence => {
+            return CONFIG.E20.originEssences[essence];
+          }).join(", ");
+          origins.push(i);
+          break;
         case 'perk':
           perks.push(i);
           break;
@@ -227,9 +226,6 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
         case 'threatPower':
           threatPowers.push(i);
-          break;
-        case 'trait':
-          traits.push(i);
           break;
         case 'weapon':
           weapons.push(i);
@@ -257,7 +253,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.spells = spells;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
-    context.traits = traits;
     context.weapons = weapons;
   }
 
@@ -516,7 +511,7 @@ export class Essence20ActorSheet extends ActorSheet {
         selectedEssence = essence;
         choices[skill] = {
           chosen: false,
-          label: CONFIG.E20.originEssenceSkills[skill],
+          label: CONFIG.E20.originSkills[skill],
         };
       }
     }

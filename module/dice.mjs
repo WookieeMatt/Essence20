@@ -151,7 +151,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = dataset.isSpecialized === 'true'
       ? dataset.specializationName
-      : this._localize(E20.essenceSkills[rolledSkill]);
+      : this._localize(E20.skills[rolledSkill]);
     const rollingForStr = this._localize('E20.RollRollingFor')
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
@@ -177,7 +177,7 @@ export class Dice {
    */
   _getWeaponRollLabel(dataset, skillRollOptions, actor, weapon) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = this._localize(E20.essenceSkills[rolledSkill]);
+    const rolledSkillStr = this._localize(E20.skills[rolledSkill]);
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
     const alternateEffectsStr = this._localize('E20.WeaponAlternateEffects');
@@ -202,7 +202,7 @@ export class Dice {
    * @private
    */
   _getSpellRollLabel(skillRollOptions, spell) {
-    const rolledSkillStr = this._localize('E20.EssenceSkillSpellcasting');
+    const rolledSkillStr = this._localize('E20.SkillSpellcasting');
     const spellRollStr = this._localize('E20.RollTypeSpell');
     const descStr = this._localize('E20.ItemDescription');
     const noneStr = this._localize('E20.None');
@@ -215,7 +215,7 @@ export class Dice {
   }
 
   _getMagicBaubleRollLabel(skillRollOptions, magicBauble) {
-    const rolledSkillStr = this._localize('E20.EssenceSkillSpellcasting');
+    const rolledSkillStr = this._localize('E20.SkillSpellcasting');
     const magicBaubleRollStr = this._localize('E20.RollTypeMagicBauble');
     const descStr = this._localize('E20.ItemDescription');
     const noneStr = this._localize('E20.None');

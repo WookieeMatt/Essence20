@@ -7,9 +7,10 @@ import { Essence20Item } from "./documents/item.mjs";
 import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
-import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { E20 } from "./helpers/config.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
+import { E20 } from "./helpers/config.mjs";
+import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
+import { performPreLocalization } from "./helpers/utils.mjs";
 import { migrateWorld } from "./migration.mjs";
 
 function registerSystemSettings() {
@@ -30,7 +31,7 @@ function runMigrations() {
     return;
   }
 
-  const NEEDS_MIGRATION_VERSION = game.system.flags.needsMigrationVersion
+  const NEEDS_MIGRATION_VERSION = game.system.flags.needsMigrationVersion;
 
   // Get the current version, or set it if not present
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
@@ -145,6 +146,9 @@ Handlebars.registerHelper("setVar", function(varName, varValue, options) {
 /* -------------------------------------------- */
 /*  Misc Hooks                                  */
 /* -------------------------------------------- */
+
+// Perform one-time pre-localization and sorting of some configuration objects
+Hooks.once("i18nInit", () => performPreLocalization(CONFIG.E20));
 
 Hooks.once("ready", async function () {
   runMigrations();
