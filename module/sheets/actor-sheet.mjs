@@ -440,6 +440,9 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       await this._showOriginEssenceDialog(sourceItem, event, data);
+    } else if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.type == 'upgrade' && sourceItem.system.type != 'drone') {
+      // Drones can only accept drone upgrades
+      return;
     } else {
       super._onDropItem(event, data);
     }
