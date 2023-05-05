@@ -28,10 +28,30 @@
           "shiftDown": 0,
           "shiftUp": 0
         },
+        "isMorphed": false,
+        "isTransformed": false,
         "movement": {
-          "aerial": 0,
-          "ground": 30,
-          "swim": 0
+          "aerial": {
+            "altmode":0,
+            "base": 0,
+            "bonus": 0,
+            "morphed": 0,
+            "total": 0
+          },
+          "ground": {
+            "altmode":0,
+            "base": 0,
+            "bonus": 0,
+            "morphed": 0,
+            "total": 0
+          },
+          "swim": {
+            "altmode":0,
+            "base": 0,
+            "bonus": 0,
+            "morphed": 0,
+            "total": 0
+          }
         },
         "size": "common",
         "skills": {
