@@ -434,6 +434,7 @@ export class Essence20ActorSheet extends ActorSheet {
     switch (sourceItem.type) {
       case 'origin':
         for (let actorItem of this.actor.items) {
+          // Characters can only have one Origin
           if(actorItem.type == 'origin') {
             ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
             return false;
@@ -443,8 +444,9 @@ export class Essence20ActorSheet extends ActorSheet {
         await this._showOriginEssenceDialog(sourceItem, event, data);
         break;
       case 'upgrade':
-        // Drones can only accept drone upgrades
+        // Drones can only accept drone Upgrades
         if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
+          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
           return false;
         }
       default:
