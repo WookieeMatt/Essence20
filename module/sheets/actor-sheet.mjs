@@ -298,6 +298,9 @@ export class Essence20ActorSheet extends ActorSheet {
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
+    //Transform Button
+    html.find('.transform').click(this._transform.bind(this));
+
     // Rollable abilities.
     if (this.actor.isOwner) {
       html.find('.rollable').click(this._onRoll.bind(this));
@@ -327,6 +330,34 @@ export class Essence20ActorSheet extends ActorSheet {
         li.addEventListener("dragstart", handler, false);
       });
     }
+  }
+
+  async _transform(event) {
+    if (!this.actor.system.isTransformed) {
+      for (const item of this.actor.items) {
+        if (item.type == "altMode") {
+          await this.actor.update({
+            "system.movement.aerial.altmode": item.system.altModeMovement.aerial,
+            "system.movement.swim.altmode": item.system.altModeMovement.aquatic,
+            "system.movement.ground.altmode": item.system.altModeMovement.ground,
+            "system.altModeSize": item.system.altModesize,
+            "system.isTransformed": true,
+          }).then(this.render(false));
+        }
+      }
+    } else {
+      await this.actor.update({
+        "system.movement.aerial.altmode": 0,
+        "system.movement.swim.altmode": 0,
+        "system.movement.ground.altmode": 0,
+        "system.isTransformed": false,
+        "system.altModeSize": ""
+      }).then(this.render(false));
+    }
+
+    console.log("Transform and Roll Out!");
+
+
   }
 
   /**

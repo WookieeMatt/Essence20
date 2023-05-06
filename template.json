@@ -13,6 +13,7 @@
     ],
     "templates": {
       "common": {
+        "altModeSize": "common",
         "color": "#b5b1b1",
         "conditioning": 0,
         "description": "",
