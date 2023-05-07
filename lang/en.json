@@ -75,6 +75,7 @@
     "AltModeChoice": " What Mode do you transform to?",
     "AltModeCrew": "Crew",
     "AltModeFirepoints": "Firepoints",
+    "AltModeNone": "This characters has no Alt Mode to transform into.",
     "AltModeSize": "Alt Mode Size",
     "AltModeMovementAerial": "Aerial",
     "AltModeMovementAquatic": "Aquatic",

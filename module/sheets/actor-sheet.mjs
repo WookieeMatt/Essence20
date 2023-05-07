@@ -341,7 +341,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
     if (!this.actor.system.isTransformed) {
       if(altModeList.length < 1) {
-        console.log("Error no Alt Modes change to screen display");
+        ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
       } else if (altModeList.length == 1) {
         this._transformAltMode(altModeList);
       } else {
@@ -350,7 +350,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     } else {
       if(altModeList.length < 1) {
-        console.log("Error No Alt Mode");
+        ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
         await this.actor.update({
           "system.isTransformed": false,
         }).then(this.render(false));
@@ -371,7 +371,6 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
     for (const altMode of altModeList) {
-      console.log(altMode);
       if (this.actor.system.altModeName != altMode.name) {
         choices[altMode.name] = {
           chosen: false,
