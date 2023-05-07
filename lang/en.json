@@ -353,6 +353,7 @@
     "UpgradePlural": "Upgrades",
     "UpgradePrerequisite": "Prerequisite",
     "UpgradeTraits": "Upgrade Traits",
+    "UpgradeTransformerError": "Transformers can only accept armor upgrades",
     "UpgradeTypeArmor": "Armor",
     "UpgradeTypeDrone": "Drone",
     "UpgradeTypeWeapon": "Weapon",
