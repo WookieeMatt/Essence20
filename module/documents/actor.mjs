@@ -108,6 +108,7 @@ export class Essence20Actor extends Actor {
    * Prepare Movement specific data.
    */
   _prepareMovement(system) {
+    system.movementIsReadOnly = true
     system.movement.aerial.base = parseFloat(system.movement.aerial.base);
     system.movement.ground.base = parseFloat(system.movement.ground.base);
     system.movement.swim.base = parseFloat(system.movement.swim.base);
