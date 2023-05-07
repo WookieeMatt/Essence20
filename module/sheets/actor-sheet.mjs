@@ -332,32 +332,115 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-  async _transform(event) {
+  async _transform() {
+    const altModeList = [];
+    for (const item of this.actor.items) {
+      if (item.type == "altMode") {
+        altModeList.push(item);
+      }
+    }
     if (!this.actor.system.isTransformed) {
-      for (const item of this.actor.items) {
-        if (item.type == "altMode") {
-          await this.actor.update({
-            "system.movement.aerial.altmode": item.system.altModeMovement.aerial,
-            "system.movement.swim.altmode": item.system.altModeMovement.aquatic,
-            "system.movement.ground.altmode": item.system.altModeMovement.ground,
-            "system.altModeSize": item.system.altModesize,
-            "system.isTransformed": true,
-          }).then(this.render(false));
+      if(altModeList.length < 1) {
+        console.log("Error no Alt Modes change to screen display");
+      } else if (altModeList.length == 1) {
+        this._transformAltMode(altModeList);
+      } else {
+        this._showAltModeChoiceDialog(altModeList, false);
+      }
+
+    } else {
+      if(altModeList.length < 1) {
+        console.log("Error No Alt Mode");
+        await this.actor.update({
+          "system.isTransformed": false,
+        }).then(this.render(false));
+      } else if (altModeList.length == 1) {
+        this._transformBotMode();
+      } else {
+        this._showAltModeChoiceDialog(altModeList, true);
+      }
+    }
+  }
+
+  async _showAltModeChoiceDialog(altModeList,transformed) {
+    const choices = {};
+    if (transformed) {
+      choices["BotMode"] = {
+        chosen: false,
+        label: "BotMode",
+      }
+    }
+    for (const altMode of altModeList) {
+      console.log(altMode);
+      if (this.actor.system.altModeName != altMode.name) {
+        choices[altMode.name] = {
+          chosen: false,
+          label: altMode.name,
         }
       }
-    } else {
-      await this.actor.update({
-        "system.movement.aerial.altmode": 0,
-        "system.movement.swim.altmode": 0,
-        "system.movement.ground.altmode": 0,
-        "system.isTransformed": false,
-        "system.altModeSize": ""
-      }).then(this.render(false));
     }
 
-    console.log("Transform and Roll Out!");
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.AltModeChoice'),
+        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._altModeSelect(altModeList, this._rememberOptions(html))
+          }
+        },
+      },
+    ).render(true);
+  }
 
+  async _altModeSelect (altModeList, options) {
+    let selectedForm = "";
+    let transformation = {};
+    for (const [altMode, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedForm = altMode;
+        break;
+      }
+    }
+    if (selectedForm == "BotMode"){
+      this._transformBotMode();
+    } else {
+      for(const mode of altModeList) {
+        if (selectedForm == mode.name) {
+          transformation = mode
+          break
+        }
+      }
+      this._transformAltMode(transformation)
+    }
+  }
 
+  async _transformAltMode (altMode) {
+    if (altMode.length) {
+      altMode = altMode[0]
+    }
+    await this.actor.update({
+      "system.movement.aerial.altmode": altMode.system.altModeMovement.aerial,
+      "system.movement.swim.altmode": altMode.system.altModeMovement.aquatic,
+      "system.movement.ground.altmode": altMode.system.altModeMovement.ground,
+      "system.altModeSize": altMode.system.altModesize,
+      "system.altModeName": altMode.name,
+      "system.isTransformed": true,
+    }).then(this.render(false));
+  }
+
+  async _transformBotMode () {
+    await this.actor.update({
+      "system.movement.aerial.altmode": 0,
+      "system.movement.swim.altmode": 0,
+      "system.movement.ground.altmode": 0,
+      "system.isTransformed": false,
+      "system.altModeName": "",
+      "system.altModeSize": ""
+    }).then(this.render(false));
   }
 
   /**
