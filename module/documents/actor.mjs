@@ -108,67 +108,71 @@ export class Essence20Actor extends Actor {
    * Prepare Movement specific data.
    */
   _prepareMovement(system) {
+    system.movement.aerial.base = parseFloat(system.movement.aerial.base);
+    system.movement.ground.base = parseFloat(system.movement.ground.base);
+    system.movement.swim.base = parseFloat(system.movement.swim.base);
+
     if (system.isMorphed && system.isTransformed) {
       if (system.movement.aerial.altMode) {
-        system.movement.aerial.total = parseFloat(system.movement.aerial.altMode) + parseFloat(system.movement.aerial.bonus) + parseFloat(system.movement.aerial.morphed);
+        system.movement.aerial.total = system.movement.aerial.altMode + system.movement.aerial.bonus + system.movement.aerial.morphed;
       } else {
         system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altMode){
-        system.movement.ground.total = parseFloat(system.movement.ground.altMode) + parseFloat(system.movement.ground.bonus) + parseFloat(system.movement.ground.morphed);
+        system.movement.ground.total = system.movement.ground.altMode + system.movement.ground.bonus + system.movement.ground.morphed;
       } else {
         system.movement.ground.total = 0;
       }
       if (system.movement.swim.altMode){
-        system.movement.swim.total = parseFloat(system.movement.swim.altMode) + parseFloat(system.movement.swim.bonus) + parseFloat(system.movement.swim.morphed);
+        system.movement.swim.total = system.movement.swim.altMode + system.movement.swim.bonus + system.movement.swim.morphed;
       } else {
         system.movement.swim.total = 0;
       }
     }else if (system.isMorphed) {
       if (system.movement.aerial.base) {
-        system.movement.aerial.total = parseFloat(system.movement.aerial.base) + parseFloat(system.movement.aerial.bonus) + parseFloat(system.movement.aerial.morphed);
+        system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus + system.movement.aerial.morphed;
       } else {
         system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
-        system.movement.ground.total = parseFloat(system.movement.ground.base) + parseFloat(system.movement.ground.bonus) + parseFloat(system.movement.ground.morphed);
+        system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus + system.movement.ground.morphed;
       } else {
         system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
-        system.movement.swim.total = parseFloat(system.movement.ground.base) + parseFloat(system.movement.swim.bonus) + parseFloat(system.movement.swim.morphed);
+        system.movement.swim.total = system.movement.swim.base + system.movement.swim.bonus + system.movement.swim.morphed;
       } else {
         system.movement.swim.total = 0;
       }
     }else if (system.isTransformed) {
       if (system.movement.aerial.altMode){
-        system.movement.aerial.total = parseFloat(system.movement.aerial.altMode) + parseFloat(system.movement.aerial.bonus);
+        system.movement.aerial.total = system.movement.aerial.altMode + system.movement.aerial.bonus;
       } else {
         system.movement.aerial.total = 0;
       }
       if (system.movement.ground.altMode){
-        system.movement.ground.total = parseFloat(system.movement.ground.altMode) + parseFloat(system.movement.ground.bonus);
+        system.movement.ground.total = system.movement.ground.altMode + system.movement.ground.bonus;
       } else {
         system.movement.ground.total = 0;
       }
       if (system.movement.swim.altMode){
-        system.movement.swim.total = parseFloat(system.movement.swim.altMode) + parseFloat(system.movement.swim.bonus);
+        system.movement.swim.total = system.movement.swim.altMode + system.movement.swim.bonus;
       } else {
         system.movement.swim.total = 0;
       }
     }else{
       if (system.movement.aerial.base){
-        system.movement.aerial.total = parseFloat(system.movement.aerial.base) + parseFloat(system.movement.aerial.bonus);
+        system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus;
       } else {
         system.movement.aerial.total = 0;
       }
       if (system.movement.ground.base){
-        system.movement.ground.total = parseFloat(system.movement.ground.base) + parseFloat(system.movement.ground.bonus);
+        system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus;
       } else {
         system.movement.ground.total = 0;
       }
       if (system.movement.swim.base){
-        system.movement.swim.total = parseFloat(system.movement.swim.base) + parseFloat(system.movement.swim.bonus);
+        system.movement.swim.total = system.movement.swim.base + system.movement.swim.bonus;
       } else {
         system.movement.swim.total = 0;
       }
