@@ -534,13 +534,14 @@
       "templates": [
         "itemDescription"
       ],
-      "upgradeIds": [],
       "availability": "standard",
       "bonusEvasion": 0,
       "bonusToughness": 0,
       "classification": "light",
       "equipped": false,
-      "traits": []
+      "traits": [],
+      "upgradeIds": [],
+      "upgradeTraits": []
     },
     "bond": {
       "templates": [
@@ -673,14 +674,20 @@
         "shift": null
       },
       "traits": [],
-      "upgradeIds": []
+      "upgradeIds": [],
+      "upgradeTraits": []
     },
     "upgrade": {
       "templates": [
         "itemDescription"
       ],
+      "armorBonus": {
+        "defense": "toughness",
+        "value": 0
+      },
       "availability": "standard",
       "benefit": "",
+      "traits": [],
       "type": "armor",
       "prerequisite": null
     }

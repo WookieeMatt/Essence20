@@ -1,32 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-
-/**
-* Handle deleting of an Origin from an Actor Sheet
-* @param {Object} uuid   The uuid of an item
-* @returns {Object>} index The id of the item
-* @private
-*/
-function indexFromUuid(uuid) {
-  const parts = uuid.split(".");
-  let index;
-
-  // Compendium Documents
-  if ( parts[0] === "Compendium" ) {
-    const [, scope, packName, id] = parts;
-    const pack = game.packs.get(`${scope}.${packName}`);
-    index = pack?.index.get(id);
-  }
-
-  // World Documents
-  else if ( parts.length < 3 ) {
-    const [docName, id] = parts;
-    const collection = CONFIG[docName].collection.instance;
-    index = collection.get(id);
-  }
-
-  return index || null;
-}
+import { indexFromUuid } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -177,52 +151,36 @@ export class Essence20ItemSheet extends ItemSheet {
   * @param {DragEvent} event            The concluding DragEvent which contains drop data
   * @private
   */
-  //
-  async _onDrop (event) {
+  async _onDrop(event) {
     const data = TextEditor.getDragEventData(event);
-    const droppedItem = indexFromUuid(data.uuid);
-    const parts = data.uuid.split(".");
     const targetItem = this.item;
+
+    let droppedItem = indexFromUuid(data.uuid);
+    if (!droppedItem.system) {
+      droppedItem = await this._searchCompendium(droppedItem);
+    }
 
     if (targetItem.type  == "origin") {
       if (droppedItem.type == "perk") {
         const originPerkIds = duplicate(this.item.system.originPerkIds);
-
-        // Can't contain duplicate Origin Perks
-        if (parts[0] === "Compendium") {
-          if (!originPerkIds.includes(droppedItem._id)) {
-            originPerkIds.push(droppedItem._id);
-            await this.item.update({
-              "system.originPerkIds": originPerkIds
-            }).then(this.render(false));
-          }
-        } else if (!originPerkIds.includes(droppedItem.id)) {
-            originPerkIds.push(droppedItem.id);
-            await this.item.update({
-              "system.originPerkIds": originPerkIds
-            }).then(this.render(false));
-        }
+        this._addItemIfUnique(droppedItem, data, originPerkIds, "originPerk");
       }
     } else if (targetItem.type == "armor") {
       if (droppedItem.type == "upgrade") {
         if (droppedItem.system.type == "armor") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-        // Can't contain duplicate Armor Upgrades
-        if (parts[0] === "Compendium") {
-          if (!upgradeIds.includes(droppedItem._id)) {
-            upgradeIds.push(droppedItem._id);
+          this._addItemIfUnique(droppedItem, data, upgradeIds, "upgrade");
+          this._addDroppedUpgradeTraits(droppedItem);
+
+          if (droppedItem.system.armorBonus.value > 0) {
+            const defenseName = droppedItem.system.armorBonus.defense.charAt(0).toUpperCase() + droppedItem.system.armorBonus.defense.slice(1)
+            const armorString = `system.bonus${defenseName}`;
+            const defense = targetItem.system[`bonus${defenseName}`] += droppedItem.system.armorBonus.value;
             await this.item.update({
-              "system.upgradeIds": upgradeIds
+              [armorString]: defense,
             }).then(this.render(false));
           }
-        } else if (!upgradeIds.includes(droppedItem.id)) {
-          upgradeIds.push(droppedItem.id);
-            await this.item.update({
-              "system.upgradeIds": upgradeIds
-            }).then(this.render(false));
-        }
-
         }
       }
     } else if (targetItem.type == "weapon") {
@@ -230,23 +188,83 @@ export class Essence20ItemSheet extends ItemSheet {
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
 
-          // Can't contain duplicate Armor Upgrades
-          if (parts[0] === "Compendium") {
-            if (!upgradeIds.includes(droppedItem._id)) {
-              upgradeIds.push(droppedItem._id);
-              await this.item.update({
-                "system.upgradeIds": upgradeIds
-              }).then(this.render(false));
-            }
-          } else if (!upgradeIds.includes(droppedItem.id)) {
-            upgradeIds.push(droppedItem.id);
-            await this.item.update({
-              "system.upgradeIds": upgradeIds
-            }).then(this.render(false));
-          }
+          this._addItemIfUnique(droppedItem, data, upgradeIds, "upgrade");
+          this._addDroppedUpgradeTraits(droppedItem);
         }
       }
     }
+    this.render(true);
+  }
+
+  /**
+  * Handles validating an item being dropped is unique
+  * @param {Item} droppedItem The item that was dropped
+  * @param {Object} data The data from drop event
+  * @param {Array} existingIds  The Ids of existing items attached to the target item
+  * @param {String} itemType  A string defining what the item is
+  * @private
+  */
+  async _addItemIfUnique(droppedItem, data, existingIds, itemType) {
+    const uuidParts = data.uuid.split(".");
+    const idString = `system.${itemType}Ids`;
+
+    if (uuidParts[0] === "Compendium") {
+      if (!existingIds.includes(droppedItem._id)) {
+        existingIds.push(droppedItem._id);
+        await this.item.update({
+          [idString]: existingIds
+        }).then(this.render(false));
+      }
+    } else if (!existingIds.includes(droppedItem.id)) {
+      existingIds.push(droppedItem.id);
+      await this.item.update({
+        [idString]: existingIds
+      }).then(this.render(false));
+    }
+  }
+
+  /**
+  * Handle adding Traits to Items from a dropped Upgrade
+  * @param {Upgrade} upgrade  The upgrade that was dropped
+  * @private
+  */
+  async _addDroppedUpgradeTraits(upgrade) {
+    if (upgrade.system.traits.length > 0) {
+      const itemTraits = this.item.system.traits;
+      const itemUpgradeTraits = this.item.system.upgradeTraits;
+
+      for (const droppedTrait of upgrade.system.traits) {
+        if (!itemTraits.includes(droppedTrait) && !itemUpgradeTraits.includes(droppedTrait)) {
+          itemUpgradeTraits.push(droppedTrait);
+        }
+      }
+
+      await this.item.update({
+        "system.upgradeTraits": itemUpgradeTraits,
+      }).then(this.render(false));
+    }
+  }
+
+  /**
+  * Handles search of the Compendiums to find the item
+  * @param {Item|String} item  Either an ID or an Item to find in the compendium
+  * @returns {Item|String}     The Item if found, or the item param otherwise
+  * @private
+  */
+  async _searchCompendium(item) {
+    const id = item._id || item;
+
+    for (const pack of game.packs){
+      const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+      if (compendium) {
+        const compendiumItem = await compendium.getDocument(id);
+        if (compendiumItem) {
+          item = compendiumItem;
+        }
+      }
+    }
+
+    return item
   }
 
   /**
@@ -265,13 +283,61 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handle deleting of a Perk from an Origin Sheet
+  * Handle deleting of an Upgrade from an Item sheet
   * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
   * @private
   */
   async _onUpgradeDelete(event) {
     const li = $(event.currentTarget).parents(".upgrade");
     const upgradeId = li.data("upgradeId");
+
+    const deletedUpgrade = game.items.get(upgradeId) || await this._searchCompendium(upgradeId);
+    if (!deletedUpgrade) {
+      return;
+    }
+
+    if (deletedUpgrade.system.traits.length > 0) {
+      let keptTraits = this.item.system.upgradeTraits;
+      const upgradeIds = this.item.system.upgradeIds;
+
+      for (const deletedUpgradeTrait of deletedUpgrade.system.traits) {
+        let isOtherItemTrait = false;
+
+        if (keptTraits.includes(deletedUpgradeTrait)) {
+          for (const id of upgradeIds) {
+            if (upgradeId != id) {
+              const otherItem = game.items.get(id);
+              if (!otherItem) {
+                otherItem = await this._searchCompendium(id);
+              }
+
+              if (otherItem.system.traits.includes(deletedUpgradeTrait)) {
+                isOtherItemTrait = true;
+                break;
+              }
+            }
+          }
+        }
+
+        if (!isOtherItemTrait) {
+          keptTraits = keptTraits.filter(x => x !== deletedUpgradeTrait);
+        }
+      }
+
+      await this.item.update({
+        "system.upgradeTraits": keptTraits,
+      }).then(this.render(false));
+    }
+
+    if (deletedUpgrade.system.armorBonus.value > 0) {
+      const defenseName = deletedUpgrade.system.armorBonus.defense.charAt(0).toUpperCase() + deletedUpgrade.system.armorBonus.defense.slice(1)
+      const armorString = `system.bonus${defenseName}`;
+      const defense = this.item.system[`bonus${defenseName}`] -= deletedUpgrade.system.armorBonus.value;
+      await this.item.update({
+        [armorString]: defense,
+      }).then(this.render(false));
+    }
+
     let upgradeIds = this.item.system.upgradeIds.filter(x => x !== upgradeId);
     this.item.update({
       "system.upgradeIds": upgradeIds,

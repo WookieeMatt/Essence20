@@ -156,6 +156,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const specializations = {};
     const spells = [];
     const threatPowers = [];
+    const upgrades = [];
     const weapons = [];
     const classFeaturesById = {};
     let equippedArmorEvasion = 0;
@@ -227,6 +228,9 @@ export class Essence20ActorSheet extends ActorSheet {
         case 'threatPower':
           threatPowers.push(i);
           break;
+        case 'upgrade':
+          upgrades.push(i);
+          break;
         case 'weapon':
           weapons.push(i);
           break;
@@ -253,6 +257,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.spells = spells;
     context.specializations = specializations;
     context.threatPowers = threatPowers;
+    context.upgrades = upgrades;
     context.weapons = weapons;
   }
 
@@ -426,24 +431,26 @@ export class Essence20ActorSheet extends ActorSheet {
     const sourceItem = await fromUuid(data.uuid);
     if (!sourceItem) return false;
 
-    if (sourceItem.type == 'origin') {
-      for (let actorItem of this.actor.items) {
-        if(actorItem.type == 'origin') {
-          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
-          return false
-        }
-      }
-
-      await this._showOriginEssenceDialog(sourceItem, event, data);
-
-    } else if (sourceItem.type == 'upgrade') {
-        if (sourceItem.system.type == 'armor') {
-          if(this.actor.type == 'transformer' || this.actor.system.canTransform == true) { // this second value is going to come from the Crossover settings
-
+    switch (sourceItem.type) {
+      case 'origin':
+        for (let actorItem of this.actor.items) {
+          // Characters can only have one Origin
+          if(actorItem.type == 'origin') {
+            ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
+            return false;
           }
         }
-    } else {
-      super._onDropItem(event, data);
+
+        await this._showOriginEssenceDialog(sourceItem, event, data);
+        break;
+      case 'upgrade':
+        // Drones can only accept drone Upgrades
+        if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
+          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
+          return false;
+        }
+      default:
+        super._onDropItem(event, data);
     }
   };
 
