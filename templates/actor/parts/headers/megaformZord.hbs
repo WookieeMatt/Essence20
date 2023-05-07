@@ -1,0 +1,12 @@
+{{#>"systems/essence20/templates/actor/parts/headers/common.hbs"}}
+{{#*inline "secondary-fields"}}
+<div>
+  <label for="system.prerequisite" class="resource-label">{{localize 'E20.ZordPrerequisite'}}</label>
+  <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
+</div>
+<div>
+  <label for="armor" class="resource-label">{{ localize 'E20.ActorArmor' }}</label>
+  <input type="number" name="system.armor" value="{{system.armor}}" />
+</div>
+{{/inline}}
+{{/"systems/essence20/templates/actor/parts/headers/common.hbs"}}

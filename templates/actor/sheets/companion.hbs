@@ -1,0 +1,64 @@
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+  {{!-- Actor Sheet Header --}}
+  {{> "systems/essence20/templates/actor/parts/headers/companion.hbs"}}
+
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
+  </nav>
+
+  {{!-- Actor Sheet Body --}}
+  <section class="sheet-body flexcol">
+    {{!-- Main Tab --}}
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
+      <div class="npc-row">
+        <div class="npc-essence-scores">
+          {{!-- NPC Essence Scores --}}
+          {{> "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs"}}
+        </div>
+        <div class="npc-health">
+          {{!-- Health --}}
+          {{> "systems/essence20/templates/actor/parts/misc/health.hbs"}}
+        </div>
+        <div class="npc-health">
+          {{!-- Stun --}}
+          {{> "systems/essence20/templates/actor/parts/misc/stun.hbs"}}
+        </div>
+      </div>
+      <div class="npc-row">
+        <div class="npc-defenses">
+          {{!-- NPC Defenses --}}
+          {{> "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs"}}
+        </div>
+        <div class="npc-movement">
+          {{!-- Movement --}}
+          {{> "systems/essence20/templates/actor/parts/misc/movement.hbs"}}
+        </div>
+      </div>
+
+      <div class="npc-row">
+        {{!-- Skills --}}
+        <div class="npc-skills">
+          {{> "systems/essence20/templates/actor/parts/misc/accordion-skills.hbs"}}
+        </div>
+
+        {{!-- Items --}}
+        <div class="npc-items">
+          {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
+          {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs"}}
+          {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}
+
+          {{#ifEquals system.type "drone"}}
+          {{> "systems/essence20/templates/actor/parts/items/upgrade/container.hbs"}}
+          {{/ifEquals}}
+        </div>
+      </div>
+    </div>
+
+    {{!-- Notes Tab --}}
+    <div class="tab notes" data-group="primary" data-tab="notes">
+      {{> "systems/essence20/templates/actor/parts/misc/notes.hbs"}}
+    </div>
+  </section>
+</form>

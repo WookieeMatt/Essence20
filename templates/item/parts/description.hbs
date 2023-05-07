@@ -1,0 +1,13 @@
+{{!-- Source --}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ItemSource'}}
+{{#*inline "item-field-inputs"}}
+<input type="text" name="system.source.book" value="{{system.source.book}}" placeholder="{{localize 'E20.ItemSourceBook'}}"/>
+<input class="two-digit-input" type="number" name="system.source.page" value="{{system.source.page}}" placeholder="{{localize 'E20.ItemSourcePage'}}" />
+{{/inline}}
+{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+{{!-- Description --}}
+<h3>{{localize 'E20.ItemDescription'}}</h3>
+<div class="description-tab flexrow active" data-group="primary" data-tab="description">
+  {{editor system.description target="system.description" button=true owner=owner editable=editable}}
+</div>

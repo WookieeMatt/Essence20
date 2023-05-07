@@ -1,0 +1,19 @@
+<ol class="dialog-options">
+  {{#each choices as |choice key|}}
+  <li>
+    <label class="checkbox">
+      <input type="radio" name="choices" id={{key}} data-dtype="Boolean" {{checked choice.chosen}}>
+      {{localize choice.label}}
+    </label>
+  </li>
+  {{/each}}
+</ol>
+
+<div class="dialog-buttons">
+  {{#each buttons as |button id|}}
+  <button class="dialog-button" data-button="{{id}}">
+    {{{button.icon}}}
+    {{{button.label}}}
+  </button>
+  {{/each}}
+</div>

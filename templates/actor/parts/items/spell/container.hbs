@@ -1,7 +1,12 @@
-{{#>"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs" items=@root.spells title="E20.ItemTypeSpellPlural" dataType="spell"}}
+{{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.spells title="E20.ItemTypeSpellPlural" dataType="spell"}}
   {{#*inline "roll-button" item}}
     <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
-      <a class="rollable" data-roll-type="spell" data-downshift={{item.system.cost}} data-is-specialized="{{item.system.isSpecialized}}" title="{{localize "E20.SpellRollTitle"}}"><i class="fas fa-dice-d20"></i></a>
+      <a
+        class="rollable" data-roll-type="spell" data-shiftDown={{item.system.cost}}
+        data-is-specialized="{{item.system.isSpecialized}}" title="{{localize "E20.SpellRollTitle"}}"
+      >
+        <i class="fas fa-dice-d20"></i>
+      </a>
       <input class="inline-edit item-label-checkbox" data-field="system.isSpecialized" type="checkbox" name="spell.{{@index}}.isSpecialized" {{checked item.system.isSpecialized}} title="{{localize "E20.RollIsSpecialized"}}"/>
     </div>
   {{/inline}}
@@ -13,4 +18,4 @@
   {{#*inline "item-label" item}}
     {{item.name}}
   {{/inline}}
-{{/"systems/essence20/templates/actor/parts/actor-collapsible-item-container.hbs"}}
+{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

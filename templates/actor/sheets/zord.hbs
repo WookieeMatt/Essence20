@@ -1,0 +1,21 @@
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+  {{!-- Actor Sheet Header --}}
+  {{> "systems/essence20/templates/actor/parts/headers/zord.hbs"}}
+
+  {{!-- Actor Sheet Body --}}
+  <section class="sheet-body flexcol">
+    <div class="npc-row">
+      <div class="npc-defenses">
+        {{!-- Defenses --}}
+        {{> "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs"}}
+      </div>
+      <div class="npc-health">
+        {{!-- Health --}}
+        {{> "systems/essence20/templates/actor/parts/misc/health.hbs"}}
+      </div>
+    </div>
+
+    {{!-- Zord Common Stats --}}
+    {{> "systems/essence20/templates/actor/parts/misc/zord-common.hbs"}}
+  </section>
+</form>

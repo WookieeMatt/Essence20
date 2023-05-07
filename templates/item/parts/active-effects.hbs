@@ -1,0 +1,52 @@
+<ol class="items-list effects-list" style="border-color: {{system.color}};">
+{{#each effects as |section sid|}}
+{{#unless section.hidden}}
+  <li class="items-header flexrow" data-effect-type="{{section.type}}">
+    <div class="item-name effect-name flexrow">{{localize section.name}}</div>
+    <div class="effect-source">{{localize "E20.ItemSource"}}</div>
+    <div class="effect-duration">{{localize "E20.ActiveEffectDuration"}}</div>
+    <div class="item-controls effect-controls flexrow">
+      {{#if @root.editable}}
+        <a class="effect-control" data-action="create" data-tooltip="E20.ActiveEffectCreate">
+          <i class="fas fa-plus"></i> {{localize "E20.ActiveEffectAdd"}}
+        </a>
+      {{/if}}
+    </div>
+  </li>
+   {{#if section.info}}
+    <ol class="info">
+    {{#each section.info}}
+        <li class="notification info">{{this}}</li>
+    {{/each}}
+    </ol>
+  {{/if}}
+
+  <ol class="item-list">
+  {{#each section.effects as |effect|}}
+    <li class="item effect flexrow" data-effect-id="{{effect.id}}">
+      <div class="item-name effect-name flexrow">
+        <img class="item-image" src="{{effect.icon}}"/>
+        <h4>{{effect.name}}</h4>
+      </div>
+      <div class="effect-source">{{effect.sourceName}}</div>
+      <div class="effect-duration">{{effect.duration.name}}</div>
+      <div class="item-controls effect-controls flexrow">
+        {{#if @root.editable}}
+          <a class="effect-control" data-action="toggle"
+            data-tooltip="{{#if effect.disabled}}E20.ActiveEffectEnable{{else}}E20.ActiveEffectDisable{{/if}}">
+            <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+          </a>
+          <a class="effect-control" data-action="edit" data-tooltip="E20.ActiveEffectEdit">
+            <i class="fas fa-edit"></i>
+          </a>
+          <a class="effect-control" data-action="delete" data-tooltip="E20.ActiveEffectDelete">
+            <i class="fas fa-trash"></i>
+          </a>
+        {{/if}}
+      </div>
+      </li>
+  {{/each}}
+  </ol>
+{{/unless}}
+{{/each}}
+</ol>
