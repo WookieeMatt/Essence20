@@ -320,16 +320,36 @@ export class Essence20ActorSheet extends ActorSheet {
         this.render();
       } else {
         parent.toggleClass('open');
+
+        // Check if the container header toggle should be flipped
+        let oneClosed = false;
+
+        // Look for a closed Item
+        const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+        for (const accordionLabel of accordionLabels) {
+          oneClosed = !$(accordionLabel).hasClass('open');
+          if (oneClosed) break;
+        }
+
+        // Set header state to open if all Items are open; closed otherwise
+        const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
+        if (oneClosed) {
+          $(container).removeClass('open');
+        } else {
+          $(container).addClass('open');
+        }
       }
     });
 
     // Open and collapse all Item contents in container
     html.find('.header-accordion-label').click(ev => {
       const el = ev.currentTarget;
+      const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
+      $(el.closest('.header-accordion-wrapper')).toggleClass('open');
 
       const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
       for (const accordionLabel of accordionLabels) {
-        $(accordionLabel).toggleClass('open');
+        isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
       }
     });
 
