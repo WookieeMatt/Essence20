@@ -448,6 +448,9 @@ export class Essence20ActorSheet extends ActorSheet {
         if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
           ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
           return false;
+        } else if (this.actor.type == 'transformer' && sourceItem.system.type != 'armor') {
+          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeTransformerError')));
+          return false;
         }
       default:
         super._onDropItem(event, data);
