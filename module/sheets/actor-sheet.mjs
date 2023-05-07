@@ -323,6 +323,16 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     });
 
+    // Open and collapse all Item contents in container
+    html.find('.header-accordion-label').click(ev => {
+      const el = ev.currentTarget;
+
+      const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+      for (const accordionLabel of accordionLabels) {
+        $(accordionLabel).toggleClass('open');
+      }
+    });
+
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = ev => this._onDragStart(ev);
