@@ -107,78 +107,40 @@ export class Essence20Actor extends Actor {
     /**
    * Prepare Movement specific data.
    */
-  _prepareMovement(system) {
-    system.movementIsReadOnly = true
-    system.movement.aerial.base = parseFloat(system.movement.aerial.base);
-    system.movement.ground.base = parseFloat(system.movement.ground.base);
-    system.movement.swim.base = parseFloat(system.movement.swim.base);
+    _prepareMovement() {
+      const system = this.system;
+      system.movementIsReadOnly = true;
+      const movementTypes = ['aerial', 'ground', 'swim'];
+      for (const movementType of movementTypes) {
+        system.movement[movementType].base = parseInt(system.movement[movementType].base);
 
-    if (system.isMorphed && system.isTransformed) {
-      if (system.movement.aerial.altMode) {
-        system.movement.aerial.total = system.movement.aerial.altMode + system.movement.aerial.bonus + system.movement.aerial.morphed;
-      } else {
-        system.movement.aerial.total = 0;
-      }
-      if (system.movement.ground.altMode){
-        system.movement.ground.total = system.movement.ground.altMode + system.movement.ground.bonus + system.movement.ground.morphed;
-      } else {
-        system.movement.ground.total = 0;
-      }
-      if (system.movement.swim.altMode){
-        system.movement.swim.total = system.movement.swim.altMode + system.movement.swim.bonus + system.movement.swim.morphed;
-      } else {
-        system.movement.swim.total = 0;
-      }
-    }else if (system.isMorphed) {
-      if (system.movement.aerial.base) {
-        system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus + system.movement.aerial.morphed;
-      } else {
-        system.movement.aerial.total = 0;
-      }
-      if (system.movement.ground.base){
-        system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus + system.movement.ground.morphed;
-      } else {
-        system.movement.ground.total = 0;
-      }
-      if (system.movement.swim.base){
-        system.movement.swim.total = system.movement.swim.base + system.movement.swim.bonus + system.movement.swim.morphed;
-      } else {
-        system.movement.swim.total = 0;
-      }
-    }else if (system.isTransformed) {
-      if (system.movement.aerial.altMode){
-        system.movement.aerial.total = system.movement.aerial.altMode + system.movement.aerial.bonus;
-      } else {
-        system.movement.aerial.total = 0;
-      }
-      if (system.movement.ground.altMode){
-        system.movement.ground.total = system.movement.ground.altMode + system.movement.ground.bonus;
-      } else {
-        system.movement.ground.total = 0;
-      }
-      if (system.movement.swim.altMode){
-        system.movement.swim.total = system.movement.swim.altMode + system.movement.swim.bonus;
-      } else {
-        system.movement.swim.total = 0;
-      }
-    }else{
-      if (system.movement.aerial.base){
-        system.movement.aerial.total = system.movement.aerial.base + system.movement.aerial.bonus;
-      } else {
-        system.movement.aerial.total = 0;
-      }
-      if (system.movement.ground.base){
-        system.movement.ground.total = system.movement.ground.base + system.movement.ground.bonus;
-      } else {
-        system.movement.ground.total = 0;
-      }
-      if (system.movement.swim.base){
-        system.movement.swim.total = system.movement.swim.base + system.movement.swim.bonus;
-      } else {
-        system.movement.swim.total = 0;
+        if (system.isMorphed && system.isTransformed) {
+          if (system.movement[movementType].altMode) {
+            system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus + system.movement[movementType].morphed;
+          } else {
+            system.movement[movementType].total = 0;
+          }
+        } else if (system.isMorphed) {
+          if (system.movement[movementType].base) {
+            system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus + system.movement[movementType].morphed;
+          } else {
+            system.movement[movementType].total = 0;
+          }
+        } else if (system.isTransformed) {
+          if (system.movement[movementType].altMode){
+            system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus;
+          } else {
+            system.movement[movementType].total = 0;
+          }
+        } else {
+          if (system.movement[movementType].base){
+            system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus;
+          } else {
+            system.movement[movementType].total = 0;
+          }
+        }
       }
     }
-  }
 
   /**
    * Prepare GI JOE type specific data.
