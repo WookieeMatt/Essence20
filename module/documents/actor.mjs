@@ -179,7 +179,6 @@ export class Essence20Actor extends Actor {
     this._prepareMovement(system);
   }
 
-
   /**
    * Prepare Power Ranger type specific data.
    */
