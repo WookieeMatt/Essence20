@@ -275,40 +275,34 @@ export class Essence20Actor extends Actor {
     /**
     * Prepare Movement specific data.
     */
-    _prepareMovement() {
-      const system = this.system;
-      system.movementIsReadOnly = 'readonly';
-      const movementTypes = ['aerial', 'ground', 'swim'];
-      for (const movementType of movementTypes) {
-        system.movement[movementType].base = parseInt(system.movement[movementType].base);
+  _prepareMovement() {
+    const system = this.system;
+    system.movementIsReadOnly = 'readonly';
 
-        if (system.isMorphed && system.isTransformed) {
-          if (system.movement[movementType].altMode) {
-            system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus + system.movement[movementType].morphed;
-          } else {
-            system.movement[movementType].total = 0;
-          }
-        } else if (system.isMorphed) {
-          if (system.movement[movementType].base) {
-            system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus + system.movement[movementType].morphed;
-          } else {
-            system.movement[movementType].total = 0;
-          }
-        } else if (system.isTransformed) {
-          if (system.movement[movementType].altMode){
-            system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus;
-          } else {
-            system.movement[movementType].total = 0;
-          }
-        } else {
-          if (system.movement[movementType].base){
-            system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus;
-          } else {
-            system.movement[movementType].total = 0;
-          }
+    const movementTypes = ['aerial', 'ground', 'swim'];
+    for (const movementType of movementTypes) {
+      system.movement[movementType].base = parseInt(system.movement[movementType].base);
+      system.movement[movementType].total = 0;
+
+      if (system.isMorphed && system.isTransformed) {
+        if (system.movement[movementType].altMode) {
+          system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus + system.movement[movementType].morphed;
+        }
+      } else if (system.isMorphed) {
+        if (system.movement[movementType].base) {
+          system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus + system.movement[movementType].morphed;
+        }
+      } else if (system.isTransformed) {
+        if (system.movement[movementType].altMode){
+          system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus;
+        }
+      } else {
+        if (system.movement[movementType].base){
+          system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus;
         }
       }
     }
+  }
 
   /**
    * Override getRollData() that's supplied to rolls.
