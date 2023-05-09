@@ -34,21 +34,21 @@
         "isTransformed": false,
         "movement": {
           "aerial": {
-            "altmode":0,
+            "altMode":0,
             "base": 0,
             "bonus": 0,
             "morphed": 0,
             "total": 0
           },
           "ground": {
-            "altmode":0,
+            "altMode":0,
             "base": 0,
             "bonus": 0,
             "morphed": 0,
             "total": 0
           },
           "swim": {
-            "altmode":0,
+            "altMode":0,
             "base": 0,
             "bonus": 0,
             "morphed": 0,
