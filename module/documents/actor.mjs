@@ -277,7 +277,7 @@ export class Essence20Actor extends Actor {
     */
     _prepareMovement() {
       const system = this.system;
-      system.movementIsReadOnly = true;
+      system.movementIsReadOnly = 'readonly';
       const movementTypes = ['aerial', 'ground', 'swim'];
       for (const movementType of movementTypes) {
         system.movement[movementType].base = parseInt(system.movement[movementType].base);
