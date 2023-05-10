@@ -145,6 +145,7 @@ export const migrateActorData = function(actor) {
         updateData[`system.movement.aerial.base`] = item.system.baseAerialMovement;
         updateData[`system.movement.ground.base`] = item.system.baseGroundMovement;
         updateData[`system.movement.swim.base`] = item.system.baseAquaticMovement;
+        break
       }
     }
   }
