@@ -286,7 +286,7 @@ export class Essence20Actor extends Actor {
       system.movement[movementType].base = parseInt(system.movement[movementType].base);
       system.movement[movementType].total = 0;
 
-      if (system.isMorphed && system.isTransformed) {
+      if (system.isMorphed && system.isTransformed) { 
         if (system.movement[movementType].altMode) {
           system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus + system.movement[movementType].morphed;
         }
