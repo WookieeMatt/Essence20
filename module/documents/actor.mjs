@@ -138,7 +138,8 @@ export class Essence20Actor extends Actor {
         bonus: system.bonuses.cleverness
       }
     ];
-    this._prepareMovement(system);
+
+    this._prepareMovement();
   }
 
   /**
