@@ -449,7 +449,11 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   async _morph() {
+    if (!this.actor.system.isMorphed) {
 
+    } else {
+
+    }
   }
 
   /**
