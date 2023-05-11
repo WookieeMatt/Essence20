@@ -450,9 +450,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
   async _morph() {
     if (!this.actor.system.isMorphed) {
-
+      await this.actor.update({
+        "system.isMorphed": true,
+      }).then(this.render(false));
     } else {
-
+      await this.actor.update({
+        "system.isMorphed": false,
+      }).then(this.render(false));
     }
   }
 
