@@ -138,6 +138,8 @@ export class Essence20Actor extends Actor {
         bonus: system.bonuses.cleverness
       }
     ];
+
+    this._prepareMovement();
   }
 
   /**
@@ -194,6 +196,8 @@ export class Essence20Actor extends Actor {
         },
       },
     ];
+
+    this._prepareMovement();
   }
 
   /**
@@ -230,6 +234,8 @@ export class Essence20Actor extends Actor {
         bonus: system.bonuses.cleverness
       }
     ];
+
+    this._prepareMovement();
   }
 
   _preparePonyData() {
@@ -263,6 +269,47 @@ export class Essence20Actor extends Actor {
         bonus: system.bonuses.cleverness
       }
     ];
+
+    this._prepareMovement();
+  }
+
+    /**
+    * Prepare Movement specific data.
+    */
+  _prepareMovement() {
+    let movementTotal = 0;
+    const system = this.system;
+    system.movementIsReadOnly = true;
+
+    const movementTypes = ['aerial', 'ground', 'swim'];
+    for (const movementType of movementTypes) {
+      system.movement[movementType].base = parseInt(system.movement[movementType].base);
+      system.movement[movementType].total = 0;
+
+      if (system.isMorphed && system.isTransformed) {
+        if (system.movement[movementType].altMode) {
+          system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus + system.movement[movementType].morphed;
+        }
+      } else if (system.isMorphed) {
+        if (system.movement[movementType].base) {
+          system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus + system.movement[movementType].morphed;
+        }
+      } else if (system.isTransformed) {
+        if (system.movement[movementType].altMode) {
+          system.movement[movementType].total = system.movement[movementType].altMode + system.movement[movementType].bonus;
+        }
+      } else {
+        if (system.movement[movementType].base) {
+          system.movement[movementType].total = system.movement[movementType].base + system.movement[movementType].bonus;
+        }
+      }
+
+      movementTotal += system.movement[movementType].total;
+    }
+
+    if (!movementTotal) {
+      system.movementNotSet = true;
+    }
   }
 
   /**
