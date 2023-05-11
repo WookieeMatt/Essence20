@@ -367,6 +367,10 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  /**
+  * Handle clicking the tranform button
+  * @private
+  */
   async _transform() {
     const altModeList = [];
     for (const item of this.actor.items) {
@@ -397,6 +401,12 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  /**
+   * Handle Creates the Alt Mode Choice List Dialog
+   * @param {array} altModeList  A list of the avaialble Alt Modes
+   * @param {boolean} transformed The current state of the Tranformer
+   * @private
+   */
   async _showAltModeChoiceDialog(altModeList,transformed) {
     const choices = {};
     if (transformed) {
@@ -430,6 +440,12 @@ export class Essence20ActorSheet extends ActorSheet {
     ).render(true);
   }
 
+  /**
+   * Handle editing specialization names inline
+   * @param {array} altModeList  A list of the avaialble Alt Modes
+   * @param {text} options The Mode that was selected
+   * @private
+   */
   async _altModeSelect (altModeList, options) {
     let selectedForm = "";
     let transformation = {};
@@ -452,6 +468,11 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  /**
+   * Handle editing specialization names inline
+   * @param {object} altMode   The item that was selected to Transform into
+   * @private
+   */
   async _transformAltMode (altMode) {
     if (altMode.length) {
       altMode = altMode[0]
@@ -466,6 +487,10 @@ export class Essence20ActorSheet extends ActorSheet {
     }).then(this.render(false));
   }
 
+  /**
+   * Handle Transforming back into the Bot Mode
+   * @private
+   */
   async _transformBotMode () {
     await this.actor.update({
       "system.movement.aerial.altMode": 0,
