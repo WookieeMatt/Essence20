@@ -303,6 +303,9 @@ export class Essence20ActorSheet extends ActorSheet {
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
+    //Transform Button
+    html.find('.morph').click(this._morph.bind(this));
+
     // Rollable abilities.
     if (this.actor.isOwner) {
       html.find('.rollable').click(this._onRoll.bind(this));
@@ -443,6 +446,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (item) return item.roll(dataset);
     }
+  }
+
+  async _morph() {
+
   }
 
   /**
