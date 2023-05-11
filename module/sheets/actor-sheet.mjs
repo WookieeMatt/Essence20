@@ -457,9 +457,9 @@ export class Essence20ActorSheet extends ActorSheet {
       altMode = altMode[0]
     }
     await this.actor.update({
-      "system.movement.aerial.altmode": altMode.system.altModeMovement.aerial,
-      "system.movement.swim.altmode": altMode.system.altModeMovement.aquatic,
-      "system.movement.ground.altmode": altMode.system.altModeMovement.ground,
+      "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
+      "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
+      "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
       "system.altModeSize": altMode.system.altModesize,
       "system.altModeName": altMode.name,
       "system.isTransformed": true,
@@ -468,9 +468,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
   async _transformBotMode () {
     await this.actor.update({
-      "system.movement.aerial.altmode": 0,
-      "system.movement.swim.altmode": 0,
-      "system.movement.ground.altmode": 0,
+      "system.movement.aerial.altMode": 0,
+      "system.movement.swim.altMode": 0,
+      "system.movement.ground.altMode": 0,
       "system.isTransformed": false,
       "system.altModeName": "",
       "system.altModeSize": ""
