@@ -196,7 +196,7 @@ export class Essence20Actor extends Actor {
       },
     ];
 
-    this._prepareMovement(system);
+    this._prepareMovement();
   }
 
   /**
