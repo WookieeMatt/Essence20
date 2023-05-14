@@ -387,9 +387,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
     } else {
       if(altModeList.length < 1) {
-        this._resetToBotMode();
-      } else if (altModeList.length == 1) {
         this._transformBotMode();
+      } else if (altModeList.length == 1) {
+        const stillList = true;
+        this._transformBotMode(stillList);
       } else {
         this._showAltModeChoiceDialog(altModeList, true);
       }
@@ -486,7 +487,10 @@ export class Essence20ActorSheet extends ActorSheet {
    * Handle Transforming back into the Bot Mode
    * @private
    */
-  async _transformBotMode () {
+  async _transformBotMode(stillList) {
+    if (!stillList) {
+      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+    }
     await this.actor.update({
       "system.movement.aerial.altMode": 0,
       "system.movement.swim.altMode": 0,
@@ -509,24 +513,16 @@ export class Essence20ActorSheet extends ActorSheet {
 
   async _onAltModeDelete(item) {
     const altModeList = this._getAltModeList();
-
-    if (altModeList.length) {
+    console.log(altModeList);
+    if (altModeList.length > 1) {
       if (item.name == this.actor.system.altModeName) {
+
         const stillList = true;
-        this._resetToBotMode(stillList);
+        this._transformBotMode(stillList);
       }
     } else {
-      this._resetToBotMode(stillList);
+      this._transformBotMode();
     }
-  }
-
-  async _resetToBotMode (stillList) {
-    if (!stillList) {
-      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-    }
-    await this.actor.update({
-      "system.isTransformed": false,
-    }).then(this.render(false));
   }
 
   /**
