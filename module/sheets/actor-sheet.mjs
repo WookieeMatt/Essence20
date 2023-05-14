@@ -512,15 +512,18 @@ export class Essence20ActorSheet extends ActorSheet {
 
     if (altModeList.length) {
       if (item.name == this.actor.system.altModeName) {
-        this._resetToBotMode();
+        const stillList = true;
+        this._resetToBotMode(stillList);
       }
     } else {
-      this._resetToBotMode();
+      this._resetToBotMode(stillList);
     }
   }
 
-  async _resetToBotMode () {
-    ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+  async _resetToBotMode (stillList) {
+    if (!stillList) {
+      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+    }
     await this.actor.update({
       "system.isTransformed": false,
     }).then(this.render(false));
