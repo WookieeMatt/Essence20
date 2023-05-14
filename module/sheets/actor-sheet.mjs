@@ -288,8 +288,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (item.type == "origin") {
         this._onOriginDelete(item);
+      } else if (item.type == "altMode") {
+        this._onAltModeDelete(item);
       }
-
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
@@ -305,6 +306,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     //Transform Button
     html.find('.transform').click(this._transform.bind(this));
+
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -372,12 +374,8 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   async _transform() {
-    const altModeList = [];
-    for (const item of this.actor.items) {
-      if (item.type == "altMode") {
-        altModeList.push(item);
-      }
-    }
+    const altModeList = this._getAltModeList();
+
     if (!this.actor.system.isTransformed) {
       if(altModeList.length < 1) {
         ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
@@ -389,10 +387,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     } else {
       if(altModeList.length < 1) {
-        ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-        await this.actor.update({
-          "system.isTransformed": false,
-        }).then(this.render(false));
+        this._resetToBotMode();
       } else if (altModeList.length == 1) {
         this._transformBotMode();
       } else {
@@ -499,6 +494,35 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.isTransformed": false,
       "system.altModeName": "",
       "system.altModeSize": ""
+    }).then(this.render(false));
+  }
+
+  _getAltModeList() {
+    const altModeList = [];
+    for (const item of this.actor.items) {
+      if (item.type == "altMode") {
+        altModeList.push(item);
+      }
+    }
+    return altModeList;
+  }
+
+  async _onAltModeDelete(item) {
+    const altModeList = this._getAltModeList();
+
+    if (altModeList.length) {
+      if (item.name == this.actor.system.altModeName) {
+        this._resetToBotMode();
+      }
+    } else {
+      this._resetToBotMode();
+    }
+  }
+
+  async _resetToBotMode () {
+    ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+    await this.actor.update({
+      "system.isTransformed": false,
     }).then(this.render(false));
   }
 
