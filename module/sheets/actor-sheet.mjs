@@ -469,7 +469,7 @@ async _transform() {
    * @private
    */
   async _transformAltMode(altMode) {
-    if (altMode.length) {
+    if (altMode.length) {             //If this comes from the original transform function altMode is an array. Otherwise it is just an object.
       altMode = altMode[0];
     }
 
