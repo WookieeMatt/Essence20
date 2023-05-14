@@ -399,11 +399,11 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle Creates the Alt Mode Choice List Dialog
-   * @param {array} altModeList  A list of the avaialble Alt Modes
-   * @param {boolean} transformed The current state of the Tranformer
+   * @param {AltMode[]} altModes  A list of the available Alt Modes
+   * @param {Boolean} isTransformed Whether the Transformer is transformed or not
    * @private
    */
-  async _showAltModeChoiceDialog(altModeList,transformed) {
+  async _showAltModeChoiceDialog(altModes, isTransformed) {
     const choices = {};
     if (transformed) {
       choices["BotMode"] = {
