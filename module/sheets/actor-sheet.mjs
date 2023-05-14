@@ -434,7 +434,7 @@ export class Essence20ActorSheet extends ActorSheet {
     new Dialog(
       {
         title: game.i18n.localize('E20.AltModeChoice'),
-        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
           choices,
         }),
         buttons: {
@@ -679,7 +679,7 @@ export class Essence20ActorSheet extends ActorSheet {
     new Dialog(
       {
         title: game.i18n.localize('E20.EssenceIncrease'),
-        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
           choices,
         }),
         buttons: {
@@ -738,7 +738,7 @@ export class Essence20ActorSheet extends ActorSheet {
     new Dialog(
       {
         title: game.i18n.localize('E20.OriginBonusSkill'),
-        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
           choices,
         }),
         buttons: {
