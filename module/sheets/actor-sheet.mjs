@@ -472,7 +472,7 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _transformAltMode(altMode) {
     if (altMode.length) {
-      altMode = altMode[0]
+      altMode = altMode[0];
     }
     await this.actor.update({
       "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
