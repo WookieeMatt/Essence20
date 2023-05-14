@@ -470,7 +470,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle editing specialization names inline
-   * @param {object} altMode   The item that was selected to Transform into
+   * @param {AltMode} altMode   The alt-mode that was selected to Transform into
    * @private
    */
   async _transformAltMode(altMode) {
