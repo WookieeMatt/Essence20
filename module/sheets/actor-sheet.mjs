@@ -438,12 +438,12 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-   * Handle editing specialization names inline
-   * @param {array} altModeList  A list of the avaialble Alt Modes
-   * @param {text} options The Mode that was selected
+   * Handle selecting an alt-mode from the Alt-mode Dialog
+   * @param {AltMode[]} altModes  A list of the available Alt Modes
+   * @param {Object} options   The options resulting from _showAltModeDialog()
    * @private
    */
-  async _altModeSelect (altModeList, options) {
+  async _altModeSelect(altModes, options) {
     let selectedForm = "";
     let transformation = {};
     for (const [altMode, isSelected] of Object.entries(options)) {
