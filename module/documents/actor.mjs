@@ -154,8 +154,10 @@ export class Essence20Actor extends Actor {
     for (const defenseType of defenseTypes) {
       if (system.isMorphed) {
         system.defenses[defenseType].total = system.defenses[defenseType].base + system.essences[system.defenses[defenseType].essence] + system.defenses[defenseType].morphed + system.defenses[defenseType].bonus
+        system.defenses[defenseType].string = `${system.defenses[defenseType].base} base + ${system.essences[system.defenses[defenseType].essence]} ${system.defenses[defenseType].essence} + ${system.defenses[defenseType].morphed} morphed + ${system.defenses[defenseType].bonus} bonus`
       } else {
         system.defenses[defenseType].total = system.defenses[defenseType].base + system.essences[system.defenses[defenseType].essence] + system.defenses[defenseType].armor + system.defenses[defenseType].bonus
+        system.defenses[defenseType].string = `${system.defenses[defenseType].base} base + ${system.essences[system.defenses[defenseType].essence]} ${system.defenses[defenseType].essence} + ${system.defenses[defenseType].armor} armor + ${system.defenses[defenseType].bonus} bonus`
       }
     }
   }
