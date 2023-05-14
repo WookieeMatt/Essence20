@@ -470,7 +470,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {object} altMode   The item that was selected to Transform into
    * @private
    */
-  async _transformAltMode (altMode) {
+  async _transformAltMode(altMode) {
     if (altMode.length) {
       altMode = altMode[0]
     }
