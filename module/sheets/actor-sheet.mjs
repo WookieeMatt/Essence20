@@ -513,6 +513,10 @@ export class Essence20ActorSheet extends ActorSheet {
     }).then(this.render(false));
   }
 
+  /**
+   * Handle returning a list of AltModes
+   * @private
+   */
   _getAltModeList() {
     const altModeList = [];
     for (const item of this.actor.items) {
@@ -523,6 +527,11 @@ export class Essence20ActorSheet extends ActorSheet {
     return altModeList;
   }
 
+    /**
+   * Handle AltModes being deleted
+   * @param {item} item is the deleted item.
+   * @private
+   */
   async _onAltModeDelete(item) {
     const altModeList = this._getAltModeList();
     console.log(altModeList);
