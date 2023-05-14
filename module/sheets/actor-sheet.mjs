@@ -498,7 +498,7 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.movement.ground.altMode": 0,
       "system.isTransformed": false,
       "system.altModeName": "",
-      "system.altModeSize": ""
+      "system.altModeSize": "",
     }).then(this.render(false));
   }
 
