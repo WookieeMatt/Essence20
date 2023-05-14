@@ -446,22 +446,25 @@ export class Essence20ActorSheet extends ActorSheet {
   async _altModeSelect(altModes, options) {
     let selectedForm = "";
     let transformation = {};
+
     for (const [altMode, isSelected] of Object.entries(options)) {
       if (isSelected) {
         selectedForm = altMode;
         break;
       }
     }
-    if (selectedForm == "BotMode"){
+
+    if (selectedForm == "BotMode") {
       this._transformBotMode();
     } else {
-      for(const mode of altModeList) {
+      for (const mode of altModeList) {
         if (selectedForm == mode.name) {
-          transformation = mode
-          break
+          transformation = mode;
+          break;
         }
       }
-      this._transformAltMode(transformation)
+
+      this._transformAltMode(transformation);
     }
   }
 
