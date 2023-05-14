@@ -411,6 +411,7 @@ export class Essence20ActorSheet extends ActorSheet {
         label: "BotMode",
       }
     }
+
     for (const altMode of altModeList) {
       if (this.actor.system.altModeName != altMode.name) {
         choices[altMode.name] = {
