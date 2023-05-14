@@ -373,21 +373,38 @@ export class Essence20ActorSheet extends ActorSheet {
   * Handle clicking the transform button
   * @private
   */
-async _transform() {
-  const altModes = [];
-  for (const item of this.actor.items) {
-    if (item.type == "altMode") {
-      altModes.push(item);
+  /**
+  * Handle clicking the tranform button
+  * @private
+  */
+  async _transform() {
+    const altModes = [];
+    for (const item of this.actor.items) {
+      if (item.type == "altMode") {
+        altModes.push(item);
+      }
+    }
+    if (!this.actor.system.isTransformed) {
+      if(altModes.length < 1) {
+        ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+      } else if (altModes.length == 1) {
+        this._transformAltMode(altModes);
+      } else {
+        this._showAltModeChoiceDialog(altModes, false);
+      }
+    } else {
+      if(altModes.length < 1) {
+        ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+        await this.actor.update({
+          "system.isTransformed": false,
+        }).then(this.render(false));
+      } else if (altModes.length == 1) {
+        this._transformBotMode();
+      } else {
+        this._showAltModeChoiceDialog(altModes, true);
+      }
     }
   }
-  if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
-    ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-  } else if (altModes.length > 1) {                           // Select from multiple alt-modes
-    this._showAltModeChoiceDialog(altModes, false);
-  } else {                                                       // Alt-mode/bot-mode toggle
-    this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes);
-  }
-}
 
 
   /**
@@ -398,14 +415,14 @@ async _transform() {
    */
   async _showAltModeChoiceDialog(altModes, isTransformed) {
     const choices = {};
-    if (transformed) {
+    if (isTransformed) {
       choices["BotMode"] = {
         chosen: false,
         label: "BotMode",
       }
     }
 
-    for (const altMode of altModeList) {
+    for (const altMode of altModes) {
       if (this.actor.system.altModeName != altMode.name) {
         choices[altMode.name] = {
           chosen: false,
@@ -423,7 +440,7 @@ async _transform() {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._altModeSelect(altModeList, this._rememberOptions(html))
+            callback: html => this._altModeSelect(altModes, this._rememberOptions(html))
           }
         },
       },
@@ -450,7 +467,7 @@ async _transform() {
     if (selectedForm == "BotMode") {
       this._transformBotMode();
     } else {
-      for (const mode of altModeList) {
+      for (const mode of altModes) {
         if (selectedForm == mode.name) {
           transformation = mode;
           break;
@@ -485,10 +502,7 @@ async _transform() {
    * Handle Transforming back into the Bot Mode
    * @private
    */
-  async _transformBotMode(stillList) {
-    if (!stillList) {
-      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-    }
+  async _transformBotMode() {
     await this.actor.update({
       "system.movement.aerial.altMode": 0,
       "system.movement.swim.altMode": 0,
