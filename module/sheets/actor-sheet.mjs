@@ -384,9 +384,9 @@ async _transform() {
     ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
   } else if (altModes.length > 1) {                           // Select from multiple alt-modes
     if (!this.actor.system.isTransformed) {
-      this._showAltModeChoiceDialog(altModes, false);
+      this._showAltModeChoiceDialog(altModes, false);         // More than 1 altMode and not transformed
     }else {
-      this._showAltModeChoiceDialog(altModes, true);
+      this._showAltModeChoiceDialog(altModes, true);          // More than 1 altMode and transformed
     }
   } else {                                                       // Alt-mode/bot-mode toggle
     this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes);
