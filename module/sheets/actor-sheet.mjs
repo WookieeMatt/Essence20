@@ -369,33 +369,26 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-  /**
-  * Handle clicking the tranform button
+/**
+  * Handle clicking the transform button
   * @private
   */
-  async _transform() {
-    const altModeList = this._getAltModeList();
-
-    if (!this.actor.system.isTransformed) {
-      if(altModeList.length < 1) {
-        ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-      } else if (altModeList.length == 1) {
-        this._transformAltMode(altModeList);
-      } else {
-        this._showAltModeChoiceDialog(altModeList, false);
-      }
-
-    } else {
-      if(altModeList.length < 1) {
-        this._transformBotMode();
-      } else if (altModeList.length == 1) {
-        const stillList = true;
-        this._transformBotMode(stillList);
-      } else {
-        this._showAltModeChoiceDialog(altModeList, true);
-      }
+async _transform() {
+  const altModes = [];
+  for (const item of this.actor.items) {
+    if (item.type == "altMode") {
+      altModes.push(item);
     }
   }
+  if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
+    ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+  } else if (altModes.length > 1) {                           // Select from multiple alt-modes
+    this._showAltModeChoiceDialog(altModes, false);
+  } else {                                                       // Alt-mode/bot-mode toggle
+    this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes);
+  }
+}
+
 
   /**
    * Handle Creates the Alt Mode Choice List Dialog
