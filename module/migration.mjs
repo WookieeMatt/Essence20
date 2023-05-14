@@ -138,6 +138,18 @@ export const migrateActorData = function(actor) {
     updateData[`system.skills`] = newSkills;
   }
 
+  //Migrate to Base Movement
+  if (!actor.system.movement.aerial.base && !actor.system.movement.ground.base && !actor.system.movement.swim.base){
+    for (const item of actor.items) {
+      if (item.type == 'origin') {
+        updateData[`system.movement.aerial.base`] = item.system.baseAerialMovement;
+        updateData[`system.movement.ground.base`] = item.system.baseGroundMovement;
+        updateData[`system.movement.swim.base`] = item.system.baseAquaticMovement;
+        break;
+      }
+    }
+  }
+
   // Migrate Zord/MFZ essence
   if (["zord", "megaformZord"].includes(actor.type)) {
     const strength = actor.system.essences.strength;
