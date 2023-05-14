@@ -370,43 +370,28 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
 /**
-  * Handle clicking the transform button
-  * @private
-  */
-  /**
-  * Handle clicking the tranform button
-  * @private
-  */
-  async _transform() {
-    const altModes = [];
-    for (const item of this.actor.items) {
-      if (item.type == "altMode") {
-        altModes.push(item);
-      }
-    }
-    if (!this.actor.system.isTransformed) {
-      if(altModes.length < 1) {
-        ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-      } else if (altModes.length == 1) {
-        this._transformAltMode(altModes);
-      } else {
-        this._showAltModeChoiceDialog(altModes, false);
-      }
-    } else {
-      if(altModes.length < 1) {
-        ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-        await this.actor.update({
-          "system.isTransformed": false,
-        }).then(this.render(false));
-      } else if (altModes.length == 1) {
-        this._transformBotMode();
-      } else {
-        this._showAltModeChoiceDialog(altModes, true);
-      }
+* Handle clicking the transform button
+* @private
+*/
+async _transform() {
+  const altModes = [];
+  for (const item of this.actor.items) {
+    if (item.type == "altMode") {
+      altModes.push(item);
     }
   }
-
-
+  if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
+    ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+  } else if (altModes.length > 1) {                           // Select from multiple alt-modes
+    if (!this.actor.system.isTransformed) {
+      this._showAltModeChoiceDialog(altModes, false);
+    }else {
+      this._showAltModeChoiceDialog(altModes, true);
+    }
+  } else {                                                       // Alt-mode/bot-mode toggle
+    this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes);
+  }
+}
   /**
    * Handle Creates the Alt Mode Choice List Dialog
    * @param {AltMode[]} altModes  A list of the available Alt Modes
@@ -537,9 +522,7 @@ export class Essence20ActorSheet extends ActorSheet {
     console.log(altModeList);
     if (altModeList.length > 1) {
       if (item.name == this.actor.system.altModeName) {
-
-        const stillList = true;
-        this._transformBotMode(stillList);
+        this._transformBotMode();
       }
     } else {
       this._transformBotMode();
