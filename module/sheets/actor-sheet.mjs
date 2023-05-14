@@ -474,6 +474,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (altMode.length) {
       altMode = altMode[0];
     }
+
     await this.actor.update({
       "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
       "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
