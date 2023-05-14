@@ -112,33 +112,7 @@ export class Essence20Actor extends Actor {
 
     const system = this.system;
 
-    system.defenses = [
-      {
-        essence: "strength",
-        name: "toughness",
-        value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
-        bonus: system.bonuses.toughness
-      },
-      {
-        essence: "speed",
-        name: "evasion",
-        value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
-        bonus: system.bonuses.evasion
-      },
-      {
-        essence: "smarts",
-        name: "willpower",
-        value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
-        bonus: system.bonuses.willpower
-      },
-      {
-        essence: "social",
-        name: "cleverness",
-        value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
-        bonus: system.bonuses.cleverness
-      }
-    ];
-
+    this._prepareDefenses();
     this._prepareMovement();
   }
 
@@ -150,53 +124,7 @@ export class Essence20Actor extends Actor {
 
     const system = this.system;
 
-    system.defenses = [
-      {
-        essence: "strength",
-        name: "toughness",
-        morphed: {
-          value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
-          bonus: system.bonuses.toughness
-        },
-        unmorphed: {
-          value: system.base.toughness + system.essences.strength,
-        },
-      },
-      {
-        essence: "speed",
-        name: "evasion",
-        morphed: {
-          value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
-          bonus: system.bonuses.evasion
-        },
-        unmorphed: {
-          value: system.base.evasion + system.essences.speed,
-        },
-      },
-      {
-        essence: "smarts",
-        name: "willpower",
-        morphed: {
-          value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
-          bonus: system.bonuses.willpower
-        },
-        unmorphed: {
-          value: system.base.willpower + system.essences.smarts,
-        },
-      },
-      {
-        essence: "social",
-        name: "cleverness",
-        morphed: {
-          value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
-          bonus: system.bonuses.cleverness
-        },
-        unmorphed: {
-          value: system.base.cleverness + system.essences.social,
-        },
-      },
-    ];
-
+    this._prepareDefenses();
     this._prepareMovement();
   }
 
@@ -207,34 +135,7 @@ export class Essence20Actor extends Actor {
     if (this.type !== 'transformer') return;
 
     const system = this.system;
-
-    system.defenses = [
-      {
-        essence: "strength",
-        name: "toughness",
-        value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
-        bonus: system.bonuses.toughness
-      },
-      {
-        essence: "speed",
-        name: "evasion",
-        value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
-        bonus: system.bonuses.evasion
-      },
-      {
-        essence: "smarts",
-        name: "willpower",
-        value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
-        bonus: system.bonuses.willpower
-      },
-      {
-        essence: "social",
-        name: "cleverness",
-        value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
-        bonus: system.bonuses.cleverness
-      }
-    ];
-
+    this._prepareDefenses();
     this._prepareMovement();
   }
 
@@ -242,40 +143,26 @@ export class Essence20Actor extends Actor {
     if (this.type !== 'pony') return;
 
     const system = this.system;
-
-    system.defenses = [
-      {
-        essence: "strength",
-        name: "toughness",
-        value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
-        bonus: system.bonuses.toughness
-      },
-      {
-        essence: "speed",
-        name: "evasion",
-        value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
-        bonus: system.bonuses.evasion
-      },
-      {
-        essence: "smarts",
-        name: "willpower",
-        value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
-        bonus: system.bonuses.willpower
-      },
-      {
-        essence: "social",
-        name: "cleverness",
-        value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
-        bonus: system.bonuses.cleverness
-      }
-    ];
-
+    this._prepareDefenses();
     this._prepareMovement();
   }
 
-    /**
-    * Prepare Movement specific data.
-    */
+  _prepareDefenses() {
+    const system = this.system;
+
+    const defenseTypes = ['cleverness', 'evasion', 'toughness', 'willpower']
+    for (const defenseType of defenseTypes) {
+      if (system.isMorphed) {
+        system.defenses[defenseType].total = system.defenses[defenseType].base + system.essences[system.defenses[defenseType].essence] + system.defenses[defenseType].morphed + system.defenses[defenseType].bonus
+      } else {
+        system.defenses[defenseType].total = system.defenses[defenseType].base + system.essences[system.defenses[defenseType].essence] + system.defenses[defenseType].armor + system.defenses[defenseType].bonus
+      }
+    }
+  }
+
+  /**
+  * Prepare Movement specific data.
+  */
   _prepareMovement() {
     let movementTotal = 0;
     const system = this.system;
