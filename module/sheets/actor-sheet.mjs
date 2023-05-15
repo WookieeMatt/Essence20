@@ -425,7 +425,7 @@ async _transform() {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._altModeSelect(altModes, this._rememberOptions(html))
+            callback: html => this._altModeSelect(altModes, this._rememberOptions(html)),
           }
         },
       },
