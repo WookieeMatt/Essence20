@@ -307,7 +307,6 @@ export class Essence20ActorSheet extends ActorSheet {
     //Transform Button
     html.find('.transform').click(this._transform.bind(this));
 
-
     // Rollable abilities.
     if (this.actor.isOwner) {
       html.find('.rollable').click(this._onRoll.bind(this));
