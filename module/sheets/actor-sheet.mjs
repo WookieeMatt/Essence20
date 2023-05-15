@@ -502,8 +502,8 @@ async _transform() {
    * Handle returning a list of AltModes
    * @private
    */
-  _getAltModeList() {
-    const altModeList = [];
+  _getAltModes() {
+    const altModes = [];
     for (const item of this.actor.items) {
       if (item.type == "altMode") {
         altModeList.push(item);
