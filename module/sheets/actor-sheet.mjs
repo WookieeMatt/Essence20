@@ -439,8 +439,8 @@ async _transform() {
    * @private
    */
   async _altModeSelect(altModes, options) {
-    let selectedForm = "";
-    let transformation = {};
+    let selectedForm = null;
+    let transformation = null;
 
     for (const [altMode, isSelected] of Object.entries(options)) {
       if (isSelected) {
