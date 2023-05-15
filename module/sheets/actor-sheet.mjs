@@ -462,6 +462,7 @@ async _transform() {
           break;
         }
       }
+
       if (transformation) {
         this._transformAltMode(transformation);
       }
