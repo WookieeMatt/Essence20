@@ -518,9 +518,8 @@ async _transform() {
    * @param {AltMode} altMode is the deleted AltMode.
    * @private
    */
-  async _onAltModeDelete(item) {
-    const altModeList = this._getAltModeList();
-    console.log(altModeList);
+  async _onAltModeDelete(altMode) {
+    const altModes = this._getAltModes();
     if (altModeList.length > 1) {
       if (item.name == this.actor.system.altModeName) {
         this._transformBotMode();
