@@ -469,9 +469,6 @@ async _transform() {
    * @private
    */
   async _transformAltMode(altMode) {
-    if (altMode.length) {             //If this comes from the original transform function altMode is an array. Otherwise it is just an object.
-      altMode = altMode[0];
-    }
 
     await this.actor.update({
       "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
