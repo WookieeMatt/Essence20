@@ -152,12 +152,19 @@ export class Essence20Actor extends Actor {
 
     const defenseTypes = ['cleverness', 'evasion', 'toughness', 'willpower']
     for (const defenseType of defenseTypes) {
+      const defenseName = system.defenses[defenseType];
+      const essenceName = game.i18n.localize(`E20.Essence${defenseName.essence.capitalize()}`);
+      const baseName = game.i18n.localize('E20.DefenseBase');
+      const armorName = game.i18n.localize('E20.DefenseArmor');
+      const bonusName = game.i18n.localize('E20.DefenseBonus');
+      const morphedName = game.i18n.localize('E20.DefenseMorphed');
+      console.log(essenceName)
       if (system.isMorphed) {
-        system.defenses[defenseType].total = system.defenses[defenseType].base + system.essences[system.defenses[defenseType].essence] + system.defenses[defenseType].morphed + system.defenses[defenseType].bonus
-        system.defenses[defenseType].string = `${system.defenses[defenseType].base} base + ${system.essences[system.defenses[defenseType].essence]} ${system.defenses[defenseType].essence} + ${system.defenses[defenseType].morphed} morphed + ${system.defenses[defenseType].bonus} bonus`
+        defenseName.total = defenseName.base + system.essences[defenseName.essence] + defenseName.morphed + defenseName.bonus
+        defenseName.string = `${defenseName.base} ${baseName} + ${system.essences[defenseName.essence]} ${essenceName} + ${defenseName.morphed} ${morphedName} + ${defenseName.bonus} ${bonusName}`
       } else {
-        system.defenses[defenseType].total = system.defenses[defenseType].base + system.essences[system.defenses[defenseType].essence] + system.defenses[defenseType].armor + system.defenses[defenseType].bonus
-        system.defenses[defenseType].string = `${system.defenses[defenseType].base} base + ${system.essences[system.defenses[defenseType].essence]} ${system.defenses[defenseType].essence} + ${system.defenses[defenseType].armor} armor + ${system.defenses[defenseType].bonus} bonus`
+        defenseName.total = defenseName.base + system.essences[defenseName.essence] + defenseName.armor + defenseName.bonus
+        defenseName.string = `${defenseName.base} ${baseName} + ${system.essences[defenseName.essence]} ${essenceName} + ${defenseName.armor} ${armorName} + ${defenseName.bonus} ${bonusName}`
       }
     }
   }
