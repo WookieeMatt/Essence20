@@ -158,7 +158,6 @@ export class Essence20Actor extends Actor {
       const armorName = game.i18n.localize('E20.DefenseArmor');
       const bonusName = game.i18n.localize('E20.DefenseBonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
-      console.log(essenceName)
       if (system.isMorphed) {
         defenseName.total = defenseName.base + system.essences[defenseName.essence] + defenseName.morphed + defenseName.bonus
         defenseName.string = `${defenseName.base} ${baseName} + ${system.essences[defenseName.essence]} ${essenceName} + ${defenseName.morphed} ${morphedName} + ${defenseName.bonus} ${bonusName}`

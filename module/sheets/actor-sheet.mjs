@@ -244,8 +244,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.contacts = contacts;
     context.classFeatures = classFeatures;
     context.classFeaturesById = classFeaturesById;
-    context.equippedArmorEvasion = equippedArmorEvasion;
-    context.equippedArmorToughness = equippedArmorToughness;
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
@@ -259,6 +257,11 @@ export class Essence20ActorSheet extends ActorSheet {
     context.threatPowers = threatPowers;
     context.upgrades = upgrades;
     context.weapons = weapons;
+
+    this.actor.update({
+      "system.defenses.evasion.armor": equippedArmorEvasion,
+      "system.defenses.toughness.armor": equippedArmorToughness,
+    }).then(this.render(false));
   }
 
   /* -------------------------------------------- */
