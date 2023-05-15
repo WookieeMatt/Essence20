@@ -379,6 +379,7 @@ async _transform() {
       altModes.push(item);
     }
   }
+
   if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
     ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
   } else if (altModes.length > 1) {                           // Select from multiple alt-modes
