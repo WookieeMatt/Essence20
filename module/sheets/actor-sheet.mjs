@@ -475,7 +475,6 @@ async _transform() {
    * @private
    */
   async _transformAltMode(altMode) {
-
     await this.actor.update({
       "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
       "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
