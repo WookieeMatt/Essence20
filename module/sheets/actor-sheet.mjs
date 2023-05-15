@@ -449,6 +449,9 @@ async _transform() {
       }
     }
 
+    if (!selectedForm) {
+      return;
+    }
     if (selectedForm == "BotMode") {
       this._transformBotMode();
     } else {
