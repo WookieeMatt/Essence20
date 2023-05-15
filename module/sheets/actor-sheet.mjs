@@ -389,7 +389,7 @@ async _transform() {
       this._showAltModeChoiceDialog(altModes, true);          // More than 1 altMode and transformed
     }
   } else {                                                       // Alt-mode/bot-mode toggle
-    this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes);
+    this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes[0]);
   }
 }
   /**
