@@ -468,7 +468,7 @@ async _transform() {
   }
 
   /**
-   * Handle editing specialization names inline
+   * Handles Transforming into an altMode
    * @param {AltMode} altMode   The alt-mode that was selected to Transform into
    * @private
    */
@@ -507,11 +507,11 @@ async _transform() {
     const altModes = [];
     for (const item of this.actor.items) {
       if (item.type == "altMode") {
-        altModeList.push(item);
+        altModes.push(item);
       }
     }
 
-    return altModeList;
+    return altModes;
   }
 
     /**
@@ -521,7 +521,7 @@ async _transform() {
    */
   async _onAltModeDelete(altMode) {
     const altModes = this._getAltModes();
-    if (altModeList.length > 1) {
+    if (altModes.length > 1) {
       if (item._id == this.actor.system.altModeId) {
         this._transformBotMode();
       }
