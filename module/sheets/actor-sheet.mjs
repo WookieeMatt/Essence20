@@ -515,7 +515,7 @@ async _transform() {
 
     /**
    * Handle AltModes being deleted
-   * @param {item} item is the deleted item.
+   * @param {AltMode} altMode is the deleted AltMode.
    * @private
    */
   async _onAltModeDelete(item) {
