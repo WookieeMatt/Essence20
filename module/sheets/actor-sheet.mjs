@@ -509,6 +509,7 @@ async _transform() {
         altModeList.push(item);
       }
     }
+
     return altModeList;
   }
 
