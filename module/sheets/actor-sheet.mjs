@@ -408,7 +408,7 @@ async _transform() {
     }
 
     for (const altMode of altModes) {
-      if (this.actor.system.altModeName != altMode.name) {
+      if (this.actor.system.altModeId != altMode._id) {
         choices[altMode.name] = {
           chosen: false,
           label: altMode.name,
@@ -479,7 +479,7 @@ async _transform() {
       "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
       "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
       "system.altModeSize": altMode.system.altModesize,
-      "system.altModeName": altMode.name,
+      "system.altModeId": altMode._id,
       "system.isTransformed": true,
     }).then(this.render(false));
   }
@@ -494,7 +494,7 @@ async _transform() {
       "system.movement.swim.altMode": 0,
       "system.movement.ground.altMode": 0,
       "system.isTransformed": false,
-      "system.altModeName": "",
+      "system.altModeId": "",
       "system.altModeSize": "",
     }).then(this.render(false));
   }
@@ -522,7 +522,7 @@ async _transform() {
   async _onAltModeDelete(altMode) {
     const altModes = this._getAltModes();
     if (altModeList.length > 1) {
-      if (item.name == this.actor.system.altModeName) {
+      if (item._id == this.actor.system.altModeId) {
         this._transformBotMode();
       }
     } else {
