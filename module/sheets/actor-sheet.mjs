@@ -385,7 +385,7 @@ async _transform() {
   } else if (altModes.length > 1) {                           // Select from multiple alt-modes
     if (!this.actor.system.isTransformed) {
       this._showAltModeChoiceDialog(altModes, false);         // More than 1 altMode and not transformed
-    }else {
+    } else {
       this._showAltModeChoiceDialog(altModes, true);          // More than 1 altMode and transformed
     }
   } else {                                                    // Alt-mode/bot-mode toggle
@@ -452,6 +452,7 @@ async _transform() {
     if (!selectedForm) {
       return;
     }
+
     if (selectedForm == "BotMode") {
       this._transformBotMode();
     } else {
@@ -461,6 +462,7 @@ async _transform() {
           break;
         }
       }
+
       if (transformation) {
         this._transformAltMode(transformation);
       }
@@ -473,7 +475,6 @@ async _transform() {
    * @private
    */
   async _transformAltMode(altMode) {
-
     await this.actor.update({
       "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
       "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
