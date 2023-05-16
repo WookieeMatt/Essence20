@@ -523,7 +523,7 @@ export class Essence20ActorSheet extends ActorSheet {
   async _onAltModeDelete(altMode) {
     const altModes = this._getAltModes();
     if (altModes.length > 1) {
-      if (item._id == this.actor.system.altModeId) {
+      if (altMode._id == this.actor.system.altModeId) {
         this._transformBotMode();
       }
     } else {
