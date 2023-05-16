@@ -110,6 +110,8 @@
     "BaseAerialMovement": "Base Aerial Movement",
     "BaseAquaticMovement": "Base Aquatic Movement",
     "BaseGroundMovement": "Base Ground Movement",
+    "ButtonMorph": "Morph",
+    "ButtonUnmorph": "Unmorph",
     "ClassFeatureUses": "Uses",
     "ClassFeatureNone": "No Class Feature",
     "CompanionAvailability": "Availability",
