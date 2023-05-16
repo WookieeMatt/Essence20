@@ -618,16 +618,11 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  // Handle setting the isMorphed value
   async _morph() {
-    if (!this.actor.system.isMorphed) {
-      await this.actor.update({
-        "system.isMorphed": true,
-      }).then(this.render(false));
-    } else {
-      await this.actor.update({
-        "system.isMorphed": false,
-      }).then(this.render(false));
-    }
+    await this.actor.update({
+      "system.isMorphed": !this.actor.system.isMorphed,
+    }).then(this.render(false));
   }
 
   /**
