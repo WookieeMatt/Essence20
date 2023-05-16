@@ -150,21 +150,25 @@ export class Essence20Actor extends Actor {
   _prepareDefenses() {
     const system = this.system;
 
-    const defenseTypes = ['cleverness', 'evasion', 'toughness', 'willpower']
     for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
-      const defenseName = system.defenses[defenseType];
-      const essenceName = game.i18n.localize(`E20.Essence${defenseName.essence.capitalize()}`);
+      const defense = system.defenses[defenseType];
+      const base = defense.base;
+      const armor = defense.armor;
+      const bonus = defense.bonus;
+      const morphed = defense.morphed;
+      const essence = system.essences[defense.essence];
+      const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
       const armorName = game.i18n.localize('E20.DefenseArmor');
       const bonusName = game.i18n.localize('E20.DefenseBonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
 
       if (system.isMorphed) {
-        defenseName.total = defenseName.base + system.essences[defenseName.essence] + defenseName.morphed + defenseName.bonus
-        defenseName.string = `${defenseName.base} ${baseName} + ${system.essences[defenseName.essence]} ${essenceName} + ${defenseName.morphed} ${morphedName} + ${defenseName.bonus} ${bonusName}`
+        defense.total = base + essence + morphed + bonus
+        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${morphed} ${morphedName} + ${bonus} ${bonusName}`
       } else {
-        defenseName.total = defenseName.base + system.essences[defenseName.essence] + defenseName.armor + defenseName.bonus
-        defenseName.string = `${defenseName.base} ${baseName} + ${system.essences[defenseName.essence]} ${essenceName} + ${defenseName.armor} ${armorName} + ${defenseName.bonus} ${bonusName}`
+        defense.total = base + essence + armor + bonus
+        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${armor} ${armorName} + ${bonus} ${bonusName}`
       }
     }
   }
