@@ -392,6 +392,7 @@ async _transform() {
     this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes[0]);
   }
 }
+
   /**
    * Handle Creates the Alt Mode Choice List Dialog
    * @param {AltMode[]} altModes  A list of the available Alt Modes
