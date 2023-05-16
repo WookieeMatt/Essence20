@@ -372,26 +372,26 @@ export class Essence20ActorSheet extends ActorSheet {
 * Handle clicking the transform button
 * @private
 */
-async _transform() {
-  const altModes = [];
-  for (const item of this.actor.items) {
-    if (item.type == "altMode") {
-      altModes.push(item);
+  async _transform() {
+    const altModes = [];
+    for (const item of this.actor.items) {
+      if (item.type == "altMode") {
+        altModes.push(item);
+      }
     }
-  }
 
-  if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
-    ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-  } else if (altModes.length > 1) {                           // Select from multiple alt-modes
-    if (!this.actor.system.isTransformed) {
-      this._showAltModeChoiceDialog(altModes, false);         // More than 1 altMode and not transformed
-    } else {
-      this._showAltModeChoiceDialog(altModes, true);          // More than 1 altMode and transformed
+    if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
+      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+    } else if (altModes.length > 1) {                           // Select from multiple alt-modes
+      if (!this.actor.system.isTransformed) {
+        this._showAltModeChoiceDialog(altModes, false);         // More than 1 altMode and not transformed
+      } else {
+        this._showAltModeChoiceDialog(altModes, true);          // More than 1 altMode and transformed
+      }
+    } else {                                                    // Alt-mode/bot-mode toggle
+      this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes[0]);
     }
-  } else {                                                    // Alt-mode/bot-mode toggle
-    this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes[0]);
   }
-}
   /**
    * Handle Creates the Alt Mode Choice List Dialog
    * @param {AltMode[]} altModes  A list of the available Alt Modes
