@@ -409,7 +409,7 @@ async _transform() {
 
     for (const altMode of altModes) {
       if (this.actor.system.altModeId != altMode._id) {
-        choices[altMode.name] = {
+        choices[altMode._id] = {
           chosen: false,
           label: altMode.name,
         }
