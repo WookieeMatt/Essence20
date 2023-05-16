@@ -20,11 +20,13 @@
   <section class="sheet-body">
     {{!-- Skills Tab --}}
     <div class="tab skills flexcol" data-group="primary" data-tab="skills">
-      {{#if system.isMorphed}}
-        <button class="morph" type="button">Unmorph</button>
-      {{else}}
-        <button class="morph" type="button">Morph</button>
-      {{/if}}
+      <button class="morph" type="button">
+        {{#if system.isMorphed}}
+          Unmorph
+        {{else}}
+          Morph
+        {{/if}}
+      </button>
       {{> "systems/essence20/templates/actor/parts/misc/defenses.hbs"}}
       {{> "systems/essence20/templates/actor/parts/misc/common.hbs"}}
       {{> "systems/essence20/templates/actor/parts/misc/pc-skills.hbs"}}
