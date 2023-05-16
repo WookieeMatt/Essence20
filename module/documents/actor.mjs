@@ -151,7 +151,7 @@ export class Essence20Actor extends Actor {
     const system = this.system;
 
     const defenseTypes = ['cleverness', 'evasion', 'toughness', 'willpower']
-    for (const defenseType of defenseTypes) {
+    for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
       const defenseName = system.defenses[defenseType];
       const essenceName = game.i18n.localize(`E20.Essence${defenseName.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
