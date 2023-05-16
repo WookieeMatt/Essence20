@@ -394,7 +394,7 @@ async _transform() {
 }
 
   /**
-   * Handle Creates the Alt Mode Choice List Dialog
+   * Creates the Alt Mode Choice List Dialog
    * @param {AltMode[]} altModes  A list of the available Alt Modes
    * @param {Boolean} isTransformed Whether the Transformer is transformed or not
    * @private
