@@ -306,7 +306,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
-    //Transform Button
+    // Morph Button
     html.find('.morph').click(this._morph.bind(this));
 
     // Rollable abilities.
