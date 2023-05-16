@@ -445,6 +445,7 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const [altMode, isSelected] of Object.entries(options)) {
       if (isSelected) {
         selectedForm = altMode;
+        console.log(selectedForm);
         break;
       }
     }
@@ -457,7 +458,8 @@ export class Essence20ActorSheet extends ActorSheet {
       this._transformBotMode();
     } else {
       for (const mode of altModes) {
-        if (selectedForm == mode.name) {
+        console.log(mode)
+        if (selectedForm == mode._id) {
           transformation = mode;
           break;
         }
