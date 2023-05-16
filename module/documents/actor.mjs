@@ -71,10 +71,10 @@ export class Essence20Actor extends Actor {
     // things organized.
     this._prepareCharacterData();
     this._prepareNpcData();
-    this._preparePowerRangerData();
-    this._prepareGiJoeData();
-    this._prepareTransformerData();
-    this._preparePonyData();
+    if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.type)) {
+      this._prepareDefenses();
+      this._prepareMovement();
+    }
   }
 
   /**
@@ -102,49 +102,6 @@ export class Essence20Actor extends Actor {
     // // Make modifications to data here. For example:
     // const data = actorData.data;
     // data.xp = (data.cr * data.cr) * 100;
-  }
-
-  /**
-   * Prepare GI JOE type specific data.
-   */
-  _prepareGiJoeData() {
-    if (this.type !== 'giJoe') return;
-
-    const system = this.system;
-
-    this._prepareDefenses();
-    this._prepareMovement();
-  }
-
-  /**
-   * Prepare Power Ranger type specific data.
-   */
-  _preparePowerRangerData() {
-    if (this.type !== 'powerRanger') return;
-
-    const system = this.system;
-
-    this._prepareDefenses();
-    this._prepareMovement();
-  }
-
-  /**
-   * Prepare Transformers type specific data.
-   */
-  _prepareTransformerData() {
-    if (this.type !== 'transformer') return;
-
-    const system = this.system;
-    this._prepareDefenses();
-    this._prepareMovement();
-  }
-
-  _preparePonyData() {
-    if (this.type !== 'pony') return;
-
-    const system = this.system;
-    this._prepareDefenses();
-    this._prepareMovement();
   }
 
   _prepareDefenses() {
