@@ -22,9 +22,9 @@
     <div class="tab skills flexcol" data-group="primary" data-tab="skills">
       <button class="morph" type="button">
         {{#if system.isMorphed}}
-          Unmorph
+          {{localize 'E20.ButtonUnmorph'}}
         {{else}}
-          Morph
+          {{localize 'E20.ButtonMorph'}}
         {{/if}}
       </button>
       {{> "systems/essence20/templates/actor/parts/misc/defenses.hbs"}}
