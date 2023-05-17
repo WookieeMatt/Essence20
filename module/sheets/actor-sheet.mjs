@@ -899,7 +899,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
       for (const item of this.actor.items) {
         if (item.type == 'perk') {
-          if (item.name == data.name) {
+          if (item.name == data.name && item.system.source.book == data.system.source.book && item.system.source.page == data.system.source.page) {
             item.delete();
             break
           }
