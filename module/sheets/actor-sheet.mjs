@@ -1,4 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { indexFromUuid } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -811,17 +812,19 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   async _originPerkCreate(origin){
-    let data = game.items.get(origin.system.originPerkIds[0]);
-    if(!data) {
-      for (let pack of game.packs){
-        const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-        let originPerk = await compendium.getDocument(origin.system.originPerkIds[0]);
-        if (originPerk) {
-          data = originPerk;
+    for (const id of origin.system.originPerkIds) {
+      let data = game.items.get(id);
+      if(!data) {
+        for (let pack of game.packs){
+          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+          let originPerk = await compendium.getDocument(id);
+          if (originPerk) {
+            data = originPerk;
+          }
         }
       }
+      await Item.create(data, { parent: this.actor });
     }
-    return await Item.create(data, { parent: this.actor });
   }
 
   /**
@@ -883,6 +886,29 @@ export class Essence20ActorSheet extends ActorSheet {
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
     }
 
+    for (const id of origin.system.originPerkIds) {
+      let data = game.items.get(id);
+      if (!data) {
+        for (let pack of game.packs){
+          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+          let originPerk = await compendium.getDocument(id);
+          if (originPerk) {
+            data = originPerk;
+          }
+        }
+      }
+      for (const item of this.actor.items) {
+        if (item.type == 'perk') {
+          if (item.name == data.name) {
+            item.delete();
+            break
+          }
+        }
+      }
+    }
+
+
+
     const essenceString = `system.essences.${essence}`;
 
     await this.actor.update({
@@ -896,6 +922,22 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.originEssencesIncrease": "",
       "system.originSkillsIncrease": ""
     });
+  }
+
+  async _searchCompendium(item) {
+    const id = item._id || item;
+
+    for (const pack of game.packs){
+      const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+      if (compendium) {
+        const compendiumItem = await compendium.getDocument(id);
+        if (compendiumItem) {
+          item = compendiumItem;
+        }
+      }
+    }
+
+    return item
   }
 
   /**
