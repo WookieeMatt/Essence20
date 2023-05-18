@@ -790,7 +790,7 @@ export class Essence20ActorSheet extends ActorSheet {
       skillString = `system.skills.${selectedSkill}.shift`;
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
     }
-
+console.log(data, event)
     super._onDropItem(event, data);
 
     await this.actor.update({

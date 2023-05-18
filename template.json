@@ -347,6 +347,7 @@
           "smarts": 3,
           "social": 3
         },
+        "influenceIds": [],
         "level": 1,
         "notes": "",
         "originPerkIds": []
@@ -520,6 +521,7 @@
       "feature",
       "gear",
       "hangUp",
+      "influence",
       "magicBauble",
       "megaformTrait",
       "origin",
@@ -604,6 +606,15 @@
       "templates": [
         "itemDescription"
       ]
+    },
+    "influence": {
+      "templates" : [
+        "itemDescription"
+      ],
+      "bond": "",
+      "hangUpIds": [],
+      "influencePerkIds": [],
+      "influenceSkill": []
     },
     "magicBauble": {
       "templates": [

@@ -41,6 +41,10 @@ export class Essence20ItemSheet extends ItemSheet {
 
     this._prepareUpgrades(context);
 
+    this._prepareHangUps(context);
+
+    this._prepareInfluencePerks(context);
+
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
     let actor = this.object?.parent ?? null;
@@ -78,9 +82,11 @@ export class Essence20ItemSheet extends ItemSheet {
         for (let pack of game.packs){
           const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
           if (compendium) {
-            let upgrade = compendium.index.get(this.item.system.upgradeIds[0]);
-            if (upgrade) {
-              upgrades.push(upgrade);
+            for (let upgradeId of this.item.system.upgradeIds) {
+              let upgrade = compendium.index.get(upgradeId);
+              if (upgrade) {
+                upgrades.push(upgrade);
+              }
             }
           }
         }
@@ -109,9 +115,11 @@ export class Essence20ItemSheet extends ItemSheet {
         for (let pack of game.packs){
           const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
           if (compendium) {
-            let originPerk = compendium.index.get(this.item.system.originPerkIds[0]);
-            if (originPerk) {
-              originPerks.push(originPerk);
+            for (let originPerkId of this.item.system.originPerkIds) {
+              let originPerk = compendium.index.get(originPerkId);
+              if (originPerk) {
+                originPerks.push(originPerk);
+              }
             }
           }
         }
@@ -120,6 +128,78 @@ export class Essence20ItemSheet extends ItemSheet {
       context.originPerks = originPerks;
     }
   }
+
+  /**
+  * Retireves the attached Influence Perks for display on the sheet
+  * @param {Object} context   The information from the item
+  * @private
+  */
+  _prepareInfluencePerks(context) {
+    if (this.item.type == 'influence') {
+      let influencePerks = [];
+      for (let influencePerkId of this.item.system.influencePerkIds) {
+        const influencePerk = game.items.get(influencePerkId);
+        if (influencePerk){
+          influencePerks.push(influencePerk);
+        }
+      }
+
+      if (!influencePerks.length) {
+        for (let pack of game.packs){
+          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+          if (compendium) {
+            for (let influencePerkId of this.item.system.influencePerkIds) {
+              let influencePerk = compendium.index.get(influencePerkId);
+              if (influencePerk) {
+                influencePerks.push(influencePerk);
+              }
+            }
+          }
+        }
+      }
+
+      context.influencePerks = influencePerks;
+    }
+  }
+
+    /**
+  * Retireves the attached Influence Perks for display on the sheet
+  * @param {Object} context   The information from the item
+  * @private
+  */
+  _prepareHangUps(context) {
+
+    if (this.item.type == 'influence') {
+      let hangUps = [];
+      for (let hangUpId of this.item.system.hangUpIds) {
+        console.log(hangUpId)
+        const hangUp = game.items.get(hangUpId);
+        console.log(hangUp)
+        if (hangUp){
+          hangUps.push(hangUp);
+        }
+      }
+
+      if (!hangUps.length) {
+
+        for (let pack of game.packs){
+          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+          if (compendium) {
+            for (let hangUpId of this.item.system.hangUpIds) {
+              const hangUp = compendium.index.get(hangUpId);
+              if (hangUp) {
+                hangUps.push(hangUp);
+              }
+            }
+          }
+        }
+      }
+      console.log(hangUps)
+      context.hangUps = hangUps;
+    }
+  }
+
+
   /* -------------------------------------------- */
 
   /** @override */
@@ -144,6 +224,13 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Delete Origin Perks from Origns
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
+
+    // Delete Origin Perks from Origns
+    html.find('.influencePerk-delete').click(this._onInfluencePerkDelete.bind(this));
+
+    // Delete Origin Perks from Origns
+    html.find('.hangUp-delete').click(this._onHangUpDelete.bind(this));
+
   }
 
   /**
@@ -191,6 +278,16 @@ export class Essence20ItemSheet extends ItemSheet {
           this._addItemIfUnique(droppedItem, data, upgradeIds, "upgrade");
           this._addDroppedUpgradeTraits(droppedItem);
         }
+      }
+    } else if (targetItem.type == "influence") {
+      if (droppedItem.type == "perk") {
+        const influencePerkIds = duplicate(this.item.system.influencePerkIds);
+
+        this._addItemIfUnique(droppedItem, data, influencePerkIds, "influencePerk");
+      } else if (droppedItem.type == "hangUp") {
+        const hangUpIds = duplicate(this.item.system.hangUpIds);
+
+        this._addItemIfUnique(droppedItem, data, hangUpIds, "hangUp");
       }
     }
     this.render(true);
@@ -278,6 +375,38 @@ export class Essence20ItemSheet extends ItemSheet {
     let originPerkIds = this.item.system.originPerkIds.filter(x => x !== originPerkId);
     this.item.update({
       "system.originPerkIds": originPerkIds,
+    });
+    li.slideUp(200, () => this.render(false));
+  }
+
+    /**
+  * Handle deleting of a Perk from an Influence Sheet
+  * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
+  * @private
+  */
+  async _onInfluencePerkDelete(event) {
+    const li = $(event.currentTarget).parents(".influencePerk");
+    console.log(li)
+    const influencePerkId = li.data("influenceperkId");
+    console.log(influencePerkId)
+    let influencePerkIds = this.item.system.influencePerkIds.filter(x => x !== influencePerkId);
+    this.item.update({
+      "system.influencePerkIds": influencePerkIds,
+    });
+    li.slideUp(200, () => this.render(false));
+  }
+
+  /**
+  * Handle deleting of a Perk from an Influence Sheet
+  * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
+  * @private
+  */
+  async _onHangUpDelete(event) {
+    const li = $(event.currentTarget).parents(".hangUp");
+    const hangUpId = li.data("hangupId");
+    let hangUpIds = this.item.system.hangUpIds.filter(x => x !== hangUpId);
+    this.item.update({
+      "system.hangUpIds": hangUpIds,
     });
     li.slideUp(200, () => this.render(false));
   }
