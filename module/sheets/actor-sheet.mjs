@@ -897,12 +897,9 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const id of this.actor.system.originPerkIds) {
 
       for (const item of this.actor.items) {
-        if (item.type == 'perk') {
-          console.log(item)
-          if (item._id == id) {
-            item.delete();
-            break
-          }
+        if (item._id == id) {
+          item.delete();
+          break
         }
       }
     }
