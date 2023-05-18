@@ -769,8 +769,6 @@ export class Essence20ActorSheet extends ActorSheet {
       return;
     }
 
-    this._originPerkCreate(origin)
-
     const essenceValue = this.actor.system.essences[essence] + 1;
     const essenceString = `system.essences.${essence}`;
     let skillString = "";
@@ -790,8 +788,9 @@ export class Essence20ActorSheet extends ActorSheet {
       skillString = `system.skills.${selectedSkill}.shift`;
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
     }
-console.log(data, event)
-    super._onDropItem(event, data);
+
+    const newOrigin = await super._onDropItem(event, data);
+    this._originPerkCreate(origin, newOrigin)
 
     await this.actor.update({
       [essenceString]: essenceValue,
@@ -811,7 +810,8 @@ console.log(data, event)
   * @param {Object} origin   The Origin
   * @private
   */
-  async _originPerkCreate(origin){
+  async _originPerkCreate(origin, newOrigin){
+    const itemId = newOrigin[0]._id
     const perkIds = [];
 
     for (const id of origin.system.originPerkIds) {
@@ -819,9 +819,11 @@ console.log(data, event)
       if(!data) {
         for (let pack of game.packs){
           const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          let originPerk = await compendium.getDocument(id);
-          if (originPerk) {
-            data = originPerk;
+          if (compendium) {
+            let originPerk = await compendium.getDocument(id);
+            if (originPerk) {
+              data = originPerk;
+            }
           }
         }
       }
@@ -829,8 +831,22 @@ console.log(data, event)
       const perk = await Item.create(data, { parent: this.actor });
       perkIds.push(perk._id);
     }
+    let indexValue = -1
+    for (const item of this.actor.items) {
+      indexValue += 1
+      if (itemId == item._id) {
+        break
+      }
+    }
 
-    this.actor.system.originPerkIds = perkIds;
+    const updateString = `this.actor.items.${indexValue}.${itemId}.system.originPerkIds`
+    console.log(updateString)
+    console.log(itemId)
+    console.log(perkIds)
+
+    await this.actor.update({
+      [updateString]: perkIds
+    });
     return
 
   }
