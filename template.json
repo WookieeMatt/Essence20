@@ -348,7 +348,8 @@
           "social": 3
         },
         "level": 1,
-        "notes": ""
+        "notes": "",
+        "originPerkIds": []
       },
       "creature": {
         "languages": []
