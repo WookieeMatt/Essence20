@@ -812,6 +812,8 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   async _originPerkCreate(origin){
+    const perkIds = [];
+
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
       if(!data) {
@@ -823,8 +825,14 @@ export class Essence20ActorSheet extends ActorSheet {
           }
         }
       }
-      await Item.create(data, { parent: this.actor });
+
+      const perk = await Item.create(data, { parent: this.actor });
+      perkIds.push(perk._id);
     }
+
+    this.actor.system.originPerkIds = perkIds;
+    return
+
   }
 
   /**
@@ -886,28 +894,18 @@ export class Essence20ActorSheet extends ActorSheet {
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
     }
 
-    for (const id of origin.system.originPerkIds) {
-      let data = game.items.get(id);
-      if (!data) {
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          let originPerk = await compendium.getDocument(id);
-          if (originPerk) {
-            data = originPerk;
-          }
-        }
-      }
+    for (const id of this.actor.system.originPerkIds) {
+
       for (const item of this.actor.items) {
         if (item.type == 'perk') {
-          if (item.name == data.name && item.system.source.book == data.system.source.book && item.system.source.page == data.system.source.page) {
+          console.log(item)
+          if (item._id == id) {
             item.delete();
             break
           }
         }
       }
     }
-
-
 
     const essenceString = `system.essences.${essence}`;
 
@@ -922,22 +920,6 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.originEssencesIncrease": "",
       "system.originSkillsIncrease": ""
     });
-  }
-
-  async _searchCompendium(item) {
-    const id = item._id || item;
-
-    for (const pack of game.packs){
-      const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-      if (compendium) {
-        const compendiumItem = await compendium.getDocument(id);
-        if (compendiumItem) {
-          item = compendiumItem;
-        }
-      }
-    }
-
-    return item
   }
 
   /**
