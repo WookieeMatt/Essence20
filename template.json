@@ -46,8 +46,10 @@
           "value": 4
         },
         "initiative": {
+          "edge": false,
           "formula": "2d20kl + 0",
           "modifier": 0,
+          "snag": false,
           "shift": "d20",
           "shiftDown": 0,
           "shiftUp": 0
@@ -86,11 +88,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "alertness": {
             "essences": {
@@ -99,11 +103,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "animalHandling": {
             "essences": {
@@ -112,11 +118,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "athletics": {
             "essences": {
@@ -125,11 +133,13 @@
               "speed": false,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "brawn": {
             "essences": {
@@ -138,11 +148,13 @@
               "speed": false,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "culture": {
             "essences": {
@@ -151,11 +163,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "deception": {
             "essences": {
@@ -164,11 +178,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "driving": {
             "essences": {
@@ -177,11 +193,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "finesse": {
             "essences": {
@@ -190,11 +208,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "infiltration": {
             "essences": {
@@ -203,11 +223,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "intimidation": {
             "essences": {
@@ -216,11 +238,13 @@
               "speed": false,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "might": {
             "essences": {
@@ -229,11 +253,13 @@
               "speed": false,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "performance": {
             "essences": {
@@ -242,11 +268,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "persuasion": {
             "essences": {
@@ -255,11 +283,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "science": {
             "essences": {
@@ -268,11 +298,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "spellcasting": {
             "essences": {
@@ -281,11 +313,13 @@
               "speed": true,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "streetwise": {
             "essences": {
@@ -294,11 +328,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "survival": {
             "essences": {
@@ -307,11 +343,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "targeting": {
             "essences": {
@@ -320,11 +358,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "technology": {
             "essences": {
@@ -333,11 +373,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           }
         },
         "stun": {
