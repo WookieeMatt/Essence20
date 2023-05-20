@@ -104,6 +104,9 @@ export class Essence20Actor extends Actor {
     // data.xp = (data.cr * data.cr) * 100;
   }
 
+  /**
+  * Prepare Defenses specific data.
+  */
   _prepareDefenses() {
     const system = this.system;
 
@@ -121,11 +124,11 @@ export class Essence20Actor extends Actor {
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
 
       if (system.isMorphed) {
-        defense.total = base + essence + morphed + bonus
-        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${morphed} ${morphedName} + ${bonus} ${bonusName}`
+        defense.total = base + essence + morphed + bonus;
+        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${morphed} ${morphedName} + ${bonus} ${bonusName}`;
       } else {
-        defense.total = base + essence + armor + bonus
-        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${armor} ${armorName} + ${bonus} ${bonusName}`
+        defense.total = base + essence + armor + bonus;
+        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${armor} ${armorName} + ${bonus} ${bonusName}`;
       }
     }
   }
