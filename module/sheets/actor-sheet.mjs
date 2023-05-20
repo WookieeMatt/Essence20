@@ -148,6 +148,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const features = []; // Used by Zords
     const gears = [];
     const hangUps = [];
+    const influences = [];
     const magicBaubles = [];
     const megaformTraits = [];
     const origins = []; // Used by PCs
@@ -192,6 +193,9 @@ export class Essence20ActorSheet extends ActorSheet {
           break;
         case 'hangUp':
           hangUps.push(i);
+          break;
+        case 'influence':
+          influences.push(i);
           break;
         case 'magicBauble':
           magicBaubles.push(i);
@@ -250,6 +254,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
+    context.influences = influences;
     context.magicBaubles = magicBaubles;
     context.megaformTraits = megaformTraits;
     context.origins = origins;
@@ -291,6 +296,8 @@ export class Essence20ActorSheet extends ActorSheet {
         this._onOriginDelete(item);
       } else if (item.type == "altMode") {
         this._onAltModeDelete(item);
+      } else if (item.type == 'influence') {
+        this._onInfluenceDelete(item)
       }
       item.delete();
       li.slideUp(200, () => this.render(false));
@@ -630,6 +637,9 @@ export class Essence20ActorSheet extends ActorSheet {
     if (!sourceItem) return false;
 
     switch (sourceItem.type) {
+      case 'influence':
+        await this._influenceUpdate(sourceItem, event, data)
+        break;
       case 'origin':
         for (let actorItem of this.actor.items) {
           // Characters can only have one Origin
@@ -654,6 +664,77 @@ export class Essence20ActorSheet extends ActorSheet {
         super._onDropItem(event, data);
     }
   };
+
+  /**
+   * Handle the dropping of an influence on to a character
+   * @param {Object} influence    The Influence
+   * @param {DragEvent} event  The concluding DragEvent which contains drop data
+   * @param {object} data      The data transfer extracted from the event
+   * @private
+   */
+  async _influenceUpdate(sourceItem, event, data) {
+    let addHangUp = false;
+
+    for(const item of this.actor.items) {
+      if (item.type == 'influence') {
+        addHangUp = true;
+        break
+      }
+    }
+
+    const newInfluenceList = await super._onDropItem(event, data);
+    const newInfluence = newInfluenceList[0]
+    const perkIds = [];
+    const hangUpIds = [];
+    for (const id of sourceItem.system.influencePerkIds) {
+      let compendiumData = game.items.get(id);
+      if(!compendiumData) {
+        for (let pack of game.packs){
+          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+          if (compendium) {
+            let influencePerk = await compendium.getDocument(id);
+            if (influencePerk) {
+              compendiumData = influencePerk;
+            }
+          }
+        }
+      }
+
+      const perk = await Item.create(compendiumData, { parent: this.actor });
+      perkIds.push(perk._id);
+    }
+    if (addHangUp) {
+      for (const id of sourceItem.system.hangUpIds) {
+        console.log(id)
+        let compendiumData = game.items.get(id);
+        if(!compendiumData) {
+          for (let pack of game.packs){
+            const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+            console.log(compendium)
+            if (compendium) {
+              let hangUp = await compendium.getDocument(id);
+              console.log(hangUp)
+              if (hangUp) {
+                compendiumData = hangUp;
+              }
+            }
+          }
+        }
+        console.log(compendiumData)
+        const newHangUp = await Item.create(compendiumData, { parent: this.actor });
+        hangUpIds.push(newHangUp._id);
+      }
+      console.log(hangUpIds)
+      await newInfluence.update({
+        ["system.influencePerkIds"]: perkIds,
+        ["system.hangUpIds"]: hangUpIds
+      });
+    }
+    await newInfluence.update({
+      ["system.influencePerkIds"]: perkIds
+    });
+  }
+
 
   /**
    * Displays a dialog for selecting an Essence for the given Origin.
@@ -810,10 +891,9 @@ export class Essence20ActorSheet extends ActorSheet {
   * @param {Object} origin   The Origin
   * @private
   */
-  async _originPerkCreate(origin, newOrigin){
-    const itemId = newOrigin[0]._id
+  async _originPerkCreate(origin, newOriginList){
+    const newOrigin = newOriginList[0]
     const perkIds = [];
-
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
       if(!data) {
@@ -831,24 +911,10 @@ export class Essence20ActorSheet extends ActorSheet {
       const perk = await Item.create(data, { parent: this.actor });
       perkIds.push(perk._id);
     }
-    let indexValue = -1
-    for (const item of this.actor.items) {
-      indexValue += 1
-      if (itemId == item._id) {
-        break
-      }
-    }
 
-    const updateString = `this.actor.items.${indexValue}.${itemId}.system.originPerkIds`
-    console.log(updateString)
-    console.log(itemId)
-    console.log(perkIds)
-
-    await this.actor.update({
-      [updateString]: perkIds
+    await newOrigin.update({
+      ["system.originPerkIds"]: perkIds
     });
-    return
-
   }
 
   /**
@@ -883,6 +949,28 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
+  * Handle deleting of an Influence from an Actor Sheet
+  * @param {Object} influence   The Influence
+  * @private
+  */
+  _onInfluenceDelete (influence) {
+    const influenceDelete = this.actor.items.get(influence._id)
+
+    for (const perk of influenceDelete.system.influencePerkIds) {
+      if(perk){
+        let item = this.actor.items.get(perk).delete()
+      }
+    }
+    for (const hangUp of influenceDelete.system.hangUpIds) {
+      let item = this.actor.items.get(hangUp)
+      if(item){
+        item.delete()
+      }
+    }
+
+  }
+
+  /**
   * Handle deleting of an Origin from an Actor Sheet
   * @param {Object} origin   The Origin
   * @private
@@ -910,14 +998,10 @@ export class Essence20ActorSheet extends ActorSheet {
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
     }
 
-    for (const id of this.actor.system.originPerkIds) {
+    const originDelete = this.actor.items.get(origin._id)
 
-      for (const item of this.actor.items) {
-        if (item._id == id) {
-          item.delete();
-          break
-        }
-      }
+    for (const perk of originDelete.system.originPerkIds) {
+      let item = this.actor.items.get(perk).delete()
     }
 
     const essenceString = `system.essences.${essence}`;
