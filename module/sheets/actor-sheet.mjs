@@ -752,6 +752,25 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
+    for (const item of this.actor.items) {
+      if (item.type == 'influence') {
+        if (item.system.influenceSkill) {
+          for (skill of this.actor.system.skills) {
+            if (skill == item.system.influenceSkill) {
+              for (essence of skill.essences) {
+                if (essence) {
+                  choices[essence] = {
+                    chosen: false,
+                    label: CONFIG.E20.originEssences[essence],
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
     new Dialog(
       {
         title: game.i18n.localize('E20.EssenceIncrease'),
