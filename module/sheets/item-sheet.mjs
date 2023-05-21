@@ -37,13 +37,17 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
-    this._prepareOriginPerks(context);
+    if (context.item.type == 'origin') {
+      this._prepareItemDisplay(context, "originPerk");
+    }
 
-    this._prepareUpgrades(context);
-
-    this._prepareHangUps(context);
-
-    this._prepareInfluencePerks(context);
+    if (context.item.type == 'upgrade') {
+      this._prepareItemDisplay(context, "upgrade");
+    }
+    if (context.item.type == 'influence') {
+      this._prepareItemDisplay(context, "hangUp");
+      this._prepareItemDisplay(context, "influencePerk");
+    }
 
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
@@ -64,141 +68,37 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Retireves the attached Upgrades for display on the sheet
+  * Retireves the attached items for display on the sheet
   * @param {Object} context   The information from the item
   * @private
   */
-  _prepareUpgrades(context) {
-    if (['armor', 'weapon'].includes(this.item.type)) {
-      let upgrades = [];
-      for (let upgradeId of this.item.system.upgradeIds) {
-        const upgrade = game.items.get(upgradeId);
-        if (upgrade){
-          upgrades.push(upgrade);
+  _prepareItemDisplay(context, itemType) {
+    if (["influence", "origin", "upgrades"].includes(this.item.type) || ['armor', 'weapon'].includes(this.item.system.type)) {
+      let itemArray = [];
+      for (let itemId of (this.item.system[`${itemType}Ids`])) {
+        const item = game.items.get(itemId);
+        if (item){
+          itemArray.push(item);
         }
       }
 
-      if (!upgrades.length) {
+      if (!itemArray.length) {
         for (let pack of game.packs){
           const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
           if (compendium) {
-            for (let upgradeId of this.item.system.upgradeIds) {
-              let upgrade = compendium.index.get(upgradeId);
-              if (upgrade) {
-                upgrades.push(upgrade);
+            for (let itemId of (this.item.system[`${itemType}Ids`])) {
+              let item = compendium.index.get(itemId);
+              if (item) {
+                itemArray.push(item);
               }
             }
           }
         }
       }
-
-      context.upgrades = upgrades;
+      const searchString = `context.${itemType}s`
+      parseFloat(searchString)= itemArray;
     }
   }
-
-  /**
-  * Retireves the attached Origin Perks for display on the sheet
-  * @param {Object} context   The information from the item
-  * @private
-  */
-  _prepareOriginPerks(context) {
-    if (this.item.type == 'origin') {
-      let originPerks = [];
-      for (let originPerkId of this.item.system.originPerkIds) {
-        const originPerk = game.items.get(originPerkId);
-        if (originPerk){
-          originPerks.push(originPerk);
-        }
-      }
-
-      if (!originPerks.length) {
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium) {
-            for (let originPerkId of this.item.system.originPerkIds) {
-              let originPerk = compendium.index.get(originPerkId);
-              if (originPerk) {
-                originPerks.push(originPerk);
-              }
-            }
-          }
-        }
-      }
-
-      context.originPerks = originPerks;
-    }
-  }
-
-  /**
-  * Retireves the attached Influence Perks for display on the sheet
-  * @param {Object} context   The information from the item
-  * @private
-  */
-  _prepareInfluencePerks(context) {
-    if (this.item.type == 'influence') {
-      let influencePerks = [];
-      for (let influencePerkId of this.item.system.influencePerkIds) {
-        const influencePerk = game.items.get(influencePerkId);
-        if (influencePerk){
-          influencePerks.push(influencePerk);
-        }
-      }
-
-      if (!influencePerks.length) {
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium) {
-            for (let influencePerkId of this.item.system.influencePerkIds) {
-              let influencePerk = compendium.index.get(influencePerkId);
-              if (influencePerk) {
-                influencePerks.push(influencePerk);
-              }
-            }
-          }
-        }
-      }
-
-      context.influencePerks = influencePerks;
-    }
-  }
-
-    /**
-  * Retireves the attached Influence Perks for display on the sheet
-  * @param {Object} context   The information from the item
-  * @private
-  */
-  _prepareHangUps(context) {
-
-    if (this.item.type == 'influence') {
-      let hangUps = [];
-      for (let hangUpId of this.item.system.hangUpIds) {
-        console.log(hangUpId)
-        const hangUp = game.items.get(hangUpId);
-        console.log(hangUp)
-        if (hangUp){
-          hangUps.push(hangUp);
-        }
-      }
-
-      if (!hangUps.length) {
-
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium) {
-            for (let hangUpId of this.item.system.hangUpIds) {
-              const hangUp = compendium.index.get(hangUpId);
-              if (hangUp) {
-                hangUps.push(hangUp);
-              }
-            }
-          }
-        }
-      }
-      console.log(hangUps)
-      context.hangUps = hangUps;
-    }
-  }
-
 
   /* -------------------------------------------- */
 
