@@ -371,17 +371,39 @@
           "pronouns": "",
           "role": ""
         },
-        "base": {
-          "cleverness": 10,
-          "evasion": 10,
-          "toughness": 10,
-          "willpower": 10
-        },
-        "bonuses": {
-          "cleverness": 0,
-          "evasion": 0,
-          "toughness": 0,
-          "willpower": 0
+        "defenses": {
+          "toughness": {
+            "armor": 0,
+            "base": 10,
+            "bonus": 0,
+            "essence": "strength",
+            "morphed": 0,
+            "name": "toughness"
+          },
+          "evasion": {
+            "armor": 0,
+            "base": 10,
+            "bonus": 0,
+            "essence": "speed",
+            "morphed": 0,
+            "name": "evasion"
+          },
+          "willpower":{
+            "armor": 0,
+            "base": 10,
+            "bonus": 0,
+            "essence": "smarts",
+            "morphed": 0,
+            "name": "willpower"
+          },
+          "cleverness": {
+            "armor": 0,
+            "base": 10,
+            "bonus": 0,
+            "essence": "social",
+            "morphed": 0,
+            "name": "cleverness"
+          }
         },
         "essences": {
           "strength": 3,
