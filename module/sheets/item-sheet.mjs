@@ -95,8 +95,7 @@ export class Essence20ItemSheet extends ItemSheet {
           }
         }
       }
-      const searchString = `context.${itemType}s`
-      parseFloat(searchString)= itemArray;
+      (context[`${itemType}s`]) = itemArray;
     }
   }
 
