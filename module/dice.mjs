@@ -73,12 +73,12 @@ export class Dice {
     }
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
-    const actorSkillData = actor.getRollData().skills[rolledSkill];
     const updatedShiftDataset = {
       ...dataset,
       shiftUp: dataset.shiftUp + actor.system.essenceShifts[rolledEssence].shiftUp,
       shiftDown: dataset.shiftDown + actor.system.essenceShifts[rolledEssence].shiftDown,
     };
+    const actorSkillData = actor.getRollData().skills[rolledSkill];
     const skillDataset = {
       edge: actorSkillData.edge,
       snag: actorSkillData.snag,
@@ -160,7 +160,7 @@ export class Dice {
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = dataset.isSpecialized === 'true'
+    const rolledSkillStr = dataset.isSpecialized
       ? dataset.specializationName
       : this._localize(E20.skills[rolledSkill]);
     const rollingForStr = this._localize('E20.RollRollingFor')
