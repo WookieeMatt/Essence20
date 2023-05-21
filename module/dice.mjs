@@ -73,10 +73,11 @@ export class Dice {
     }
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
+    const essenceShifts = actor.system.essenceShifts;
     const updatedShiftDataset = {
       ...dataset,
-      shiftUp: dataset.shiftUp + actor.system.essenceShifts[rolledEssence].shiftUp,
-      shiftDown: dataset.shiftDown + actor.system.essenceShifts[rolledEssence].shiftDown,
+      shiftUp: dataset.shiftUp + essenceShifts[rolledEssence].shiftUp + essenceShifts.any.shiftUp,
+      shiftDown: dataset.shiftDown + essenceShifts[rolledEssence].shiftDown + essenceShifts.any.shiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
     const skillDataset = {

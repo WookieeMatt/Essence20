@@ -282,7 +282,7 @@ describe("rollSkill", () => {
       ...dataset,
       isSpecialized: false,
       shiftUp: 1,
-      shiftDown: 1,
+      shiftDown: 2,
     };
     const expectedSkillDataset = {
       edge: false,
@@ -301,6 +301,7 @@ describe("rollSkill", () => {
     };
     mockShiftedActor.system.essenceShifts.strength.shiftDown = 1;
     mockShiftedActor.system.essenceShifts.strength.shiftUp = 1;
+    mockShiftedActor.system.essenceShifts.any.shiftDown = 1;
     dice._rollSkillHelper = jest.fn()
 
     await dice.rollSkill(dataset, mockShiftedActor, null);
