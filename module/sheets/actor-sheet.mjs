@@ -249,8 +249,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.contacts = contacts;
     context.classFeatures = classFeatures;
     context.classFeaturesById = classFeaturesById;
-    context.equippedArmorEvasion = equippedArmorEvasion;
-    context.equippedArmorToughness = equippedArmorToughness;
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
@@ -265,6 +263,11 @@ export class Essence20ActorSheet extends ActorSheet {
     context.threatPowers = threatPowers;
     context.upgrades = upgrades;
     context.weapons = weapons;
+
+    this.actor.update({
+      "system.defenses.evasion.armor": equippedArmorEvasion,
+      "system.defenses.toughness.armor": equippedArmorToughness,
+    }).then(this.render(false));
   }
 
   /* -------------------------------------------- */
@@ -311,6 +314,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
+
+    // Morph Button
+    html.find('.morph').click(this._morph.bind(this));
 
     //Transform Button
     html.find('.transform').click(this._transform.bind(this));
@@ -618,6 +624,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (item) return item.roll(dataset);
     }
+  }
+
+  // Handle setting the isMorphed value
+  async _morph() {
+    await this.actor.update({
+      "system.isMorphed": !this.actor.system.isMorphed,
+    }).then(this.render(false));
   }
 
   /**
