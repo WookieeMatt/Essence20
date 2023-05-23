@@ -63,7 +63,7 @@ export class Essence20ItemSheet extends ItemSheet {
     context.system = itemData.system;
     context.system.description = TextEditor.enrichHTML(itemData.system.description, {async: false});
     context.flags = itemData.flags;
-    console.log(context)
+
     return context;
   }
 
@@ -75,24 +75,23 @@ export class Essence20ItemSheet extends ItemSheet {
   async _prepareItemDisplay(context, itemType) {
     let itemArray = [];
     for (let itemId of (this.item.system[`${itemType}Ids`])) {
-      const item = game.items.get(itemId);
+      let item = game.items.get(itemId);
       if (item){
         itemArray.push(item);
+      } else {
+        for (let pack of game.packs){
+          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+          if (compendium) {
+            item = compendium.index.get(itemId);
+            if (item) {
+              itemArray.push(item);
+            }
+          }
+        }
       }
     }
 
-    if (!itemArray.length) {
-      for (let itemId of (this.item.system[`${itemType}Ids`])) {
-        const item = await this._searchCompendium(itemId);
-        console.log(item)
-        itemArray.push(item);
-        console.log(itemArray);
-      }
-    }
-      console.log(itemArray);
-      context[`${itemType}s`] = itemArray;
-      console.log(itemType)
-      console.log(context[`${itemType}s`])
+    context[`${itemType}s`] = itemArray;
   }
 
   /* -------------------------------------------- */
@@ -251,13 +250,10 @@ export class Essence20ItemSheet extends ItemSheet {
       if (compendium) {
         const compendiumItem = await compendium.getDocument(id);
         if (compendiumItem) {
-          console.log(compendiumItem)
-          item = compendiumItem;
+          return compendiumItem;
         }
       }
     }
-
-    return item
   }
 
   /**
