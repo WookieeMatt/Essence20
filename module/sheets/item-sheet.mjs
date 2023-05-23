@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { indexFromUuid } from "../helpers/utils.mjs";
+import { indexFromUuid, searchCompendium } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -79,14 +79,9 @@ export class Essence20ItemSheet extends ItemSheet {
       if (item){
         itemArray.push(item);
       } else {
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium) {
-            item = compendium.index.get(itemId);
-            if (item) {
-              itemArray.push(item);
-            }
-          }
+        item = searchCompendium(itemId);
+        if (item) {
+          itemArray.push(item);
         }
       }
     }
@@ -138,7 +133,7 @@ export class Essence20ItemSheet extends ItemSheet {
 
     let droppedItem = indexFromUuid(data.uuid);
     if (!droppedItem.system) {
-      droppedItem = await this._searchCompendium(droppedItem);
+      droppedItem = await searchCompendium(droppedItem);
     }
 
     if (targetItem.type  == "origin") {
@@ -237,26 +232,6 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handles search of the Compendiums to find the item
-  * @param {Item|String} item  Either an ID or an Item to find in the compendium
-  * @returns {Item|String}     The Item if found, or the item param otherwise
-  * @private
-  */
-  async _searchCompendium(item) {
-    const id = item._id || item;
-
-    for (const pack of game.packs){
-      const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-      if (compendium) {
-        const compendiumItem = await compendium.getDocument(id);
-        if (compendiumItem) {
-          return compendiumItem;
-        }
-      }
-    }
-  }
-
-  /**
   * Handle deleting of a Perk from an Origin Sheet
   * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
   * @private
@@ -312,7 +287,7 @@ export class Essence20ItemSheet extends ItemSheet {
     const li = $(event.currentTarget).parents(".upgrade");
     const upgradeId = li.data("upgradeId");
 
-    const deletedUpgrade = game.items.get(upgradeId) || await this._searchCompendium(upgradeId);
+    const deletedUpgrade = game.items.get(upgradeId) || await searchCompendium(upgradeId);
     if (!deletedUpgrade) {
       return;
     }
@@ -329,7 +304,7 @@ export class Essence20ItemSheet extends ItemSheet {
             if (upgradeId != id) {
               const otherItem = game.items.get(id);
               if (!otherItem) {
-                otherItem = await this._searchCompendium(id);
+                otherItem = await searchCompendium(id);
               }
 
               if (otherItem.system.traits.includes(deletedUpgradeTrait)) {
