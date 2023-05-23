@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { indexFromUuid } from "../helpers/utils.mjs";
+import { indexFromUuid, searchCompendium } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -702,14 +702,9 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const id of sourceItem.system.influencePerkIds) {
       let compendiumData = game.items.get(id);
       if(!compendiumData) {
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium) {
-            let influencePerk = await compendium.getDocument(id);
-            if (influencePerk) {
-              compendiumData = influencePerk;
-            }
-          }
+        const influencePerk = searchCompendium(id);
+        if (influencePerk) {
+          compendiumData = influencePerk;
         }
       }
 
@@ -717,37 +712,92 @@ export class Essence20ActorSheet extends ActorSheet {
       perkIds.push(perk._id);
     }
     if (addHangUp) {
-      for (const id of sourceItem.system.hangUpIds) {
-        console.log(id)
-        let compendiumData = game.items.get(id);
-        if(!compendiumData) {
-          for (let pack of game.packs){
-            const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-            console.log(compendium)
-            if (compendium) {
-              let hangUp = await compendium.getDocument(id);
-              console.log(hangUp)
-              if (hangUp) {
-                compendiumData = hangUp;
-              }
+      if (sourceItem.system.hangUpIds.length > 1) {
+        this._chooseHangUp(sourceItem, perkIds, newInfluence)
+      } else {
+        for (const id of sourceItem.system.hangUpIds) {
+          let compendiumData = game.items.get(id);
+          if(!compendiumData) {
+            const hangUp = searchCompendium(id);
+            if (hangUp) {
+              compendiumData = hangUp;
             }
           }
+
+          const newHangUp = await Item.create(compendiumData, { parent: this.actor });
+          hangUpIds.push(newHangUp._id);
         }
-        console.log(compendiumData)
-        const newHangUp = await Item.create(compendiumData, { parent: this.actor });
-        hangUpIds.push(newHangUp._id);
+        console.log(hangUpIds.length)
+        await newInfluence.update({
+          ["system.influencePerkIds"]: perkIds,
+          ["system.hangUpIds"]: hangUpIds
+        });
       }
-      console.log(hangUpIds)
-      await newInfluence.update({
-        ["system.influencePerkIds"]: perkIds,
-        ["system.hangUpIds"]: hangUpIds
-      });
     }
     await newInfluence.update({
       ["system.influencePerkIds"]: perkIds
     });
   }
 
+  /**
+  * Displays a dialog for selecting a Hang Up from an Influence
+  * @param {Object} influence  The Influence
+  * @private
+  */
+  async _chooseHangUp(sourceItem, perkIds, newInfluence) {
+    const choices = {};
+    let compendiumData = ""
+    for (const id of sourceItem.system.hangUpIds) {
+      compendiumData = game.items.get(id);
+      if(!compendiumData) {
+        compendiumData = searchCompendium(id);
+        if (compendiumData) {
+          choices[compendiumData._id] = {
+            chosen: false,
+            label: compendiumData.name,
+          }
+        }
+      }
+
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.HangUpChoice'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._hangUpSelect(compendiumData, this._rememberOptions(html), perkIds, newInfluence),
+          }
+        },
+      },
+    ).render(true);
+  }
+
+  async _hangUpSelect(compendiumData, options, perkIds, newInfluence) {
+    let selectedHangUp = null;
+    const hangUpIds = []
+    for (const [hangUp, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedHangUp = hangUp;
+        break;
+      }
+    }
+
+    if (!selectedHangUp) {
+      return;
+    }
+    const newHangUp = await Item.create(compendiumData, { parent: this.actor });
+    hangUpIds.push(newHangUp._id);
+    await newInfluence.update({
+      ["system.influencePerkIds"]: perkIds,
+      ["system.hangUpIds"]: hangUpIds
+    });
+
+  }
 
   /**
    * Displays a dialog for selecting an Essence for the given Origin.
@@ -768,13 +818,14 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const item of this.actor.items) {
       if (item.type == 'influence') {
         if (item.system.influenceSkill) {
-          for (skill of this.actor.system.skills) {
+          for (const skill in this.actor.system.skills) {
+
             if (skill == item.system.influenceSkill) {
-              for (essence of skill.essences) {
-                if (essence) {
-                  choices[essence] = {
+              for (const influenceEssence in this.actor.system.skills[skill].essences) {
+                if (this.actor.system.skills[skill].essences[influenceEssence] == true) {
+                  choices[influenceEssence] = {
                     chosen: false,
-                    label: CONFIG.E20.originEssences[essence],
+                    label: CONFIG.E20.originEssences[influenceEssence],
                   }
                 }
               }
@@ -835,6 +886,21 @@ export class Essence20ActorSheet extends ActorSheet {
           chosen: false,
           label: CONFIG.E20.originSkills[skill],
         };
+      }
+    }
+
+    for (const item of this.actor.items) {
+      if (item.type == 'influence') {
+        if (item.system.influenceSkill) {
+          const essence = CONFIG.E20.skillToEssence[item.system.influenceSkill];
+          if (options[essence] && essences.includes(essence)) {
+            selectedEssence = essence;
+            choices[item.system.influenceSkill] = {
+              chosen: false,
+              label: CONFIG.E20.originSkills[item.system.influenceSkill],
+            };
+          }
+        }
       }
     }
 
@@ -990,7 +1056,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
     for (const perk of influenceDelete.system.influencePerkIds) {
       if(perk){
-        let item = this.actor.items.get(perk).delete()
+        const item = this.actor.items.get(perk)
+        if(item){
+          item.delete()
+        }
       }
     }
     for (const hangUp of influenceDelete.system.hangUpIds) {
