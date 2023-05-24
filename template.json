@@ -18,6 +18,28 @@
         "color": "#b5b1b1",
         "conditioning": 0,
         "description": "",
+        "essenceShifts": {
+          "any": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          },
+          "smarts": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          },
+          "social": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          },
+          "speed": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          },
+          "strength": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          }
+        },
         "health": {
           "max": 4,
           "min": 0,
