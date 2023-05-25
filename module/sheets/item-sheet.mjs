@@ -109,16 +109,16 @@ export class Essence20ItemSheet extends ItemSheet {
     this.form.ondrop = (event) => this._onDrop(event);
 
     // Delete Origin Perks from Origns
-    html.find('.originPerk-delete').click(this._onOriginPerkDelete.bind(this));
+    html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".originPerk", "originperkId", "originPerkIds"));
 
     // Delete Origin Perks from Origns
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
 
     // Delete Origin Perks from Origns
-    html.find('.influencePerk-delete').click(this._onInfluencePerkDelete.bind(this));
+    html.find('.influencePerk-delete').click(this._onIdDelete.bind(this, ".influencePerk", "influenceperkId", "influencePerkIds"));
 
     // Delete Origin Perks from Origns
-    html.find('.hangUp-delete').click(this._onHangUpDelete.bind(this));
+    html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangupId", "hangUpIds"));
 
   }
 
@@ -232,48 +232,20 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handle deleting of a Perk from an Origin Sheet
-  * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
+  * Handle deleting of a Ids from an item Sheet
+  * @param {String} cssClass           Where the deleted item is on the sheet
+  * @param {String} idName             The data field name from the item sheet
+  * @param {String} itemListName       The name of the ID list
+  * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
   * @private
   */
-  async _onOriginPerkDelete(event) {
-    const li = $(event.currentTarget).parents(".originPerk");
-    const originPerkId = li.data("originperkId");
-    let originPerkIds = this.item.system.originPerkIds.filter(x => x !== originPerkId);
+  async _onIdDelete(cssClass, idName, itemListName, event) {
+    const li = $(event.currentTarget).parents(cssClass);
+    const id = li.data(idName);
+    let ids = this.item.system[itemListName].filter(x => x !== id);
+    const systemSearch = `system.${itemListName}`;
     this.item.update({
-      "system.originPerkIds": originPerkIds,
-    });
-    li.slideUp(200, () => this.render(false));
-  }
-
-    /**
-  * Handle deleting of a Perk from an Influence Sheet
-  * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
-  * @private
-  */
-  async _onInfluencePerkDelete(event) {
-    const li = $(event.currentTarget).parents(".influencePerk");
-    console.log(li)
-    const influencePerkId = li.data("influenceperkId");
-    console.log(influencePerkId)
-    let influencePerkIds = this.item.system.influencePerkIds.filter(x => x !== influencePerkId);
-    this.item.update({
-      "system.influencePerkIds": influencePerkIds,
-    });
-    li.slideUp(200, () => this.render(false));
-  }
-
-  /**
-  * Handle deleting of a Perk from an Influence Sheet
-  * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
-  * @private
-  */
-  async _onHangUpDelete(event) {
-    const li = $(event.currentTarget).parents(".hangUp");
-    const hangUpId = li.data("hangupId");
-    let hangUpIds = this.item.system.hangUpIds.filter(x => x !== hangUpId);
-    this.item.update({
-      "system.hangUpIds": hangUpIds,
+      [systemSearch]: ids,
     });
     li.slideUp(200, () => this.render(false));
   }
