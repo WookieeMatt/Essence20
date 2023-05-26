@@ -80,15 +80,17 @@ export class Essence20ActorSheet extends ActorSheet {
     let buttons = super._getHeaderButtons();
     // Token Configuration
     if (this.actor.isOwner) {
-      buttons = [
-        {
-          label: game.i18n.localize('E20.Crossover'),
-          class: 'configure-actor',
-          icon: 'fas fa-cog',
-          onclick: (ev) => this._onConfigureEntity(ev),
-        },
-        ...buttons,
-      ];
+      if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+        buttons = [
+          {
+            label: game.i18n.localize('E20.Crossover'),
+            class: 'configure-actor',
+            icon: 'fas fa-cog',
+            onclick: (ev) => this._onConfigureEntity(ev),
+          },
+          ...buttons,
+        ];
+      }
     }
     return buttons;
   }
