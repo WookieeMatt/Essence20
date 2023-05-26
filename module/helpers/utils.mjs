@@ -100,7 +100,6 @@ export function indexFromUuid(uuid) {
   * Handles search of the Compendiums to find the item
   * @param {Item|String} item  Either an ID or an Item to find in the compendium
   * @returns {Item|String}     The Item if found, or the item param otherwise
-  * @private
   */
  export function searchCompendium(item) {
   const id = item._id || item;

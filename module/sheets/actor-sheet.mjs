@@ -382,17 +382,25 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  _getItemsOfType(type) {
+    const itemOfType = [];
+    for (const item of this.actor.items) {
+      if (item.type == type) {
+        itemOfType.push(item);
+      }
+    }
+
+    return itemOfType
+  }
+
+
 /**
 * Handle clicking the transform button
 * @private
 */
   async _transform() {
     const altModes = [];
-    for (const item of this.actor.items) {
-      if (item.type == "altMode") {
-        altModes.push(item);
-      }
-    }
+    altModes =await this._getItemsOfType("altMode");
 
     if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
       ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
@@ -518,13 +526,9 @@ export class Essence20ActorSheet extends ActorSheet {
    * Handle returning a list of AltModes
    * @private
    */
-  _getAltModes() {
+  async _getAltModes() {
     const altModes = [];
-    for (const item of this.actor.items) {
-      if (item.type == "altMode") {
-        altModes.push(item);
-      }
-    }
+    altModes = await this._getItemsOfType("altMode");
 
     return altModes;
   }
@@ -814,19 +818,17 @@ export class Essence20ActorSheet extends ActorSheet {
         label: CONFIG.E20.originEssences[essence],
       }
     }
+    const influences = await this._getItemsOfType("influence");
+    for (const influence of influences) {
+      if (influence.system.influenceSkill) {
+        for (const skill in this.actor.system.skills) {
 
-    for (const item of this.actor.items) {
-      if (item.type == 'influence') {
-        if (item.system.influenceSkill) {
-          for (const skill in this.actor.system.skills) {
-
-            if (skill == item.system.influenceSkill) {
-              for (const influenceEssence in this.actor.system.skills[skill].essences) {
-                if (this.actor.system.skills[skill].essences[influenceEssence] == true) {
-                  choices[influenceEssence] = {
-                    chosen: false,
-                    label: CONFIG.E20.originEssences[influenceEssence],
-                  }
+          if (skill == influence.system.influenceSkill) {
+            for (const influenceEssence in this.actor.system.skills[skill].essences) {
+              if (this.actor.system.skills[skill].essences[influenceEssence] == true) {
+                choices[influenceEssence] = {
+                  chosen: false,
+                  label: CONFIG.E20.originEssences[influenceEssence],
                 }
               }
             }
@@ -889,17 +891,16 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
-    for (const item of this.actor.items) {
-      if (item.type == 'influence') {
-        if (item.system.influenceSkill) {
-          const essence = CONFIG.E20.skillToEssence[item.system.influenceSkill];
-          if (options[essence] && essences.includes(essence)) {
-            selectedEssence = essence;
-            choices[item.system.influenceSkill] = {
-              chosen: false,
-              label: CONFIG.E20.originSkills[item.system.influenceSkill],
-            };
-          }
+    const influences = await this._getItemsOfType("influence");
+    for (const influence of influences) {
+      if (influence.system.influenceSkill) {
+        const essence = CONFIG.E20.skillToEssence[influence.system.influenceSkill];
+        if (options[essence] && essences.includes(essence)) {
+          selectedEssence = essence;
+          choices[influence.system.influenceSkill] = {
+            chosen: false,
+            label: CONFIG.E20.originSkills[influence.system.influenceSkill],
+          };
         }
       }
     }
@@ -995,15 +996,7 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
       if(!data) {
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium) {
-            let originPerk = await compendium.getDocument(id);
-            if (originPerk) {
-              data = originPerk;
-            }
-          }
-        }
+        data = searchCompendium(id)
       }
 
       const perk = await Item.create(data, { parent: this.actor });
