@@ -7,14 +7,25 @@
     </div>
     <div class="flexrow" style="gap: 2px;">
       <div class="actor-header-size">
-        <label for="system.size" class="resource-label">{{localize 'E20.ActorSize'}}</label>
-        <select name="system.size">
-          {{#select system.size}}
-          {{#each config.actorSizes as |value size|}}
-          <option value="{{size}}">{{value}}</option>
-          {{/each}}
-          {{/select}}
-        </select>
+        {{#if system.isTransformed}}
+          <label for="system.altModeSize" class="resource-label">{{localize 'E20.ActorSize'}}</label>
+          <select name="system.altModeSize">
+            {{#select system.altModeSize}}
+            {{#each config.actorSizes as |value size|}}
+            <option value="{{size}}">{{value}}</option>
+            {{/each}}
+            {{/select}}
+          </select>
+        {{else}}
+          <label for="system.size" class="resource-label">{{localize 'E20.ActorSize'}}</label>
+          <select name="system.size">
+            {{#select system.size}}
+            {{#each config.actorSizes as |value size|}}
+            <option value="{{size}}">{{value}}</option>
+            {{/each}}
+            {{/select}}
+          </select>
+        {{/if}}
       </div>
       {{#> secondary-fields}}
       {{!-- Custom secondary fields here --}}

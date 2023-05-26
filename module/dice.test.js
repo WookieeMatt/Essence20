@@ -25,24 +25,47 @@ class Mocki18n {
   format(text, _) { return text; }
 }
 
+const mockActor = {
+  system: {
+    initiative: {
+      formula: "",
+      modifier: 0,
+      shift: "d20",
+      shiftDown: 0,
+      shiftUp: 0,
+    },
+    essenceShifts: {
+      any: {
+        shiftDown: 0,
+        shiftUp: 0,
+      },
+      strength: {
+        shiftDown: 0,
+        shiftUp: 0,
+      },
+      speed: {
+        shiftDown: 0,
+        shiftUp: 0,
+      },
+      smarts: {
+        shiftDown: 0,
+        shiftUp: 0,
+      },
+      social: {
+        shiftDown: 0,
+        shiftUp: 0,
+      },
+    },
+  },
+};
+
 const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
 
 /* Begin Tests */
 
 /* prepareInitiativeRoll */
 describe("prepareInitiativeRoll", () => {
-  const mockActor = jest.mock();
-
   test("normal initiative roll", async () => {
-    mockActor.system = {};
-    mockActor.system.initiative = {
-      formula: "",
-      modifier: 0,
-      shift: "d20",
-      shiftDown: 0,
-      shiftUp: 0
-    };
-
     rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       shiftDown: 0,
@@ -51,11 +74,11 @@ describe("prepareInitiativeRoll", () => {
       isSpecialized: false,
       timesToRoll: 1,
     });
+    const mockInitActor = {...mockActor};
+    mockInitActor.update = jest.fn();
 
-    mockActor.update = jest.fn();
-    await dice.prepareInitiativeRoll(mockActor);
-
-    expect(mockActor.update).toHaveBeenCalledWith({
+    await dice.prepareInitiativeRoll(mockInitActor);
+    expect(mockInitActor.update).toHaveBeenCalledWith({
       "system.initiative.formula": "2d20kl + 0",
     });
   });
@@ -64,11 +87,13 @@ describe("prepareInitiativeRoll", () => {
 /* rollSkill */
 describe("rollSkill", () => {
   const dataset = {
-    isSpecialized: false,
+    essence: 'strength',
+    isSpecialized: 'false',
     shift: 'd20',
+    shiftDown: '0',
+    shiftUp: '0',
     skill: 'athletics',
   };
-  const mockActor = jest.mock();
 
   test("normal skill roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
@@ -235,6 +260,52 @@ describe("rollSkill", () => {
 
     await dice.rollSkill(dataset, mockActor, spell);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
+  });
+
+  test.only("essence-shifted skill roll", async () => {
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
+        },
+      },
+    }));
+    const expectedDataset = {
+      ...dataset,
+      isSpecialized: false,
+      shiftUp: 1,
+      shiftDown: 2,
+    };
+    const expectedSkillDataset = {
+      edge: false,
+      snag: false,
+    }
+    const mockShiftedActor = {
+      ...mockActor,
+      getRollData: jest.fn().mockReturnValue({
+        skills: {
+          athletics: {
+            edge: false,
+            snag: false,
+          }
+        }
+      }),
+    };
+    mockShiftedActor.system.essenceShifts.strength.shiftDown = 1;
+    mockShiftedActor.system.essenceShifts.strength.shiftUp = 1;
+    mockShiftedActor.system.essenceShifts.any.shiftDown = 1;
+    dice._rollSkillHelper = jest.fn()
+
+    await dice.rollSkill(dataset, mockShiftedActor, null);
+    expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(expectedDataset, expectedSkillDataset, mockShiftedActor);
   });
 });
 

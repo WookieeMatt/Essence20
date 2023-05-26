@@ -273,8 +273,6 @@ _onConfigureEntity(event) {
     context.contacts = contacts;
     context.classFeatures = classFeatures;
     context.classFeaturesById = classFeaturesById;
-    context.equippedArmorEvasion = equippedArmorEvasion;
-    context.equippedArmorToughness = equippedArmorToughness;
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
@@ -288,6 +286,11 @@ _onConfigureEntity(event) {
     context.threatPowers = threatPowers;
     context.upgrades = upgrades;
     context.weapons = weapons;
+
+    this.actor.update({
+      "system.defenses.evasion.armor": equippedArmorEvasion,
+      "system.defenses.toughness.armor": equippedArmorToughness,
+    }).then(this.render(false));
   }
 
   /* -------------------------------------------- */
@@ -317,8 +320,9 @@ _onConfigureEntity(event) {
 
       if (item.type == "origin") {
         this._onOriginDelete(item);
+      } else if (item.type == "altMode") {
+        this._onAltModeDelete(item);
       }
-
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
@@ -331,6 +335,12 @@ _onConfigureEntity(event) {
 
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
+
+    // Morph Button
+    html.find('.morph').click(this._morph.bind(this));
+
+    //Transform Button
+    html.find('.transform').click(this._transform.bind(this));
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -349,6 +359,36 @@ _onConfigureEntity(event) {
         this.render();
       } else {
         parent.toggleClass('open');
+
+        // Check if the container header toggle should be flipped
+        let oneClosed = false;
+
+        // Look for a closed Item
+        const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+        for (const accordionLabel of accordionLabels) {
+          oneClosed = !$(accordionLabel).hasClass('open');
+          if (oneClosed) break;
+        }
+
+        // Set header state to open if all Items are open; closed otherwise
+        const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
+        if (oneClosed) {
+          $(container).removeClass('open');
+        } else {
+          $(container).addClass('open');
+        }
+      }
+    });
+
+    // Open and collapse all Item contents in container
+    html.find('.header-accordion-label').click(ev => {
+      const el = ev.currentTarget;
+      const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
+      $(el.closest('.header-accordion-wrapper')).toggleClass('open');
+
+      const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+      for (const accordionLabel of accordionLabels) {
+        isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
       }
     });
 
@@ -360,6 +400,169 @@ _onConfigureEntity(event) {
         li.setAttribute("draggable", true);
         li.addEventListener("dragstart", handler, false);
       });
+    }
+  }
+
+/**
+* Handle clicking the transform button
+* @private
+*/
+  async _transform() {
+    const altModes = [];
+    for (const item of this.actor.items) {
+      if (item.type == "altMode") {
+        altModes.push(item);
+      }
+    }
+
+    if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
+      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+    } else if (altModes.length > 1) {                           // Select from multiple alt-modes
+      if (!this.actor.system.isTransformed) {
+        this._showAltModeChoiceDialog(altModes, false);         // More than 1 altMode and not transformed
+      } else {
+        this._showAltModeChoiceDialog(altModes, true);          // More than 1 altMode and transformed
+      }
+    } else {                                                    // Alt-mode/bot-mode toggle
+      this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes[0]);
+    }
+  }
+  /**
+   * Creates the Alt Mode Choice List Dialog
+   * @param {AltMode[]} altModes  A list of the available Alt Modes
+   * @param {Boolean} isTransformed Whether the Transformer is transformed or not
+   * @private
+   */
+  async _showAltModeChoiceDialog(altModes, isTransformed) {
+    const choices = {};
+    if (isTransformed) {
+      choices["BotMode"] = {
+        chosen: false,
+        label: "BotMode",
+      }
+    }
+
+    for (const altMode of altModes) {
+      if (this.actor.system.altModeId != altMode._id) {
+        choices[altMode._id] = {
+          chosen: false,
+          label: altMode.name,
+        }
+      }
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.AltModeChoice'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._altModeSelect(altModes, this._rememberOptions(html)),
+          }
+        },
+      },
+    ).render(true);
+  }
+
+  /**
+   * Handle selecting an alt-mode from the Alt-mode Dialog
+   * @param {AltMode[]} altModes  A list of the available Alt Modes
+   * @param {Object} options   The options resulting from _showAltModeDialog()
+   * @private
+   */
+  async _altModeSelect(altModes, options) {
+    let selectedForm = null;
+    let transformation = null;
+
+    for (const [altMode, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedForm = altMode;
+        break;
+      }
+    }
+
+    if (!selectedForm) {
+      return;
+    }
+
+    if (selectedForm == "BotMode") {
+      this._transformBotMode();
+    } else {
+      for (const mode of altModes) {
+        if (selectedForm == mode._id) {
+          transformation = mode;
+          break;
+        }
+      }
+
+      if (transformation) {
+        this._transformAltMode(transformation);
+      }
+    }
+  }
+
+  /**
+   * Handles Transforming into an altMode
+   * @param {AltMode} altMode   The alt-mode that was selected to Transform into
+   * @private
+   */
+  async _transformAltMode(altMode) {
+    await this.actor.update({
+      "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
+      "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
+      "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
+      "system.altModeSize": altMode.system.altModesize,
+      "system.altModeId": altMode._id,
+      "system.isTransformed": true,
+    }).then(this.render(false));
+  }
+
+  /**
+   * Handle Transforming back into the Bot Mode
+   * @private
+   */
+  async _transformBotMode() {
+    await this.actor.update({
+      "system.movement.aerial.altMode": 0,
+      "system.movement.swim.altMode": 0,
+      "system.movement.ground.altMode": 0,
+      "system.isTransformed": false,
+      "system.altModeId": "",
+      "system.altModeSize": "",
+    }).then(this.render(false));
+  }
+
+  /**
+   * Handle returning a list of AltModes
+   * @private
+   */
+  _getAltModes() {
+    const altModes = [];
+    for (const item of this.actor.items) {
+      if (item.type == "altMode") {
+        altModes.push(item);
+      }
+    }
+
+    return altModes;
+  }
+
+    /**
+   * Handle AltModes being deleted
+   * @param {AltMode} altMode is the deleted AltMode.
+   * @private
+   */
+  async _onAltModeDelete(altMode) {
+    const altModes = this._getAltModes();
+    if (altModes.length > 1) {
+      if (altMode._id == this.actor.system.altModeId) {
+        this._transformBotMode();
+      }
+    } else {
+      this._transformBotMode();
     }
   }
 
@@ -444,6 +647,13 @@ _onConfigureEntity(event) {
     }
   }
 
+  // Handle setting the isMorphed value
+  async _morph() {
+    await this.actor.update({
+      "system.isMorphed": !this.actor.system.isMorphed,
+    }).then(this.render(false));
+  }
+
   /**
    * Handle dropping an Item onto an Actor.
    * @param {DragEvent} event            The concluding DragEvent which contains drop data
@@ -477,6 +687,9 @@ _onConfigureEntity(event) {
         if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
           ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
           return false;
+        } else if (this.actor.type == 'transformer' && sourceItem.system.type != 'armor') {
+          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeTransformerError')));
+          return false;
         }
       default:
         super._onDropItem(event, data);
@@ -502,7 +715,7 @@ _onConfigureEntity(event) {
     new Dialog(
       {
         title: game.i18n.localize('E20.EssenceIncrease'),
-        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
           choices,
         }),
         buttons: {
@@ -561,7 +774,7 @@ _onConfigureEntity(event) {
     new Dialog(
       {
         title: game.i18n.localize('E20.OriginBonusSkill'),
-        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
           choices,
         }),
         buttons: {
@@ -626,9 +839,9 @@ _onConfigureEntity(event) {
       [skillString]: newShift,
       "system.health.max": origin.system.startingHealth,
       "system.health.value": origin.system.startingHealth,
-      "system.movement.aerial": origin.system.baseAerialMovement,
-      "system.movement.swim": origin.system.baseAquaticMovement,
-      "system.movement.ground": origin.system.baseGroundMovement,
+      "system.movement.aerial.base": origin.system.baseAerialMovement,
+      "system.movement.swim.base": origin.system.baseAquaticMovement,
+      "system.movement.ground.base": origin.system.baseGroundMovement,
       "system.originEssencesIncrease": essence,
       "system.originSkillsIncrease": selectedSkill,
     });
@@ -719,9 +932,9 @@ _onConfigureEntity(event) {
       [skillString]: newShift,
       "system.health.max": 0,
       "system.health.value": 0,
-      "system.movement.aerial": 0,
-      "system.movement.swim": 0,
-      "system.movement.ground": 0,
+      "system.movement.aerial.base": 0,
+      "system.movement.swim.base": 0,
+      "system.movement.ground.base": 0,
       "system.originEssencesIncrease": "",
       "system.originSkillsIncrease": ""
     });
