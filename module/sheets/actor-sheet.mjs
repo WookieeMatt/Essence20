@@ -95,7 +95,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
 _onConfigureEntity(event) {
   event.preventDefault();
-  new Essence20Crossover(this.actor).render(true);
+  console.log(event);
+  // new Essence20Crossover(this.actor).render(true);
 }
 
 /**
