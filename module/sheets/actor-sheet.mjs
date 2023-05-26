@@ -93,10 +93,39 @@ export class Essence20ActorSheet extends ActorSheet {
     return buttons;
   }
 
-_onConfigureEntity(event) {
+async _onConfigureEntity(event) {
   event.preventDefault();
-  console.log(event);
-  // new Essence20Crossover(this.actor).render(true);
+
+  new Dialog(
+    {
+      title: game.i18n.localize('E20.Crossover'),
+      content: await renderTemplate("systems/essence20/templates/dialog/crossover-options.hbs", {
+        actor: this.actor,
+        system: this.actor.system
+      }),
+      buttons: {
+        save: {
+          label: game.i18n.localize('E20.AcceptButton'),
+          callback: html => this._crossoverSettings(this._rememberOptions(html)),
+        }
+      },
+    },
+  ).render(true);
+}
+
+_crossoverSettings(options) {
+  for (const option in options) {
+    const updateString = `system.${option}`
+    if (options[option]) {
+      this.actor.update({
+        [updateString]: true
+      }).then(this.render(false));
+    } else {
+      this.actor.update({
+        [updateString]: false
+      }).then(this.render(false));
+    }
+  }
 }
 
 /**
