@@ -109,16 +109,16 @@ export class Essence20ItemSheet extends ItemSheet {
     this.form.ondrop = (event) => this._onDrop(event);
 
     // Delete Origin Perks from Origns
-    html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".originPerk", "originperkId", "originPerkIds"));
+    html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".originPerk", "originPerkIds"));
 
     // Delete Origin Perks from Origns
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
 
     // Delete Origin Perks from Origns
-    html.find('.influencePerk-delete').click(this._onIdDelete.bind(this, ".influencePerk", "influenceperkId", "influencePerkIds"));
+    html.find('.influencePerk-delete').click(this._onIdDelete.bind(this, ".influencePerk", "influencePerkIds"));
 
     // Delete Origin Perks from Origns
-    html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangupId", "hangUpIds"));
+    html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangUpIds"));
 
   }
 
@@ -239,9 +239,9 @@ export class Essence20ItemSheet extends ItemSheet {
   * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
   * @private
   */
-  async _onIdDelete(cssClass, idName, itemListName, event) {
+  async _onIdDelete(cssClass, itemListName, event) {
     const li = $(event.currentTarget).parents(cssClass);
-    const id = li.data(idName);
+    const id = li.data("itemId");
     let ids = this.item.system[itemListName].filter(x => x !== id);
     const systemSearch = `system.${itemListName}`;
     this.item.update({
@@ -257,7 +257,7 @@ export class Essence20ItemSheet extends ItemSheet {
   */
   async _onUpgradeDelete(event) {
     const li = $(event.currentTarget).parents(".upgrade");
-    const upgradeId = li.data("upgradeId");
+    const upgradeId = li.data("itemId");
 
     const deletedUpgrade = game.items.get(upgradeId) || await searchCompendium(upgradeId);
     if (!deletedUpgrade) {

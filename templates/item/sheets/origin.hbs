@@ -77,32 +77,7 @@
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Origin Perk --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginBenefit' originPerks=@root.originPerks}}
-    {{#*inline "item-field-inputs"}}
-    {{#if @root.originPerks}}
-    <div class="flexcol">
-      {{#each originPerks as |originPerk|}}
-      <div class="flexrow originPerk" data-originPerk-id="{{originPerk._id}}">
-        <ul class="items-list">
-          <li class="item">
-            <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
-              <label style="white-space: nowrap; overflow: hidden;">{{originPerk.name}}</label>
-              <div class="item-controls">
-                <a class="item-control originPerk-delete flex-right" title="{{localize 'E20.DeleteOriginPerk'}}">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      {{/each}}
-    </div>
-    {{else}}
-      <label>{{localize 'E20.OriginPerkDrop'}}</label>
-    {{/if}}
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{> "systems/essence20/templates/item/parts/id-drop.hbs" label='E20.OriginPerk' items=@root.originPerks}}
 
     {{!--Description--}}
     {{> "systems/essence20/templates/item/parts/description.hbs"}}

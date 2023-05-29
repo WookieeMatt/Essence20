@@ -24,60 +24,10 @@
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
     {{!-- Influence Perk --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluencePerk' influencePerks=@root.influencePerks}}
-    {{#*inline "item-field-inputs"}}
-    {{#if @root.influencePerks}}
-    <div class="flexcol">
-      {{#each influencePerks as |influencePerk|}}
-      <div class="flexrow influencePerk" data-influencePerk-id="{{influencePerk._id}}">
-        <ul class="items-list">
-          <li class="item">
-            <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
-              <label style="white-space: nowrap; overflow: hidden;">{{influencePerk.name}}</label>
-              <div class="item-controls">
-                <a class="item-control influencePerk-delete flex-right" title="{{localize 'E20.DeleteInfluencePerk'}}">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      {{/each}}
-    </div>
-    {{else}}
-      <label>{{localize 'E20.InfluencePerkDrop'}}</label>
-    {{/if}}
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{> "systems/essence20/templates/item/parts/id-drop.hbs" label='E20.InfluencePerk' items=@root.influencePerks}}
 
     {{!-- Hang-Ups --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.HangUps' hangUps=@root.hangUps}}
-    {{#*inline "item-field-inputs"}}
-    {{#if @root.hangUps}}
-    <div class="flexcol">
-      {{#each hangUps as |hangUp|}}
-      <div class="flexrow hangUp" data-hangUp-id="{{hangUp._id}}">
-        <ul class="items-list">
-          <li class="item">
-            <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
-              <label style="white-space: nowrap; overflow: hidden;">{{hangUp.name}}</label>
-              <div class="item-controls">
-                <a class="item-control hangUp-delete flex-right" title="{{localize 'E20.DeleteHangUp'}}">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-      {{/each}}
-    </div>
-    {{else}}
-      <label>{{localize 'E20.hangUpDrop'}}</label>
-    {{/if}}
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{> "systems/essence20/templates/item/parts/id-drop.hbs" label='E20.HangUps' items=@root.hangUps}}
 
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/description.hbs"}}

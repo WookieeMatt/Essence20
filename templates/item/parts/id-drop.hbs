@@ -1,15 +1,15 @@
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradePlural' upgrades=@root.upgrades}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label=label items=items}}
     {{#*inline "item-field-inputs"}}
-    {{#if @root.upgrades}}
+    {{#if items}}
     <div class="flexcol">
-      {{#each upgrades as |upgrade|}}
-      <div class="flexrow upgrade" data-upgrade-id="{{upgrade._id}}">
+      {{#each items as |item|}}
+      <div class="flexrow {{item.type}}" data-item-id="{{item._id}}">
         <ul class="items-list">
           <li class="item">
             <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
-              <label style="white-space: nowrap; overflow: hidden;">{{upgrade.name}}</label>
+              <label style="white-space: nowrap; overflow: hidden;">{{item.name}}</label>
               <div class="item-controls">
-                <a class="item-control upgrade-delete flex-right" title="{{localize 'E20.DeleteUpgrade'}}">
+                <a class="item-control {{item.type}}-delete flex-right" title="{{localize 'E20.DeleteItem'}}">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>
@@ -20,7 +20,7 @@
       {{/each}}
     </div>
     {{else}}
-      <label>{{localize 'E20.UpgradeDrop'}}</label>
+      <label>{{localize 'E20.ItemDrop'}}</label>
     {{/if}}
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

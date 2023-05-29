@@ -701,37 +701,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
     const newInfluenceList = await super._onDropItem(event, data);
     const newInfluence = newInfluenceList[0]
-    const perkIds = [];
-    const hangUpIds = [];
-    for (const id of sourceItem.system.influencePerkIds) {
-      let compendiumData = game.items.get(id);
-      if(!compendiumData) {
-        const influencePerk = searchCompendium(id);
-        if (influencePerk) {
-          compendiumData = influencePerk;
-        }
-      }
-
-      const perk = await Item.create(compendiumData, { parent: this.actor });
-      perkIds.push(perk._id);
-    }
+    const perkIds = await this._createItemCopies(sourceItem.system.influencePerkIds);
+    let hangUpIds = [];
     if (addHangUp) {
       if (sourceItem.system.hangUpIds.length > 1) {
         this._chooseHangUp(sourceItem, perkIds, newInfluence)
       } else {
-        for (const id of sourceItem.system.hangUpIds) {
-          let compendiumData = game.items.get(id);
-          if(!compendiumData) {
-            const hangUp = searchCompendium(id);
-            if (hangUp) {
-              compendiumData = hangUp;
-            }
-          }
-
-          const newHangUp = await Item.create(compendiumData, { parent: this.actor });
-          hangUpIds.push(newHangUp._id);
-        }
-        console.log(hangUpIds.length)
+        hangUpIds = await this._createItemCopies(sourceItem.system.hangUpIds);
         await newInfluence.update({
           ["system.influencePerkIds"]: perkIds,
           ["system.hangUpIds"]: hangUpIds
@@ -983,7 +959,32 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.originEssencesIncrease": essence,
       "system.originSkillsIncrease": selectedSkill,
     });
-}
+  }
+
+    /**
+   * Creates copies of Items for given IDs
+   * @param {String[]} ids  The IDs of the items to be copied
+   * @returns {String[]}    The IDs of the copied items
+   * @private
+   */
+  async _createItemCopies(ids) {
+    const copyIds = [];
+
+    for (const id of ids) {
+      let compendiumData = game.items.get(id);
+      if(!compendiumData) {
+        const item = searchCompendium(id);
+        if (item) {
+          compendiumData = item;
+        }
+      }
+
+      const newItem = await Item.create(compendiumData, { parent: this.actor });
+      copyIds.push(newItem._id);
+    }
+
+    return copyIds;
+  }
 
   /**
   * Creates the Perk from the Origin on the Actor
@@ -1049,19 +1050,19 @@ export class Essence20ActorSheet extends ActorSheet {
 
     for (const perk of influenceDelete.system.influencePerkIds) {
       if(perk){
-        const item = this.actor.items.get(perk)
-        if(item){
-          item.delete()
-        }
+        this._itemDeleteById(perk)
       }
     }
     for (const hangUp of influenceDelete.system.hangUpIds) {
-      let item = this.actor.items.get(hangUp)
-      if(item){
-        item.delete()
-      }
+      this._itemDeleteById(hangUp)
     }
+  }
 
+  _itemDeleteById(id) {
+    let item = this.actor.items.get(id)
+    if(item){
+      item.delete()
+    }
   }
 
   /**
@@ -1095,10 +1096,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const originDelete = this.actor.items.get(origin._id)
 
     for (const perk of originDelete.system.originPerkIds) {
-      let item = this.actor.items.get(perk)
-      if (item) {
-        item.delete()
-      }
+      this._itemDeleteById(perk)
     }
 
     const essenceString = `system.essences.${essence}`;

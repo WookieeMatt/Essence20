@@ -80,10 +80,10 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/weapon/details.hbs",
 
     // Item partials.
+    "systems/essence20/templates/item/parts/active-effects.hbs",
     "systems/essence20/templates/item/parts/description.hbs",
     "systems/essence20/templates/item/parts/header.hbs",
+    "systems/essence20/templates/item/parts/id-drop.hbs",
     "systems/essence20/templates/item/parts/sheet-field.hbs",
-    "systems/essence20/templates/item/parts/active-effects.hbs",
-    "systems/essence20/templates/item/parts/upgrades.hbs",
   ]);
 };
