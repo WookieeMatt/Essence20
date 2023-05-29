@@ -731,7 +731,6 @@ export class Essence20ActorSheet extends ActorSheet {
           const newHangUp = await Item.create(compendiumData, { parent: this.actor });
           hangUpIds.push(newHangUp._id);
         }
-        console.log(hangUpIds.length)
         await newInfluence.update({
           ["system.influencePerkIds"]: perkIds,
           ["system.hangUpIds"]: hangUpIds
@@ -1004,9 +1003,10 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     await newOrigin.update({
-      ["system.originPerkIds"]: perkIds
+      "system.originPerkIds": perkIds
     });
   }
+
 
   /**
    * Handle dropping of an Actor data onto another Actor sheet
@@ -1049,21 +1049,21 @@ export class Essence20ActorSheet extends ActorSheet {
 
     for (const perk of influenceDelete.system.influencePerkIds) {
       if(perk){
-        const item = this.actor.items.get(perk)
-        if(item){
-          item.delete()
-        }
+        this._itemDeleteById(perk)
       }
     }
     for (const hangUp of influenceDelete.system.hangUpIds) {
-      let item = this.actor.items.get(hangUp)
-      if(item){
-        item.delete()
-      }
+      this._itemDeleteById(hangUp)
     }
 
   }
 
+  _itemDeleteById(id) {
+    let item = this.actor.items.get(id)
+    if(item){
+      item.delete()
+    }
+  }
   /**
   * Handle deleting of an Origin from an Actor Sheet
   * @param {Object} origin   The Origin
@@ -1095,10 +1095,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const originDelete = this.actor.items.get(origin._id)
 
     for (const perk of originDelete.system.originPerkIds) {
-      let item = this.actor.items.get(perk)
-      if (item) {
-        item.delete()
-      }
+      this._itemDeleteById(perk)
     }
 
     const essenceString = `system.essences.${essence}`;
