@@ -92,6 +92,7 @@ export class Essence20ActorSheet extends ActorSheet {
         ];
       }
     }
+
     return buttons;
   }
 
