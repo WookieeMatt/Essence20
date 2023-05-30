@@ -36,7 +36,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // editable, the items array, and the effects array.
     const context = super.getData();
 
-    // Make all the Essence20 consts accessible
+    // Make all the Essence20 consts accessibleonIdDe
     context.config = CONFIG.E20;
 
     // Use a safe clone of the actor data for further operations.
@@ -95,49 +95,52 @@ export class Essence20ActorSheet extends ActorSheet {
     return buttons;
   }
 
-async _onConfigureEntity(event) {
-  event.preventDefault();
+  /**
+   * Creates dialog window for Crossover Options
+   * @param {Event} event   The originating click event
+   */
+  async _onConfigureEntity(event) {
+    event.preventDefault();
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.Crossover'),
-      content: await renderTemplate("systems/essence20/templates/dialog/crossover-options.hbs", {
-        actor: this.actor,
-        system: this.actor.system
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => this._crossoverSettings(this._rememberOptions(html)),
-        }
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.Crossover'),
+        content: await renderTemplate("systems/essence20/templates/dialog/crossover-options.hbs", {
+          actor: this.actor,
+          system: this.actor.system
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._crossoverSettings(this._rememberOptions(html)),
+          }
+        },
       },
-    },
-  ).render(true);
-}
+    ).render(true);
+  }
 
-_crossoverSettings(options) {
-  for (const option in options) {
-    const updateString = `system.${option}`
-    if (options[option]) {
-      this.actor.update({
-        [updateString]: true
-      }).then(this.render(false));
-    } else {
-      this.actor.update({
-        [updateString]: false
-      }).then(this.render(false));
+  /**
+   * Sets the options from the Crossover Dialog
+   * @param {HTML} html   The html of the dialog upon submission
+   */
+  _crossoverSettings(options) {
+    for (const option in options) {
+      const updateString = `system.${option}`
+      if (options[option]) {
+        this.actor.update({
+          [updateString]: true
+        }).then(this.render(false));
+      } else {
+        this.actor.update({
+          [updateString]: false
+        }).then(this.render(false));
+      }
     }
   }
-}
-
-/**
-
 
   /**
    * Prepare skills that are always displayed for NPCs.
-   *
    * @param {Object} context The actor data to prepare.
-   *
    * @return {undefined}
    */
   _prepareDisplayedNpcSkills(context) {
