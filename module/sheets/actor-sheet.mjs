@@ -691,10 +691,10 @@ export class Essence20ActorSheet extends ActorSheet {
   async _influenceUpdate(sourceItem, event, data) {
     let addHangUp = false;
 
-    for(const item of this.actor.items) {
+    for (const item of this.actor.items) {
       if (item.type == 'influence') {
         addHangUp = true;
-        break
+        break;
       }
     }
 
