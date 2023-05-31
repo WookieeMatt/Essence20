@@ -393,7 +393,6 @@ export class Essence20ActorSheet extends ActorSheet {
     return itemOfType
   }
 
-
 /**
 * Handle clicking the transform button
 * @private
