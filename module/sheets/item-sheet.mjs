@@ -170,14 +170,13 @@ export class Essence20ItemSheet extends ItemSheet {
     } else if (targetItem.type == "influence") {
       if (droppedItem.type == "perk") {
         const influencePerkIds = duplicate(this.item.system.influencePerkIds);
-
         this._addItemIfUnique(droppedItem, data, influencePerkIds, "influencePerk");
       } else if (droppedItem.type == "hangUp") {
         const hangUpIds = duplicate(this.item.system.hangUpIds);
-
         this._addItemIfUnique(droppedItem, data, hangUpIds, "hangUp");
       }
     }
+
     this.render(true);
   }
 
