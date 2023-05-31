@@ -119,7 +119,6 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Delete Origin Perks from Origns
     html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangUpIds"));
-
   }
 
   /**
