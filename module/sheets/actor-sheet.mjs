@@ -960,7 +960,7 @@ export class Essence20ActorSheet extends ActorSheet {
     });
   }
 
-    /**
+  /**
    * Creates copies of Items for given IDs
    * @param {String[]} ids  The IDs of the items to be copied
    * @returns {String[]}    The IDs of the copied items
