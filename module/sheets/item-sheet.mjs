@@ -241,7 +241,7 @@ export class Essence20ItemSheet extends ItemSheet {
   async _onIdDelete(cssClass, itemListName, event) {
     const li = $(event.currentTarget).parents(cssClass);
     const id = li.data("itemId");
-    let ids = this.item.system[itemListName].filter(x => x !== id);
+    const ids = this.item.system[itemListName].filter(x => x !== id);
     const systemSearch = `system.${itemListName}`;
     this.item.update({
       [systemSearch]: ids,
