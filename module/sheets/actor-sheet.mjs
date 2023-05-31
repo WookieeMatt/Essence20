@@ -1093,9 +1093,8 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     const originDelete = this.actor.items.get(origin._id)
-
     for (const perk of originDelete.system.originPerkIds) {
-      this._itemDeleteById(perk)
+      this._itemDeleteById(perk);
     }
 
     const essenceString = `system.essences.${essence}`;
