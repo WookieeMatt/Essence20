@@ -383,7 +383,7 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   _getItemsOfType(type) {
-    const itemOfType = [];
+    const itemsOfType = [];
     for (const item of this.actor.items) {
       if (item.type == type) {
         itemOfType.push(item);
