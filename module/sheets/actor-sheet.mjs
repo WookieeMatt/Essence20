@@ -1058,9 +1058,9 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   _itemDeleteById(id) {
-    let item = this.actor.items.get(id)
-    if(item){
-      item.delete()
+    let item = this.actor.items.get(id);
+    if (item){
+      item.delete();
     }
   }
 
