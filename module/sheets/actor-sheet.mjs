@@ -126,14 +126,14 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _crossoverSettings(options) {
     for (const option in options) {
-      const updateString = `system.${option}`
+      const updateString = `system.${option}`;
       if (options[option]) {
         this.actor.update({
-          [updateString]: true
+          [updateString]: true,
         }).then(this.render(false));
       } else {
         this.actor.update({
-          [updateString]: false
+          [updateString]: false,
         }).then(this.render(false));
       }
     }
