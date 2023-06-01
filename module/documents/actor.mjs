@@ -76,8 +76,12 @@ export class Essence20Actor extends Actor {
       this._prepareMovement();
     }
 
-this.system.canMorph = this.type == 'powerRanger';
-this.system.canTransform = this.type == 'transformer';
+    if (this.type == 'powerRanger') {
+      this.system.canMorph = true;
+    }
+    if (this.type == 'transformer') {
+      this.system.canTransform = true;
+    }
   }
 
   /**

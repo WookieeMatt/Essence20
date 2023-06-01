@@ -36,7 +36,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // editable, the items array, and the effects array.
     const context = super.getData();
 
-    // Make all the Essence20 consts accessibleonIdDe
+    // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
 
     // Use a safe clone of the actor data for further operations.
@@ -122,9 +122,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Sets the options from the Crossover Dialog
-   * @param {HTML} html   The html of the dialog upon submission
+   * @param {options} options   The options from the dialog
    */
   _crossoverSettings(options) {
+    console.log(options)
     for (const option in options) {
       const updateString = `system.${option}`;
       if (options[option]) {
