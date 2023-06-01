@@ -23,18 +23,7 @@
   <section class="sheet-body">
     {{!-- Skills Tab --}}
     <div class="tab skills flexcol" data-group="primary" data-tab="skills">
-      {{#if system.canTransform}}
-        <button class="transform" type="button">{{ localize "E20.Transform" }}</button>
-      {{/if}}
-      {{#if system.canMorph}}
-        <button class="morph" type="button">
-        {{#if system.isMorphed}}
-          {{localize 'E20.ButtonUnmorph'}}
-        {{else}}
-          {{localize 'E20.ButtonMorph'}}
-        {{/if}}
-        </button>
-      {{/if}}
+      {{> "systems/essence20/templates/actor/parts/misc/morph-transform.hbs"}}
       {{> "systems/essence20/templates/actor/parts/misc/defenses.hbs"}}
       {{> "systems/essence20/templates/actor/parts/misc/common.hbs"}}
       {{> "systems/essence20/templates/actor/parts/misc/pc-skills.hbs"}}
