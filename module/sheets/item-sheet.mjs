@@ -82,6 +82,11 @@ export class Essence20ItemSheet extends ItemSheet {
         item = searchCompendium(itemId);
         if (item) {
           itemArray.push(item);
+        } else {
+          if (this.actor) {
+            item = this.actor.items.get(itemId)
+            itemArray.push(item);
+          }
         }
       }
     }
