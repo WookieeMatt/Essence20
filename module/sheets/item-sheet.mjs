@@ -39,12 +39,9 @@ export class Essence20ItemSheet extends ItemSheet {
     const itemData = context.item;
     if (context.item.type == 'origin') {
       this._prepareItemDisplay(context, "originPerk");
-    }
-
-    if (context.item.type == 'armor' || context.item.type =='weapon') {
+    } else if (context.item.type == 'armor' || context.item.type =='weapon') {
       this._prepareItemDisplay(context, "upgrade");
-    }
-    if (context.item.type == 'influence') {
+    } else if (context.item.type == 'influence') {
       this._prepareItemDisplay(context, "hangUp");
       this._prepareItemDisplay(context, "influencePerk");
     }
@@ -116,13 +113,13 @@ export class Essence20ItemSheet extends ItemSheet {
     // Delete Origin Perks from Origns
     html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".originPerk", "originPerkIds"));
 
-    // Delete Origin Perks from Origns
+    // Delete Origin Upgrade from item
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
 
-    // Delete Origin Perks from Origns
+    // Delete Influence Perk from Influence
     html.find('.influencePerk-delete').click(this._onIdDelete.bind(this, ".influencePerk", "influencePerkIds"));
 
-    // Delete Origin Perks from Origns
+    // Delete Hang Up from Influence
     html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangUpIds"));
   }
 
@@ -237,7 +234,6 @@ export class Essence20ItemSheet extends ItemSheet {
   /**
   * Handle deleting of a Ids from an item Sheet
   * @param {String} cssClass           Where the deleted item is on the sheet
-  * @param {String} idName             The data field name from the item sheet
   * @param {String} itemListName       The name of the ID list
   * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
   * @private

@@ -1058,7 +1058,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     for (const id of ids) {
       let compendiumData = game.items.get(id);
-      if(!compendiumData) {
+      if (!compendiumData) {
         const item = searchCompendium(id);
         if (item) {
           compendiumData = item;
@@ -1075,6 +1075,7 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
   * Creates the Perk from the Origin on the Actor
   * @param {Object} origin   The Origin
+  * @param {Array} newOriginList
   * @private
   */
   async _originPerkCreate(origin, newOriginList){
@@ -1082,7 +1083,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const perkIds = [];
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
-      if(!data) {
+      if (!data) {
         data = searchCompendium(id)
       }
 
@@ -1132,18 +1133,24 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   _onInfluenceDelete (influence) {
-    const influenceDelete = this.actor.items.get(influence._id)
+    const influenceDelete = this.actor.items.get(influence._id);
 
     for (const perk of influenceDelete.system.influencePerkIds) {
       if(perk){
-        this._itemDeleteById(perk)
+        this._itemDeleteById(perk);
       }
     }
+
     for (const hangUp of influenceDelete.system.hangUpIds) {
-      this._itemDeleteById(hangUp)
+      this._itemDeleteById(hangUp);
     }
   }
 
+  /**
+  * Handle deleting of items by an Id
+  * @param {id} id of the item to delete
+  * @private
+  */
   _itemDeleteById(id) {
     let item = this.actor.items.get(id);
     if (item){
