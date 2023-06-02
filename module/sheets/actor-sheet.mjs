@@ -798,7 +798,7 @@ export class Essence20ActorSheet extends ActorSheet {
   async _chooseHangUp(influence, perkIds, newInfluence) {
     const choices = {};
     let itemArray = [];
-    let compendiumData = ""
+    let compendiumData = null;
     for (const id of influence.system.hangUpIds) {
       compendiumData = game.items.get(id);
       if(!compendiumData) {
@@ -811,7 +811,6 @@ export class Essence20ActorSheet extends ActorSheet {
           }
         }
       }
-
     }
 
     new Dialog(
@@ -824,31 +823,43 @@ export class Essence20ActorSheet extends ActorSheet {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
             callback: html => this._hangUpSelect(itemArray, this._rememberOptions(html), perkIds, newInfluence),
-          }
+          },
         },
       },
     ).render(true);
   }
 
+  /**
+  * Adds the chosen hangUp to the character
+  * @param {Array} itemArray  An Array of the HangUps that could be picked
+  * @param {Object} options the selections from the dialog
+  * @param {Array} perkIds the Ids from any perk that were added with the Influence
+  * @param {Object} newInfluence the newInfluence that was created.
+  * @private
+  */
   async _hangUpSelect(itemArray, options, perkIds, newInfluence) {
     console.log(itemArray)
     let selectedHangUp = null;
     const hangUpIds = [];
     let hangUpCreate = "";
+
     for (const [hangUp, isSelected] of Object.entries(options)) {
       if (isSelected) {
         selectedHangUp = hangUp;
         break;
       }
     }
+
     if (!selectedHangUp) {
       return;
     }
+
     for (const item of itemArray) {
       if (item._id == selectedHangUp) {
         hangUpCreate = item;
       }
     }
+
     const newHangUp = await Item.create(hangUpCreate, { parent: this.actor });
     hangUpIds.push(newHangUp._id);
     await newInfluence.update({
@@ -876,16 +887,12 @@ export class Essence20ActorSheet extends ActorSheet {
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
       if (influence.system.influenceSkill) {
-        for (const skill in this.actor.system.skills) {
-
-          if (skill == influence.system.influenceSkill) {
-            for (const influenceEssence in this.actor.system.skills[skill].essences) {
-              if (this.actor.system.skills[skill].essences[influenceEssence] == true) {
-                choices[influenceEssence] = {
-                  chosen: false,
-                  label: CONFIG.E20.originEssences[influenceEssence],
-                }
-              }
+        const skill = influence.system.influenceSkill
+        for (const influenceEssence in this.actor.system.skills[skill].essences) {
+          if (this.actor.system.skills[skill].essences[influenceEssence] == true) {
+            choices[influenceEssence] = {
+              chosen: false,
+              label: CONFIG.E20.originEssences[influenceEssence],
             }
           }
         }
@@ -1025,7 +1032,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     const newOrigin = await super._onDropItem(event, data);
-    this._originPerkCreate(origin, newOrigin)
+    this._originPerkCreate(origin, newOrigin);
 
     await this.actor.update({
       [essenceString]: essenceValue,
