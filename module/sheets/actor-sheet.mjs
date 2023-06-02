@@ -706,20 +706,21 @@ export class Essence20ActorSheet extends ActorSheet {
 
     const newInfluence = await super._onDropItem(event, data)[0];
     const perkIds = await this._createItemCopies(sourceItem.system.influencePerkIds);
-    let hangUpIds = [];
+
     if (addHangUp) {
-      if (sourceItem.system.hangUpIds.length > 1) {
-        this._chooseHangUp(sourceItem, perkIds, newInfluence)
+      if (sourceItem.system.hangUpIds.length) {
+        this._chooseHangUp(sourceItem, perkIds, newInfluence);
       } else {
-        hangUpIds = await this._createItemCopies(sourceItem.system.hangUpIds);
+        const hangUpIds = await this._createItemCopies(sourceItem.system.hangUpIds);
         await newInfluence.update({
           ["system.influencePerkIds"]: perkIds,
-          ["system.hangUpIds"]: hangUpIds
+          ["system.hangUpIds"]: hangUpIds,
         });
       }
     }
+
     await newInfluence.update({
-      ["system.influencePerkIds"]: perkIds
+      ["system.influencePerkIds"]: perkIds,
     });
   }
 
