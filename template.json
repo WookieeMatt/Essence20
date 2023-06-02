@@ -489,7 +489,8 @@
         "common",
         "creature",
         "character"
-      ]
+      ],
+      "canMorph": true
     },
     "megaformZord": {
       "templates": [
@@ -561,6 +562,7 @@
         "creature",
         "character"
       ],
+      "canTransform": true,
       "energon": 0,
       "externalHardpoints": 2,
       "internalHarpoints": 2,
