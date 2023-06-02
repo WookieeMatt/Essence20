@@ -382,6 +382,12 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  /**
+  * get items of a type
+  * @param {text} type the type of item to return
+  * @returns {Array} itemsOFType all items of the type requested.
+  * @private
+  */
   _getItemsOfType(type) {
     const itemsOfType = [];
     for (const item of this.actor.items) {
@@ -525,9 +531,9 @@ export class Essence20ActorSheet extends ActorSheet {
    * Handle returning a list of AltModes
    * @private
    */
-  async _getAltModes() {
+  _getAltModes() {
     const altModes = [];
-    altModes = await this._getItemsOfType("altMode");
+    altModes = this._getItemsOfType("altMode");
 
     return altModes;
   }
@@ -698,8 +704,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
-    const newInfluenceList = await super._onDropItem(event, data);
-    const newInfluence = newInfluenceList[0]
+    const newInfluence = await super._onDropItem(event, data)[0];
     const perkIds = await this._createItemCopies(sourceItem.system.influencePerkIds);
     let hangUpIds = [];
     if (addHangUp) {
