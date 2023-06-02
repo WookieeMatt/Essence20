@@ -758,7 +758,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {object} data      The data transfer extracted from the event
    * @private
    */
-  async _influenceUpdate(sourceItem, event, data) {
+  async _influenceUpdate(influence, event, data) {
     let addHangUp = false;
 
     for (const item of this.actor.items) {
@@ -768,39 +768,43 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
-    const newInfluence = await super._onDropItem(event, data)[0];
-    const perkIds = await this._createItemCopies(sourceItem.system.influencePerkIds);
+    const newInfluenceList = await super._onDropItem(event, data);
+    const newInfluence = newInfluenceList[0]
+    const perkIds = await this._createItemCopies(influence.system.influencePerkIds);
 
     if (addHangUp) {
-      if (sourceItem.system.hangUpIds.length) {
-        this._chooseHangUp(sourceItem, perkIds, newInfluence);
+      if (influence.system.hangUpIds.length > 1) {
+        this._chooseHangUp(influence, perkIds, newInfluence)
       } else {
-        const hangUpIds = await this._createItemCopies(sourceItem.system.hangUpIds);
+        const hangUpIds = await this._createItemCopies(influence.system.hangUpIds);
         await newInfluence.update({
           ["system.influencePerkIds"]: perkIds,
-          ["system.hangUpIds"]: hangUpIds,
+          ["system.hangUpIds"]: hangUpIds
         });
       }
     }
-
     await newInfluence.update({
-      ["system.influencePerkIds"]: perkIds,
+      ["system.influencePerkIds"]: perkIds
     });
   }
 
   /**
   * Displays a dialog for selecting a Hang Up from an Influence
   * @param {Object} influence  The Influence
+  * @param {Array} perkIds The perk Ids that go with the new Influence
+  * @param {Object} newInfluence the newInfluence that was created.
   * @private
   */
-  async _chooseHangUp(sourceItem, perkIds, newInfluence) {
+  async _chooseHangUp(influence, perkIds, newInfluence) {
     const choices = {};
+    let itemArray = [];
     let compendiumData = ""
-    for (const id of sourceItem.system.hangUpIds) {
+    for (const id of influence.system.hangUpIds) {
       compendiumData = game.items.get(id);
       if(!compendiumData) {
         compendiumData = searchCompendium(id);
         if (compendiumData) {
+          itemArray.push(compendiumData)
           choices[compendiumData._id] = {
             chosen: false,
             label: compendiumData.name,
@@ -819,27 +823,33 @@ export class Essence20ActorSheet extends ActorSheet {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._hangUpSelect(compendiumData, this._rememberOptions(html), perkIds, newInfluence),
+            callback: html => this._hangUpSelect(itemArray, this._rememberOptions(html), perkIds, newInfluence),
           }
         },
       },
     ).render(true);
   }
 
-  async _hangUpSelect(compendiumData, options, perkIds, newInfluence) {
+  async _hangUpSelect(itemArray, options, perkIds, newInfluence) {
+    console.log(itemArray)
     let selectedHangUp = null;
-    const hangUpIds = []
+    const hangUpIds = [];
+    let hangUpCreate = "";
     for (const [hangUp, isSelected] of Object.entries(options)) {
       if (isSelected) {
         selectedHangUp = hangUp;
         break;
       }
     }
-
     if (!selectedHangUp) {
       return;
     }
-    const newHangUp = await Item.create(compendiumData, { parent: this.actor });
+    for (const item of itemArray) {
+      if (item._id == selectedHangUp) {
+        hangUpCreate = item;
+      }
+    }
+    const newHangUp = await Item.create(hangUpCreate, { parent: this.actor });
     hangUpIds.push(newHangUp._id);
     await newInfluence.update({
       ["system.influencePerkIds"]: perkIds,
