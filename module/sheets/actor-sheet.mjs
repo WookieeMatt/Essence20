@@ -125,7 +125,6 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {options} options   The options from the dialog
    */
   _crossoverSettings(options) {
-    console.log(options)
     for (const option in options) {
       const updateString = `system.${option}`;
       if (options[option]) {
