@@ -386,11 +386,11 @@ export class Essence20ActorSheet extends ActorSheet {
     const itemsOfType = [];
     for (const item of this.actor.items) {
       if (item.type == type) {
-        itemOfType.push(item);
+        itemsOfType.push(item);
       }
     }
 
-    return itemOfType
+    return itemsOfType
   }
 
 /**
@@ -398,8 +398,8 @@ export class Essence20ActorSheet extends ActorSheet {
 * @private
 */
   async _transform() {
-    const altModes = [];
-    altModes =await this._getItemsOfType("altMode");
+    let altModes = [];
+    altModes = this._getItemsOfType("altMode");
 
     if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
       ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
