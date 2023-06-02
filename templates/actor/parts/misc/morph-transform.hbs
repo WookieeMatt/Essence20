@@ -1,0 +1,14 @@
+<div class="flexrow flex-group-center" style="border-color: {{system.color}};">
+  {{#if system.canTransform}}
+    <button class="transform" type="button">{{ localize "E20.Transform" }}</button>
+  {{/if}}
+  {{#if system.canMorph}}
+    <button class="morph" type="button">
+    {{#if system.isMorphed}}
+      {{localize 'E20.ButtonUnmorph'}}
+    {{else}}
+      {{localize 'E20.ButtonMorph'}}
+    {{/if}}
+    </button>
+  {{/if}}
+</div>
