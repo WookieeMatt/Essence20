@@ -460,16 +460,15 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
-    return itemsOfType
+    return itemsOfType;
   }
 
-/**
-* Handle clicking the transform button
-* @private
-*/
+  /**
+  * Handle clicking the transform button
+  * @private
+  */
   async _transform() {
-    let altModes = [];
-    altModes = this._getItemsOfType("altMode");
+    const altModes = this._getItemsOfType("altMode");
 
     if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
       ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
@@ -483,6 +482,7 @@ export class Essence20ActorSheet extends ActorSheet {
       this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes[0]);
     }
   }
+
   /**
    * Creates the Alt Mode Choice List Dialog
    * @param {AltMode[]} altModes  A list of the available Alt Modes
@@ -779,10 +779,11 @@ export class Essence20ActorSheet extends ActorSheet {
         const hangUpIds = await this._createItemCopies(influence.system.hangUpIds);
         await newInfluence.update({
           ["system.influencePerkIds"]: perkIds,
-          ["system.hangUpIds"]: hangUpIds
+          ["system.hangUpIds"]: hangUpIds,
         });
       }
     }
+
     await newInfluence.update({
       ["system.influencePerkIds"]: perkIds
     });
@@ -799,6 +800,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const choices = {};
     let itemArray = [];
     let compendiumData = null;
+
     for (const id of influence.system.hangUpIds) {
       compendiumData = game.items.get(id);
       if(!compendiumData) {
@@ -841,7 +843,7 @@ export class Essence20ActorSheet extends ActorSheet {
     console.log(itemArray)
     let selectedHangUp = null;
     const hangUpIds = [];
-    let hangUpCreate = "";
+    let hangUpToCreate = null;
 
     for (const [hangUp, isSelected] of Object.entries(options)) {
       if (isSelected) {
@@ -856,17 +858,16 @@ export class Essence20ActorSheet extends ActorSheet {
 
     for (const item of itemArray) {
       if (item._id == selectedHangUp) {
-        hangUpCreate = item;
+        hangUpToCreate = item;
       }
     }
 
-    const newHangUp = await Item.create(hangUpCreate, { parent: this.actor });
+    const newHangUp = await Item.create(hangUpToCreate, { parent: this.actor });
     hangUpIds.push(newHangUp._id);
     await newInfluence.update({
       ["system.influencePerkIds"]: perkIds,
       ["system.hangUpIds"]: hangUpIds
     });
-
   }
 
   /**
@@ -884,6 +885,7 @@ export class Essence20ActorSheet extends ActorSheet {
         label: CONFIG.E20.originEssences[essence],
       }
     }
+
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
       if (influence.system.influenceSkill) {
@@ -1031,8 +1033,8 @@ export class Essence20ActorSheet extends ActorSheet {
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
     }
 
-    const newOrigin = await super._onDropItem(event, data);
-    this._originPerkCreate(origin, newOrigin);
+    const newOriginList = await super._onDropItem(event, data);
+    this._originPerkCreate(origin, newOriginList);
 
     await this.actor.update({
       [essenceString]: essenceValue,
@@ -1074,8 +1076,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Creates the Perk from the Origin on the Actor
-  * @param {Object} origin   The Origin
-  * @param {Array} newOriginList
+  * * @param {Object} origin        The original Origin to get Perks from
+  * @param {Origin} newOrigin The new Origin being created
   * @private
   */
   async _originPerkCreate(origin, newOriginList){
@@ -1136,7 +1138,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const influenceDelete = this.actor.items.get(influence._id);
 
     for (const perk of influenceDelete.system.influencePerkIds) {
-      if(perk){
+      if (perk) {
         this._itemDeleteById(perk);
       }
     }
@@ -1153,7 +1155,7 @@ export class Essence20ActorSheet extends ActorSheet {
   */
   _itemDeleteById(id) {
     let item = this.actor.items.get(id);
-    if (item){
+    if (item) {
       item.delete();
     }
   }

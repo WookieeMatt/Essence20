@@ -67,24 +67,15 @@ export class Essence20ItemSheet extends ItemSheet {
   /**
   * Retireves the attached items for display on the sheet
   * @param {Object} context   The information from the item
+  * @param {string} itemType  The type of items to prepare
   * @private
   */
   async _prepareItemDisplay(context, itemType) {
-    let itemArray = [];
+    const itemArray = [];
     for (let itemId of (this.item.system[`${itemType}Ids`])) {
-      let item = game.items.get(itemId);
-      if (item){
+      const item = game.items.get(itemId) || searchCompendium(itemId) || this.actor.items.get(itemId);
+      if (item) {
         itemArray.push(item);
-      } else {
-        item = searchCompendium(itemId);
-        if (item) {
-          itemArray.push(item);
-        } else {
-          if (this.actor) {
-            item = this.actor.items.get(itemId)
-            itemArray.push(item);
-          }
-        }
       }
     }
 
