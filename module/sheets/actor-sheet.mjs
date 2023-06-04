@@ -753,7 +753,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle the dropping of an influence on to a character
-   * @param {Object} influence    The Influence
+   * @param {Influence} influence    The Influence
    * @param {DragEvent} event  The concluding DragEvent which contains drop data
    * @param {object} data      The data transfer extracted from the event
    * @private
