@@ -774,7 +774,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     await newInfluence.update({
-      ["system.influencePerkIds"]: perkIds
+      ["system.influencePerkIds"]: perkIds,
     });
   }
 
