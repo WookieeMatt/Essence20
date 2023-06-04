@@ -742,7 +742,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle the dropping of an influence on to a character
-   * @param {Object} influence    The Influence
+   * @param {Influence} influence    The Influence
    * @param {DragEvent} event  The concluding DragEvent which contains drop data
    * @param {object} data      The data transfer extracted from the event
    * @private
@@ -780,9 +780,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Displays a dialog for selecting a Hang Up from an Influence
-  * @param {Object} influence  The Influence
-  * @param {Array} perkIds The perk Ids that go with the new Influence
-  * @param {Object} newInfluence the newInfluence that was created.
+  * @param {Influence} influence  The Influence
+  * @param {Perk[]} perkIds The Perk IDs that go with the new Influence
+  * @param {Influence} newInfluence The new Influence that was created.
   * @private
   */
   async _chooseHangUp(influence, perkIds, newInfluence) {
@@ -822,14 +822,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Adds the chosen hangUp to the character
-  * @param {Array} itemArray  An Array of the HangUps that could be picked
-  * @param {Object} options the selections from the dialog
-  * @param {Array} perkIds the Ids from any perk that were added with the Influence
-  * @param {Object} newInfluence the newInfluence that was created.
+  * @param {HangUp[]} hangUps  An Array of the HangUps that could be picked
+  * @param {Object} options  The selections from the dialog
+  * @param {String[]} perkIds  The IDs from any perk that were added with the Influence
+  * @param {Influence} newInfluence  The new influence that was created
   * @private
   */
-  async _hangUpSelect(itemArray, options, perkIds, newInfluence) {
-    console.log(itemArray)
+  async _hangUpSelect(hangUps, options, perkIds, newInfluence) {
     let selectedHangUp = null;
     const hangUpIds = [];
     let hangUpToCreate = null;
@@ -878,7 +877,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
       if (influence.system.influenceSkill) {
-        const skill = influence.system.influenceSkill
+        const skill = influence.system.influenceSkill;
         for (const influenceEssence in this.actor.system.skills[skill].essences) {
           if (this.actor.system.skills[skill].essences[influenceEssence] == true) {
             choices[influenceEssence] = {
@@ -1065,7 +1064,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Creates the Perk from the Origin on the Actor
-  * * @param {Object} origin        The original Origin to get Perks from
+  * @param {Origin} origin        The original Origin to get Perks from
   * @param {Origin} newOrigin The new Origin being created
   * @private
   */
