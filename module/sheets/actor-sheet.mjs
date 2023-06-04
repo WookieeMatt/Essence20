@@ -1175,7 +1175,7 @@ export class Essence20ActorSheet extends ActorSheet {
       newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
     }
 
-    const originDelete = this.actor.items.get(origin._id)
+    const originDelete = this.actor.items.get(origin._id);
     for (const perk of originDelete.system.originPerkIds) {
       this._itemDeleteById(perk);
     }
