@@ -1118,7 +1118,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Handle deleting of an Influence from an Actor Sheet
-  * @param {Object} influence   The Influence
+  * @param {Influence} influence   The Influence
   * @private
   */
   _onInfluenceDelete (influence) {
