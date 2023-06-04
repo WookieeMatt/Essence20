@@ -1075,7 +1075,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Creates the Perk from the Origin on the Actor
-  * * @param {Object} origin        The original Origin to get Perks from
+  * @param {Origin} origin        The original Origin to get Perks from
   * @param {Origin} newOrigin The new Origin being created
   * @private
   */
