@@ -791,9 +791,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Displays a dialog for selecting a Hang Up from an Influence
-  * @param {Object} influence  The Influence
-  * @param {Array} perkIds The perk Ids that go with the new Influence
-  * @param {Object} newInfluence the newInfluence that was created.
+  * @param {Influence} influence  The Influence
+  * @param {Perk[]} perkIds The Perk IDs that go with the new Influence
+  * @param {Influence} newInfluence The new Influence that was created.
   * @private
   */
   async _chooseHangUp(influence, perkIds, newInfluence) {
