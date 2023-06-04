@@ -879,7 +879,7 @@ export class Essence20ActorSheet extends ActorSheet {
       if (influence.system.influenceSkill) {
         const skill = influence.system.influenceSkill;
         for (const influenceEssence in this.actor.system.skills[skill].essences) {
-          if (this.actor.system.skills[skill].essences[influenceEssence] == true) {
+          if (this.actor.system.skills[skill].essences[influenceEssence]) {
             choices[influenceEssence] = {
               chosen: false,
               label: CONFIG.E20.originEssences[influenceEssence],
