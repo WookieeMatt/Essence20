@@ -713,7 +713,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
       case 'influence':
-        await this._influenceUpdate(sourceItem, event, data)
+        await this._influenceUpdate(sourceItem, event, data);
         break;
       case 'origin':
         for (let actorItem of this.actor.items) {
