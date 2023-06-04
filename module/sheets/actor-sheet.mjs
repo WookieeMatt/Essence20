@@ -364,7 +364,7 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (item.type == "altMode") {
         this._onAltModeDelete(item);
       } else if (item.type == 'influence') {
-        this._onInfluenceDelete(item)
+        this._onInfluenceDelete(item);
       }
       item.delete();
       li.slideUp(200, () => this.render(false));
