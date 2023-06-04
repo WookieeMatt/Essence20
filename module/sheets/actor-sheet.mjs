@@ -833,14 +833,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Adds the chosen hangUp to the character
-  * @param {Array} itemArray  An Array of the HangUps that could be picked
-  * @param {Object} options the selections from the dialog
-  * @param {Array} perkIds the Ids from any perk that were added with the Influence
-  * @param {Object} newInfluence the newInfluence that was created.
+  * @param {HangUp[]} hangUps  An Array of the HangUps that could be picked
+  * @param {Object} options  The selections from the dialog
+  * @param {String[]} perkIds  The IDs from any perk that were added with the Influence
+  * @param {Influence} newInfluence  The new influence that was created
   * @private
   */
-  async _hangUpSelect(itemArray, options, perkIds, newInfluence) {
-    console.log(itemArray)
+  async _hangUpSelect(hangUps, options, perkIds, newInfluence) {
     let selectedHangUp = null;
     const hangUpIds = [];
     let hangUpToCreate = null;
