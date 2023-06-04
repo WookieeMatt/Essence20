@@ -758,7 +758,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     const newInfluenceList = await super._onDropItem(event, data);
-    const newInfluence = newInfluenceList[0]
+    const newInfluence = newInfluenceList[0];
     const perkIds = await this._createItemCopies(influence.system.influencePerkIds);
 
     if (addHangUp) {
