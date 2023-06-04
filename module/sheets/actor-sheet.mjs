@@ -792,7 +792,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     for (const id of influence.system.hangUpIds) {
       compendiumData = game.items.get(id);
-      if(!compendiumData) {
+      if (!compendiumData) {
         compendiumData = searchCompendium(id);
         if (compendiumData) {
           itemArray.push(compendiumData)
