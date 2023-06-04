@@ -592,23 +592,12 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-   * Handle returning a list of AltModes
-   * @private
-   */
-  _getAltModes() {
-    const altModes = [];
-    altModes = this._getItemsOfType("altMode");
-
-    return altModes;
-  }
-
-    /**
    * Handle AltModes being deleted
    * @param {AltMode} altMode is the deleted AltMode.
    * @private
    */
   async _onAltModeDelete(altMode) {
-    const altModes = this._getAltModes();
+    const altModes = this._getItemsOfType("altMode");
     if (altModes.length > 1) {
       if (altMode._id == this.actor.system.altModeId) {
         this._transformBotMode();
@@ -1034,7 +1023,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     const newOriginList = await super._onDropItem(event, data);
-    this._originPerkCreate(origin, newOriginList);
+    this._originPerkCreate(origin, newOriginList[0]);
 
     await this.actor.update({
       [essenceString]: essenceValue,
@@ -1080,8 +1069,7 @@ export class Essence20ActorSheet extends ActorSheet {
   * @param {Origin} newOrigin The new Origin being created
   * @private
   */
-  async _originPerkCreate(origin, newOriginList){
-    const newOrigin = newOriginList[0]
+  async _originPerkCreate(origin, newOrigin){
     const perkIds = [];
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
