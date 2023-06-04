@@ -1137,7 +1137,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Handle deleting of items by an Id
-  * @param {id} id of the item to delete
+  * @param {String} id of the item to delete
   * @private
   */
   _itemDeleteById(id) {
