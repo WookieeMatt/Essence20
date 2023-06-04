@@ -888,7 +888,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
       if (influence.system.influenceSkill) {
-        const skill = influence.system.influenceSkill
+        const skill = influence.system.influenceSkill;
         for (const influenceEssence in this.actor.system.skills[skill].essences) {
           if (this.actor.system.skills[skill].essences[influenceEssence] == true) {
             choices[influenceEssence] = {
