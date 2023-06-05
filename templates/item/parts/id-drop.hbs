@@ -1,4 +1,4 @@
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label=label items=items}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" thing=thing label=label items=items}}
     {{#*inline "item-field-inputs"}}
     {{#if items}}
     <div class="flexcol">
@@ -9,7 +9,7 @@
             <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
               <label style="white-space: nowrap; overflow: hidden;">{{item.name}}</label>
               <div class="item-controls">
-                <a class="item-control {{item.type}}-delete flex-right" title="{{localize 'E20.DeleteItem'}}">
+                <a class="item-control {{../thing}}-delete flex-right" title="{{localize 'E20.DeleteItem'}}">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>

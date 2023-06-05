@@ -759,7 +759,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     const newInfluenceList = await super._onDropItem(event, data);
     const newInfluence = newInfluenceList[0];
-    const perkIds = await this._createItemCopies(influence.system.influencePerkIds);
+    const perkIds = await this._createItemCopies(influence.system.perkIds);
 
     if (addHangUp) {
       if (influence.system.hangUpIds.length > 1) {
@@ -767,14 +767,14 @@ export class Essence20ActorSheet extends ActorSheet {
       } else {
         const hangUpIds = await this._createItemCopies(influence.system.hangUpIds);
         await newInfluence.update({
-          ["system.influencePerkIds"]: perkIds,
+          ["system.perkIds"]: perkIds,
           ["system.hangUpIds"]: hangUpIds,
         });
       }
     }
 
     await newInfluence.update({
-      ["system.influencePerkIds"]: perkIds,
+      ["system.perkIds"]: perkIds,
     });
   }
 
@@ -853,7 +853,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const newHangUp = await Item.create(hangUpToCreate, { parent: this.actor });
     hangUpIds.push(newHangUp._id);
     await newInfluence.update({
-      ["system.influencePerkIds"]: perkIds,
+      ["system.perkIds"]: perkIds,
       ["system.hangUpIds"]: hangUpIds
     });
   }
@@ -876,8 +876,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
-      if (influence.system.influenceSkill) {
-        const skill = influence.system.influenceSkill;
+      if (influence.system.skill) {
+        const skill = influence.system.skill;
         for (const influenceEssence in this.actor.system.skills[skill].essences) {
           if (this.actor.system.skills[skill].essences[influenceEssence]) {
             choices[influenceEssence] = {
@@ -945,13 +945,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
-      if (influence.system.influenceSkill) {
-        const essence = CONFIG.E20.skillToEssence[influence.system.influenceSkill];
+      if (influence.system.skill) {
+        const essence = CONFIG.E20.skillToEssence[influence.system.skill];
         if (options[essence] && essences.includes(essence)) {
           selectedEssence = essence;
-          choices[influence.system.influenceSkill] = {
+          choices[influence.system.skill] = {
             chosen: false,
-            label: CONFIG.E20.originSkills[influence.system.influenceSkill],
+            label: CONFIG.E20.originSkills[influence.system.skill],
           };
         }
       }
@@ -1124,7 +1124,7 @@ export class Essence20ActorSheet extends ActorSheet {
   _onInfluenceDelete (influence) {
     const influenceDelete = this.actor.items.get(influence._id);
 
-    for (const perk of influenceDelete.system.influencePerkIds) {
+    for (const perk of influenceDelete.system.perkIds) {
       if (perk) {
         this._itemDeleteById(perk);
       }

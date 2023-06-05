@@ -43,7 +43,7 @@ export class Essence20ItemSheet extends ItemSheet {
       this._prepareItemDisplay(context, "upgrade");
     } else if (context.item.type == 'influence') {
       this._prepareItemDisplay(context, "hangUp");
-      this._prepareItemDisplay(context, "influencePerk");
+      this._prepareItemDisplay(context, "perk");
     }
 
     // Retrieve the roll data for TinyMCE editors.
@@ -108,7 +108,7 @@ export class Essence20ItemSheet extends ItemSheet {
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
 
     // Delete Influence Perk from Influence
-    html.find('.influencePerk-delete').click(this._onIdDelete.bind(this, ".influencePerk", "influencePerkIds"));
+    html.find('.influencePerk-delete').click(this._onIdDelete.bind(this, ".perk", "perkIds"));
 
     // Delete Hang Up from Influence
     html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangUpIds"));
@@ -162,8 +162,8 @@ export class Essence20ItemSheet extends ItemSheet {
       }
     } else if (targetItem.type == "influence") {
       if (droppedItem.type == "perk") {
-        const influencePerkIds = duplicate(this.item.system.influencePerkIds);
-        this._addItemIfUnique(droppedItem, data, influencePerkIds, "influencePerk");
+        const perkIds = duplicate(this.item.system.perkIds);
+        this._addItemIfUnique(droppedItem, data, perkIds, "perk");
       } else if (droppedItem.type == "hangUp") {
         const hangUpIds = duplicate(this.item.system.hangUpIds);
         this._addItemIfUnique(droppedItem, data, hangUpIds, "hangUp");

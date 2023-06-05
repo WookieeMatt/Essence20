@@ -437,8 +437,7 @@
         },
         "influenceIds": [],
         "level": 1,
-        "notes": "",
-        "originPerkIds": []
+        "notes": ""
       },
       "creature": {
         "languages": []
@@ -703,8 +702,8 @@
       ],
       "bond": "",
       "hangUpIds": [],
-      "influencePerkIds": [],
-      "influenceSkill": []
+      "perkIds": [],
+      "skill": []
     },
     "magicBauble": {
       "templates": [
