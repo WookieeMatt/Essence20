@@ -1,26 +1,26 @@
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" thing=thing label=label items=items}}
-    {{#*inline "item-field-inputs"}}
-    {{#if items}}
-    <div class="flexcol">
-      {{#each items as |item|}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" className=className label=label items=items}}
+{{#*inline "item-field-inputs"}}
+{{#if items}}
+  <div class="flexcol">
+    {{#each items as |item|}}
       <div class="flexrow {{item.type}}" data-item-id="{{item._id}}">
         <ul class="items-list">
           <li class="item">
-            <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
-              <label style="white-space: nowrap; overflow: hidden;">{{item.name}}</label>
-              <div class="item-controls">
-                <a class="item-control {{../thing}}-delete flex-right" title="{{localize 'E20.DeleteItem'}}">
-                  <i class="fas fa-trash"></i>
-                </a>
-              </div>
+          <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
+            <label style="white-space: nowrap; overflow: hidden;">{{item.name}}</label>
+            <div class="item-controls">
+              <a class="item-control {{../className}}-delete flex-right" title="{{localize 'E20.DeleteItem'}}">
+                <i class="fas fa-trash"></i>
+              </a>
             </div>
+          </div>
           </li>
         </ul>
       </div>
-      {{/each}}
-    </div>
-    {{else}}
-      <label>{{localize 'E20.ItemDrop'}}</label>
-    {{/if}}
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/each}}
+  </div>
+{{else}}
+  <label>{{localize 'E20.ItemDrop'}}</label>
+{{/if}}
+{{/inline}}
+{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
