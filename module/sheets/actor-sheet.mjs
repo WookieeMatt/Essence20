@@ -1073,7 +1073,7 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
       if (!data) {
-        data = searchCompendium(id)
+        data = searchCompendium(id);
       }
 
       const perk = await Item.create(data, { parent: this.actor });
