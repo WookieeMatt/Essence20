@@ -447,9 +447,9 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-  * get items of a type
-  * @param {text} type the type of item to return
-  * @returns {Array} itemsOFType all items of the type requested.
+  * Get items of a type
+  * @param {String} type The type of item to return
+  * @returns {Item[]}    All items of the type requested
   * @private
   */
   _getItemsOfType(type) {
