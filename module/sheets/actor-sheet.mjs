@@ -1081,7 +1081,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     await newOrigin.update({
-      ["system.originPerkIds"]: perkIds
+      ["system.originPerkIds"]: perkIds,
     });
   }
 
