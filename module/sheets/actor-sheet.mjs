@@ -854,7 +854,7 @@ export class Essence20ActorSheet extends ActorSheet {
     hangUpIds.push(newHangUp._id);
     await newInfluence.update({
       ["system.perkIds"]: perkIds,
-      ["system.hangUpIds"]: hangUpIds
+      ["system.hangUpIds"]: hangUpIds,
     });
   }
 
