@@ -96,3 +96,21 @@ export function indexFromUuid(uuid) {
   return index || null;
 }
 
+ /**
+  * Handles search of the Compendiums to find the item
+  * @param {Item|String} item  Either an ID or an Item to find in the compendium
+  * @returns {Item}     The Item, if found
+  */
+ export function searchCompendium(item) {
+  const id = item._id || item;
+
+  for (const pack of game.packs){
+    const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+    if (compendium) {
+      const compendiumItem = compendium.index.get(id);
+      if (compendiumItem) {
+        return compendiumItem;
+      }
+    }
+  }
+}
