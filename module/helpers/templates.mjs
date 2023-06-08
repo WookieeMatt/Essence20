@@ -29,6 +29,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/health.hbs",
     "systems/essence20/templates/actor/parts/misc/initiative.hbs",
     "systems/essence20/templates/actor/parts/misc/mode-selector.hbs",
+    "systems/essence20/templates/actor/parts/misc/morph-transform.hbs",
     "systems/essence20/templates/actor/parts/misc/movement.hbs",
     "systems/essence20/templates/actor/parts/misc/notes.hbs",
     "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs",
@@ -58,6 +59,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/gear/details.hbs",
     "systems/essence20/templates/actor/parts/items/hangUp/container.hbs",
     "systems/essence20/templates/actor/parts/items/hangUp/details.hbs",
+    "systems/essence20/templates/actor/parts/items/influence/container.hbs",
+    "systems/essence20/templates/actor/parts/items/influence/details.hbs",
     "systems/essence20/templates/actor/parts/items/magicBauble/container.hbs",
     "systems/essence20/templates/actor/parts/items/magicBauble/details.hbs",
     "systems/essence20/templates/actor/parts/items/megaformTrait/container.hbs",
@@ -78,10 +81,10 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/weapon/details.hbs",
 
     // Item partials.
+    "systems/essence20/templates/item/parts/active-effects.hbs",
     "systems/essence20/templates/item/parts/description.hbs",
     "systems/essence20/templates/item/parts/header.hbs",
+    "systems/essence20/templates/item/parts/id-drop.hbs",
     "systems/essence20/templates/item/parts/sheet-field.hbs",
-    "systems/essence20/templates/item/parts/active-effects.hbs",
-    "systems/essence20/templates/item/parts/upgrades.hbs",
   ]);
 };

@@ -15,6 +15,8 @@
       "common": {
         "altModeName": "",
         "altModeSize": "common",
+        "canMorph": false,
+        "canTransform": false,
         "color": "#b5b1b1",
         "conditioning": 0,
         "description": "",
@@ -433,6 +435,7 @@
           "smarts": 3,
           "social": 3
         },
+        "influenceIds": [],
         "level": 1,
         "notes": ""
       },
@@ -487,7 +490,8 @@
         "common",
         "creature",
         "character"
-      ]
+      ],
+      "canMorph": true
     },
     "megaformZord": {
       "templates": [
@@ -559,6 +563,7 @@
         "creature",
         "character"
       ],
+      "canTransform": true,
       "energon": 0,
       "externalHardpoints": 2,
       "internalHarpoints": 2,
@@ -605,6 +610,7 @@
       "feature",
       "gear",
       "hangUp",
+      "influence",
       "magicBauble",
       "megaformTrait",
       "origin",
@@ -689,6 +695,15 @@
       "templates": [
         "itemDescription"
       ]
+    },
+    "influence": {
+      "templates" : [
+        "itemDescription"
+      ],
+      "bond": "",
+      "hangUpIds": [],
+      "perkIds": [],
+      "skills": []
     },
     "magicBauble": {
       "templates": [
