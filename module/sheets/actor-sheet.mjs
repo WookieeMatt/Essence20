@@ -185,20 +185,6 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Organize and classify Items for Character sheets.
    *
-   * @param {Object} actorData The actor to prepare.
-   *
-   * @return {undefined}
-   */
-  _prepareCharacterData(context) {
-    // Handle ability scores.
-    // for (let [k, v] of Object.entries(context.data.abilities)) {
-    //   v.label = game.i18n.localize(CONFIG.BOILERPLATE.abilities[k]) ?? k;
-    // }
-  }
-
-  /**
-   * Organize and classify Items for Character sheets.
-   *
    * @param {Object} context The actor data to prepare.
    *
    * @return {undefined}
@@ -229,84 +215,106 @@ export class Essence20ActorSheet extends ActorSheet {
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
 
-    // // Iterate through items, allocating to containers
+    // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
+
       switch (itemType) {
-        case 'altMode':
-          altModes.push(i);
-          break;
-        case 'armor':
-          if (i.system.equipped) {
-            equippedArmorEvasion += parseInt(i.system.bonusEvasion);
-            equippedArmorToughness += parseInt(i.system.bonusToughness);
-          }
-          armors.push(i);
-          break;
-        case 'bond':
-          bonds.push(i);
-          break;
-        case 'contact':
-          contacts.push(i);
-          break;
-        case 'feature':
-          features.push(i);
-          break;
-        case 'gear':
-          gears.push(i);
-          break;
-        case 'hangUp':
-          hangUps.push(i);
-          break;
-        case 'influence':
-          influences.push(i);
-          break;
-        case 'magicBauble':
-          magicBaubles.push(i);
-          break;
-        case 'megaformTrait':
-          megaformTraits.push(i);
-          break;
-        case 'origin':
-          i.skillsString = i.system.skills.map(skill => {
-            return CONFIG.E20.originSkills[skill];
-          }).join(", ");
-          i.essenceString = i.system.essences.map(essence => {
-            return CONFIG.E20.originEssences[essence];
-          }).join(", ");
-          origins.push(i);
-          break;
-        case 'perk':
-          perks.push(i);
-          break;
-        case 'power':
-          powers.push(i);
-          break;
-        case 'spell':
-          spells.push(i);
-          break;
-        case 'classFeature':
-          classFeatures.push(i);
-          classFeaturesById[i._id] = i.name;
-          break;
-        case 'specialization':
-          const skill = i.system.skill;
-          const existingSkillSpecializations = specializations[skill];
-          existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
-          break;
-        case 'threatPower':
-          threatPowers.push(i);
-          break;
-        case 'trait':
-          traits.push(i);
-          break;
-        case 'upgrade':
-          upgrades.push(i);
-        case 'weapon':
-          weapons.push(i);
-          break;
-      };
+      case 'altMode': {
+        altModes.push(i);
+        break;
+      }
+      case 'armor': {
+        if (i.system.equipped) {
+          equippedArmorEvasion += parseInt(i.system.bonusEvasion);
+          equippedArmorToughness += parseInt(i.system.bonusToughness);
+        }
+        armors.push(i);
+        break;
+      }
+      case 'bond': {
+        bonds.push(i);
+        break;
+      }
+      case 'contact': {
+        contacts.push(i);
+        break;
+      }
+      case 'feature': {
+        features.push(i);
+        break;
+      }
+      case 'gear': {
+        gears.push(i);
+        break;
+      }
+      case 'hangUp': {
+        hangUps.push(i);
+        break;
+      }
+      case 'influence': {
+        influences.push(i);
+        break;
+      }
+      case 'magicBauble': {
+        magicBaubles.push(i);
+        break;
+      }
+      case 'megaformTrait': {
+        megaformTraits.push(i);
+        break;
+      }
+      case 'origin': {
+        i.skillsString = i.system.skills.map(skill => {
+          return CONFIG.E20.originSkills[skill];
+        }).join(", ");
+        i.essenceString = i.system.essences.map(essence => {
+          return CONFIG.E20.originEssences[essence];
+        }).join(", ");
+        origins.push(i);
+        break;
+      }
+      case 'perk': {
+        perks.push(i);
+        break;
+      }
+      case 'power': {
+        powers.push(i);
+        break;
+      }
+      case 'spell': {
+        spells.push(i);
+        break;
+      }
+      case 'classFeature': {
+        classFeatures.push(i);
+        classFeaturesById[i._id] = i.name;
+        break;
+      }
+      case 'specialization': {
+        const skill = i.system.skill;
+        const existingSkillSpecializations = specializations[skill];
+        existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
+        break;
+      }
+      case 'threatPower': {
+        threatPowers.push(i);
+        break;
+      }
+      case 'trait': {
+        traits.push(i);
+        break;
+      }
+      case 'upgrade': {
+        upgrades.push(i);
+        break;
+      }
+      case 'weapon': {
+        weapons.push(i);
+        break;
+      }
+      }
     }
 
     // Assign and return
@@ -499,7 +507,7 @@ export class Essence20ActorSheet extends ActorSheet {
       choices["BotMode"] = {
         chosen: false,
         label: "BotMode",
-      }
+      };
     }
 
     for (const altMode of altModes) {
@@ -507,7 +515,7 @@ export class Essence20ActorSheet extends ActorSheet {
         choices[altMode._id] = {
           chosen: false,
           label: altMode.name,
-        }
+        };
       }
     }
 
@@ -716,33 +724,34 @@ export class Essence20ActorSheet extends ActorSheet {
     if (!sourceItem) return false;
 
     switch (sourceItem.type) {
-      case 'influence':
-        await this._influenceUpdate(sourceItem, event, data);
-        break;
-      case 'origin':
-        for (let actorItem of this.actor.items) {
-          // Characters can only have one Origin
-          if(actorItem.type == 'origin') {
-            ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
-            return false;
-          }
+    case 'influence':
+      await this._influenceUpdate(sourceItem, event, data);
+      break;
+    case 'origin':
+      for (let actorItem of this.actor.items) {
+        // Characters can only have one Origin
+        if(actorItem.type == 'origin') {
+          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
+          return false;
         }
+      }
 
-        await this._showOriginEssenceDialog(sourceItem, event, data);
-        break;
-      case 'upgrade':
-        // Drones can only accept drone Upgrades
-        if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
-          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
-          return false;
-        } else if (this.actor.type == 'transformer' && sourceItem.system.type != 'armor') {
-          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeTransformerError')));
-          return false;
-        }
-      default:
-        super._onDropItem(event, data);
+      await this._showOriginEssenceDialog(sourceItem, event, data);
+      break;
+    case 'upgrade':
+      // Drones can only accept drone Upgrades
+      if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
+        return false;
+      } else if (this.actor.type == 'transformer' && sourceItem.system.type != 'armor') {
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeTransformerError')));
+        return false;
+      }
+      break;
+    default:
+      super._onDropItem(event, data);
     }
-  };
+  }
 
   /**
    * Handle the dropping of an influence on to a character
@@ -767,7 +776,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     if (addHangUp) {
       if (influence.system.hangUpIds.length > 1) {
-        this._chooseHangUp(influence, perkIds, newInfluence)
+        this._chooseHangUp(influence, perkIds, newInfluence);
       } else {
         const hangUpIds = await this._createItemCopies(influence.system.hangUpIds);
         await newInfluence.update({
@@ -799,11 +808,11 @@ export class Essence20ActorSheet extends ActorSheet {
       if (!compendiumData) {
         compendiumData = searchCompendium(id);
         if (compendiumData) {
-          itemArray.push(compendiumData)
+          itemArray.push(compendiumData);
           choices[compendiumData._id] = {
             chosen: false,
             label: compendiumData.name,
-          }
+          };
         }
       }
     }
@@ -875,7 +884,7 @@ export class Essence20ActorSheet extends ActorSheet {
       choices[essence] = {
         chosen: false,
         label: CONFIG.E20.originEssences[essence],
-      }
+      };
     }
 
     const influences = await this._getItemsOfType("influence");
@@ -887,7 +896,7 @@ export class Essence20ActorSheet extends ActorSheet {
             choices[influenceEssence] = {
               chosen: false,
               label: CONFIG.E20.originEssences[influenceEssence],
-            }
+            };
           }
         }
       }
@@ -921,7 +930,7 @@ export class Essence20ActorSheet extends ActorSheet {
       options[el.id] = el.checked;
     });
     return options;
-  };
+  }
 
   /**
    * Displays a dialog for selecting a Skill for the given Origin.
@@ -1014,7 +1023,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (selectedSkill == "initiative"){
       skillString = `system.${selectedSkill}.shift`;
       currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
     } else if (selectedSkill == "conditioning"){
       skillString = `system.${selectedSkill}`;
       currentShift = this.actor.system[selectedSkill];
@@ -1022,7 +1031,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else {
       currentShift = this.actor.system.skills[selectedSkill].shift;
       skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
     }
 
     const newOriginList = await super._onDropItem(event, data);
@@ -1168,7 +1177,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (selectedSkill == "initiative"){
       skillString = `system.${selectedSkill}.shift`;
       currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
     } else if (selectedSkill == "conditioning"){
       skillString = `system.${selectedSkill}`;
       currentShift = this.actor.system[selectedSkill];
@@ -1176,7 +1185,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else {
       currentShift = this.actor.system.skills[selectedSkill].shift;
       skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
     }
 
     const originDelete = this.actor.items.get(origin._id);
