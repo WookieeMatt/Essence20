@@ -78,22 +78,6 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Prepare Character type specific data
-   */
-  _prepareCharacterData(actorData) {
-    // if (actorData.type !== 'character') return;
-
-    // // Make modifications to data here. For example:
-    // const data = actorData.data;
-
-    // // Loop through ability scores, and add their modifiers to our sheet output.
-    // for (let [key, ability] of Object.entries(data.abilities)) {
-    //   // Calculate the modifier using d20 rules.
-    //   ability.mod = Math.floor((ability.value - 10) / 2);
-    // }
-  }
-
-  /**
    * Prepare NPC type specific data.
    */
   _prepareNpcData() {
@@ -191,15 +175,6 @@ export class Essence20Actor extends Actor {
   _getCharacterRollData(data) {
     const initiativeFormula = data.initiative.shift == 'd20' ? 'd20' : `d20 + ${data.initiative.shift}`;
     data.initiativeFormula = `${initiativeFormula} + ${data.initiative.modifier}`;
-  }
-
-  /**
-   * Prepare NPC roll data.
-   */
-  _getNpcRollData(data) {
-    if (this.type !== 'npc') return;
-
-    // Process additional NPC data here.
   }
 
   /**

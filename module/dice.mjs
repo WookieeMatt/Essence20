@@ -41,7 +41,7 @@ export class Dice {
     const skillDataset = {
       edge: actor.system.initiative.edge,
       snag: actor.system.initiative.snag,
-    }
+    };
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
@@ -49,7 +49,7 @@ export class Dice {
     }
 
     const finalShift = this._getFinalShift(
-      skillRollOptions, actor.system.initiative.shift, E20.initiativeShiftList)
+      skillRollOptions, actor.system.initiative.shift, E20.initiativeShiftList);
     await actor.update({
       "system.initiative.formula": this._getFormula(
         skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.initiative.modifier),
@@ -70,7 +70,7 @@ export class Dice {
       isSpecialized: rawDataset.isSpecialized === 'true',
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
-    }
+    };
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const essenceShifts = actor.system.essenceShifts;
@@ -83,7 +83,7 @@ export class Dice {
     const skillDataset = {
       edge: actorSkillData.edge,
       snag: actorSkillData.snag,
-    }
+    };
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
@@ -94,17 +94,17 @@ export class Dice {
     let label = '';
 
     switch(item?.type) {
-      case 'weapon':
-        label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
-        break;
-      case 'spell':
-          label = this._getSpellRollLabel(skillRollOptions, item);
-          break;
-      case 'magicBauble':
-        label = this._getMagicBaubleRollLabel(skillRollOptions, item);
-        break;
-      default:
-        label = this._getSkillRollLabel(dataset, skillRollOptions);
+    case 'weapon':
+      label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
+      break;
+    case 'spell':
+      label = this._getSpellRollLabel(skillRollOptions, item);
+      break;
+    case 'magicBauble':
+      label = this._getMagicBaubleRollLabel(skillRollOptions, item);
+      break;
+    default:
+      label = this._getSkillRollLabel(dataset, skillRollOptions);
     }
 
     let finalShift = this._getFinalShift(skillRollOptions, initialShift);
@@ -164,7 +164,7 @@ export class Dice {
     const rolledSkillStr = dataset.isSpecialized
       ? dataset.specializationName
       : this._localize(E20.skills[rolledSkill]);
-    const rollingForStr = this._localize('E20.RollRollingFor')
+    const rollingForStr = this._localize('E20.RollRollingFor');
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
 
@@ -197,7 +197,7 @@ export class Dice {
     const noneStr = this._localize('E20.None');
     const classFeatureId = weapon.system.classFeatureId;
 
-    let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`
+    let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
     label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}<br>`;
@@ -219,7 +219,7 @@ export class Dice {
     const descStr = this._localize('E20.ItemDescription');
     const noneStr = this._localize('E20.None');
 
-    let label = `<b>${spellRollStr}</b> - ${spell.name} (${rolledSkillStr})`
+    let label = `<b>${spellRollStr}</b> - ${spell.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${descStr}</b> - ${spell.system.description || noneStr}<br>`;
 
@@ -232,7 +232,7 @@ export class Dice {
     const descStr = this._localize('E20.ItemDescription');
     const noneStr = this._localize('E20.None');
 
-    let label = `<b>${magicBaubleRollStr}</b> - ${magicBauble.name} (${rolledSkillStr})`
+    let label = `<b>${magicBaubleRollStr}</b> - ${magicBauble.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${descStr}</b> - ${magicBauble.system.description || noneStr}<br>`;
 
@@ -275,12 +275,12 @@ export class Dice {
         speaker: this._chatMessage.getSpeaker({ actor }),
       };
       switch (skillShift) {
-        case 'autoFail':
-          label += ` ${this._localize('E20.RollAutoFail')}`;
-          break;
-        case 'fumble':
-          label += ` ${this._localize('E20.RollAutoFailFumble')}`;
-          break;
+      case 'autoFail':
+        label += ` ${this._localize('E20.RollAutoFail')}`;
+        break;
+      case 'fumble':
+        label += ` ${this._localize('E20.RollAutoFailFumble')}`;
+        break;
       }
       chatData.content = label;
       this._chatMessage.create(chatData);
@@ -301,8 +301,7 @@ export class Dice {
     // Edge and Snag cancel eachother out
     if (edge == snag) {
       return 'd20';
-    }
-    else {
+    } else {
       return edge ? '2d20kh' : '2d20kl';
     }
   }
@@ -319,8 +318,8 @@ export class Dice {
 
     // Edge and Snag cancel eachother out
     if (edge != snag) {
-      const withAnEdge = this._localize('E20.RollWithAnEdge')
-      const withASnag = this._localize('E20.RollWithASnag')
+      const withAnEdge = this._localize('E20.RollWithAnEdge');
+      const withASnag = this._localize('E20.RollWithASnag');
       result = edge ? ` ${withAnEdge}` : ` ${withASnag}`;
     }
 
@@ -371,8 +370,7 @@ export class Dice {
           }
         }
         formula += ` + {${this._arrayToFormula(shiftOperands)}}kh`;
-      }
-      else {
+      } else {
         // For non-specialized, just add the single bonus die
         formula += ` + ${finalShift}`;
       }
