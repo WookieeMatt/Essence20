@@ -71,10 +71,10 @@ export class Essence20Actor extends Actor {
     // things organized.
     this._prepareCharacterData();
     this._prepareNpcData();
-    this._preparePowerRangerData();
-    this._prepareGiJoeData();
-    this._prepareTransformerData();
-    this._preparePonyData();
+    if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.type)) {
+      this._prepareDefenses();
+      this._prepareMovement();
+    }
   }
 
   /**
@@ -105,177 +105,37 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Prepare GI JOE type specific data.
-   */
-  _prepareGiJoeData() {
-    if (this.type !== 'giJoe') return;
-
+  * Prepare Defenses specific data.
+  */
+  _prepareDefenses() {
     const system = this.system;
 
-    system.defenses = [
-      {
-        essence: "strength",
-        name: "toughness",
-        value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
-        bonus: system.bonuses.toughness
-      },
-      {
-        essence: "speed",
-        name: "evasion",
-        value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
-        bonus: system.bonuses.evasion
-      },
-      {
-        essence: "smarts",
-        name: "willpower",
-        value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
-        bonus: system.bonuses.willpower
-      },
-      {
-        essence: "social",
-        name: "cleverness",
-        value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
-        bonus: system.bonuses.cleverness
-      }
-    ];
+    for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
+      const defense = system.defenses[defenseType];
+      const base = defense.base;
+      const armor = defense.armor;
+      const bonus = defense.bonus;
+      const morphed = defense.morphed;
+      const essence = system.essences[defense.essence];
+      const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
+      const baseName = game.i18n.localize('E20.DefenseBase');
+      const armorName = game.i18n.localize('E20.DefenseArmor');
+      const bonusName = game.i18n.localize('E20.DefenseBonus');
+      const morphedName = game.i18n.localize('E20.DefenseMorphed');
 
-    this._prepareMovement();
+      if (system.isMorphed) {
+        defense.total = base + essence + morphed + bonus;
+        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${morphed} ${morphedName} + ${bonus} ${bonusName}`;
+      } else {
+        defense.total = base + essence + armor + bonus;
+        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${armor} ${armorName} + ${bonus} ${bonusName}`;
+      }
+    }
   }
 
   /**
-   * Prepare Power Ranger type specific data.
-   */
-  _preparePowerRangerData() {
-    if (this.type !== 'powerRanger') return;
-
-    const system = this.system;
-
-    system.defenses = [
-      {
-        essence: "strength",
-        name: "toughness",
-        morphed: {
-          value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
-          bonus: system.bonuses.toughness
-        },
-        unmorphed: {
-          value: system.base.toughness + system.essences.strength,
-        },
-      },
-      {
-        essence: "speed",
-        name: "evasion",
-        morphed: {
-          value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
-          bonus: system.bonuses.evasion
-        },
-        unmorphed: {
-          value: system.base.evasion + system.essences.speed,
-        },
-      },
-      {
-        essence: "smarts",
-        name: "willpower",
-        morphed: {
-          value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
-          bonus: system.bonuses.willpower
-        },
-        unmorphed: {
-          value: system.base.willpower + system.essences.smarts,
-        },
-      },
-      {
-        essence: "social",
-        name: "cleverness",
-        morphed: {
-          value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
-          bonus: system.bonuses.cleverness
-        },
-        unmorphed: {
-          value: system.base.cleverness + system.essences.social,
-        },
-      },
-    ];
-
-    this._prepareMovement();
-  }
-
-  /**
-   * Prepare Transformers type specific data.
-   */
-  _prepareTransformerData() {
-    if (this.type !== 'transformer') return;
-
-    const system = this.system;
-
-    system.defenses = [
-      {
-        essence: "strength",
-        name: "toughness",
-        value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
-        bonus: system.bonuses.toughness
-      },
-      {
-        essence: "speed",
-        name: "evasion",
-        value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
-        bonus: system.bonuses.evasion
-      },
-      {
-        essence: "smarts",
-        name: "willpower",
-        value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
-        bonus: system.bonuses.willpower
-      },
-      {
-        essence: "social",
-        name: "cleverness",
-        value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
-        bonus: system.bonuses.cleverness
-      }
-    ];
-
-    this._prepareMovement();
-  }
-
-  _preparePonyData() {
-    if (this.type !== 'pony') return;
-
-    const system = this.system;
-
-    system.defenses = [
-      {
-        essence: "strength",
-        name: "toughness",
-        value: system.base.toughness + system.essences.strength + system.bonuses.toughness,
-        bonus: system.bonuses.toughness
-      },
-      {
-        essence: "speed",
-        name: "evasion",
-        value: system.base.evasion + system.essences.speed + system.bonuses.evasion,
-        bonus: system.bonuses.evasion
-      },
-      {
-        essence: "smarts",
-        name: "willpower",
-        value: system.base.willpower + system.essences.smarts + system.bonuses.willpower,
-        bonus: system.bonuses.willpower
-      },
-      {
-        essence: "social",
-        name: "cleverness",
-        value: system.base.cleverness + system.essences.social + system.bonuses.cleverness,
-        bonus: system.bonuses.cleverness
-      }
-    ];
-
-    this._prepareMovement();
-  }
-
-    /**
-    * Prepare Movement specific data.
-    */
+  * Prepare Movement specific data.
+  */
   _prepareMovement() {
     let movementTotal = 0;
     const system = this.system;

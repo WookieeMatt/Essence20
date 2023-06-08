@@ -35,11 +35,14 @@ export class Dice {
   async prepareInitiativeRoll(actor) {
     const dataset = {
       shift: actor.system.initiative.shift,
-      shiftUp: actor.system.initiative.shiftUp,
-      shiftDown: actor.system.initiative.shiftDown,
+      shiftUp: actor.system.initiative.shiftUp + actor.system.essenceShifts.speed.shiftUp,
+      shiftDown: actor.system.initiative.shiftDown + actor.system.essenceShifts.speed.shiftDown,
     };
-
-    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);
+    const skillDataset = {
+      edge: actor.system.initiative.edge,
+      snag: actor.system.initiative.snag,
+    }
+    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
       return false;
@@ -57,33 +60,42 @@ export class Dice {
 
   /**
    * Handle skill and specialization rolls.
-   * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Event.currentTarget.element.dataset} rawDataset   The dataset of the click event.
    * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The item being used, if any.
    */
-  async rollSkill(dataset, actor, item) {
-    const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, actor);
+  async rollSkill(rawDataset, actor, item) {
+    const dataset = { // Converting strings to usable types
+      ...rawDataset,
+      isSpecialized: rawDataset.isSpecialized === 'true',
+      shiftDown: parseInt(rawDataset.shiftDown),
+      shiftUp: parseInt(rawDataset.shiftUp),
+    }
+    const rolledSkill = dataset.skill;
+    const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
+    const essenceShifts = actor.system.essenceShifts;
+    const updatedShiftDataset = {
+      ...dataset,
+      shiftUp: dataset.shiftUp + essenceShifts[rolledEssence].shiftUp + essenceShifts.any.shiftUp,
+      shiftDown: dataset.shiftDown + essenceShifts[rolledEssence].shiftDown + essenceShifts.any.shiftDown,
+    };
+    const actorSkillData = actor.getRollData().skills[rolledSkill];
+    const skillDataset = {
+      edge: actorSkillData.edge,
+      snag: actorSkillData.snag,
+    }
+    const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
       return;
     }
 
-    const rolledSkill = dataset.skill;
-    const actorSkillData = actor.getRollData().skills;
-    const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
-    const initialShift = dataset.shift || actorSkillData[rolledSkill].shift;
-    const completeDataset = {
-      ...dataset,
-      // Weapon partial can't populate these easily
-      essence : rolledEssence,
-      shift: initialShift,
-    }
-
+    const initialShift = dataset.shift || actorSkillData.shift;
     let label = '';
 
     switch(item?.type) {
       case 'weapon':
-        label = this._getWeaponRollLabel(completeDataset, skillRollOptions, actor, item);
+        label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
         break;
       case 'spell':
           label = this._getSpellRollLabel(skillRollOptions, item);
@@ -92,7 +104,7 @@ export class Dice {
         label = this._getMagicBaubleRollLabel(skillRollOptions, item);
         break;
       default:
-        label = this._getSkillRollLabel(completeDataset, skillRollOptions);
+        label = this._getSkillRollLabel(dataset, skillRollOptions);
     }
 
     let finalShift = this._getFinalShift(skillRollOptions, initialShift);
@@ -106,8 +118,8 @@ export class Dice {
       finalShift = E20.skillRollableShifts[E20.skillRollableShifts.length - 1];
     }
 
-    const isSpecialized = dataset.isSpecialized === 'true' || skillRollOptions.isSpecialized;
-    const modifier = actorSkillData[rolledSkill].modifier || 0;
+    const isSpecialized = dataset.isSpecialized || skillRollOptions.isSpecialized;
+    const modifier = actorSkillData.modifier || 0;
     const formula = this._getFormula(isSpecialized, skillRollOptions, finalShift, modifier);
 
     // Repeat the roll as many times as specified in the skill roll options dialog
@@ -149,7 +161,7 @@ export class Dice {
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = dataset.isSpecialized === 'true'
+    const rolledSkillStr = dataset.isSpecialized
       ? dataset.specializationName
       : this._localize(E20.skills[rolledSkill]);
     const rollingForStr = this._localize('E20.RollRollingFor')

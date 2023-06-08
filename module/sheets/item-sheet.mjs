@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { indexFromUuid } from "../helpers/utils.mjs";
+import { indexFromUuid, searchCompendium } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -37,9 +37,14 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
-    this._prepareOriginPerks(context);
-
-    this._prepareUpgrades(context);
+    if (context.item.type == 'origin') {
+      this._prepareItemDisplay(context, "originPerk");
+    } else if (context.item.type == 'armor' || context.item.type =='weapon') {
+      this._prepareItemDisplay(context, "upgrade");
+    } else if (context.item.type == 'influence') {
+      this._prepareItemDisplay(context, "hangUp");
+      this._prepareItemDisplay(context, "perk");
+    }
 
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
@@ -60,66 +65,23 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Retireves the attached Upgrades for display on the sheet
+  * Retireves the attached items for display on the sheet
   * @param {Object} context   The information from the item
+  * @param {string} itemType  The type of items to prepare
   * @private
   */
-  _prepareUpgrades(context) {
-    if (['armor', 'weapon'].includes(this.item.type)) {
-      let upgrades = [];
-      for (let upgradeId of this.item.system.upgradeIds) {
-        const upgrade = game.items.get(upgradeId);
-        if (upgrade){
-          upgrades.push(upgrade);
-        }
+  async _prepareItemDisplay(context, itemType) {
+    const itemArray = [];
+    for (let itemId of (this.item.system[`${itemType}Ids`])) {
+      const item = game.items.get(itemId) || searchCompendium(itemId) || this.actor.items.get(itemId);
+      if (item) {
+        itemArray.push(item);
       }
-
-      if (!upgrades.length) {
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium) {
-            let upgrade = compendium.index.get(this.item.system.upgradeIds[0]);
-            if (upgrade) {
-              upgrades.push(upgrade);
-            }
-          }
-        }
-      }
-
-      context.upgrades = upgrades;
     }
+
+    context[`${itemType}s`] = itemArray;
   }
 
-  /**
-  * Retireves the attached Origin Perks for display on the sheet
-  * @param {Object} context   The information from the item
-  * @private
-  */
-  _prepareOriginPerks(context) {
-    if (this.item.type == 'origin') {
-      let originPerks = [];
-      for (let originPerkId of this.item.system.originPerkIds) {
-        const originPerk = game.items.get(originPerkId);
-        if (originPerk){
-          originPerks.push(originPerk);
-        }
-      }
-
-      if (!originPerks.length) {
-        for (let pack of game.packs){
-          const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-          if (compendium) {
-            let originPerk = compendium.index.get(this.item.system.originPerkIds[0]);
-            if (originPerk) {
-              originPerks.push(originPerk);
-            }
-          }
-        }
-      }
-
-      context.originPerks = originPerks;
-    }
-  }
   /* -------------------------------------------- */
 
   /** @override */
@@ -140,10 +102,16 @@ export class Essence20ItemSheet extends ItemSheet {
     this.form.ondrop = (event) => this._onDrop(event);
 
     // Delete Origin Perks from Origns
-    html.find('.originPerk-delete').click(this._onOriginPerkDelete.bind(this));
+    html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".originPerk", "originPerkIds"));
 
-    // Delete Origin Perks from Origns
+    // Delete Origin Upgrade from item
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
+
+    // Delete Influence Perk from Influence
+    html.find('.influencePerk-delete').click(this._onIdDelete.bind(this, ".perk", "perkIds"));
+
+    // Delete Hang Up from Influence
+    html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangUpIds"));
   }
 
   /**
@@ -157,7 +125,7 @@ export class Essence20ItemSheet extends ItemSheet {
 
     let droppedItem = indexFromUuid(data.uuid);
     if (!droppedItem.system) {
-      droppedItem = await this._searchCompendium(droppedItem);
+      droppedItem = await searchCompendium(droppedItem);
     }
 
     if (targetItem.type  == "origin") {
@@ -192,7 +160,16 @@ export class Essence20ItemSheet extends ItemSheet {
           this._addDroppedUpgradeTraits(droppedItem);
         }
       }
+    } else if (targetItem.type == "influence") {
+      if (droppedItem.type == "perk") {
+        const perkIds = duplicate(this.item.system.perkIds);
+        this._addItemIfUnique(droppedItem, data, perkIds, "perk");
+      } else if (droppedItem.type == "hangUp") {
+        const hangUpIds = duplicate(this.item.system.hangUpIds);
+        this._addItemIfUnique(droppedItem, data, hangUpIds, "hangUp");
+      }
     }
+
     this.render(true);
   }
 
@@ -246,38 +223,19 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handles search of the Compendiums to find the item
-  * @param {Item|String} item  Either an ID or an Item to find in the compendium
-  * @returns {Item|String}     The Item if found, or the item param otherwise
+  * Handle deleting of a Ids from an item Sheet
+  * @param {String} cssClass           Where the deleted item is on the sheet
+  * @param {String} itemListName       The name of the ID list
+  * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
   * @private
   */
-  async _searchCompendium(item) {
-    const id = item._id || item;
-
-    for (const pack of game.packs){
-      const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-      if (compendium) {
-        const compendiumItem = await compendium.getDocument(id);
-        if (compendiumItem) {
-          item = compendiumItem;
-        }
-      }
-    }
-
-    return item
-  }
-
-  /**
-  * Handle deleting of a Perk from an Origin Sheet
-  * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
-  * @private
-  */
-  async _onOriginPerkDelete(event) {
-    const li = $(event.currentTarget).parents(".originPerk");
-    const originPerkId = li.data("originperkId");
-    let originPerkIds = this.item.system.originPerkIds.filter(x => x !== originPerkId);
+  async _onIdDelete(cssClass, itemListName, event) {
+    const li = $(event.currentTarget).parents(cssClass);
+    const id = li.data("itemId");
+    const ids = this.item.system[itemListName].filter(x => x !== id);
+    const systemSearch = `system.${itemListName}`;
     this.item.update({
-      "system.originPerkIds": originPerkIds,
+      [systemSearch]: ids,
     });
     li.slideUp(200, () => this.render(false));
   }
@@ -289,9 +247,9 @@ export class Essence20ItemSheet extends ItemSheet {
   */
   async _onUpgradeDelete(event) {
     const li = $(event.currentTarget).parents(".upgrade");
-    const upgradeId = li.data("upgradeId");
+    const upgradeId = li.data("itemId");
 
-    const deletedUpgrade = game.items.get(upgradeId) || await this._searchCompendium(upgradeId);
+    const deletedUpgrade = game.items.get(upgradeId) || await searchCompendium(upgradeId);
     if (!deletedUpgrade) {
       return;
     }
@@ -308,7 +266,7 @@ export class Essence20ItemSheet extends ItemSheet {
             if (upgradeId != id) {
               const otherItem = game.items.get(id);
               if (!otherItem) {
-                otherItem = await this._searchCompendium(id);
+                otherItem = await searchCompendium(id);
               }
 
               if (otherItem.system.traits.includes(deletedUpgradeTrait)) {

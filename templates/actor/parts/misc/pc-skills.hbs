@@ -10,7 +10,7 @@
       <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
     </div>
     {{#each @root.config.skillsByEssence.strength as |skill|}}
-      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
+      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill)}}
     {{/each}}
   </div>
 
@@ -21,7 +21,7 @@
       <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
     </div>
     {{#each @root.config.skillsByEssence.speed as |skill|}}
-      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
+      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='speed' skill=skill fields=(lookup @root.system.skills skill)}}
     {{/each}}
   </div>
 
@@ -32,7 +32,7 @@
       <input class="two-digit-input" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" />
     </div>
    {{#each @root.config.skillsByEssence.smarts as |skill|}}
-      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
+      {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='smarts' skill=skill fields=(lookup @root.system.skills skill)}}
     {{/each}}
   </div>
 
