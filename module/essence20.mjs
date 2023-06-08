@@ -19,7 +19,7 @@ function registerSystemSettings() {
     scope: "world",
     type: String,
     default: "",
-  })
+  });
 }
 
 /**
@@ -119,8 +119,7 @@ Handlebars.registerHelper('sum', function () {
     let newValue = arguments[arg];
     if (typeof newValue == 'number') {
       total += newValue;
-    }
-    else if (typeof newValue == 'string') {
+    } else if (typeof newValue == 'string') {
       total += parseInt(newValue);
     }
   }
