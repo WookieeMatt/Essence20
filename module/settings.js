@@ -97,4 +97,4 @@ export const registerSettings = function () {
     type: Number,
     config: false,
   });
-}
+};
