@@ -20,9 +20,13 @@ rollDialog.getSkillRollOptions.mockReturnValue({
 });
 
 class Mocki18n {
-  localize(text) { return text; }
+  localize(text) {
+    return text;
+  }
   /* eslint-disable no-unused-vars */
-  format(text, _) { return text; }
+  format(text, _) {
+    return text;
+  }
 }
 
 const mockActor = {
