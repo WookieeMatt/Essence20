@@ -1,7 +1,12 @@
 export const registerSettings = function () {
   let systemName = "essence20";
 
-  const debouncedReload = foundry.utils.debounce(function () { window.location.reload(); }, 100);
+  const debouncedReload = foundry.utils.debounce(
+    function () {
+      window.location.reload();
+    },
+    100,
+  );
 
   /* -------------------------------------------- */
   /*  Story Points Tracker settings               */
@@ -97,4 +102,4 @@ export const registerSettings = function () {
     type: Number,
     config: false,
   });
-}
+};

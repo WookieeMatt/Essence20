@@ -1,6 +1,6 @@
 // Changes the color of the roll total for crits and fumbles
 // Called on the renderChatMessage hook
-export const highlightCriticalSuccessFailure = function (message, html, data) {
+export const highlightCriticalSuccessFailure = function (message, html) {
   if (!message.isRoll || !message.isContentVisible || !message.rolls.length) {
     return;
   }
@@ -15,7 +15,7 @@ export const highlightCriticalSuccessFailure = function (message, html, data) {
   } else if (isFumble) {
     html.find(".dice-total").addClass("fumble");
   }
-}
+};
 
 // Helper to determine if the roll was a crit and/or fumble
 export const _isCritIsFumble = function (dice) {
@@ -42,4 +42,4 @@ export const _isCritIsFumble = function (dice) {
   }
 
   return [isCrit, isFumble];
-}
+};

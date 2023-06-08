@@ -49,7 +49,7 @@ export class Essence20Item extends Item {
       const templateData = {
         config: CONFIG.E20,
         item: this,
-      }
+      };
 
       ChatMessage.create({
         speaker: speaker,
@@ -96,7 +96,6 @@ export class Essence20Item extends Item {
       });
     } else if (this.type == 'weapon') {
       const skill = this.system.classification.skill;
-      const essence = CONFIG.E20.skillToEssence[skill];
       const shift = this.actor.system.skills[skill].shift;
       const shiftUp = this.actor.system.skills[skill].shiftUp;
       const shiftDown = this.actor.system.skills[skill].shiftDown;
@@ -155,9 +154,7 @@ export class Essence20Item extends Item {
           flavor: label,
           content: this.system.description ?? ''
         });
-      }
-      // Otherwise, create a roll and send a chat message from it.
-      else {
+      } else { // Otherwise, create a roll and send a chat message from it.
         // Retrieve roll data.
         const rollData = this.getRollData();
 

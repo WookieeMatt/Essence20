@@ -100,7 +100,7 @@ E20.weaponTraits = {
   void: "E20.WeaponTraitVoid",
   wrecker: "E20.WeaponTraitWrecker",
   xenotech: "E20.WeaponTraitXenotech",
-}
+};
 preLocalize("weaponTraits");
 
 /************************************************
@@ -153,7 +153,7 @@ E20.originEssences = {
   speed: "E20.EssenceSpeed",
   smarts: "E20.EssenceSmarts",
   social: "E20.EssenceSocial",
-}
+};
 preLocalize("originEssences");
 
 // Actor Essence skills
@@ -186,7 +186,7 @@ E20.originSkills = {
   conditioning: "E20.SkillConditioning",
   initiative: "E20.SkillInitiative",
   ...E20.skills,
-}
+};
 preLocalize("originSkills");
 
 // Maps skills back to their corresponding Essence
@@ -415,7 +415,7 @@ preLocalize("movementTypes");
 E20.transformerFactions = {
   autobots: "E20.FactionAutobots",
   decepticons: "E20.FactionDecepticons",
-}
+};
 preLocalize("transformerFactions");
 
 // Options for Transformer Modes
@@ -423,7 +423,7 @@ E20.transformerModes = {
   modeAltMode: "E20.ModeAltMode",
   modeBotMode: "E20.ModeBotMode",
   modeAny: "E20.ModeAny",
-}
+};
 preLocalize("transformerModes");
 
 // Options for Companion types
@@ -432,7 +432,7 @@ E20.companionTypes = {
   human: "E20.CompanionTypeHuman",
   miniCon: "E20.CompanionTypeMiniCon",
   pet: "E20.CompanionTypePet",
-}
+};
 preLocalize("companionTypes");
 
 /************************************************

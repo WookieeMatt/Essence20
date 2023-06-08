@@ -1,5 +1,5 @@
 import { Dice } from "./dice.mjs";
-import { jest } from '@jest/globals'
+import { jest } from '@jest/globals';
 
 /* Setup Mocks */
 
@@ -8,21 +8,25 @@ chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
 
-const rollDialog = jest.mock()
+const rollDialog = jest.mock();
 rollDialog.getSkillRollOptions = jest.fn();
 rollDialog.getSkillRollOptions.mockReturnValue({
-    edge: false,
-    shiftDown: 0,
-    shiftUp: 0,
-    snag: false,
-    isSpecialized: false,
-    timesToRoll: 1,
-  }
-);
+  edge: false,
+  shiftDown: 0,
+  shiftUp: 0,
+  snag: false,
+  isSpecialized: false,
+  timesToRoll: 1,
+});
 
 class Mocki18n {
-  localize(text) { return text; }
-  format(text, _) { return text; }
+  localize(text) {
+    return text;
+  }
+  /* eslint-disable no-unused-vars */
+  format(text, _) {
+    return text;
+  }
 }
 
 const mockActor = {
@@ -133,7 +137,7 @@ describe("rollSkill", () => {
         },
       },
     }));
-    dice._rollSkillHelper = jest.fn()
+    dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.SkillAthletics");
@@ -144,7 +148,7 @@ describe("rollSkill", () => {
     const datasetCopy = {
       ...dataset,
       shift: 'autoSuccess',
-    }
+    };
     rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
@@ -160,7 +164,7 @@ describe("rollSkill", () => {
         },
       },
     }));
-    dice._rollSkillHelper = jest.fn()
+    dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics");
@@ -171,7 +175,7 @@ describe("rollSkill", () => {
       ...dataset,
       isSpecialized: "true",
       specializationName: 'Foo Specialization',
-    }
+    };
     rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
@@ -187,7 +191,7 @@ describe("rollSkill", () => {
         },
       },
     }));
-    dice._rollSkillHelper = jest.fn()
+    dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization");
@@ -220,7 +224,7 @@ describe("rollSkill", () => {
         },
       },
     }));
-    dice._rollSkillHelper = jest.fn()
+    dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, weapon);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - Some effect<br><b>E20.WeaponAlternateEffects</b> - Some alternate effects<br><b>ITEM.TypeClassfeature</b> - E20.None");
@@ -256,7 +260,7 @@ describe("rollSkill", () => {
         },
       },
     }));
-    dice._rollSkillHelper = jest.fn()
+    dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, spell);
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
@@ -287,7 +291,7 @@ describe("rollSkill", () => {
     const expectedSkillDataset = {
       edge: false,
       snag: false,
-    }
+    };
     const mockShiftedActor = {
       ...mockActor,
       getRollData: jest.fn().mockReturnValue({
@@ -302,7 +306,7 @@ describe("rollSkill", () => {
     mockShiftedActor.system.essenceShifts.strength.shiftDown = 1;
     mockShiftedActor.system.essenceShifts.strength.shiftUp = 1;
     mockShiftedActor.system.essenceShifts.any.shiftDown = 1;
-    dice._rollSkillHelper = jest.fn()
+    dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockShiftedActor, null);
     expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(expectedDataset, expectedSkillDataset, mockShiftedActor);
@@ -318,7 +322,7 @@ describe("_getSkillRollLabel", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const expected = "E20.RollRollingFor E20.SkillAthletics";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
@@ -331,7 +335,7 @@ describe("_getSkillRollLabel", () => {
     const skillRollOptions = {
       edge: true,
       snag: false,
-    }
+    };
     const expected = "E20.RollRollingFor E20.SkillAthletics E20.RollWithAnEdge";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
@@ -344,7 +348,7 @@ describe("_getSkillRollLabel", () => {
     const skillRollOptions = {
       edge: false,
       snag: true,
-    }
+    };
     const expected = "E20.RollRollingFor E20.SkillAthletics E20.RollWithASnag";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
@@ -359,7 +363,7 @@ describe("_getSkillRollLabel", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const expected = "E20.RollRollingFor Foo Specialization";
 
     expect(dice._getSkillRollLabel(dataset, skillRollOptions)).toEqual(expected);
@@ -375,7 +379,7 @@ describe("_getWeaponRollLabel", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const weapon = {
       name: 'Zeo Power Clubs',
       type: 'weapon',
@@ -400,7 +404,7 @@ describe("_getWeaponRollLabel", () => {
     const skillRollOptions = {
       edge: true,
       snag: false,
-    }
+    };
     const weapon = {
       name: 'Zeo Power Clubs',
       type: 'weapon',
@@ -425,7 +429,7 @@ describe("_getWeaponRollLabel", () => {
     const skillRollOptions = {
       edge: false,
       snag: true,
-    }
+    };
     const weapon = {
       name: 'Zeo Power Clubs',
       type: 'weapon',
@@ -450,7 +454,7 @@ describe("_getWeaponRollLabel", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const weapon = {
       name: 'Zeo Power Clubs',
       type: 'weapon',
@@ -475,7 +479,7 @@ describe("_getSpellRollLabel", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const spell = {
       name: 'Barreling Beam',
       type: 'spell',
@@ -495,7 +499,7 @@ describe("_getMagicBaubleRollLabel", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const magicBauble = {
       name: "Healer's Salve",
       type: 'magic bauble',
@@ -517,7 +521,7 @@ describe("_getFinalShift", () => {
     const skillRollOptions = {
       shiftUp: 0,
       shiftDown: 0,
-    }
+    };
     const expected = 'd20';
 
     expect(dice._getFinalShift(skillRollOptions, initialShift)).toEqual(expected);
@@ -527,7 +531,7 @@ describe("_getFinalShift", () => {
     const skillRollOptions = {
       shiftUp: 1,
       shiftDown: 0,
-    }
+    };
     const expected = 'd2';
 
     expect(dice._getFinalShift(skillRollOptions, initialShift)).toEqual(expected);
@@ -537,7 +541,7 @@ describe("_getFinalShift", () => {
     const skillRollOptions = {
       shiftUp: 0,
       shiftDown: 1,
-    }
+    };
     const expected = 'autoFail';
 
     expect(dice._getFinalShift(skillRollOptions, initialShift)).toEqual(expected);
@@ -547,7 +551,7 @@ describe("_getFinalShift", () => {
     const skillRollOptions = {
       shiftUp: 0,
       shiftDown: 1,
-    }
+    };
     const expected = 'd20';
     const shiftList = ['d2', 'd20'];
     expect(dice._getFinalShift(skillRollOptions, initialShift, shiftList)).toEqual(expected);
@@ -557,7 +561,7 @@ describe("_getFinalShift", () => {
     const skillRollOptions = {
       shiftUp: 1,
       shiftDown: 0,
-    }
+    };
     const initialShift = 'd2';
     const expected = 'd2';
     const shiftList = ['d2', 'd20'];
@@ -568,7 +572,7 @@ describe("_getFinalShift", () => {
     const skillRollOptions = {
       shiftUp: 1,
       shiftDown: 1,
-    }
+    };
     const expected = 'd20';
 
     expect(dice._getFinalShift(skillRollOptions, initialShift)).toEqual(expected);
@@ -578,7 +582,7 @@ describe("_getFinalShift", () => {
     const skillRollOptions = {
       shiftUp: 2,
       shiftDown: 1,
-    }
+    };
     const expected = 'd2';
 
     expect(dice._getFinalShift(skillRollOptions, initialShift)).toEqual(expected);
@@ -726,7 +730,7 @@ describe("_getFormula", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const finalShift = 'd20';
     const modifier = 0;
     const expected = 'd20 + 0';
@@ -739,7 +743,7 @@ describe("_getFormula", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const finalShift = 'd6';
     const modifier = 0;
     const expected = 'd20 + d6 + 0';
@@ -752,7 +756,7 @@ describe("_getFormula", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const finalShift = 'd6';
     const modifier = 0;
     const expected = 'd20 + {d2,d4,d6}kh + 0';
@@ -765,7 +769,7 @@ describe("_getFormula", () => {
     const skillRollOptions = {
       edge: false,
       snag: false,
-    }
+    };
     const finalShift = 'd20';
     const modifier = 1;
     const expected = 'd20 + 1';
@@ -778,7 +782,7 @@ describe("_getFormula", () => {
     const skillRollOptions = {
       edge: true,
       snag: false,
-    }
+    };
     const finalShift = 'd20';
     const modifier = 0;
     const expected = '2d20kh + 0';
@@ -791,7 +795,7 @@ describe("_getFormula", () => {
     const skillRollOptions = {
       edge: false,
       snag: true,
-    }
+    };
     const finalShift = 'd20';
     const modifier = 0;
     const expected = '2d20kl + 0';

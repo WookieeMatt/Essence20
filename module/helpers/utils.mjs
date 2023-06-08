@@ -79,15 +79,12 @@ export function indexFromUuid(uuid) {
   const parts = uuid.split(".");
   let index;
 
-  // Compendium Documents
-  if (parts[0] === "Compendium") {
+
+  if (parts[0] === "Compendium") { // Compendium Documents
     const [, scope, packName, id] = parts;
     const pack = game.packs.get(`${scope}.${packName}`);
     index = pack?.index.get(id);
-  }
-
-  // World Documents
-  else if (parts.length < 3) {
+  } else if (parts.length < 3) {   // World Documents
     const [docName, id] = parts;
     const collection = CONFIG[docName].collection.instance;
     index = collection.get(id);
@@ -96,12 +93,12 @@ export function indexFromUuid(uuid) {
   return index || null;
 }
 
- /**
+/**
   * Handles search of the Compendiums to find the item
   * @param {Item|String} item  Either an ID or an Item to find in the compendium
   * @returns {Item}     The Item, if found
   */
- export function searchCompendium(item) {
+export function searchCompendium(item) {
   const id = item._id || item;
 
   for (const pack of game.packs){

@@ -142,7 +142,7 @@ export class Essence20ItemSheet extends ItemSheet {
           this._addDroppedUpgradeTraits(droppedItem);
 
           if (droppedItem.system.armorBonus.value > 0) {
-            const defenseName = droppedItem.system.armorBonus.defense.charAt(0).toUpperCase() + droppedItem.system.armorBonus.defense.slice(1)
+            const defenseName = droppedItem.system.armorBonus.defense.charAt(0).toUpperCase() + droppedItem.system.armorBonus.defense.slice(1);
             const armorString = `system.bonus${defenseName}`;
             const defense = targetItem.system[`bonus${defenseName}`] += droppedItem.system.armorBonus.value;
             await this.item.update({
@@ -264,7 +264,7 @@ export class Essence20ItemSheet extends ItemSheet {
         if (keptTraits.includes(deletedUpgradeTrait)) {
           for (const id of upgradeIds) {
             if (upgradeId != id) {
-              const otherItem = game.items.get(id);
+              let otherItem = game.items.get(id);
               if (!otherItem) {
                 otherItem = await searchCompendium(id);
               }
@@ -288,7 +288,7 @@ export class Essence20ItemSheet extends ItemSheet {
     }
 
     if (deletedUpgrade.system.armorBonus.value > 0) {
-      const defenseName = deletedUpgrade.system.armorBonus.defense.charAt(0).toUpperCase() + deletedUpgrade.system.armorBonus.defense.slice(1)
+      const defenseName = deletedUpgrade.system.armorBonus.defense.charAt(0).toUpperCase() + deletedUpgrade.system.armorBonus.defense.slice(1);
       const armorString = `system.bonus${defenseName}`;
       const defense = this.item.system[`bonus${defenseName}`] -= deletedUpgrade.system.armorBonus.value;
       await this.item.update({
