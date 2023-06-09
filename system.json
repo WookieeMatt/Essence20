@@ -23,271 +23,64 @@
   "gridUnits": "ft",
   "packs": [
     {
-      "name": "across_the_stars_hangups",
-      "label": "Across the Stars Hang-Ups",
+      "name": "across_the_stars",
+      "label": "Across the Stars",
       "system": "essence20",
-      "path": "packs/atshangups.db",
+      "path": "packs/atsitems",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "across_the_stars_influences",
-      "label": "Across the Stars Influences",
+      "name": "field_guide_action_adventure",
+      "label": "Field Guide to Action and Adventure",
       "system": "essence20",
-      "path": "packs/atsinfluences.db",
+      "path": "packs/fgtaaitems",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "across_the_stars_origins",
-      "label": "Across the Stars Origins",
+      "name": "gi_joe_crb",
+      "label": "GI Joe Core Rulebook",
       "system": "essence20",
-      "path": "packs/atsorigins.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-        {
-      "name": "across_the_stars_perks ",
-      "label": "Across the Stars Perks",
-      "system": "essence20",
-      "path": "packs/atsperks.db",
+      "path": "packs/gijcrbitems",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "field_guide_action_adventure_altmodes",
-      "label": "Field Guide to Action and Adventure AltModes",
+      "name": "mlp_crb",
+      "label": "My Little Pony Core Rulebook",
       "system": "essence20",
-      "path": "packs/fgtaaaltmode.db",
+      "path": "packs/mlpcrbitems",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "field_guide_action_adventure_hangups",
-      "label": "Field Guide to Action and Adventure Hang-Ups",
+      "name": "pr_crb",
+      "label": "Power Ranger Core Rulebook",
       "system": "essence20",
-      "path": "packs/fgtaahangups.db",
+      "path": "packs/prcrbitems",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "field_guide_action_adventure_influences",
-      "label": "Field Guide to Action and Adventure Influences",
+      "name": "sgt_slaughter_sourcebook",
+      "label": "Sgt Slaughter Sourcebook",
       "system": "essence20",
-      "path": "packs/fgtaainfluences.db",
+      "path": "packs/sssitems",
       "type": "Item",
       "private": false,
       "flags": {}
     },
     {
-      "name": "field_guide_action_adventure_origins",
-      "label": "Field Guide to Action and Adventure Origins",
+      "name": "tf_crb",
+      "label": "Transformers Core Rulebook",
       "system": "essence20",
-      "path": "packs/fgtaaorigins.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "field_guide_action_adventure_perks",
-      "label": "Field Guide to Action and Adventure Perks",
-      "system": "essence20",
-      "path": "packs/fgtaaperks.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "gi_joe_crb_hangups",
-      "label": "GI Joe CRB Hang-Ups",
-      "system": "essence20",
-      "path": "packs/gijcrbhangups.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "gi_joe_crb_influences",
-      "label": "GI Joe CRB Influences",
-      "system": "essence20",
-      "path": "packs/gijcrbinfluences.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "gi_joe_crb_origins",
-      "label": "GI Joe CRB Origins",
-      "system": "essence20",
-      "path": "packs/gijcrborigins.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "gi_joe_crb_perks",
-      "label": "GI Joe CRB Perks",
-      "system": "essence20",
-      "path": "packs/gijcrbperks.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "mlp_crb_hangups",
-      "label": "My Little Pony CRB Hang-Ups",
-      "system": "essence20",
-      "path": "packs/mlpcrbhangups.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "mlp_crb_influences",
-      "label": "My Little Pony CRB Influences",
-      "system": "essence20",
-      "path": "packs/mlpcrbinfluences.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "mlp_crb_origins",
-      "label": "My Little Pony CRB Origins",
-      "system": "essence20",
-      "path": "packs/mlpcrborigins.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "mlp_crb_perks",
-      "label": "My Little Pony CRB Perks",
-      "system": "essence20",
-      "path": "packs/mlpcrbperks.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "pr_crb_hangups",
-      "label": "Power Ranger CRB Hang-Ups",
-      "system": "essence20",
-      "path": "packs/prcrbhangups.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "pr_crb_influences",
-      "label": "Power Ranger CRB Influences",
-      "system": "essence20",
-      "path": "packs/prcrbinfluences.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "pr_crb_origins",
-      "label": "Power Ranger CRB Origins",
-      "system": "essence20",
-      "path": "packs/prcrborigins.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "pr_crb_perks",
-      "label": "Power Ranger CRB Perks",
-      "system": "essence20",
-      "path": "packs/prcrbperks.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "sgt_slaughter_sourcebook_hangups",
-      "label": "Sgt Slaughter Sourcebook Hang-Ups",
-      "system": "essence20",
-      "path": "packs/ssshangups.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "sgt_slaughter_sourcebook_influences",
-      "label": "Sgt Slaughter Sourcebook Influences",
-      "system": "essence20",
-      "path": "packs/sssinfluences.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "sgt_slaughter_sourcebook_origins",
-      "label": "Sgt Slaughter Sourcebook Origins",
-      "system": "essence20",
-      "path": "packs/sssorigins.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "sgt_slaughter_sourcebook_perks",
-      "label": "Sgt Slaughter Sourcebook Perks",
-      "system": "essence20",
-      "path": "packs/sssperks.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "tf_crb_altmodes",
-      "label": "Transformers CRB Alt Modes",
-      "system": "essence20",
-      "path": "packs/tfcrbaltmodes.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "tf_crb_hangups",
-      "label": "Transformers CRB Hang-Ups",
-      "system": "essence20",
-      "path": "packs/tfcrbhangups.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "tf_crb_influences",
-      "label": "Transformers CRB Influences",
-      "system": "essence20",
-      "path": "packs/tfcrbinfluences.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "tf_crb_origins",
-      "label": "Transformers CRB Origins",
-      "system": "essence20",
-      "path": "packs/tfcrborigins.db",
-      "type": "Item",
-      "private": false,
-      "flags": {}
-    },
-    {
-      "name": "tf_crb_perks",
-      "label": "Transformers CRB Perks",
-      "system": "essence20",
-      "path": "packs/tfcrbperks.db",
+      "path": "packs/tfcrbitems",
       "type": "Item",
       "private": false,
       "flags": {}
