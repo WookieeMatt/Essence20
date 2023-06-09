@@ -123,7 +123,7 @@
     },
     {
       "name": "gi_joe_crb_origins",
-      "label": "GI Joe Core Rulebook Origins",
+      "label": "GI Joe CRB Origins",
       "system": "essence20",
       "path": "packs/gijcrborigins.db",
       "type": "Item",
@@ -132,7 +132,7 @@
     },
     {
       "name": "gi_joe_crb_perks",
-      "label": "GI Joe Core Rulebook Perks",
+      "label": "GI Joe CRB Perks",
       "system": "essence20",
       "path": "packs/gijcrbperks.db",
       "type": "Item",
@@ -159,7 +159,7 @@
     },
     {
       "name": "mlp_crb_origins",
-      "label": "My Little Pony Core Rulebook Origins",
+      "label": "My Little Pony CRB Origins",
       "system": "essence20",
       "path": "packs/mlpcrborigins.db",
       "type": "Item",
@@ -168,7 +168,7 @@
     },
     {
       "name": "mlp_crb_perks",
-      "label": "My Little Pony Core Rulebook Perks",
+      "label": "My Little Pony CRB Perks",
       "system": "essence20",
       "path": "packs/mlpcrbperks.db",
       "type": "Item",
@@ -195,7 +195,7 @@
     },
     {
       "name": "pr_crb_origins",
-      "label": "Power Ranger Core Rulebook Origins",
+      "label": "Power Ranger CRB Origins",
       "system": "essence20",
       "path": "packs/prcrborigins.db",
       "type": "Item",
@@ -204,7 +204,7 @@
     },
     {
       "name": "pr_crb_perks",
-      "label": "Power Ranger Core Rulebook Perks",
+      "label": "Power Ranger CRB Perks",
       "system": "essence20",
       "path": "packs/prcrbperks.db",
       "type": "Item",
@@ -249,7 +249,7 @@
     },
     {
       "name": "tf_crb_altmodes",
-      "label": "Transformers Core Rulebook Alt Modes",
+      "label": "Transformers CRB Alt Modes",
       "system": "essence20",
       "path": "packs/tfcrbaltmodes.db",
       "type": "Item",
@@ -276,7 +276,7 @@
     },
     {
       "name": "tf_crb_origins",
-      "label": "Transformers Core Rulebook Origins",
+      "label": "Transformers CRB Origins",
       "system": "essence20",
       "path": "packs/tfcrborigins.db",
       "type": "Item",
@@ -285,7 +285,7 @@
     },
     {
       "name": "tf_crb_perks",
-      "label": "Transformers Core Rulebook Perks",
+      "label": "Transformers CRB Perks",
       "system": "essence20",
       "path": "packs/tfcrbperks.db",
       "type": "Item",

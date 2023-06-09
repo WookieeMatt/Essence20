@@ -16,7 +16,7 @@
 
     {{#*inline "item-field-inputs"}}
     <div class="flex-group-right chip-section">
-      {{#each item.system.skill as |name|}}
+      {{#each item.system.skills as |name|}}
       <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
       {{/each}}
     </div>

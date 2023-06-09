@@ -334,6 +334,7 @@ E20.perkTypes = {
   general: "E20.PerkGeneral",
   influence: "E20.PerkInfluence",
   origin: "E20.PerkOrigin",
+  minicon: "E20.MiniCon",
   role: "E20.PerkRole"
 };
 preLocalize("perkTypes");
