@@ -69,7 +69,6 @@ export class Essence20Actor extends Actor {
   prepareDerivedData() {
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
-    this._prepareCharacterData();
     this._prepareNpcData();
     if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.type)) {
       this._prepareDefenses();
