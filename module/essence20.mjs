@@ -7,9 +7,10 @@ import { Essence20Item } from "./documents/item.mjs";
 import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
-import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { E20 } from "./helpers/config.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
+import { E20 } from "./helpers/config.mjs";
+import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
+import { performPreLocalization } from "./helpers/utils.mjs";
 import { migrateWorld } from "./migration.mjs";
 
 function registerSystemSettings() {
@@ -18,7 +19,7 @@ function registerSystemSettings() {
     scope: "world",
     type: String,
     default: "",
-  })
+  });
 }
 
 /**
@@ -118,8 +119,7 @@ Handlebars.registerHelper('sum', function () {
     let newValue = arguments[arg];
     if (typeof newValue == 'number') {
       total += newValue;
-    }
-    else if (typeof newValue == 'string') {
+    } else if (typeof newValue == 'string') {
       total += parseInt(newValue);
     }
   }
@@ -142,6 +142,9 @@ Handlebars.registerHelper('inArray', function (array, value, options) {
 /*  Misc Hooks                                  */
 /* -------------------------------------------- */
 
+// Perform one-time pre-localization and sorting of some configuration objects
+Hooks.once("i18nInit", () => performPreLocalization(CONFIG.E20));
+
 Hooks.once("ready", async function () {
   runMigrations();
 
@@ -154,8 +157,9 @@ Hooks.once("ready", async function () {
   });
 });
 
+/* eslint-disable no-unused-vars */
 Hooks.on("renderChatMessage", (app, html, data) => {
-  highlightCriticalSuccessFailure(app, html, data);
+  highlightCriticalSuccessFailure(app, html);
 });
 
 /* -------------------------------------------- */

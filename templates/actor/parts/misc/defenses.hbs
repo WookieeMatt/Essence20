@@ -1,0 +1,39 @@
+<div class="stats-container defense-container" style="border-color: {{system.color}};">
+  <table class="tg" style="border-color: {{system.color}};">
+    <thead style="border-color: {{system.color}};">
+      <tr>
+        <th class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseTitle'}}</th>
+
+        {{!-- Defense headers --}}
+        {{#each system.defenses as |defense|}}
+        <th class="tg-td" style="border-color: {{system.color}};">
+          <span>{{lookup @root.config.defenses defense.name}}</span>
+          <span>
+            {{#ifEquals ../bonusDisplayType 'input'}}
+            {{#with (lookup @root.system.defenses defense.name) as |defenseBonus|}}
+            +<input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense.name '.bonus'}}
+              value="{{defenseBonus.bonus}}" />
+            {{/with}}
+            {{/ifEquals}}
+          </span>
+        </th>
+        {{/each}}
+      </tr>
+    </thead>
+
+    {{!-- Body --}}
+    <tbody>
+      <tr>
+        <td class="tg-td" style="border-color: {{system.color}};">{{localize 'E20.DefenseValues'}}</td>
+        {{#each system.defenses as |defense|}}
+        <td class="tg-td" style="border-color: {{system.color}};">
+          <span
+            title="{{defense.string}}">
+            {{defense.total}}
+          </span>
+        </td>
+        {{/each}}
+      </tr>
+    </tbody>
+  </table>
+</div>

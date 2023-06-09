@@ -1,7 +1,12 @@
 export const registerSettings = function () {
   let systemName = "essence20";
 
-  const debouncedReload = foundry.utils.debounce(function () { window.location.reload(); }, 100);
+  const debouncedReload = foundry.utils.debounce(
+    function () {
+      window.location.reload();
+    },
+    100,
+  );
 
   /* -------------------------------------------- */
   /*  Story Points Tracker settings               */
@@ -20,7 +25,7 @@ export const registerSettings = function () {
 
   let POINTS_NAME_OPTIONS = {};
   for (let [name, str] of Object.entries(CONFIG.E20.pointsNameOptions)) {
-    POINTS_NAME_OPTIONS[name] = game.i18n.localize(str);
+    POINTS_NAME_OPTIONS[name] = str;
   }
 
   /* -------------------------------------------- */
@@ -97,4 +102,4 @@ export const registerSettings = function () {
     type: Number,
     config: false,
   });
-}
+};

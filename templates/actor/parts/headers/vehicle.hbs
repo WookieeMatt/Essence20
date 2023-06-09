@@ -1,0 +1,13 @@
+{{#>"systems/essence20/templates/actor/parts/headers/common.hbs"}}
+{{#*inline "secondary-fields"}}
+<div>
+  <label for="name" class="resource-label">{{localize 'E20.NpcThreatLevel'}}</label>
+  <input type="number" name="system.threatLevel" value="{{system.threatLevel}}" />
+</div>
+<div class="pr-header-color flex-group-center">
+  <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
+  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+</div>
+{{> "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs"}}
+{{/inline}}
+{{/"systems/essence20/templates/actor/parts/headers/common.hbs"}}

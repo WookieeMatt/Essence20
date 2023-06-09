@@ -1,0 +1,19 @@
+<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+  {{#if system.movementNotSet}}
+    <div>Set PC movement by adding an Origin</div>
+  {{else}}
+    {{#each @root.config.movementTypes as |name type|}}
+    <div class="flexcol">
+      <label>{{name}}</label>
+
+      {{#with (lookup @root.system.movement type) as |moveData|}}
+        {{#if @root.system.movementIsReadOnly}}
+          <input class="centered-input" style="background: transparent;" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+        {{else}}
+          <input class="centered-input" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" />
+        {{/if}}
+      {{/with}}
+    </div>
+    {{/each}}
+  {{/if}}
+</div>

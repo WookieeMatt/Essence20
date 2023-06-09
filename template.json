@@ -8,29 +8,78 @@
       "zord",
       "giJoe",
       "transformer",
-      "pony"
+      "pony",
+      "companion"
     ],
     "templates": {
       "common": {
+        "altModeName": "",
+        "altModeSize": "common",
+        "canMorph": false,
+        "canTransform": false,
         "color": "#b5b1b1",
         "conditioning": 0,
         "description": "",
+        "essenceShifts": {
+          "any": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          },
+          "smarts": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          },
+          "social": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          },
+          "speed": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          },
+          "strength": {
+            "shiftUp": 0,
+            "shiftDown": 0
+          }
+        },
         "health": {
           "max": 4,
           "min": 0,
           "value": 4
         },
         "initiative": {
+          "edge": false,
           "formula": "2d20kl + 0",
           "modifier": 0,
+          "snag": false,
           "shift": "d20",
           "shiftDown": 0,
           "shiftUp": 0
         },
+        "isMorphed": false,
+        "isTransformed": false,
         "movement": {
-          "aerial": 0,
-          "ground": 30,
-          "swim": 0
+          "aerial": {
+            "altMode":0,
+            "base": 0,
+            "bonus": 0,
+            "morphed": 0,
+            "total": 0
+          },
+          "ground": {
+            "altMode":0,
+            "base": 0,
+            "bonus": 0,
+            "morphed": 0,
+            "total": 0
+          },
+          "swim": {
+            "altMode":0,
+            "base": 0,
+            "bonus": 0,
+            "morphed": 0,
+            "total": 0
+          }
         },
         "size": "common",
         "skills": {
@@ -41,11 +90,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "alertness": {
             "essences": {
@@ -54,11 +105,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "animalHandling": {
             "essences": {
@@ -67,11 +120,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "athletics": {
             "essences": {
@@ -80,11 +135,13 @@
               "speed": false,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "brawn": {
             "essences": {
@@ -93,11 +150,13 @@
               "speed": false,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "culture": {
             "essences": {
@@ -106,11 +165,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "deception": {
             "essences": {
@@ -119,11 +180,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "driving": {
             "essences": {
@@ -132,11 +195,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "finesse": {
             "essences": {
@@ -145,11 +210,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "infiltration": {
             "essences": {
@@ -158,11 +225,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "intimidation": {
             "essences": {
@@ -171,11 +240,13 @@
               "speed": false,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "might": {
             "essences": {
@@ -184,11 +255,13 @@
               "speed": false,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "performance": {
             "essences": {
@@ -197,11 +270,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "persuasion": {
             "essences": {
@@ -210,11 +285,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "science": {
             "essences": {
@@ -223,11 +300,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "spellcasting": {
             "essences": {
@@ -236,11 +315,13 @@
               "speed": true,
               "strength": true
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "streetwise": {
             "essences": {
@@ -249,11 +330,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "survival": {
             "essences": {
@@ -262,11 +345,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "targeting": {
             "essences": {
@@ -275,11 +360,13 @@
               "speed": true,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           },
           "technology": {
             "essences": {
@@ -288,11 +375,13 @@
               "speed": false,
               "strength": false
             },
+            "edge": false,
             "isSpecialized": false,
             "modifier": 0,
             "shift": "d20",
             "shiftDown": 0,
-            "shiftUp": 0
+            "shiftUp": 0,
+            "snag": false
           }
         },
         "stun": {
@@ -306,17 +395,39 @@
           "pronouns": "",
           "role": ""
         },
-        "base": {
-          "cleverness": 10,
-          "evasion": 10,
-          "toughness": 10,
-          "willpower": 10
-        },
-        "bonuses": {
-          "cleverness": 0,
-          "evasion": 0,
-          "toughness": 0,
-          "willpower": 0
+        "defenses": {
+          "toughness": {
+            "armor": 0,
+            "base": 10,
+            "bonus": 0,
+            "essence": "strength",
+            "morphed": 0,
+            "name": "toughness"
+          },
+          "evasion": {
+            "armor": 0,
+            "base": 10,
+            "bonus": 0,
+            "essence": "speed",
+            "morphed": 0,
+            "name": "evasion"
+          },
+          "willpower":{
+            "armor": 0,
+            "base": 10,
+            "bonus": 0,
+            "essence": "smarts",
+            "morphed": 0,
+            "name": "willpower"
+          },
+          "cleverness": {
+            "armor": 0,
+            "base": 10,
+            "bonus": 0,
+            "essence": "social",
+            "morphed": 0,
+            "name": "cleverness"
+          }
         },
         "essences": {
           "strength": 3,
@@ -324,6 +435,7 @@
           "smarts": 3,
           "social": 3
         },
+        "influenceIds": [],
         "level": 1,
         "notes": ""
       },
@@ -378,7 +490,8 @@
         "common",
         "creature",
         "character"
-      ]
+      ],
+      "canMorph": true
     },
     "megaformZord": {
       "templates": [
@@ -409,7 +522,6 @@
           "value": null
         }
       },
-      "notes": "",
       "threatLevel": 0
     },
     "vehicle": {
@@ -451,6 +563,7 @@
         "creature",
         "character"
       ],
+      "canTransform": true,
       "energon": 0,
       "externalHardpoints": 2,
       "internalHarpoints": 2,
@@ -462,8 +575,30 @@
         "creature",
         "character"
       ]
+    },
+    "companion": {
+      "templates": [
+        "common",
+        "creature",
+        "character"
+      ],
+      "availability": "standard",
+      "defenses": {
+        "toughness": {
+          "value": 10
+        },
+        "evasion": {
+          "value": 10
+        },
+        "willpower": {
+          "value": null
+        },
+        "cleverness": {
+          "value": null
+        }
+      },
+      "type": "pet"
     }
-
   },
   "Item": {
     "types": [
@@ -475,6 +610,7 @@
       "feature",
       "gear",
       "hangUp",
+      "influence",
       "magicBauble",
       "megaformTrait",
       "origin",
@@ -484,8 +620,8 @@
       "spell",
       "threatPower",
       "trait",
-      "weapon",
-      "weaponUpgrade"
+      "upgrade",
+      "weapon"
     ],
     "templates": {
       "itemDescription": {
@@ -518,7 +654,9 @@
       "bonusToughness": 0,
       "classification": "light",
       "equipped": false,
-      "traits": []
+      "traits": [],
+      "upgradeIds": [],
+      "upgradeTraits": []
     },
     "bond": {
       "templates": [
@@ -556,8 +694,17 @@
     },
     "hangUp": {
       "templates": [
-        "itemDescription"        
+        "itemDescription"
       ]
+    },
+    "influence": {
+      "templates" : [
+        "itemDescription"
+      ],
+      "bond": "",
+      "hangUpIds": [],
+      "perkIds": [],
+      "skills": []
     },
     "magicBauble": {
       "templates": [
@@ -655,14 +802,22 @@
         "skill": null,
         "shift": null
       },
-      "upgrades": ""
+      "traits": [],
+      "upgradeIds": [],
+      "upgradeTraits": []
     },
-    "weaponUpgrade": {
+    "upgrade": {
       "templates": [
         "itemDescription"
       ],
+      "armorBonus": {
+        "defense": "toughness",
+        "value": 0
+      },
       "availability": "standard",
       "benefit": "",
+      "traits": [],
+      "type": "armor",
       "prerequisite": null
     }
   }

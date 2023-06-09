@@ -1,4 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { searchCompendium } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -73,11 +74,75 @@ export class Essence20ActorSheet extends ActorSheet {
     return context;
   }
 
+  /* -------------------------------------------- */
+  /* Crossover Button for Character Sheets        */
+  /* -------------------------------------------- */
+  _getHeaderButtons() {
+    let buttons = super._getHeaderButtons();
+    // Token Configuration
+    if (this.actor.isOwner) {
+      if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+        buttons = [
+          {
+            label: game.i18n.localize('E20.Crossover'),
+            class: 'configure-actor',
+            icon: 'fas fa-cog',
+            onclick: (ev) => this._onConfigureEntity(ev),
+          },
+          ...buttons,
+        ];
+      }
+    }
+
+    return buttons;
+  }
+
+  /**
+   * Creates dialog window for Crossover Options
+   * @param {Event} event   The originating click event
+   */
+  async _onConfigureEntity(event) {
+    event.preventDefault();
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.Crossover'),
+        content: await renderTemplate("systems/essence20/templates/dialog/crossover-options.hbs", {
+          actor: this.actor,
+          system: this.actor.system,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._crossoverSettings(this._rememberOptions(html)),
+          },
+        },
+      },
+    ).render(true);
+  }
+
+  /**
+   * Sets the options from the Crossover Dialog
+   * @param {options} options   The options from the dialog
+   */
+  _crossoverSettings(options) {
+    for (const option in options) {
+      const updateString = `system.${option}`;
+      if (options[option]) {
+        this.actor.update({
+          [updateString]: true,
+        }).then(this.render(false));
+      } else {
+        this.actor.update({
+          [updateString]: false,
+        }).then(this.render(false));
+      }
+    }
+  }
+
   /**
    * Prepare skills that are always displayed for NPCs.
-   *
    * @param {Object} context The actor data to prepare.
-   *
    * @return {undefined}
    */
   _prepareDisplayedNpcSkills(context) {
@@ -120,20 +185,6 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Organize and classify Items for Character sheets.
    *
-   * @param {Object} actorData The actor to prepare.
-   *
-   * @return {undefined}
-   */
-  _prepareCharacterData(context) {
-    // Handle ability scores.
-    // for (let [k, v] of Object.entries(context.data.abilities)) {
-    //   v.label = game.i18n.localize(CONFIG.BOILERPLATE.abilities[k]) ?? k;
-    // }
-  }
-
-  /**
-   * Organize and classify Items for Character sheets.
-   *
    * @param {Object} context The actor data to prepare.
    *
    * @return {undefined}
@@ -147,6 +198,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const features = []; // Used by Zords
     const gears = [];
     const hangUps = [];
+    const influences = [];
     const magicBaubles = [];
     const megaformTraits = [];
     const origins = []; // Used by PCs
@@ -156,85 +208,113 @@ export class Essence20ActorSheet extends ActorSheet {
     const specializations = {};
     const spells = [];
     const threatPowers = [];
-    const traits = []; // Catchall for Megaform Zords, Vehicles, NPCs
+    const upgrades = [];
+    const traits = []; // Used by Vehicles
     const weapons = [];
     const classFeaturesById = {};
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
 
-    // // Iterate through items, allocating to containers
+    // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
+
       switch (itemType) {
-        case 'altMode':
-          altModes.push(i);
-          break;
-        case 'armor':
-          if (i.system.equipped) {
-            equippedArmorEvasion += parseInt(i.system.bonusEvasion);
-            equippedArmorToughness += parseInt(i.system.bonusToughness);
-          }
-          armors.push(i);
-          break;
-        case 'bond':
-          bonds.push(i);
-          break;
-        case 'contact':
-          contacts.push(i);
-          break;
-        case 'feature':
-          features.push(i);
-          break;
-        case 'gear':
-          gears.push(i);
-          break;
-        case 'hangUp':
-          hangUps.push(i);
-          break;
-        case 'magicBauble':
-          magicBaubles.push(i);
-          break;
-        case 'megaformTrait':
-          megaformTraits.push(i);
-          break;
-          case 'origin':
-            i.skillsString = i.system.skills.map(skill => {
-              return game.i18n.localize(CONFIG.E20.originEssenceSkills[skill]);
-            }).join(", ");
-            i.essenceString = i.system.essences.map(essence => {
-              return game.i18n.localize(CONFIG.E20.originEssences[essence]);
-            }).join(", ");
-            origins.push(i);
-            break;
-        case 'perk':
-          perks.push(i);
-          break;
-        case 'power':
-          powers.push(i);
-          break;
-        case 'spell':
-          spells.push(i);
-          break;
-        case 'classFeature':
-          classFeatures.push(i);
-          classFeaturesById[i._id] = i.name;
-          break;
-        case 'specialization':
-          const skill = i.system.skill;
-          const existingSkillSpecializations = specializations[skill];
-          existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
-          break;
-        case 'threatPower':
-          threatPowers.push(i);
-          break;
-        case 'trait':
-          traits.push(i);
-          break;
-        case 'weapon':
-          weapons.push(i);
-          break;
-      };
+      case 'altMode': {
+        altModes.push(i);
+        break;
+      }
+      case 'armor': {
+        if (i.system.equipped) {
+          equippedArmorEvasion += parseInt(i.system.bonusEvasion);
+          equippedArmorToughness += parseInt(i.system.bonusToughness);
+        }
+        armors.push(i);
+        break;
+      }
+      case 'bond': {
+        bonds.push(i);
+        break;
+      }
+      case 'contact': {
+        contacts.push(i);
+        break;
+      }
+      case 'feature': {
+        features.push(i);
+        break;
+      }
+      case 'gear': {
+        gears.push(i);
+        break;
+      }
+      case 'hangUp': {
+        hangUps.push(i);
+        break;
+      }
+      case 'influence': {
+        influences.push(i);
+        break;
+      }
+      case 'magicBauble': {
+        magicBaubles.push(i);
+        break;
+      }
+      case 'megaformTrait': {
+        megaformTraits.push(i);
+        break;
+      }
+      case 'origin': {
+        i.skillsString = i.system.skills.map(skill => {
+          return CONFIG.E20.originSkills[skill];
+        }).join(", ");
+        i.essenceString = i.system.essences.map(essence => {
+          return CONFIG.E20.originEssences[essence];
+        }).join(", ");
+        origins.push(i);
+        break;
+      }
+      case 'perk': {
+        perks.push(i);
+        break;
+      }
+      case 'power': {
+        powers.push(i);
+        break;
+      }
+      case 'spell': {
+        spells.push(i);
+        break;
+      }
+      case 'classFeature': {
+        classFeatures.push(i);
+        classFeaturesById[i._id] = i.name;
+        break;
+      }
+      case 'specialization': {
+        const skill = i.system.skill;
+        const existingSkillSpecializations = specializations[skill];
+        existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
+        break;
+      }
+      case 'threatPower': {
+        threatPowers.push(i);
+        break;
+      }
+      case 'trait': {
+        traits.push(i);
+        break;
+      }
+      case 'upgrade': {
+        upgrades.push(i);
+        break;
+      }
+      case 'weapon': {
+        weapons.push(i);
+        break;
+      }
+      }
     }
 
     // Assign and return
@@ -244,11 +324,10 @@ export class Essence20ActorSheet extends ActorSheet {
     context.contacts = contacts;
     context.classFeatures = classFeatures;
     context.classFeaturesById = classFeaturesById;
-    context.equippedArmorEvasion = equippedArmorEvasion;
-    context.equippedArmorToughness = equippedArmorToughness;
     context.features = features;
     context.gears = gears;
     context.hangUps = hangUps;
+    context.influences = influences;
     context.magicBaubles = magicBaubles;
     context.megaformTraits = megaformTraits;
     context.origins = origins;
@@ -258,7 +337,13 @@ export class Essence20ActorSheet extends ActorSheet {
     context.specializations = specializations;
     context.threatPowers = threatPowers;
     context.traits = traits;
+    context.upgrades = upgrades;
     context.weapons = weapons;
+
+    this.actor.update({
+      "system.defenses.evasion.armor": equippedArmorEvasion,
+      "system.defenses.toughness.armor": equippedArmorToughness,
+    }).then(this.render(false));
   }
 
   /* -------------------------------------------- */
@@ -288,8 +373,11 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (item.type == "origin") {
         this._onOriginDelete(item);
+      } else if (item.type == "altMode") {
+        this._onAltModeDelete(item);
+      } else if (item.type == 'influence') {
+        this._onInfluenceDelete(item);
       }
-
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
@@ -302,6 +390,12 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
+
+    // Morph Button
+    html.find('.morph').click(this._morph.bind(this));
+
+    //Transform Button
+    html.find('.transform').click(this._transform.bind(this));
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -320,6 +414,36 @@ export class Essence20ActorSheet extends ActorSheet {
         this.render();
       } else {
         parent.toggleClass('open');
+
+        // Check if the container header toggle should be flipped
+        let oneClosed = false;
+
+        // Look for a closed Item
+        const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+        for (const accordionLabel of accordionLabels) {
+          oneClosed = !$(accordionLabel).hasClass('open');
+          if (oneClosed) break;
+        }
+
+        // Set header state to open if all Items are open; closed otherwise
+        const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
+        if (oneClosed) {
+          $(container).removeClass('open');
+        } else {
+          $(container).addClass('open');
+        }
+      }
+    });
+
+    // Open and collapse all Item contents in container
+    html.find('.header-accordion-label').click(ev => {
+      const el = ev.currentTarget;
+      const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
+      $(el.closest('.header-accordion-wrapper')).toggleClass('open');
+
+      const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+      for (const accordionLabel of accordionLabels) {
+        isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
       }
     });
 
@@ -331,6 +455,167 @@ export class Essence20ActorSheet extends ActorSheet {
         li.setAttribute("draggable", true);
         li.addEventListener("dragstart", handler, false);
       });
+    }
+  }
+
+  /**
+  * Get items of a type
+  * @param {String} type The type of item to return
+  * @returns {Item[]}    All items of the type requested
+  * @private
+  */
+  _getItemsOfType(type) {
+    const itemsOfType = [];
+    for (const item of this.actor.items) {
+      if (item.type == type) {
+        itemsOfType.push(item);
+      }
+    }
+
+    return itemsOfType;
+  }
+
+  /**
+  * Handle clicking the transform button
+  * @private
+  */
+  async _transform() {
+    const altModes = this._getItemsOfType("altMode");
+
+    if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
+      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+    } else if (altModes.length > 1) {                           // Select from multiple alt-modes
+      if (!this.actor.system.isTransformed) {
+        this._showAltModeChoiceDialog(altModes, false);         // More than 1 altMode and not transformed
+      } else {
+        this._showAltModeChoiceDialog(altModes, true);          // More than 1 altMode and transformed
+      }
+    } else {                                                    // Alt-mode/bot-mode toggle
+      this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes[0]);
+    }
+  }
+
+  /**
+   * Creates the Alt Mode Choice List Dialog
+   * @param {AltMode[]} altModes  A list of the available Alt Modes
+   * @param {Boolean} isTransformed Whether the Transformer is transformed or not
+   * @private
+   */
+  async _showAltModeChoiceDialog(altModes, isTransformed) {
+    const choices = {};
+    if (isTransformed) {
+      choices["BotMode"] = {
+        chosen: false,
+        label: "BotMode",
+      };
+    }
+
+    for (const altMode of altModes) {
+      if (this.actor.system.altModeId != altMode._id) {
+        choices[altMode._id] = {
+          chosen: false,
+          label: altMode.name,
+        };
+      }
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.AltModeChoice'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._altModeSelect(altModes, this._rememberOptions(html)),
+          }
+        },
+      },
+    ).render(true);
+  }
+
+  /**
+   * Handle selecting an alt-mode from the Alt-mode Dialog
+   * @param {AltMode[]} altModes  A list of the available Alt Modes
+   * @param {Object} options   The options resulting from _showAltModeDialog()
+   * @private
+   */
+  async _altModeSelect(altModes, options) {
+    let selectedForm = null;
+    let transformation = null;
+
+    for (const [altMode, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedForm = altMode;
+        break;
+      }
+    }
+
+    if (!selectedForm) {
+      return;
+    }
+
+    if (selectedForm == "BotMode") {
+      this._transformBotMode();
+    } else {
+      for (const mode of altModes) {
+        if (selectedForm == mode._id) {
+          transformation = mode;
+          break;
+        }
+      }
+
+      if (transformation) {
+        this._transformAltMode(transformation);
+      }
+    }
+  }
+
+  /**
+   * Handles Transforming into an altMode
+   * @param {AltMode} altMode   The alt-mode that was selected to Transform into
+   * @private
+   */
+  async _transformAltMode(altMode) {
+    await this.actor.update({
+      "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
+      "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
+      "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
+      "system.altModeSize": altMode.system.altModesize,
+      "system.altModeId": altMode._id,
+      "system.isTransformed": true,
+    }).then(this.render(false));
+  }
+
+  /**
+   * Handle Transforming back into the Bot Mode
+   * @private
+   */
+  async _transformBotMode() {
+    await this.actor.update({
+      "system.movement.aerial.altMode": 0,
+      "system.movement.swim.altMode": 0,
+      "system.movement.ground.altMode": 0,
+      "system.isTransformed": false,
+      "system.altModeId": "",
+      "system.altModeSize": "",
+    }).then(this.render(false));
+  }
+
+  /**
+   * Handle AltModes being deleted
+   * @param {AltMode} altMode is the deleted AltMode.
+   * @private
+   */
+  async _onAltModeDelete(altMode) {
+    const altModes = this._getItemsOfType("altMode");
+    if (altModes.length > 1) {
+      if (altMode._id == this.actor.system.altModeId) {
+        this._transformBotMode();
+      }
+    } else {
+      this._transformBotMode();
     }
   }
 
@@ -415,6 +700,13 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
+  // Handle setting the isMorphed value
+  async _morph() {
+    await this.actor.update({
+      "system.isMorphed": !this.actor.system.isMorphed,
+    }).then(this.render(false));
+  }
+
   /**
    * Handle dropping an Item onto an Actor.
    * @param {DragEvent} event            The concluding DragEvent which contains drop data
@@ -431,19 +723,153 @@ export class Essence20ActorSheet extends ActorSheet {
     const sourceItem = await fromUuid(data.uuid);
     if (!sourceItem) return false;
 
-    if (sourceItem.type == 'origin') {
+    switch (sourceItem.type) {
+    case 'influence':
+      await this._influenceUpdate(sourceItem, event, data);
+      break;
+    case 'origin':
       for (let actorItem of this.actor.items) {
+        // Characters can only have one Origin
         if(actorItem.type == 'origin') {
           ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
-          return false
+          return false;
         }
       }
 
       await this._showOriginEssenceDialog(sourceItem, event, data);
-    } else {
+      break;
+    case 'upgrade':
+      // Drones can only accept drone Upgrades
+      if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
+        return false;
+      } else if (this.actor.type == 'transformer' && sourceItem.system.type != 'armor') {
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeTransformerError')));
+        return false;
+      }
+      break;
+    default:
       super._onDropItem(event, data);
     }
-  };
+  }
+
+  /**
+   * Handle the dropping of an influence on to a character
+   * @param {Influence} influence    The Influence
+   * @param {DragEvent} event  The concluding DragEvent which contains drop data
+   * @param {object} data      The data transfer extracted from the event
+   * @private
+   */
+  async _influenceUpdate(influence, event, data) {
+    let addHangUp = false;
+
+    for (const item of this.actor.items) {
+      if (item.type == 'influence') {
+        addHangUp = true;
+        break;
+      }
+    }
+
+    const newInfluenceList = await super._onDropItem(event, data);
+    const newInfluence = newInfluenceList[0];
+    const perkIds = await this._createItemCopies(influence.system.perkIds);
+
+    if (addHangUp) {
+      if (influence.system.hangUpIds.length > 1) {
+        this._chooseHangUp(influence, perkIds, newInfluence);
+      } else {
+        const hangUpIds = await this._createItemCopies(influence.system.hangUpIds);
+        await newInfluence.update({
+          ["system.perkIds"]: perkIds,
+          ["system.hangUpIds"]: hangUpIds,
+        });
+      }
+    }
+
+    await newInfluence.update({
+      ["system.perkIds"]: perkIds,
+    });
+  }
+
+  /**
+  * Displays a dialog for selecting a Hang Up from an Influence
+  * @param {Influence} influence  The Influence
+  * @param {Perk[]} perkIds The Perk IDs that go with the new Influence
+  * @param {Influence} newInfluence The new Influence that was created.
+  * @private
+  */
+  async _chooseHangUp(influence, perkIds, newInfluence) {
+    const choices = {};
+    let itemArray = [];
+    let compendiumData = null;
+
+    for (const id of influence.system.hangUpIds) {
+      compendiumData = game.items.get(id);
+      if (!compendiumData) {
+        compendiumData = searchCompendium(id);
+        if (compendiumData) {
+          itemArray.push(compendiumData);
+          choices[compendiumData._id] = {
+            chosen: false,
+            label: compendiumData.name,
+          };
+        }
+      }
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.HangUpChoice'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._hangUpSelect(itemArray, this._rememberOptions(html), perkIds, newInfluence),
+          },
+        },
+      },
+    ).render(true);
+  }
+
+  /**
+  * Adds the chosen hangUp to the character
+  * @param {HangUp[]} hangUps  An Array of the HangUps that could be picked
+  * @param {Object} options  The selections from the dialog
+  * @param {String[]} perkIds  The IDs from any perk that were added with the Influence
+  * @param {Influence} newInfluence  The new influence that was created
+  * @private
+  */
+  async _hangUpSelect(hangUps, options, perkIds, newInfluence) {
+    let selectedHangUp = null;
+    const hangUpIds = [];
+    let hangUpToCreate = null;
+
+    for (const [hangUp, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedHangUp = hangUp;
+        break;
+      }
+    }
+
+    if (!selectedHangUp) {
+      return;
+    }
+
+    for (const item of itemArray) {
+      if (item._id == selectedHangUp) {
+        hangUpToCreate = item;
+      }
+    }
+
+    const newHangUp = await Item.create(hangUpToCreate, { parent: this.actor });
+    hangUpIds.push(newHangUp._id);
+    await newInfluence.update({
+      ["system.perkIds"]: perkIds,
+      ["system.hangUpIds"]: hangUpIds,
+    });
+  }
 
   /**
    * Displays a dialog for selecting an Essence for the given Origin.
@@ -458,13 +884,28 @@ export class Essence20ActorSheet extends ActorSheet {
       choices[essence] = {
         chosen: false,
         label: CONFIG.E20.originEssences[essence],
+      };
+    }
+
+    const influences = await this._getItemsOfType("influence");
+    for (const influence of influences) {
+      if (influence.system.skills) {
+        const skill = influence.system.skills;
+        for (const influenceEssence in this.actor.system.skills[skill].essences) {
+          if (this.actor.system.skills[skill].essences[influenceEssence]) {
+            choices[influenceEssence] = {
+              chosen: false,
+              label: CONFIG.E20.originEssences[influenceEssence],
+            };
+          }
+        }
       }
     }
 
     new Dialog(
       {
         title: game.i18n.localize('E20.EssenceIncrease'),
-        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
           choices,
         }),
         buttons: {
@@ -489,7 +930,7 @@ export class Essence20ActorSheet extends ActorSheet {
       options[el.id] = el.checked;
     });
     return options;
-  };
+  }
 
   /**
    * Displays a dialog for selecting a Skill for the given Origin.
@@ -510,8 +951,22 @@ export class Essence20ActorSheet extends ActorSheet {
         selectedEssence = essence;
         choices[skill] = {
           chosen: false,
-          label: CONFIG.E20.originEssenceSkills[skill],
+          label: CONFIG.E20.originSkills[skill],
         };
+      }
+    }
+
+    const influences = await this._getItemsOfType("influence");
+    for (const influence of influences) {
+      if (influence.system.skills) {
+        const essence = CONFIG.E20.skillToEssence[influence.system.skills];
+        if (options[essence] && essences.includes(essence)) {
+          selectedEssence = essence;
+          choices[influence.system.skills] = {
+            chosen: false,
+            label: CONFIG.E20.originSkills[influence.system.skills],
+          };
+        }
       }
     }
 
@@ -523,7 +978,7 @@ export class Essence20ActorSheet extends ActorSheet {
     new Dialog(
       {
         title: game.i18n.localize('E20.OriginBonusSkill'),
-        content: await renderTemplate("systems/essence20/templates/dialog/drop-origin.hbs", {
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
           choices,
         }),
         buttons: {
@@ -559,8 +1014,6 @@ export class Essence20ActorSheet extends ActorSheet {
       return;
     }
 
-    this._originPerkCreate(origin)
-
     const essenceValue = this.actor.system.essences[essence] + 1;
     const essenceString = `system.essences.${essence}`;
     let skillString = "";
@@ -570,7 +1023,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (selectedSkill == "initiative"){
       skillString = `system.${selectedSkill}.shift`;
       currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
     } else if (selectedSkill == "conditioning"){
       skillString = `system.${selectedSkill}`;
       currentShift = this.actor.system[selectedSkill];
@@ -578,41 +1031,71 @@ export class Essence20ActorSheet extends ActorSheet {
     } else {
       currentShift = this.actor.system.skills[selectedSkill].shift;
       skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))]
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
     }
 
-    super._onDropItem(event, data);
+    const newOriginList = await super._onDropItem(event, data);
+    this._originPerkCreate(origin, newOriginList[0]);
 
     await this.actor.update({
       [essenceString]: essenceValue,
       [skillString]: newShift,
       "system.health.max": origin.system.startingHealth,
       "system.health.value": origin.system.startingHealth,
-      "system.movement.aerial": origin.system.baseAerialMovement,
-      "system.movement.swim": origin.system.baseAquaticMovement,
-      "system.movement.ground": origin.system.baseGroundMovement,
+      "system.movement.aerial.base": origin.system.baseAerialMovement,
+      "system.movement.swim.base": origin.system.baseAquaticMovement,
+      "system.movement.ground.base": origin.system.baseGroundMovement,
       "system.originEssencesIncrease": essence,
       "system.originSkillsIncrease": selectedSkill,
     });
-}
+  }
+
+  /**
+   * Creates copies of Items for given IDs
+   * @param {String[]} ids  The IDs of the items to be copied
+   * @returns {String[]}    The IDs of the copied items
+   * @private
+   */
+  async _createItemCopies(ids) {
+    const copyIds = [];
+
+    for (const id of ids) {
+      let compendiumData = game.items.get(id);
+      if (!compendiumData) {
+        const item = searchCompendium(id);
+        if (item) {
+          compendiumData = item;
+        }
+      }
+
+      const newItem = await Item.create(compendiumData, { parent: this.actor });
+      copyIds.push(newItem._id);
+    }
+
+    return copyIds;
+  }
 
   /**
   * Creates the Perk from the Origin on the Actor
-  * @param {Object} origin   The Origin
+  * @param {Origin} origin        The original Origin to get Perks from
+  * @param {Origin} newOrigin The new Origin being created
   * @private
   */
-  async _originPerkCreate(origin){
-    let data = game.items.get(origin.system.originPerkIds[0]);
-    if(!data) {
-      for (let pack of game.packs){
-        const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-        let originPerk = await compendium.getDocument(origin.system.originPerkIds[0]);
-        if (originPerk) {
-          data = originPerk;
-        }
+  async _originPerkCreate(origin, newOrigin){
+    const perkIds = [];
+    for (const id of origin.system.originPerkIds) {
+      let data = game.items.get(id);
+      if (!data) {
+        data = searchCompendium(id);
       }
+
+      const perk = await Item.create(data, { parent: this.actor });
+      perkIds.push(perk._id);
     }
-    return await Item.create(data, { parent: this.actor });
+
+    await newOrigin.update({
+      ["system.originPerkIds"]: perkIds,
+    });
   }
 
   /**
@@ -647,6 +1130,37 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
+  * Handle deleting of an Influence from an Actor Sheet
+  * @param {Influence} influence   The Influence
+  * @private
+  */
+  _onInfluenceDelete (influence) {
+    const influenceDelete = this.actor.items.get(influence._id);
+
+    for (const perk of influenceDelete.system.perkIds) {
+      if (perk) {
+        this._itemDeleteById(perk);
+      }
+    }
+
+    for (const hangUp of influenceDelete.system.hangUpIds) {
+      this._itemDeleteById(hangUp);
+    }
+  }
+
+  /**
+  * Handle deleting of items by an Id
+  * @param {String} id of the item to delete
+  * @private
+  */
+  _itemDeleteById(id) {
+    let item = this.actor.items.get(id);
+    if (item) {
+      item.delete();
+    }
+  }
+
+  /**
   * Handle deleting of an Origin from an Actor Sheet
   * @param {Object} origin   The Origin
   * @private
@@ -663,7 +1177,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (selectedSkill == "initiative"){
       skillString = `system.${selectedSkill}.shift`;
       currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
     } else if (selectedSkill == "conditioning"){
       skillString = `system.${selectedSkill}`;
       currentShift = this.actor.system[selectedSkill];
@@ -671,7 +1185,12 @@ export class Essence20ActorSheet extends ActorSheet {
     } else {
       currentShift = this.actor.system.skills[selectedSkill].shift;
       skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))]
+      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
+    }
+
+    const originDelete = this.actor.items.get(origin._id);
+    for (const perk of originDelete.system.originPerkIds) {
+      this._itemDeleteById(perk);
     }
 
     const essenceString = `system.essences.${essence}`;
@@ -681,9 +1200,9 @@ export class Essence20ActorSheet extends ActorSheet {
       [skillString]: newShift,
       "system.health.max": 0,
       "system.health.value": 0,
-      "system.movement.aerial": 0,
-      "system.movement.swim": 0,
-      "system.movement.ground": 0,
+      "system.movement.aerial.base": 0,
+      "system.movement.swim.base": 0,
+      "system.movement.ground.base": 0,
       "system.originEssencesIncrease": "",
       "system.originSkillsIncrease": ""
     });

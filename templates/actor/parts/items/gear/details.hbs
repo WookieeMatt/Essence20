@@ -8,9 +8,6 @@
   {{#if item.system.effectArea}}
   <span class="chip" name="chip.gear.effectArea">{{localize 'E20.GearEffectArea'}}: {{item.system.effectArea}}</span>
   {{/if}}
-  {{#if (lookup @root.config.effectShapes item.system.effectShape)}}
-  <span class="chip" name="chip.gear.effectShape">{{localize 'E20.GearEffectShape'}}: {{localize (lookup @root.config.effectShapes item.system.effectShape)}}</span>
-  {{/if}}
   {{#if item.system.lightRange.bright}}
   <span class="chip" name="chip.gear.lightRange.bright">{{localize 'E20.LightRangeBright'}}: {{item.system.lightRange.bright}}</span>
   {{/if}}

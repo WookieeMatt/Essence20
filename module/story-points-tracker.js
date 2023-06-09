@@ -10,7 +10,7 @@ export let setting = key => {
   return game.settings.get("essence20", key);
 };
 export let getPointsName = plural => {
-  return `${i18n(CONFIG.E20.pointsNameOptions[setting('sptPointsName')])} ${i18n(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
+  return `${CONFIG.E20.pointsNameOptions[setting('sptPointsName')]} ${i18n(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
 };
 
 /* -------------------------------------------- */
@@ -164,7 +164,7 @@ export class StoryPointsTracker extends Application {
       .find(control => control.name === "token").tools
       .find(control => control.name === "toggleDialog");
     toggleDialogControl.active = false;
-    toggleDialogControl.onClick(false)
+    toggleDialogControl.onClick(false);
     ui.controls.render();
 
     this.closeSpt();
@@ -202,18 +202,18 @@ Hooks.on('ready', () => {
   Draggable.prototype._onDragMouseUp = function (event) {
     Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
     return oldDragMouseUp.call(this, event);
-  }
+  };
 });
 
 // Persists dialog position when moved by the user
 Hooks.on('dragEndStoryPointsTracker', (app) => {
   game.user.setFlag("essence20", "storyPointsTrackerPos", { left: app.position.left, top: app.position.top });
-})
+});
 
 // Init the button in the controls for toggling the dialog
 Hooks.on("getSceneControlButtons", (controls) => {
   if (setting("sptShow") == 'toggle' && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
-    let tokenControls = controls.find(control => control.name === "token")
+    let tokenControls = controls.find(control => control.name === "token");
     tokenControls.tools.push({
       name: "toggleDialog",
       title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),

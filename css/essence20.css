@@ -86,6 +86,11 @@
   display: block;
 }
 
+.essence20 .header-accordion-label {
+  float: right;
+  margin-right: 8px;
+}
+
 /* Chevron icon. */
 .essence20 .accordion-icon {
   transition: all ease-in-out 0.25s;

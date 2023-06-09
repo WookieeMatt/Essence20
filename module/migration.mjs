@@ -119,7 +119,7 @@ export const migrateActorData = function(actor) {
 
   // Migrate Skills
   if (actor.system.skills.strength) {
-    const skillsForEssences = actor.system.skills
+    const skillsForEssences = actor.system.skills;
     const essenceList = ["any", "strength", "speed", "smarts", "social"];
     let newSkills = {};
     for (const [essence, skillsForEssence] of Object.entries(skillsForEssences)) {
@@ -131,11 +131,23 @@ export const migrateActorData = function(actor) {
             "shift": fields.shift,
             "shiftDown": fields.shiftDown,
             "shiftUp": fields.shiftUp
-          }
+          };
         }
       }
     }
     updateData[`system.skills`] = newSkills;
+  }
+
+  //Migrate to Base Movement
+  if (!actor.system.movement.aerial.base && !actor.system.movement.ground.base && !actor.system.movement.swim.base){
+    for (const item of actor.items) {
+      if (item.type == 'origin') {
+        updateData[`system.movement.aerial.base`] = item.system.baseAerialMovement;
+        updateData[`system.movement.ground.base`] = item.system.baseGroundMovement;
+        updateData[`system.movement.swim.base`] = item.system.baseAquaticMovement;
+        break;
+      }
+    }
   }
 
   // Migrate Zord/MFZ essence
@@ -189,7 +201,7 @@ export const migrateActorData = function(actor) {
  * @param {object} item             Item data to migrate
  * @returns {object}                The updateData to apply
  */
- export function migrateItemData(item) {
+export function migrateItemData(item) {
   const updateData = {};
 
   if (item.type == "armor") {
@@ -249,25 +261,22 @@ export const migrateCompendium = async function(pack) {
     let updateData = {};
     try {
       switch (documentName) {
-        case "Actor":
-          updateData = migrateActorData(doc.toObject());
-          break;
-        case "Item":
-          updateData = migrateItemData(doc.toObject());
-          break;
-        case "Scene":
-          // updateData = migrateSceneData(doc.toObject());
-          break;
+      case "Actor":
+        updateData = migrateActorData(doc.toObject());
+        break;
+      case "Item":
+        updateData = migrateItemData(doc.toObject());
+        break;
+      case "Scene":
+        // updateData = migrateSceneData(doc.toObject());
+        break;
       }
 
       // Save the entry, if data was changed
       if ( foundry.utils.isEmpty(updateData) ) continue;
       await doc.update(updateData);
       console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
-    }
-
-    // Handle migration failures
-    catch(err) {
+    } catch(err) { // Handle migration failures
       err.message = `Failed dnd5e system migration for document ${doc.name} in pack ${pack.collection}: ${err.message}`;
       console.error(err);
     }

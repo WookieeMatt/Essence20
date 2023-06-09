@@ -30,18 +30,21 @@ export class RollDialog {
    * @param {Actor} actor   The actor performing the roll.
    * @returns {Promise<Dialog>}   The dialog to be displayed.
    */
-  async getSkillRollOptions(dataset, actor) {
-    const template = "systems/essence20/templates/dialog/roll-dialog.hbs"
-    const snag = E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(dataset.shift);
+  async getSkillRollOptions(dataset, skillDataset, actor) {
+    const template = "systems/essence20/templates/dialog/roll-dialog.hbs";
+    const snag =
+      skillDataset.snag ||
+      E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(dataset.shift);
+    const edge = skillDataset.edge;
     const html = await renderTemplate(
       template,
       {
         shiftUp: dataset.shiftUp || 0,
         shiftDown: dataset.shiftDown || 0,
         isSpecialized: dataset.isSpecialized === 'true',
-        snag,
-        edge: false,
-        normal: !snag
+        snag: snag && !edge,
+        edge: edge && !snag,
+        normal: edge == snag,
       }
     );
 
@@ -56,6 +59,7 @@ export class RollDialog {
           },
           cancel: {
             label: this._localize('E20.RollDialogCancelButton'),
+            /* eslint-disable no-unused-vars */
             callback: html => resolve({ cancelled: true }),
           },
         },
@@ -79,6 +83,6 @@ export class RollDialog {
       snag: form.snagEdge.value == 'snag',
       isSpecialized: form.isSpecialized.checked,
       timesToRoll: parseInt(form.timesToRoll.value),
-    }
+    };
   }
 }

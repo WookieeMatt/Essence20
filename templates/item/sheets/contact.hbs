@@ -1,0 +1,33 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+    {{!-- Allegiance Points --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ContactAllegiancePoints'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="number" name="system.allegiancePoints" value="{{system.allegiancePoints}}" />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Gaining the Contact --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ContactGainingTheContact'}}
+    {{#*inline "item-field-inputs"}}
+    <textarea type="text" name="system.gainingTheContact">{{system.gainingTheContact}}</textarea>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Perks --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ContactPerks'}}
+    {{#*inline "item-field-inputs"}}
+    <textarea type="text" name="system.perks">{{system.perks}}</textarea>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Description Section --}}
+    {{> "systems/essence20/templates/item/parts/description.hbs"}}
+  </section>
+
+</form>
