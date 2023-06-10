@@ -102,7 +102,7 @@
   ],
   "compatibility": {
     "minimum": "0.8.6",
-    "verified": "10"
+    "verified": "11"
   },
   "flags": {
     "needsMigrationVersion": "3.1.4"
