@@ -330,6 +330,7 @@ preLocalize("availabilities");
 
 // Perk types
 E20.perkTypes = {
+  division: "E20.PerkDivision",
   faction: "E20.PerkFaction",
   general: "E20.PerkGeneral",
   influence: "E20.PerkInfluence",
