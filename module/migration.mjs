@@ -166,11 +166,11 @@ export const migrateActorData = function(actor) {
         break;
       }
     }
-  } else if (typeof actor.system.movement.aerial == 'number') {
+  } else if (typeof actor.system.movement.aerial == 'string') { // Non-PCs
     updateData[`system.movement.aerial.total`] = actor.system.movement.aerial;
     updateData[`system.movement.ground.total`] = actor.system.movement.ground;
     updateData[`system.movement.swim.total`] = actor.system.movement.swim;
-  } else { // Movement fields are already objects
+  } else { // Non-PCs where movement fields are already objects
     updateData[`system.movement.aerial.total`] = actor.system.movement.aerial.total;
     updateData[`system.movement.ground.total`] = actor.system.movement.ground.total;
     updateData[`system.movement.swim.total`] = actor.system.movement.swim.total;
