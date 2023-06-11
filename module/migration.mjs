@@ -138,8 +138,26 @@ export const migrateActorData = function(actor) {
     updateData[`system.skills`] = newSkills;
   }
 
-  //Migrate to Base Movement
-  if (!actor.system.movement.aerial.base && !actor.system.movement.ground.base && !actor.system.movement.swim.base){
+  // Migrate to Base Movement
+  updateData[`system.movement.aerial.altMode`] = 0;
+  updateData[`system.movement.aerial.base`] = 0;
+  updateData[`system.movement.aerial.bonus`] = 0;
+  updateData[`system.movement.aerial.morphed`] = 0;
+  updateData[`system.movement.aerial.total`] = 0;
+
+  updateData[`system.movement.ground.altMode`] = 0;
+  updateData[`system.movement.ground.base`] = 0;
+  updateData[`system.movement.ground.bonus`] = 0;
+  updateData[`system.movement.ground.morphed`] = 0;
+  updateData[`system.movement.ground.total`] = 0;
+
+  updateData[`system.movement.swim.altMode`] = 0;
+  updateData[`system.movement.swim.base`] = 0;
+  updateData[`system.movement.swim.bonus`] = 0;
+  updateData[`system.movement.swim.morphed`] = 0;
+  updateData[`system.movement.swim.total`] = 0;
+
+  if (["giJoe", "pony", "powerRanger", "transformer"].includes(actor.type)) {
     for (const item of actor.items) {
       if (item.type == 'origin') {
         updateData[`system.movement.aerial.base`] = item.system.baseAerialMovement;
@@ -148,6 +166,10 @@ export const migrateActorData = function(actor) {
         break;
       }
     }
+  } else {
+    updateData[`system.movement.aerial.base`] = actor.system.movement.aerial;
+    updateData[`system.movement.ground.base`] = actor.system.movement.ground;
+    updateData[`system.movement.swim.base`] = actor.system.movement.swim;
   }
 
   // Migrate Zord/MFZ essence
