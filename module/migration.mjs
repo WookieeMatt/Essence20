@@ -166,10 +166,14 @@ export const migrateActorData = function(actor) {
         break;
       }
     }
-  } else {
-    updateData[`system.movement.aerial.base`] = actor.system.movement.aerial;
-    updateData[`system.movement.ground.base`] = actor.system.movement.ground;
-    updateData[`system.movement.swim.base`] = actor.system.movement.swim;
+  } else if (typeof actor.system.movement.aerial == 'number') {
+    updateData[`system.movement.aerial.total`] = actor.system.movement.aerial;
+    updateData[`system.movement.ground.total`] = actor.system.movement.ground;
+    updateData[`system.movement.swim.total`] = actor.system.movement.swim;
+  } else { // Movement fields are already objects
+    updateData[`system.movement.aerial.total`] = actor.system.movement.aerial.total;
+    updateData[`system.movement.ground.total`] = actor.system.movement.ground.total;
+    updateData[`system.movement.swim.total`] = actor.system.movement.swim.total;
   }
 
   // Migrate Zord/MFZ essence
