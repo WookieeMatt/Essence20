@@ -113,7 +113,7 @@ export const migrateActorData = function(actor) {
     updateData[`system.initiative`] = {
       "formula": "", // This will populate after the actor's first initiative roll
       "modifier": 0,
-      "shift": actor.system.initiative
+      "shift": actor.system.initiative,
     };
   }
 
@@ -130,11 +130,12 @@ export const migrateActorData = function(actor) {
             "modifier": fields.modifier,
             "shift": fields.shift,
             "shiftDown": fields.shiftDown,
-            "shiftUp": fields.shiftUp
+            "shiftUp": fields.shiftUp,
           };
         }
       }
     }
+
     updateData[`system.skills`] = newSkills;
   }
 

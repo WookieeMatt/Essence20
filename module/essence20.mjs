@@ -60,7 +60,7 @@ Hooks.once('init', async function () {
     Essence20Combat,
     Essence20Combatant,
     Essence20Item,
-    rollItemMacro
+    rollItemMacro,
   };
 
   // Add custom constants for configuration.
@@ -106,6 +106,7 @@ Handlebars.registerHelper('concat', function () {
       outStr += arguments[arg];
     }
   }
+
   return outStr;
 });
 
@@ -123,6 +124,7 @@ Handlebars.registerHelper('sum', function () {
       total += parseInt(newValue);
     }
   }
+
   return total;
 });
 
@@ -187,9 +189,10 @@ async function createItemMacro(data, slot) {
       type: "script",
       img: item.img,
       command: command,
-      flags: { "essence20.itemMacro": true }
+      flags: { "essence20.itemMacro": true },
     });
   }
+
   game.user.assignHotbarMacro(macro, slot);
   return false;
 }

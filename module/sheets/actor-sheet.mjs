@@ -18,7 +18,7 @@ export class Essence20ActorSheet extends ActorSheet {
       classes: ["essence20", "sheet", "actor"],
       width: 620,
       height: 574,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }]
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }],
     });
   }
 
@@ -221,51 +221,42 @@ export class Essence20ActorSheet extends ActorSheet {
       const itemType = i.type;
 
       switch (itemType) {
-      case 'altMode': {
+      case 'altMode':
         altModes.push(i);
         break;
-      }
-      case 'armor': {
+      case 'armor':
         if (i.system.equipped) {
           equippedArmorEvasion += parseInt(i.system.bonusEvasion);
           equippedArmorToughness += parseInt(i.system.bonusToughness);
         }
+
         armors.push(i);
         break;
-      }
-      case 'bond': {
+      case 'bond':
         bonds.push(i);
         break;
-      }
-      case 'contact': {
+      case 'contact':
         contacts.push(i);
         break;
-      }
-      case 'feature': {
+      case 'feature':
         features.push(i);
         break;
-      }
-      case 'gear': {
+      case 'gear':
         gears.push(i);
         break;
-      }
-      case 'hangUp': {
+      case 'hangUp':
         hangUps.push(i);
         break;
-      }
-      case 'influence': {
+      case 'influence':
         influences.push(i);
         break;
-      }
-      case 'magicBauble': {
+      case 'magicBauble':
         magicBaubles.push(i);
         break;
-      }
-      case 'megaformTrait': {
+      case 'megaformTrait':
         megaformTraits.push(i);
         break;
-      }
-      case 'origin': {
+      case 'origin':
         i.skillsString = i.system.skills.map(skill => {
           return CONFIG.E20.originSkills[skill];
         }).join(", ");
@@ -274,46 +265,39 @@ export class Essence20ActorSheet extends ActorSheet {
         }).join(", ");
         origins.push(i);
         break;
-      }
-      case 'perk': {
+      case 'perk':
         perks.push(i);
         break;
-      }
-      case 'power': {
+      case 'power':
         powers.push(i);
         break;
-      }
-      case 'spell': {
+      case 'spell':
         spells.push(i);
         break;
-      }
-      case 'classFeature': {
+      case 'classFeature':
         classFeatures.push(i);
         classFeaturesById[i._id] = i.name;
         break;
-      }
-      case 'specialization': {
-        const skill = i.system.skill;
-        const existingSkillSpecializations = specializations[skill];
-        existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
+      case 'specialization':
+        {
+          const skill = i.system.skill;
+          const existingSkillSpecializations = specializations[skill];
+          existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
+        }
+
         break;
-      }
-      case 'threatPower': {
+      case 'threatPower':
         threatPowers.push(i);
         break;
-      }
-      case 'trait': {
+      case 'trait':
         traits.push(i);
         break;
-      }
-      case 'upgrade': {
+      case 'upgrade':
         upgrades.push(i);
         break;
-      }
-      case 'weapon': {
+      case 'weapon':
         weapons.push(i);
         break;
-      }
       }
     }
 
@@ -378,6 +362,7 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (item.type == 'influence') {
         this._onInfluenceDelete(item);
       }
+
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
@@ -529,7 +514,7 @@ export class Essence20ActorSheet extends ActorSheet {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
             callback: html => this._altModeSelect(altModes, this._rememberOptions(html)),
-          }
+          },
         },
       },
     ).render(true);
@@ -637,7 +622,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const itemData = {
       name: name,
       type: type,
-      data: data
+      data: data,
     };
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.data["type"];
@@ -747,6 +732,7 @@ export class Essence20ActorSheet extends ActorSheet {
         ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeTransformerError')));
         return false;
       }
+
       break;
     default:
       super._onDropItem(event, data);
@@ -911,8 +897,8 @@ export class Essence20ActorSheet extends ActorSheet {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._showOriginSkillDialog(origin, this._rememberOptions(html), event, data)
-          }
+            callback: html => this._showOriginSkillDialog(origin, this._rememberOptions(html), event, data),
+          },
         },
       },
     ).render(true);
@@ -984,8 +970,8 @@ export class Essence20ActorSheet extends ActorSheet {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._originStatUpdate(origin, selectedEssence, this._rememberOptions(html), event, data)
-          }
+            callback: html => this._originStatUpdate(origin, selectedEssence, this._rememberOptions(html), event, data),
+          },
         },
       },
     ).render(true);
@@ -1121,7 +1107,7 @@ export class Essence20ActorSheet extends ActorSheet {
       if (!zordIds.includes(sourceActor.id)) {
         zordIds.push(sourceActor.id);
         await this.actor.update({
-          "system.zordIds": zordIds
+          "system.zordIds": zordIds,
         }).then(this.render(false));
       }
     } else {
@@ -1204,7 +1190,7 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.movement.swim.base": 0,
       "system.movement.ground.base": 0,
       "system.originEssencesIncrease": "",
-      "system.originSkillsIncrease": ""
+      "system.originSkillsIncrease": "",
     });
   }
 

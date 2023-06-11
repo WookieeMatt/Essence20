@@ -13,8 +13,9 @@ export function onManageSelectTrait(event, owner) {
     name: a.dataset.target,
     title: a.parentElement.innerText,
     choices: [],
-    allowCustom: false
+    allowCustom: false,
   };
+  
   switch (a.dataset.options) {
   case "armor":
     options.choices = CONFIG.E20.armorTraits;
@@ -37,5 +38,6 @@ export function onManageSelectTrait(event, owner) {
     options.valueKey = null;
     break;
   }
+
   new TraitSelector(owner, options).render(true);
 }

@@ -212,7 +212,7 @@ E20.skillToEssence = {
   performance: "social",
   persuasion: "social",
   spellcasting: "any",
-  streetwise: "social"
+  streetwise: "social",
 },
 
 E20.skillsByEssence = {
@@ -335,7 +335,7 @@ E20.perkTypes = {
   influence: "E20.PerkInfluence",
   origin: "E20.PerkOrigin",
   minicon: "E20.MiniCon",
-  role: "E20.PerkRole"
+  role: "E20.PerkRole",
 };
 preLocalize("perkTypes");
 
@@ -351,7 +351,7 @@ E20.gearTypes = {
   other: "E20.GearOther",
   security: "E20.GearSecurity",
   support: "E20.GearSupport",
-  tools: "E20.GearTools"
+  tools: "E20.GearTools",
 };
 preLocalize("gearTypes");
 
@@ -400,7 +400,7 @@ E20.actorSizes = {
   extended2: "E20.ActorSizeExtended2",
   towering: "E20.ActorSizeTowering",
   extended3: "E20.ActorSizeExtended3",
-  titanic: "E20.ActorSizeTitanic"
+  titanic: "E20.ActorSizeTitanic",
 };
 preLocalize("actorSizes");
 

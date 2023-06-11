@@ -152,7 +152,7 @@ export class Essence20Item extends Item {
           speaker: speaker,
           rollMode: rollMode,
           flavor: label,
-          content: this.system.description ?? ''
+          content: this.system.description ?? '',
         });
       } else { // Otherwise, create a roll and send a chat message from it.
         // Retrieve roll data.
@@ -167,6 +167,7 @@ export class Essence20Item extends Item {
           rollMode: rollMode,
           flavor: label,
         });
+
         return roll;
       }
     }

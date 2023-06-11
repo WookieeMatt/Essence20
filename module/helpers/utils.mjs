@@ -51,14 +51,14 @@ function _localizeObject(obj, keys) {
 
     if (type !== "object") {
       console.error(new Error(
-        `Pre-localized configuration values must be a string or object, ${type} found for "${k}" instead.`
+        `Pre-localized configuration values must be a string or object, ${type} found for "${k}" instead.`,
       ));
       continue;
     }
 
     if (!keys?.length) {
       console.error(new Error(
-        "Localization keys must be provided for pre-localizing when target is an object."
+        "Localization keys must be provided for pre-localizing when target is an object.",
       ));
       continue;
     }

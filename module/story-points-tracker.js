@@ -3,12 +3,15 @@ import { registerSettings } from "./settings.js";
 export let i18n = key => {
   return game.i18n.localize(key);
 };
+
 export let i18nf = (key, vars) => {
   return game.i18n.format(key, vars);
 };
+
 export let setting = key => {
   return game.settings.get("essence20", key);
 };
+
 export let getPointsName = plural => {
   return `${CONFIG.E20.pointsNameOptions[setting('sptPointsName')]} ${i18n(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
 };
@@ -230,7 +233,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
           game.settings.set('essence20', 'sptToggleState', false);
           game.StoryPointsTracker.closeSpt();
         }
-      }
+      },
     });
   }
 });
