@@ -30,5 +30,18 @@ module.exports = {
       'error',
       'always',
     ],
+    'padding-line-between-statements': [
+      'error',
+      {
+        // Always require a line after a { ... } statement
+        blankLine: 'always',
+        prev: ['block-like'],
+        next: ['*'],
+      },
+    ],
+    'comma-dangle': [
+      'error',
+      'always-multiline',
+    ],
   },
 };

@@ -15,7 +15,7 @@ export function onManageActiveEffect(event, owner) {
       icon: "icons/svg/aura.svg",
       origin: owner.uuid,
       "duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
-      disabled: li.dataset.effectType === "inactive"
+      disabled: li.dataset.effectType === "inactive",
     }]);
   case "edit":
     return effect.sheet.render(true);
@@ -38,18 +38,18 @@ export function prepareActiveEffectCategories(effects) {
     temporary: {
       type: "temporary",
       name: "Temporary Effects",
-      effects: []
+      effects: [],
     },
     passive: {
       type: "passive",
       name: "Passive Effects",
-      effects: []
+      effects: [],
     },
     inactive: {
       type: "inactive",
       name: "Inactive Effects",
-      effects: []
-    }
+      effects: [],
+    },
   };
 
   // Iterate over active effects, classifying them into categories
@@ -58,5 +58,6 @@ export function prepareActiveEffectCategories(effects) {
     else if ( e.isTemporary ) categories.temporary.effects.push(e);
     else categories.passive.effects.push(e);
   }
+
   return categories;
 }

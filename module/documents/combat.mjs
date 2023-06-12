@@ -12,7 +12,7 @@ export class Essence20Combat extends Combat {
   */
   async rollInitiative(ids, options) {
     const combatants = ids.flatMap(
-      (id) => this.combatants.get(id) ?? []
+      (id) => this.combatants.get(id) ?? [],
     );
 
     for (let combatant of combatants) {

@@ -253,7 +253,7 @@ export class Dice {
     const initialShiftIndex = shiftList.findIndex(s => s == initialShift);
     const finalShiftIndex = Math.max(
       0,
-      Math.min(shiftList.length - 1, initialShiftIndex - optionsShiftTotal)
+      Math.min(shiftList.length - 1, initialShiftIndex - optionsShiftTotal),
     );
 
     return shiftList[finalShiftIndex];
@@ -274,6 +274,7 @@ export class Dice {
       const chatData = {
         speaker: this._chatMessage.getSpeaker({ actor }),
       };
+
       switch (skillShift) {
       case 'autoFail':
         label += ` ${this._localize('E20.RollAutoFail')}`;
@@ -282,6 +283,7 @@ export class Dice {
         label += ` ${this._localize('E20.RollAutoFailFumble')}`;
         break;
       }
+
       chatData.content = label;
       this._chatMessage.create(chatData);
       autoFailed = true;
@@ -369,6 +371,7 @@ export class Dice {
             break;
           }
         }
+
         formula += ` + {${this._arrayToFormula(shiftOperands)}}kh`;
       } else {
         // For non-specialized, just add the single bonus die
