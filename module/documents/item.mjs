@@ -46,10 +46,27 @@ export class Essence20Item extends Item {
       const label = `[${this.type}] ${this.name}`;
 
       const template = `systems/essence20/templates/actor/parts/items/${this.type}/details.hbs`;
-      const templateData = {
-        config: CONFIG.E20,
-        item: this,
-      };
+      let templateData = {};
+
+      if (this.type == 'origin') {
+        templateData = {
+          config: CONFIG.E20,
+          item: {
+            ...this,
+            skillsString: this.system.skills.map(skill => {
+              return CONFIG.E20.originSkills[skill];
+            }).join(", "),
+            essenceString: this.system.essences.map(essence => {
+              return CONFIG.E20.originEssences[essence];
+            }).join(", "),
+          }
+        };
+      } else {
+        templateData = {
+          config: CONFIG.E20,
+          item: this,
+        };
+      }
 
       ChatMessage.create({
         speaker: speaker,
