@@ -59,7 +59,7 @@ export class Essence20Item extends Item {
             essenceString: this.system.essences.map(essence => {
               return CONFIG.E20.originEssences[essence];
             }).join(", "),
-          }
+          },
         };
       } else {
         templateData = {
