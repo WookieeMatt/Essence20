@@ -312,6 +312,6 @@
     "verified": "10"
   },
   "flags": {
-    "needsMigrationVersion": "3.2.2"
+    "needsMigrationVersion": "3.2.1"
   }
 }
