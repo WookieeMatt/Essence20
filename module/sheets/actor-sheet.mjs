@@ -857,7 +857,7 @@ export class Essence20ActorSheet extends ActorSheet {
       return;
     }
 
-    for (const item of itemArray) {
+    for (const item of hangUps) {
       if (item._id == selectedHangUp) {
         hangUpToCreate = item;
       }
@@ -889,7 +889,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
-      if (influence.system.skills) {
+      if (influence.system.skills.length) {
         const skill = influence.system.skills;
         for (const influenceEssence in this.actor.system.skills[skill].essences) {
           if (this.actor.system.skills[skill].essences[influenceEssence]) {
