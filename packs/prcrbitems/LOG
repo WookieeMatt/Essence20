@@ -1,3 +1,5 @@
-2023/06/10-11:18:25.684 f154 Recovering log #6
-2023/06/10-11:18:25.706 f154 Delete type=0 #6
-2023/06/10-11:18:25.706 f154 Delete type=3 #4
+2023/06/14-13:34:02.149 e6cc Recovering log #10
+2023/06/14-13:34:02.149 e6cc Level-0 table #12: started
+2023/06/14-13:34:02.160 e6cc Level-0 table #12: 1130 bytes OK
+2023/06/14-13:34:02.184 e6cc Delete type=0 #10
+2023/06/14-13:34:02.184 e6cc Delete type=3 #9
