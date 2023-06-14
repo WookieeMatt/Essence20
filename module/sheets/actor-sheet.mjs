@@ -1,6 +1,7 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { searchCompendium } from "../helpers/utils.mjs";
+import { getItemsOfType, searchCompendium } from "../helpers/utils.mjs";
 import { onMorph, onZordDelete, prepareZords } from "./power-ranger-sheet-helper.mjs";
+// import {  } from "./transformer-sheet-helper.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -427,29 +428,13 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-  /**
-  * Get items of a type
-  * @param {String} type The type of item to return
-  * @returns {Item[]}    All items of the type requested
-  * @private
-  */
-  _getItemsOfType(type) {
-    const itemsOfType = [];
-    for (const item of this.actor.items) {
-      if (item.type == type) {
-        itemsOfType.push(item);
-      }
-    }
-
-    return itemsOfType;
-  }
 
   /**
   * Handle clicking the transform button
   * @private
   */
   async _transform() {
-    const altModes = this._getItemsOfType("altMode");
+    const altModes = getItemsOfType("altMode", this.actor.items);
 
     if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
       ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
@@ -578,7 +563,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @private
    */
   async _onAltModeDelete(altMode) {
-    const altModes = this._getItemsOfType("altMode");
+    const altModes = getItemsOfType("altMode", this.actor.items);
     if (altModes.length > 1) {
       if (altMode._id == this.actor.system.altModeId) {
         this._transformBotMode();
@@ -850,7 +835,7 @@ export class Essence20ActorSheet extends ActorSheet {
       };
     }
 
-    const influences = await this._getItemsOfType("influence");
+    const influences = await getItemsOfType("influence", this.actor.items);
     for (const influence of influences) {
       if (influence.system.skills.length) {
         const skill = influence.system.skills;
@@ -919,7 +904,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
-    const influences = await this._getItemsOfType("influence");
+    const influences = await getItemsOfType("influence", this.actor.items);
     for (const influence of influences) {
       if (influence.system.skills) {
         const essence = CONFIG.E20.skillToEssence[influence.system.skills];

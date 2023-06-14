@@ -101,7 +101,7 @@ export function indexFromUuid(uuid) {
 export function searchCompendium(item) {
   const id = item._id || item;
 
-  for (const pack of game.packs){
+  for (const pack of game.packs) {
     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
     if (compendium) {
       const compendiumItem = compendium.index.get(id);
@@ -110,4 +110,21 @@ export function searchCompendium(item) {
       }
     }
   }
+}
+
+/**
+* Get Items of a type
+* @param {String} type  The type of Item to return
+* @param {Item[]} items The Items to search through
+* @returns {Item[]}     All Items of the type requested
+*/
+export function getItemsOfType(type, items) {
+  const itemsOfType = [];
+  for (const item of items) {
+    if (item.type == type) {
+      itemsOfType.push(item);
+    }
+  }
+
+  return itemsOfType;
 }
