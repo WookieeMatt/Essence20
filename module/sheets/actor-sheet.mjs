@@ -69,7 +69,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
     // Prepare Zords for MFZs
-    prepareZords(context, this.actor);
+    prepareZords(context, this);
 
     context.accordionStates = this._accordionStates;
 
@@ -353,7 +353,7 @@ export class Essence20ActorSheet extends ActorSheet {
     });
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(onZordDelete.bind(this));
+    html.find('.zord-delete').click(ev => onZordDelete(ev, this));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
@@ -362,7 +362,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Morph Button
-    html.find('.morph').click(onMorph.bind(this));
+    html.find('.morph').click(() => onMorph(this));
 
     //Transform Button
     html.find('.transform').click(this._transform.bind(this));

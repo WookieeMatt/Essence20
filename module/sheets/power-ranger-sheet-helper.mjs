@@ -1,10 +1,11 @@
 /**
  * Prepare Zords for MFZs.
  *
- * @param {Object} context The actor data to prepare
- * @param {Actor} actor    The actor
+ * @param {Object} context                 The actor data to prepare
+ * @param {Essence20ActorSheet} actorSheet The actor sheet
  */
-export function prepareZords(context, actor) {
+export function prepareZords(context, actorSheet) {
+  const actor = actorSheet.actor;
   if (actor.type == 'megaformZord') {
     let zords = [];
 
@@ -19,20 +20,24 @@ export function prepareZords(context, actor) {
 /**
  * Handle deleting Zords from MFZs
  * @param {Event} event The originating click event
+ * @param {Essence20ActorSheet} actorSheet The actor sheet
  */
-export async function onZordDelete(event) {
+export async function onZordDelete(event, actorSheet) {
+  const actor = actorSheet.actor;
   const li = $(event.currentTarget).parents(".zord");
   const zordId = li.data("zordId");
-  const zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
-  this.actor.update({ "system.zordIds": zordIds });
-  li.slideUp(200, () => this.render(false));
+  const zordIds = actor.system.zordIds.filter(x => x !== zordId);
+  actor.update({ "system.zordIds": zordIds });
+  li.slideUp(200, () => actorSheet.render(false));
 }
 
 /**
  * Handle morphing an Actor
+ * @param {Essence20ActorSheet} actorSheet The actor sheet
  */
-export async function onMorph() {
-  await this.actor.update({
-    "system.isMorphed": !this.actor.system.isMorphed,
-  }).then(this.render(false));
+export async function onMorph(actorSheet) {
+  const actor = actorSheet.actor;
+  await actor.update({
+    "system.isMorphed": !actor.system.isMorphed,
+  }).then(actorSheet.render(false));
 }
