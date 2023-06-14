@@ -35,6 +35,9 @@
   min-height: auto;
 }
 
+.directory-list .actor {
+  min-width: fit-content;
+}
 
 .dialog .dialog-buttons button.default {
   color: v.$textcolor1;

@@ -14,7 +14,7 @@ export class Essence20ItemSheet extends ItemSheet {
       classes: ["essence20", "sheet", "item"],
       width: 520,
       height: 480,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }]
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
     });
   }
 
@@ -189,13 +189,13 @@ export class Essence20ItemSheet extends ItemSheet {
       if (!existingIds.includes(droppedItem._id)) {
         existingIds.push(droppedItem._id);
         await this.item.update({
-          [idString]: existingIds
+          [idString]: existingIds,
         }).then(this.render(false));
       }
     } else if (!existingIds.includes(droppedItem.id)) {
       existingIds.push(droppedItem.id);
       await this.item.update({
-        [idString]: existingIds
+        [idString]: existingIds,
       }).then(this.render(false));
     }
   }

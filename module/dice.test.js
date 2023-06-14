@@ -299,8 +299,8 @@ describe("rollSkill", () => {
           athletics: {
             edge: false,
             snag: false,
-          }
-        }
+          },
+        },
       }),
     };
     mockShiftedActor.system.essenceShifts.strength.shiftDown = 1;
@@ -358,7 +358,7 @@ describe("_getSkillRollLabel", () => {
     const dataset = {
       skill: 'athletics',
       isSpecialized: "true",
-      specializationName: 'Foo Specialization'
+      specializationName: 'Foo Specialization',
     };
     const skillRollOptions = {
       edge: false,
