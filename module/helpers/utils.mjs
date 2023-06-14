@@ -128,3 +128,18 @@ export function getItemsOfType(type, items) {
 
   return itemsOfType;
 }
+
+/**
+ * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
+ * @param {HTML} html   The html of the dialog upon submission
+ * @returns {Object>}  The dialog inputs and their submitted values
+ * @private
+ */
+export function rememberOptions(html) {
+  const options = {};
+  html.find("input").each((i, el) => {
+    options[el.id] = el.checked;
+  });
+
+  return options;
+}
