@@ -1,5 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { searchCompendium } from "../helpers/utils.mjs";
+import { onMorph, onZordDelete, prepareZords } from "./power-ranger-sheet-helper.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -67,7 +68,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
     // Prepare Zords for MFZs
-    this._prepareZords(context);
+    prepareZords(context, this.actor);
 
     context.accordionStates = this._accordionStates;
 
@@ -163,24 +164,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.displayedNpcSkills = displayedNpcSkills;
   }
 
-  /**
-   * Prepare Zords for MFZs.
-   *
-   * @param {Object} context The actor data to prepare.
-   *
-   * @return {undefined}
-   */
-  _prepareZords(context) {
-    if (this.actor.type == 'megaformZord') {
-      let zords = [];
 
-      for (let zordId of this.actor.system.zordIds) {
-        zords.push(game.actors.get(zordId));
-      }
-
-      context.zords = zords;
-    }
-  }
 
   /**
    * Organize and classify Items for Character sheets.
@@ -368,7 +352,7 @@ export class Essence20ActorSheet extends ActorSheet {
     });
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(this._onZordDelete.bind(this));
+    html.find('.zord-delete').click(onZordDelete.bind(this));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
@@ -377,7 +361,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Morph Button
-    html.find('.morph').click(this._morph.bind(this));
+    html.find('.morph').click(onMorph.bind(this));
 
     //Transform Button
     html.find('.transform').click(this._transform.bind(this));
@@ -683,13 +667,6 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (item) return item.roll(dataset);
     }
-  }
-
-  // Handle setting the isMorphed value
-  async _morph() {
-    await this.actor.update({
-      "system.isMorphed": !this.actor.system.isMorphed,
-    }).then(this.render(false));
   }
 
   /**
@@ -1192,20 +1169,5 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.originEssencesIncrease": "",
       "system.originSkillsIncrease": "",
     });
-  }
-
-  /**
-   * Handle deleting Zords from MFZs
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  async _onZordDelete(event) {
-    const li = $(event.currentTarget).parents(".zord");
-    const zordId = li.data("zordId");
-    let zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
-    this.actor.update({
-      "system.zordIds": zordIds,
-    });
-    li.slideUp(200, () => this.render(false));
   }
 }
