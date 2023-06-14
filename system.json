@@ -32,6 +32,15 @@
       "flags": {}
     },
     {
+      "name": "cobra_codex",
+      "label": "Cobra Codex",
+      "system": "essence20",
+      "path": "packs/ccitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "field_guide_action_adventure",
       "label": "Field Guide to Action and Adventure",
       "system": "essence20",
