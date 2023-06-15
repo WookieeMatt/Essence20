@@ -367,37 +367,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Open and collapse Item content
-    html.find('.accordion-label').click(ev => {
-      const el = ev.currentTarget;
-      const parent = $(el).parents('.accordion-wrapper');
-
-      // Avoid collapsing NPC skills container on rerender
-      if (parent.hasClass('skills-container')) {
-        const isOpen = this._accordionStates.skills;
-        this._accordionStates.skills = isOpen ? '' : 'open';
-        this.render();
-      } else {
-        parent.toggleClass('open');
-
-        // Check if the container header toggle should be flipped
-        let oneClosed = false;
-
-        // Look for a closed Item
-        const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
-        for (const accordionLabel of accordionLabels) {
-          oneClosed = !$(accordionLabel).hasClass('open');
-          if (oneClosed) break;
-        }
-
-        // Set header state to open if all Items are open; closed otherwise
-        const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
-        if (oneClosed) {
-          $(container).removeClass('open');
-        } else {
-          $(container).addClass('open');
-        }
-      }
-    });
+    html.find('.accordion-label').click(this._onToggleAccordion.bind(this));
 
     // Open and collapse all Item contents in container
     html.find('.header-accordion-label').click(ev => {
@@ -419,6 +389,43 @@ export class Essence20ActorSheet extends ActorSheet {
         li.setAttribute("draggable", true);
         li.addEventListener("dragstart", handler, false);
       });
+    }
+  }
+
+  /**
+   * Handle toggling accordion containers.
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  async _onToggleAccordion(event) {
+    const el = event.currentTarget;
+    const parent = $(el).parents('.accordion-wrapper');
+
+    // Avoid collapsing NPC skills container on rerender
+    if (parent.hasClass('skills-container')) {
+      const isOpen = this._accordionStates.skills;
+      this._accordionStates.skills = isOpen ? '' : 'open';
+      this.render();
+    } else {
+      parent.toggleClass('open');
+
+      // Check if the container header toggle should be flipped
+      let oneClosed = false;
+
+      // Look for a closed Item
+      const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+      for (const accordionLabel of accordionLabels) {
+        oneClosed = !$(accordionLabel).hasClass('open');
+        if (oneClosed) break;
+      }
+
+      // Set header state to open if all Items are open; closed otherwise
+      const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
+      if (oneClosed) {
+        $(container).removeClass('open');
+      } else {
+        $(container).addClass('open');
+      }
     }
   }
 
@@ -488,7 +495,7 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-  * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
+  * Handle deleting Items
   * @param {Event} event   The originating click event
   * @private
   */
