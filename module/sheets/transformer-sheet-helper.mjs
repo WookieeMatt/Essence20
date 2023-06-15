@@ -11,6 +11,21 @@ export class TransformerSheetHandler {
   }
 
   /**
+   * Handle AltModes being deleted
+   * @param {AltMode} altMode                The deleted AltMode.
+   */
+  async onAltModeDelete(altMode) {
+    const altModes = getItemsOfType("altMode", this._actor.items);
+    if (altModes.length > 1) {
+      if (altMode._id == this._actor.system.altModeId) {
+        this._transformBotMode();
+      }
+    } else {
+      this._transformBotMode();
+    }
+  }
+  
+  /**
    * Handle clicking the transform button
    */
   async onTransform() {
@@ -21,21 +36,22 @@ export class TransformerSheetHandler {
       ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
     } else if (altModes.length > 1) {             // Select from multiple alt-modes
       if (!isTransformed) {
-        this.showAltModeChoiceDialog(altModes, false); // More than 1 altMode and not transformed
+        this._showAltModeChoiceDialog(altModes, false); // More than 1 altMode and not transformed
       } else {
-        this.showAltModeChoiceDialog(altModes, true);  // More than 1 altMode and transformed
+        this._showAltModeChoiceDialog(altModes, true);  // More than 1 altMode and transformed
       }
     } else {                                      // Alt-mode/bot-mode toggle
       isTransformed
-        ? this.transformBotMode()
-        : this.transformAltMode(altModes[0]);
+        ? this._transformBotMode()
+        : this._transformAltMode(altModes[0]);
     }
   }
 
   /**
    * Handle Transforming back into the Bot Mode
+   * @private
    */
-  async transformBotMode() {
+  async _transformBotMode() {
     await this._actor.update({
       "system.movement.aerial.altMode": 0,
       "system.movement.swim.altMode": 0,
@@ -49,8 +65,9 @@ export class TransformerSheetHandler {
   /**
    * Handles Transforming into an AltMode
    * @param {AltMode} altMode                The alt-mode that was selected to Transform into
+   * @private
    */
-  async transformAltMode(altMode) {
+  async _transformAltMode(altMode) {
     await this._actor.update({
       "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
       "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
@@ -67,7 +84,7 @@ export class TransformerSheetHandler {
    * @param {Boolean} isTransformed Whether the Transformer is transformed or not
    * @private
    */
-  async showAltModeChoiceDialog(altModes, isTransformed) {
+  async _showAltModeChoiceDialog(altModes, isTransformed) {
     const choices = {};
     if (isTransformed) {
       choices["BotMode"] = {
@@ -94,7 +111,7 @@ export class TransformerSheetHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this.altModeSelect(altModes, rememberOptions(html)),
+            callback: html => this._altModeSelect(altModes, rememberOptions(html)),
           },
         },
       },
@@ -105,8 +122,9 @@ export class TransformerSheetHandler {
    * Handle selecting an alt-mode from the Alt-mode Dialog
    * @param {AltMode[]} altModes  A list of the available Alt Modes
    * @param {Object} options      The options resulting from _showAltModeDialog()
+   * @private
    */
-  async altModeSelect(altModes, options) {
+  async _altModeSelect(altModes, options) {
     let selectedForm = null;
     let transformation = null;
 
@@ -122,7 +140,7 @@ export class TransformerSheetHandler {
     }
 
     if (selectedForm == "BotMode") {
-      this.transformBotMode();
+      this._transformBotMode();
     } else {
       for (const mode of altModes) {
         if (selectedForm == mode._id) {
@@ -132,23 +150,8 @@ export class TransformerSheetHandler {
       }
 
       if (transformation) {
-        this.transformAltMode(transformation);
+        this._transformAltMode(transformation);
       }
-    }
-  }
-
-  /**
-   * Handle AltModes being deleted
-   * @param {AltMode} altMode                The deleted AltMode.
-   */
-  async onAltModeDelete(altMode) {
-    const altModes = getItemsOfType("altMode", this._actor.items);
-    if (altModes.length > 1) {
-      if (altMode._id == this._actor.system.altModeId) {
-        this.transformBotMode();
-      }
-    } else {
-      this.transformBotMode();
     }
   }
 }
