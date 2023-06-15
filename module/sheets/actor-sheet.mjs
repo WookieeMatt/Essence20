@@ -5,9 +5,9 @@ import {
   onOriginDelete,
   showOriginEssenceDialog,
 } from "./background-sheet-helper.mjs";
+import { CrossoverSheetHandler } from "./crossover-sheet-helper.mjs";
 import { PowerRangerSheetHandler } from "./power-ranger-sheet-helper.mjs";
 import { TransformerSheetHandler } from "./transformer-sheet-helper.mjs";
-import { onConfigureEntity } from "./crossover-sheet-helper.mjs";
 
 /**
  * @extends {ActorSheet}
@@ -19,6 +19,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._accordionStates = { skills: '' };
     this._prHandler = new PowerRangerSheetHandler(this);
     this._tfHandler = new TransformerSheetHandler(this);
+    this._crossoverHandler = new CrossoverSheetHandler(this);
   }
 
   /** @override */
@@ -93,7 +94,7 @@ export class Essence20ActorSheet extends ActorSheet {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => onConfigureEntity(ev, this),
+            onclick: (ev) => this._crossoverHandler.onConfigureEntity(ev, this),
           },
           ...buttons,
         ];
