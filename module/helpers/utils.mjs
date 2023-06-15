@@ -143,3 +143,40 @@ export function rememberOptions(html) {
 
   return options;
 }
+
+/**
+ * Creates copies of Items for given IDs
+ * @param {String[]} ids The IDs of the Items to be copied
+ * @param {Actor} owner  The Items' owner
+ * @returns {String[]}   The IDs of the copied items
+ */
+export async function createItemCopies(ids, owner) {
+  const copyIds = [];
+
+  for (const id of ids) {
+    let compendiumData = game.items.get(id);
+    if (!compendiumData) {
+      const item = searchCompendium(id);
+      if (item) {
+        compendiumData = item;
+      }
+    }
+
+    const newItem = await Item.create(compendiumData, { parent: owner });
+    copyIds.push(newItem._id);
+  }
+
+  return copyIds;
+}
+
+/**
+* Handle deleting of items by an Id
+* @param {String} id   ID of the item to delete
+* @param {Actor} owner The Items' owner
+*/
+export function itemDeleteById(id, owner) {
+  let item = owner.items.get(id);
+  if (item) {
+    item.delete();
+  }
+}

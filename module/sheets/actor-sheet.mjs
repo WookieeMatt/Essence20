@@ -1,5 +1,13 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { getItemsOfType, rememberOptions, searchCompendium } from "../helpers/utils.mjs";
+import {
+  rememberOptions,
+} from "../helpers/utils.mjs";
+import {
+  influenceUpdate,
+  onInfluenceDelete,
+  onOriginDelete,
+  showOriginEssenceDialog,
+} from "./background-sheet-helper.mjs";
 import { onMorph, onZordDelete, prepareZords } from "./power-ranger-sheet-helper.mjs";
 import { onAltModeDelete, onTransform } from "./transformer-sheet-helper.mjs";
 
@@ -341,11 +349,11 @@ export class Essence20ActorSheet extends ActorSheet {
       const item = this.actor.items.get(li.data("itemId"));
 
       if (item.type == "origin") {
-        this._onOriginDelete(item);
+        onOriginDelete(item, this.actor);
       } else if (item.type == "altMode") {
         onAltModeDelete(item, this);
       } else if (item.type == 'influence') {
-        this._onInfluenceDelete(item);
+        onInfluenceDelete(item, this.actor);
       }
 
       item.delete();
@@ -527,7 +535,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
     case 'influence':
-      await this._influenceUpdate(sourceItem, event, data);
+      await influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data), this.actor);
       break;
     case 'origin':
       for (let actorItem of this.actor.items) {
@@ -538,7 +546,7 @@ export class Essence20ActorSheet extends ActorSheet {
         }
       }
 
-      await this._showOriginEssenceDialog(sourceItem, event, data);
+      await showOriginEssenceDialog(sourceItem, super._onDropItem.bind(this, event, data), this.actor);
       break;
     case 'upgrade':
       // Drones can only accept drone Upgrades
@@ -554,339 +562,6 @@ export class Essence20ActorSheet extends ActorSheet {
     default:
       super._onDropItem(event, data);
     }
-  }
-
-  /**
-   * Handle the dropping of an influence on to a character
-   * @param {Influence} influence    The Influence
-   * @param {DragEvent} event  The concluding DragEvent which contains drop data
-   * @param {object} data      The data transfer extracted from the event
-   * @private
-   */
-  async _influenceUpdate(influence, event, data) {
-    let addHangUp = false;
-
-    for (const item of this.actor.items) {
-      if (item.type == 'influence') {
-        addHangUp = true;
-        break;
-      }
-    }
-
-    const newInfluenceList = await super._onDropItem(event, data);
-    const newInfluence = newInfluenceList[0];
-    const perkIds = await this._createItemCopies(influence.system.perkIds);
-
-    if (addHangUp) {
-      if (influence.system.hangUpIds.length > 1) {
-        this._chooseHangUp(influence, perkIds, newInfluence);
-      } else {
-        const hangUpIds = await this._createItemCopies(influence.system.hangUpIds);
-        await newInfluence.update({
-          ["system.perkIds"]: perkIds,
-          ["system.hangUpIds"]: hangUpIds,
-        });
-      }
-    }
-
-    await newInfluence.update({
-      ["system.perkIds"]: perkIds,
-    });
-  }
-
-  /**
-  * Displays a dialog for selecting a Hang Up from an Influence
-  * @param {Influence} influence  The Influence
-  * @param {Perk[]} perkIds The Perk IDs that go with the new Influence
-  * @param {Influence} newInfluence The new Influence that was created.
-  * @private
-  */
-  async _chooseHangUp(influence, perkIds, newInfluence) {
-    const choices = {};
-    let itemArray = [];
-    let compendiumData = null;
-
-    for (const id of influence.system.hangUpIds) {
-      compendiumData = game.items.get(id);
-      if (!compendiumData) {
-        compendiumData = searchCompendium(id);
-        if (compendiumData) {
-          itemArray.push(compendiumData);
-          choices[compendiumData._id] = {
-            chosen: false,
-            label: compendiumData.name,
-          };
-        }
-      }
-    }
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.HangUpChoice'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._hangUpSelect(itemArray, rememberOptions(html), perkIds, newInfluence),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-  /**
-  * Adds the chosen hangUp to the character
-  * @param {HangUp[]} hangUps  An Array of the HangUps that could be picked
-  * @param {Object} options  The selections from the dialog
-  * @param {String[]} perkIds  The IDs from any perk that were added with the Influence
-  * @param {Influence} newInfluence  The new influence that was created
-  * @private
-  */
-  async _hangUpSelect(hangUps, options, perkIds, newInfluence) {
-    let selectedHangUp = null;
-    const hangUpIds = [];
-    let hangUpToCreate = null;
-
-    for (const [hangUp, isSelected] of Object.entries(options)) {
-      if (isSelected) {
-        selectedHangUp = hangUp;
-        break;
-      }
-    }
-
-    if (!selectedHangUp) {
-      return;
-    }
-
-    for (const item of hangUps) {
-      if (item._id == selectedHangUp) {
-        hangUpToCreate = item;
-      }
-    }
-
-    const newHangUp = await Item.create(hangUpToCreate, { parent: this.actor });
-    hangUpIds.push(newHangUp._id);
-    await newInfluence.update({
-      ["system.perkIds"]: perkIds,
-      ["system.hangUpIds"]: hangUpIds,
-    });
-  }
-
-  /**
-   * Displays a dialog for selecting an Essence for the given Origin.
-   * @param {Object} origin    The Origin
-   * @param {DragEvent} event  The concluding DragEvent which contains drop data
-   * @param {object} data      The data transfer extracted from the event
-   * @private
-   */
-  async _showOriginEssenceDialog(origin, event, data) {
-    const choices = {};
-    for (const essence of origin.system.essences) {
-      choices[essence] = {
-        chosen: false,
-        label: CONFIG.E20.originEssences[essence],
-      };
-    }
-
-    const influences = await getItemsOfType("influence", this.actor.items);
-    for (const influence of influences) {
-      if (influence.system.skills.length) {
-        const skill = influence.system.skills;
-        for (const influenceEssence in this.actor.system.skills[skill].essences) {
-          if (this.actor.system.skills[skill].essences[influenceEssence]) {
-            choices[influenceEssence] = {
-              chosen: false,
-              label: CONFIG.E20.originEssences[influenceEssence],
-            };
-          }
-        }
-      }
-    }
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.EssenceIncrease'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._showOriginSkillDialog(origin, rememberOptions(html), event, data),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-
-
-  /**
-   * Displays a dialog for selecting a Skill for the given Origin.
-   * @param {Object} origin    The Origin
-   * @param {Object} options   The options resulting from _showOriginEssenceDialog()
-   * @param {DragEvent} event  The concluding DragEvent which contains drop data
-   * @param {object} data      The data transfer extracted from the event
-   * @private
-   */
-  async _showOriginSkillDialog(origin, options, event, data) {
-    const essences = Object.keys(options);
-    const choices = {};
-    let selectedEssence = "";
-
-    for (const skill of origin.system.skills) {
-      const essence = CONFIG.E20.skillToEssence[skill];
-      if (options[essence] && essences.includes(essence)) {
-        selectedEssence = essence;
-        choices[skill] = {
-          chosen: false,
-          label: CONFIG.E20.originSkills[skill],
-        };
-      }
-    }
-
-    const influences = await getItemsOfType("influence", this.actor.items);
-    for (const influence of influences) {
-      if (influence.system.skills) {
-        const essence = CONFIG.E20.skillToEssence[influence.system.skills];
-        if (options[essence] && essences.includes(essence)) {
-          selectedEssence = essence;
-          choices[influence.system.skills] = {
-            chosen: false,
-            label: CONFIG.E20.originSkills[influence.system.skills],
-          };
-        }
-      }
-    }
-
-    if (!selectedEssence) {
-      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoEssence'));
-      return;
-    }
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.OriginBonusSkill'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._originStatUpdate(origin, selectedEssence, rememberOptions(html), event, data),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-  /**
-  * Updates the actor with the information selected for the Origin
-  * @param {Object} origin    The Origin
-  * @param {Object} options   The options resulting from _showOriginSkillDialog()
-  * @param {Object} essence   The essence selected in the _showOriginEssenceDialog()
-  * @param {DragEvent} event  The concluding DragEvent which contains drop data
-  * @param {object} data      The data transfer extracted from the event
-  * @private
-  */
-  async _originStatUpdate(origin, essence, options, event, data) {
-    let selectedSkill = "";
-    for (const [skill, isSelected] of Object.entries(options)) {
-      if (isSelected) {
-        selectedSkill = skill;
-        break;
-      }
-    }
-
-    if (!selectedSkill){
-      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoSkill'));
-      return;
-    }
-
-    const essenceValue = this.actor.system.essences[essence] + 1;
-    const essenceString = `system.essences.${essence}`;
-    let skillString = "";
-    let currentShift = "";
-    let newShift = "";
-
-    if (selectedSkill == "initiative"){
-      skillString = `system.${selectedSkill}.shift`;
-      currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
-    } else if (selectedSkill == "conditioning"){
-      skillString = `system.${selectedSkill}`;
-      currentShift = this.actor.system[selectedSkill];
-      newShift = currentShift + 1;
-    } else {
-      currentShift = this.actor.system.skills[selectedSkill].shift;
-      skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
-    }
-
-    const newOriginList = await super._onDropItem(event, data);
-    this._originPerkCreate(origin, newOriginList[0]);
-
-    await this.actor.update({
-      [essenceString]: essenceValue,
-      [skillString]: newShift,
-      "system.health.max": origin.system.startingHealth,
-      "system.health.value": origin.system.startingHealth,
-      "system.movement.aerial.base": origin.system.baseAerialMovement,
-      "system.movement.swim.base": origin.system.baseAquaticMovement,
-      "system.movement.ground.base": origin.system.baseGroundMovement,
-      "system.originEssencesIncrease": essence,
-      "system.originSkillsIncrease": selectedSkill,
-    });
-  }
-
-  /**
-   * Creates copies of Items for given IDs
-   * @param {String[]} ids  The IDs of the items to be copied
-   * @returns {String[]}    The IDs of the copied items
-   * @private
-   */
-  async _createItemCopies(ids) {
-    const copyIds = [];
-
-    for (const id of ids) {
-      let compendiumData = game.items.get(id);
-      if (!compendiumData) {
-        const item = searchCompendium(id);
-        if (item) {
-          compendiumData = item;
-        }
-      }
-
-      const newItem = await Item.create(compendiumData, { parent: this.actor });
-      copyIds.push(newItem._id);
-    }
-
-    return copyIds;
-  }
-
-  /**
-  * Creates the Perk from the Origin on the Actor
-  * @param {Origin} origin        The original Origin to get Perks from
-  * @param {Origin} newOrigin The new Origin being created
-  * @private
-  */
-  async _originPerkCreate(origin, newOrigin){
-    const perkIds = [];
-    for (const id of origin.system.originPerkIds) {
-      let data = game.items.get(id);
-      if (!data) {
-        data = searchCompendium(id);
-      }
-
-      const perk = await Item.create(data, { parent: this.actor });
-      perkIds.push(perk._id);
-    }
-
-    await newOrigin.update({
-      ["system.originPerkIds"]: perkIds,
-    });
   }
 
   /**
@@ -918,84 +593,5 @@ export class Essence20ActorSheet extends ActorSheet {
     } else {
       return false;
     }
-  }
-
-  /**
-  * Handle deleting of an Influence from an Actor Sheet
-  * @param {Influence} influence   The Influence
-  * @private
-  */
-  _onInfluenceDelete (influence) {
-    const influenceDelete = this.actor.items.get(influence._id);
-
-    for (const perk of influenceDelete.system.perkIds) {
-      if (perk) {
-        this._itemDeleteById(perk);
-      }
-    }
-
-    for (const hangUp of influenceDelete.system.hangUpIds) {
-      this._itemDeleteById(hangUp);
-    }
-  }
-
-  /**
-  * Handle deleting of items by an Id
-  * @param {String} id of the item to delete
-  * @private
-  */
-  _itemDeleteById(id) {
-    let item = this.actor.items.get(id);
-    if (item) {
-      item.delete();
-    }
-  }
-
-  /**
-  * Handle deleting of an Origin from an Actor Sheet
-  * @param {Object} origin   The Origin
-  * @private
-  */
-  async _onOriginDelete(origin) {
-    let essence = this.actor.system.originEssencesIncrease;
-    let essenceValue = this.actor.system.essences[essence] - 1;
-
-    let skillString = "";
-    let currentShift = "";
-    let newShift = "";
-
-    let selectedSkill = this.actor.system.originSkillsIncrease;
-    if (selectedSkill == "initiative"){
-      skillString = `system.${selectedSkill}.shift`;
-      currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
-    } else if (selectedSkill == "conditioning"){
-      skillString = `system.${selectedSkill}`;
-      currentShift = this.actor.system[selectedSkill];
-      newShift = currentShift - 1;
-    } else {
-      currentShift = this.actor.system.skills[selectedSkill].shift;
-      skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
-    }
-
-    const originDelete = this.actor.items.get(origin._id);
-    for (const perk of originDelete.system.originPerkIds) {
-      this._itemDeleteById(perk);
-    }
-
-    const essenceString = `system.essences.${essence}`;
-
-    await this.actor.update({
-      [essenceString]: essenceValue,
-      [skillString]: newShift,
-      "system.health.max": 0,
-      "system.health.value": 0,
-      "system.movement.aerial.base": 0,
-      "system.movement.swim.base": 0,
-      "system.movement.ground.base": 0,
-      "system.originEssencesIncrease": "",
-      "system.originSkillsIncrease": "",
-    });
   }
 }
