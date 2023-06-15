@@ -34,8 +34,6 @@ export class Essence20ActorSheet extends ActorSheet {
     return `systems/essence20/templates/actor/sheets/${this.actor.type}.hbs`;
   }
 
-  /* -------------------------------------------- */
-
   /** @override */
   getData() {
     // Retrieve the data structure from the base sheet. You can inspect or log
@@ -130,6 +128,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * Organize and classify Items for Character sheets.
    * @param {Object} context The actor data to prepare.
    * @return {undefined}
+   * @private
    */
   _prepareItems(context) {
     // Initialize containers.
@@ -490,7 +489,7 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Handle dropping an Item onto an Actor.
    * @param {DragEvent} event            The concluding DragEvent which contains drop data
-   * @param {object} data                The data transfer extracted from the event
+   * @param {Object} data                The data transfer extracted from the event
    * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
    *                                     not permitted.
    * @override
