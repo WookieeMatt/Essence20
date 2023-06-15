@@ -344,21 +344,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-create').click(this._onItemCreate.bind(this));
 
     // Delete Inventory Item
-    html.find('.item-delete').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(li.data("itemId"));
-
-      if (item.type == "origin") {
-        onOriginDelete(item, this.actor);
-      } else if (item.type == "altMode") {
-        onAltModeDelete(item, this);
-      } else if (item.type == 'influence') {
-        onInfluenceDelete(item, this.actor);
-      }
-
-      item.delete();
-      li.slideUp(200, () => this.render(false));
-    });
+    html.find('.item-delete').click(this._onItemDelete.bind(this));
 
     // Delete Zord from MFZ
     html.find('.zord-delete').click(ev => onZordDelete(ev, this));
@@ -499,6 +485,27 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Finally, create the item!
     return await Item.create(itemData, { parent: this.actor });
+  }
+
+  /**
+  * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
+  * @param {Event} event   The originating click event
+  * @private
+  */
+  async _onItemDelete(event) {
+    const li = $(event.currentTarget).parents(".item");
+    const item = this.actor.items.get(li.data("itemId"));
+
+    if (item.type == "origin") {
+      onOriginDelete(item, this.actor);
+    } else if (item.type == "altMode") {
+      onAltModeDelete(item, this);
+    } else if (item.type == 'influence') {
+      onInfluenceDelete(item, this.actor);
+    }
+
+    item.delete();
+    li.slideUp(200, () => this.render(false));
   }
 
   /**
