@@ -1,10 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import {
-  influenceUpdate,
-  onInfluenceDelete,
-  onOriginDelete,
-  showOriginEssenceDialog,
-} from "./background-sheet-helper.mjs";
+import { BackgroundSheetHandler } from "./background-sheet-helper.mjs";
 import { CrossoverSheetHandler } from "./crossover-sheet-helper.mjs";
 import { PowerRangerSheetHandler } from "./power-ranger-sheet-helper.mjs";
 import { TransformerSheetHandler } from "./transformer-sheet-helper.mjs";
@@ -19,7 +14,8 @@ export class Essence20ActorSheet extends ActorSheet {
     this._accordionStates = { skills: '' };
     this._prHandler = new PowerRangerSheetHandler(this);
     this._tfHandler = new TransformerSheetHandler(this);
-    this._crossoverHandler = new CrossoverSheetHandler(this);
+    this._coHandler = new CrossoverSheetHandler(this);
+    this._bgHandler = new BackgroundSheetHandler(this);
   }
 
   /** @override */
@@ -94,7 +90,7 @@ export class Essence20ActorSheet extends ActorSheet {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => this._crossoverHandler.onConfigureEntity(ev, this),
+            onclick: (ev) => this._coHandler.onConfigureEntity(ev, this),
           },
           ...buttons,
         ];
@@ -462,11 +458,11 @@ export class Essence20ActorSheet extends ActorSheet {
     const item = this.actor.items.get(li.data("itemId"));
 
     if (item.type == "origin") {
-      onOriginDelete(item, this.actor);
+      this._bgHandler.onOriginDelete(item, this.actor);
     } else if (item.type == "altMode") {
       this._tfHandler.onAltModeDelete(item, this);
     } else if (item.type == 'influence') {
-      onInfluenceDelete(item, this.actor);
+      this._bgHandler.onInfluenceDelete(item, this.actor);
     }
 
     item.delete();
@@ -507,7 +503,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
     case 'influence':
-      await influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data), this.actor);
+      await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data), this.actor);
       break;
     case 'origin':
       for (let actorItem of this.actor.items) {
@@ -518,7 +514,7 @@ export class Essence20ActorSheet extends ActorSheet {
         }
       }
 
-      await showOriginEssenceDialog(sourceItem, super._onDropItem.bind(this, event, data), this.actor);
+      await this._bgHandler.showOriginEssenceDialog(sourceItem, super._onDropItem.bind(this, event, data), this.actor);
       break;
     case 'upgrade':
       // Drones can only accept drone Upgrades
