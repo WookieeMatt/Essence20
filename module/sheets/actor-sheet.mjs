@@ -370,16 +370,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.accordion-label').click(this._onToggleAccordion.bind(this));
 
     // Open and collapse all Item contents in container
-    html.find('.header-accordion-label').click(ev => {
-      const el = ev.currentTarget;
-      const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
-      $(el.closest('.header-accordion-wrapper')).toggleClass('open');
-
-      const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
-      for (const accordionLabel of accordionLabels) {
-        isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
-      }
-    });
+    html.find('.header-accordion-label').click(this._onToggleHeaderAccordion.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -389,6 +380,22 @@ export class Essence20ActorSheet extends ActorSheet {
         li.setAttribute("draggable", true);
         li.addEventListener("dragstart", handler, false);
       });
+    }
+  }
+
+  /**
+   * Handle toggling accordion container headers.
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  async _onToggleHeaderAccordion(event) {
+    const el = event.currentTarget;
+    const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
+    $(el.closest('.header-accordion-wrapper')).toggleClass('open');
+
+    const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+    for (const accordionLabel of accordionLabels) {
+      isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
     }
   }
 
