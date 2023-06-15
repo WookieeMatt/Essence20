@@ -1,8 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import {
-  rememberOptions,
-} from "../helpers/utils.mjs";
-import {
   influenceUpdate,
   onInfluenceDelete,
   onOriginDelete,
@@ -10,9 +7,9 @@ import {
 } from "./background-sheet-helper.mjs";
 import { onMorph, onZordDelete, prepareZords } from "./power-ranger-sheet-helper.mjs";
 import { onAltModeDelete, onTransform } from "./transformer-sheet-helper.mjs";
+import { onConfigureEntity } from "./crossover-sheet-helper.mjs";
 
 /**
- * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
 export class Essence20ActorSheet extends ActorSheet {
@@ -84,20 +81,19 @@ export class Essence20ActorSheet extends ActorSheet {
     return context;
   }
 
-  /* -------------------------------------------- */
-  /* Crossover Button for Character Sheets        */
-  /* -------------------------------------------- */
+  /** @override */
   _getHeaderButtons() {
     let buttons = super._getHeaderButtons();
-    // Token Configuration
+
     if (this.actor.isOwner) {
+      // Crossover Button for Character Sheets
       if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
         buttons = [
           {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => this._onConfigureEntity(ev),
+            onclick: (ev) => onConfigureEntity(ev, this),
           },
           ...buttons,
         ];
@@ -105,49 +101,6 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     return buttons;
-  }
-
-  /**
-   * Creates dialog window for Crossover Options
-   * @param {Event} event   The originating click event
-   */
-  async _onConfigureEntity(event) {
-    event.preventDefault();
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.Crossover'),
-        content: await renderTemplate("systems/essence20/templates/dialog/crossover-options.hbs", {
-          actor: this.actor,
-          system: this.actor.system,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._crossoverSettings(rememberOptions(html)),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-  /**
-   * Sets the options from the Crossover Dialog
-   * @param {options} options   The options from the dialog
-   */
-  _crossoverSettings(options) {
-    for (const option in options) {
-      const updateString = `system.${option}`;
-      if (options[option]) {
-        this.actor.update({
-          [updateString]: true,
-        }).then(this.render(false));
-      } else {
-        this.actor.update({
-          [updateString]: false,
-        }).then(this.render(false));
-      }
-    }
   }
 
   /**
@@ -173,13 +126,9 @@ export class Essence20ActorSheet extends ActorSheet {
     context.displayedNpcSkills = displayedNpcSkills;
   }
 
-
-
   /**
    * Organize and classify Items for Character sheets.
-   *
    * @param {Object} context The actor data to prepare.
-   *
    * @return {undefined}
    */
   _prepareItems(context) {
