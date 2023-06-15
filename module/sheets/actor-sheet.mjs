@@ -5,7 +5,7 @@ import {
   onOriginDelete,
   showOriginEssenceDialog,
 } from "./background-sheet-helper.mjs";
-import { onMorph, onZordDelete, prepareZords } from "./power-ranger-sheet-helper.mjs";
+import { PowerRangerSheetHandler } from "./power-ranger-sheet-helper.mjs";
 import { onAltModeDelete, onTransform } from "./transformer-sheet-helper.mjs";
 import { onConfigureEntity } from "./crossover-sheet-helper.mjs";
 
@@ -17,6 +17,7 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
+    this._prHandler = new PowerRangerSheetHandler(this);
   }
 
   /** @override */
@@ -72,7 +73,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
     // Prepare Zords for MFZs
-    prepareZords(context, this);
+    this._prHandler.prepareZords(context);
 
     context.accordionStates = this._accordionStates;
 
@@ -295,7 +296,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-delete').click(this._onItemDelete.bind(this));
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(ev => onZordDelete(ev, this));
+    html.find('.zord-delete').click(ev => this._prHandler.onZordDelete(ev));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
@@ -304,7 +305,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Morph Button
-    html.find('.morph').click(() => onMorph(this));
+    html.find('.morph').click(() => this._prHandler.onMorph());
 
     //Transform Button
     html.find('.transform').click(() => onTransform(this));
