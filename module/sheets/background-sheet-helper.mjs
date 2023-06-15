@@ -3,7 +3,7 @@ import {
   getItemsOfType,
   itemDeleteById,
   rememberOptions,
-  searchCompendium
+  searchCompendium,
 } from "../helpers/utils.mjs";
 
 /**
