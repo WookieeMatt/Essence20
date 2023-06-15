@@ -1,154 +1,154 @@
 import { getItemsOfType, rememberOptions } from "../helpers/utils.mjs";
 
-/**
- * Handle clicking the transform button
- * @param {Essence20ActorSheet} actorSheet The actor sheet
- */
-export async function onTransform(actorSheet) {
-  const actor = actorSheet.actor;
-  const altModes = getItemsOfType("altMode", actor.items);
+export class TransformerSheetHandler {
+  /**
+   * Constructor
+   * @param {Essence20ActorSheet} actorSheet The actor sheet
+   */
+  constructor(actorSheet) {
+    this._actorSheet = actorSheet;
+    this._actor = actorSheet.actor;
+  }
 
-  if (!altModes.length && !actor.system.isTransformed) {      // No alt-modes to transform into
-    ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-  } else if (altModes.length > 1) {                           // Select from multiple alt-modes
-    if (!actor.system.isTransformed) {
-      showAltModeChoiceDialog(altModes, false, actorSheet);   // More than 1 altMode and not transformed
-    } else {
-      showAltModeChoiceDialog(altModes, true, actorSheet);    // More than 1 altMode and transformed
+  /**
+   * Handle clicking the transform button
+   */
+  async onTransform() {
+    const altModes = getItemsOfType("altMode", this._actor.items);
+    const isTransformed = this._actor.system.isTransformed;
+
+    if (!altModes.length && !isTransformed) {     // No alt-modes to transform into
+      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
+    } else if (altModes.length > 1) {             // Select from multiple alt-modes
+      if (!isTransformed) {
+        this.showAltModeChoiceDialog(altModes, false); // More than 1 altMode and not transformed
+      } else {
+        this.showAltModeChoiceDialog(altModes, true);  // More than 1 altMode and transformed
+      }
+    } else {                                      // Alt-mode/bot-mode toggle
+      isTransformed
+        ? this.transformBotMode()
+        : this.transformAltMode(altModes[0]);
     }
-  } else {                                                    // Alt-mode/bot-mode toggle
-    actor.system.isTransformed
-      ? transformBotMode(actorSheet)
-      : transformAltMode(altModes[0], actorSheet);
-  }
-}
-
-/**
- * Handle Transforming back into the Bot Mode
- * @param {Essence20ActorSheet} actorSheet The actor sheet
- */
-export async function transformBotMode(actorSheet) {
-  const actor = actorSheet.actor;
-  await actor.update({
-    "system.movement.aerial.altMode": 0,
-    "system.movement.swim.altMode": 0,
-    "system.movement.ground.altMode": 0,
-    "system.isTransformed": false,
-    "system.altModeId": "",
-    "system.altModeSize": "",
-  }).then(actorSheet.render(false));
-}
-
-/**
- * Handles Transforming into an AltMode
- * @param {AltMode} altMode                The alt-mode that was selected to Transform into
- * @param {Essence20ActorSheet} actorSheet The actor sheet
- */
-export async function transformAltMode(altMode, actorSheet) {
-  const actor = actorSheet.actor;
-  await actor.update({
-    "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
-    "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
-    "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
-    "system.altModeSize": altMode.system.altModesize,
-    "system.altModeId": altMode._id,
-    "system.isTransformed": true,
-  }).then(actorSheet.render(false));
-}
-
-/**
- * Creates the Alt Mode Choice List Dialog
- * @param {AltMode[]} altModes  A list of the available Alt Modes
- * @param {Boolean} isTransformed Whether the Transformer is transformed or not
- * @param {Essence20ActorSheet} actorSheet The actor sheet
- * @private
- */
-export async function showAltModeChoiceDialog(altModes, isTransformed, actorSheet) {
-  const actor = actorSheet.actor;
-  const choices = {};
-  if (isTransformed) {
-    choices["BotMode"] = {
-      chosen: false,
-      label: "BotMode",
-    };
   }
 
-  for (const altMode of altModes) {
-    if (actor.system.altModeId != altMode._id) {
-      choices[altMode._id] = {
+  /**
+   * Handle Transforming back into the Bot Mode
+   */
+  async transformBotMode() {
+    await this._actor.update({
+      "system.movement.aerial.altMode": 0,
+      "system.movement.swim.altMode": 0,
+      "system.movement.ground.altMode": 0,
+      "system.isTransformed": false,
+      "system.altModeId": "",
+      "system.altModeSize": "",
+    }).then(this._actorSheet.render(false));
+  }
+
+  /**
+   * Handles Transforming into an AltMode
+   * @param {AltMode} altMode                The alt-mode that was selected to Transform into
+   */
+  async transformAltMode(altMode) {
+    await this._actor.update({
+      "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
+      "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
+      "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
+      "system.altModeSize": altMode.system.altModesize,
+      "system.altModeId": altMode._id,
+      "system.isTransformed": true,
+    }).then(this._actorSheet.render(false));
+  }
+
+  /**
+   * Creates the Alt Mode Choice List Dialog
+   * @param {AltMode[]} altModes    A list of the available Alt Modes
+   * @param {Boolean} isTransformed Whether the Transformer is transformed or not
+   * @private
+   */
+  async showAltModeChoiceDialog(altModes, isTransformed) {
+    const choices = {};
+    if (isTransformed) {
+      choices["BotMode"] = {
         chosen: false,
-        label: altMode.name,
+        label: "BotMode",
       };
     }
-  }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.AltModeChoice'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => altModeSelect(altModes, rememberOptions(html), actorSheet),
+    for (const altMode of altModes) {
+      if (this._actor.system.altModeId != altMode._id) {
+        choices[altMode._id] = {
+          chosen: false,
+          label: altMode.name,
+        };
+      }
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.AltModeChoice'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this.altModeSelect(altModes, rememberOptions(html)),
+          },
         },
       },
-    },
-  ).render(true);
-}
-
-/**
- * Handle selecting an alt-mode from the Alt-mode Dialog
- * @param {AltMode[]} altModes  A list of the available Alt Modes
- * @param {Object} options   The options resulting from _showAltModeDialog()
- * @param {Essence20ActorSheet} actorSheet The actor sheet
- */
-export async function altModeSelect(altModes, options, actorSheet) {
-  let selectedForm = null;
-  let transformation = null;
-
-  for (const [altMode, isSelected] of Object.entries(options)) {
-    if (isSelected) {
-      selectedForm = altMode;
-      break;
-    }
+    ).render(true);
   }
 
-  if (!selectedForm) {
-    return;
-  }
+  /**
+   * Handle selecting an alt-mode from the Alt-mode Dialog
+   * @param {AltMode[]} altModes  A list of the available Alt Modes
+   * @param {Object} options      The options resulting from _showAltModeDialog()
+   */
+  async altModeSelect(altModes, options) {
+    let selectedForm = null;
+    let transformation = null;
 
-  if (selectedForm == "BotMode") {
-    transformBotMode(actorSheet);
-  } else {
-    for (const mode of altModes) {
-      if (selectedForm == mode._id) {
-        transformation = mode;
+    for (const [altMode, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedForm = altMode;
         break;
       }
     }
 
-    if (transformation) {
-      transformAltMode(transformation, actorSheet);
+    if (!selectedForm) {
+      return;
+    }
+
+    if (selectedForm == "BotMode") {
+      this.transformBotMode();
+    } else {
+      for (const mode of altModes) {
+        if (selectedForm == mode._id) {
+          transformation = mode;
+          break;
+        }
+      }
+
+      if (transformation) {
+        this.transformAltMode(transformation);
+      }
     }
   }
-}
 
-/**
- * Handle AltModes being deleted
- * @param {AltMode} altMode                The deleted AltMode.
- * @param {Essence20ActorSheet} actorSheet The actor sheet
- */
-export async function onAltModeDelete(altMode, actorSheet) {
-  const actor = actorSheet.actor;
-
-  const altModes = getItemsOfType("altMode", actor.items);
-  if (altModes.length > 1) {
-    if (altMode._id == actor.system.altModeId) {
-      transformBotMode(actorSheet);
+  /**
+   * Handle AltModes being deleted
+   * @param {AltMode} altMode                The deleted AltMode.
+   */
+  async onAltModeDelete(altMode) {
+    const altModes = getItemsOfType("altMode", this._actor.items);
+    if (altModes.length > 1) {
+      if (altMode._id == this._actor.system.altModeId) {
+        this.transformBotMode();
+      }
+    } else {
+      this.transformBotMode();
     }
-  } else {
-    transformBotMode(actorSheet);
   }
 }

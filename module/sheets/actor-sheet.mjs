@@ -6,7 +6,7 @@ import {
   showOriginEssenceDialog,
 } from "./background-sheet-helper.mjs";
 import { PowerRangerSheetHandler } from "./power-ranger-sheet-helper.mjs";
-import { onAltModeDelete, onTransform } from "./transformer-sheet-helper.mjs";
+import { TransformerSheetHandler } from "./transformer-sheet-helper.mjs";
 import { onConfigureEntity } from "./crossover-sheet-helper.mjs";
 
 /**
@@ -18,6 +18,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     this._accordionStates = { skills: '' };
     this._prHandler = new PowerRangerSheetHandler(this);
+    this._tfHandler = new TransformerSheetHandler(this);
   }
 
   /** @override */
@@ -308,7 +309,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.morph').click(() => this._prHandler.onMorph());
 
     //Transform Button
-    html.find('.transform').click(() => onTransform(this));
+    html.find('.transform').click(() => this._tfHandler.onTransform(this));
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -462,7 +463,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (item.type == "origin") {
       onOriginDelete(item, this.actor);
     } else if (item.type == "altMode") {
-      onAltModeDelete(item, this);
+      this._tfHandler.onAltModeDelete(item, this);
     } else if (item.type == 'influence') {
       onInfluenceDelete(item, this.actor);
     }
