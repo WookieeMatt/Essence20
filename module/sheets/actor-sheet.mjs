@@ -437,6 +437,44 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
+   * Handle clickable rolls.
+   * @param {Event} event   The originating click event
+   * @private
+   */
+  async _onRoll(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    const rollType = dataset.rollType;
+
+    if (!rollType) {
+      return;
+    }
+
+    // Handle type-specific rolls.
+    if (rollType == 'skill') {
+      this.actor.rollSkill(dataset);
+    } else if (rollType == 'initiative') {
+      this.actor.rollInitiative({createCombatants: true});
+    } else { // Handle items
+      const itemId = element.closest('.item').dataset.itemId;
+      const item = this.actor.items.get(itemId);
+
+      if (rollType == 'power') {
+        const classFeature = this.actor.items.get(item.system.classFeatureId);
+        if (classFeature) {
+          classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
+        }
+      } else if (rollType == 'classFeature') {
+        // If a Class Feature is being used, decrement uses
+        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
+      }
+
+      if (item) return item.roll(dataset);
+    }
+  }
+
+  /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
    * @param {Event} event   The originating click event
    * @private
@@ -477,44 +515,6 @@ export class Essence20ActorSheet extends ActorSheet {
     let newValue = element.type == 'checkbox' ? element.checked : element.value;
 
     return item.update({ [field]: newValue });
-  }
-
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  async _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const dataset = element.dataset;
-    const rollType = dataset.rollType;
-
-    if (!rollType) {
-      return;
-    }
-
-    // Handle type-specific rolls.
-    if (rollType == 'skill') {
-      this.actor.rollSkill(dataset);
-    } else if (rollType == 'initiative') {
-      this.actor.rollInitiative({createCombatants: true});
-    } else { // Handle items
-      const itemId = element.closest('.item').dataset.itemId;
-      const item = this.actor.items.get(itemId);
-
-      if (rollType == 'power') {
-        const classFeature = this.actor.items.get(item.system.classFeatureId);
-        if (classFeature) {
-          classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
-        }
-      } else if (rollType == 'classFeature') {
-        // If a Class Feature is being used, decrement uses
-        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
-      }
-
-      if (item) return item.roll(dataset);
-    }
   }
 
   /**
