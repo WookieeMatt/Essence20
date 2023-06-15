@@ -90,7 +90,7 @@ export class Essence20ActorSheet extends ActorSheet {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => this._coHandler.onConfigureEntity(ev, this),
+            onclick: (ev) => this._coHandler.showCrossoverOptions(ev, this),
           },
           ...buttons,
         ];

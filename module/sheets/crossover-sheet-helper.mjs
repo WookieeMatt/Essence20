@@ -14,7 +14,7 @@ export class CrossoverSheetHandler {
    * Creates dialog window for Crossover Options
    * @param {Event} event   The originating click event
    */
-  async onConfigureEntity(event) {
+  async showCrossoverOptions(event) {
     event.preventDefault();
 
     new Dialog(
@@ -27,7 +27,7 @@ export class CrossoverSheetHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this.crossoverSettings(rememberOptions(html)),
+            callback: html => this._crossoverSettings(rememberOptions(html)),
           },
         },
       },
@@ -38,7 +38,7 @@ export class CrossoverSheetHandler {
    * Sets the options from the Crossover Dialog
    * @param {Options} options The options from the dialog
    */
-  crossoverSettings(options) {
+  _crossoverSettings(options) {
     for (const option in options) {
       const updateString = `system.${option}`;
       if (options[option]) {
