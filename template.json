@@ -16,6 +16,7 @@
         "altModeName": "",
         "altModeSize": "common",
         "canMorph": false,
+        "canSpellcast": false,
         "canTransform": false,
         "color": "#b5b1b1",
         "conditioning": 0,
@@ -574,7 +575,8 @@
         "common",
         "creature",
         "character"
-      ]
+      ],
+      "canSpellcast": true
     },
     "companion": {
       "templates": [
