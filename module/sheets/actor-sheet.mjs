@@ -890,13 +890,14 @@ export class Essence20ActorSheet extends ActorSheet {
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
       if (influence.system.skills.length) {
-        const skill = influence.system.skills;
-        for (const influenceEssence in this.actor.system.skills[skill].essences) {
-          if (this.actor.system.skills[skill].essences[influenceEssence]) {
-            choices[influenceEssence] = {
-              chosen: false,
-              label: CONFIG.E20.originEssences[influenceEssence],
-            };
+        for (const skill of influence.system.skills) {
+          for (const influenceEssence in this._actor.system.skills[skill].essences) {
+            if (this._actor.system.skills[skill].essences[influenceEssence]) {
+              choices[influenceEssence] = {
+                chosen: false,
+                label: CONFIG.E20.originEssences[influenceEssence],
+              };
+            }
           }
         }
       }
