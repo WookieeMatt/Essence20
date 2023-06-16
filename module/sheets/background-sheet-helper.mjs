@@ -20,8 +20,9 @@ export class BackgroundSheetHandler {
   * Creates the Perk from the Origin on the Actor
   * @param {Origin} origin    The original Origin to get Perks from
   * @param {Origin} newOrigin The new Origin being created
+  * @private
   */
-  async originPerkCreate(origin, newOrigin) {
+  async _originPerkCreate(origin, newOrigin) {
     const perkIds = [];
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
@@ -43,8 +44,9 @@ export class BackgroundSheetHandler {
   * @param {Influence} influence    The Influence
   * @param {Perk[]} perkIds         The Perk IDs that go with the new Influence
   * @param {Influence} newInfluence The new Influence that was created.
+  * @private
   */
-  async chooseHangUp(influence, perkIds, newInfluence) {
+  async _chooseHangUp(influence, perkIds, newInfluence) {
     const choices = {};
     let itemArray = [];
     let compendiumData = null;
@@ -73,7 +75,7 @@ export class BackgroundSheetHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => hangUpSelect(
+            callback: html => this._hangUpSelect(
               itemArray, rememberOptions(html), perkIds, newInfluence,
             ),
           },
@@ -89,7 +91,7 @@ export class BackgroundSheetHandler {
   * @param {String[]} perkIds       The IDs from any Perk that were added with the Influence
   * @param {Influence} newInfluence The new Influence that was created
   */
-  async hangUpSelect(hangUps, options, perkIds, newInfluence) {
+  async _hangUpSelect(hangUps, options, perkIds, newInfluence) {
     let selectedHangUp = null;
     const hangUpIds = [];
     let hangUpToCreate = null;
@@ -206,7 +208,7 @@ export class BackgroundSheetHandler {
 
     if (addHangUp) {
       if (influence.system.hangUpIds.length > 1) {
-        this.chooseHangUp(influence, perkIds, newInfluence);
+        this._chooseHangUp(influence, perkIds, newInfluence);
       } else {
         const hangUpIds = await createItemCopies(influence.system.hangUpIds, this._actor);
         await newInfluence.update({
@@ -222,13 +224,30 @@ export class BackgroundSheetHandler {
   }
 
   /**
+   * Handle the dropping of an influence on to a character
+   * @param {Origin} origin     The Origin
+   * @param {Function} dropFunc The function to call to complete the Origin drop
+   */
+  async originUpdate(origin, dropFunc) {
+    for (let actorItem of this._actor.items) {
+      // Characters can only have one Origin
+      if (actorItem.type == 'origin') {
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
+        return false;
+      }
+    }
+
+    await this._showOriginEssenceDialog(origin, dropFunc);
+  }
+
+  /**
   * Updates the actor with the information selected for the Origin
   * @param {Object} origin     The Origin
   * @param {Object} options    The options resulting from _showOriginSkillDialog()
   * @param {Object} essence    The essence selected in the _showOriginEssenceDialog()
   * @param {Function} dropFunc The function to call to complete the Origin drop
   */
-  async originStatUpdate(origin, essence, options, dropFunc) {
+  async _originStatUpdate(origin, essence, options, dropFunc) {
     let selectedSkill = "";
     for (const [skill, isSelected] of Object.entries(options)) {
       if (isSelected) {
@@ -263,7 +282,7 @@ export class BackgroundSheetHandler {
     }
 
     const newOriginList = await dropFunc();
-    this.originPerkCreate(origin, newOriginList[0]);
+    this._originPerkCreate(origin, newOriginList[0]);
 
     await this._actor.update({
       [essenceString]: essenceValue,
@@ -284,7 +303,7 @@ export class BackgroundSheetHandler {
    * @param {Object} options    The options resulting from _showOriginEssenceDialog()
    * @param {Function} dropFunc The function to call to complete the Origin drop
    */
-  async showOriginSkillDialog(origin, options, dropFunc) {
+  async _showOriginSkillDialog(origin, options, dropFunc) {
     const essences = Object.keys(options);
     const choices = {};
     let selectedEssence = "";
@@ -328,7 +347,7 @@ export class BackgroundSheetHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this.originStatUpdate(
+            callback: html => this._originStatUpdate(
               origin, selectedEssence, rememberOptions(html), dropFunc,
             ),
           },
@@ -342,7 +361,7 @@ export class BackgroundSheetHandler {
    * @param {Object} origin     The Origin
    * @param {Function} dropFunc The function to call to complete the Origin drop
    */
-  async showOriginEssenceDialog(origin, dropFunc) {
+  async _showOriginEssenceDialog(origin, dropFunc) {
     const choices = {};
     for (const essence of origin.system.essences) {
       choices[essence] = {
@@ -375,7 +394,7 @@ export class BackgroundSheetHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this.showOriginSkillDialog(origin, rememberOptions(html), dropFunc),
+            callback: html => this._showOriginSkillDialog(origin, rememberOptions(html), dropFunc),
           },
         },
       },

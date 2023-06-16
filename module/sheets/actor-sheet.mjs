@@ -12,10 +12,10 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
+    this._bgHandler = new BackgroundSheetHandler(this);
+    this._coHandler = new CrossoverSheetHandler(this);
     this._prHandler = new PowerRangerSheetHandler(this);
     this._tfHandler = new TransformerSheetHandler(this);
-    this._coHandler = new CrossoverSheetHandler(this);
-    this._bgHandler = new BackgroundSheetHandler(this);
   }
 
   /** @override */
@@ -458,11 +458,11 @@ export class Essence20ActorSheet extends ActorSheet {
     const item = this.actor.items.get(li.data("itemId"));
 
     if (item.type == "origin") {
-      this._bgHandler.onOriginDelete(item, this.actor);
+      this._bgHandler.onOriginDelete(item);
+    } else if (item.type == 'influence') {
+      this._bgHandler.onInfluenceDelete(item);
     } else if (item.type == "altMode") {
       this._tfHandler.onAltModeDelete(item, this);
-    } else if (item.type == 'influence') {
-      this._bgHandler.onInfluenceDelete(item, this.actor);
     }
 
     item.delete();
@@ -503,18 +503,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
     case 'influence':
-      await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data), this.actor);
+      await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
       break;
     case 'origin':
-      for (let actorItem of this.actor.items) {
-        // Characters can only have one Origin
-        if(actorItem.type == 'origin') {
-          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
-          return false;
-        }
-      }
-
-      await this._bgHandler.showOriginEssenceDialog(sourceItem, super._onDropItem.bind(this, event, data), this.actor);
+      await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
       break;
     case 'upgrade':
       // Drones can only accept drone Upgrades
@@ -535,7 +527,7 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Handle dropping of an Actor data onto another Actor sheet
    * @param {DragEvent} event            The concluding DragEvent which contains drop data
-   * @param {object} data                The data transfer extracted from the event
+   * @param {Object} data                The data transfer extracted from the event
    * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
    *                                     not permitted.
    * @override
