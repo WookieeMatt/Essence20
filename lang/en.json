@@ -119,6 +119,7 @@
     "ButtonMorph": "Morph",
     "ButtonUnmorph": "Unmorph",
     "CanMorph": "Allow character to morph?",
+    "CanSpellcast": "Allow character to spellcast?",
     "CanTransform": "Allow character to transform?",
     "ClassFeatureUses": "Uses",
     "ClassFeatureNone": "No Class Feature",
