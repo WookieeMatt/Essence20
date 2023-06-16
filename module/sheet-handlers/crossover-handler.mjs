@@ -12,7 +12,7 @@ export class CrossoverHandler {
 
   /**
    * Creates dialog window for Crossover Options
-   * @param {Event} event   The originating click event
+   * @param {Event} event The originating click event
    */
   async showCrossoverOptions(event) {
     event.preventDefault();

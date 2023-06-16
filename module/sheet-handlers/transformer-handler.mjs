@@ -12,7 +12,7 @@ export class TransformerHandler {
 
   /**
    * Handle AltModes being deleted
-   * @param {AltMode} altMode                The deleted AltMode.
+   * @param {AltMode} altMode The deleted AltMode.
    */
   async onAltModeDelete(altMode) {
     const altModes = getItemsOfType("altMode", this._actor.items);
@@ -32,15 +32,15 @@ export class TransformerHandler {
     const altModes = getItemsOfType("altMode", this._actor.items);
     const isTransformed = this._actor.system.isTransformed;
 
-    if (!altModes.length && !isTransformed) {     // No alt-modes to transform into
+    if (!altModes.length && !isTransformed) {           // No alt-modes to transform into
       ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-    } else if (altModes.length > 1) {             // Select from multiple alt-modes
+    } else if (altModes.length > 1) {                   // Select from multiple alt-modes
       if (!isTransformed) {
         this._showAltModeChoiceDialog(altModes, false); // More than 1 altMode and not transformed
       } else {
         this._showAltModeChoiceDialog(altModes, true);  // More than 1 altMode and transformed
       }
-    } else {                                      // Alt-mode/bot-mode toggle
+    } else {                                             // Alt-mode/bot-mode toggle
       isTransformed
         ? this._transformBotMode()
         : this._transformAltMode(altModes[0]);
@@ -64,7 +64,7 @@ export class TransformerHandler {
 
   /**
    * Handles Transforming into an AltMode
-   * @param {AltMode} altMode                The alt-mode that was selected to Transform into
+   * @param {AltMode} altMode The alt-mode that was selected to Transform into
    * @private
    */
   async _transformAltMode(altMode) {
@@ -120,8 +120,8 @@ export class TransformerHandler {
 
   /**
    * Handle selecting an alt-mode from the Alt-mode Dialog
-   * @param {AltMode[]} altModes  A list of the available Alt Modes
-   * @param {Object} options      The options resulting from _showAltModeDialog()
+   * @param {AltMode[]} altModes A list of the available Alt Modes
+   * @param {Object} options     The options resulting from _showAltModeDialog()
    * @private
    */
   async _altModeSelect(altModes, options) {

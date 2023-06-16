@@ -4,9 +4,6 @@ import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 
-/**
- * @extends {ActorSheet}
- */
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
@@ -50,11 +47,6 @@ export class Essence20ActorSheet extends ActorSheet {
     // Add the actor's system data to context for easier access, as well as flags.
     context.system = actorData.system;
     context.flags = actorData.flags;
-
-    // // Prepare NPC data and items.
-    // if (actorData.type == 'npc') {
-    //   this._prepareItems(context);
-    // }
 
     // Might need to filter like above eventually
     this._prepareItems(context);
@@ -333,7 +325,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle toggling accordion container headers.
-   * @param {Event} event   The originating click event
+   * @param {Event} event The originating click event
    * @private
    */
   async _onToggleHeaderAccordion(event) {
@@ -349,7 +341,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle toggling accordion containers.
-   * @param {Event} event   The originating click event
+   * @param {Event} event The originating click event
    * @private
    */
   async _onToggleAccordion(event) {
@@ -386,7 +378,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle clickable rolls.
-   * @param {Event} event   The originating click event
+   * @param {Event} event The originating click event
    * @private
    */
   async _onRoll(event) {
@@ -424,7 +416,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-   * @param {Event} event   The originating click event
+   * @param {Event} event The originating click event
    * @private
    */
   async _onItemCreate(event) {
@@ -451,7 +443,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
   * Handle deleting Items
-  * @param {Event} event   The originating click event
+  * @param {Event} event The originating click event
   * @private
   */
   async _onItemDelete(event) {
@@ -472,7 +464,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle editing specialization names inline
-   * @param {Event} event   The originating click event
+   * @param {Event} event The originating click event
    * @private
    */
   async _onInlineEdit(event) {
@@ -488,10 +480,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle dropping an Item onto an Actor.
-   * @param {DragEvent} event            The concluding DragEvent which contains drop data
-   * @param {Object} data                The data transfer extracted from the event
-   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
-   *                                     not permitted.
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
    * @override
    */
   async _onDropItem(event, data) {
@@ -527,10 +519,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle dropping of an Actor data onto another Actor sheet
-   * @param {DragEvent} event            The concluding DragEvent which contains drop data
-   * @param {Object} data                The data transfer extracted from the event
-   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
-   *                                     not permitted.
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
    * @override
    */
   async _onDropActor(event, data) {
