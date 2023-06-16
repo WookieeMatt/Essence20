@@ -1,8 +1,8 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { BackgroundSheetHandler } from "./background-sheet-helper.mjs";
-import { CrossoverSheetHandler } from "./crossover-sheet-helper.mjs";
-import { PowerRangerSheetHandler } from "./power-ranger-sheet-helper.mjs";
-import { TransformerSheetHandler } from "./transformer-sheet-helper.mjs";
+import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
+import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
+import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
+import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 
 /**
  * @extends {ActorSheet}
@@ -12,10 +12,10 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._bgHandler = new BackgroundSheetHandler(this);
-    this._coHandler = new CrossoverSheetHandler(this);
-    this._prHandler = new PowerRangerSheetHandler(this);
-    this._tfHandler = new TransformerSheetHandler(this);
+    this._bgHandler = new BackgroundHandler(this);
+    this._coHandler = new CrossoverHandler(this);
+    this._prHandler = new PowerRangerHandler(this);
+    this._tfHandler = new TransformerHandler(this);
   }
 
   /** @override */
