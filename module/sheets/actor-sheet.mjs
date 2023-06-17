@@ -890,13 +890,14 @@ export class Essence20ActorSheet extends ActorSheet {
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
       if (influence.system.skills.length) {
-        const skill = influence.system.skills;
-        for (const influenceEssence in this.actor.system.skills[skill].essences) {
-          if (this.actor.system.skills[skill].essences[influenceEssence]) {
-            choices[influenceEssence] = {
-              chosen: false,
-              label: CONFIG.E20.originEssences[influenceEssence],
-            };
+        for (const skill of influence.system.skills) {
+          for (const influenceEssence in this.actor.system.skills[skill].essences) {
+            if (this.actor.system.skills[skill].essences[influenceEssence]) {
+              choices[influenceEssence] = {
+                chosen: false,
+                label: CONFIG.E20.originEssences[influenceEssence],
+              };
+            }
           }
         }
       }
@@ -959,13 +960,15 @@ export class Essence20ActorSheet extends ActorSheet {
     const influences = await this._getItemsOfType("influence");
     for (const influence of influences) {
       if (influence.system.skills) {
-        const essence = CONFIG.E20.skillToEssence[influence.system.skills];
-        if (options[essence] && essences.includes(essence)) {
-          selectedEssence = essence;
-          choices[influence.system.skills] = {
-            chosen: false,
-            label: CONFIG.E20.originSkills[influence.system.skills],
-          };
+        for (const skill of influence.system.skills) {
+          const essence = CONFIG.E20.skillToEssence[skill];
+          if (options[essence] && essences.includes(essence)) {
+            selectedEssence = essence;
+            choices[skill] = {
+              chosen: false,
+              label: CONFIG.E20.originSkills[skill],
+            };
+          }
         }
       }
     }
