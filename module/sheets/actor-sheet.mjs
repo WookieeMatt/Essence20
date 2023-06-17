@@ -1,15 +1,18 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { searchCompendium } from "../helpers/utils.mjs";
+import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
+import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
+import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
+import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 
-/**
- * Extend the basic ActorSheet with some very simple modifications
- * @extends {ActorSheet}
- */
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
 
     this._accordionStates = { skills: '' };
+    this._bgHandler = new BackgroundHandler(this);
+    this._coHandler = new CrossoverHandler(this);
+    this._prHandler = new PowerRangerHandler(this);
+    this._tfHandler = new TransformerHandler(this);
   }
 
   /** @override */
@@ -26,8 +29,6 @@ export class Essence20ActorSheet extends ActorSheet {
   get template() {
     return `systems/essence20/templates/actor/sheets/${this.actor.type}.hbs`;
   }
-
-  /* -------------------------------------------- */
 
   /** @override */
   getData() {
@@ -47,11 +48,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
-    // // Prepare NPC data and items.
-    // if (actorData.type == 'npc') {
-    //   this._prepareItems(context);
-    // }
-
     // Might need to filter like above eventually
     this._prepareItems(context);
 
@@ -67,7 +63,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
     // Prepare Zords for MFZs
-    this._prepareZords(context);
+    this._prHandler.prepareZords(context);
 
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
@@ -75,20 +71,19 @@ export class Essence20ActorSheet extends ActorSheet {
     return context;
   }
 
-  /* -------------------------------------------- */
-  /* Crossover Button for Character Sheets        */
-  /* -------------------------------------------- */
+  /** @override */
   _getHeaderButtons() {
     let buttons = super._getHeaderButtons();
-    // Token Configuration
+
     if (this.actor.isOwner) {
+      // Crossover Button for Character Sheets
       if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
         buttons = [
           {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => this._onConfigureEntity(ev),
+            onclick: (ev) => this._coHandler.showCrossoverOptions(ev, this),
           },
           ...buttons,
         ];
@@ -96,49 +91,6 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     return buttons;
-  }
-
-  /**
-   * Creates dialog window for Crossover Options
-   * @param {Event} event   The originating click event
-   */
-  async _onConfigureEntity(event) {
-    event.preventDefault();
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.Crossover'),
-        content: await renderTemplate("systems/essence20/templates/dialog/crossover-options.hbs", {
-          actor: this.actor,
-          system: this.actor.system,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._crossoverSettings(this._rememberOptions(html)),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-  /**
-   * Sets the options from the Crossover Dialog
-   * @param {options} options   The options from the dialog
-   */
-  _crossoverSettings(options) {
-    for (const option in options) {
-      const updateString = `system.${option}`;
-      if (options[option]) {
-        this.actor.update({
-          [updateString]: true,
-        }).then(this.render(false));
-      } else {
-        this.actor.update({
-          [updateString]: false,
-        }).then(this.render(false));
-      }
-    }
   }
 
   /**
@@ -165,30 +117,10 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-   * Prepare Zords for MFZs.
-   *
-   * @param {Object} context The actor data to prepare.
-   *
-   * @return {undefined}
-   */
-  _prepareZords(context) {
-    if (this.actor.type == 'megaformZord') {
-      let zords = [];
-
-      for (let zordId of this.actor.system.zordIds) {
-        zords.push(game.actors.get(zordId));
-      }
-
-      context.zords = zords;
-    }
-  }
-
-  /**
    * Organize and classify Items for Character sheets.
-   *
    * @param {Object} context The actor data to prepare.
-   *
    * @return {undefined}
+   * @private
    */
   _prepareItems(context) {
     // Initialize containers.
@@ -352,24 +284,10 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-create').click(this._onItemCreate.bind(this));
 
     // Delete Inventory Item
-    html.find('.item-delete').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(li.data("itemId"));
-
-      if (item.type == "origin") {
-        this._onOriginDelete(item);
-      } else if (item.type == "altMode") {
-        this._onAltModeDelete(item);
-      } else if (item.type == 'influence') {
-        this._onInfluenceDelete(item);
-      }
-
-      item.delete();
-      li.slideUp(200, () => this.render(false));
-    });
+    html.find('.item-delete').click(this._onItemDelete.bind(this));
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(this._onZordDelete.bind(this));
+    html.find('.zord-delete').click(ev => this._prHandler.onZordDelete(ev));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
@@ -378,10 +296,10 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Morph Button
-    html.find('.morph').click(this._morph.bind(this));
+    html.find('.morph').click(() => this._prHandler.onMorph());
 
     //Transform Button
-    html.find('.transform').click(this._transform.bind(this));
+    html.find('.transform').click(() => this._tfHandler.onTransform(this));
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -389,49 +307,10 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Open and collapse Item content
-    html.find('.accordion-label').click(ev => {
-      const el = ev.currentTarget;
-      const parent = $(el).parents('.accordion-wrapper');
-
-      // Avoid collapsing NPC skills container on rerender
-      if (parent.hasClass('skills-container')) {
-        const isOpen = this._accordionStates.skills;
-        this._accordionStates.skills = isOpen ? '' : 'open';
-        this.render();
-      } else {
-        parent.toggleClass('open');
-
-        // Check if the container header toggle should be flipped
-        let oneClosed = false;
-
-        // Look for a closed Item
-        const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
-        for (const accordionLabel of accordionLabels) {
-          oneClosed = !$(accordionLabel).hasClass('open');
-          if (oneClosed) break;
-        }
-
-        // Set header state to open if all Items are open; closed otherwise
-        const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
-        if (oneClosed) {
-          $(container).removeClass('open');
-        } else {
-          $(container).addClass('open');
-        }
-      }
-    });
+    html.find('.accordion-label').click(this._onToggleAccordion.bind(this));
 
     // Open and collapse all Item contents in container
-    html.find('.header-accordion-label').click(ev => {
-      const el = ev.currentTarget;
-      const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
-      $(el.closest('.header-accordion-wrapper')).toggleClass('open');
-
-      const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
-      for (const accordionLabel of accordionLabels) {
-        isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
-      }
-    });
+    html.find('.header-accordion-label').click(this._onToggleHeaderAccordion.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -445,212 +324,61 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-  * Get items of a type
-  * @param {String} type The type of item to return
-  * @returns {Item[]}    All items of the type requested
-  * @private
-  */
-  _getItemsOfType(type) {
-    const itemsOfType = [];
-    for (const item of this.actor.items) {
-      if (item.type == type) {
-        itemsOfType.push(item);
-      }
-    }
+   * Handle toggling accordion container headers.
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _onToggleHeaderAccordion(event) {
+    const el = event.currentTarget;
+    const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
+    $(el.closest('.header-accordion-wrapper')).toggleClass('open');
 
-    return itemsOfType;
+    const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+    for (const accordionLabel of accordionLabels) {
+      isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
+    }
   }
 
   /**
-  * Handle clicking the transform button
-  * @private
-  */
-  async _transform() {
-    const altModes = this._getItemsOfType("altMode");
+   * Handle toggling accordion containers.
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _onToggleAccordion(event) {
+    const el = event.currentTarget;
+    const parent = $(el).parents('.accordion-wrapper');
 
-    if (!altModes.length && !this.actor.system.isTransformed) { // No alt-modes to transform into
-      ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
-    } else if (altModes.length > 1) {                           // Select from multiple alt-modes
-      if (!this.actor.system.isTransformed) {
-        this._showAltModeChoiceDialog(altModes, false);         // More than 1 altMode and not transformed
+    // Avoid collapsing NPC skills container on rerender
+    if (parent.hasClass('skills-container')) {
+      const isOpen = this._accordionStates.skills;
+      this._accordionStates.skills = isOpen ? '' : 'open';
+      this.render();
+    } else {
+      parent.toggleClass('open');
+
+      // Check if the container header toggle should be flipped
+      let oneClosed = false;
+
+      // Look for a closed Item
+      const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+      for (const accordionLabel of accordionLabels) {
+        oneClosed = !$(accordionLabel).hasClass('open');
+        if (oneClosed) break;
+      }
+
+      // Set header state to open if all Items are open; closed otherwise
+      const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
+      if (oneClosed) {
+        $(container).removeClass('open');
       } else {
-        this._showAltModeChoiceDialog(altModes, true);          // More than 1 altMode and transformed
-      }
-    } else {                                                    // Alt-mode/bot-mode toggle
-      this.actor.system.isTransformed ? this._transformBotMode() : this._transformAltMode(altModes[0]);
-    }
-  }
-
-  /**
-   * Creates the Alt Mode Choice List Dialog
-   * @param {AltMode[]} altModes  A list of the available Alt Modes
-   * @param {Boolean} isTransformed Whether the Transformer is transformed or not
-   * @private
-   */
-  async _showAltModeChoiceDialog(altModes, isTransformed) {
-    const choices = {};
-    if (isTransformed) {
-      choices["BotMode"] = {
-        chosen: false,
-        label: "BotMode",
-      };
-    }
-
-    for (const altMode of altModes) {
-      if (this.actor.system.altModeId != altMode._id) {
-        choices[altMode._id] = {
-          chosen: false,
-          label: altMode.name,
-        };
+        $(container).addClass('open');
       }
     }
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.AltModeChoice'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._altModeSelect(altModes, this._rememberOptions(html)),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-  /**
-   * Handle selecting an alt-mode from the Alt-mode Dialog
-   * @param {AltMode[]} altModes  A list of the available Alt Modes
-   * @param {Object} options   The options resulting from _showAltModeDialog()
-   * @private
-   */
-  async _altModeSelect(altModes, options) {
-    let selectedForm = null;
-    let transformation = null;
-
-    for (const [altMode, isSelected] of Object.entries(options)) {
-      if (isSelected) {
-        selectedForm = altMode;
-        break;
-      }
-    }
-
-    if (!selectedForm) {
-      return;
-    }
-
-    if (selectedForm == "BotMode") {
-      this._transformBotMode();
-    } else {
-      for (const mode of altModes) {
-        if (selectedForm == mode._id) {
-          transformation = mode;
-          break;
-        }
-      }
-
-      if (transformation) {
-        this._transformAltMode(transformation);
-      }
-    }
-  }
-
-  /**
-   * Handles Transforming into an altMode
-   * @param {AltMode} altMode   The alt-mode that was selected to Transform into
-   * @private
-   */
-  async _transformAltMode(altMode) {
-    await this.actor.update({
-      "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
-      "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
-      "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
-      "system.altModeSize": altMode.system.altModesize,
-      "system.altModeId": altMode._id,
-      "system.isTransformed": true,
-    }).then(this.render(false));
-  }
-
-  /**
-   * Handle Transforming back into the Bot Mode
-   * @private
-   */
-  async _transformBotMode() {
-    await this.actor.update({
-      "system.movement.aerial.altMode": 0,
-      "system.movement.swim.altMode": 0,
-      "system.movement.ground.altMode": 0,
-      "system.isTransformed": false,
-      "system.altModeId": "",
-      "system.altModeSize": "",
-    }).then(this.render(false));
-  }
-
-  /**
-   * Handle AltModes being deleted
-   * @param {AltMode} altMode is the deleted AltMode.
-   * @private
-   */
-  async _onAltModeDelete(altMode) {
-    const altModes = this._getItemsOfType("altMode");
-    if (altModes.length > 1) {
-      if (altMode._id == this.actor.system.altModeId) {
-        this._transformBotMode();
-      }
-    } else {
-      this._transformBotMode();
-    }
-  }
-
-  /**
-   * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  async _onItemCreate(event) {
-    event.preventDefault();
-    const header = event.currentTarget;
-    // Get the type of item to create.
-    const type = header.dataset.type;
-    // Grab any data associated with this control.
-    const data = duplicate(header.dataset);
-    // Initialize a default name.
-    const name = `New ${type.capitalize()}`;
-    // Prepare the item object.
-    const itemData = {
-      name: name,
-      type: type,
-      data: data,
-    };
-    // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.data["type"];
-
-    // Finally, create the item!
-    return await Item.create(itemData, { parent: this.actor });
-  }
-
-  /**
-   * Handle editing specialization names inline
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  async _onInlineEdit(event) {
-    event.preventDefault();
-    let element = event.currentTarget;
-    let itemId = element.closest(".item").dataset.itemId;
-    let item = this.actor.items.get(itemId);
-    let field = element.dataset.field;
-    let newValue = element.type == 'checkbox' ? element.checked : element.value;
-
-    return item.update({ [field]: newValue });
   }
 
   /**
    * Handle clickable rolls.
-   * @param {Event} event   The originating click event
+   * @param {Event} event The originating click event
    * @private
    */
   async _onRoll(event) {
@@ -686,19 +414,76 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-  // Handle setting the isMorphed value
-  async _morph() {
-    await this.actor.update({
-      "system.isMorphed": !this.actor.system.isMorphed,
-    }).then(this.render(false));
+  /**
+   * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _onItemCreate(event) {
+    event.preventDefault();
+    const header = event.currentTarget;
+    // Get the type of item to create.
+    const type = header.dataset.type;
+    // Grab any data associated with this control.
+    const data = duplicate(header.dataset);
+    // Initialize a default name.
+    const name = `New ${type.capitalize()}`;
+    // Prepare the item object.
+    const itemData = {
+      name: name,
+      type: type,
+      data: data,
+    };
+    // Remove the type from the dataset since it's in the itemData.type prop.
+    delete itemData.data["type"];
+
+    // Finally, create the item!
+    return await Item.create(itemData, { parent: this.actor });
+  }
+
+  /**
+  * Handle deleting Items
+  * @param {Event} event The originating click event
+  * @private
+  */
+  async _onItemDelete(event) {
+    const li = $(event.currentTarget).parents(".item");
+    const item = this.actor.items.get(li.data("itemId"));
+
+    if (item.type == "origin") {
+      this._bgHandler.onOriginDelete(item);
+    } else if (item.type == 'influence') {
+      this._bgHandler.onInfluenceDelete(item);
+    } else if (item.type == "altMode") {
+      this._tfHandler.onAltModeDelete(item, this);
+    }
+
+    item.delete();
+    li.slideUp(200, () => this.render(false));
+  }
+
+  /**
+   * Handle editing specialization names inline
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _onInlineEdit(event) {
+    event.preventDefault();
+    let element = event.currentTarget;
+    let itemId = element.closest(".item").dataset.itemId;
+    let item = this.actor.items.get(itemId);
+    let field = element.dataset.field;
+    let newValue = element.type == 'checkbox' ? element.checked : element.value;
+
+    return item.update({ [field]: newValue });
   }
 
   /**
    * Handle dropping an Item onto an Actor.
-   * @param {DragEvent} event            The concluding DragEvent which contains drop data
-   * @param {object} data                The data transfer extracted from the event
-   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
-   *                                     not permitted.
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
    * @override
    */
   async _onDropItem(event, data) {
@@ -711,18 +496,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
     case 'influence':
-      await this._influenceUpdate(sourceItem, event, data);
+      await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
       break;
     case 'origin':
-      for (let actorItem of this.actor.items) {
-        // Characters can only have one Origin
-        if(actorItem.type == 'origin') {
-          ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
-          return false;
-        }
-      }
-
-      await this._showOriginEssenceDialog(sourceItem, event, data);
+      await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
       break;
     case 'upgrade':
       // Drones can only accept drone Upgrades
@@ -741,356 +518,11 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-   * Handle the dropping of an influence on to a character
-   * @param {Influence} influence    The Influence
-   * @param {DragEvent} event  The concluding DragEvent which contains drop data
-   * @param {object} data      The data transfer extracted from the event
-   * @private
-   */
-  async _influenceUpdate(influence, event, data) {
-    let addHangUp = false;
-
-    for (const item of this.actor.items) {
-      if (item.type == 'influence') {
-        addHangUp = true;
-        break;
-      }
-    }
-
-    const newInfluenceList = await super._onDropItem(event, data);
-    const newInfluence = newInfluenceList[0];
-    const perkIds = await this._createItemCopies(influence.system.perkIds);
-
-    if (addHangUp) {
-      if (influence.system.hangUpIds.length > 1) {
-        this._chooseHangUp(influence, perkIds, newInfluence);
-      } else {
-        const hangUpIds = await this._createItemCopies(influence.system.hangUpIds);
-        await newInfluence.update({
-          ["system.perkIds"]: perkIds,
-          ["system.hangUpIds"]: hangUpIds,
-        });
-      }
-    }
-
-    await newInfluence.update({
-      ["system.perkIds"]: perkIds,
-    });
-  }
-
-  /**
-  * Displays a dialog for selecting a Hang Up from an Influence
-  * @param {Influence} influence  The Influence
-  * @param {Perk[]} perkIds The Perk IDs that go with the new Influence
-  * @param {Influence} newInfluence The new Influence that was created.
-  * @private
-  */
-  async _chooseHangUp(influence, perkIds, newInfluence) {
-    const choices = {};
-    let itemArray = [];
-    let compendiumData = null;
-
-    for (const id of influence.system.hangUpIds) {
-      compendiumData = game.items.get(id);
-      if (!compendiumData) {
-        compendiumData = searchCompendium(id);
-        if (compendiumData) {
-          itemArray.push(compendiumData);
-          choices[compendiumData._id] = {
-            chosen: false,
-            label: compendiumData.name,
-          };
-        }
-      }
-    }
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.HangUpChoice'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._hangUpSelect(itemArray, this._rememberOptions(html), perkIds, newInfluence),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-  /**
-  * Adds the chosen hangUp to the character
-  * @param {HangUp[]} hangUps  An Array of the HangUps that could be picked
-  * @param {Object} options  The selections from the dialog
-  * @param {String[]} perkIds  The IDs from any perk that were added with the Influence
-  * @param {Influence} newInfluence  The new influence that was created
-  * @private
-  */
-  async _hangUpSelect(hangUps, options, perkIds, newInfluence) {
-    let selectedHangUp = null;
-    const hangUpIds = [];
-    let hangUpToCreate = null;
-
-    for (const [hangUp, isSelected] of Object.entries(options)) {
-      if (isSelected) {
-        selectedHangUp = hangUp;
-        break;
-      }
-    }
-
-    if (!selectedHangUp) {
-      return;
-    }
-
-    for (const item of hangUps) {
-      if (item._id == selectedHangUp) {
-        hangUpToCreate = item;
-      }
-    }
-
-    const newHangUp = await Item.create(hangUpToCreate, { parent: this.actor });
-    hangUpIds.push(newHangUp._id);
-    await newInfluence.update({
-      ["system.perkIds"]: perkIds,
-      ["system.hangUpIds"]: hangUpIds,
-    });
-  }
-
-  /**
-   * Displays a dialog for selecting an Essence for the given Origin.
-   * @param {Object} origin    The Origin
-   * @param {DragEvent} event  The concluding DragEvent which contains drop data
-   * @param {object} data      The data transfer extracted from the event
-   * @private
-   */
-  async _showOriginEssenceDialog(origin, event, data) {
-    const choices = {};
-    for (const essence of origin.system.essences) {
-      choices[essence] = {
-        chosen: false,
-        label: CONFIG.E20.originEssences[essence],
-      };
-    }
-
-    const influences = await this._getItemsOfType("influence");
-    for (const influence of influences) {
-      if (influence.system.skills.length) {
-        const skill = influence.system.skills;
-        for (const influenceEssence in this.actor.system.skills[skill].essences) {
-          if (this.actor.system.skills[skill].essences[influenceEssence]) {
-            choices[influenceEssence] = {
-              chosen: false,
-              label: CONFIG.E20.originEssences[influenceEssence],
-            };
-          }
-        }
-      }
-    }
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.EssenceIncrease'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._showOriginSkillDialog(origin, this._rememberOptions(html), event, data),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-  /**
-   * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
-   * @param {HTML} html   The html of the dialog upon submission
-   * @returns {Object>}  The dialog inputs and their submitted values
-   * @private
-   */
-  _rememberOptions(html) {
-    const options = {};
-    html.find("input").each((i, el) => {
-      options[el.id] = el.checked;
-    });
-    return options;
-  }
-
-  /**
-   * Displays a dialog for selecting a Skill for the given Origin.
-   * @param {Object} origin    The Origin
-   * @param {Object} options   The options resulting from _showOriginEssenceDialog()
-   * @param {DragEvent} event  The concluding DragEvent which contains drop data
-   * @param {object} data      The data transfer extracted from the event
-   * @private
-   */
-  async _showOriginSkillDialog(origin, options, event, data) {
-    const essences = Object.keys(options);
-    const choices = {};
-    let selectedEssence = "";
-
-    for (const skill of origin.system.skills) {
-      const essence = CONFIG.E20.skillToEssence[skill];
-      if (options[essence] && essences.includes(essence)) {
-        selectedEssence = essence;
-        choices[skill] = {
-          chosen: false,
-          label: CONFIG.E20.originSkills[skill],
-        };
-      }
-    }
-
-    const influences = await this._getItemsOfType("influence");
-    for (const influence of influences) {
-      if (influence.system.skills) {
-        const essence = CONFIG.E20.skillToEssence[influence.system.skills];
-        if (options[essence] && essences.includes(essence)) {
-          selectedEssence = essence;
-          choices[influence.system.skills] = {
-            chosen: false,
-            label: CONFIG.E20.originSkills[influence.system.skills],
-          };
-        }
-      }
-    }
-
-    if (!selectedEssence) {
-      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoEssence'));
-      return;
-    }
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.OriginBonusSkill'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._originStatUpdate(origin, selectedEssence, this._rememberOptions(html), event, data),
-          },
-        },
-      },
-    ).render(true);
-  }
-
-  /**
-  * Updates the actor with the information selected for the Origin
-  * @param {Object} origin    The Origin
-  * @param {Object} options   The options resulting from _showOriginSkillDialog()
-  * @param {Object} essence   The essence selected in the _showOriginEssenceDialog()
-  * @param {DragEvent} event  The concluding DragEvent which contains drop data
-  * @param {object} data      The data transfer extracted from the event
-  * @private
-  */
-  async _originStatUpdate(origin, essence, options, event, data) {
-    let selectedSkill = "";
-    for (const [skill, isSelected] of Object.entries(options)) {
-      if (isSelected) {
-        selectedSkill = skill;
-        break;
-      }
-    }
-
-    if (!selectedSkill){
-      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoSkill'));
-      return;
-    }
-
-    const essenceValue = this.actor.system.essences[essence] + 1;
-    const essenceString = `system.essences.${essence}`;
-    let skillString = "";
-    let currentShift = "";
-    let newShift = "";
-
-    if (selectedSkill == "initiative"){
-      skillString = `system.${selectedSkill}.shift`;
-      currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
-    } else if (selectedSkill == "conditioning"){
-      skillString = `system.${selectedSkill}`;
-      currentShift = this.actor.system[selectedSkill];
-      newShift = currentShift + 1;
-    } else {
-      currentShift = this.actor.system.skills[selectedSkill].shift;
-      skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
-    }
-
-    const newOriginList = await super._onDropItem(event, data);
-    this._originPerkCreate(origin, newOriginList[0]);
-
-    await this.actor.update({
-      [essenceString]: essenceValue,
-      [skillString]: newShift,
-      "system.health.max": origin.system.startingHealth,
-      "system.health.value": origin.system.startingHealth,
-      "system.movement.aerial.base": origin.system.baseAerialMovement,
-      "system.movement.swim.base": origin.system.baseAquaticMovement,
-      "system.movement.ground.base": origin.system.baseGroundMovement,
-      "system.originEssencesIncrease": essence,
-      "system.originSkillsIncrease": selectedSkill,
-    });
-  }
-
-  /**
-   * Creates copies of Items for given IDs
-   * @param {String[]} ids  The IDs of the items to be copied
-   * @returns {String[]}    The IDs of the copied items
-   * @private
-   */
-  async _createItemCopies(ids) {
-    const copyIds = [];
-
-    for (const id of ids) {
-      let compendiumData = game.items.get(id);
-      if (!compendiumData) {
-        const item = searchCompendium(id);
-        if (item) {
-          compendiumData = item;
-        }
-      }
-
-      const newItem = await Item.create(compendiumData, { parent: this.actor });
-      copyIds.push(newItem._id);
-    }
-
-    return copyIds;
-  }
-
-  /**
-  * Creates the Perk from the Origin on the Actor
-  * @param {Origin} origin        The original Origin to get Perks from
-  * @param {Origin} newOrigin The new Origin being created
-  * @private
-  */
-  async _originPerkCreate(origin, newOrigin){
-    const perkIds = [];
-    for (const id of origin.system.originPerkIds) {
-      let data = game.items.get(id);
-      if (!data) {
-        data = searchCompendium(id);
-      }
-
-      const perk = await Item.create(data, { parent: this.actor });
-      perkIds.push(perk._id);
-    }
-
-    await newOrigin.update({
-      ["system.originPerkIds"]: perkIds,
-    });
-  }
-
-  /**
    * Handle dropping of an Actor data onto another Actor sheet
-   * @param {DragEvent} event            The concluding DragEvent which contains drop data
-   * @param {object} data                The data transfer extracted from the event
-   * @returns {Promise<object|boolean>}  A data object which describes the result of the drop, or false if the drop was
-   *                                     not permitted.
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
    * @override
    */
   async _onDropActor(event, data) {
@@ -1114,99 +546,5 @@ export class Essence20ActorSheet extends ActorSheet {
     } else {
       return false;
     }
-  }
-
-  /**
-  * Handle deleting of an Influence from an Actor Sheet
-  * @param {Influence} influence   The Influence
-  * @private
-  */
-  _onInfluenceDelete (influence) {
-    const influenceDelete = this.actor.items.get(influence._id);
-
-    for (const perk of influenceDelete.system.perkIds) {
-      if (perk) {
-        this._itemDeleteById(perk);
-      }
-    }
-
-    for (const hangUp of influenceDelete.system.hangUpIds) {
-      this._itemDeleteById(hangUp);
-    }
-  }
-
-  /**
-  * Handle deleting of items by an Id
-  * @param {String} id of the item to delete
-  * @private
-  */
-  _itemDeleteById(id) {
-    let item = this.actor.items.get(id);
-    if (item) {
-      item.delete();
-    }
-  }
-
-  /**
-  * Handle deleting of an Origin from an Actor Sheet
-  * @param {Object} origin   The Origin
-  * @private
-  */
-  async _onOriginDelete(origin) {
-    let essence = this.actor.system.originEssencesIncrease;
-    let essenceValue = this.actor.system.essences[essence] - 1;
-
-    let skillString = "";
-    let currentShift = "";
-    let newShift = "";
-
-    let selectedSkill = this.actor.system.originSkillsIncrease;
-    if (selectedSkill == "initiative"){
-      skillString = `system.${selectedSkill}.shift`;
-      currentShift = this.actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
-    } else if (selectedSkill == "conditioning"){
-      skillString = `system.${selectedSkill}`;
-      currentShift = this.actor.system[selectedSkill];
-      newShift = currentShift - 1;
-    } else {
-      currentShift = this.actor.system.skills[selectedSkill].shift;
-      skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
-    }
-
-    const originDelete = this.actor.items.get(origin._id);
-    for (const perk of originDelete.system.originPerkIds) {
-      this._itemDeleteById(perk);
-    }
-
-    const essenceString = `system.essences.${essence}`;
-
-    await this.actor.update({
-      [essenceString]: essenceValue,
-      [skillString]: newShift,
-      "system.health.max": 0,
-      "system.health.value": 0,
-      "system.movement.aerial.base": 0,
-      "system.movement.swim.base": 0,
-      "system.movement.ground.base": 0,
-      "system.originEssencesIncrease": "",
-      "system.originSkillsIncrease": "",
-    });
-  }
-
-  /**
-   * Handle deleting Zords from MFZs
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  async _onZordDelete(event) {
-    const li = $(event.currentTarget).parents(".zord");
-    const zordId = li.data("zordId");
-    let zordIds = this.actor.system.zordIds.filter(x => x !== zordId);
-    this.actor.update({
-      "system.zordIds": zordIds,
-    });
-    li.slideUp(200, () => this.render(false));
   }
 }
