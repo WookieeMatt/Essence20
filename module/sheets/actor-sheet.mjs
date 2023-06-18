@@ -1,4 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { searchCompendium } from "../helpers/utils.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
@@ -229,6 +230,15 @@ export class Essence20ActorSheet extends ActorSheet {
         upgrades.push(i);
         break;
       case 'weapon':
+        i.upgrades = [];
+
+        for (const id of i.system.upgradeIds) {
+          const upgrade = game.items.get(id) || searchCompendium(id);
+          if (upgrade) {
+            i.upgrades.push(upgrade);
+          }
+        }
+
         weapons.push(i);
         break;
       }
@@ -447,8 +457,11 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   async _onItemDelete(event) {
-    const li = $(event.currentTarget).parents(".item");
-    const item = this.actor.items.get(li.data("itemId"));
+    const subLi = $(event.currentTarget).parents(".sub-item");
+    const li = $(event.currentTarget).closest(".item");
+    const item = subLi.length
+      ? game.items.get(subLi.data("itemId"))
+      : this.actor.items.get(li.data("itemId"));
 
     if (item.type == "origin") {
       this._bgHandler.onOriginDelete(item);

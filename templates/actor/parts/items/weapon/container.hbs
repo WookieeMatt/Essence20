@@ -1,4 +1,4 @@
-{{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.weapons title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
+{{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.weapons hasSubcontainers="true" title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
   {{#*inline "expand-details" item}}
     {{> "systems/essence20/templates/actor/parts/items/weapon/details.hbs"}}
   {{/inline}}
@@ -16,4 +16,9 @@
 
     {{item.name}}
   {{/inline}}
+
+  {{#*inline "subcontainers" item}}
+    {{> "systems/essence20/templates/actor/parts/items/upgrade/container.hbs" items=item.upgrades isSubcontainer="sub-item"}}
+  {{/inline}}
+
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

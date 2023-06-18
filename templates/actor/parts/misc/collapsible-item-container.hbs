@@ -21,7 +21,7 @@
 
   <ol class="items-list" style="border-color: {{system.color}};">
     {{#each items as |item|}}
-    <li class="item accordion-wrapper" data-item-id="{{item._id}}">
+    <li class="item {{../isSubcontainer}} accordion-wrapper" data-item-id="{{item._id}}">
       {{!-- Item label and buttons --}}
       <div class="flexrow item-label">
         <div class="item-image" style="flex-grow: 0;">
@@ -51,6 +51,12 @@
           <a class="item-control accordion-label"><i class="accordion-icon fas fa-chevron-down"></i></a>
         </div>
       </div>
+
+      {{#ifEquals ../hasSubcontainers "true"}}
+      {{#> subcontainers item=item }}
+      {{!-- Subcontainers here --}}
+      {{/subcontainers}}
+      {{/ifEquals}}
 
       {{!-- Item content --}}
       <div class="accordion-content">
