@@ -42,11 +42,12 @@ export class Essence20Actor extends Actor {
     return actor;
   }
 
-  async _preCreate(data, options, user) {
-    console.log(data,options,user)
-    await super._preCreate(data, options, user);
-  }
-
+  /**
+  * Extend the preUpdate function to also size tokens appropriately.
+  * @param {changed} the values that changed
+  * @param {options} the options for rendering the change
+  * @param {user} who made the change
+  */
   async _preUpdate(changed, options, user) {
     await super._preUpdate(changed, options, user);
     if ( "size" in (this.system || {}) ) {
@@ -60,7 +61,8 @@ export class Essence20Actor extends Actor {
             "height": height,
             "width": width,
           })
-        }
+        };
+
         if ( !foundry.utils.hasProperty(changed, "prototypeToken.width") ) {
           changed.prototypeToken ||= {};
           changed.prototypeToken.height = height;
