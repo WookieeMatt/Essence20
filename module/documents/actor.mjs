@@ -42,6 +42,39 @@ export class Essence20Actor extends Actor {
     return actor;
   }
 
+  async _preCreate(data, options, user) {
+    console.log(data,options,user)
+    await super._preCreate(data, options, user);
+  }
+
+  async _preUpdate(changed, options, user) {
+    await super._preUpdate(changed, options, user);
+    let currentSize = "";
+    if (this.system.isTransformed) {
+      currentSize = this.system.altModeSize;
+    } else {
+      if ( "size" in (this.system || {}) ) {
+        const newSize = foundry.utils.getProperty(changed, "system.size");
+        if ( newSize && (newSize !== this.system?.size) ) {
+          let width = CONFIG.E20.tokenSizesWidth[newSize];
+          let height = CONFIG.E20.tokenSizesHeight[newSize];
+          if ( !foundry.utils.hasProperty(changed, "prototypeToken.width") ) {
+            changed.prototypeToken ||= {};
+            changed.prototypeToken.height = height;
+            changed.prototypeToken.width = width;
+          }
+        }
+      }
+    }
+    // if (this.system.isTransformed) {
+    //   currentSize = this.system.altModeSize;
+    //   console.log(currentSize)
+    // } else {
+    //   currentSize = this.system.size;
+    // }
+
+  }
+
   /** @override */
   prepareData() {
     // Prepare data for the actor. Calling the super version of this executes
