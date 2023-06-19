@@ -49,30 +49,25 @@ export class Essence20Actor extends Actor {
 
   async _preUpdate(changed, options, user) {
     await super._preUpdate(changed, options, user);
-    let currentSize = "";
-    if (this.system.isTransformed) {
-      currentSize = this.system.altModeSize;
-    } else {
-      if ( "size" in (this.system || {}) ) {
-        const newSize = foundry.utils.getProperty(changed, "system.size");
-        if ( newSize && (newSize !== this.system?.size) ) {
-          let width = CONFIG.E20.tokenSizesWidth[newSize];
-          let height = CONFIG.E20.tokenSizesHeight[newSize];
-          if ( !foundry.utils.hasProperty(changed, "prototypeToken.width") ) {
-            changed.prototypeToken ||= {};
-            changed.prototypeToken.height = height;
-            changed.prototypeToken.width = width;
-          }
+    if ( "size" in (this.system || {}) ) {
+      const tokens = this.getActiveTokens();
+      const newSize = foundry.utils.getProperty(changed, "system.size");
+      if ( newSize && (newSize !== this.system?.size) ) {
+        let width = CONFIG.E20.tokenSizesWidth[newSize];
+        let height = CONFIG.E20.tokenSizesHeight[newSize];
+        for (const token of tokens) {
+          token.document.update({
+            "height": height,
+            "width": width,
+          })
+        }
+        if ( !foundry.utils.hasProperty(changed, "prototypeToken.width") ) {
+          changed.prototypeToken ||= {};
+          changed.prototypeToken.height = height;
+          changed.prototypeToken.width = width;
         }
       }
     }
-    // if (this.system.isTransformed) {
-    //   currentSize = this.system.altModeSize;
-    //   console.log(currentSize)
-    // } else {
-    //   currentSize = this.system.size;
-    // }
-
   }
 
   /** @override */

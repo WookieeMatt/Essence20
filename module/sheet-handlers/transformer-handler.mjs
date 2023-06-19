@@ -52,7 +52,18 @@ export class TransformerHandler {
    * @private
    */
   async _transformBotMode() {
+    const tokens = this._actor.getActiveTokens();
+    const width = CONFIG.E20.tokenSizesWidth[this._actor.system.size];
+    const height = CONFIG.E20.tokenSizesHeight[this._actor.system.size];
+    for (const token of tokens) {
+      token.document.update({
+        "height": height,
+        "width": width,
+      })
+    }
     await this._actor.update({
+      "prototypeToken.height": height,
+      "prototypeToken.width": width,
       "system.movement.aerial.altMode": 0,
       "system.movement.swim.altMode": 0,
       "system.movement.ground.altMode": 0,
@@ -68,7 +79,18 @@ export class TransformerHandler {
    * @private
    */
   async _transformAltMode(altMode) {
+      const tokens = this._actor.getActiveTokens();
+      const width = CONFIG.E20.tokenSizesWidth[altMode.system.altModesize];
+      const height = CONFIG.E20.tokenSizesHeight[altMode.system.altModesize];
+      for (const token of tokens) {
+        token.document.update({
+          "height": height,
+          "width": width,
+        })
+      }
     await this._actor.update({
+      "prototypeToken.height": height,
+      "prototypeToken.width": width,
       "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
       "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
       "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
