@@ -8,7 +8,7 @@ import { RollDialog } from "../helpers/roll-dialog.mjs";
 export class Essence20Actor extends Actor {
   constructor(...args) {
     super(...args);
-    this._dice = new Dice(ChatMessage, new RollDialog());
+    this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
   }
 
   /** @override */
