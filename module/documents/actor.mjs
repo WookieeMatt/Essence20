@@ -60,8 +60,9 @@ export class Essence20Actor extends Actor {
           token.document.update({
             "height": height,
             "width": width,
-          })
-        };
+          });
+
+        }
 
         if ( !foundry.utils.hasProperty(changed, "prototypeToken.width") ) {
           changed.prototypeToken ||= {};

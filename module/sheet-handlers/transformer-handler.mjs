@@ -59,8 +59,9 @@ export class TransformerHandler {
       token.document.update({
         "height": height,
         "width": width,
-      })
+      });
     }
+
     await this._actor.update({
       "prototypeToken.height": height,
       "prototypeToken.width": width,
@@ -79,15 +80,16 @@ export class TransformerHandler {
    * @private
    */
   async _transformAltMode(altMode) {
-      const tokens = this._actor.getActiveTokens();
-      const width = CONFIG.E20.tokenSizesWidth[altMode.system.altModesize];
-      const height = CONFIG.E20.tokenSizesHeight[altMode.system.altModesize];
-      for (const token of tokens) {
-        token.document.update({
-          "height": height,
-          "width": width,
-        })
-      }
+    const tokens = this._actor.getActiveTokens();
+    const width = CONFIG.E20.tokenSizesWidth[altMode.system.altModesize];
+    const height = CONFIG.E20.tokenSizesHeight[altMode.system.altModesize];
+    for (const token of tokens) {
+      token.document.update({
+        "height": height,
+        "width": width,
+      });
+    }
+
     await this._actor.update({
       "prototypeToken.height": height,
       "prototypeToken.width": width,
