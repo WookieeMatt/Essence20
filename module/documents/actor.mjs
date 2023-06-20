@@ -72,6 +72,7 @@ export class Essence20Actor extends Actor {
     this._prepareNpcData();
     if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.type)) {
       this._prepareDefenses();
+      this._prepareHealth();
       this._prepareMovement();
     }
   }
@@ -87,6 +88,28 @@ export class Essence20Actor extends Actor {
     // data.xp = (data.cr * data.cr) * 100;
   }
 
+  /**
+  * Prepare Health specific data.
+  */
+  _prepareHealth () {
+    const system = this.system;
+    const health = system.health;
+    let max = system.health.max;
+    let origin = 0;
+    const conditioning = system.conditioning;
+    const bonus = system.health.bonus;
+    const originName = game.i18n.localize('E20.HealthOrigin');
+    const conditionName = game.i18n.localize('E20.HealthCondition');
+    const bonusName = game.i18n.localize('E20.HealthBonus');
+    for (const item of this.items) {
+      if (item.type == 'origin') {
+        origin = item.system.startingHealth;
+      }
+    }
+
+    health.max = origin + conditioning + bonus;
+    health.string = `${origin} ${originName} + ${conditioning} ${conditionName} + ${bonus} ${bonusName}`;
+  }
   /**
   * Prepare Defenses specific data.
   */
