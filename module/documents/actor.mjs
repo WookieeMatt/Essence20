@@ -42,12 +42,7 @@ export class Essence20Actor extends Actor {
     return actor;
   }
 
-  /**
-  * Extend the preUpdate function to also size tokens appropriately.
-  * @param {changed} the values that changed
-  * @param {options} the options for rendering the change
-  * @param {user} who made the change
-  */
+  /** @override */
   async _preUpdate(changed, options, user) {
     await super._preUpdate(changed, options, user);
     if ( "size" in (this.system || {}) ) {
