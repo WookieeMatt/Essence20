@@ -45,7 +45,7 @@ export class RollDialog {
         snag: snag && !edge,
         edge: edge && !snag,
         normal: edge == snag,
-      }
+      },
     );
 
     return new Promise(resolve => {
@@ -66,6 +66,7 @@ export class RollDialog {
         default: "normal",
         close: () => resolve({ cancelled: true }),
       };
+      
       new Dialog(data, null).render(true);
     });
   }

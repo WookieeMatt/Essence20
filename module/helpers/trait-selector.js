@@ -18,7 +18,7 @@ export default class TraitSelector extends DocumentSheet {
       minimum: 0,
       maximum: null,
       valueKey: "value",
-      customKey: "custom"
+      customKey: "custom",
     });
   }
 
@@ -53,7 +53,7 @@ export default class TraitSelector extends DocumentSheet {
     return {
       allowCustom: o.allowCustom,
       choices: choices,
-      custom: custom
+      custom: custom,
     };
   }
 
@@ -77,6 +77,7 @@ export default class TraitSelector extends DocumentSheet {
     if ( o.minimum && (chosen.length < o.minimum) ) {
       return ui.notifications.error(`You must choose at least ${o.minimum} options`);
     }
+
     if ( o.maximum && (chosen.length > o.maximum) ) {
       return ui.notifications.error(`You may choose no more than ${o.maximum} options`);
     }

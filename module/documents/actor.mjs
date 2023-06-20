@@ -23,7 +23,7 @@ export class Essence20Actor extends Actor {
           type: 'classFeature',
           data: {},
         },
-        { parent: actor }
+        { parent: actor },
       );
     }
 
@@ -35,7 +35,7 @@ export class Essence20Actor extends Actor {
           type: 'classFeature',
           data: {},
         },
-        { parent: actor }
+        { parent: actor },
       );
     }
 

@@ -1,0 +1,19 @@
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" style="border-color: {{system.color}};" data-tab="skills"> {{ localize "E20.TabSkills" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="combat">{{ localize "E20.TabCombat" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="gear">{{ localize "E20.TabGear" }}</a>
+    {{#if system.canSpellcast}}
+      <a class="item" style="border-color: {{system.color}};" data-tab="spells">{{ localize "E20.TabSpells" }}</a>
+    {{/if}}
+    {{#if system.canMorph}}
+      <a class="item" style="border-color: {{system.color}};" data-tab="powers">{{ localize "E20.TabPowers" }}</a>
+    {{/if}}
+    <a class="item" style="border-color: {{system.color}};" data-tab="perks">{{ localize "E20.TabPerks" }}</a>
+    {{#if system.canTransform}}
+      <a class="item" style="border-color: {{system.color}};" data-tab="altmode">{{ localize "E20.TabAltMode" }}</a>
+    {{/if}}
+    <a class="item" style="border-color: {{system.color}};" data-tab="background">{{ localize "E20.TabBackground" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
+  </nav>

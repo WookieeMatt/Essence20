@@ -9,7 +9,17 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     {{/ifEquals}}
   </div>
-    <div class="flexcol">
+  <div class="flexcol">
+    {{#ifEquals actor.type 'pony'}}
+    {{else}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanSpellcast'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="checkbox" id="canSpellcast" name="system.canSpellcast" {{checked system.canSpellcast}}/>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/ifEquals}}
+  </div>
+  <div class="flexcol">
     {{#ifEquals actor.type 'transformer'}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanTransform'}}

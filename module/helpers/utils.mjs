@@ -51,14 +51,14 @@ function _localizeObject(obj, keys) {
 
     if (type !== "object") {
       console.error(new Error(
-        `Pre-localized configuration values must be a string or object, ${type} found for "${k}" instead.`
+        `Pre-localized configuration values must be a string or object, ${type} found for "${k}" instead.`,
       ));
       continue;
     }
 
     if (!keys?.length) {
       console.error(new Error(
-        "Localization keys must be provided for pre-localizing when target is an object."
+        "Localization keys must be provided for pre-localizing when target is an object.",
       ));
       continue;
     }
@@ -101,7 +101,7 @@ export function indexFromUuid(uuid) {
 export function searchCompendium(item) {
   const id = item._id || item;
 
-  for (const pack of game.packs){
+  for (const pack of game.packs) {
     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
     if (compendium) {
       const compendiumItem = compendium.index.get(id);
@@ -109,5 +109,74 @@ export function searchCompendium(item) {
         return compendiumItem;
       }
     }
+  }
+}
+
+/**
+* Get Items of a type
+* @param {String} type  The type of Item to return
+* @param {Item[]} items The Items to search through
+* @returns {Item[]}     All Items of the type requested
+*/
+export function getItemsOfType(type, items) {
+  const itemsOfType = [];
+  for (const item of items) {
+    if (item.type == type) {
+      itemsOfType.push(item);
+    }
+  }
+
+  return itemsOfType;
+}
+
+/**
+ * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
+ * @param {HTML} html   The html of the dialog upon submission
+ * @returns {Object>}  The dialog inputs and their submitted values
+ * @private
+ */
+export function rememberOptions(html) {
+  const options = {};
+  html.find("input").each((i, el) => {
+    options[el.id] = el.checked;
+  });
+
+  return options;
+}
+
+/**
+ * Creates copies of Items for given IDs
+ * @param {String[]} ids The IDs of the Items to be copied
+ * @param {Actor} owner  The Items' owner
+ * @returns {String[]}   The IDs of the copied items
+ */
+export async function createItemCopies(ids, owner) {
+  const copyIds = [];
+
+  for (const id of ids) {
+    let compendiumData = game.items.get(id);
+    if (!compendiumData) {
+      const item = searchCompendium(id);
+      if (item) {
+        compendiumData = item;
+      }
+    }
+
+    const newItem = await Item.create(compendiumData, { parent: owner });
+    copyIds.push(newItem._id);
+  }
+
+  return copyIds;
+}
+
+/**
+* Handle deleting of items by an Id
+* @param {String} id   ID of the item to delete
+* @param {Actor} owner The Items' owner
+*/
+export function itemDeleteById(id, owner) {
+  let item = owner.items.get(id);
+  if (item) {
+    item.delete();
   }
 }

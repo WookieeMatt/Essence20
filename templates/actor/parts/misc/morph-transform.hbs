@@ -1,14 +1,25 @@
-<div class="flexrow flex-group-center" style="border-color: {{system.color}};">
+{{#if canMorphOrTransform}}
+<div class="stats-container flexcol" style="min-width: fit-content; border-color: {{system.color}};">
   {{#if system.canTransform}}
-    <button class="transform" type="button">{{ localize "E20.Transform" }}</button>
+  <div class="flexrow" style="gap: 5px; align-items: center; flex-wrap: nowrap; width: 100%">
+    <a class="transform" style="flex-grow: 0;"><i class="fas fa-steering-wheel"></i></a>
+    <span style="text-align: left;">
+      {{localize 'E20.Transform'}}
+    </span>
+  </div>
   {{/if}}
+
   {{#if system.canMorph}}
-    <button class="morph" type="button">
-    {{#if system.isMorphed}}
+  <div class="flexrow" style="gap: 5px; align-items: center; flex-wrap: nowrap; width: 100%">
+    <a class="morph" style="flex-grow: 0;"><i class="fas fa-sword"></i></a>
+    <span style="text-align: left;">
+      {{#if system.isMorphed}}
       {{localize 'E20.ButtonUnmorph'}}
-    {{else}}
+      {{else}}
       {{localize 'E20.ButtonMorph'}}
-    {{/if}}
-    </button>
+      {{/if}}
+    </span>
+  </div>
   {{/if}}
 </div>
+{{/if}}
