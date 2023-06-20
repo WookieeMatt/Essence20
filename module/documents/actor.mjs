@@ -51,6 +51,7 @@ export class Essence20Actor extends Actor {
       if ( newSize && (newSize !== this.system?.size) ) {
         let width = CONFIG.E20.tokenSizesWidth[newSize];
         let height = CONFIG.E20.tokenSizesHeight[newSize];
+
         for (const token of tokens) {
           token.document.update({
             "height": height,
