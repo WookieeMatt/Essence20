@@ -50,7 +50,8 @@ export class Essence20Actor extends Actor {
     if (currentSize) {
       const tokens = this.getActiveTokens();
       const newSize = foundry.utils.getProperty(changed, "system.size");
-      if ( newSize && (newSize !== this.system?.size) ) {
+
+      if (newSize && (newSize !== currentSize)) {
         let width = CONFIG.E20.tokenSizesWidth[newSize];
         let height = CONFIG.E20.tokenSizesHeight[newSize];
 
