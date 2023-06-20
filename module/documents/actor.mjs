@@ -45,7 +45,9 @@ export class Essence20Actor extends Actor {
   /** @override */
   async _preUpdate(changed, options, user) {
     await super._preUpdate(changed, options, user);
-    if ( "size" in (this.system || {}) ) {
+
+    const currentSize = this.system?.size;
+    if (currentSize) {
       const tokens = this.getActiveTokens();
       const newSize = foundry.utils.getProperty(changed, "system.size");
       if ( newSize && (newSize !== this.system?.size) ) {
