@@ -76,7 +76,7 @@ export class TransformerHandler {
   async _transformAltMode(altMode) {
     const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
     const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
-    resizeTokens (this._actor, width, height);
+    resizeTokens(this._actor, width, height);
 
     await this._actor.update({
       "prototypeToken.height": height,
