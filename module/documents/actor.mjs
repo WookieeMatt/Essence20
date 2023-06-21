@@ -1,5 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
+import { resizeTokens } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -48,19 +49,13 @@ export class Essence20Actor extends Actor {
 
     const currentSize = this.system?.size;
     if (currentSize) {
-      const tokens = this.getActiveTokens();
       const newSize = foundry.utils.getProperty(changed, "system.size");
 
       if (newSize && (newSize !== currentSize)) {
-        let width = CONFIG.E20.tokenSizesWidth[newSize];
-        let height = CONFIG.E20.tokenSizesHeight[newSize];
+        const width = CONFIG.E20.tokenSizes[newSize].width;
+        const height = CONFIG.E20.tokenSizes[newSize].height;
 
-        for (const token of tokens) {
-          token.document.update({
-            "height": height,
-            "width": width,
-          });
-        }
+        resizeTokens(this, width, height)
 
         if (!foundry.utils.hasProperty(changed, "prototypeToken.width")) {
           changed.prototypeToken ||= {};

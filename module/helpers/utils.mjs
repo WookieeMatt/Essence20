@@ -180,3 +180,18 @@ export function itemDeleteById(id, owner) {
     item.delete();
   }
 }
+
+/**
+ * Handle looking up tokens associated with actor and changing size
+ */
+
+export function resizeTokens(actor, width, height) {
+  const tokens = actor.getActiveTokens();
+  for (const token of tokens) {
+    token.document.update({
+      "height": height,
+      "width": width,
+    });
+  }
+
+}

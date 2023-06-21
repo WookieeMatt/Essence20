@@ -528,44 +528,62 @@ E20.statusEffects = [
  * Token Sizes                                  *
  ***********************************************/
 
-E20.tokenSizesHeight = {
-  small: 1,
-  common: 1,
-  large: 2,
-  long: 1,
-  huge: 3,
-  extended: 2,
-  gigantic: 4,
-  extended2: 3,
-  towering: 5,
-  extended3: 5,
-  titanic: 5,
+E20.tokenSizes = {
+  small: {
+    height: 1,
+    reach: 2,
+    width: 1
+  },
+  common: {
+    height: 1,
+    reach: 5,
+    width: 1
+  },
+  large: {
+    height: 2,
+    reach: 5,
+    width: 2
+  },
+  long: {
+    height: 1,
+    reach: 5,
+    width: 2
+  },
+  huge: {
+    height: 3,
+    reach: 10,
+    width: 3
+  },
+  extended: {
+    height: 2,
+    reach: 10,
+    width: 4
+  },
+  gigantic: {
+    height: 4,
+    reach: 15,
+    width: 4
+  },
+  extended2: {
+    height: 3,
+    reach: 15,
+    width: 6
+  },
+  towering: {
+    height: 5,
+    reach: 20,
+    width: 5
+  },
+  extended3: {
+    height: 5,
+    reach: 15,
+    width: 5
+  },
+  titanic: {
+    height: 5,
+    reach: 25,
+    width: 5
+  },
 };
 
-E20.tokenSizesReach = {
-  small: 2,
-  common: 5,
-  large: 5,
-  long: 5,
-  huge: 10,
-  extended: 10,
-  gigantic: 15,
-  extended2: 15,
-  towering: 20,
-  extended3: 15,
-  titanic: 25,
-};
 
-E20.tokenSizesWidth = {
-  small: 1,
-  common: 1,
-  large: 2,
-  long: 2,
-  huge: 3,
-  extended: 4,
-  gigantic: 4,
-  extended2: 6,
-  towering: 5,
-  extended3: 5,
-  titanic: 5,
-};

@@ -1,4 +1,4 @@
-import { getItemsOfType, rememberOptions } from "../helpers/utils.mjs";
+import { getItemsOfType, rememberOptions, resizeTokens } from "../helpers/utils.mjs";
 
 export class TransformerHandler {
   /**
@@ -52,15 +52,9 @@ export class TransformerHandler {
    * @private
    */
   async _transformBotMode() {
-    const tokens = this._actor.getActiveTokens();
-    const width = CONFIG.E20.tokenSizesWidth[this._actor.system.size];
-    const height = CONFIG.E20.tokenSizesHeight[this._actor.system.size];
-    for (const token of tokens) {
-      token.document.update({
-        "height": height,
-        "width": width,
-      });
-    }
+    const width = CONFIG.E20.tokenSizes[this._actor.system.size].width;
+    const height = CONFIG.E20.tokenSizes[this._actor.system.size].height;
+    resizeTokens (this._actor, width, height)
 
     await this._actor.update({
       "prototypeToken.height": height,
@@ -80,15 +74,9 @@ export class TransformerHandler {
    * @private
    */
   async _transformAltMode(altMode) {
-    const tokens = this._actor.getActiveTokens();
-    const width = CONFIG.E20.tokenSizesWidth[altMode.system.altModesize];
-    const height = CONFIG.E20.tokenSizesHeight[altMode.system.altModesize];
-    for (const token of tokens) {
-      token.document.update({
-        "height": height,
-        "width": width,
-      });
-    }
+    const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
+    const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
+    resizeTokens (this._actor, width, height)
 
     await this._actor.update({
       "prototypeToken.height": height,
