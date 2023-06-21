@@ -119,14 +119,13 @@ export class Essence20Actor extends Actor {
     const system = this.system;
     system.healthIsReadOnly = true;
     const health = system.health;
-    let max = system.health.max;
     let origin = 0;
     const conditioning = system.conditioning;
     const bonus = system.health.bonus;
     const originName = game.i18n.localize('E20.HealthOrigin');
     const conditionName = game.i18n.localize('E20.HealthCondition');
     const bonusName = game.i18n.localize('E20.HealthBonus');
-    const origins = getItemsOfType ('origin', this.items)
+    const origins = getItemsOfType ('origin', this.items);
     if (origins.length>0) {
       origin = origins[0].system.startingHealth;
     }
