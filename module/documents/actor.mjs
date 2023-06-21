@@ -1,6 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { resizeTokens } from "../helpers/utils.mjs";
+import { resizeTokens, getItemsOfType } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -117,6 +117,7 @@ export class Essence20Actor extends Actor {
   */
   _prepareHealth () {
     const system = this.system;
+    system.healthIsReadOnly = true;
     const health = system.health;
     let max = system.health.max;
     let origin = 0;
@@ -125,10 +126,9 @@ export class Essence20Actor extends Actor {
     const originName = game.i18n.localize('E20.HealthOrigin');
     const conditionName = game.i18n.localize('E20.HealthCondition');
     const bonusName = game.i18n.localize('E20.HealthBonus');
-    for (const item of this.items) {
-      if (item.type == 'origin') {
-        origin = item.system.startingHealth;
-      }
+    const origins = getItemsOfType ('origin', this.items)
+    if (origins.length>0) {
+      origin = origins[0].system.startingHealth;
     }
 
     health.max = origin + conditioning + bonus;
