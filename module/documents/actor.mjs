@@ -55,7 +55,7 @@ export class Essence20Actor extends Actor {
         const width = CONFIG.E20.tokenSizes[newSize].width;
         const height = CONFIG.E20.tokenSizes[newSize].height;
 
-        resizeTokens(this, width, height)
+        resizeTokens(this, width, height);
 
         if (!foundry.utils.hasProperty(changed, "prototypeToken.width")) {
           changed.prototypeToken ||= {};
