@@ -183,8 +183,10 @@ export function itemDeleteById(id, owner) {
 
 /**
  * Handle looking up tokens associated with actor and changing size
+ * @param {Actor} actor  The actor
+ * @param {Number} width The actor's new width
+ * @param {Number} height The actor's new width
  */
-
 export function resizeTokens(actor, width, height) {
   const tokens = actor.getActiveTokens();
   for (const token of tokens) {
@@ -193,5 +195,4 @@ export function resizeTokens(actor, width, height) {
       "width": width,
     });
   }
-
 }
