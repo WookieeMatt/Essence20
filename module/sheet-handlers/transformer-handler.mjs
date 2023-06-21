@@ -1,4 +1,4 @@
-import { getItemsOfType, rememberOptions } from "../helpers/utils.mjs";
+import { getItemsOfType, rememberOptions, resizeTokens } from "../helpers/utils.mjs";
 
 export class TransformerHandler {
   /**
@@ -52,7 +52,13 @@ export class TransformerHandler {
    * @private
    */
   async _transformBotMode() {
+    const width = CONFIG.E20.tokenSizes[this._actor.system.size].width;
+    const height = CONFIG.E20.tokenSizes[this._actor.system.size].height;
+    resizeTokens(this._actor, width, height);
+
     await this._actor.update({
+      "prototypeToken.height": height,
+      "prototypeToken.width": width,
       "system.movement.aerial.altMode": 0,
       "system.movement.swim.altMode": 0,
       "system.movement.ground.altMode": 0,
@@ -68,7 +74,13 @@ export class TransformerHandler {
    * @private
    */
   async _transformAltMode(altMode) {
+    const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
+    const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
+    resizeTokens(this._actor, width, height);
+
     await this._actor.update({
+      "prototypeToken.height": height,
+      "prototypeToken.width": width,
       "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
       "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
       "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
