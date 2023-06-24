@@ -128,7 +128,7 @@ export class Essence20Actor extends Actor {
 
     const origins = getItemsOfType('origin', this.items);
     if (origins.length > 0) {
-      origin = origins[0].system.startingHealth;
+      startingHealth = origins[0].system.startingHealth;
     }
 
     health.max = startingHealth + conditioning + bonus;
