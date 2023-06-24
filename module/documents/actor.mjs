@@ -119,20 +119,20 @@ export class Essence20Actor extends Actor {
     const system = this.system;
     system.healthIsReadOnly = true;
     const health = system.health;
-    let origin = 0;
+    let startingHealth = 0;
     const conditioning = system.conditioning;
     const bonus = system.health.bonus;
-    const originName = game.i18n.localize('E20.HealthOrigin');
-    const conditionName = game.i18n.localize('E20.HealthCondition');
-    const bonusName = game.i18n.localize('E20.HealthBonus');
+    const originName = game.i18n.localize('E20.Origin');
+    const conditionName = game.i18n.localize('E20.SkillConditioning');
+    const bonusName = game.i18n.localize('E20.Bonus');
 
     const origins = getItemsOfType('origin', this.items);
-    if (origins.length) {
+    if (origins.length > 0) {
       origin = origins[0].system.startingHealth;
     }
 
-    health.max = origin + conditioning + bonus;
-    health.string = `${origin} ${originName} + ${conditioning} ${conditionName} + ${bonus} ${bonusName}`;
+    health.max = startingHealth + conditioning + bonus;
+    health.string = `${startingHealth} ${originName} + ${conditioning} ${conditionName} + ${bonus} ${bonusName}`;
   }
   /**
   * Prepare Defenses specific data.
@@ -150,7 +150,7 @@ export class Essence20Actor extends Actor {
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
       const armorName = game.i18n.localize('E20.DefenseArmor');
-      const bonusName = game.i18n.localize('E20.DefenseBonus');
+      const bonusName = game.i18n.localize('E20.Bonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
 
       if (system.isMorphed) {
