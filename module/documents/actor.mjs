@@ -125,8 +125,9 @@ export class Essence20Actor extends Actor {
     const originName = game.i18n.localize('E20.HealthOrigin');
     const conditionName = game.i18n.localize('E20.HealthCondition');
     const bonusName = game.i18n.localize('E20.HealthBonus');
-    const origins = getItemsOfType ('origin', this.items);
-    if (origins.length>0) {
+
+    const origins = getItemsOfType('origin', this.items);
+    if (origins.length) {
       origin = origins[0].system.startingHealth;
     }
 
