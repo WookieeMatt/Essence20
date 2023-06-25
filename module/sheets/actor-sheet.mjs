@@ -508,7 +508,7 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
         super._onDropItem(event, data);
       } else {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDropError')));
+        ui.notifications.error(game.i18n.format('E20.UpgradeDropError'));
         return false;
       }
 
