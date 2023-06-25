@@ -503,7 +503,6 @@ export class Essence20ActorSheet extends ActorSheet {
       break;
     case 'upgrade':
       // Drones can only accept drone Upgrades
-      console.log(this.actor.system.canTransform)
       if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
         super._onDropItem(event, data);
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
@@ -513,6 +512,7 @@ export class Essence20ActorSheet extends ActorSheet {
         return false;
       }
       break;
+
     default:
       super._onDropItem(event, data);
     }
