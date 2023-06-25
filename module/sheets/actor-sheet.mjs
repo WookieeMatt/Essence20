@@ -493,6 +493,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
     const sourceItem = await fromUuid(data.uuid);
     if (!sourceItem) return false;
+    const actor_type = this.actor.type;
+    const upgrade_type = sourceItem.system.type;
 
     switch (sourceItem.type) {
     case 'influence':
@@ -503,8 +505,6 @@ export class Essence20ActorSheet extends ActorSheet {
       break;
     case 'upgrade':
       // Drones can only accept drone Upgrades
-      const actor_type = this.actor.type;
-      const upgrade_type = sourceItem.system.type;
 
       if (actor_type == 'companion' && this.actor.system.type == 'drone' && upgrade_type == 'drone') {
         super._onDropItem(event, data);
