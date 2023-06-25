@@ -21,7 +21,7 @@
 
   <ol class="items-list" style="border-color: {{system.color}};">
     {{#each items as |item|}}
-    <li class="item {{../isSubcontainer}} accordion-wrapper" data-item-id="{{item._id}}">
+    <li class="item accordion-wrapper" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
       {{!-- Item label and buttons --}}
       <div class="flexrow item-label">
         <div class="item-image" style="flex-grow: 0;">

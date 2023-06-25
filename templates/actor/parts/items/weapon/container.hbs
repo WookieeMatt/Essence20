@@ -18,7 +18,7 @@
   {{/inline}}
 
   {{#*inline "subcontainers" item}}
-    {{> "systems/essence20/templates/actor/parts/items/upgrade/container.hbs" items=item.upgrades isSubcontainer="sub-item"}}
+    {{> "systems/essence20/templates/actor/parts/items/upgrade/container.hbs" items=item.upgrades parentId=item._id}}
   {{/inline}}
 
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

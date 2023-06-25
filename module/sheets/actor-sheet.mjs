@@ -281,8 +281,12 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Render the item sheet for viewing/editing prior to the editable check.
     html.find('.item-edit').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(li.data("itemId"));
+      const li = $(ev.currentTarget).closest(".item");
+      const itemId = li.data("itemId");
+      const parentId = li.data("parentId");
+      const item = parentId
+        ? game.items.get(itemId)
+        : this.actor.items.get(itemId);
       item.sheet.render(true);
     });
 
@@ -457,11 +461,22 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   async _onItemDelete(event) {
-    const subLi = $(event.currentTarget).parents(".sub-item");
     const li = $(event.currentTarget).closest(".item");
-    const item = subLi.length
-      ? game.items.get(subLi.data("itemId"))
-      : this.actor.items.get(li.data("itemId"));
+    const itemId = li.data("itemId");
+    const parentId = li.data("parentId");
+
+    const parentItem = this.actor.items.get(parentId);
+    if (parentItem) {
+      switch (parentItem.type) {
+        case 'weapon':
+          const remainingUpgradeIds = parentItem.system.upgradeIds.filter(u => u != itemId);
+          await parentItem.update({ ["system.upgradeIds"]: remainingUpgradeIds });
+      }
+    }
+
+    const item = parentId
+      ? game.items.get(itemId)
+      : this.actor.items.get(itemId);
 
     if (item.type == "origin") {
       this._bgHandler.onOriginDelete(item);
