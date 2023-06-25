@@ -371,7 +371,7 @@
     "Upgrade": "Upgrade",
     "UpgradeAvailability": "Availability",
     "UpgradeBenefit": "Benefit",
-    "UpgradeDropError": "Upgrade of type {upgrade_type} cannot be dropped on {actor_type}",
+    "UpgradeDropError": "This upgrade can not be dropped here",
     "UpgradePlural": "Upgrades",
     "UpgradePrerequisite": "Prerequisite",
     "UpgradeTraits": "Upgrade Traits",
