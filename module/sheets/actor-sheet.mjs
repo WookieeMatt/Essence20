@@ -511,8 +511,8 @@ export class Essence20ActorSheet extends ActorSheet {
         ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDropError')));
         return false;
       }
-      break;
 
+      break;
     default:
       super._onDropItem(event, data);
     }
