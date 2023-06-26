@@ -503,11 +503,12 @@ export class Essence20ActorSheet extends ActorSheet {
       break;
     case 'upgrade':
       // Drones can only accept drone Upgrades
-      if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
-        return false;
-      } else if (this.actor.type == 'transformer' && sourceItem.system.type != 'armor') {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeTransformerError')));
+      if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
+        super._onDropItem(event, data);
+      } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
+        super._onDropItem(event, data);
+      } else {
+        ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
         return false;
       }
 
