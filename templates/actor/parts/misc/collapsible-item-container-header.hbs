@@ -1,0 +1,18 @@
+<div class="flexrow">
+  <div></div>
+
+  <div style="flex-grow: 0; white-space: nowrap;">
+    {{localize title}}
+    <a class="item-create" data-type={{dataType}} title="{{ localize 'E20.ItemControlAdd' }}">
+      <i class="fas fa-plus"></i>
+    </a>
+  </div>
+
+  <span class="header-accordion-wrapper">
+    {{#if items.length}}
+    <a class="header-accordion-label" data-type={{dataType}} title="{{ localize 'E20.ItemControlAdd' }}">
+      <i class="accordion-icon fas fa-chevron-down"></i>
+    </a>
+    {{/if}}
+  </span>
+</div>
