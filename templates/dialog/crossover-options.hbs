@@ -1,6 +1,7 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
   <div class="flexcol">
     {{#ifEquals actor.type 'powerRanger'}}
+    {{else ifEquals actor.type 'npc'}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanMorph'}}
       {{#*inline "item-field-inputs"}}
@@ -11,6 +12,7 @@
   </div>
   <div class="flexcol">
     {{#ifEquals actor.type 'pony'}}
+    {{else ifEquals actor.type 'npc'}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanSpellcast'}}
       {{#*inline "item-field-inputs"}}

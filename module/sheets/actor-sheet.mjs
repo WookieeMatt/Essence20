@@ -77,7 +77,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     if (this.actor.isOwner) {
       // Crossover Button for Character Sheets
-      if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+      if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
         buttons = [
           {
             label: game.i18n.localize('E20.Crossover'),
