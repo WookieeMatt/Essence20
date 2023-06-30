@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { searchCompendium } from "../helpers/utils.mjs";
+import { getItemsOfType, rememberOptions, searchCompendium } from "../helpers/utils.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
@@ -233,7 +233,7 @@ export class Essence20ActorSheet extends ActorSheet {
         i.upgrades = [];
 
         for (const id of i.system.upgradeIds) {
-          const upgrade = game.items.get(id) || searchCompendium(id);
+          const upgrade = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
           if (upgrade) {
             i.upgrades.push(upgrade);
           }
@@ -474,9 +474,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
-    const item = parentId
-      ? game.items.get(itemId)
-      : this.actor.items.get(itemId);
+    const item = this.actor.items.get(itemId);
 
     if (item.type == "origin") {
       this._bgHandler.onOriginDelete(item);
@@ -531,17 +529,71 @@ export class Essence20ActorSheet extends ActorSheet {
       break;
     case 'upgrade':
       // Drones can only accept drone Upgrades
-      if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type != 'drone') {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDroneError')));
-        return false;
-      } else if (this.actor.type == 'transformer' && sourceItem.system.type != 'armor') {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeTransformerError')));
+      if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
+        super._onDropItem(event, data);
+      } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
+        super._onDropItem(event, data);
+      } else if (sourceItem.system.type == 'weapon') {
+        const weapons = await getItemsOfType('weapon', this.actor.items);
+
+        if (weapons.length == 1) {
+          this._upgradeWeapon(weapons[0], event, data)
+        } else if (weapons.length > 1) {
+          const choices = {}
+          for (const weapon of weapons) {
+            choices[weapon._id] = {
+              chosen: false,
+              label: weapon.name,
+            };
+          }
+
+          new Dialog(
+            {
+              title: game.i18n.localize('E20.WeaponSelect'),
+              content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+                choices,
+              }),
+              buttons: {
+                save: {
+                  label: game.i18n.localize('E20.AcceptButton'),
+                  callback: html => this._upgradeSelectedWeaponOptionHandler(
+                    rememberOptions(html), event, data,
+                  ),
+                },
+              },
+            },
+          ).render(true);
+        } else {
+          ui.notifications.error(game.i18n.localize('E20.NoWeaponsError'));
+          return false;
+        }
+      } else {
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDropError')));
         return false;
       }
 
       break;
     default:
       super._onDropItem(event, data);
+    }
+  }
+
+  async _upgradeSelectedWeaponOptionHandler(options, event, data) {
+    for (const [weaponId, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        const weapon = this.actor.items.get(weaponId);
+        this._upgradeWeapon(weapon, event, data);
+      }
+    }
+  }
+
+  async _upgradeWeapon(weapon, event, data) {
+    if (weapon) {
+      const newUpgradeList = await super._onDropItem(event, data);
+      const newUpgrade = newUpgradeList[0];
+      const weaponUpgradeIds = weapon.system.upgradeIds;
+      weaponUpgradeIds.push(newUpgrade._id)
+      await weapon.update({ ["system.upgradeIds"]: weaponUpgradeIds });
     }
   }
 
