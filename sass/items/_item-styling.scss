@@ -2,6 +2,7 @@
 
 .essence20 .item {
   color: v.$textcolor1;
+  gap: 5px;
 }
 
 /* Generic Item Sheet Styling */
@@ -140,7 +141,7 @@
 .essence20 .item-label {
   align-items: center;
   gap: 5px;
-  margin-bottom: 5px;
+  width: 100%;
 }
 
 .essence20 .item-formula {
