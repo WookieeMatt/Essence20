@@ -1,8 +1,9 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { getItemsOfType, rememberOptions, searchCompendium } from "../helpers/utils.mjs";
+import { searchCompendium } from "../helpers/utils.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
+import { UpgradeHandler } from "../sheet-handlers/upgrade-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
@@ -13,6 +14,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
     this._prHandler = new PowerRangerHandler(this);
+    this._upHandler = new UpgradeHandler(this);
     this._tfHandler = new TransformerHandler(this);
   }
 
@@ -553,79 +555,23 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
     case 'influence':
-      await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
-      break;
+      return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
-      await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
-      break;
+      return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       // Drones can only accept drone Upgrades
       if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
-        super._onDropItem(event, data);
+        return super._onDropItem(event, data);
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
-        super._onDropItem(event, data);
+        return super._onDropItem(event, data);
       } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
-        const upgradeType = sourceItem.system.type;
-        const upgradableItems = await getItemsOfType(upgradeType, this.actor.items);
-
-        if (upgradableItems.length == 1) {
-          this._upgradeItem(upgradableItems[0], event, data);
-        } else if (upgradableItems.length > 1) {
-          const choices = {};
-          for (const upgradableItem of upgradableItems) {
-            choices[upgradableItem._id] = {
-              chosen: false,
-              label: upgradableItem.name,
-            };
-          }
-
-          new Dialog(
-            {
-              title: game.i18n.localize('E20.ItemSelect'),
-              content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-                choices,
-              }),
-              buttons: {
-                save: {
-                  label: game.i18n.localize('E20.AcceptButton'),
-                  callback: html => this._upgradeSelectedItemOptionHandler(
-                    rememberOptions(html), event, data,
-                  ),
-                },
-              },
-            },
-          ).render(true);
-        } else {
-          ui.notifications.error(game.i18n.localize('E20.NoItemsError'));
-          return false;
-        }
+        return this._upHandler.upgradeItem(sourceItem, super._onDropItem.bind(this, event, data));
       } else {
         ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
         return false;
       }
-
-      break;
     default:
-      super._onDropItem(event, data);
-    }
-  }
-
-  async _upgradeSelectedItemOptionHandler(options, event, data) {
-    for (const [itemId, isSelected] of Object.entries(options)) {
-      if (isSelected) {
-        const item = this.actor.items.get(itemId);
-        this._upgradeItem(item, event, data);
-      }
-    }
-  }
-
-  async _upgradeItem(item, event, data) {
-    if (item) {
-      const newUpgradeList = await super._onDropItem(event, data);
-      const newUpgrade = newUpgradeList[0];
-      const itemUpgradeIds = item.system.upgradeIds;
-      itemUpgradeIds.push(newUpgrade._id);
-      await item.update({ ["system.upgradeIds"]: itemUpgradeIds });
+      return super._onDropItem(event, data);
     }
   }
 
