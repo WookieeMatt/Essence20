@@ -533,7 +533,6 @@ export class Essence20ActorSheet extends ActorSheet {
         super._onDropItem(event, data);
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
         super._onDropItem(event, data);
-<<<<<<< HEAD
       } else if (sourceItem.system.type == 'weapon') {
         const weapons = await getItemsOfType('weapon', this.actor.items);
 
