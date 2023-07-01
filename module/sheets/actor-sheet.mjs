@@ -164,6 +164,15 @@ export class Essence20ActorSheet extends ActorSheet {
           equippedArmorToughness += parseInt(i.system.bonusToughness);
         }
 
+        i.upgrades = [];
+
+        for (const id of i.system.upgradeIds) {
+          const upgrade = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
+          if (upgrade) {
+            i.upgrades.push(upgrade);
+          }
+        }
+
         armors.push(i);
         break;
       case 'bond':
@@ -533,7 +542,7 @@ export class Essence20ActorSheet extends ActorSheet {
         super._onDropItem(event, data);
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
         super._onDropItem(event, data);
-      } else if (['weapon'].includes(sourceItem.system.type)) {
+      } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
         const upgradeType = sourceItem.system.type;
         const upgradableItems = await getItemsOfType(upgradeType, this.actor.items);
 

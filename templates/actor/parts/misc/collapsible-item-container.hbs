@@ -8,11 +8,9 @@
       {{!-- Item label and buttons --}}
       {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
 
-      {{#ifEquals ../hasSubcontainers "true"}}
       {{#> subcontainers item=item }}
       {{!-- Subcontainers here --}}
       {{/subcontainers}}
-      {{/ifEquals}}
 
       {{!-- Item content --}}
       {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}

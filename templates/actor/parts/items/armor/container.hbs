@@ -1,5 +1,17 @@
-{{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.armors title='E20.ItemTypeArmorPlural' dataType='armor'}}
+{{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.armors title='E20.ItemTypeArmorPlural' dataType='armor'}}
   {{#*inline "expand-details" item}}
     {{> "systems/essence20/templates/actor/parts/items/armor/details.hbs"}}
+  {{/inline}}
+
+  {{#*inline "subcontainers" item}}
+  {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=item.upgrades title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentId}}
+    {{#*inline "expand-details" item}}
+      {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
+    {{/inline}}
+
+    {{#*inline "item-label" item}}
+      {{item.name}}
+    {{/inline}}
+  {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
