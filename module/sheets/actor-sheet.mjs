@@ -164,15 +164,7 @@ export class Essence20ActorSheet extends ActorSheet {
           equippedArmorToughness += parseInt(i.system.bonusToughness);
         }
 
-        i.upgrades = [];
-
-        for (const id of i.system.upgradeIds) {
-          const upgrade = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
-          if (upgrade) {
-            i.upgrades.push(upgrade);
-          }
-        }
-
+        i.upgrades = this._populateUpgrades(i);
         armors.push(i);
         break;
       case 'bond':
@@ -239,15 +231,7 @@ export class Essence20ActorSheet extends ActorSheet {
         upgrades.push(i);
         break;
       case 'weapon':
-        i.upgrades = [];
-
-        for (const id of i.system.upgradeIds) {
-          const upgrade = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
-          if (upgrade) {
-            i.upgrades.push(upgrade);
-          }
-        }
-
+        i.upgrades = this._populateUpgrades(i);
         weapons.push(i);
         break;
       }
@@ -280,6 +264,25 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.defenses.evasion.armor": equippedArmorEvasion,
       "system.defenses.toughness.armor": equippedArmorToughness,
     }).then(this.render(false));
+  }
+
+  /**
+   * Returns the upgrades associated with the give Item
+   * @param {Item} item The item to fetch upgrades for
+   * @returns {Promise<Upgrade[]>} The upgrades associated with the give Item
+   * @private
+   */
+  _populateUpgrades(item) {
+    const upgrades = [];
+
+    for (const id of item.system.upgradeIds) {
+      const upgrade = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
+      if (upgrade) {
+        upgrades.push(upgrade);
+      }
+    }
+
+    return upgrades;
   }
 
   /* -------------------------------------------- */
