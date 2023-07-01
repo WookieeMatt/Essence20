@@ -1096,14 +1096,21 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 5px 2px 5px 2px;
-  border-bottom: 1px solid #b5b1b1;
+  padding: 0 2px;
   color: #c7c4c4;
 }
 
-.essence20 .items-list .item:last-child {
-  border-bottom: none;
-  padding: 0 2px;
+.essence20 .items-list hr {
+  margin: 4;
+  width: 100%;
+}
+
+.essence20 .items-list hr:last-child {
+  display: none;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list hr {
+  border: 1px solid #4a4848;
 }
 
 .essence20 .items-list .item .item-name {
