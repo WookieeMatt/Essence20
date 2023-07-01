@@ -533,30 +533,30 @@ export class Essence20ActorSheet extends ActorSheet {
         super._onDropItem(event, data);
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
         super._onDropItem(event, data);
-      } else if (sourceItem.system.type == 'weapon') {
-        const weapons = await getItemsOfType('weapon', this.actor.items);
+      } else if (['weapon'].includes(sourceItem.system.type)) {
+        const upgradableItems = await getItemsOfType('weapon', this.actor.items);
 
-        if (weapons.length == 1) {
-          this._upgradeWeapon(weapons[0], event, data)
-        } else if (weapons.length > 1) {
+        if (upgradableItems.length == 1) {
+          this._upgradeItem(upgradableItems[0], event, data)
+        } else if (upgradableItems.length > 1) {
           const choices = {}
-          for (const weapon of weapons) {
-            choices[weapon._id] = {
+          for (const upgradableItem of upgradableItems) {
+            choices[upgradableItem._id] = {
               chosen: false,
-              label: weapon.name,
+              label: upgradableItem.name,
             };
           }
 
           new Dialog(
             {
-              title: game.i18n.localize('E20.WeaponSelect'),
+              title: game.i18n.localize('E20.ItemSelect'),
               content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
                 choices,
               }),
               buttons: {
                 save: {
                   label: game.i18n.localize('E20.AcceptButton'),
-                  callback: html => this._upgradeSelectedWeaponOptionHandler(
+                  callback: html => this._upgradeSelectedItemOptionHandler(
                     rememberOptions(html), event, data,
                   ),
                 },
@@ -564,7 +564,7 @@ export class Essence20ActorSheet extends ActorSheet {
             },
           ).render(true);
         } else {
-          ui.notifications.error(game.i18n.localize('E20.NoWeaponsError'));
+          ui.notifications.error(game.i18n.localize('E20.NoItemsError'));
           return false;
         }
       } else {
@@ -578,22 +578,22 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-  async _upgradeSelectedWeaponOptionHandler(options, event, data) {
-    for (const [weaponId, isSelected] of Object.entries(options)) {
+  async _upgradeSelectedItemOptionHandler(options, event, data) {
+    for (const [itemId, isSelected] of Object.entries(options)) {
       if (isSelected) {
-        const weapon = this.actor.items.get(weaponId);
-        this._upgradeWeapon(weapon, event, data);
+        const item = this.actor.items.get(itemId);
+        this._upgradeItem(item, event, data);
       }
     }
   }
 
-  async _upgradeWeapon(weapon, event, data) {
-    if (weapon) {
+  async _upgradeItem(item, event, data) {
+    if (item) {
       const newUpgradeList = await super._onDropItem(event, data);
       const newUpgrade = newUpgradeList[0];
-      const weaponUpgradeIds = weapon.system.upgradeIds;
-      weaponUpgradeIds.push(newUpgrade._id)
-      await weapon.update({ ["system.upgradeIds"]: weaponUpgradeIds });
+      const itemUpgradeIds = item.system.upgradeIds;
+      itemUpgradeIds.push(newUpgrade._id)
+      await item.update({ ["system.upgradeIds"]: itemUpgradeIds });
     }
   }
 
