@@ -523,3 +523,67 @@ E20.statusEffects = [
     label: 'E20.StatusUnconscious',
   },
 ];
+
+/************************************************
+ * Token Sizes                                  *
+ ***********************************************/
+
+E20.tokenSizes = {
+  small: {
+    height: 1,
+    reach: 2,
+    width: 1,
+  },
+  common: {
+    height: 1,
+    reach: 5,
+    width: 1,
+  },
+  large: {
+    height: 2,
+    reach: 5,
+    width: 2,
+  },
+  long: {
+    height: 1,
+    reach: 5,
+    width: 2,
+  },
+  huge: {
+    height: 3,
+    reach: 10,
+    width: 3,
+  },
+  extended: {
+    height: 2,
+    reach: 10,
+    width: 4,
+  },
+  gigantic: {
+    height: 4,
+    reach: 15,
+    width: 4,
+  },
+  extended2: {
+    height: 3,
+    reach: 15,
+    width: 6,
+  },
+  towering: {
+    height: 5,
+    reach: 20,
+    width: 5,
+  },
+  extended3: {
+    height: 5,
+    reach: 15,
+    width: 5,
+  },
+  titanic: {
+    height: 5,
+    reach: 25,
+    width: 5,
+  },
+};
+
+

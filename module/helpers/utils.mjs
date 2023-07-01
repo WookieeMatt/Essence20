@@ -79,9 +79,8 @@ export function indexFromUuid(uuid) {
   const parts = uuid.split(".");
   let index;
 
-
   if (parts[0] === "Compendium") { // Compendium Documents
-    const [, scope, packName, id] = parts;
+    const [, scope, packName, , id] = parts;
     const pack = game.packs.get(`${scope}.${packName}`);
     index = pack?.index.get(id);
   } else if (parts.length < 3) {   // World Documents
@@ -178,5 +177,21 @@ export function itemDeleteById(id, owner) {
   let item = owner.items.get(id);
   if (item) {
     item.delete();
+  }
+}
+
+/**
+ * Handle looking up tokens associated with actor and changing size
+ * @param {Actor} actor  The actor
+ * @param {Number} width The actor's new width
+ * @param {Number} height The actor's new width
+ */
+export function resizeTokens(actor, width, height) {
+  const tokens = actor.getActiveTokens();
+  for (const token of tokens) {
+    token.document.update({
+      "height": height,
+      "width": width,
+    });
   }
 }

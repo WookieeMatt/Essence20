@@ -1,23 +1,23 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
   <div class="flexcol">
-    {{#ifEquals actor.type 'powerRanger'}}
+    {{#inArray '["powerRanger", "npc"]' actor.type}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanMorph'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canMorph" name="system.canMorph" {{checked system.canMorph}} />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifEquals}}
+    {{/inArray}}
   </div>
   <div class="flexcol">
-    {{#ifEquals actor.type 'pony'}}
+    {{#inArray '["pony", "npc"]' actor.type}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanSpellcast'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canSpellcast" name="system.canSpellcast" {{checked system.canSpellcast}}/>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifEquals}}
+    {{/inArray}}
   </div>
   <div class="flexcol">
     {{#ifEquals actor.type 'transformer'}}

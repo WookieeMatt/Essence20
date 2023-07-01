@@ -5,7 +5,9 @@
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
-    <a class="item" style="border-color: {{system.color}};" data-tab="altmode">{{ localize "E20.TabAltMode" }}</a>
+    {{#if system.canTransform}}
+      <a class="item" style="border-color: {{system.color}};" data-tab="altmode">{{ localize "E20.TabAltMode" }}</a>
+    {{/if}}
     <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
   </nav>
 
@@ -28,6 +30,8 @@
         </div>
       </div>
       <div class="npc-row">
+        {{!-- NPC Can Transform --}}
+        {{> "systems/essence20/templates/actor/parts/misc/morph-transform.hbs"}}
         <div class="npc-defenses">
           {{!-- NPC Defenses --}}
           {{> "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs"}}

@@ -4,7 +4,7 @@ import { RollDialog } from "../helpers/roll-dialog.mjs";
 export class Essence20Combat extends Combat {
   constructor(data, context) {
     super(data, context);
-    this._dice = new Dice(ChatMessage, new RollDialog());
+    this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
   }
 
   /**

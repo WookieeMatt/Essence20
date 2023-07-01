@@ -4,7 +4,11 @@
     <div class="flexrow" style="align-items: center;">
       <input class="centered-input" type="number" name="system.health.value" value="{{system.health.value}}" />
       <span>/</span>
-      <input class="centered-input" type="number" name="system.health.max" value="{{system.health.max}}" />
+      {{#if @root.system.movementIsReadOnly}}
+        <input class="centered-input" type="number" name="system.health.max" value="{{system.health.max}}" title="{{system.health.string}}" readonly/>
+      {{else}}
+        <input class="centered-input" type="number" name="system.health.max" value="{{system.health.max}}"/>
+      {{/if}}
     </div>
   </div>
 </div>

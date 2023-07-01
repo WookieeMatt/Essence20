@@ -78,7 +78,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     if (this.actor.isOwner) {
       // Crossover Button for Character Sheets
-      if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+      if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
         buttons = [
           {
             label: game.i18n.localize('E20.Crossover'),
@@ -533,6 +533,7 @@ export class Essence20ActorSheet extends ActorSheet {
         super._onDropItem(event, data);
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
         super._onDropItem(event, data);
+<<<<<<< HEAD
       } else if (sourceItem.system.type == 'weapon') {
         const weapons = await getItemsOfType('weapon', this.actor.items);
 
@@ -568,7 +569,7 @@ export class Essence20ActorSheet extends ActorSheet {
           return false;
         }
       } else {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.UpgradeDropError')));
+        ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
         return false;
       }
 
