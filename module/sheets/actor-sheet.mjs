@@ -474,12 +474,12 @@ export class Essence20ActorSheet extends ActorSheet {
     const itemId = li.data("itemId");
     const parentId = li.data("parentId");
 
+    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     const parentItem = this.actor.items.get(parentId);
     if (parentItem) {
-      switch (parentItem.type) {
-        case 'weapon':
-          const remainingUpgradeIds = parentItem.system.upgradeIds.filter(u => u != itemId);
-          await parentItem.update({ ["system.upgradeIds"]: remainingUpgradeIds });
+      if ([['armor', 'weapon']].includes(parentItem.type)) {
+        const remainingUpgradeIds = parentItem.system.upgradeIds.filter(u => u != itemId);
+        await parentItem.update({ ["system.upgradeIds"]: remainingUpgradeIds });
       }
     }
 
@@ -547,9 +547,9 @@ export class Essence20ActorSheet extends ActorSheet {
         const upgradableItems = await getItemsOfType(upgradeType, this.actor.items);
 
         if (upgradableItems.length == 1) {
-          this._upgradeItem(upgradableItems[0], event, data)
+          this._upgradeItem(upgradableItems[0], event, data);
         } else if (upgradableItems.length > 1) {
-          const choices = {}
+          const choices = {};
           for (const upgradableItem of upgradableItems) {
             choices[upgradableItem._id] = {
               chosen: false,
@@ -602,7 +602,7 @@ export class Essence20ActorSheet extends ActorSheet {
       const newUpgradeList = await super._onDropItem(event, data);
       const newUpgrade = newUpgradeList[0];
       const itemUpgradeIds = item.system.upgradeIds;
-      itemUpgradeIds.push(newUpgrade._id)
+      itemUpgradeIds.push(newUpgrade._id);
       await item.update({ ["system.upgradeIds"]: itemUpgradeIds });
     }
   }
