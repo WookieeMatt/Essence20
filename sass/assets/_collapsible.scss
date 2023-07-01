@@ -31,6 +31,13 @@
   height: fit-content;
 }
 
+.essence20 .collapsible-item-subcontainer {
+  border-color: #4a4848;
+  box-shadow: none;
+  margin: auto;
+  width: 90%;
+}
+
 /* Content toggle open/close. */
 .essence20 .accordion-content {
   display: none;
