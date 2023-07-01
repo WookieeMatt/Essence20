@@ -177,6 +177,7 @@
     "ItemControlAdd": "Add",
     "ItemControlDelete": "Delete",
     "ItemControlEdit": "Edit",
+    "ItemControlExpand": "Expand",
     "ItemDescription": "Description",
     "ItemDrop": "None; drag an item of the appropriate type onto this sheet to add.",
     "ItemRollTitle": "Display in chat",

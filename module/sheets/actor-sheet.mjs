@@ -457,11 +457,30 @@ export class Essence20ActorSheet extends ActorSheet {
       type: type,
       data: data,
     };
+
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.data["type"];
 
+    // Set the parent item type for nested items
+    if (data.parentId) {
+      const parentItem = this.actor.items.get(data.parentId);
+      itemData.data.type = parentItem.type;
+    }
+
     // Finally, create the item!
-    return await Item.create(itemData, { parent: this.actor });
+    const newItem = await Item.create(itemData, { parent: this.actor });
+
+    // Update parent item's ID list for nested items
+    if (data.parentId) {
+      const parentItem = this.actor.items.get(data.parentId);
+
+      // Only upgrades are nestable for now
+      if (['armor', 'weapon'].includes(parentItem.type)) {
+        const upgradeIds = parentItem.system.upgradeIds;
+        upgradeIds.push(newItem._id);
+        await parentItem.update({ ["system.upgradeIds"]: upgradeIds });
+      }
+    }
   }
 
   /**
@@ -477,7 +496,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     const parentItem = this.actor.items.get(parentId);
     if (parentItem) {
-      if ([['armor', 'weapon']].includes(parentItem.type)) {
+      if (['armor', 'weapon'].includes(parentItem.type)) {
         const remainingUpgradeIds = parentItem.system.upgradeIds.filter(u => u != itemId);
         await parentItem.update({ ["system.upgradeIds"]: remainingUpgradeIds });
       }
