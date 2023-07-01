@@ -155,9 +155,9 @@ export class Essence20ActorSheet extends ActorSheet {
       const itemType = i.type;
 
       switch (itemType) {
-        case 'alteration':
-          alterations.push(i);
-          break;
+      case 'alteration':
+        alterations.push(i);
+        break;
       case 'altMode':
         altModes.push(i);
         break;
