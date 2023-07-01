@@ -1,0 +1,73 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
+    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+  </nav>
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
+      {{!-- Alteration Essence Bonus --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceBonus'}}
+      {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="originEssences" data-target="system.essenceBonus" title="{{localize 'E20.TraitSelector'}}">
+          <i class="fas fa-edit"></i>
+        </a>
+      {{/inline}}
+
+      {{#*inline "item-field-inputs"}}
+        <div class="chip-section">
+          {{#each item.system.essenceBonus as |essence|}}
+          <span class="chip" name="chip.alteration.essenceBonus.{{type}}">{{lookup @root.config.originEssences essence}}</span>
+          {{/each}}
+        </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Alteration Essence Cost --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceCost'}}
+      {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="originEssences" data-target="system.essenceCost" title="{{localize 'E20.TraitSelector'}}">
+          <i class="fas fa-edit"></i>
+        </a>
+      {{/inline}}
+
+      {{#*inline "item-field-inputs"}}
+        <div class="chip-section">
+          {{#each item.system.essenceCost as |essence|}}
+          <span class="chip" name="chip.alteration.essenceCost.{{type}}">{{lookup @root.config.originEssences essence}}</span>
+          {{/each}}
+        </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Alteration Non Essence Bonus --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationBonus'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.bonus" value="{{system.bonus}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Alteration Non Essence Bonus --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationCost'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.cost" value="{{system.cost}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{!-- Effects Section --}}
+      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
+    </div>
+
+  </section>
+</form>

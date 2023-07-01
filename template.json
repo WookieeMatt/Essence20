@@ -605,6 +605,7 @@
   },
   "Item": {
     "types": [
+      "alteration",
       "altMode",
       "armor",
       "bond",
@@ -634,6 +635,15 @@
           "page": null
         }
       }
+    },
+    "alteration": {
+      "templates": [
+        "itemDescription"
+      ],
+      "benefit": "",
+      "cost": "",
+      "essenceBenefit": "",
+      "essenceCost": ""
     },
     "altMode": {
       "templates": [
