@@ -534,7 +534,8 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
         super._onDropItem(event, data);
       } else if (['weapon'].includes(sourceItem.system.type)) {
-        const upgradableItems = await getItemsOfType('weapon', this.actor.items);
+        const upgradeType = sourceItem.system.type;
+        const upgradableItems = await getItemsOfType(upgradeType, this.actor.items);
 
         if (upgradableItems.length == 1) {
           this._upgradeItem(upgradableItems[0], event, data)
