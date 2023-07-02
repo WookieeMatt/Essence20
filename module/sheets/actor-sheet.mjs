@@ -374,7 +374,7 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onToggleAccordion(event) {
     const el = event.currentTarget;
-    const parent = $(el).parents('.accordion-wrapper');
+    const parent = $(el).closest('.accordion-wrapper');
 
     // Avoid collapsing NPC skills container on rerender
     if (parent.hasClass('skills-container')) {
