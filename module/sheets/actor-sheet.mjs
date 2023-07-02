@@ -1,7 +1,9 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { searchCompendium } from "../helpers/utils.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
+import { UpgradeHandler } from "../sheet-handlers/upgrade-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
@@ -12,6 +14,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
     this._prHandler = new PowerRangerHandler(this);
+    this._upHandler = new UpgradeHandler(this);
     this._tfHandler = new TransformerHandler(this);
   }
 
@@ -167,6 +170,7 @@ export class Essence20ActorSheet extends ActorSheet {
           equippedArmorToughness += parseInt(i.system.bonusToughness);
         }
 
+        i.upgrades = this._populateUpgrades(i);
         armors.push(i);
         break;
       case 'bond':
@@ -233,6 +237,7 @@ export class Essence20ActorSheet extends ActorSheet {
         upgrades.push(i);
         break;
       case 'weapon':
+        i.upgrades = this._populateUpgrades(i);
         weapons.push(i);
         break;
       }
@@ -268,6 +273,25 @@ export class Essence20ActorSheet extends ActorSheet {
     }).then(this.render(false));
   }
 
+  /**
+   * Returns the upgrades associated with the given Item
+   * @param {Item} item The item to fetch upgrades for
+   * @returns {Promise<Upgrade[]>} The upgrades associated with the given Item
+   * @private
+   */
+  _populateUpgrades(item) {
+    const upgrades = [];
+
+    for (const id of item.system.upgradeIds) {
+      const upgrade = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
+      if (upgrade) {
+        upgrades.push(upgrade);
+      }
+    }
+
+    return upgrades;
+  }
+
   /* -------------------------------------------- */
 
   /** @override */
@@ -276,8 +300,12 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Render the item sheet for viewing/editing prior to the editable check.
     html.find('.item-edit').click(ev => {
-      const li = $(ev.currentTarget).parents(".item");
-      const item = this.actor.items.get(li.data("itemId"));
+      const li = $(ev.currentTarget).closest(".item");
+      const itemId = li.data("itemId");
+      const parentId = li.data("parentId");
+      const item = parentId
+        ? game.items.get(itemId)
+        : this.actor.items.get(itemId);
       item.sheet.render(true);
     });
 
@@ -351,7 +379,7 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onToggleAccordion(event) {
     const el = event.currentTarget;
-    const parent = $(el).parents('.accordion-wrapper');
+    const parent = $(el).closest('.accordion-wrapper');
 
     // Avoid collapsing NPC skills container on rerender
     if (parent.hasClass('skills-container')) {
@@ -439,11 +467,30 @@ export class Essence20ActorSheet extends ActorSheet {
       type: type,
       data: data,
     };
+
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.data["type"];
 
+    // Set the parent item type for nested items
+    if (data.parentId) {
+      const parentItem = this.actor.items.get(data.parentId);
+      itemData.data.type = parentItem.type;
+    }
+
     // Finally, create the item!
-    return await Item.create(itemData, { parent: this.actor });
+    const newItem = await Item.create(itemData, { parent: this.actor });
+
+    // Update parent item's ID list for nested items
+    if (data.parentId) {
+      const parentItem = this.actor.items.get(data.parentId);
+
+      // Only upgrades are nestable for now
+      if (['armor', 'weapon'].includes(parentItem.type)) {
+        const upgradeIds = parentItem.system.upgradeIds;
+        upgradeIds.push(newItem._id);
+        await parentItem.update({ ["system.upgradeIds"]: upgradeIds });
+      }
+    }
   }
 
   /**
@@ -452,8 +499,20 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   async _onItemDelete(event) {
-    const li = $(event.currentTarget).parents(".item");
-    const item = this.actor.items.get(li.data("itemId"));
+    const li = $(event.currentTarget).closest(".item");
+    const itemId = li.data("itemId");
+    const parentId = li.data("parentId");
+
+    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
+    const parentItem = this.actor.items.get(parentId);
+    if (parentItem) {
+      if (['armor', 'weapon'].includes(parentItem.type)) {
+        const remainingUpgradeIds = parentItem.system.upgradeIds.filter(u => u != itemId);
+        await parentItem.update({ ["system.upgradeIds"]: remainingUpgradeIds });
+      }
+    }
+
+    const item = this.actor.items.get(itemId);
 
     if (item.type == "origin") {
       this._bgHandler.onOriginDelete(item);
@@ -501,25 +560,24 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
     case 'influence':
-      await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
-      break;
+      return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
-      await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
-      break;
+      return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       // Drones can only accept drone Upgrades
       if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
-        super._onDropItem(event, data);
+        return super._onDropItem(event, data);
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
-        super._onDropItem(event, data);
+        return super._onDropItem(event, data);
+      } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
+        return this._upHandler.upgradeItem(sourceItem, super._onDropItem.bind(this, event, data));
       } else {
         ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
         return false;
       }
 
-      break;
     default:
-      super._onDropItem(event, data);
+      return super._onDropItem(event, data);
     }
   }
 
