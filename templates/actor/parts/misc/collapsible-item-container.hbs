@@ -8,12 +8,12 @@
       {{!-- Item label and buttons --}}
       {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
 
+      {{!-- Item content --}}
+      {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
+
       {{#> subcontainers parentItem=item }}
       {{!-- Subcontainers here --}}
       {{/subcontainers}}
-
-      {{!-- Item content --}}
-      {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
     </li>
 
     <hr>
