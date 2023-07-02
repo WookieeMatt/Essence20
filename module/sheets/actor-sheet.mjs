@@ -127,6 +127,7 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareItems(context) {
     // Initialize containers.
+    const alterations = [];
     const altModes = [];
     const armors = [];
     const bonds = [];
@@ -157,6 +158,9 @@ export class Essence20ActorSheet extends ActorSheet {
       const itemType = i.type;
 
       switch (itemType) {
+      case 'alteration':
+        alterations.push(i);
+        break;
       case 'altMode':
         altModes.push(i);
         break;
@@ -240,6 +244,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Assign and return
+    context.alterations = alterations;
     context.altModes = altModes;
     context.armors = armors;
     context.bonds = bonds;

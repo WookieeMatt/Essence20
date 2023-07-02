@@ -48,6 +48,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs",
 
     // Actor partials - Items
+    "systems/essence20/templates/actor/parts/items/alteration/container.hbs",
+    "systems/essence20/templates/actor/parts/items/alteration/details.hbs",
     "systems/essence20/templates/actor/parts/items/altMode/container.hbs",
     "systems/essence20/templates/actor/parts/items/altMode/details.hbs",
     "systems/essence20/templates/actor/parts/items/armor/container.hbs",
