@@ -13,6 +13,7 @@
       "companion": "Companion"
     },
     "Item": {
+      "alteration": "Alteration",
       "altMode": "Alt Mode",
       "armor": "Armor",
       "bond": "Bond",
