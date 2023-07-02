@@ -269,9 +269,9 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-   * Returns the upgrades associated with the give Item
+   * Returns the upgrades associated with the given Item
    * @param {Item} item The item to fetch upgrades for
-   * @returns {Promise<Upgrade[]>} The upgrades associated with the give Item
+   * @returns {Promise<Upgrade[]>} The upgrades associated with the given Item
    * @private
    */
   _populateUpgrades(item) {
@@ -570,6 +570,7 @@ export class Essence20ActorSheet extends ActorSheet {
         ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
         return false;
       }
+
     default:
       return super._onDropItem(event, data);
     }
