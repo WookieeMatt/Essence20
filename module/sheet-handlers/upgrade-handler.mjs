@@ -11,12 +11,12 @@ export class UpgradeHandler {
   }
 
   /**
-   * Creates dialog window for Crossover Options
-   * @param {Item} item         The item to upgrade
+   * Initiates the process to apply an upgrade to an item on the actor sheet
+   * @param {Upgrade} upgrade   The upgrade
    * @param {Function} dropFunc The function to call to complete the drop
    */
-  async upgradeItem(item, dropFunc) {
-    const upgradeType = item.system.type;
+  async upgradeItem(upgrade, dropFunc) {
+    const upgradeType = upgrade.system.type;
     const upgradableItems = await getItemsOfType(upgradeType, this._actor.items);
 
     if (upgradableItems.length == 1) {
@@ -47,13 +47,13 @@ export class UpgradeHandler {
         },
       ).render(true);
     } else {
-      ui.notifications.error(game.i18n.localize('E20.NoItemsError'));
+      ui.notifications.error(game.i18n.localize('E20.NoUpgradableItemsError'));
       return false;
     }
   }
 
   /**
-   * Creates dialog window for Crossover Options
+   * Processes the options resulting from _showUpgradeDialog()
    * @param {Object} options    The options resulting from _showUpgradeDialog()
    * @param {Function} dropFunc The function to call to complete the drop
    * @private
@@ -63,12 +63,13 @@ export class UpgradeHandler {
       if (isSelected) {
         const item = this._actor.items.get(itemId);
         this._upgradeItem(item, dropFunc);
+        break;
       }
     }
   }
 
   /**
-   * Creates dialog window for Crossover Options
+   * Creates the upgrade for the actor and applies it to the given item
    * @param {Item} item         The item to upgrade
    * @param {Function} dropFunc The function to call to complete the drop
    * @private

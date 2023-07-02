@@ -224,6 +224,7 @@
     "MovementTypeGround": "Ground",
     "MovementTypeSwim": "Swim",
     "MulitpleOriginError": "Characters can only have one Origin",
+    "NoUpgradableItemsError": "No upgradable items exist on this actor sheet",
     "None": "None",
     "NpcThreatLevel": "Threat Level",
     "Origin": "Origin",
