@@ -611,6 +611,7 @@
       "bond",
       "classFeature",
       "contact",
+      "effect",
       "feature",
       "gear",
       "hangUp",
@@ -692,6 +693,20 @@
       "gainingTheContact": "",
       "allegiancePoints": 0,
       "perks": ""
+    },
+    "effect" : {
+      "damageType": "",
+      "damageValue": 0,
+      "downshift": 0,
+      "numHands": 1,
+      "numTargets": 0,
+      "radius": 0,
+      "range": {
+        "min": null,
+        "reachMultiplier": 0,
+        "long": null,
+        "value": null
+      }
     },
     "feature": {
       "templates": [
