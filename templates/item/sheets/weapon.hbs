@@ -157,6 +157,9 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+    {{!-- Weapon Effects --}}
+    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.WeaponEffectPlural' items=@root.weaponEffects}}
+
     {{!-- Weapon Upgrades --}}
     {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.upgrades}}
 

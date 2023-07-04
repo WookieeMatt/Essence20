@@ -818,7 +818,8 @@
       },
       "traits": [],
       "upgradeIds": [],
-      "upgradeTraits": []
+      "upgradeTraits": [],
+      "weaponEffectIds": []
     },
     "upgrade": {
       "templates": [
