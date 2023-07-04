@@ -19,7 +19,7 @@
       "bond": "Bond",
       "classFeature": "Class Feature",
       "contact": "Contact",
-      "effect": "Weapon Effect",
+
       "feature": "Feature",
       "gear": "Gear",
       "influence": "Influence",
@@ -34,7 +34,8 @@
       "power": "Power",
       "specialization": "Specialization",
       "spell": "Spell",
-      "trait": "Trait"
+      "trait": "Trait",
+      "weaponEffect": "Weapon Effect"
     }
   },
   "MIGRATION": {
@@ -268,8 +269,6 @@
     "RollDialogEdge": "Edge",
     "RollDialogNormal": "Normal",
     "RollDialogRollButton": "Roll",
-    "RollDialogShiftDown": "Shift down",
-    "RollDialogShiftUp": "Shift up",
     "RollDialogSnag": "Snag",
     "RollDialogTimesToRoll": "Times to roll",
     "RollDialogTitle": "{actor} skill roll",
@@ -287,6 +286,7 @@
     "ShiftCriticalSuccess": "Critical Success",
     "ShiftDown": "Shift Down",
     "ShiftFumble": "Fumble",
+    "ShiftUp": "Shift Up",
     "SkillAcrobatics": "Acrobatics",
     "SkillAlertness": "Alertness",
     "SkillAnimalHandling": "Animal Handling",
