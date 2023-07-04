@@ -19,6 +19,7 @@
       "bond": "Bond",
       "classFeature": "Class Feature",
       "contact": "Contact",
+
       "feature": "Feature",
       "gear": "Gear",
       "influence": "Influence",
@@ -33,7 +34,8 @@
       "power": "Power",
       "specialization": "Specialization",
       "spell": "Spell",
-      "trait": "Trait"
+      "trait": "Trait",
+      "weaponEffect": "Weapon Effect"
     }
   },
   "MIGRATION": {
@@ -139,6 +141,12 @@
     "ContactPerks": "Perks",
     "Cost": "Cost",
     "Crossover": "Crossover Options",
+    "Damage": "Damage",
+    "DamageBlunt": "Blunt",
+    "DamageElement": "Element",
+    "DamageManeuver": "Maneuver",
+    "DamageSharp": "Sharp",
+    "DamageStun": "Stun",
     "DefenseArmor": "Armor",
     "DefenseBase": "Base",
     "DefenseCleverness": "Cleverness",
@@ -261,8 +269,6 @@
     "RollDialogEdge": "Edge",
     "RollDialogNormal": "Normal",
     "RollDialogRollButton": "Roll",
-    "RollDialogShiftDown": "Shift down",
-    "RollDialogShiftUp": "Shift up",
     "RollDialogSnag": "Snag",
     "RollDialogTimesToRoll": "Times to roll",
     "RollDialogTitle": "{actor} skill roll",
@@ -278,7 +284,9 @@
     "ShiftAutoSuccess": "Auto Success",
     "SkillSelector": "Select Skills",
     "ShiftCriticalSuccess": "Critical Success",
+    "ShiftDown": "Shift Down",
     "ShiftFumble": "Fumble",
+    "ShiftUp": "Shift Up",
     "SkillAcrobatics": "Acrobatics",
     "SkillAlertness": "Alertness",
     "SkillAnimalHandling": "Animal Handling",

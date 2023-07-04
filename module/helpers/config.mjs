@@ -328,6 +328,15 @@ E20.availabilities = {
 };
 preLocalize("availabilities");
 
+// Damage Types
+E20.damageType = {
+  blunt: "E20.DamageBlunt",
+  element: "E20.DamageElement",
+  maneuver: "E20.DamageManeuver",
+  sharp: "E20.DamageSharp",
+  stun: "E20.DamageStun",
+};
+
 // Perk types
 E20.perkTypes = {
   division: "E20.PerkDivision",
