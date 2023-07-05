@@ -3,7 +3,7 @@ import { searchCompendium } from "../helpers/utils.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
-import { UpgradeHandler } from "../sheet-handlers/upgrade-handler.mjs";
+import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
@@ -14,7 +14,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
     this._prHandler = new PowerRangerHandler(this);
-    this._upHandler = new UpgradeHandler(this);
+    this._atHandler = new AttachmentHandler(this);
     this._tfHandler = new TransformerHandler(this);
   }
 
@@ -170,7 +170,7 @@ export class Essence20ActorSheet extends ActorSheet {
           equippedArmorToughness += parseInt(i.system.bonusToughness);
         }
 
-        i.upgrades = this._populateUpgrades(i);
+        i.upgrades = this._populateChildItems(i.system.upgradeIds);
         armors.push(i);
         break;
       case 'bond':
@@ -237,7 +237,8 @@ export class Essence20ActorSheet extends ActorSheet {
         upgrades.push(i);
         break;
       case 'weapon':
-        i.upgrades = this._populateUpgrades(i);
+        i.upgrades = this._populateChildItems(i.system.upgradeIds);
+        i.weaponEffects = this._populateChildItems(i.system.weaponEffectIds);
         weapons.push(i);
         break;
       }
@@ -279,17 +280,17 @@ export class Essence20ActorSheet extends ActorSheet {
    * @returns {Promise<Upgrade[]>} The upgrades associated with the given Item
    * @private
    */
-  _populateUpgrades(item) {
-    const upgrades = [];
+  _populateChildItems(childItemIds) {
+    const childItems = [];
 
-    for (const id of item.system.upgradeIds) {
-      const upgrade = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
-      if (upgrade) {
-        upgrades.push(upgrade);
+    for (const id of childItemIds) {
+      const childItem = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
+      if (childItem) {
+        childItems.push(childItem);
       }
     }
 
-    return upgrades;
+    return childItems;
   }
 
   /* -------------------------------------------- */
@@ -484,13 +485,25 @@ export class Essence20ActorSheet extends ActorSheet {
     if (data.parentId) {
       const parentItem = this.actor.items.get(data.parentId);
 
-      // Only upgrades are nestable for now
-      if (['armor', 'weapon'].includes(parentItem.type)) {
-        const upgradeIds = parentItem.system.upgradeIds;
-        upgradeIds.push(newItem._id);
-        await parentItem.update({ ["system.upgradeIds"]: upgradeIds });
+      if (newItem.type == 'upgrade' && ['armor', 'weapon'].includes(parentItem.type)) {
+        this._addChildItemToParent(parentItem, newItem, "upgradeIds");
+      } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
+        this._addChildItemToParent(parentItem, newItem, "weaponEffectIds");
       }
     }
+  }
+
+  /**
+  * Adds the given child Item's ID to its parent's ID list
+  * @param {Item} parent      The parent Item
+  * @param {Item} child       The child Item
+  * @param {String} listName  The name of the parent's ID list
+  * @private
+  */
+  async _addChildItemToParent(parent, child, listName) {
+    const ids = parent.system[listName];
+    ids.push(child._id);
+    await parent.update({ [`system.${listName}`]: ids });
   }
 
   /**
@@ -570,12 +583,13 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
         return super._onDropItem(event, data);
       } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
-        return this._upHandler.upgradeItem(sourceItem, super._onDropItem.bind(this, event, data));
+        return this._atHandler.attachItem(sourceItem.system.type, super._onDropItem.bind(this, event, data));
       } else {
         ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
         return false;
       }
-
+    case 'weaponEffect':
+      return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
     default:
       return super._onDropItem(event, data);
     }
