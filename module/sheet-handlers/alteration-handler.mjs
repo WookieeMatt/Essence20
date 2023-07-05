@@ -273,10 +273,10 @@ export class AlterationHandler {
 
 
     await this._actor.update ({
-        [bonusEssenceString]: bonusEssenceValue,
-        [costEssenceString]: costEssenceValue,
-        [bonusSkillString]: bonusNewShift,
-        [costSkillString]: costNewShift,
-      });
+      [bonusEssenceString]: bonusEssenceValue,
+      [costEssenceString]: costEssenceValue,
+      [bonusSkillString]: bonusNewShift,
+      [costSkillString]: costNewShift,
+    });
   }
 }
