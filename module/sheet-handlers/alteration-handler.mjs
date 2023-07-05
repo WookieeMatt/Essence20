@@ -162,6 +162,7 @@ export class AlterationHandler {
       ui.notifications.warn(game.idemo8n.localize('E20.AlterationSelectNoSkill'));
       return;
     }
+
     const bonusEssence = alteration.system.essenceBonus;
     const bonusEssenceValue = this._actor.system.essences[bonusEssence] + 1;
     const costEssenceValue  = this._actor.system.essences[costEssence] - 1;
@@ -224,12 +225,13 @@ export class AlterationHandler {
     const bonusEssence = alteration.system.essenceBonus;
     const bonusEssenceValue = this._actor.system.essences[bonusEssence] - 1;
     const bonusEssenceString = `system.essences.${bonusEssence}`;
-    let costEssence = ""
+    let costEssence = "";
     if (alteration.system.selectedEssence) {
       costEssence = alteration.system.selectedEssence;
     } else {
       costEssence = alteration.system.essenceCost;
     }
+
     const costEssenceValue = this._actor.system.essences[costEssence] + 1;
     const costEssenceString = `system.essences.${costEssence}`;
     const bonusSkill = alteration.system.bonus;
@@ -242,32 +244,32 @@ export class AlterationHandler {
     let costNewShift = "";
 
     if (bonusSkill == "initiative") {
-        bonusSkillString = `system.${bonusSkill}.shift`;
-        bonusCurrentShift = this._actor.system[bonusSkill].shift;
-        bonusNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(bonusCurrentShift) + 1))];
-      } else if (bonusSkill == "conditioning") {
-        bonusSkillString = `system.${bonusSkill}`;
-        bonusCurrentShift= this._actor.system[bonusSkill];
-        bonusNewShift = bonusCurrentShift - 1;
-      } else {
-        bonusCurrentShift = this._actor.system.skills[bonusSkill].shift;
-        bonusSkillString = `system.skills.${bonusSkill}.shift`;
-        bonusNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(bonusCurrentShift) + 1))];
-      }
+      bonusSkillString = `system.${bonusSkill}.shift`;
+      bonusCurrentShift = this._actor.system[bonusSkill].shift;
+      bonusNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(bonusCurrentShift) + 1))];
+    } else if (bonusSkill == "conditioning") {
+      bonusSkillString = `system.${bonusSkill}`;
+      bonusCurrentShift= this._actor.system[bonusSkill];
+      bonusNewShift = bonusCurrentShift - 1;
+    } else {
+      bonusCurrentShift = this._actor.system.skills[bonusSkill].shift;
+      bonusSkillString = `system.skills.${bonusSkill}.shift`;
+      bonusNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(bonusCurrentShift) + 1))];
+    }
 
-      if (costSkill == "initiative") {
-        costSkillString = `system.${costSkill}.shift`;
-        costCurrentShift = this._actor.system[costSkill].shift;
-        costNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(costCurrentShift) - 1))];
-      } else if (costSkill == "conditioning") {
-        costSkillString = `system.${costSkill}`;
-        costCurrentShift= this._actor.system[costSkill];
-        costNewShift = costCurrentShift + 1;
-      } else {
-        costCurrentShift = this._actor.system.skills[costSkill].shift;
-        costSkillString = `system.skills.${costSkill}.shift`;
-        costNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(costCurrentShift) - 1))];
-      }
+    if (costSkill == "initiative") {
+      costSkillString = `system.${costSkill}.shift`;
+      costCurrentShift = this._actor.system[costSkill].shift;
+      costNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(costCurrentShift) - 1))];
+    } else if (costSkill == "conditioning") {
+      costSkillString = `system.${costSkill}`;
+      costCurrentShift= this._actor.system[costSkill];
+      costNewShift = costCurrentShift + 1;
+    } else {
+      costCurrentShift = this._actor.system.skills[costSkill].shift;
+      costSkillString = `system.skills.${costSkill}.shift`;
+      costNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(costCurrentShift) - 1))];
+    }
 
 
     await this._actor.update ({
