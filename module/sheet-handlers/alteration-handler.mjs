@@ -4,7 +4,7 @@ import {
 
 export class AlterationHandler {
 
-    /**
+  /**
   * Constructor
   * @param {Essence20ActorSheet} actorSheet The actor sheet
   */
@@ -15,7 +15,7 @@ export class AlterationHandler {
 
   async alterationUpdate(alteration, dropFunc) {
     if (alteration.system.essenceBonus) {
-      await this._showAlterationBonusSkillDialog(alteration, dropFunc)
+      await this._showAlterationBonusSkillDialog(alteration, dropFunc);
     }
 
 
@@ -59,14 +59,14 @@ export class AlterationHandler {
     }
 
     if (!bonusSkill) {
-        ui.notifications.warn(game.idemo8n.localize('E20.AlterationSelectNoSkill'));
+      ui.notifications.warn(game.idemo8n.localize('E20.AlterationSelectNoSkill'));
       return;
     }
 
     if (alteration.system.essenceCost.length > 1) {
-        await this._showAlterationCostEssenceDialog (alteration, bonusSkill, dropFunc)
+      await this._showAlterationCostEssenceDialog (alteration, bonusSkill, dropFunc);
     } else {
-        await this._showAlterationCostSkillDialog (alteration, bonusSkill, dropFunc)
+      await this._showAlterationCostSkillDialog (alteration, bonusSkill, dropFunc);
     }
 
   }
@@ -107,7 +107,6 @@ export class AlterationHandler {
         }
       }
 
-      let selectedEssence = "";
       for (const skill in this._actor.system.skills) {
         for (const essence of essences) {
           if (options[essence]) {
@@ -160,8 +159,8 @@ export class AlterationHandler {
     }
 
     if (!costSkill) {
-        ui.notifications.warn(game.idemo8n.localize('E20.AlterationSelectNoSkill'));
-        return;
+      ui.notifications.warn(game.idemo8n.localize('E20.AlterationSelectNoSkill'));
+      return;
     }
     const bonusEssence = alteration.system.essenceBonus;
     const bonusEssenceValue = this._actor.system.essences[bonusEssence] + 1;
