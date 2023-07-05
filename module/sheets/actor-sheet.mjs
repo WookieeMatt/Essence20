@@ -303,10 +303,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).closest(".item");
       const itemId = li.data("itemId");
-      const parentId = li.data("parentId");
-      const item = parentId
-        ? game.items.get(itemId)
-        : this.actor.items.get(itemId);
+      const item = this.actor.items.get(itemId) || game.items.get(itemId) || searchCompendium(itemId);
       item.sheet.render(true);
     });
 
