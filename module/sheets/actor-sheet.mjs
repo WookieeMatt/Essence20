@@ -1,5 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { searchCompendium } from "../helpers/utils.mjs";
+import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
@@ -11,6 +12,7 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
+    this._alterHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
     this._prHandler = new PowerRangerHandler(this);
