@@ -576,6 +576,8 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'weaponEffect':
+      return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
     case 'upgrade':
       // Drones can only accept drone Upgrades
       if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
@@ -588,8 +590,7 @@ export class Essence20ActorSheet extends ActorSheet {
         ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
         return false;
       }
-    case 'weaponEffect':
-      return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
+
     default:
       return super._onDropItem(event, data);
     }
