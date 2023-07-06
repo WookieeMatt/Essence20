@@ -17,9 +17,6 @@ export class AlterationHandler {
     if (alteration.system.essenceBonus) {
       await this._showAlterationBonusSkillDialog(alteration, dropFunc);
     }
-
-
-
   }
 
   async _showAlterationBonusSkillDialog(alteration, dropFunc) {
@@ -33,6 +30,21 @@ export class AlterationHandler {
       }
     }
 
+    if (alteration.system.essenceBonus == 'speed') {
+      const skill = "initiatve"
+      choices[skill] = {
+        chosen: false,
+        label: CONFIG.E20.originSkills[skill],
+      };
+    }
+
+    if (alteration.system.essenceBonus == 'strength') {
+      const skill = "conditioning"
+      choices[skill] = {
+        chosen: false,
+        label: CONFIG.E20.originSkills[skill],
+      };
+    }
     new Dialog(
       {
         title: game.i18n.localize('E20.AlterationIncrease'),
@@ -119,6 +131,21 @@ export class AlterationHandler {
           }
         }
       }
+      if (costEssence == 'speed') {
+        const skill = "initiative"
+        choices[skill] = {
+          chosen: false,
+          label: CONFIG.E20.originSkills[skill],
+        };
+      }
+
+      if (costEssence == 'strength') {
+        const skill = "conditioning"
+        choices[skill] = {
+          chosen: false,
+          label: CONFIG.E20.originSkills[skill],
+        };
+      }
 
     } else {
       const essence = alteration.system.essenceCost;
@@ -129,6 +156,21 @@ export class AlterationHandler {
             label: CONFIG.E20.originSkills[skill],
           };
         }
+      }
+      if (alteration.system.essenceCost == 'speed') {
+        const skill = "initiative"
+        choices[skill] = {
+          chosen: false,
+          label: CONFIG.E20.originSkills[skill],
+        };
+      }
+
+      if (alteration.system.essenceBonus == 'strength') {
+        const skill = "conditioning"
+        choices[skill] = {
+          chosen: false,
+          label: CONFIG.E20.originSkills[skill],
+        };
       }
     }
 
@@ -205,6 +247,7 @@ export class AlterationHandler {
 
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
+    console.log (costSkill, costSkillString,costNewShift)
 
     await this._actor.update ({
       [bonusEssenceString]: bonusEssenceValue,
