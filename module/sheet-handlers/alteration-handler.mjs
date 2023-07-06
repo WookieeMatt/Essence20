@@ -31,7 +31,7 @@ export class AlterationHandler {
     }
 
     if (alteration.system.essenceBonus == 'speed') {
-      const skill = "initiatve"
+      const skill = "initiatve";
       choices[skill] = {
         chosen: false,
         label: CONFIG.E20.originSkills[skill],
@@ -39,12 +39,13 @@ export class AlterationHandler {
     }
 
     if (alteration.system.essenceBonus == 'strength') {
-      const skill = "conditioning"
+      const skill = "conditioning";
       choices[skill] = {
         chosen: false,
         label: CONFIG.E20.originSkills[skill],
       };
     }
+
     new Dialog(
       {
         title: game.i18n.localize('E20.AlterationIncrease'),
@@ -131,8 +132,9 @@ export class AlterationHandler {
           }
         }
       }
+
       if (costEssence == 'speed') {
-        const skill = "initiative"
+        const skill = "initiative";
         choices[skill] = {
           chosen: false,
           label: CONFIG.E20.originSkills[skill],
@@ -140,7 +142,7 @@ export class AlterationHandler {
       }
 
       if (costEssence == 'strength') {
-        const skill = "conditioning"
+        const skill = "conditioning";
         choices[skill] = {
           chosen: false,
           label: CONFIG.E20.originSkills[skill],
@@ -157,8 +159,9 @@ export class AlterationHandler {
           };
         }
       }
+
       if (alteration.system.essenceCost == 'speed') {
-        const skill = "initiative"
+        const skill = "initiative";
         choices[skill] = {
           chosen: false,
           label: CONFIG.E20.originSkills[skill],
@@ -166,7 +169,7 @@ export class AlterationHandler {
       }
 
       if (alteration.system.essenceBonus == 'strength') {
-        const skill = "conditioning"
+        const skill = "conditioning";
         choices[skill] = {
           chosen: false,
           label: CONFIG.E20.originSkills[skill],
@@ -247,7 +250,6 @@ export class AlterationHandler {
 
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
-    console.log (costSkill, costSkillString,costNewShift)
 
     await this._actor.update ({
       [bonusEssenceString]: bonusEssenceValue,
