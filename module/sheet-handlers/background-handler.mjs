@@ -5,7 +5,6 @@ import {
   itemDeleteById,
   rememberOptions,
   searchCompendium,
-
 } from "../helpers/utils.mjs";
 
 export class BackgroundHandler {
