@@ -246,7 +246,6 @@ export class AlterationHandler {
     const bonusNewShift, bonusSkillString = await getSkillChange(bonusSkill, -1, this._actor);
     const costNewShift, costSkillString = await getSkillChange(costSkill, 1, this._actor);
 
-
     await this._actor.update ({
       [bonusEssenceString]: bonusEssenceValue,
       [costEssenceString]: costEssenceValue,
