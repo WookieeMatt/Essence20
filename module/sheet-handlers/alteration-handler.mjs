@@ -143,6 +143,7 @@ export class AlterationHandler {
           };
         }
       }
+
       costEssence = essence;
     }
 
