@@ -134,7 +134,6 @@ export class AlterationHandler {
           }
         }
       }
-
     } else {
       const essence = alteration.system.essenceCost;
       for (const skill in this._actor.system.skills) {
