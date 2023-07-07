@@ -112,6 +112,7 @@ export class AlterationHandler {
   async _showAlterationCostSkillDialog(alteration, bonusSkill, dropFunc, options) {
     const choices = {};
     let costEssence = "";
+
     if (options) {
       const essences = Object.keys(options);
 
