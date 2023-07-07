@@ -62,7 +62,7 @@ export class AlterationHandler {
     ).render(true);
   }
 
-  async _alterationBonusSet (alteration, options, dropFunc) {
+  async _alterationBonusSet(alteration, options, dropFunc) {
     let bonusSkill = "";
     for (const [skill, isSelected] of Object.entries(options)) {
       if (isSelected) {
@@ -81,10 +81,9 @@ export class AlterationHandler {
     } else {
       await this._showAlterationCostSkillDialog (alteration, bonusSkill, dropFunc);
     }
-
   }
 
-  async _showAlterationCostEssenceDialog (alteration, bonusSkill, dropFunc) {
+  async _showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc) {
     const choices = {};
     for (const essence of alteration.system.essenceCost) {
       choices[essence] = {
@@ -108,7 +107,8 @@ export class AlterationHandler {
       },
     ).render(true);
   }
-  async _showAlterationCostSkillDialog (alteration, bonusSkill, dropFunc, options) {
+
+  async _showAlterationCostSkillDialog(alteration, bonusSkill, dropFunc, options) {
     const choices = {};
     let costEssence = "";
     if (options) {
@@ -133,22 +133,6 @@ export class AlterationHandler {
         }
       }
 
-      if (costEssence == 'speed') {
-        const skill = "initiative";
-        choices[skill] = {
-          chosen: false,
-          label: CONFIG.E20.originSkills[skill],
-        };
-      }
-
-      if (costEssence == 'strength') {
-        const skill = "conditioning";
-        choices[skill] = {
-          chosen: false,
-          label: CONFIG.E20.originSkills[skill],
-        };
-      }
-
     } else {
       const essence = alteration.system.essenceCost;
       for (const skill in this._actor.system.skills) {
@@ -159,22 +143,21 @@ export class AlterationHandler {
           };
         }
       }
+      costEssence = essence;
+    }
 
-      if (alteration.system.essenceCost == 'speed') {
-        const skill = "initiative";
-        choices[skill] = {
-          chosen: false,
-          label: CONFIG.E20.originSkills[skill],
-        };
-      }
-
-      if (alteration.system.essenceBonus == 'strength') {
-        const skill = "conditioning";
-        choices[skill] = {
-          chosen: false,
-          label: CONFIG.E20.originSkills[skill],
-        };
-      }
+    if (costEssence == 'speed') {
+      const skill = "initiative";
+      choices[skill] = {
+        chosen: false,
+        label: CONFIG.E20.originSkills[skill],
+      };
+    } else if (costEssence == 'strength') {
+      const skill = "conditioning";
+      choices[skill] = {
+        chosen: false,
+        label: CONFIG.E20.originSkills[skill],
+      };
     }
 
     new Dialog(
@@ -191,7 +174,6 @@ export class AlterationHandler {
         },
       },
     ).render(true);
-
   }
 
   async _alterationStatUpdate(alteration, bonusSkill, dropFunc, costEssence, options) {
