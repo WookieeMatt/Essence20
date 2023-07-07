@@ -195,3 +195,27 @@ export function resizeTokens(actor, width, height) {
     });
   }
 }
+
+/**
+ * Handle changing skills
+ * @param
+ */
+export async function getSkillChange(skill, change, actor) {
+  let skillString = "";
+  let currentShift = "";
+  let newShift = "";
+  if (skill == "initiative") {
+    skillString = `system.${skill}.shift`;
+    currentShift = actor.system[skill].shift;
+    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - change))];
+  } else if (skill == "conditioning") {
+    skillString = `system.${skill}`;
+    currentShift = actor.system[skill];
+    newShift = currentShift + change;
+  } else {
+    currentShift = actor.system.skills[skill].shift;
+    skillString = `system.skills.${skill}.shift`;
+    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - change))];
+  }
+  return [newShift, skillString]
+}

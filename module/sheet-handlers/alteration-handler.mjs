@@ -1,4 +1,5 @@
 import {
+  getSkillChange,
   rememberOptions,
 } from "../helpers/utils.mjs";
 
@@ -197,39 +198,16 @@ export class AlterationHandler {
     const bonusEssenceString = `system.essences.${bonusEssence}`;
     const costEssenceString = `system.essences.${costEssence}`;
     let bonusSkillString = "";
-    let bonusCurrentShift = "";
     let bonusNewShift = "";
     let costSkillString = "";
-    let costCurrentShift = "";
     let costNewShift = "";
 
-    if (bonusSkill == "initiative") {
-      bonusSkillString = `system.${bonusSkill}.shift`;
-      bonusCurrentShift = this._actor.system[bonusSkill].shift;
-      bonusNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(bonusCurrentShift) - 1))];
-    } else if (bonusSkill == "conditioning") {
-      bonusSkillString = `system.${bonusSkill}`;
-      bonusCurrentShift= this._actor.system[bonusSkill];
-      bonusNewShift = bonusCurrentShift + 1;
-    } else {
-      bonusCurrentShift = this._actor.system.skills[bonusSkill].shift;
-      bonusSkillString = `system.skills.${bonusSkill}.shift`;
-      bonusNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(bonusCurrentShift) - 1))];
-    }
-
-    if (costSkill == "initiative") {
-      costSkillString = `system.${costSkill}.shift`;
-      costCurrentShift = this._actor.system[costSkill].shift;
-      costNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(costCurrentShift) + 1))];
-    } else if (costSkill == "conditioning") {
-      costSkillString = `system.${costSkill}`;
-      costCurrentShift= this._actor.system[costSkill];
-      costNewShift = costCurrentShift - 1;
-    } else {
-      costCurrentShift = this._actor.system.skills[costSkill].shift;
-      costSkillString = `system.skills.${costSkill}.shift`;
-      costNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(costCurrentShift) + 1))];
-    }
+    const bonus = await getSkillChange(bonusSkill, 1, this._actor);
+    const cost = await getSkillChange(costSkill, -1, this._actor);
+    bonusNewShift = bonus[0];
+    bonusSkillString = bonus[1];
+    costNewShift = cost[0];
+    costSkillString = cost[1];
 
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
@@ -271,33 +249,12 @@ export class AlterationHandler {
     let costCurrentShift = "";
     let costNewShift = "";
 
-    if (bonusSkill == "initiative") {
-      bonusSkillString = `system.${bonusSkill}.shift`;
-      bonusCurrentShift = this._actor.system[bonusSkill].shift;
-      bonusNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(bonusCurrentShift) + 1))];
-    } else if (bonusSkill == "conditioning") {
-      bonusSkillString = `system.${bonusSkill}`;
-      bonusCurrentShift= this._actor.system[bonusSkill];
-      bonusNewShift = bonusCurrentShift - 1;
-    } else {
-      bonusCurrentShift = this._actor.system.skills[bonusSkill].shift;
-      bonusSkillString = `system.skills.${bonusSkill}.shift`;
-      bonusNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(bonusCurrentShift) + 1))];
-    }
-
-    if (costSkill == "initiative") {
-      costSkillString = `system.${costSkill}.shift`;
-      costCurrentShift = this._actor.system[costSkill].shift;
-      costNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(costCurrentShift) - 1))];
-    } else if (costSkill == "conditioning") {
-      costSkillString = `system.${costSkill}`;
-      costCurrentShift= this._actor.system[costSkill];
-      costNewShift = costCurrentShift + 1;
-    } else {
-      costCurrentShift = this._actor.system.skills[costSkill].shift;
-      costSkillString = `system.skills.${costSkill}.shift`;
-      costNewShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(costCurrentShift) - 1))];
-    }
+    const bonus = await getSkillChange(bonusSkill, -1, this._actor);
+    const cost = await getSkillChange(costSkill, 1, this._actor);
+    bonusNewShift = bonus[0];
+    bonusSkillString = bonus[1];
+    costNewShift = cost[0];
+    costSkillString = cost[1];
 
 
     await this._actor.update ({
