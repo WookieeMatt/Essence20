@@ -202,8 +202,12 @@ export class AlterationHandler {
     let costSkillString = "";
     let costNewShift = "";
 
-    const bonusNewShift, bonusSkillString = await getSkillChange(bonusSkill, 1, this._actor);
-    const costNewShift, costSkillString = await getSkillChange(costSkill, -1, this._actor);
+    const bonus = await getSkillChange(bonusSkill, 1, this._actor);
+    const cost = await getSkillChange(costSkill, -1, this._actor);
+    bonusNewShift = bonus[0];
+    bonusSkillString = bonus[1];
+    costNewShift = cost[0];
+    costSkillString = cost[1];
 
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
