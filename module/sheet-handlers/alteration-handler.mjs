@@ -228,6 +228,7 @@ export class AlterationHandler {
     const bonusEssenceValue = this._actor.system.essences[bonusEssence] - 1;
     const bonusEssenceString = `system.essences.${bonusEssence}`;
     let costEssence = "";
+
     if (alteration.system.selectedEssence) {
       costEssence = alteration.system.selectedEssence;
     } else {
