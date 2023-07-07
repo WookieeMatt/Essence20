@@ -205,7 +205,7 @@ export class BackgroundHandler {
     let skillString = "";
     let newShift = "";
 
-     const skillChange = await getSkillChange(selectedSkill, 1, this._actor);
+    const skillChange = await getSkillChange(selectedSkill, 1, this._actor);
     newShift = skillChange[0];
     skillString = skillChange[1];
 

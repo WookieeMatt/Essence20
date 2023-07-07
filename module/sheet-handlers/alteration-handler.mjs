@@ -243,10 +243,8 @@ export class AlterationHandler {
     const bonusSkill = alteration.system.bonus;
     const costSkill = alteration.system.cost;
     let bonusSkillString = "";
-    let bonusCurrentShift = "";
     let bonusNewShift = "";
     let costSkillString = "";
-    let costCurrentShift = "";
     let costNewShift = "";
 
     const bonus = await getSkillChange(bonusSkill, -1, this._actor);
