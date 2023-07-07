@@ -204,7 +204,9 @@ export class BackgroundHandler {
     let skillString = "";
     let newShift = "";
 
-    const newShift, skillString = await getSkillChange(selectedSkill, 1, this._actor);
+    const skillChange = await getSkillChange(selectedSkill, 1, this._actor);
+    newShift = skillChange[0];
+    skillString = skillChange[1];
 
     const newOriginList = await dropFunc();
     this._originPerkCreate(origin, newOriginList[0]);
