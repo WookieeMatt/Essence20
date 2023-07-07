@@ -219,5 +219,5 @@ export async function getSkillChange(skill, change, actor) {
     newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - change))];
   }
 
-  return newShift, skillString;
+  return [newShift, skillString];
 }

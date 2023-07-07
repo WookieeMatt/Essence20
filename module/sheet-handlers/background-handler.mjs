@@ -201,12 +201,8 @@ export class BackgroundHandler {
 
     const essenceValue = this._actor.system.essences[essence] + 1;
     const essenceString = `system.essences.${essence}`;
-    let skillString = "";
-    let newShift = "";
 
-    const skillChange = await getSkillChange(selectedSkill, 1, this._actor);
-    newShift = skillChange[0];
-    skillString = skillChange[1];
+    const [newShift, skillString] = await getSkillChange(selectedSkill, 1, this._actor);
 
     const newOriginList = await dropFunc();
     this._originPerkCreate(origin, newOriginList[0]);
@@ -355,14 +351,8 @@ export class BackgroundHandler {
     let essence = this._actor.system.originEssencesIncrease;
     let essenceValue = this._actor.system.essences[essence] - 1;
 
-    let skillString = "";
-    let newShift = "";
-
     let selectedSkill = this._actor.system.originSkillsIncrease;
-    const skillChange = await getSkillChange(selectedSkill, 1, this._actor);
-    newShift = skillChange[0];
-    skillString = skillChange[1];
-
+    const [newShift, skillString] = await getSkillChange(selectedSkill, 1, this._actor);
 
     const originDelete = this._actor.items.get(origin._id);
     for (const perk of originDelete.system.originPerkIds) {

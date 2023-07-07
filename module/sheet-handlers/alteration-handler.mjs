@@ -197,18 +197,11 @@ export class AlterationHandler {
     const costEssenceValue  = this._actor.system.essences[costEssence] - 1;
     const bonusEssenceString = `system.essences.${bonusEssence}`;
     const costEssenceString = `system.essences.${costEssence}`;
-    let bonusSkillString = "";
-    let bonusNewShift = "";
-    let costSkillString = "";
-    let costNewShift = "";
 
-    const bonus = await getSkillChange(bonusSkill, 1, this._actor);
-    const cost = await getSkillChange(costSkill, -1, this._actor);
-    bonusNewShift = bonus[0];
-    bonusSkillString = bonus[1];
-    costNewShift = cost[0];
-    costSkillString = cost[1];
+    const [bonusNewShift, bonusSkillString] = await getSkillChange(bonusSkill, 1, this._actor);
+    const [costNewShift, costSkillString] = await getSkillChange(costSkill, -1, this._actor);
 
+    console.log(bonusNewShift, bonusSkillString, costNewShift, costSkillString)
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
 
@@ -242,17 +235,9 @@ export class AlterationHandler {
     const costEssenceString = `system.essences.${costEssence}`;
     const bonusSkill = alteration.system.bonus;
     const costSkill = alteration.system.cost;
-    let bonusSkillString = "";
-    let bonusNewShift = "";
-    let costSkillString = "";
-    let costNewShift = "";
 
-    const bonus = await getSkillChange(bonusSkill, -1, this._actor);
-    const cost = await getSkillChange(costSkill, 1, this._actor);
-    bonusNewShift = bonus[0];
-    bonusSkillString = bonus[1];
-    costNewShift = cost[0];
-    costSkillString = cost[1];
+    const [bonusNewShift, bonusSkillString] = await getSkillChange(bonusSkill, -1, this._actor);
+    const [costNewShift, costSkillString] = await getSkillChange(costSkill, 1, this._actor);
 
     await this._actor.update ({
       [bonusEssenceString]: bonusEssenceValue,
