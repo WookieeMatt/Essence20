@@ -201,7 +201,6 @@ export class AlterationHandler {
     const [bonusNewShift, bonusSkillString] = await getSkillChange(bonusSkill, 1, this._actor);
     const [costNewShift, costSkillString] = await getSkillChange(costSkill, -1, this._actor);
 
-    console.log(bonusNewShift, bonusSkillString, costNewShift, costSkillString)
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
 
