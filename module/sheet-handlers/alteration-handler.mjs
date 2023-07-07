@@ -221,7 +221,6 @@ export class AlterationHandler {
       "system.cost": costSkill,
       "system.selectedEssence": costEssence,
     });
-
   }
 
   async _onAlterationDelete(alteration) {
