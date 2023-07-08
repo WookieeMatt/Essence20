@@ -1,6 +1,6 @@
 import { getItemsOfType, rememberOptions } from "../helpers/utils.mjs";
 
-export class UpgradeHandler {
+export class AttachmentHandler {
   /**
    * Constructor
    * @param {Essence20ActorSheet} actorSheet The actor sheet
@@ -11,16 +11,15 @@ export class UpgradeHandler {
   }
 
   /**
-   * Initiates the process to apply an upgrade to an item on the actor sheet
-   * @param {Upgrade} upgrade   The upgrade
+   * Initiates the process to apply an attachment item to an item on the actor sheet
+   * @param {Item} attachment   The attachment
    * @param {Function} dropFunc The function to call to complete the drop
    */
-  async upgradeItem(upgrade, dropFunc) {
-    const upgradeType = upgrade.system.type;
-    const upgradableItems = await getItemsOfType(upgradeType, this._actor.items);
+  async attachItem(parentType, dropFunc) {
+    const upgradableItems = await getItemsOfType(parentType, this._actor.items);
 
     if (upgradableItems.length == 1) {
-      this._upgradeItem(upgradableItems[0], dropFunc);
+      this._attachItem(upgradableItems[0], dropFunc);
     } else if (upgradableItems.length > 1) {
       const choices = {};
       for (const upgradableItem of upgradableItems) {
@@ -39,7 +38,7 @@ export class UpgradeHandler {
           buttons: {
             save: {
               label: game.i18n.localize('E20.AcceptButton'),
-              callback: html => this._upgradeSelectedItemOptionHandler(
+              callback: html => this._attachSelectedItemOptionHandler(
                 rememberOptions(html), dropFunc,
               ),
             },
@@ -53,34 +52,34 @@ export class UpgradeHandler {
   }
 
   /**
-   * Processes the options resulting from _showUpgradeDialog()
-   * @param {Object} options    The options resulting from _showUpgradeDialog()
+   * Processes the options resulting from _showAttachmentDialog()
+   * @param {Object} options    The options resulting from _showAttachmentDialog()
    * @param {Function} dropFunc The function to call to complete the drop
    * @private
    */
-  async _upgradeSelectedItemOptionHandler(options, dropFunc) {
+  async _attachSelectedItemOptionHandler(options, dropFunc) {
     for (const [itemId, isSelected] of Object.entries(options)) {
       if (isSelected) {
         const item = this._actor.items.get(itemId);
-        this._upgradeItem(item, dropFunc);
+        this._attachItem(item, dropFunc);
         break;
       }
     }
   }
 
   /**
-   * Creates the upgrade for the actor and applies it to the given item
-   * @param {Item} item         The item to upgrade
+   * Creates the attachment for the actor and attaches it to the given item
+   * @param {Item} item         The item to attach to
    * @param {Function} dropFunc The function to call to complete the drop
    * @private
    */
-  async _upgradeItem(item, dropFunc) {
+  async _attachItem(item, dropFunc) {
     if (item) {
-      const newUpgradeList = await dropFunc();
-      const newUpgrade = newUpgradeList[0];
-      const itemUpgradeIds = item.system.upgradeIds;
-      itemUpgradeIds.push(newUpgrade._id);
-      await item.update({ ["system.upgradeIds"]: itemUpgradeIds });
+      const attachmentList = await dropFunc();
+      const newAttachment = attachmentList[0];
+      const itemAttachmentIds = item.system[`${newAttachment.type}Ids`];
+      itemAttachmentIds.push(newAttachment._id);
+      await item.update({ [`system.${newAttachment.type}Ids`]: itemAttachmentIds });
     }
   }
 }
