@@ -1,7 +1,7 @@
 import {
   createItemCopies,
   getItemsOfType,
-  getSkillChange,
+  getShiftedSkill,
   itemDeleteById,
   rememberOptions,
   searchCompendium,
@@ -202,7 +202,7 @@ export class BackgroundHandler {
     const essenceValue = this._actor.system.essences[essence] + 1;
     const essenceString = `system.essences.${essence}`;
 
-    const [newShift, skillString] = await getSkillChange(selectedSkill, 1, this._actor);
+    const [newShift, skillString] = await getShiftedSkill(selectedSkill, 1, this._actor);
 
     const newOriginList = await dropFunc();
     this._originPerkCreate(origin, newOriginList[0]);
@@ -352,7 +352,7 @@ export class BackgroundHandler {
     let essenceValue = this._actor.system.essences[essence] - 1;
 
     let selectedSkill = this._actor.system.originSkillsIncrease;
-    const [newShift, skillString] = await getSkillChange(selectedSkill, 1, this._actor);
+    const [newShift, skillString] = await getShiftedSkill(selectedSkill, 1, this._actor);
 
     const originDelete = this._actor.items.get(origin._id);
     for (const perk of originDelete.system.originPerkIds) {

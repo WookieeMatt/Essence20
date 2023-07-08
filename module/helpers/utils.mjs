@@ -197,10 +197,12 @@ export function resizeTokens(actor, width, height) {
 }
 
 /**
- * Handle changing skills
- * @param
+ * Handle Shifting skills
+ * @param {Text} skill The skill shifting
+ * @param {Number} shift The quantity of the shift
+ * @param {Actor} actor  The actor
  */
-export async function getSkillChange(skill, change, actor) {
+export async function getShiftedSkill(skill, shift, actor) {
   let skillString = "";
   let currentShift = "";
   let newShift = "";
@@ -208,15 +210,15 @@ export async function getSkillChange(skill, change, actor) {
   if (skill == "initiative") {
     skillString = `system.${skill}.shift`;
     currentShift = actor.system[skill].shift;
-    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - change))];
+    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - shift))];
   } else if (skill == "conditioning") {
     skillString = `system.${skill}`;
     currentShift = actor.system[skill];
-    newShift = currentShift + change;
+    newShift = currentShift + shift;
   } else {
     currentShift = actor.system.skills[skill].shift;
     skillString = `system.skills.${skill}.shift`;
-    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - change))];
+    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - shift))];
   }
 
   return [newShift, skillString];

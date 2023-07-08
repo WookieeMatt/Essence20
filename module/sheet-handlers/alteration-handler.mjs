@@ -1,5 +1,5 @@
 import {
-  getSkillChange,
+  getShiftedSkill,
   rememberOptions,
 } from "../helpers/utils.mjs";
 
@@ -14,12 +14,22 @@ export class AlterationHandler {
     this._actor = actorSheet.actor;
   }
 
+  /**
+  * Handle the dropping of an alteratione on to a character
+  * @param {Object} alteration The alteration
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
+  */
   async alterationUpdate(alteration, dropFunc) {
     if (alteration.system.essenceBonus) {
       await this._showAlterationBonusSkillDialog(alteration, dropFunc);
     }
   }
 
+  /**
+  * Handles creating a list to select a skill to increase
+  * @param {Object} alteration The alteration
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
+  */
   async _showAlterationBonusSkillDialog(alteration, dropFunc) {
     const choices = {};
     for (const skill in this._actor.system.skills) {
@@ -49,21 +59,27 @@ export class AlterationHandler {
 
     new Dialog(
       {
-        title: game.i18n.localize('E20.AlterationIncrease'),
+        title: game.i18n.localize('E20.AlterationSkillIncrease'),
         content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
           choices,
         }),
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._alterationBonusSet(alteration, rememberOptions(html), dropFunc),
+            callback: html => this._processAlterationSkillIncrease(alteration, rememberOptions(html), dropFunc),
           },
         },
       },
     ).render(true);
   }
 
-  async _alterationBonusSet(alteration, options, dropFunc) {
+  /**
+  * Handles choosing a skill to increase
+  * @param {Object} alteration The alteration
+   * @param {Object} options    The options resulting from _showAlterationBonusSkillDialog()
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
+  */
+  async _processAlterationSkillIncrease(alteration, options, dropFunc) {
     let bonusSkill = "";
     for (const [skill, isSelected] of Object.entries(options)) {
       if (isSelected) {
@@ -84,6 +100,12 @@ export class AlterationHandler {
     }
   }
 
+  /**
+  * Handles creating a dialog to choose an essencd to decrease
+  * @param {Object} alteration The alteration
+   * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
+  */
   async _showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc) {
     const choices = {};
     for (const essence of alteration.system.essenceCost) {
@@ -109,6 +131,13 @@ export class AlterationHandler {
     ).render(true);
   }
 
+  /**
+  * Handles creating a dialog to select a skill to decrease
+  * @param {Object} alteration The alteration
+   * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
+  * @param {Object} options    The options resulting from _showAlterationCostEssenceDialog()
+  */
   async _showAlterationCostSkillDialog(alteration, bonusSkill, dropFunc, options) {
     const choices = {};
     let costEssence = "";
@@ -178,6 +207,14 @@ export class AlterationHandler {
     ).render(true);
   }
 
+  /**
+  * Handles the setting of values from a essence bonus alteration
+  * @param {Object} alteration The alteration
+   * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
+  * @param {Text} costEssence    The essence selected from _showAlterationCostEssenceDialog()
+  * @param {Object} options    The options resulting from _showAlterationCostSkillDialog()
+  */
   async _alterationStatUpdate(alteration, bonusSkill, dropFunc, costEssence, options) {
     let costSkill = "";
     for (const [skill, isSelected] of Object.entries(options)) {
@@ -198,8 +235,8 @@ export class AlterationHandler {
     const bonusEssenceString = `system.essences.${bonusEssence}`;
     const costEssenceString = `system.essences.${costEssence}`;
 
-    const [bonusNewShift, bonusSkillString] = await getSkillChange(bonusSkill, 1, this._actor);
-    const [costNewShift, costSkillString] = await getSkillChange(costSkill, -1, this._actor);
+    const [bonusNewShift, bonusSkillString] = await getShiftedSkill(bonusSkill, 1, this._actor);
+    const [costNewShift, costSkillString] = await getShiftedSkill(costSkill, -1, this._actor);
 
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
@@ -218,6 +255,10 @@ export class AlterationHandler {
     });
   }
 
+  /**
+  * Handle the deleting of the alteration from a character
+  * @param {Object} alteration The alteration
+  */
   async _onAlterationDelete(alteration) {
     const bonusEssence = alteration.system.essenceBonus;
     const bonusEssenceValue = this._actor.system.essences[bonusEssence] - 1;
@@ -235,8 +276,8 @@ export class AlterationHandler {
     const bonusSkill = alteration.system.bonus;
     const costSkill = alteration.system.cost;
 
-    const [bonusNewShift, bonusSkillString] = await getSkillChange(bonusSkill, -1, this._actor);
-    const [costNewShift, costSkillString] = await getSkillChange(costSkill, 1, this._actor);
+    const [bonusNewShift, bonusSkillString] = await getShiftedSkill(bonusSkill, -1, this._actor);
+    const [costNewShift, costSkillString] = await getShiftedSkill(costSkill, 1, this._actor);
 
     await this._actor.update ({
       [bonusEssenceString]: bonusEssenceValue,
