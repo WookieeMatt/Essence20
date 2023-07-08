@@ -12,7 +12,7 @@ For support please join our discord: https://discord.gg/74QYVA355W
 
 Manifest URL v11: https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json
 
-Manifest URL v10: https://raw.githubusercontent.com/WookieeMatt/Essence20/v10-branch/system.json
+Manifest URL v10: https://raw.githubusercontent.com/WookieeMatt/Essence20/v10-Branch/system.json
 
 V10 Support stops at 3.2.4 We have now migrated to v11 and will support that version of foundry moving forward. We've included the link for v10 for anyone not yet on v11. However no further updates will be provided. 
 
