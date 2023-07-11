@@ -101,7 +101,7 @@ export class AlterationHandler {
   }
 
   /**
-  * Handles creating a dialog to choose an essencd to decrease
+  * Handles creating a dialog to choose an essence to decrease
   * @param {Object} alteration The alteration
    * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
