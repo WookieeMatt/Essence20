@@ -198,7 +198,7 @@ export function resizeTokens(actor, width, height) {
 
 /**
  * Handle Shifting skills
- * @param {Text} skill The skill shifting
+ * @param {String} skill The skill shifting
  * @param {Number} shift The quantity of the shift
  * @param {Actor} actor  The actor
  */
