@@ -94,16 +94,16 @@ export class AlterationHandler {
     }
 
     if (alteration.system.essenceCost.length > 1) {
-      await this._showAlterationCostEssenceDialog (alteration, bonusSkill, dropFunc);
+      await this._showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc);
     } else {
-      await this._showAlterationCostSkillDialog (alteration, bonusSkill, dropFunc);
+      await this._showAlterationCostSkillDialog(alteration, bonusSkill, dropFunc);
     }
   }
 
   /**
   * Handles creating a dialog to choose an essencd to decrease
-  * @param {Alteration} alteration The alteration
-  * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {Object} alteration The alteration
+   * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc) {
