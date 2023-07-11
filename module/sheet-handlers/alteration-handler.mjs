@@ -16,7 +16,7 @@ export class AlterationHandler {
 
   /**
   * Handle the dropping of an alteratione on to a character
-  * @param {Object} alteration The alteration
+  * @param {Alteration} alteration The alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async alterationUpdate(alteration, dropFunc) {
@@ -75,8 +75,8 @@ export class AlterationHandler {
 
   /**
   * Handles choosing a skill to increase
-  * @param {Object} alteration The alteration
-   * @param {Object} options    The options resulting from _showAlterationBonusSkillDialog()
+  * @param {Alteration} alteration The alteration
+  * @param {Object} options    The options resulting from _showAlterationBonusSkillDialog()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _processAlterationSkillIncrease(alteration, options, dropFunc) {
@@ -102,8 +102,8 @@ export class AlterationHandler {
 
   /**
   * Handles creating a dialog to choose an essencd to decrease
-  * @param {Object} alteration The alteration
-   * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {Alteration} alteration The alteration
+  * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc) {
@@ -133,8 +133,8 @@ export class AlterationHandler {
 
   /**
   * Handles creating a dialog to select a skill to decrease
-  * @param {Object} alteration The alteration
-   * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {Alteration} alteration The alteration
+  * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   * @param {Object} options    The options resulting from _showAlterationCostEssenceDialog()
   */
@@ -209,8 +209,8 @@ export class AlterationHandler {
 
   /**
   * Handles the setting of values from a essence bonus alteration
-  * @param {Object} alteration The alteration
-   * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {Alteration} alteration The alteration
+  * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   * @param {Text} costEssence    The essence selected from _showAlterationCostEssenceDialog()
   * @param {Object} options    The options resulting from _showAlterationCostSkillDialog()
@@ -257,7 +257,7 @@ export class AlterationHandler {
 
   /**
   * Handle the deleting of the alteration from a character
-  * @param {Object} alteration The alteration
+  * @param {Alteration} alteration The alteration
   */
   async _onAlterationDelete(alteration) {
     const bonusEssence = alteration.system.essenceBonus;
