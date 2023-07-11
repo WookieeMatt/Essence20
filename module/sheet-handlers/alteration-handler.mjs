@@ -94,9 +94,9 @@ export class AlterationHandler {
     }
 
     if (alteration.system.essenceCost.length > 1) {
-      await this._showAlterationCostEssenceDialog (alteration, bonusSkill, dropFunc);
+      await this._showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc);
     } else {
-      await this._showAlterationCostSkillDialog (alteration, bonusSkill, dropFunc);
+      await this._showAlterationCostSkillDialog(alteration, bonusSkill, dropFunc);
     }
   }
 
