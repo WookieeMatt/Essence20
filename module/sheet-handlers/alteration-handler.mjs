@@ -15,7 +15,7 @@ export class AlterationHandler {
   }
 
   /**
-  * Handle the dropping of an alteratione on to a character
+  * Handle the dropping of an alteration onto a character
   * @param {Object} alteration The alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
