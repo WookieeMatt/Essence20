@@ -42,7 +42,7 @@ export class AlterationHandler {
     }
 
     if (alteration.system.essenceBonus == 'speed') {
-      const skill = "initiatve";
+      const skill = "initiative";
       choices[skill] = {
         chosen: false,
         label: CONFIG.E20.originSkills[skill],
