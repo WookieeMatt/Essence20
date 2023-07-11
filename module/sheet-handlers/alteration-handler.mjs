@@ -27,7 +27,7 @@ export class AlterationHandler {
 
   /**
   * Handles creating a list to select a skill to increase
-  * @param {Object} alteration The alteration
+  * @param {Alteration} alteration The alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _showAlterationBonusSkillDialog(alteration, dropFunc) {
@@ -103,7 +103,7 @@ export class AlterationHandler {
   /**
   * Handles creating a dialog to choose an essencd to decrease
   * @param {Object} alteration The alteration
-   * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {String} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc) {
@@ -134,7 +134,7 @@ export class AlterationHandler {
   /**
   * Handles creating a dialog to select a skill to decrease
   * @param {Alteration} alteration The alteration
-  * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {String} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   * @param {Object} options    The options resulting from _showAlterationCostEssenceDialog()
   */
@@ -210,9 +210,9 @@ export class AlterationHandler {
   /**
   * Handles the setting of values from a essence bonus alteration
   * @param {Alteration} alteration The alteration
-  * @param {Text} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {String} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
-  * @param {Text} costEssence    The essence selected from _showAlterationCostEssenceDialog()
+  * @param {String} costEssence    The essence selected from _showAlterationCostEssenceDialog()
   * @param {Object} options    The options resulting from _showAlterationCostSkillDialog()
   */
   async _alterationStatUpdate(alteration, bonusSkill, dropFunc, costEssence, options) {
