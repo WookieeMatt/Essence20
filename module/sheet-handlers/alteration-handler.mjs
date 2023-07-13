@@ -233,7 +233,7 @@ export class AlterationHandler {
     }
 
     if (!costSkill) {
-      ui.notifications.warn(game.idemo8n.localize('E20.AlterationSelectNoSkill'));
+      ui.notifications.warn(game.i18n.localize('E20.AlterationSelectNoSkill'));
       return;
     }
 
