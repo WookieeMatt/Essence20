@@ -155,10 +155,12 @@ export class AlterationHandler {
         for (const essence of essences) {
           if (options[essence]) {
             if (this._actor.system.skills[skill].essences[essence]) {
-              choices[skill] = {
-                chosen: false,
-                label: CONFIG.E20.originSkills[skill],
-              };
+              if (CONFIG.E20.skillShiftList.indexOf(this._actor.system.skills[skill].shift) < 10) {
+                choices[skill] = {
+                  chosen: false,
+                  label: CONFIG.E20.originSkills[skill],
+                };
+              }
             }
           }
         }
@@ -167,10 +169,12 @@ export class AlterationHandler {
       const essence = alteration.system.essenceCost;
       for (const skill in this._actor.system.skills) {
         if (this._actor.system.skills[skill].essences[essence]) {
-          choices[skill] = {
-            chosen: false,
-            label: CONFIG.E20.originSkills[skill],
-          };
+          if (CONFIG.E20.skillShiftList.indexOf(this._actor.system.skills[skill].shift) < 10) {
+            choices[skill] = {
+              chosen: false,
+              label: CONFIG.E20.originSkills[skill],
+            };
+          }
         }
       }
 
@@ -179,16 +183,20 @@ export class AlterationHandler {
 
     if (costEssence == 'speed') {
       const skill = "initiative";
-      choices[skill] = {
-        chosen: false,
-        label: CONFIG.E20.originSkills[skill],
-      };
+      if (CONFIG.E20.skillShiftList.indexOf(this._actor.system.initiative.shift) < 10) {
+        choices[skill] = {
+          chosen: false,
+          label: CONFIG.E20.originSkills[skill],
+        };
+      }
     } else if (costEssence == 'strength') {
       const skill = "conditioning";
-      choices[skill] = {
-        chosen: false,
-        label: CONFIG.E20.originSkills[skill],
-      };
+      if (this._actor.system.conditioning > 0) {
+        choices[skill] = {
+          chosen: false,
+          label: CONFIG.E20.originSkills[skill],
+        };
+      }
     }
 
     new Dialog(
