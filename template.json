@@ -68,6 +68,13 @@
             "morphed": 0,
             "total": 0
           },
+          "climb": {
+            "altMode":0,
+            "base": 0,
+            "bonus": 0,
+            "morphed": 0,
+            "total": 0
+          },
           "ground": {
             "altMode":0,
             "base": 0,
