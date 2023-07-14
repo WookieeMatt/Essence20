@@ -156,7 +156,7 @@ export class AlterationHandler {
         for (const essence of essences) {
           if (options[essence]) {
             if (this._actor.system.skills[skill].essences[essence]) {
-              if (compareShift(this._actor.system.skills[skill].shift, "d20","greater")) {
+              if (compareShift(this._actor.system.skills[skill].shift, "d20", "greater")) {
                 choices[skill] = {
                   chosen: false,
                   label: CONFIG.E20.originSkills[skill],
@@ -170,7 +170,7 @@ export class AlterationHandler {
       const essence = alteration.system.essenceCost;
       for (const skill in this._actor.system.skills) {
         if (this._actor.system.skills[skill].essences[essence]) {
-          if (compareShift(this._actor.system.skills[skill].shift, "d20","greater")) {
+          if (compareShift(this._actor.system.skills[skill].shift, "d20", "greater")) {
             choices[skill] = {
               chosen: false,
               label: CONFIG.E20.originSkills[skill],
