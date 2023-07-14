@@ -234,23 +234,23 @@ export async function getShiftedSkill(skill, shift, actor) {
 export function compareShift(shift1,shift2,operator) {
   if (operator == 'greater') {
     if (CONFIG.E20.skillShiftList.indexOf(shift1) < CONFIG.E20.skillShiftList.indexOf(shift2)){
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   }
   else if (operator == 'lesser') {
     if (CONFIG.E20.skillShiftList.indexOf(shift1) > CONFIG.E20.skillShiftList.indexOf(shift2)){
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   }
   else if (operator == 'equal') {
     if (CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2)){
-      return true
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 }
