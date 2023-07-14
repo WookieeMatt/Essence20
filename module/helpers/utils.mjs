@@ -247,7 +247,7 @@ export function compareShift(shift1,shift2,operator) {
     }
   }
   else if (operator == 'equal') {
-    if (CONFIG.E20.skillShiftList.indexOf(shift1) = CONFIG.E20.skillShiftList.indexOf(shift2)){
+    if (CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2)){
       return true
     } else {
       return false
