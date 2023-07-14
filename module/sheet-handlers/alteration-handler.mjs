@@ -1,4 +1,5 @@
 import {
+  compareShift,
   getShiftedSkill,
   rememberOptions,
 } from "../helpers/utils.mjs";
@@ -155,7 +156,7 @@ export class AlterationHandler {
         for (const essence of essences) {
           if (options[essence]) {
             if (this._actor.system.skills[skill].essences[essence]) {
-              if (CONFIG.E20.skillShiftList.indexOf(this._actor.system.skills[skill].shift) < 10) {
+              if (compareShift(this._actor.system.skills[skill].shift, "d20","greater")) {
                 choices[skill] = {
                   chosen: false,
                   label: CONFIG.E20.originSkills[skill],
@@ -169,7 +170,7 @@ export class AlterationHandler {
       const essence = alteration.system.essenceCost;
       for (const skill in this._actor.system.skills) {
         if (this._actor.system.skills[skill].essences[essence]) {
-          if (CONFIG.E20.skillShiftList.indexOf(this._actor.system.skills[skill].shift) < 10) {
+          if (compareShift(this._actor.system.skills[skill].shift, "d20","greater")) {
             choices[skill] = {
               chosen: false,
               label: CONFIG.E20.originSkills[skill],

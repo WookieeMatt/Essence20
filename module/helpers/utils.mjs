@@ -225,3 +225,32 @@ export async function getShiftedSkill(skill, shift, actor) {
 
   return [newShift, skillString];
 }
+
+/** Handle comparing skill rank
+ * @param {String} shift1 The first skill
+ * @param {String} shift2 The second skill
+ * @param {String} operator The type of comparison
+ */
+export function compareShift(shift1,shift2,operator) {
+  if (operator == 'greater') {
+    if (CONFIG.E20.skillShiftList.indexOf(shift1) < CONFIG.E20.skillShiftList.indexOf(shift2)){
+      return true
+    } else {
+      return false
+    }
+  }
+  else if (operator == 'lesser') {
+    if (CONFIG.E20.skillShiftList.indexOf(shift1) > CONFIG.E20.skillShiftList.indexOf(shift2)){
+      return true
+    } else {
+      return false
+    }
+  }
+  else if (operator == 'equal') {
+    if (CONFIG.E20.skillShiftList.indexOf(shift1) = CONFIG.E20.skillShiftList.indexOf(shift2)){
+      return true
+    } else {
+      return false
+    }
+  }
+}
