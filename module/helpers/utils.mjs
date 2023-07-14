@@ -238,15 +238,13 @@ export function compareShift(shift1,shift2,operator) {
     } else {
       return false;
     }
-  }
-  else if (operator == 'lesser') {
+  } else if (operator == 'lesser') {
     if (CONFIG.E20.skillShiftList.indexOf(shift1) > CONFIG.E20.skillShiftList.indexOf(shift2)){
       return true;
     } else {
       return false;
     }
-  }
-  else if (operator == 'equal') {
+  } else if (operator == 'equal') {
     if (CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2)){
       return true;
     } else {
