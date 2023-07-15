@@ -1,6 +1,7 @@
 import {
   createItemCopies,
   getItemsOfType,
+  getShiftedSkill,
   itemDeleteById,
   rememberOptions,
   searchCompendium,
@@ -200,23 +201,8 @@ export class BackgroundHandler {
 
     const essenceValue = this._actor.system.essences[essence] + 1;
     const essenceString = `system.essences.${essence}`;
-    let skillString = "";
-    let currentShift = "";
-    let newShift = "";
 
-    if (selectedSkill == "initiative") {
-      skillString = `system.${selectedSkill}.shift`;
-      currentShift = this._actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
-    } else if (selectedSkill == "conditioning") {
-      skillString = `system.${selectedSkill}`;
-      currentShift = this._actor.system[selectedSkill];
-      newShift = currentShift + 1;
-    } else {
-      currentShift = this._actor.system.skills[selectedSkill].shift;
-      skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - 1))];
-    }
+    const [newShift, skillString] = await getShiftedSkill(selectedSkill, 1, this._actor);
 
     const newOriginList = await dropFunc();
     this._originPerkCreate(origin, newOriginList[0]);
@@ -365,24 +351,8 @@ export class BackgroundHandler {
     let essence = this._actor.system.originEssencesIncrease;
     let essenceValue = this._actor.system.essences[essence] - 1;
 
-    let skillString = "";
-    let currentShift = "";
-    let newShift = "";
-
     let selectedSkill = this._actor.system.originSkillsIncrease;
-    if (selectedSkill == "initiative") {
-      skillString = `system.${selectedSkill}.shift`;
-      currentShift = this._actor.system[selectedSkill].shift;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
-    } else if (selectedSkill == "conditioning") {
-      skillString = `system.${selectedSkill}`;
-      currentShift = this._actor.system[selectedSkill];
-      newShift = currentShift - 1;
-    } else {
-      currentShift = this._actor.system.skills[selectedSkill].shift;
-      skillString = `system.skills.${selectedSkill}.shift`;
-      newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) + 1))];
-    }
+    const [newShift, skillString] = await getShiftedSkill(selectedSkill, 1, this._actor);
 
     const originDelete = this._actor.items.get(origin._id);
     for (const perk of originDelete.system.originPerkIds) {

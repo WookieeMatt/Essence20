@@ -1,5 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { searchCompendium } from "../helpers/utils.mjs";
+import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
@@ -11,6 +12,7 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
+    this._alHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
     this._prHandler = new PowerRangerHandler(this);
@@ -530,6 +532,8 @@ export class Essence20ActorSheet extends ActorSheet {
       this._bgHandler.onInfluenceDelete(item);
     } else if (item.type == "altMode") {
       this._tfHandler.onAltModeDelete(item, this);
+    } else if (item.type == "alteration") {
+      this._alHandler._onAlterationDelete(item);
     }
 
     item.delete();
@@ -569,6 +573,8 @@ export class Essence20ActorSheet extends ActorSheet {
     if (!sourceItem) return false;
 
     switch (sourceItem.type) {
+    case 'alteration':
+      return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
