@@ -230,7 +230,7 @@ export async function getShiftedSkill(skill, shift, actor) {
  * @param {String} shift1 The first skill
  * @param {String} shift2 The second skill
  * @param {String} operator The type of comparison
- * @return {Boolean} result the result of the comparison
+ * @return {Boolean} The result of the comparison
  */
 export function compareShift(shift1, shift2, operator) {
   if (operator == 'greater') {
