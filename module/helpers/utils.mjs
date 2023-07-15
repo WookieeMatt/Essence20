@@ -195,3 +195,51 @@ export function resizeTokens(actor, width, height) {
     });
   }
 }
+
+/**
+ * Handle Shifting skills
+ * @param {String} skill The skill shifting
+ * @param {Number} shift The quantity of the shift
+ * @param {Actor} actor  The actor
+ * @return {String} newShift The value of the new Shift
+ * @return {String} skillString The name of the skill being shifted
+ */
+export async function getShiftedSkill(skill, shift, actor) {
+  let skillString = "";
+  let currentShift = "";
+  let newShift = "";
+
+  if (skill == "initiative") {
+    skillString = `system.${skill}.shift`;
+    currentShift = actor.system[skill].shift;
+    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - shift))];
+  } else if (skill == "conditioning") {
+    skillString = `system.${skill}`;
+    currentShift = actor.system[skill];
+    newShift = currentShift + shift;
+  } else {
+    currentShift = actor.system.skills[skill].shift;
+    skillString = `system.skills.${skill}.shift`;
+    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - shift))];
+  }
+
+  return [newShift, skillString];
+}
+
+/** Handle comparing skill rank
+ * @param {String} shift1 The first skill
+ * @param {String} shift2 The second skill
+ * @param {String} operator The type of comparison
+ * @return {Boolean} The result of the comparison
+ */
+export function compareShift(shift1, shift2, operator) {
+  if (operator == 'greater') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) < CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else if (operator == 'lesser') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) > CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else if (operator == 'equal') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else {
+    throw new Error(`Operator ${operator} not expected`);
+  }
+}
