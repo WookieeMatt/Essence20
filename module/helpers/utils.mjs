@@ -240,6 +240,6 @@ export function compareShift(shift1, shift2, operator) {
   } else if (operator == 'equal') {
     return CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2);
   } else {
-    return false;
+    throw new Error(`Operator ${operator} not expected`);
   }
 }
