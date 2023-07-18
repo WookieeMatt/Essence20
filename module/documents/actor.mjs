@@ -171,7 +171,7 @@ export class Essence20Actor extends Actor {
     const system = this.system;
     system.movementIsReadOnly = true;
 
-    const movementTypes = ['aerial', 'ground', 'swim'];
+    const movementTypes = ['aerial', 'ground', 'climb', 'swim'];
     for (const movementType of movementTypes) {
       system.movement[movementType].base = parseInt(system.movement[movementType].base);
       system.movement[movementType].total = 0;
@@ -195,7 +195,17 @@ export class Essence20Actor extends Actor {
       }
 
       movementTotal += system.movement[movementType].total;
+
+      if (system.movement[movementType].total == 0) {
+        console.log(movementType)
+        if (movementType == 'climb' || movementType == 'swim') {
+          console.log('GotHere')
+          system.movement[movementType].total = system.movement.ground.total * .5
+        }
+      }
     }
+
+
 
     if (!movementTotal) {
       system.movementNotSet = true;

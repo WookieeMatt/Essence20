@@ -234,6 +234,7 @@
     "ModeBotMode": "Bot Mode",
     "ModeAny": "Any Mode",
     "MovementTypeAerial": "Aerial",
+    "MovementTypeClimb": "Climb ",
     "MovementTypeGround": "Ground",
     "MovementTypeSwim": "Swim",
     "MulitpleOriginError": "Characters can only have one Origin",
