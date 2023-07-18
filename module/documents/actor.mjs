@@ -197,10 +197,8 @@ export class Essence20Actor extends Actor {
       movementTotal += system.movement[movementType].total;
 
       if (system.movement[movementType].total == 0) {
-        console.log(movementType)
         if (movementType == 'climb' || movementType == 'swim') {
-          console.log('GotHere')
-          system.movement[movementType].total = system.movement.ground.total * .5
+          system.movement[movementType].total = system.movement.ground.total * .5;
         }
       }
     }
