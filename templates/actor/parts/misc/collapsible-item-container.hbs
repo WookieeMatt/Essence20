@@ -6,7 +6,7 @@
     {{#each items as |item|}}
     <li class="item accordion-wrapper flexcol" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
       {{!-- Item label and buttons --}}
-      {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
 
       {{!-- Item content --}}
       {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
