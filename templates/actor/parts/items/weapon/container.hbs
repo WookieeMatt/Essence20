@@ -3,10 +3,6 @@
     {{> "systems/essence20/templates/actor/parts/items/weapon/details.hbs"}}
   {{/inline}}
 
-  {{#*inline "roll-button" item}}
-    <a class="rollable" data-roll-type="weapon" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
-  {{/inline}}
-
   {{#*inline "item-label" item}}
     {{#ifEquals @root.actor.type 'powerRanger'}}
       {{>"systems/essence20/templates/actor/parts/items/classFeature/selector.hbs"}}

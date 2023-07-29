@@ -846,11 +846,15 @@
       "prerequisite": null
     },
     "weaponEffect" : {
+      "classification": {
+        "skill": "athletics",
+        "style": "melee"
+      },
       "damageType": "",
-      "damageValue": 0,
-      "downshift": 0,
+      "damageValue": 1,
+      "shiftDown": 0,
       "numHands": 1,
-      "numTargets": 0,
+      "numTargets": 1,
       "radius": 0,
       "range": {
         "min": null,
