@@ -23,8 +23,46 @@ export class AlterationHandler {
   async alterationUpdate(alteration, dropFunc) {
     if (alteration.system.essenceBonus) {
       await this._showAlterationBonusSkillDialog(alteration, dropFunc);
+    } else if (alteration.system.bonusMovement) {
+      await this._showAlterationCostMovementDialog(alteration, dropFunc);
     }
   }
+
+  /**
+  *
+  * @param {Alteration} alteration The alteration
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
+  */
+  async _showAlterationCostMovementDialog (alteration, dropFunc) {
+    const choices = {};
+    for (const movementType in this._actor.system.movement) {
+      console.log(this._actor.system.movement[movementType].base)
+      if (this._actor.system.movement[movementType].base) {
+        console.log(movementType)
+        choices[movementType] = {
+          chosen: false,
+          label: CONFIG.E20.movementTypes[movementType],
+          value: this._actor.system.movement[movementType].base,
+        };
+      }
+    }
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.AlterationMovementCost'),
+        content: await renderTemplate("systems/essence20/templates/dialog/alteration-movement.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._processAlterationMovementCost(alteration, rememberOptions(html), dropFunc),
+          },
+        },
+      },
+    ).render(true);
+  }
+
+
 
   /**
   * Handles creating a list to select a skill to increase
@@ -295,4 +333,6 @@ export class AlterationHandler {
       [costSkillString]: costNewShift,
     });
   }
+
+
 }

@@ -6,6 +6,7 @@ import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
 import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
+import { Essence20Dialog } from "./dialog.mjs"
 // Import helper/utility classes and constants.
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
@@ -81,6 +82,7 @@ Hooks.once('init', async function () {
   CONFIG.Item.documentClass = Essence20Item;
   CONFIG.statusEffects = foundry.utils.deepClone(E20.statusEffects);
 
+
   // Register System Settings
   registerSystemSettings();
 
@@ -89,6 +91,7 @@ Hooks.once('init', async function () {
   Actors.registerSheet("essence20", Essence20ActorSheet, { makeDefault: true });
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("essence20", Essence20ItemSheet, { makeDefault: true });
+
 
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
