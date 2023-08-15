@@ -1,0 +1,42 @@
+{
+  "name": "Cybertronian Military",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 52
+    },
+    "bond": "",
+    "hangUpIds": [
+      "L2oBtS3KAwncY2xY",
+      "79jifb9w1OlopUUY",
+      "M5gCV4i6hoOSowIb"
+    ],
+    "perkIds": [
+      "j1EQkzPX3k5HgVMQ"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686316179646,
+    "modifiedTime": 1686340779668,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "ApqE17GbqR3eOWmd",
+  "folder": "DK1GwBI01Dgiz7QR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!ApqE17GbqR3eOWmd"
+}

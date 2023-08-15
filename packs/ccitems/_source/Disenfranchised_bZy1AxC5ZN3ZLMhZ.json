@@ -1,0 +1,32 @@
+{
+  "folder": "mD3NGV0g8UZq5x8r",
+  "name": "Disenfranchised",
+  "type": "perk",
+  "_id": "bZy1AxC5ZN3ZLMhZ",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 30
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686421019228,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!bZy1AxC5ZN3ZLMhZ"
+}

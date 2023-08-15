@@ -1,0 +1,19 @@
+{
+  "name": "Alt Modes",
+  "type": "Item",
+  "folder": null,
+  "_id": "OYKMZYECwtJb5a92",
+  "sorting": "a",
+  "sort": 100000,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": null,
+    "modifiedTime": 1686343025712,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "color": null,
+  "_key": "!folders!OYKMZYECwtJb5a92"
+}

@@ -1,0 +1,42 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.UNgNYpUADVTaNrWt",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "G8E3L5zBXbFvkm9L",
+  "changes": [
+    {
+      "key": "system.defenses.evasion.morphed",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    },
+    {
+      "key": "system.defenses.toughness.morphed",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    },
+    {
+      "key": "system.skills.infiltration.edge",
+      "mode": 5,
+      "value": "true",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Morphed Bonus",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!UNgNYpUADVTaNrWt.G8E3L5zBXbFvkm9L"
+}

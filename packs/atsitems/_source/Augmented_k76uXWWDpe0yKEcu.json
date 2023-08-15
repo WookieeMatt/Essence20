@@ -1,0 +1,31 @@
+{
+  "name": "Augmented",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 44
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1680309643672,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "k76uXWWDpe0yKEcu",
+  "folder": "TCpK6lLW8Yc9ocnk",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!k76uXWWDpe0yKEcu"
+}

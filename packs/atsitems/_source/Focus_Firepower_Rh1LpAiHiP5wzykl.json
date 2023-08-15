@@ -1,0 +1,34 @@
+{
+  "name": "Focus Firepower",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 69
+    },
+    "prerequisite": "Trageting d6 or higher",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686264030131,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "Rh1LpAiHiP5wzykl",
+  "folder": "wCReLTLx2TAq0REM",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!Rh1LpAiHiP5wzykl"
+}

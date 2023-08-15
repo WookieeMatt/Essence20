@@ -1,0 +1,48 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.evFWTG94sRZa1Vr6",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "sYOx6z8wHYJxiLic",
+  "changes": [
+    {
+      "key": "system.defenses.cleverness.bonus",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    },
+    {
+      "key": "system.defenses.evasion.bonus",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    },
+    {
+      "key": "system.defenses.toughness.bonus",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    },
+    {
+      "key": "system.defenses.willpower.bonus",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Adjacent Ally",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!T95n2lwh3F5OHjnB.sYOx6z8wHYJxiLic"
+}

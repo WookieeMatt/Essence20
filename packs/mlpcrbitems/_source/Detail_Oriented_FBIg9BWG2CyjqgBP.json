@@ -1,0 +1,34 @@
+{
+  "name": "Detail Oriented",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 58
+    },
+    "prerequisite": "",
+    "type": "influence"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686009281445,
+    "modifiedTime": 1686342150550,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "FBIg9BWG2CyjqgBP",
+  "folder": "Tfmw9ivxWE7QDsfv",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!FBIg9BWG2CyjqgBP"
+}

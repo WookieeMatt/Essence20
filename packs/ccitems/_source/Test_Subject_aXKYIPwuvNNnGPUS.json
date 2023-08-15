@@ -1,0 +1,32 @@
+{
+  "folder": "lZ2algGajxm0TzRv",
+  "name": "Test Subject",
+  "type": "perk",
+  "_id": "aXKYIPwuvNNnGPUS",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 73
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686494773742,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!aXKYIPwuvNNnGPUS"
+}
