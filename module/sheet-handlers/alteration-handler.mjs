@@ -2,6 +2,7 @@ import {
   compareShift,
   getShiftedSkill,
   rememberOptions,
+  rememberValues,
 } from "../helpers/utils.mjs";
 
 export class AlterationHandler {
@@ -36,14 +37,23 @@ export class AlterationHandler {
   async _showAlterationCostMovementDialog (alteration, dropFunc) {
     const choices = {};
     for (const movementType in this._actor.system.movement) {
-      console.log(this._actor.system.movement[movementType].base)
-      if (this._actor.system.movement[movementType].base) {
-        console.log(movementType)
-        choices[movementType] = {
-          chosen: false,
-          label: CONFIG.E20.movementTypes[movementType],
-          value: this._actor.system.movement[movementType].base,
-        };
+      let maxValue = 0;
+      if (alteration.bonusMovementType == movementType) {
+
+      } else {
+        if (this._actor.system.movement[movementType].base) {
+          if (movementType == 'ground') {
+            maxValue = (this._actor.system.movement[movementType].base/5-2)
+          }else {
+            maxValue = (this._actor.system.movement[movementType].base/5-1)
+          }
+          choices[movementType] = {
+            chosen: false,
+            label: CONFIG.E20.movementTypes[movementType],
+            value: 0,
+            maxValue: [maxValue],
+          };
+        }
       }
     }
     new Dialog(
@@ -55,11 +65,32 @@ export class AlterationHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._processAlterationMovementCost(alteration, rememberOptions(html), dropFunc),
+            callback: html => this._processAlterationMovementCost(alteration, rememberValues(html), dropFunc),
           },
         },
       },
     ).render(true);
+  }
+
+  async _processAlterationMovementCost(alteration, options, dropFunc) {
+    const newAlterationList = await dropFunc();
+    const newAlteration = newAlterationList[0];
+
+    for (const [movementReductionType, movementReductionValue] of Object.entries(options)) {
+      const newMovementValue = this._actor.system.movement[movementReductionType].base-(movementReductionValue*5)
+      const movementReductionString = `system.movement.${movementReductionType}.base`;
+      await this._actor.update ({
+        [movementReductionString]: newMovementValue,
+      });
+
+
+    }
+
+    bonusMovementString = `system.movement.${alteration.system.bonusMovementType}.base`
+    await this._actor.update ({
+      [bonusMovementString]: alteration.system.bonusMovement,
+    });
+
   }
 
 

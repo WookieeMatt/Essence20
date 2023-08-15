@@ -143,6 +143,15 @@ export function rememberOptions(html) {
   return options;
 }
 
+export function rememberValues(html) {
+  const options = {};
+  html.find("input").each((i, el) => {
+    options[el.id] = el.value;
+  });
+
+  return options;
+}
+
 /**
  * Creates copies of Items for given IDs
  * @param {String[]} ids The IDs of the Items to be copied

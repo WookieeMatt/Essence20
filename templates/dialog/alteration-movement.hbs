@@ -1,14 +1,13 @@
+<label>{{localize 'E20.AlterationMovementText'}}</label>
+<p></p>
 <ol class="dialog-options">
   {{#each choices as |choice key|}}
   <li>
-    <label class="checkbox">
-      <input type="checkbox" name="choices" id={{key}} data-dtype="Boolean" {{checked choice.chosen}}>
-      {{localize choice.label}}
+    <label>
+      {{localize choice.label}} (min 0, max {{choice.maxValue}})
     </label>
     <span>
-      <a class="alteration-movement-increase">&ndash;</a>
-      <span>{{choice.value}}</span>
-      <a class="alteration-movement-decrease">+</a>
+      <input type="number" name="choices" id={{key}} value= "0" min="0" max="{{choice.maxValue}}">
     </span>
   </li>
   {{/each}}
