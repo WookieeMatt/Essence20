@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.pr_crb_hangups.sbJ6CYXmoKrwv5Jl",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "m8xPc4jow7JQzW3Q",
+  "changes": [
+    {
+      "key": "system.skills.Alertness.snag",
+      "mode": 5,
+      "value": "true",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Alertness Snag",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!sbJ6CYXmoKrwv5Jl.m8xPc4jow7JQzW3Q"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Keep 'Em Laughing",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 23
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681687864357,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "xrwFNj0NDRcWXvXN",
+  "folder": "6JBsYFMKeBdQECxk",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!xrwFNj0NDRcWXvXN"
+}

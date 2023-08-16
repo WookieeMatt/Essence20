@@ -1,0 +1,34 @@
+{
+  "name": "EMT Crash Course",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 94
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1685398806638,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "cBezxXDBMpsRwYbP",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!cBezxXDBMpsRwYbP"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "\"Oh, What Now?\"",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 24
+    },
+    "prerequisite": "",
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681687956006,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "FauecjTdfhdnz7n9",
+  "folder": "6JBsYFMKeBdQECxk",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!FauecjTdfhdnz7n9"
+}

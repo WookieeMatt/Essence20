@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.uTNIVUskV10sJ1Ao",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "MvR1KBFSL6CPWX74",
+  "changes": [
+    {
+      "key": "system.skills.speed.infiltration.shiftDown",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Whimsical",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!XLDVNcC9B4hnSppZ.MvR1KBFSL6CPWX74"
+}

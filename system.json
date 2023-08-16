@@ -95,6 +95,39 @@
       "flags": {}
     }
   ],
+  "packFolders": [
+    {
+      "name": "GI Joe",
+      "sorting": "m",
+      "packs": [
+        "gi_joe_crb",
+        "sgt_slaughter_sourcebook",
+        "cobra_codex"
+      ]
+    },
+    {
+      "name": "My Little Pony",
+      "sorting": "m",
+      "packs": [
+        "mlp_crb"
+      ]
+    },
+    {
+      "name": "Power Rangers",
+      "sorting": "m",
+      "packs": [
+        "pr_crb",
+        "across_the_stars"
+      ]
+    },
+    {
+      "name": "Transformers",
+      "sorting": "m",
+      "packs": [
+        "tf_crb"
+      ]
+    }
+  ],
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stun",
   "socket": true,

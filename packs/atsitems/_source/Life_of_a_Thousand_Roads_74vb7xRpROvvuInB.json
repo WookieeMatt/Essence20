@@ -1,0 +1,36 @@
+{
+  "name": "Life of a Thousand Roads",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 41
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [
+    "6tNAE1jXZAci9eOv"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681744688420,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "74vb7xRpROvvuInB",
+  "folder": "drR1a0cKGlGOZXBX",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!74vb7xRpROvvuInB"
+}

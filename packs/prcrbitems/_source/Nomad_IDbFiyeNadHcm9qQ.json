@@ -1,0 +1,40 @@
+{
+  "name": "Nomad",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 70
+    },
+    "bond": "",
+    "hangUpIds": [
+      "yqTgicNYo9b9B0FH"
+    ],
+    "perkIds": [
+      "C95eqVptP3sXWN5t"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686272893847,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "IDbFiyeNadHcm9qQ",
+  "folder": "1Q1jzdGAVmJ9S5HF",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!IDbFiyeNadHcm9qQ"
+}

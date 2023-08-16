@@ -1,0 +1,34 @@
+{
+  "name": "You Can't Tell Me What To Learn!",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 26
+    },
+    "prerequisite": "",
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681691284703,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "U6ExS3t6Zfw6aqcB",
+  "folder": "6JBsYFMKeBdQECxk",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!U6ExS3t6Zfw6aqcB"
+}

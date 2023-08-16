@@ -1,0 +1,36 @@
+{
+  "name": "Dodgy",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 123
+    },
+    "prerequisite": "Speed 3",
+    "type": "general"
+  },
+  "effects": [
+    "0gYm3Tih86HRdIY0"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1685407830223,
+    "modifiedTime": 1686342150550,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "folder": "hTtvIMEXXET4Kkqf",
+  "_id": "jwhdtCaq0MBotupG",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!jwhdtCaq0MBotupG"
+}

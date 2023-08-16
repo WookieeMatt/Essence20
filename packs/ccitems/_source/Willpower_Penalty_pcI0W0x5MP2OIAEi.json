@@ -1,0 +1,30 @@
+{
+  "name": "Willpower Penalty",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.hr78g0celAOw4Vzk",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "pcI0W0x5MP2OIAEi",
+  "changes": [
+    {
+      "key": "system.defenses.willpower.bonus",
+      "mode": 2,
+      "value": "-1",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!hr78g0celAOw4Vzk.pcI0W0x5MP2OIAEi"
+}

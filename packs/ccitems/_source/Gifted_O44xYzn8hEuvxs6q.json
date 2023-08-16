@@ -1,0 +1,68 @@
+{
+  "folder": "fNZdfcqnnNHonskV",
+  "name": "Gifted",
+  "type": "origin",
+  "_id": "O44xYzn8hEuvxs6q",
+  "img": "systems/essence20/assets/icons/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 44
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "speed",
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "KBKmjp2fzimi30EY"
+    ],
+    "skills": [
+      "conditioning",
+      "initiative",
+      "athletics",
+      "brawn",
+      "intimidation",
+      "might",
+      "acrobatics",
+      "driving",
+      "finesse",
+      "infiltration",
+      "targeting",
+      "alertness",
+      "culture",
+      "science",
+      "survival",
+      "technology",
+      "animalHandling",
+      "deception",
+      "performance",
+      "persuasion",
+      "spellcasting",
+      "streetwise"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686493606486,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!O44xYzn8hEuvxs6q"
+}

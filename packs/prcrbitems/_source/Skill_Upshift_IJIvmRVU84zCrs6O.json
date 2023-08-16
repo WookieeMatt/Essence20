@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.igJWyBvFZf2aFiuv",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "IJIvmRVU84zCrs6O",
+  "changes": [
+    {
+      "key": "system.essenceShifts.smarts.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Skill Upshift",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!oRcjZWMSFIipugZ6.IJIvmRVU84zCrs6O"
+}
