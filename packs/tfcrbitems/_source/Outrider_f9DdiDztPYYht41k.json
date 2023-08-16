@@ -1,0 +1,53 @@
+{
+  "name": "Outrider",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/origin.svg",
+  "system": {
+    "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.NaF9feAfujLYwDfO]{Outrider (Common)}@UUID[Compendium.essence20.tf_crb.Item.WYlv5KoOv8WTUtKN]{Outrider (Long)}</p>",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 52
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "efPOy3Owf2XIAykS"
+    ],
+    "skills": [
+      "alertness",
+      "survival"
+    ],
+    "startingHealth": 3,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681743742241,
+    "modifiedTime": 1686343625458,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "f9DdiDztPYYht41k",
+  "folder": "vECyC1kfkRvVO3FR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!f9DdiDztPYYht41k"
+}

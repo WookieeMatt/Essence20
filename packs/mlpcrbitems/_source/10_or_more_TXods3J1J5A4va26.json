@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.M7fLb600qXWY0dPm",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "TXods3J1J5A4va26",
+  "changes": [
+    {
+      "key": "system.skills.perofrmance.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "10 or more",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!M7fLb600qXWY0dPm.TXods3J1J5A4va26"
+}

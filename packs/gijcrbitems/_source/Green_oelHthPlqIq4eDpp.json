@@ -1,0 +1,34 @@
+{
+  "name": "Green",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 131
+    },
+    "prerequisite": "Level 4 or lower",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686281161357,
+    "modifiedTime": 1686341513787,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "oelHthPlqIq4eDpp",
+  "folder": "RXPdNB9Xnw7MUk8x",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!oelHthPlqIq4eDpp"
+}

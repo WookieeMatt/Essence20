@@ -1,0 +1,39 @@
+{
+  "name": "Agency",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 42
+    },
+    "bond": "",
+    "hangUpIds": [
+      "QZpWbKjMxMdahpoL"
+    ],
+    "perkIds": [
+      "bGKG7artYs7uHHz4"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686271375457,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "4N0KzHhvMJAbWzJN",
+  "folder": "grSWo8UfUN6Awowy",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!4N0KzHhvMJAbWzJN"
+}

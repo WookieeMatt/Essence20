@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.SzZUYzsATwRq6EDv",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "GpDZMidEIgrvOisO",
+  "changes": [
+    {
+      "key": "system.defenses.toughness.morphed",
+      "mode": 2,
+      "value": "4",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Heavy Armor Training",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!UFMTHB90lA9ZEvso.GpDZMidEIgrvOisO"
+}

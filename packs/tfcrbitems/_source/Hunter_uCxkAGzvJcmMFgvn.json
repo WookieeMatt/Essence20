@@ -1,0 +1,42 @@
+{
+  "name": "Hunter",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 35
+    },
+    "bond": "",
+    "hangUpIds": [
+      "L2oBtS3KAwncY2xY",
+      "yoyifVDjpnLloHbK",
+      "aT1jR044JiN8tLQi"
+    ],
+    "perkIds": [
+      "5Z0xtNOeSCD2YoRc"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686279494245,
+    "modifiedTime": 1686343539187,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "uCxkAGzvJcmMFgvn",
+  "folder": "SWtRpPu5oWtOo7vD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!uCxkAGzvJcmMFgvn"
+}

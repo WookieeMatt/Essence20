@@ -1,0 +1,38 @@
+{
+  "folder": "aRlyNQZylQaPn1bO",
+  "name": "Scapegoat",
+  "type": "influence",
+  "_id": "Rcv4sKWRqozCS7Mm",
+  "img": "systems/essence20/assets/icons/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 33
+    },
+    "bond": "",
+    "hangUpIds": [
+      "T2NO8rvrvvVYOuAP"
+    ],
+    "perkIds": [
+      "yMihdpSe5ntjRN3R"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686492217703,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!Rcv4sKWRqozCS7Mm"
+}

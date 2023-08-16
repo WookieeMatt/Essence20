@@ -1,0 +1,58 @@
+{
+  "name": "Curious",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 24
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "35",
+    "essences": [
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "R8wEt8VfWwQMQeuw"
+    ],
+    "skills": [
+      "alertness",
+      "culture",
+      "technology",
+      "deception",
+      "persuasion",
+      "streetwise"
+    ],
+    "startingHealth": 1,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681696325201,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "P3i2IVz9u1XPM6Jv",
+  "folder": "AXtwURx09lzKH1fD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!P3i2IVz9u1XPM6Jv"
+}

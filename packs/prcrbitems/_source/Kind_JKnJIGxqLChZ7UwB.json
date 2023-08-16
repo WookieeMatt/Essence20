@@ -1,0 +1,59 @@
+{
+  "name": "Kind",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 24
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "30",
+    "essences": [
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "anfEVX8bI2eQh40E"
+    ],
+    "skills": [
+      "alertness",
+      "culture",
+      "science",
+      "technology",
+      "animalHandling",
+      "performance",
+      "persuasion"
+    ],
+    "startingHealth": 1,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681696544434,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "JKnJIGxqLChZ7UwB",
+  "folder": "AXtwURx09lzKH1fD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!JKnJIGxqLChZ7UwB"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Cleverness Bonus",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.Y944bF2C3aZHYus9",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "wKEgdtCNNQws2eQv",
+  "changes": [
+    {
+      "key": "system.defenses.cleverness.bonus",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!Y944bF2C3aZHYus9.wKEgdtCNNQws2eQv"
+}

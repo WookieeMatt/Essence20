@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.9gR0IJvQ9NKjonjm",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "r3DReO5TtauwO1Rg",
+  "changes": [
+    {
+      "key": "system.skills.intimidation.essences.social",
+      "mode": 5,
+      "value": "true",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Intimidation Social",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!ofiEt8uFPgovBvLQ.r3DReO5TtauwO1Rg"
+}
