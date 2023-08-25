@@ -103,6 +103,7 @@ export class AlterationHandler {
         [movementReductionString]: newMovementValue,
       });
     }
+
     const totalBonusMovment = alteration.system.bonusMovement + (additionalBonusMovement*5);
     const bonusMovementString = `system.movement.${alteration.system.bonusMovementType}.base`;
     await this._actor.update ({
@@ -113,8 +114,6 @@ export class AlterationHandler {
       "system.movementCost": options,
     });
   }
-
-
 
   /**
   * Handles creating a list to select a skill to increase
@@ -380,7 +379,7 @@ export class AlterationHandler {
       const newMovement = this._actor.system.movement[alteration.system.bonusMovementType].base - ((totalMovementDecrease * 5) + alteration.system.bonusMovement);
       await this._actor.update ({
         [bonusMovementRemovalString]: newMovement,
-      })
+      });
 
     }else {
       const bonusEssence = alteration.system.essenceBonus;
