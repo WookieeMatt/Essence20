@@ -72,6 +72,12 @@ export class AlterationHandler {
     ).render(true);
   }
 
+   /**
+  *
+  * @param {Alteration} alteration The alteration
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
+  * @param {Options} options  The options selected from the dialog
+  */
   async _processAlterationMovementCost(alteration, options, dropFunc) {
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];

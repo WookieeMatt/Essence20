@@ -116,7 +116,6 @@ export class BackgroundHandler {
     ).render(true);
   }
 
-
   /**
    * Displays a dialog for selecting a Skill for the given Origin.
    * @param {Object} origin     The Origin
