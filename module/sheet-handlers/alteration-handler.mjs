@@ -38,9 +38,7 @@ export class AlterationHandler {
     const choices = {};
     for (const movementType in this._actor.system.movement) {
       let maxValue = 0;
-      if (alteration.bonusMovementType == movementType) {
-
-      } else {
+      if (alteration.system.bonusMovementType != movementType) {
         if (this._actor.system.movement[movementType].base) {
           if (movementType == 'ground') {
             maxValue = (this._actor.system.movement[movementType].base/5-2)
@@ -75,22 +73,41 @@ export class AlterationHandler {
   async _processAlterationMovementCost(alteration, options, dropFunc) {
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
-
+    let additionalBonusMovement = 0;
     for (const [movementReductionType, movementReductionValue] of Object.entries(options)) {
-      const newMovementValue = this._actor.system.movement[movementReductionType].base-(movementReductionValue*5)
+      let maxValue = 0;
+      if (movementReductionType == 'ground') {
+        maxValue = (this._actor.system.movement[movementReductionType].base/5-2)
+      }else {
+        maxValue = (this._actor.system.movement[movementReductionType].base/5-1)
+      }
+      if (movementReductionValue>maxValue) {
+        ui.notifications.warn(game.i18n.localize('E20.AlterationMovementTooBig'));
+        break;
+      }
+      additionalBonusMovement += movementReductionValue;
+      let newMovementValue = 0;
+
+      if (movementReductionType == alteration.system.costMovementType) {
+        newMovementValue = this._actor.system.movement[movementReductionType].base - ((movementReductionValue * 5) + alteration.system.costMovement);
+      }else{
+        newMovementValue = this._actor.system.movement[movementReductionType].base - (movementReductionValue * 5);
+      }
+
       const movementReductionString = `system.movement.${movementReductionType}.base`;
       await this._actor.update ({
         [movementReductionString]: newMovementValue,
       });
-
-
     }
-
-    bonusMovementString = `system.movement.${alteration.system.bonusMovementType}.base`
+    const totalBonusMovment = alteration.system.bonusMovement + (additionalBonusMovement*5)
+    const bonusMovementString = `system.movement.${alteration.system.bonusMovementType}.base`
     await this._actor.update ({
-      [bonusMovementString]: alteration.system.bonusMovement,
+      [bonusMovementString]: totalBonusMovment,
     });
 
+    await newAlteration.update ({
+      "system.movementCost": options,
+    });
   }
 
 
@@ -338,31 +355,55 @@ export class AlterationHandler {
   * @param {Alteration} alteration The alteration
   */
   async _onAlterationDelete(alteration) {
-    const bonusEssence = alteration.system.essenceBonus;
-    const bonusEssenceValue = this._actor.system.essences[bonusEssence] - 1;
-    const bonusEssenceString = `system.essences.${bonusEssence}`;
-    let costEssence = "";
+    if (alteration.system.movementCost){
+      let totalMovementDecrease = 0;
+      for (const [movementReductionType, movementReductionValue] of Object.entries(alteration.system.movementCost)) {
+        let movementUpdate = 0;
+        if (movementReductionType == alteration.system.costMovementType) {
+          movementUpdate = this._actor.system.movement[movementReductionType].base + (movementReductionValue * 5) + alteration.system.costMovement;
+        } else {
+          movementUpdate = this._actor.system.movement[movementReductionType].base + (movementReductionValue * 5);
+        }
+        const movementReductionString = `system.movement.${movementReductionType}.base`
+        console.log(movementReductionType, movementReductionValue, movementUpdate)
+        await this._actor.update ({
+          [movementReductionString]: movementUpdate,
+        })
+        totalMovementDecrease += movementReductionValue;
+      }
+      const bonusMovementRemovalString = `system.movement.${alteration.system.bonusMovementType}.base`
+      const newMovement = this._actor.system.movement[alteration.system.bonusMovementType].base - ((totalMovementDecrease * 5) + alteration.system.bonusMovement);
+      await this._actor.update ({
+        [bonusMovementRemovalString]: newMovement,
+      })
 
-    if (alteration.system.selectedEssence) {
-      costEssence = alteration.system.selectedEssence;
-    } else {
-      costEssence = alteration.system.essenceCost;
+    }else {
+      const bonusEssence = alteration.system.essenceBonus;
+      const bonusEssenceValue = this._actor.system.essences[bonusEssence] - 1;
+      const bonusEssenceString = `system.essences.${bonusEssence}`;
+      let costEssence = "";
+
+      if (alteration.system.selectedEssence) {
+        costEssence = alteration.system.selectedEssence;
+      } else {
+        costEssence = alteration.system.essenceCost;
+      }
+
+      const costEssenceValue = this._actor.system.essences[costEssence] + 1;
+      const costEssenceString = `system.essences.${costEssence}`;
+      const bonusSkill = alteration.system.bonus;
+      const costSkill = alteration.system.cost;
+
+      const [bonusNewShift, bonusSkillString] = await getShiftedSkill(bonusSkill, -1, this._actor);
+      const [costNewShift, costSkillString] = await getShiftedSkill(costSkill, 1, this._actor);
+
+      await this._actor.update ({
+        [bonusEssenceString]: bonusEssenceValue,
+        [costEssenceString]: costEssenceValue,
+        [bonusSkillString]: bonusNewShift,
+        [costSkillString]: costNewShift,
+      });
     }
-
-    const costEssenceValue = this._actor.system.essences[costEssence] + 1;
-    const costEssenceString = `system.essences.${costEssence}`;
-    const bonusSkill = alteration.system.bonus;
-    const costSkill = alteration.system.cost;
-
-    const [bonusNewShift, bonusSkillString] = await getShiftedSkill(bonusSkill, -1, this._actor);
-    const [costNewShift, costSkillString] = await getShiftedSkill(costSkill, 1, this._actor);
-
-    await this._actor.update ({
-      [bonusEssenceString]: bonusEssenceValue,
-      [costEssenceString]: costEssenceValue,
-      [bonusSkillString]: bonusNewShift,
-      [costSkillString]: costNewShift,
-    });
   }
 
 

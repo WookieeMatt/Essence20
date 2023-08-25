@@ -198,7 +198,7 @@ export class Essence20Actor extends Actor {
 
       if (system.movement[movementType].total == 0) {
         if (movementType == 'climb' || movementType == 'swim') {
-          system.movement[movementType].total = system.movement.ground.total * .5;
+          system.movement[movementType].total = Math.floor(system.movement.ground.total/5*.5)*5;
         }
       }
     }

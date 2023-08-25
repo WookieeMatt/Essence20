@@ -214,6 +214,7 @@ export function resizeTokens(actor, width, height) {
  * @return {String} skillString The name of the skill being shifted
  */
 export async function getShiftedSkill(skill, shift, actor) {
+  console.log(shift)
   let skillString = "";
   let currentShift = "";
   let newShift = "";
@@ -227,6 +228,7 @@ export async function getShiftedSkill(skill, shift, actor) {
     currentShift = actor.system[skill];
     newShift = currentShift + shift;
   } else {
+    console.log(CONFIG.E20.skillShiftList.indexOf(currentShift))
     currentShift = actor.system.skills[skill].shift;
     skillString = `system.skills.${skill}.shift`;
     newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - shift))];
