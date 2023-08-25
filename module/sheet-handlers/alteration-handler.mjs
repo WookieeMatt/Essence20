@@ -41,10 +41,11 @@ export class AlterationHandler {
       if (alteration.system.bonusMovementType != movementType) {
         if (this._actor.system.movement[movementType].base) {
           if (movementType == 'ground') {
-            maxValue = (this._actor.system.movement[movementType].base/5-2)
+            maxValue = (this._actor.system.movement[movementType].base/5-2);
           }else {
-            maxValue = (this._actor.system.movement[movementType].base/5-1)
+            maxValue = (this._actor.system.movement[movementType].base/5-1);
           }
+
           choices[movementType] = {
             chosen: false,
             label: CONFIG.E20.movementTypes[movementType],
@@ -54,6 +55,7 @@ export class AlterationHandler {
         }
       }
     }
+
     new Dialog(
       {
         title: game.i18n.localize('E20.AlterationMovementCost'),
@@ -77,14 +79,16 @@ export class AlterationHandler {
     for (const [movementReductionType, movementReductionValue] of Object.entries(options)) {
       let maxValue = 0;
       if (movementReductionType == 'ground') {
-        maxValue = (this._actor.system.movement[movementReductionType].base/5-2)
+        maxValue = (this._actor.system.movement[movementReductionType].base/5-2);
       }else {
-        maxValue = (this._actor.system.movement[movementReductionType].base/5-1)
+        maxValue = (this._actor.system.movement[movementReductionType].base/5-1);
       }
-      if (movementReductionValue>maxValue) {
+
+      if (movementReductionValue > maxValue) {
         ui.notifications.warn(game.i18n.localize('E20.AlterationMovementTooBig'));
         break;
       }
+
       additionalBonusMovement += movementReductionValue;
       let newMovementValue = 0;
 
