@@ -103,8 +103,8 @@ export class AlterationHandler {
         [movementReductionString]: newMovementValue,
       });
     }
-    const totalBonusMovment = alteration.system.bonusMovement + (additionalBonusMovement*5)
-    const bonusMovementString = `system.movement.${alteration.system.bonusMovementType}.base`
+    const totalBonusMovment = alteration.system.bonusMovement + (additionalBonusMovement*5);
+    const bonusMovementString = `system.movement.${alteration.system.bonusMovementType}.base`;
     await this._actor.update ({
       [bonusMovementString]: totalBonusMovment,
     });
@@ -368,14 +368,15 @@ export class AlterationHandler {
         } else {
           movementUpdate = this._actor.system.movement[movementReductionType].base + (movementReductionValue * 5);
         }
-        const movementReductionString = `system.movement.${movementReductionType}.base`
-        console.log(movementReductionType, movementReductionValue, movementUpdate)
+
+        const movementReductionString = `system.movement.${movementReductionType}.base`;
         await this._actor.update ({
           [movementReductionString]: movementUpdate,
-        })
+        });
         totalMovementDecrease += movementReductionValue;
       }
-      const bonusMovementRemovalString = `system.movement.${alteration.system.bonusMovementType}.base`
+
+      const bonusMovementRemovalString = `system.movement.${alteration.system.bonusMovementType}.base`;
       const newMovement = this._actor.system.movement[alteration.system.bonusMovementType].base - ((totalMovementDecrease * 5) + alteration.system.bonusMovement);
       await this._actor.update ({
         [bonusMovementRemovalString]: newMovement,
