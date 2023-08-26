@@ -161,7 +161,7 @@ export class BackgroundHandler {
     }
 
     if (!selectedEssence) {
-      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoEssence'));
+      ui.notifications.error(game.i18n.localize('E20.OriginSelectNoEssence'));
       return;
     }
 
