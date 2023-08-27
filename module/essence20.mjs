@@ -175,9 +175,7 @@ Hooks.on("renderDialog", (dialog, html) => {
       select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
     }
   }
-
 });
-
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
