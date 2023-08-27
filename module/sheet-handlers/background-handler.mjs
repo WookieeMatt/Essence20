@@ -54,15 +54,20 @@ export class BackgroundHandler {
   }
 
   /**
-   * Handle the dropping of an influence on to a character
+   * Handle the dropping of an Origin on to a character
    * @param {Origin} origin     The Origin
    * @param {Function} dropFunc The function to call to complete the Origin drop
    */
   async originUpdate(origin, dropFunc) {
+    if (!origin.system.essences.length) {
+      ui.notifications.error(game.i18n.format(game.i18n.localize('E20.OriginNoEssenceError')));
+      return false;
+    }
+
     for (let actorItem of this._actor.items) {
       // Characters can only have one Origin
       if (actorItem.type == 'origin') {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.OriginMulitpleError')));
         return false;
       }
     }
@@ -156,7 +161,7 @@ export class BackgroundHandler {
     }
 
     if (!selectedEssence) {
-      ui.notifications.warn(game.idemo8n.localize('E20.OriginSelectNoEssence'));
+      ui.notifications.error(game.i18n.localize('E20.OriginSelectNoEssence'));
       return;
     }
 
