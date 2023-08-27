@@ -244,9 +244,10 @@ export function compareShift(shift1, shift2, operator) {
   }
 }
 
-/**Handle organizing selects by adding optGroups
+/*
+ * Handle organizing selects by adding optGroups
  * @param {Select} select The select that you are organizing
- * @param {Category} category The category that we are odding to the options
+ * @param {Category} category The category that we are adding to the options
  * @param {Items} items The types that you are putting in the category
  */
 export function setOptGroup(select, category, items) {
