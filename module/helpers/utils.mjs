@@ -249,10 +249,11 @@ export function compareShift(shift1, shift2, operator) {
  * @param {Category} category The category that we are odding to the options
  * @param {Items} items The types that you are putting in the category
  */
-export function setOptGroup (select, category, items) {
+export function setOptGroup(select, category, items) {
   const options = select.querySelectorAll(":scope > option");
   const optGroup = document.createElement("optgroup");
   optGroup.label = category;
+
   for (const option of options) {
     if (items[option.value]) {
       optGroup.appendChild(option);
