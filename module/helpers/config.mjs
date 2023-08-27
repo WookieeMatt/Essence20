@@ -326,7 +326,7 @@ E20.equipmentTypes = {
   weaponEffect: "E20.WeaponEffect",
 };
 
-//Options for Background Item Types
+// Options for Background Item Types
 E20.backgroundTypes = {
   bond: "E20.Bond",
   hangUp: "E20.HangUp",
@@ -334,7 +334,7 @@ E20.backgroundTypes = {
   origin: "E20.Origin",
 };
 
-//Options for Character Item Types
+// Options for Character Item Types
 E20.characterTypes = {
   alteration: "E20.Alteration",
   altMode: "E20.AltMode",
@@ -346,7 +346,7 @@ E20.characterTypes = {
   spell: "E20.Spell",
 };
 
-//Options for Other Item Types
+// Options for Other Item Types
 E20.otherTypes = {
   contact: "E20.Contact",
   megaformTrait: "E20.MegaformTrait",
