@@ -316,6 +316,44 @@ E20.skillShiftList = [
  * Items                                        *
  ***********************************************/
 
+// Options for Equipment Item Types
+E20.equipmentTypes = {
+  armor: "E20.Armor",
+  gear: "E20.Gear",
+  magicBauble: "E20.MagicBauble",
+  upgrade: "E20.Upgrade",
+  weapon: "E20.Weapon",
+  weaponEffect: "E20.WeaponEffect",
+};
+
+// Options for Background Item Types
+E20.backgroundTypes = {
+  bond: "E20.Bond",
+  hangUp: "E20.HangUp",
+  influence: "E20.Influence",
+  origin: "E20.Origin",
+};
+
+// Options for Character Item Types
+E20.characterTypes = {
+  alteration: "E20.Alteration",
+  altMode: "E20.AltMode",
+  classFeature: "E20.ClassFeature",
+  feature: "E20.Feature",
+  perk: "E20.Perk",
+  power: "E20.Power",
+  specialization: "E20.Specialization",
+  spell: "E20.Spell",
+};
+
+// Options for Other Item Types
+E20.otherTypes = {
+  contact: "E20.Contact",
+  megaformTrait: "E20.MegaformTrait",
+  threatPower: "E20.ThreatPower",
+  trait: "E20.Trait",
+};
+
 // Options for Item availabilities
 E20.availabilities = {
   automatic: "E20.AvailabilityAutomatic",
