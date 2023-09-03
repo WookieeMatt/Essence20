@@ -75,8 +75,8 @@ export class AlterationHandler {
   /**
   * Handles the movements choices and updating the actors movements
   * @param {Alteration} alteration The alteration
-  * @param {Function} dropFunc   The function to call to complete the Alteration drop
   * @param {Options} options  The options selected from the dialog
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _processAlterationMovementCost(alteration, options, dropFunc) {
     const newAlterationList = await dropFunc();
@@ -84,16 +84,15 @@ export class AlterationHandler {
     let additionalBonusMovement = 0;
 
     for (const movementReductionType in options) {
-      const movementReductionValue = options[movementReductionType].value;
-      const maxValue = options[movementReductionType].max;
-      let movementNumberConversion = Number(movementReductionValue);
+      const movementReduction = Number(options[movementReductionType].value);
+      const movementReductionMax = options[movementReductionType].max;
 
-      if (movementNumberConversion > maxValue) {
+      if (movementNumberConversion > movementReductionMax) {
         ui.notifications.warn(game.i18n.localize('E20.AlterationMovementTooBig'));
         break;
       }
 
-      additionalBonusMovement += movementNumberConversion;
+      additionalBonusMovement += movementReduction;
       let newMovementValue = 0;
 
       if (movementReductionType == alteration.system.costMovementType) {
