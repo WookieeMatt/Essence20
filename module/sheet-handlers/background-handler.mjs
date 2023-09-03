@@ -353,6 +353,7 @@ export class BackgroundHandler {
     let selectedSkill = this._actor.system.originSkillsIncrease;
     const [newShift, skillString] = await getShiftedSkill(selectedSkill, -1, this._actor);
     const originDelete = this._actor.items.get(origin._id);
+
     for (const perk of originDelete.system.originPerkIds) {
       itemDeleteById(perk, this._actor);
     }
