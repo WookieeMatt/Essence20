@@ -144,7 +144,7 @@ export function rememberOptions(html) {
 }
 
 /**
- * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.( this one des values instead of checked options)
+ * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.( this one des values instead of checked)
  * @param {HTML} html   The html of the dialog upon submission
  * @returns {Object>}  The dialog inputs and their entered values
  * @private
@@ -152,7 +152,11 @@ export function rememberOptions(html) {
 export function rememberValues(html) {
   const options = {};
   html.find("input").each((i, el) => {
-    options[el.id] = el.value;
+    console.log(el)
+    options[el.id] = {
+      max: el.max,
+      value: el.value,
+    };
   });
 
   return options;

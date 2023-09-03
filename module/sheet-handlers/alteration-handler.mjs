@@ -83,26 +83,24 @@ export class AlterationHandler {
     const newAlteration = newAlterationList[0];
     let additionalBonusMovement = 0;
 
-    for (const [movementReductionType, movementReductionValue] of Object.entries(options)) {
-      let maxValue = 0;
-      if (movementReductionType == 'ground') {
-        maxValue = (this._actor.system.movement[movementReductionType].base/5-2);
-      }else {
-        maxValue = (this._actor.system.movement[movementReductionType].base/5-1);
-      }
+    for (const movementReductionType in options) {
+      const movementReductionValue = options[movementReductionType].value;
+      const maxValue = options[movementReductionType].max;
+      console.log(maxValue,movementReductionValue)
+      let movementNumberConversion = Number(movementReductionValue);
 
-      if (movementReductionValue > maxValue) {
+      if (movementNumberConversion > maxValue) {
         ui.notifications.warn(game.i18n.localize('E20.AlterationMovementTooBig'));
         break;
       }
 
-      additionalBonusMovement += movementReductionValue;
+      additionalBonusMovement += movementNumberConversion;
       let newMovementValue = 0;
 
       if (movementReductionType == alteration.system.costMovementType) {
-        newMovementValue = this._actor.system.movement[movementReductionType].base - ((movementReductionValue * 5) + alteration.system.costMovement);
+        newMovementValue = this._actor.system.movement[movementReductionType].base - ((movementNumberConversion * 5) + alteration.system.costMovement);
       } else{
-        newMovementValue = this._actor.system.movement[movementReductionType].base - (movementReductionValue * 5);
+        newMovementValue = this._actor.system.movement[movementReductionType].base - (movementNumberConversion * 5);
       }
 
       const movementReductionString = `system.movement.${movementReductionType}.base`;
@@ -111,10 +109,10 @@ export class AlterationHandler {
       });
     }
 
-    const totalBonusMovment = alteration.system.bonusMovement + (additionalBonusMovement*5);
+    const totalBonusMovement = alteration.system.bonusMovement + (additionalBonusMovement * 5);
     const bonusMovementString = `system.movement.${alteration.system.bonusMovementType}.base`;
     await this._actor.update ({
-      [bonusMovementString]: totalBonusMovment,
+      [bonusMovementString]: totalBonusMovement,
     });
 
     await newAlteration.update ({
@@ -367,7 +365,9 @@ export class AlterationHandler {
   async _onAlterationDelete(alteration) {
     if (alteration.system.movementCost) {
       let totalMovementDecrease = 0;
-      for (const [movementReductionType, movementReductionValue] of Object.entries(alteration.system.movementCost)) {
+      for (const movementReductionType in alteration.system.movementCost) {
+        const movementReductionValue = alteration.system.movementCost[movementReductionType].value;
+
         let movementUpdate = 0;
         if (movementReductionType == alteration.system.costMovementType) {
           movementUpdate = this._actor.system.movement[movementReductionType].base + (movementReductionValue * 5) + alteration.system.costMovement;
