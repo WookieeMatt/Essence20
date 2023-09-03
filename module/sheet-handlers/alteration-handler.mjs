@@ -30,7 +30,7 @@ export class AlterationHandler {
   }
 
   /**
-  *
+  * Handles the creation of a dialog to create alteration movement reduction
   * @param {Alteration} alteration The alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
@@ -73,7 +73,7 @@ export class AlterationHandler {
   }
 
   /**
-  *
+  * Handles the movements choices and updating the actors movments
   * @param {Alteration} alteration The alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   * @param {Options} options  The options selected from the dialog

@@ -198,7 +198,8 @@ export class Essence20Actor extends Actor {
 
       if (system.movement[movementType].total == 0) {
         if (movementType == 'climb' || movementType == 'swim') {
-          system.movement[movementType].total = Math.floor(system.movement.ground.total/5*.5)*5;
+          //This equation gives you half speed round down to the nearest 5 ft for certain movements.
+          system.movement[movementType].total = Math.floor(system.movement.ground.total / 5 * .5) * 5;
         }
       }
     }
