@@ -388,7 +388,7 @@ export class AlterationHandler {
         [bonusMovementRemovalString]: newMovement,
       });
 
-    }else {
+    } else {
       const bonusEssence = alteration.system.essenceBonus;
       const bonusEssenceValue = this._actor.system.essences[bonusEssence] - 1;
       const bonusEssenceString = `system.essences.${bonusEssence}`;
