@@ -90,7 +90,6 @@ Hooks.once('init', async function () {
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("essence20", Essence20ItemSheet, { makeDefault: true });
 
-
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
 });
