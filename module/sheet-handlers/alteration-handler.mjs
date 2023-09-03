@@ -365,7 +365,7 @@ export class AlterationHandler {
   * @param {Alteration} alteration The alteration
   */
   async _onAlterationDelete(alteration) {
-    if (alteration.system.movementCost){
+    if (alteration.system.movementCost) {
       let totalMovementDecrease = 0;
       for (const [movementReductionType, movementReductionValue] of Object.entries(alteration.system.movementCost)) {
         let movementUpdate = 0;
