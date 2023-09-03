@@ -86,7 +86,6 @@ export class AlterationHandler {
     for (const movementReductionType in options) {
       const movementReductionValue = options[movementReductionType].value;
       const maxValue = options[movementReductionType].max;
-      console.log(maxValue,movementReductionValue)
       let movementNumberConversion = Number(movementReductionValue);
 
       if (movementNumberConversion > maxValue) {

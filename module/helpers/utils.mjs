@@ -152,7 +152,6 @@ export function rememberOptions(html) {
 export function rememberValues(html) {
   const options = {};
   html.find("input").each((i, el) => {
-    console.log(el)
     options[el.id] = {
       max: el.max,
       value: el.value,
