@@ -98,7 +98,7 @@ export class AlterationHandler {
 
       if (movementReductionType == alteration.system.costMovementType) {
         newMovementValue = this._actor.system.movement[movementReductionType].base - ((movementNumberConversion * 5) + alteration.system.costMovement);
-      } else{
+      } else {
         newMovementValue = this._actor.system.movement[movementReductionType].base - (movementNumberConversion * 5);
       }
 
