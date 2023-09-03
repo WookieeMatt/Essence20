@@ -82,6 +82,7 @@ export class AlterationHandler {
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
     let additionalBonusMovement = 0;
+
     for (const [movementReductionType, movementReductionValue] of Object.entries(options)) {
       let maxValue = 0;
       if (movementReductionType == 'ground') {
