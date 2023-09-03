@@ -41,9 +41,9 @@ export class AlterationHandler {
       if (alteration.system.bonusMovementType != movementType) {
         if (this._actor.system.movement[movementType].base) {
           if (movementType == 'ground') {
-            maxValue = (this._actor.system.movement[movementType].base/5-2);
+            maxValue = (this._actor.system.movement[movementType].base / 5 - 2);
           }else {
-            maxValue = (this._actor.system.movement[movementType].base/5-1);
+            maxValue = (this._actor.system.movement[movementType].base / 5 - 1);
           }
 
           choices[movementType] = {
