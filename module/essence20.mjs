@@ -81,7 +81,6 @@ Hooks.once('init', async function () {
   CONFIG.Item.documentClass = Essence20Item;
   CONFIG.statusEffects = foundry.utils.deepClone(E20.statusEffects);
 
-
   // Register System Settings
   registerSystemSettings();
 
