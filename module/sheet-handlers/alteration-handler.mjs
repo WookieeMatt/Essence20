@@ -416,6 +416,4 @@ export class AlterationHandler {
       });
     }
   }
-
-
 }
