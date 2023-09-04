@@ -46,6 +46,34 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+      {{!-- Alteration Movement Bonus --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationBonusMovement'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.bonusMovement" value="{{system.bonusMovement}}" />
+      <select name="system.bonusMovementType">
+        {{#select system.bonusMovementType}}
+        {{#each config.movementTypes as |name type|}}
+          <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Alteration Movement Cost --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationCostMovement'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.costMovement" value="{{system.costMovement}}" />
+      <select name="system.costMovementType">
+        {{#select system.costMovementType}}
+        {{#each config.movementTypes as |name type|}}
+          <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
       {{!-- Alteration Non Essence Bonus --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Bonus'}}
       {{#*inline "item-field-inputs"}}

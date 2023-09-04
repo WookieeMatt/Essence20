@@ -82,6 +82,7 @@
     "AlterationCost": "Select an essence to decrease.",
     "AlterationEssenceBonus": "Essence Bonus",
     "AlterationEssenceCost": "Essence Cost",
+    "AlterationMovementText": "Enter the number of 5ft reductions you would like for the available movement types.",
     "AlterationSkillIncrease": "Select a skill to increase.",
     "AlterationSelectNoSkill": "You must select an option to drop.",
     "AlterationSkillCost": "Select a skill to decrease.",

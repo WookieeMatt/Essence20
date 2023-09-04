@@ -121,7 +121,6 @@ export class BackgroundHandler {
     ).render(true);
   }
 
-
   /**
    * Displays a dialog for selecting a Skill for the given Origin.
    * @param {Object} origin     The Origin
@@ -357,9 +356,9 @@ export class BackgroundHandler {
     let essenceValue = this._actor.system.essences[essence] - 1;
 
     let selectedSkill = this._actor.system.originSkillsIncrease;
-    const [newShift, skillString] = await getShiftedSkill(selectedSkill, 1, this._actor);
-
+    const [newShift, skillString] = await getShiftedSkill(selectedSkill, -1, this._actor);
     const originDelete = this._actor.items.get(origin._id);
+
     for (const perk of originDelete.system.originPerkIds) {
       itemDeleteById(perk, this._actor);
     }

@@ -144,6 +144,25 @@ export function rememberOptions(html) {
 }
 
 /**
+ * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
+ * (This one does values instead of checked)
+ * @param {HTML} html   The html of the dialog upon submission
+ * @returns {Object}  The dialog inputs and their entered values
+ * @private
+ */
+export function rememberValues(html) {
+  const options = {};
+  html.find("input").each((i, el) => {
+    options[el.id] = {
+      max: el.max,
+      value: el.value,
+    };
+  });
+
+  return options;
+}
+
+/**
  * Creates copies of Items for given IDs
  * @param {String[]} ids The IDs of the Items to be copied
  * @param {Actor} owner  The Items' owner
