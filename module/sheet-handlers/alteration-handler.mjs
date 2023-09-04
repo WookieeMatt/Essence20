@@ -87,7 +87,7 @@ export class AlterationHandler {
       const movementReduction = Number(options[movementReductionType].value);
       const movementReductionMax = options[movementReductionType].max;
 
-      if (movementNumberConversion > movementReductionMax) {
+      if (movementReduction > movementReductionMax) {
         ui.notifications.warn(game.i18n.localize('E20.AlterationMovementTooBig'));
         break;
       }
@@ -96,9 +96,9 @@ export class AlterationHandler {
       let newMovementValue = 0;
 
       if (movementReductionType == alteration.system.costMovementType) {
-        newMovementValue = this._actor.system.movement[movementReductionType].base - ((movementNumberConversion * 5) + alteration.system.costMovement);
+        newMovementValue = this._actor.system.movement[movementReductionType].base - ((movementReduction * 5) + alteration.system.costMovement);
       } else {
-        newMovementValue = this._actor.system.movement[movementReductionType].base - (movementNumberConversion * 5);
+        newMovementValue = this._actor.system.movement[movementReductionType].base - (movementReduction * 5);
       }
 
       const movementReductionString = `system.movement.${movementReductionType}.base`;
