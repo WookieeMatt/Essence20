@@ -26,7 +26,7 @@ export class BackgroundHandler {
     let addHangUp = false;
 
     for (const item of this._actor.items) {
-      if (item.type == 'influence') {
+      if (item.type == 'influence' || influence.system.mandatoryHangUp) {
         addHangUp = true;
         break;
       }

@@ -1,0 +1,42 @@
+{
+  "name": "Local Legend",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.YbIuqKwQ1wvsuozR",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "kqyizC1lrnVfgzcy",
+  "changes": [
+    {
+      "key": "system.skills.intimidation.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    },
+    {
+      "key": "system.skills.persuasion.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    },
+    {
+      "key": "system.skills.streetwise.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!YbIuqKwQ1wvsuozR.kqyizC1lrnVfgzcy"
+}
