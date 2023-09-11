@@ -3,7 +3,7 @@
   "name": "Well-Traveled",
   "type": "perk",
   "_id": "K2mYSJgYuViWFMAb",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/perk.svg",
   "system": {
     "description": "",
     "source": {
