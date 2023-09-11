@@ -22,9 +22,14 @@ export class AlterationHandler {
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async alterationUpdate(alteration, dropFunc) {
-    if (alteration.system.essenceBonus) {
+    for (let actorItem of this._actor.items) {
+      if (actorItem.type == 'alteration') {
+        console.log (actorItem)
+      }
+    }
+    if (alteration.system.alterationType == 'essence') {
       await this._showAlterationBonusSkillDialog(alteration, dropFunc);
-    } else if (alteration.system.bonusMovement) {
+    } else if (alteration.system.alterationType == 'movement') {
       await this._showAlterationCostMovementDialog(alteration, dropFunc);
     }
   }
@@ -79,8 +84,6 @@ export class AlterationHandler {
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _processAlterationMovementCost(alteration, options, dropFunc) {
-    const newAlterationList = await dropFunc();
-    const newAlteration = newAlterationList[0];
     let additionalBonusMovement = 0;
 
     for (const movementReductionType in options) {
@@ -89,7 +92,7 @@ export class AlterationHandler {
 
       if (movementReduction > movementReductionMax) {
         ui.notifications.warn(game.i18n.localize('E20.AlterationMovementTooBig'));
-        break;
+        return;
       }
 
       additionalBonusMovement += movementReduction;
@@ -106,6 +109,8 @@ export class AlterationHandler {
         [movementReductionString]: newMovementValue,
       });
     }
+    const newAlterationList = await dropFunc();
+    const newAlteration = newAlterationList[0];
 
     const totalBonusMovement = alteration.system.bonusMovement + (additionalBonusMovement * 5);
     const bonusMovementString = `system.movement.${alteration.system.bonusMovementType}.base`;

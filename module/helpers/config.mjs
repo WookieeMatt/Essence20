@@ -411,6 +411,14 @@ E20.upgradeTypes = {
 };
 preLocalize("upgradeTypes");
 
+// Alteration Type Options
+E20.alterationTypes = {
+  essence: "E20.AlterationTypeEssence",
+  movement: "E20.AlterationTypeMovement",
+  other: "E20.AlterationTypeOther",
+};
+preLocalize("alterationTypes")
+
 /************************************************
  * Spells                                       *
  ***********************************************/

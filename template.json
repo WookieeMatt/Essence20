@@ -648,6 +648,7 @@
       "templates": [
         "itemDescription"
       ],
+      "alterationType": "other",
       "benefit": "",
       "bonusSkill": "",
       "cost": "",
@@ -655,6 +656,7 @@
       "essenceBenefit": "",
       "essenceCost": "",
       "movementCost": "",
+      "originalId": "",
       "selectedEssence": ""
     },
     "altMode": {
