@@ -54,6 +54,7 @@ preLocalize("weaponStyles");
 
 // Options for Weapon trait
 E20.weaponTraits = {
+  accurate: "E20.WeaponTraitAccurate",
   acid: "E20.WeaponTraitAcid",
   amphibious: "E20.WeaponTraitAmphibious",
   antiTank: "E20.WeaponTraitAntiTank",
@@ -64,6 +65,7 @@ E20.weaponTraits = {
   blunt: "E20.WeaponTraitBlunt",
   cold: "E20.WeaponTraitCold",
   combined: " E20.WeaponTraitCombined",
+  components: "E20.WeaponTraitComponents",
   computerized: "E20.WeaponTraitComputerized",
   consumable: "E20.WeaponTraitConsumable",
   cover: "E20.WeaponTraitCover",
@@ -71,6 +73,7 @@ E20.weaponTraits = {
   electric: "E20.WeaponTraitElectric",
   electromagnetic: "E20.WeaponTraitElectormagnetic",
   energy: "E20.WeaponTraitEnergy",
+  fanning: "E20.WeaponTraitFanning",
   fire: "E20.WeaponTraitFire",
   grapple: "E20.WeaponTraitGrapple",
   inaccurate: "E20.WeaponTraitInaccurate",

@@ -1,0 +1,38 @@
+{
+  "folder": "PZ6gGpi7TwxnxTMh",
+  "name": "Beloved",
+  "type": "influence",
+  "_id": "TkbPdLkUyIGo6Qjg",
+  "img": "systems/essence20/assets/icons/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 17
+    },
+    "bond": "",
+    "hangUpIds": [
+      "361M08IGiGRkPrsO"
+    ],
+    "perkIds": [
+      "wXbkcyQTziLjCYEC"
+    ],
+    "mandatoryHangUp": true,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694465205383,
+    "modifiedTime": 1694471614813,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!TkbPdLkUyIGo6Qjg"
+}
