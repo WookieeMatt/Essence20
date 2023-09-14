@@ -731,6 +731,7 @@
       "bond": "",
       "hangUpIds": [],
       "perkIds": [],
+      "mandatoryHangUp": false,
       "skills": []
     },
     "magicBauble": {

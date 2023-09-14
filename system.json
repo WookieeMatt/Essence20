@@ -59,6 +59,15 @@
       "flags": {}
     },
     {
+      "name": "jump_through_time",
+      "label": "A Jump Through Time",
+      "system": "essence20",
+      "path": "packs/jttitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "mlp_crb",
       "label": "My Little Pony Core Rulebook",
       "system": "essence20",
@@ -117,7 +126,8 @@
       "sorting": "m",
       "packs": [
         "pr_crb",
-        "across_the_stars"
+        "across_the_stars",
+        "jump_through_time"
       ]
     },
     {
