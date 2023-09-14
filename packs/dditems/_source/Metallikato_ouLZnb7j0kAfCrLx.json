@@ -1,0 +1,31 @@
+{
+  "folder": "7HOrvd6hwScvddul",
+  "name": "Metallikato",
+  "type": "perk",
+  "_id": "ouLZnb7j0kAfCrLx",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 66
+    },
+    "prerequisite": "Finesse or Might d6 and Specialization in blades",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694608523336,
+    "modifiedTime": 1694609115603,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ouLZnb7j0kAfCrLx"
+}

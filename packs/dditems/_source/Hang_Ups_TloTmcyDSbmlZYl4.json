@@ -1,0 +1,19 @@
+{
+  "name": "Hang-Ups",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "TloTmcyDSbmlZYl4",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694531820276,
+    "modifiedTime": 1694609115531,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "_key": "!folders!TloTmcyDSbmlZYl4"
+}

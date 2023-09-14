@@ -41,6 +41,15 @@
       "flags": {}
     },
     {
+      "name": "decepticon_directive",
+      "label": "Decpeticon Directive",
+      "system": "essence20",
+      "path": "packs/dditems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "field_guide_action_adventure",
       "label": "Field Guide to Action and Adventure",
       "system": "essence20",
@@ -134,7 +143,8 @@
       "name": "Transformers",
       "sorting": "m",
       "packs": [
-        "tf_crb"
+        "tf_crb",
+        "decepticon_directive"
       ]
     }
   ],

@@ -1,0 +1,45 @@
+{
+  "folder": "IH1Vv46XVX08gAk1",
+  "name": "Mini-Con (Mini-Vehicle (Ground))",
+  "type": "altMode",
+  "img": "systems/essence20/assets/icons/altmode.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 36
+    },
+    "crew": 0,
+    "firepoints": 0,
+    "movement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 0
+    },
+    "size": "common",
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 40
+    },
+    "altModesize": "small",
+    "altModeCrew": 1,
+    "altModeFirepoints": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694553878913,
+    "modifiedTime": 1694609115603,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "_id": "JVIOxmSpPwPQDY1z",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!JVIOxmSpPwPQDY1z"
+}
