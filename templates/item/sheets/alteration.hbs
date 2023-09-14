@@ -13,6 +13,19 @@
   <section class="sheet-body item-sheet">
     <div class="tab main flexcol" data-group="primary" data-tab="main">
 
+      {{!-- Availability --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationAvailability'}}
+      {{#*inline "item-field-inputs"}}
+      <select class="item-field-inputs" name="system.availability">
+        {{#select system.availability}}
+        {{#each config.availabilities as |name type|}}
+          <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
       {{!--Alteration Type --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationOptions'}}
       {{#*inline "item-field-inputs"}}

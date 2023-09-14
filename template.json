@@ -649,6 +649,7 @@
         "itemDescription"
       ],
       "alterationType": "other",
+      "availability": "standard",
       "benefit": "",
       "bonusSkill": "",
       "cost": "",
