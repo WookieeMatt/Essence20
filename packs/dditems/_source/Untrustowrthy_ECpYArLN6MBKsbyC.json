@@ -1,0 +1,33 @@
+{
+  "folder": "TloTmcyDSbmlZYl4",
+  "name": "Untrustowrthy",
+  "type": "hangUp",
+  "_id": "ECpYArLN6MBKsbyC",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 32
+    }
+  },
+  "effects": [
+    "Los1snQZHhLrd5Wf"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694532224054,
+    "modifiedTime": 1694609115603,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ECpYArLN6MBKsbyC"
+}
