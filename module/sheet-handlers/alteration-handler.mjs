@@ -24,7 +24,10 @@ export class AlterationHandler {
   async alterationUpdate(alteration, dropFunc) {
     for (let actorItem of this._actor.items) {
       if (actorItem.type == 'alteration') {
-        console.log (actorItem)
+        if (actorItem.system.originalId == alteration.uuid) {
+          ui.notifications.warn(game.i18n.localize('E20.AlterationAlreadyTaken'));
+          return;
+        }
       }
     }
     if (alteration.system.alterationType == 'essence') {
@@ -40,6 +43,11 @@ export class AlterationHandler {
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _showAlterationCostMovementDialog (alteration, dropFunc) {
+    if (!this._actor.system.movement.ground.base && !this._actor.system.movement.aerial.base && !this._actor.system.movement.climb.base && !this._actor.system.movement.swim.base) {
+      ui.notifications.warn(game.i18n.localize('E20.AlterationNoMovement'));
+      return;
+    }
+
     const choices = {};
     for (const movementType in this._actor.system.movement) {
       let maxValue = 0;
@@ -120,6 +128,7 @@ export class AlterationHandler {
 
     await newAlteration.update ({
       "system.movementCost": options,
+      "system.originalId": alteration.uuid,
     });
   }
 
@@ -357,6 +366,7 @@ export class AlterationHandler {
     await newAlteration.update ({
       "system.bonus": bonusSkill,
       "system.cost": costSkill,
+      "system.originalId": alteration.uuid,
       "system.selectedEssence": costEssence,
     });
   }

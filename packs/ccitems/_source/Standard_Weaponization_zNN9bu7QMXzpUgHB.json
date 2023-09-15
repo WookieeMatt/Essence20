@@ -1,0 +1,41 @@
+{
+  "folder": "dUgFcCG3h9DxRZQa",
+  "name": "Standard Weaponization",
+  "type": "alteration",
+  "_id": "zNN9bu7QMXzpUgHB",
+  "img": "systems/essence20/assets/icons/alteration.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 84
+    },
+    "alterationType": "other",
+    "availability": "standard",
+    "benefit": "",
+    "bonusSkill": "",
+    "cost": null,
+    "costSkill": "",
+    "essenceBenefit": "",
+    "essenceCost": "",
+    "movementCost": "",
+    "originalId": "",
+    "selectedEssence": "",
+    "bonus": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694730045610,
+    "modifiedTime": 1694735973951,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zNN9bu7QMXzpUgHB"
+}

@@ -1,0 +1,43 @@
+{
+  "folder": "dUgFcCG3h9DxRZQa",
+  "name": "Y-Series Weaponization",
+  "type": "alteration",
+  "_id": "W6ZrWSY6ux3ki9D1",
+  "img": "systems/essence20/assets/icons/alteration.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 87
+    },
+    "alterationType": "other",
+    "availability": "restricted",
+    "benefit": "",
+    "bonusSkill": "",
+    "cost": null,
+    "costSkill": "",
+    "essenceBenefit": "",
+    "essenceCost": "",
+    "movementCost": "",
+    "originalId": "",
+    "selectedEssence": "",
+    "bonus": null
+  },
+  "effects": [
+    "aIM7qXO78X5xWJJ6"
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694732515142,
+    "modifiedTime": 1694736079978,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!W6ZrWSY6ux3ki9D1"
+}

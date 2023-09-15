@@ -1,0 +1,48 @@
+{
+  "folder": "dUgFcCG3h9DxRZQa",
+  "name": "Alluring",
+  "type": "alteration",
+  "_id": "7d6wjAWVligNBLgu",
+  "img": "systems/essence20/assets/icons/alteration.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 85
+    },
+    "alterationType": "essence",
+    "availability": "limited",
+    "benefit": "",
+    "bonusSkill": "",
+    "cost": null,
+    "costSkill": "",
+    "essenceBenefit": "",
+    "essenceCost": [
+      "strength",
+      "speed"
+    ],
+    "movementCost": "",
+    "originalId": "",
+    "selectedEssence": "",
+    "bonus": null,
+    "essenceBonus": [
+      "social"
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694730081691,
+    "modifiedTime": 1694735973951,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!7d6wjAWVligNBLgu"
+}

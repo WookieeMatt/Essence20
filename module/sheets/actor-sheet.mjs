@@ -595,7 +595,14 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
     default:
-      return super._onDropItem(event, data);
+      const droppedItemList = await super._onDropItem(event, data);
+      const newItem = droppedItemList[0];
+
+      await newItem.update ({
+        "system.originalId": data.uuid,
+      });
+
+      return droppedItemList
     }
   }
 

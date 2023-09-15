@@ -642,11 +642,15 @@
           "book": "",
           "page": null
         }
+      },
+      "item": {
+        "originalId": ""
       }
     },
     "alteration": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "alterationType": "other",
       "availability": "standard",
@@ -657,12 +661,12 @@
       "essenceBenefit": "",
       "essenceCost": "",
       "movementCost": "",
-      "originalId": "",
       "selectedEssence": ""
     },
     "altMode": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "crew": 0,
       "firepoints": 0,
@@ -675,7 +679,8 @@
     },
     "armor": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "availability": "standard",
       "bonusEvasion": 0,
@@ -688,12 +693,14 @@
     },
     "bond": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ]
     },
     "classFeature": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "uses": {
         "max": 0,
@@ -702,7 +709,8 @@
     },
     "contact": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "gainingTheContact": "",
       "allegiancePoints": 0,
@@ -710,24 +718,28 @@
     },
     "feature": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ]
     },
     "gear": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "quantity": 1,
       "type": ""
     },
     "hangUp": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ]
     },
     "influence": {
       "templates" : [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "bond": "",
       "hangUpIds": [],
@@ -737,7 +749,8 @@
     },
     "magicBauble": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "duration": "",
       "range": "",
@@ -745,12 +758,14 @@
     },
     "megaformTrait": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ]
     },
     "origin": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "baseAerialMovement": 0,
       "baseAquaticMovement": 0,
@@ -763,25 +778,31 @@
     },
     "perk": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "prerequisite": null,
       "type": "general"
     },
     "power": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "classFeatureId": null
     },
     "specialization": {
+      "templates": [
+        "item"
+      ],
       "isSpecialized": true,
       "shift": "d20",
       "skill": "athletics"
     },
     "spell": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "circle": null,
       "cost": 0,
@@ -791,6 +812,9 @@
       "tier": null
     },
     "threatPower": {
+      "templates": [
+        "item"
+      ],
       "actionType": "",
       "charges": null,
       "cost": null,
@@ -798,12 +822,14 @@
     },
     "trait": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ]
     },
     "weapon": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "classFeatureId": null,
       "alternateEffects": "",
@@ -838,7 +864,8 @@
     },
     "upgrade": {
       "templates": [
-        "itemDescription"
+        "itemDescription",
+        "item"
       ],
       "armorBonus": {
         "defense": "toughness",
@@ -851,6 +878,9 @@
       "prerequisite": null
     },
     "weaponEffect" : {
+      "templates": [
+        "item"
+      ],
       "classification": {
         "skill": "athletics",
         "style": "melee"
