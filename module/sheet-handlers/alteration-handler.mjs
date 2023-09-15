@@ -1,7 +1,7 @@
 import {
   compareShift,
   getShiftedSkill,
-  indexFromUuid,
+  parseId,
   rememberOptions,
   rememberValues,
 } from "../helpers/utils.mjs";
@@ -23,7 +23,8 @@ export class AlterationHandler {
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async alterationUpdate(alteration, dropFunc) {
-    const alterationUuid = indexFromUuid(alteration.uuid);
+    const alterationUuid = parseId(alteration.uuid);
+    console.log(alterationUuid);
     for (let actorItem of this._actor.items) {
       if (actorItem.type == 'alteration') {
         if (actorItem.system.originalId == alterationUuid) {

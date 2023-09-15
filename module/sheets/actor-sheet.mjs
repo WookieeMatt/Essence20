@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { searchCompendium, indexFromUuid } from "../helpers/utils.mjs";
+import { searchCompendium, parseId } from "../helpers/utils.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -599,7 +599,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
     default:
-      itemUuid = await indexFromUuid(data.uuid);
+      itemUuid = await parseId(data.uuid);
 
       droppedItemList = await super._onDropItem(event, data);
       newItem = droppedItemList[0];
