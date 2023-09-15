@@ -420,7 +420,7 @@ E20.alterationTypes = {
   movement: "E20.AlterationTypeMovement",
   other: "E20.AlterationTypeOther",
 };
-preLocalize("alterationTypes")
+preLocalize("alterationTypes");
 
 /************************************************
  * Spells                                       *
