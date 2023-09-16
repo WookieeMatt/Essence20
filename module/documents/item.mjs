@@ -115,7 +115,7 @@ export class Essence20Item extends Item {
       const skill = this.system.classification.skill;
       const shift = this.actor.system.skills[skill].shift;
       const shiftUp = this.actor.system.skills[skill].shiftUp;
-      const shiftDown = this.actor.system.skills[skill].shiftDown;
+      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,
