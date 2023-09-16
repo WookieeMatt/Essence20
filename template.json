@@ -798,6 +798,20 @@
         "itemDescription"
       ]
     },
+    "upgrade": {
+      "templates": [
+        "itemDescription"
+      ],
+      "armorBonus": {
+        "defense": "toughness",
+        "value": 0
+      },
+      "availability": "standard",
+      "benefit": "",
+      "traits": [],
+      "type": "armor",
+      "prerequisite": null
+    },
     "weapon": {
       "templates": [
         "itemDescription"
@@ -805,11 +819,6 @@
       "classFeatureId": null,
       "alternateEffects": "",
       "availability": "standard",
-      "classification": {
-        "skill": "athletics",
-        "size": "medium",
-        "style": "melee"
-      },
       "custom": "",
       "effect": "",
       "equipped": true,
@@ -832,20 +841,6 @@
       "upgradeIds": [],
       "upgradeTraits": [],
       "weaponEffectIds": []
-    },
-    "upgrade": {
-      "templates": [
-        "itemDescription"
-      ],
-      "armorBonus": {
-        "defense": "toughness",
-        "value": 0
-      },
-      "availability": "standard",
-      "benefit": "",
-      "traits": [],
-      "type": "armor",
-      "prerequisite": null
     },
     "weaponEffect" : {
       "classification": {
