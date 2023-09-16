@@ -44,9 +44,10 @@
           }
         },
         "health": {
-          "max": 4,
-          "min": 0,
-          "value": 4
+          "bonus": 0,
+          "max": 0,
+          "origin": 0,
+          "value": 0
         },
         "initiative": {
           "edge": false,
@@ -61,6 +62,13 @@
         "isTransformed": false,
         "movement": {
           "aerial": {
+            "altMode":0,
+            "base": 0,
+            "bonus": 0,
+            "morphed": 0,
+            "total": 0
+          },
+          "climb": {
             "altMode":0,
             "base": 0,
             "bonus": 0,
@@ -604,6 +612,7 @@
   },
   "Item": {
     "types": [
+      "alteration",
       "altMode",
       "armor",
       "bond",
@@ -623,7 +632,8 @@
       "threatPower",
       "trait",
       "upgrade",
-      "weapon"
+      "weapon",
+      "weaponEffect"
     ],
     "templates": {
       "itemDescription": {
@@ -633,6 +643,19 @@
           "page": null
         }
       }
+    },
+    "alteration": {
+      "templates": [
+        "itemDescription"
+      ],
+      "benefit": "",
+      "bonusSkill": "",
+      "cost": "",
+      "costSkill": "",
+      "essenceBenefit": "",
+      "essenceCost": "",
+      "movementCost": "",
+      "selectedEssence": ""
     },
     "altMode": {
       "templates": [
@@ -706,6 +729,7 @@
       "bond": "",
       "hangUpIds": [],
       "perkIds": [],
+      "mandatoryHangUp": false,
       "skills": []
     },
     "magicBauble": {
@@ -806,7 +830,8 @@
       },
       "traits": [],
       "upgradeIds": [],
-      "upgradeTraits": []
+      "upgradeTraits": [],
+      "weaponEffectIds": []
     },
     "upgrade": {
       "templates": [
@@ -821,6 +846,24 @@
       "traits": [],
       "type": "armor",
       "prerequisite": null
+    },
+    "weaponEffect" : {
+      "classification": {
+        "skill": "athletics",
+        "style": "melee"
+      },
+      "damageType": "",
+      "damageValue": 1,
+      "shiftDown": 0,
+      "numHands": 1,
+      "numTargets": 1,
+      "radius": 0,
+      "range": {
+        "min": null,
+        "reachMultiplier": 0,
+        "long": null,
+        "value": null
+      }
     }
   }
 }

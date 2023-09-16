@@ -2,6 +2,7 @@
 
 .essence20 .item {
   color: v.$textcolor1;
+  gap: 5px;
 }
 
 /* Generic Item Sheet Styling */
@@ -77,12 +78,20 @@
   -ms-flex-align: center;
   align-items: center;
   padding: 0 2px;
-  border-bottom: 1px solid #b5b1b1;
   color: v.$textcolor1;
 }
 
-.essence20 .items-list .item:last-child {
-  border-bottom: none;
+.essence20 .items-list hr {
+  margin: 4;
+  width: 100%;
+}
+
+.essence20 .items-list hr:last-child {
+  display: none;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list hr {
+  border: 1px solid #4a4848;
 }
 
 .essence20 .items-list .item .item-name {
@@ -132,7 +141,7 @@
 .essence20 .item-label {
   align-items: center;
   gap: 5px;
-  margin-bottom: 5px;
+  width: 100%;
 }
 
 .essence20 .item-formula {

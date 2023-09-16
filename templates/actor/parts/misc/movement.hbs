@@ -9,6 +9,10 @@
       {{#with (lookup @root.system.movement type) as |moveData|}}
         {{#if @root.system.movementIsReadOnly}}
           <input class="centered-input" style="background: transparent;" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+        {{else if @root.system.isTransformed}}
+          {{#ifEquals @root.actor.type "npc"}}
+            <input class="centered-input" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" />
+          {{/ifEquals}}
         {{else}}
           <input class="centered-input" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" />
         {{/if}}

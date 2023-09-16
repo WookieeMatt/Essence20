@@ -1,0 +1,32 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Toxicologist",
+  "type": "perk",
+  "_id": "hkkJDJ0o6yVbunr0",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 81
+    },
+    "prerequisite": "Qualified with Standard Poisons, Science d12",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686502208535,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!hkkJDJ0o6yVbunr0"
+}

@@ -1,5 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
+import { resizeTokens, getItemsOfType } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -43,6 +44,29 @@ export class Essence20Actor extends Actor {
   }
 
   /** @override */
+  async _preUpdate(changed, options, user) {
+    await super._preUpdate(changed, options, user);
+
+    const currentSize = this.system?.size;
+    if (currentSize) {
+      const newSize = foundry.utils.getProperty(changed, "system.size");
+
+      if (newSize && (newSize !== currentSize)) {
+        const width = CONFIG.E20.tokenSizes[newSize].width;
+        const height = CONFIG.E20.tokenSizes[newSize].height;
+
+        resizeTokens(this, width, height);
+
+        if (!foundry.utils.hasProperty(changed, "prototypeToken.width")) {
+          changed.prototypeToken ||= {};
+          changed.prototypeToken.height = height;
+          changed.prototypeToken.width = width;
+        }
+      }
+    }
+  }
+
+  /** @override */
   prepareData() {
     // Prepare data for the actor. Calling the super version of this executes
     // the following, in order: data reset (to clear active effects),
@@ -72,6 +96,7 @@ export class Essence20Actor extends Actor {
     this._prepareNpcData();
     if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.type)) {
       this._prepareDefenses();
+      this._prepareHealth();
       this._prepareMovement();
     }
   }
@@ -88,6 +113,28 @@ export class Essence20Actor extends Actor {
   }
 
   /**
+  * Prepare Health specific data.
+  */
+  _prepareHealth () {
+    const system = this.system;
+    system.healthIsReadOnly = true;
+    const health = system.health;
+    let startingHealth = 0;
+    const conditioning = system.conditioning;
+    const bonus = system.health.bonus;
+    const originName = game.i18n.localize('E20.Origin');
+    const conditionName = game.i18n.localize('E20.SkillConditioning');
+    const bonusName = game.i18n.localize('E20.Bonus');
+
+    const origins = getItemsOfType('origin', this.items);
+    if (origins.length > 0) {
+      startingHealth = origins[0].system.startingHealth;
+    }
+
+    health.max = startingHealth + conditioning + bonus;
+    health.string = `${startingHealth} ${originName} + ${conditioning} ${conditionName} + ${bonus} ${bonusName}`;
+  }
+  /**
   * Prepare Defenses specific data.
   */
   _prepareDefenses() {
@@ -103,7 +150,7 @@ export class Essence20Actor extends Actor {
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
       const armorName = game.i18n.localize('E20.DefenseArmor');
-      const bonusName = game.i18n.localize('E20.DefenseBonus');
+      const bonusName = game.i18n.localize('E20.Bonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
 
       if (system.isMorphed) {
@@ -124,7 +171,7 @@ export class Essence20Actor extends Actor {
     const system = this.system;
     system.movementIsReadOnly = true;
 
-    const movementTypes = ['aerial', 'ground', 'swim'];
+    const movementTypes = ['aerial', 'ground', 'climb', 'swim'];
     for (const movementType of movementTypes) {
       system.movement[movementType].base = parseInt(system.movement[movementType].base);
       system.movement[movementType].total = 0;
@@ -148,6 +195,13 @@ export class Essence20Actor extends Actor {
       }
 
       movementTotal += system.movement[movementType].total;
+
+      if (system.movement[movementType].total == 0) {
+        if (movementType == 'climb' || movementType == 'swim') {
+          //This equation gives you half speed round down to the nearest 5 ft for certain movements.
+          system.movement[movementType].total = Math.floor(system.movement.ground.total / 5 * .5) * 5;
+        }
+      }
     }
 
     if (!movementTotal) {

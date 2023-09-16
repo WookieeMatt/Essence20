@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.GHpCPDiTDMsowoxk",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "fasjv1YYciglJ4Jy",
+  "changes": [
+    {
+      "key": "system.defenses.toughness.bonus",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Unnamed Effect",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!GHpCPDiTDMsowoxk.fasjv1YYciglJ4Jy"
+}

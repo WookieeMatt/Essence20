@@ -54,6 +54,7 @@ preLocalize("weaponStyles");
 
 // Options for Weapon trait
 E20.weaponTraits = {
+  accurate: "E20.WeaponTraitAccurate",
   acid: "E20.WeaponTraitAcid",
   amphibious: "E20.WeaponTraitAmphibious",
   antiTank: "E20.WeaponTraitAntiTank",
@@ -64,6 +65,7 @@ E20.weaponTraits = {
   blunt: "E20.WeaponTraitBlunt",
   cold: "E20.WeaponTraitCold",
   combined: " E20.WeaponTraitCombined",
+  components: "E20.WeaponTraitComponents",
   computerized: "E20.WeaponTraitComputerized",
   consumable: "E20.WeaponTraitConsumable",
   cover: "E20.WeaponTraitCover",
@@ -71,6 +73,7 @@ E20.weaponTraits = {
   electric: "E20.WeaponTraitElectric",
   electromagnetic: "E20.WeaponTraitElectormagnetic",
   energy: "E20.WeaponTraitEnergy",
+  fanning: "E20.WeaponTraitFanning",
   fire: "E20.WeaponTraitFire",
   grapple: "E20.WeaponTraitGrapple",
   inaccurate: "E20.WeaponTraitInaccurate",
@@ -316,6 +319,44 @@ E20.skillShiftList = [
  * Items                                        *
  ***********************************************/
 
+// Options for Equipment Item Types
+E20.equipmentTypes = {
+  armor: "E20.Armor",
+  gear: "E20.Gear",
+  magicBauble: "E20.MagicBauble",
+  upgrade: "E20.Upgrade",
+  weapon: "E20.Weapon",
+  weaponEffect: "E20.WeaponEffect",
+};
+
+// Options for Background Item Types
+E20.backgroundTypes = {
+  bond: "E20.Bond",
+  hangUp: "E20.HangUp",
+  influence: "E20.Influence",
+  origin: "E20.Origin",
+};
+
+// Options for Character Item Types
+E20.characterTypes = {
+  alteration: "E20.Alteration",
+  altMode: "E20.AltMode",
+  classFeature: "E20.ClassFeature",
+  feature: "E20.Feature",
+  perk: "E20.Perk",
+  power: "E20.Power",
+  specialization: "E20.Specialization",
+  spell: "E20.Spell",
+};
+
+// Options for Other Item Types
+E20.otherTypes = {
+  contact: "E20.Contact",
+  megaformTrait: "E20.MegaformTrait",
+  threatPower: "E20.ThreatPower",
+  trait: "E20.Trait",
+};
+
 // Options for Item availabilities
 E20.availabilities = {
   automatic: "E20.AvailabilityAutomatic",
@@ -327,6 +368,15 @@ E20.availabilities = {
   theoretical: "E20.AvailabilityTheoretical",
 };
 preLocalize("availabilities");
+
+// Damage Types
+E20.damageType = {
+  blunt: "E20.DamageBlunt",
+  element: "E20.DamageElement",
+  maneuver: "E20.DamageManeuver",
+  sharp: "E20.DamageSharp",
+  stun: "E20.DamageStun",
+};
 
 // Perk types
 E20.perkTypes = {
@@ -408,6 +458,7 @@ preLocalize("actorSizes");
 // Types of movement used by Actors
 E20.movementTypes = {
   aerial: "E20.MovementTypeAerial",
+  climb: "E20.MovementTypeClimb",
   ground: "E20.MovementTypeGround",
   swim: "E20.MovementTypeSwim",
 };
@@ -523,3 +574,67 @@ E20.statusEffects = [
     label: 'E20.StatusUnconscious',
   },
 ];
+
+/************************************************
+ * Token Sizes                                  *
+ ***********************************************/
+
+E20.tokenSizes = {
+  small: {
+    height: 1,
+    reach: 2,
+    width: 1,
+  },
+  common: {
+    height: 1,
+    reach: 5,
+    width: 1,
+  },
+  large: {
+    height: 2,
+    reach: 5,
+    width: 2,
+  },
+  long: {
+    height: 1,
+    reach: 5,
+    width: 2,
+  },
+  huge: {
+    height: 3,
+    reach: 10,
+    width: 3,
+  },
+  extended: {
+    height: 2,
+    reach: 10,
+    width: 4,
+  },
+  gigantic: {
+    height: 4,
+    reach: 15,
+    width: 4,
+  },
+  extended2: {
+    height: 3,
+    reach: 15,
+    width: 6,
+  },
+  towering: {
+    height: 5,
+    reach: 20,
+    width: 5,
+  },
+  extended3: {
+    height: 5,
+    reach: 15,
+    width: 5,
+  },
+  titanic: {
+    height: 5,
+    reach: 25,
+    width: 5,
+  },
+};
+
+

@@ -1,0 +1,32 @@
+{
+  "folder": "lZ2algGajxm0TzRv",
+  "name": "Crash Survivor",
+  "type": "perk",
+  "_id": "5SKezm0w5KQbdSJ4",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 70
+    },
+    "prerequisite": "",
+    "type": "division"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686494554471,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!5SKezm0w5KQbdSJ4"
+}

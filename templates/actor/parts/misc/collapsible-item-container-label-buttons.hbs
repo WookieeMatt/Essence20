@@ -1,0 +1,29 @@
+<div class="flexrow item-label">
+  <div class="item-image" style="flex-grow: 0;">
+    <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
+      <a class="rollable" data-roll-type="info" title="{{localize 'E20.ItemRollTitle'}}">
+        <i class="fas fa-message-lines"></i>
+      </a>
+      {{#> roll-button}}
+      {{!-- Custom roll button here --}}
+      {{/roll-button}}
+    </div>
+  </div>
+  {{#if (isdefined item.system.equipped)}}
+  <div style="flex-grow: 0;">
+    <input class="inline-edit item-label-checkbox" data-field="system.equipped" type="checkbox"
+      name="armor.{{@index}}.equipped" {{checked item.system.equipped}} title="{{localize 'E20.ItemToggleEquipped'}}" />
+  </div>
+  {{/if}}
+  <div>
+    {{#> item-label item=item}}
+    {{!-- Custom item label here, or use default below --}}
+    {{item.name}}
+    {{/item-label}}
+  </div>
+  <div class="item-controls">
+    <a class="item-control item-edit" title="{{localize 'E20.ItemControlEdit'}}"><i class="fas fa-edit"></i></a>
+    <a class="item-control item-delete" title="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
+    <a class="item-control accordion-label"><i class="accordion-icon fas fa-chevron-down"></i></a>
+  </div>
+</div>

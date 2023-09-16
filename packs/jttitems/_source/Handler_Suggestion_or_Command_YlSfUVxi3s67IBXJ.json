@@ -1,0 +1,30 @@
+{
+  "name": "Handler Suggestion or Command",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.zu446tiCwXa7kbaR",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "YlSfUVxi3s67IBXJ",
+  "changes": [
+    {
+      "key": "system.skills.animalHandling.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!zu446tiCwXa7kbaR.YlSfUVxi3s67IBXJ"
+}

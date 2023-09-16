@@ -1,0 +1,36 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.IT3v6horcOd82vdK",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "l56hv0VXy6zEhWcx",
+  "changes": [
+    {
+      "key": "system.essenceShifts.social.shiftUp",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    },
+    {
+      "key": "",
+      "mode": 2,
+      "value": "",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "First Impression",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!IT3v6horcOd82vdK.l56hv0VXy6zEhWcx"
+}

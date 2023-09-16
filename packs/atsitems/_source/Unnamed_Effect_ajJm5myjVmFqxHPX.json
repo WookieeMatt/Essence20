@@ -1,0 +1,36 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.Ylo4AY4LCHTXjuuE",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "ajJm5myjVmFqxHPX",
+  "changes": [
+    {
+      "key": "system.skills.athletics.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    },
+    {
+      "key": "system.skills.acrobatics.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Unnamed Effect",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!Ylo4AY4LCHTXjuuE.ajJm5myjVmFqxHPX"
+}

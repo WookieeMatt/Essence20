@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.vic68loeBd3vXbmB",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "sKsEvCeh7vI3t27C",
+  "changes": [
+    {
+      "key": "system.defenses.evasion.bonus",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Can't Catch Me!",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!vic68loeBd3vXbmB.sKsEvCeh7vI3t27C"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Pack Mule",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 132
+    },
+    "prerequisite": "Brawn d2",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686281466404,
+    "modifiedTime": 1686341513787,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "x8SbuymJTLYn1TdC",
+  "folder": "RXPdNB9Xnw7MUk8x",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!x8SbuymJTLYn1TdC"
+}

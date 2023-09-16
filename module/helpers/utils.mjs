@@ -79,9 +79,8 @@ export function indexFromUuid(uuid) {
   const parts = uuid.split(".");
   let index;
 
-
   if (parts[0] === "Compendium") { // Compendium Documents
-    const [, scope, packName, id] = parts;
+    const [, scope, packName, , id] = parts;
     const pack = game.packs.get(`${scope}.${packName}`);
     index = pack?.index.get(id);
   } else if (parts.length < 3) {   // World Documents
@@ -145,6 +144,25 @@ export function rememberOptions(html) {
 }
 
 /**
+ * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
+ * (This one does values instead of checked)
+ * @param {HTML} html   The html of the dialog upon submission
+ * @returns {Object}  The dialog inputs and their entered values
+ * @private
+ */
+export function rememberValues(html) {
+  const options = {};
+  html.find("input").each((i, el) => {
+    options[el.id] = {
+      max: el.max,
+      value: el.value,
+    };
+  });
+
+  return options;
+}
+
+/**
  * Creates copies of Items for given IDs
  * @param {String[]} ids The IDs of the Items to be copied
  * @param {Actor} owner  The Items' owner
@@ -179,4 +197,88 @@ export function itemDeleteById(id, owner) {
   if (item) {
     item.delete();
   }
+}
+
+/**
+ * Handle looking up tokens associated with actor and changing size
+ * @param {Actor} actor  The actor
+ * @param {Number} width The actor's new width
+ * @param {Number} height The actor's new width
+ */
+export function resizeTokens(actor, width, height) {
+  const tokens = actor.getActiveTokens();
+  for (const token of tokens) {
+    token.document.update({
+      "height": height,
+      "width": width,
+    });
+  }
+}
+
+/**
+ * Handle Shifting skills
+ * @param {String} skill The skill shifting
+ * @param {Number} shift The quantity of the shift
+ * @param {Actor} actor  The actor
+ * @return {String} newShift The value of the new Shift
+ * @return {String} skillString The name of the skill being shifted
+ */
+export async function getShiftedSkill(skill, shift, actor) {
+  let skillString = "";
+  let currentShift = "";
+  let newShift = "";
+
+  if (skill == "initiative") {
+    skillString = `system.${skill}.shift`;
+    currentShift = actor.system[skill].shift;
+    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - shift))];
+  } else if (skill == "conditioning") {
+    skillString = `system.${skill}`;
+    currentShift = actor.system[skill];
+    newShift = currentShift + shift;
+  } else {
+    currentShift = actor.system.skills[skill].shift;
+    skillString = `system.skills.${skill}.shift`;
+    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - shift))];
+  }
+
+  return [newShift, skillString];
+}
+
+/** Handle comparing skill rank
+ * @param {String} shift1 The first skill
+ * @param {String} shift2 The second skill
+ * @param {String} operator The type of comparison
+ * @return {Boolean} The result of the comparison
+ */
+export function compareShift(shift1, shift2, operator) {
+  if (operator == 'greater') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) < CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else if (operator == 'lesser') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) > CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else if (operator == 'equal') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else {
+    throw new Error(`Operator ${operator} not expected`);
+  }
+}
+
+/*
+ * Handle organizing selects by adding optGroups
+ * @param {Select} select The select that you are organizing
+ * @param {Category} category The category that we are adding to the options
+ * @param {Items} items The types that you are putting in the category
+ */
+export function setOptGroup(select, category, items) {
+  const options = select.querySelectorAll(":scope > option");
+  const optGroup = document.createElement("optgroup");
+  optGroup.label = category;
+
+  for (const option of options) {
+    if (items[option.value]) {
+      optGroup.appendChild(option);
+    }
+  }
+
+  return optGroup;
 }

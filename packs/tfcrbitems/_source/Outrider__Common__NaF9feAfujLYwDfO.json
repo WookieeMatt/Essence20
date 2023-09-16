@@ -1,0 +1,48 @@
+{
+  "name": "Outrider (Common)",
+  "type": "altMode",
+  "img": "systems/essence20/assets/icons/altmode.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 52
+    },
+    "crew": 0,
+    "firepoints": 0,
+    "movement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 0
+    },
+    "size": "common",
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 45
+    },
+    "altModesize": "common",
+    "altModeCrew": 2,
+    "altModeFirepoints": 2
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681742254001,
+    "modifiedTime": 1686343539187,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "NaF9feAfujLYwDfO",
+  "folder": "OYKMZYECwtJb5a92",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!NaF9feAfujLYwDfO"
+}

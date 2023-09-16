@@ -37,11 +37,16 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
-    if (context.item.type == 'origin') {
+
+    const itemType = context.item.type;
+    if (itemType == 'origin') {
       this._prepareItemDisplay(context, "originPerk");
-    } else if (context.item.type == 'armor' || context.item.type =='weapon') {
+    } else if (itemType == 'armor') {
       this._prepareItemDisplay(context, "upgrade");
-    } else if (context.item.type == 'influence') {
+    } else if (itemType == 'weapon') {
+      this._prepareItemDisplay(context, "upgrade");
+      this._prepareItemDisplay(context, "weaponEffect");
+    } else if (itemType == 'influence') {
       this._prepareItemDisplay(context, "hangUp");
       this._prepareItemDisplay(context, "perk");
     }
@@ -104,6 +109,9 @@ export class Essence20ItemSheet extends ItemSheet {
     // Delete Origin Perks from Origns
     html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".originPerk", "originPerkIds"));
 
+    // Delete Effects from Weapons
+    html.find('.weaponEffect-delete').click(this._onIdDelete.bind(this, ".weaponEffect", "weaponEffectIds"));
+
     // Delete Origin Upgrade from item
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
 
@@ -116,7 +124,7 @@ export class Essence20ItemSheet extends ItemSheet {
 
   /**
   * Handles the dropping of items on to other items
-  * @param {DragEvent} event            The concluding DragEvent which contains drop data
+  * @param {DragEvent} event The concluding DragEvent which contains drop data
   * @private
   */
   async _onDrop(event) {
@@ -155,10 +163,12 @@ export class Essence20ItemSheet extends ItemSheet {
       if (droppedItem.type == "upgrade") {
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
-
           this._addItemIfUnique(droppedItem, data, upgradeIds, "upgrade");
           this._addDroppedUpgradeTraits(droppedItem);
         }
+      } else if (droppedItem.type == "weaponEffect") {
+        const weaponEffectIds = duplicate(this.item.system.weaponEffectIds);
+        this._addItemIfUnique(droppedItem, data, weaponEffectIds, "weaponEffect");
       }
     } else if (targetItem.type == "influence") {
       if (droppedItem.type == "perk") {

@@ -1,0 +1,36 @@
+{
+  "name": "Durabyllium Super-Alloy",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 108
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [
+    "VixVPJ431CXmfISz"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686275398272,
+    "modifiedTime": 1686343539187,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "Q9DWZNwPe66ewBuG",
+  "folder": "ERY0Xs3Bi23Hjx2K",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!Q9DWZNwPe66ewBuG"
+}

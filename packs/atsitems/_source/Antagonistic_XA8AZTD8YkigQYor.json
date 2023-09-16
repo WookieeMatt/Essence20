@@ -1,0 +1,56 @@
+{
+  "name": "Antagonistic",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 38
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "smarts"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "ztdjBJ7H7WJiIH9i"
+    ],
+    "skills": [
+      "athletics",
+      "intimidation",
+      "might",
+      "alertness",
+      "culture"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681745058373,
+    "modifiedTime": 1686340810811,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "XA8AZTD8YkigQYor",
+  "folder": "7CXPtLaacOXQ0Rwc",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!XA8AZTD8YkigQYor"
+}
