@@ -580,29 +580,51 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
-      // Drones can only accept drone Upgrades
-      if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
-        return super._onDropItem(event, data);
-      } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
-        return super._onDropItem(event, data);
-      } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
-        return this._atHandler.attachItem(sourceItem.system.type, super._onDropItem.bind(this, event, data));
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
-        return false;
-      }
+      return await this._onDropUpgrade(event, data);
     case 'weapon':
-      const weaponList = await super._onDropItem(event, data);
-      const newWeapon = weaponList[0];
-      const oldWeaponEffectIds = newWeapon.system.weaponEffectIds;
-      const newWeaponEffectIds = await createItemCopies(oldWeaponEffectIds, this.actor);
-      await newWeapon.update({ ['system.weaponEffectIds']: newWeaponEffectIds });
-      return weaponList;
+      return await this._onDropWeapon(event, data);
     case 'weaponEffect':
       return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
     default:
       return super._onDropItem(event, data);
     }
+  }
+
+  /**
+   * Handle dropping of an Upgrade onto an Actor sheet
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   */
+  async _onDropUpgrade(event, data) {
+    // Drones can only accept drone Upgrades
+    if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
+      return super._onDropItem(event, data);
+    } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
+      return super._onDropItem(event, data);
+    } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
+      return this._atHandler.attachItem(sourceItem.system.type, super._onDropItem.bind(this, event, data));
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
+      return false;
+    }
+  }
+
+  /**
+   * Handle dropping of a Weapon onto an Actor sheet
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   */
+  async _onDropWeapon(event, data) {
+    const weaponList = await super._onDropItem(event, data);
+    const newWeapon = weaponList[0];
+    const oldWeaponEffectIds = newWeapon.system.weaponEffectIds;
+    const newWeaponEffectIds = await createItemCopies(oldWeaponEffectIds, this.actor);
+    await newWeapon.update({ ['system.weaponEffectIds']: newWeaponEffectIds });
+    return weaponList;
   }
 
   /**
