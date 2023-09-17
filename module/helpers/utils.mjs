@@ -70,7 +70,11 @@ function _localizeObject(obj, keys) {
   }
 }
 
-export function parseId (uuid) {
+/*
+* Parse the UUID to get just the ID value of the item
+* @param {uuid} uuid of the item that we are parsing for the id
+*/
+export function parseId(uuid) {
   const parts = uuid.split(".");
   let index;
 

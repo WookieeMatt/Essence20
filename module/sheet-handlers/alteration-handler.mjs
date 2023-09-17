@@ -18,13 +18,13 @@ export class AlterationHandler {
   }
 
   /**
-  * Handle the dropping of an alteratione on to a character
+  * Handle the dropping of an alterations on to a character
   * @param {Alteration} alteration The alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async alterationUpdate(alteration, dropFunc) {
     const alterationUuid = parseId(alteration.uuid);
-    console.log(alterationUuid);
+
     for (let actorItem of this._actor.items) {
       if (actorItem.type == 'alteration') {
         if (actorItem.system.originalId == alterationUuid) {
@@ -35,19 +35,24 @@ export class AlterationHandler {
     }
 
     if (alteration.system.alterationType == 'essence') {
-      await this._showAlterationBonusSkillDialog(alteration, dropFunc, alterationUuid);
+      await this._showAlterationBonusSkillDialog(alteration, alterationUuid, dropFunc);
     } else if (alteration.system.alterationType == 'movement') {
-      await this._showAlterationCostMovementDialog(alteration, dropFunc, alterationUuid);
+      await this._showAlterationCostMovementDialog(alteration, alterationUuid, dropFunc);
     }
   }
 
   /**
   * Handles the creation of a dialog to create alteration movement reduction
   * @param {Alteration} alteration The alteration
+  * @param {AlterationUUID} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _showAlterationCostMovementDialog (alteration, dropFunc, alterationUuid) {
-    if (!this._actor.system.movement.ground.base && !this._actor.system.movement.aerial.base && !this._actor.system.movement.climb.base && !this._actor.system.movement.swim.base) {
+  async _showAlterationCostMovementDialog (alteration, alterationUuid, dropFunc) {
+
+    //This validates that no base movement has been set for the actor yet.
+    if (!this._actor.system.movement.ground.base && !this._actor.system.movement.aerial.base
+      && !this._actor.system.movement.climb.base && !this._actor.system.movement.swim.base) {
+
       ui.notifications.warn(game.i18n.localize('E20.AlterationNoMovement'));
       return;
     }
@@ -82,7 +87,7 @@ export class AlterationHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._processAlterationMovementCost(alteration, rememberValues(html), dropFunc, alterationUuid),
+            callback: html => this._processAlterationMovementCost(alteration, rememberValues(html), alterationUuid, dropFunc),
           },
         },
       },
@@ -93,9 +98,10 @@ export class AlterationHandler {
   * Handles the movements choices and updating the actors movements
   * @param {Alteration} alteration The alteration
   * @param {Options} options  The options selected from the dialog
+  * @param {AlterationUUID} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _processAlterationMovementCost(alteration, options, dropFunc, alterationUuid) {
+  async _processAlterationMovementCost(alteration, options, alterationUuid, dropFunc) {
     let additionalBonusMovement = 0;
 
     for (const movementReductionType in options) {
@@ -140,9 +146,10 @@ export class AlterationHandler {
   /**
   * Handles creating a list to select a skill to increase
   * @param {Alteration} alteration The alteration
+  * @param {AlterationUUID} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _showAlterationBonusSkillDialog(alteration, dropFunc, alterationUuid) {
+  async _showAlterationBonusSkillDialog(alteration, alterationUuid, dropFunc) {
     const choices = {};
     for (const skill in this._actor.system.skills) {
       if (this._actor.system.skills[skill].essences[alteration.system.essenceBonus]) {
@@ -178,7 +185,7 @@ export class AlterationHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._processAlterationSkillIncrease(alteration, rememberOptions(html), dropFunc, alterationUuid),
+            callback: html => this._processAlterationSkillIncrease(alteration, rememberOptions(html), alterationUuid, dropFunc),
           },
         },
       },
@@ -189,9 +196,10 @@ export class AlterationHandler {
   * Handles choosing a skill to increase
   * @param {Alteration} alteration The alteration
   * @param {Object} options    The options resulting from _showAlterationBonusSkillDialog()
+  * @param {AlterationUUID} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _processAlterationSkillIncrease(alteration, options, dropFunc, alterationUuid) {
+  async _processAlterationSkillIncrease(alteration, options, alterationUuid, dropFunc) {
     let bonusSkill = "";
     for (const [skill, isSelected] of Object.entries(options)) {
       if (isSelected) {
@@ -206,9 +214,9 @@ export class AlterationHandler {
     }
 
     if (alteration.system.essenceCost.length > 1) {
-      await this._showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc, alterationUuid);
+      await this._showAlterationCostEssenceDialog(alteration, bonusSkill, alterationUuid, dropFunc);
     } else {
-      await this._showAlterationCostSkillDialog(alteration, bonusSkill, dropFunc, alterationUuid);
+      await this._showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, dropFunc);
     }
   }
 
@@ -216,9 +224,10 @@ export class AlterationHandler {
   * Handles creating a dialog to choose an essencd to decrease
   * @param {Object} alteration The alteration
   * @param {String} bonusSkill    The skill selected from _processAlterationSkillIncrease()
+  * @param {AlterationUUID} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _showAlterationCostEssenceDialog(alteration, bonusSkill, dropFunc, alterationUuid) {
+  async _showAlterationCostEssenceDialog(alteration, bonusSkill, alterationUuid, dropFunc) {
     const choices = {};
     for (const essence of alteration.system.essenceCost) {
       choices[essence] = {
@@ -236,7 +245,7 @@ export class AlterationHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._showAlterationCostSkillDialog(alteration, bonusSkill, dropFunc, rememberOptions(html), alterationUuid),
+            callback: html => this._showAlterationCostSkillDialog(alteration, bonusSkill, rememberOptions(html), alterationUuid, dropFunc),
           },
         },
       },
@@ -247,10 +256,11 @@ export class AlterationHandler {
   * Handles creating a dialog to select a skill to decrease
   * @param {Alteration} alteration The alteration
   * @param {String} bonusSkill    The skill selected from _processAlterationSkillIncrease()
-  * @param {Function} dropFunc   The function to call to complete the Alteration drop
   * @param {Object} options    The options resulting from _showAlterationCostEssenceDialog()
+  * @param {AlterationUUID} alterationUuid The original ID of the alteration
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _showAlterationCostSkillDialog(alteration, bonusSkill, dropFunc, options, alterationUuid) {
+  async _showAlterationCostSkillDialog(alteration, bonusSkill, options, alterationUuid, dropFunc) {
     const choices = {};
     let costEssence = "";
 
@@ -320,7 +330,7 @@ export class AlterationHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._alterationStatUpdate(alteration, bonusSkill, dropFunc, costEssence, rememberOptions(html), alterationUuid),
+            callback: html => this._alterationStatUpdate(alteration, bonusSkill, costEssence, rememberOptions(html), alterationUuid, dropFunc),
           },
         },
       },
@@ -331,11 +341,12 @@ export class AlterationHandler {
   * Handles the setting of values from a essence bonus alteration
   * @param {Alteration} alteration The alteration
   * @param {String} bonusSkill    The skill selected from _processAlterationSkillIncrease()
-  * @param {Function} dropFunc   The function to call to complete the Alteration drop
   * @param {String} costEssence    The essence selected from _showAlterationCostEssenceDialog()
   * @param {Object} options    The options resulting from _showAlterationCostSkillDialog()
+  * @param {AlterationUUID} alterationUuid The original ID of the alteration
+  * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _alterationStatUpdate(alteration, bonusSkill, dropFunc, costEssence, options, alterationUuid) {
+  async _alterationStatUpdate(alteration, bonusSkill, costEssence, options, alterationUuid, dropFunc) {
     let costSkill = "";
     for (const [skill, isSelected] of Object.entries(options)) {
       if (isSelected) {

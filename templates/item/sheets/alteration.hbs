@@ -40,7 +40,6 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{#ifEquals system.alterationType 'essence'}}
-
         {{!-- Alteration Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceBonus'}}
         {{#*inline "item-field-edit"}}
@@ -107,7 +106,6 @@
       {{/ifEquals}}
 
       {{#ifEquals system.alterationType 'other'}}
-
         {{!-- Alteration Non Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Bonus'}}
         {{#*inline "item-field-inputs"}}
