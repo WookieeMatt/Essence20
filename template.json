@@ -834,11 +834,6 @@
       "classFeatureId": null,
       "alternateEffects": "",
       "availability": "standard",
-      "classification": {
-        "skill": "athletics",
-        "size": "medium",
-        "style": "melee"
-      },
       "custom": "",
       "effect": "",
       "equipped": true,
