@@ -85,12 +85,10 @@ export function parseId(uuid) {
   } else if (parts.length < 3) {   // World Documents
     const [, id] = parts;
     index = id;
-
   }
 
   return index || null;
 }
-
 
 /**
  * Retrieve the indexed data for a Document using its UUID. Will never return a result for embedded documents.
