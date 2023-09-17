@@ -44,7 +44,7 @@ export class AlterationHandler {
   /**
   * Handles the creation of a dialog to create alteration movement reduction
   * @param {Alteration} alteration The alteration
-  * @param {AlterationUUID} alterationUuid The original ID of the alteration
+  * @param {String} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _showAlterationCostMovementDialog (alteration, alterationUuid, dropFunc) {
