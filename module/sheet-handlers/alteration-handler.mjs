@@ -224,7 +224,7 @@ export class AlterationHandler {
   * Handles creating a dialog to choose an essencd to decrease
   * @param {Object} alteration The alteration
   * @param {String} bonusSkill    The skill selected from _processAlterationSkillIncrease()
-  * @param {AlterationUUID} alterationUuid The original ID of the alteration
+  * @param {String} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _showAlterationCostEssenceDialog(alteration, bonusSkill, alterationUuid, dropFunc) {
