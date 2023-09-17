@@ -612,26 +612,26 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 
-    /**
+  /**
    * Handle dropping of any other item an Actor sheet
    * @param {DragEvent} event           The concluding DragEvent which contains drop data
    * @param {Object} data               The data transfer extracted from the event
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    */
-    async _onDropOther(event, data) {
-      // Drones can only accept drone Upgrades
-      const itemUuid = await parseId(data.uuid);
+  async _onDropOther(event, data) {
+    // Drones can only accept drone Upgrades
+    const itemUuid = await parseId(data.uuid);
 
-      const droppedItemList = await super._onDropItem(event, data);
-      const newItem = droppedItemList[0];
+    const droppedItemList = await super._onDropItem(event, data);
+    const newItem = droppedItemList[0];
 
-      await newItem.update ({
-        "system.originalId": itemUuid,
-      });
+    await newItem.update ({
+      "system.originalId": itemUuid,
+    });
 
-      return droppedItemList;
-    }
+    return droppedItemList;
+  }
 
   /**
    * Handle dropping of a Weapon onto an Actor sheet
