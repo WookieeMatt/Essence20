@@ -84,7 +84,6 @@ export function parseId (uuid) {
   }
 
   return index || null;
-
 }
 
 
