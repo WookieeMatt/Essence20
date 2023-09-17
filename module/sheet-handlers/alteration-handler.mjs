@@ -98,7 +98,7 @@ export class AlterationHandler {
   * Handles the movements choices and updating the actors movements
   * @param {Alteration} alteration The alteration
   * @param {Options} options  The options selected from the dialog
-  * @param {AlterationUUID} alterationUuid The original ID of the alteration
+  * @param {string} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _processAlterationMovementCost(alteration, options, alterationUuid, dropFunc) {
