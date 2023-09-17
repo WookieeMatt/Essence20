@@ -10,7 +10,7 @@
       "book": "Cobra Codex",
       "page": 85
     },
-    "alterationType": "essence",
+    "type": "essence",
     "availability": "limited",
     "benefit": "",
     "bonusSkill": "",

@@ -10,7 +10,7 @@
       "book": "Cobra Codex",
       "page": 85
     },
-    "alterationType": "movement",
+    "type": "movement",
     "availability": "limited",
     "benefit": "",
     "bonusSkill": "",

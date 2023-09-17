@@ -10,7 +10,7 @@
       "book": "Cobra Codex",
       "page": 86
     },
-    "alterationType": "other",
+    "type": "other",
     "availability": "restricted",
     "benefit": "",
     "bonusSkill": "",

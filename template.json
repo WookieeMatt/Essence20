@@ -636,23 +636,22 @@
       "weaponEffect"
     ],
     "templates": {
+      "item": {
+        "originalId": ""
+      },
       "itemDescription": {
         "description": "",
         "source": {
           "book": "",
           "page": null
         }
-      },
-      "item": {
-        "originalId": ""
       }
     },
     "alteration": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
-      "alterationType": "other",
       "availability": "standard",
       "benefit": "",
       "bonusSkill": "",
@@ -661,12 +660,13 @@
       "essenceBenefit": "",
       "essenceCost": "",
       "movementCost": "",
-      "selectedEssence": ""
+      "selectedEssence": "",
+      "type": "other"
     },
     "altMode": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "crew": 0,
       "firepoints": 0,
@@ -679,8 +679,8 @@
     },
     "armor": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "availability": "standard",
       "bonusEvasion": 0,
@@ -693,14 +693,14 @@
     },
     "bond": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ]
     },
     "classFeature": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "uses": {
         "max": 0,
@@ -709,8 +709,8 @@
     },
     "contact": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "gainingTheContact": "",
       "allegiancePoints": 0,
@@ -718,28 +718,28 @@
     },
     "feature": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ]
     },
     "gear": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "quantity": 1,
       "type": ""
     },
     "hangUp": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ]
     },
     "influence": {
       "templates" : [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "bond": "",
       "hangUpIds": [],
@@ -749,8 +749,8 @@
     },
     "magicBauble": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "duration": "",
       "range": "",
@@ -758,14 +758,14 @@
     },
     "megaformTrait": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ]
     },
     "origin": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "baseAerialMovement": 0,
       "baseAquaticMovement": 0,
@@ -778,16 +778,16 @@
     },
     "perk": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "prerequisite": null,
       "type": "general"
     },
     "power": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "classFeatureId": null
     },
@@ -801,8 +801,8 @@
     },
     "spell": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "circle": null,
       "cost": 0,
@@ -822,14 +822,14 @@
     },
     "trait": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ]
     },
     "weapon": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "classFeatureId": null,
       "alternateEffects": "",
@@ -864,8 +864,8 @@
     },
     "upgrade": {
       "templates": [
-        "itemDescription",
-        "item"
+        "item",
+        "itemDescription"
       ],
       "armorBonus": {
         "defense": "toughness",

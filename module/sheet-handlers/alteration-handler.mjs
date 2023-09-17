@@ -34,9 +34,9 @@ export class AlterationHandler {
       }
     }
 
-    if (alteration.system.alterationType == 'essence') {
+    if (alteration.system.type == 'essence') {
       await this._showAlterationBonusSkillDialog(alteration, alterationUuid, dropFunc);
-    } else if (alteration.system.alterationType == 'movement') {
+    } else if (alteration.system.type == 'movement') {
       await this._showAlterationCostMovementDialog(alteration, alterationUuid, dropFunc);
     }
   }

@@ -29,8 +29,8 @@
       {{!--Alteration Type --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationOptions'}}
       {{#*inline "item-field-inputs"}}
-      <select name="system.alterationType">
-        {{#select system.alterationType}}
+      <select name="system.type">
+        {{#select system.type}}
         {{#each config.alterationTypes as |name type|}}
           <option value="{{type}}">{{name}}</option>
         {{/each}}
@@ -39,7 +39,7 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{#ifEquals system.alterationType 'essence'}}
+      {{#ifEquals system.type 'essence'}}
         {{!-- Alteration Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceBonus'}}
         {{#*inline "item-field-edit"}}
@@ -75,7 +75,7 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       {{/ifEquals}}
 
-      {{#ifEquals system.alterationType 'movement'}}
+      {{#ifEquals system.type 'movement'}}
         {{!-- Alteration Movement Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationBonusMovement'}}
         {{#*inline "item-field-inputs"}}
@@ -105,7 +105,7 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       {{/ifEquals}}
 
-      {{#ifEquals system.alterationType 'other'}}
+      {{#ifEquals system.type 'other'}}
         {{!-- Alteration Non Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Bonus'}}
         {{#*inline "item-field-inputs"}}
