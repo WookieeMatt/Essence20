@@ -146,7 +146,7 @@ export class AlterationHandler {
   /**
   * Handles creating a list to select a skill to increase
   * @param {Alteration} alteration The alteration
-  * @param {AlterationUUID} alterationUuid The original ID of the alteration
+  * @param {String} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _showAlterationBonusSkillDialog(alteration, alterationUuid, dropFunc) {
