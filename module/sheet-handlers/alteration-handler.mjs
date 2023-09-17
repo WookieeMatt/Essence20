@@ -245,7 +245,7 @@ export class AlterationHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._showAlterationCostSkillDialog(alteration, bonusSkill, rememberOptions(html), alterationUuid, dropFunc),
+            callback: html => this._showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, dropFunc, rememberOptions(html)),
           },
         },
       },
@@ -260,7 +260,7 @@ export class AlterationHandler {
   * @param {String} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _showAlterationCostSkillDialog(alteration, bonusSkill, options, alterationUuid, dropFunc) {
+  async _showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, dropFunc, options) {
     const choices = {};
     let costEssence = "";
 
