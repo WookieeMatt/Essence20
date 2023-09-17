@@ -111,11 +111,11 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
-    } else if (this.type == 'weaponEffect') {
+    } else if (['weapon', 'weaponEffect'].includes(this.type)) {
       const skill = this.system.classification.skill;
       const shift = this.actor.system.skills[skill].shift;
       const shiftUp = this.actor.system.skills[skill].shiftUp;
-      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.shiftDown;
+      const shiftDown = this.actor.system.skills[skill].shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,
