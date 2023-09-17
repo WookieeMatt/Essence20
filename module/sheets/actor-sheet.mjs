@@ -641,7 +641,6 @@ export class Essence20ActorSheet extends ActorSheet {
     return weaponList;
   }
 
-
   /**
    * Handle dropping of an Actor data onto another Actor sheet
    * @param {DragEvent} event           The concluding DragEvent which contains drop data
