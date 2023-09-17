@@ -6,32 +6,6 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
 
-    {{!-- Skill --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSkill'}}
-    {{#*inline "item-field-inputs"}}
-    <select class="item-field-inputs" name="system.classification.skill">
-      {{#select system.classification.skill}}
-      {{#each config.skills as |name type|}}
-      <option value="{{type}}">{{name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-    {{!-- Style --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponStyle'}}
-    {{#*inline "item-field-inputs"}}
-    <select class="item-field-inputs" name="system.classification.style">
-      {{#select system.classification.style}}
-      {{#each config.weaponStyles as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
     {{!-- Effect Damage --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Damage'}}
     {{#*inline "item-field-inputs"}}

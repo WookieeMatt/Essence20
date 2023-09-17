@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { createItemCopies, searchCompendium, parseId } from "../helpers/utils.mjs";
+import { searchCompendium, parseId } from "../helpers/utils.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -583,10 +583,6 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
-    case 'upgrade':
-      return await this._onDropUpgrade(event, data);
-    case 'weapon':
-      return await this._onDropWeapon(event, data);
     case 'weaponEffect':
       return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
     case 'upgrade':
@@ -603,7 +599,16 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
     default:
-      return super._onDropItem(event, data);
+      itemUuid = await parseId(data.uuid);
+
+      droppedItemList = await super._onDropItem(event, data);
+      newItem = droppedItemList[0];
+
+      await newItem.update ({
+        "system.originalId": itemUuid,
+      });
+
+      return droppedItemList;
     }
   }
 
