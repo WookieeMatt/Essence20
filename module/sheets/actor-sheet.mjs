@@ -587,7 +587,7 @@ export class Essence20ActorSheet extends ActorSheet {
       return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
 
     default:
-      return await this._onDropOther(event, data);
+      return await this._onDropDefault(event, data);
     }
   }
 
@@ -619,7 +619,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    */
-  async _onDropOther(event, data) {
+  async _onDropDefault(event, data) {
     // Drones can only accept drone Upgrades
     const itemUuid = await parseId(data.uuid);
 
