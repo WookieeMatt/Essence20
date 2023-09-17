@@ -343,7 +343,7 @@ export class AlterationHandler {
   * @param {String} bonusSkill    The skill selected from _processAlterationSkillIncrease()
   * @param {String} costEssence    The essence selected from _showAlterationCostEssenceDialog()
   * @param {Object} options    The options resulting from _showAlterationCostSkillDialog()
-  * @param {AlterationUUID} alterationUuid The original ID of the alteration
+  * @param {String} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
   async _alterationStatUpdate(alteration, bonusSkill, costEssence, options, alterationUuid, dropFunc) {
