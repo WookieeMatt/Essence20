@@ -569,10 +569,6 @@ export class Essence20ActorSheet extends ActorSheet {
       return;
     }
 
-    let itemUuid = null;
-    let droppedItemList = null;
-    let newItem = null;
-
     const sourceItem = await fromUuid(data.uuid);
     if (!sourceItem) return false;
 
@@ -591,16 +587,7 @@ export class Essence20ActorSheet extends ActorSheet {
       return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
 
     default:
-      itemUuid = await parseId(data.uuid);
-
-      droppedItemList = await super._onDropItem(event, data);
-      newItem = droppedItemList[0];
-
-      await newItem.update ({
-        "system.originalId": itemUuid,
-      });
-
-      return droppedItemList;
+      return await this._onDropOther(event, data);
     }
   }
 
@@ -624,6 +611,27 @@ export class Essence20ActorSheet extends ActorSheet {
       return false;
     }
   }
+
+    /**
+   * Handle dropping of any other item an Actor sheet
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   */
+    async _onDropOther(event, data) {
+      // Drones can only accept drone Upgrades
+      const itemUuid = await parseId(data.uuid);
+
+      const droppedItemList = await super._onDropItem(event, data);
+      const newItem = droppedItemList[0];
+
+      await newItem.update ({
+        "system.originalId": itemUuid,
+      });
+
+      return droppedItemList;
+    }
 
   /**
    * Handle dropping of a Weapon onto an Actor sheet

@@ -826,6 +826,21 @@
         "itemDescription"
       ]
     },
+    "upgrade": {
+      "templates": [
+        "item",
+        "itemDescription"
+      ],
+      "armorBonus": {
+        "defense": "toughness",
+        "value": 0
+      },
+      "availability": "standard",
+      "benefit": "",
+      "traits": [],
+      "type": "armor",
+      "prerequisite": null
+    },
     "weapon": {
       "templates": [
         "item",
@@ -856,21 +871,6 @@
       "upgradeIds": [],
       "upgradeTraits": [],
       "weaponEffectIds": []
-    },
-    "upgrade": {
-      "templates": [
-        "item",
-        "itemDescription"
-      ],
-      "armorBonus": {
-        "defense": "toughness",
-        "value": 0
-      },
-      "availability": "standard",
-      "benefit": "",
-      "traits": [],
-      "type": "armor",
-      "prerequisite": null
     },
     "weaponEffect" : {
       "templates": [
