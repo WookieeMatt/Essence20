@@ -90,6 +90,7 @@
     "AlterationMovementTooBig": "You have decreased a movement more than the maximum.",
     "AlterationMovementText": "Enter the number of 5ft reductions you would like for the available movement types.",
     "AlterationNoMovement": "You have no movement to modify",
+    "AlterationNoOptions": "There are no skills in the Essence that can be decreased.",
     "AlterationOptions": "Type",
     "AlterationSkillIncrease": "Select a skill to increase.",
     "AlterationSelectNoSkill": "You must select an option to drop.",

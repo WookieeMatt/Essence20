@@ -216,7 +216,8 @@ export class AlterationHandler {
     if (alteration.system.essenceCost.length > 1) {
       await this._showAlterationCostEssenceDialog(alteration, bonusSkill, alterationUuid, dropFunc);
     } else {
-      await this._showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, dropFunc);
+      const options = null
+      await this._showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, options, dropFunc);
     }
   }
 
@@ -245,7 +246,7 @@ export class AlterationHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, dropFunc, rememberOptions(html)),
+            callback: html => this._showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, rememberOptions(html), dropFunc),
           },
         },
       },
@@ -260,7 +261,7 @@ export class AlterationHandler {
   * @param {String} alterationUuid The original ID of the alteration
   * @param {Function} dropFunc   The function to call to complete the Alteration drop
   */
-  async _showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, dropFunc, options) {
+  async _showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, options, dropFunc) {
     const choices = {};
     let costEssence = "";
 
@@ -320,7 +321,10 @@ export class AlterationHandler {
         };
       }
     }
-
+    if (!Object.keys(choices).length) {
+      ui.notifications.warn(game.i18n.localize('E20.AlterationNoOptions'));
+      return;
+    }
     new Dialog(
       {
         title: game.i18n.localize('E20.AlterationSkillCost'),
