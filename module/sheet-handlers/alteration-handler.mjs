@@ -321,10 +321,12 @@ export class AlterationHandler {
         };
       }
     }
+
     if (!Object.keys(choices).length) {
       ui.notifications.warn(game.i18n.localize('E20.AlterationNoOptions'));
       return;
     }
+
     new Dialog(
       {
         title: game.i18n.localize('E20.AlterationSkillCost'),
