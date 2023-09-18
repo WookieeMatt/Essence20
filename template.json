@@ -636,6 +636,9 @@
       "weaponEffect"
     ],
     "templates": {
+      "item": {
+        "originalId": ""
+      },
       "itemDescription": {
         "description": "",
         "source": {
@@ -646,8 +649,10 @@
     },
     "alteration": {
       "templates": [
+        "item",
         "itemDescription"
       ],
+      "availability": "standard",
       "benefit": "",
       "bonusSkill": "",
       "cost": "",
@@ -655,10 +660,12 @@
       "essenceBenefit": "",
       "essenceCost": "",
       "movementCost": "",
-      "selectedEssence": ""
+      "selectedEssence": "",
+      "type": "other"
     },
     "altMode": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "crew": 0,
@@ -672,6 +679,7 @@
     },
     "armor": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "availability": "standard",
@@ -685,11 +693,13 @@
     },
     "bond": {
       "templates": [
+        "item",
         "itemDescription"
       ]
     },
     "classFeature": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "uses": {
@@ -699,6 +709,7 @@
     },
     "contact": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "gainingTheContact": "",
@@ -707,11 +718,13 @@
     },
     "feature": {
       "templates": [
+        "item",
         "itemDescription"
       ]
     },
     "gear": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "quantity": 1,
@@ -719,11 +732,13 @@
     },
     "hangUp": {
       "templates": [
+        "item",
         "itemDescription"
       ]
     },
     "influence": {
       "templates" : [
+        "item",
         "itemDescription"
       ],
       "bond": "",
@@ -734,6 +749,7 @@
     },
     "magicBauble": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "duration": "",
@@ -742,11 +758,13 @@
     },
     "megaformTrait": {
       "templates": [
+        "item",
         "itemDescription"
       ]
     },
     "origin": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "baseAerialMovement": 0,
@@ -760,6 +778,7 @@
     },
     "perk": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "prerequisite": null,
@@ -767,17 +786,22 @@
     },
     "power": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "classFeatureId": null
     },
     "specialization": {
+      "templates": [
+        "item"
+      ],
       "isSpecialized": true,
       "shift": "d20",
       "skill": "athletics"
     },
     "spell": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "circle": null,
@@ -788,6 +812,9 @@
       "tier": null
     },
     "threatPower": {
+      "templates": [
+        "item"
+      ],
       "actionType": "",
       "charges": null,
       "cost": null,
@@ -795,11 +822,13 @@
     },
     "trait": {
       "templates": [
+        "item",
         "itemDescription"
       ]
     },
     "upgrade": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "armorBonus": {
@@ -814,6 +843,7 @@
     },
     "weapon": {
       "templates": [
+        "item",
         "itemDescription"
       ],
       "classFeatureId": null,
@@ -843,6 +873,9 @@
       "weaponEffectIds": []
     },
     "weaponEffect" : {
+      "templates": [
+        "item"
+      ],
       "classification": {
         "skill": "athletics",
         "style": "melee"

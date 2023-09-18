@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { createItemCopies, searchCompendium } from "../helpers/utils.mjs";
+import { createItemCopies, searchCompendium, parseId } from "../helpers/utils.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -585,8 +585,9 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._onDropWeapon(event, data);
     case 'weaponEffect':
       return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
+
     default:
-      return super._onDropItem(event, data);
+      return await this._onDropDefault(event, data);
     }
   }
 
@@ -609,6 +610,27 @@ export class Essence20ActorSheet extends ActorSheet {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;
     }
+  }
+
+  /**
+   * Handle dropping of any other item an Actor sheet
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   */
+  async _onDropDefault(event, data) {
+    // Drones can only accept drone Upgrades
+    const itemUuid = await parseId(data.uuid);
+
+    const droppedItemList = await super._onDropItem(event, data);
+    const newItem = droppedItemList[0];
+
+    await newItem.update ({
+      "system.originalId": itemUuid,
+    });
+
+    return droppedItemList;
   }
 
   /**

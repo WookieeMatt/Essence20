@@ -70,6 +70,26 @@ function _localizeObject(obj, keys) {
   }
 }
 
+/*
+* Parse the UUID to get just the ID value of the item
+* @param {string} uuid of the item that we are parsing for the id
+* @return {string|null} index or null returned.
+*/
+export function parseId(uuid) {
+  const parts = uuid.split(".");
+  let index;
+
+  if (parts[0] === "Compendium") { // Compendium Documents
+    const [, , , , id] = parts;
+    index = id;
+  } else if (parts.length < 3) {   // World Documents
+    const [, id] = parts;
+    index = id;
+  }
+
+  return index || null;
+}
+
 /**
  * Retrieve the indexed data for a Document using its UUID. Will never return a result for embedded documents.
  * @param {string} uuid  The UUID of the Document index to retrieve.
