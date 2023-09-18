@@ -850,7 +850,6 @@
       "alternateEffects": "",
       "availability": "standard",
       "equipped": true,
-      "usesPerScene": null,
       "requirements": {
         "custom": null,
         "skill": null,
@@ -859,6 +858,7 @@
       "traits": [],
       "upgradeIds": [],
       "upgradeTraits": [],
+      "usesPerScene": null,
       "weaponEffectIds": []
     },
     "weaponEffect" : {
