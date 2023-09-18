@@ -216,7 +216,7 @@ export class AlterationHandler {
     if (alteration.system.essenceCost.length > 1) {
       await this._showAlterationCostEssenceDialog(alteration, bonusSkill, alterationUuid, dropFunc);
     } else {
-      const options = null
+      const options = null;
       await this._showAlterationCostSkillDialog(alteration, bonusSkill, alterationUuid, options, dropFunc);
     }
   }
