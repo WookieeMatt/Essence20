@@ -849,19 +849,7 @@
       "classFeatureId": null,
       "alternateEffects": "",
       "availability": "standard",
-      "custom": "",
-      "effect": "",
       "equipped": true,
-      "numCharges": null,
-      "numHands": 1,
-      "numTargets": 1,
-      "radius": null,
-      "range": {
-        "min": null,
-        "reachMultiplier": 1,
-        "long": null,
-        "value": null
-      },
       "requirements": {
         "custom": null,
         "skill": null,
@@ -870,6 +858,7 @@
       "traits": [],
       "upgradeIds": [],
       "upgradeTraits": [],
+      "usesPerScene": null,
       "weaponEffectIds": []
     },
     "weaponEffect" : {
