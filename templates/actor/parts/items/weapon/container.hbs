@@ -14,20 +14,47 @@
   {{/inline}}
 
   {{#*inline "subcontainers" parentItem}}
-  {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.weaponEffects title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentId=parentItem._id}}
-    {{#*inline "item-label" item}}
-      {{item.name}}
-    {{/inline}}
-  {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
+    {{!-- Weapon Effects --}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.weaponEffects title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentId=parentItem._id}}
+      {{#*inline "roll-button"}}
+        <a class="rollable" data-roll-type="weaponEffect" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+      {{/inline}}
 
-  {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.upgrades title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentItem._id}}
-    {{#*inline "expand-details" item}}
-      {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
-    {{/inline}}
+      {{#*inline "item-label" item}}
+        <div class="flexrow" style="align-items: center;">
+          <div style="flex-grow: 1.5;">
+            {{item.name}}
+          </div>
+          <select class="inline-edit" data-field="system.classification.skill" name="system.classification.skill">
+            {{#select item.system.classification.skill}}
+            {{#each @root.config.skills as |name type|}}
+            <option value="{{type}}">{{name}}</option>
+            {{/each}}
+            {{/select}}
+          </select>
+          <div style="text-align: center;">
+            {{item.system.numTargets}} <i class="fas fa-bullseye"></i>
+          </div>
+          <div style="text-align: center;">
+            {{item.system.shiftDown}} <i class="fas fa-arrow-down"></i>
+          </div>
+          <div style="text-align: center;">
+            {{item.system.numHands}} <i class="fas fa-hand"></i>
+          </div>
+        </div>
+      {{/inline}}
+    {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
 
-    {{#*inline "item-label" item}}
-      {{item.name}}
-    {{/inline}}
-  {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
+    {{!-- Upgrades --}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.upgrades title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentItem._id}}
+      {{#*inline "expand-details" item}}
+        {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
+      {{/inline}}
+
+      {{#*inline "item-label" item}}
+        {{item.name}}
+      {{/inline}}
+    {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
   {{/inline}}
+
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
