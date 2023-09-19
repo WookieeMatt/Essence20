@@ -43,16 +43,20 @@
           </div>
         </div>
       {{/inline}}
+
+      {{#*inline "expand-details" item}}
+        {{> "systems/essence20/templates/actor/parts/items/weaponEffect/details.hbs"}}
+      {{/inline}}
     {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
 
     {{!-- Upgrades --}}
     {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.upgrades title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentItem._id}}
-      {{#*inline "expand-details" item}}
-        {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
-      {{/inline}}
-
       {{#*inline "item-label" item}}
         {{item.name}}
+      {{/inline}}
+
+      {{#*inline "expand-details" item}}
+        {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
       {{/inline}}
     {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
   {{/inline}}
