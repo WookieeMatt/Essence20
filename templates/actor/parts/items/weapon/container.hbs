@@ -16,6 +16,10 @@
   {{#*inline "subcontainers" parentItem}}
     {{!-- Weapon Effects --}}
     {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.weaponEffects title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentId=parentItem._id}}
+      {{#*inline "roll-button"}}
+        <a class="rollable" data-roll-type="weaponEffect" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+      {{/inline}}
+
       {{#*inline "item-label" item}}
         <div class="flexrow" style="align-items: center;">
           <div style="flex-grow: 1.5;">
