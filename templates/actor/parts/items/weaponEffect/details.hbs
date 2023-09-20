@@ -5,7 +5,7 @@
   <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.system.numHands}}</span>
   <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.system.numTargets}}</span>
   <span class="chip" name="chip.weapon.damageValue">{{localize 'E20.Damage'}}: {{item.system.damageValue}}</span>
-  <span class="chip" name="chip.weapon.damageType">{{localize 'E20.DamageType'}}: {{item.system.damageType}}</span>
+  <span class="chip" name="chip.weapon.damageType">{{localize 'E20.DamageType'}}: {{localize (lookup @root.config.damageTypes item.system.damageType)}}</span>
   {{#if item.system.shiftDown}}
   <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.system.shiftDown}}</span>
   {{/if}}

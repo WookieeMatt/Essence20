@@ -38,7 +38,7 @@
     <input type="number" name="system.damageValue" value="{{system.damageValue}}" />
     <select name="system.damageType">
       {{#select system.damageType}}
-        {{#each config.damageType as |name type|}}
+        {{#each config.damageTypes as |name type|}}
           <option value="{{type}}">{{localize name}}</option>
         {{/each}}
       {{/select}}
