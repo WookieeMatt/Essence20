@@ -7,9 +7,13 @@
     <li class="item accordion-wrapper" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
       {{!-- Item label and buttons --}}
       {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
-        {{#*inline "roll-button"}}
-          <a class="rollable" data-roll-type="weaponEffect" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
-        {{/inline}}
+        {{#> roll-button}}
+        {{!-- Custom roll button here --}}
+        {{/roll-button}}
+
+        {{#> item-label item=item}}
+        {{!-- Custom item label here --}}
+        {{/item-label}}
       {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs"}}
 
       {{!-- Item content --}}
