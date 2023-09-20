@@ -21,7 +21,7 @@
       <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
     </div>
     <div class="essence-header">
-      <span>Actions: {{numActions.movement}} Move, {{numActions.standard}} Std, {{numActions.free}} Free</span>
+      <span>Actions: {{numActions.movement}}M, {{numActions.standard}}S, {{numActions.free}}F</span>
     </div>
     {{#each @root.config.skillsByEssence.speed as |skill|}}
       {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='speed' skill=skill fields=(lookup @root.system.skills skill)}}
