@@ -73,6 +73,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
 
+    context.numActions = this._prepareNumActions();
     return context;
   }
 
@@ -293,6 +294,19 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     return childItems;
+  }
+
+  /**
+   * Prepare the number of actions available for the actor.
+   * @return {Object}
+   */
+  _prepareNumActions() {
+    const speed = this.actor.system.essences.speed;
+    return {
+      free: Math.max(0, speed - 2),
+      movement: speed > 0 ? 1 : 0,
+      standard: speed > 1 ? 1 : 0
+    };
   }
 
   /* -------------------------------------------- */
