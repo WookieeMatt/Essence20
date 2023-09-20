@@ -869,7 +869,7 @@
         "skill": "athletics",
         "style": "melee"
       },
-      "damageType": "",
+      "damageType": "blunt",
       "damageValue": 1,
       "shiftDown": 0,
       "numHands": 1,
