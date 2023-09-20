@@ -302,10 +302,11 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   _prepareNumActions() {
     const speed = this.actor.system.essences.speed;
+
     return {
       free: Math.max(0, speed - 2),
       movement: speed > 0 ? 1 : 0,
-      standard: speed > 1 ? 1 : 0
+      standard: speed > 1 ? 1 : 0,
     };
   }
 
