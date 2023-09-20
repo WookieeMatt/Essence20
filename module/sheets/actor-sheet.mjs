@@ -72,8 +72,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
-
     context.numActions = this._prepareNumActions();
+
     return context;
   }
 
