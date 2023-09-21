@@ -381,13 +381,8 @@ export class Essence20ActorSheet extends ActorSheet {
   async _onRest() {
     await this.actor.update({
       "system.health.value": this.actor.system.health.max,
+      "system.stun.value": 0,
     }).then(this.render(false));
-
-    for (const item of this.actor.items) {
-      if (item.type == 'classFeature') {
-        item.update({ 'system.uses.value': item.system.uses.max });
-      }
-    }
   }
 
   /**
