@@ -351,7 +351,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Rollable abilities.
     if (this.actor.isOwner) {
-      html.find('.rollable').click(this._onRoll.bind());
+      html.find('.rollable').click(this._onRoll.bind(this));
     }
 
     // Open and collapse Item content
@@ -371,7 +371,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Rest button
-    html.find('.rest').click(this._onRest.bind(this));
+    html.find('.rest').click(() => this._onRest());
   }
 
   /**
