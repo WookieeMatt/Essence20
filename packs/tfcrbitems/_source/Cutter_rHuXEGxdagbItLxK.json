@@ -1,7 +1,7 @@
 {
   "name": "Cutter",
   "type": "origin",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.5sxhsXAHh97KTpwa]{Cutter (Common)}@UUID[Compendium.essence20.tf_crb.Item.FlN4FCnbTP7RRz8K]{Cutter (Long)}</p>",
     "source": {

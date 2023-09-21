@@ -3,7 +3,7 @@
   "name": "Sustained Fire",
   "type": "perk",
   "_id": "PE6UeC7BcKIg5peF",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

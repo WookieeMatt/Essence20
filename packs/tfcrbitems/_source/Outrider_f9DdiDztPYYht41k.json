@@ -1,7 +1,7 @@
 {
   "name": "Outrider",
   "type": "origin",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.NaF9feAfujLYwDfO]{Outrider (Common)}@UUID[Compendium.essence20.tf_crb.Item.WYlv5KoOv8WTUtKN]{Outrider (Long)}</p>",
     "source": {

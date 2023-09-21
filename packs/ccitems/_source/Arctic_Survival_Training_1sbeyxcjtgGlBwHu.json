@@ -3,7 +3,7 @@
   "name": "Arctic Survival Training",
   "type": "perk",
   "_id": "1sbeyxcjtgGlBwHu",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

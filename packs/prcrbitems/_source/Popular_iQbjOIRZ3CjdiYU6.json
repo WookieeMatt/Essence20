@@ -1,7 +1,7 @@
 {
   "name": "Popular",
   "type": "origin",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "",
     "source": {

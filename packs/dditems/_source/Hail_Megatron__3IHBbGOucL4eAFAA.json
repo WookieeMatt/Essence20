@@ -3,7 +3,7 @@
   "name": "Hail Megatron!",
   "type": "perk",
   "_id": "3IHBbGOucL4eAFAA",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

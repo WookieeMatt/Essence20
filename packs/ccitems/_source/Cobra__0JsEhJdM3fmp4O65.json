@@ -3,7 +3,7 @@
   "name": "Cobra!",
   "type": "perk",
   "_id": "0JsEhJdM3fmp4O65",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

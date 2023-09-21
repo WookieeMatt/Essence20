@@ -3,7 +3,7 @@
   "name": "Monstrosity",
   "type": "origin",
   "_id": "klVUhbIUpKMQBWze",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "<p><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.IW0xRwpT2RU6Eyso\" data-id=\"IW0xRwpT2RU6Eyso\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Monstrosity (Extended (Aerial))</a><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.CeAcrZMp5T9ZhuzO\" data-id=\"CeAcrZMp5T9ZhuzO\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Monstrosity (Extended (Aquatic))</a><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.isx1XflgpBp18ND0\" data-id=\"isx1XflgpBp18ND0\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Monstrosity (Extended (Ground))</a><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.rz9Kdesd5C7RBhtm\" data-id=\"rz9Kdesd5C7RBhtm\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Monstrosity (Huge (Aerial)@UUID[Compendium.essence20.decepticon_directive.Item.rtQAraNbxCoIplbH]{Monstrosity (Huge (Aquatic)}@UUID[Compendium.essence20.decepticon_directive.Item.ula8VtBnEtz8y4jS]{Monstrosity (Huge (Ground))}</a></p>",
     "source": {

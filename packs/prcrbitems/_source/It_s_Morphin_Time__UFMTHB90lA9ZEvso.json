@@ -1,7 +1,7 @@
 {
   "name": "It's Morphin Time!",
   "type": "perk",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "<p>Activate the appropriate Armor Training to have gain the toughness bonus when morphed.&nbsp;</p>",
     "source": {

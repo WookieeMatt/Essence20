@@ -3,7 +3,7 @@
   "name": "Create Chaos",
   "type": "perk",
   "_id": "1Yho7fqBC8IfqHfN",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

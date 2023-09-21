@@ -3,7 +3,7 @@
   "name": "Energon Manipulator",
   "type": "perk",
   "_id": "cOVq7EH6HPrXmhBC",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

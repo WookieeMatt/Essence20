@@ -1,7 +1,7 @@
 {
   "name": "Champion",
   "type": "origin",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.IFssZkdjKb6vcYfk]{Champion}</p>\n<p>&nbsp;</p>",
     "source": {
