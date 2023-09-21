@@ -351,7 +351,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Rollable abilities.
     if (this.actor.isOwner) {
-      html.find('.rollable').click(this._onRoll.bind(this));
+      html.find('.rollable').click(this._onRoll.bind());
     }
 
     // Open and collapse Item content
@@ -376,10 +376,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle clicking the rest button.
-   * @param {Event} event The originating click event
    * @private
    */
-  async _onRest(event) {
+  async _onRest() {
     await this.actor.update({
       "system.health.value": this.actor.system.health.max,
     }).then(this.render(false));
