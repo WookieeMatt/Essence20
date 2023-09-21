@@ -370,9 +370,10 @@ E20.availabilities = {
 preLocalize("availabilities");
 
 // Damage Types
-E20.damageType = {
+E20.damageTypes = {
   blunt: "E20.DamageBlunt",
   element: "E20.DamageElement",
+  intimidate: "E20.DamageIntimidate",
   maneuver: "E20.DamageManeuver",
   sharp: "E20.DamageSharp",
   stun: "E20.DamageStun",
