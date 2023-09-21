@@ -1,6 +1,9 @@
 <div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
   <div class="flexcol flex-group-center">
-    <label>{{localize 'E20.ActorHealth'}}</label>
+    <div class="flexrow" style="gap: 5px;">
+      <a class="rest" style="flex-grow: 0;"><i class="fas fa-face-sleeping"></i></a>
+      <label>{{localize 'E20.ActorHealth'}}</label>
+    </div>
     <div class="flexrow" style="align-items: center;">
       <input class="centered-input" type="number" name="system.health.value" value="{{system.health.value}}" />
       <span>/</span>

@@ -346,7 +346,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Morph Button
     html.find('.morph').click(() => this._prHandler.onMorph());
 
-    //Transform Button
+    // Transform Button
     html.find('.transform').click(() => this._tfHandler.onTransform(this));
 
     // Rollable abilities.
@@ -368,6 +368,26 @@ export class Essence20ActorSheet extends ActorSheet {
         li.setAttribute("draggable", true);
         li.addEventListener("dragstart", handler, false);
       });
+    }
+
+    // Rest button
+    html.find('.rest').click(this._onRest.bind(this));
+  }
+
+  /**
+   * Handle clicking the rest button.
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _onRest(event) {
+    await this.actor.update({
+      "system.health.value": this.actor.system.health.max,
+    }).then(this.render(false));
+
+    for (const item of this.actor.items) {
+      if (item.type == 'classFeature') {
+        item.update({ 'system.uses.value': item.system.uses.max });
+      }
     }
   }
 
