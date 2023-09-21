@@ -286,6 +286,7 @@
     "RangerRed": "Red Ranger",
     "RangerWhite": "White Ranger",
     "RangerYellow": "Yellow Ranger",
+    "RestButtonTitle": "Rest (restore health and class features)",
     "RollAutoFail": "automatically fails",
     "RollAutoFailFumble": "automatically fails and fumbles",
     "RollDialogCancelButton": "Cancel",
