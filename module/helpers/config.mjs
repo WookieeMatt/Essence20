@@ -64,7 +64,7 @@ E20.weaponTraits = {
   ballistic: "E20.WeaponTraitBallistic",
   blunt: "E20.WeaponTraitBlunt",
   cold: "E20.WeaponTraitCold",
-  combined: " E20.WeaponTraitCombined",
+  combined: "E20.WeaponTraitCombined",
   components: "E20.WeaponTraitComponents",
   computerized: "E20.WeaponTraitComputerized",
   consumable: "E20.WeaponTraitConsumable",
@@ -372,6 +372,7 @@ preLocalize("availabilities");
 // Damage Types
 E20.damageTypes = {
   blunt: "E20.DamageBlunt",
+  cover: "E20.DamageCover",
   element: "E20.DamageElement",
   intimidate: "E20.DamageIntimidate",
   maneuver: "E20.DamageManeuver",

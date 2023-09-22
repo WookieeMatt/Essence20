@@ -1,0 +1,42 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Long Range Rifle Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "VkQf2RoxDh20fltE",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 2,
+    "shiftDown": 1,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": 30,
+      "reachMultiplier": 0,
+      "long": 600,
+      "value": 150
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695331005065,
+    "modifiedTime": 1695400290374,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!VkQf2RoxDh20fltE"
+}

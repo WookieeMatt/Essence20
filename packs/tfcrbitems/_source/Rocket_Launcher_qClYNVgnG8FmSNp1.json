@@ -1,0 +1,58 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Rocket Launcher",
+  "type": "weapon",
+  "_id": "qClYNVgnG8FmSNp1",
+  "img": "systems/essence20/assets/icons/weapons/rocket_launcher.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 124
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "equipped": true,
+    "requirements": {
+      "custom": "Huge",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "antiTank",
+      "mounted",
+      "reload",
+      "sharp",
+      "wrecker"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "5K1meYTN9tX4PlXi"
+    ],
+    "classification": {
+      "size": "heavy"
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695387043473,
+    "modifiedTime": 1695400290374,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!qClYNVgnG8FmSNp1"
+}

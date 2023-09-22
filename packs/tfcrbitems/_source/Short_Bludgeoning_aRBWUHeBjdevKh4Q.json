@@ -1,0 +1,56 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Short Bludgeoning",
+  "type": "weapon",
+  "_id": "aRBWUHeBjdevKh4Q",
+  "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 122
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d4"
+    },
+    "traits": [
+      "blunt",
+      "martialArts",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "7ah23fiimnJq6HIL",
+      "rMg6ZhYEEHTeZ8Db",
+      "m2Wl4D5TxL8vD3BO"
+    ],
+    "classification": {
+      "size": "sidearm"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695307719462,
+    "modifiedTime": 1695400290374,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!aRBWUHeBjdevKh4Q"
+}

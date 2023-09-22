@@ -1,0 +1,56 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Artillery Lobber",
+  "type": "weapon",
+  "_id": "dRtyqdPeYHC1BKHW",
+  "img": "systems/essence20/assets/icons/weapons/mortar.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Effect also has Trip</p>",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "science",
+      "shift": "d2"
+    },
+    "traits": [
+      "antiTank",
+      "indirect",
+      "reload",
+      "sharp",
+      "wrecker"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "6SNB0WmDWMUkpr2X"
+    ],
+    "classification": {
+      "size": "long"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695336792301,
+    "modifiedTime": 1695388102654,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!dRtyqdPeYHC1BKHW"
+}

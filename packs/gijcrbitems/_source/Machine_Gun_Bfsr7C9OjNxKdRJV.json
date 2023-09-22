@@ -1,0 +1,55 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Machine Gun",
+  "type": "weapon",
+  "_id": "Bfsr7C9OjNxKdRJV",
+  "img": "systems/essence20/assets/icons/weapons/machine_gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Alternate Effect 2 is a 30 ft cone</p>\n<p>&nbsp;</p>",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "eflSyq2zTBRtI4CE",
+      "Y0L9HpE3L8t4i6fW",
+      "xMufKArRO7cnkSPU"
+    ],
+    "classification": {
+      "size": "long"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695334425955,
+    "modifiedTime": 1695388102654,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!Bfsr7C9OjNxKdRJV"
+}
