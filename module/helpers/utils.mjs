@@ -117,13 +117,14 @@ export function indexFromUuid(uuid) {
   * @param {Item|String} item  Either an ID or an Item to find in the compendium
   * @returns {Item}     The Item, if found
   */
-export function searchCompendium(item) {
+export async function searchCompendium(item) {
+  console.log (item)
   const id = item._id || item;
 
   for (const pack of game.packs) {
     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
     if (compendium) {
-      const compendiumItem = compendium.index.get(id);
+      const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
       if (compendiumItem) {
         return compendiumItem;
       }
