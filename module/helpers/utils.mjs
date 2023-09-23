@@ -117,13 +117,13 @@ export function indexFromUuid(uuid) {
   * @param {Item|String} item  Either an ID or an Item to find in the compendium
   * @returns {Item}     The Item, if found
   */
-export function searchCompendium(item) {
+export async function searchCompendium(item) {
   const id = item._id || item;
 
   for (const pack of game.packs) {
     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
     if (compendium) {
-      const compendiumItem = compendium.index.get(id);
+      const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
       if (compendiumItem) {
         return compendiumItem;
       }
@@ -194,7 +194,7 @@ export async function createItemCopies(ids, owner) {
   for (const id of ids) {
     let compendiumData = game.items.get(id);
     if (!compendiumData) {
-      const item = searchCompendium(id);
+      const item = await searchCompendium(id);
       if (item) {
         compendiumData = item;
       }
