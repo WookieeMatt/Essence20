@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { createItemCopies, searchCompendium, parseId } from "../helpers/utils.mjs";
+import { createItemCopies, parseId } from "../helpers/utils.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -287,7 +287,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const childItems = [];
 
     for (const id of childItemIds) {
-      const childItem = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
+      const childItem = this.actor.items.get(id) || game.items.get(id);
       if (childItem) {
         childItems.push(childItem);
       }
@@ -320,7 +320,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).closest(".item");
       const itemId = li.data("itemId");
-      const item = this.actor.items.get(itemId) || game.items.get(itemId) || searchCompendium(itemId);
+      const item = this.actor.items.get(itemId) || game.items.get(itemId);
       item.sheet.render(true);
     });
 
