@@ -235,7 +235,7 @@ export class BackgroundHandler {
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
       if (!data) {
-        data = searchCompendium(id);
+        data = await searchCompendium(id);
       }
 
       const perk = await Item.create(data, { parent: this._actor });
@@ -262,7 +262,7 @@ export class BackgroundHandler {
     for (const id of influence.system.hangUpIds) {
       compendiumData = game.items.get(id);
       if (!compendiumData) {
-        compendiumData = searchCompendium(id);
+        compendiumData = await searchCompendium(id);
         if (compendiumData) {
           itemArray.push(compendiumData);
           choices[compendiumData._id] = {

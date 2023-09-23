@@ -28,7 +28,7 @@ export class Essence20ItemSheet extends ItemSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  getData() {
+  async getData() {
     // Retrieve base data structure.
     const context = super.getData();
 
@@ -40,15 +40,15 @@ export class Essence20ItemSheet extends ItemSheet {
 
     const itemType = context.item.type;
     if (itemType == 'origin') {
-      this._prepareItemDisplay(context, "originPerk");
+      await this._prepareItemDisplay(context, "originPerk");
     } else if (itemType == 'armor') {
-      this._prepareItemDisplay(context, "upgrade");
+      await this._prepareItemDisplay(context, "upgrade");
     } else if (itemType == 'weapon') {
-      this._prepareItemDisplay(context, "upgrade");
-      this._prepareItemDisplay(context, "weaponEffect");
+      await this._prepareItemDisplay(context, "upgrade");
+      await this._prepareItemDisplay(context, "weaponEffect");
     } else if (itemType == 'influence') {
-      this._prepareItemDisplay(context, "hangUp");
-      this._prepareItemDisplay(context, "perk");
+      await this._prepareItemDisplay(context, "hangUp");
+      await this._prepareItemDisplay(context, "perk");
     }
 
     // Retrieve the roll data for TinyMCE editors.
@@ -78,7 +78,7 @@ export class Essence20ItemSheet extends ItemSheet {
   async _prepareItemDisplay(context, itemType) {
     const itemArray = [];
     for (let itemId of (this.item.system[`${itemType}Ids`])) {
-      const item = game.items.get(itemId) || searchCompendium(itemId) || this.actor.items.get(itemId);
+      const item = await searchCompendium(itemId) ||  game.items.get(itemId) || this.actor.items.get(itemId);
       if (item) {
         itemArray.push(item);
       }

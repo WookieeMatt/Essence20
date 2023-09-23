@@ -287,7 +287,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const childItems = [];
 
     for (const id of childItemIds) {
-      const childItem = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
+      const childItem = this.actor.items.get(id) || game.items.get(id);
       if (childItem) {
         childItems.push(childItem);
       }
