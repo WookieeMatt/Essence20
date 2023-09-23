@@ -3,7 +3,7 @@
   "name": "Armory Call",
   "type": "origin",
   "_id": "zgo6RlDkSfa6ciPY",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.UO5WlCGHXtPOKFFY]{Armory Call}</p>",
     "source": {

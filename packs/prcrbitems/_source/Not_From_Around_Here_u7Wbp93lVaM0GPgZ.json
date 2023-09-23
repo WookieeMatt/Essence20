@@ -1,7 +1,7 @@
 {
   "name": "Not From Around Here",
   "type": "influence",
-  "img": "systems/essence20/assets/icons/influence.svg",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
     "description": "",
     "source": {
@@ -34,7 +34,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!u7Wbp93lVaM0GPgZ"
 }

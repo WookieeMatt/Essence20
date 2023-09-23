@@ -1,0 +1,56 @@
+{
+  "folder": "hMxc3Svkb17tNliI",
+  "name": "Small Thrown Weapon",
+  "type": "weapon",
+  "_id": "W7iyFJTIGw7BuR3x",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 123
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "Huge",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "blunt",
+      "sharp",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "bxT99cXuxn9UPeNT",
+      "GqfmPxPjAP8Xoll9"
+    ],
+    "classification": {
+      "size": "sidearm"
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695329746589,
+    "modifiedTime": 1695401669612,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!W7iyFJTIGw7BuR3x"
+}

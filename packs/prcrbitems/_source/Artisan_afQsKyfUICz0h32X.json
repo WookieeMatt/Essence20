@@ -8,7 +8,7 @@
       "book": "Power Rangers Core Rulebook",
       "page": 66
     },
-    "img": "assets/icons/hangups.svg"
+    "img": "assets/icons/items/hangups.svg"
   },
   "effects": [],
   "flags": {
@@ -27,7 +27,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!afQsKyfUICz0h32X"
 }

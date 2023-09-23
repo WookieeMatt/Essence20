@@ -3,7 +3,7 @@
   "name": "Take the Wheel",
   "type": "perk",
   "_id": "EQK0bAGpmYkGPcRi",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {
