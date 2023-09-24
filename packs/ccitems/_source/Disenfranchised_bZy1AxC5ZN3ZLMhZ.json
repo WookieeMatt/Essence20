@@ -3,7 +3,7 @@
   "name": "Disenfranchised",
   "type": "perk",
   "_id": "bZy1AxC5ZN3ZLMhZ",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {
@@ -26,7 +26,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!bZy1AxC5ZN3ZLMhZ"
 }

@@ -1,0 +1,31 @@
+{
+  "folder": "7HOrvd6hwScvddul",
+  "name": "Exterminator",
+  "type": "perk",
+  "_id": "B5HgQeurLyvio1t7",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 65
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694608214798,
+    "modifiedTime": 1694609115603,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!B5HgQeurLyvio1t7"
+}

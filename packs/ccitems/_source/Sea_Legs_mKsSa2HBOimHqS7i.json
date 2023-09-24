@@ -3,7 +3,7 @@
   "name": "Sea Legs",
   "type": "perk",
   "_id": "mKsSa2HBOimHqS7i",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "<p>sets swim base speed to 30. If you have swim speed from somwhere else deactivate the base swim and activate the bonus swim.&nbsp;</p>",
     "source": {
@@ -29,7 +29,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!mKsSa2HBOimHqS7i"
 }

@@ -6,13 +6,39 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
 
+    {{!-- Skill --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSkill'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.classification.skill">
+      {{#select system.classification.skill}}
+      {{#each config.skills as |name type|}}
+      <option value="{{type}}">{{name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Style --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponStyle'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.classification.style">
+      {{#select system.classification.style}}
+      {{#each config.weaponStyles as |name type|}}
+      <option value="{{type}}">{{localize name}}</option>
+      {{/each}}
+      {{/select}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
     {{!-- Effect Damage --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Damage'}}
     {{#*inline "item-field-inputs"}}
     <input type="number" name="system.damageValue" value="{{system.damageValue}}" />
     <select name="system.damageType">
       {{#select system.damageType}}
-        {{#each config.damageType as |name type|}}
+        {{#each config.damageTypes as |name type|}}
           <option value="{{type}}">{{localize name}}</option>
         {{/each}}
       {{/select}}
@@ -34,10 +60,10 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Downshift --}}
+    {{!-- Shift Down --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShiftDown'}}
     {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.downshift" value="{{system.downshift}}" />
+    <input type="number" name="system.shiftDown" value="{{system.shiftDown}}" />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

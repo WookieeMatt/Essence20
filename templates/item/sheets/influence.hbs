@@ -29,6 +29,13 @@
     {{!-- Hang-Ups --}}
     {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="hangUp" label='E20.ItemTypeHangupPlural' items=@root.hangUps}}
 
+    {{!-- Mandatory Hang Up --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceMandatoryHangUp'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="checkbox" name="system.mandatoryHangUp" {{checked system.mandatoryHangUp}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
     {{!-- Description Section --}}
     {{> "systems/essence20/templates/item/parts/description.hbs"}}
   </section>

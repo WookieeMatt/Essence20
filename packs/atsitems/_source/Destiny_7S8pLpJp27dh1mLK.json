@@ -1,7 +1,7 @@
 {
   "name": "Destiny",
   "type": "influence",
-  "img": "systems/essence20/assets/icons/influence.svg",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
     "description": "",
     "source": {
@@ -15,6 +15,7 @@
     "perkIds": [
       "GIJjrJMqor21zz7j"
     ],
+    "mandatoryHangUp": true,
     "skills": []
   },
   "effects": [],
@@ -23,11 +24,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
     "createdTime": 1686271786041,
-    "modifiedTime": 1686339231149,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1694484010564,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
   },
   "_id": "7S8pLpJp27dh1mLK",
   "folder": "grSWo8UfUN6Awowy",

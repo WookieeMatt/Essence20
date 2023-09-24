@@ -3,7 +3,7 @@
   "name": "Faceless",
   "type": "perk",
   "_id": "63f4lC7RmuQbQll8",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {
@@ -28,7 +28,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!63f4lC7RmuQbQll8"
 }

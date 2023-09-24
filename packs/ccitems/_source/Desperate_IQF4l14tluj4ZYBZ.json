@@ -3,7 +3,7 @@
   "name": "Desperate",
   "type": "influence",
   "_id": "IQF4l14tluj4ZYBZ",
-  "img": "systems/essence20/assets/icons/influence.svg",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
     "description": "",
     "source": {
@@ -32,7 +32,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!IQF4l14tluj4ZYBZ"
 }

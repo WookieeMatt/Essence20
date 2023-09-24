@@ -3,10 +3,6 @@
     {{> "systems/essence20/templates/actor/parts/items/weapon/details.hbs"}}
   {{/inline}}
 
-  {{#*inline "roll-button" item}}
-    <a class="rollable" data-roll-type="weapon" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
-  {{/inline}}
-
   {{#*inline "item-label" item}}
     {{#ifEquals @root.actor.type 'powerRanger'}}
       {{>"systems/essence20/templates/actor/parts/items/classFeature/selector.hbs"}}
@@ -18,20 +14,67 @@
   {{/inline}}
 
   {{#*inline "subcontainers" parentItem}}
-  {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.weaponEffects title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentId=parentItem._id}}
-    {{#*inline "item-label" item}}
-      {{item.name}}
-    {{/inline}}
-  {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
+    {{!-- Weapon Effects --}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.weaponEffects title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentId=parentItem._id}}
+      {{#*inline "roll-button"}}
+        <a class="rollable" data-roll-type="weaponEffect" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+      {{/inline}}
 
-  {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.upgrades title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentItem._id}}
-    {{#*inline "expand-details" item}}
-      {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
-    {{/inline}}
+      {{#*inline "item-label" item}}
+        <div class="flexrow" style="align-items: center;">
+          <div style="flex-grow: 1.5;">
+            {{item.name}}
+          </div>
+          <select class="inline-edit" data-field="system.classification.skill" name="system.classification.skill">
+            {{#select item.system.classification.skill}}
+            {{#each @root.config.skills as |name type|}}
+            <option value="{{type}}">{{name}}</option>
+            {{/each}}
+            {{/select}}
+          </select>
+          <div style="text-align: center;" title="{{item.system.numTargets}} {{localize "E20.WeaponTargets"}}">
+            {{item.system.numTargets}} <i class="fas fa-bullseye"></i>
+          </div>
+          <div style="text-align: center;" title="{{item.system.shiftDown}} {{localize "E20.ShiftDown"}}">
+            {{item.system.shiftDown}} <i class="fas fa-arrow-down"></i>
+          </div>
+          <div style="text-align: center;" title="{{item.system.numHands}} {{localize "E20.WeaponHands"}}">
+            {{item.system.numHands}} <i class="fas fa-hand"></i>
+          </div>
+          <div style="text-align: center;" title="{{item.system.damageValue}} {{localize (lookup @root.config.damageTypes item.system.damageType)}} {{localize "E20.Damage"}}">
+            {{item.system.damageValue}}
+            {{#ifEquals item.system.damageType 'sharp'}}
+              <i class="fas fa-sword"></i>
+            {{else ifEquals item.system.damageType 'blunt'}}
+              <i class="fas fa-hammer"></i>
+            {{else ifEquals item.system.damageType 'element'}}
+              <i class="fas fa-droplet"></i>
+            {{else ifEquals item.system.damageType 'maneuver'}}
+              <i class="fas fa-person-falling"></i>
+            {{else ifEquals item.system.damageType 'stun'}}
+              <i class="fas fa-face-spiral-eyes"></i>
+            {{else ifEquals item.system.damageType 'intimidate'}}
+              <i class="fas fa-person-harassing"></i>
+            {{/ifEquals}}
+          </div>
+        </div>
+      {{/inline}}
 
-    {{#*inline "item-label" item}}
-      {{item.name}}
-    {{/inline}}
-  {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
+      {{#*inline "expand-details" item}}
+        {{> "systems/essence20/templates/actor/parts/items/weaponEffect/details.hbs"}}
+      {{/inline}}
+    {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
+
+    {{!-- Upgrades --}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.upgrades title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentItem._id}}
+      {{#*inline "item-label" item}}
+        {{item.name}}
+      {{/inline}}
+
+      {{#*inline "expand-details" item}}
+        {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
+      {{/inline}}
+    {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
   {{/inline}}
+
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

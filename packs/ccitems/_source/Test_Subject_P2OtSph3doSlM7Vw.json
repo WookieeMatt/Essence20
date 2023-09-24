@@ -3,7 +3,7 @@
   "name": "Test Subject",
   "type": "origin",
   "_id": "P2OtSph3doSlM7Vw",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "",
     "source": {
@@ -62,7 +62,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!P2OtSph3doSlM7Vw"
 }

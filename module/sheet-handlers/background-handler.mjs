@@ -26,7 +26,7 @@ export class BackgroundHandler {
     let addHangUp = false;
 
     for (const item of this._actor.items) {
-      if (item.type == 'influence') {
+      if (item.type == 'influence' || influence.system.mandatoryHangUp) {
         addHangUp = true;
         break;
       }
@@ -54,15 +54,20 @@ export class BackgroundHandler {
   }
 
   /**
-   * Handle the dropping of an influence on to a character
+   * Handle the dropping of an Origin on to a character
    * @param {Origin} origin     The Origin
    * @param {Function} dropFunc The function to call to complete the Origin drop
    */
   async originUpdate(origin, dropFunc) {
+    if (!origin.system.essences.length) {
+      ui.notifications.error(game.i18n.format(game.i18n.localize('E20.OriginNoEssenceError')));
+      return false;
+    }
+
     for (let actorItem of this._actor.items) {
       // Characters can only have one Origin
       if (actorItem.type == 'origin') {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.MulitpleOriginError')));
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.OriginMulitpleError')));
         return false;
       }
     }
@@ -116,7 +121,6 @@ export class BackgroundHandler {
     ).render(true);
   }
 
-
   /**
    * Displays a dialog for selecting a Skill for the given Origin.
    * @param {Object} origin     The Origin
@@ -156,7 +160,7 @@ export class BackgroundHandler {
     }
 
     if (!selectedEssence) {
-      ui.notifications.warn(game.idemo8n.localize('E20.OriginSelectNoEssence'));
+      ui.notifications.error(game.i18n.localize('E20.OriginSelectNoEssence'));
       return;
     }
 
@@ -231,7 +235,7 @@ export class BackgroundHandler {
     for (const id of origin.system.originPerkIds) {
       let data = game.items.get(id);
       if (!data) {
-        data = searchCompendium(id);
+        data = await searchCompendium(id);
       }
 
       const perk = await Item.create(data, { parent: this._actor });
@@ -258,7 +262,7 @@ export class BackgroundHandler {
     for (const id of influence.system.hangUpIds) {
       compendiumData = game.items.get(id);
       if (!compendiumData) {
-        compendiumData = searchCompendium(id);
+        compendiumData = await searchCompendium(id);
         if (compendiumData) {
           itemArray.push(compendiumData);
           choices[compendiumData._id] = {
@@ -352,9 +356,9 @@ export class BackgroundHandler {
     let essenceValue = this._actor.system.essences[essence] - 1;
 
     let selectedSkill = this._actor.system.originSkillsIncrease;
-    const [newShift, skillString] = await getShiftedSkill(selectedSkill, 1, this._actor);
-
+    const [newShift, skillString] = await getShiftedSkill(selectedSkill, -1, this._actor);
     const originDelete = this._actor.items.get(origin._id);
+
     for (const perk of originDelete.system.originPerkIds) {
       itemDeleteById(perk, this._actor);
     }

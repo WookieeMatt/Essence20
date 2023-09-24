@@ -1,7 +1,7 @@
 {
   "name": "Cutter (Long)",
   "type": "altMode",
-  "img": "systems/essence20/assets/icons/altmode.svg",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
     "description": "",
     "source": {
@@ -42,7 +42,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!FlN4FCnbTP7RRz8K"
 }

@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { searchCompendium } from "../helpers/utils.mjs";
+import { createItemCopies, parseId } from "../helpers/utils.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -72,6 +72,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
+    context.numActions = this._prepareNumActions();
 
     return context;
   }
@@ -286,13 +287,27 @@ export class Essence20ActorSheet extends ActorSheet {
     const childItems = [];
 
     for (const id of childItemIds) {
-      const childItem = this.actor.items.get(id) || game.items.get(id) || searchCompendium(id);
+      const childItem = this.actor.items.get(id) || game.items.get(id);
       if (childItem) {
         childItems.push(childItem);
       }
     }
 
     return childItems;
+  }
+
+  /**
+   * Prepare the number of actions available for the actor.
+   * @return {Object}
+   */
+  _prepareNumActions() {
+    const speed = this.actor.system.essences.speed;
+
+    return {
+      free: Math.max(0, speed - 2),
+      movement: speed > 0 ? 1 : 0,
+      standard: speed > 1 ? 1 : 0,
+    };
   }
 
   /* -------------------------------------------- */
@@ -305,7 +320,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).closest(".item");
       const itemId = li.data("itemId");
-      const item = this.actor.items.get(itemId) || game.items.get(itemId) || searchCompendium(itemId);
+      const item = this.actor.items.get(itemId) || game.items.get(itemId);
       item.sheet.render(true);
     });
 
@@ -331,7 +346,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Morph Button
     html.find('.morph').click(() => this._prHandler.onMorph());
 
-    //Transform Button
+    // Transform Button
     html.find('.transform').click(() => this._tfHandler.onTransform(this));
 
     // Rollable abilities.
@@ -354,6 +369,20 @@ export class Essence20ActorSheet extends ActorSheet {
         li.addEventListener("dragstart", handler, false);
       });
     }
+
+    // Rest button
+    html.find('.rest').click(() => this._onRest());
+  }
+
+  /**
+   * Handle clicking the rest button.
+   * @private
+   */
+  async _onRest() {
+    await this.actor.update({
+      "system.health.value": this.actor.system.health.max,
+      "system.stun.value": 0,
+    }).then(this.render(false));
   }
 
   /**
@@ -579,24 +608,74 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'upgrade':
+      return await this._onDropUpgrade(event, data);
+    case 'weapon':
+      return await this._onDropWeapon(event, data);
     case 'weaponEffect':
       return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
-    case 'upgrade':
-      // Drones can only accept drone Upgrades
-      if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
-        return super._onDropItem(event, data);
-      } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
-        return super._onDropItem(event, data);
-      } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
-        return this._atHandler.attachItem(sourceItem.system.type, super._onDropItem.bind(this, event, data));
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
-        return false;
-      }
 
     default:
-      return super._onDropItem(event, data);
+      return await this._onDropDefault(event, data);
     }
+  }
+
+  /**
+   * Handle dropping of an Upgrade onto an Actor sheet
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   */
+  async _onDropUpgrade(event, data) {
+    // Drones can only accept drone Upgrades
+    if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
+      return super._onDropItem(event, data);
+    } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
+      return super._onDropItem(event, data);
+    } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
+      return this._atHandler.attachItem(sourceItem.system.type, super._onDropItem.bind(this, event, data));
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
+      return false;
+    }
+  }
+
+  /**
+   * Handle dropping of any other item an Actor sheet
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   */
+  async _onDropDefault(event, data) {
+    // Drones can only accept drone Upgrades
+    const itemUuid = await parseId(data.uuid);
+
+    const droppedItemList = await super._onDropItem(event, data);
+    const newItem = droppedItemList[0];
+
+    await newItem.update ({
+      "system.originalId": itemUuid,
+    });
+
+    return droppedItemList;
+  }
+
+  /**
+   * Handle dropping of a Weapon onto an Actor sheet
+   * @param {DragEvent} event           The concluding DragEvent which contains drop data
+   * @param {Object} data               The data transfer extracted from the event
+   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+   *                                    not permitted.
+   */
+  async _onDropWeapon(event, data) {
+    const weaponList = await super._onDropItem(event, data);
+    const newWeapon = weaponList[0];
+    const oldWeaponEffectIds = newWeapon.system.weaponEffectIds;
+    const newWeaponEffectIds = await createItemCopies(oldWeaponEffectIds, this.actor);
+    await newWeapon.update({ ['system.weaponEffectIds']: newWeaponEffectIds });
+    return weaponList;
   }
 
   /**

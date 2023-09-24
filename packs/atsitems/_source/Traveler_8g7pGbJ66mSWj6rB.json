@@ -1,7 +1,7 @@
 {
   "name": "Traveler",
   "type": "origin",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "",
     "source": {
@@ -51,7 +51,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!8g7pGbJ66mSWj6rB"
 }

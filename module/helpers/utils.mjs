@@ -70,6 +70,26 @@ function _localizeObject(obj, keys) {
   }
 }
 
+/*
+* Parse the UUID to get just the ID value of the item
+* @param {string} uuid of the item that we are parsing for the id
+* @return {string|null} index or null returned.
+*/
+export function parseId(uuid) {
+  const parts = uuid.split(".");
+  let index;
+
+  if (parts[0] === "Compendium") { // Compendium Documents
+    const [, , , , id] = parts;
+    index = id;
+  } else if (parts.length < 3) {   // World Documents
+    const [, id] = parts;
+    index = id;
+  }
+
+  return index || null;
+}
+
 /**
  * Retrieve the indexed data for a Document using its UUID. Will never return a result for embedded documents.
  * @param {string} uuid  The UUID of the Document index to retrieve.
@@ -97,13 +117,13 @@ export function indexFromUuid(uuid) {
   * @param {Item|String} item  Either an ID or an Item to find in the compendium
   * @returns {Item}     The Item, if found
   */
-export function searchCompendium(item) {
+export async function searchCompendium(item) {
   const id = item._id || item;
 
   for (const pack of game.packs) {
     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
     if (compendium) {
-      const compendiumItem = compendium.index.get(id);
+      const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
       if (compendiumItem) {
         return compendiumItem;
       }
@@ -144,6 +164,25 @@ export function rememberOptions(html) {
 }
 
 /**
+ * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
+ * (This one does values instead of checked)
+ * @param {HTML} html   The html of the dialog upon submission
+ * @returns {Object}  The dialog inputs and their entered values
+ * @private
+ */
+export function rememberValues(html) {
+  const options = {};
+  html.find("input").each((i, el) => {
+    options[el.id] = {
+      max: el.max,
+      value: el.value,
+    };
+  });
+
+  return options;
+}
+
+/**
  * Creates copies of Items for given IDs
  * @param {String[]} ids The IDs of the Items to be copied
  * @param {Actor} owner  The Items' owner
@@ -155,7 +194,7 @@ export async function createItemCopies(ids, owner) {
   for (const id of ids) {
     let compendiumData = game.items.get(id);
     if (!compendiumData) {
-      const item = searchCompendium(id);
+      const item = await searchCompendium(id);
       if (item) {
         compendiumData = item;
       }
@@ -242,4 +281,24 @@ export function compareShift(shift1, shift2, operator) {
   } else {
     throw new Error(`Operator ${operator} not expected`);
   }
+}
+
+/*
+ * Handle organizing selects by adding optGroups
+ * @param {Select} select The select that you are organizing
+ * @param {Category} category The category that we are adding to the options
+ * @param {Items} items The types that you are putting in the category
+ */
+export function setOptGroup(select, category, items) {
+  const options = select.querySelectorAll(":scope > option");
+  const optGroup = document.createElement("optgroup");
+  optGroup.label = category;
+
+  for (const option of options) {
+    if (items[option.value]) {
+      optGroup.appendChild(option);
+    }
+  }
+
+  return optGroup;
 }
