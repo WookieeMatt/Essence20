@@ -483,6 +483,7 @@ preLocalize("movementTypes");
 E20.transformerFactions = {
   autobots: "E20.FactionAutobots",
   decepticons: "E20.FactionDecepticons",
+  other: "E20.FactionOther",
 };
 preLocalize("transformerFactions");
 
