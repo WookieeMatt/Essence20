@@ -3,8 +3,9 @@
   "name": "Candle",
   "type": "gear",
   "_id": "MILwEFL9UAad5Pr1",
-  "img": "systems/essence20/assets/icons/candle-light.svg",
+  "img": "systems/essence20/assets/icons/gear/candle-light.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
@@ -26,7 +27,7 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1692303190399,
-    "modifiedTime": 1692305752016,
+    "modifiedTime": 1695663201031,
     "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
   "_key": "!items!MILwEFL9UAad5Pr1"
