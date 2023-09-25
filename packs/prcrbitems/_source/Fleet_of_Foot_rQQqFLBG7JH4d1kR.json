@@ -1,7 +1,7 @@
 {
   "name": "Fleet of Foot",
   "type": "perk",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "<p>Add at both 2nd and 12th level.&nbsp;</p>",
     "source": {
