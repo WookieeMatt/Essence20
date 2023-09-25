@@ -1,0 +1,34 @@
+{
+  "folder": "6qJvSGsyllbIzUjk",
+  "name": "Plastic Restraints",
+  "type": "gear",
+  "_id": "KUdLtO6SNihKv0Im",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 161
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "security"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695568553542,
+    "modifiedTime": 1695608055264,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!KUdLtO6SNihKv0Im"
+}

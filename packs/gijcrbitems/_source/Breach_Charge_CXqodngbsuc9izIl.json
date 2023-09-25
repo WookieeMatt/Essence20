@@ -1,0 +1,34 @@
+{
+  "folder": "eitZXR4Ort4gb604",
+  "name": "Breach Charge",
+  "type": "gear",
+  "_id": "CXqodngbsuc9izIl",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 162
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "military"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695568654886,
+    "modifiedTime": 1695608055264,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!CXqodngbsuc9izIl"
+}
