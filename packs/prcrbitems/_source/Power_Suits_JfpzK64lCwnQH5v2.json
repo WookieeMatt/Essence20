@@ -1,0 +1,19 @@
+{
+  "name": "Power Suits",
+  "sorting": "a",
+  "folder": "nz07wDpL3BkNm0sE",
+  "type": "Item",
+  "_id": "JfpzK64lCwnQH5v2",
+  "sort": 300000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": null,
+    "modifiedTime": 1695663137921,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!folders!JfpzK64lCwnQH5v2"
+}
