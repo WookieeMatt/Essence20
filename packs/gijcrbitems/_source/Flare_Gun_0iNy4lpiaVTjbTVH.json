@@ -3,7 +3,7 @@
   "name": "Flare Gun",
   "type": "gear",
   "_id": "0iNy4lpiaVTjbTVH",
-  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "img": "systems/essence20/assets/icons/gear/flare_gun.svg",
   "system": {
     "originalId": "",
     "description": "",

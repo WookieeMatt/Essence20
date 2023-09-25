@@ -3,7 +3,7 @@
   "name": "Wingsuit",
   "type": "gear",
   "_id": "dI5xvrclQC5P2Qz1",
-  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "img": "systems/essence20/assets/icons/gear/wingsuit.svg",
   "system": {
     "originalId": "",
     "description": "",

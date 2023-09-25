@@ -3,7 +3,7 @@
   "name": "Geiger Counter",
   "type": "gear",
   "_id": "62X3r5ILcvn5VDQw",
-  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "img": "systems/essence20/assets/icons/gear/geiger_counter.svg",
   "system": {
     "originalId": "",
     "description": "",

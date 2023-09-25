@@ -3,7 +3,7 @@
   "name": "Weapon Cache",
   "type": "gear",
   "_id": "Fgyjk4kb9lSchZ02",
-  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "img": "systems/essence20/assets/icons/gear/weapon_cache.svg",
   "system": {
     "originalId": "",
     "description": "",

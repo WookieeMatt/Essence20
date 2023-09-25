@@ -3,7 +3,7 @@
   "name": "Satellite Phone",
   "type": "gear",
   "_id": "R4s4PzhsPvPqihTF",
-  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "img": "systems/essence20/assets/icons/gear/satellite_phone.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -22,7 +22,7 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695567420449,
-    "modifiedTime": 1695608055264,
+    "modifiedTime": 1695677350835,
     "lastModifiedBy": "Mvvtv1SHd99VKNXD"
   },
   "sort": 0,
