@@ -86,6 +86,12 @@ export class Essence20ActorSheet extends ActorSheet {
       if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
         buttons = [
           {
+            label: "Toggle Lock",
+            class: 'lock-status',
+            icon: `fas fa-lock${this.actor.system.isLocked ? '' : '-open'}`,
+            onclick: (ev) => this._toggleLock(ev),
+          },
+          {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
@@ -97,6 +103,16 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     return buttons;
+  }
+
+  /**
+   * Handles clicking the lock/unlock button
+   * @param {Event} event The originating click event
+   * @return {undefined}
+   */
+  async _toggleLock(event) {
+    await this.actor.update({"system.isLocked": !this.actor.system.isLocked});
+    $(event.currentTarget).find("i").toggleClass("fa-lock-open fa-lock");
   }
 
   /**
