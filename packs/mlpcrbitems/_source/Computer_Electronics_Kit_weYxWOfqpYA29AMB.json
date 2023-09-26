@@ -3,7 +3,7 @@
   "name": "Computer/Electronics Kit",
   "type": "gear",
   "_id": "weYxWOfqpYA29AMB",
-  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "img": "systems/essence20/assets/icons/gear/computer_electronics_kit.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -22,7 +22,7 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695609058332,
-    "modifiedTime": 1695611082766,
+    "modifiedTime": 1695701293180,
     "lastModifiedBy": "Mvvtv1SHd99VKNXD"
   },
   "sort": 0,

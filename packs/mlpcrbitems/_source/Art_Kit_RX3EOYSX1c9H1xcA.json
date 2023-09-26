@@ -3,7 +3,7 @@
   "name": "Art Kit",
   "type": "gear",
   "_id": "RX3EOYSX1c9H1xcA",
-  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "img": "systems/essence20/assets/icons/gear/art_kit.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -22,7 +22,7 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695608876455,
-    "modifiedTime": 1695611082766,
+    "modifiedTime": 1695701248247,
     "lastModifiedBy": "Mvvtv1SHd99VKNXD"
   },
   "sort": 0,
