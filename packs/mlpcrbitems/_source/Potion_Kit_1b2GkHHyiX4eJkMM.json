@@ -1,0 +1,34 @@
+{
+  "folder": "s3yYeYZuD9s4wWjQ",
+  "name": "Potion Kit",
+  "type": "gear",
+  "_id": "1b2GkHHyiX4eJkMM",
+  "img": "systems/essence20/assets/icons/gear/potion_kit.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 152
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695609157342,
+    "modifiedTime": 1695701324540,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!1b2GkHHyiX4eJkMM"
+}
