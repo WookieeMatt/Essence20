@@ -11,6 +11,7 @@ export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
 
+    this._isLocked = false;
     this._accordionStates = { skills: '' };
     this._alHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
@@ -70,6 +71,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare Zords for MFZs
     this._prHandler.prepareZords(context);
 
+    context.isLocked = this._isLocked;
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
     context.numActions = this._prepareNumActions();
@@ -110,8 +112,8 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Event} event The originating click event
    * @return {undefined}
    */
-  async _toggleLock(event) {
-    await this.actor.update({"system.isLocked": !this.actor.system.isLocked});
+  _toggleLock(event) {
+    this._isLocked = !this._isLocked;
     $(event.currentTarget).find("i").toggleClass("fa-lock-open fa-lock");
   }
 
@@ -551,11 +553,28 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
+  * Adds the given child Item's ID to its parent's ID list
+  * @private
+  */
+  _checkIsLocked() {
+    if (this._isLocked) {
+      ui.notifications.error(game.i18n.localize('E20.ActorLockedError'));
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
   * Handle deleting Items
   * @param {Event} event The originating click event
   * @private
   */
   async _onItemDelete(event) {
+    if (this._checkIsLocked()) {
+      return;
+    }
+
     const li = $(event.currentTarget).closest(".item");
     const itemId = li.data("itemId");
     const parentId = li.data("parentId");
@@ -611,6 +630,10 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onDropItem(event, data) {
     if (data.type != 'Item') {
+      return;
+    }
+
+    if (this._checkIsLocked()) {
       return;
     }
 

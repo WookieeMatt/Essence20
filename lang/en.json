@@ -60,6 +60,7 @@
     "ActorInitiative": "Initiative",
     "ActorLanguages": "Languages",
     "ActorLevel": "Level",
+    "ActorLockedError": "This actor sheet must be unlocked before it can be modified.",
     "ActorName": "Name",
     "ActorPronouns": "Pronouns",
     "ActorColor": "Color",
