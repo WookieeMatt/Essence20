@@ -1,0 +1,40 @@
+{
+  "folder": "zSpggN0FQabbHARC",
+  "name": "Increased Armor",
+  "type": "upgrade",
+  "_id": "A7Wp7HXKqDRoLTti",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 132
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 1
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Might d4"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695678425844,
+    "modifiedTime": 1695685525240,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!A7Wp7HXKqDRoLTti"
+}
