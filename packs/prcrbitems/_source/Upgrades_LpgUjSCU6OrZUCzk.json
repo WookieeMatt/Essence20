@@ -1,19 +1,19 @@
 {
-  "name": "Equipment",
+  "name": "Upgrades",
   "sorting": "a",
-  "folder": null,
+  "folder": "nz07wDpL3BkNm0sE",
   "type": "Item",
-  "_id": "nz07wDpL3BkNm0sE",
-  "sort": 0,
+  "_id": "LpgUjSCU6OrZUCzk",
+  "sort": 500000,
   "color": null,
   "flags": {},
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
-    "createdTime": 1695731997840,
-    "modifiedTime": 1695732819995,
+    "createdTime": 1695732005291,
+    "modifiedTime": 1695732862107,
     "lastModifiedBy": "Mvvtv1SHd99VKNXD"
   },
-  "_key": "!folders!nz07wDpL3BkNm0sE"
+  "_key": "!folders!LpgUjSCU6OrZUCzk"
 }

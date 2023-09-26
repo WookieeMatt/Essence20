@@ -1,8 +1,8 @@
 {
   "folder": "jqKh12PIc6n5keSU",
-  "name": "Flashlight",
+  "name": "Scope",
   "type": "upgrade",
-  "_id": "amwW5U2k9S6zVthr",
+  "_id": "cBiD2lBLRwnxu8Rx",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
     "originalId": "",
@@ -19,14 +19,9 @@
     "benefit": "",
     "traits": [],
     "type": "weapon",
-    "prerequisite": "Medium or Large"
+    "prerequisite": ""
   },
   "effects": [],
-  "sort": 0,
-  "ownership": {
-    "default": 0,
-    "RQsfT4GIto0XIK1k": 3
-  },
   "flags": {
     "core": {}
   },
@@ -34,9 +29,14 @@
     "systemId": "essence20",
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
-    "createdTime": 1695598752885,
-    "modifiedTime": 1695732820020,
+    "createdTime": 1695605263967,
+    "modifiedTime": 1695732820050,
     "lastModifiedBy": "Mvvtv1SHd99VKNXD"
   },
-  "_key": "!items!amwW5U2k9S6zVthr"
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!cBiD2lBLRwnxu8Rx"
 }
