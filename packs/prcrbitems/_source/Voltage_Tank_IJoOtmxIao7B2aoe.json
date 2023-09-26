@@ -1,32 +1,29 @@
 {
   "folder": "jqKh12PIc6n5keSU",
-  "name": "Flashlight",
+  "name": "Voltage Tank",
   "type": "upgrade",
-  "_id": "amwW5U2k9S6zVthr",
+  "_id": "IJoOtmxIao7B2aoe",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
   "system": {
     "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
-      "page": 116
+      "page": 118
     },
     "armorBonus": {
       "defense": "toughness",
       "value": 0
     },
-    "availability": "standard",
+    "availability": "restricted",
     "benefit": "",
-    "traits": [],
+    "traits": [
+      "electric"
+    ],
     "type": "weapon",
-    "prerequisite": "Medium or Large"
+    "prerequisite": ""
   },
   "effects": [],
-  "sort": 0,
-  "ownership": {
-    "default": 0,
-    "RQsfT4GIto0XIK1k": 3
-  },
   "flags": {
     "core": {}
   },
@@ -34,9 +31,14 @@
     "systemId": "essence20",
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
-    "createdTime": 1695598752885,
-    "modifiedTime": 1695732820020,
+    "createdTime": 1695685433694,
+    "modifiedTime": 1695732820050,
     "lastModifiedBy": "Mvvtv1SHd99VKNXD"
   },
-  "_key": "!items!amwW5U2k9S6zVthr"
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!IJoOtmxIao7B2aoe"
 }
