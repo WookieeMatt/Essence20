@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { createItemCopies, parseId } from "../helpers/utils.mjs";
+import { checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -526,7 +526,7 @@ export class Essence20ActorSheet extends ActorSheet {
   async _onItemCreate(event) {
     event.preventDefault();
 
-    if (this._checkIsLocked()) {
+    if (checkIsLocked(this.actor)) {
       return;
     }
 
@@ -582,26 +582,12 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-  * Displays an error message if the sheet is locked
-  * @returns {boolean} True if the sheet is locked, and false otherwise
-  * @private
-  */
-  _checkIsLocked() {
-    if (this.actor.system.isLocked) {
-      ui.notifications.error(game.i18n.localize('E20.ActorLockError'));
-      return true;
-    }
-
-    return false;
-  }
-
-  /**
   * Handle deleting Items
   * @param {Event} event The originating click event
   * @private
   */
   async _onItemDelete(event) {
-    if (this._checkIsLocked()) {
+    if (checkIsLocked(this.actor)) {
       return;
     }
 
@@ -663,7 +649,7 @@ export class Essence20ActorSheet extends ActorSheet {
       return;
     }
 
-    if (this._checkIsLocked()) {
+    if (checkIsLocked(this.actor)) {
       return;
     }
 
