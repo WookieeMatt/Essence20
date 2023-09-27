@@ -390,6 +390,10 @@ export class Essence20ActorSheet extends ActorSheet {
     inputs.focus(ev => ev.currentTarget.select());
     // Set readonly if sheet is locked
     inputs.attr('readonly', this._isLocked)
+    // Don't readonly health and stun values
+    html.find('.no-lock').attr('readonly', false);
+    // Stun max is always locked
+    html.find('.no-unlock').attr('readonly', true);
 
     // Disable selects if sheet is locked
     html.find('select').attr('disabled', this._isLocked);
@@ -403,6 +407,8 @@ export class Essence20ActorSheet extends ActorSheet {
       $(ev.currentTarget).find('i').toggleClass('fa-lock-open fa-lock');
       const inputs = html.find('input');
       inputs.attr('readonly', this._isLocked)
+      html.find('.no-lock').attr('readonly', false);
+      html.find('.no-unlock').attr('readonly', true);
       html.find('select').attr('disabled', this._isLocked);
     });
   }
@@ -578,7 +584,7 @@ export class Essence20ActorSheet extends ActorSheet {
   */
   _checkIsLocked() {
     if (this._isLocked) {
-      ui.notifications.error(game.i18n.localize('E20.ActorLockedError'));
+      ui.notifications.error(game.i18n.localize('E20.ActorLockError'));
       return true;
     }
 
