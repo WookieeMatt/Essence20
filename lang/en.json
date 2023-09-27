@@ -61,6 +61,8 @@
     "ActorLanguages": "Languages",
     "ActorLevel": "Level",
     "ActorLockError": "This actor sheet must be unlocked before it can be modified.",
+    "ActorLockOff": "Sheet unlocked",
+    "ActorLockOn": "Sheet locked",
     "ActorLockTitle": "Sheet lock toggle",
     "ActorName": "Name",
     "ActorPronouns": "Pronouns",

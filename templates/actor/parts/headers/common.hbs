@@ -1,18 +1,24 @@
 <header class="sheet-header" style="border-color: {{system.color}};">
+  {{!-- Profile image --}}
   <div class="flexcol" style="flex-grow: .175; gap: 5px;">
     <img class="profile-img" style="border-color: {{system.color}};" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-    <a class="lock-status" style="text-align: center; margin-right: 10px;" title="{{localize 'E20.ActorLockTitle'}}">
-      Sheet {{#if system.isLocked}} locked {{else}} unlocked {{/if}}
-      <i class="fas" style="margin-left: 2px;"></i>
-    </a>
   </div>
 
   <div>
+    {{!-- Name --}}
     <div>
-      <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
+      <div class="flexrow">
+        <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
+        <a class="lock-status" title="{{localize 'E20.ActorLockTitle'}}">
+          {{#if system.isLocked}} {{localize 'E20.ActorLockOn'}} {{else}} {{localize 'E20.ActorLockOff'}} {{/if}}
+          <i class="fas" style="margin-left: 2px;"></i>
+        </a>
+      </div>
       <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
     </div>
+
     <div class="flexrow" style="gap: 2px;">
+      {{!-- Size --}}
       <div class="actor-header-size">
         {{#if system.isTransformed}}
           <label for="system.altModeSize" class="resource-label">{{localize 'E20.ActorSize'}}</label>
@@ -34,6 +40,7 @@
           </select>
         {{/if}}
       </div>
+      
       {{#> secondary-fields}}
       {{!-- Custom secondary fields here --}}
       {{/secondary-fields}}
