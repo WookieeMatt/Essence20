@@ -1,7 +1,10 @@
 <header class="sheet-header" style="border-color: {{system.color}};">
-  <div class="flexcol" style="flex-grow: .15;">
+  <div class="flexcol" style="flex-grow: .175; gap: 5px;">
     <img class="profile-img" style="border-color: {{system.color}};" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
-    <a class="lock-status" style="text-align: center; margin-right: 10px;" title="{{localize 'E20.ActorLockTitle'}}"><i class="fas"></i></a>
+    <a class="lock-status" style="text-align: center; margin-right: 10px;" title="{{localize 'E20.ActorLockTitle'}}">
+      Sheet {{#if system.isLocked}} locked {{else}} unlocked {{/if}}
+      <i class="fas" style="margin-left: 2px;"></i>
+    </a>
   </div>
 
   <div>
