@@ -11,7 +11,7 @@ export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
 
-    this._isLocked = false;
+    this._isLocked = true;
     this._accordionStates = { skills: '' };
     this._alHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
@@ -71,7 +71,6 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare Zords for MFZs
     this._prHandler.prepareZords(context);
 
-    context.isLocked = this._isLocked;
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
     context.numActions = this._prepareNumActions();
@@ -87,12 +86,6 @@ export class Essence20ActorSheet extends ActorSheet {
       // Crossover Button for Character Sheets
       if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
         buttons = [
-          {
-            label: "Toggle Lock",
-            class: 'lock-status',
-            icon: `fas fa-lock${this.actor.system.isLocked ? '' : '-open'}`,
-            onclick: (ev) => this._toggleLock(ev),
-          },
           {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
@@ -390,6 +383,28 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Rest button
     html.find('.rest').click(() => this._onRest());
+
+    // Inputs
+    const inputs = html.find('input');
+    // Selects all text when focused
+    inputs.focus(ev => ev.currentTarget.select());
+    // Set readonly if sheet is locked
+    inputs.attr('readonly', this._isLocked)
+
+    // Disable selects if sheet is locked
+    html.find('select').attr('disabled', this._isLocked);
+
+    // Lock icon
+    html.find('.lock-status').find('i').addClass(this._isLocked ? 'fa-lock' : 'fa-lock-open')
+
+    // Toggling the lock button
+    html.find('.lock-status').click(ev => {
+      this._isLocked = !this._isLocked;
+      $(ev.currentTarget).find('i').toggleClass('fa-lock-open fa-lock');
+      const inputs = html.find('input');
+      inputs.attr('readonly', this._isLocked)
+      html.find('select').attr('disabled', this._isLocked);
+    });
   }
 
   /**
@@ -501,6 +516,11 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onItemCreate(event) {
     event.preventDefault();
+
+    if (this._checkIsLocked()) {
+      return;
+    }
+
     const header = event.currentTarget;
     // Get the type of item to create.
     const type = header.dataset.type;

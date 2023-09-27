@@ -1,5 +1,9 @@
 <header class="sheet-header" style="border-color: {{system.color}};">
-  <img class="profile-img" style="border-color: {{system.color}};" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+  <div class="flexcol" style="flex-grow: .15;">
+    <img class="profile-img" style="border-color: {{system.color}};" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    <a class="lock-status" style="text-align: center; margin-right: 10px;" title="{{localize 'E20.ActorLockTitle'}}"><i class="fas"></i></a>
+  </div>
+
   <div>
     <div>
       <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
