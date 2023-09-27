@@ -579,7 +579,8 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-  * Adds the given child Item's ID to its parent's ID list
+  * Displays an error message if the sheet is locked
+  * @returns {boolean} True if the sheet is locked, and false otherwise
   * @private
   */
   _checkIsLocked() {
