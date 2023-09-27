@@ -389,7 +389,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Selects all text when focused
     inputs.focus(ev => ev.currentTarget.select());
     // Set readonly if sheet is locked
-    inputs.attr('readonly', this._isLocked)
+    inputs.attr('readonly', this._isLocked);
     // Don't readonly health and stun values
     html.find('.no-lock').attr('readonly', false);
     // Stun max is always locked
@@ -399,14 +399,14 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('select').attr('disabled', this._isLocked);
 
     // Lock icon
-    html.find('.lock-status').find('i').addClass(this._isLocked ? 'fa-lock' : 'fa-lock-open')
+    html.find('.lock-status').find('i').addClass(this._isLocked ? 'fa-lock' : 'fa-lock-open');
 
     // Toggling the lock button
     html.find('.lock-status').click(ev => {
       this._isLocked = !this._isLocked;
       $(ev.currentTarget).find('i').toggleClass('fa-lock-open fa-lock');
       const inputs = html.find('input');
-      inputs.attr('readonly', this._isLocked)
+      inputs.attr('readonly', this._isLocked);
       html.find('.no-lock').attr('readonly', false);
       html.find('.no-unlock').attr('readonly', true);
       html.find('select').attr('disabled', this._isLocked);
