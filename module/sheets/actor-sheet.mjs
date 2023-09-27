@@ -11,7 +11,6 @@ export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
 
-    this._isLocked = true;
     this._accordionStates = { skills: '' };
     this._alHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
@@ -384,32 +383,36 @@ export class Essence20ActorSheet extends ActorSheet {
     // Rest button
     html.find('.rest').click(() => this._onRest());
 
+    const isLocked = this.actor.system.isLocked;
+
     // Inputs
     const inputs = html.find('input');
     // Selects all text when focused
     inputs.focus(ev => ev.currentTarget.select());
     // Set readonly if sheet is locked
-    inputs.attr('readonly', this._isLocked);
+    inputs.attr('readonly', isLocked);
     // Don't readonly health and stun values
     html.find('.no-lock').attr('readonly', false);
     // Stun max is always locked
     html.find('.no-unlock').attr('readonly', true);
 
     // Disable selects if sheet is locked
-    html.find('select').attr('disabled', this._isLocked);
+    html.find('select').attr('disabled', isLocked);
 
     // Lock icon
-    html.find('.lock-status').find('i').addClass(this._isLocked ? 'fa-lock' : 'fa-lock-open');
+    html.find('.lock-status').find('i').addClass(isLocked ? 'fa-lock' : 'fa-lock-open');
 
     // Toggling the lock button
     html.find('.lock-status').click(ev => {
-      this._isLocked = !this._isLocked;
+      this.actor.update({
+        "system.isLocked": !isLocked,
+      });
       $(ev.currentTarget).find('i').toggleClass('fa-lock-open fa-lock');
       const inputs = html.find('input');
-      inputs.attr('readonly', this._isLocked);
+      inputs.attr('readonly', isLocked);
       html.find('.no-lock').attr('readonly', false);
       html.find('.no-unlock').attr('readonly', true);
-      html.find('select').attr('disabled', this._isLocked);
+      html.find('select').attr('disabled', isLocked);
     });
   }
 
@@ -584,7 +587,7 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   _checkIsLocked() {
-    if (this._isLocked) {
+    if (this.actor.system.isLocked) {
       ui.notifications.error(game.i18n.localize('E20.ActorLockError'));
       return true;
     }
