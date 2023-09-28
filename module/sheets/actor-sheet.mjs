@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { createItemCopies, parseId } from "../helpers/utils.mjs";
+import { checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -97,6 +97,16 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     return buttons;
+  }
+
+  /**
+   * Handles clicking the lock/unlock button
+   * @param {Event} event The originating click event
+   * @return {undefined}
+   */
+  _toggleLock(event) {
+    this._isLocked = !this._isLocked;
+    $(event.currentTarget).find("i").toggleClass("fa-lock-open fa-lock");
   }
 
   /**
@@ -372,6 +382,38 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Rest button
     html.find('.rest').click(() => this._onRest());
+
+    const isLocked = this.actor.system.isLocked;
+
+    // Inputs
+    const inputs = html.find('input');
+    // Selects all text when focused
+    inputs.focus(ev => ev.currentTarget.select());
+    // Set readonly if sheet is locked
+    inputs.attr('readonly', isLocked);
+    // Don't readonly health and stun values
+    html.find('.no-lock').attr('readonly', false);
+    // Stun max is always locked
+    html.find('.no-unlock').attr('readonly', true);
+
+    // Disable selects if sheet is locked
+    html.find('select').attr('disabled', isLocked);
+
+    // Lock icon
+    html.find('.lock-status').find('i').addClass(isLocked ? 'fa-lock' : 'fa-lock-open');
+
+    // Toggling the lock button
+    html.find('.lock-status').click(ev => {
+      this.actor.update({
+        "system.isLocked": !isLocked,
+      });
+      $(ev.currentTarget).find('i').toggleClass('fa-lock-open fa-lock');
+      const inputs = html.find('input');
+      inputs.attr('readonly', isLocked);
+      html.find('.no-lock').attr('readonly', false);
+      html.find('.no-unlock').attr('readonly', true);
+      html.find('select').attr('disabled', isLocked);
+    });
   }
 
   /**
@@ -483,6 +525,11 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onItemCreate(event) {
     event.preventDefault();
+
+    if (checkIsLocked(this.actor)) {
+      return;
+    }
+
     const header = event.currentTarget;
     // Get the type of item to create.
     const type = header.dataset.type;
@@ -540,6 +587,10 @@ export class Essence20ActorSheet extends ActorSheet {
   * @private
   */
   async _onItemDelete(event) {
+    if (checkIsLocked(this.actor)) {
+      return;
+    }
+
     const li = $(event.currentTarget).closest(".item");
     const itemId = li.data("itemId");
     const parentId = li.data("parentId");
@@ -595,6 +646,10 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onDropItem(event, data) {
     if (data.type != 'Item') {
+      return;
+    }
+
+    if (checkIsLocked(this.actor)) {
       return;
     }
 

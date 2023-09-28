@@ -1,3 +1,5 @@
+import { checkIsLocked } from "../helpers/utils.mjs";
+
 /**
  * Manage Active Effect instances through the Actor Sheet via effect control buttons.
  * @param {MouseEvent} event      The left-click event on the effect control
@@ -6,6 +8,11 @@
 export function onManageActiveEffect(event, owner) {
   event.preventDefault();
   const a = event.currentTarget;
+
+  if (["create", "delete"].includes(a.dataset.action) && checkIsLocked(owner)) {
+    return;
+  }
+
   const li = a.closest("li");
   const effect = li.dataset.effectId ? owner.effects.get(li.dataset.effectId) : null;
   switch ( a.dataset.action ) {
