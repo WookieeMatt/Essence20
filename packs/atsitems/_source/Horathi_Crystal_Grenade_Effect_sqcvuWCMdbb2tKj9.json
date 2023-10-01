@@ -1,0 +1,42 @@
+{
+  "folder": "Z2xK8nOrVV5BbzH4",
+  "name": "Horathi Crystal Grenade Effect",
+  "type": "weaponEffect",
+  "_id": "sqcvuWCMdbb2tKj9",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "athletics",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 2,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 35,
+      "value": 20
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696179040148,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!sqcvuWCMdbb2tKj9"
+}

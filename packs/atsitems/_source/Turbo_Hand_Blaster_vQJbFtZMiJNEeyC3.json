@@ -1,0 +1,54 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Turbo Hand Blaster",
+  "type": "weapon",
+  "_id": "vQJbFtZMiJNEeyC3",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 78
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "Turbocharged",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "powerWeapon",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "CaQIh9A8U56bR8gX"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695960144186,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!vQJbFtZMiJNEeyC3"
+}

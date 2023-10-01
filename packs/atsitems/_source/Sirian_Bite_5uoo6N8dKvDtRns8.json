@@ -1,0 +1,54 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Sirian Bite",
+  "type": "weapon",
+  "_id": "5uoo6N8dKvDtRns8",
+  "img": "systems/essence20/assets/icons/weapons/sirian_bite.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 76
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "automatic",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "sharp",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "89NzsQrxskdJgWcO",
+      "uz91iLIykgZI5HKK"
+    ],
+    "classification": {
+      "size": "integrated"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695757439675,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!5uoo6N8dKvDtRns8"
+}
