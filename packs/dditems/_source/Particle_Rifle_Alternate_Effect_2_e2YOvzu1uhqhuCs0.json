@@ -1,0 +1,41 @@
+{
+  "folder": "oKWTunb7j09H7xpd",
+  "name": "Particle Rifle Alternate Effect 2",
+  "type": "weaponEffect",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 3,
+    "shiftDown": 3,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": 30,
+      "reachMultiplier": 0,
+      "long": 600,
+      "value": 150
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696169357876,
+    "modifiedTime": 1696169890833,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "_id": "e2YOvzu1uhqhuCs0",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!e2YOvzu1uhqhuCs0"
+}
