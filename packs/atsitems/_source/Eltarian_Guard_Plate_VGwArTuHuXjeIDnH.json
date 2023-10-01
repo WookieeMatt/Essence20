@@ -1,0 +1,30 @@
+{
+  "name": "Eltarian Guard Plate",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.vmjU8nDOjER1oot0",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "VGwArTuHuXjeIDnH",
+  "changes": [
+    {
+      "key": "system.helath.bonus",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!vmjU8nDOjER1oot0.VGwArTuHuXjeIDnH"
+}
