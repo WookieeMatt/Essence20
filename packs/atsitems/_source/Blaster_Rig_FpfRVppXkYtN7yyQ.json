@@ -1,0 +1,46 @@
+{
+  "folder": "wz3jDXHF9H1jTjUn",
+  "name": "Blaster Rig",
+  "type": "armor",
+  "_id": "FpfRVppXkYtN7yyQ",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Modular 3</p>",
+    "source": {
+      "book": "Across the Stars",
+      "page": 84
+    },
+    "availability": "limited",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "deflective",
+      "enhanceSkill",
+      "exoFrame",
+      "modular"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": []
+  },
+  "effects": [
+    "ZTHBjpa3IsUR3N9X"
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695745140006,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!FpfRVppXkYtN7yyQ"
+}

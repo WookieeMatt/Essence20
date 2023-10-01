@@ -1,0 +1,53 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Lightspeed Rescue Claw",
+  "type": "weapon",
+  "_id": "trZUXoSl2mFHkW6g",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 79
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "Lightspeed Response",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "inertial",
+      "powerWeapon"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "ZZcej0it6Oc13SpD"
+    ],
+    "classification": {
+      "size": "sidearm"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695911989148,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!trZUXoSl2mFHkW6g"
+}

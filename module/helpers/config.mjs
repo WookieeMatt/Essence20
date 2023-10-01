@@ -381,6 +381,7 @@ E20.damageTypes = {
   intimidate: "E20.DamageIntimidate",
   maneuver: "E20.DamageManeuver",
   mesmerized: "E20.DamageMesmerized",
+  poison: "E20.DamagePoison",
   sharp: "E20.DamageSharp",
   stun: "E20.DamageStun",
 };

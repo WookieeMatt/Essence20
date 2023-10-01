@@ -1,0 +1,58 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Zeo Power Cannon",
+  "type": "weapon",
+  "_id": "ZrpkmsfwLl0kGQvh",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 80
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "antiTank",
+      "combined",
+      "energy",
+      "powerWeapon",
+      "stun",
+      "wrecker"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "udUylY8q4hcePUY0",
+      "mzFJbJJpVuV3M7vW"
+    ],
+    "classification": {
+      "size": "heavy"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696174438822,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "Mvvtv1SHd99VKNXD": 3
+  },
+  "_key": "!items!ZrpkmsfwLl0kGQvh"
+}
