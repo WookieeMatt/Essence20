@@ -3,7 +3,7 @@
   "name": "Salvaged",
   "type": "origin",
   "_id": "7JGOSMXObCNJs6SS",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.cGGEXSdCI170AaM4]{Salvaged}</p>",
     "source": {

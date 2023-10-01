@@ -1,7 +1,7 @@
 {
   "name": "Pretender (Small, Ground 30, Aquatic 20)",
   "type": "altMode",
-  "img": "systems/essence20/assets/icons/altmode.svg",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
     "description": "",
     "source": {

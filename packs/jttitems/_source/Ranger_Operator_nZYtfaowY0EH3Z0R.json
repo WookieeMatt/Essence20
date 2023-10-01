@@ -3,7 +3,7 @@
   "name": "Ranger Operator",
   "type": "perk",
   "_id": "nZYtfaowY0EH3Z0R",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

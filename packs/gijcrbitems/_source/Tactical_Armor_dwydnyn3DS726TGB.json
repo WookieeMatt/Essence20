@@ -1,0 +1,40 @@
+{
+  "folder": "wjVbe6RZpn9ylt2k",
+  "name": "Tactical Armor",
+  "type": "armor",
+  "_id": "dwydnyn3DS726TGB",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 1,
+    "classification": "light",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695586228938,
+    "modifiedTime": 1695608055264,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!dwydnyn3DS726TGB"
+}

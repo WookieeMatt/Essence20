@@ -3,7 +3,7 @@
   "name": "Profiteer",
   "type": "perk",
   "_id": "KPAgV7R7zsP6ts5Q",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

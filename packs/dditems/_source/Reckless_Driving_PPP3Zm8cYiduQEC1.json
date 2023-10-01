@@ -3,7 +3,7 @@
   "name": "Reckless Driving",
   "type": "perk",
   "_id": "PPP3Zm8cYiduQEC1",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

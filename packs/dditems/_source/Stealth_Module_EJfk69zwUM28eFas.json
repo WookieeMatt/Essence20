@@ -3,7 +3,7 @@
   "name": "Stealth Module",
   "type": "perk",
   "_id": "EJfk69zwUM28eFas",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {

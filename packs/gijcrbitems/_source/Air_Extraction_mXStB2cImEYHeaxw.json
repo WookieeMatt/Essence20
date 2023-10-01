@@ -1,0 +1,33 @@
+{
+  "folder": "7OsjJcCvWyvy9lVI",
+  "name": "Air Extraction",
+  "type": "gear",
+  "_id": "mXStB2cImEYHeaxw",
+  "img": "systems/essence20/assets/icons/gear/air_extraction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 163
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "support"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695581949128,
+    "modifiedTime": 1695608055264,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!mXStB2cImEYHeaxw"
+}

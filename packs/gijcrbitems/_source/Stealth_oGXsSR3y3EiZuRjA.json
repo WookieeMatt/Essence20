@@ -1,0 +1,30 @@
+{
+  "name": "Stealth",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.ThXrre0RHTcr1BEp",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "oGXsSR3y3EiZuRjA",
+  "changes": [
+    {
+      "key": "system.skills.infilitration.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!ThXrre0RHTcr1BEp.oGXsSR3y3EiZuRjA"
+}

@@ -1,0 +1,35 @@
+{
+  "folder": "qxnBZjvAup48KbHV",
+  "name": "Crowbar",
+  "type": "gear",
+  "_id": "rcxLjLzrwULKjVOO",
+  "img": "systems/essence20/assets/icons/gear/crowbar.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 154
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "tools"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695568491581,
+    "modifiedTime": 1695611082766,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!rcxLjLzrwULKjVOO"
+}

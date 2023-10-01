@@ -1,7 +1,7 @@
 {
   "name": "Fast",
   "type": "perk",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "<p>Ground bonus is activated by default but you can deactivate and activate a different movement type if that is your choice.&nbsp;</p>",
     "source": {
@@ -33,7 +33,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!NU7KqcXvQbOFbU0C"
 }

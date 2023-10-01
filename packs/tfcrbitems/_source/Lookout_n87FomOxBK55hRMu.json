@@ -1,7 +1,7 @@
 {
   "name": "Lookout",
   "type": "origin",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.ZS3kX8oKogmsH6OK]{Lookout}</p>",
     "source": {
@@ -50,7 +50,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!n87FomOxBK55hRMu"
 }

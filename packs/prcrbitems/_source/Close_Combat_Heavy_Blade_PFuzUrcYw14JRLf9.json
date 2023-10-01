@@ -1,0 +1,55 @@
+{
+  "folder": "hMxc3Svkb17tNliI",
+  "name": "Close Combat Heavy Blade",
+  "type": "weapon",
+  "_id": "PFuzUrcYw14JRLf9",
+  "img": "systems/essence20/assets/icons/weapons/blade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 112
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "sharp",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "SP4uvhATIJanJQQE",
+      "eJVQOt1PPGCzePPP"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695303519731,
+    "modifiedTime": 1695401669612,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!PFuzUrcYw14JRLf9"
+}

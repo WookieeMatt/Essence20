@@ -1,0 +1,54 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Short Blade",
+  "type": "weapon",
+  "_id": "4aAdVztvcJLhZR8N",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 122
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "O6FfE5SvgKn7M2ej",
+      "pLatOjUTLhYOup6N"
+    ],
+    "classification": {
+      "size": "sidearm"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695306892684,
+    "modifiedTime": 1695400290374,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!4aAdVztvcJLhZR8N"
+}

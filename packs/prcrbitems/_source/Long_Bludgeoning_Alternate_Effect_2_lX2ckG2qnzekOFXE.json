@@ -1,0 +1,43 @@
+{
+  "folder": "y6hopQhl3OPjCyRs",
+  "name": "Long Bludgeoning Alternate Effect 2",
+  "type": "weaponEffect",
+  "_id": "lX2ckG2qnzekOFXE",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "maneuver",
+    "damageValue": null,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 2,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695398162784,
+    "modifiedTime": 1695732838737,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 2100000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!lX2ckG2qnzekOFXE"
+}

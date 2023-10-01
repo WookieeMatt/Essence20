@@ -70,6 +70,26 @@ function _localizeObject(obj, keys) {
   }
 }
 
+/*
+* Parse the UUID to get just the ID value of the item
+* @param {string} uuid of the item that we are parsing for the id
+* @return {string|null} index or null returned.
+*/
+export function parseId(uuid) {
+  const parts = uuid.split(".");
+  let index;
+
+  if (parts[0] === "Compendium") { // Compendium Documents
+    const [, , , , id] = parts;
+    index = id;
+  } else if (parts.length < 3) {   // World Documents
+    const [, id] = parts;
+    index = id;
+  }
+
+  return index || null;
+}
+
 /**
  * Retrieve the indexed data for a Document using its UUID. Will never return a result for embedded documents.
  * @param {string} uuid  The UUID of the Document index to retrieve.
@@ -97,13 +117,13 @@ export function indexFromUuid(uuid) {
   * @param {Item|String} item  Either an ID or an Item to find in the compendium
   * @returns {Item}     The Item, if found
   */
-export function searchCompendium(item) {
+export async function searchCompendium(item) {
   const id = item._id || item;
 
   for (const pack of game.packs) {
     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
     if (compendium) {
-      const compendiumItem = compendium.index.get(id);
+      const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
       if (compendiumItem) {
         return compendiumItem;
       }
@@ -174,7 +194,7 @@ export async function createItemCopies(ids, owner) {
   for (const id of ids) {
     let compendiumData = game.items.get(id);
     if (!compendiumData) {
-      const item = searchCompendium(id);
+      const item = await searchCompendium(id);
       if (item) {
         compendiumData = item;
       }
@@ -281,4 +301,18 @@ export function setOptGroup(select, category, items) {
   }
 
   return optGroup;
+}
+
+/**
+ * Displays an error message if the sheet is locked
+ * @returns {boolean} True if the sheet is locked, and false otherwise
+ * @private
+ */
+export function checkIsLocked(actor) {
+  if (actor.system.isLocked) {
+    ui.notifications.error(game.i18n.localize('E20.ActorLockError'));
+    return true;
+  }
+
+  return false;
 }

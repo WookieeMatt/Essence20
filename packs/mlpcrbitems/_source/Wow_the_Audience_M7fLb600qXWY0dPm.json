@@ -1,7 +1,7 @@
 {
   "name": "Wow the Audience",
   "type": "perk",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {
@@ -32,7 +32,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!M7fLb600qXWY0dPm"
 }

@@ -3,7 +3,7 @@
   "name": "Insecticon",
   "type": "origin",
   "_id": "qlWm1QQKEjwuWLR3",
-  "img": "systems/essence20/assets/icons/origin.svg",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.LQuQIm8rqeGu84ga]{Insecticon}</p>",
     "source": {

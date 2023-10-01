@@ -531,6 +531,12 @@
   display: flex;
 }
 
+.essence20 .lock-status {
+  flex-grow: 0;
+  white-space: nowrap;
+  margin-right: 2px;
+}
+
 .essence20 .actor-header-size {
   display: flex;
   flex-direction: column;

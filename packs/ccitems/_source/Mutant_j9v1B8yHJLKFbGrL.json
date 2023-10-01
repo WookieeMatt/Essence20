@@ -3,7 +3,7 @@
   "name": "Mutant",
   "type": "perk",
   "_id": "j9v1B8yHJLKFbGrL",
-  "img": "systems/essence20/assets/icons/perk.svg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "description": "",
     "source": {
@@ -26,7 +26,6 @@
   "sort": 0,
   "ownership": {
     "default": 0
-
   },
   "_key": "!items!j9v1B8yHJLKFbGrL"
 }
