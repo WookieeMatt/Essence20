@@ -1,5 +1,5 @@
 {
-  "folder": "y6hopQhl3OPjCyRs",
+  "folder": "90aj0LwwIHN1JKcX",
   "name": "Long Blade Alternate Effect 2",
   "type": "weaponEffect",
   "_id": "4rgKqfYX9WXvJEX2",
@@ -32,10 +32,10 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695394644903,
-    "modifiedTime": 1695732838737,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695887019000,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
-  "sort": 600000,
+  "sort": 200000,
   "ownership": {
     "default": 0
   },

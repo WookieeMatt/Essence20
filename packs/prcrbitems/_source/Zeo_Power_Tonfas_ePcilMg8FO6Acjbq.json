@@ -1,0 +1,55 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Zeo Power Tonfas",
+  "type": "weapon",
+  "_id": "ePcilMg8FO6Acjbq",
+  "img": "systems/essence20/assets/icons/weapons/bo.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d2"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "DfYW5EG8SjImoH8p",
+      "iaoDkO8mNeTWY3tV"
+    ],
+    "classification": {
+      "size": "sidearm"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "RQsfT4GIto0XIK1k": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696183649542,
+    "modifiedTime": 1696184858772,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!ePcilMg8FO6Acjbq"
+}

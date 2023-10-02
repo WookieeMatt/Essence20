@@ -1,0 +1,55 @@
+{
+  "folder": "cZmpUestiJJV73Mc",
+  "name": "Brawling",
+  "type": "weapon",
+  "_id": "5Y0qpK0gnsupCNHX",
+  "img": "systems/essence20/assets/icons/weapons/punch.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 108
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "automatic",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "blunt",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "IOenNqdotgidwRTa",
+      "JK2fJIoMMEmrX3pF",
+      "WgxbC8HBSTE6i1Yb"
+    ],
+    "classification": {
+      "size": "integrated"
+    }
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "RQsfT4GIto0XIK1k": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695834636458,
+    "modifiedTime": 1695839621947,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!5Y0qpK0gnsupCNHX"
+}

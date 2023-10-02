@@ -1,0 +1,56 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Zeo Power Clubs",
+  "type": "weapon",
+  "_id": "RgzDZkv7Wm3apg3c",
+  "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d4"
+    },
+    "traits": [
+      "blunt",
+      "martialArts",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "dyMByLJ4dJEVLhV3",
+      "HY6yLZbqpLHOM7S9",
+      "s5aQgda3nG5qbx2O"
+    ],
+    "classification": {
+      "size": "sidearm"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "RQsfT4GIto0XIK1k": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696182903437,
+    "modifiedTime": 1696183241159,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!RgzDZkv7Wm3apg3c"
+}

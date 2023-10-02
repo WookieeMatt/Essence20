@@ -1,5 +1,5 @@
 {
-  "folder": "y6hopQhl3OPjCyRs",
+  "folder": "kvf1ZslntELicto6",
   "name": "Thrown Blade Effect",
   "type": "weaponEffect",
   "_id": "3TUcZi1RplIBPQU2",
@@ -32,10 +32,10 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695308218287,
-    "modifiedTime": 1695732838737,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695887098875,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
-  "sort": 400000,
+  "sort": 300000,
   "ownership": {
     "default": 0
   },
