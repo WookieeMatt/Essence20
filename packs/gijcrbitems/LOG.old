@@ -1,5 +1,1 @@
-2023/10/01-16:14:39.626 6e4 Log #6: 0 ops saved to Table #7 OK
-2023/10/01-16:14:39.626 6e4 Archiving C:\Users\fishx\AppData\Local\FoundryVTT\Data\systems\essence20\packs\gijcrbitems/000006.log: OK
-2023/10/01-16:14:39.627 6e4 Table #5: 397 entries OK
-2023/10/01-16:14:39.628 6e4 Archiving C:\Users\fishx\AppData\Local\FoundryVTT\Data\systems\essence20\packs\gijcrbitems/MANIFEST-000004: OK
-2023/10/01-16:14:39.630 6e4 **** Repaired leveldb C:\Users\fishx\AppData\Local\FoundryVTT\Data\systems\essence20\packs\gijcrbitems; recovered 1 files; 96415 bytes. Some data may have been lost. ****
+2023/10/01-09:22:43.125 6a04 Delete type=3 #1
