@@ -3,7 +3,7 @@
   "name": "Jotunn Ice Blade",
   "type": "weapon",
   "_id": "THoz1wfP0uwmzyPj",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -49,8 +49,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!THoz1wfP0uwmzyPj"
 }

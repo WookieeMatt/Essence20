@@ -3,7 +3,7 @@
   "name": "Android Gauntlet Beam",
   "type": "weapon",
   "_id": "nyfshv9epZbusYNp",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -40,15 +40,14 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "coreVersion": "11.311",
     "createdTime": 1696178565970,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1696372141338,
+    "lastModifiedBy": "iCCZI3EVfOIO2b8O"
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!nyfshv9epZbusYNp"
 }

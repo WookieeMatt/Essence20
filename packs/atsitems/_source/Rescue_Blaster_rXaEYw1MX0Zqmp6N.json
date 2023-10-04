@@ -3,7 +3,7 @@
   "name": "Rescue Blaster",
   "type": "weapon",
   "_id": "rXaEYw1MX0Zqmp6N",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -50,8 +50,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!rXaEYw1MX0Zqmp6N"
 }

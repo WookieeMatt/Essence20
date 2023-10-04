@@ -3,7 +3,7 @@
   "name": "Delta Blaster",
   "type": "weapon",
   "_id": "4oahai24Cxroir20",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -47,8 +47,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!4oahai24Cxroir20"
 }

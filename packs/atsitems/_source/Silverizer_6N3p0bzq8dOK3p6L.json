@@ -3,7 +3,7 @@
   "name": "Silverizer",
   "type": "weapon",
   "_id": "6N3p0bzq8dOK3p6L",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -47,8 +47,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!6N3p0bzq8dOK3p6L"
 }

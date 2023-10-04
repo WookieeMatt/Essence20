@@ -3,7 +3,7 @@
   "name": "Void Bow",
   "type": "weapon",
   "_id": "iB2pxhfbirn2qTzs",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -48,8 +48,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!iB2pxhfbirn2qTzs"
 }

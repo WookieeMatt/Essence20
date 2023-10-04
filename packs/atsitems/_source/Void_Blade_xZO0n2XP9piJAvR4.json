@@ -3,7 +3,7 @@
   "name": "Void Blade",
   "type": "weapon",
   "_id": "xZO0n2XP9piJAvR4",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -44,8 +44,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!xZO0n2XP9piJAvR4"
 }
