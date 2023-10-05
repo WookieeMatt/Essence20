@@ -1,5 +1,5 @@
 {
-  "folder": "y6hopQhl3OPjCyRs",
+  "folder": "iw6Cs35WhD3rPzvE",
   "name": "Large Thrown Weapon Effect (Blunt)",
   "type": "weaponEffect",
   "_id": "Ewoa4XvWFFQHPLi9",
@@ -32,10 +32,10 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695329844856,
-    "modifiedTime": 1695732838737,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695887008169,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
-  "sort": 800000,
+  "sort": 100000,
   "ownership": {
     "default": 0
   },

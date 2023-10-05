@@ -1,5 +1,5 @@
 {
-  "folder": "y6hopQhl3OPjCyRs",
+  "folder": "LreVcarsMrTDtIJi",
   "name": "Concussion Grenade Effect",
   "type": "weaponEffect",
   "_id": "biSzIazZJHL5DNGN",
@@ -32,10 +32,10 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695303212620,
-    "modifiedTime": 1695732838737,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695887170207,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
-  "sort": 1800000,
+  "sort": 100000,
   "ownership": {
     "default": 0
   },

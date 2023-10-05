@@ -1,0 +1,42 @@
+{
+  "folder": "HMobEyWV3AHCixnn",
+  "name": "Thunder Slinger Alternate Effect 2",
+  "type": "weaponEffect",
+  "_id": "Or8J0uxAifHW8mrK",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 1,
+    "shiftDown": 1,
+    "numHands": "1",
+    "numTargets": 2,
+    "radius": 30,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 100,
+      "value": 50
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "RQsfT4GIto0XIK1k": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696279460660,
+    "modifiedTime": 1696279489515,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!Or8J0uxAifHW8mrK"
+}

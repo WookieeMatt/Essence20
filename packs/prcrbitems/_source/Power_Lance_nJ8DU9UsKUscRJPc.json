@@ -1,0 +1,52 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Power Lance",
+  "type": "weapon",
+  "_id": "nJ8DU9UsKUscRJPc",
+  "img": "systems/essence20/assets/icons/weapons/magic-trident.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 108
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "3zthzCzaR5vZHbW6",
+      "OpxzP1nA2eXD4nqF",
+      "4KcPHqd2LA9DVSpl"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "RQsfT4GIto0XIK1k": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696145763318,
+    "modifiedTime": 1696181007184,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!nJ8DU9UsKUscRJPc"
+}

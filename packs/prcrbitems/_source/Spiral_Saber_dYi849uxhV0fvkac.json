@@ -1,0 +1,55 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Spiral Saber",
+  "type": "weapon",
+  "_id": "dYi849uxhV0fvkac",
+  "img": "systems/essence20/assets/icons/weapons/coiled-nail.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "cold",
+      "sharp"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "7ggpfXIQXed1uEKf",
+      "pFLbgyKOlmuzJ5p3",
+      "5zKff8GYFxr7ry4z"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "RQsfT4GIto0XIK1k": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696193253003,
+    "modifiedTime": 1696193449885,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!dYi849uxhV0fvkac"
+}

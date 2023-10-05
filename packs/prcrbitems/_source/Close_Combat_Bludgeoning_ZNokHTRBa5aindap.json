@@ -1,5 +1,5 @@
 {
-  "folder": "hMxc3Svkb17tNliI",
+  "folder": "UCLYWNFqe5XND1kq",
   "name": "Close Combat Bludgeoning",
   "type": "weapon",
   "_id": "ZNokHTRBa5aindap",
@@ -44,10 +44,10 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695300703100,
-    "modifiedTime": 1695401669612,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695839697182,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0
   },

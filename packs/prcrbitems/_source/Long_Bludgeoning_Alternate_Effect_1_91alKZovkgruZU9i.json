@@ -1,5 +1,5 @@
 {
-  "folder": "y6hopQhl3OPjCyRs",
+  "folder": "xEobfe1YNl85DACZ",
   "name": "Long Bludgeoning Alternate Effect 1",
   "type": "weaponEffect",
   "_id": "91alKZovkgruZU9i",
@@ -32,10 +32,10 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695307855415,
-    "modifiedTime": 1695732838737,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695887033576,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
-  "sort": 700000,
+  "sort": 100000,
   "ownership": {
     "default": 0
   },
