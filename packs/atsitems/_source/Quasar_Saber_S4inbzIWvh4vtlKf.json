@@ -3,7 +3,7 @@
   "name": "Quasar Saber",
   "type": "weapon",
   "_id": "S4inbzIWvh4vtlKf",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -47,8 +47,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!S4inbzIWvh4vtlKf"
 }

@@ -3,7 +3,7 @@
   "name": "Turbo Blade",
   "type": "weapon",
   "_id": "11McvXnnzKsD3OKo",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -48,8 +48,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!11McvXnnzKsD3OKo"
 }

@@ -3,7 +3,7 @@
   "name": "Auto Blaster",
   "type": "weapon",
   "_id": "U4XFwXCXXceKtGEl",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -46,8 +46,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!U4XFwXCXXceKtGEl"
 }

@@ -3,7 +3,7 @@
   "name": "Zeo Power Cannon",
   "type": "weapon",
   "_id": "ZrpkmsfwLl0kGQvh",
-  "img": "icons/svg/item-bag.svg",
+  "img": "icons/svg/combat.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -51,8 +51,7 @@
   },
   "sort": 0,
   "ownership": {
-    "default": 0,
-    "Mvvtv1SHd99VKNXD": 3
+    "default": 0
   },
   "_key": "!items!ZrpkmsfwLl0kGQvh"
 }
