@@ -1,0 +1,39 @@
+{
+  "name": "Community Helper",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 68
+    },
+    "bond": "",
+    "hangUpIds": [
+      "X8M8SesquSdGZiNe"
+    ],
+    "perkIds": [
+      "6CnhyT0WBSFHwVGq"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686272770368,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "YecCMqDrznGYauGm",
+  "folder": "1Q1jzdGAVmJ9S5HF",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!YecCMqDrznGYauGm"
+}

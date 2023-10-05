@@ -1,0 +1,52 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Turbo Hand Blasters",
+  "type": "weapon",
+  "_id": "YKWOuXvBnImqtiLF",
+  "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "AwsXeADNcZ4PnmWE"
+    ],
+    "classification": {
+      "size": "sidearm"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696192278502,
+    "modifiedTime": 1696192389993,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!YKWOuXvBnImqtiLF"
+}

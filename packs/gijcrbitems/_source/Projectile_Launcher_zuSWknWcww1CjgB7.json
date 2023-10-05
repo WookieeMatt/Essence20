@@ -1,0 +1,54 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Projectile Launcher",
+  "type": "weapon",
+  "_id": "zuSWknWcww1CjgB7",
+  "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent",
+      "sniper"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "H6Z6NxpLuBFB2FJ9"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695329553415,
+    "modifiedTime": 1695388102654,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zuSWknWcww1CjgB7"
+}

@@ -1,0 +1,30 @@
+{
+  "name": "Insectoid Components",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.dvTnIzPUg5kUVkBq",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "PqrP0eHsbTr9Db9r",
+  "changes": [
+    {
+      "key": "system.defenses.toughness.bonus",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!dvTnIzPUg5kUVkBq.PqrP0eHsbTr9Db9r"
+}

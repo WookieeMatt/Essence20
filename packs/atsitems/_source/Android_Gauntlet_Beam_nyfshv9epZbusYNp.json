@@ -1,0 +1,53 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Android Gauntlet Beam",
+  "type": "weapon",
+  "_id": "nyfshv9epZbusYNp",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 80
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "prototype",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "laser",
+      "stun"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "WfelJzcJXZHBfrpZ",
+      "IgvuSVEWpeC3CcUr"
+    ],
+    "classification": {
+      "size": "integrated"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.311",
+    "createdTime": 1696178565970,
+    "modifiedTime": 1696372141338,
+    "lastModifiedBy": "iCCZI3EVfOIO2b8O"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!nyfshv9epZbusYNp"
+}

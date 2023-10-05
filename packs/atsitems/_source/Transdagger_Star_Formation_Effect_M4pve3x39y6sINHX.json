@@ -1,0 +1,41 @@
+{
+  "folder": "Z2xK8nOrVV5BbzH4",
+  "name": "Transdagger Star Formation Effect",
+  "type": "weaponEffect",
+  "_id": "M4pve3x39y6sINHX",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "explosive"
+    },
+    "damageType": "element",
+    "damageValue": 3,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 2,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 120,
+      "value": 75
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696173800520,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!M4pve3x39y6sINHX"
+}

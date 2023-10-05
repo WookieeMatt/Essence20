@@ -1,0 +1,39 @@
+{
+  "name": "Oathbound",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 46
+    },
+    "bond": "",
+    "hangUpIds": [
+      "mg1Nxf9SLWxCeoLo"
+    ],
+    "perkIds": [
+      "uBEb7H0GK1R0Nczt"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686271849318,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "BaKVe4lpJgZmGmTR",
+  "folder": "grSWo8UfUN6Awowy",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!BaKVe4lpJgZmGmTR"
+}

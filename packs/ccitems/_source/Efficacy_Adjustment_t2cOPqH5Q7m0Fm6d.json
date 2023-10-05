@@ -1,0 +1,44 @@
+{
+  "name": "Efficacy Adjustment",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.8pao5WMYv8zZNiw6",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "t2cOPqH5Q7m0Fm6d",
+  "changes": [
+    {
+      "key": "system.movement.aerial.bonus",
+      "mode": 2,
+      "value": "-5"
+    },
+    {
+      "key": "system.movement.climb.bonus",
+      "mode": 2,
+      "value": "-5"
+    },
+    {
+      "key": "system.movement.ground.bonus",
+      "mode": 2,
+      "value": "-5"
+    },
+    {
+      "key": "system.movement.swim.bonus",
+      "mode": 2,
+      "value": "-5"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!8pao5WMYv8zZNiw6.t2cOPqH5Q7m0Fm6d"
+}

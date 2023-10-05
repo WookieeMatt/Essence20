@@ -1,3 +1,11 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-packs/** binary
+assets/** binary
+*.log binary
+CURRENT binary
+LOCK binary
+LOG binary
+MANIFEST* binary
+*.log binary
+*.ldb binary
+*.old binary

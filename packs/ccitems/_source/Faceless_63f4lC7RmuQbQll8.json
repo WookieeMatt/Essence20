@@ -1,0 +1,33 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Faceless",
+  "type": "perk",
+  "_id": "63f4lC7RmuQbQll8",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 80
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [
+    "YYn1mar0j2WHzVMw"
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686501383939,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!63f4lC7RmuQbQll8"
+}

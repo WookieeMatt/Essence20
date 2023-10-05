@@ -54,6 +54,7 @@ preLocalize("weaponStyles");
 
 // Options for Weapon trait
 E20.weaponTraits = {
+  accurate: "E20.WeaponTraitAccurate",
   acid: "E20.WeaponTraitAcid",
   amphibious: "E20.WeaponTraitAmphibious",
   antiTank: "E20.WeaponTraitAntiTank",
@@ -62,8 +63,10 @@ E20.weaponTraits = {
   armorPiercing: "E20.WeaponTraitArmorPiercing",
   ballistic: "E20.WeaponTraitBallistic",
   blunt: "E20.WeaponTraitBlunt",
+  bypassing: "E20.WeaponTraitBypassing",
   cold: "E20.WeaponTraitCold",
-  combined: " E20.WeaponTraitCombined",
+  combined: "E20.WeaponTraitCombined",
+  components: "E20.WeaponTraitComponents",
   computerized: "E20.WeaponTraitComputerized",
   consumable: "E20.WeaponTraitConsumable",
   cover: "E20.WeaponTraitCover",
@@ -71,6 +74,7 @@ E20.weaponTraits = {
   electric: "E20.WeaponTraitElectric",
   electromagnetic: "E20.WeaponTraitElectormagnetic",
   energy: "E20.WeaponTraitEnergy",
+  fanning: "E20.WeaponTraitFanning",
   fire: "E20.WeaponTraitFire",
   grapple: "E20.WeaponTraitGrapple",
   inaccurate: "E20.WeaponTraitInaccurate",
@@ -82,10 +86,12 @@ E20.weaponTraits = {
   martialArts: "E20.WeaponTraitMartialArts",
   mounted: "E20.WeaponTraitMounted",
   multipleTargets: "E20.WeaponTraitMultipleTargets",
+  ongoing: "E20.WeaponTraitOngoing",
   poison: "E20.WeaponTraitPoison",
   powerWeapon: "E20.WeaponTraitPowerWeapon",
   psychic: "E20.WeaponTraitPsychic",
   reload: "E20.WeaponTraitReload",
+  retrogen: "E20.WeaponTraitRetrogen",
   seeking: "E20.WeaponTraitSeeking",
   sharp: "E20.WeaponTraitSharp",
   shove: "E20.WeaponTraitShove",
@@ -94,6 +100,7 @@ E20.weaponTraits = {
   sonic: "E20.WeaponTraitSonic",
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
+  tempermental: "E20.WeaponTraitTempermental",
   trip: "E20.WeaponTraitTrip",
   vehicular: "E20.WeaponTraitVehicular",
   versatile: "E20.WeaponTraitVersatile",
@@ -316,6 +323,44 @@ E20.skillShiftList = [
  * Items                                        *
  ***********************************************/
 
+// Options for Equipment Item Types
+E20.equipmentTypes = {
+  armor: "E20.Armor",
+  gear: "E20.Gear",
+  magicBauble: "E20.MagicBauble",
+  upgrade: "E20.Upgrade",
+  weapon: "E20.Weapon",
+  weaponEffect: "E20.WeaponEffect",
+};
+
+// Options for Background Item Types
+E20.backgroundTypes = {
+  bond: "E20.Bond",
+  hangUp: "E20.HangUp",
+  influence: "E20.Influence",
+  origin: "E20.Origin",
+};
+
+// Options for Character Item Types
+E20.characterTypes = {
+  alteration: "E20.Alteration",
+  altMode: "E20.AltMode",
+  classFeature: "E20.ClassFeature",
+  feature: "E20.Feature",
+  perk: "E20.Perk",
+  power: "E20.Power",
+  specialization: "E20.Specialization",
+  spell: "E20.Spell",
+};
+
+// Options for Other Item Types
+E20.otherTypes = {
+  contact: "E20.Contact",
+  megaformTrait: "E20.MegaformTrait",
+  threatPower: "E20.ThreatPower",
+  trait: "E20.Trait",
+};
+
 // Options for Item availabilities
 E20.availabilities = {
   automatic: "E20.AvailabilityAutomatic",
@@ -327,6 +372,19 @@ E20.availabilities = {
   theoretical: "E20.AvailabilityTheoretical",
 };
 preLocalize("availabilities");
+
+// Damage Types
+E20.damageTypes = {
+  blunt: "E20.DamageBlunt",
+  cover: "E20.DamageCover",
+  element: "E20.DamageElement",
+  intimidate: "E20.DamageIntimidate",
+  maneuver: "E20.DamageManeuver",
+  mesmerized: "E20.DamageMesmerized",
+  poison: "E20.DamagePoison",
+  sharp: "E20.DamageSharp",
+  stun: "E20.DamageStun",
+};
 
 // Perk types
 E20.perkTypes = {
@@ -363,6 +421,14 @@ E20.upgradeTypes = {
   weapon: "E20.UpgradeTypeWeapon",
 };
 preLocalize("upgradeTypes");
+
+// Alteration Type Options
+E20.alterationTypes = {
+  essence: "E20.AlterationTypeEssence",
+  movement: "E20.AlterationTypeMovement",
+  other: "E20.AlterationTypeOther",
+};
+preLocalize("alterationTypes");
 
 /************************************************
  * Spells                                       *
@@ -408,6 +474,7 @@ preLocalize("actorSizes");
 // Types of movement used by Actors
 E20.movementTypes = {
   aerial: "E20.MovementTypeAerial",
+  climb: "E20.MovementTypeClimb",
   ground: "E20.MovementTypeGround",
   swim: "E20.MovementTypeSwim",
 };
@@ -417,6 +484,7 @@ preLocalize("movementTypes");
 E20.transformerFactions = {
   autobots: "E20.FactionAutobots",
   decepticons: "E20.FactionDecepticons",
+  other: "E20.FactionOther",
 };
 preLocalize("transformerFactions");
 
@@ -453,73 +521,137 @@ preLocalize("pointsNameOptions");
 
 E20.statusEffects = [
   {
-    icon: 'systems/essence20/assets/icons/status_asleep.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_asleep.svg',
     id: 'asleep',
     label: 'E20.StatusAsleep',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_blinded.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_blinded.svg',
     id: 'blinded',
     label: 'E20.StatusBlinded',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_deafened.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_deafened.svg',
     id: 'deafened',
     label: 'E20.StatusDeafened',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_defeated.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_defeated.svg',
     id: 'defeated',
     label: 'E20.StatusDefeated',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_frightened.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_frightened.svg',
     id: 'frightened',
     label: 'E20.StatusFrightened',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_grappled.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_grappled.svg',
     id: 'grappled',
     label: 'E20.StatusGrappled',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_immobilized.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
     id: 'immobilized',
     label: 'E20.StatusImmobilized',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_impaired.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
     id: 'Impaired',
     label: 'E20.StatusImpaired',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_invisible.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_invisible.svg',
     id: 'invisible',
     label: 'E20.StatusInvisible',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_mesmerized.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_mesmerized.svg',
     id: 'mesmerized',
     label: 'E20.StatusMesmerized',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_prone.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_prone.svg',
     id: 'prone',
     label: 'E20.StatusProne',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_restrained.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_restrained.svg',
     id: 'restrained',
     label: 'E20.StatusRestrained',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_stunned.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_stunned.svg',
     id: 'stunned',
     label: 'E20.StatusStunned',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_unconscious.svg',
+    icon: 'systems/essence20/assets/icons/status_effects/status_unconscious.svg',
     id: 'unconscious',
     label: 'E20.StatusUnconscious',
   },
 ];
+
+/************************************************
+ * Token Sizes                                  *
+ ***********************************************/
+
+E20.tokenSizes = {
+  small: {
+    height: 1,
+    reach: 2,
+    width: 1,
+  },
+  common: {
+    height: 1,
+    reach: 5,
+    width: 1,
+  },
+  large: {
+    height: 2,
+    reach: 5,
+    width: 2,
+  },
+  long: {
+    height: 1,
+    reach: 5,
+    width: 2,
+  },
+  huge: {
+    height: 3,
+    reach: 10,
+    width: 3,
+  },
+  extended: {
+    height: 2,
+    reach: 10,
+    width: 4,
+  },
+  gigantic: {
+    height: 4,
+    reach: 15,
+    width: 4,
+  },
+  extended2: {
+    height: 3,
+    reach: 15,
+    width: 6,
+  },
+  towering: {
+    height: 5,
+    reach: 20,
+    width: 5,
+  },
+  extended3: {
+    height: 5,
+    reach: 15,
+    width: 5,
+  },
+  titanic: {
+    height: 5,
+    reach: 25,
+    width: 5,
+  },
+};
+
+

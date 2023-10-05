@@ -1,0 +1,41 @@
+{
+  "folder": "rKbv2VhncPgS7qdI",
+  "name": "Turbo Thunder Canon Effect",
+  "type": "weaponEffect",
+  "_id": "BbgVmjJ9gN0uYlca",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 2,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 120,
+      "value": 30
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696192501820,
+    "modifiedTime": 1696192537905,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!BbgVmjJ9gN0uYlca"
+}

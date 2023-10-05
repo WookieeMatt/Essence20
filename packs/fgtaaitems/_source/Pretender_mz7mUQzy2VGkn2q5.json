@@ -1,0 +1,48 @@
+{
+  "name": "Pretender",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "<p>@UUID[Compendium.essence20.field_guide_action_adventure.Item.VGMl0WRUi7JlpeHD]{Pretender (Common, Ground 30, Aerial 20)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.2RdkwgXojDbxqZwG]{Pretender (Common, Ground 30, Aquatic 20)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.ca4svWchRNjMhEMf]{Pretender (Common, Ground 45)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.WYhFLk3UNGrPpkDc]{Pretender (Small, Ground 30, Aerial 20)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.YBPRmUSQ8YWltd1T]{Pretender (Small, Ground 30, Aquatic 20)}@UUID[Compendium.essence20.field_guide_action_adventure.Item.sew02e01Cw2m4cUd]{Pretender (Small, Ground 45)}</p>",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 62
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "social"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "cqAShkpH0EIYZSDS"
+    ],
+    "skills": [
+      "deception",
+      "performance",
+      "streetwise"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1685406320154,
+    "modifiedTime": 1686341014559,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "folder": "AsctL0sSYq52brFB",
+  "_id": "mz7mUQzy2VGkn2q5",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!mz7mUQzy2VGkn2q5"
+}

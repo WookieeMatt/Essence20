@@ -1,0 +1,39 @@
+{
+  "folder": "JfpzK64lCwnQH5v2",
+  "name": "Turbo Armor",
+  "type": "armor",
+  "_id": "zR1vd47msoThMOQ8",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 118
+    },
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1692302162508,
+    "modifiedTime": 1692303884828,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!zR1vd47msoThMOQ8"
+}

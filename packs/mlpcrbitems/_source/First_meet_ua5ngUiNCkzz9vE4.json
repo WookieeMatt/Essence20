@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.IgjtNiGBXQinE1GO",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "ua5ngUiNCkzz9vE4",
+  "changes": [
+    {
+      "key": "system.essenceShifts.social.shiftUp",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "First meet",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!IgjtNiGBXQinE1GO.ua5ngUiNCkzz9vE4"
+}

@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.6r0sYiTEtGsge6cB",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "t0Z8CCtYmMQwB8OS",
+  "changes": [
+    {
+      "key": "system.initiative.edge",
+      "mode": 5,
+      "value": "true",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Initiative Edge",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!6r0sYiTEtGsge6cB.t0Z8CCtYmMQwB8OS"
+}

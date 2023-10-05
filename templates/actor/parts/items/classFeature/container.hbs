@@ -1,14 +1,14 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.classFeatures title='E20.ItemTypeClassFeaturePlural' dataType='classFeature'}}
   {{#*inline "item-label" item}}
-  {{item.name}}
-  <input class="one-digit-input inline-edit" data-field="system.uses.value" type="number"
-    name="item.system.uses.value" value="{{item.system.uses.value}}" />
-  /
-  <input class="one-digit-input inline-edit" data-field="system.uses.max" type="number" name="item.system.uses.max"
-    value="{{item.system.uses.max}}" />
-  </span>
-
+    {{item.name}}
+    <input class="one-digit-input inline-edit" data-field="system.uses.value" type="number"
+      name="item.system.uses.value" value="{{item.system.uses.value}}" />
+    /
+    <input class="one-digit-input inline-edit" data-field="system.uses.max" type="number" name="item.system.uses.max"
+      value="{{item.system.uses.max}}" />
+    </span>
   {{/inline}}
+
   {{#*inline "expand-details" item}}
     {{> "systems/essence20/templates/actor/parts/items/classFeature/details.hbs"}}
   {{/inline}}

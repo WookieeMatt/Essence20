@@ -1,0 +1,55 @@
+{
+  "folder": "Vp6v1H3MnV842PdP",
+  "name": "Fusion Gun",
+  "type": "weapon",
+  "_id": "T7Dn9YePiA7n2U5I",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 73
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "antiTank",
+      "computerized",
+      "energy",
+      "reload",
+      "wrecker"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "rkfV4VuLcr7TUh4G"
+    ],
+    "classification": {
+      "size": "heavy"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696168832907,
+    "modifiedTime": 1696169890833,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!T7Dn9YePiA7n2U5I"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Why Do I know That?",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 39
+    },
+    "prerequisite": "",
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681764116822,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "ugJU6pzzWNesCn4f",
+  "folder": "drR1a0cKGlGOZXBX",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ugJU6pzzWNesCn4f"
+}

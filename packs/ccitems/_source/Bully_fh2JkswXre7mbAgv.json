@@ -1,0 +1,47 @@
+{
+  "folder": "fNZdfcqnnNHonskV",
+  "name": "Bully",
+  "type": "origin",
+  "_id": "fh2JkswXre7mbAgv",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 41
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "social"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "t0QDESiNz7GEDYHL"
+    ],
+    "skills": [
+      "brawn",
+      "intimidation",
+      "deception",
+      "streetwise"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686493263406,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!fh2JkswXre7mbAgv"
+}

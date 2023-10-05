@@ -28,7 +28,7 @@ export class Essence20ItemSheet extends ItemSheet {
   /* -------------------------------------------- */
 
   /** @override */
-  getData() {
+  async getData() {
     // Retrieve base data structure.
     const context = super.getData();
 
@@ -37,13 +37,18 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
-    if (context.item.type == 'origin') {
-      this._prepareItemDisplay(context, "originPerk");
-    } else if (context.item.type == 'armor' || context.item.type =='weapon') {
-      this._prepareItemDisplay(context, "upgrade");
-    } else if (context.item.type == 'influence') {
-      this._prepareItemDisplay(context, "hangUp");
-      this._prepareItemDisplay(context, "perk");
+
+    const itemType = context.item.type;
+    if (itemType == 'origin') {
+      await this._prepareItemDisplay(context, "originPerk");
+    } else if (itemType == 'armor') {
+      await this._prepareItemDisplay(context, "upgrade");
+    } else if (itemType == 'weapon') {
+      await this._prepareItemDisplay(context, "upgrade");
+      await this._prepareItemDisplay(context, "weaponEffect");
+    } else if (itemType == 'influence') {
+      await this._prepareItemDisplay(context, "hangUp");
+      await this._prepareItemDisplay(context, "perk");
     }
 
     // Retrieve the roll data for TinyMCE editors.
@@ -73,7 +78,7 @@ export class Essence20ItemSheet extends ItemSheet {
   async _prepareItemDisplay(context, itemType) {
     const itemArray = [];
     for (let itemId of (this.item.system[`${itemType}Ids`])) {
-      const item = game.items.get(itemId) || searchCompendium(itemId) || this.actor.items.get(itemId);
+      const item = await searchCompendium(itemId) ||  game.items.get(itemId) || this.actor.items.get(itemId);
       if (item) {
         itemArray.push(item);
       }
@@ -104,6 +109,9 @@ export class Essence20ItemSheet extends ItemSheet {
     // Delete Origin Perks from Origns
     html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".originPerk", "originPerkIds"));
 
+    // Delete Effects from Weapons
+    html.find('.weaponEffect-delete').click(this._onIdDelete.bind(this, ".weaponEffect", "weaponEffectIds"));
+
     // Delete Origin Upgrade from item
     html.find('.upgrade-delete').click(this._onUpgradeDelete.bind(this));
 
@@ -116,7 +124,7 @@ export class Essence20ItemSheet extends ItemSheet {
 
   /**
   * Handles the dropping of items on to other items
-  * @param {DragEvent} event            The concluding DragEvent which contains drop data
+  * @param {DragEvent} event The concluding DragEvent which contains drop data
   * @private
   */
   async _onDrop(event) {
@@ -155,10 +163,12 @@ export class Essence20ItemSheet extends ItemSheet {
       if (droppedItem.type == "upgrade") {
         if (droppedItem.system.type == "weapon") {
           const upgradeIds = duplicate(this.item.system.upgradeIds);
-
           this._addItemIfUnique(droppedItem, data, upgradeIds, "upgrade");
           this._addDroppedUpgradeTraits(droppedItem);
         }
+      } else if (droppedItem.type == "weaponEffect") {
+        const weaponEffectIds = duplicate(this.item.system.weaponEffectIds);
+        this._addItemIfUnique(droppedItem, data, weaponEffectIds, "weaponEffect");
       }
     } else if (targetItem.type == "influence") {
       if (droppedItem.type == "perk") {

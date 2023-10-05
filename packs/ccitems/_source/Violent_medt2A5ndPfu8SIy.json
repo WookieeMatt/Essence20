@@ -1,0 +1,29 @@
+{
+  "folder": "3FMemNB97tHEQvI8",
+  "name": "Violent",
+  "type": "hangUp",
+  "_id": "medt2A5ndPfu8SIy",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 38
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686493005904,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!medt2A5ndPfu8SIy"
+}

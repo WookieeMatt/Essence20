@@ -1,0 +1,56 @@
+{
+  "name": "Marine",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Sgt Slaughter Sourcebook",
+      "page": 7
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 30,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "speed"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "IR8Rl7IXn0zKBBXV"
+    ],
+    "skills": [
+      "conditioning",
+      "initiative",
+      "athletics",
+      "brawn"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681765122294,
+    "modifiedTime": 1686342990274,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "6nFlIOi0nwjJgZpx",
+  "folder": "JuahnV9krwv4o0b9",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!6nFlIOi0nwjJgZpx"
+}

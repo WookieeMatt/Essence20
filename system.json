@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "3.3.0",
+  "version": "4.0.0",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -41,6 +41,15 @@
       "flags": {}
     },
     {
+      "name": "decepticon_directive",
+      "label": "Decpeticon Directive",
+      "system": "essence20",
+      "path": "packs/dditems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "field_guide_action_adventure",
       "label": "Field Guide to Action and Adventure",
       "system": "essence20",
@@ -54,6 +63,15 @@
       "label": "GI Joe Core Rulebook",
       "system": "essence20",
       "path": "packs/gijcrbitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "jump_through_time",
+      "label": "A Jump Through Time",
+      "system": "essence20",
+      "path": "packs/jttitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -93,6 +111,41 @@
       "type": "Item",
       "private": false,
       "flags": {}
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "GI Joe",
+      "sorting": "m",
+      "packs": [
+        "gi_joe_crb",
+        "sgt_slaughter_sourcebook",
+        "cobra_codex"
+      ]
+    },
+    {
+      "name": "My Little Pony",
+      "sorting": "m",
+      "packs": [
+        "mlp_crb"
+      ]
+    },
+    {
+      "name": "Power Rangers",
+      "sorting": "m",
+      "packs": [
+        "pr_crb",
+        "across_the_stars",
+        "jump_through_time"
+      ]
+    },
+    {
+      "name": "Transformers",
+      "sorting": "m",
+      "packs": [
+        "tf_crb",
+        "decepticon_directive"
+      ]
     }
   ],
   "primaryTokenAttribute": "health",

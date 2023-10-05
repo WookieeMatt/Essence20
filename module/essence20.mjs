@@ -10,7 +10,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { performPreLocalization } from "./helpers/utils.mjs";
+import { performPreLocalization, setOptGroup } from "./helpers/utils.mjs";
 import { migrateWorld } from "./migration.mjs";
 
 function registerSystemSettings() {
@@ -162,6 +162,19 @@ Hooks.once("ready", async function () {
 /* eslint-disable no-unused-vars */
 Hooks.on("renderChatMessage", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html);
+});
+
+/* Hook to organize the item options by type */
+Hooks.on("renderDialog", (dialog, html) => {
+  if (html[0].innerText.includes('Create New Item')) {
+    const select = html[0].querySelector("select[name='type']");
+    if (select) {
+      select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
+      select.append(setOptGroup(select, "Background", CONFIG.E20.backgroundTypes));
+      select.append(setOptGroup(select, "Character Options", CONFIG.E20.characterTypes));
+      select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
+    }
+  }
 });
 
 /* -------------------------------------------- */

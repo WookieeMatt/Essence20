@@ -23,6 +23,10 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/active-effects.hbs",
     "systems/essence20/templates/actor/parts/misc/background.hbs",
     "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs",
+    "systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs",
+    "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs",
+    "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs",
+    "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs",
     "systems/essence20/templates/actor/parts/misc/common.hbs",
     "systems/essence20/templates/actor/parts/misc/defenses.hbs",
     "systems/essence20/templates/actor/parts/misc/essence-skills.hbs",
@@ -44,6 +48,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs",
 
     // Actor partials - Items
+    "systems/essence20/templates/actor/parts/items/alteration/container.hbs",
+    "systems/essence20/templates/actor/parts/items/alteration/details.hbs",
     "systems/essence20/templates/actor/parts/items/altMode/container.hbs",
     "systems/essence20/templates/actor/parts/items/altMode/details.hbs",
     "systems/essence20/templates/actor/parts/items/armor/container.hbs",
@@ -81,6 +87,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/trait/details.hbs",
     "systems/essence20/templates/actor/parts/items/upgrade/container.hbs",
     "systems/essence20/templates/actor/parts/items/upgrade/details.hbs",
+    "systems/essence20/templates/actor/parts/items/weaponEffect/details.hbs",
     "systems/essence20/templates/actor/parts/items/weapon/container.hbs",
     "systems/essence20/templates/actor/parts/items/weapon/details.hbs",
 

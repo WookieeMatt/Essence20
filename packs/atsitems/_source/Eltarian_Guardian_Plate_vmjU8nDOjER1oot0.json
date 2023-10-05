@@ -1,0 +1,44 @@
+{
+  "folder": "wz3jDXHF9H1jTjUn",
+  "name": "Eltarian Guardian Plate",
+  "type": "armor",
+  "_id": "vmjU8nDOjER1oot0",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 84
+    },
+    "availability": "limited",
+    "bonusEvasion": 0,
+    "bonusToughness": 4,
+    "classification": "heavy",
+    "equipped": false,
+    "traits": [
+      "bulwark",
+      "deflective",
+      "regal"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": []
+  },
+  "effects": [
+    "VGwArTuHuXjeIDnH"
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695745239120,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!vmjU8nDOjER1oot0"
+}

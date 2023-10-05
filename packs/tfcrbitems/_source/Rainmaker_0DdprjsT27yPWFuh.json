@@ -1,0 +1,52 @@
+{
+  "name": "Rainmaker",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.OlLBvRl06PVw9OQx]{Rainmaker}</p>",
+    "source": {
+      "book": "Transformers Core Ruelbook",
+      "page": 52
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "speed"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "LZirSocExL40Ljya"
+    ],
+    "skills": [
+      "initiative",
+      "targeting"
+    ],
+    "startingHealth": 4,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681743805099,
+    "modifiedTime": 1686343637213,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "0DdprjsT27yPWFuh",
+  "folder": "vECyC1kfkRvVO3FR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!0DdprjsT27yPWFuh"
+}

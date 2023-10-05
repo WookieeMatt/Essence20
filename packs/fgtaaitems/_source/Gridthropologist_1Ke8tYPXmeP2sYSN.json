@@ -1,0 +1,48 @@
+{
+  "name": "Gridthropologist",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 61
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 35,
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "MS8KLmY19EyKR1Ww"
+    ],
+    "skills": [
+      "culture",
+      "science",
+      "technology"
+    ],
+    "startingHealth": 1
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1685406180934,
+    "modifiedTime": 1686340779668,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "folder": "AsctL0sSYq52brFB",
+  "_id": "1Ke8tYPXmeP2sYSN",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!1Ke8tYPXmeP2sYSN"
+}

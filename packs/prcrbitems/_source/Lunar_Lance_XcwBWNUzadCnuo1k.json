@@ -1,0 +1,55 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Lunar Lance",
+  "type": "weapon",
+  "_id": "XcwBWNUzadCnuo1k",
+  "img": "systems/essence20/assets/icons/weapons/spear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "sharp"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "LAxPAXvQKtiaWGmV",
+      "mOd8XXF5PGvMUVLO",
+      "DMVavBBvj9Nh4Dfa",
+      "9pOLGLbkQctW2wCy"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696195438886,
+    "modifiedTime": 1696195760981,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!XcwBWNUzadCnuo1k"
+}

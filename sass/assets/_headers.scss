@@ -61,7 +61,7 @@
   border: v.$border;
   font-weight: bold;
   border-radius: v.$border-radius;
-  box-shadow: v.$boxshadow; 
+  box-shadow: v.$boxshadow;
 }
 
 .essence20 .items-header>* {
@@ -76,6 +76,12 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.essence20 .lock-status {
+  flex-grow: 0;
+  white-space: nowrap;
+  margin-right: 2px;
 }
 
 .essence20 .actor-header-size {

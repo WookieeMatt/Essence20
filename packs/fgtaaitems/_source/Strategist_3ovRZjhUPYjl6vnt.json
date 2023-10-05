@@ -1,0 +1,47 @@
+{
+  "name": "Strategist",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 63
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "YPzpjKFz1yrwPHN6"
+    ],
+    "skills": [
+      "culture",
+      "science"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1685406891472,
+    "modifiedTime": 1686340779668,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "folder": "AsctL0sSYq52brFB",
+  "_id": "3ovRZjhUPYjl6vnt",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+
+  },
+  "_key": "!items!3ovRZjhUPYjl6vnt"
+}

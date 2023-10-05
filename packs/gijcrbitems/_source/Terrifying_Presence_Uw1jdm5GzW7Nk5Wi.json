@@ -1,0 +1,35 @@
+{
+  "name": "Terrifying Presence",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 134
+    },
+    "prerequisite": "Intimidation d6",
+    "type": "general"
+  },
+  "effects": [
+    "NOm1MHrcUtxhD6q2"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686281942332,
+    "modifiedTime": 1686341513787,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "Uw1jdm5GzW7Nk5Wi",
+  "folder": "RXPdNB9Xnw7MUk8x",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Uw1jdm5GzW7Nk5Wi"
+}

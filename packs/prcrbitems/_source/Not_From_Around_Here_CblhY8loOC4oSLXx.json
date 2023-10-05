@@ -1,0 +1,33 @@
+{
+  "name": "Not From Around Here",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 72
+    },
+    "prerequisite": "",
+    "type": "influence"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686011874308,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "CblhY8loOC4oSLXx",
+  "folder": "929s94UYQgmotPSz",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!CblhY8loOC4oSLXx"
+}
