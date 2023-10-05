@@ -1,9 +1,9 @@
 {
-  "folder": "hMxc3Svkb17tNliI",
+  "folder": "4xX7UVy4D1SvGCXN",
   "name": "Small Thrown Weapon",
   "type": "weapon",
   "_id": "W7iyFJTIGw7BuR3x",
-  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "img": "systems/essence20/assets/icons/weapons/small_thrown_weapon.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -45,10 +45,10 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695329746589,
-    "modifiedTime": 1695401669612,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695839716903,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0
   },

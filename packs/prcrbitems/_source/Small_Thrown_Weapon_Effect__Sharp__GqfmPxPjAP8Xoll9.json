@@ -1,5 +1,5 @@
 {
-  "folder": "y6hopQhl3OPjCyRs",
+  "folder": "3RSAjvUzQI5s4Qm9",
   "name": "Small Thrown Weapon Effect (Sharp)",
   "type": "weaponEffect",
   "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
@@ -31,11 +31,11 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695329646636,
-    "modifiedTime": 1695732838737,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695887074486,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
   "_id": "GqfmPxPjAP8Xoll9",
-  "sort": 900000,
+  "sort": 200000,
   "ownership": {
     "default": 0
   },

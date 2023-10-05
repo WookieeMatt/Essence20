@@ -1,5 +1,5 @@
 {
-  "folder": "y6hopQhl3OPjCyRs",
+  "folder": "90aj0LwwIHN1JKcX",
   "name": "Long Blade Effect",
   "type": "weaponEffect",
   "_id": "uYAnV5vfucrRlJlr",
@@ -32,10 +32,10 @@
     "systemVersion": "3.3.0",
     "coreVersion": "11.307",
     "createdTime": 1695307095717,
-    "modifiedTime": 1695732838737,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1695887020493,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
   },
-  "sort": 2500000,
+  "sort": 300000,
   "ownership": {
     "default": 0
   },

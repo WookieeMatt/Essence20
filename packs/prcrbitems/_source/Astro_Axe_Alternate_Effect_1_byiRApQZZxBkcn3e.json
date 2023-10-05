@@ -1,0 +1,42 @@
+{
+  "folder": "BKsaJE1ih5XcoRRr",
+  "name": "Astro Axe Alternate Effect 1",
+  "type": "weaponEffect",
+  "_id": "byiRApQZZxBkcn3e",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 2,
+    "shiftDown": 2,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "RQsfT4GIto0XIK1k": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696278655236,
+    "modifiedTime": 1696278672928,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!byiRApQZZxBkcn3e"
+}
