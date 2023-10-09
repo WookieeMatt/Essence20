@@ -193,7 +193,7 @@ export class Dice {
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
     const alternateEffectsStr = this._localize('E20.WeaponAlternateEffects');
-    const classFeatureStr = this._localize('ITEM.TypeClassfeature');
+    const classFeatureStr = this._localize('TYPES.Item.classFeature');
     const noneStr = this._localize('E20.None');
     const classFeatureId = weapon.system.classFeatureId;
 
