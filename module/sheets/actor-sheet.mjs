@@ -61,6 +61,11 @@ export class Essence20ActorSheet extends ActorSheet {
       this._prepareDisplayedNpcSkills(context);
     }
 
+    // Prepare number of actions
+    if (['giJoe', 'npc', 'pony', 'powerRanger', 'transformer'].includes(actorData.type)) {
+      this._prepareNumActions(context);
+    }
+
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
 
@@ -72,7 +77,6 @@ export class Essence20ActorSheet extends ActorSheet {
 
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
-    context.numActions = this._prepareNumActions();
 
     return context;
   }
@@ -308,12 +312,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Prepare the number of actions available for the actor.
-   * @return {Object}
+   * @param {Object} context The actor data to prepare.
+   * @return {undefined}
    */
-  _prepareNumActions() {
+  _prepareNumActions(context) {
     const speed = this.actor.system.essences.speed;
 
-    return {
+    context.numActions = {
       free: Math.max(0, speed - 2),
       movement: speed > 0 ? 1 : 0,
       standard: speed > 1 ? 1 : 0,
