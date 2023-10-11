@@ -790,7 +790,14 @@
         "item",
         "itemDescription"
       ],
-      "classFeatureId": null
+	  "actionType": "",
+    "canActivate": true,
+    "classFeatureId": null,
+    "isVariable": false,
+	  "powerCost": null,
+    "timesSelected": 1,
+	  "type": "grid",
+	  "usesPerScene": null
     },
     "specialization": {
       "templates": [
