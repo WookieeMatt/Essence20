@@ -324,7 +324,7 @@
     "RollTypeSpell": "Spell Roll",
     "RollWithAnEdge": "with an Edge",
     "RollWithASnag": "with a Snag",
-    "SelectionLimit": "Number of Times Selected",
+    "PowerSelectionLimit": "Selection Limit",
     "ShiftAutoFail": "Auto Fail",
     "ShiftAutoSuccess": "Auto Success",
     "SkillSelector": "Select Skills",
