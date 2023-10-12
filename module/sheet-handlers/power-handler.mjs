@@ -1,3 +1,7 @@
+import {
+    parseId,
+  } from "../helpers/utils.mjs";
+
 export class PowerHandler {
   /**
   * Constructor
@@ -15,7 +19,28 @@ export class PowerHandler {
   */
 
   async powerUpdate(power, dropFunc) {
+    const powerUuid = parseId(power.uuid);
+    let timesTaken  = 0;
+
+    for (let actorItem of this._actor.items) {
+        if (actorItem.type == 'power') {
+          if (actorItem.system.originalId == powerUuid) {
+            timesTaken++;
+            if (power.system.timesSelected == timesTaken) {
+              ui.notifications.warn(game.i18n.localize('E20.PowerAlreadyTaken'));
+              return;
+            }
+          }
+        }
+      }
+
+
     const newPowerList = await dropFunc();
     const newPower = newPowerList[0];
+
+    await newPower.update ({
+        "system.originalId": powerUuid,
+      });
+
   }
 }
