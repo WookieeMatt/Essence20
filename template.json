@@ -795,7 +795,7 @@
     "classFeatureId": null,
     "isVariable": false,
 	  "powerCost": null,
-    "timesSelected": 1,
+    "selectionLimit": 1,
 	  "type": "grid",
 	  "usesPerScene": null
     },

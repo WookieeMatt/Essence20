@@ -670,6 +670,8 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'power':
+      return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(event, data);
     case 'weapon':

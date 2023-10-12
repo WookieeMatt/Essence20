@@ -14,7 +14,7 @@
     <div class="tab main flexcol" data-group="primary" data-tab="main">
 
       {{!--Power Type --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerOptions'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerTypes'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.type">
         {{#select system.type}}
@@ -27,9 +27,9 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Times Selected --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.TimesSelected'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.timesSelected" value="{{system.timesSelected}}" />
+      <input type="number" name="system.selectionLimit" value="{{system.selectionLimit}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

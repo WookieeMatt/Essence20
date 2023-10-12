@@ -329,7 +329,7 @@ E20.actionTypes = {
   move: "E20.ActionMove",
   standard: "E20.ActionStandard",
 };
-
+preLocalize("actionTypes");
 
 /************************************************
  * Items                                        *
