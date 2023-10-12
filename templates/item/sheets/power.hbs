@@ -27,7 +27,7 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Times Selected --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerSelectionLimit'}}
       {{#*inline "item-field-inputs"}}
       <input type="number" name="system.selectionLimit" value="{{system.selectionLimit}}" />
       {{/inline}}
@@ -56,7 +56,7 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
         {{!--Action Type --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionOptions'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionTypes'}}
         {{#*inline "item-field-inputs"}}
         <select name="system.actionType">
           {{#select system.actionType}}
@@ -69,7 +69,7 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
         {{!-- Uses Per Scene --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowersUsesPerScene'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerUsesPerScene'}}
         {{#*inline "item-field-inputs"}}
         <input type="number" name="system.usesPerScene" value="{{system.usesPerScene}}" />
         {{/inline}}
