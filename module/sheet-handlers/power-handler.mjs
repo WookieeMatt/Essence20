@@ -55,7 +55,4 @@ export class PowerHandler {
 
   }
 
-  powerCost() {
-
-  }
 }
