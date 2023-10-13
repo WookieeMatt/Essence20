@@ -43,8 +43,6 @@ export class PowerHandler {
       }
     }
 
-
-
     const newPowerList = await dropFunc();
     const newPower = newPowerList[0];
 
