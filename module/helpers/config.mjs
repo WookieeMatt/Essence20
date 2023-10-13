@@ -325,9 +325,9 @@ E20.skillShiftList = [
 
 // Options for Actions
 E20.actionTypes = {
-  free: "E20.ActionFree",
-  move: "E20.ActionMove",
-  standard: "E20.ActionStandard",
+  free: "E20.ActionTypeFree",
+  move: "E20.ActionTypeMove",
+  standard: "E20.ActionTypeStandard",
 };
 preLocalize("actionTypes");
 
@@ -428,9 +428,9 @@ preLocalize("gearTypes");
 
 // Power types
 E20.powerTypes = {
-  grid: "E20.PowerGrid",
-  sorcerous: "E20.PowerSorcerous",
-  threat: "E20.PowerThreat",
+  grid: "E20.PowerSourceGrid",
+  sorcerous: "E20.PowerSourceSorcerous",
+  threat: "E20.PowerSourceThreat",
 };
 preLocalize("powerTypes");
 
