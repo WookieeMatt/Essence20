@@ -50,7 +50,5 @@ export class PowerHandler {
       "system.originalId": powerUuid,
       "system.classFeatureId": classFeatureId,
     });
-
   }
-
 }
