@@ -17,7 +17,6 @@ export class PowerHandler {
   * @param {Power} power The power
   * @param {Function} dropFunc   The function to call to complete the Power drop
   */
-
   async powerUpdate(power, dropFunc) {
     const powerUuid = parseId(power.uuid);
     let timesTaken  = 0;
