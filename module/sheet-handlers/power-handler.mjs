@@ -1,6 +1,6 @@
 import {
-    parseId,
-  } from "../helpers/utils.mjs";
+  parseId,
+} from "../helpers/utils.mjs";
 
 export class PowerHandler {
   /**
@@ -32,6 +32,7 @@ export class PowerHandler {
 
         }
       }
+
       if (actorItem.type == 'power') {
         if (actorItem.system.originalId == powerUuid) {
           timesTaken++;
@@ -47,9 +48,9 @@ export class PowerHandler {
     const newPower = newPowerList[0];
 
     await newPower.update ({
-        "system.originalId": powerUuid,
-        "system.classFeatureId": classFeatureId,
-      });
+      "system.originalId": powerUuid,
+      "system.classFeatureId": classFeatureId,
+    });
 
   }
 
