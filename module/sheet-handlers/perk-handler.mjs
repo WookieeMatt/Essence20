@@ -12,6 +12,9 @@ export class AlterationHandler {
   async perkUpdate(perk, dropFunc) {
     const perkUuid = parseId(perk.uuid);
 
+    const newPerkList = await dropFunc();
+    const newPerk = newPerkList[0];
+
 
   }
 }
