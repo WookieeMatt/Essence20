@@ -790,14 +790,14 @@
         "item",
         "itemDescription"
       ],
-	    "actionType": "free",
+      "actionType": "free",
       "canActivate": true,
       "classFeatureId": null,
       "isVariable": false,
-	    "powerCost": null,
+      "powerCost": null,
       "selectionLimit": 1,
-	    "type": "grid",
-	    "usesPerScene": null
+      "type": "grid",
+      "usesPerScene": null
     },
     "specialization": {
       "templates": [
