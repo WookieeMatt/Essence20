@@ -53,4 +53,20 @@ export class PowerHandler {
 
   }
 
+  async powerCost(powerCost, isVariable) {
+
+    new Dialog(
+        {
+          title: game.i18n.localize('E20.PowerCost'),
+          content: await renderTemplate("systems/essence20/templates/dialog/power-cost.hbs"),
+
+          buttons: {
+            save: {
+              label: game.i18n.localize('E20.AcceptButton'),
+              callback: html => this._powerCountUpdate(rememberOptions(html)),
+            },
+          },
+        },
+      ).render(true);
+  }
 }
