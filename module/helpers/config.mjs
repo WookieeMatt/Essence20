@@ -320,6 +320,18 @@ E20.skillShiftList = [
 ];
 
 /************************************************
+ * Actions                                        *
+ ***********************************************/
+
+// Options for Actions
+E20.actionTypes = {
+  free: "E20.ActionTypeFree",
+  move: "E20.ActionTypeMove",
+  standard: "E20.ActionTypeStandard",
+};
+preLocalize("actionTypes");
+
+/************************************************
  * Items                                        *
  ***********************************************/
 
@@ -413,6 +425,14 @@ E20.gearTypes = {
   tools: "E20.GearTools",
 };
 preLocalize("gearTypes");
+
+// Power types
+E20.powerTypes = {
+  grid: "E20.PowerSourceGrid",
+  sorcerous: "E20.PowerSourceSorcerous",
+  threat: "E20.PowerSourceThreat",
+};
+preLocalize("powerTypes");
 
 // Upgrade types
 E20.upgradeTypes = {

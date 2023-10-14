@@ -6,6 +6,7 @@ import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
 import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
+import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -18,6 +19,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prHandler = new PowerRangerHandler(this);
     this._atHandler = new AttachmentHandler(this);
     this._tfHandler = new TransformerHandler(this);
+    this._pwHandler = new PowerHandler(this);
   }
 
   /** @override */
@@ -668,6 +670,8 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'power':
+      return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(event, data);
     case 'weapon':
