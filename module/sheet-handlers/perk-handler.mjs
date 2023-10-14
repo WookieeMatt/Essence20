@@ -1,4 +1,8 @@
-export class AlterationHandler {
+import {
+  parseId,
+} from "../helpers/utils.mjs";
+
+export class PerkHandler {
 
   /**
   * Constructor
@@ -10,11 +14,19 @@ export class AlterationHandler {
   }
 
   async perkUpdate(perk, dropFunc) {
+
     const perkUuid = parseId(perk.uuid);
+
+    if (perkUuid == "xUBOE1s5pgVyUrwj") {
+
+    }
 
     const newPerkList = await dropFunc();
     const newPerk = newPerkList[0];
 
+    await newPerk.update ({
+      "system.originalId": perkUuid,
+    });
 
   }
 }
