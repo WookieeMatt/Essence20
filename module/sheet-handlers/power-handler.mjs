@@ -25,21 +25,14 @@ export class PowerHandler {
 
     for (let actorItem of this._actor.items) {
       if (actorItem.type =='classFeature') {
-        if (power.system.type == "grid") {
-          if (actorItem.name == 'Personal Power') {
-            classFeatureId = actorItem._id;
-          }
-
+        if (power.system.type == "grid" && actorItem.name == 'Personal Power') {
+          classFeatureId = actorItem._id;
         }
-      }
-
-      if (actorItem.type == 'power') {
-        if (actorItem.system.originalId == powerUuid) {
-          timesTaken++;
-          if (power.system.selectionLimit == timesTaken) {
-            ui.notifications.warn(game.i18n.localize('E20.PowerAlreadyTaken'));
-            return;
-          }
+      } else if (actorItem.type == 'power' && actorItem.system.originalId == powerUuid) {
+        timesTaken++;
+        if (power.system.selectionLimit == timesTaken) {
+          ui.notifications.error(game.i18n.localize('E20.PowerAlreadyTaken'));
+          return;
         }
       }
     }
