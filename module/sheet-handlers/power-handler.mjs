@@ -13,7 +13,6 @@ export class PowerHandler {
   * @param {Power} power The power
   * @param {Function} dropFunc   The function to call to complete the Power drop
   */
-
   async powerUpdate(power, dropFunc) {
     const newPowerList = await dropFunc();
     const newPower = newPowerList[0];
