@@ -36,7 +36,7 @@ export class PowerHandler {
       if (actorItem.type == 'power') {
         if (actorItem.system.originalId == powerUuid) {
           timesTaken++;
-          if (power.system.timesSelected == timesTaken) {
+          if (power.system.selectionLimit == timesTaken) {
             ui.notifications.warn(game.i18n.localize('E20.PowerAlreadyTaken'));
             return;
           }
