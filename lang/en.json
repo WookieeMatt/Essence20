@@ -45,7 +45,7 @@
   "E20": {
     "AcceptButton": "Accept",
     "AccordionSkillsTitle": "Skills",
-    "ActionType": "Action Type",
+    "ActionTypes": "Action Type",
     "ActionTypeFree": "Free",
     "ActionTypeMove": "Move",
     "ActionTypeStandard": "Standard",
