@@ -17,6 +17,6 @@ export class PowerHandler {
   async powerUpdate(power, dropFunc) {
     const newPowerList = await dropFunc();
     const newPower = newPowerList[0];
-    console.log(newPower);
+    console.log(power, newPower);
   }
 }
