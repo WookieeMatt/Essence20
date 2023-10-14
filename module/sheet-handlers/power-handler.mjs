@@ -29,7 +29,6 @@ export class PowerHandler {
           if (actorItem.name == 'Personal Power') {
             classFeatureId = actorItem._id;
           }
-
         }
       }
 
