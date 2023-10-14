@@ -790,7 +790,7 @@
         "item",
         "itemDescription"
       ],
-	    "actionType": "",
+	    "actionType": "free",
       "canActivate": true,
       "classFeatureId": null,
       "isVariable": false,
