@@ -794,6 +794,7 @@
     "canActivate": true,
     "classFeatureId": null,
     "isVariable": false,
+    "maxPowerCost": null,
 	  "powerCost": null,
     "selectionLimit": 1,
 	  "type": "grid",

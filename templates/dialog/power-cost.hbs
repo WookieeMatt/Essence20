@@ -1,7 +1,14 @@
 <form class="power-cost-dialog">
   <div class="flexcol">
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerCost'}}
-      <input type="number" name="totalPowerCost" value={{powerCost}} />
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    <ol class="power-cost">
+      <li>
+        <label>
+          {{localize power.name}} (min 0, max {{maxPower}})
+        </label>
+        <span>
+          <input type="number" id ="{{power.name}}" value="{{power.system.powerCost}}" max="{{maxPower}}"/>
+        </span>
+      </li>
+    </ol>
   </div>
 </form>

@@ -55,6 +55,15 @@
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+        {{#ifEquals system.isVariable true}}
+          {{!-- Max Power Cost --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerMaxCost'}}
+          {{#*inline "item-field-inputs"}}
+          <input type="number" name="system.maxPowerCost" value="{{system.maxPowerCost}}" />
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
+
         {{!--Action Type --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionTypes'}}
         {{#*inline "item-field-inputs"}}

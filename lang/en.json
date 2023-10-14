@@ -45,7 +45,7 @@
   "E20": {
     "AcceptButton": "Accept",
     "AccordionSkillsTitle": "Skills",
-    "ActionType": "Action Type",
+    "ActionTypes": "Action Type",
     "ActionTypeFree": "Free",
     "ActionTypeMove": "Move",
     "ActionTypeStandard": "Standard",
@@ -291,7 +291,8 @@
     "PerkType": "Type",
     "PowerActive": "Can Be Activated",
     "PowerCost": "Power Cost",
-    "PowerIncrease": "Can Addition Power Be Spent?",
+    "PowerIncrease": "Power Can Be increased",
+    "PowerMaxCost": "Maximum Power",
     "PowerRangerPersonalPower": "Personal Power",
     "PowerSourceGrid": "Grid",
     "PowerSourceSorcerous": "Sorcerous",

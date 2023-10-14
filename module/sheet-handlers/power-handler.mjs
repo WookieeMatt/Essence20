@@ -1,5 +1,6 @@
 import {
     parseId,
+    rememberValues,
   } from "../helpers/utils.mjs";
 
 export class PowerHandler {
@@ -53,20 +54,55 @@ export class PowerHandler {
 
   }
 
-  async powerCost(powerCost, isVariable) {
+  async powerCost(power) {
+    let maxPower = 0;
+    const classFeature = this._actor.items.get(power.system.classFeatureId);
 
-    new Dialog(
+    if (power.system.isVariable) {
+      if (power.system.maxPowerCost > 0) {
+        maxPower = power.system.maxPowerCost;
+      } else {
+        maxPower = classFeature.system.uses.value
+      }
+
+      new Dialog(
         {
           title: game.i18n.localize('E20.PowerCost'),
-          content: await renderTemplate("systems/essence20/templates/dialog/power-cost.hbs"),
+          content: await renderTemplate("systems/essence20/templates/dialog/power-cost.hbs", {
+            power: power,
+            maxPower: maxPower,
+
+          }),
 
           buttons: {
             save: {
               label: game.i18n.localize('E20.AcceptButton'),
-              callback: html => this._powerCountUpdate(rememberOptions(html)),
+              callback: html => this.powerCountUpdate(rememberValues(html), power, classFeature),
             },
           },
         },
       ).render(true);
+    } else {
+      if(classFeature) {
+        classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - power.system.powerCost) });
+      }
+    }
   }
+
+
+  powerCountUpdate (options, power, classFeature) {
+
+    if (options[power.name].value > options[power.name].max) {
+      ui.notifications.warn(game.i18n.localize('E20.PowerOverSpent'));
+      return;
+    } else if (options[power.name].value > classFeature.system.uses.value) {
+      ui.notifications.warn(game.i18n.localize('E20.PowerOverSpent'));
+      return;
+    } else {
+      if(classFeature) {
+        classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - options[power.name].value) });
+      }
+    }
+  }
+
 }
