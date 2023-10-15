@@ -38,6 +38,5 @@ export class PerkHandler {
     await newPerk.update ({
       "system.originalId": perkUuid,
     });
-
   }
 }
