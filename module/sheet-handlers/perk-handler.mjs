@@ -14,7 +14,6 @@ export class PerkHandler {
   }
 
   async perkUpdate(perk, dropFunc) {
-
     const perkUuid = parseId(perk.uuid);
 
     if (perkUuid == "xUBOE1s5pgVyUrwj") {
