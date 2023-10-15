@@ -18,7 +18,14 @@ export class PerkHandler {
     const perkUuid = parseId(perk.uuid);
 
     if (perkUuid == "xUBOE1s5pgVyUrwj") {
-
+      Item.create(
+        {
+          name: game.i18n.localize('E20.SorcerousPower'),
+          type: 'classFeature',
+          data: {},
+        },
+        { parent: this._actor},
+      );
     }
 
     const newPerkList = await dropFunc();
