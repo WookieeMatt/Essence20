@@ -290,6 +290,7 @@
     "PerkRole": "Role",
     "PerkType": "Type",
     "PowerActive": "Can Be Activated",
+    "PowerAlreadyTaken": "You have already taken this power the maximum number of times.",
     "PowerCost": "Power Cost",
     "PowerIncrease": "Power Can Be increased",
     "PowerMaxCost": "Maximum Power",
