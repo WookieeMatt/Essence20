@@ -19,7 +19,7 @@ export class PowerHandler {
   */
   async powerUpdate(power, dropFunc) {
     const powerUuid = parseId(power.uuid);
-    let timesTaken  = 0;
+    let timesTaken = 0;
     let classFeatureId = "";
 
     for (let actorItem of this._actor.items) {
