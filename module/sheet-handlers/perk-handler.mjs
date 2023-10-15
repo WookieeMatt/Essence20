@@ -18,9 +18,10 @@ export class PerkHandler {
   * @param {Function} dropFunc   The function to call to complete the Power drop
   */
   async perkUpdate(perk, dropFunc) {
+    const SORCERY_PERK_ID = "xUBOE1s5pgVyUrwj";
     const perkUuid = parseId(perk.uuid);
 
-    if (perkUuid == "xUBOE1s5pgVyUrwj") {
+    if (perkUuid == SORCERY_PERK_ID) {
       Item.create(
         {
           name: game.i18n.localize('E20.SorcerousPower'),
