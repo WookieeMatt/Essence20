@@ -12,6 +12,11 @@ export class PerkHandler {
     this._actor = actorSheet.actor;
   }
 
+  /**
+  * Handle the dropping of a power on to a character
+  * @param {Perk} perk The perk
+  * @param {Function} dropFunc   The function to call to complete the Power drop
+  */
   async perkUpdate(perk, dropFunc) {
     const perkUuid = parseId(perk.uuid);
 
