@@ -54,7 +54,7 @@ export class PowerHandler {
       if (power.system.maxPowerCost > 0) {
         maxPower = power.system.maxPowerCost;
       } else {
-        maxPower = classFeature.system.uses.value
+        maxPower = classFeature.system.uses.value;
       }
 
       new Dialog(
