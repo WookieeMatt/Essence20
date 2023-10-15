@@ -1,6 +1,8 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
   {{#*inline "roll-button" item}}
-    <a class="rollable" data-roll-type={{item.type}} title="{{localize 'E20.PowerRollTitle'}}"><i class="fas fa-battery-bolt"></i></a>
+    {{#ifEquals item.system.canActivate true}}
+      <a class="rollable" data-roll-type={{item.type}} title="{{localize 'E20.PowerRollTitle'}}"><i class="fas fa-battery-bolt"></i></a>
+    {{/ifEquals}}
   {{/inline}}
 
   {{#*inline "expand-details" item}}
@@ -8,10 +10,6 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    {{#ifEquals @root.actor.type "vehicle"}}
-    {{else}}
-    {{>"systems/essence20/templates/actor/parts/items/classFeature/selector.hbs"}}
-    {{/ifEquals}}
     {{item.name}}
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
