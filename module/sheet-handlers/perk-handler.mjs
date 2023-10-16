@@ -2,6 +2,8 @@ import {
   parseId,
 } from "../helpers/utils.mjs";
 
+const SORCERY_PERK_ID = "xUBOE1s5pgVyUrwj";
+
 export class PerkHandler {
   /**
   * Constructor
@@ -18,7 +20,6 @@ export class PerkHandler {
   * @param {Function} dropFunc   The function to call to complete the Power drop
   */
   async perkUpdate(perk, dropFunc) {
-    const SORCERY_PERK_ID = "xUBOE1s5pgVyUrwj";
     const perkUuid = parseId(perk.uuid);
 
     if (perkUuid == SORCERY_PERK_ID) {
