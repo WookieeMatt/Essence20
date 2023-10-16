@@ -1,5 +1,6 @@
 import {
   parseId,
+  rememberValues,
 } from "../helpers/utils.mjs";
 
 export class PowerHandler {
@@ -51,7 +52,7 @@ export class PowerHandler {
     const classFeature = this._actor.items.get(power.system.classFeatureId);
 
     if (power.system.isVariable) {
-      if (power.system.maxPowerCost > 0) {
+      if (power.system.maxPowerCost) {
         maxPower = power.system.maxPowerCost;
       } else {
         maxPower = classFeature.system.uses.value;
