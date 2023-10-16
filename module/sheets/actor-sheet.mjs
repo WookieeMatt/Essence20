@@ -7,6 +7,7 @@ import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
 import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
+import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -20,6 +21,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._atHandler = new AttachmentHandler(this);
     this._tfHandler = new TransformerHandler(this);
     this._pwHandler = new PowerHandler(this);
+    this._pkHandler = new PerkHandler(this);
   }
 
   /** @override */
@@ -669,6 +671,8 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'perk':
+      return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':
       return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
