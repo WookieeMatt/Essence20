@@ -294,6 +294,7 @@
     "PowerCost": "Power Cost",
     "PowerIncrease": "Power Can Be Increased",
     "PowerMaxCost": "Maximum Power",
+    "PowerOverSpent": "You don't have enough points to use this power.",
     "PowerRangerPersonalPower": "Personal Power",
     "PowerSourceGrid": "Grid",
     "PowerSourceSorcerous": "Sorcerous",

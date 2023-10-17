@@ -87,6 +87,7 @@ export class PowerHandler {
 
   /**
   * Handle the spending of power for a power activated
+  * @param {Options} options The options selected in power dialog.
   * @param {Power} power The power
   * @param {ClassFeature} classFeature  The classFeature that is tied to the power
   */
