@@ -94,8 +94,8 @@ export class PowerHandler {
   * @param {ClassFeature} classFeature  The classFeature that is tied to the power
   */
   powerCountUpdate (options, power, classFeature) {
-
-    if ((options[power.name].value > options[power.name].max) || (classFeature && options[power.name].value > classFeature.system.uses.value)) {
+    if ((options[power.name].value > options[power.name].max)
+      || (classFeature && options[power.name].value > classFeature.system.uses.value)) {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
       return;
     } else if(classFeature) {
