@@ -69,7 +69,6 @@ export class PowerHandler {
             maxPower: maxPower,
 
           }),
-
           buttons: {
             save: {
               label: game.i18n.localize('E20.AcceptButton'),
