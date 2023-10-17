@@ -80,10 +80,13 @@ export class PowerHandler {
         },
       ).render(true);
 
-    } else {
+    } else if (classFeature.system.uses.value > power.system.powerCost){
       if(classFeature) {
         classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - power.system.powerCost) });
       }
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
+      return;
     }
   }
 
