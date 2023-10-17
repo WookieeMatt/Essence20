@@ -55,7 +55,7 @@ export class PowerHandler {
     let maxPower = 0;
     const classFeature = this._actor.items.get(power.system.classFeatureId);
 
-    if (power.system.hasVariableCost) {
+    if (power.system.hasVariableCost && classFeature) {
       if (power.system.maxPowerCost) {
         maxPower = power.system.maxPowerCost;
       } else {
