@@ -82,17 +82,14 @@ export class PowerHandler {
 
     } else if (classFeature && classFeature.system.uses.value >= power.system.powerCost){
       classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - power.system.powerCost) });
-
     } else {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
       return;
     }
   }
 
-
   /**
   * Handle the spending of power for a power activated
-  *
   * @param {Power} power The power
   * @param {ClassFeature} classFeature  The classFeature that is tied to the power
   */
