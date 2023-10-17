@@ -1,14 +1,12 @@
 <form class="power-cost-dialog">
   <div class="flexcol">
-    <ol class="power-cost">
-      <li>
-        <label>
-          {{localize power.name}} (min 0, max {{maxPower}})
-        </label>
-        <span>
-          <input type="number" id ="{{power.name}}" value="{{power.system.powerCost}}" max="{{maxPower}}"/>
-        </span>
-      </li>
-    </ol>
+    <div class="power-cost">
+      <label>
+        {{localize power.name}} (min {{power.system.powerCost}}, max {{maxPower}})
+      </label>
+      <span>
+        <input type="number" id ="{{power.name}}" value="{{power.system.powerCost}}" max="{{maxPower}}"/>
+      </span>
+    </div>
   </div>
 </form>

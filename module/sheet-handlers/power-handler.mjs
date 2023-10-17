@@ -51,7 +51,7 @@ export class PowerHandler {
     let maxPower = 0;
     const classFeature = this._actor.items.get(power.system.classFeatureId);
 
-    if (power.system.isVariable) {
+    if (power.system.hasVariableCost) {
       if (power.system.maxPowerCost) {
         maxPower = power.system.maxPowerCost;
       } else {
@@ -85,11 +85,8 @@ export class PowerHandler {
 
   powerCountUpdate (options, power, classFeature) {
 
-    if (options[power.name].value > options[power.name].max) {
-      ui.notifications.warn(game.i18n.localize('E20.PowerOverSpent'));
-      return;
-    } else if (options[power.name].value > classFeature.system.uses.value) {
-      ui.notifications.warn(game.i18n.localize('E20.PowerOverSpent'));
+    if ((options[power.name].value > options[power.name].max) || (classFeature && options[power.name].value > classFeature.system.uses.value)) {
+      ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
       return;
     } else {
       if(classFeature) {

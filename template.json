@@ -793,7 +793,7 @@
 	  "actionType": "",
     "canActivate": true,
     "classFeatureId": null,
-    "isVariable": false,
+    "hasVariableCost": false,
     "maxPowerCost": null,
 	  "powerCost": null,
     "selectionLimit": 1,

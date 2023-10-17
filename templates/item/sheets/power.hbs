@@ -51,11 +51,11 @@
         {{!-- Power Incease --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerIncrease'}}
         {{#*inline "item-field-inputs"}}
-        <input type="checkbox" name="system.isVariable" {{checked system.isVariable}} />
+        <input type="checkbox" name="system.hasVariableCost" {{checked system.hasVariableCost}} />
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-        {{#ifEquals system.isVariable true}}
+        {{#ifEquals system.hasVariableCost true}}
           {{!-- Max Power Cost --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerMaxCost'}}
           {{#*inline "item-field-inputs"}}
