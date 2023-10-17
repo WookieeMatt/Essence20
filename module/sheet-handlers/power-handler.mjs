@@ -67,7 +67,6 @@ export class PowerHandler {
           content: await renderTemplate("systems/essence20/templates/dialog/power-cost.hbs", {
             power: power,
             maxPower: maxPower,
-
           }),
           buttons: {
             save: {
