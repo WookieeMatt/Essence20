@@ -96,8 +96,7 @@ export class PowerHandler {
     if ((powerCost > powerMax)
       || (classFeature && powerCost > classFeature.system.uses.value)) {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-      return;
-    } else if(classFeature) {
+    } else if (classFeature) {
       classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - powerCost) });
     }
   }
