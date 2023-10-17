@@ -67,7 +67,6 @@ export class PowerHandler {
           content: await renderTemplate("systems/essence20/templates/dialog/power-cost.hbs", {
             power: power,
             maxPower: maxPower,
-
           }),
           buttons: {
             save: {
@@ -81,7 +80,6 @@ export class PowerHandler {
       classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - power.system.powerCost) });
     } else {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-      return;
     }
   }
 
@@ -97,8 +95,7 @@ export class PowerHandler {
     if ((powerCost > powerMax)
       || (classFeature && powerCost > classFeature.system.uses.value)) {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-      return;
-    } else if(classFeature) {
+    } else if (classFeature) {
       classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - powerCost) });
     }
   }
