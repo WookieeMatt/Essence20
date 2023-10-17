@@ -91,12 +91,14 @@ export class PowerHandler {
   * @param {ClassFeature} classFeature  The classFeature that is tied to the power
   */
   powerCountUpdate (options, power, classFeature) {
-    if ((options[power.name].value > options[power.name].max)
-      || (classFeature && options[power.name].value > classFeature.system.uses.value)) {
+    const powerCost = options[power.name].value;
+    const powerMax = options[power.name].max;
+    if ((powerCost > powerMax)
+      || (classFeature && powerCost > classFeature.system.uses.value)) {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
       return;
     } else if(classFeature) {
-      classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - options[power.name].value) });
+      classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - powerCost) });
     }
   }
 }
