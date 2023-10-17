@@ -47,6 +47,10 @@ export class PowerHandler {
     });
   }
 
+  /**
+  * Handles determining the cost of a power activation
+  * @param {Power} power The power
+  */
   async powerCost(power) {
     let maxPower = 0;
     const classFeature = this._actor.items.get(power.system.classFeatureId);
@@ -75,6 +79,7 @@ export class PowerHandler {
           },
         },
       ).render(true);
+
     } else {
       if(classFeature) {
         classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - power.system.powerCost) });
@@ -83,6 +88,12 @@ export class PowerHandler {
   }
 
 
+  /**
+  * Handle the spending of power for a power activated
+  *
+  * @param {Power} power The power
+  * @param {ClassFeature} classFeature  The classFeature that is tied to the power
+  */
   powerCountUpdate (options, power, classFeature) {
 
     if ((options[power.name].value > options[power.name].max) || (classFeature && options[power.name].value > classFeature.system.uses.value)) {
