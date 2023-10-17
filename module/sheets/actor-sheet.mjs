@@ -514,9 +514,7 @@ export class Essence20ActorSheet extends ActorSheet {
       const item = this.actor.items.get(itemId);
 
       if (rollType == 'power') {
-
         await this._pwHandler.powerCost(item);
-
       } else if (rollType == 'classFeature') {
         // If a Class Feature is being used, decrement uses
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
