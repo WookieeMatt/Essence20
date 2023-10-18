@@ -25,6 +25,13 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+      {{!-- Selection Limit --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkSelectionLimit'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.selectionLimit" value="{{system.selectionLimit}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
       {{!-- Prerequisite --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkPrerequisite'}}
       {{#*inline "item-field-inputs"}}

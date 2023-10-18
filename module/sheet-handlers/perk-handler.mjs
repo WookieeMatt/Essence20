@@ -36,7 +36,7 @@ export class PerkHandler {
     for (let actorItem of this._actor.items) {
       if (actorItem.type == 'perk' && actorItem.system.originalId == perkUuid) {
         timesTaken++;
-        if (power.system.selectionLimit == timesTaken) {
+        if (perk.system.selectionLimit == timesTaken) {
           ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
           return;
         }
