@@ -1,5 +1,6 @@
 import {
   parseId,
+  rememberValues,
 } from "../helpers/utils.mjs";
 
 export class PowerHandler {
@@ -45,5 +46,59 @@ export class PowerHandler {
       "system.originalId": powerUuid,
       "system.classFeatureId": classFeatureId,
     });
+  }
+
+  /**
+  * Handles determining the cost of a power activation
+  * @param {Power} power The power
+  */
+  async powerCost(power) {
+    let maxPower = 0;
+    const classFeature = this._actor.items.get(power.system.classFeatureId);
+
+    if (power.system.hasVariableCost && classFeature) {
+      if (power.system.maxPowerCost) {
+        maxPower = power.system.maxPowerCost;
+      } else {
+        maxPower = classFeature.system.uses.value;
+      }
+
+      new Dialog(
+        {
+          title: game.i18n.localize('E20.PowerCost'),
+          content: await renderTemplate("systems/essence20/templates/dialog/power-cost.hbs", {
+            power: power,
+            maxPower: maxPower,
+          }),
+          buttons: {
+            save: {
+              label: game.i18n.localize('E20.AcceptButton'),
+              callback: html => this.powerCountUpdate(rememberValues(html), power, classFeature),
+            },
+          },
+        },
+      ).render(true);
+    } else if (classFeature && classFeature.system.uses.value >= power.system.powerCost){
+      classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - power.system.powerCost) });
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
+    }
+  }
+
+  /**
+  * Handle the spending of power for a power activated
+  * @param {Options} options The options selected in power dialog.
+  * @param {Power} power The power
+  * @param {ClassFeature} classFeature  The classFeature that is tied to the power
+  */
+  powerCountUpdate (options, power, classFeature) {
+    const powerCost = options[power.name].value;
+    const powerMax = options[power.name].max;
+    if ((powerCost > powerMax)
+      || (classFeature && powerCost > classFeature.system.uses.value)) {
+      ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
+    } else if (classFeature) {
+      classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - powerCost) });
+    }
   }
 }
