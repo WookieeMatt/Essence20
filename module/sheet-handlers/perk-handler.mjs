@@ -33,6 +33,7 @@ export class PerkHandler {
         { parent: this._actor},
       );
     }
+
     for (let actorItem of this._actor.items) {
       if (actorItem.type == 'perk' && actorItem.system.originalId == perkUuid) {
         timesTaken++;
@@ -42,6 +43,7 @@ export class PerkHandler {
         }
       }
     }
+
     const newPerkList = await dropFunc();
     const newPerk = newPerkList[0];
 
