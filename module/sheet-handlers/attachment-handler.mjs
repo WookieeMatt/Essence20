@@ -1,7 +1,7 @@
 import {
   getItemsOfType,
   itemDeleteById,
-  rememberOptions
+  rememberOptions,
 } from "../helpers/utils.mjs";
 
 export class AttachmentHandler {
