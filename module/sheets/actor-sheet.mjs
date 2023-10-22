@@ -619,7 +619,11 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (item.type == "altMode") {
       this._tfHandler.onAltModeDelete(item, this);
     } else if (item.type == "alteration") {
-      this._alHandler._onAlterationDelete(item);
+      this._alHandler.onAlterationDelete(item);
+    } else if (item.type == "weapon") {
+      this._atHandler.deleteAttachments(item, ["upgrade", "weaponEffect"]);
+    } else if (item.type == "armor") {
+      this._atHandler.deleteAttachments(item, ["upgrade"]);
     }
 
     item.delete();

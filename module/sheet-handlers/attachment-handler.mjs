@@ -1,4 +1,8 @@
-import { getItemsOfType, rememberOptions } from "../helpers/utils.mjs";
+import {
+  getItemsOfType,
+  itemDeleteById,
+  rememberOptions,
+} from "../helpers/utils.mjs";
 
 export class AttachmentHandler {
   /**
@@ -80,6 +84,19 @@ export class AttachmentHandler {
       const itemAttachmentIds = item.system[`${newAttachment.type}Ids`];
       itemAttachmentIds.push(newAttachment._id);
       await item.update({ [`system.${newAttachment.type}Ids`]: itemAttachmentIds });
+    }
+  }
+
+  /**
+  * Handle deleting the attachments of an item from an Actor Sheet
+  * @param {Item} item                The Item
+  * @param {String[]} attachmentTypes The types of attachments the Item has
+  */
+  deleteAttachments(item, attachmentTypes) {
+    for (const attachmentType of attachmentTypes) {
+      for (const attachmentId of item.system[`${attachmentType}Ids`]) {
+        itemDeleteById(attachmentId, this._actor);
+      }
     }
   }
 }
