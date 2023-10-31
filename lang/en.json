@@ -49,6 +49,7 @@
     "ActionTypeFree": "Free",
     "ActionTypeMove": "Move",
     "ActionTypeStandard": "Standard",
+    "ActionTypeStandardAndMove": "Standard and Move",
     "ActiveEffectDuration": "Duration",
     "ActiveEffectAdd": "Add",
     "ActiveEffectCreate": "Create Effect",

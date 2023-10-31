@@ -10,6 +10,15 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    {{item.name}}
+    <strong>
+      {{item.name}}
+      {{#ifEquals @root.actor.type "npc"}}
+        (
+        {{#if system.usesPerScene}}
+          {{system.usesPerScene}}/Scene,
+        {{/if}}
+        {{system.actionType}})
+      {{/ifEquals}}
+    </strong>
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

@@ -91,7 +91,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
@@ -206,7 +206,7 @@ export const migrateActorData = function(actor) {
   const items = actor.items.reduce((arr, i) => {
     // Migrate the Owned Item
     const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
-    let itemUpdate = migrateItemData(itemData);
+    let itemUpdate = migrateItemData(itemData, actor);
 
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
@@ -230,7 +230,8 @@ export const migrateActorData = function(actor) {
  * @param {object} item             Item data to migrate
  * @returns {object}                The updateData to apply
  */
-export function migrateItemData(item) {
+export function migrateItemData(item, actor) {
+  console.log(actor)
   const updateData = {};
 
   if (item.type == "armor") {
@@ -263,6 +264,29 @@ export function migrateItemData(item) {
       const perkType = item.system.perkType;
       updateData[`system.type`] = perkType;
     }
+  } else if (item.type == "threatPower") {
+    Item.create(
+      {
+        name: item.name,
+        type: 'power',
+        system: {
+          actionType: item.system.actionType,
+          canActivate: true,
+          description: item.system.description,
+          originalId: item.system.originalId,
+          usesPerScene: item.system.charges,
+          type: "threat",
+          source: {
+            book: item.system.source.book,
+            page: item.system.source.page,
+          }
+        },
+
+      },
+      { parent: actor, keepId: true },
+    );
+
+    item.delete();
   }
 
   return updateData;

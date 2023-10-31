@@ -328,6 +328,8 @@ E20.actionTypes = {
   free: "E20.ActionTypeFree",
   move: "E20.ActionTypeMove",
   standard: "E20.ActionTypeStandard",
+  standardAndMove: "E20.ActionTypeStandardAndMove",
+
 };
 preLocalize("actionTypes");
 
