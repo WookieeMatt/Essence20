@@ -212,7 +212,7 @@ export const migrateActorData = function(actor) {
     const fullActor = game.actors.get(actor._id);
     const itemToDelete = fullActor.items.get(i._id);
     if (itemToDelete.type == "threatPower"){
-      itemToDelete.delete()
+      itemToDelete.delete();
     }
 
     let itemUpdate = migrateItemData(itemData, fullActor);
@@ -319,6 +319,7 @@ export const migrateCompendium = async function(pack) {
         if (doc.type == "threatPower") {
           doc.delete();
         }
+
         updateData = migrateItemData(doc.toObject());
         break;
       case "Scene":
