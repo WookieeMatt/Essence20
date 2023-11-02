@@ -15,7 +15,6 @@ export const migrateWorld = async function() {
       const updateData = migrateActorData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Actor document ${actor.name}`);
-        console.log(updateData);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
         await actor.update({"system.skills.-=strength": null});
         await actor.update({"system.skills.-=smarts": null});
@@ -35,6 +34,9 @@ export const migrateWorld = async function() {
   for (const [item, valid] of items) {
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
+      if (item.type == "threatPower") {
+        item.delete();
+      }
       const updateData = migrateItemData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
@@ -206,7 +208,12 @@ export const migrateActorData = function(actor) {
   const items = actor.items.reduce((arr, i) => {
     // Migrate the Owned Item
     const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
-    let itemUpdate = migrateItemData(itemData, actor);
+    const fullActor = game.actors.get(actor._id);
+    const itemToDelete = fullActor.items.get(i._id);
+    if (itemToDelete.type == "threatPower"){
+      itemToDelete.delete()
+    }
+    let itemUpdate = migrateItemData(itemData, fullActor);
 
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
@@ -231,7 +238,6 @@ export const migrateActorData = function(actor) {
  * @returns {object}                The updateData to apply
  */
 export function migrateItemData(item, actor) {
-  console.log(actor)
   const updateData = {};
 
   if (item.type == "armor") {
@@ -265,28 +271,18 @@ export function migrateItemData(item, actor) {
       updateData[`system.type`] = perkType;
     }
   } else if (item.type == "threatPower") {
-    Item.create(
-      {
-        name: item.name,
-        type: 'power',
-        system: {
-          actionType: item.system.actionType,
-          canActivate: true,
-          description: item.system.description,
-          originalId: item.system.originalId,
-          usesPerScene: item.system.charges,
-          type: "threat",
-          source: {
-            book: item.system.source.book,
-            page: item.system.source.page,
-          }
-        },
+    const itemData = item;
+    itemData.type = "power";
+    itemData.system.canActivate = true;
+    itemData.system.usesPerScene = item.system.charges;
+    itemData.system.type = "threat";
+    if (actor) {
+      Item.implementation.create(itemData, {parent: actor, keepId: true});
+    } else {
+      Item.implementation.create(itemData, {keepId: true});
+    }
 
-      },
-      { parent: actor, keepId: true },
-    );
 
-    item.delete();
   }
 
   return updateData;
@@ -318,6 +314,9 @@ export const migrateCompendium = async function(pack) {
         updateData = migrateActorData(doc.toObject());
         break;
       case "Item":
+        if (doc.type == "threatPower") {
+          doc.delete();
+        }
         updateData = migrateItemData(doc.toObject());
         break;
       case "Scene":
