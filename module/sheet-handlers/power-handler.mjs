@@ -57,7 +57,7 @@ export class PowerHandler {
     for (const actorEffect of this._actor.effects) {
       const parts = actorEffect.origin.split(".");
       if (parts[3] == power._id) {
-        actorEffect.update({disabled: false})
+        actorEffect.update({disabled: false});
       }
     }
 

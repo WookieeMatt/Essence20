@@ -37,6 +37,7 @@ export const migrateWorld = async function() {
       if (item.type == "threatPower") {
         item.delete();
       }
+
       const updateData = migrateItemData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
@@ -213,6 +214,7 @@ export const migrateActorData = function(actor) {
     if (itemToDelete.type == "threatPower"){
       itemToDelete.delete()
     }
+
     let itemUpdate = migrateItemData(itemData, fullActor);
 
     // Update the Owned Item
