@@ -14,10 +14,10 @@
       {{item.name}}
       {{#ifEquals @root.actor.type "npc"}}
         (
-        {{#if system.usesPerScene}}
-          {{system.usesPerScene}}/Scene,
+        {{#if system.usesPer}}
+          {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},
         {{/if}}
-        {{system.actionType}})
+        {{lookup @root.config.actionTypes system.actionType}})
       {{/ifEquals}}
     </strong>
   {{/inline}}

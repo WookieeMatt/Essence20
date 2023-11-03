@@ -798,7 +798,8 @@
       "powerCost": null,
       "selectionLimit": 1,
       "type": "grid",
-      "usesPerScene": null
+      "usesInterval": "scene",
+      "usesPer": null
     },
     "specialization": {
       "templates": [

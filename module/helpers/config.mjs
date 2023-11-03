@@ -326,12 +326,22 @@ E20.skillShiftList = [
 // Options for Actions
 E20.actionTypes = {
   free: "E20.ActionTypeFree",
+  fullAction: "E20.ActionTypeFullAction",
   move: "E20.ActionTypeMove",
   standard: "E20.ActionTypeStandard",
   standardAndMove: "E20.ActionTypeStandardAndMove",
+  wholeTurn: "E20.ActionTypeWholeTurn",
 
 };
 preLocalize("actionTypes");
+
+// Options for Intervals
+E20.usesInterval = {
+  perScene: "E20.UsesIntervalScene",
+  perTurn: "E20.UsesIntervalTurn",
+  special: "E20.UsesIntervalSpecial",
+};
+preLocalize("usesInterval");
 
 /************************************************
  * Items                                        *
