@@ -278,6 +278,7 @@ export function migrateItemData(item, actor) {
     itemData.system.canActivate = true;
     itemData.system.usesPerScene = item.system.charges;
     itemData.system.type = "threat";
+    itemData.system.actionType = item.system.actionType.toLowerCase();
     if (actor) {
       Item.implementation.create(itemData, {parent: actor, keepId: true});
     } else {
