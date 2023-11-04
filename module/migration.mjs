@@ -297,7 +297,6 @@ export function migrateItemData(item, actor) {
     } else {
       Item.implementation.create(itemData, {keepId: true});
     }
-
   }
 
   return updateData;
