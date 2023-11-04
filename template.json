@@ -798,7 +798,7 @@
       "powerCost": null,
       "selectionLimit": 1,
       "type": "grid",
-      "usesInterval": "scene",
+      "usesInterval": "perScene",
       "usesPer": null
     },
     "specialization": {

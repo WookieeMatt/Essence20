@@ -278,11 +278,15 @@ export function migrateItemData(item, actor) {
     itemData.system.canActivate = true;
     itemData.system.usesPer = item.system.charges;
     itemData.system.type = "threat";
+    itemData.system.usesInterval = "perScene";
     //This is an attempt to catch as many actions as possible by converting to camelCase.
     if (item.system.actionType) {
-      itemData.system.actionType = item.system.actionType.split(" ").map((word, i) => {
+      const parsedActionType = item.system.actionType.split(" ").map((word, i) => {
         return (i == 0 ? word[0].toLowerCase() : word[0].toUpperCase()) + word.substring(1);
       }).join("");
+      itemData.system.actionType = Object.keys(CONFIG.E20.actionTypes).includes(parsedActionType) ? parsedActionType : "free"
+    } else {
+      itemData.system.actionType = "free";
     }
 
     if (actor) {
