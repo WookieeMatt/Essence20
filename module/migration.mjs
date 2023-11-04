@@ -206,13 +206,13 @@ export const migrateActorData = function(actor) {
     return updateData;
   }
 
-  const items = actor.items.reduce((arr, i) => {
+  const items = actor.items.reduce(async (arr, i) => {
     // Migrate the Owned Item
     const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
     const fullActor = game.actors.get(actor._id);
     const itemToDelete = fullActor.items.get(i._id);
     if (itemToDelete.type == "threatPower"){
-      itemToDelete.delete();
+      await itemToDelete.delete();
     }
 
     let itemUpdate = migrateItemData(itemData, fullActor);
