@@ -6,6 +6,8 @@ import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
 import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
+import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
+import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -18,6 +20,8 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prHandler = new PowerRangerHandler(this);
     this._atHandler = new AttachmentHandler(this);
     this._tfHandler = new TransformerHandler(this);
+    this._pwHandler = new PowerHandler(this);
+    this._pkHandler = new PerkHandler(this);
   }
 
   /** @override */
@@ -61,6 +65,11 @@ export class Essence20ActorSheet extends ActorSheet {
       this._prepareDisplayedNpcSkills(context);
     }
 
+    // Prepare number of actions
+    if (['giJoe', 'npc', 'pony', 'powerRanger', 'transformer'].includes(actorData.type)) {
+      this._prepareNumActions(context);
+    }
+
     // Add roll data for TinyMCE editors.
     context.rollData = context.actor.getRollData();
 
@@ -72,7 +81,6 @@ export class Essence20ActorSheet extends ActorSheet {
 
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
-    context.numActions = this._prepareNumActions();
 
     return context;
   }
@@ -308,12 +316,13 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Prepare the number of actions available for the actor.
-   * @return {Object}
+   * @param {Object} context The actor data to prepare.
+   * @return {undefined}
    */
-  _prepareNumActions() {
+  _prepareNumActions(context) {
     const speed = this.actor.system.essences.speed;
 
-    return {
+    context.numActions = {
       free: Math.max(0, speed - 2),
       movement: speed > 0 ? 1 : 0,
       standard: speed > 1 ? 1 : 0,
@@ -505,10 +514,7 @@ export class Essence20ActorSheet extends ActorSheet {
       const item = this.actor.items.get(itemId);
 
       if (rollType == 'power') {
-        const classFeature = this.actor.items.get(item.system.classFeatureId);
-        if (classFeature) {
-          classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
-        }
+        await this._pwHandler.powerCost(item);
       } else if (rollType == 'classFeature') {
         // If a Class Feature is being used, decrement uses
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
@@ -613,7 +619,11 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (item.type == "altMode") {
       this._tfHandler.onAltModeDelete(item, this);
     } else if (item.type == "alteration") {
-      this._alHandler._onAlterationDelete(item);
+      this._alHandler.onAlterationDelete(item);
+    } else if (item.type == "weapon") {
+      this._atHandler.deleteAttachments(item, ["upgrade", "weaponEffect"]);
+    } else if (item.type == "armor") {
+      this._atHandler.deleteAttachments(item, ["upgrade"]);
     }
 
     item.delete();
@@ -663,6 +673,10 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'perk':
+      return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'power':
+      return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(event, data);
     case 'weapon':

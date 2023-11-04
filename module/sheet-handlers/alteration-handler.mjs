@@ -397,7 +397,7 @@ export class AlterationHandler {
   * Handle the deleting of the alteration from a character
   * @param {Alteration} alteration The alteration
   */
-  async _onAlterationDelete(alteration) {
+  async onAlterationDelete(alteration) {
     if (alteration.system.movementCost) {
       let totalMovementDecrease = 0;
       for (const movementReductionType in alteration.system.movementCost) {
