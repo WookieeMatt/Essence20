@@ -27,6 +27,8 @@ export class PowerHandler {
       if (actorItem.type =='classFeature') {
         if (power.system.type == "grid" && actorItem.name == 'Personal Power') {
           classFeatureId = actorItem._id;
+        } else if (power.system.type == "sorcerous" && actorItem.name == 'Sorcerous Power') {
+          classFeatureId = actorItem._id;
         }
       } else if (actorItem.type == 'power' && actorItem.system.originalId == powerUuid) {
         timesTaken++;

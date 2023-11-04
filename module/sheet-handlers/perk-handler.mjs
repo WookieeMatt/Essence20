@@ -21,6 +21,7 @@ export class PerkHandler {
   */
   async perkUpdate(perk, dropFunc) {
     const perkUuid = parseId(perk.uuid);
+    let timesTaken = 0;
 
     if (perkUuid == SORCERY_PERK_ID) {
       Item.create(
@@ -31,6 +32,16 @@ export class PerkHandler {
         },
         { parent: this._actor},
       );
+    }
+
+    for (let actorItem of this._actor.items) {
+      if (actorItem.type == 'perk' && actorItem.system.originalId == perkUuid) {
+        timesTaken++;
+        if (perk.system.selectionLimit == timesTaken) {
+          ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
+          return;
+        }
+      }
     }
 
     const newPerkList = await dropFunc();

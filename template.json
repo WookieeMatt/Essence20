@@ -783,6 +783,7 @@
         "itemDescription"
       ],
       "prerequisite": null,
+      "selectionLimit": 1,
       "type": "general"
     },
     "power": {
