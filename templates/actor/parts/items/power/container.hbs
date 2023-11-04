@@ -11,13 +11,12 @@
 
   {{#*inline "item-label" item}}
     <strong>
-      {{item.name}}
+      {{item.name}}:
       {{#ifEquals @root.actor.type "npc"}}
-        (
         {{#if system.usesPer}}
           {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},
         {{/if}}
-        {{lookup @root.config.actionTypes system.actionType}} )
+        {{lookup @root.config.actionTypes system.actionType}}
       {{/ifEquals}}
     </strong>
   {{/inline}}
