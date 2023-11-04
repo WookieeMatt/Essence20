@@ -13,7 +13,8 @@
     <strong>
       {{item.name}}
       {{#ifEquals @root.actor.type "npc"}}
-        ({{#if system.usesPer}}
+        (
+        {{#if system.usesPer}}
           {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},
         {{/if}}
         {{lookup @root.config.actionTypes system.actionType}} )
