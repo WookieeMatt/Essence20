@@ -380,7 +380,6 @@ E20.characterTypes = {
 E20.otherTypes = {
   contact: "E20.Contact",
   megaformTrait: "E20.MegaformTrait",
-  threatPower: "E20.ThreatPower",
   trait: "E20.Trait",
 };
 

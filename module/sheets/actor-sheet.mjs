@@ -165,7 +165,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const classFeatures = []; // Used by PCs
     const specializations = {};
     const spells = [];
-    const threatPowers = [];
     const upgrades = [];
     const traits = []; // Used by Vehicles
     const weapons = [];
@@ -248,9 +247,6 @@ export class Essence20ActorSheet extends ActorSheet {
         }
 
         break;
-      case 'threatPower':
-        threatPowers.push(i);
-        break;
       case 'trait':
         traits.push(i);
         break;
@@ -284,7 +280,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.powers = powers;
     context.spells = spells;
     context.specializations = specializations;
-    context.threatPowers = threatPowers;
     context.traits = traits;
     context.upgrades = upgrades;
     context.weapons = weapons;
