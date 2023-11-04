@@ -284,7 +284,7 @@ export function migrateItemData(item, actor) {
       const parsedActionType = item.system.actionType.split(" ").map((word, i) => {
         return (i == 0 ? word[0].toLowerCase() : word[0].toUpperCase()) + word.substring(1);
       }).join("");
-      itemData.system.actionType = Object.keys(CONFIG.E20.actionTypes).includes(parsedActionType) ? parsedActionType : "free"
+      itemData.system.actionType = Object.keys(CONFIG.E20.actionTypes).includes(parsedActionType) ? parsedActionType : "free";
     } else {
       itemData.system.actionType = "free";
     }
