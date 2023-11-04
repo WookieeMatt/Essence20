@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -187,6 +187,6 @@
     "verified": "11"
   },
   "flags": {
-    "needsMigrationVersion": "3.2.1"
+    "needsMigrationVersion": "4.1.0"
   }
 }

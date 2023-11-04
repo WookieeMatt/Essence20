@@ -10,6 +10,14 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    {{item.name}}
+    <strong>
+      {{item.name}}:
+      {{#ifEquals @root.actor.type "npc"}}
+        {{#if system.usesPer}}
+          {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},
+        {{/if}}
+        {{lookup @root.config.actionTypes system.actionType}}
+      {{/ifEquals}}
+    </strong>
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

@@ -56,6 +56,13 @@ export class PowerHandler {
     let maxPower = 0;
     const classFeature = this._actor.items.get(power.system.classFeatureId);
 
+    for (const actorEffect of this._actor.effects) {
+      const parts = actorEffect.origin.split(".");
+      if (parts[3] == power._id) {
+        actorEffect.update({disabled: false});
+      }
+    }
+
     if (power.system.hasVariableCost && classFeature) {
       if (power.system.maxPowerCost) {
         maxPower = power.system.maxPowerCost;
@@ -80,6 +87,8 @@ export class PowerHandler {
       ).render(true);
     } else if (classFeature && classFeature.system.uses.value >= power.system.powerCost){
       classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - power.system.powerCost) });
+    } else if (!power.system.powerCost) {
+      console.log("still working on something for here");
     } else {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
     }
