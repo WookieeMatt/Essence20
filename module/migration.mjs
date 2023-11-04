@@ -211,7 +211,8 @@ export const migrateActorData = function(actor) {
     const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
     const fullActor = game.actors.get(actor._id);
     const itemToDelete = fullActor.items.get(i._id);
-    if (itemToDelete.type == "threatPower"){
+
+    if (itemToDelete.type == "threatPower") {
       await itemToDelete.delete();
     }
 
