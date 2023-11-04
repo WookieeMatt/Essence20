@@ -280,6 +280,7 @@ export function migrateItemData(item, actor) {
     itemData.system.usesPer = item.system.charges;
     itemData.system.type = "threat";
     itemData.system.usesInterval = "perScene";
+
     //This is an attempt to catch as many actions as possible by converting to camelCase.
     if (item.system.actionType) {
       const parsedActionType = item.system.actionType.split(" ").map((word, i) => {
