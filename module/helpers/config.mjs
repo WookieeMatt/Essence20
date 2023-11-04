@@ -331,7 +331,6 @@ E20.actionTypes = {
   standard: "E20.ActionTypeStandard",
   standardAndMove: "E20.ActionTypeStandardAndMove",
   wholeTurn: "E20.ActionTypeWholeTurn",
-
 };
 preLocalize("actionTypes");
 

@@ -34,6 +34,7 @@ export const migrateWorld = async function() {
   for (const [item, valid] of items) {
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
+
       if (item.type == "threatPower") {
         item.delete();
       }
@@ -211,7 +212,8 @@ export const migrateActorData = function(actor) {
     const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
     const fullActor = game.actors.get(actor._id);
     const itemToDelete = fullActor.items.get(i._id);
-    if (itemToDelete.type == "threatPower"){
+
+    if (itemToDelete.type == "threatPower") {
       await itemToDelete.delete();
     }
 
@@ -279,6 +281,7 @@ export function migrateItemData(item, actor) {
     itemData.system.usesPer = item.system.charges;
     itemData.system.type = "threat";
     itemData.system.usesInterval = "perScene";
+
     //This is an attempt to catch as many actions as possible by converting to camelCase.
     if (item.system.actionType) {
       const parsedActionType = item.system.actionType.split(" ").map((word, i) => {
