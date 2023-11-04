@@ -630,7 +630,6 @@
       "power",
       "specialization",
       "spell",
-      "threatPower",
       "trait",
       "upgrade",
       "weapon",
@@ -821,15 +820,6 @@
       "isSpecialized": false,
       "range": 0,
       "tier": null
-    },
-    "threatPower": {
-      "templates": [
-        "item"
-      ],
-      "actionType": "",
-      "charges": null,
-      "cost": null,
-      "limited": false
     },
     "trait": {
       "templates": [
