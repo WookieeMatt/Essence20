@@ -24,14 +24,10 @@ export class PerkHandler {
     let timesTaken = 0;
 
     if (perkUuid == SORCERY_PERK_ID) {
-      Item.create(
-        {
-          name: game.i18n.localize('E20.SorcerousPower'),
-          type: 'classFeature',
-          data: {},
-        },
-        { parent: this._actor},
-      );
+      await this._actor.update ({
+        "system.power.sorcerous.levelTaken": this._actor.system.level,
+      });
+
     }
 
     for (let actorItem of this._actor.items) {

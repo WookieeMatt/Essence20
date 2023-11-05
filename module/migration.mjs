@@ -215,6 +215,17 @@ export const migrateActorData = function(actor) {
 
     if (itemToDelete.type == "threatPower") {
       await itemToDelete.delete();
+    } else if (itemToDelete.type == "classFeature") {
+      console.log (itemToDelete);
+      if (itemToDelete.name == "Personal Power") {
+        updateData[`system.power.personal.max`] = itemToDelete.system.uses.max;
+        updateData[`system.power.personal.value`] = itemToDelete.system.uses.value;
+        await itemToDelete.delete();
+      } else if (itemToDelete.name == "Energon") {
+        updateData[`system.energon.value`] = itemToDelete.system.uses.value;
+        updateData[`system.energon.max`] = itemToDelete.system.uses.max;
+        itemToDelete.delete();
+      }
     }
 
     let itemUpdate = migrateItemData(itemData, fullActor);

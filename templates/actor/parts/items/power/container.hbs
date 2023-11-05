@@ -1,3 +1,22 @@
+<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+  {{#if actor.system.canMorph}}
+  <label>Personal Power</label>
+    <input class="centered-input no-lock" data-field="system.power.personal.value" type="number"
+      name="system.power.personal.value" value="{{system.power.personal.value}}" />
+    /
+    <input class="centered-input no-lock" data-field="system.power.personal.max" type="number" name="system.power.personal.max"
+      value="{{system.power.personal.max}}" />
+  {{/if}}
+    {{#if system.power.sorcerous.levelTaken}}
+  <label>Sorcerous Power</label>
+    <input class="centered-input no-lock" data-field="system.power.sorcerous.value" type="number"
+      name="system.power.sorcerous.value" value="{{system.power.sorcerous.value}}" />
+    /
+    <input class="centered-input no-lock" data-field="system.power.sorcerous.max" type="number" name="system.power.sorcerous.max"
+      value="{{system.power.sorcerous.max}}" />
+  {{/if}}
+</div>
+
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
   {{#*inline "roll-button" item}}
     {{#ifEquals item.system.canActivate true}}
@@ -11,9 +30,9 @@
 
   {{#*inline "item-label" item}}
     <strong>
-      {{item.name}}:
+      {{item.name}}
       {{#ifEquals @root.actor.type "npc"}}
-        {{#if system.usesPer}}
+        :{{#if system.usesPer}}
           {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},
         {{/if}}
         {{lookup @root.config.actionTypes system.actionType}}
