@@ -27,7 +27,6 @@ export class PerkHandler {
       await this._actor.update ({
         "system.power.sorcerous.levelTaken": this._actor.system.level,
       });
-
     }
 
     for (let actorItem of this._actor.items) {
