@@ -23,7 +23,6 @@ export class PowerHandler {
     let timesTaken = 0;
 
     for (let actorItem of this._actor.items) {
-
       if (actorItem.type == 'power' && actorItem.system.originalId == powerUuid) {
         timesTaken++;
         if (power.system.selectionLimit == timesTaken) {
