@@ -217,8 +217,8 @@ export const migrateActorData = function(actor) {
       await itemToDelete.delete();
     } else if (itemToDelete.type == "classFeature") {
       if (itemToDelete.name == "Personal Power") {
-        updateData[`system.power.personal.max`] = itemToDelete.system.uses.max;
-        updateData[`system.power.personal.value`] = itemToDelete.system.uses.value;
+        updateData[`system.powers.personal.max`] = itemToDelete.system.uses.max;
+        updateData[`system.powers.personal.value`] = itemToDelete.system.uses.value;
         await itemToDelete.delete();
       } else if (itemToDelete.name == "Energon") {
         updateData[`system.energon.value`] = itemToDelete.system.uses.value;

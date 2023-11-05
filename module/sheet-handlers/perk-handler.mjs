@@ -25,7 +25,7 @@ export class PerkHandler {
 
     if (perkUuid == SORCERY_PERK_ID) {
       await this._actor.update ({
-        "system.power.sorcerous.levelTaken": this._actor.system.level,
+        "system.powers.sorcerous.levelTaken": this._actor.system.level,
       });
     }
 
