@@ -1,0 +1,10 @@
+<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+  {{#if actor.system.canTransform}}
+  <label>Energon</label>
+    <input class="centered-input no-lock" data-field="system.energon.value" type="number"
+      name="system.energon.value" value="{{system.energon.value}}" />
+    /
+    <input class="centered-input no-lock" data-field="system.energon.max" type="number" name="system.energon.max"
+      value="{{system.energon.max}}" />
+  {{/if}}
+</div>
