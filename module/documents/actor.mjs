@@ -95,6 +95,7 @@ export class Essence20Actor extends Actor {
     // things organized.
     this._prepareNpcData();
     this._prepareSorcerousPower();
+
     if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.type)) {
       this._prepareDefenses();
       this._prepareHealth();
