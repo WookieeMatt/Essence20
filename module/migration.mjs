@@ -224,7 +224,7 @@ export const migrateActorData = function(actor) {
       } else if (itemToDelete.name == "Energon") {
         updateData[`system.energon.value`] = itemToDelete.system.uses.value;
         updateData[`system.energon.max`] = itemToDelete.system.uses.max;
-        itemToDelete.delete();
+        await itemToDelete.delete();
       }
     }
 
