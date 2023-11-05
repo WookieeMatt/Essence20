@@ -84,7 +84,7 @@ export class PowerHandler {
           },
         },
       ).render(true);
-    } else if (powerType != "threat" && this._actor.system.power[powerType].value >= power.system.powerCost){
+    } else if (powerType != "threat" && this._actor.system.power[powerType].value >= power.system.powerCost) {
       const updateString = `system.power.${powerType}.value`;
       this._actor.update({ [updateString]: Math.max(0, this._actor.system.power[powerType].value - power.system.powerCost) });
     } else if (!power.system.powerCost) {
