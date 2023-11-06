@@ -21,16 +21,9 @@ export class PowerHandler {
   async powerUpdate(power, dropFunc) {
     const powerUuid = parseId(power.uuid);
     let timesTaken = 0;
-    let classFeatureId = "";
 
     for (let actorItem of this._actor.items) {
-      if (actorItem.type =='classFeature') {
-        if (power.system.type == "grid" && actorItem.name == 'Personal Power') {
-          classFeatureId = actorItem._id;
-        } else if (power.system.type == "sorcerous" && actorItem.name == 'Sorcerous Power') {
-          classFeatureId = actorItem._id;
-        }
-      } else if (actorItem.type == 'power' && actorItem.system.originalId == powerUuid) {
+      if (actorItem.type == 'power' && actorItem.system.originalId == powerUuid) {
         timesTaken++;
         if (power.system.selectionLimit == timesTaken) {
           ui.notifications.error(game.i18n.localize('E20.PowerAlreadyTaken'));
@@ -44,7 +37,6 @@ export class PowerHandler {
 
     await newPower.update ({
       "system.originalId": powerUuid,
-      "system.classFeatureId": classFeatureId,
     });
   }
 
@@ -54,20 +46,27 @@ export class PowerHandler {
   */
   async powerCost(power) {
     let maxPower = 0;
-    const classFeature = this._actor.items.get(power.system.classFeatureId);
-
-    for (const actorEffect of this._actor.effects) {
-      const parts = actorEffect.origin.split(".");
-      if (parts[3] == power._id) {
-        actorEffect.update({disabled: false});
-      }
+    let powerType = "";
+    if (power.system.type == "grid") {
+      powerType = "personal";
+    } else if (power.system.type == "sorcerous") {
+      powerType = "sorcerous";
+    } else {
+      powerType = "threat";
     }
 
-    if (power.system.hasVariableCost && classFeature) {
+    // for (const actorEffect of this._actor.effects) {
+    //   const parts = actorEffect.origin.split(".");
+    //   if (parts[3] == power._id) {
+    //     actorEffect.update({disabled: false});
+    //   }
+    // }
+
+    if (power.system.hasVariableCost && powerType != "threat") {
       if (power.system.maxPowerCost) {
         maxPower = power.system.maxPowerCost;
       } else {
-        maxPower = classFeature.system.uses.value;
+        maxPower = this._actor.system.power[powerType].value;
       }
 
       new Dialog(
@@ -80,13 +79,14 @@ export class PowerHandler {
           buttons: {
             save: {
               label: game.i18n.localize('E20.AcceptButton'),
-              callback: html => this.powerCountUpdate(rememberValues(html), power, classFeature),
+              callback: html => this.powerCountUpdate(rememberValues(html), power, powerType),
             },
           },
         },
       ).render(true);
-    } else if (classFeature && classFeature.system.uses.value >= power.system.powerCost){
-      classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - power.system.powerCost) });
+    } else if (powerType != "threat" && this._actor.system.power[powerType].value >= power.system.powerCost) {
+      const updateString = `system.power.${powerType}.value`;
+      this._actor.update({ [updateString]: Math.max(0, this._actor.system.power[powerType].value - power.system.powerCost) });
     } else if (!power.system.powerCost) {
       console.log("still working on something for here");
     } else {
@@ -98,16 +98,17 @@ export class PowerHandler {
   * Handle the spending of power for a power activated
   * @param {Options} options The options selected in power dialog.
   * @param {Power} power The power
-  * @param {ClassFeature} classFeature  The classFeature that is tied to the power
+  * @param {powerType} powerType  The type of power this is.
   */
-  powerCountUpdate (options, power, classFeature) {
+  powerCountUpdate (options, power, powerType) {
     const powerCost = options[power.name].value;
     const powerMax = options[power.name].max;
+    const updateString = `system.power.${powerType}.value`;
     if ((powerCost > powerMax)
-      || (classFeature && powerCost > classFeature.system.uses.value)) {
+      || (powerType !="threat" && powerCost > this._actor.system.power[powerType].value)) {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-    } else if (classFeature) {
-      classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - powerCost) });
+    } else if (powerType != "threat") {
+      this._actor.update({ [updateString]: Math.max(0, this._actor.system.power[powerType].value - powerCost) });
     }
   }
 }

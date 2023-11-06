@@ -94,6 +94,8 @@ export class Essence20Actor extends Actor {
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
     this._prepareNpcData();
+    this._prepareSorcerousPower();
+
     if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.type)) {
       this._prepareDefenses();
       this._prepareHealth();
@@ -207,6 +209,16 @@ export class Essence20Actor extends Actor {
     if (!movementTotal) {
       system.movementNotSet = true;
     }
+  }
+
+  /**
+   * Prepares Sorcerous Power
+   */
+  _prepareSorcerousPower() {
+    const system = this.system;
+    const levelMultiplier = system.level - system.powers.sorcerous.levelTaken;
+
+    system.powers.sorcerous.max = (levelMultiplier * 2) + 4;
   }
 
   /**

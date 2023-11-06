@@ -21,6 +21,10 @@
         "color": "#b5b1b1",
         "conditioning": 0,
         "description": "",
+        "energon": {
+          "max": 0,
+          "value": 0
+        },
         "essenceShifts": {
           "any": {
             "shiftUp": 0,
@@ -89,6 +93,17 @@
             "bonus": 0,
             "morphed": 0,
             "total": 0
+          }
+        },
+        "powers": {
+          "personal": {
+            "max": 0,
+            "value": 0
+          },
+          "sorcerous": {
+            "levelTaken": 0,
+            "max": 0,
+            "value": 0
           }
         },
         "size": "common",
@@ -574,7 +589,6 @@
         "character"
       ],
       "canTransform": true,
-      "energon": 0,
       "externalHardpoints": 2,
       "internalHarpoints": 2,
       "transformerFaction": "autobots"
