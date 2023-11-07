@@ -12,16 +12,17 @@
       "page": 271
     },
     "prerequisite": "Culture (Arcane) or Performance (Rituals) skill at +d2 or higher",
+    "selectionLimit": 1,
     "type": "general"
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.0.1",
+    "systemVersion": "4.1.0",
     "coreVersion": "11.311",
     "createdTime": 1697318880015,
-    "modifiedTime": 1697319014379,
+    "modifiedTime": 1699319554487,
     "lastModifiedBy": "iCCZI3EVfOIO2b8O"
   },
   "sort": 0,
