@@ -331,6 +331,8 @@ E20.actionTypes = {
   standard: "E20.ActionTypeStandard",
   standardAndMove: "E20.ActionTypeStandardAndMove",
   wholeTurn: "E20.ActionTypeWholeTurn",
+  tenMinutes: "E20.ActionTypeTenMinutes",
+  oneHour: "E20.ActionTypeOneHour",
 };
 preLocalize("actionTypes");
 

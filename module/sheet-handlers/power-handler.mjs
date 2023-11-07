@@ -66,7 +66,7 @@ export class PowerHandler {
       if (power.system.maxPowerCost) {
         maxPower = power.system.maxPowerCost;
       } else {
-        maxPower = this._actor.system.power[powerType].value;
+        maxPower = this._actor.system.powers[powerType].value;
       }
 
       new Dialog(
@@ -84,9 +84,9 @@ export class PowerHandler {
           },
         },
       ).render(true);
-    } else if (powerType != "threat" && this._actor.system.power[powerType].value >= power.system.powerCost) {
-      const updateString = `system.power.${powerType}.value`;
-      this._actor.update({ [updateString]: Math.max(0, this._actor.system.power[powerType].value - power.system.powerCost) });
+    } else if (powerType != "threat" && this._actor.system.powers[powerType].value >= power.system.powerCost) {
+      const updateString = `system.powers.${powerType}.value`;
+      this._actor.update({ [updateString]: Math.max(0, this._actor.system.powers[powerType].value - power.system.powerCost) });
     } else if (!power.system.powerCost) {
       console.log("still working on something for here");
     } else {
@@ -103,12 +103,12 @@ export class PowerHandler {
   powerCountUpdate (options, power, powerType) {
     const powerCost = options[power.name].value;
     const powerMax = options[power.name].max;
-    const updateString = `system.power.${powerType}.value`;
+    const updateString = `system.powers.${powerType}.value`;
     if ((powerCost > powerMax)
-      || (powerType !="threat" && powerCost > this._actor.system.power[powerType].value)) {
+      || (powerType !="threat" && powerCost > this._actor.system.powers[powerType].value)) {
       ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
     } else if (powerType != "threat") {
-      this._actor.update({ [updateString]: Math.max(0, this._actor.system.power[powerType].value - powerCost) });
+      this._actor.update({ [updateString]: Math.max(0, this._actor.system.powers[powerType].value - powerCost) });
     }
   }
 }
