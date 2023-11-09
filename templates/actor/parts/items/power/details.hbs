@@ -1,1 +1,9 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+
+<div class="chip-section">
+  <span class="chip" name="chip.power.powerType">{{localize 'E20.PowerTypes'}}: {{lookup @root.config.powerTypes item.system.type}}</span>
+  <span class="chip" name="chip.power.actionType">{{localize 'E20.ActionTypes'}}: {{lookup @root.config.actionTypes item.system.actionType}}</span>
+  {{#if item.system.canActivate}}
+  <span class="chip" name="chip.power.powerCost">{{localize 'E20.PowerCost'}}: {{item.system.powerCost}}</span>
+  {{/if}}
+</div>

@@ -425,9 +425,22 @@ export class Essence20ActorSheet extends ActorSheet {
    * @private
    */
   async _onRest() {
+    const maxEnergonRestore = Math.ceil(this.actor.system.energon.normal.max/2);
+    let energonRestore = 0;
+    if ((this.actor.system.energon.normal.value + maxEnergonRestore) > this.actor.system.energon.normal.max) {
+      energonRestore = this.actor.system.energon.normal.max;
+    } else {
+      energonRestore = this.actor.system.energon.normal.value + maxEnergonRestore;
+    }
+
     await this.actor.update({
       "system.health.value": this.actor.system.health.max,
       "system.stun.value": 0,
+      "system.energon.normal.value": energonRestore,
+      "system.energon.dark.value": 0,
+      "system.energon.primal.value": 0,
+      "system.energon.red.value": 0,
+      "system.energon.synth-en.value": 0,
     }).then(this.render(false));
   }
 

@@ -94,16 +94,11 @@ export class Essence20Item extends Item {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
-      const label = `[${this.type}] ${this.name}`;
+      const label = `[${this.type.toUpperCase()}] ${this.name}`;
       const descriptionStr = game.i18n.localize('E20.ItemDescription');
       const noneStr = game.i18n.localize('E20.None');
-      const classFeatureStr = game.i18n.localize('ITEM.TypeClassfeature');
-      const classFeatureId = this.system.classFeatureId;
 
       let content = `<b>${descriptionStr}</b> - ${this.system.description}<br>`;
-      if (this.actor.type !== "vehicle"){
-        content += `<b>${classFeatureStr}</b> - ${classFeatureId ? this.actor.items.get(classFeatureId).name : noneStr}`;
-      }
 
       ChatMessage.create({
         speaker: speaker,
