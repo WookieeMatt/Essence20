@@ -96,7 +96,6 @@ export class Essence20Item extends Item {
       const rollMode = game.settings.get('core', 'rollMode');
       const label = `[${this.type.toUpperCase()}] ${this.name}`;
       const descriptionStr = game.i18n.localize('E20.ItemDescription');
-      const noneStr = game.i18n.localize('E20.None');
 
       let content = `<b>${descriptionStr}</b> - ${this.system.description}<br>`;
 
