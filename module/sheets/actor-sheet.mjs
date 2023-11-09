@@ -426,11 +426,12 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onRest() {
     const maxEnergonRestore = Math.ceil(this.actor.system.energon.normal.max/2);
+    const energon = this.actor.system.energon.normal;
     let energonRestore = 0;
-    if ((this.actor.system.energon.normal.value + maxEnergonRestore) > this.actor.system.energon.normal.max) {
-      energonRestore = this.actor.system.energon.normal.max;
+    if ((energon.value + maxEnergonRestore) > energon.max) {
+      energonRestore = energon.max;
     } else {
-      energonRestore = this.actor.system.energon.normal.value + maxEnergonRestore;
+      energonRestore = energon.value + maxEnergonRestore;
     }
 
     await this.actor.update({
