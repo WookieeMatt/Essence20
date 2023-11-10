@@ -425,14 +425,35 @@ export class Essence20ActorSheet extends ActorSheet {
    * @private
    */
   async _onRest() {
-    const maxEnergonRestore = Math.ceil(this.actor.system.energon.normal.max/2);
-    const energon = this.actor.system.energon.normal;
-    let energonRestore = 0;
-    if ((energon.value + maxEnergonRestore) > energon.max) {
-      energonRestore = energon.max;
-    } else {
-      energonRestore = energon.value + maxEnergonRestore;
+    const normalEnergon = this.actor.system.energon.normal;
+    const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
+    const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
+
+    // Notifications for resetting Energon types
+    if (this.actor.system.canTransform) {
+      let energonsReset = [];
+
+      const actorEnergons = this.actor.system.energon;
+      for (const actorEnergon of Object.keys(actorEnergons)) {
+        if (actorEnergons[actorEnergon].value) {
+          energonsReset.push(game.i18n.localize(CONFIG.E20.energonTypes[actorEnergon]));
+        }
+      }
+
+      if (energonsReset.length) {
+        ui.notifications.info(
+          game.i18n.format(
+            'E20.RestEnergonReset',
+            {energon: energonsReset.join(", ")},
+          ),
+        );
+      }
+
+      ui.notifications.info(`Energon restored by ${energonRestore}.`);
     }
+
+    ui.notifications.info("Health restored and stun reset.");
+    ui.notifications.info("Rest complete!");
 
     await this.actor.update({
       "system.health.value": this.actor.system.health.max,
@@ -441,7 +462,7 @@ export class Essence20ActorSheet extends ActorSheet {
       "system.energon.dark.value": 0,
       "system.energon.primal.value": 0,
       "system.energon.red.value": 0,
-      "system.energon.synth-en.value": 0,
+      "system.energon.synthEn.value": 0,
     }).then(this.render(false));
   }
 
