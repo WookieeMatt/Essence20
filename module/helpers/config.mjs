@@ -537,6 +537,16 @@ E20.companionTypes = {
 };
 preLocalize("companionTypes");
 
+// Energon types
+E20.energonTypes = {
+  energon: "E20.Energon",
+  dark: "E20.EnergonDark",
+  primal: "E20.EnergonPrimal",
+  red: "E20.EnergonRed",
+  synthEn: "E20.EnergonSynthEn",
+};
+preLocalize("energonTypes");
+
 /************************************************
  * Settings                                     *
  ***********************************************/
@@ -685,5 +695,4 @@ E20.tokenSizes = {
     width: 5,
   },
 };
-
 
