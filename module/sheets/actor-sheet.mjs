@@ -654,6 +654,8 @@ export class Essence20ActorSheet extends ActorSheet {
       this._atHandler.deleteAttachments(item, ["upgrade", "weaponEffect"]);
     } else if (item.type == "armor") {
       this._atHandler.deleteAttachments(item, ["upgrade"]);
+    } else if (item.type == "perk") {
+      this._pkHandler.onPerkDelete(item);
     }
 
     item.delete();

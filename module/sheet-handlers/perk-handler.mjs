@@ -46,4 +46,15 @@ export class PerkHandler {
       "system.originalId": perkUuid,
     });
   }
+
+  async onPerkDelete(perk) {
+    const perkUuid = perk.system.originalId;
+
+    if (perkUuid == SORCERY_PERK_ID) {
+      await this._actor.update ({
+        "system.powers.sorcerous.levelTaken": 0,
+      });
+    }
+
+  }
 }
