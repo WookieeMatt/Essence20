@@ -22,8 +22,22 @@
         "conditioning": 0,
         "description": "",
         "energon": {
-          "max": 0,
-          "value": 0
+          "dark": {
+            "value": 0
+          },
+          "normal": {
+            "max": 0,
+            "value": 0
+          },
+          "primal": {
+            "value": 0
+          },
+          "red": {
+            "value": 0
+          },
+          "synth-en": {
+            "value": 0
+          }
         },
         "essenceShifts": {
           "any": {
