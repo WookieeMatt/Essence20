@@ -192,7 +192,7 @@ export class Dice {
     const rolledSkillStr = this._localize(E20.skills[rolledSkill]);
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
-    const damageType = this._localize(E20.damageTypes[weaponEffect.system.damageType]);;
+    const damageType = this._localize(E20.damageTypes[weaponEffect.system.damageType]);
     const noneStr = "";
 
     let label = `<b>${attackRollStr}</b> - ${weaponEffect.name} (${rolledSkillStr})`;
