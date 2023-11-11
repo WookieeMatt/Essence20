@@ -94,7 +94,7 @@ export class Dice {
     let label = '';
 
     switch(item?.type) {
-    case 'weapon':
+    case 'weaponEffect':
       label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
       break;
     case 'spell':
@@ -193,15 +193,14 @@ export class Dice {
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
     const alternateEffectsStr = this._localize('E20.WeaponAlternateEffects');
-    const classFeatureStr = this._localize('ITEM.TypeClassfeature');
     const noneStr = this._localize('E20.None');
-    const classFeatureId = weapon.system.classFeatureId;
+
 
     let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
     label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}<br>`;
-    label += `<b>${classFeatureStr}</b> - ${classFeatureId ? actor.items.get(classFeatureId).name : noneStr}`;
+
 
     return label;
   }

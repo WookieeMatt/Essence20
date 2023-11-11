@@ -1,6 +1,6 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
   <div class="flexcol">
-    {{#inArray '["powerRanger", "npc"]' actor.type}}
+    {{#inArray '["powerRanger"]' actor.type}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanMorph'}}
       {{#*inline "item-field-inputs"}}
