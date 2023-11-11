@@ -47,6 +47,10 @@ export class PerkHandler {
     });
   }
 
+  /**
+  * Handle the deleting of a perk.
+  * @param {Perk} perk The perk
+  */
   async onPerkDelete(perk) {
     const perkUuid = perk.system.originalId;
 
