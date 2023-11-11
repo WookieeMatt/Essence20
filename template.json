@@ -648,6 +648,7 @@
       "classFeature",
       "contact",
       "feature",
+      "focus",
       "gear",
       "hangUp",
       "influence",
@@ -656,6 +657,7 @@
       "origin",
       "perk",
       "power",
+      "role",
       "specialization",
       "spell",
       "trait",
@@ -828,6 +830,14 @@
       "type": "grid",
       "usesInterval": "perScene",
       "usesPer": null
+    },
+    "role": {
+      "templates": [
+        "item",
+        "itemDescription"
+      ],
+      "rolePerkIds": []
+
     },
     "specialization": {
       "templates": [
