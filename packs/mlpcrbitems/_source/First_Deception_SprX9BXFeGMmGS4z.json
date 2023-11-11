@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.LWCNfr3eEU2y9MyP",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "SprX9BXFeGMmGS4z",
+  "changes": [
+    {
+      "key": "system.skills.deception.edge",
+      "mode": 5,
+      "value": "true",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "First Deception",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!LWCNfr3eEU2y9MyP.SprX9BXFeGMmGS4z"
+}

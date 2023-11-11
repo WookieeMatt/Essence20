@@ -1,0 +1,38 @@
+{
+  "folder": "PZ6gGpi7TwxnxTMh",
+  "name": "Local Legend",
+  "type": "influence",
+  "_id": "TTUlY38yRLhfDyMg",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 20
+    },
+    "bond": "",
+    "hangUpIds": [
+      "ZRTxAVToyCXLbWZ3"
+    ],
+    "perkIds": [
+      "YbIuqKwQ1wvsuozR"
+    ],
+    "mandatoryHangUp": true,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694465335375,
+    "modifiedTime": 1694471614813,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!TTUlY38yRLhfDyMg"
+}

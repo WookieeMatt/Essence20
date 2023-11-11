@@ -1,0 +1,39 @@
+{
+  "name": "Once a Marauder",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Sgt Slaughter Sourcebook",
+      "page": 7
+    },
+    "bond": "",
+    "hangUpIds": [
+      "Prmh2Lie5CEOp71i"
+    ],
+    "perkIds": [
+      "vh7bPPAgLv9KG0N7"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686272126965,
+    "modifiedTime": 1686342990274,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "folder": "9jnif8g2KnnqVujz",
+  "_id": "cm8scG8U3jzoekP1",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!cm8scG8U3jzoekP1"
+}

@@ -1,0 +1,55 @@
+{
+  "name": "First Responder",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 63
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "35",
+    "essences": [
+      "strength",
+      "smarts"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "2Yj1om5TJUJgVP8A"
+    ],
+    "skills": [
+      "conditioning",
+      "athletics",
+      "science",
+      "survival"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681738429648,
+    "modifiedTime": 1686341513787,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "Z0FvovwSrrX0fMsE",
+  "folder": "lt3PqmG6G17ICpRK",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Z0FvovwSrrX0fMsE"
+}

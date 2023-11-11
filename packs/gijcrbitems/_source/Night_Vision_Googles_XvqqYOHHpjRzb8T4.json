@@ -1,0 +1,33 @@
+{
+  "folder": "8pILPlRg2uDTxFNq",
+  "name": "Night Vision Googles",
+  "type": "gear",
+  "_id": "XvqqYOHHpjRzb8T4",
+  "img": "systems/essence20/assets/icons/gear/night_vision_googles.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 162
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "exploration"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695581417184,
+    "modifiedTime": 1695608055264,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!XvqqYOHHpjRzb8T4"
+}

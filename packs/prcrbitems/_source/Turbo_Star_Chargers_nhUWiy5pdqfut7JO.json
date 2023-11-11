@@ -1,0 +1,52 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Turbo Star Chargers",
+  "type": "weapon",
+  "_id": "nhUWiy5pdqfut7JO",
+  "img": "systems/essence20/assets/icons/weapons/brass-knuckles.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d6"
+    },
+    "traits": [
+      "electric",
+      "energy"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "cx1X5HhHKv86nLm4"
+    ],
+    "classification": {
+      "size": "light"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696192617921,
+    "modifiedTime": 1696192948290,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!nhUWiy5pdqfut7JO"
+}

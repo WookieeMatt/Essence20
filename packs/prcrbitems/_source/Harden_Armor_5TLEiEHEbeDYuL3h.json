@@ -1,0 +1,49 @@
+{
+  "name": "Harden Armor",
+  "type": "power",
+  "_id": "5TLEiEHEbeDYuL3h",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 100
+    },
+    "actionType": "free",
+    "canActivate": false,
+    "classFeatureId": null,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": null,
+    "selectionLimit": 3,
+    "type": "grid",
+    "usesInterval": "perScene",
+    "usesPer": null,
+    "isVariable": false,
+    "usesPerScene": null,
+    "timesSelected": 3,
+    "castable": false,
+    "powerIncrease": false,
+    "isActive": true
+  },
+  "effects": [
+    "EygAmCiyxeKLWcPi"
+  ],
+  "folder": "7T0RaytDHGwWT02Z",
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.0",
+    "coreVersion": "11.311",
+    "createdTime": 1697028942286,
+    "modifiedTime": 1699319564746,
+    "lastModifiedBy": "iCCZI3EVfOIO2b8O"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!5TLEiEHEbeDYuL3h"
+}

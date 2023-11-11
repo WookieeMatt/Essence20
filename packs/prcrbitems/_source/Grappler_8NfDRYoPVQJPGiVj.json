@@ -1,0 +1,55 @@
+{
+  "folder": "UCLYWNFqe5XND1kq",
+  "name": "Grappler",
+  "type": "weapon",
+  "_id": "8NfDRYoPVQJPGiVj",
+  "img": "systems/essence20/assets/icons/weapons/whip.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 112
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "d2"
+    },
+    "traits": [
+      "martialArts",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "ln4X4eCYWHWONcX7",
+      "KuQG7ngt1dMuwfnY"
+    ],
+    "classification": {
+      "size": "long"
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695387342244,
+    "modifiedTime": 1695839704946,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "sort": 112500,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!8NfDRYoPVQJPGiVj"
+}

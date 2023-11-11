@@ -1,0 +1,30 @@
+{
+  "name": "Arctic Expedition Clothes",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.pWRpmsOcWIv9trHP",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "rN31v1eFkPdh0fbe",
+  "changes": [
+    {
+      "key": "system.defenses.toughness.bonus",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!pWRpmsOcWIv9trHP.rN31v1eFkPdh0fbe"
+}

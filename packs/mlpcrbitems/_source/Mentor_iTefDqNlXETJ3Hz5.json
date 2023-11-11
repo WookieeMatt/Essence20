@@ -1,0 +1,41 @@
+{
+  "name": "Mentor",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 53
+    },
+    "bond": "",
+    "hangUpIds": [
+      "PkbtskVfOkyz7Nty"
+    ],
+    "perkIds": [
+      "Xi0qQqfZQJh0MBTu"
+    ],
+    "skills": [
+      "culture"
+    ]
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686263008389,
+    "modifiedTime": 1686342150550,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "iTefDqNlXETJ3Hz5",
+  "folder": "vjofBqKYZU3tiTmw",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!iTefDqNlXETJ3Hz5"
+}

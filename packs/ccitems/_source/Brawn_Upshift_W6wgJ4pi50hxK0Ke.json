@@ -1,0 +1,30 @@
+{
+  "name": "Brawn Upshift",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.1sbeyxcjtgGlBwHu",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "W6wgJ4pi50hxK0Ke",
+  "changes": [
+    {
+      "key": "system.skills.brawn.shiftUp",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!1sbeyxcjtgGlBwHu.W6wgJ4pi50hxK0Ke"
+}

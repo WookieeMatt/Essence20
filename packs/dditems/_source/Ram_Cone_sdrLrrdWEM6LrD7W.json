@@ -1,0 +1,33 @@
+{
+  "folder": "bC8b7I6seS4DLyg1",
+  "name": "Ram Cone",
+  "type": "gear",
+  "_id": "sdrLrrdWEM6LrD7W",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 76
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "support"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696126612637,
+    "modifiedTime": 1696169890833,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!sdrLrrdWEM6LrD7W"
+}

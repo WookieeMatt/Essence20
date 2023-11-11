@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.VfthJLMhKptuhZWu",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "kNzPxGf1hkgSycZB",
+  "changes": [
+    {
+      "key": "system.essenceShifts.social.shiftDown",
+      "mode": 2,
+      "value": "1",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Social Downshift",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!tccs1maGZTZPoBOC.kNzPxGf1hkgSycZB"
+}

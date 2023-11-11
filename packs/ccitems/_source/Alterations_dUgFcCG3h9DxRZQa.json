@@ -1,0 +1,19 @@
+{
+  "name": "Alterations",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "dUgFcCG3h9DxRZQa",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694728946354,
+    "modifiedTime": 1694735973934,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "_key": "!folders!dUgFcCG3h9DxRZQa"
+}

@@ -1,0 +1,33 @@
+{
+  "folder": "7OsjJcCvWyvy9lVI",
+  "name": "Weapon Cache",
+  "type": "gear",
+  "_id": "Fgyjk4kb9lSchZ02",
+  "img": "systems/essence20/assets/icons/gear/weapon_cache.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 163
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "support"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695581898937,
+    "modifiedTime": 1695608055264,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Fgyjk4kb9lSchZ02"
+}

@@ -1,0 +1,55 @@
+{
+  "folder": "cZmpUestiJJV73Mc",
+  "name": "Strike",
+  "type": "weapon",
+  "_id": "YUm8S0ztubmNytbg",
+  "img": "systems/essence20/assets/icons/weapons/foot.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 108
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "automatic",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "blunt",
+      "martialArts",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "BP9YxSmLfSKnet6l",
+      "VqqsTiVussWdBA4P",
+      "4C3FTnp6CDhz9Qse"
+    ],
+    "classification": {
+      "size": "integrated"
+    }
+  },
+  "effects": [],
+  "sort": 200000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695835547146,
+    "modifiedTime": 1695839625008,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!YUm8S0ztubmNytbg"
+}

@@ -1,0 +1,37 @@
+{
+  "folder": "aRlyNQZylQaPn1bO",
+  "name": "Mistrustful",
+  "type": "influence",
+  "_id": "iyIMaHvQBtFD1mq9",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 32
+    },
+    "bond": "",
+    "hangUpIds": [
+      "sQ00MnGryA2GNzHF"
+    ],
+    "perkIds": [
+      "iIRJqa8XXmRHXMIl"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686492130839,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!iyIMaHvQBtFD1mq9"
+}

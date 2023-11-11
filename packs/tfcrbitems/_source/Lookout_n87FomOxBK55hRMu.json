@@ -1,0 +1,55 @@
+{
+  "name": "Lookout",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.ZS3kX8oKogmsH6OK]{Lookout}</p>",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 50
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "speed",
+      "social"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "FDRxSxEYSzPlvtgx"
+    ],
+    "skills": [
+      "finesse",
+      "infiltration",
+      "deception",
+      "streetwise"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681743593292,
+    "modifiedTime": 1686343594852,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "n87FomOxBK55hRMu",
+  "folder": "vECyC1kfkRvVO3FR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!n87FomOxBK55hRMu"
+}

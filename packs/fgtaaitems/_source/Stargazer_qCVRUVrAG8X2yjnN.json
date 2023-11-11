@@ -1,0 +1,39 @@
+{
+  "name": "Stargazer",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 59
+    },
+    "bond": "",
+    "hangUpIds": [
+      "bcx4ncWJNi3tcAxc"
+    ],
+    "perkIds": [
+      "SnAIok2KD1f77DyV"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686316540342,
+    "modifiedTime": 1686340779668,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "qCVRUVrAG8X2yjnN",
+  "folder": "DK1GwBI01Dgiz7QR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!qCVRUVrAG8X2yjnN"
+}

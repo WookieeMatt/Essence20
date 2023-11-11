@@ -1,0 +1,33 @@
+{
+  "name": "Cybertronian with Attitude",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 52
+    },
+    "prerequisite": "",
+    "type": "influence"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686315482968,
+    "modifiedTime": 1686340779668,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "me3jAybxn8Smb83w",
+  "folder": "Esz9SAEXytXZwm2R",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!me3jAybxn8Smb83w"
+}

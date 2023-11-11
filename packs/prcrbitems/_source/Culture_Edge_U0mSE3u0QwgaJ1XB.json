@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.OkqQ9EcsfspN4fn1",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "U0mSE3u0QwgaJ1XB",
+  "changes": [
+    {
+      "key": "system.skills.culture.edge",
+      "mode": 5,
+      "value": "true",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Culture Edge",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!cPEDaNdD6XwW8MD2.U0mSE3u0QwgaJ1XB"
+}

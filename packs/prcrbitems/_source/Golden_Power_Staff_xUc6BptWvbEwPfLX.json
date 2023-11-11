@@ -1,0 +1,55 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Golden Power Staff",
+  "type": "weapon",
+  "_id": "xUc6BptWvbEwPfLX",
+  "img": "systems/essence20/assets/icons/weapons/winged-scepter.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d6"
+    },
+    "traits": [
+      "blunt",
+      "energy",
+      "stun"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "07nYBzl0dK4vhqaE",
+      "YSKQyx5F4E03uZiq",
+      "oAP5sJrDoXxc0Czi"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696191482951,
+    "modifiedTime": 1696191771546,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!xUc6BptWvbEwPfLX"
+}

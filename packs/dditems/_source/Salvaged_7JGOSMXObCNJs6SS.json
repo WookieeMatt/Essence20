@@ -1,0 +1,44 @@
+{
+  "folder": "82NMc5Rrlomtpkcr",
+  "name": "Salvaged",
+  "type": "origin",
+  "_id": "7JGOSMXObCNJs6SS",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.cGGEXSdCI170AaM4]{Salvaged}</p>",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 37
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 33,
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "a7KiUNWgLZgtQz6S"
+    ],
+    "skills": [
+      "survival",
+      "technology"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694554459191,
+    "modifiedTime": 1694609313437,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!7JGOSMXObCNJs6SS"
+}

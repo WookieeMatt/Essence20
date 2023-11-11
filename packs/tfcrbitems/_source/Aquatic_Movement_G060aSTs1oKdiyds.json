@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.f7QOaDUFo1b0184W",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "G060aSTs1oKdiyds",
+  "changes": [
+    {
+      "key": "system.movement.swim.altMode",
+      "mode": 5,
+      "value": "20",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Aquatic Movement",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!f7QOaDUFo1b0184W.G060aSTs1oKdiyds"
+}

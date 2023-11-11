@@ -1,0 +1,41 @@
+{
+  "name": "Machinist",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 37
+    },
+    "bond": "",
+    "hangUpIds": [
+      "sYz93Ud4qoob9PsA",
+      "79jifb9w1OlopUUY",
+      "yoyifVDjpnLloHbK"
+    ],
+    "perkIds": [
+      "14SqA7pgjDcFyQVd"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686279632986,
+    "modifiedTime": 1686343539187,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "OuPAD1Fj5wusub72",
+  "folder": "SWtRpPu5oWtOo7vD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!OuPAD1Fj5wusub72"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Experiment",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 32
+    },
+    "prerequisite": "",
+    "type": "influence"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686278487022,
+    "modifiedTime": 1686343539187,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "EcSOADOOb3PZMolz",
+  "folder": "pjaD7pILDmkmWGn7",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!EcSOADOOb3PZMolz"
+}

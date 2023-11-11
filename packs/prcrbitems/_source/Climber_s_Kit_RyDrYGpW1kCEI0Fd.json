@@ -1,0 +1,33 @@
+{
+  "folder": "wHb7gIqaEqnlQRFZ",
+  "name": "Climber’s Kit",
+  "type": "gear",
+  "_id": "RyDrYGpW1kCEI0Fd",
+  "img": "systems/essence20/assets/icons/gear/mountain-climbing.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 119
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "kits"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1692306179147,
+    "modifiedTime": 1695663268018,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!RyDrYGpW1kCEI0Fd"
+}
