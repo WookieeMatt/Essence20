@@ -878,6 +878,9 @@
       "classFeatureId": null,
       "alternateEffects": "",
       "availability": "standard",
+      "classification": {
+        "size": "integrated"
+      },
       "equipped": true,
       "requirements": {
         "custom": null,
