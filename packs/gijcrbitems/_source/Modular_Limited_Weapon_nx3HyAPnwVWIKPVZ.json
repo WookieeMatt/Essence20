@@ -1,0 +1,39 @@
+{
+  "folder": "w813kMBI7fhWPpY9",
+  "name": "Modular Limited Weapon",
+  "type": "upgrade",
+  "_id": "nx3HyAPnwVWIKPVZ",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 150
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [],
+    "type": "weapon",
+    "prerequisite": "Medium or Larger weapon"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695606188369,
+    "modifiedTime": 1695608055264,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!nx3HyAPnwVWIKPVZ"
+}

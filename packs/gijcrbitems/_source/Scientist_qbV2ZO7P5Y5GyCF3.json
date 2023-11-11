@@ -1,0 +1,53 @@
+{
+  "name": "Scientist",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 67
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "30",
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "9H78lRwXzJW6tj9e"
+    ],
+    "skills": [
+      "culture",
+      "science",
+      "technology"
+    ],
+    "startingHealth": 1,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681738984473,
+    "modifiedTime": 1686341513787,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "qbV2ZO7P5Y5GyCF3",
+  "folder": "lt3PqmG6G17ICpRK",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!qbV2ZO7P5Y5GyCF3"
+}

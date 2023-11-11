@@ -1,0 +1,53 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Element Jet",
+  "type": "weapon",
+  "_id": "vy8VGcdoFiacJ3bT",
+  "img": "systems/essence20/assets/icons/weapons/flamethrower.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 124
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "reload"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "ZqAWG11mWqPzei5E",
+      "Wf7FBuKNkke4uxOF"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695336253804,
+    "modifiedTime": 1695400290374,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!vy8VGcdoFiacJ3bT"
+}

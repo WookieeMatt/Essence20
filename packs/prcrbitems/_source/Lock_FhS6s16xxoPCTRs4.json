@@ -1,0 +1,32 @@
+{
+  "folder": "Vut9CD4jSXSlHVjN",
+  "name": "Lock",
+  "type": "gear",
+  "_id": "FhS6s16xxoPCTRs4",
+  "img": "icons/svg/padlock.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 119
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "tools"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1692304430661,
+    "modifiedTime": 1692305840360,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!FhS6s16xxoPCTRs4"
+}

@@ -1,0 +1,32 @@
+{
+  "folder": "Vut9CD4jSXSlHVjN",
+  "name": "Acid",
+  "type": "gear",
+  "_id": "R6dTWFgDG319xBgr",
+  "img": "icons/svg/acid.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 119
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "tools"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1692302481199,
+    "modifiedTime": 1692303798570,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!R6dTWFgDG319xBgr"
+}

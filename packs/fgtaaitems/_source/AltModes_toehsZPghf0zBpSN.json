@@ -1,0 +1,19 @@
+{
+  "name": "AltModes",
+  "type": "Item",
+  "folder": null,
+  "_id": "toehsZPghf0zBpSN",
+  "sorting": "a",
+  "sort": 100000,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": null,
+    "modifiedTime": 1686339341934,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "color": null,
+  "_key": "!folders!toehsZPghf0zBpSN"
+}

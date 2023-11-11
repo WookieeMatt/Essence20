@@ -1,0 +1,31 @@
+{
+  "name": "Treacherous",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 43
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1680142281151,
+    "modifiedTime": 1686343539187,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "KwvsyHeuUqRbto9u",
+  "folder": "VGJuFEF6el923K6k",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!KwvsyHeuUqRbto9u"
+}

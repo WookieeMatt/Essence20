@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.FDRxSxEYSzPlvtgx",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "glJ8S557Fs65lKiM",
+  "changes": [
+    {
+      "key": "system.bonuses.evasion",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Look Out!",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!FDRxSxEYSzPlvtgx.glJ8S557Fs65lKiM"
+}

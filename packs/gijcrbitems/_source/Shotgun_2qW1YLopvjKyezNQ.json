@@ -1,0 +1,52 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Shotgun",
+  "type": "weapon",
+  "_id": "2qW1YLopvjKyezNQ",
+  "img": "systems/essence20/assets/icons/weapons/shotgun.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>15 ft cone</p>",
+    "source": {
+      "book": "",
+      "page": null
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "fTJL51h5V8FYp5mp"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695303038125,
+    "modifiedTime": 1695388102654,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!2qW1YLopvjKyezNQ"
+}

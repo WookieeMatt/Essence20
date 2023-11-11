@@ -1,0 +1,54 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Power Sword",
+  "type": "weapon",
+  "_id": "0uunXYl3dfxyEMFV",
+  "img": "systems/essence20/assets/icons/weapons/broadsword.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 108
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "sharp",
+      "silent"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "wEhq1WPmoknaHjXf",
+      "lbxWEhERy0fu9sXS",
+      "iwdGrBp0skzJnZGP"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696145679221,
+    "modifiedTime": 1696180770654,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!0uunXYl3dfxyEMFV"
+}

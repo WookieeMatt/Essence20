@@ -1,0 +1,39 @@
+{
+  "name": "Nomad",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 51
+    },
+    "bond": "",
+    "hangUpIds": [
+      "V9KcY4sdR5KSETSD"
+    ],
+    "perkIds": [
+      "ydHkst9BtOuxECl0"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686282983004,
+    "modifiedTime": 1686341513787,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "X0VvLHGZReRyOydD",
+  "folder": "848nQlbiz9DfiwL2",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!X0VvLHGZReRyOydD"
+}

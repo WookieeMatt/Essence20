@@ -1,0 +1,41 @@
+{
+  "name": "Buckballer",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 46
+    },
+    "bond": "",
+    "hangUpIds": [
+      "r4zNwxXpkdWtIGqk"
+    ],
+    "perkIds": [
+      "sTEcpoI5UTnGn01U"
+    ],
+    "skills": [
+      "targeting"
+    ]
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686262443070,
+    "modifiedTime": 1686342150550,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "cQgyD98XirI1yD0c",
+  "folder": "vjofBqKYZU3tiTmw",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!cQgyD98XirI1yD0c"
+}

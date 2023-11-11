@@ -1,0 +1,35 @@
+{
+  "folder": "6BKwMp735fBmaDBb",
+  "name": "Arctic Expedition Clothes",
+  "type": "gear",
+  "_id": "pWRpmsOcWIv9trHP",
+  "img": "systems/essence20/assets/icons/gear/clothes.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 160
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "clothes"
+  },
+  "effects": [
+    "rN31v1eFkPdh0fbe"
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695563138673,
+    "modifiedTime": 1695611082766,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!pWRpmsOcWIv9trHP"
+}

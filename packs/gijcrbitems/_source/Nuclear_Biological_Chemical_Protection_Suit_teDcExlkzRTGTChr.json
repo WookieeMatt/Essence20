@@ -1,0 +1,35 @@
+{
+  "folder": "qwws6UjFimwPw5Jz",
+  "name": "Nuclear Biological Chemical Protection Suit",
+  "type": "gear",
+  "_id": "teDcExlkzRTGTChr",
+  "img": "systems/essence20/assets/icons/gear/hazmat-suit.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 160
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "hazard"
+  },
+  "effects": [
+    "7vMJ4U52wPbNnFmF"
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695567574662,
+    "modifiedTime": 1695608055264,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!teDcExlkzRTGTChr"
+}

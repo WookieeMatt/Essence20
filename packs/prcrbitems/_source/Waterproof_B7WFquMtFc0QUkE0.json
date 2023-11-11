@@ -1,0 +1,43 @@
+{
+  "folder": "jqKh12PIc6n5keSU",
+  "name": "Waterproof",
+  "type": "upgrade",
+  "_id": "B7WFquMtFc0QUkE0",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 116
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "",
+    "traits": [
+      "aquatic"
+    ],
+    "type": "weapon",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695605400789,
+    "modifiedTime": 1695732820050,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!B7WFquMtFc0QUkE0"
+}

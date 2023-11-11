@@ -1,0 +1,35 @@
+{
+  "name": "Shadow Form (Form)",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 70
+    },
+    "prerequisite": "maximum Personal Power 6 or higher",
+    "type": "general"
+  },
+  "effects": [
+    "G8E3L5zBXbFvkm9L"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686268579754,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "UNgNYpUADVTaNrWt",
+  "folder": "wCReLTLx2TAq0REM",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!UNgNYpUADVTaNrWt"
+}

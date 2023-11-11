@@ -1,0 +1,54 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Delta Combo Blaster",
+  "type": "weapon",
+  "_id": "Xvo979dG6lIWpHaS",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 78
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "combined",
+      "powerWeapon",
+      "stun"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "IpQaykWFi9pBBgZd",
+      "MIvjVFJ7EI5YEOYk"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696003891352,
+    "modifiedTime": 1696179524226,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Xvo979dG6lIWpHaS"
+}

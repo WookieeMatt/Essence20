@@ -1,0 +1,39 @@
+{
+  "folder": "YEPZzNZA8laWrNh7",
+  "name": "Pit Plate",
+  "type": "upgrade",
+  "_id": "AgWI1lccUBTgj3gT",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 75
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 2
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Brawn d4"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696127072183,
+    "modifiedTime": 1696169890833,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!AgWI1lccUBTgj3gT"
+}

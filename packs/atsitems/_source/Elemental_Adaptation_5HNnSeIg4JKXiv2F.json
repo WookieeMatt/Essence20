@@ -1,0 +1,41 @@
+{
+  "folder": "oraxFPyn1k5irQtu",
+  "name": "Elemental Adaptation",
+  "type": "power",
+  "_id": "5HNnSeIg4JKXiv2F",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 72
+    },
+    "actionType": "free",
+    "canActivate": true,
+    "classFeatureId": null,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": null,
+    "selectionLimit": 1,
+    "type": "grid",
+    "usesInterval": "perTurn",
+    "usesPer": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.0",
+    "coreVersion": "11.311",
+    "createdTime": 1699315812744,
+    "modifiedTime": 1699319547954,
+    "lastModifiedBy": "iCCZI3EVfOIO2b8O"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!5HNnSeIg4JKXiv2F"
+}

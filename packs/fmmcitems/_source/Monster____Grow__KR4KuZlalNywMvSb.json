@@ -1,0 +1,41 @@
+{
+  "folder": "2bNf2yIeSKu5hHP1",
+  "name": "Monster... Grow!",
+  "type": "power",
+  "_id": "KR4KuZlalNywMvSb",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Magic Cookbook",
+      "page": 274
+    },
+    "actionType": "standardAndMove",
+    "canActivate": true,
+    "classFeatureId": null,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": 2,
+    "selectionLimit": 1,
+    "type": "sorcerous",
+    "usesInterval": "perTurn",
+    "usesPer": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.0",
+    "coreVersion": "11.311",
+    "createdTime": 1699319120063,
+    "modifiedTime": 1699319554495,
+    "lastModifiedBy": "iCCZI3EVfOIO2b8O"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!KR4KuZlalNywMvSb"
+}

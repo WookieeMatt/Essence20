@@ -1,0 +1,41 @@
+{
+  "name": "Powerhouse",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 57
+    },
+    "bond": "",
+    "hangUpIds": [
+      "13UV5zMtHCSmtexy"
+    ],
+    "perkIds": [
+      "JxScHzozoGYU6P46"
+    ],
+    "skills": [
+      "brawn"
+    ]
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686263255445,
+    "modifiedTime": 1686342150550,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "AQl6NPRRRIx6Sz9V",
+  "folder": "vjofBqKYZU3tiTmw",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!AQl6NPRRRIx6Sz9V"
+}

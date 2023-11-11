@@ -1,0 +1,33 @@
+{
+  "name": "EMT Crash Course",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 131
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686280880644,
+    "modifiedTime": 1686341513787,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "jDAu1zaZpv1IylJ8",
+  "folder": "RXPdNB9Xnw7MUk8x",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!jDAu1zaZpv1IylJ8"
+}

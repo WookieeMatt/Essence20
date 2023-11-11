@@ -1,0 +1,55 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Thunder Slinger",
+  "type": "weapon",
+  "_id": "efCC0ouJPWIbECio",
+  "img": "systems/essence20/assets/icons/weapons/slingshot.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "silent",
+      "sniper",
+      "stun"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "RcWXdZlDmk71PmUt",
+      "qf9N60YZPMIxa1l5",
+      "Or8J0uxAifHW8mrK"
+    ],
+    "classification": {
+      "size": "medium"
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696279326254,
+    "modifiedTime": 1696279527235,
+    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+  },
+  "_key": "!items!efCC0ouJPWIbECio"
+}

@@ -1,0 +1,55 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Rocket Launcher",
+  "type": "weapon",
+  "_id": "qClYNVgnG8FmSNp1",
+  "img": "systems/essence20/assets/icons/weapons/rocket_launcher.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 143
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "antiTank",
+      "mounted",
+      "reload",
+      "sharp",
+      "wrecker"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "5K1meYTN9tX4PlXi"
+    ],
+    "classification": {
+      "size": "heavy"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695387043473,
+    "modifiedTime": 1695388102654,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!qClYNVgnG8FmSNp1"
+}
