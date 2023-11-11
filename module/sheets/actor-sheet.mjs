@@ -710,7 +710,7 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'power':
       return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
-      return await this._onDropUpgrade(event, data);
+      return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
       return await this._onDropWeapon(event, data);
     case 'weaponEffect':
@@ -723,19 +723,20 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle dropping of an Upgrade onto an Actor sheet
+   * @param {Upgrade} upgrade           The upgrade
    * @param {DragEvent} event           The concluding DragEvent which contains drop data
    * @param {Object} data               The data transfer extracted from the event
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    */
-  async _onDropUpgrade(event, data) {
+  async _onDropUpgrade(upgrade, event, data) {
     // Drones can only accept drone Upgrades
-    if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && sourceItem.system.type == 'drone') {
+    if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && upgrade.system.type == 'drone') {
       return super._onDropItem(event, data);
-    } else if (this.actor.system.canTransform && sourceItem.system.type == 'armor') {
+    } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
       return super._onDropItem(event, data);
-    } else if (['armor', 'weapon'].includes(sourceItem.system.type)) {
-      return this._atHandler.attachItem(sourceItem.system.type, super._onDropItem.bind(this, event, data));
+    } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
+      return this._atHandler.attachItem(upgrade.system.type, super._onDropItem.bind(this, event, data));
     } else {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;
