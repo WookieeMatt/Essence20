@@ -187,19 +187,19 @@ export class Dice {
    * @returns {String}   The resultant roll label.
    * @private
    */
-  _getWeaponRollLabel(dataset, skillRollOptions, actor, weaponEffect) {
-
+  _getWeaponRollLabel(dataset, skillRollOptions, actor, weapon) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._localize(E20.skills[rolledSkill]);
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
-    const damageType = this._localize(E20.damageTypes[weaponEffect.system.damageType]);;
-    const noneStr = "";
+    const alternateEffectsStr = this._localize('E20.WeaponAlternateEffects');
+    const noneStr = this._localize('E20.None');
 
-    let label = `<b>${attackRollStr}</b> - ${weaponEffect.name} (${rolledSkillStr})`;
+
+    let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
-    label += `<b>${effectStr}</b> - ${weaponEffect.system.damageValue || noneStr} ${damageType}<br>`;
-
+    label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
+    label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}<br>`;
 
 
     return label;
