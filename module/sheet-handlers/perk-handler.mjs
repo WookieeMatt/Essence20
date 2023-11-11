@@ -59,6 +59,5 @@ export class PerkHandler {
         "system.powers.sorcerous.levelTaken": 0,
       });
     }
-
   }
 }
