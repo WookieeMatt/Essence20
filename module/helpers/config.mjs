@@ -320,6 +320,31 @@ E20.skillShiftList = [
 ];
 
 /************************************************
+ * Actions                                        *
+ ***********************************************/
+
+// Options for Actions
+E20.actionTypes = {
+  free: "E20.ActionTypeFree",
+  fullAction: "E20.ActionTypeFullAction",
+  move: "E20.ActionTypeMove",
+  standard: "E20.ActionTypeStandard",
+  standardAndMove: "E20.ActionTypeStandardAndMove",
+  wholeTurn: "E20.ActionTypeWholeTurn",
+  tenMinutes: "E20.ActionTypeTenMinutes",
+  oneHour: "E20.ActionTypeOneHour",
+};
+preLocalize("actionTypes");
+
+// Options for Intervals
+E20.usesInterval = {
+  perScene: "E20.UsesIntervalScene",
+  perTurn: "E20.UsesIntervalTurn",
+  special: "E20.UsesIntervalSpecial",
+};
+preLocalize("usesInterval");
+
+/************************************************
  * Items                                        *
  ***********************************************/
 
@@ -357,7 +382,6 @@ E20.characterTypes = {
 E20.otherTypes = {
   contact: "E20.Contact",
   megaformTrait: "E20.MegaformTrait",
-  threatPower: "E20.ThreatPower",
   trait: "E20.Trait",
 };
 
@@ -413,6 +437,14 @@ E20.gearTypes = {
   tools: "E20.GearTools",
 };
 preLocalize("gearTypes");
+
+// Power types
+E20.powerTypes = {
+  grid: "E20.PowerSourceGrid",
+  sorcerous: "E20.PowerSourceSorcerous",
+  threat: "E20.PowerSourceThreat",
+};
+preLocalize("powerTypes");
 
 // Upgrade types
 E20.upgradeTypes = {
@@ -504,6 +536,16 @@ E20.companionTypes = {
   pet: "E20.CompanionTypePet",
 };
 preLocalize("companionTypes");
+
+// Energon types
+E20.energonTypes = {
+  energon: "E20.Energon",
+  dark: "E20.EnergonDark",
+  primal: "E20.EnergonPrimal",
+  red: "E20.EnergonRed",
+  synthEn: "E20.EnergonSynthEn",
+};
+preLocalize("energonTypes");
 
 /************************************************
  * Settings                                     *
@@ -653,5 +695,4 @@ E20.tokenSizes = {
     width: 5,
   },
 };
-
 

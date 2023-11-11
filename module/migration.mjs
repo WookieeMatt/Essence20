@@ -15,7 +15,6 @@ export const migrateWorld = async function() {
       const updateData = migrateActorData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Actor document ${actor.name}`);
-        console.log(updateData);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
         await actor.update({"system.skills.-=strength": null});
         await actor.update({"system.skills.-=smarts": null});
@@ -35,6 +34,11 @@ export const migrateWorld = async function() {
   for (const [item, valid] of items) {
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
+
+      if (item.type == "threatPower") {
+        item.delete();
+      }
+
       const updateData = migrateItemData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
@@ -203,10 +207,27 @@ export const migrateActorData = function(actor) {
     return updateData;
   }
 
-  const items = actor.items.reduce((arr, i) => {
+  const items = actor.items.reduce(async (arr, i) => {
     // Migrate the Owned Item
     const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
-    let itemUpdate = migrateItemData(itemData);
+    const fullActor = game.actors.get(actor._id);
+    const itemToDelete = fullActor.items.get(i._id);
+
+    if (itemToDelete.type == "threatPower") {
+      await itemToDelete.delete();
+    } else if (itemToDelete.type == "classFeature") {
+      if (itemToDelete.name == "Personal Power") {
+        updateData[`system.powers.personal.max`] = itemToDelete.system.uses.max;
+        updateData[`system.powers.personal.value`] = itemToDelete.system.uses.value;
+        await itemToDelete.delete();
+      } else if (itemToDelete.name == "Energon") {
+        updateData[`system.energon.normal.value`] = itemToDelete.system.uses.value;
+        updateData[`system.energon.normal.max`] = itemToDelete.system.uses.max;
+        await itemToDelete.delete();
+      }
+    }
+
+    let itemUpdate = migrateItemData(itemData, fullActor);
 
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
@@ -230,7 +251,7 @@ export const migrateActorData = function(actor) {
  * @param {object} item             Item data to migrate
  * @returns {object}                The updateData to apply
  */
-export function migrateItemData(item) {
+export function migrateItemData(item, actor) {
   const updateData = {};
 
   if (item.type == "armor") {
@@ -263,6 +284,29 @@ export function migrateItemData(item) {
       const perkType = item.system.perkType;
       updateData[`system.type`] = perkType;
     }
+  } else if (item.type == "threatPower") {
+    const itemData = item;
+    itemData.type = "power";
+    itemData.system.canActivate = true;
+    itemData.system.usesPer = item.system.charges;
+    itemData.system.type = "threat";
+    itemData.system.usesInterval = "perScene";
+
+    //This is an attempt to catch as many actions as possible by converting to camelCase.
+    if (item.system.actionType) {
+      const parsedActionType = item.system.actionType.split(" ").map((word, i) => {
+        return (i == 0 ? word[0].toLowerCase() : word[0].toUpperCase()) + word.substring(1);
+      }).join("");
+      itemData.system.actionType = Object.keys(CONFIG.E20.actionTypes).includes(parsedActionType) ? parsedActionType : "free";
+    } else {
+      itemData.system.actionType = "free";
+    }
+
+    if (actor) {
+      Item.implementation.create(itemData, {parent: actor, keepId: true});
+    } else {
+      Item.implementation.create(itemData, {keepId: true});
+    }
   }
 
   return updateData;
@@ -294,6 +338,10 @@ export const migrateCompendium = async function(pack) {
         updateData = migrateActorData(doc.toObject());
         break;
       case "Item":
+        if (doc.type == "threatPower") {
+          doc.delete();
+        }
+
         updateData = migrateItemData(doc.toObject());
         break;
       case "Scene":

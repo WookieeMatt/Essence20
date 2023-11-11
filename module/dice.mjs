@@ -94,7 +94,7 @@ export class Dice {
     let label = '';
 
     switch(item?.type) {
-    case 'weapon':
+    case 'weaponEffect':
       label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
       break;
     case 'spell':
@@ -183,25 +183,21 @@ export class Dice {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {Actor} actor   The actor performing the roll.
-   * @param {Item} weapon   The weapon being used.
+   * @param {Item} weaponEffect   The weapon effect being used.
    * @returns {String}   The resultant roll label.
    * @private
    */
-  _getWeaponRollLabel(dataset, skillRollOptions, actor, weapon) {
+  _getWeaponRollLabel(dataset, skillRollOptions, actor, weaponEffect) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._localize(E20.skills[rolledSkill]);
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
-    const alternateEffectsStr = this._localize('E20.WeaponAlternateEffects');
-    const classFeatureStr = this._localize('ITEM.TypeClassfeature');
-    const noneStr = this._localize('E20.None');
-    const classFeatureId = weapon.system.classFeatureId;
+    const damageType = this._localize(E20.damageTypes[weaponEffect.system.damageType]);
+    const noneStr = "";
 
-    let label = `<b>${attackRollStr}</b> - ${weapon.name} (${rolledSkillStr})`;
+    let label = `<b>${attackRollStr}</b> - ${weaponEffect.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
-    label += `<b>${effectStr}</b> - ${weapon.system.effect || noneStr}<br>`;
-    label += `<b>${alternateEffectsStr}</b> - ${weapon.system.alternateEffects || noneStr}<br>`;
-    label += `<b>${classFeatureStr}</b> - ${classFeatureId ? actor.items.get(classFeatureId).name : noneStr}`;
+    label += `<b>${effectStr}</b> - ${weaponEffect.system.damageValue || noneStr} ${damageType}<br>`;
 
     return label;
   }

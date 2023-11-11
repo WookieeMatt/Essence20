@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "4.0.2",
+  "version": "4.1.0",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -50,10 +50,28 @@
       "flags": {}
     },
     {
+      "name": "ferocious_fighters",
+      "label": "Ferocious Fighters: Factions in Action Vol 1",
+      "system": "essence20",
+      "path": "packs/fffav1items",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "field_guide_action_adventure",
       "label": "Field Guide to Action and Adventure",
       "system": "essence20",
       "path": "packs/fgtaaitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "finster_s_monster_matic_cookbook",
+      "label": "Finster's Monster-Matic Cookbook ",
+      "system": "essence20",
+      "path": "packs/fmmcitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -120,7 +138,8 @@
       "packs": [
         "gi_joe_crb",
         "sgt_slaughter_sourcebook",
-        "cobra_codex"
+        "cobra_codex",
+        "ferocious_fighters"
       ]
     },
     {
@@ -136,7 +155,8 @@
       "packs": [
         "pr_crb",
         "across_the_stars",
-        "jump_through_time"
+        "jump_through_time",
+        "finster_s_monster_matic_cookbook"
       ]
     },
     {
@@ -167,6 +187,6 @@
     "verified": "11"
   },
   "flags": {
-    "needsMigrationVersion": "3.2.1"
+    "needsMigrationVersion": "4.1.0"
   }
 }

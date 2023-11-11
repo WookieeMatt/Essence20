@@ -1,0 +1,18 @@
+<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+  {{#if actor.system.canMorph}}
+  <label>Personal Power</label>
+    <input class="centered-input no-lock" data-field="system.powers.personal.value" type="number"
+      name="system.powers.personal.value" value="{{system.powers.personal.value}}" />
+    /
+    <input class="centered-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
+      value="{{system.powers.personal.max}}" />
+  {{/if}}
+    {{#if system.powers.sorcerous.levelTaken}}
+  <label>Sorcerous Power</label>
+    <input class="centered-input no-lock" data-field="system.powers.sorcerous.value" type="number"
+      name="system.powers.sorcerous.value" value="{{system.powers.sorcerous.value}}" />
+    /
+    <input class="centered-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
+      value="{{system.powers.sorcerous.max}}" />
+  {{/if}}
+</div>

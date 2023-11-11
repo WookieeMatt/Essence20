@@ -16,30 +16,6 @@ export class Essence20Actor extends Actor {
   static async create(data, options = {}) {
     const actor = await super.create(data, options);
 
-    // Create Personal Power as a default class feature for Power Rangers
-    if (data.type == 'powerRanger') {
-      Item.create(
-        {
-          name: game.i18n.localize('E20.PowerRangerPersonalPower'),
-          type: 'classFeature',
-          data: {},
-        },
-        { parent: actor },
-      );
-    }
-
-    // Create Energon as a default class feature for Transformers
-    if (data.type == 'transformer') {
-      Item.create(
-        {
-          name: game.i18n.localize('E20.TransformerEnergon'),
-          type: 'classFeature',
-          data: {},
-        },
-        { parent: actor },
-      );
-    }
-
     return actor;
   }
 
@@ -94,10 +70,12 @@ export class Essence20Actor extends Actor {
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
     this._prepareNpcData();
+
     if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.type)) {
       this._prepareDefenses();
       this._prepareHealth();
       this._prepareMovement();
+      this._prepareSorcerousPower();
     }
   }
 
@@ -207,6 +185,16 @@ export class Essence20Actor extends Actor {
     if (!movementTotal) {
       system.movementNotSet = true;
     }
+  }
+
+  /**
+   * Prepares Sorcerous Power
+   */
+  _prepareSorcerousPower() {
+    const system = this.system;
+    const levelMultiplier = system.level - system.powers.sorcerous.levelTaken;
+
+    system.powers.sorcerous.max = (levelMultiplier * 2) + 4;
   }
 
   /**

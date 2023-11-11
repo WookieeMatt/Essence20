@@ -6,6 +6,8 @@ import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
 import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
+import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
+import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -18,6 +20,8 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prHandler = new PowerRangerHandler(this);
     this._atHandler = new AttachmentHandler(this);
     this._tfHandler = new TransformerHandler(this);
+    this._pwHandler = new PowerHandler(this);
+    this._pkHandler = new PerkHandler(this);
   }
 
   /** @override */
@@ -161,7 +165,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const classFeatures = []; // Used by PCs
     const specializations = {};
     const spells = [];
-    const threatPowers = [];
     const upgrades = [];
     const traits = []; // Used by Vehicles
     const weapons = [];
@@ -244,9 +247,6 @@ export class Essence20ActorSheet extends ActorSheet {
         }
 
         break;
-      case 'threatPower':
-        threatPowers.push(i);
-        break;
       case 'trait':
         traits.push(i);
         break;
@@ -280,7 +280,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.powers = powers;
     context.spells = spells;
     context.specializations = specializations;
-    context.threatPowers = threatPowers;
     context.traits = traits;
     context.upgrades = upgrades;
     context.weapons = weapons;
@@ -426,9 +425,44 @@ export class Essence20ActorSheet extends ActorSheet {
    * @private
    */
   async _onRest() {
+    const normalEnergon = this.actor.system.energon.normal;
+    const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
+    const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
+
+    // Notifications for resetting Energon types
+    if (this.actor.system.canTransform) {
+      let energonsReset = [];
+
+      const actorEnergons = this.actor.system.energon;
+      for (const actorEnergon of Object.keys(actorEnergons)) {
+        if (actorEnergons[actorEnergon].value) {
+          energonsReset.push(game.i18n.localize(CONFIG.E20.energonTypes[actorEnergon]));
+        }
+      }
+
+      if (energonsReset.length) {
+        ui.notifications.info(
+          game.i18n.format(
+            'E20.RestEnergonReset',
+            {energon: energonsReset.join(", ")},
+          ),
+        );
+      }
+
+      ui.notifications.info(`Energon restored by ${energonRestore}.`);
+    }
+
+    ui.notifications.info("Health restored and stun reset.");
+    ui.notifications.info("Rest complete!");
+
     await this.actor.update({
       "system.health.value": this.actor.system.health.max,
       "system.stun.value": 0,
+      "system.energon.normal.value": energonRestore,
+      "system.energon.dark.value": 0,
+      "system.energon.primal.value": 0,
+      "system.energon.red.value": 0,
+      "system.energon.synthEn.value": 0,
     }).then(this.render(false));
   }
 
@@ -510,10 +544,7 @@ export class Essence20ActorSheet extends ActorSheet {
       const item = this.actor.items.get(itemId);
 
       if (rollType == 'power') {
-        const classFeature = this.actor.items.get(item.system.classFeatureId);
-        if (classFeature) {
-          classFeature.update({ ["system.uses.value"]: Math.max(0, classFeature.system.uses.value - 1) });
-        }
+        await this._pwHandler.powerCost(item);
       } else if (rollType == 'classFeature') {
         // If a Class Feature is being used, decrement uses
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
@@ -618,7 +649,13 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (item.type == "altMode") {
       this._tfHandler.onAltModeDelete(item, this);
     } else if (item.type == "alteration") {
-      this._alHandler._onAlterationDelete(item);
+      this._alHandler.onAlterationDelete(item);
+    } else if (item.type == "weapon") {
+      this._atHandler.deleteAttachments(item, ["upgrade", "weaponEffect"]);
+    } else if (item.type == "armor") {
+      this._atHandler.deleteAttachments(item, ["upgrade"]);
+    } else if (item.type == "perk") {
+      this._pkHandler.onPerkDelete(item);
     }
 
     item.delete();
@@ -668,6 +705,10 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'perk':
+      return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'power':
+      return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
