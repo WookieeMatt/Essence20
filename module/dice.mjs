@@ -183,7 +183,7 @@ export class Dice {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
    * @param {Actor} actor   The actor performing the roll.
-   * @param {Item} weapon   The weapon being used.
+   * @param {Item} weaponEffect   The weapon effect being used.
    * @returns {String}   The resultant roll label.
    * @private
    */

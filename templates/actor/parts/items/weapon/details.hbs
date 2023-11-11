@@ -1,6 +1,7 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
 <div class="chip-section">
+  <span class="chip" name="chip.weapon.classification.size">{{lookup @root.config.weaponSizes item.system.classification.size}} </span>
    <span class="chip" name="chip.weapon.availability">{{lookup @root.config.availabilities item.system.availability}}</span>
   {{#each item.system.traits as |trait|}}
     <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
