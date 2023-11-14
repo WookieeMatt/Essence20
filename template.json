@@ -836,8 +836,9 @@
         "item",
         "itemDescription"
       ],
-      "rolePerkIds": []
+      "rolePerks": {
 
+      }
     },
     "specialization": {
       "templates": [
