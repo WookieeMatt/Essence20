@@ -698,6 +698,11 @@ export class Essence20ActorSheet extends ActorSheet {
     const sourceItem = await fromUuid(data.uuid);
     if (!sourceItem) return false;
 
+    // Don't drop a new item if they're just sorting
+    if (this.actor.uuid === sourceItem?.parent?.uuid) {
+      return await this._onDropDefault(event, data, false);
+    }
+
     switch (sourceItem.type) {
     case 'alteration':
       return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
@@ -747,19 +752,24 @@ export class Essence20ActorSheet extends ActorSheet {
    * Handle dropping of any other item an Actor sheet
    * @param {DragEvent} event           The concluding DragEvent which contains drop data
    * @param {Object} data               The data transfer extracted from the event
+   * @param {Boolean} isNewItem         Whether a new item is intended to be dropped
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    */
-  async _onDropDefault(event, data) {
+  async _onDropDefault(event, data, isNewItem=true) {
     // Drones can only accept drone Upgrades
     const itemUuid = await parseId(data.uuid);
 
     const droppedItemList = await super._onDropItem(event, data);
-    const newItem = droppedItemList[0];
 
-    await newItem.update ({
-      "system.originalId": itemUuid,
-    });
+    if (isNewItem) {
+      const newItem = droppedItemList[0];
+      await newItem.update ({
+        "system.originalId": itemUuid,
+      });
+    } else {
+      droppedItemList = [];
+    }
 
     return droppedItemList;
   }
