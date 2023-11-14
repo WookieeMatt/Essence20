@@ -760,7 +760,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Drones can only accept drone Upgrades
     const itemUuid = await parseId(data.uuid);
 
-    const droppedItemList = await super._onDropItem(event, data);
+    let droppedItemList = await super._onDropItem(event, data);
 
     if (isNewItem) {
       const newItem = droppedItemList[0];
