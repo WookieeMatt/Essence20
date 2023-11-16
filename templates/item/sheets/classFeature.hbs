@@ -3,19 +3,31 @@
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
+  </nav>
+
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    {{!-- Uses --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ClassFeatureUses'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.uses.value" value="{{system.uses.value}}" />
-    <div class="min-max-divider">/</div>
-    <input type="number" name="system.uses.max" value="{{system.uses.max}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
+      {{!-- Uses --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ClassFeatureUses'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.uses.value" value="{{system.uses.value}}" />
+      <div class="min-max-divider">/</div>
+      <input type="number" name="system.uses.max" value="{{system.uses.max}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    </div>
+
   </section>
 
 </form>
