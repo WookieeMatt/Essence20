@@ -836,8 +836,25 @@
         "item",
         "itemDescription"
       ],
-      "rolePerks": {
-
+      "armors": {
+        "qualified": "",
+        "trained":""
+      },
+      "essences": {
+        "smarts":  "",
+        "social":  "",
+        "speed":  "",
+        "strength":  ""
+      },
+      "focus": false,
+      "perks": {
+        "general": [],
+        "role": []
+      },
+      "skills": [],
+      "weapons": {
+        "qualified": "",
+        "trained":""
       }
     },
     "specialization": {

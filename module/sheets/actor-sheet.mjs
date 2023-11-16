@@ -9,6 +9,7 @@ import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
 import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
+import { RoleHandler } from "../sheet-handlers/role-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -24,6 +25,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._tfHandler = new TransformerHandler(this);
     this._pwHandler = new PowerHandler(this);
     this._pkHandler = new PerkHandler(this);
+    this._rlHandler = new RoleHandler(this);
   }
 
   /** @override */

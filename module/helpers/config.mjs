@@ -110,6 +110,23 @@ E20.weaponTraits = {
 };
 preLocalize("weaponTraits");
 
+// Options for Weapon types
+E20.weaponTypes = {
+  assaultRifle: "E20.WeaponsAssaultRifle",
+  ballistic: "E20.WeaponsBallistic",
+  closeCombatHeavyBlade: "E20.WeaponsCloseCombatHeavyBlade",
+  element: "E20.WeaponsElement",
+  explosives: "E20.WeaponsExplosives",
+  finesse: "E20.WeaponsFinesse",
+  grenades: "E20.WeaponGrenades",
+  mightMelee: "E20.WeaponsMightMelee",
+  shotguns: "E20.WeaponsShotgun",
+  silent: "E20.WeaponsSilent",
+  submachineGun: "E20.WeaponsSubmachineGun",
+  thrown: "E20.WeaponsThrown",
+};
+preLocalize("weaponTypes");
+
 /************************************************
  * Armor                                        *
  ***********************************************/
@@ -139,6 +156,17 @@ E20.armorTraits = {
   xenotech: "E20.ArmorTraitXenotech",
 };
 preLocalize("armorTraits");
+
+// Options for Armor types
+E20.armorTypes = {
+  computerized: "E20.ArmorComputerized",
+  heavy: "E20.ArmorsHeavy",
+  impulse: "E20.ArmorImpulse",
+  light: "E20.ArmorsLight",
+  medium: "E20.ArmorsMedium",
+  tactical: "E20.ArmorsTactical",
+};
+preLocalize("armorTypes");
 
 /************************************************
  * Essences and Skills                          *
@@ -229,6 +257,31 @@ E20.skillsByEssence = {
   smarts: ["alertness", "culture", "science", "survival", "technology"],
   social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"],
 };
+
+E20.essenceLevels = {
+  level1: "E20.level1",
+  level1optional: "E20.level1Optional",
+  level2: "E20.level2",
+  level3: "E20.level3",
+  level4: "E20.level4",
+  level5: "E20.level5",
+  level6: "E20.level6",
+  level7: "E20.level7",
+  level8: "E20.level8",
+  level9: "E20.level9",
+  level10: "E20.level10",
+  level11: "E20.level11",
+  level12: "E20.level12",
+  level13: "E20.level13",
+  level14: "E20.level14",
+  level15: "E20.level15",
+  level16: "E20.level16",
+  level17: "E20.level17",
+  level18: "E20.level18",
+  level19: "E20.level19",
+  level20: "E20.level20",
+};
+preLocalize("essenceLevels");
 
 /************************************************
  * Rolls                                        *

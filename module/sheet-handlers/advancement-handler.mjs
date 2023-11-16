@@ -13,6 +13,7 @@ export class AdvancementHandler {
     for (const item of actor.items) {
       if (item.type == "role") {
 
+
       }
     }
   }
