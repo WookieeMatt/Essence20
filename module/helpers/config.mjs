@@ -11,7 +11,7 @@ E20.version = {
   giJoe: "E20.VersionGIJoe",
   myLittlePony: "E20.VersionMyLittlePony",
   powerRangers: "E20.VersionPowerRangers",
-  transformers: "E20.Transformers",
+  transformers: "E20.VersionTransformers",
 };
 preLocalize("version");
 
@@ -272,27 +272,27 @@ E20.skillsByEssence = {
 };
 
 E20.essenceLevels = {
-  level1: "E20.level1",
-  level1optional: "E20.level1Optional",
-  level2: "E20.level2",
-  level3: "E20.level3",
-  level4: "E20.level4",
-  level5: "E20.level5",
-  level6: "E20.level6",
-  level7: "E20.level7",
-  level8: "E20.level8",
-  level9: "E20.level9",
-  level10: "E20.level10",
-  level11: "E20.level11",
-  level12: "E20.level12",
-  level13: "E20.level13",
-  level14: "E20.level14",
-  level15: "E20.level15",
-  level16: "E20.level16",
-  level17: "E20.level17",
-  level18: "E20.level18",
-  level19: "E20.level19",
-  level20: "E20.level20",
+  level1: "E20.Level1",
+  level1optional: "E20.Level1Additional",
+  level2: "E20.Level2",
+  level3: "E20.Level3",
+  level4: "E20.Level4",
+  level5: "E20.Level5",
+  level6: "E20.Level6",
+  level7: "E20.Level7",
+  level8: "E20.Level8",
+  level9: "E20.Level9",
+  level10: "E20.Level10",
+  level11: "E20.Level11",
+  level12: "E20.Level12",
+  level13: "E20.Level13",
+  level14: "E20.Level14",
+  level15: "E20.Level15",
+  level16: "E20.Level16",
+  level17: "E20.Level17",
+  level18: "E20.Level18",
+  level19: "E20.Level19",
+  level20: "E20.Level20",
 };
 preLocalize("essenceLevels");
 
