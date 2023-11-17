@@ -3,6 +3,19 @@ import { preLocalize } from "./utils.mjs";
 export const E20 = {};
 
 /************************************************
+ * System Version                               *
+ ***********************************************/
+
+//Game Version
+E20.version = {
+  giJoe: "E20.VersionGIJoe",
+  myLittlePony: "E20.VersionMyLittlePony",
+  powerRangers: "E20.VersionPowerRangers",
+  transformers: "E20.Transformers",
+};
+preLocalize("version");
+
+/************************************************
  * Defense                                      *
  ***********************************************/
 

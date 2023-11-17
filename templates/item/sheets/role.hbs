@@ -6,163 +6,180 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     <div>
-      {{!-- Armor Trained --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTrained'}}
-      {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="armorType" data-target="system.armors.trained" title="{{localize 'E20.TraitSelector'}}">
+
+      {{!-- System --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RoleVersion'}}
+      {{#*inline "item-field-inputs"}}
+      <select class="item-field-inputs" name="system.version">
+        {{#select system.version}}
+        {{#each config.version as |name type|}}
+        <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#ifNotEquals system.version 'myLittlePony'}}
+        {{!-- Armor Trained --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTrained'}}
+        {{#*inline "item-field-edit"}}
+          <a class="trait-selector" style="flex-grow: 0;" data-options="armorType" data-target="system.armors.trained" title="{{localize 'E20.TraitSelector'}}">
+            <i class="fas fa-edit"></i>
+          </a>
+        {{/inline}}
+
+        {{#*inline "item-field-inputs"}}
+          <div class="chip-section">
+            {{#each item.system.armor.trained as |armorType|}}
+            <span class="chip" name="chip.armor.trained.{{armorType}}">{{lookup @root.config.armorTypes armorType}}</span>
+            {{/each}}
+          </div>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#ifNotEquals system.version 'powerRangers'}}
+          {{!-- Armor Quailfication --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorQualified'}}
+          {{#*inline "item-field-edit"}}
+            <a class="trait-selector" style="flex-grow: 0;" data-options="armorType" data-target="system.armors.qualified" title="{{localize 'E20.TraitSelector'}}">
+              <i class="fas fa-edit"></i>
+            </a>
+          {{/inline}}
+
+          {{#*inline "item-field-inputs"}}
+            <div class="chip-section">
+              {{#each item.system.armor.qualified as |armorType|}}
+              <span class="chip" name="chip.armor.qualified.{{armorType}}">{{lookup @root.config.armorTypes armorType}}</span>
+              {{/each}}
+            </div>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+          {{!-- Weapon Trained --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTrained'}}
+          {{#*inline "item-field-edit"}}
+            <a class="trait-selector" style="flex-grow: 0;" data-options="weaponType" data-target="system.weapons.trained" title="{{localize 'E20.TraitSelector'}}">
+              <i class="fas fa-edit"></i>
+            </a>
+          {{/inline}}
+
+          {{#*inline "item-field-inputs"}}
+            <div class="chip-section">
+              {{#each item.system.weapon.trained as |weaponType|}}
+              <span class="chip" name="chip.armor.trained.{{weaponType}}">{{lookup @root.config.weaponTypes weaponType}}</span>
+              {{/each}}
+            </div>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+          {{!-- Weapon Qualified --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponQualified'}}
+          {{#*inline "item-field-edit"}}
+            <a class="trait-selector" style="flex-grow: 0;" data-options="weaponType" data-target="system.weapons.qualified" title="{{localize 'E20.TraitSelector'}}">
+              <i class="fas fa-edit"></i>
+            </a>
+          {{/inline}}
+
+          {{#*inline "item-field-inputs"}}
+            <div class="chip-section">
+              {{#each item.system.weapon.qualified as |weaponType|}}
+              <span class="chip" name="chip.weapon.qualified.{{weaponType}}">{{lookup @root.config.weaponTypes weaponType}}</span>
+              {{/each}}
+            </div>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifNotEquals}}
+        {{!-- Strength Essence Boosts --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.StrengthEssenceBoost'}}
+        {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="essenceLevels" data-target="system.essences.strength"
+          title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
-      {{/inline}}
+        {{/inline}}
 
-      {{#*inline "item-field-inputs"}}
-        <div class="chip-section">
-          {{#each item.system.armor.trained as |armorType|}}
-          <span class="chip" name="chip.armor.trained.{{armorType}}">{{lookup @root.config.armorTypes armorType}}</span>
+        {{#*inline "item-field-inputs"}}
+        <div class="flex-group-right chip-section">
+          {{#each item.system.essences.strength as |name|}}
+            <span class="chip" name="chip.essences.strength{{type}}">{{lookup @root.config.essenceLevels name}}</span>
           {{/each}}
         </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Armor Trained --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorQualified'}}
-      {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="armorType" data-target="system.armors.qualified" title="{{localize 'E20.TraitSelector'}}">
+        {{!-- Speed Essence Boosts --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpeedEssenceBoost'}}
+        {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="essenceLevels" data-target="system.essences.speed"
+          title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
-      {{/inline}}
+        {{/inline}}
 
-      {{#*inline "item-field-inputs"}}
-        <div class="chip-section">
-          {{#each item.system.armor.qualified as |armorType|}}
-          <span class="chip" name="chip.armor.qualified.{{armorType}}">{{lookup @root.config.armorTypes armorType}}</span>
+        {{#*inline "item-field-inputs"}}
+        <div class="flex-group-right chip-section">
+          {{#each item.system.essences.speed as |name|}}
+            <span class="chip" name="chip.essences.speed{{type}}">{{lookup @root.config.essenceLevels name}}</span>
           {{/each}}
         </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Weapon Trained --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTrained'}}
-      {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="weaponType" data-target="system.weapons.trained" title="{{localize 'E20.TraitSelector'}}">
+        {{!-- Smarts Essence Boosts --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SmartsEssenceBoost'}}
+        {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="essenceLevels" data-target="system.essences.smarts"
+          title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
-      {{/inline}}
+        {{/inline}}
 
-      {{#*inline "item-field-inputs"}}
-        <div class="chip-section">
-          {{#each item.system.weapon.trained as |weaponType|}}
-          <span class="chip" name="chip.armor.trained.{{weaponType}}">{{lookup @root.config.weaponTypes weaponType}}</span>
+        {{#*inline "item-field-inputs"}}
+        <div class="flex-group-right chip-section">
+          {{#each item.system.essences.smarts as |name|}}
+            <span class="chip" name="chip.essences.smarts{{type}}">{{lookup @root.config.essenceLevels name}}</span>
           {{/each}}
         </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Weapon Qualified --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponQualified'}}
-      {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="weaponType" data-target="system.weapons.qualified" title="{{localize 'E20.TraitSelector'}}">
+        {{!-- Social Essence Boosts --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SocialEssenceBoost'}}
+        {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="essenceLevels" data-target="system.essences.social"
+          title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
-      {{/inline}}
+        {{/inline}}
 
-      {{#*inline "item-field-inputs"}}
-        <div class="chip-section">
-          {{#each item.system.weapon.qualified as |weaponType|}}
-          <span class="chip" name="chip.weapon.qualified.{{weaponType}}">{{lookup @root.config.weaponTypes weaponType}}</span>
+        {{#*inline "item-field-inputs"}}
+        <div class="flex-group-right chip-section">
+          {{#each item.system.essences.social as |name|}}
+            <span class="chip" name="chip.essences.social{{type}}">{{lookup @root.config.essenceLevels name}}</span>
           {{/each}}
         </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Strength Essence Boosts --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.StrengthEssenceBoost'}}
-      {{#*inline "item-field-edit"}}
-      <a class="trait-selector" style="flex-grow: 0;" data-options="essenceLevels" data-target="system.essences.strength"
-        title="{{localize 'E20.EssenceSelector'}}">
-        <i class="fas fa-edit"></i>
-      </a>
-      {{/inline}}
+        {{!-- Origin Skills --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.StartingRoleSkills'}}
+        {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="originSkills" data-target="system.skills"
+          title="{{localize 'E20.SkillSelector'}}">
+          <i class="fas fa-edit"></i>
+        </a>
+        {{/inline}}
 
-      {{#*inline "item-field-inputs"}}
-      <div class="flex-group-right chip-section">
-        {{#each item.system.essences.strength as |name|}}
-          <span class="chip" name="chip.essences.strength{{type}}">{{lookup @root.config.essenceLevels name}}</span>
+        {{#*inline "item-field-inputs"}}
+        <div class="flex-group-right chip-section">
+        {{#each item.system.skills as |name|}}
+          <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
         {{/each}}
-      </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-            {{!-- Speed Essence Boosts --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpeedEssenceBoost'}}
-      {{#*inline "item-field-edit"}}
-      <a class="trait-selector" style="flex-grow: 0;" data-options="essenceLevels" data-target="system.essences.speed"
-        title="{{localize 'E20.EssenceSelector'}}">
-        <i class="fas fa-edit"></i>
-      </a>
-      {{/inline}}
-
-      {{#*inline "item-field-inputs"}}
-      <div class="flex-group-right chip-section">
-        {{#each item.system.essences.speed as |name|}}
-          <span class="chip" name="chip.essences.speed{{type}}">{{lookup @root.config.essenceLevels name}}</span>
-        {{/each}}
-      </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-            {{!-- Smarts Essence Boosts --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SmartsEssenceBoost'}}
-      {{#*inline "item-field-edit"}}
-      <a class="trait-selector" style="flex-grow: 0;" data-options="essenceLevels" data-target="system.essences.smarts"
-        title="{{localize 'E20.EssenceSelector'}}">
-        <i class="fas fa-edit"></i>
-      </a>
-      {{/inline}}
-
-      {{#*inline "item-field-inputs"}}
-      <div class="flex-group-right chip-section">
-        {{#each item.system.essences.smarts as |name|}}
-          <span class="chip" name="chip.essences.smarts{{type}}">{{lookup @root.config.essenceLevels name}}</span>
-        {{/each}}
-      </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-            {{!-- Social Essence Boosts --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SocialEssenceBoost'}}
-      {{#*inline "item-field-edit"}}
-      <a class="trait-selector" style="flex-grow: 0;" data-options="essenceLevels" data-target="system.essences.social"
-        title="{{localize 'E20.EssenceSelector'}}">
-        <i class="fas fa-edit"></i>
-      </a>
-      {{/inline}}
-
-      {{#*inline "item-field-inputs"}}
-      <div class="flex-group-right chip-section">
-        {{#each item.system.essences.social as |name|}}
-          <span class="chip" name="chip.essences.social{{type}}">{{lookup @root.config.essenceLevels name}}</span>
-        {{/each}}
-      </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Origin Skills --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.StartingRoleSkills'}}
-      {{#*inline "item-field-edit"}}
-      <a class="trait-selector" style="flex-grow: 0;" data-options="originSkills" data-target="system.skills"
-        title="{{localize 'E20.SkillSelector'}}">
-        <i class="fas fa-edit"></i>
-      </a>
-      {{/inline}}
-
-      {{#*inline "item-field-inputs"}}
-      <div class="flex-group-right chip-section">
-      {{#each item.system.skills as |name|}}
-        <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
-      {{/each}}
-      </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        </div>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifNotEquals}}
 
       {{!-- General Perk --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.GeneralPerks'}}
