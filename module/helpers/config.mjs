@@ -6,7 +6,7 @@ export const E20 = {};
  * System Version                               *
  ***********************************************/
 
-//Game Version
+// Game Version
 E20.version = {
   giJoe: "E20.VersionGIJoe",
   myLittlePony: "E20.VersionMyLittlePony",
