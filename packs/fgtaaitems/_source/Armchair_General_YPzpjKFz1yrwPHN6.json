@@ -1,0 +1,33 @@
+{
+  "name": "Armchair General",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 63
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1685406835763,
+    "modifiedTime": 1686340779668,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "folder": "IKbSBZVLO0HuU86W",
+  "_id": "YPzpjKFz1yrwPHN6",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!YPzpjKFz1yrwPHN6"
+}

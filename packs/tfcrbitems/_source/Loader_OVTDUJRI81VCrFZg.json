@@ -1,0 +1,33 @@
+{
+  "folder": "zRS3PJz9qBfLiXRf",
+  "name": "Loader",
+  "type": "gear",
+  "_id": "OVTDUJRI81VCrFZg",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transfomers Core Rulebook",
+      "page": 134
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "support"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.311",
+    "createdTime": 1696366164514,
+    "modifiedTime": 1696366348379,
+    "lastModifiedBy": "iCCZI3EVfOIO2b8O"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!OVTDUJRI81VCrFZg"
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Fool Me Twice",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 54
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1680143166232,
+    "modifiedTime": 1686342150550,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "0EK07G1dijXl89qT",
+  "folder": "ly03UXfH1Jdy7p6W",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!0EK07G1dijXl89qT"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Kits",
+  "sorting": "a",
+  "folder": "NwAxIW1A2UA1sk8K",
+  "type": "Item",
+  "_id": "xPQZVuqXJFCJwWG8",
+  "sort": 500000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.311",
+    "createdTime": 1696365759156,
+    "modifiedTime": 1696366358570,
+    "lastModifiedBy": "iCCZI3EVfOIO2b8O"
+  },
+  "_key": "!folders!xPQZVuqXJFCJwWG8"
+}

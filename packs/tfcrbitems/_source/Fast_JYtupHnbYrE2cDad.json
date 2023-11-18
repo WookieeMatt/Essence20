@@ -1,0 +1,35 @@
+{
+  "name": "Fast",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 109
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [
+    "5EpV9IiGoB682Xik"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686275727304,
+    "modifiedTime": 1686343539187,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "JYtupHnbYrE2cDad",
+  "folder": "ERY0Xs3Bi23Hjx2K",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!JYtupHnbYrE2cDad"
+}

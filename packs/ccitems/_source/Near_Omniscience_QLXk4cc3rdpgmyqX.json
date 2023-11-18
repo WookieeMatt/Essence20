@@ -1,0 +1,48 @@
+{
+  "folder": "dUgFcCG3h9DxRZQa",
+  "name": "Near Omniscience",
+  "type": "alteration",
+  "_id": "QLXk4cc3rdpgmyqX",
+  "img": "systems/essence20/assets/icons/items/alteration.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 87
+    },
+    "type": "essence",
+    "availability": "restricted",
+    "benefit": "",
+    "bonusSkill": "",
+    "cost": null,
+    "costSkill": "",
+    "essenceBenefit": "",
+    "essenceCost": [
+      "strength",
+      "speed",
+      "social"
+    ],
+    "movementCost": "",
+    "originalId": "",
+    "selectedEssence": "",
+    "bonus": null,
+    "essenceBonus": [
+      "smarts"
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1694732399037,
+    "modifiedTime": 1694735973951,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!QLXk4cc3rdpgmyqX"
+}

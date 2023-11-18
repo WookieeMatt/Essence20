@@ -1,0 +1,51 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Concussion Grenade",
+  "type": "weapon",
+  "_id": "uWID45bHyKuarkGs",
+  "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 141
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "biSzIazZJHL5DNGN"
+    ],
+    "classification": {
+      "size": "sidearm"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695303304427,
+    "modifiedTime": 1695388102654,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!uWID45bHyKuarkGs"
+}

@@ -1,0 +1,52 @@
+{
+  "name": "Seeker",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.RXTZuPJnnAlkgHX2]{Seeker}</p>",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 53
+    },
+    "baseAerialMovement": 30,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "speed"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "wkskDLpz4belpb7p"
+    ],
+    "skills": [
+      "acrobatics",
+      "driving"
+    ],
+    "startingHealth": 3,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681743896725,
+    "modifiedTime": 1686343645732,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "wVmnk4NgILkNuNuh",
+  "folder": "vECyC1kfkRvVO3FR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!wVmnk4NgILkNuNuh"
+}

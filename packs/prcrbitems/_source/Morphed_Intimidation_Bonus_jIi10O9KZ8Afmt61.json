@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.9gR0IJvQ9NKjonjm",
+  "duration": {
+    "rounds": 1,
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "jIi10O9KZ8Afmt61",
+  "changes": [
+    {
+      "key": "system.skills.intimidation.shiftUp",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Morphed Intimidation Bonus",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!ofiEt8uFPgovBvLQ.jIi10O9KZ8Afmt61"
+}

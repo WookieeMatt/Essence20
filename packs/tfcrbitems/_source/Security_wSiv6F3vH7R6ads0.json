@@ -1,0 +1,41 @@
+{
+  "name": "Security",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 40
+    },
+    "bond": "",
+    "hangUpIds": [
+      "79jifb9w1OlopUUY",
+      "yoyifVDjpnLloHbK",
+      "M5gCV4i6hoOSowIb"
+    ],
+    "perkIds": [
+      "JSIHwTZHlqRPDERC"
+    ],
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1686279830198,
+    "modifiedTime": 1686343539187,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "wSiv6F3vH7R6ads0",
+  "folder": "SWtRpPu5oWtOo7vD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!wSiv6F3vH7R6ads0"
+}

@@ -1,0 +1,31 @@
+{
+  "name": "Oathbound",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 46
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1680309736615,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "mg1Nxf9SLWxCeoLo",
+  "folder": "TCpK6lLW8Yc9ocnk",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!mg1Nxf9SLWxCeoLo"
+}

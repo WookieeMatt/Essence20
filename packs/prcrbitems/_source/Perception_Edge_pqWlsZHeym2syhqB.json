@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.CGlS5qKfa1bekwOw",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "pqWlsZHeym2syhqB",
+  "changes": [
+    {
+      "key": "system.skills.alertness.edge",
+      "mode": 5,
+      "value": "true",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Perception Edge",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!Z4YwTrUSDQIrDkQT.pqWlsZHeym2syhqB"
+}

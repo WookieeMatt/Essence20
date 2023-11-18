@@ -1,0 +1,38 @@
+{
+  "name": "Fast",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "<p>Ground bonus is activated by default but you can deactivate and activate a different movement type if that is your choice.&nbsp;</p>",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 95
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [
+    "QKwFodfIXRRqrA6r",
+    "NpRY7BHmPB3gfQeG",
+    "KjnkWH6BzXFKnNXV",
+    "RMS45cfYUwYBEAL9"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.2",
+    "coreVersion": "11.301",
+    "createdTime": 1685399229973,
+    "modifiedTime": 1686767681112,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "DM3png00SY9CgkMN",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!DM3png00SY9CgkMN"
+}

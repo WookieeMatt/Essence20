@@ -1,0 +1,30 @@
+{
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.f7QOaDUFo1b0184W",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "tY4QAmHLtkWyNhC0",
+  "changes": [
+    {
+      "key": "system.movement.ground.altMode",
+      "mode": 5,
+      "value": "20",
+      "priority": null
+    }
+  ],
+  "tint": null,
+  "transfer": true,
+  "flags": {},
+  "name": "Ground Movement",
+  "description": "",
+  "statuses": [],
+  "_key": "!items.effects!f7QOaDUFo1b0184W.tY4QAmHLtkWyNhC0"
+}

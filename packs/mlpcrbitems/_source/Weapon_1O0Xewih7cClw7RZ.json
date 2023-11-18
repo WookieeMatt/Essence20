@@ -1,0 +1,19 @@
+{
+  "name": "Weapon",
+  "sorting": "a",
+  "folder": "iMalZP7dfGSzlePj",
+  "type": "Item",
+  "_id": "1O0Xewih7cClw7RZ",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695610128952,
+    "modifiedTime": 1695611082735,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "_key": "!folders!1O0Xewih7cClw7RZ"
+}

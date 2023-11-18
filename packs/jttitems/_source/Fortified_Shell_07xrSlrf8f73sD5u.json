@@ -1,0 +1,30 @@
+{
+  "name": "Fortified Shell",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Item.bu1g1akniEFaquMX",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "07xrSlrf8f73sD5u",
+  "changes": [
+    {
+      "key": "system.defenses.toughness.morphed",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!bu1g1akniEFaquMX.07xrSlrf8f73sD5u"
+}

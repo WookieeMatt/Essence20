@@ -1,0 +1,54 @@
+{
+  "folder": "Vp6v1H3MnV842PdP",
+  "name": "Catalytic Cannon",
+  "type": "weapon",
+  "_id": "9CNW8MXt30aEWkCX",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 73
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "equipped": true,
+    "requirements": {
+      "custom": "Brawn d4",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "acid",
+      "mounted",
+      "reload",
+      "wrecker"
+    ],
+    "upgradeIds": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "weaponEffectIds": [
+      "dOBqt0AR7KeGLDFv"
+    ],
+    "classification": {
+      "size": "heavy"
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1696131404105,
+    "modifiedTime": 1696169890833,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!9CNW8MXt30aEWkCX"
+}

@@ -1,0 +1,31 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Matured",
+  "type": "perk",
+  "_id": "bf4nxa6WKKhuQcEH",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 80
+    },
+    "prerequisite": "At least one Influence Hang-Up",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.301",
+    "createdTime": 1686501523672,
+    "modifiedTime": 1686502352304,
+    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!bf4nxa6WKKhuQcEH"
+}

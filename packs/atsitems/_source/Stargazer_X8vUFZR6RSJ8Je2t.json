@@ -1,0 +1,56 @@
+{
+  "name": "Stargazer",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 40
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "30",
+    "essences": [
+      "speed",
+      "smarts"
+    ],
+    "languages": "",
+    "originPerkIds": [
+      "WujkaoHiNr324Zyu"
+    ],
+    "skills": [
+      "driving",
+      "targeting",
+      "alertness",
+      "science",
+      "technology"
+    ],
+    "startingHealth": 1,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1681764426639,
+    "modifiedTime": 1686339231149,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "X8vUFZR6RSJ8Je2t",
+  "folder": "7CXPtLaacOXQ0Rwc",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!X8vUFZR6RSJ8Je2t"
+}

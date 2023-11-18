@@ -1,0 +1,33 @@
+{
+  "name": "Expertise",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 123
+    },
+    "prerequisite": "",
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1685407830223,
+    "modifiedTime": 1686342150550,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "folder": "hTtvIMEXXET4Kkqf",
+  "_id": "06cSi4Q1ztUPXWtw",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!06cSi4Q1ztUPXWtw"
+}

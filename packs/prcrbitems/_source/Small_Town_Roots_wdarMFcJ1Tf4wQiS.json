@@ -1,0 +1,32 @@
+{
+  "name": "Small Town Roots",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 69
+    },
+    "img": "icons/svg/hazard.svg"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.2.0",
+    "coreVersion": "11.300",
+    "createdTime": 1680138440541,
+    "modifiedTime": 1686342745792,
+    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+  },
+  "_id": "wdarMFcJ1Tf4wQiS",
+  "folder": "uiyepoxb2PD3I4f0",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!wdarMFcJ1Tf4wQiS"
+}
