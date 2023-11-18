@@ -438,8 +438,10 @@ E20.characterTypes = {
   altMode: "E20.AltMode",
   classFeature: "E20.ClassFeature",
   feature: "E20.Feature",
+  focus: "E20.Focus",
   perk: "E20.Perk",
   power: "E20.Power",
+  role: "E20.Role",
   specialization: "E20.Specialization",
   spell: "E20.Spell",
 };

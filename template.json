@@ -752,6 +752,16 @@
         "itemDescription"
       ]
     },
+    "focus": {
+      "templates": [
+        "item",
+        "itemDescription"
+      ],
+      "essences": "",
+      "role": "",
+      "rolePerks": [],
+      "skills": ""
+    },
     "gear": {
       "templates": [
         "item",
