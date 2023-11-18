@@ -107,7 +107,7 @@ export class Essence20ItemSheet extends ItemSheet {
     this.form.ondrop = (event) => this._onDrop(event);
 
     // Delete Origin Perks from Origns
-    html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".originPerk", "originPerkIds"));
+    html.find('.originPerk-delete').click(this._onIdDelete.bind(this, ".perk", "originPerkIds"));
 
     // Delete Effects from Weapons
     html.find('.weaponEffect-delete').click(this._onIdDelete.bind(this, ".weaponEffect", "weaponEffectIds"));

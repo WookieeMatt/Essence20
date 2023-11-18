@@ -63,7 +63,7 @@
   list-style: none;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   flex-grow: 0;
@@ -121,10 +121,16 @@
 }
 
 .essence20 .editor-content {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   min-height: fit-content;
   font-size: 16px;
   padding: 0;
+}
+
+.tox-tinymce {
+  min-height: 250px;
+  max-height: 100%;
+  max-width: 100%;
 }
 
 .flex-group-center,
@@ -182,21 +188,21 @@
 .window-app {
   font-family: "Rajdhani", sans-serif;
   font-weight: bold;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
 }
 
 .window-app .window-content {
   /* background: rgb(78, 78, 78); */
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border-radius: 15px;
   background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
   background-size: cover;
 }
 
 .window-app .window-content button {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   background: none;
   border-color: 4px solid #b5b1b1;
   border-radius: 20px;
@@ -218,17 +224,17 @@
 }
 
 .dialog .dialog-buttons button.default {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   background: none;
 }
 
 .dialog .dialog-buttons button {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   background: none;
 }
 
 .dialog .dialog-buttons {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   padding-top: 6px;
 }
 
@@ -236,7 +242,7 @@
   list-style: none;
   padding: 6px;
   overflow-y: none;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   flex-basis: auto;
   justify-content: center;
   height: 100%;
@@ -247,7 +253,7 @@
 }
 
 .dialog input {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .app .window-app dialog {
@@ -255,7 +261,7 @@
 }
 
 #module-management .package-list .package-title {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .item-button-container {
@@ -268,39 +274,39 @@
 
 .rollable:hover,
 .rollable:focus {
-  color: black;
+  color: rgb(0, 0, 0);
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
 
 .window-app textarea {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .chat-message {
   background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
   opacity: 80;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border: 4px solid #b5b1b1;
   box-shadow: 4px 4px 0 black;
 }
 
 .chat-message .flavor-text {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .chat-message .message-sender {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .chat-message .message-metadata {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .chat-message.whisper {
   background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
   opacity: 80;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border: 4px dashed #b5b1b1;
   box-shadow: 4px 4px 0 black;
 }
@@ -558,7 +564,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -644,7 +650,7 @@
 .essence20 .skills-container {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   transform: rotate(0deg);
   scrollbar-width: thin;
   background-color: none;
@@ -660,7 +666,7 @@
 .essence20 .skillscontainer {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 6px;
@@ -671,11 +677,11 @@
 .essence20 h2,
 .essence20 h3,
 .essence20 h4 {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .tox .tox-editor-container {
-  background: white;
+  background: rgb(255, 255, 255);
 }
 
 .essence20 .tox .tox-edit-area {
@@ -701,7 +707,7 @@
   list-style: none;
   padding: 4px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
@@ -811,7 +817,7 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -916,7 +922,7 @@
   list-style: none;
   padding: 6px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   flex-basis: auto;
   justify-content: center;
   background: none;
@@ -1002,7 +1008,7 @@
 
 .essence20 .pony {
   /* background: rgb(78, 78, 78); */
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   border-radius: 15px;
   background: #212c5f;
   background-size: cover;
@@ -1028,7 +1034,7 @@
 }
 
 .essence20 .item {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   gap: 5px;
 }
 
@@ -1039,7 +1045,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1105,7 +1111,7 @@
   -ms-flex-align: center;
   align-items: center;
   padding: 0 2px;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .items-list hr {
@@ -1201,7 +1207,7 @@
   background: none;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
   padding: 6px;
   min-height: none;
 }
@@ -1218,7 +1224,7 @@
 /* -- Jornal page styling -- */
 .window-content .journal-sheet-container .journal-entry-content {
   background: none;
-  color: #a3a3a3;
+  color: rgb(163, 163, 163);
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
@@ -1272,11 +1278,11 @@ option {
 
 form .notes,
 form .hint {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .span {
-  color: #c7c4c4;
+  color: rgb(199, 196, 196);
 }
 
 .essence20 .sheet-body {
