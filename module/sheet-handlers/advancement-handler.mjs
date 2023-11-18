@@ -10,12 +10,7 @@ export class AdvancementHandler {
   }
 
   onLevelChange(actor) {
-    for (const item of actor.items) {
-      if (item.type == "role") {
-
-
-      }
-    }
+    console.log(actor);
   }
 
 }
