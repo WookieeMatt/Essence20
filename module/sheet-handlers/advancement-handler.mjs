@@ -1,5 +1,4 @@
 export class AdvancementHandler {
-
   /**
   * Constructor
   * @param {Essence20ActorSheet} actorSheet The actor sheet
