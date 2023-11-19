@@ -271,7 +271,7 @@ E20.skillsByEssence = {
   social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"],
 };
 
-E20.essenceLevels = {
+E20.actorLevels = {
   level1: "E20.Level1",
   level1optional: "E20.Level1Additional",
   level2: "E20.Level2",
@@ -294,7 +294,7 @@ E20.essenceLevels = {
   level19: "E20.Level19",
   level20: "E20.Level20",
 };
-preLocalize("essenceLevels");
+preLocalize("actorLevels");
 
 /************************************************
  * Rolls                                        *

@@ -274,6 +274,7 @@
     "ItemTypeWeaponPlural": "Weapons",
     "ItemTypeWeaponEffectPlural": "Effects",
     "Level1": "1st Level",
+    "Level1Additional": "1st Level *",
     "Level2": "2nd Level",
     "Level3": "3rd Level",
     "Level4": "4th Level",

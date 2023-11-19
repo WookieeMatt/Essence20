@@ -367,6 +367,9 @@ export class Essence20ActorSheet extends ActorSheet {
     // Transform Button
     html.find('.transform').click(() => this._tfHandler.onTransform(this));
 
+    // Level Change
+    html.find('.level').change(this._advHandler.onLevelChange(this.actor));
+
     // Rollable abilities.
     if (this.actor.isOwner) {
       html.find('.rollable').click(this._onRoll.bind(this));
@@ -401,8 +404,6 @@ export class Essence20ActorSheet extends ActorSheet {
     inputs.attr('readonly', isLocked);
     // Don't readonly health and stun values
     html.find('.no-lock').attr('readonly', false);
-    //
-    html.find('.level').change(this._advHandler.onLevelChange(this.actor));
     // Stun max is always locked
     html.find('.no-unlock').attr('readonly', true);
 
