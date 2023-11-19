@@ -1,5 +1,4 @@
 export class AdvancementHandler {
-
   /**
   * Constructor
   * @param {Essence20ActorSheet} actorSheet The actor sheet
@@ -12,5 +11,4 @@ export class AdvancementHandler {
   onLevelChange(actor) {
     console.log(actor);
   }
-
 }

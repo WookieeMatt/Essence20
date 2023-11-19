@@ -1,5 +1,4 @@
 export class RoleHandler {
-
   /**
   * Constructor
   * @param {Essence20ActorSheet} actorSheet The actor sheet
@@ -8,5 +7,4 @@ export class RoleHandler {
     this._actorSheet = actorSheet;
     this._actor = actorSheet.actor;
   }
-
 }
