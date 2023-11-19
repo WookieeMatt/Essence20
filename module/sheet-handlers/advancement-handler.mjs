@@ -11,5 +11,4 @@ export class AdvancementHandler {
   onLevelChange(actor) {
     console.log(actor);
   }
-
 }
