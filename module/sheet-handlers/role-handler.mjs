@@ -7,5 +7,4 @@ export class RoleHandler {
     this._actorSheet = actorSheet;
     this._actor = actorSheet.actor;
   }
-
 }
