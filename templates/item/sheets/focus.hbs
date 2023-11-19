@@ -11,7 +11,7 @@
     {{!-- Focus Essences --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusEssenceScoreIncrease'}}
     {{#*inline "item-field-edit"}}
-    <a class="trait-selector" style="flex-grow: 0;" data-options="focusEssences" data-target="system.essences"
+    <a class="trait-selector traits" data-options="focusEssences" data-target="system.essences"
       title="{{localize 'E20.EssenceSelector'}}">
       <i class="fas fa-edit"></i>
     </a>
@@ -29,7 +29,7 @@
     {{!-- Starting Role Skills --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusStartingSkills'}}
     {{#*inline "item-field-edit"}}
-    <a class="trait-selector" style="flex-grow: 0;" data-options="focusSkills" data-target="system.skills"
+    <a class="trait-selector traits" data-options="focusSkills" data-target="system.skills"
       title="{{localize 'E20.SkillSelector'}}">
       <i class="fas fa-edit"></i>
     </a>

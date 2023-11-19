@@ -26,7 +26,7 @@
           {{!-- Armor Trained --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTrained'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" style="flex-grow: 0;" data-options="armorType" data-target="system.armors.trained" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector traits" data-options="armorType" data-target="system.armors.trained" title="{{localize 'E20.TraitSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
@@ -45,7 +45,7 @@
           {{!-- Armor Quailfication --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorQualified'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" style="flex-grow: 0;" data-options="armorType" data-target="system.armors.qualified" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector traits" data-options="armorType" data-target="system.armors.qualified" title="{{localize 'E20.TraitSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
@@ -64,7 +64,7 @@
           {{!-- Weapon Trained --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTrained'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" style="flex-grow: 0;" data-options="weaponType" data-target="system.weapons.trained" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector traits" data-options="weaponType" data-target="system.weapons.trained" title="{{localize 'E20.TraitSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
@@ -83,7 +83,7 @@
           {{!-- Weapon Qualified --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponQualified'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" style="flex-grow: 0;" data-options="weaponType" data-target="system.weapons.qualified" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector traits" data-options="weaponType" data-target="system.weapons.qualified" title="{{localize 'E20.TraitSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
@@ -116,7 +116,7 @@
           {{!-- Personal Power Increase Levels --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalIncreaseLevels'}}
           {{#*inline "item-field-edit"}}
-          <a class="trait-selector" style="flex-grow: 0;" data-options="actorLevels" data-target="system.power.personal.levels"
+          <a class="trait-selector traits" data-options="actorLevels" data-target="system.power.personal.levels"
             title="{{localize 'E20.EssenceSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
@@ -135,7 +135,7 @@
         {{!-- Strength Essence Boosts --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsStrength'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="actorLevels" data-target="system.essences.strength"
+        <a class="trait-selector traits" data-options="actorLevels" data-target="system.essences.strength"
           title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -153,7 +153,7 @@
         {{!-- Speed Essence Boosts --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSpeed'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="actorLevels" data-target="system.essences.speed"
+        <a class="trait-selector traits" data-options="actorLevels" data-target="system.essences.speed"
           title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -171,7 +171,7 @@
         {{!-- Smarts Essence Boosts --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSmarts'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="actorLevels" data-target="system.essences.smarts"
+        <a class="trait-selector traits" data-options="actorLevels" data-target="system.essences.smarts"
           title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -189,7 +189,7 @@
         {{!-- Social Essence Boosts --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSocial'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="actorLevels" data-target="system.essences.social"
+        <a class="trait-selector traits" data-options="actorLevels" data-target="system.essences.social"
           title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -207,7 +207,7 @@
         {{!-- Starting Role Skills --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.StartingRoleSkills'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="originSkills" data-target="system.skills"
+        <a class="trait-selector traits" data-options="originSkills" data-target="system.skills"
           title="{{localize 'E20.SkillSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -226,7 +226,7 @@
       {{!-- General Perk --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkGeneralPlural'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" style="flex-grow: 0;" data-options="actorLevels" data-target="system.perks.general"
+      <a class="trait-selector traits" data-options="actorLevels" data-target="system.perks.general"
         title="{{localize 'E20.LevelSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
