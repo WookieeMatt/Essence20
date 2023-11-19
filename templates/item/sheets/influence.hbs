@@ -2,41 +2,50 @@
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
+   {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
+  </nav>
+
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-
-    {{!-- Influence Skills --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceSkill'}}
-    {{#*inline "item-field-edit"}}
-    <a class="trait-selector" style="flex-grow: 0;" data-options="influenceSkill" data-target="system.skills"
-      title="{{localize 'E20.SkillSelector'}}">
-      <i class="fas fa-edit"></i>
-    </a>
-    {{/inline}}
-
-    {{#*inline "item-field-inputs"}}
-    <div class="flex-group-right chip-section">
-      {{#each item.system.skills as |name|}}
-      <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
-      {{/each}}
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
     </div>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Influence Perk --}}
-    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="influencePerk" label='E20.InfluencePerk' items=@root.perks}}
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
+      {{!-- Influence Skills --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceSkill'}}
+      {{#*inline "item-field-edit"}}
+      <a class="trait-selector" style="flex-grow: 0;" data-options="influenceSkill" data-target="system.skills"
+        title="{{localize 'E20.SkillSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
+      {{/inline}}
 
-    {{!-- Hang-Ups --}}
-    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="hangUp" label='E20.ItemTypeHangupPlural' items=@root.hangUps}}
+      {{#*inline "item-field-inputs"}}
+      <div class="flex-group-right chip-section">
+        {{#each item.system.skills as |name|}}
+        <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
+        {{/each}}
+      </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Mandatory Hang Up --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceMandatoryHangUp'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="checkbox" name="system.mandatoryHangUp" {{checked system.mandatoryHangUp}} />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Influence Perk --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="influencePerk" label='E20.InfluencePerk' items=@root.perks}}
 
-    {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/description.hbs"}}
+      {{!-- Hang-Ups --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="hangUp" label='E20.ItemTypeHangupPlural' items=@root.hangUps}}
+
+      {{!-- Mandatory Hang Up --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceMandatoryHangUp'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.mandatoryHangUp" {{checked system.mandatoryHangUp}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    </div>
   </section>
 </form>

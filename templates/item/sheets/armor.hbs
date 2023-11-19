@@ -5,13 +5,19 @@
 
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
     <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
   </nav>
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="tab main flexcol" data-group="primary" data-tab="main">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
 
       {{!-- Availability --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorAvailability'}}
@@ -76,8 +82,6 @@
       {{!-- Armor Upgrades --}}
       {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.upgrades}}
 
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
     </div>
 
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
