@@ -758,9 +758,9 @@
         "itemDescription"
       ],
       "essences": "",
-      "role": "",
-      "rolePerks": [],
-      "skills": ""
+      "role": [],
+      "rolePerkIds": [],
+      "skills": []
     },
     "gear": {
       "templates": [
