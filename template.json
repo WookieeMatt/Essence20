@@ -847,8 +847,8 @@
         "itemDescription"
       ],
       "armors": {
-        "qualified": "",
-        "trained":""
+        "qualified": [],
+        "trained": []
       },
       "essences": {
         "smarts":  "",
@@ -857,8 +857,7 @@
         "strength":  ""
       },
       "perks": {
-        "general": [],
-        "role": []
+        "general": []
       },
       "powers": {
         "personal": {
@@ -870,8 +869,8 @@
       "skills": [],
       "version": "",
       "weapons": {
-        "qualified": "",
-        "trained":""
+        "qualified": [],
+        "trained":[]
       }
     },
     "specialization": {
