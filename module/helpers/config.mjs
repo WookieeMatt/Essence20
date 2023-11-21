@@ -174,7 +174,7 @@ preLocalize("armorTraits");
 E20.armorTypes = {
   computerized: "E20.ArmorsComputerized",
   heavy: "E20.ArmorsHeavy",
-  impulse: "E20.ArmorImpulse",
+  impulse: "E20.ArmorsImpulse",
   light: "E20.ArmorsLight",
   medium: "E20.ArmorsMedium",
   tactical: "E20.ArmorsTactical",
