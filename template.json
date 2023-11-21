@@ -856,7 +856,7 @@
         "speed":  [],
         "strength":  []
       },
-      "perks": {
+      "perkLevels": {
         "general": []
       },
       "powers": {

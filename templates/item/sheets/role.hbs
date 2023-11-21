@@ -135,7 +135,7 @@
         {{!-- Strength Essence Boosts --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsStrength'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="actorLevels" data-target="system.essences.strength"
+        <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels.strength"
           title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -143,8 +143,8 @@
 
         {{#*inline "item-field-inputs"}}
         <div class="flex-group-right chip-section">
-          {{#each item.system.essences.strength as |name|}}
-            <span class="chip" name="chip.essences.strength{{type}}">{{lookup @root.config.actorLevels name}}</span>
+          {{#each item.system.essenceLevels.strength as |name|}}
+            <span class="chip" name="chip.essenceLevels.strength{{type}}">{{lookup @root.config.actorLevels name}}</span>
           {{/each}}
         </div>
         {{/inline}}
@@ -153,7 +153,7 @@
         {{!-- Speed Essence Boosts --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSpeed'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="actorLevels" data-target="system.essences.speed"
+        <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels.speed"
           title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -161,8 +161,8 @@
 
         {{#*inline "item-field-inputs"}}
         <div class="flex-group-right chip-section">
-          {{#each item.system.essences.speed as |name|}}
-            <span class="chip" name="chip.essences.speed{{type}}">{{lookup @root.config.actorLevels name}}</span>
+          {{#each item.system.essenceLevels.speed as |name|}}
+            <span class="chip" name="chip.essenceLevels.speed{{type}}">{{lookup @root.config.actorLevels name}}</span>
           {{/each}}
         </div>
         {{/inline}}
@@ -171,7 +171,7 @@
         {{!-- Smarts Essence Boosts --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSmarts'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="actorLevels" data-target="system.essences.smarts"
+        <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels.smarts"
           title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -179,8 +179,8 @@
 
         {{#*inline "item-field-inputs"}}
         <div class="flex-group-right chip-section">
-          {{#each item.system.essences.smarts as |name|}}
-            <span class="chip" name="chip.essences.smarts{{type}}">{{lookup @root.config.actorLevels name}}</span>
+          {{#each item.system.essenceLevels.smarts as |name|}}
+            <span class="chip" name="chip.essenceLevels.smarts{{type}}">{{lookup @root.config.actorLevels name}}</span>
           {{/each}}
         </div>
         {{/inline}}
@@ -189,7 +189,7 @@
         {{!-- Social Essence Boosts --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSocial'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="actorLevels" data-target="system.essences.social"
+        <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels.social"
           title="{{localize 'E20.EssenceSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -197,8 +197,8 @@
 
         {{#*inline "item-field-inputs"}}
         <div class="flex-group-right chip-section">
-          {{#each item.system.essences.social as |name|}}
-            <span class="chip" name="chip.essences.social{{type}}">{{lookup @root.config.actorLevels name}}</span>
+          {{#each item.system.essenceLevels.social as |name|}}
+            <span class="chip" name="chip.essenceLevels.social{{type}}">{{lookup @root.config.actorLevels name}}</span>
           {{/each}}
         </div>
         {{/inline}}
@@ -226,7 +226,7 @@
       {{!-- General Perk --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkGeneralPlural'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="actorLevels" data-target="system.perks.general"
+      <a class="trait-selector" data-options="actorLevels" data-target="system.perkLevels.general"
         title="{{localize 'E20.LevelSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -234,8 +234,8 @@
 
       {{#*inline "item-field-inputs"}}
       <div class="flex-group-right chip-section">
-      {{#each item.system.perks.general as |name|}}
-        <span class="chip" name="chip.perks.general.{{type}}">{{lookup @root.config.actorLevels name}}</span>
+      {{#each item.system.perkLevels.general as |name|}}
+        <span class="chip" name="chip.perkLevels.general.{{type}}">{{lookup @root.config.actorLevels name}}</span>
       {{/each}}
       </div>
       {{/inline}}
