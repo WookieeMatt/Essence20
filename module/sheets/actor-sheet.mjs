@@ -1,5 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
+import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -8,12 +9,14 @@ import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
 import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
+import { RoleHandler } from "../sheet-handlers/role-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
 
     this._accordionStates = { skills: '' };
+    this._advHandler = new AdvancementHandler(this);
     this._alHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
@@ -22,6 +25,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._tfHandler = new TransformerHandler(this);
     this._pwHandler = new PowerHandler(this);
     this._pkHandler = new PerkHandler(this);
+    this._rlHandler = new RoleHandler(this);
   }
 
   /** @override */
@@ -362,6 +366,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Transform Button
     html.find('.transform').click(() => this._tfHandler.onTransform(this));
+
+    // Level Change
+    html.find('.level').change(this._advHandler.onLevelChange(this.actor));
 
     // Rollable abilities.
     if (this.actor.isOwner) {

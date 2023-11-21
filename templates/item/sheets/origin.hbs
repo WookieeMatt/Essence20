@@ -27,7 +27,7 @@
       {{!-- Origin Essences --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginEssenceScoreIncrease'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" style="flex-grow: 0;" data-options="originEssences" data-target="system.essences"
+      <a class="trait-selector" data-options="originEssences" data-target="system.essences"
         title="{{localize 'E20.EssenceSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -42,14 +42,14 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Origin Skills --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginSkill'}}
-      {{#*inline "item-field-edit"}}
-      <a class="trait-selector" style="flex-grow: 0;" data-options="originSkills" data-target="system.skills"
-        title="{{localize 'E20.SkillSelector'}}">
-        <i class="fas fa-edit"></i>
-      </a>
-      {{/inline}}
+    {{!-- Origin Skills --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginSkill'}}
+    {{#*inline "item-field-edit"}}
+    <a class="trait-selector" data-options="originSkills" data-target="system.skills"
+      title="{{localize 'E20.SkillSelector'}}">
+      <i class="fas fa-edit"></i>
+    </a>
+    {{/inline}}
 
       {{#*inline "item-field-inputs"}}
       <div class="flex-group-right chip-section">

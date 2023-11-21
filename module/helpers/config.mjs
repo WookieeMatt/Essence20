@@ -3,6 +3,19 @@ import { preLocalize } from "./utils.mjs";
 export const E20 = {};
 
 /************************************************
+ * System Version                               *
+ ***********************************************/
+
+// Game Version
+E20.version = {
+  giJoe: "E20.VersionGIJoe",
+  myLittlePony: "E20.VersionMyLittlePony",
+  powerRangers: "E20.VersionPowerRangers",
+  transformers: "E20.VersionTransformers",
+};
+preLocalize("version");
+
+/************************************************
  * Defense                                      *
  ***********************************************/
 
@@ -110,6 +123,23 @@ E20.weaponTraits = {
 };
 preLocalize("weaponTraits");
 
+// Options for Weapon types
+E20.weaponTypes = {
+  assaultRifle: "E20.WeaponsAssaultRifle",
+  ballistic: "E20.WeaponsBallistic",
+  closeCombatHeavyBlade: "E20.WeaponsCloseCombatHeavyBlade",
+  element: "E20.WeaponsElement",
+  explosives: "E20.WeaponsExplosives",
+  finesse: "E20.WeaponsFinesse",
+  grenades: "E20.WeaponGrenades",
+  mightMelee: "E20.WeaponsMightMelee",
+  shotguns: "E20.WeaponsShotgun",
+  silent: "E20.WeaponsSilent",
+  submachineGun: "E20.WeaponsSubmachineGun",
+  thrown: "E20.WeaponsThrown",
+};
+preLocalize("weaponTypes");
+
 /************************************************
  * Armor                                        *
  ***********************************************/
@@ -139,6 +169,17 @@ E20.armorTraits = {
   xenotech: "E20.ArmorTraitXenotech",
 };
 preLocalize("armorTraits");
+
+// Options for Armor types
+E20.armorTypes = {
+  computerized: "E20.ArmorsComputerized",
+  heavy: "E20.ArmorsHeavy",
+  impulse: "E20.ArmorsImpulse",
+  light: "E20.ArmorsLight",
+  medium: "E20.ArmorsMedium",
+  tactical: "E20.ArmorsTactical",
+};
+preLocalize("armorTypes");
 
 /************************************************
  * Essences and Skills                          *
@@ -229,6 +270,31 @@ E20.skillsByEssence = {
   smarts: ["alertness", "culture", "science", "survival", "technology"],
   social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"],
 };
+
+E20.actorLevels = {
+  level1: "E20.Level1",
+  level1optional: "E20.Level1Additional",
+  level2: "E20.Level2",
+  level3: "E20.Level3",
+  level4: "E20.Level4",
+  level5: "E20.Level5",
+  level6: "E20.Level6",
+  level7: "E20.Level7",
+  level8: "E20.Level8",
+  level9: "E20.Level9",
+  level10: "E20.Level10",
+  level11: "E20.Level11",
+  level12: "E20.Level12",
+  level13: "E20.Level13",
+  level14: "E20.Level14",
+  level15: "E20.Level15",
+  level16: "E20.Level16",
+  level17: "E20.Level17",
+  level18: "E20.Level18",
+  level19: "E20.Level19",
+  level20: "E20.Level20",
+};
+preLocalize("actorLevels");
 
 /************************************************
  * Rolls                                        *
@@ -372,8 +438,10 @@ E20.characterTypes = {
   altMode: "E20.AltMode",
   classFeature: "E20.ClassFeature",
   feature: "E20.Feature",
+  focus: "E20.Focus",
   perk: "E20.Perk",
   power: "E20.Power",
+  role: "E20.Role",
   specialization: "E20.Specialization",
   spell: "E20.Spell",
 };

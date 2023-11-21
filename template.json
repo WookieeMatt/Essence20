@@ -648,6 +648,7 @@
       "classFeature",
       "contact",
       "feature",
+      "focus",
       "gear",
       "hangUp",
       "influence",
@@ -656,6 +657,7 @@
       "origin",
       "perk",
       "power",
+      "role",
       "specialization",
       "spell",
       "threatPower",
@@ -751,6 +753,16 @@
         "itemDescription"
       ]
     },
+    "focus": {
+      "templates": [
+        "item",
+        "itemDescription"
+      ],
+      "essences": "",
+      "roleId": "",
+      "rolePerkIds": [],
+      "skills": []
+    },
     "gear": {
       "templates": [
         "item",
@@ -829,6 +841,38 @@
       "type": "grid",
       "usesInterval": "perScene",
       "usesPer": null
+    },
+    "role": {
+      "templates": [
+        "item",
+        "itemDescription"
+      ],
+      "armors": {
+        "qualified": [],
+        "trained": []
+      },
+      "essencelevels": {
+        "smarts":  [],
+        "social":  [],
+        "speed":  [],
+        "strength":  []
+      },
+      "perkLevels": {
+        "general": []
+      },
+      "powers": {
+        "personal": {
+          "increase": 0,
+          "levels": [],
+          "starting": 0
+        }
+      },
+      "skills": [],
+      "version": "",
+      "weapons": {
+        "qualified":[],
+        "trained":[]
+      }
     },
     "specialization": {
       "templates": [

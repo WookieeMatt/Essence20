@@ -703,6 +703,10 @@
   margin: 2px;
 }
 
+.trait-selector {
+  flex-grow: 0;
+}
+
 .essence20 .powers-section {
   list-style: none;
   padding: 4px;
