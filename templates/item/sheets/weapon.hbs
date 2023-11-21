@@ -3,91 +3,102 @@
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
+  </nav>
+
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    {{!-- Availability --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponAvailability'}}
-    {{#*inline "item-field-inputs"}}
-    <select class="item-field-inputs" name="system.availability">
-      {{#select system.availability}}
-      {{#each config.availabilities as |name type|}}
-      <option value="{{type}}">{{name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
 
-    {{!-- Size --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSize'}}
-    {{#*inline "item-field-inputs"}}
-    <select class="item-field-inputs" name="system.classification.size">
-      {{#select system.classification.size}}
-      {{#each config.weaponSizes as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-    {{!-- Traits --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTraits'}}
-    {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="weapon" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
-        <i class="fas fa-edit"></i>
-      </a>
-    {{/inline}}
-
-    {{#*inline "item-field-inputs"}}
-      <div class="chip-section">
-        {{#each item.system.traits as |trait|}}
-        <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
+      {{!-- Availability --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponAvailability'}}
+      {{#*inline "item-field-inputs"}}
+      <select class="item-field-inputs" name="system.availability">
+        {{#select system.availability}}
+        {{#each config.availabilities as |name type|}}
+        <option value="{{type}}">{{name}}</option>
         {{/each}}
-        {{#each item.system.upgradeTraits as |trait|}}
-        <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Size --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSize'}}
+      {{#*inline "item-field-inputs"}}
+      <select class="item-field-inputs" name="system.classification.size">
+        {{#select system.classification.size}}
+        {{#each config.weaponSizes as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
         {{/each}}
-      </div>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Charges --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponUsesPerScene'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.usesPerScene" value="{{system.usesPerScene}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Traits --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTraits'}}
+      {{#*inline "item-field-edit"}}
+        <a class="trait-selector" style="flex-grow: 0;" data-options="weapon" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
+          <i class="fas fa-edit"></i>
+        </a>
+      {{/inline}}
 
-    {{!-- Requirements --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRequirements'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
-      placeholder="{{ localize 'E20.WeaponRequirementsCustom' }}" />
-    <select name="system.requirements.skill">
-      {{#select system.requirements.skill}}
-      {{#each config.skills as |name type|}}
-      <option value="{{type}}">{{name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    <select name="system.requirements.shift">
-      {{#select system.requirements.shift}}
-      {{#each config.weaponRequirementShifts as |name type|}}
-      <option value="{{type}}">{{name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{#*inline "item-field-inputs"}}
+        <div class="chip-section">
+          {{#each item.system.traits as |trait|}}
+          <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
+          {{/each}}
+          {{#each item.system.upgradeTraits as |trait|}}
+          <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
+          {{/each}}
+        </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Weapon Effects --}}
-    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.ItemTypeWeaponEffectPlural' items=@root.weaponEffects}}
+      {{!-- Charges --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponUsesPerScene'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.usesPerScene" value="{{system.usesPerScene}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Weapon Upgrades --}}
-    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.upgrades}}
+      {{!-- Requirements --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRequirements'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
+        placeholder="{{ localize 'E20.WeaponRequirementsCustom' }}" />
+      <select name="system.requirements.skill">
+        {{#select system.requirements.skill}}
+        {{#each config.skills as |name type|}}
+        <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      <select name="system.requirements.shift">
+        {{#select system.requirements.shift}}
+        {{#each config.weaponRequirementShifts as |name type|}}
+        <option value="{{type}}">{{name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Description Section --}}
-    {{> "systems/essence20/templates/item/parts/description.hbs"}}
+      {{!-- Weapon Effects --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.ItemTypeWeaponEffectPlural' items=@root.weaponEffects}}
+
+      {{!-- Weapon Upgrades --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.upgrades}}
+    </div>
+
   </section>
 
 </form>
