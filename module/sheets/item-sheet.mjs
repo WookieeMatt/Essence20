@@ -125,7 +125,7 @@ export class Essence20ItemSheet extends ItemSheet {
     html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
 
     //Role Level Sort
-    html.find('.level').change(this._onItemSort.bind(this));
+    // html.find('.level').change(this._onItemSort.bind(this));
   }
 
   /**
@@ -210,7 +210,7 @@ export class Essence20ItemSheet extends ItemSheet {
     }
 
     this.render(true);
-    this._onItemSort();
+    // this._onItemSort();
   }
 
   /**
