@@ -290,7 +290,7 @@ export class Essence20ItemSheet extends ItemSheet {
     li.slideUp(200, () => this.render(false));
   }
 
-  _onItemSort(event) {
+  _onItemSort() {
     let toSort = document.getElementById('rolePerkList').children;
     toSort = Array.prototype.slice.call(toSort, 0);
     toSort.sort(function(a, b) {
