@@ -200,7 +200,7 @@ export class Essence20ItemSheet extends ItemSheet {
 
         let id= "";
         do {
-          id = randomID(5);
+          id = randomId(5);
         } while (items[id]);
 
         await this.item.update({
