@@ -281,7 +281,6 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   async _onObjectDelete(cssClass, event) {
-    console.log(cssClass)
     const li = $(event.currentTarget).parents(cssClass);
     const id = li.data("itemKey");
     const updateString = `system.items.-=${id}`
@@ -293,9 +292,8 @@ export class Essence20ItemSheet extends ItemSheet {
 
   _onItemSort(event) {
     console.log(event)
-    let toSort = document.getElementById('rolePerkList').children
+    let toSort = document.getElementById('rolePerkList').children;
     toSort = Array.prototype.slice.call(toSort, 0);
-    console.log(toSort)
     toSort.sort(function(a, b) {
 
       let aord = parseInt( $(a).data("itemLevel"));
@@ -304,13 +302,13 @@ export class Essence20ItemSheet extends ItemSheet {
       return (aord < bord) ? -1 : (aord > bord) ? 1 : 0;
     })
 
-
     let parent = document.getElementById('rolePerkList');
     parent.innerHTML = "";
 
     for(let i = 0; i < toSort.length; i++) {
       parent.appendChild(toSort[i]);
     }
+
     document.getElementById('rolePerkList').innerHTML = parent.innerHTML;
   }
 
