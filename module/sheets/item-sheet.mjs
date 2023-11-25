@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { indexFromUuid, searchCompendium } from "../helpers/utils.mjs";
+import { indexFromUuid, randomId, searchCompendium } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -120,6 +120,12 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Delete Hang Up from Influence
     html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangUpIds"));
+
+     // Delete Role Perk from Influence
+     html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
+
+     //Role Level Sort
+     html.find('.level').change(this._onItemSort.bind(this));
   }
 
   /**
@@ -177,6 +183,29 @@ export class Essence20ItemSheet extends ItemSheet {
       } else if (droppedItem.type == "hangUp") {
         const hangUpIds = duplicate(this.item.system.hangUpIds);
         this._addItemIfUnique(droppedItem, data, hangUpIds, "hangUp");
+      }
+    } else if (targetItem.type == "role" || targetItem.type == "focus") {
+      if (droppedItem.type == "perk") {
+
+        const entry = {
+          uuid: droppedItem.uuid,
+          img: droppedItem.img,
+          name: droppedItem.name,
+          subtype: droppedItem.system.type,
+          type: droppedItem.type,
+          level: 1,
+      };
+        const items = targetItem.system.items;
+        const pathPrefix = "system.items";
+
+        let id= "";
+        do {
+            id = randomID(5);
+        } while (items[id]);
+
+        await this.item.update({
+          [`${pathPrefix}.${id}`]: entry,
+        })
       }
     }
 
@@ -248,6 +277,39 @@ export class Essence20ItemSheet extends ItemSheet {
       [systemSearch]: ids,
     });
     li.slideUp(200, () => this.render(false));
+  }
+
+  async _onObjectDelete(cssClass, event) {
+    console.log(cssClass)
+    const li = $(event.currentTarget).parents(cssClass);
+    const id = li.data("itemKey");
+    const updateString = `system.items.-=${id}`
+
+    await this.item.update({[updateString]: null});
+
+    li.slideUp(200, () => this.render(false));
+  }
+
+  _onItemSort(event) {
+    let toSort = document.getElementById('rolePerkList').children
+    toSort = Array.prototype.slice.call(toSort, 0);
+    console.log(toSort)
+    toSort.sort(function(a, b) {
+
+      let aord = parseInt( $(a).data("itemLevel"));
+      let bord = parseInt( $(b).data("itemLevel"));
+      // two elements never have the same ID hence this is sufficient:
+      return (aord < bord) ? -1 : (aord > bord) ? 1 : 0;
+    })
+
+
+    let parent = document.getElementById('rolePerkList');
+    parent.innerHTML = "";
+
+    for(let i = 0; i < toSort.length; i++) {
+      parent.appendChild(toSort[i]);
+    }
+    document.getElementById('rolePerkList').innerHTML = parent.innerHTML;
   }
 
   /**
