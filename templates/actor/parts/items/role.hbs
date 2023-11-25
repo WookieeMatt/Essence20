@@ -1,0 +1,16 @@
+
+<div>
+  <label for="system.role" class="resource-label">{{localize 'E20.ActorRole'}}</label>
+    <ul>
+      {{#each @root.roles as |item|}}
+      <li class="item" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
+        <input type="text" name="system.role" value="{{item.name}}" />
+        <div class="item-controls">
+        <a class="item-control item-delete flex-right" title="{{localize 'E20.DeleteItem'}}">
+          <i class="fas fa-trash"></i>
+        </a>
+       </div>
+      </li>
+    </ul>
+  {{/each}}
+</div>
