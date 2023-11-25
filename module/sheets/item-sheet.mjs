@@ -283,7 +283,7 @@ export class Essence20ItemSheet extends ItemSheet {
   async _onObjectDelete(cssClass, event) {
     const li = $(event.currentTarget).parents(cssClass);
     const id = li.data("itemKey");
-    const updateString = `system.items.-=${id}`
+    const updateString = `system.items.-=${id}`;
 
     await this.item.update({[updateString]: null});
 
@@ -291,7 +291,6 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   _onItemSort(event) {
-    console.log(event)
     let toSort = document.getElementById('rolePerkList').children;
     toSort = Array.prototype.slice.call(toSort, 0);
     toSort.sort(function(a, b) {
@@ -300,7 +299,7 @@ export class Essence20ItemSheet extends ItemSheet {
       let bord = parseInt( $(b).data("itemLevel"));
       // two elements never have the same ID hence this is sufficient:
       return (aord < bord) ? -1 : (aord > bord) ? 1 : 0;
-    })
+    });
 
     let parent = document.getElementById('rolePerkList');
     parent.innerHTML = "";
