@@ -121,11 +121,11 @@ export class Essence20ItemSheet extends ItemSheet {
     // Delete Hang Up from Influence
     html.find('.hangUp-delete').click(this._onIdDelete.bind(this, ".hangUp", "hangUpIds"));
 
-     // Delete Role Perk from Influence
-     html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
+    // Delete Role Perk from Influence
+    html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
 
-     //Role Level Sort
-     html.find('.level').change(this._onItemSort.bind(this));
+    //Role Level Sort
+    html.find('.level').change(this._onItemSort.bind(this));
   }
 
   /**
@@ -194,18 +194,18 @@ export class Essence20ItemSheet extends ItemSheet {
           subtype: droppedItem.system.type,
           type: droppedItem.type,
           level: 1,
-      };
+        };
         const items = targetItem.system.items;
         const pathPrefix = "system.items";
 
         let id= "";
         do {
-            id = randomID(5);
+          id = randomID(5);
         } while (items[id]);
 
         await this.item.update({
           [`${pathPrefix}.${id}`]: entry,
-        })
+        });
       }
     }
 

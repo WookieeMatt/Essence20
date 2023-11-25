@@ -329,6 +329,6 @@ export function checkIsLocked(actor) {
 export function randomId(length) {
   const multiplier = Math.pow(10, length);
   return Math.floor((1 + Math.random()) * multiplier)
-      .toString(16)
-      .substring(1);
+    .toString(16)
+    .substring(1);
 }
