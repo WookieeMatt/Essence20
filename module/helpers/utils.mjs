@@ -188,23 +188,17 @@ export function rememberValues(html) {
  * @param {Actor} owner  The Items' owner
  * @returns {String[]}   The IDs of the copied items
  */
-export async function createItemCopies(ids, owner) {
-  const copyIds = [];
-
-  for (const id of ids) {
-    let compendiumData = game.items.get(id);
-    if (!compendiumData) {
-      const item = await searchCompendium(id);
-      if (item) {
-        compendiumData = item;
+export async function createItemCopies(items, owner, type) {
+  if (items) {
+    for (const [key,item] of Object.entries(items)) {
+      if (item.type == type) {
+        const itemToCreate = await fromUuid(item.uuid);
+        const newItem = await Item.create(itemToCreate, { parent: owner });
+        newItem.setFlag('core', 'sourceId', item.uuid);
+        newItem.setFlag('essence20', 'parentId', );
       }
     }
-
-    const newItem = await Item.create(compendiumData, { parent: owner });
-    copyIds.push(newItem._id);
   }
-
-  return copyIds;
 }
 
 /**
@@ -315,4 +309,20 @@ export function checkIsLocked(actor) {
   }
 
   return false;
+}
+
+/**
+* Generate a random ID
+* Generate random number and convert it to base 36 and remove the '0.' at the beginning
+* As long as the string is not long enough, generate more random data into it
+* Use substring in case we generated a string with a length higher than the requested length
+*
+* @param length    The length of the random ID to generate
+* @return          Return a string containing random letters and numbers
+*/
+export function randomId(length) {
+  const multiplier = Math.pow(10, length);
+  return Math.floor((1 + Math.random()) * multiplier)
+    .toString(16)
+    .substring(1);
 }

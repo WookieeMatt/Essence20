@@ -718,9 +718,8 @@
       "bonusToughness": 0,
       "classification": "light",
       "equipped": false,
-      "traits": [],
-      "upgradeIds": [],
-      "upgradeTraits": []
+      "items": {},
+      "traits": []
     },
     "bond": {
       "templates": [
@@ -783,8 +782,7 @@
         "itemDescription"
       ],
       "bond": "",
-      "hangUpIds": [],
-      "perkIds": [],
+      "items":{},
       "mandatoryHangUp": false,
       "skills": []
     },
@@ -813,7 +811,7 @@
       "baseGroundMovement": 0,
       "essences": [],
       "languages": "",
-      "originPerkIds": [],
+      "items": {},
       "skills": [],
       "startingHealth": 0
     },
@@ -936,16 +934,15 @@
         "size": "integrated"
       },
       "equipped": true,
+      "items": {},
       "requirements": {
         "custom": null,
         "skill": null,
         "shift": null
       },
       "traits": [],
-      "upgradeIds": [],
       "upgradeTraits": [],
-      "usesPerScene": null,
-      "weaponEffectIds": []
+      "usesPerScene": null
     },
     "weaponEffect" : {
       "templates": [
