@@ -94,8 +94,16 @@ export class AttachmentHandler {
   */
   deleteAttachments(item, attachmentTypes) {
     for (const attachmentType of attachmentTypes) {
-      for (const attachmentId of item.system[`${attachmentType}Ids`]) {
-        itemDeleteById(attachmentId, this._actor);
+      for (const [key,deletedItem] of Object.entries(item.system.items)) {
+        for (const actorItem of this._actor.items) {
+          const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId')
+          const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId')
+          if (itemSourceId == deletedItem.uuid) {
+            if (influence._id == parentId) {
+              actorItem.delete();
+            }
+          }
+        }
       }
     }
   }

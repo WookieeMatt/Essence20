@@ -32,9 +32,8 @@ export class BackgroundHandler {
       }
     }
 
-    await dropFunc();
-
-    await createItemCopies(influence, this._actor, "perk");
+    const newInfluenceList = await dropFunc();
+    await createItemCopies(influence.system.items, this._actor, "perk", newInfluenceList[0]);
 
     if (addHangUp) {
       const hangUpIds = []
@@ -47,7 +46,7 @@ export class BackgroundHandler {
       if (hangUpIds.length > 1) {
         this._chooseHangUp(influence);
       } else {
-        await createItemCopies(influence, this._actor, "hangUp");
+        await createItemCopies(influence.system.items, this._actor, "hangUp", newInfluenceList[0]);
       }
     }
 
@@ -208,8 +207,8 @@ export class BackgroundHandler {
 
     const [newShift, skillString] = await getShiftedSkill(selectedSkill, 1, this._actor);
 
-    await dropFunc();
-    await createItemCopies(origin, this._actor, "perk");
+    const newOriginList = await dropFunc();
+    await createItemCopies(origin.system.items, this._actor, "perk", newOriginList[0]);
 
     await this._actor.update({
       [essenceString]: essenceValue,
@@ -238,7 +237,6 @@ export class BackgroundHandler {
 
     for (const [key,item] of Object.entries(influence.system.items)) {
       if (item.type == 'hangUp') {
-        console.log(item)
         itemArray.push(item);
           choices[item.uuid] = {
           chosen: false,
@@ -302,9 +300,12 @@ export class BackgroundHandler {
     const influenceDelete = this._actor.items.get(influence._id);
     for (const [key,deletedItem] of Object.entries(influenceDelete.system.items)) {
       for (const actorItem of this._actor.items) {
-        const test = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId')
-        if (test == deletedItem.uuid) {
-          actorItem.delete();
+        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId')
+        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId')
+        if (itemSourceId == deletedItem.uuid) {
+          if (influence._id == parentId) {
+            actorItem.delete();
+          }
         }
       }
     }
@@ -323,9 +324,12 @@ export class BackgroundHandler {
     const originDelete = this._actor.items.get(origin._id);
     for (const [key,deletedItem] of Object.entries(originDelete.system.items)) {
       for (const actorItem of this._actor.items) {
-        const test = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId')
-        if (test == deletedItem.uuid) {
-          actorItem.delete();
+        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId')
+        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId')
+        if (itemSourceId == deletedItem.uuid) {
+          if (origin._id == parentId) {
+            actorItem.delete();
+          }
         }
       }
     }
