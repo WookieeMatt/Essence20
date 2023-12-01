@@ -2,9 +2,9 @@ import {
   createItemCopies,
   getItemsOfType,
   getShiftedSkill,
-  itemDeleteById,
+  // itemDeleteById,
   rememberOptions,
-  searchCompendium,
+  // searchCompendium,
 } from "../helpers/utils.mjs";
 
 export class BackgroundHandler {
@@ -36,10 +36,11 @@ export class BackgroundHandler {
     await createItemCopies(influence.system.items, this._actor, "perk", newInfluenceList[0]);
 
     if (addHangUp) {
-      const hangUpIds = []
+      const hangUpIds = [];
       for (const [key,item] of Object.entries(influence.system.items)) {
+        console.log(key);
         if (item.type == 'hangUp') {
-          hangUpIds.push(item.uuid)
+          hangUpIds.push(item.uuid);
         }
       }
 
