@@ -114,6 +114,7 @@ export class Essence20ItemSheet extends ItemSheet {
       if (droppedItem.type == "perk") {
         this._addItemIfUnique(droppedItem, targetItem, entry);
       }
+
       break;
     case "armor":
       if (droppedItem.type == "upgrade") {
@@ -124,6 +125,7 @@ export class Essence20ItemSheet extends ItemSheet {
           this._addItemIfUnique(droppedItem, targetItem, entry);
         }
       }
+
       break;
     case "weapon":
       if (droppedItem.type == "upgrade") {
@@ -135,6 +137,7 @@ export class Essence20ItemSheet extends ItemSheet {
       } else if (droppedItem.type == "weaponEffect") {
         this._addItemIfUnique(droppedItem, targetItem, entry);
       }
+
       break;
     case "influence":
       if (droppedItem.type == "perk") {
@@ -144,6 +147,7 @@ export class Essence20ItemSheet extends ItemSheet {
         this._addItemIfUnique(droppedItem, targetItem, entry);
         break;
       }
+
       break;
     default:
       break;
@@ -164,8 +168,9 @@ export class Essence20ItemSheet extends ItemSheet {
     const items = targetItem.system.items;
     if (items) {
       for (const [key,item] of Object.entries(items)) {
+        console.log(key);
         if (item.uuid === droppedItem.uuid) {
-          return
+          return;
         }
       }
     }
