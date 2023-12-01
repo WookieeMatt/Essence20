@@ -144,6 +144,7 @@ export class Essence20ItemSheet extends ItemSheet {
         this._addItemIfUnique(droppedItem, targetItem, entry);
         break;
       }
+      break;
     default:
       break;
     }
@@ -203,7 +204,7 @@ export class Essence20ItemSheet extends ItemSheet {
   //   }
   // }
 
-    /**
+  /**
   * Handle deleting of a Ids from an item Sheet
   * @param {String} cssClass           Where the deleted item is on the sheet
   * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
