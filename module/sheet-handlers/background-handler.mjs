@@ -236,7 +236,7 @@ export class BackgroundHandler {
     let itemArray = [];
 
     for (const [key,item] of Object.entries(influence.system.items)) {
-      console.log(key)
+      console.log(key);
       if (item.type == 'hangUp') {
         itemArray.push(item);
         choices[item.uuid] = {
@@ -301,7 +301,7 @@ export class BackgroundHandler {
   onInfluenceDelete(influence) {
     const influenceDelete = this._actor.items.get(influence._id);
     for (const [key,deletedItem] of Object.entries(influenceDelete.system.items)) {
-      console.log(key)
+      console.log(key);
       for (const actorItem of this._actor.items) {
         const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId');
         const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
@@ -326,9 +326,10 @@ export class BackgroundHandler {
     const [newShift, skillString] = await getShiftedSkill(selectedSkill, -1, this._actor);
     const originDelete = this._actor.items.get(origin._id);
     for (const [key,deletedItem] of Object.entries(originDelete.system.items)) {
+      console.log(key);
       for (const actorItem of this._actor.items) {
-        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId')
-        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId')
+        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId');
+        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
         if (itemSourceId == deletedItem.uuid) {
           if (origin._id == parentId) {
             actorItem.delete();

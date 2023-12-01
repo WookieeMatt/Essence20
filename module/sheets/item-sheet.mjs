@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { indexFromUuid, randomId, searchCompendium } from "../helpers/utils.mjs";
+import { randomId } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -38,7 +38,7 @@ export class Essence20ItemSheet extends ItemSheet {
     // Use a safe clone of the item data for further operations.
     const itemData = context.item;
 
-    const itemType = context.item.type;
+    // const itemType = context.item.type;
 
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
@@ -100,7 +100,7 @@ export class Essence20ItemSheet extends ItemSheet {
   */
   async _onDrop(event) {
     const data = TextEditor.getDragEventData(event);
-    const droppedItem = await fromUuid(data.uuid)
+    const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.item;
     const entry = {
       uuid: droppedItem.uuid,
@@ -110,42 +110,42 @@ export class Essence20ItemSheet extends ItemSheet {
     };
 
     switch (targetItem.type) {
-      case "origin":
-        if (droppedItem.type == "perk") {
+    case "origin":
+      if (droppedItem.type == "perk") {
+        this._addItemIfUnique(droppedItem, targetItem, entry);
+      }
+      break;
+    case "armor":
+      if (droppedItem.type == "upgrade") {
+        entry['armorBonus'] = droppedItem.system.armorBonus;
+        entry['traits'] = droppedItem.system.traits;
+        entry['subtype'] = droppedItem.system.type;
+        if (droppedItem.system.type == "armor") {
           this._addItemIfUnique(droppedItem, targetItem, entry);
         }
-        break;
-      case "armor":
-        if (droppedItem.type == "upgrade") {
-          entry['armorBonus'] = droppedItem.system.armorBonus;
-          entry['traits'] = droppedItem.system.traits;
-          entry['subtype'] = droppedItem.system.type;
-          if (droppedItem.system.type == "armor") {
-            this._addItemIfUnique(droppedItem, targetItem, entry);
-          }
-        }
-        break;
-      case "weapon":
-        if (droppedItem.type == "upgrade") {
-          entry['traits'] = droppedItem.system.traits;
-          entry['subtype'] = droppedItem.system.type;
-         if (droppedItem.system.type == "weapon") {
-            this._addItemIfUnique(droppedItem, targetItem, entry);
-          }
-        } else if (droppedItem.type == "weaponEffect") {
+      }
+      break;
+    case "weapon":
+      if (droppedItem.type == "upgrade") {
+        entry['traits'] = droppedItem.system.traits;
+        entry['subtype'] = droppedItem.system.type;
+        if (droppedItem.system.type == "weapon") {
           this._addItemIfUnique(droppedItem, targetItem, entry);
         }
+      } else if (droppedItem.type == "weaponEffect") {
+        this._addItemIfUnique(droppedItem, targetItem, entry);
+      }
+      break;
+    case "influence":
+      if (droppedItem.type == "perk") {
+        this._addItemIfUnique(droppedItem, targetItem, entry);
         break;
-      case "influence":
-        if (droppedItem.type == "perk") {
-          this._addItemIfUnique(droppedItem, targetItem, entry);
-          break;
-        } else if (droppedItem.type == "hangUp") {
-          this._addItemIfUnique(droppedItem, targetItem, entry);
-          break;
-        }
-        default:
+      } else if (droppedItem.type == "hangUp") {
+        this._addItemIfUnique(droppedItem, targetItem, entry);
         break;
+      }
+    default:
+      break;
     }
 
     this.render(true);
