@@ -729,7 +729,7 @@ export class Essence20ActorSheet extends ActorSheet {
       return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
 
     default:
-      return await this._onDropDefault(event, data);
+      return await super._onDropItem(event, data);
     }
   }
 
