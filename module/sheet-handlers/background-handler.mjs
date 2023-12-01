@@ -234,12 +234,12 @@ export class BackgroundHandler {
   async _chooseHangUp(influence) {
     const choices = {};
     let itemArray = [];
-    let compendiumData = null;
 
     for (const [key,item] of Object.entries(influence.system.items)) {
+      console.log(key)
       if (item.type == 'hangUp') {
         itemArray.push(item);
-          choices[item.uuid] = {
+        choices[item.uuid] = {
           chosen: false,
           label: item.name,
         };
@@ -274,7 +274,7 @@ export class BackgroundHandler {
   */
   async _hangUpSelect(influence, options) {
     let selectedHangUp = null;
-    let hangUpToCreate = null;
+    // let hangUpToCreate = null;
     const owner = this._actor;
 
     for (const [hangUp, isSelected] of Object.entries(options)) {
@@ -287,9 +287,10 @@ export class BackgroundHandler {
     if (!selectedHangUp) {
       return;
     }
-    const itemToCreate = await fromUuid(selectedHangUp)
-    const newItem = await Item.create(itemToCreate, { parent: owner })
-    newItem.setFlag('core', 'sourceId', selectedHangUp)
+
+    const itemToCreate = await fromUuid(selectedHangUp);
+    const newItem = await Item.create(itemToCreate, { parent: owner });
+    newItem.setFlag('core', 'sourceId', selectedHangUp);
 
   }
 
@@ -300,9 +301,10 @@ export class BackgroundHandler {
   onInfluenceDelete(influence) {
     const influenceDelete = this._actor.items.get(influence._id);
     for (const [key,deletedItem] of Object.entries(influenceDelete.system.items)) {
+      console.log(key)
       for (const actorItem of this._actor.items) {
-        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId')
-        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId')
+        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId');
+        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
         if (itemSourceId == deletedItem.uuid) {
           if (influence._id == parentId) {
             actorItem.delete();
