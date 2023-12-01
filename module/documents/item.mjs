@@ -25,10 +25,12 @@ export class Essence20Item extends Item {
     let upgradeTraits = [];
     if (this.type == 'weapon' || this.type == 'armor') {
       for (const [key,item] of Object.entries(this.system.items)) {
+        console.log(key)
         if (item.type == 'upgrade'){
-            upgradeTraits.push(item.traits)
+          upgradeTraits.push(item.traits);
         }
       }
+
       for (const traits of upgradeTraits) {
         for (const trait of traits) {
           if (!traitsFlag.includes(trait)) {
@@ -36,6 +38,7 @@ export class Essence20Item extends Item {
           }
         }
       }
+
       this.setFlag('essence20', 'traits', traitsFlag);
     }
 
@@ -44,6 +47,7 @@ export class Essence20Item extends Item {
 
       let armorBonusEvasion  = this.system.bonusEvasion;
       for (const [key,item] of Object.entries(this.system.items)) {
+        console.log(key)
         if (item.type == 'upgrade' && item.subtype == 'armor'){
           if (item.armorBonus.defense == 'toughness') {
             armorBonusToughness += item.armorBonus.value;
@@ -51,6 +55,7 @@ export class Essence20Item extends Item {
           if (item.armorBonus.defense == 'evasion') {
             armorBonusEvasion += item.armorBonus.value;
           }
+
           this.setFlag('essence20', 'armorBonusEvasion', armorBonusEvasion);
           this.setFlag('essence20', 'armorBonusToughness', armorBonusToughness);
         }

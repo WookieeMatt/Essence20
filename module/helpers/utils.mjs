@@ -191,10 +191,12 @@ export function rememberValues(html) {
 export async function createItemCopies(items, owner, type, parentItem) {
   if (items) {
     for (const [key,item] of Object.entries(items)) {
+      console.log(key)
       if (item.type == type) {
         const itemToCreate = await fromUuid(item.uuid);
         const newItem = await Item.create(itemToCreate, { parent: owner });
         newItem.setFlag('core', 'sourceId', item.uuid);
+
         if(parentItem) {
           newItem.setFlag('essence20', 'parentId', parentItem._id);
         };
