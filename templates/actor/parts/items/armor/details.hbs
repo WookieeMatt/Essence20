@@ -3,10 +3,10 @@
 <div class="chip-section">
   <span class="chip" name="chip.armor.availability">{{lookup @root.config.availabilities item.system.availability}}</span>
   <span class="chip" name="chip.armor.classification">{{lookup @root.config.armorClassifications item.system.classification}}</span>
-  <span class="chip" name="chip.armor.bonusEvasion">{{localize 'E20.ArmorBonusEvasion'}}: {{item.flags.essence20.armorBonusEvasion}}</span>
-  <span class="chip" name="chip.armor.bonusToughness">{{localize 'E20.ArmorBonusToughness'}}: {{item.flags.essence20.armorBonusToughness}}</span>
+  <span class="chip" name="chip.armor.bonusEvasion">{{localize 'E20.ArmorBonusEvasion'}}: {{item.system.totalBonusEvasion}}</span>
+  <span class="chip" name="chip.armor.bonusToughness">{{localize 'E20.ArmorBonusToughness'}}: {{item.system.totalBonusToughness}}</span>
 
-  {{#each item.flags.essence20.traits as |trait|}}
+  {{#each item.system.totalTraits as |trait|}}
   <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
   {{/each}}
 

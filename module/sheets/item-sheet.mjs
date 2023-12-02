@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { randomId } from "../helpers/utils.mjs";
+import { addItemIfUnique } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -112,7 +112,7 @@ export class Essence20ItemSheet extends ItemSheet {
     switch (targetItem.type) {
     case "origin":
       if (droppedItem.type == "perk") {
-        this._addItemIfUnique(droppedItem, targetItem, entry);
+        this.addItemIfUnique(droppedItem, targetItem, entry);
       }
 
       break;
@@ -122,7 +122,7 @@ export class Essence20ItemSheet extends ItemSheet {
         entry['traits'] = droppedItem.system.traits;
         entry['subtype'] = droppedItem.system.type;
         if (droppedItem.system.type == "armor") {
-          this._addItemIfUnique(droppedItem, targetItem, entry);
+          this.addItemIfUnique(droppedItem, targetItem, entry);
         }
       }
 
@@ -132,19 +132,28 @@ export class Essence20ItemSheet extends ItemSheet {
         entry['traits'] = droppedItem.system.traits;
         entry['subtype'] = droppedItem.system.type;
         if (droppedItem.system.type == "weapon") {
-          this._addItemIfUnique(droppedItem, targetItem, entry);
+          addItemIfUnique(droppedItem, targetItem, entry);
         }
       } else if (droppedItem.type == "weaponEffect") {
-        this._addItemIfUnique(droppedItem, targetItem, entry);
+        entry['traits'] = droppedItem.system.damageType;
+        entry['damageValue'] = droppedItem.system.damageValue;
+        entry['damageType'] = droppedItem.system.damageType;
+        entry['classification'] = droppedItem.system.classification;
+        entry['numHands'] = droppedItem.system.numHands;
+        entry['numTargets'] = droppedItem.system.numTargets;
+        entry['radius'] = droppedItem.system.radius;
+        entry['range'] = droppedItem.system.range;
+        entry['shiftDown'] = droppedItem.system.shiftDown;
+        addItemIfUnique(droppedItem, targetItem, entry);
       }
 
       break;
     case "influence":
       if (droppedItem.type == "perk") {
-        this._addItemIfUnique(droppedItem, targetItem, entry);
+        addItemIfUnique(droppedItem, targetItem, entry);
         break;
       } else if (droppedItem.type == "hangUp") {
-        this._addItemIfUnique(droppedItem, targetItem, entry);
+        addItemIfUnique(droppedItem, targetItem, entry);
         break;
       }
 
@@ -154,37 +163,6 @@ export class Essence20ItemSheet extends ItemSheet {
     }
 
     this.render(true);
-  }
-
-  /**
-  * Handles validating an item being dropped is unique
-  * @param {Item} droppedItem The item that was dropped
-  * @param {Object} data The data from drop event
-  * @param {Array} existingIds  The Ids of existing items attached to the target item
-  * @param {String} itemType  A string defining what the item is
-  * @private
-  */
-  async _addItemIfUnique(droppedItem, targetItem, entry) {
-    const items = targetItem.system.items;
-    if (items) {
-      for (const [key,item] of Object.entries(items)) {
-        console.log(key);
-        if (item.uuid === droppedItem.uuid) {
-          return;
-        }
-      }
-    }
-
-    const pathPrefix = "system.items";
-
-    let id= "";
-    do {
-      id = randomId(5);
-    } while (items[id]);
-
-    await this.item.update({
-      [`${pathPrefix}.${id}`]: entry,
-    });
   }
 
   /**

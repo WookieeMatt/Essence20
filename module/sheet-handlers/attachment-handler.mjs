@@ -1,6 +1,6 @@
 import {
+  addItemIfUnique,
   getItemsOfType,
-  // itemDeleteById,
   rememberOptions,
 } from "../helpers/utils.mjs";
 
@@ -19,11 +19,18 @@ export class AttachmentHandler {
    * @param {Item} attachment   The attachment
    * @param {Function} dropFunc The function to call to complete the drop
    */
-  async attachItem(parentType, dropFunc) {
+  async attachItem(droppedItem) {
+    let parentType = "";
+    if (droppedItem.system.type) {
+      parentType = droppedItem.system.type;
+    } else if (droppedItem.type == 'weaponEffect') {
+      parentType = "weapon";
+    }
+
     const upgradableItems = await getItemsOfType(parentType, this._actor.items);
 
     if (upgradableItems.length == 1) {
-      this._attachItem(upgradableItems[0], dropFunc);
+      this._attachItem(upgradableItems[0], droppedItem);
     } else if (upgradableItems.length > 1) {
       const choices = {};
       for (const upgradableItem of upgradableItems) {
@@ -43,7 +50,7 @@ export class AttachmentHandler {
             save: {
               label: game.i18n.localize('E20.AcceptButton'),
               callback: html => this._attachSelectedItemOptionHandler(
-                rememberOptions(html), dropFunc,
+                rememberOptions(html), droppedItem,
               ),
             },
           },
@@ -61,11 +68,11 @@ export class AttachmentHandler {
    * @param {Function} dropFunc The function to call to complete the drop
    * @private
    */
-  async _attachSelectedItemOptionHandler(options, dropFunc) {
+  async _attachSelectedItemOptionHandler(options, droppedItem) {
     for (const [itemId, isSelected] of Object.entries(options)) {
       if (isSelected) {
         const item = this._actor.items.get(itemId);
-        this._attachItem(item, dropFunc);
+        this._attachItem(item, droppedItem);
         break;
       }
     }
@@ -77,13 +84,44 @@ export class AttachmentHandler {
    * @param {Function} dropFunc The function to call to complete the drop
    * @private
    */
-  async _attachItem(item, dropFunc) {
-    if (item) {
-      const attachmentList = await dropFunc();
-      const newAttachment = attachmentList[0];
-      const itemAttachmentIds = item.system[`${newAttachment.type}Ids`];
-      itemAttachmentIds.push(newAttachment._id);
-      await item.update({ [`system.${newAttachment.type}Ids`]: itemAttachmentIds });
+  async _attachItem(targetItem, droppedItem) {
+    if (targetItem) {
+      const entry = {
+        uuid: droppedItem.uuid,
+        img: droppedItem.img,
+        name: droppedItem.name,
+        type: droppedItem.type,
+      };
+      if (targetItem.type == 'armor') {
+        if (droppedItem.type == "upgrade") {
+          entry['armorBonus'] = droppedItem.system.armorBonus;
+          entry['traits'] = droppedItem.system.traits;
+          entry['subtype'] = droppedItem.system.type;
+          if (droppedItem.system.type == "armor") {
+            addItemIfUnique(droppedItem, targetItem, entry);
+          }
+        }
+      } else if (targetItem.type == 'weapon') {
+        if (droppedItem.type == "upgrade") {
+          entry['traits'] = droppedItem.system.traits;
+          entry['subtype'] = droppedItem.system.type;
+          if (droppedItem.system.type == "weapon") {
+            addItemIfUnique(droppedItem, targetItem, entry);
+          }
+        } else if (droppedItem.type == "weaponEffect") {
+          console.log("Got Here")
+          entry['traits'] = droppedItem.system.damageType;
+          entry['damageValue'] = droppedItem.system.damageValue;
+          entry['damageType'] = droppedItem.system.damageType;
+          entry['classification'] = droppedItem.system.classification;
+          entry['numHands'] = droppedItem.system.numHands;
+          entry['numTargets'] = droppedItem.system.numTargets;
+          entry['radius'] = droppedItem.system.radius;
+          entry['range'] = droppedItem.system.range;
+          entry['shiftDown'] = droppedItem.system.shiftDown;
+          addItemIfUnique(droppedItem, targetItem, entry);
+        }
+      }
     }
   }
 

@@ -190,8 +190,8 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'armor':
         if (i.system.equipped) {
-          equippedArmorEvasion += parseInt(i.flags.essence20.armorBonusEvasion);
-          equippedArmorToughness += parseInt(i.flags.essence20.armorBonusToughness);
+          equippedArmorEvasion += parseInt(i.system.totalBonusEvasion);
+          equippedArmorToughness += parseInt(i.system.totalBonusToughness);
         }
 
         // i.upgrades = this._populateChildItems(i.system.upgradeIds);
@@ -258,8 +258,6 @@ export class Essence20ActorSheet extends ActorSheet {
         upgrades.push(i);
         break;
       case 'weapon':
-        i.upgrades = this._populateChildItems(i.system.upgradeIds);
-        i.weaponEffects = this._populateChildItems(i.system.weaponEffectIds);
         weapons.push(i);
         break;
       }
@@ -641,32 +639,32 @@ export class Essence20ActorSheet extends ActorSheet {
     // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     const parentItem = this.actor.items.get(parentId);
     if (parentItem) {
-      if (['armor', 'weapon'].includes(parentItem.type)) {
-        const remainingUpgradeIds = parentItem.system.upgradeIds.filter(u => u != itemId);
-        await parentItem.update({ ["system.upgradeIds"]: remainingUpgradeIds });
-      }
+      const id = li.data("itemKey");
+      const updateString = `system.items.-=${id}`;
+
+      await parentItem.update({[updateString]: null});
+
+      li.slideUp(200, () => this.render(false));
+
     }
 
     const item = this.actor.items.get(itemId);
+    if (item) {
+      if (item.type == "origin") {
+        this._bgHandler.onOriginDelete(item);
+      } else if (item.type == 'influence') {
+        this._bgHandler.onInfluenceDelete(item);
+      } else if (item.type == "altMode") {
+        this._tfHandler.onAltModeDelete(item, this);
+      } else if (item.type == "alteration") {
+        this._alHandler.onAlterationDelete(item);
+      } else if (item.type == "perk") {
+        this._pkHandler.onPerkDelete(item);
+      }
 
-    if (item.type == "origin") {
-      this._bgHandler.onOriginDelete(item);
-    } else if (item.type == 'influence') {
-      this._bgHandler.onInfluenceDelete(item);
-    } else if (item.type == "altMode") {
-      this._tfHandler.onAltModeDelete(item, this);
-    } else if (item.type == "alteration") {
-      this._alHandler.onAlterationDelete(item);
-    } else if (item.type == "weapon") {
-      this._atHandler.deleteAttachments(item, ["upgrade", "weaponEffect"]);
-    } else if (item.type == "armor") {
-      this._atHandler.deleteAttachments(item, ["upgrade"]);
-    } else if (item.type == "perk") {
-      this._pkHandler.onPerkDelete(item);
+      item.delete();
+      li.slideUp(200, () => this.render(false));
     }
-
-    item.delete();
-    li.slideUp(200, () => this.render(false));
   }
 
   /**
@@ -723,10 +721,10 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
-    case 'weapon':
-      return await this._onDropWeapon(event, data);
+    // case 'weapon':
+    //   return await this._onDropWeapon(event, data);
     case 'weaponEffect':
-      return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
+      return this._atHandler.attachItem(sourceItem);
 
     default:
       return await super._onDropItem(event, data);
@@ -748,7 +746,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
       return super._onDropItem(event, data);
     } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return this._atHandler.attachItem(upgrade.system.type, super._onDropItem.bind(this, event, data));
+      return this._atHandler.attachItem(upgrade);
     } else {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;

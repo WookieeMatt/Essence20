@@ -4,24 +4,25 @@
 
   <ol class="items-list" style="border-color: {{system.color}};">
     {{#each items as |item|}}
-    <li class="item accordion-wrapper" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
-      {{!-- Item label and buttons --}}
-      {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
-        {{#> roll-button}}
-        {{!-- Custom roll button here --}}
-        {{/roll-button}}
+    {{#ifEquals item.type ../dataType}}
+      <li class="item accordion-wrapper" data-item-key="{{@key}}" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
+        {{!-- Item label and buttons --}}
+        {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
+          {{#> roll-button}}
+          {{!-- Custom roll button here --}}
+          {{/roll-button}}
 
-        {{#> item-label item=item}}
-        {{!-- Custom item label here --}}
-        {{/item-label}}
-      {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs"}}
+          {{#> item-label item=item}}
+          {{!-- Custom item label here --}}
+          {{/item-label}}
+        {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs"}}
 
-      {{!-- Item content --}}
-      {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
-    </li>
+        {{!-- Item content --}}
+        {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
+      </li>
 
-    <hr>
-
+      <hr>
+    {{/ifEquals}}
     {{/each}}
   </ol>
 </div>

@@ -719,6 +719,9 @@
       "classification": "light",
       "equipped": false,
       "items": {},
+      "totalBonusEvasion": 0,
+      "totalBonusToughness": 0,
+      "totalTraits": [],
       "traits": []
     },
     "bond": {
@@ -940,6 +943,7 @@
         "skill": null,
         "shift": null
       },
+      "totalTraits": [],
       "traits": [],
       "upgradeTraits": [],
       "usesPerScene": null

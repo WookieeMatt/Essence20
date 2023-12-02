@@ -21,6 +21,7 @@ export class Essence20Item extends Item {
   }
 
   prepareDerivedData() {
+    super.prepareDerivedData;
     let traitsFlag = this.system.traits;
     let upgradeTraits = [];
     if (this.type == 'weapon' || this.type == 'armor') {
@@ -39,10 +40,13 @@ export class Essence20Item extends Item {
         }
       }
 
-      this.setFlag('essence20', 'traits', traitsFlag);
+      if (traitsFlag) {
+        this.system.totalTraits = traitsFlag;
+      }
     }
 
     if (this.type == 'armor') {
+
       let armorBonusToughness = this.system.bonusToughness;
 
       let armorBonusEvasion  = this.system.bonusEvasion;
@@ -56,14 +60,16 @@ export class Essence20Item extends Item {
           if (item.armorBonus.defense == 'evasion') {
             armorBonusEvasion += item.armorBonus.value;
           }
-
-          this.setFlag('essence20', 'armorBonusEvasion', armorBonusEvasion);
-          this.setFlag('essence20', 'armorBonusToughness', armorBonusToughness);
         }
       }
+
+      if (armorBonusEvasion) {
+        this.system.totalBonusEvasion = armorBonusEvasion;
+      }
+      if (armorBonusToughness) {
+        this.system.totalBonusToughness = armorBonusToughness;
+      }
     }
-
-
   }
   /**
    * Prepare a data object which is passed to any Roll formulas which are created related to this Item
