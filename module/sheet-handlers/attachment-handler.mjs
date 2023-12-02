@@ -109,7 +109,6 @@ export class AttachmentHandler {
             addItemIfUnique(droppedItem, targetItem, entry);
           }
         } else if (droppedItem.type == "weaponEffect") {
-          console.log("Got Here")
           entry['traits'] = droppedItem.system.damageType;
           entry['damageValue'] = droppedItem.system.damageValue;
           entry['damageType'] = droppedItem.system.damageType;
