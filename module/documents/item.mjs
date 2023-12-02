@@ -66,6 +66,7 @@ export class Essence20Item extends Item {
       if (armorBonusEvasion) {
         this.system.totalBonusEvasion = armorBonusEvasion;
       }
+
       if (armorBonusToughness) {
         this.system.totalBonusToughness = armorBonusToughness;
       }

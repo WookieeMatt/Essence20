@@ -331,33 +331,32 @@ export function randomId(length) {
     .substring(1);
 }
 
-  /**
-  * Handles validating an item being dropped is unique
-  * @param {Item} droppedItem The item that was dropped
-  * @param {Item} targetItem The item that was dropped on to.
-  * @param {object} entry The Object being created.
-  * @private
-  */
-  export async function addItemIfUnique(droppedItem, targetItem, entry) {
-    console.log()
-    const items = targetItem.system.items;
-    if (items) {
-      for (const [key,item] of Object.entries(items)) {
-        console.log(key);
-        if (item.uuid === droppedItem.uuid) {
-          return;
-        }
+/**
+* Handles validating an item being dropped is unique
+* @param {Item} droppedItem The item that was dropped
+* @param {Item} targetItem The item that was dropped on to.
+* @param {object} entry The Object being created.
+* @private
+*/
+export async function addItemIfUnique(droppedItem, targetItem, entry) {
+  const items = targetItem.system.items;
+  if (items) {
+    for (const [key,item] of Object.entries(items)) {
+      console.log(key);
+      if (item.uuid === droppedItem.uuid) {
+        return;
       }
     }
-
-    const pathPrefix = "system.items";
-
-    let id= "";
-    do {
-      id = randomId(5);
-    } while (items[id]);
-
-    await targetItem.update({
-      [`${pathPrefix}.${id}`]: entry,
-    });
   }
+
+  const pathPrefix = "system.items";
+
+  let id= "";
+  do {
+    id = randomId(5);
+  } while (items[id]);
+
+  await targetItem.update({
+    [`${pathPrefix}.${id}`]: entry,
+  });
+}
