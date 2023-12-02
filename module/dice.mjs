@@ -94,7 +94,7 @@ export class Dice {
     let label = '';
 
     switch(item?.type) {
-    case 'weaponEffect':
+    case 'weapon':
       label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
       break;
     case 'spell':
