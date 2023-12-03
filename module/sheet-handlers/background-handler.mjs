@@ -38,7 +38,7 @@ export class BackgroundHandler {
 
     if (addHangUp) {
       const hangUpIds = [];
-      for (const [_,item] of Object.entries(influence.system.items)) {
+      for (const [,item] of Object.entries(influence.system.items)) {
         if (item.type == 'hangUp') {
           hangUpIds.push(item.uuid);
         }
@@ -235,7 +235,7 @@ export class BackgroundHandler {
     const choices = {};
     let itemArray = [];
 
-    for (const [_,item] of Object.entries(influence.system.items)) {
+    for (const [,item] of Object.entries(influence.system.items)) {
         if (item.type == 'hangUp') {
         itemArray.push(item);
         choices[item.uuid] = {

@@ -190,7 +190,7 @@ export function rememberValues(html) {
  * @param {Object} parentItem The object that we are droping on to
  */
 export async function createItemCopies(items, owner, type, parentItem) {
-  for (const [_,item] of Object.entries(items)) {
+  for (const [,item] of Object.entries(items)) {
     if (item.type == type) {
       const itemToCreate = await fromUuid(item.uuid);
       const newItem = await Item.create(itemToCreate, { parent: owner });
@@ -339,7 +339,7 @@ export function randomId(length) {
 export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
   if (items) {
-    for (const [_,item] of Object.entries(items)) {
+    for (const [,item] of Object.entries(items)) {
       if (item.uuid === droppedItem.uuid) {
         return;
       }
@@ -429,7 +429,7 @@ export function setEntry(droppedItem,targetItem){
 
 export function attachedItemDelete(item, actor) {
   const itemDelete = actor.items.get(item._id);
-  for (const [_,deletedItem] of Object.entries(itemDelete.system.items)) {
+  for (const [,deletedItem] of Object.entries(itemDelete.system.items)) {
     for (const actorItem of actor.items) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');

@@ -25,7 +25,7 @@ export class Essence20Item extends Item {
     let traitsFlag = this.system.traits;
     let upgradeTraits = [];
     if (this.type == 'weapon' || this.type == 'armor') {
-      for (const [_,item] of Object.entries(this.system.items)) {
+      for (const [,item] of Object.entries(this.system.items)) {
         if (item.type == 'upgrade'){
           upgradeTraits.push(item.traits);
         }
@@ -49,7 +49,7 @@ export class Essence20Item extends Item {
       let armorBonusToughness = this.system.bonusToughness;
 
       let armorBonusEvasion  = this.system.bonusEvasion;
-      for (const [_,item] of Object.entries(this.system.items)) {
+      for (const [,item] of Object.entries(this.system.items)) {
         if (item.type == 'upgrade' && item.subtype == 'armor'){
           if (item.armorBonus.defense == 'toughness') {
             armorBonusToughness += item.armorBonus.value;
