@@ -558,6 +558,7 @@ export class Essence20ActorSheet extends ActorSheet {
         // If a Class Feature is being used, decrement uses
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
+
       if (item) {
         if (keyId) {
           return item.roll(dataset, keyId);
