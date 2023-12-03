@@ -184,22 +184,21 @@ export function rememberValues(html) {
 
 /**
  * Creates copies of Items for given IDs
- * @param {String[]} ids The IDs of the Items to be copied
- * @param {Actor} owner  The Items' owner
- * @returns {String[]}   The IDs of the copied items
+ * @param {Object} items The items attached to the item
+ * @param {Actor} owner The Items' owner
+ * @param {String} type The tyoe of item(s) to drop
+ * @param {Object} parentItem The object that we are droping on to
  */
 export async function createItemCopies(items, owner, type, parentItem) {
-  if (items) {
-    for (const [key,item] of Object.entries(items)) {
-      console.log(key);
-      if (item.type == type) {
-        const itemToCreate = await fromUuid(item.uuid);
-        const newItem = await Item.create(itemToCreate, { parent: owner });
-        newItem.setFlag('core', 'sourceId', item.uuid);
+  for (const [key,item] of Object.entries(items)) {
+    console.log(key);
+    if (item.type == type) {
+      const itemToCreate = await fromUuid(item.uuid);
+      const newItem = await Item.create(itemToCreate, { parent: owner });
+      newItem.setFlag('core', 'sourceId', item.uuid);
 
-        if(parentItem) {
-          newItem.setFlag('essence20', 'parentId', parentItem._id);
-        }
+      if(parentItem) {
+        newItem.setFlag('essence20', 'parentId', parentItem._id);
       }
     }
   }

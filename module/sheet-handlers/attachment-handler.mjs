@@ -124,23 +124,23 @@ export class AttachmentHandler {
     }
   }
 
-  /**
-  * Handle deleting the attachments of an item from an Actor Sheet
-  * @param {Item} item                The Item
-  * @param {String[]} attachmentTypes The types of attachments the Item has
-  */
-  deleteAttachments(item) {
-    for (const [key,deletedItem] of Object.entries(item.system.items)) {
-      console.log(key);
-      for (const actorItem of this._actor.items) {
-        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId');
-        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
-        if (itemSourceId == deletedItem.uuid) {
-          if (influence._id == parentId) {
-            actorItem.delete();
-          }
-        }
-      }
-    }
-  }
+//   /**
+//   * Handle deleting the attachments of an item from an Actor Sheet
+//   * @param {Item} item                The Item
+//   * @param {String[]} attachmentTypes The types of attachments the Item has
+//   */
+//   deleteAttachments(item) {
+//     for (const [key,deletedItem] of Object.entries(item.system.items)) {
+//       console.log(key);
+//       for (const actorItem of this._actor.items) {
+//         const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId');
+//         const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
+//         if (itemSourceId == deletedItem.uuid) {
+//           if (item._id == parentId) {
+//             actorItem.delete();
+//           }
+//         }
+//       }
+//     }
+//   }
 }

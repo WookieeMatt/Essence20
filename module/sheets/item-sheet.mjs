@@ -117,23 +117,20 @@ export class Essence20ItemSheet extends ItemSheet {
 
       break;
     case "armor":
-      if (droppedItem.type == "upgrade") {
+      if (droppedItem.type == "upgrade" && droppedItem.system.type == "armor") {
         entry['armorBonus'] = droppedItem.system.armorBonus;
         entry['traits'] = droppedItem.system.traits;
         entry['subtype'] = droppedItem.system.type;
-        if (droppedItem.system.type == "armor") {
-          this.addItemIfUnique(droppedItem, targetItem, entry);
-        }
+        this.addItemIfUnique(droppedItem, targetItem, entry);
       }
 
       break;
     case "weapon":
-      if (droppedItem.type == "upgrade") {
+      if (droppedItem.type == "upgrade" && droppedItem.type == "weaponEffect") {
         entry['traits'] = droppedItem.system.traits;
         entry['subtype'] = droppedItem.system.type;
-        if (droppedItem.system.type == "weapon") {
-          addItemIfUnique(droppedItem, targetItem, entry);
-        }
+        addItemIfUnique(droppedItem, targetItem, entry);
+
       } else if (droppedItem.type == "weaponEffect") {
         entry['traits'] = droppedItem.system.damageType;
         entry['damageValue'] = droppedItem.system.damageValue;
