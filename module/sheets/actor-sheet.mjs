@@ -534,7 +534,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
     const rollType = dataset.rollType;
-
     if (!rollType) {
       return;
     }
@@ -545,7 +544,12 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (rollType == 'initiative') {
       this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
-      const itemId = element.closest('.item').dataset.itemId;
+      let keyId = element.closest('.item').dataset.itemKey;
+      let itemId = element.closest('.item').dataset.itemId;
+      if(!itemId) {
+        itemId = element.closest('.item').dataset.parentId;
+      }
+
       const item = this.actor.items.get(itemId);
 
       if (rollType == 'power') {
@@ -554,8 +558,13 @@ export class Essence20ActorSheet extends ActorSheet {
         // If a Class Feature is being used, decrement uses
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
-
-      if (item) return item.roll(dataset);
+      if (item) {
+        if (keyId) {
+          return item.roll(dataset, keyId);
+        }
+      } else {
+        return item.roll(dataset);
+      }
     }
   }
 
