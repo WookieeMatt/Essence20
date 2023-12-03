@@ -90,46 +90,46 @@ export function parseId(uuid) {
   return index || null;
 }
 
-/**
- * Retrieve the indexed data for a Document using its UUID. Will never return a result for embedded documents.
- * @param {string} uuid  The UUID of the Document index to retrieve.
- * @returns {object}     Document's index if one could be found.
- */
-export function indexFromUuid(uuid) {
-  const parts = uuid.split(".");
-  let index;
+// /**
+//  * Retrieve the indexed data for a Document using its UUID. Will never return a result for embedded documents.
+//  * @param {string} uuid  The UUID of the Document index to retrieve.
+//  * @returns {object}     Document's index if one could be found.
+//  */
+// export function indexFromUuid(uuid) {
+//   const parts = uuid.split(".");
+//   let index;
 
-  if (parts[0] === "Compendium") { // Compendium Documents
-    const [, scope, packName, , id] = parts;
-    const pack = game.packs.get(`${scope}.${packName}`);
-    index = pack?.index.get(id);
-  } else if (parts.length < 3) {   // World Documents
-    const [docName, id] = parts;
-    const collection = CONFIG[docName].collection.instance;
-    index = collection.get(id);
-  }
+//   if (parts[0] === "Compendium") { // Compendium Documents
+//     const [, scope, packName, , id] = parts;
+//     const pack = game.packs.get(`${scope}.${packName}`);
+//     index = pack?.index.get(id);
+//   } else if (parts.length < 3) {   // World Documents
+//     const [docName, id] = parts;
+//     const collection = CONFIG[docName].collection.instance;
+//     index = collection.get(id);
+//   }
 
-  return index || null;
-}
+//   return index || null;
+// }
 
 /**
   * Handles search of the Compendiums to find the item
   * @param {Item|String} item  Either an ID or an Item to find in the compendium
   * @returns {Item}     The Item, if found
   */
-export async function searchCompendium(item) {
-  const id = item._id || item;
+// export async function searchCompendium(item) {
+//   const id = item._id || item;
 
-  for (const pack of game.packs) {
-    const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-    if (compendium) {
-      const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
-      if (compendiumItem) {
-        return compendiumItem;
-      }
-    }
-  }
-}
+//   for (const pack of game.packs) {
+//     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+//     if (compendium) {
+//       const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
+//       if (compendiumItem) {
+//         return compendiumItem;
+//       }
+//     }
+//   }
+// }
 
 /**
 * Get Items of a type
@@ -190,8 +190,7 @@ export function rememberValues(html) {
  * @param {Object} parentItem The object that we are droping on to
  */
 export async function createItemCopies(items, owner, type, parentItem) {
-  for (const [key,item] of Object.entries(items)) {
-    console.log(key);
+  for (const [_,item] of Object.entries(items)) {
     if (item.type == type) {
       const itemToCreate = await fromUuid(item.uuid);
       const newItem = await Item.create(itemToCreate, { parent: owner });
@@ -209,12 +208,12 @@ export async function createItemCopies(items, owner, type, parentItem) {
 * @param {String} id   ID of the item to delete
 * @param {Actor} owner The Items' owner
 */
-export function itemDeleteById(id, owner) {
-  let item = owner.items.get(id);
-  if (item) {
-    item.delete();
-  }
-}
+// export function itemDeleteById(id, owner) {
+//   let item = owner.items.get(id);
+//   if (item) {
+//     item.delete();
+//   }
+// }
 
 /**
  * Handle looking up tokens associated with actor and changing size
@@ -340,8 +339,7 @@ export function randomId(length) {
 export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
   if (items) {
-    for (const [key,item] of Object.entries(items)) {
-      console.log(key);
+    for (const [_,item] of Object.entries(items)) {
       if (item.uuid === droppedItem.uuid) {
         return;
       }
@@ -358,4 +356,88 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
   await targetItem.update({
     [`${pathPrefix}.${id}`]: entry,
   });
+}
+
+export function setEntry(droppedItem,targetItem){
+  const entry = {
+    uuid: droppedItem.uuid,
+    img: droppedItem.img,
+    name: droppedItem.name,
+    type: droppedItem.type,
+  };
+
+  switch (targetItem.type) {
+  case "origin":
+    if (droppedItem.type == "perk") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "armor":
+    if (droppedItem.type == "upgrade" && droppedItem.system.type == "armor") {
+      entry['armorBonus'] = droppedItem.system.armorBonus;
+      entry['availability'] = droppedItem.system.availability;
+      entry['benefit'] = droppedItem.system.benefit;
+      entry['description'] = droppedItem.system.description;
+      entry['prerequisite'] = droppedItem.system.prerequisite;
+      entry['source'] = droppedItem.system.source;
+      entry['subtype'] = droppedItem.system.type;
+      entry['traits'] = droppedItem.system.traits;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "weapon":
+    if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {
+      entry['availability'] = droppedItem.system.availability;
+      entry['benefit'] = droppedItem.system.benefit;
+      entry['description'] = droppedItem.system.description;
+      entry['prerequisite'] = droppedItem.system.prerequisite;
+      entry['source'] = droppedItem.system.source;
+      entry['subtype'] = droppedItem.system.type;
+      entry['traits'] = droppedItem.system.traits;
+      addItemIfUnique(droppedItem, targetItem, entry);
+
+    } else if (droppedItem.type == "weaponEffect") {
+      entry['classification'] = droppedItem.system.classification;
+      entry['damageValue'] = droppedItem.system.damageValue;
+      entry['damageType'] = droppedItem.system.damageType;
+      entry['numHands'] = droppedItem.system.numHands;
+      entry['numTargets'] = droppedItem.system.numTargets;
+      entry['radius'] = droppedItem.system.radius;
+      entry['range'] = droppedItem.system.range;
+      entry['shiftDown'] = droppedItem.system.shiftDown;
+      entry['traits'] = droppedItem.system.damageType;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "influence":
+    if (droppedItem.type == "perk") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+      break;
+    } else if (droppedItem.type == "hangUp") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+      break;
+    }
+
+    break;
+  default:
+    break;
+  }
+}
+
+export function attachedItemDelete(item, actor) {
+  const itemDelete = actor.items.get(item._id);
+  for (const [_,deletedItem] of Object.entries(itemDelete.system.items)) {
+    for (const actorItem of actor.items) {
+      const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
+      const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
+      if (itemSourceId == deletedItem.uuid) {
+        if (item._id == parentId) {
+          actorItem.delete();
+        }
+      }
+    }
+  }
 }

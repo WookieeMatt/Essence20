@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
+import { attachedItemDelete, checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
 import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
@@ -663,7 +663,7 @@ export class Essence20ActorSheet extends ActorSheet {
       if (item.type == "origin") {
         this._bgHandler.onOriginDelete(item);
       } else if (item.type == 'influence') {
-        this._bgHandler.onInfluenceDelete(item);
+        attachedItemDelete(item, this.actor);
       } else if (item.type == "altMode") {
         this._tfHandler.onAltModeDelete(item, this);
       } else if (item.type == "alteration") {

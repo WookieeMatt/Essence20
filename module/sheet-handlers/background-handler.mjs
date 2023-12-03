@@ -1,4 +1,5 @@
 import {
+  attachedItemDelete,
   createItemCopies,
   getItemsOfType,
   getShiftedSkill,
@@ -37,8 +38,7 @@ export class BackgroundHandler {
 
     if (addHangUp) {
       const hangUpIds = [];
-      for (const [key,item] of Object.entries(influence.system.items)) {
-        console.log(key);
+      for (const [_,item] of Object.entries(influence.system.items)) {
         if (item.type == 'hangUp') {
           hangUpIds.push(item.uuid);
         }
@@ -235,9 +235,8 @@ export class BackgroundHandler {
     const choices = {};
     let itemArray = [];
 
-    for (const [key,item] of Object.entries(influence.system.items)) {
-      console.log(key);
-      if (item.type == 'hangUp') {
+    for (const [_,item] of Object.entries(influence.system.items)) {
+        if (item.type == 'hangUp') {
         itemArray.push(item);
         choices[item.uuid] = {
           chosen: false,
@@ -295,26 +294,6 @@ export class BackgroundHandler {
   }
 
   /**
-  * Handle deleting of an Influence from an Actor Sheet
-  * @param {Influence} influence The Influence
-  */
-  onInfluenceDelete(influence) {
-    const influenceDelete = this._actor.items.get(influence._id);
-    for (const [key,deletedItem] of Object.entries(influenceDelete.system.items)) {
-      console.log(key);
-      for (const actorItem of this._actor.items) {
-        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId');
-        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
-        if (itemSourceId == deletedItem.uuid) {
-          if (influence._id == parentId) {
-            actorItem.delete();
-          }
-        }
-      }
-    }
-  }
-
-  /**
   * Handle deleting of an Origin from an Actor Sheet
   * @param {Object} origin The Origin
   */
@@ -324,19 +303,7 @@ export class BackgroundHandler {
 
     let selectedSkill = this._actor.system.originSkillsIncrease;
     const [newShift, skillString] = await getShiftedSkill(selectedSkill, -1, this._actor);
-    const originDelete = this._actor.items.get(origin._id);
-    for (const [key,deletedItem] of Object.entries(originDelete.system.items)) {
-      console.log(key);
-      for (const actorItem of this._actor.items) {
-        const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId');
-        const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
-        if (itemSourceId == deletedItem.uuid) {
-          if (origin._id == parentId) {
-            actorItem.delete();
-          }
-        }
-      }
-    }
+    await attachedItemDelete(origin, this._actor);
 
     const essenceString = `system.essences.${essence}`;
 

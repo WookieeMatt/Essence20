@@ -1,7 +1,7 @@
 import {
-  addItemIfUnique,
   getItemsOfType,
   rememberOptions,
+  setEntry,
 } from "../helpers/utils.mjs";
 
 export class AttachmentHandler {
@@ -86,41 +86,7 @@ export class AttachmentHandler {
    */
   async _attachItem(targetItem, droppedItem) {
     if (targetItem) {
-      const entry = {
-        uuid: droppedItem.uuid,
-        img: droppedItem.img,
-        name: droppedItem.name,
-        type: droppedItem.type,
-      };
-      if (targetItem.type == 'armor') {
-        if (droppedItem.type == "upgrade") {
-          entry['armorBonus'] = droppedItem.system.armorBonus;
-          entry['traits'] = droppedItem.system.traits;
-          entry['subtype'] = droppedItem.system.type;
-          if (droppedItem.system.type == "armor") {
-            addItemIfUnique(droppedItem, targetItem, entry);
-          }
-        }
-      } else if (targetItem.type == 'weapon') {
-        if (droppedItem.type == "upgrade") {
-          entry['traits'] = droppedItem.system.traits;
-          entry['subtype'] = droppedItem.system.type;
-          if (droppedItem.system.type == "weapon") {
-            addItemIfUnique(droppedItem, targetItem, entry);
-          }
-        } else if (droppedItem.type == "weaponEffect") {
-          entry['traits'] = droppedItem.system.damageType;
-          entry['damageValue'] = droppedItem.system.damageValue;
-          entry['damageType'] = droppedItem.system.damageType;
-          entry['classification'] = droppedItem.system.classification;
-          entry['numHands'] = droppedItem.system.numHands;
-          entry['numTargets'] = droppedItem.system.numTargets;
-          entry['radius'] = droppedItem.system.radius;
-          entry['range'] = droppedItem.system.range;
-          entry['shiftDown'] = droppedItem.system.shiftDown;
-          addItemIfUnique(droppedItem, targetItem, entry);
-        }
-      }
+      await setEntry(droppedItem, targetItem);
     }
   }
 

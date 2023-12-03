@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { addItemIfUnique } from "../helpers/utils.mjs";
+import { setEntry } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -102,62 +102,7 @@ export class Essence20ItemSheet extends ItemSheet {
     const data = TextEditor.getDragEventData(event);
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.item;
-    const entry = {
-      uuid: droppedItem.uuid,
-      img: droppedItem.img,
-      name: droppedItem.name,
-      type: droppedItem.type,
-    };
-
-    switch (targetItem.type) {
-    case "origin":
-      if (droppedItem.type == "perk") {
-        this.addItemIfUnique(droppedItem, targetItem, entry);
-      }
-
-      break;
-    case "armor":
-      if (droppedItem.type == "upgrade" && droppedItem.system.type == "armor") {
-        entry['armorBonus'] = droppedItem.system.armorBonus;
-        entry['traits'] = droppedItem.system.traits;
-        entry['subtype'] = droppedItem.system.type;
-        this.addItemIfUnique(droppedItem, targetItem, entry);
-      }
-
-      break;
-    case "weapon":
-      if (droppedItem.type == "upgrade" && droppedItem.type == "weaponEffect") {
-        entry['traits'] = droppedItem.system.traits;
-        entry['subtype'] = droppedItem.system.type;
-        addItemIfUnique(droppedItem, targetItem, entry);
-
-      } else if (droppedItem.type == "weaponEffect") {
-        entry['traits'] = droppedItem.system.damageType;
-        entry['damageValue'] = droppedItem.system.damageValue;
-        entry['damageType'] = droppedItem.system.damageType;
-        entry['classification'] = droppedItem.system.classification;
-        entry['numHands'] = droppedItem.system.numHands;
-        entry['numTargets'] = droppedItem.system.numTargets;
-        entry['radius'] = droppedItem.system.radius;
-        entry['range'] = droppedItem.system.range;
-        entry['shiftDown'] = droppedItem.system.shiftDown;
-        addItemIfUnique(droppedItem, targetItem, entry);
-      }
-
-      break;
-    case "influence":
-      if (droppedItem.type == "perk") {
-        addItemIfUnique(droppedItem, targetItem, entry);
-        break;
-      } else if (droppedItem.type == "hangUp") {
-        addItemIfUnique(droppedItem, targetItem, entry);
-        break;
-      }
-
-      break;
-    default:
-      break;
-    }
+    await setEntry(droppedItem, targetItem);
 
     this.render(true);
   }
