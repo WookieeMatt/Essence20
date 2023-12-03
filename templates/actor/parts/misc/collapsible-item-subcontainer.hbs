@@ -1,13 +1,13 @@
 <div class="collapsible-item-container collapsible-item-subcontainer">
   {{!-- Header with + and v buttons --}}
-  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType parentId=parentId}}
-
+  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType parentItem=parentItem}}
   <ol class="items-list" style="border-color: {{system.color}};">
     {{#each items as |item|}}
     {{#ifEquals item.type ../dataType}}
-      <li class="item accordion-wrapper" data-item-key="{{@key}}" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
+      <li class="item accordion-wrapper" data-item-key="{{@key}}" data-item-id="{{item._id}}" data-parent-id="{{../parentItem._id}}">
         {{!-- Item label and buttons --}}
-        {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
+
+        {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item }}
           {{#> roll-button}}
           {{!-- Custom roll button here --}}
           {{/roll-button}}

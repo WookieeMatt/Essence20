@@ -4,7 +4,7 @@
   {{/inline}}
 
   {{#*inline "subcontainers" parentItem}}
-  {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentItem._id}}
+  {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentItem=parentItem}}
     {{#*inline "expand-details" item}}
       {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
     {{/inline}}

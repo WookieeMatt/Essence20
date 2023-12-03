@@ -15,7 +15,8 @@
 
   {{#*inline "subcontainers" parentItem}}
     {{!-- Weapon Effects --}}
-    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentId=parentItem._id}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentItem=parentItem}}
+
       {{#*inline "roll-button"}}
         <a class="rollable" data-roll-type="weaponEffect" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
       {{/inline}}
@@ -71,12 +72,12 @@
     {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
 
     {{!-- Upgrades --}}
-    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentItem._id}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentItem=parentItem}}
       {{#*inline "item-label" item}}
         {{item.name}}
       {{/inline}}
 
-      {{#*inline "expand-details" item}}
+      {{#*inline "expand-details" item parentItem}}
         {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
       {{/inline}}
     {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
