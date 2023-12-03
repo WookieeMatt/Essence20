@@ -236,12 +236,12 @@ export class BackgroundHandler {
     let itemArray = [];
 
     for (const [,item] of Object.entries(influence.system.items)) {
-        if (item.type == 'hangUp') {
-        itemArray.push(item);
-        choices[item.uuid] = {
-          chosen: false,
-          label: item.name,
-        };
+      if (item.type == 'hangUp') {
+      itemArray.push(item);
+      choices[item.uuid] = {
+        chosen: false,
+        label: item.name,
+      };
       }
     }
 
