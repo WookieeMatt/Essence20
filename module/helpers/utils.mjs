@@ -190,7 +190,7 @@ export function rememberValues(html) {
  * @param {Object} parentItem The object that we are droping on to
  */
 export async function createItemCopies(items, owner, type, parentItem) {
-  for (const [,item] of Object.entries(items)) {
+  for (const [, item] of Object.entries(items)) {
     if (item.type == type) {
       const itemToCreate = await fromUuid(item.uuid);
       const newItem = await Item.create(itemToCreate, { parent: owner });
@@ -339,7 +339,7 @@ export function randomId(length) {
 export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
   if (items) {
-    for (const [,item] of Object.entries(items)) {
+    for (const [, item] of Object.entries(items)) {
       if (item.uuid === droppedItem.uuid) {
         return;
       }

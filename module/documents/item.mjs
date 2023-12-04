@@ -25,7 +25,7 @@ export class Essence20Item extends Item {
     console.log("GotHere")
     let upgradeTraits = [];
     if (this.type == 'weapon' || this.type == 'armor') {
-      for (const [,item] of Object.entries(this.system.items)) {
+      for (const [, item] of Object.entries(this.system.items)) {
         if (item.type == 'upgrade'){
           upgradeTraits.push(item.traits);
         }
@@ -51,7 +51,7 @@ export class Essence20Item extends Item {
       let armorBonusToughness = this.system.bonusToughness;
 
       let armorBonusEvasion  = this.system.bonusEvasion;
-      for (const [,item] of Object.entries(this.system.items)) {
+      for (const [, item] of Object.entries(this.system.items)) {
         if (item.type == 'upgrade' && item.subtype == 'armor'){
           if (item.armorBonus.defense == 'toughness') {
             armorBonusToughness += item.armorBonus.value;
@@ -71,6 +71,8 @@ export class Essence20Item extends Item {
         this.system.totalBonusToughness = armorBonusToughness;
       }
     }
+
+    super.prepareDerivedData();
   }
   /**
    * Prepare a data object which is passed to any Roll formulas which are created related to this Item
