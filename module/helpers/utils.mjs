@@ -184,10 +184,10 @@ export function rememberValues(html) {
 
 /**
  * Creates copies of Items for given IDs
- * @param {Object} items The items attached to the item
- * @param {Actor} owner The Items' owner
- * @param {String} type The tyoe of item(s) to drop
- * @param {Object} parentItem The object that we are droping on to
+ * @param {Item} items The item(s) to copy
+ * @param {Actor} owner The item(s)' owner
+ * @param {String} type The type of item(s) to drop
+ * @param {Item} parentItem The item(s) parent item
  */
 export async function createItemCopies(items, owner, type, parentItem) {
   for (const [, item] of Object.entries(items)) {
