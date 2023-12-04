@@ -51,10 +51,9 @@ export class Essence20Item extends Item {
     }
 
     if (this.type == 'armor') {
-
       let armorBonusToughness = this.system.bonusToughness;
-
       let armorBonusEvasion  = this.system.bonusEvasion;
+
       for (const [, item] of Object.entries(this.system.items)) {
         if (item.type == 'upgrade' && item.subtype == 'armor'){
           if (item.armorBonus.defense == 'toughness') {
@@ -164,7 +163,6 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weapon') {
-
       const skill = this.system.items[keyId].classification.skill;
       const shift = this.actor.system.skills[skill].shift;
       const shiftUp = this.actor.system.skills[skill].shiftUp;
