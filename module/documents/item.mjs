@@ -27,6 +27,7 @@ export class Essence20Item extends Item {
     let traitsFlag = this.system.traits;
     console.log("GotHere")
     let upgradeTraits = [];
+
     if (this.type == 'weapon' || this.type == 'armor') {
       for (const [,item] of Object.entries(this.system.items)) {
         if (item.type == 'upgrade'){
