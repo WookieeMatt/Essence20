@@ -562,9 +562,9 @@ export class Essence20ActorSheet extends ActorSheet {
       if (item) {
         if (keyId) {
           return item.roll(dataset, keyId);
+        } else {
+          return item.roll(dataset);
         }
-      } else {
-        return item.roll(dataset);
       }
     }
   }
@@ -717,7 +717,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (this.actor.uuid === sourceItem?.parent?.uuid) {
       return await this._onDropDefault(event, data, false);
     }
-    console.log(sourceItem.type)
+
     switch (sourceItem.type) {
     case 'alteration':
       return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));

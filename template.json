@@ -722,9 +722,6 @@
       "bonusToughness": 0,
       "classification": "light",
       "equipped": false,
-      "totalBonusEvasion": 0,
-      "totalBonusToughness": 0,
-      "totalTraits": [],
       "traits": []
     },
     "bond": {

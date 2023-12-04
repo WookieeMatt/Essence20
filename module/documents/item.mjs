@@ -20,10 +20,10 @@ export class Essence20Item extends Item {
     super.prepareData();
   }
 
-    /**
-     * @override
-     */
-    prepareDerivedData() {
+  /**
+  * @override
+  */
+  prepareDerivedData() {
     let traitsFlag = this.system.traits;
     console.log("GotHere")
     let upgradeTraits = [];
