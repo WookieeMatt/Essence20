@@ -30,7 +30,7 @@ export class Essence20Item extends Item {
 
     if (this.type == 'weapon' || this.type == 'armor') {
       for (const [, item] of Object.entries(this.system.items)) {
-        if (item.type == 'upgrade'){
+        if (item.type == 'upgrade') {
           upgradeTraits.push(item.traits);
         }
       }
