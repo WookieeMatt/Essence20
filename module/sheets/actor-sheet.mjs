@@ -655,7 +655,6 @@ export class Essence20ActorSheet extends ActorSheet {
       await parentItem.update({[updateString]: null});
 
       li.slideUp(200, () => this.render(false));
-
     }
 
     const item = this.actor.items.get(itemId);
