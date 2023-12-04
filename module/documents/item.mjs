@@ -21,8 +21,8 @@ export class Essence20Item extends Item {
   }
 
   prepareDerivedData() {
-    super.prepareDerivedData;
     let traitsFlag = this.system.traits;
+    console.log("GotHere")
     let upgradeTraits = [];
     if (this.type == 'weapon' || this.type == 'armor') {
       for (const [,item] of Object.entries(this.system.items)) {
@@ -32,9 +32,11 @@ export class Essence20Item extends Item {
       }
 
       for (const traits of upgradeTraits) {
-        for (const trait of traits) {
-          if (!traitsFlag.includes(trait)) {
-            traitsFlag.push(trait);
+        if (traits) {
+          for (const trait of traits) {
+            if (!traitsFlag.includes(trait)) {
+              traitsFlag.push(trait);
+            }
           }
         }
       }
