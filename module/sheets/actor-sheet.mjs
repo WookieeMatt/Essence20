@@ -544,10 +544,7 @@ export class Essence20ActorSheet extends ActorSheet {
       this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
       let keyId = element.closest('.item').dataset.itemKey;
-      let itemId = element.closest('.item').dataset.itemId;
-      if(!itemId) {
-        itemId = element.closest('.item').dataset.parentId;
-      }
+      const itemId = element.closest('.item').dataset.itemId || element.closest('.item').dataset.parentId;
 
       const item = this.actor.items.get(itemId);
 
