@@ -3,9 +3,7 @@ import {
   createItemCopies,
   getItemsOfType,
   getShiftedSkill,
-  // itemDeleteById,
   rememberOptions,
-  // searchCompendium,
 } from "../helpers/utils.mjs";
 
 export class BackgroundHandler {
@@ -227,8 +225,6 @@ export class BackgroundHandler {
   /**
   * Displays a dialog for selecting a Hang Up from an Influence
   * @param {Influence} influence    The Influence
-  * @param {Perk[]} perkIds         The Perk IDs that go with the new Influence
-  * @param {Influence} newInfluence The new Influence that was created.
   * @private
   */
   async _chooseHangUp(influence) {
@@ -266,14 +262,10 @@ export class BackgroundHandler {
 
   /**
   * Adds the chosen HangUp to the character
-  * @param {HangUp[]} hangUps       An Array of the HangUps that could be picked
   * @param {Object} options         The selections from the dialog
-  * @param {String[]} perkIds       The IDs from any Perk that were added with the Influence
-  * @param {Influence} newInfluence The new Influence that was created
   */
-  async _hangUpSelect(influence, options) {
+  async _hangUpSelect(options) {
     let selectedHangUp = null;
-    // let hangUpToCreate = null;
     const owner = this._actor;
 
     for (const [hangUp, isSelected] of Object.entries(options)) {

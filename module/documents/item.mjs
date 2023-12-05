@@ -28,11 +28,12 @@ export class Essence20Item extends Item {
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
     }
+
     super.prepareDerivedData();
   }
 
   _prepareTraits() {
-    let traitsFlag = this.system.traits;
+    let itemAndUpgradeTraits = this.system.traits;
     let upgradeTraits = [];
 
     if (this.type == 'weapon' || this.type == 'armor') {
@@ -45,43 +46,44 @@ export class Essence20Item extends Item {
       for (const traits of upgradeTraits) {
         if (traits) {
           for (const trait of traits) {
-            if (!traitsFlag.includes(trait)) {
-              traitsFlag.push(trait);
+            if (!itemAndUpgradeTraits.includes(trait)) {
+              itemAndUpgradeTraits.push(trait);
             }
           }
         }
       }
 
-      if (traitsFlag) {
-        this.system.totalTraits = traitsFlag;
+      if (itemAndUpgradeTraits) {
+        this.system.itemAndUpgradeTraits = itemAndUpgradeTraits;
       }
     }
   }
 
   _prepareArmorBonuses() {
-      let armorBonusToughness = this.system.bonusToughness;
-      let armorBonusEvasion  = this.system.bonusEvasion;
+    let armorBonusToughness = this.system.bonusToughness;
+    let armorBonusEvasion  = this.system.bonusEvasion;
 
-      for (const [, item] of Object.entries(this.system.items)) {
-        if (item.type == 'upgrade' && item.subtype == 'armor'){
-          if (item.armorBonus.defense == 'toughness') {
-            armorBonusToughness += item.armorBonus.value;
-          }
+    for (const [, item] of Object.entries(this.system.items)) {
+      if (item.type == 'upgrade' && item.subtype == 'armor'){
+        if (item.armorBonus.defense == 'toughness') {
+          armorBonusToughness += item.armorBonus.value;
+        }
 
-          if (item.armorBonus.defense == 'evasion') {
-            armorBonusEvasion += item.armorBonus.value;
-          }
+        if (item.armorBonus.defense == 'evasion') {
+          armorBonusEvasion += item.armorBonus.value;
         }
       }
+    }
 
-      if (armorBonusEvasion) {
-        this.system.totalBonusEvasion = armorBonusEvasion;
-      }
+    if (armorBonusEvasion) {
+      this.system.totalBonusEvasion = armorBonusEvasion;
+    }
 
-      if (armorBonusToughness) {
-        this.system.totalBonusToughness = armorBonusToughness;
-      }
+    if (armorBonusToughness) {
+      this.system.totalBonusToughness = armorBonusToughness;
+    }
   }
+
   /**
    * Prepare a data object which is passed to any Roll formulas which are created related to this Item
    * @private
@@ -100,7 +102,7 @@ export class Essence20Item extends Item {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @private
    */
-  async roll(dataset, keyId) {
+  async roll(dataset, childKey) {
     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -168,10 +170,10 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weapon') {
-      const skill = this.system.items[keyId].classification.skill;
+      const skill = this.system.items[childKey].classification.skill;
       const shift = this.actor.system.skills[skill].shift;
       const shiftUp = this.actor.system.skills[skill].shiftUp;
-      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.items[keyId].shiftDown;
+      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.items[childKey].shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,

@@ -6,7 +6,7 @@
   <span class="chip" name="chip.armor.bonusEvasion">{{localize 'E20.ArmorBonusEvasion'}}: {{item.system.totalBonusEvasion}}</span>
   <span class="chip" name="chip.armor.bonusToughness">{{localize 'E20.ArmorBonusToughness'}}: {{item.system.totalBonusToughness}}</span>
 
-  {{#each item.system.totalTraits as |trait|}}
+  {{#each item.system.itemAndUpgradeTraits as |trait|}}
   <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
   {{/each}}
 

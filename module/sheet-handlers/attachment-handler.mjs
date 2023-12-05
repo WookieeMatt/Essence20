@@ -16,8 +16,7 @@ export class AttachmentHandler {
 
   /**
    * Initiates the process to apply an attachment item to an item on the actor sheet
-   * @param {Item} attachment   The attachment
-   * @param {Function} dropFunc The function to call to complete the drop
+   * @param {Item} droppedItem   The attachment
    */
   async attachItem(droppedItem) {
     let parentType = "";
@@ -80,8 +79,8 @@ export class AttachmentHandler {
 
   /**
    * Creates the attachment for the actor and attaches it to the given item
-   * @param {Item} item         The item to attach to
-   * @param {Function} dropFunc The function to call to complete the drop
+   * @param {Item} targetItem         The item to attach to
+   * @param {Item} droppedItem The item being attached
    * @private
    */
   async _attachItem(targetItem, droppedItem) {
@@ -90,23 +89,4 @@ export class AttachmentHandler {
     }
   }
 
-//   /**
-//   * Handle deleting the attachments of an item from an Actor Sheet
-//   * @param {Item} item                The Item
-//   * @param {String[]} attachmentTypes The types of attachments the Item has
-//   */
-//   deleteAttachments(item) {
-//     for (const [key,deletedItem] of Object.entries(item.system.items)) {
-//       console.log(key);
-//       for (const actorItem of this._actor.items) {
-//         const itemSourceId = this._actor.items.get(actorItem._id).getFlag('core', 'sourceId');
-//         const parentId = this._actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
-//         if (itemSourceId == deletedItem.uuid) {
-//           if (item._id == parentId) {
-//             actorItem.delete();
-//           }
-//         }
-//       }
-//     }
-//   }
 }

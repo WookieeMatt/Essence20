@@ -53,7 +53,7 @@
 
       {{#*inline "item-field-inputs"}}
         <div class="chip-section">
-          {{#each item.system.totalTraits as |trait|}}
+          {{#each item.system.itemAndUpgradeTraits as |trait|}}
           <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
           {{/each}}
         </div>

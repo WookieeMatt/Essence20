@@ -348,7 +348,7 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
 
   const pathPrefix = "system.items";
 
-  let id= "";
+  let id = "";
   do {
     id = randomId(5);
   } while (items[id]);
@@ -358,7 +358,7 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
   });
 }
 
-export function setEntry(droppedItem,targetItem){
+export function setEntry(droppedItem, targetItem){
   const entry = {
     uuid: droppedItem.uuid,
     img: droppedItem.img,
@@ -397,7 +397,6 @@ export function setEntry(droppedItem,targetItem){
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
       addItemIfUnique(droppedItem, targetItem, entry);
-
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
