@@ -24,6 +24,14 @@ export class Essence20Item extends Item {
   * @override
   */
   prepareDerivedData() {
+    this._prepareTraits();
+    if (this.type == 'armor') {
+      this._prepareArmorBonuses();
+    }
+    super.prepareDerivedData();
+  }
+
+  _prepareTraits() {
     let traitsFlag = this.system.traits;
     let upgradeTraits = [];
 
@@ -48,8 +56,9 @@ export class Essence20Item extends Item {
         this.system.totalTraits = traitsFlag;
       }
     }
+  }
 
-    if (this.type == 'armor') {
+  _prepareArmorBonuses() {
       let armorBonusToughness = this.system.bonusToughness;
       let armorBonusEvasion  = this.system.bonusEvasion;
 
@@ -72,9 +81,6 @@ export class Essence20Item extends Item {
       if (armorBonusToughness) {
         this.system.totalBonusToughness = armorBonusToughness;
       }
-    }
-
-    super.prepareDerivedData();
   }
   /**
    * Prepare a data object which is passed to any Roll formulas which are created related to this Item

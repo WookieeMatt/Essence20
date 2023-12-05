@@ -194,7 +194,6 @@ export class Essence20ActorSheet extends ActorSheet {
           equippedArmorToughness += parseInt(i.system.totalBonusToughness);
         }
 
-        // i.upgrades = this._populateChildItems(i.system.upgradeIds);
         armors.push(i);
         break;
       case 'bond':
@@ -730,8 +729,6 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
-    // case 'weapon':
-    //   return await this._onDropWeapon(event, data);
     case 'weaponEffect':
       return this._atHandler.attachItem(sourceItem);
 
