@@ -29,6 +29,7 @@ export class RoleHandler {
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
 
+    this._actor.seFlag('essence20', 'lastLevelUp', this._actor.system.level);
     console.log(newRole)
 
   }
