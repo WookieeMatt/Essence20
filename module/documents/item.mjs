@@ -44,11 +44,9 @@ export class Essence20Item extends Item {
       }
 
       for (const traits of upgradeTraits) {
-        if (traits) {
-          for (const trait of traits) {
-            if (!itemAndUpgradeTraits.includes(trait)) {
-              itemAndUpgradeTraits.push(trait);
-            }
+        for (const trait of traits) {
+          if (!itemAndUpgradeTraits.includes(trait)) {
+            itemAndUpgradeTraits.push(trait);
           }
         }
       }
