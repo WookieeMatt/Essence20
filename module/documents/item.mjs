@@ -105,7 +105,6 @@ export class Essence20Item extends Item {
    * @private
    */
   async roll(dataset, childKey) {
-    console.log(dataset)
     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
