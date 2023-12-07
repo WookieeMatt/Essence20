@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { attachedItemDelete, checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
+import { deleteAttachmentsForItem, checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
 import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
@@ -533,6 +533,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
     const rollType = dataset.rollType;
+
     if (!rollType) {
       return;
     }
@@ -545,7 +546,6 @@ export class Essence20ActorSheet extends ActorSheet {
     } else { // Handle items
       let keyId = element.closest('.item').dataset.itemKey;
       const itemId = element.closest('.item').dataset.itemId || element.closest('.item').dataset.parentId;
-
       const item = this.actor.items.get(itemId);
 
       if (rollType == 'power') {
@@ -658,7 +658,7 @@ export class Essence20ActorSheet extends ActorSheet {
       if (item.type == "origin") {
         this._bgHandler.onOriginDelete(item);
       } else if (item.type == 'influence') {
-        attachedItemDelete(item, this.actor);
+        deleteAttachmentsForItem(item, this.actor);
       } else if (item.type == "altMode") {
         this._tfHandler.onAltModeDelete(item, this);
       } else if (item.type == "alteration") {

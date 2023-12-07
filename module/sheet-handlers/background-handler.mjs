@@ -1,5 +1,5 @@
 import {
-  attachedItemDelete,
+  deleteAttachmentsForItem,
   createItemCopies,
   getItemsOfType,
   getShiftedSkill,
@@ -48,7 +48,6 @@ export class BackgroundHandler {
         await createItemCopies(influence.system.items, this._actor, "hangUp", newInfluenceList[0]);
       }
     }
-
   }
 
   /**
@@ -295,7 +294,8 @@ export class BackgroundHandler {
 
     let selectedSkill = this._actor.system.originSkillsIncrease;
     const [newShift, skillString] = await getShiftedSkill(selectedSkill, -1, this._actor);
-    await attachedItemDelete(origin, this._actor);
+    console.log(origin)
+    await deleteAttachmentsForItem(origin, this._actor);
 
     const essenceString = `system.essences.${essence}`;
 

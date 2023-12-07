@@ -246,6 +246,25 @@ export const migrateActorData = function(actor) {
 };
 
 /**
+  * Handles search of the Compendiums to find the item
+  * @param {Item|String} item  Either an ID or an Item to find in the compendium
+  * @returns {Item}     The Item, if found
+  */
+export async function searchCompendium(item) {
+  const id = item._id || item;
+
+  for (const pack of game.packs) {
+    const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+    if (compendium) {
+      const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
+      if (compendiumItem) {
+        return compendiumItem;
+      }
+    }
+  }
+}
+
+/**
  * Migrate a single Item document to incorporate latest data model changes
  *
  * @param {object} item             Item data to migrate
@@ -307,6 +326,32 @@ export function migrateItemData(item, actor) {
     } else {
       Item.implementation.create(itemData, {keepId: true});
     }
+  } else if (item.type == 'origin') {
+    if (item.system.originPerkIds) {
+      for (const perkIds of item.system.originPerkIds) {
+        attachedItem = searchCompendium(perkIds);
+        console.log(attachedItem);
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+        }
+        const pathPrefix = "system.items";
+
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
+      }
+    }
+
+  } else if (item.type == 'influence') {
+
+  }else if (item.type == 'weapon') {
+
   }
 
   return updateData;

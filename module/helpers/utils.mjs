@@ -113,25 +113,6 @@ export function parseId(uuid) {
 // }
 
 /**
-  * Handles search of the Compendiums to find the item
-  * @param {Item|String} item  Either an ID or an Item to find in the compendium
-  * @returns {Item}     The Item, if found
-  */
-// export async function searchCompendium(item) {
-//   const id = item._id || item;
-
-//   for (const pack of game.packs) {
-//     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-//     if (compendium) {
-//       const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
-//       if (compendiumItem) {
-//         return compendiumItem;
-//       }
-//     }
-//   }
-// }
-
-/**
 * Get Items of a type
 * @param {String} type  The type of Item to return
 * @param {Item[]} items The Items to search through
@@ -302,7 +283,6 @@ export function setOptGroup(select, category, items) {
 /**
  * Displays an error message if the sheet is locked
  * @returns {boolean} True if the sheet is locked, and false otherwise
- * @private
  */
 export function checkIsLocked(actor) {
   if (actor.system.isLocked) {
@@ -318,7 +298,6 @@ export function checkIsLocked(actor) {
 * Generate random number and convert it to base 36 and remove the '0.' at the beginning
 * As long as the string is not long enough, generate more random data into it
 * Use substring in case we generated a string with a length higher than the requested length
-*
 * @param length    The length of the random ID to generate
 * @return          Return a string containing random letters and numbers
 */
@@ -334,7 +313,6 @@ export function randomId(length) {
 * @param {Item} droppedItem The item that was dropped
 * @param {Item} targetItem The item that was dropped on to.
 * @param {object} entry The Object being created.
-* @private
 */
 export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
@@ -414,10 +392,8 @@ export function setEntry(droppedItem, targetItem){
   case "influence":
     if (droppedItem.type == "perk") {
       addItemIfUnique(droppedItem, targetItem, entry);
-      break;
     } else if (droppedItem.type == "hangUp") {
       addItemIfUnique(droppedItem, targetItem, entry);
-      break;
     }
 
     break;
@@ -426,13 +402,19 @@ export function setEntry(droppedItem, targetItem){
   }
 }
 
-export function attachedItemDelete(item, actor) {
+/**
+* Handles deleting items attached to other items
+* @param {Item} item The item that was deleted
+* @param {Actor} actor The actor the parent item is on
+*/
+export function deleteAttachmentsForItem(item, actor) {
   const itemDelete = actor.items.get(item._id);
-  for (const [,deletedItem] of Object.entries(itemDelete.system.items)) {
+  console.log(itemDelete)
+  for (const [,attachment] of Object.entries(itemDelete.system.items)) {
     for (const actorItem of actor.items) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
-      if (itemSourceId == deletedItem.uuid) {
+      if (itemSourceId == attachment.uuid) {
         if (item._id == parentId) {
           actorItem.delete();
         }

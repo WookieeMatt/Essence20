@@ -21,17 +21,20 @@ export class Essence20Item extends Item {
   }
 
   /**
-  * @override
+  * Extends the preparedDerivedData model to add system specific data/.
   */
   prepareDerivedData() {
+    super.prepareDerivedData();
     this._prepareTraits();
+
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
     }
-
-    super.prepareDerivedData();
   }
 
+  /**
+  * prepares the item and any upgrade traits currently on the item
+  */
   _prepareTraits() {
     let itemAndUpgradeTraits = this.system.traits;
     let upgradeTraits = [];
@@ -57,6 +60,9 @@ export class Essence20Item extends Item {
     }
   }
 
+  /**
+  * prepares the combined armor bonuses from the armor and any upgrades
+  */
   _prepareArmorBonuses() {
     let armorBonusToughness = this.system.bonusToughness;
     let armorBonusEvasion  = this.system.bonusEvasion;
@@ -65,9 +71,7 @@ export class Essence20Item extends Item {
       if (item.type == 'upgrade' && item.subtype == 'armor'){
         if (item.armorBonus.defense == 'toughness') {
           armorBonusToughness += item.armorBonus.value;
-        }
-
-        if (item.armorBonus.defense == 'evasion') {
+        } else if (item.armorBonus.defense == 'evasion') {
           armorBonusEvasion += item.armorBonus.value;
         }
       }
@@ -101,6 +105,7 @@ export class Essence20Item extends Item {
    * @private
    */
   async roll(dataset, childKey) {
+    console.log(dataset)
     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
