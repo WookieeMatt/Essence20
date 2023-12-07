@@ -348,9 +348,9 @@ export function migrateItemData(item, actor) {
       }
     }
 
-  // } else if (item.type == 'influence') {
+    // } else if (item.type == 'influence') {
 
-  // }else if (item.type == 'weapon') {
+    // }else if (item.type == 'weapon') {
 
   }
 
