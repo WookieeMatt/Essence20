@@ -336,7 +336,7 @@ export function migrateItemData(item, actor) {
           img: attachedItem.img,
           name: attachedItem.name,
           type: attachedItem.type,
-        }
+        };
         const pathPrefix = "system.items";
 
         let id = "";
@@ -348,11 +348,11 @@ export function migrateItemData(item, actor) {
       }
     }
 
-  } else if (item.type == 'influence') {
+  // } else if (item.type == 'influence') {
 
-  }else if (item.type == 'weapon') {
+  // }else if (item.type == 'weapon') {
 
-  }
+  // }
 
   return updateData;
 }
