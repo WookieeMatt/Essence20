@@ -409,7 +409,6 @@ export function setEntry(droppedItem, targetItem){
 */
 export function deleteAttachmentsForItem(item, actor) {
   const itemDelete = actor.items.get(item._id);
-  console.log(itemDelete)
   for (const [,attachment] of Object.entries(itemDelete.system.items)) {
     for (const actorItem of actor.items) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');

@@ -352,7 +352,7 @@ export function migrateItemData(item, actor) {
 
   // }else if (item.type == 'weapon') {
 
-  // }
+  }
 
   return updateData;
 }
