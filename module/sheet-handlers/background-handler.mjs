@@ -294,7 +294,6 @@ export class BackgroundHandler {
 
     let selectedSkill = this._actor.system.originSkillsIncrease;
     const [newShift, skillString] = await getShiftedSkill(selectedSkill, -1, this._actor);
-    console.log(origin)
     await deleteAttachmentsForItem(origin, this._actor);
 
     const essenceString = `system.essences.${essence}`;
