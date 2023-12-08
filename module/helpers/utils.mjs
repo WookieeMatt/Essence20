@@ -336,7 +336,7 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
   });
 }
 
-export function setEntry(droppedItem, targetItem){
+export function setEntryAndAddItem(droppedItem, targetItem){
   const entry = {
     uuid: droppedItem.uuid,
     img: droppedItem.img,
@@ -409,7 +409,7 @@ export function setEntry(droppedItem, targetItem){
 */
 export function deleteAttachmentsForItem(item, actor) {
   const itemDelete = actor.items.get(item._id);
-  for (const [,attachment] of Object.entries(itemDelete.system.items)) {
+  for (const [, attachment] of Object.entries(itemDelete.system.items)) {
     for (const actorItem of actor.items) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');

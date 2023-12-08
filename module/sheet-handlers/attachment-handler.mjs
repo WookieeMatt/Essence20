@@ -1,7 +1,7 @@
 import {
   getItemsOfType,
   rememberOptions,
-  setEntry,
+  setEntryAndAddItem,
 } from "../helpers/utils.mjs";
 
 export class AttachmentHandler {
@@ -85,7 +85,7 @@ export class AttachmentHandler {
    */
   async _attachItem(targetItem, droppedItem) {
     if (targetItem) {
-      await setEntry(droppedItem, targetItem);
+      await setEntryAndAddItem(droppedItem, targetItem);
     }
   }
 

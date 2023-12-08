@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { setEntry } from "../helpers/utils.mjs";
+import { setEntryAndAddItem } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -100,7 +100,7 @@ export class Essence20ItemSheet extends ItemSheet {
     const data = TextEditor.getDragEventData(event);
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.item;
-    await setEntry(droppedItem, targetItem);
+    await setEntryAndAddItem(droppedItem, targetItem);
 
     this.render(true);
   }

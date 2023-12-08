@@ -33,7 +33,7 @@ export class Essence20Item extends Item {
   }
 
   /**
-  * prepares the item and any upgrade traits currently on the item
+  * Prepares the item and any upgrade traits currently on the item
   */
   _prepareTraits() {
     let itemAndUpgradeTraits = this.system.traits;
@@ -61,7 +61,7 @@ export class Essence20Item extends Item {
   }
 
   /**
-  * prepares the combined armor bonuses from the armor and any upgrades
+  * Prepares the combined armor bonuses from the armor and any upgrades
   */
   _prepareArmorBonuses() {
     let armorBonusToughness = this.system.bonusToughness;
