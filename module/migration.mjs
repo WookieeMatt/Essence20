@@ -408,8 +408,10 @@ export const migrateCompendium = async function(pack) {
         if (doc.type == "threatPower") {
           doc.delete();
         }
-
         updateData = await migrateItemData(doc.toObject());
+        if (doc.type == "origin") {
+          await doc.update({"system.-=originPerkIds": null});
+        }
         break;
       case "Scene":
         // updateData = migrateSceneData(doc.toObject());
