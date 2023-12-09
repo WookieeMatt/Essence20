@@ -1,3 +1,7 @@
+// import {
+//   randomId
+// } from "../helpers/utils.mjs";
+
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @returns {Promise}      A Promise which resolves once the migration is completed
@@ -42,9 +46,9 @@ export const migrateWorld = async function() {
       const updateData = migrateItemData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
-        console.log(updateData);
         await item.update(updateData, {enforceTypes: false, diff: valid});
         await item.update({"system.-=perkType": null});
+        await item.update({"system.-=originPerkIds": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Item ${item.name}: ${err.message}`;
@@ -89,13 +93,13 @@ export const migrateWorld = async function() {
 
   // Migrate World Compendium Packs
   for (let p of game.packs) {
-    if (p.metadata.packageType !== "world") continue;
+    if (p.metadata.packageType !== "world" && p.metadata.packageType !== "system" ) continue;
     if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
-    await migrateCompendium(p);
+     await migrateCompendium(p);
   }
 
   // Set the migration as complete
-  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
@@ -252,7 +256,6 @@ export const migrateActorData = function(actor) {
   */
 export async function searchCompendium(item) {
   const id = item._id || item;
-
   for (const pack of game.packs) {
     const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
     if (compendium) {
@@ -265,12 +268,27 @@ export async function searchCompendium(item) {
 }
 
 /**
+* Generate a random ID
+* Generate random number and convert it to base 36 and remove the '0.' at the beginning
+* As long as the string is not long enough, generate more random data into it
+* Use substring in case we generated a string with a length higher than the requested length
+* @param length    The length of the random ID to generate
+* @return          Return a string containing random letters and numbers
+*/
+export function randomId(length) {
+  const multiplier = Math.pow(10, length);
+  return Math.floor((1 + Math.random()) * multiplier)
+    .toString(16)
+    .substring(1);
+}
+
+/**
  * Migrate a single Item document to incorporate latest data model changes
  *
  * @param {object} item             Item data to migrate
  * @returns {object}                The updateData to apply
  */
-export function migrateItemData(item, actor) {
+export async function migrateItemData(item, actor) {
   const updateData = {};
 
   if (item.type == "armor") {
@@ -328,9 +346,13 @@ export function migrateItemData(item, actor) {
     }
   } else if (item.type == 'origin') {
     if (item.system.originPerkIds) {
-      for (const perkIds of item.system.originPerkIds) {
-        attachedItem = searchCompendium(perkIds);
-        console.log(attachedItem);
+      for (const perkId of item.system.originPerkIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
+        }
+
         const entry = {
           uuid: attachedItem.uuid,
           img: attachedItem.img,
@@ -345,6 +367,7 @@ export function migrateItemData(item, actor) {
         } while (items[id]);
 
         updateData[`${pathPrefix}.${id}`] = entry;
+        console.log(updateData)
       }
     }
 
@@ -387,7 +410,7 @@ export const migrateCompendium = async function(pack) {
           doc.delete();
         }
 
-        updateData = migrateItemData(doc.toObject());
+        updateData = await migrateItemData(doc.toObject());
         break;
       case "Scene":
         // updateData = migrateSceneData(doc.toObject());
@@ -396,10 +419,11 @@ export const migrateCompendium = async function(pack) {
 
       // Save the entry, if data was changed
       if ( foundry.utils.isEmpty(updateData) ) continue;
+      console.log(updateData)
       await doc.update(updateData);
       console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
     } catch(err) { // Handle migration failures
-      err.message = `Failed dnd5e system migration for document ${doc.name} in pack ${pack.collection}: ${err.message}`;
+      err.message = `Failed essence20 system migration for document ${doc.name} in pack ${pack.collection}: ${err.message}`;
       console.error(err);
     }
   }
