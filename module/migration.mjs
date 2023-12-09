@@ -95,7 +95,7 @@ export const migrateWorld = async function() {
   for (let p of game.packs) {
     if (p.metadata.packageType !== "world" && p.metadata.packageType !== "system" ) continue;
     if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
-     await migrateCompendium(p);
+    await migrateCompendium(p);
   }
 
   // Set the migration as complete
@@ -367,7 +367,6 @@ export async function migrateItemData(item, actor) {
         } while (items[id]);
 
         updateData[`${pathPrefix}.${id}`] = entry;
-        console.log(updateData)
       }
     }
 
@@ -419,7 +418,6 @@ export const migrateCompendium = async function(pack) {
 
       // Save the entry, if data was changed
       if ( foundry.utils.isEmpty(updateData) ) continue;
-      console.log(updateData)
       await doc.update(updateData);
       console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
     } catch(err) { // Handle migration failures
