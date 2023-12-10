@@ -327,6 +327,7 @@ export async function migrateItemData(item, actor) {
         if (!attachedItem) {
           attachedItem = await searchCompendium(perkId);
         }
+
         let originalArmorBonus = 0;
         if (attachedItem.armorBonus) {
           if (attachedItem.armorBonus.defense == 'toughness') {
@@ -363,11 +364,12 @@ export async function migrateItemData(item, actor) {
       }
 
       if (item.system.upgradeTraits) {
-        let keptTraits = item.system.traits
+        let keptTraits = item.system.traits;
         for (const removedTrait of item.system.upgradeTraits) {
           keptTraits.filter(x => x !== removedTrait);
         }
-        updateData[`system.traits`] = keptTraits
+
+        updateData[`system.traits`] = keptTraits;
       }
 
 
@@ -510,13 +512,15 @@ export async function migrateItemData(item, actor) {
       }
 
       if (item.system.upgradeTraits) {
-        let keptTraits = item.system.traits
+        let keptTraits = item.system.traits;
         for (const removedTrait of item.system.upgradeTraits) {
           keptTraits.filter(x => x !== removedTrait);
         }
-        updateData[`system.traits`] = keptTraits
+
+        updateData[`system.traits`] = keptTraits;
       }
     }
+
     if (item.system.weaponEffectIds) {
       for (const perkId of item.system.weaponEffectIds) {
         let attachedItem = "";
@@ -593,6 +597,7 @@ export const migrateCompendium = async function(pack) {
           await doc.update({"system.-=perkIds": null});
           await doc.update({"system.-=hangUpIds": null});
         }
+
         break;
       case "Scene":
         // updateData = migrateSceneData(doc.toObject());
