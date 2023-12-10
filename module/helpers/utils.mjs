@@ -384,7 +384,7 @@ export function setEntryAndAddItem(droppedItem, targetItem){
       entry['radius'] = droppedItem.system.radius;
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
-      entry['traits'] = droppedItem.system.damageType;
+      entry['traits'] = droppedItem.system.traits;
       addItemIfUnique(droppedItem, targetItem, entry);
     }
 

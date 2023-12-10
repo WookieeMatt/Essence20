@@ -49,6 +49,8 @@ export const migrateWorld = async function() {
         await item.update(updateData, {enforceTypes: false, diff: valid});
         await item.update({"system.-=perkType": null});
         await item.update({"system.-=originPerkIds": null});
+        await item.update({"system.-=perkIds": null});
+        await item.update({"system.-=hangUpIds": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Item ${item.name}: ${err.message}`;
@@ -231,7 +233,7 @@ export const migrateActorData = function(actor) {
       }
     }
 
-    let itemUpdate = migrateItemData(itemData, fullActor);
+    let itemUpdate = await migrateItemData(itemData, fullActor);
 
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
@@ -316,6 +318,61 @@ export async function migrateItemData(item, actor) {
     if (effect && !item.system.bonusToughness) {
       updateData[`system.bonusToughness`] = effect;
     }
+
+    //Armor Upgrade Migration to system.items
+    if (item.system.upgradeIds) {
+      for (const perkId of item.system.upgradeIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
+        }
+        let originalArmorBonus = 0;
+        if (attachedItem.armorBonus) {
+          if (attachedItem.armorBonus.defense == 'toughness') {
+            originalArmorBonus = item.system.bonusToughness - attachedItem.armorBonus.value;
+            updateData[`system.bonusToughness`] = originalArmorBonus;
+          } else if (attachedItem.armorBonus.defense == 'evasion') {
+            originalArmorBonus = item.system.bonusEvasion - attachedItem.armorBonus.value;
+            updateData[`system.bonusEvasion`] = originalArmorBonus;
+          }
+        }
+
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+          armorBonus: attachedItem.armorBonus,
+          availability: attachedItem.availability,
+          benefit: attachedItem.benefit,
+          description: attachedItem.description,
+          prerequisite: attachedItem.prerequisite,
+          source: attachedItem.source,
+          subtype: attachedItem.type,
+          traits: attachedItem.traits,
+        };
+        const pathPrefix = "system.items";
+
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (item.system.items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
+      }
+
+      if (item.system.upgradeTraits) {
+        let keptTraits = item.system.traits
+        for (const removedTrait of item.system.upgradeTraits) {
+          keptTraits.filter(x => x !== removedTrait);
+        }
+        updateData[`system.traits`] = keptTraits
+      }
+
+
+    }
+
   } else if (item.type == "perk") {
     if (item.system.perkType) {
       const perkType = item.system.perkType;
@@ -364,20 +421,141 @@ export async function migrateItemData(item, actor) {
         let id = "";
         do {
           id = randomId(5);
-        } while (items[id]);
+        } while (item.system.items[id]);
 
         updateData[`${pathPrefix}.${id}`] = entry;
       }
     }
 
-    // } else if (item.type == 'influence') {
+  } else if (item.type == 'influence') {
+    if (item.system.perkIds) {
+      for (const perkId of item.system.perkIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
+        }
 
-    // }else if (item.type == 'weapon') {
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+        };
+        const pathPrefix = "system.items";
 
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (item.system.items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
+      }
+    }
+
+    if (item.system.hangUpIds) {
+      for (const perkId of item.system.hangUpIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
+        }
+
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+        };
+        const pathPrefix = "system.items";
+
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (item.system.items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
+      }
+    }
+  }else if (item.type == 'weapon') {
+    if (item.system.upgradeIds) {
+      for (const perkId of item.system.upgradeIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
+        }
+
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+          availability: attachedItem.availability,
+          benefit: attachedItem.benefit,
+          description: attachedItem.description,
+          prerequisite: attachedItem.prerequisite,
+          source: attachedItem.source,
+          subtype: attachedItem.type,
+          traits: attachedItem.traits,
+        };
+        const pathPrefix = "system.items";
+
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (item.system.items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
+      }
+
+      if (item.system.upgradeTraits) {
+        let keptTraits = item.system.traits
+        for (const removedTrait of item.system.upgradeTraits) {
+          keptTraits.filter(x => x !== removedTrait);
+        }
+        updateData[`system.traits`] = keptTraits
+      }
+    }
+    if (item.system.weaponEffectIds) {
+      for (const perkId of item.system.weaponEffectIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
+        }
+
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+          classification: attachedItem.classification,
+          damageValue: attachedItem.damageValue,
+          damageType: attachedItem.damageType,
+          numHands: attachedItem.numHands,
+          numTargets: attachedItem.numTargets,
+          radius: attachedItem.radius,
+          range: attachedItem.range,
+          shiftDown: attachedItem.shiftDown,
+          traits: attachedItem.traits,
+        };
+        const pathPrefix = "system.items";
+
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (item.system.items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
+      }
+    }
   }
 
   return updateData;
 }
+
+
 
 /**
  * Apply migration rules to all Documents within a single Compendium pack
@@ -411,6 +589,9 @@ export const migrateCompendium = async function(pack) {
         updateData = await migrateItemData(doc.toObject());
         if (doc.type == "origin") {
           await doc.update({"system.-=originPerkIds": null});
+        } else if (doc.type == "influence") {
+          await doc.update({"system.-=perkIds": null});
+          await doc.update({"system.-=hangUpIds": null});
         }
         break;
       case "Scene":
