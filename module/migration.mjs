@@ -51,6 +51,8 @@ export const migrateWorld = async function() {
         await item.update({"system.-=originPerkIds": null});
         await item.update({"system.-=perkIds": null});
         await item.update({"system.-=hangUpIds": null});
+        await item.update({"system.-=upgradeIds": null});
+        await item.update({"system.-=weaponEffectIds": null});
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Item ${item.name}: ${err.message}`;
@@ -101,7 +103,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
@@ -597,6 +599,8 @@ export const migrateCompendium = async function(pack) {
         } else if (doc.type == "influence") {
           await doc.update({"system.-=perkIds": null});
           await doc.update({"system.-=hangUpIds": null});
+          await doc.update({"system.-=upgradeIds": null});
+          await doc.update({"system.-=weaponEffectIds": null});
         }
 
         break;

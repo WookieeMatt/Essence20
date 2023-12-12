@@ -641,6 +641,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const li = $(event.currentTarget).closest(".item");
     const itemId = li.data("itemId");
     const parentId = li.data("parentId");
+    const item = this.actor.items.get(itemId);
 
     // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     const parentItem = this.actor.items.get(parentId);
@@ -650,12 +651,14 @@ export class Essence20ActorSheet extends ActorSheet {
 
       await parentItem.update({[updateString]: null});
 
+      item.delete();
       li.slideUp(200, () => this.render(false));
     }
 
-    const item = this.actor.items.get(itemId);
     if (item) {
-      if (item.type == "origin") {
+      if (item.type == "armor") {
+        deleteAttachmentsForItem(item, this.actor);
+      } else if (item.type == "origin") {
         this._bgHandler.onOriginDelete(item);
       } else if (item.type == 'influence') {
         deleteAttachmentsForItem(item, this.actor);
@@ -665,6 +668,8 @@ export class Essence20ActorSheet extends ActorSheet {
         this._alHandler.onAlterationDelete(item);
       } else if (item.type == "perk") {
         this._pkHandler.onPerkDelete(item);
+      } else if (item.type == "weapon") {
+        deleteAttachmentsForItem(item, this.actor);
       }
 
       item.delete();
@@ -716,6 +721,8 @@ export class Essence20ActorSheet extends ActorSheet {
     switch (sourceItem.type) {
     case 'alteration':
       return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'armor':
+      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data))
     case 'influence':
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
@@ -726,6 +733,8 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
+    case 'weapon':
+      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data))
     case 'weaponEffect':
       return this._atHandler.attachItem(sourceItem);
 

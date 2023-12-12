@@ -171,11 +171,12 @@ export function rememberValues(html) {
  * @param {Item} parentItem The item(s) parent item
  */
 export async function createItemCopies(items, owner, type, parentItem) {
-  for (const [, item] of Object.entries(items)) {
+  for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const itemToCreate = await fromUuid(item.uuid);
       const newItem = await Item.create(itemToCreate, { parent: owner });
       newItem.setFlag('core', 'sourceId', item.uuid);
+      newItem.setFlag('essence20', 'collectionId', key);
 
       if(parentItem) {
         newItem.setFlag('essence20', 'parentId', parentItem._id);
@@ -409,7 +410,7 @@ export function setEntryAndAddItem(droppedItem, targetItem){
 */
 export function deleteAttachmentsForItem(item, actor) {
   const itemDelete = actor.items.get(item._id);
-  for (const [, attachment] of Object.entries(itemDelete.system.items)) {
+  for (const [key, attachment] of Object.entries(itemDelete.system.items)) {
     for (const actorItem of actor.items) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');

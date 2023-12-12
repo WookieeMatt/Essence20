@@ -1,4 +1,5 @@
 import {
+  createItemCopies,
   getItemsOfType,
   rememberOptions,
   setEntryAndAddItem,
@@ -12,6 +13,21 @@ export class AttachmentHandler {
   constructor(actorSheet) {
     this._actorSheet = actorSheet;
     this._actor = actorSheet.actor;
+  }
+
+  /**
+  * Initiates the process to apply an attachment item to an item on the actor sheet
+  * @param {Item} droppedItem   The attachment
+  */
+  async gearDrop(droppedItem, dropFunc) {
+    const newGearList = await dropFunc();
+    console.log(droppedItem);
+    if (droppedItem.system.items) {
+      await createItemCopies(droppedItem.system.items, this._actor, "upgrade", newGearList[0]);
+      if (droppedItem.type == 'weapon') {
+        await createItemCopies(droppedItem.system.items, this._actor, "weaponEffect", newGearList[0]);
+      }
+    }
   }
 
   /**
