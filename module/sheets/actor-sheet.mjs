@@ -722,7 +722,7 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'alteration':
       return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'armor':
-      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data))
+      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
@@ -734,7 +734,7 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
-      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data))
+      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
     case 'weaponEffect':
       return this._atHandler.attachItem(sourceItem);
 

@@ -103,7 +103,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
@@ -329,6 +329,7 @@ export async function migrateItemData(item, actor) {
         if (!attachedItem) {
           attachedItem = await searchCompendium(perkId);
         }
+        attachedItem.setFlag('core', 'parentId', item.uuid);
 
         let originalArmorBonus = 0;
         if (attachedItem.armorBonus) {
@@ -489,6 +490,7 @@ export async function migrateItemData(item, actor) {
         if (!attachedItem) {
           attachedItem = await searchCompendium(perkId);
         }
+        attachedItem.setFlag('core', 'parentId', item.uuid);
 
         const entry = {
           uuid: attachedItem.uuid,
@@ -530,6 +532,7 @@ export async function migrateItemData(item, actor) {
         if (!attachedItem) {
           attachedItem = await searchCompendium(perkId);
         }
+        attachedItem.setFlag('core', 'parentId', item.uuid);
 
         const entry = {
           uuid: attachedItem.uuid,
