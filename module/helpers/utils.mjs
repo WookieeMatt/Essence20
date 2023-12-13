@@ -186,18 +186,6 @@ export async function createItemCopies(items, owner, type, parentItem) {
 }
 
 /**
-* Handle deleting of items by an Id
-* @param {String} id   ID of the item to delete
-* @param {Actor} owner The Items' owner
-*/
-// export function itemDeleteById(id, owner) {
-//   let item = owner.items.get(id);
-//   if (item) {
-//     item.delete();
-//   }
-// }
-
-/**
  * Handle looking up tokens associated with actor and changing size
  * @param {Actor} actor  The actor
  * @param {Number} width The actor's new width

@@ -106,28 +106,6 @@ export class Essence20ItemSheet extends ItemSheet {
   }
 
   /**
-  * Handle adding Traits to Items from a dropped Upgrade
-  * @param {Upgrade} upgrade  The upgrade that was dropped
-  * @private
-  */
-  // async _addDroppedUpgradeTraits(upgrade) {
-  //   if (upgrade.system.traits.length > 0) {
-  //     const itemTraits = this.item.system.traits;
-  //     const itemUpgradeTraits = this.item.system.upgradeTraits;
-
-  //     for (const droppedTrait of upgrade.system.traits) {
-  //       if (!itemTraits.includes(droppedTrait) && !itemUpgradeTraits.includes(droppedTrait)) {
-  //         itemUpgradeTraits.push(droppedTrait);
-  //       }
-  //     }
-
-  //     await this.item.update({
-  //       "system.upgradeTraits": itemUpgradeTraits,
-  //     }).then(this.render(false));
-  //   }
-  // }
-
-  /**
   * Handle deleting of a Ids from an item Sheet
   * @param {String} cssClass           Where the deleted item is on the sheet
   * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
@@ -143,61 +121,4 @@ export class Essence20ItemSheet extends ItemSheet {
     li.slideUp(200, () => this.render(false));
   }
 
-  /**
-  * Handle deleting of an Upgrade from an Item sheet
-  * @param {DeleteEvent} event            The concluding DragEvent which contains drop data
-  * @private
-  */
-  // async _onUpgradeDelete(event) {
-  //   const li = $(event.currentTarget).parents(".upgrade");
-  //   const upgradeId = li.data("itemKey");
-
-  //   if (this.item.system.items[upgradeId].traits.length>0) {
-  //     let keptTraits = this.item.system.upgradeTraits;
-  //     const upgradeIds = this.item.system.upgradeIds;
-
-  //     for (const deletedUpgradeTrait of deletedUpgrade.system.traits) {
-  //       let isOtherItemTrait = false;
-
-  //       if (keptTraits.includes(deletedUpgradeTrait)) {
-  //         for (const id of upgradeIds) {
-  //           if (upgradeId != id) {
-  //             let otherItem = game.items.get(id);
-  //             if (!otherItem) {
-  //               otherItem = await searchCompendium(id);
-  //             }
-
-  //             if (otherItem.system.traits.includes(deletedUpgradeTrait)) {
-  //               isOtherItemTrait = true;
-  //               break;
-  //             }
-  //           }
-  //         }
-  //       }
-
-  //       if (!isOtherItemTrait) {
-  //         keptTraits = keptTraits.filter(x => x !== deletedUpgradeTrait);
-  //       }
-  //     }
-
-  //     await this.item.update({
-  //       "system.upgradeTraits": keptTraits,
-  //     }).then(this.render(false));
-  //   }
-
-  //   if (deletedUpgrade.system.armorBonus.value > 0) {
-  //     const defenseName = deletedUpgrade.system.armorBonus.defense.charAt(0).toUpperCase() + deletedUpgrade.system.armorBonus.defense.slice(1);
-  //     const armorString = `system.bonus${defenseName}`;
-  //     const defense = this.item.system[`bonus${defenseName}`] -= deletedUpgrade.system.armorBonus.value;
-  //     await this.item.update({
-  //       [armorString]: defense,
-  //     }).then(this.render(false));
-  //   }
-
-  //   let upgradeIds = this.item.system.upgradeIds.filter(x => x !== upgradeId);
-  //   this.item.update({
-  //     "system.upgradeIds": upgradeIds,
-  //   });
-  //   li.slideUp(200, () => this.render(false));
-  // }
 }
