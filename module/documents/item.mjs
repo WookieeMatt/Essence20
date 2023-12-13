@@ -12,10 +12,9 @@ export class Essence20Item extends Item {
   }
 
   async _preCreate(data, options, userId) {
-    await super._preCreate(data,options,userId)
+    await super._preCreate(data,options,userId);
     if (data.img === undefined) {
       const image = CONFIG.E20.defaultIcon[this.type];
-      console.log(image)
       if (image) this.updateSource({ img: image });
     }
   }
