@@ -90,28 +90,6 @@ export function parseId(uuid) {
   return index || null;
 }
 
-// /**
-//  * Retrieve the indexed data for a Document using its UUID. Will never return a result for embedded documents.
-//  * @param {string} uuid  The UUID of the Document index to retrieve.
-//  * @returns {object}     Document's index if one could be found.
-//  */
-// export function indexFromUuid(uuid) {
-//   const parts = uuid.split(".");
-//   let index;
-
-//   if (parts[0] === "Compendium") { // Compendium Documents
-//     const [, scope, packName, , id] = parts;
-//     const pack = game.packs.get(`${scope}.${packName}`);
-//     index = pack?.index.get(id);
-//   } else if (parts.length < 3) {   // World Documents
-//     const [docName, id] = parts;
-//     const collection = CONFIG[docName].collection.instance;
-//     index = collection.get(id);
-//   }
-
-//   return index || null;
-// }
-
 /**
 * Get Items of a type
 * @param {String} type  The type of Item to return

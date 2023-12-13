@@ -1,7 +1,3 @@
-// import {
-//   randomId
-// } from "../helpers/utils.mjs";
-
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @returns {Promise}      A Promise which resolves once the migration is completed
