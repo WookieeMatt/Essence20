@@ -329,6 +329,7 @@ export async function migrateItemData(item, actor) {
         if (!attachedItem) {
           attachedItem = await searchCompendium(perkId);
         }
+
         attachedItem.setFlag('core', 'parentId', item.uuid);
 
         let originalArmorBonus = 0;
@@ -490,6 +491,7 @@ export async function migrateItemData(item, actor) {
         if (!attachedItem) {
           attachedItem = await searchCompendium(perkId);
         }
+
         attachedItem.setFlag('core', 'parentId', item.uuid);
 
         const entry = {
@@ -532,6 +534,7 @@ export async function migrateItemData(item, actor) {
         if (!attachedItem) {
           attachedItem = await searchCompendium(perkId);
         }
+
         attachedItem.setFlag('core', 'parentId', item.uuid);
 
         const entry = {
