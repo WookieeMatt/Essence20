@@ -11,6 +11,15 @@ export class Essence20Item extends Item {
     this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
   }
 
+  async _preCreate(data, options, userId) {
+    await super._preCreate(data,options,userId)
+    if (data.img === undefined) {
+      const image = CONFIG.E20.defaultIcon[this.type];
+      console.log(image)
+      if (image) this.updateSource({ img: image });
+    }
+  }
+
   /**
    * Augment the basic Item data model with additional dynamic data.
    */
