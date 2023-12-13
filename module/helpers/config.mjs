@@ -420,6 +420,7 @@ E20.defaultIcon = {
   altMode: "systems/essence20/assets/icons/items/altmode.svg",
   armor: "systems/essence20/assets/icons/items/armor.svg",
   gear: "systems/essence20/assets/icons/items/gear.svg",
+  hangUp: "icons/svg/hazard.svg",
   influence: "systems/essence20/assets/icons/items/influence.svg",
   origin: "systems/essence20/assets/icons/items/origin.svg",
   perk: "systems/essence20/assets/icons/items/perk.svg",
