@@ -11,6 +11,12 @@ export class Essence20Item extends Item {
     this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
   }
 
+  /**
+   * Sets the basic values of an item between submiting the create and opening the item sheet.
+   * @param {Data} data The information about the item.
+   * @param {Options} options The options from the sheet
+   * @param {userId} userId The user creating the item
+   */
   async _preCreate(data, options, userId) {
     await super._preCreate(data,options,userId);
     if (data.img === undefined) {
