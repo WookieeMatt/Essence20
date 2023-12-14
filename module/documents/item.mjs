@@ -12,10 +12,10 @@ export class Essence20Item extends Item {
   }
 
   /**
-   * Sets the basic values of an item between submiting the create and opening the item sheet.
-   * @param {Data} data The information about the item.
-   * @param {Options} options The options from the sheet
-   * @param {userId} userId The user creating the item
+   * Sets the basic values of an item after creation but before opening its sheet.
+   * @param {Object} data The information about the item.
+   * @param {Object} options The options from the sheet
+   * @param {String} userId The user creating the item
    */
   async _preCreate(data, options, userId) {
     await super._preCreate(data,options,userId);
