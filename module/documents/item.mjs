@@ -18,7 +18,7 @@ export class Essence20Item extends Item {
    * @param {String} userId The user creating the item
    */
   async _preCreate(data, options, userId) {
-    await super._preCreate(data,options,userId);
+    await super._preCreate(data, options, userId);
     if (data.img === undefined) {
       const image = CONFIG.E20.defaultIcon[this.type];
       if (image) this.updateSource({ img: image });
