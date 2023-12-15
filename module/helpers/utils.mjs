@@ -316,3 +316,19 @@ export function checkIsLocked(actor) {
 
   return false;
 }
+
+/**
+* Generate a random ID
+* Generate random number and convert it to base 36 and remove the '0.' at the beginning
+* As long as the string is not long enough, generate more random data into it
+* Use substring in case we generated a string with a length higher than the requested length
+*
+* @param length    The length of the random ID to generate
+* @return          Return a string containing random letters and numbers
+*/
+export function randomId(length) {
+  const multiplier = Math.pow(10, length);
+  return Math.floor((1 + Math.random()) * multiplier)
+    .toString(16)
+    .substring(1);
+}

@@ -759,8 +759,8 @@
         "itemDescription"
       ],
       "essences": "",
+      "items": {},
       "roleId": "",
-      "rolePerkIds": [],
       "skills": []
     },
     "gear": {
@@ -857,6 +857,7 @@
         "speed":  [],
         "strength":  []
       },
+      "items": {},
       "perkLevels": {
         "general": []
       },
