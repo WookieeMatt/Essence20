@@ -637,14 +637,26 @@ export class Essence20ActorSheet extends ActorSheet {
     if (checkIsLocked(this.actor)) {
       return;
     }
-
+    let item = "";
     const li = $(event.currentTarget).closest(".item");
     const itemId = li.data("itemId");
     const parentId = li.data("parentId");
-    const item = this.actor.items.get(itemId);
-
-    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     const parentItem = this.actor.items.get(parentId);
+    if (itemId) {
+      item = this.actor.items.get(itemId);
+    } else {
+      const keyId = li.data("itemKey");
+
+      for (const attachedItem of this.actor.items) {
+        const collectionId = await attachedItem.getFlag('essence20', 'collectionId');
+        if (collectionId) {
+          if (keyId == collectionId) {
+            item = attachedItem;
+          }
+        }
+      }
+    }
+    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     if (parentItem) {
       const id = li.data("itemKey");
       const updateString = `system.items.-=${id}`;
@@ -653,9 +665,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
       item.delete();
       li.slideUp(200, () => this.render(false));
-    }
 
-    if (item) {
+    } else {
       if (item.type == "armor") {
         deleteAttachmentsForItem(item, this.actor);
       } else if (item.type == "origin") {

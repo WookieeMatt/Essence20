@@ -375,8 +375,7 @@ export function setEntryAndAddItem(droppedItem, targetItem){
 * @param {Actor} actor The actor the parent item is on
 */
 export function deleteAttachmentsForItem(item, actor) {
-  const itemDelete = actor.items.get(item._id);
-  for (const [, attachment] of Object.entries(itemDelete.system.items)) {
+  for (const [, attachment] of Object.entries(item.system.items)) {
     for (const actorItem of actor.items) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
