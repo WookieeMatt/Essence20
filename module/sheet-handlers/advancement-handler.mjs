@@ -9,9 +9,10 @@ export class AdvancementHandler {
   }
 
   onLevelChange(actor) {
-    if (actor.flags.essence20.lastLevelUp) {
+    const lastLevelUp = this._actor.getFlag('essence20', 'lastLevelUp');
+    if (lastLevelUp) {
       if (this._actor.system.level != actor.flags.essence20.lastLevelUp) {
-        this._actor.seFlag('essence20', 'lastLevelUp', this._actor.system.level);
+        this._actor.setFlag('essence20', 'lastLevelUp', this._actor.system.level);
       }
     }
   }

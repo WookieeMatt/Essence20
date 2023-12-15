@@ -640,9 +640,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     const li = $(event.currentTarget).closest(".item");
-    console.log(event)
     const itemId = li.data("itemId");
-    console.log(itemId)
     const parentId = li.data("parentId");
 
     // Check if this item has a parent item, such as for deleting an upgrade from a weapon
