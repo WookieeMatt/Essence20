@@ -637,6 +637,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (checkIsLocked(this.actor)) {
       return;
     }
+
     let item = "";
     const li = $(event.currentTarget).closest(".item");
     const itemId = li.data("itemId");
@@ -656,6 +657,7 @@ export class Essence20ActorSheet extends ActorSheet {
         }
       }
     }
+
     // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     if (parentItem) {
       const id = li.data("itemKey");
