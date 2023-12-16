@@ -358,8 +358,8 @@ export async function migrateItemData(item, actor) {
         id = randomId(5);
       } while (item.system.items[id]);
 
-        updateData[`${pathPrefix}.${id}`] = entry;
-      }
+      updateData[`${pathPrefix}.${id}`] = entry;
+    }
 
     if (item.system.upgradeTraits) {
       let keptTraits = item.system.traits;
@@ -512,6 +512,7 @@ export async function migrateItemData(item, actor) {
       for (const removedTrait of item.system.upgradeTraits) {
         keptTraits.filter(x => x !== removedTrait);
       }
+
       updateData[`system.traits`] = keptTraits;
     }
 
