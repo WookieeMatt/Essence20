@@ -306,7 +306,7 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
 
   const pathPrefix = "system.items";
 
-  const id = createId(items)
+  const id = createId(items);
 
   await targetItem.update({
     [`${pathPrefix}.${id}`]: entry,

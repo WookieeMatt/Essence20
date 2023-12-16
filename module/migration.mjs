@@ -279,15 +279,16 @@ export async function getItem(perkId) {
   if (!attachedItem) {
     attachedItem = await searchCompendium(perkId);
   }
+
   return attachedItem;
 }
 
-  /**
- * Migrate a single Item document to incorporate latest data model changes
- *
- * @param {object} item             Item data to migrate
- * @returns {object}                The updateData to apply
- */
+/**
+* Migrate a single Item document to incorporate latest data model changes
+*
+* @param {object} item             Item data to migrate
+* @returns {object}                The updateData to apply
+*/
 export async function migrateItemData(item, actor) {
   const updateData = {};
   const pathPrefix = "system.items";
@@ -350,7 +351,7 @@ export async function migrateItemData(item, actor) {
             traits: attachedItem.traits,
           };
 
-          const id = createId(item.system.items)
+          const id = createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -405,7 +406,7 @@ export async function migrateItemData(item, actor) {
             type: attachedItem.type,
           };
 
-          const id = createId(item.system.items)
+          const id = createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -425,7 +426,7 @@ export async function migrateItemData(item, actor) {
             type: attachedItem.type,
           };
 
-          const id = createId(item.system.items)
+          const id = createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -444,7 +445,7 @@ export async function migrateItemData(item, actor) {
             type: attachedItem.type,
           };
 
-          const id = createId(item.system.items)
+          const id = createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -472,7 +473,7 @@ export async function migrateItemData(item, actor) {
             traits: attachedItem.traits,
           };
 
-          const id = createId(item.system.items)
+          const id = createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -510,7 +511,7 @@ export async function migrateItemData(item, actor) {
             traits: attachedItem.traits,
           };
 
-          const id = createId(item.system.items)
+          const id = createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
