@@ -35,7 +35,7 @@ export class Essence20Item extends Item {
   }
 
   /**
-  * Extends the preparedDerivedData model to add system specific data/.
+  * Extends the preparedDerivedData model to add system specific data.
   */
   prepareDerivedData() {
     super.prepareDerivedData();
@@ -116,6 +116,7 @@ export class Essence20Item extends Item {
   /**
    * Handle clickable rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {Key} childKey The key of the item attached to another item
    * @private
    */
   async roll(dataset, childKey) {

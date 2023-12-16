@@ -143,7 +143,7 @@ export function rememberValues(html) {
 
 /**
  * Creates copies of Items for given IDs
- * @param {Item} items The item(s) to copy
+ * @param {Item[]} items The item(s) to copy
  * @param {Actor} owner The item(s)' owner
  * @param {String} type The type of item(s) to drop
  * @param {Item} parentItem The item(s) parent item
@@ -156,7 +156,7 @@ export async function createItemCopies(items, owner, type, parentItem) {
       newItem.setFlag('core', 'sourceId', item.uuid);
       newItem.setFlag('essence20', 'collectionId', key);
 
-      if(parentItem) {
+      if (parentItem) {
         newItem.setFlag('essence20', 'parentId', parentItem._id);
       }
     }
@@ -279,7 +279,7 @@ export function randomId(length) {
 * Handles validating an item being dropped is unique
 * @param {Item} droppedItem The item that was dropped
 * @param {Item} targetItem The item that was dropped on to.
-* @param {object} entry The Object being created.
+* @param {Object} entry The entry for the item being added
 */
 export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
@@ -303,7 +303,12 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
   });
 }
 
-export function setEntryAndAddItem(droppedItem, targetItem){
+/**
+* Handles setting the value of the Entry variable and calling the creating function.
+* @param {Item} droppedItem The item that is being attached on the item
+* @param {Item} atttachedItem The item that we are attaching to.
+*/
+export function setEntryAndAddItem(droppedItem, targetItem) {
   const entry = {
     uuid: droppedItem.uuid,
     img: droppedItem.img,
