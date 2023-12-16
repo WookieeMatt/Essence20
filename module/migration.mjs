@@ -290,6 +290,7 @@ export function randomId(length) {
  */
 export async function migrateItemData(item, actor) {
   const updateData = {};
+  const pathPrefix = "system.items";
 
   if (item.type == "armor") {
     // Armor trait -> traits migration
@@ -318,58 +319,58 @@ export async function migrateItemData(item, actor) {
     }
 
     //Armor Upgrade Migration to system.items
-    for (const perkId of item.system.upgradeIds) {
-      let attachedItem = "";
-      attachedItem = await fromUuid(`Item.${perkId}`);
-      if (!attachedItem) {
-        attachedItem = await searchCompendium(perkId);
-      }
-
-      attachedItem.setFlag('core', 'parentId', item.uuid);
-
-      if (attachedItem.armorBonus) {
-        if (attachedItem.armorBonus.defense == 'toughness') {
-          const originalArmorBonus = item.system.bonusToughness - attachedItem.armorBonus.value;
-          updateData[`system.bonusToughness`] = originalArmorBonus;
-        } else if (attachedItem.armorBonus.defense == 'evasion') {
-          const originalArmorBonus = item.system.bonusEvasion - attachedItem.armorBonus.value;
-          updateData[`system.bonusEvasion`] = originalArmorBonus;
+    if (item.system.upgradeIds) {
+      for (const perkId of item.system.upgradeIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
         }
+
+        attachedItem.setFlag('core', 'parentId', item.uuid);
+
+        if (attachedItem.armorBonus) {
+          if (attachedItem.armorBonus.defense == 'toughness') {
+            const originalArmorBonus = item.system.bonusToughness - attachedItem.armorBonus.value;
+            updateData[`system.bonusToughness`] = originalArmorBonus;
+          } else if (attachedItem.armorBonus.defense == 'evasion') {
+            const originalArmorBonus = item.system.bonusEvasion - attachedItem.armorBonus.value;
+            updateData[`system.bonusEvasion`] = originalArmorBonus;
+          }
+        }
+
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+          armorBonus: attachedItem.armorBonus,
+          availability: attachedItem.availability,
+          benefit: attachedItem.benefit,
+          description: attachedItem.description,
+          prerequisite: attachedItem.prerequisite,
+          source: attachedItem.source,
+          subtype: attachedItem.type,
+          traits: attachedItem.traits,
+        };
+
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (item.system.items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
       }
 
-      const entry = {
-        uuid: attachedItem.uuid,
-        img: attachedItem.img,
-        name: attachedItem.name,
-        type: attachedItem.type,
-        armorBonus: attachedItem.armorBonus,
-        availability: attachedItem.availability,
-        benefit: attachedItem.benefit,
-        description: attachedItem.description,
-        prerequisite: attachedItem.prerequisite,
-        source: attachedItem.source,
-        subtype: attachedItem.type,
-        traits: attachedItem.traits,
-      };
-      const pathPrefix = "system.items";
+      if (item.system.upgradeTraits) {
+        let keptTraits = item.system.traits;
+        for (const removedTrait of item.system.upgradeTraits) {
+          keptTraits.filter(x => x !== removedTrait);
+        }
 
-      let id = "";
-      do {
-        id = randomId(5);
-      } while (item.system.items[id]);
-
-      updateData[`${pathPrefix}.${id}`] = entry;
-    }
-
-    if (item.system.upgradeTraits) {
-      let keptTraits = item.system.traits;
-      for (const removedTrait of item.system.upgradeTraits) {
-        keptTraits.filter(x => x !== removedTrait);
+        updateData[`system.traits`] = keptTraits;
       }
-
-      updateData[`system.traits`] = keptTraits;
     }
-
   } else if (item.type == "perk") {
     if (item.system.perkType) {
       const perkType = item.system.perkType;
@@ -413,7 +414,6 @@ export async function migrateItemData(item, actor) {
           name: attachedItem.name,
           type: attachedItem.type,
         };
-        const pathPrefix = "system.items";
 
         let id = "";
         do {
@@ -439,7 +439,6 @@ export async function migrateItemData(item, actor) {
           name: attachedItem.name,
           type: attachedItem.type,
         };
-        const pathPrefix = "system.items";
 
         let id = "";
         do {
@@ -464,7 +463,6 @@ export async function migrateItemData(item, actor) {
           name: attachedItem.name,
           type: attachedItem.type,
         };
-        const pathPrefix = "system.items";
 
         let id = "";
         do {
@@ -475,81 +473,82 @@ export async function migrateItemData(item, actor) {
       }
     }
   } else if (item.type == 'weapon') {
-    for (const perkId of item.system.upgradeIds) {
-      let attachedItem = "";
-      attachedItem = await fromUuid(`Item.${perkId}`);
-      if (!attachedItem) {
-        attachedItem = await searchCompendium(perkId);
+    if (item.system.upgradeIds) {
+      for (const perkId of item.system.upgradeIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
+        }
+
+        attachedItem.setFlag('core', 'parentId', item.uuid);
+
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+          availability: attachedItem.availability,
+          benefit: attachedItem.benefit,
+          description: attachedItem.description,
+          prerequisite: attachedItem.prerequisite,
+          source: attachedItem.source,
+          subtype: attachedItem.type,
+          traits: attachedItem.traits,
+        };
+
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (item.system.items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
       }
 
-      attachedItem.setFlag('core', 'parentId', item.uuid);
+      if (item.system.upgradeTraits) {
+        let keptTraits = item.system.traits;
+        for (const removedTrait of item.system.upgradeTraits) {
+          keptTraits.filter(x => x !== removedTrait);
+        }
 
-      const entry = {
-        uuid: attachedItem.uuid,
-        img: attachedItem.img,
-        name: attachedItem.name,
-        type: attachedItem.type,
-        availability: attachedItem.availability,
-        benefit: attachedItem.benefit,
-        description: attachedItem.description,
-        prerequisite: attachedItem.prerequisite,
-        source: attachedItem.source,
-        subtype: attachedItem.type,
-        traits: attachedItem.traits,
-      };
-      const pathPrefix = "system.items";
-
-      let id = "";
-      do {
-        id = randomId(5);
-      } while (item.system.items[id]);
-
-      updateData[`${pathPrefix}.${id}`] = entry;
-    }
-
-    if (item.system.upgradeTraits) {
-      let keptTraits = item.system.traits;
-      for (const removedTrait of item.system.upgradeTraits) {
-        keptTraits.filter(x => x !== removedTrait);
+        updateData[`system.traits`] = keptTraits;
       }
-
-      updateData[`system.traits`] = keptTraits;
     }
 
-    for (const perkId of item.system.weaponEffectIds) {
-      let attachedItem = "";
-      attachedItem = await fromUuid(`Item.${perkId}`);
-      if (!attachedItem) {
-        attachedItem = await searchCompendium(perkId);
+    if (item.system.weaponEffectIds) {
+      for (const perkId of item.system.weaponEffectIds) {
+        let attachedItem = "";
+        attachedItem = await fromUuid(`Item.${perkId}`);
+        if (!attachedItem) {
+          attachedItem = await searchCompendium(perkId);
+        }
+
+        attachedItem.setFlag('core', 'parentId', item.uuid);
+
+        const entry = {
+          uuid: attachedItem.uuid,
+          img: attachedItem.img,
+          name: attachedItem.name,
+          type: attachedItem.type,
+          classification: attachedItem.classification,
+          damageValue: attachedItem.damageValue,
+          damageType: attachedItem.damageType,
+          numHands: attachedItem.numHands,
+          numTargets: attachedItem.numTargets,
+          radius: attachedItem.radius,
+          range: attachedItem.range,
+          shiftDown: attachedItem.shiftDown,
+          traits: attachedItem.traits,
+        };
+
+        let id = "";
+        do {
+          id = randomId(5);
+        } while (item.system.items[id]);
+
+        updateData[`${pathPrefix}.${id}`] = entry;
       }
-
-      attachedItem.setFlag('core', 'parentId', item.uuid);
-
-      const entry = {
-        uuid: attachedItem.uuid,
-        img: attachedItem.img,
-        name: attachedItem.name,
-        type: attachedItem.type,
-        classification: attachedItem.classification,
-        damageValue: attachedItem.damageValue,
-        damageType: attachedItem.damageType,
-        numHands: attachedItem.numHands,
-        numTargets: attachedItem.numTargets,
-        radius: attachedItem.radius,
-        range: attachedItem.range,
-        shiftDown: attachedItem.shiftDown,
-        traits: attachedItem.traits,
-      };
-      const pathPrefix = "system.items";
-
-      let id = "";
-      do {
-        id = randomId(5);
-      } while (item.system.items[id]);
-
-      updateData[`${pathPrefix}.${id}`] = entry;
     }
-
   }
 
   return updateData;
