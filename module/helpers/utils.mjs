@@ -276,6 +276,19 @@ export function randomId(length) {
 }
 
 /**
+* Handles creating a unique 5 digit Id for an item
+* @param {Array} items The items already on the item.
+*/
+export function createId(items) {
+  let id = "";
+  do {
+    id = randomId(5);
+  } while (items[id]);
+
+  return id;
+}
+
+/**
 * Handles validating an item being dropped is unique
 * @param {Item} droppedItem The item that was dropped
 * @param {Item} targetItem The item that was dropped on to.
@@ -293,10 +306,7 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
 
   const pathPrefix = "system.items";
 
-  let id = "";
-  do {
-    id = randomId(5);
-  } while (items[id]);
+  const id = createId(items)
 
   await targetItem.update({
     [`${pathPrefix}.${id}`]: entry,
