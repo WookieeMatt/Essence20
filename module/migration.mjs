@@ -322,7 +322,7 @@ export async function migrateItemData(item, actor) {
     //Armor Upgrade Migration to system.items
     if (item.system.upgradeIds) {
       for (const perkId of item.system.upgradeIds) {
-        attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId);
         if (attachedItem) {
           attachedItem.setFlag('core', 'parentId', item.uuid);
 
@@ -397,7 +397,7 @@ export async function migrateItemData(item, actor) {
   } else if (item.type == 'origin') {
     if (item.system.originPerkIds) {
       for (const perkId of item.system.originPerkIds) {
-        attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId);
         if (attachedItem) {
           const entry = {
             uuid: attachedItem.uuid,
@@ -416,7 +416,7 @@ export async function migrateItemData(item, actor) {
   } else if (item.type == 'influence') {
     if (item.system.perkIds) {
       for (const perkId of item.system.perkIds) {
-        attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId);
         if (attachedItem) {
 
           const entry = {
@@ -435,7 +435,7 @@ export async function migrateItemData(item, actor) {
 
     if (item.system.hangUpIds) {
       for (const perkId of item.system.hangUpIds) {
-        attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId);
         if (attachedItem) {
 
           const entry = {
@@ -454,7 +454,7 @@ export async function migrateItemData(item, actor) {
   } else if (item.type == 'weapon') {
     if (item.system.upgradeIds) {
       for (const perkId of item.system.upgradeIds) {
-        attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId);
         if (attachedItem) {
 
           attachedItem.setFlag('core', 'parentId', item.uuid);
@@ -491,7 +491,7 @@ export async function migrateItemData(item, actor) {
 
     if (item.system.weaponEffectIds) {
       for (const perkId of item.system.weaponEffectIds) {
-        attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId);
         if (attachedItem) {
           attachedItem.setFlag('core', 'parentId', item.uuid);
 
