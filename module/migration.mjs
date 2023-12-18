@@ -100,7 +100,7 @@ export const migrateWorld = async function() {
   }
 
   // Set the migration as complete
-  game.settings.set("essence20", "systemMigrationVersion", game.system.version);
+  // game.settings.set("essence20", "systemMigrationVersion", game.system.version);
   ui.notifications.info(game.i18n.format("MIGRATION.complete", {version}), {permanent: true});
 };
 
@@ -352,7 +352,7 @@ export async function migrateItemData(item, actor) {
             traits: attachedItem.traits,
           };
 
-          const id = createId(item.system.items);
+          const id = await createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -407,7 +407,7 @@ export async function migrateItemData(item, actor) {
             type: attachedItem.type,
           };
 
-          const id = createId(item.system.items);
+          const id = await createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -427,7 +427,7 @@ export async function migrateItemData(item, actor) {
             type: attachedItem.type,
           };
 
-          const id = createId(item.system.items);
+          const id = await createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -446,7 +446,7 @@ export async function migrateItemData(item, actor) {
             type: attachedItem.type,
           };
 
-          const id = createId(item.system.items);
+          const id = await createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -474,7 +474,7 @@ export async function migrateItemData(item, actor) {
             traits: attachedItem.traits,
           };
 
-          const id = createId(item.system.items);
+          const id = await createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
@@ -512,7 +512,7 @@ export async function migrateItemData(item, actor) {
             traits: attachedItem.traits,
           };
 
-          const id = createId(item.system.items);
+          const id = await createId(item.system.items);
 
           updateData[`${pathPrefix}.${id}`] = entry;
         }
