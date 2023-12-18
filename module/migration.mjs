@@ -323,6 +323,7 @@ export async function migrateItemData(item, actor) {
     if (item.system.upgradeIds) {
       for (const perkId of item.system.upgradeIds) {
         const attachedItem = await getItem(perkId);
+        console.log(attachedItem)
         if (attachedItem) {
           attachedItem.setFlag('core', 'parentId', item.uuid);
 
