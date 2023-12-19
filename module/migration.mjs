@@ -325,7 +325,7 @@ export async function migrateItemData(item, actor) {
         const attachedItem = await getItem(perkId);
         console.log(attachedItem)
         if (attachedItem) {
-          attachedItem.setFlag('core', 'parentId', item.uuid);
+          attachedItem.setFlag('essence20', 'parentId', item.uuid);
 
           if (attachedItem.armorBonus) {
             if (attachedItem.armorBonus.defense == 'toughness') {
@@ -458,7 +458,7 @@ export async function migrateItemData(item, actor) {
         const attachedItem = await getItem(perkId);
         if (attachedItem) {
 
-          attachedItem.setFlag('core', 'parentId', item.uuid);
+          attachedItem.setFlag('essence20', 'parentId', item.uuid);
 
           const entry = {
             uuid: attachedItem.uuid,
@@ -494,7 +494,7 @@ export async function migrateItemData(item, actor) {
       for (const perkId of item.system.weaponEffectIds) {
         const attachedItem = await getItem(perkId);
         if (attachedItem) {
-          attachedItem.setFlag('core', 'parentId', item.uuid);
+          attachedItem.setFlag('essence20', 'parentId', item.uuid);
 
           const entry = {
             uuid: attachedItem.uuid,
