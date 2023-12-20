@@ -252,6 +252,9 @@ export const migrateActorData = function(actor) {
     }
 
     // Update the Owned Item
+    console.log(itemData)
+    console.log(itemToDelete)
+    console.log(itemUpdate)
     if (!foundry.utils.isEmpty(itemUpdate)) {
       itemUpdate._id = itemData._id;
       arr.push(foundry.utils.expandObject(itemUpdate));
