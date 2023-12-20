@@ -40,7 +40,7 @@ export const migrateWorld = async function() {
         item.delete();
       }
 
-      const updateData = migrateItemData(source);
+      const updateData = await migrateItemData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
         await item.update(updateData, {enforceTypes: false, diff: valid});
