@@ -44,12 +44,17 @@ export const migrateWorld = async function() {
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
         await item.update(updateData, {enforceTypes: false, diff: valid});
-        await item.update({"system.-=perkType": null});
-        await item.update({"system.-=originPerkIds": null});
-        await item.update({"system.-=perkIds": null});
-        await item.update({"system.-=hangUpIds": null});
-        await item.update({"system.-=upgradeIds": null});
-        await item.update({"system.-=weaponEffectIds": null});
+        if (item.type == "origin") {
+          await item.update({"system.-=originPerkIds": null});
+        } else if (item.type == "influence") {
+          await item.update({"system.-=perkIds": null});
+          await item.update({"system.-=hangUpIds": null});
+        } else if (item.type == "weapon") {
+          await item.update({"system.-=upgradeIds": null});
+          await item.update({"system.-=weaponEffectIds": null});
+        } else if (item.type =="armor") {
+          await item.update({"system.-=upgradeIds": null});
+        }
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Item ${item.name}: ${err.message}`;
@@ -233,6 +238,18 @@ export const migrateActorData = function(actor) {
     }
 
     let itemUpdate = await migrateItemData(itemData, fullActor);
+
+    if (itemToDelete.type == "origin") {
+      await itemToDelete.update({"system.-=originPerkIds": null});
+    } else if (itemToDelete.type == "influence") {
+      await itemToDelete.update({"system.-=perkIds": null});
+      await itemToDelete.update({"system.-=hangUpIds": null});
+    } else if (itemToDelete.type == "weapon") {
+      await itemToDelete.update({"system.-=upgradeIds": null});
+      await itemToDelete.update({"system.-=weaponEffectIds": null});
+    } else if (itemToDelete.type =="armor") {
+      await itemToDelete.update({"system.-=upgradeIds": null});
+    }
 
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
@@ -559,8 +576,11 @@ export const migrateCompendium = async function(pack) {
         } else if (doc.type == "influence") {
           await doc.update({"system.-=perkIds": null});
           await doc.update({"system.-=hangUpIds": null});
+        } else if (doc.type == "weapon") {
           await doc.update({"system.-=upgradeIds": null});
           await doc.update({"system.-=weaponEffectIds": null});
+        } else if (doc.type =="armor") {
+          await doc.update({"system.-=upgradeIds": null});
         }
 
         break;
