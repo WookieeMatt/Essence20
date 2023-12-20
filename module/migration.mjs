@@ -13,7 +13,7 @@ export const migrateWorld = async function() {
   for (const [actor, valid] of actors) {
     try {
       const source = valid ? actor.toObject() : game.data.actors.find(a => a._id === actor.id);
-      const updateData = migrateActorData(source);
+      const updateData = await migrateActorData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Actor document ${actor.name}`);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
