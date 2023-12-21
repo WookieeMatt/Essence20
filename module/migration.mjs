@@ -217,48 +217,47 @@ export const migrateActorData = function(actor) {
     return updateData;
   }
 
-  const items = actor.items.reduce(async (arr, i) => {
+  const items = [];
+  for (const itemData of actor.items) {
     // Migrate the Owned Item
-    const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
     const fullActor = game.actors.get(actor._id);
-    const itemToDelete = fullActor.items.get(i._id);
+    const itemToDelete = fullActor.items.get(itemData._id);
 
     if (itemToDelete.type == "threatPower") {
-      await itemToDelete.delete();
+      itemToDelete.delete();
     } else if (itemToDelete.type == "classFeature") {
       if (itemToDelete.name == "Personal Power") {
         updateData[`system.powers.personal.max`] = itemToDelete.system.uses.max;
         updateData[`system.powers.personal.value`] = itemToDelete.system.uses.value;
-        await itemToDelete.delete();
+        itemToDelete.delete();
       } else if (itemToDelete.name == "Energon") {
         updateData[`system.energon.normal.value`] = itemToDelete.system.uses.value;
         updateData[`system.energon.normal.max`] = itemToDelete.system.uses.max;
-        await itemToDelete.delete();
+        itemToDelete.delete();
       }
     }
 
-    let itemUpdate = await migrateItemData(itemData, fullActor);
+    let itemUpdate = migrateItemData(itemToDelete, fullActor);
 
     if (itemToDelete.type == "origin") {
-      await itemToDelete.update({"system.-=originPerkIds": null});
+      itemToDelete.update({"system.-=originPerkIds": null});
     } else if (itemToDelete.type == "influence") {
-      await itemToDelete.update({"system.-=perkIds": null});
-      await itemToDelete.update({"system.-=hangUpIds": null});
+      itemToDelete.update({"system.-=perkIds": null});
+      itemToDelete.update({"system.-=hangUpIds": null});
     } else if (itemToDelete.type == "weapon") {
-      await itemToDelete.update({"system.-=upgradeIds": null});
-      await itemToDelete.update({"system.-=weaponEffectIds": null});
+      itemToDelete.update({"system.-=upgradeIds": null});
+      itemToDelete.update({"system.-=weaponEffectIds": null});
     } else if (itemToDelete.type =="armor") {
-      await itemToDelete.update({"system.-=upgradeIds": null});
+      itemToDelete.update({"system.-=upgradeIds": null});
     }
 
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
-      itemUpdate._id = itemData._id;
-      arr.push(foundry.utils.expandObject(itemUpdate));
+      items.push(itemUpdate)
     }
 
     return arr;
-  }, []);
+  }
 
   if (items.length > 0) {
     updateData.items = items;
