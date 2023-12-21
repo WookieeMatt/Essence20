@@ -256,7 +256,6 @@ export const migrateActorData = function(actor) {
       items.push(itemUpdate)
     }
 
-    return arr;
   }
 
   if (items.length > 0) {
