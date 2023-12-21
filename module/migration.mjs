@@ -257,7 +257,7 @@ export const migrateActorData = function(actor) {
     console.log(itemUpdate)
     if (!foundry.utils.isEmpty(itemUpdate)) {
       itemUpdate._id = itemData._id;
-      arr.push(foundry.utils.expandObject(itemUpdate));
+      arr.push(await foundry.utils.expandObject(itemUpdate));
     }
 
     return arr;
