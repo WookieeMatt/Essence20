@@ -119,7 +119,7 @@ export const migrateWorld = async function() {
  * @param {object} actor            The actor data object to update
  * @returns {object}                The updateData to apply
  */
-export const migrateActorData = function(actor) {
+export const migrateActorData = async function(actor) {
   const updateData = {};
 
   // Migrate initiative
@@ -224,31 +224,31 @@ export const migrateActorData = function(actor) {
     const itemToDelete = fullActor.items.get(itemData._id);
 
     if (itemToDelete.type == "threatPower") {
-      itemToDelete.delete();
+      await itemToDelete.delete();
     } else if (itemToDelete.type == "classFeature") {
       if (itemToDelete.name == "Personal Power") {
         updateData[`system.powers.personal.max`] = itemToDelete.system.uses.max;
         updateData[`system.powers.personal.value`] = itemToDelete.system.uses.value;
-        itemToDelete.delete();
+        await itemToDelete.delete();
       } else if (itemToDelete.name == "Energon") {
         updateData[`system.energon.normal.value`] = itemToDelete.system.uses.value;
         updateData[`system.energon.normal.max`] = itemToDelete.system.uses.max;
-        itemToDelete.delete();
+        await itemToDelete.delete();
       }
     }
 
-    let itemUpdate = migrateItemData(itemToDelete, fullActor);
+    let itemUpdate = await migrateItemData(itemToDelete, fullActor);
 
     if (itemToDelete.type == "origin") {
-      itemToDelete.update({"system.-=originPerkIds": null});
+      await itemToDelete.update({"system.-=originPerkIds": null});
     } else if (itemToDelete.type == "influence") {
-      itemToDelete.update({"system.-=perkIds": null});
-      itemToDelete.update({"system.-=hangUpIds": null});
+      await itemToDelete.update({"system.-=perkIds": null});
+      await itemToDelete.update({"system.-=hangUpIds": null});
     } else if (itemToDelete.type == "weapon") {
-      itemToDelete.update({"system.-=upgradeIds": null});
-      itemToDelete.update({"system.-=weaponEffectIds": null});
+      await itemToDelete.update({"system.-=upgradeIds": null});
+      await itemToDelete.update({"system.-=weaponEffectIds": null});
     } else if (itemToDelete.type =="armor") {
-      itemToDelete.update({"system.-=upgradeIds": null});
+      await itemToDelete.update({"system.-=upgradeIds": null});
     }
 
     // Update the Owned Item
@@ -560,7 +560,7 @@ export const migrateCompendium = async function(pack) {
     try {
       switch (documentName) {
       case "Actor":
-        updateData = migrateActorData(doc.toObject());
+        updateData = await migrateActorData(doc.toObject());
         break;
       case "Item":
         if (doc.type == "threatPower") {
