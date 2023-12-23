@@ -253,6 +253,7 @@ export const migrateActorData = async function(actor) {
 
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
+      itemUpdate._id = itemData._id;
       items.push(itemUpdate)
     }
 
