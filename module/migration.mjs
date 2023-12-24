@@ -289,11 +289,14 @@ export async function searchCompendium(item) {
 * @param {Item|String} perkId The id from the parentItem
 * @returns {Item} attachedItem  The Item, if found
 */
-export async function getItem(perkId) {
+export async function getItem(perkId, actor) {
   let attachedItem = "";
   attachedItem = await fromUuid(`Item.${perkId}`);
   if (!attachedItem) {
     attachedItem = await searchCompendium(perkId);
+  }
+  if (!attachedItem && actor) {
+    attachedItem = await actor.items.get(perkId._id);
   }
 
   return attachedItem;
@@ -338,7 +341,7 @@ export async function migrateItemData(item, actor) {
     //Armor Upgrade Migration to system.items
     if (item.system.upgradeIds) {
       for (const perkId of item.system.upgradeIds) {
-        const attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
           attachedItem.setFlag('essence20', 'parentId', item.uuid);
 
@@ -413,7 +416,7 @@ export async function migrateItemData(item, actor) {
   } else if (item.type == 'origin') {
     if (item.system.originPerkIds) {
       for (const perkId of item.system.originPerkIds) {
-        const attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
           const entry = {
             uuid: attachedItem.uuid,
@@ -432,7 +435,7 @@ export async function migrateItemData(item, actor) {
   } else if (item.type == 'influence') {
     if (item.system.perkIds) {
       for (const perkId of item.system.perkIds) {
-        const attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
 
           const entry = {
@@ -451,7 +454,7 @@ export async function migrateItemData(item, actor) {
 
     if (item.system.hangUpIds) {
       for (const perkId of item.system.hangUpIds) {
-        const attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
 
           const entry = {
@@ -470,7 +473,7 @@ export async function migrateItemData(item, actor) {
   } else if (item.type == 'weapon') {
     if (item.system.upgradeIds) {
       for (const perkId of item.system.upgradeIds) {
-        const attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
 
           attachedItem.setFlag('essence20', 'parentId', item.uuid);
@@ -507,7 +510,7 @@ export async function migrateItemData(item, actor) {
 
     if (item.system.weaponEffectIds) {
       for (const perkId of item.system.weaponEffectIds) {
-        const attachedItem = await getItem(perkId);
+        const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
           attachedItem.setFlag('essence20', 'parentId', item.uuid);
 
