@@ -296,7 +296,7 @@ export async function getItem(perkId, actor) {
     attachedItem = await searchCompendium(perkId);
   }
   if (!attachedItem && actor) {
-    attachedItem = await actor.items.get(perkId._id);
+    attachedItem = await actor.items.get(perkId);
   }
 
   return attachedItem;
