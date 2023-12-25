@@ -254,7 +254,7 @@ export const migrateActorData = async function(actor) {
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
       itemUpdate._id = itemData._id;
-      items.push(itemUpdate)
+      items.push(itemUpdate);
     }
 
   }
@@ -295,6 +295,7 @@ export async function getItem(perkId, actor) {
   if (!attachedItem) {
     attachedItem = await searchCompendium(perkId);
   }
+
   if (!attachedItem && actor) {
     attachedItem = await actor.items.get(perkId);
   }
