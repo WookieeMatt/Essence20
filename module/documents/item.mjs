@@ -12,6 +12,20 @@ export class Essence20Item extends Item {
   }
 
   /**
+   * Sets the basic values of an item after creation but before opening its sheet.
+   * @param {Object} data The information about the item.
+   * @param {Object} options The options from the sheet
+   * @param {String} userId The user creating the item
+   */
+  async _preCreate(data, options, userId) {
+    await super._preCreate(data, options, userId);
+    if (data.img === undefined) {
+      const image = CONFIG.E20.defaultIcon[this.type];
+      if (image) this.updateSource({ img: image });
+    }
+  }
+
+  /**
    * Augment the basic Item data model with additional dynamic data.
    */
   prepareData() {

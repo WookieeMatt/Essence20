@@ -414,6 +414,20 @@ preLocalize("usesInterval");
  * Items                                        *
  ***********************************************/
 
+// Default item Icons
+E20.defaultIcon = {
+  alteration: "systems/essence20/assets/icons/items/alteration.svg",
+  altMode: "systems/essence20/assets/icons/items/altmode.svg",
+  armor: "systems/essence20/assets/icons/items/armor.svg",
+  gear: "systems/essence20/assets/icons/items/gear.svg",
+  hangUp: "icons/svg/hazard.svg",
+  influence: "systems/essence20/assets/icons/items/influence.svg",
+  origin: "systems/essence20/assets/icons/items/origin.svg",
+  perk: "systems/essence20/assets/icons/items/perk.svg",
+  power: "systems/essence20/assets/icons/items/powers.svg",
+  weaponEffect: "systems/essence20/assets/icons/items/weapon_effect.svg",
+};
+
 // Options for Equipment Item Types
 E20.equipmentTypes = {
   armor: "E20.Armor",

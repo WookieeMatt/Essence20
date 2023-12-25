@@ -15,7 +15,7 @@
   "_id": "aIM7qXO78X5xWJJ6",
   "changes": [
     {
-      "key": "system.health.max",
+      "key": "system.health.bonus",
       "mode": 2,
       "value": "-1"
     }
