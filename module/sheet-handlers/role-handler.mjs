@@ -27,7 +27,27 @@ export class RoleHandler {
 
     }
 
+    if (role.system.powers.personal.starting) {
+      let totalIncrease = 0;
+      for (let i =0; i<role.system.powers.personal.levels.length; i++) {
+        const powerIncreaseLevel = role.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
+        if (powerIncreaseLevel <= this._actor.system.level ) {
+          totalIncrease += 1;
+        }
+      }
 
+      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) + parseInt(role.system.powers.personal.starting) + parseInt(role.system.powers.personal.increase * totalIncrease);
+
+      await this._actor.update({
+        "system.powers.personal.max": newPersonalPowerMax,
+      })
+    }
+
+    for (const [,perk] of role.system.items) {
+      if (perk.level <=this._actor.system.level) {
+
+      }
+    }
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
 
@@ -50,6 +70,21 @@ export class RoleHandler {
 
       await this._actor.update({
         [essenceString]: essenceValue,
+      })
+    }
+
+    if (role.system.powers.personal.starting) {
+      let totalDecrease = 0;
+      for (let i =0; i<role.system.powers.personal.levels.length; i++) {
+        const powerDecreaseLevel = role.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
+        if (powerDecreaseLevel <= this._actor.system.level ) {
+          totalDecrease += 1;
+        }
+      }
+      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease);
+
+      await this._actor.update({
+        "system.powers.personal.max": newPersonalPowerMax,
       })
     }
 
