@@ -722,7 +722,8 @@
       "bonusToughness": 0,
       "classification": "light",
       "equipped": false,
-      "traits": []
+      "traits": [],
+      "upgradeTraits": []
     },
     "bond": {
       "templates": [
