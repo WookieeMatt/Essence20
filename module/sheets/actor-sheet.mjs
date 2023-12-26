@@ -660,6 +660,11 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
+    // return if no item is found.
+    if (!item) {
+      return;
+    }
+
     // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     if (parentItem) {
       const id = li.data("itemKey");
