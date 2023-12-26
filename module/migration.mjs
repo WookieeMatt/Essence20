@@ -290,8 +290,7 @@ export async function searchCompendium(item) {
 * @returns {Item} attachedItem  The Item, if found
 */
 export async function getItem(perkId, actor) {
-  let attachedItem = "";
-  attachedItem = await fromUuid(`Item.${perkId}`);
+  let attachedItem = await fromUuid(`Item.${perkId}`);
   if (!attachedItem) {
     attachedItem = await searchCompendium(perkId);
   }
@@ -370,9 +369,7 @@ export async function migrateItemData(item, actor) {
             subtype: attachedItem.system.type,
             traits: attachedItem.system.traits,
           };
-
           const id = await createId(item.system.items);
-
           updateData[`${pathPrefix}.${id}`] = entry;
         }
       }
@@ -425,9 +422,7 @@ export async function migrateItemData(item, actor) {
             name: attachedItem.name,
             type: attachedItem.type,
           };
-
           const id = await createId(item.system.items);
-
           updateData[`${pathPrefix}.${id}`] = entry;
         }
       }
@@ -438,16 +433,13 @@ export async function migrateItemData(item, actor) {
       for (const perkId of item.system.perkIds) {
         const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
-
           const entry = {
             uuid: attachedItem.uuid,
             img: attachedItem.img,
             name: attachedItem.name,
             type: attachedItem.type,
           };
-
           const id = await createId(item.system.items);
-
           updateData[`${pathPrefix}.${id}`] = entry;
         }
       }
@@ -457,16 +449,13 @@ export async function migrateItemData(item, actor) {
       for (const perkId of item.system.hangUpIds) {
         const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
-
           const entry = {
             uuid: attachedItem.uuid,
             img: attachedItem.img,
             name: attachedItem.name,
             type: attachedItem.type,
           };
-
           const id = await createId(item.system.items);
-
           updateData[`${pathPrefix}.${id}`] = entry;
         }
       }
@@ -476,7 +465,6 @@ export async function migrateItemData(item, actor) {
       for (const perkId of item.system.upgradeIds) {
         const attachedItem = await getItem(perkId, actor);
         if (attachedItem) {
-
           attachedItem.setFlag('essence20', 'parentId', item.uuid);
 
           const entry = {
@@ -492,9 +480,7 @@ export async function migrateItemData(item, actor) {
             subtype: attachedItem.system.type,
             traits: attachedItem.system.traits,
           };
-
           const id = await createId(item.system.items);
-
           updateData[`${pathPrefix}.${id}`] = entry;
         }
       }
@@ -530,9 +516,7 @@ export async function migrateItemData(item, actor) {
             shiftDown: attachedItem.system.shiftDown,
             traits: attachedItem.system.traits,
           };
-
           const id = await createId(item.system.items);
-
           updateData[`${pathPrefix}.${id}`] = entry;
         }
       }

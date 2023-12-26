@@ -118,7 +118,7 @@ export class Essence20Item extends Item {
   /**
    * Handle clickable rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
-   * @param {Key} childKey The key of the item attached to another item
+   * @param {String} childKey The key of the item attached to another item
    * @private
    */
   async roll(dataset, childKey) {

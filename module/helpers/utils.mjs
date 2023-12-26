@@ -277,7 +277,7 @@ export function randomId(length) {
 
 /**
 * Handles creating a unique 5 digit Id for an item
-* @param {Array} items The items already on the item.
+* @param {Array} items The items keyed by IDs
 */
 export function createId(items) {
   let id = "";

@@ -18,10 +18,10 @@ export class AttachmentHandler {
   /**
   * Initiates the process to apply an attachment item to an item on the actor sheet
   * @param {Item} droppedItem   The attachment
+  * @param {Function} dropFunc The function to call to complete the drop
   */
   async gearDrop(droppedItem, dropFunc) {
     const newGearList = await dropFunc();
-    console.log(droppedItem);
     if (droppedItem.system.items) {
       await createItemCopies(droppedItem.system.items, this._actor, "upgrade", newGearList[0]);
       if (droppedItem.type == 'weapon') {
