@@ -26,6 +26,8 @@ export class RoleHandler {
       })
 
     }
+
+
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
 
@@ -38,7 +40,7 @@ export class RoleHandler {
     for (const essence in role.system.essenceLevels) {
       let totalDecrease = 0;
       for (let i =0; i<role.system.essenceLevels[essence].length; i++) {
-        const essenceLevel = role.system.essenceLevels.strength[i].replace(/[^0-9]/g, '');
+        const essenceLevel = role.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
         if (essenceLevel <=this._actor.system.level ) {
           totalDecrease += 1;
         }
@@ -50,5 +52,7 @@ export class RoleHandler {
         [essenceString]: essenceValue,
       })
     }
+
+    this._actor.setFlag('essence20', 'lastLevelUp', 0);
   }
 }
