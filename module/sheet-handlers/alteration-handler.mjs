@@ -38,6 +38,12 @@ export class AlterationHandler {
       await this._showAlterationBonusSkillDialog(alteration, alterationUuid, dropFunc);
     } else if (alteration.system.type == 'movement') {
       await this._showAlterationCostMovementDialog(alteration, alterationUuid, dropFunc);
+    } else {
+      const newAlterationList = await dropFunc();
+      const newAlteration = newAlterationList[0];
+      await newAlteration.update ({
+        "system.originalId": alterationUuid,
+      });
     }
   }
 
