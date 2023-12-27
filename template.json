@@ -676,6 +676,9 @@
           "book": "",
           "page": null
         }
+      },
+      "parentItem": {
+        "items": {}
       }
     },
     "alteration": {
@@ -711,7 +714,8 @@
     "armor": {
       "templates": [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "availability": "standard",
       "bonusEvasion": 0,
@@ -719,7 +723,6 @@
       "classification": "light",
       "equipped": false,
       "traits": [],
-      "upgradeIds": [],
       "upgradeTraits": []
     },
     "bond": {
@@ -756,7 +759,8 @@
     "focus": {
       "templates": [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "essences": "",
       "items": {},
@@ -780,11 +784,10 @@
     "influence": {
       "templates" : [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "bond": "",
-      "hangUpIds": [],
-      "perkIds": [],
       "mandatoryHangUp": false,
       "skills": []
     },
@@ -806,14 +809,14 @@
     "origin": {
       "templates": [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "baseAerialMovement": 0,
       "baseAquaticMovement": 0,
       "baseGroundMovement": 0,
       "essences": [],
       "languages": "",
-      "originPerkIds": [],
       "skills": [],
       "startingHealth": 0
     },
@@ -845,7 +848,8 @@
     "role": {
       "templates": [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "armors": {
         "qualified": [],
@@ -928,7 +932,8 @@
     "weapon": {
       "templates": [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "classFeatureId": null,
       "alternateEffects": "",
@@ -943,10 +948,8 @@
         "shift": null
       },
       "traits": [],
-      "upgradeIds": [],
       "upgradeTraits": [],
-      "usesPerScene": null,
-      "weaponEffectIds": []
+      "usesPerScene": null
     },
     "weaponEffect" : {
       "templates": [

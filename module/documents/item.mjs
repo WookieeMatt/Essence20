@@ -35,6 +35,74 @@ export class Essence20Item extends Item {
   }
 
   /**
+  * Extends the preparedDerivedData model to add system specific data.
+  */
+  prepareDerivedData() {
+    super.prepareDerivedData();
+    this._prepareTraits();
+
+    if (this.type == 'armor') {
+      this._prepareArmorBonuses();
+    }
+  }
+
+  /**
+  * Prepares the item and any upgrade traits currently on the item
+  */
+  _prepareTraits() {
+    let itemAndUpgradeTraits = this.system.traits;
+    let upgradeTraits = [];
+
+    if (this.type == 'weapon' || this.type == 'armor') {
+      for (const [, item] of Object.entries(this.system.items)) {
+        if (item.type == 'upgrade') {
+          upgradeTraits.push(item.traits);
+
+          for (const traits of upgradeTraits) {
+            if (traits) {
+              for (const trait of traits) {
+                if (!itemAndUpgradeTraits.includes(trait)) {
+                  itemAndUpgradeTraits.push(trait);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (itemAndUpgradeTraits) {
+        this.system.itemAndUpgradeTraits = itemAndUpgradeTraits;
+      }
+    }
+  }
+
+  /**
+  * Prepares the combined armor bonuses from the armor and any upgrades
+  */
+  _prepareArmorBonuses() {
+    let armorBonusToughness = this.system.bonusToughness;
+    let armorBonusEvasion  = this.system.bonusEvasion;
+
+    for (const [, item] of Object.entries(this.system.items)) {
+      if (item.type == 'upgrade' && item.subtype == 'armor'){
+        if (item.armorBonus.defense == 'toughness') {
+          armorBonusToughness += item.armorBonus.value;
+        } else if (item.armorBonus.defense == 'evasion') {
+          armorBonusEvasion += item.armorBonus.value;
+        }
+      }
+    }
+
+    if (armorBonusEvasion) {
+      this.system.totalBonusEvasion = armorBonusEvasion;
+    }
+
+    if (armorBonusToughness) {
+      this.system.totalBonusToughness = armorBonusToughness;
+    }
+  }
+
+  /**
    * Prepare a data object which is passed to any Roll formulas which are created related to this Item
    * @private
    */
@@ -50,9 +118,10 @@ export class Essence20Item extends Item {
   /**
    * Handle clickable rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {String} childKey The key of the item attached to another item
    * @private
    */
-  async roll(dataset) {
+  async roll(dataset, childKey) {
     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -119,11 +188,11 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
-    } else if (this.type == 'weaponEffect') {
-      const skill = this.system.classification.skill;
+    } else if (this.type == 'weapon') {
+      const skill = this.system.items[childKey].classification.skill;
       const shift = this.actor.system.skills[skill].shift;
       const shiftUp = this.actor.system.skills[skill].shiftUp;
-      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.shiftDown;
+      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.items[childKey].shiftDown;
       const weaponDataset = {
         ...dataset,
         shift,

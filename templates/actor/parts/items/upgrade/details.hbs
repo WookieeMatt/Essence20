@@ -1,14 +1,45 @@
-<div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-<div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.system.prerequisite}}}</div>
-<div>{{localize 'E20.UpgradeBenefit'}}: {{{item.system.benefit}}}</div>
-
-<div class="chip-section">
-  <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.system.type}}</span>
-  <span class="chip" name="chip.upgrade.availability">{{localize 'E20.UpgradeAvailability'}}: {{lookup @root.config.availabilities item.system.availability}}</span>
-  {{#if item.system.armorBonus.value}}
-  <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.system.armorBonus.defense}}: {{item.system.armorBonus.value}}</span>
+{{#ifEquals system.type "drone"}}
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+  <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.system.prerequisite}}}</div>
+  <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.system.benefit}}}</div>
+  <div class="chip-section">
+    <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.system.type}}</span>
+    <span class="chip" name="chip.upgrade.availability">{{localize 'E20.UpgradeAvailability'}}: {{lookup @root.config.availabilities item.system.availability}}</span>
+    {{#if item.system.armorBonus.value}}
+    <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.system.armorBonus.defense}}: {{item.system.armorBonus.value}}</span>
+    {{/if}}
+    {{#each item.system.traits as |trait|}}
+    <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.armorTraits trait}}</span>
+    {{/each}}
+  </div>
+{{else}}
+  {{#if @root.actor.system.canTransform}}
+    <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+    <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.system.prerequisite}}}</div>
+    <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.system.benefit}}}</div>
+    <div class="chip-section">
+      <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.system.type}}</span>
+      <span class="chip" name="chip.upgrade.availability">{{localize 'E20.UpgradeAvailability'}}: {{lookup @root.config.availabilities item.system.availability}}</span>
+      {{#if item.system.armorBonus.value}}
+      <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.system.armorBonus.defense}}: {{item.system.armorBonus.value}}</span>
+      {{/if}}
+      {{#each item.system.traits as |trait|}}
+      <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.armorTraits trait}}</span>
+      {{/each}}
+    </div>
+  {{else}}
+    <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
+    <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.prerequisite}}}</div>
+    <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.benefit}}}</div>
+    <div class="chip-section">
+      <span class="chip" name="chip.upgrade.type">{{localize 'E20.UpgradeType'}}: {{lookup @root.config.upgradeTypes item.type}}</span>
+      <span class="chip" name="chip.upgrade.availability">{{localize 'E20.UpgradeAvailability'}}: {{lookup @root.config.availabilities item.availability}}</span>
+      {{#if item.armorBonus.value}}
+      <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.armorBonus.defense}}: {{item.armorBonus.value}}</span>
+      {{/if}}
+      {{#each item.traits as |trait|}}
+      <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.armorTraits trait}}</span>
+      {{/each}}
+    </div>
   {{/if}}
-  {{#each item.system.traits as |trait|}}
-  <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.armorTraits trait}}</span>
-  {{/each}}
-</div>
+{{/ifEquals}}

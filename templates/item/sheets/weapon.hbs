@@ -53,10 +53,7 @@
 
       {{#*inline "item-field-inputs"}}
         <div class="chip-section">
-          {{#each item.system.traits as |trait|}}
-          <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
-          {{/each}}
-          {{#each item.system.upgradeTraits as |trait|}}
+          {{#each item.system.itemAndUpgradeTraits as |trait|}}
           <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
           {{/each}}
         </div>
@@ -93,10 +90,10 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Weapon Effects --}}
-      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.ItemTypeWeaponEffectPlural' items=@root.weaponEffects}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.ItemTypeWeaponEffectPlural' items=@root.system.items type='weaponEffect'}}
 
       {{!-- Weapon Upgrades --}}
-      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.upgrades}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.system.items type='upgrade'}}
     </div>
 
   </section>
