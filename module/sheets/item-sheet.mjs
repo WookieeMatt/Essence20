@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { indexFromUuid, randomId, searchCompendium, setEntryAndAddItem } from "../helpers/utils.mjs";
+import { setEntryAndAddItem } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -118,16 +118,6 @@ export class Essence20ItemSheet extends ItemSheet {
   * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
   * @private
   */
-  async _onObjectDelete(cssClass, event) {
-    const li = $(event.currentTarget).parents(cssClass);
-    const id = li.data("itemKey");
-    const updateString = `system.items.-=${id}`;
-
-    await this.item.update({[updateString]: null});
-
-    li.slideUp(200, () => this.render(false));
-  }
-
   async _onObjectDelete(cssClass, event) {
     const li = $(event.currentTarget).parents(cssClass);
     const id = li.data("itemKey");

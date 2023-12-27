@@ -327,12 +327,6 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
   };
 
   switch (targetItem.type) {
-  case "origin":
-    if (droppedItem.type == "perk") {
-      addItemIfUnique(droppedItem, targetItem, entry);
-    }
-
-    break;
   case "armor":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "armor") {
       entry['armorBonus'] = droppedItem.system.armorBonus;
@@ -343,6 +337,36 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "focus":
+    if (droppedItem.type == "perk") {
+      entry ['subtype'] = droppedItem.system.type;
+      entry ['level'] = 1;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "influence":
+    if (droppedItem.type == "perk") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == "hangUp") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+    case "origin":
+    if (droppedItem.type == "perk") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "role":
+    if (droppedItem.type == "perk") {
+      entry ['subtype'] = droppedItem.system.type;
+      entry ['level'] = 1;
       addItemIfUnique(droppedItem, targetItem, entry);
     }
 
@@ -367,14 +391,6 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
-      addItemIfUnique(droppedItem, targetItem, entry);
-    }
-
-    break;
-  case "influence":
-    if (droppedItem.type == "perk") {
-      addItemIfUnique(droppedItem, targetItem, entry);
-    } else if (droppedItem.type == "hangUp") {
       addItemIfUnique(droppedItem, targetItem, entry);
     }
 
