@@ -91,47 +91,6 @@ export function parseId(uuid) {
 }
 
 /**
- * Retrieve the indexed data for a Document using its UUID. Will never return a result for embedded documents.
- * @param {string} uuid  The UUID of the Document index to retrieve.
- * @returns {object}     Document's index if one could be found.
- */
-export function indexFromUuid(uuid) {
-  const parts = uuid.split(".");
-  let index;
-
-  if (parts[0] === "Compendium") { // Compendium Documents
-    const [, scope, packName, , id] = parts;
-    const pack = game.packs.get(`${scope}.${packName}`);
-    index = pack?.index.get(id);
-  } else if (parts.length < 3) {   // World Documents
-    const [docName, id] = parts;
-    const collection = CONFIG[docName].collection.instance;
-    index = collection.get(id);
-  }
-
-  return index || null;
-}
-
-/**
-  * Handles search of the Compendiums to find the item
-  * @param {Item|String} item  Either an ID or an Item to find in the compendium
-  * @returns {Item}     The Item, if found
-  */
-export async function searchCompendium(item) {
-  const id = item._id || item;
-
-  for (const pack of game.packs) {
-    const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
-    if (compendium) {
-      const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
-      if (compendiumItem) {
-        return compendiumItem;
-      }
-    }
-  }
-}
-
-/**
 * Get Items of a type
 * @param {String} type  The type of Item to return
 * @param {Item[]} items The Items to search through
@@ -184,38 +143,23 @@ export function rememberValues(html) {
 
 /**
  * Creates copies of Items for given IDs
- * @param {String[]} ids The IDs of the Items to be copied
- * @param {Actor} owner  The Items' owner
- * @returns {String[]}   The IDs of the copied items
+ * @param {Item[]} items The item(s) to copy
+ * @param {Actor} owner The item(s)' owner
+ * @param {String} type The type of item(s) to drop
+ * @param {Item} parentItem The item(s) parent item
  */
-export async function createItemCopies(ids, owner) {
-  const copyIds = [];
+export async function createItemCopies(items, owner, type, parentItem) {
+  for (const [key, item] of Object.entries(items)) {
+    if (item.type == type) {
+      const itemToCreate = await fromUuid(item.uuid);
+      const newItem = await Item.create(itemToCreate, { parent: owner });
+      newItem.setFlag('core', 'sourceId', item.uuid);
+      newItem.setFlag('essence20', 'collectionId', key);
 
-  for (const id of ids) {
-    let compendiumData = game.items.get(id);
-    if (!compendiumData) {
-      const item = await searchCompendium(id);
-      if (item) {
-        compendiumData = item;
+      if (parentItem) {
+        newItem.setFlag('essence20', 'parentId', parentItem._id);
       }
     }
-
-    const newItem = await Item.create(compendiumData, { parent: owner });
-    copyIds.push(newItem._id);
-  }
-
-  return copyIds;
-}
-
-/**
-* Handle deleting of items by an Id
-* @param {String} id   ID of the item to delete
-* @param {Actor} owner The Items' owner
-*/
-export function itemDeleteById(id, owner) {
-  let item = owner.items.get(id);
-  if (item) {
-    item.delete();
   }
 }
 
@@ -306,7 +250,6 @@ export function setOptGroup(select, category, items) {
 /**
  * Displays an error message if the sheet is locked
  * @returns {boolean} True if the sheet is locked, and false otherwise
- * @private
  */
 export function checkIsLocked(actor) {
   if (actor.system.isLocked) {
@@ -322,7 +265,6 @@ export function checkIsLocked(actor) {
 * Generate random number and convert it to base 36 and remove the '0.' at the beginning
 * As long as the string is not long enough, generate more random data into it
 * Use substring in case we generated a string with a length higher than the requested length
-*
 * @param length    The length of the random ID to generate
 * @return          Return a string containing random letters and numbers
 */
@@ -331,4 +273,148 @@ export function randomId(length) {
   return Math.floor((1 + Math.random()) * multiplier)
     .toString(16)
     .substring(1);
+}
+
+/**
+* Handles creating a unique 5 digit Id for an item
+* @param {Array} items The items keyed by IDs
+*/
+export function createId(items) {
+  let id = "";
+  do {
+    id = randomId(5);
+  } while (items[id]);
+
+  return id;
+}
+
+/**
+* Handles validating an item being dropped is unique
+* @param {Item} droppedItem The item that was dropped
+* @param {Item} targetItem The item that was dropped on to.
+* @param {Object} entry The entry for the item being added
+*/
+export async function addItemIfUnique(droppedItem, targetItem, entry) {
+  const items = targetItem.system.items;
+  if (items) {
+    for (const [, item] of Object.entries(items)) {
+      if (item.uuid === droppedItem.uuid) {
+        return;
+      }
+    }
+  }
+
+  const pathPrefix = "system.items";
+
+  const id = createId(items);
+
+  await targetItem.update({
+    [`${pathPrefix}.${id}`]: entry,
+  });
+}
+
+/**
+* Handles setting the value of the Entry variable and calling the creating function.
+* @param {Item} droppedItem The item that is being attached on the item
+* @param {Item} atttachedItem The item that we are attaching to.
+*/
+export function setEntryAndAddItem(droppedItem, targetItem) {
+  const entry = {
+    uuid: droppedItem.uuid,
+    img: droppedItem.img,
+    name: droppedItem.name,
+    type: droppedItem.type,
+  };
+
+  switch (targetItem.type) {
+  case "armor":
+    if (droppedItem.type == "upgrade" && droppedItem.system.type == "armor") {
+      entry['armorBonus'] = droppedItem.system.armorBonus;
+      entry['availability'] = droppedItem.system.availability;
+      entry['benefit'] = droppedItem.system.benefit;
+      entry['description'] = droppedItem.system.description;
+      entry['prerequisite'] = droppedItem.system.prerequisite;
+      entry['source'] = droppedItem.system.source;
+      entry['subtype'] = droppedItem.system.type;
+      entry['traits'] = droppedItem.system.traits;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "focus":
+    if (droppedItem.type == "perk") {
+      entry ['subtype'] = droppedItem.system.type;
+      entry ['level'] = 1;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "influence":
+    if (droppedItem.type == "perk") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == "hangUp") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "origin":
+    if (droppedItem.type == "perk") {
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "role":
+    if (droppedItem.type == "perk") {
+      entry ['subtype'] = droppedItem.system.type;
+      entry ['level'] = 1;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "weapon":
+    if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {
+      entry['availability'] = droppedItem.system.availability;
+      entry['benefit'] = droppedItem.system.benefit;
+      entry['description'] = droppedItem.system.description;
+      entry['prerequisite'] = droppedItem.system.prerequisite;
+      entry['source'] = droppedItem.system.source;
+      entry['subtype'] = droppedItem.system.type;
+      entry['traits'] = droppedItem.system.traits;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == "weaponEffect") {
+      entry['classification'] = droppedItem.system.classification;
+      entry['damageValue'] = droppedItem.system.damageValue;
+      entry['damageType'] = droppedItem.system.damageType;
+      entry['numHands'] = droppedItem.system.numHands;
+      entry['numTargets'] = droppedItem.system.numTargets;
+      entry['radius'] = droppedItem.system.radius;
+      entry['range'] = droppedItem.system.range;
+      entry['shiftDown'] = droppedItem.system.shiftDown;
+      entry['traits'] = droppedItem.system.traits;
+      addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  default:
+    break;
+  }
+}
+
+/**
+* Handles deleting items attached to other items
+* @param {Item} item The item that was deleted
+* @param {Actor} actor The actor the parent item is on
+*/
+export function deleteAttachmentsForItem(item, actor) {
+  for (const [, attachment] of Object.entries(item.system.items)) {
+    for (const actorItem of actor.items) {
+      const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
+      const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
+      if (itemSourceId == attachment.uuid) {
+        if (item._id == parentId) {
+          actorItem.delete();
+        }
+      }
+    }
+  }
 }

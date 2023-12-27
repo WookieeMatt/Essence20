@@ -1,7 +1,8 @@
 import {
+  createItemCopies,
   getItemsOfType,
-  itemDeleteById,
   rememberOptions,
+  setEntryAndAddItem,
 } from "../helpers/utils.mjs";
 
 export class AttachmentHandler {
@@ -15,15 +16,36 @@ export class AttachmentHandler {
   }
 
   /**
+  * Initiates the process to apply an attachment item to an item on the actor sheet
+  * @param {Item} droppedItem   The attachment
+  * @param {Function} dropFunc The function to call to complete the drop
+  */
+  async gearDrop(droppedItem, dropFunc) {
+    const newGearList = await dropFunc();
+    if (droppedItem.system.items) {
+      await createItemCopies(droppedItem.system.items, this._actor, "upgrade", newGearList[0]);
+      if (droppedItem.type == 'weapon') {
+        await createItemCopies(droppedItem.system.items, this._actor, "weaponEffect", newGearList[0]);
+      }
+    }
+  }
+
+  /**
    * Initiates the process to apply an attachment item to an item on the actor sheet
-   * @param {Item} attachment   The attachment
-   * @param {Function} dropFunc The function to call to complete the drop
+   * @param {Item} droppedItem   The attachment
    */
-  async attachItem(parentType, dropFunc) {
+  async attachItem(droppedItem) {
+    let parentType = "";
+    if (droppedItem.system.type) {
+      parentType = droppedItem.system.type;
+    } else if (droppedItem.type == 'weaponEffect') {
+      parentType = "weapon";
+    }
+
     const upgradableItems = await getItemsOfType(parentType, this._actor.items);
 
     if (upgradableItems.length == 1) {
-      this._attachItem(upgradableItems[0], dropFunc);
+      this._attachItem(upgradableItems[0], droppedItem);
     } else if (upgradableItems.length > 1) {
       const choices = {};
       for (const upgradableItem of upgradableItems) {
@@ -43,7 +65,7 @@ export class AttachmentHandler {
             save: {
               label: game.i18n.localize('E20.AcceptButton'),
               callback: html => this._attachSelectedItemOptionHandler(
-                rememberOptions(html), dropFunc,
+                rememberOptions(html), droppedItem,
               ),
             },
           },
@@ -61,11 +83,11 @@ export class AttachmentHandler {
    * @param {Function} dropFunc The function to call to complete the drop
    * @private
    */
-  async _attachSelectedItemOptionHandler(options, dropFunc) {
+  async _attachSelectedItemOptionHandler(options, droppedItem) {
     for (const [itemId, isSelected] of Object.entries(options)) {
       if (isSelected) {
         const item = this._actor.items.get(itemId);
-        this._attachItem(item, dropFunc);
+        this._attachItem(item, droppedItem);
         break;
       }
     }
@@ -73,30 +95,14 @@ export class AttachmentHandler {
 
   /**
    * Creates the attachment for the actor and attaches it to the given item
-   * @param {Item} item         The item to attach to
-   * @param {Function} dropFunc The function to call to complete the drop
+   * @param {Item} targetItem         The item to attach to
+   * @param {Item} droppedItem The item being attached
    * @private
    */
-  async _attachItem(item, dropFunc) {
-    if (item) {
-      const attachmentList = await dropFunc();
-      const newAttachment = attachmentList[0];
-      const itemAttachmentIds = item.system[`${newAttachment.type}Ids`];
-      itemAttachmentIds.push(newAttachment._id);
-      await item.update({ [`system.${newAttachment.type}Ids`]: itemAttachmentIds });
+  async _attachItem(targetItem, droppedItem) {
+    if (targetItem) {
+      await setEntryAndAddItem(droppedItem, targetItem);
     }
   }
 
-  /**
-  * Handle deleting the attachments of an item from an Actor Sheet
-  * @param {Item} item                The Item
-  * @param {String[]} attachmentTypes The types of attachments the Item has
-  */
-  deleteAttachments(item, attachmentTypes) {
-    for (const attachmentType of attachmentTypes) {
-      for (const attachmentId of item.system[`${attachmentType}Ids`]) {
-        itemDeleteById(attachmentId, this._actor);
-      }
-    }
-  }
 }

@@ -35,10 +35,10 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Influence Perk --}}
-      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="influencePerk" label='E20.InfluencePerk' items=@root.perks}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="influencePerk" label='E20.InfluencePerk' items=@root.system.items type='perk'}}
 
       {{!-- Hang-Ups --}}
-      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="hangUp" label='E20.ItemTypeHangupPlural' items=@root.hangUps}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="hangUp" label='E20.ItemTypeHangupPlural' items=@root.system.items type='hangUp'}}
 
       {{!-- Mandatory Hang Up --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceMandatoryHangUp'}}

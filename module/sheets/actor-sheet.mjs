@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
+import { deleteAttachmentsForItem, checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
 import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
@@ -191,11 +191,10 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'armor':
         if (i.system.equipped) {
-          equippedArmorEvasion += parseInt(i.system.bonusEvasion);
-          equippedArmorToughness += parseInt(i.system.bonusToughness);
+          equippedArmorEvasion += parseInt(i.system.totalBonusEvasion);
+          equippedArmorToughness += parseInt(i.system.totalBonusToughness);
         }
 
-        i.upgrades = this._populateChildItems(i.system.upgradeIds);
         armors.push(i);
         break;
       case 'bond':
@@ -262,8 +261,6 @@ export class Essence20ActorSheet extends ActorSheet {
         upgrades.push(i);
         break;
       case 'weapon':
-        i.upgrades = this._populateChildItems(i.system.upgradeIds);
-        i.weaponEffects = this._populateChildItems(i.system.weaponEffectIds);
         weapons.push(i);
         break;
       }
@@ -552,7 +549,8 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (rollType == 'initiative') {
       this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
-      const itemId = element.closest('.item').dataset.itemId;
+      let keyId = element.closest('.item').dataset.itemKey;
+      const itemId = element.closest('.item').dataset.itemId || element.closest('.item').dataset.parentId;
       const item = this.actor.items.get(itemId);
 
       if (rollType == 'power') {
@@ -562,7 +560,13 @@ export class Essence20ActorSheet extends ActorSheet {
         await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
       }
 
-      if (item) return item.roll(dataset);
+      if (item) {
+        if (keyId) {
+          return item.roll(dataset, keyId);
+        } else {
+          return item.roll(dataset);
+        }
+      }
     }
   }
 
@@ -639,41 +643,62 @@ export class Essence20ActorSheet extends ActorSheet {
       return;
     }
 
+    let item = null;
     const li = $(event.currentTarget).closest(".item");
     const itemId = li.data("itemId");
     const parentId = li.data("parentId");
-
-    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     const parentItem = this.actor.items.get(parentId);
-    if (parentItem) {
-      if (['armor', 'weapon'].includes(parentItem.type)) {
-        const remainingUpgradeIds = parentItem.system.upgradeIds.filter(u => u != itemId);
-        await parentItem.update({ ["system.upgradeIds"]: remainingUpgradeIds });
+
+    if (itemId) {
+      item = this.actor.items.get(itemId);
+    } else {
+      const keyId = li.data("itemKey");
+
+      // If the deleted item is attached to another item find what it is attached to.
+      for (const attachedItem of this.actor.items) {
+        const collectionId = await attachedItem.getFlag('essence20', 'collectionId');
+        if (collectionId) {
+          if (keyId == collectionId) {
+            item = attachedItem;
+          }
+        }
       }
     }
 
-    const item = this.actor.items.get(itemId);
-
-    if (item.type == "origin") {
-      this._bgHandler.onOriginDelete(item);
-    } else if (item.type == 'influence') {
-      this._bgHandler.onInfluenceDelete(item);
-    } else if (item.type == "altMode") {
-      this._tfHandler.onAltModeDelete(item, this);
-    } else if (item.type == "alteration") {
-      this._alHandler.onAlterationDelete(item);
-    } else if (item.type == "weapon") {
-      this._atHandler.deleteAttachments(item, ["upgrade", "weaponEffect"]);
-    } else if (item.type == "armor") {
-      this._atHandler.deleteAttachments(item, ["upgrade"]);
-    } else if (item.type == "perk") {
-      this._pkHandler.onPerkDelete(item);
-    } else if (item.type == "role" || item.type == "focus") {
-      this._rlHandler.onRoleDelete(item);
+    // return if no item is found.
+    if (!item) {
+      return;
     }
 
-    item.delete();
-    li.slideUp(200, () => this.render(false));
+    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
+    if (parentItem) {
+      const id = li.data("itemKey");
+      const updateString = `system.items.-=${id}`;
+
+      await parentItem.update({[updateString]: null});
+
+      item.delete();
+      li.slideUp(200, () => this.render(false));
+    } else {
+      if (item.type == "armor") {
+        deleteAttachmentsForItem(item, this.actor);
+      } else if (item.type == "origin") {
+        this._bgHandler.onOriginDelete(item);
+      } else if (item.type == 'influence') {
+        deleteAttachmentsForItem(item, this.actor);
+      } else if (item.type == "altMode") {
+        this._tfHandler.onAltModeDelete(item, this);
+      } else if (item.type == "alteration") {
+        this._alHandler.onAlterationDelete(item);
+      } else if (item.type == "perk") {
+        this._pkHandler.onPerkDelete(item);
+      } else if (item.type == "weapon") {
+        deleteAttachmentsForItem(item, this.actor);
+      }
+
+      item.delete();
+      li.slideUp(200, () => this.render(false));
+    }
   }
 
   /**
@@ -720,6 +745,8 @@ export class Essence20ActorSheet extends ActorSheet {
     switch (sourceItem.type) {
     case 'alteration':
       return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'armor':
+      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
@@ -733,12 +760,12 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
-      return await this._onDropWeapon(event, data);
+      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
     case 'weaponEffect':
-      return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
+      return this._atHandler.attachItem(sourceItem);
 
     default:
-      return await this._onDropDefault(event, data);
+      return await super._onDropItem(event, data);
     }
   }
 
@@ -757,7 +784,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
       return super._onDropItem(event, data);
     } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return this._atHandler.attachItem(upgrade.system.type, super._onDropItem.bind(this, event, data));
+      return this._atHandler.attachItem(upgrade);
     } else {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;

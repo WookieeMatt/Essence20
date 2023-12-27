@@ -1,3 +1,4 @@
+import { createId } from "./helpers/utils.mjs";
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @returns {Promise}      A Promise which resolves once the migration is completed
@@ -12,7 +13,7 @@ export const migrateWorld = async function() {
   for (const [actor, valid] of actors) {
     try {
       const source = valid ? actor.toObject() : game.data.actors.find(a => a._id === actor.id);
-      const updateData = migrateActorData(source);
+      const updateData = await migrateActorData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Actor document ${actor.name}`);
         await actor.update(updateData, {enforceTypes: false, diff: valid});
@@ -39,12 +40,21 @@ export const migrateWorld = async function() {
         item.delete();
       }
 
-      const updateData = migrateItemData(source);
+      const updateData = await migrateItemData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
-        console.log(updateData);
         await item.update(updateData, {enforceTypes: false, diff: valid});
-        await item.update({"system.-=perkType": null});
+        if (item.type == "origin") {
+          await item.update({"system.-=originPerkIds": null});
+        } else if (item.type == "influence") {
+          await item.update({"system.-=perkIds": null});
+          await item.update({"system.-=hangUpIds": null});
+        } else if (item.type == "weapon") {
+          await item.update({"system.-=upgradeIds": null});
+          await item.update({"system.-=weaponEffectIds": null});
+        } else if (item.type =="armor") {
+          await item.update({"system.-=upgradeIds": null});
+        }
       }
     } catch(err) {
       err.message = `Failed essence20 system migration for Item ${item.name}: ${err.message}`;
@@ -89,7 +99,7 @@ export const migrateWorld = async function() {
 
   // Migrate World Compendium Packs
   for (let p of game.packs) {
-    if (p.metadata.packageType !== "world") continue;
+    if (p.metadata.packageType !== "world" && p.metadata.packageType !== "system" ) continue;
     if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
     await migrateCompendium(p);
   }
@@ -109,7 +119,7 @@ export const migrateWorld = async function() {
  * @param {object} actor            The actor data object to update
  * @returns {object}                The updateData to apply
  */
-export const migrateActorData = function(actor) {
+export const migrateActorData = async function(actor) {
   const updateData = {};
 
   // Migrate initiative
@@ -207,11 +217,11 @@ export const migrateActorData = function(actor) {
     return updateData;
   }
 
-  const items = actor.items.reduce(async (arr, i) => {
+  const items = [];
+  for (const itemData of actor.items) {
     // Migrate the Owned Item
-    const itemData = i instanceof CONFIG.Item.documentClass ? i.toObject() : i;
     const fullActor = game.actors.get(actor._id);
-    const itemToDelete = fullActor.items.get(i._id);
+    const itemToDelete = fullActor.items.get(itemData._id);
 
     if (itemToDelete.type == "threatPower") {
       await itemToDelete.delete();
@@ -227,16 +237,27 @@ export const migrateActorData = function(actor) {
       }
     }
 
-    let itemUpdate = migrateItemData(itemData, fullActor);
+    let itemUpdate = await migrateItemData(itemToDelete, fullActor);
+
+    if (itemToDelete.type == "origin") {
+      await itemToDelete.update({"system.-=originPerkIds": null});
+    } else if (itemToDelete.type == "influence") {
+      await itemToDelete.update({"system.-=perkIds": null});
+      await itemToDelete.update({"system.-=hangUpIds": null});
+    } else if (itemToDelete.type == "weapon") {
+      await itemToDelete.update({"system.-=upgradeIds": null});
+      await itemToDelete.update({"system.-=weaponEffectIds": null});
+    } else if (itemToDelete.type =="armor") {
+      await itemToDelete.update({"system.-=upgradeIds": null});
+    }
 
     // Update the Owned Item
     if (!foundry.utils.isEmpty(itemUpdate)) {
       itemUpdate._id = itemData._id;
-      arr.push(foundry.utils.expandObject(itemUpdate));
+      items.push(itemUpdate);
     }
 
-    return arr;
-  }, []);
+  }
 
   if (items.length > 0) {
     updateData.items = items;
@@ -246,13 +267,50 @@ export const migrateActorData = function(actor) {
 };
 
 /**
- * Migrate a single Item document to incorporate latest data model changes
- *
- * @param {object} item             Item data to migrate
- * @returns {object}                The updateData to apply
- */
-export function migrateItemData(item, actor) {
+* Handles search of the Compendiums to find the item
+* @param {Item|String} item  Either an ID or an Item to find in the compendium
+* @returns {Item}     The Item, if found
+*/
+export async function searchCompendium(item) {
+  const id = item._id || item;
+  for (const pack of game.packs) {
+    const compendium = game.packs.get(`essence20.${pack.metadata.name}`);
+    if (compendium) {
+      const compendiumItem = await fromUuid(`Compendium.essence20.${pack.metadata.name}.${id}`);
+      if (compendiumItem) {
+        return compendiumItem;
+      }
+    }
+  }
+}
+
+/**
+* Gets an Item from an Id
+* @param {Item|String} perkId The id from the parentItem
+* @returns {Item} attachedItem  The Item, if found
+*/
+export async function getItem(perkId, actor) {
+  let attachedItem = await fromUuid(`Item.${perkId}`);
+  if (!attachedItem) {
+    attachedItem = await searchCompendium(perkId);
+  }
+
+  if (!attachedItem && actor) {
+    attachedItem = await actor.items.get(perkId);
+  }
+
+  return attachedItem;
+}
+
+/**
+* Migrate a single Item document to incorporate latest data model changes
+*
+* @param {object} item             Item data to migrate
+* @returns {object}                The updateData to apply
+*/
+export async function migrateItemData(item, actor) {
   const updateData = {};
+  const pathPrefix = "system.items";
 
   if (item.type == "armor") {
     // Armor trait -> traits migration
@@ -278,6 +336,52 @@ export function migrateItemData(item, actor) {
     const effect = item.system.effect;
     if (effect && !item.system.bonusToughness) {
       updateData[`system.bonusToughness`] = effect;
+    }
+
+    //Armor Upgrade Migration to system.items
+    if (item.system.upgradeIds) {
+      for (const perkId of item.system.upgradeIds) {
+        const attachedItem = await getItem(perkId, actor);
+        if (attachedItem) {
+          attachedItem.setFlag('essence20', 'parentId', item.uuid);
+
+          if (attachedItem.armorBonus) {
+            if (attachedItem.armorBonus.defense == 'toughness') {
+              const originalArmorBonus = item.system.bonusToughness - attachedItem.armorBonus.value;
+              updateData[`system.bonusToughness`] = originalArmorBonus;
+            } else if (attachedItem.armorBonus.defense == 'evasion') {
+              const originalArmorBonus = item.system.bonusEvasion - attachedItem.armorBonus.value;
+              updateData[`system.bonusEvasion`] = originalArmorBonus;
+            }
+          }
+
+          const entry = {
+            uuid: attachedItem.uuid,
+            img: attachedItem.img,
+            name: attachedItem.name,
+            type: attachedItem.type,
+            armorBonus: attachedItem.system.armorBonus,
+            availability: attachedItem.system.availability,
+            benefit: attachedItem.system.benefit,
+            description: attachedItem.system.description,
+            prerequisite: attachedItem.system.prerequisite,
+            source: attachedItem.system.source,
+            subtype: attachedItem.system.type,
+            traits: attachedItem.system.traits,
+          };
+          const id = await createId(item.system.items);
+          updateData[`${pathPrefix}.${id}`] = entry;
+        }
+      }
+
+      if (item.system.upgradeTraits) {
+        let keptTraits = item.system.traits;
+        for (const removedTrait of item.system.upgradeTraits) {
+          keptTraits.filter(x => x !== removedTrait);
+        }
+
+        updateData[`system.traits`] = keptTraits;
+      }
     }
   } else if (item.type == "perk") {
     if (item.system.perkType) {
@@ -307,6 +411,116 @@ export function migrateItemData(item, actor) {
     } else {
       Item.implementation.create(itemData, {keepId: true});
     }
+  } else if (item.type == 'origin') {
+    if (item.system.originPerkIds) {
+      for (const perkId of item.system.originPerkIds) {
+        const attachedItem = await getItem(perkId, actor);
+        if (attachedItem) {
+          const entry = {
+            uuid: attachedItem.uuid,
+            img: attachedItem.img,
+            name: attachedItem.name,
+            type: attachedItem.type,
+          };
+          const id = await createId(item.system.items);
+          updateData[`${pathPrefix}.${id}`] = entry;
+        }
+      }
+    }
+
+  } else if (item.type == 'influence') {
+    if (item.system.perkIds) {
+      for (const perkId of item.system.perkIds) {
+        const attachedItem = await getItem(perkId, actor);
+        if (attachedItem) {
+          const entry = {
+            uuid: attachedItem.uuid,
+            img: attachedItem.img,
+            name: attachedItem.name,
+            type: attachedItem.type,
+          };
+          const id = await createId(item.system.items);
+          updateData[`${pathPrefix}.${id}`] = entry;
+        }
+      }
+    }
+
+    if (item.system.hangUpIds) {
+      for (const perkId of item.system.hangUpIds) {
+        const attachedItem = await getItem(perkId, actor);
+        if (attachedItem) {
+          const entry = {
+            uuid: attachedItem.uuid,
+            img: attachedItem.img,
+            name: attachedItem.name,
+            type: attachedItem.type,
+          };
+          const id = await createId(item.system.items);
+          updateData[`${pathPrefix}.${id}`] = entry;
+        }
+      }
+    }
+  } else if (item.type == 'weapon') {
+    if (item.system.upgradeIds) {
+      for (const perkId of item.system.upgradeIds) {
+        const attachedItem = await getItem(perkId, actor);
+        if (attachedItem) {
+          attachedItem.setFlag('essence20', 'parentId', item.uuid);
+
+          const entry = {
+            uuid: attachedItem.uuid,
+            img: attachedItem.img,
+            name: attachedItem.name,
+            type: attachedItem.type,
+            availability: attachedItem.system.availability,
+            benefit: attachedItem.system.benefit,
+            description: attachedItem.system.description,
+            prerequisite: attachedItem.system.prerequisite,
+            source: attachedItem.system.source,
+            subtype: attachedItem.system.type,
+            traits: attachedItem.system.traits,
+          };
+          const id = await createId(item.system.items);
+          updateData[`${pathPrefix}.${id}`] = entry;
+        }
+      }
+
+      if (item.system.upgradeTraits) {
+        let keptTraits = item.system.traits;
+        for (const removedTrait of item.system.upgradeTraits) {
+          keptTraits.filter(x => x !== removedTrait);
+        }
+
+        updateData[`system.traits`] = keptTraits;
+      }
+    }
+
+    if (item.system.weaponEffectIds) {
+      for (const perkId of item.system.weaponEffectIds) {
+        const attachedItem = await getItem(perkId, actor);
+        if (attachedItem) {
+          attachedItem.setFlag('essence20', 'parentId', item.uuid);
+
+          const entry = {
+            uuid: attachedItem.uuid,
+            img: attachedItem.img,
+            name: attachedItem.name,
+            type: attachedItem.type,
+            classification: attachedItem.system.classification,
+            damageValue: attachedItem.system.damageValue,
+            damageType: attachedItem.system.damageType,
+            numHands: attachedItem.system.numHands,
+            numTargets: attachedItem.system.numTargets,
+            radius: attachedItem.system.radius,
+            range: attachedItem.system.range,
+            shiftDown: attachedItem.system.shiftDown,
+            traits: attachedItem.system.traits,
+          };
+          const id = await createId(item.system.items);
+          updateData[`${pathPrefix}.${id}`] = entry;
+        }
+      }
+    }
   }
 
   return updateData;
@@ -335,14 +549,26 @@ export const migrateCompendium = async function(pack) {
     try {
       switch (documentName) {
       case "Actor":
-        updateData = migrateActorData(doc.toObject());
+        updateData = await migrateActorData(doc.toObject());
         break;
       case "Item":
         if (doc.type == "threatPower") {
           doc.delete();
         }
 
-        updateData = migrateItemData(doc.toObject());
+        updateData = await migrateItemData(doc.toObject());
+        if (doc.type == "origin") {
+          await doc.update({"system.-=originPerkIds": null});
+        } else if (doc.type == "influence") {
+          await doc.update({"system.-=perkIds": null});
+          await doc.update({"system.-=hangUpIds": null});
+        } else if (doc.type == "weapon") {
+          await doc.update({"system.-=upgradeIds": null});
+          await doc.update({"system.-=weaponEffectIds": null});
+        } else if (doc.type =="armor") {
+          await doc.update({"system.-=upgradeIds": null});
+        }
+
         break;
       case "Scene":
         // updateData = migrateSceneData(doc.toObject());
@@ -354,7 +580,7 @@ export const migrateCompendium = async function(pack) {
       await doc.update(updateData);
       console.log(`Migrated ${documentName} document ${doc.name} in Compendium ${pack.collection}`);
     } catch(err) { // Handle migration failures
-      err.message = `Failed dnd5e system migration for document ${doc.name} in pack ${pack.collection}: ${err.message}`;
+      err.message = `Failed essence20 system migration for document ${doc.name} in pack ${pack.collection}: ${err.message}`;
       console.error(err);
     }
   }

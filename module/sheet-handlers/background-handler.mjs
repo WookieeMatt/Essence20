@@ -1,10 +1,9 @@
 import {
+  deleteAttachmentsForItem,
   createItemCopies,
   getItemsOfType,
   getShiftedSkill,
-  itemDeleteById,
   rememberOptions,
-  searchCompendium,
 } from "../helpers/utils.mjs";
 
 export class BackgroundHandler {
@@ -33,24 +32,22 @@ export class BackgroundHandler {
     }
 
     const newInfluenceList = await dropFunc();
-    const newInfluence = newInfluenceList[0];
-    const perkIds = await createItemCopies(influence.system.perkIds, this._actor);
+    await createItemCopies(influence.system.items, this._actor, "perk", newInfluenceList[0]);
 
     if (addHangUp) {
-      if (influence.system.hangUpIds.length > 1) {
-        this._chooseHangUp(influence, perkIds, newInfluence);
+      const hangUpIds = [];
+      for (const [, item] of Object.entries(influence.system.items)) {
+        if (item.type == 'hangUp') {
+          hangUpIds.push(item.uuid);
+        }
+      }
+
+      if (hangUpIds.length > 1) {
+        this._chooseHangUp(influence);
       } else {
-        const hangUpIds = await createItemCopies(influence.system.hangUpIds, this._actor);
-        await newInfluence.update({
-          ["system.perkIds"]: perkIds,
-          ["system.hangUpIds"]: hangUpIds,
-        });
+        await createItemCopies(influence.system.items, this._actor, "hangUp", newInfluenceList[0]);
       }
     }
-
-    await newInfluence.update({
-      ["system.perkIds"]: perkIds,
-    });
   }
 
   /**
@@ -209,7 +206,7 @@ export class BackgroundHandler {
     const [newShift, skillString] = await getShiftedSkill(selectedSkill, 1, this._actor);
 
     const newOriginList = await dropFunc();
-    this._originPerkCreate(origin, newOriginList[0]);
+    await createItemCopies(origin.system.items, this._actor, "perk", newOriginList[0]);
 
     await this._actor.update({
       [essenceString]: essenceValue,
@@ -225,51 +222,21 @@ export class BackgroundHandler {
   }
 
   /**
-  * Creates the Perk from the Origin on the Actor
-  * @param {Origin} origin    The original Origin to get Perks from
-  * @param {Origin} newOrigin The new Origin being created
-  * @private
-  */
-  async _originPerkCreate(origin, newOrigin) {
-    const perkIds = [];
-    for (const id of origin.system.originPerkIds) {
-      let data = game.items.get(id);
-      if (!data) {
-        data = await searchCompendium(id);
-      }
-
-      const perk = await Item.create(data, { parent: this._actor });
-      perkIds.push(perk._id);
-    }
-
-    await newOrigin.update({
-      ["system.originPerkIds"]: perkIds,
-    });
-  }
-
-  /**
   * Displays a dialog for selecting a Hang Up from an Influence
   * @param {Influence} influence    The Influence
-  * @param {Perk[]} perkIds         The Perk IDs that go with the new Influence
-  * @param {Influence} newInfluence The new Influence that was created.
   * @private
   */
-  async _chooseHangUp(influence, perkIds, newInfluence) {
+  async _chooseHangUp(influence) {
     const choices = {};
     let itemArray = [];
-    let compendiumData = null;
 
-    for (const id of influence.system.hangUpIds) {
-      compendiumData = game.items.get(id);
-      if (!compendiumData) {
-        compendiumData = await searchCompendium(id);
-        if (compendiumData) {
-          itemArray.push(compendiumData);
-          choices[compendiumData._id] = {
-            chosen: false,
-            label: compendiumData.name,
-          };
-        }
+    for (const [, item] of Object.entries(influence.system.items)) {
+      if (item.type == 'hangUp') {
+        itemArray.push(item);
+        choices[item.uuid] = {
+          chosen: false,
+          label: item.name,
+        };
       }
     }
 
@@ -284,7 +251,7 @@ export class BackgroundHandler {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
             callback: html => this._hangUpSelect(
-              itemArray, rememberOptions(html), perkIds, newInfluence,
+              influence, rememberOptions(html),
             ),
           },
         },
@@ -294,15 +261,11 @@ export class BackgroundHandler {
 
   /**
   * Adds the chosen HangUp to the character
-  * @param {HangUp[]} hangUps       An Array of the HangUps that could be picked
   * @param {Object} options         The selections from the dialog
-  * @param {String[]} perkIds       The IDs from any Perk that were added with the Influence
-  * @param {Influence} newInfluence The new Influence that was created
   */
-  async _hangUpSelect(hangUps, options, perkIds, newInfluence) {
+  async _hangUpSelect(options) {
     let selectedHangUp = null;
-    const hangUpIds = [];
-    let hangUpToCreate = null;
+    const owner = this._actor;
 
     for (const [hangUp, isSelected] of Object.entries(options)) {
       if (isSelected) {
@@ -315,36 +278,10 @@ export class BackgroundHandler {
       return;
     }
 
-    for (const item of hangUps) {
-      if (item._id == selectedHangUp) {
-        hangUpToCreate = item;
-      }
-    }
+    const itemToCreate = await fromUuid(selectedHangUp);
+    const newItem = await Item.create(itemToCreate, { parent: owner });
+    newItem.setFlag('core', 'sourceId', selectedHangUp);
 
-    const newHangUp = await Item.create(hangUpToCreate, { parent: this._actor });
-    hangUpIds.push(newHangUp._id);
-    await newInfluence.update({
-      ["system.perkIds"]: perkIds,
-      ["system.hangUpIds"]: hangUpIds,
-    });
-  }
-
-  /**
-  * Handle deleting of an Influence from an Actor Sheet
-  * @param {Influence} influence The Influence
-  */
-  onInfluenceDelete(influence) {
-    const influenceDelete = this._actor.items.get(influence._id);
-
-    for (const perk of influenceDelete.system.perkIds) {
-      if (perk) {
-        itemDeleteById(perk, this._actor);
-      }
-    }
-
-    for (const hangUp of influenceDelete.system.hangUpIds) {
-      itemDeleteById(hangUp, this._actor);
-    }
   }
 
   /**
@@ -357,11 +294,7 @@ export class BackgroundHandler {
 
     let selectedSkill = this._actor.system.originSkillsIncrease;
     const [newShift, skillString] = await getShiftedSkill(selectedSkill, -1, this._actor);
-    const originDelete = this._actor.items.get(origin._id);
-
-    for (const perk of originDelete.system.originPerkIds) {
-      itemDeleteById(perk, this._actor);
-    }
+    await deleteAttachmentsForItem(origin, this._actor);
 
     const essenceString = `system.essences.${essence}`;
 
