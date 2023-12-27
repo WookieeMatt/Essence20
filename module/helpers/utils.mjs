@@ -357,7 +357,7 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
     }
 
     break;
-    case "origin":
+  case "origin":
     if (droppedItem.type == "perk") {
       addItemIfUnique(droppedItem, targetItem, entry);
     }
