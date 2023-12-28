@@ -763,7 +763,6 @@
         "parentItem"
       ],
       "essences": "",
-      "items": {},
       "roleId": "",
       "skills": []
     },
@@ -861,7 +860,6 @@
         "speed":  [],
         "strength":  []
       },
-      "items": {},
       "perkLevels": {
         "general": []
       },
