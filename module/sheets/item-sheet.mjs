@@ -89,6 +89,10 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Delete Hang Up from Influence
     html.find('.hangUp-delete').click(this._onObjectDelete.bind(this, ".hangUp"));
+
+    // Delete Role Perk from Influence
+    html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
+
   }
 
   /**
