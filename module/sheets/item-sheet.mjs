@@ -93,8 +93,6 @@ export class Essence20ItemSheet extends ItemSheet {
     // Delete Role Perk from Influence
     html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
 
-    //Role Level Sort
-    // html.find('.level').change(this._onItemSort.bind(this));
   }
 
   /**
@@ -109,7 +107,6 @@ export class Essence20ItemSheet extends ItemSheet {
     await setEntryAndAddItem(droppedItem, targetItem);
 
     this.render(true);
-    // this._onItemSort();
   }
 
   /**
@@ -126,27 +123,6 @@ export class Essence20ItemSheet extends ItemSheet {
     await this.item.update({[updateString]: null});
 
     li.slideUp(200, () => this.render(false));
-  }
-
-  _onItemSort() {
-    let toSort = document.getElementById('rolePerkList').children;
-    toSort = Array.prototype.slice.call(toSort, 0);
-    toSort.sort(function(a, b) {
-
-      let aord = parseInt( $(a).data("itemLevel"));
-      let bord = parseInt( $(b).data("itemLevel"));
-      // two elements never have the same ID hence this is sufficient:
-      return (aord < bord) ? -1 : (aord > bord) ? 1 : 0;
-    });
-
-    let parent = document.getElementById('rolePerkList');
-    parent.innerHTML = "";
-
-    for(let i = 0; i < toSort.length; i++) {
-      parent.appendChild(toSort[i]);
-    }
-
-    document.getElementById('rolePerkList').innerHTML = parent.innerHTML;
   }
 
 }

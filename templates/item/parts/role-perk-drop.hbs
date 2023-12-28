@@ -8,7 +8,7 @@
           <li class="item">
           <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
             <label style="white-space: nowrap; overflow: hidden;">{{item.name}}</label>
-            <input type="number" class="level" value="{{item.level}}" name="system.items.{{@key}}.level" />
+            <input type="number" class="level" placeholder="Level" value="{{item.level}}" name="system.items.{{@key}}.level" />
             <div class="item-controls">
               <a class="item-control {{../className}}-delete flex-right" title="{{localize 'E20.DeleteItem'}}">
                 <i class="fas fa-trash"></i>
