@@ -692,6 +692,8 @@ export class Essence20ActorSheet extends ActorSheet {
         this._alHandler.onAlterationDelete(item);
       } else if (item.type == "perk") {
         this._pkHandler.onPerkDelete(item);
+      } else if (item.type == "role") {
+        this._rlHandler.onRoleDelete(item);
       } else if (item.type == "weapon") {
         deleteAttachmentsForItem(item, this.actor);
       }

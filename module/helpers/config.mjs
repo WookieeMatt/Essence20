@@ -778,3 +778,40 @@ E20.tokenSizes = {
   },
 };
 
+/************************************************
+ * MLP Essence Advancement                      *
+ ***********************************************/
+
+E20.MLPAdvancement = {
+  diamond: [
+    "level1",
+    "level1Optional",
+    "level5",
+    "level9",
+    "level13",
+    "level16",
+    "level18",
+    "level20",
+  ],
+  gold: [
+    "level1",
+    "level2",
+    "level6",
+    "level10",
+    "level14",
+    "level17",
+    "level19",
+  ],
+  silver: [
+    "level3",
+    "level7",
+    "level11",
+    "level15",
+  ],
+  bronze: [
+    "level4",
+    "level8",
+    "level12",
+  ],
+};
+

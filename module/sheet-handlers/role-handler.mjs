@@ -1,3 +1,7 @@
+import {
+  createItemCopies
+} from "../helpers/utils.mjs";
+
 export class RoleHandler {
   /**
   * Constructor
@@ -9,11 +13,27 @@ export class RoleHandler {
   }
 
   async roleUpdate(role, dropFunc) {
+    for (let actorItem of this._actor.items) {
+      // Characters can only have one Role
+      if (actorItem.type == 'role') {
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleMulitpleError')));
+        return false;
+      }
+    }
 
-    for (const essence in role.system.essenceLevels) {
+    const newRoleList = await dropFunc();
+    const newRole = newRoleList[0];
+
+    this._actor.setFlag('essence20', 'lastLevelUp', this._actor.system.level);
+
+    if (role.system.version == 'myLittlePony') {
+      await essenceSelect(newRole);
+    }
+
+    for (const essence in newRole.system.essenceLevels) {
       let totalIncrease = 0;
-      for (let i =0; i<role.system.essenceLevels[essence].length; i++) {
-        const essenceLevel = role.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
+      for (let i =0; i<newRole.system.essenceLevels[essence].length; i++) {
+        const essenceLevel = newRole.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
         if (essenceLevel <= this._actor.system.level ) {
           totalIncrease += 1;
         }
@@ -27,32 +47,27 @@ export class RoleHandler {
 
     }
 
-    if (role.system.powers.personal.starting) {
+    if (newRole.system.powers.personal.starting) {
       let totalIncrease = 0;
-      for (let i =0; i<role.system.powers.personal.levels.length; i++) {
-        const powerIncreaseLevel = role.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
+      for (let i =0; i<newRole.system.powers.personal.levels.length; i++) {
+        const powerIncreaseLevel = newRole.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
         if (powerIncreaseLevel <= this._actor.system.level ) {
           totalIncrease += 1;
         }
       }
 
-      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) + parseInt(role.system.powers.personal.starting) + parseInt(role.system.powers.personal.increase * totalIncrease);
+      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) + parseInt(newRole.system.powers.personal.starting) + parseInt(newRole.system.powers.personal.increase * totalIncrease);
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
       })
     }
 
-    for (const [,perk] of role.system.items) {
-      if (perk.level <=this._actor.system.level) {
+    await createItemCopies(newRole.system.items, this._actor, "perk", newRole);
 
-      }
-    }
-    const newRoleList = await dropFunc();
-    const newRole = newRoleList[0];
+  }
 
-    this._actor.setFlag('essence20', 'lastLevelUp', this._actor.system.level);
-
+  async essenceSelect(role) {
 
   }
 
