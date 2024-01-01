@@ -1,5 +1,6 @@
 import {
-  createItemCopies
+  createItemCopies,
+  deleteAttachmentsForItem,
 } from "../helpers/utils.mjs";
 
 export class RoleHandler {
@@ -102,7 +103,7 @@ export class RoleHandler {
         "system.powers.personal.max": newPersonalPowerMax,
       })
     }
-
+    await deleteAttachmentsForItem(role, this._actor);
     this._actor.setFlag('essence20', 'lastLevelUp', 0);
   }
 }
