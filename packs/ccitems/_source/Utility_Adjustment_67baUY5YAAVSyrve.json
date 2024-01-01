@@ -17,22 +17,26 @@
     {
       "key": "system.movement.aerial.bonus",
       "mode": 2,
-      "value": "-5"
+      "value": "-5",
+      "priority": null
     },
     {
       "key": "system.movement.climb.bonus",
       "mode": 2,
-      "value": "-5"
+      "value": "-5",
+      "priority": null
     },
     {
       "key": "system.movement.ground.bonus",
       "mode": 2,
-      "value": "-5"
+      "value": "-5",
+      "priority": null
     },
     {
       "key": "system.movement.swim.bonus",
       "mode": 2,
-      "value": "-5"
+      "value": "-5",
+      "priority": null
     }
   ],
   "description": "",

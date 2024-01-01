@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 66
     },
+    "items": {
+      "f7bb": {
+        "uuid": "Compendium.essence20.pr_crb.Item.okjZ3lM2q0iwpbcG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Artisan",
+        "type": "perk"
+      },
+      "714b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.afQsKyfUICz0h32X",
+        "img": "icons/svg/hazard.svg",
+        "name": "Artisan",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "afQsKyfUICz0h32X"
-    ],
-    "perkIds": [
-      "okjZ3lM2q0iwpbcG"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686272517992,
-    "modifiedTime": 1686342745792,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127418364,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "QgWNBEkNt3necVNQ",
   "folder": "1Q1jzdGAVmJ9S5HF",

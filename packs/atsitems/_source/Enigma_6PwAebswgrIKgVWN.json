@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Across the Stars",
       "page": 39
+    },
+    "items": {
+      "4a72": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.ugJU6pzzWNesCn4f",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Why Do I know That?",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": "0",
     "baseAquaticMovement": "0",
@@ -18,9 +27,6 @@
       "social"
     ],
     "languages": "",
-    "originPerkIds": [
-      "ugJU6pzzWNesCn4f"
-    ],
     "skills": [
       "athletics",
       "intimidation",
@@ -45,11 +51,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681764017613,
-    "modifiedTime": 1686339231149,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127404748,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "6PwAebswgrIKgVWN",
   "folder": "7CXPtLaacOXQ0Rwc",

@@ -11,9 +11,58 @@
       "book": "GI Joe Core Rulebook",
       "page": 143
     },
+    "items": {
+      "12ae": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.IiBX6i0pIcx5NjQ9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Artillery Cannon Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 600,
+          "value": 300
+        },
+        "shiftDown": 0
+      },
+      "24bc": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GBle85ytocfRUrps",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Artillery Cannon Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 20,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 600,
+          "value": 300
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -21,26 +70,18 @@
       "shift": "d6"
     },
     "traits": [],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "IiBX6i0pIcx5NjQ9",
-      "GBle85ytocfRUrps"
-    ],
-    "classification": {
-      "size": "long"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695387786359,
-    "modifiedTime": 1695388102654,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127411644,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

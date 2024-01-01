@@ -11,9 +11,102 @@
       "book": "Across the Stars",
       "page": 80
     },
+    "items": {
+      "2219": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.SE8qSzBoXWrmVHl5",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Quasar Launcher (Staff) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "0a43": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.xrUEVpcQXWJLh3Jy",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Quaser Launcher (Cannon Mode) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 5,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 150,
+          "value": 60
+        },
+        "shiftDown": 0
+      },
+      "13fe": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.Afb8UmHTcyA5uqZi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Quaser Lancher (Cannon Mode) Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "melee"
+        },
+        "damageValue": 3,
+        "damageType": "stun",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 150,
+          "value": 60
+        },
+        "shiftDown": 0
+      },
+      "01f0": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.FUyO2cyjN6g9PKFi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Quasar Launcher (Staff) Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "2",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "restricted",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -28,28 +121,18 @@
       "stun",
       "versatile"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "xrUEVpcQXWJLh3Jy",
-      "Afb8UmHTcyA5uqZi",
-      "SE8qSzBoXWrmVHl5",
-      "FUyO2cyjN6g9PKFi"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696102490393,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127405950,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

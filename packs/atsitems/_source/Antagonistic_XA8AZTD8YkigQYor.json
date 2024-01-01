@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Across the Stars",
       "page": 38
+    },
+    "items": {
+      "84ee": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.ztdjBJ7H7WJiIH9i",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "One-Upping",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -16,9 +25,6 @@
       "smarts"
     ],
     "languages": "",
-    "originPerkIds": [
-      "ztdjBJ7H7WJiIH9i"
-    ],
     "skills": [
       "athletics",
       "intimidation",
@@ -40,11 +46,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681745058373,
-    "modifiedTime": 1686340810811,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127405429,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "XA8AZTD8YkigQYor",
   "folder": "7CXPtLaacOXQ0Rwc",

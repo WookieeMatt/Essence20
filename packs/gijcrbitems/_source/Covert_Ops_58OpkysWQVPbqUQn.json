@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
       "page": 64
+    },
+    "items": {
+      "1b63": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.1m1pdHboGB7gem34",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Always in Contact",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": "0",
     "baseAquaticMovement": "0",
@@ -16,9 +25,6 @@
       "social"
     ],
     "languages": "",
-    "originPerkIds": [
-      "1m1pdHboGB7gem34"
-    ],
     "skills": [
       "acrobatics",
       "infiltration",
@@ -40,11 +46,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681738629605,
-    "modifiedTime": 1686341513787,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127409702,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "58OpkysWQVPbqUQn",
   "folder": "lt3PqmG6G17ICpRK",

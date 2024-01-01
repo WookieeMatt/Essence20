@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Across the Stars",
       "page": 42
     },
+    "items": {
+      "c228": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.bGKG7artYs7uHHz4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Agency",
+        "type": "perk"
+      },
+      "bcc9": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.QZpWbKjMxMdahpoL",
+        "img": "icons/svg/hazard.svg",
+        "name": "Agency",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "QZpWbKjMxMdahpoL"
-    ],
-    "perkIds": [
-      "bGKG7artYs7uHHz4"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686271375457,
-    "modifiedTime": 1686339231149,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127404641,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "4N0KzHhvMJAbWzJN",
   "folder": "grSWo8UfUN6Awowy",

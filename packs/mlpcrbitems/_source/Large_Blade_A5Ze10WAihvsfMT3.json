@@ -11,9 +11,36 @@
       "book": "My Little Pony Core Rulebook",
       "page": 151
     },
+    "items": {
+      "f710": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ejIzNaeyXdwEuEW9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Large Blades Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "standard",
+    "classification": {
+      "size": "long"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -21,25 +48,18 @@
       "shift": "none"
     },
     "traits": [],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "ejIzNaeyXdwEuEW9"
-    ],
-    "classification": {
-      "size": "long"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695610881089,
-    "modifiedTime": 1695611082766,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127413614,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

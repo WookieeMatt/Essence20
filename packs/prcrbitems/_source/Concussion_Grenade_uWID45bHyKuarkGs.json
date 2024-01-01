@@ -11,9 +11,36 @@
       "book": "Power Rangers Core Rulebook",
       "page": 112
     },
+    "items": {
+      "e660": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.biSzIazZJHL5DNGN",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Concussion Grenade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -23,15 +50,8 @@
     "traits": [
       "consumable"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "biSzIazZJHL5DNGN"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {
@@ -39,11 +59,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695303304427,
-    "modifiedTime": 1695839701395,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127421801,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 150000,
   "ownership": {

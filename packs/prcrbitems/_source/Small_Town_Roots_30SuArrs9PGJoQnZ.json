@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 69
     },
+    "items": {
+      "6fc5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.UAHzqNqQhE4IN8Sc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Small Town Roots",
+        "type": "perk"
+      },
+      "f6f4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.wdarMFcJ1Tf4wQiS",
+        "img": "icons/svg/hazard.svg",
+        "name": "Small Town Roots",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "wdarMFcJ1Tf4wQiS"
-    ],
-    "perkIds": [
-      "UAHzqNqQhE4IN8Sc"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686272816121,
-    "modifiedTime": 1686342745792,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127416620,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "30SuArrs9PGJoQnZ",
   "folder": "1Q1jzdGAVmJ9S5HF",

@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 57
     },
+    "items": {
+      "b879": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.JxScHzozoGYU6P46",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Muscle Over Panache",
+        "type": "perk"
+      },
+      "2dbf": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.13UV5zMtHCSmtexy",
+        "img": "icons/svg/hazard.svg",
+        "name": "Don't Know Your Own Strength",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "13UV5zMtHCSmtexy"
-    ],
-    "perkIds": [
-      "JxScHzozoGYU6P46"
-    ],
+    "mandatoryHangUp": false,
     "skills": [
       "brawn"
     ]
@@ -25,11 +35,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686263255445,
-    "modifiedTime": 1686342150550,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127413675,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "AQl6NPRRRIx6Sz9V",
   "folder": "vjofBqKYZU3tiTmw",

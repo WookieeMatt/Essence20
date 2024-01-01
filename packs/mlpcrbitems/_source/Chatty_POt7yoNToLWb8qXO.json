@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 48
     },
+    "items": {
+      "c245": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.L18ewA90Q1MqaQlC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Chatter Flashback",
+        "type": "perk"
+      },
+      "f237": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.5jVuxvLHf3ULWpxu",
+        "img": "icons/svg/hazard.svg",
+        "name": "Chatterbox",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "5jVuxvLHf3ULWpxu"
-    ],
-    "perkIds": [
-      "L18ewA90Q1MqaQlC"
-    ],
+    "mandatoryHangUp": false,
     "skills": [
       "persuasion"
     ]
@@ -25,11 +35,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686262745031,
-    "modifiedTime": 1686342150550,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127414414,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "POt7yoNToLWb8qXO",
   "folder": "vjofBqKYZU3tiTmw",

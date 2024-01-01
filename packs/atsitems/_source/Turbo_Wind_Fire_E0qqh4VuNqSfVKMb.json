@@ -11,9 +11,58 @@
       "book": "Across the Stars",
       "page": 78
     },
+    "items": {
+      "0581": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.alNke0FOM6wnHesz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Wind Fire Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 30
+        },
+        "shiftDown": 0
+      },
+      "672a": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.ZR3CkLhfNkxh2pxf",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Wind Fire Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 30
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "Turbocharged",
@@ -24,26 +73,18 @@
       "powerWeapon",
       "sniper"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "alNke0FOM6wnHesz",
-      "ZR3CkLhfNkxh2pxf"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695991682778,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127405066,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

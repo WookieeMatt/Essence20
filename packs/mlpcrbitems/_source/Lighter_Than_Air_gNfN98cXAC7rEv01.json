@@ -3,12 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 35
     },
     "prerequisite": "",
+    "selectionLimit": 1,
     "type": "origin"
   },
   "effects": [
@@ -19,11 +21,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681775952988,
-    "modifiedTime": 1686342150550,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127413382,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "gNfN98cXAC7rEv01",
   "folder": "K6SCQzqZPwV7gIDS",

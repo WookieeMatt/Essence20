@@ -5,12 +5,12 @@
   "_id": "7d6wjAWVligNBLgu",
   "img": "systems/essence20/assets/icons/items/alteration.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 85
     },
-    "type": "essence",
     "availability": "limited",
     "benefit": "",
     "bonusSkill": "",
@@ -22,8 +22,8 @@
       "speed"
     ],
     "movementCost": "",
-    "originalId": "",
     "selectedEssence": "",
+    "type": "essence",
     "bonus": null,
     "essenceBonus": [
       "social"
@@ -33,11 +33,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694730081691,
-    "modifiedTime": 1694735973951,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127406320,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

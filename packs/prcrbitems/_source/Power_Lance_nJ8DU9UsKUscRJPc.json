@@ -11,9 +11,80 @@
       "book": "Core Book",
       "page": 108
     },
+    "items": {
+      "fb64": {
+        "uuid": "Compendium.essence20.pr_crb.Item.3zthzCzaR5vZHbW6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Lance (Lance) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "03f4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.OpxzP1nA2eXD4nqF",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Lance (Sai Blades) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "29b3": {
+        "uuid": "Compendium.essence20.pr_crb.Item.4KcPHqd2LA9DVSpl",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Lance Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -21,17 +92,8 @@
       "shift": "none"
     },
     "traits": [],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "3zthzCzaR5vZHbW6",
-      "OpxzP1nA2eXD4nqF",
-      "4KcPHqd2LA9DVSpl"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 0,
@@ -41,11 +103,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696145763318,
-    "modifiedTime": 1696181007184,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127421130,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!nJ8DU9UsKUscRJPc"
 }

@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 70
     },
+    "items": {
+      "e5ee": {
+        "uuid": "Compendium.essence20.pr_crb.Item.C95eqVptP3sXWN5t",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nomad",
+        "type": "perk"
+      },
+      "8fc8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.yqTgicNYo9b9B0FH",
+        "img": "icons/svg/hazard.svg",
+        "name": "Nomad",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "yqTgicNYo9b9B0FH"
-    ],
-    "perkIds": [
-      "C95eqVptP3sXWN5t"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686272893847,
-    "modifiedTime": 1686342745792,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127417584,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "IDbFiyeNadHcm9qQ",
   "folder": "1Q1jzdGAVmJ9S5HF",

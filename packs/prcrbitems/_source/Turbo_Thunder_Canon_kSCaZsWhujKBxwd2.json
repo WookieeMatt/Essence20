@@ -11,9 +11,58 @@
       "book": "Core Book",
       "page": 110
     },
+    "items": {
+      "1017": {
+        "uuid": "Compendium.essence20.pr_crb.Item.GkobUXUpyU8l6gKw",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Thunder Canon Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 4,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 120,
+          "value": 30
+        },
+        "shiftDown": 2
+      },
+      "0c4a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.BbgVmjJ9gN0uYlca",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Thunder Canon Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 120,
+          "value": 30
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -23,16 +72,8 @@
     "traits": [
       "energy"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "BbgVmjJ9gN0uYlca",
-      "GkobUXUpyU8l6gKw"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 0,
@@ -42,11 +83,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696192411982,
-    "modifiedTime": 1696192583580,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127420849,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!kSCaZsWhujKBxwd2"
 }

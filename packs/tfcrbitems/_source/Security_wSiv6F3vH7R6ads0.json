@@ -3,20 +3,40 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 40
     },
+    "items": {
+      "6680": {
+        "uuid": "Compendium.essence20.tf_crb.Item.79jifb9w1OlopUUY",
+        "img": "icons/svg/hazard.svg",
+        "name": "Glacial",
+        "type": "hangUp"
+      },
+      "96f1": {
+        "uuid": "Compendium.essence20.tf_crb.Item.JSIHwTZHlqRPDERC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Security",
+        "type": "perk"
+      },
+      "d0ee": {
+        "uuid": "Compendium.essence20.tf_crb.Item.yoyifVDjpnLloHbK",
+        "img": "icons/svg/hazard.svg",
+        "name": "Skeptical",
+        "type": "hangUp"
+      },
+      "7ec7": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5gCV4i6hoOSowIb",
+        "img": "icons/svg/hazard.svg",
+        "name": "Subordinate",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "79jifb9w1OlopUUY",
-      "yoyifVDjpnLloHbK",
-      "M5gCV4i6hoOSowIb"
-    ],
-    "perkIds": [
-      "JSIHwTZHlqRPDERC"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -25,11 +45,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686279830198,
-    "modifiedTime": 1686343539187,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127425731,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "wSiv6F3vH7R6ads0",
   "folder": "SWtRpPu5oWtOo7vD",

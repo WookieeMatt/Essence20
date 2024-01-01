@@ -5,29 +5,39 @@
   "_id": "9IZ7hxLSyothBCP9",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 36
     },
+    "items": {
+      "5326": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.QJ1Uw4VZxy3zrxa1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unscrupulous",
+        "type": "perk"
+      },
+      "d15d": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.tld8Z6kTlMYdcWqy",
+        "img": "icons/svg/hazard.svg",
+        "name": "Unscrupulous",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "tld8Z6kTlMYdcWqy"
-    ],
-    "perkIds": [
-      "QJ1Uw4VZxy3zrxa1"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686492789262,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406506,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

@@ -5,20 +5,39 @@
   "_id": "VnODgwFgBUNXyPat",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Decepticon Directive",
       "page": 26
     },
+    "items": {
+      "4750": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.LopI86yM8zyBHU7O",
+        "img": "icons/svg/hazard.svg",
+        "name": "Something To Prove",
+        "type": "hangUp"
+      },
+      "1bd2": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.dXZpwsbvn6Jdgpsn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Lackey",
+        "type": "perk"
+      },
+      "edf4": {
+        "uuid": "Compendium.essence20.tf_crb.Item.SgofEgBVvg4josSR",
+        "img": "icons/svg/hazard.svg",
+        "name": "Mode Attachment",
+        "type": "hangUp"
+      },
+      "e62c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5gCV4i6hoOSowIb",
+        "img": "icons/svg/hazard.svg",
+        "name": "Subordinate",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "SgofEgBVvg4josSR",
-      "LopI86yM8zyBHU7O",
-      "M5gCV4i6hoOSowIb"
-    ],
-    "perkIds": [
-      "dXZpwsbvn6Jdgpsn"
-    ],
     "mandatoryHangUp": false,
     "skills": []
   },
@@ -26,11 +45,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694533324232,
-    "modifiedTime": 1694609115603,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127407571,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

@@ -11,9 +11,36 @@
       "book": "GI Joe Core Rulebook",
       "page": 142
     },
+    "items": {
+      "fa89": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6SNB0WmDWMUkpr2X",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Artillery Lobber Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 12,
+        "radius": 10,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 100
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "long"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -27,25 +54,18 @@
       "sharp",
       "wrecker"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "6SNB0WmDWMUkpr2X"
-    ],
-    "classification": {
-      "size": "long"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695336792301,
-    "modifiedTime": 1695388102654,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127411469,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

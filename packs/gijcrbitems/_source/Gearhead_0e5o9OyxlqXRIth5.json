@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
       "page": 48
     },
+    "items": {
+      "0ce0": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.3uEwTov2cda8AD2K",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gearhead",
+        "type": "perk"
+      },
+      "e7f9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.l6zrDIj6DzNzmXdR",
+        "img": "icons/svg/hazard.svg",
+        "name": "Gearhead",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "l6zrDIj6DzNzmXdR"
-    ],
-    "perkIds": [
-      "3uEwTov2cda8AD2K"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686282876221,
-    "modifiedTime": 1686341513787,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127409346,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "0e5o9OyxlqXRIth5",
   "folder": "848nQlbiz9DfiwL2",

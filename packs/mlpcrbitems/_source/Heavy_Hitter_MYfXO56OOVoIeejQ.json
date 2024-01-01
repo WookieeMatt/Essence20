@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 51
     },
+    "items": {
+      "3224": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.p4qXDtj2RCJcibCh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Force",
+        "type": "perk"
+      },
+      "d3fb": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.PblwqCeE7Zyb3jF4",
+        "img": "icons/svg/hazard.svg",
+        "name": "Fleeting Energy",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "PblwqCeE7Zyb3jF4"
-    ],
-    "perkIds": [
-      "p4qXDtj2RCJcibCh"
-    ],
+    "mandatoryHangUp": false,
     "skills": [
       "might"
     ]
@@ -25,11 +35,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686262919014,
-    "modifiedTime": 1686342150550,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127414306,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "MYfXO56OOVoIeejQ",
   "folder": "vjofBqKYZU3tiTmw",
