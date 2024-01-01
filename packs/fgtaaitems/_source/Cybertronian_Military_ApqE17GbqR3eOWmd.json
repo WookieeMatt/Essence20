@@ -3,20 +3,40 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Field Guide to Action and Adventure",
       "page": 52
     },
+    "items": {
+      "d430": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.j1EQkzPX3k5HgVMQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cybertronian Military",
+        "type": "perk"
+      },
+      "cc41": {
+        "uuid": "Compendium.essence20.tf_crb.Item.L2oBtS3KAwncY2xY",
+        "img": "icons/svg/hazard.svg",
+        "name": "Earthspoiled",
+        "type": "hangUp"
+      },
+      "cb5e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.79jifb9w1OlopUUY",
+        "img": "icons/svg/hazard.svg",
+        "name": "Glacial",
+        "type": "hangUp"
+      },
+      "d4f9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5gCV4i6hoOSowIb",
+        "img": "icons/svg/hazard.svg",
+        "name": "Subordinate",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "L2oBtS3KAwncY2xY",
-      "79jifb9w1OlopUUY",
-      "M5gCV4i6hoOSowIb"
-    ],
-    "perkIds": [
-      "j1EQkzPX3k5HgVMQ"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -25,11 +45,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686316179646,
-    "modifiedTime": 1686340779668,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127408606,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "ApqE17GbqR3eOWmd",
   "folder": "DK1GwBI01Dgiz7QR",

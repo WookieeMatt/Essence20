@@ -5,12 +5,14 @@
   "_id": "WJNadltM5sDG4fOt",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Decepticon Directive",
       "page": 31
     },
     "prerequisite": "",
+    "selectionLimit": 1,
     "type": "influence"
   },
   "effects": [
@@ -19,11 +21,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694533018281,
-    "modifiedTime": 1694609115603,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127406946,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

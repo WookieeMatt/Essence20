@@ -11,9 +11,58 @@
       "book": "Core Book",
       "page": 110
     },
+    "items": {
+      "dcff": {
+        "uuid": "Compendium.essence20.pr_crb.Item.n4QZ5gVyCHBaETqb",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Power Axes Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "f80a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Uj5hMJqLtUH8HBdm",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Power Axes Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "light"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -25,16 +74,8 @@
       "sharp",
       "silent"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "n4QZ5gVyCHBaETqb",
-      "Uj5hMJqLtUH8HBdm"
-    ],
-    "classification": {
-      "size": "light"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 0,
@@ -44,11 +85,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696190921273,
-    "modifiedTime": 1696191077234,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127421650,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!trxt5KHDQjy1vYmY"
 }

@@ -11,6 +11,7 @@
       "book": "Across the Stars",
       "page": 84
     },
+    "items": {},
     "availability": "limited",
     "bonusEvasion": 0,
     "bonusToughness": 6,
@@ -23,7 +24,6 @@
       "exoFrame",
       "modular"
     ],
-    "upgradeIds": [],
     "upgradeTraits": []
   },
   "effects": [
@@ -32,11 +32,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695745465993,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127405823,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

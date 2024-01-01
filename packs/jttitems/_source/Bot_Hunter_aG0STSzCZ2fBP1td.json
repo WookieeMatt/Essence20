@@ -5,23 +5,25 @@
   "_id": "aG0STSzCZ2fBP1td",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
       "page": 54
     },
     "prerequisite": "See book",
+    "selectionLimit": 1,
     "type": "general"
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694466448570,
-    "modifiedTime": 1694471614813,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127412653,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

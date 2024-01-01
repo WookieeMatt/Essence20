@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Field Guide to Action and Adventure",
       "page": 53
     },
+    "items": {
+      "83af": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.IT3v6horcOd82vdK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Diplomat",
+        "type": "perk"
+      },
+      "cf7c": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.tKhMtRMrpYHPpNnm",
+        "img": "icons/svg/hazard.svg",
+        "name": "Diplomat",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "tKhMtRMrpYHPpNnm"
-    ],
-    "perkIds": [
-      "IT3v6horcOd82vdK"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686316326079,
-    "modifiedTime": 1686340779668,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127408675,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "KdXreBXxBvEMoOrf",
   "folder": "DK1GwBI01Dgiz7QR",

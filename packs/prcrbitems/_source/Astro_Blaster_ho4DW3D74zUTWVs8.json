@@ -11,9 +11,58 @@
       "book": "Core Book",
       "page": 110
     },
+    "items": {
+      "d3df": {
+        "uuid": "Compendium.essence20.pr_crb.Item.bziLRLI4edEu4Veh",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Astro Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "be52": {
+        "uuid": "Compendium.essence20.pr_crb.Item.LxKfr7PrMtcgJJEO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Astro Blaster Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -23,16 +72,8 @@
     "traits": [
       "energy"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "bziLRLI4edEu4Veh",
-      "LxKfr7PrMtcgJJEO"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 0,
@@ -42,11 +83,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696193678693,
-    "modifiedTime": 1696277918229,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127420637,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!ho4DW3D74zUTWVs8"
 }

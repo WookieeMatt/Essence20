@@ -3,20 +3,40 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 32
     },
+    "items": {
+      "1cf2": {
+        "uuid": "Compendium.essence20.tf_crb.Item.EcSOADOOb3PZMolz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Experiment",
+        "type": "perk"
+      },
+      "b180": {
+        "uuid": "Compendium.essence20.tf_crb.Item.sYz93Ud4qoob9PsA",
+        "img": "icons/svg/hazard.svg",
+        "name": "Distressed",
+        "type": "hangUp"
+      },
+      "6f1a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.KwvsyHeuUqRbto9u",
+        "img": "icons/svg/hazard.svg",
+        "name": "Treacherous",
+        "type": "hangUp"
+      },
+      "18a6": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aT1jR044JiN8tLQi",
+        "img": "icons/svg/hazard.svg",
+        "name": "Violent",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "sYz93Ud4qoob9PsA",
-      "KwvsyHeuUqRbto9u",
-      "aT1jR044JiN8tLQi"
-    ],
-    "perkIds": [
-      "EcSOADOOb3PZMolz"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -25,11 +45,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686279315414,
-    "modifiedTime": 1686343539187,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127422979,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "6I8T9wdUmidy7RMG",
   "folder": "SWtRpPu5oWtOo7vD",

@@ -4,6 +4,7 @@
   "type": "altMode",
   "img": "systems/essence20/assets/icons/items/altmode.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Decepticon Directive",
@@ -30,11 +31,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694553878913,
-    "modifiedTime": 1694609115603,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127406952,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "i8jLfvRkKOFmPdnF",
   "sort": 0,

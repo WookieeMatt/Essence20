@@ -3,20 +3,40 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 33
     },
+    "items": {
+      "d828": {
+        "uuid": "Compendium.essence20.tf_crb.Item.gcqyJw1sXxi2wy8e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Former Senator",
+        "type": "perk"
+      },
+      "ca00": {
+        "uuid": "Compendium.essence20.tf_crb.Item.79jifb9w1OlopUUY",
+        "img": "icons/svg/hazard.svg",
+        "name": "Glacial",
+        "type": "hangUp"
+      },
+      "dad9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.DMzShKiIJk3doOpA",
+        "img": "icons/svg/hazard.svg",
+        "name": "Idolizer",
+        "type": "hangUp"
+      },
+      "072a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.SgofEgBVvg4josSR",
+        "img": "icons/svg/hazard.svg",
+        "name": "Mode Attachment",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "79jifb9w1OlopUUY",
-      "DMzShKiIJk3doOpA",
-      "SgofEgBVvg4josSR"
-    ],
-    "perkIds": [
-      "gcqyJw1sXxi2wy8e"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -25,11 +45,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686279389638,
-    "modifiedTime": 1686343539187,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127423689,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "Slrso9jMespO5Hnj",
   "folder": "SWtRpPu5oWtOo7vD",

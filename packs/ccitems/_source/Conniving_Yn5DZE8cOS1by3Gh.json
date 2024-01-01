@@ -5,29 +5,39 @@
   "_id": "Yn5DZE8cOS1by3Gh",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 28
     },
+    "items": {
+      "fbda": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.dJoVvMG3wjowbWJ8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Conniving",
+        "type": "perk"
+      },
+      "1cbf": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.w8yTnTpOIUdFVm8u",
+        "img": "icons/svg/hazard.svg",
+        "name": "Conniving",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "w8yTnTpOIUdFVm8u"
-    ],
-    "perkIds": [
-      "dJoVvMG3wjowbWJ8"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686420835771,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406701,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

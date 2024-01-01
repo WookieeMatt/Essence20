@@ -3,12 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 93
     },
     "prerequisite": "Speed 3 or higher",
+    "selectionLimit": 1,
     "type": "general"
   },
   "effects": [],
@@ -17,11 +19,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1685393405496,
-    "modifiedTime": 1686342745792,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127415922,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "folder": "Vc2wR3XEEeI6BPrg",
   "_id": "4kt5qBpgTEgY8cGF",

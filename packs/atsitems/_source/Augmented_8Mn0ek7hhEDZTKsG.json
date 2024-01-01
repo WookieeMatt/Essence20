@@ -3,18 +3,27 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Across the Stars",
       "page": 43
     },
+    "items": {
+      "f0f1": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.doGUFfELpwkaUznS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Augmented",
+        "type": "perk"
+      },
+      "262e": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.k76uXWWDpe0yKEcu",
+        "img": "icons/svg/hazard.svg",
+        "name": "Augmented",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "k76uXWWDpe0yKEcu"
-    ],
-    "perkIds": [
-      "doGUFfELpwkaUznS"
-    ],
     "mandatoryHangUp": true,
     "skills": []
   },
@@ -24,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686271449282,
-    "modifiedTime": 1694484006575,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127404794,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "8Mn0ek7hhEDZTKsG",
   "folder": "grSWo8UfUN6Awowy",

@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
       "page": 67
+    },
+    "items": {
+      "ee5e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.9H78lRwXzJW6tj9e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expert Knowledge",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": "0",
     "baseAquaticMovement": "0",
@@ -15,9 +24,6 @@
       "smarts"
     ],
     "languages": "",
-    "originPerkIds": [
-      "9H78lRwXzJW6tj9e"
-    ],
     "skills": [
       "culture",
       "science",
@@ -37,11 +43,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681738984473,
-    "modifiedTime": 1686341513787,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127412072,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "qbV2ZO7P5Y5GyCF3",
   "folder": "lt3PqmG6G17ICpRK",

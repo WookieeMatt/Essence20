@@ -11,9 +11,58 @@
       "book": "Across the Stars",
       "page": 76
     },
+    "items": {
+      "c51b": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.IM6JwIFrafqLp8DZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Auto Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "59b8": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.K7aCNf1q8TR56gB4",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Auto Blaster Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 75,
+          "value": 40
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "Turbocharged",
@@ -23,26 +72,18 @@
     "traits": [
       "powerWeapon"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "IM6JwIFrafqLp8DZ",
-      "K7aCNf1q8TR56gB4"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695757734656,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127405318,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

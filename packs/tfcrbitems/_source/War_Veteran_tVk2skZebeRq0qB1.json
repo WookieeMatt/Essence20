@@ -3,20 +3,40 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 41
     },
+    "items": {
+      "6379": {
+        "uuid": "Compendium.essence20.tf_crb.Item.sYz93Ud4qoob9PsA",
+        "img": "icons/svg/hazard.svg",
+        "name": "Distressed",
+        "type": "hangUp"
+      },
+      "e1ce": {
+        "uuid": "Compendium.essence20.tf_crb.Item.yrnw1HF1u9mE3BgQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "War Veteran",
+        "type": "perk"
+      },
+      "417a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.DMzShKiIJk3doOpA",
+        "img": "icons/svg/hazard.svg",
+        "name": "Idolizer",
+        "type": "hangUp"
+      },
+      "b7de": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5gCV4i6hoOSowIb",
+        "img": "icons/svg/hazard.svg",
+        "name": "Subordinate",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "sYz93Ud4qoob9PsA",
-      "DMzShKiIJk3doOpA",
-      "M5gCV4i6hoOSowIb"
-    ],
-    "perkIds": [
-      "yrnw1HF1u9mE3BgQ"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -25,11 +45,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686279879707,
-    "modifiedTime": 1686343539187,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127425358,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "tVk2skZebeRq0qB1",
   "folder": "SWtRpPu5oWtOo7vD",

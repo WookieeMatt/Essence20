@@ -25,15 +25,16 @@
   },
   "effects": [],
   "flags": {
-    "core": {}
+    "core": {},
+    "essence20": {}
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695394429836,
-    "modifiedTime": 1695887056204,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127416847,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 200000,
   "ownership": {

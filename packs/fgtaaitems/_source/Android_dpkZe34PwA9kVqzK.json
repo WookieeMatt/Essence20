@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Field Guide to Action & Adventure",
       "page": 60
+    },
+    "items": {
+      "0488": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.qPPgeJcB5BMd1jHB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Programmable",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -18,9 +27,6 @@
       "social"
     ],
     "languages": "",
-    "originPerkIds": [
-      "qPPgeJcB5BMd1jHB"
-    ],
     "skills": [
       "conditioning",
       "initiative",
@@ -53,11 +59,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1685405915969,
-    "modifiedTime": 1686340779668,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127408818,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "folder": "AsctL0sSYq52brFB",
   "_id": "dpkZe34PwA9kVqzK",

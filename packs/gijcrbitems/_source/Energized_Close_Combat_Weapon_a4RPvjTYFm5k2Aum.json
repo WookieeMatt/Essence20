@@ -11,9 +11,58 @@
       "book": "GI Joe Core Rulebook",
       "page": 143
     },
+    "items": {
+      "a3b7": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.RwpDWPgoIEejm7Fz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Energized Close Combat Weapon Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "b9ba": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.mCD4bCkChXbq6NzO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Energized Close Combat Weapon Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "energy"
+        },
+        "damageValue": null,
+        "damageType": "intimidate",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -25,26 +74,18 @@
       "energy",
       "reload"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "RwpDWPgoIEejm7Fz",
-      "mCD4bCkChXbq6NzO"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695349742598,
-    "modifiedTime": 1695388102654,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127411248,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

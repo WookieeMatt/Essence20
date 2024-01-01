@@ -11,9 +11,36 @@
       "book": "Across the Stars",
       "page": 80
     },
+    "items": {
+      "fe66": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.M4pve3x39y6sINHX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Transdagger Star Formation Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 120,
+          "value": 75
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -25,25 +52,18 @@
       "inaccurate",
       "powerWeapon"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "M4pve3x39y6sINHX"
-    ],
-    "classification": {
-      "size": "heavy"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696173861702,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127405398,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

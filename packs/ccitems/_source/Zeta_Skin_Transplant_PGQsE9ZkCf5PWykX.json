@@ -17,7 +17,8 @@
     {
       "key": "system.health.bonus",
       "mode": 2,
-      "value": "-1"
+      "value": "-1",
+      "priority": null
     }
   ],
   "description": "",

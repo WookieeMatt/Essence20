@@ -11,9 +11,58 @@
       "book": "Transformers Core Rulebook",
       "page": 123
     },
+    "items": {
+      "d0c8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ewoa4XvWFFQHPLi9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Large Thrown Weapon Effect (Blunt)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 40,
+          "value": 20
+        },
+        "shiftDown": 0
+      },
+      "dceb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.KOCU7talbW0YHjXY",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Large Thrown Weapon Effect (Sharp)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 40,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -26,16 +75,8 @@
       "sharp",
       "silent"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "Ewoa4XvWFFQHPLi9",
-      "KOCU7talbW0YHjXY"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {
@@ -43,11 +84,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695329905958,
-    "modifiedTime": 1695839706592,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127421381,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 106250,
   "ownership": {

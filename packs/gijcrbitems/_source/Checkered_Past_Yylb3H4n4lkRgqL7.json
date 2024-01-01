@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
       "page": 47
     },
+    "items": {
+      "6289": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.0gmwqTySkvTHqfI2",
+        "img": "icons/svg/hazard.svg",
+        "name": "Checkered Past",
+        "type": "hangUp"
+      },
+      "b250": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.3u36PBwDcOmk7y6B",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Checkered Past",
+        "type": "perk"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "0gmwqTySkvTHqfI2"
-    ],
-    "perkIds": [
-      "3u36PBwDcOmk7y6B"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686282843477,
-    "modifiedTime": 1686341513787,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127410994,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "Yylb3H4n4lkRgqL7",
   "folder": "848nQlbiz9DfiwL2",

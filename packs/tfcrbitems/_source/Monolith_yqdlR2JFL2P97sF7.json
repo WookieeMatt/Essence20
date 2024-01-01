@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.62Su4NGv4ejOIvLv]{Monolith}</p>",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 51
+    },
+    "items": {
+      "6f1e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Rj9N6i7Jmkl54ujX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Large And In Charge",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -15,9 +24,6 @@
       "strength"
     ],
     "languages": "",
-    "originPerkIds": [
-      "Rj9N6i7Jmkl54ujX"
-    ],
     "skills": [
       "brawn",
       "might"
@@ -36,11 +42,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681743670134,
-    "modifiedTime": 1686343608357,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127425877,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "yqdlR2JFL2P97sF7",
   "folder": "vECyC1kfkRvVO3FR",

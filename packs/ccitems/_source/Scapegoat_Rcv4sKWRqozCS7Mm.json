@@ -5,29 +5,39 @@
   "_id": "Rcv4sKWRqozCS7Mm",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 33
     },
+    "items": {
+      "ce53": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.yMihdpSe5ntjRN3R",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Scapegoat",
+        "type": "perk"
+      },
+      "23c3": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.T2NO8rvrvvVYOuAP",
+        "img": "icons/svg/hazard.svg",
+        "name": "Scapegoat",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "T2NO8rvrvvVYOuAP"
-    ],
-    "perkIds": [
-      "yMihdpSe5ntjRN3R"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686492217703,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406678,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

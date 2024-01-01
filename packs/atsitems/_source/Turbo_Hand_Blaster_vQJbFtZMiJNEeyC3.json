@@ -11,9 +11,36 @@
       "book": "Across the Stars",
       "page": 78
     },
+    "items": {
+      "3d52": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.CaQIh9A8U56bR8gX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Hand Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 30
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "Turbocharged",
@@ -25,25 +52,18 @@
       "powerWeapon",
       "silent"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "CaQIh9A8U56bR8gX"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695960144186,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127406093,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

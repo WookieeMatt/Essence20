@@ -3,20 +3,40 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 30
     },
+    "items": {
+      "cf1e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.7XR1us1Zm4dKDrwW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bureaucrat",
+        "type": "perk"
+      },
+      "e41c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.SgofEgBVvg4josSR",
+        "img": "icons/svg/hazard.svg",
+        "name": "Mode Attachment",
+        "type": "hangUp"
+      },
+      "e031": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5gCV4i6hoOSowIb",
+        "img": "icons/svg/hazard.svg",
+        "name": "Subordinate",
+        "type": "hangUp"
+      },
+      "345c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.KwvsyHeuUqRbto9u",
+        "img": "icons/svg/hazard.svg",
+        "name": "Treacherous",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "SgofEgBVvg4josSR",
-      "M5gCV4i6hoOSowIb",
-      "KwvsyHeuUqRbto9u"
-    ],
-    "perkIds": [
-      "7XR1us1Zm4dKDrwW"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -25,11 +45,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686278972270,
-    "modifiedTime": 1686343539187,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127424594,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "e6RS3aIEGjFyZZgE",
   "folder": "SWtRpPu5oWtOo7vD",

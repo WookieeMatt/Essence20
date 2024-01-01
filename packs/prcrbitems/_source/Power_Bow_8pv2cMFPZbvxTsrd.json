@@ -11,9 +11,58 @@
       "book": "Core Book",
       "page": 108
     },
+    "items": {
+      "f740": {
+        "uuid": "Compendium.essence20.pr_crb.Item.pEt1KUvh2saJVbfX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Bow Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 0
+      },
+      "33c0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.ApN7p75a0leshQPW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Bow Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 2,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -27,16 +76,8 @@
       "silent",
       "sniper"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "pEt1KUvh2saJVbfX",
-      "ApN7p75a0leshQPW"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 0,
@@ -46,11 +87,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696145856408,
-    "modifiedTime": 1696181173377,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127417040,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!8pv2cMFPZbvxTsrd"
 }

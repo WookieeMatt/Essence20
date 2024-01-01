@@ -11,9 +11,80 @@
       "book": "Transformers Core Rulebook",
       "page": 122
     },
+    "items": {
+      "2031": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7ah23fiimnJq6HIL",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Short Bludgeoning Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "b44e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.rMg6ZhYEEHTeZ8Db",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Short Bludgeoning Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "f5bf": {
+        "uuid": "Compendium.essence20.tf_crb.Item.m2Wl4D5TxL8vD3BO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Short Bludgeoning Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "maneuver",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -25,27 +96,18 @@
       "martialArts",
       "silent"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "7ah23fiimnJq6HIL",
-      "rMg6ZhYEEHTeZ8Db",
-      "m2Wl4D5TxL8vD3BO"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695307719462,
-    "modifiedTime": 1695400290374,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127424450,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

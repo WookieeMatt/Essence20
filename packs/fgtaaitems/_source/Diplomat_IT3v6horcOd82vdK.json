@@ -3,12 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Field Guide to Action and Adventure",
       "page": 53
     },
     "prerequisite": "",
+    "selectionLimit": 1,
     "type": "influence"
   },
   "effects": [
@@ -20,11 +22,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686315518613,
-    "modifiedTime": 1686340779668,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127408337,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "IT3v6horcOd82vdK",
   "folder": "Esz9SAEXytXZwm2R",

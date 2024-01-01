@@ -5,10 +5,19 @@
   "_id": "52XzvQFvltYAARUN",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 42
+    },
+    "items": {
+      "02ea": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.fUSF6fxRyTniN2wT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Distracting Offer",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -18,9 +27,6 @@
       "social"
     ],
     "languages": "",
-    "originPerkIds": [
-      "fUSF6fxRyTniN2wT"
-    ],
     "skills": [
       "culture",
       "technology",
@@ -34,11 +40,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686493365740,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406446,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

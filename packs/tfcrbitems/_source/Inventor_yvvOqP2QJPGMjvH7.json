@@ -3,20 +3,40 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 36
     },
+    "items": {
+      "7974": {
+        "uuid": "Compendium.essence20.tf_crb.Item.DMzShKiIJk3doOpA",
+        "img": "icons/svg/hazard.svg",
+        "name": "Idolizer",
+        "type": "hangUp"
+      },
+      "33b6": {
+        "uuid": "Compendium.essence20.tf_crb.Item.0A8SSXo0HkjyFcEA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inventor",
+        "type": "perk"
+      },
+      "e018": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ztsvCKdnaDZzBR8Q",
+        "img": "icons/svg/hazard.svg",
+        "name": "Vainglorious",
+        "type": "hangUp"
+      },
+      "97c5": {
+        "uuid": "Compendium.essence20.tf_crb.Item.XLDVNcC9B4hnSppZ",
+        "img": "icons/svg/hazard.svg",
+        "name": "Whimsical",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "DMzShKiIJk3doOpA",
-      "ztsvCKdnaDZzBR8Q",
-      "XLDVNcC9B4hnSppZ"
-    ],
-    "perkIds": [
-      "0A8SSXo0HkjyFcEA"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -25,11 +45,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686279563041,
-    "modifiedTime": 1686343539187,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127426015,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "yvvOqP2QJPGMjvH7",
   "folder": "SWtRpPu5oWtOo7vD",

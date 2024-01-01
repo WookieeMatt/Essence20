@@ -11,9 +11,102 @@
       "book": "Core Book",
       "page": 110
     },
+    "items": {
+      "a73f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.LAxPAXvQKtiaWGmV",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lunar Lance Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "fb79": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mOd8XXF5PGvMUVLO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lunar Lance Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "f87f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.DMVavBBvj9Nh4Dfa",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lunar Lance Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "89e5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.9pOLGLbkQctW2wCy",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lunar Lance Alternate Effect 3",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -24,18 +117,8 @@
       "energy",
       "sharp"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "LAxPAXvQKtiaWGmV",
-      "mOd8XXF5PGvMUVLO",
-      "DMVavBBvj9Nh4Dfa",
-      "9pOLGLbkQctW2wCy"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 0,
@@ -45,11 +128,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696195438886,
-    "modifiedTime": 1696195760981,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127419470,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!XcwBWNUzadCnuo1k"
 }

@@ -5,10 +5,19 @@
   "_id": "6YZS6OXsyK5jqgxz",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
       "page": 27
+    },
+    "items": {
+      "ec89": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.o7Yn4EXPvYywe5AZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "You Can Do It, Too",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -18,9 +27,6 @@
       "social"
     ],
     "languages": "",
-    "originPerkIds": [
-      "o7Yn4EXPvYywe5AZ"
-    ],
     "skills": [
       "alertness",
       "culture",
@@ -33,11 +39,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694465831312,
-    "modifiedTime": 1694471614813,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127412718,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

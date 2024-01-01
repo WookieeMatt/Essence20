@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.hr00Kzgshnz67400]{Support}</p>",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 54
+    },
+    "items": {
+      "9498": {
+        "uuid": "Compendium.essence20.tf_crb.Item.4l9Oa6LLVheEdnFO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "In Case of Emergency",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -15,9 +24,6 @@
       "smarts"
     ],
     "languages": "",
-    "originPerkIds": [
-      "4l9Oa6LLVheEdnFO"
-    ],
     "skills": [
       "science",
       "technology"
@@ -36,11 +42,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681743982540,
-    "modifiedTime": 1686343655549,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127423184,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "B3wRZcgNAAnjlcfD",
   "folder": "vECyC1kfkRvVO3FR",

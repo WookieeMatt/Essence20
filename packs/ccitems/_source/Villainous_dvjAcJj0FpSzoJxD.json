@@ -5,29 +5,39 @@
   "_id": "dvjAcJj0FpSzoJxD",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 37
     },
+    "items": {
+      "b2f3": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.IH82p4TztIjbt7eZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Villainous",
+        "type": "perk"
+      },
+      "267c": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.IKtCNZtKHqs7DIQh",
+        "img": "icons/svg/hazard.svg",
+        "name": "Villainous",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "IKtCNZtKHqs7DIQh"
-    ],
-    "perkIds": [
-      "IH82p4TztIjbt7eZ"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686492912070,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406774,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {
