@@ -3,6 +3,7 @@
   "type": "hangUp",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
@@ -15,11 +16,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1680140511679,
-    "modifiedTime": 1686341513787,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127409082,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "5FEYM1LMPfla4mOL",
   "folder": "mBc7vkBIME7jNvk7",

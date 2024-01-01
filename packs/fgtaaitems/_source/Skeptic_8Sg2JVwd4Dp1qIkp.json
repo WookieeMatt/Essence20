@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Field Guide to Action and Adventure",
       "page": 58
     },
+    "items": {
+      "32af": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.vb1L2oi4xiWkD5ZF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Skeptic",
+        "type": "perk"
+      },
+      "0315": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.gUrBCm0G8ntInUar",
+        "img": "icons/svg/hazard.svg",
+        "name": "Skeptic",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "gUrBCm0G8ntInUar"
-    ],
-    "perkIds": [
-      "vb1L2oi4xiWkD5ZF"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686316508799,
-    "modifiedTime": 1686340779668,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127408484,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "8Sg2JVwd4Dp1qIkp",
   "folder": "DK1GwBI01Dgiz7QR",

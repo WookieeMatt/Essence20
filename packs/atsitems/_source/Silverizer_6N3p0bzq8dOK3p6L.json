@@ -11,9 +11,58 @@
       "book": "Across the Stars",
       "page": 80
     },
+    "items": {
+      "1732": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.5MgKVp4uuQ7mL99s",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Silverizer Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 90,
+          "value": 45
+        },
+        "shiftDown": 0
+      },
+      "b1f5": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.bjCS6TsnNawbFxpt",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Silverizer Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 45
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "Silver Ranger",
@@ -24,26 +73,18 @@
       "energy",
       "powerWeapon"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "5MgKVp4uuQ7mL99s",
-      "bjCS6TsnNawbFxpt"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696173471813,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127404734,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

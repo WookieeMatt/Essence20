@@ -11,9 +11,36 @@
       "book": "Decepticon Directive",
       "page": 72
     },
+    "items": {
+      "e173": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.brH80yz71vOOFIAk",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Concussion Pistol Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -23,25 +50,18 @@
     "traits": [
       "sonic"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "brH80yz71vOOFIAk"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696129081763,
-    "modifiedTime": 1696169890833,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127407165,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

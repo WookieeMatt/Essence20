@@ -11,9 +11,80 @@
       "book": "Across the Stars",
       "page": 76
     },
+    "items": {
+      "6a60": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.w2PYXrZEuQfOiMRH",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "V-Lancer (Blast Mode) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "88dd": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.gPEG1BVtPfnDlV6c",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "V-Lancer (Lance Mode)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d259": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.5qs9D0ZploWeZ3PX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "V-Lancer (Lance Mode) Effects",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
     "equipped": true,
     "requirements": {
       "custom": "Lightspeed Response",
@@ -26,27 +97,18 @@
       "silent",
       "versatile"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "w2PYXrZEuQfOiMRH",
-      "gPEG1BVtPfnDlV6c",
-      "5qs9D0ZploWeZ3PX"
-    ],
-    "classification": {
-      "size": "medium"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695770347401,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127404951,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

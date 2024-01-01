@@ -5,10 +5,19 @@
   "_id": "fh2JkswXre7mbAgv",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 41
+    },
+    "items": {
+      "8d10": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.t0QDESiNz7GEDYHL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Menace",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -18,9 +27,6 @@
       "social"
     ],
     "languages": "",
-    "originPerkIds": [
-      "t0QDESiNz7GEDYHL"
-    ],
     "skills": [
       "brawn",
       "intimidation",
@@ -33,11 +39,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686493263406,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406790,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

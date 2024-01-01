@@ -11,9 +11,36 @@
       "book": "Decepticon Directive",
       "page": 73
     },
+    "items": {
+      "958c": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.rkfV4VuLcr7TUh4G",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Fusion Gun Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 160,
+          "value": 40
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -27,25 +54,18 @@
       "reload",
       "wrecker"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "rkfV4VuLcr7TUh4G"
-    ],
-    "classification": {
-      "size": "heavy"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696168832907,
-    "modifiedTime": 1696169890833,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127407409,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

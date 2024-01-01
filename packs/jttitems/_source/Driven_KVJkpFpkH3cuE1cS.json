@@ -5,10 +5,19 @@
   "_id": "KVJkpFpkH3cuE1cS",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
       "page": 26
+    },
+    "items": {
+      "ac16": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.bFJOnWaIKTDYjDDJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Try, Try Again",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -18,9 +27,6 @@
       "smarts"
     ],
     "languages": "",
-    "originPerkIds": [
-      "bFJOnWaIKTDYjDDJ"
-    ],
     "skills": [
       "athletics",
       "might",
@@ -33,11 +39,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694465738659,
-    "modifiedTime": 1694471614813,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127412882,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

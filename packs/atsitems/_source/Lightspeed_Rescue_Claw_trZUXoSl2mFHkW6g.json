@@ -11,9 +11,36 @@
       "book": "Across the Stars",
       "page": 79
     },
+    "items": {
+      "2b00": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.ZZcej0it6Oc13SpD",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lightspeed Rescue Claw Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "Lightspeed Response",
@@ -24,25 +51,18 @@
       "inertial",
       "powerWeapon"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "ZZcej0it6Oc13SpD"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695911989148,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127406039,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

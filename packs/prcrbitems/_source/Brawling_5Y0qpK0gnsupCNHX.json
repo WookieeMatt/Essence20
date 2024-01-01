@@ -11,9 +11,80 @@
       "book": "Core Book",
       "page": 108
     },
+    "items": {
+      "592f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.IOenNqdotgidwRTa",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Brawling Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "0efb": {
+        "uuid": "Compendium.essence20.pr_crb.Item.JK2fJIoMMEmrX3pF",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Brawling Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 2
+      },
+      "fb17": {
+        "uuid": "Compendium.essence20.pr_crb.Item.WgxbC8HBSTE6i1Yb",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Brawling Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -24,17 +95,8 @@
       "blunt",
       "silent"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "IOenNqdotgidwRTa",
-      "JK2fJIoMMEmrX3pF",
-      "WgxbC8HBSTE6i1Yb"
-    ],
-    "classification": {
-      "size": "integrated"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 100000,
@@ -44,11 +106,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695834636458,
-    "modifiedTime": 1695839621947,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127416766,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!5Y0qpK0gnsupCNHX"
 }

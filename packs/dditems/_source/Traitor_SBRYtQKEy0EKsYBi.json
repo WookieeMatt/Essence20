@@ -5,6 +5,7 @@
   "_id": "SBRYtQKEy0EKsYBi",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Decepticon Directive",
@@ -17,11 +18,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694532341215,
-    "modifiedTime": 1694609115603,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127406945,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

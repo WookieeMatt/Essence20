@@ -16,7 +16,8 @@
     {
       "key": "system.movement.aerial.bonus",
       "mode": 2,
-      "value": "10"
+      "value": "10",
+      "priority": null
     }
   ],
   "tint": null,

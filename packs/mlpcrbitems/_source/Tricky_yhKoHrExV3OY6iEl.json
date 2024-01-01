@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 63
     },
+    "items": {
+      "2303": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.E6QEmhG9S1skhLLs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bait and Switch",
+        "type": "perk"
+      },
+      "9dc7": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.30WB5sRAQ3zhLmsz",
+        "img": "icons/svg/hazard.svg",
+        "name": "Outfoxed",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "30WB5sRAQ3zhLmsz"
-    ],
-    "perkIds": [
-      "E6QEmhG9S1skhLLs"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686263637956,
-    "modifiedTime": 1686342150550,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127415756,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "yhKoHrExV3OY6iEl",
   "folder": "vjofBqKYZU3tiTmw",

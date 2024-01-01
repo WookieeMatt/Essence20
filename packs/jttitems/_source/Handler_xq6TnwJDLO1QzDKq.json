@@ -5,18 +5,27 @@
   "_id": "xq6TnwJDLO1QzDKq",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "A Jump Through Time",
       "page": 19
     },
+    "items": {
+      "f3d1": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.zu446tiCwXa7kbaR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Handler",
+        "type": "perk"
+      },
+      "4e58": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.ssjkxF1VjMMKlzuD",
+        "img": "icons/svg/hazard.svg",
+        "name": "Handler",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "ssjkxF1VjMMKlzuD"
-    ],
-    "perkIds": [
-      "zu446tiCwXa7kbaR"
-    ],
     "mandatoryHangUp": false,
     "skills": []
   },
@@ -24,11 +33,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694465301895,
-    "modifiedTime": 1694471614813,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127413306,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

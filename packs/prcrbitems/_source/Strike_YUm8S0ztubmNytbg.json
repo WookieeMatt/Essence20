@@ -11,9 +11,80 @@
       "book": "Core Book",
       "page": 108
     },
+    "items": {
+      "c27f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.BP9YxSmLfSKnet6l",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Strike Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "b728": {
+        "uuid": "Compendium.essence20.pr_crb.Item.VqqsTiVussWdBA4P",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Strike Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 2
+      },
+      "c8d2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.4C3FTnp6CDhz9Qse",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Strike Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -25,17 +96,8 @@
       "martialArts",
       "silent"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "BP9YxSmLfSKnet6l",
-      "VqqsTiVussWdBA4P",
-      "4C3FTnp6CDhz9Qse"
-    ],
-    "classification": {
-      "size": "integrated"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "sort": 200000,
@@ -45,11 +107,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695835547146,
-    "modifiedTime": 1695839625008,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127419747,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!YUm8S0ztubmNytbg"
 }

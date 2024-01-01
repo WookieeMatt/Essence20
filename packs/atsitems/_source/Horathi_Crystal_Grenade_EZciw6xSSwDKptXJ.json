@@ -11,9 +11,58 @@
       "book": "Across the Stars",
       "page": 80
     },
+    "items": {
+      "d5dc": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.sqcvuWCMdbb2tKj9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Horathi Crystal Grenade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 35,
+          "value": 20
+        },
+        "shiftDown": 0
+      },
+      "fcb9": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.wnWWFjqGuovQnHuV",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Horathi Crystal Grenade Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 35,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "prototype",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -23,26 +72,18 @@
     "traits": [
       "xenotech"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "sqcvuWCMdbb2tKj9",
-      "wnWWFjqGuovQnHuV"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696179175774,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127405096,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

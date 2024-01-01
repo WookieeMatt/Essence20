@@ -5,20 +5,39 @@
   "_id": "sKQYpaavGqh9n2xO",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Decepticon Directive",
       "page": 28
     },
+    "items": {
+      "a601": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.vx3ZMblF2uv5qHJT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Recruiter",
+        "type": "perk"
+      },
+      "c751": {
+        "uuid": "Compendium.essence20.tf_crb.Item.sYz93Ud4qoob9PsA",
+        "img": "icons/svg/hazard.svg",
+        "name": "Distressed",
+        "type": "hangUp"
+      },
+      "55be": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.oowLckrIBcn1Zff3",
+        "img": "icons/svg/hazard.svg",
+        "name": "Show Respect",
+        "type": "hangUp"
+      },
+      "444c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ztsvCKdnaDZzBR8Q",
+        "img": "icons/svg/hazard.svg",
+        "name": "Vainglorious",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "sYz93Ud4qoob9PsA",
-      "oowLckrIBcn1Zff3",
-      "ztsvCKdnaDZzBR8Q"
-    ],
-    "perkIds": [
-      "vx3ZMblF2uv5qHJT"
-    ],
     "mandatoryHangUp": false,
     "skills": []
   },
@@ -26,11 +45,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694533406658,
-    "modifiedTime": 1694609115603,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127408081,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

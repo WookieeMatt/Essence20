@@ -11,6 +11,7 @@
       "book": "Across the Stars",
       "page": 83
     },
+    "items": {},
     "availability": "automatic",
     "bonusEvasion": 0,
     "bonusToughness": 1,
@@ -20,18 +21,17 @@
       "silent",
       "xenotech"
     ],
-    "upgradeIds": [],
     "upgradeTraits": []
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695744820568,
-    "modifiedTime": 1696179524226,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127404884,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

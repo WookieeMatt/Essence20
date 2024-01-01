@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 27
+    },
+    "items": {
+      "c506": {
+        "uuid": "Compendium.essence20.pr_crb.Item.wbptqxlNMVmjRf0w",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Capable of Anything",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": "0",
     "baseAquaticMovement": "0",
@@ -18,9 +27,6 @@
       "social"
     ],
     "languages": "",
-    "originPerkIds": [
-      "wbptqxlNMVmjRf0w"
-    ],
     "skills": [
       "athletics",
       "brawn",
@@ -46,11 +52,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681696852485,
-    "modifiedTime": 1686342745792,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127419526,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "XuiQfgUfCX1txf7j",
   "folder": "AXtwURx09lzKH1fD",

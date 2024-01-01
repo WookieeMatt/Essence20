@@ -3,20 +3,40 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "",
       "page": null
     },
+    "items": {
+      "af69": {
+        "uuid": "Compendium.essence20.tf_crb.Item.gfd6fjOPXEbggsAx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cube Player",
+        "type": "perk"
+      },
+      "b40c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.L2oBtS3KAwncY2xY",
+        "img": "icons/svg/hazard.svg",
+        "name": "Earthspoiled",
+        "type": "hangUp"
+      },
+      "fec1": {
+        "uuid": "Compendium.essence20.tf_crb.Item.V5GfafYii5GSMtzr",
+        "img": "icons/svg/hazard.svg",
+        "name": "Impulsive",
+        "type": "hangUp"
+      },
+      "e2e5": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ztsvCKdnaDZzBR8Q",
+        "img": "icons/svg/hazard.svg",
+        "name": "Vainglorious",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "L2oBtS3KAwncY2xY",
-      "V5GfafYii5GSMtzr",
-      "ztsvCKdnaDZzBR8Q"
-    ],
-    "perkIds": [
-      "gfd6fjOPXEbggsAx"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -25,11 +45,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686279225063,
-    "modifiedTime": 1686343539187,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127423826,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "TfwNuzbHJFQmvO4F",
   "folder": "SWtRpPu5oWtOo7vD",

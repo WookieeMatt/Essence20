@@ -11,9 +11,36 @@
       "book": "Decepticon Directive",
       "page": 71
     },
+    "items": {
+      "6067": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.yh7TfIRJK8Ef79jg",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hi-Ex Grenade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 5,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 30,
+          "value": 10
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -26,25 +53,18 @@
       "consumable",
       "wrecker"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "yh7TfIRJK8Ef79jg"
-    ],
-    "classification": {
-      "size": "sidearm"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696128289132,
-    "modifiedTime": 1696169890833,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127408170,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

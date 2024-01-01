@@ -5,23 +5,25 @@
   "_id": "IH82p4TztIjbt7eZ",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
       "page": 37
     },
     "prerequisite": "",
+    "selectionLimit": 1,
     "type": "influence"
   },
   "effects": [],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686492833094,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406325,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

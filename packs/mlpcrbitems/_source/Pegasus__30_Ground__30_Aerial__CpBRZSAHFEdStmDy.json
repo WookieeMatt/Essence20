@@ -3,10 +3,31 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 35
+    },
+    "items": {
+      "d736": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ekWiJObUf2BAhevg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Air Born",
+        "type": "perk"
+      },
+      "9fe6": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.gNfN98cXAC7rEv01",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Lighter Than Air",
+        "type": "perk"
+      },
+      "0c12": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.j4U7F2wEqNJzJnI7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cutie Mark Perk",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 30,
     "baseAquaticMovement": 0,
@@ -15,11 +36,6 @@
       "speed"
     ],
     "languages": "",
-    "originPerkIds": [
-      "ekWiJObUf2BAhevg",
-      "gNfN98cXAC7rEv01",
-      "j4U7F2wEqNJzJnI7"
-    ],
     "skills": [
       "initiative",
       "acrobatics",
@@ -43,11 +59,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681776377877,
-    "modifiedTime": 1686342150550,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127414038,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "CpBRZSAHFEdStmDy",
   "folder": "opM7CR9TYwSB1EQV",

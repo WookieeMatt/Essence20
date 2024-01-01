@@ -5,20 +5,39 @@
   "_id": "od6Yw5ordlxFpJRm",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Decepticon Directive",
       "page": 24
     },
+    "items": {
+      "b1db": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.QhiG6aB3Z2GM1Get",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fanatic",
+        "type": "perk"
+      },
+      "6c8e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.DMzShKiIJk3doOpA",
+        "img": "icons/svg/hazard.svg",
+        "name": "Idolizer",
+        "type": "hangUp"
+      },
+      "f818": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.LopI86yM8zyBHU7O",
+        "img": "icons/svg/hazard.svg",
+        "name": "Something To Prove",
+        "type": "hangUp"
+      },
+      "a66c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5gCV4i6hoOSowIb",
+        "img": "icons/svg/hazard.svg",
+        "name": "Subordinate",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "DMzShKiIJk3doOpA",
-      "LopI86yM8zyBHU7O",
-      "M5gCV4i6hoOSowIb"
-    ],
-    "perkIds": [
-      "QhiG6aB3Z2GM1Get"
-    ],
     "mandatoryHangUp": false,
     "skills": []
   },
@@ -26,11 +45,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694533219767,
-    "modifiedTime": 1694609115603,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127407806,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

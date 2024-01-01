@@ -23,14 +23,16 @@
     }
   },
   "effects": [],
-  "flags": {},
+  "flags": {
+    "essence20": {}
+  },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1696169357876,
-    "modifiedTime": 1696169890833,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127408201,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "e2YOvzu1uhqhuCs0",
   "sort": 0,

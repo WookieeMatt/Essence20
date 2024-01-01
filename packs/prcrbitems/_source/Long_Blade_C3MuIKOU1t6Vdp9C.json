@@ -11,9 +11,58 @@
       "book": "Power Rangers Core Rulebook",
       "page": 112
     },
+    "items": {
+      "4231": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.2IRZcCJbUGFuEYMk",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Blade Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "6c5f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.uYAnV5vfucrRlJlr",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Blade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",
+    "classification": {
+      "size": "long"
+    },
     "equipped": true,
     "requirements": {
       "custom": "",
@@ -25,16 +74,8 @@
       "sharp",
       "silent"
     ],
-    "upgradeIds": [],
     "upgradeTraits": [],
-    "usesPerScene": null,
-    "weaponEffectIds": [
-      "uYAnV5vfucrRlJlr",
-      "2IRZcCJbUGFuEYMk"
-    ],
-    "classification": {
-      "size": "long"
-    }
+    "usesPerScene": null
   },
   "effects": [],
   "flags": {
@@ -42,11 +83,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1695307173813,
-    "modifiedTime": 1695839708496,
-    "lastModifiedBy": "RQsfT4GIto0XIK1k"
+    "modifiedTime": 1704127417442,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 103125,
   "ownership": {

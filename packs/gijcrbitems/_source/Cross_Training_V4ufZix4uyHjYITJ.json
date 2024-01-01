@@ -3,12 +3,14 @@
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
       "page": 130
     },
     "prerequisite": "Level 4",
+    "selectionLimit": 1,
     "type": "general"
   },
   "effects": [],
@@ -17,11 +19,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686280620203,
-    "modifiedTime": 1686341513787,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127409114,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "V4ufZix4uyHjYITJ",
   "folder": "RXPdNB9Xnw7MUk8x",

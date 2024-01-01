@@ -5,6 +5,7 @@
   "_id": "wGMyGbySdNSgPs8B",
   "img": "icons/svg/hazard.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Cobra Codex",
@@ -15,11 +16,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686420145945,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406350,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

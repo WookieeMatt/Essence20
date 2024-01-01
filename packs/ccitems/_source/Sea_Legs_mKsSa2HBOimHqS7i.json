@@ -5,12 +5,14 @@
   "_id": "mKsSa2HBOimHqS7i",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
+    "originalId": "",
     "description": "<p>sets swim base speed to 30. If you have swim speed from somwhere else deactivate the base swim and activate the bonus swim.&nbsp;</p>",
     "source": {
       "book": "Cobra Codex",
       "page": 81
     },
     "prerequisite": "",
+    "selectionLimit": 1,
     "type": "general"
   },
   "effects": [
@@ -20,11 +22,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.301",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686501906655,
-    "modifiedTime": 1686502352304,
-    "lastModifiedBy": "qb4uqfrOHw0AT64Q"
+    "modifiedTime": 1704127406343,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "sort": 0,
   "ownership": {

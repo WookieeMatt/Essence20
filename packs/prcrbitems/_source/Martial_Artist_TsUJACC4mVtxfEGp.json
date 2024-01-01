@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 70
     },
+    "items": {
+      "4414": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rtIjZwmsUxBYNfA1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Martial Artist",
+        "type": "perk"
+      },
+      "19ff": {
+        "uuid": "Compendium.essence20.pr_crb.Item.hXKy7kWGic6wSge9",
+        "img": "icons/svg/hazard.svg",
+        "name": "Martial Artist",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "hXKy7kWGic6wSge9"
-    ],
-    "perkIds": [
-      "rtIjZwmsUxBYNfA1"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686272860377,
-    "modifiedTime": 1686342745792,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127418685,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "TsUJACC4mVtxfEGp",
   "folder": "1Q1jzdGAVmJ9S5HF",

@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Field Guide to Action & Adventure",
       "page": 63
+    },
+    "items": {
+      "bed2": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.YPzpjKFz1yrwPHN6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Armchair General",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
@@ -15,9 +24,6 @@
       "smarts"
     ],
     "languages": "",
-    "originPerkIds": [
-      "YPzpjKFz1yrwPHN6"
-    ],
     "skills": [
       "culture",
       "science"
@@ -30,11 +36,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1685406891472,
-    "modifiedTime": 1686340779668,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127408450,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "folder": "AsctL0sSYq52brFB",
   "_id": "3ovRZjhUPYjl6vnt",

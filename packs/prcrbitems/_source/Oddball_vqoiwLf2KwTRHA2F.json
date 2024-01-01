@@ -3,10 +3,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 25
+    },
+    "items": {
+      "a0f8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.9nvRKN0A8N0EEXUl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nobody Like Me",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": "0",
     "baseAquaticMovement": "0",
@@ -18,9 +27,6 @@
       "social"
     ],
     "languages": "",
-    "originPerkIds": [
-      "9nvRKN0A8N0EEXUl"
-    ],
     "skills": [
       "intimidation",
       "might",
@@ -47,11 +53,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1681696615337,
-    "modifiedTime": 1686342745792,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127422091,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "vqoiwLf2KwTRHA2F",
   "folder": "AXtwURx09lzKH1fD",

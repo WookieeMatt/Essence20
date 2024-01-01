@@ -4,10 +4,19 @@
   "type": "origin",
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
+    "originalId": "",
     "description": "<p><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.dUNk3ylraMY7348P\" data-id=\"dUNk3ylraMY7348P\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Mini-Con (Firearm Enhancment Module)</a><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.i8jLfvRkKOFmPdnF\" data-id=\"i8jLfvRkKOFmPdnF\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Mini-Con (Mini-Cassette)</a><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.oSn5EyMwso8Z1Ohh\" data-id=\"oSn5EyMwso8Z1Ohh\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Mini-Con (Mini-Vehicle (Aerial)</a><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.JVIOxmSpPwPQDY1z\" data-id=\"JVIOxmSpPwPQDY1z\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Mini-Con (Mini-Vehicle (Ground))</a><a class=\"content-link\" draggable=\"true\" data-uuid=\"Compendium.essence20.decepticon_directive.Item.1Phg0rsbVHuCOpJb\" data-id=\"1Phg0rsbVHuCOpJb\" data-type=\"Item\" data-pack=\"essence20.decepticon_directive\" data-tooltip=\"Alt Mode Item\">Mini-Con (Power Conduit)</a></p>",
     "source": {
       "book": "Decepticon Directive",
       "page": 35
+    },
+    "items": {
+      "aeb9": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.4NR1hsHWADKJegbh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Frame Efficacy",
+        "type": "perk"
+      }
     },
     "baseAerialMovement": 40,
     "baseAquaticMovement": 0,
@@ -16,9 +25,6 @@
       "speed"
     ],
     "languages": "",
-    "originPerkIds": [
-      "4NR1hsHWADKJegbh"
-    ],
     "skills": [
       "initiative",
       "acrobatics"
@@ -29,11 +35,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1694553713888,
-    "modifiedTime": 1694609190380,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1704127407640,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "iGVnRMJYEWHJ0l0s",
   "sort": 0,

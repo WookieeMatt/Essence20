@@ -16,7 +16,8 @@
     {
       "key": "system.initiative.shiftUp",
       "mode": 2,
-      "value": "2"
+      "value": "2",
+      "priority": null
     }
   ],
   "tint": null,

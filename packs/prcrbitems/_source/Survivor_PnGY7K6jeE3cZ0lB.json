@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "Power Rangers Core Rulebook",
       "page": 75
     },
+    "items": {
+      "6626": {
+        "uuid": "Compendium.essence20.pr_crb.Item.sbJ6CYXmoKrwv5Jl",
+        "img": "icons/svg/hazard.svg",
+        "name": "Survivor",
+        "type": "hangUp"
+      },
+      "48f0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.YmSnQxVytktWfZTZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Survivior",
+        "type": "perk"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "sbJ6CYXmoKrwv5Jl"
-    ],
-    "perkIds": [
-      "YmSnQxVytktWfZTZ"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686273016984,
-    "modifiedTime": 1686342745792,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127418172,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "PnGY7K6jeE3cZ0lB",
   "folder": "1Q1jzdGAVmJ9S5HF",

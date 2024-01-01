@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "My Little Pony Core Rulebook",
       "page": 60
     },
+    "items": {
+      "2700": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.Vk2EFSSBfmunP5fk",
+        "img": "icons/svg/hazard.svg",
+        "name": "Competitive",
+        "type": "hangUp"
+      },
+      "8c7e": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ciWHdEjMnqAxBkZi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shoots and Scores",
+        "type": "perk"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "Vk2EFSSBfmunP5fk"
-    ],
-    "perkIds": [
-      "ciWHdEjMnqAxBkZi"
-    ],
+    "mandatoryHangUp": false,
     "skills": [
       "athletics"
     ]
@@ -25,11 +35,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686263483885,
-    "modifiedTime": 1686342150550,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127415495,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "mvLSIbCvR1ZIAX0J",
   "folder": "vjofBqKYZU3tiTmw",

@@ -3,18 +3,28 @@
   "type": "influence",
   "img": "systems/essence20/assets/icons/items/influence.svg",
   "system": {
+    "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
       "page": 51
     },
+    "items": {
+      "a621": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ydHkst9BtOuxECl0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nomad",
+        "type": "perk"
+      },
+      "0200": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.V9KcY4sdR5KSETSD",
+        "img": "icons/svg/hazard.svg",
+        "name": "Nomad",
+        "type": "hangUp"
+      }
+    },
     "bond": "",
-    "hangUpIds": [
-      "V9KcY4sdR5KSETSD"
-    ],
-    "perkIds": [
-      "ydHkst9BtOuxECl0"
-    ],
+    "mandatoryHangUp": false,
     "skills": []
   },
   "effects": [],
@@ -23,11 +33,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "3.2.0",
-    "coreVersion": "11.300",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
     "createdTime": 1686282983004,
-    "modifiedTime": 1686341513787,
-    "lastModifiedBy": "VXjSis47pxYnJDJ1"
+    "modifiedTime": 1704127410892,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_id": "X0VvLHGZReRyOydD",
   "folder": "848nQlbiz9DfiwL2",
