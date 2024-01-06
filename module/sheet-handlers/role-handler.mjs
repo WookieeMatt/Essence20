@@ -111,8 +111,9 @@ export class RoleHandler {
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
-      })
+      });
     }
+
     await deleteAttachmentsForItem(role, this._actor);
     this._actor.setFlag('essence20', 'lastLevelUp', 0);
   }
