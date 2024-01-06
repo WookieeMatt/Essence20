@@ -433,10 +433,8 @@ export function deleteAttachmentsForItem(item, actor, lastLevelUp) {
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
       if (itemSourceId == attachment.uuid) {
         if (item._id == parentId) {
-          console.log(lastLevelUp)
           if (lastLevelUp) {
             if (attachment.level > actor.system.level && attachment.level <= lastLevelUp) {
-              console.log("delete")
               actorItem.delete();
             }
           } else {
