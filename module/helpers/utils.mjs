@@ -150,7 +150,6 @@ export function rememberValues(html) {
  */
 export async function createItemCopies(items, owner, type, parentItem, lastLevelUp ) {
   for (const [key, item] of Object.entries(items)) {
-    console.log(item)
     if (item.type == type) {
       const itemToCreate = await fromUuid(item.uuid);
       if (parentItem.type == "role") {

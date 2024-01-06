@@ -39,12 +39,13 @@ export class RoleHandler {
           totalIncrease += 1;
         }
       }
+
       const essenceValue = this._actor.system.essences[essence] + totalIncrease;
       const essenceString = `system.essences.${essence}`;
 
       await this._actor.update({
         [essenceString]: essenceValue,
-      })
+      });
 
     }
 
@@ -61,16 +62,16 @@ export class RoleHandler {
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
-      })
+      });
     }
 
     await createItemCopies(newRole.system.items, this._actor, "perk", newRole);
 
   }
 
-  async essenceSelect(role) {
+  // async essenceSelect(role) {
 
-  }
+  // }
 
   async onRoleDelete(role){
     for (const essence in role.system.essenceLevels) {
@@ -81,6 +82,7 @@ export class RoleHandler {
           totalDecrease += 1;
         }
       }
+
       let essenceValue = this._actor.system.essences[essence] - totalDecrease;
       const essenceString = `system.essences.${essence}`;
       if (essenceValue < 0 ) {
@@ -89,7 +91,7 @@ export class RoleHandler {
 
       await this._actor.update({
         [essenceString]: essenceValue,
-      })
+      });
     }
 
     if (role.system.powers.personal.starting) {
@@ -100,6 +102,7 @@ export class RoleHandler {
           totalDecrease += 1;
         }
       }
+
       let newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease);
 
       if (newPersonalPowerMax < 0) {

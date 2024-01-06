@@ -54,6 +54,7 @@ export class AdvancementHandler {
                   "system.powers.personal.max": newPersonalPowerMax,
                 });
               }
+
               await createItemCopies(item.system.items, actor, "perk", item, lastLevelUp);
             }
           }
@@ -68,6 +69,7 @@ export class AdvancementHandler {
                     totalDecrease += 1;
                   }
                 }
+
                 let essenceValue = actor.system.essences[essence] - totalDecrease;
                 const essenceString = `system.essences.${essence}`;
                 if (essenceValue < 0) {
