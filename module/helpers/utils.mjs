@@ -148,16 +148,26 @@ export function rememberValues(html) {
  * @param {String} type The type of item(s) to drop
  * @param {Item} parentItem The item(s) parent item
  */
-export async function createItemCopies(items, owner, type, parentItem) {
+export async function createItemCopies(items, owner, type, parentItem, lastLevelUp ) {
   for (const [key, item] of Object.entries(items)) {
+    console.log(item)
     if (item.type == type) {
       const itemToCreate = await fromUuid(item.uuid);
-      if (parentItem == "role") {
-        if (item.level <= this._actor.system.level && item.level > owner.flags.essence20.lastLevelUp) {
-          const newItem = await Item.create(itemToCreate, { parent: owner });
-          newItem.setFlag('core', 'sourceId', item.uuid);
-          newItem.setFlag('essence20', 'collectionId', key);
-          newItem.setFlag('essence20', 'parentId', parentItem._id);
+      if (parentItem.type == "role") {
+        if (!lastLevelUp) {
+          if (item.level <= owner.system.level && item.level){
+            const newItem = await Item.create(itemToCreate, { parent: owner });
+            newItem.setFlag('core', 'sourceId', item.uuid);
+            newItem.setFlag('essence20', 'collectionId', key);
+            newItem.setFlag('essence20', 'parentId', parentItem._id);
+          }
+        } else {
+          if (item.level <= owner.system.level && item.level > lastLevelUp) {
+            const newItem = await Item.create(itemToCreate, { parent: owner });
+            newItem.setFlag('core', 'sourceId', item.uuid);
+            newItem.setFlag('essence20', 'collectionId', key);
+            newItem.setFlag('essence20', 'parentId', parentItem._id);
+          }
         }
 
       }else {
@@ -414,15 +424,24 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
 * Handles deleting items attached to other items
 * @param {Item} item The item that was deleted
 * @param {Actor} actor The actor the parent item is on
+* @param {Value} lastLevelUp (optional) The value of the last time you leveled up.
 */
-export function deleteAttachmentsForItem(item, actor) {
-  for (const [, attachment] of Object.entries(item.system.items)) {
-    for (const actorItem of actor.items) {
+export function deleteAttachmentsForItem(item, actor, lastLevelUp) {
+  for (const actorItem of actor.items) {
+    for (const [, attachment] of Object.entries(item.system.items)) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
       if (itemSourceId == attachment.uuid) {
         if (item._id == parentId) {
-          actorItem.delete();
+          console.log(lastLevelUp)
+          if (lastLevelUp) {
+            if (attachment.level > actor.system.level && attachment.level <= lastLevelUp) {
+              console.log("delete")
+              actorItem.delete();
+            }
+          } else {
+            actorItem.delete();
+          }
         }
       }
     }

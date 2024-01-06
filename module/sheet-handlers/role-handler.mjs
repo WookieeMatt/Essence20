@@ -81,8 +81,11 @@ export class RoleHandler {
           totalDecrease += 1;
         }
       }
-      const essenceValue = this._actor.system.essences[essence] - totalDecrease;
+      let essenceValue = this._actor.system.essences[essence] - totalDecrease;
       const essenceString = `system.essences.${essence}`;
+      if (essenceValue < 0 ) {
+        essenceValue = 0;
+      }
 
       await this._actor.update({
         [essenceString]: essenceValue,
@@ -97,7 +100,11 @@ export class RoleHandler {
           totalDecrease += 1;
         }
       }
-      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease);
+      let newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease);
+
+      if (newPersonalPowerMax < 0) {
+        newPersonalPowerMax = 0;
+      }
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
