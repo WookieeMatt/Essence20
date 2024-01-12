@@ -1,0 +1,192 @@
+{
+  "folder": "UcsFO5Hku6T5zN7o",
+  "name": "White Ranger",
+  "type": "role",
+  "_id": "6ANY0ZSPWC9G1WHD",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 60
+    },
+    "items": {
+      "2318": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "9c9c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.82Ld65NsKwfMZaSC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Relic Weapon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "876d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.ALq37Ch25nKvZ454",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Follow Me!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "c468": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "55e6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FJSNzVRulj20M0B1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inspiration",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "447d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.woCTg4Lpk3KpsgtF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shining Leader",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "bc85": {
+        "uuid": "Compendium.essence20.pr_crb.Item.YhdTm7qhaPCoiDab",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sidestep",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "edb5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.UFwnD2CsWCWXlUyf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "At All Costs",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "b47e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.RDdg5LWyjHOyqsCp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "White Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "starting": 0
+      }
+    },
+    "skills": [
+      "might",
+      "culture"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "power": {
+      "personal": {
+        "starting": "2",
+        "increase": "1",
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ]
+      }
+    },
+    "essenceLevels": {
+      "strength": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "speed": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "smarts": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "social": [
+        "level5",
+        "level7",
+        "level11",
+        "level15"
+      ]
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1705032732046,
+    "modifiedTime": 1705032977760,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!6ANY0ZSPWC9G1WHD"
+}
