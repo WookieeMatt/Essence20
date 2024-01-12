@@ -1,0 +1,34 @@
+{
+  "folder": "9cbFfPvDjdZTIyqh",
+  "name": "Triple Strike Attacks",
+  "type": "perk",
+  "_id": "hnbSzD1qg9P0RiAH",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 56
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1705028553534,
+    "modifiedTime": 1705028561676,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!hnbSzD1qg9P0RiAH"
+}

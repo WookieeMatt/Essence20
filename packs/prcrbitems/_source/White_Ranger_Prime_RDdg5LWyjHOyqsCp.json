@@ -1,0 +1,36 @@
+{
+  "folder": "9cbFfPvDjdZTIyqh",
+  "name": "White Ranger Prime",
+  "type": "perk",
+  "_id": "RDdg5LWyjHOyqsCp",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 63
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    "meDdTxEEFydjRJRG"
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1705027835588,
+    "modifiedTime": 1705027909261,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!RDdg5LWyjHOyqsCp"
+}

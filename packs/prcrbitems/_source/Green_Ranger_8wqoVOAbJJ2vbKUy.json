@@ -1,0 +1,194 @@
+{
+  "folder": "UcsFO5Hku6T5zN7o",
+  "name": "Green Ranger",
+  "type": "role",
+  "_id": "8wqoVOAbJJ2vbKUy",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 43
+    },
+    "items": {
+      "eca3": {
+        "uuid": "Compendium.essence20.pr_crb.Item.533qZ3OkmpHDjnHc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Solo Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "6c79": {
+        "uuid": "Compendium.essence20.pr_crb.Item.TG2rarEjGgDeOsc5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unique Weapon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "fea0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.pdSn2ZRcGm9AZ9r2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Survival Boon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "a6cb": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d349": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "94cc": {
+        "uuid": "Compendium.essence20.pr_crb.Item.YhdTm7qhaPCoiDab",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sidestep",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "2ab1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.b4OEl1hxeFXcAAy8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Team Player",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "c9ea": {
+        "uuid": "Compendium.essence20.pr_crb.Item.UFwnD2CsWCWXlUyf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "At All Costs",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "1ee6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Y5F6BOw77vhD3tW2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Green Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "starting": 0
+      }
+    },
+    "skills": [
+      "conditioning",
+      "initiative",
+      "might",
+      "finesse"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "power": {
+      "personal": {
+        "starting": "2",
+        "increase": "1",
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ]
+      }
+    },
+    "essenceLevels": {
+      "strength": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "smarts": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "social": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ]
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1705029917210,
+    "modifiedTime": 1705030297582,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!8wqoVOAbJJ2vbKUy"
+}
