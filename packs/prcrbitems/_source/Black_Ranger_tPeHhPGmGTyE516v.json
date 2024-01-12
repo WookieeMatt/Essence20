@@ -1,0 +1,179 @@
+{
+  "folder": "UcsFO5Hku6T5zN7o",
+  "name": "Black Ranger",
+  "type": "role",
+  "_id": "tPeHhPGmGTyE516v",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 32
+    },
+    "items": {
+      "16ab": {
+        "uuid": "Compendium.essence20.pr_crb.Item.7EyU0Hf6T3YVels4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart of the Team",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "8e3c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.1DphEJt2hPswKDzI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Whatever We Need",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "4cd4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "You Got This!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "d827": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "b6ff": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "c53f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.8duLY5PjlpmbNkwK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "One For All",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "bcc0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Q5YDt0r21QDmBuDC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "All For One",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "ab97": {
+        "uuid": "Compendium.essence20.pr_crb.Item.nDJbufpNURXmVRJn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Black Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "starting": 0
+      }
+    },
+    "skills": [
+      "might",
+      "performance"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "power": {
+      "personal": {
+        "starting": "2",
+        "increase": "2",
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ]
+      }
+    },
+    "essenceLevels": {
+      "strength": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "speed": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "smarts": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "social": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ]
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1704807677775,
+    "modifiedTime": 1705013876927,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!tPeHhPGmGTyE516v"
+}
