@@ -108,8 +108,6 @@ export class AdvancementHandler {
               await deleteAttachmentsForItem(item, actor, lastLevelUp);
             }
           }
-
-
         }
 
         actor.setFlag('essence20', 'lastLevelUp', newLevel);
