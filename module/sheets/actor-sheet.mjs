@@ -867,7 +867,7 @@ export class Essence20ActorSheet extends ActorSheet {
     await super._onChangeInput(event);
 
     if (event.currentTarget.name == "system.level") {
-      await this._advHandler.onLevelChange(this.actor, this.actor.system.level)
+      await this._advHandler.onLevelChange(this.actor, this.actor.system.level);
     }
   }
 

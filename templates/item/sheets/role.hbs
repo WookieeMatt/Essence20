@@ -134,7 +134,7 @@
 
           {{#*inline "item-field-inputs"}}
           <div class="flex-group-right chip-section">
-            {{#each item.system.power.personal.levels as |name|}}
+            {{#each item.system.powers.personal.levels as |name|}}
               <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
             {{/each}}
           </div>
