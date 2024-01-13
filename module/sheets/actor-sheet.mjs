@@ -369,9 +369,6 @@ export class Essence20ActorSheet extends ActorSheet {
     // Transform Button
     html.find('.transform').click(() => this._tfHandler.onTransform(this));
 
-    // Level Change
-    html.find('.level').change(this._advHandler.onLevelChange(this.actor));
-
     // Rollable abilities.
     if (this.actor.isOwner) {
       html.find('.rollable').click(this._onRoll.bind(this));
@@ -865,4 +862,13 @@ export class Essence20ActorSheet extends ActorSheet {
       return false;
     }
   }
+
+  async _onChangeInput(event) {
+    await super._onChangeInput(event);
+
+    if (event.currentTarget.name == "system.level") {
+      await this._advHandler.onLevelChange(this.actor, this.actor.system.level)
+    }
+  }
+
 }

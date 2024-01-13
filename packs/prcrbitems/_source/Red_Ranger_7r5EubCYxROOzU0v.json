@@ -110,9 +110,14 @@
     },
     "powers": {
       "personal": {
-        "increase": 0,
-        "levels": [],
-        "starting": 0
+        "starting": "2",
+        "increase": "2",
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ]
       }
     },
     "skills": [
@@ -123,18 +128,6 @@
     "weapons": {
       "qualified": [],
       "trained": []
-    },
-    "power": {
-      "personal": {
-        "starting": "2",
-        "increase": "2",
-        "levels": [
-          "level5",
-          "level9",
-          "level13",
-          "level17"
-        ]
-      }
     },
     "essenceLevels": {
       "strength": [

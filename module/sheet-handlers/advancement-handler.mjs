@@ -13,19 +13,19 @@ export class AdvancementHandler {
     this._actor = actorSheet.actor;
   }
 
-  async onLevelChange(actor) {
+  async onLevelChange(actor, newLevel) {
     const lastLevelUp = actor.getFlag('essence20', 'lastLevelUp');
-    this._actor.setFlag('essence20', 'lastLevelUp', actor.system.level);
+
     if (lastLevelUp) {
-      if (actor.system.level != lastLevelUp) {
-        if (actor.system.level > lastLevelUp) {
+      if (newLevel != lastLevelUp) {
+        if (newLevel > lastLevelUp) {
           for (const item of actor.items) {
             if (item.type == "role") {
               for (const essence in item.system.essenceLevels) {
                 let totalIncrease = 0;
                 for (let i =0; i<item.system.essenceLevels[essence].length; i++) {
                   const essenceLevel = item.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
-                  if (essenceLevel <= actor.system.level && essenceLevel > lastLevelUp) {
+                  if (essenceLevel <= newLevel && essenceLevel > lastLevelUp) {
                     totalIncrease += 1;
                   }
                 }
@@ -43,7 +43,7 @@ export class AdvancementHandler {
                 let totalIncrease = 0;
                 for (let i =0; i<item.system.powers.personal.levels.length; i++) {
                   const powerIncreaseLevel = item.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
-                  if (powerIncreaseLevel <= actor.system.level && powerIncreaseLevel > lastLevelUp) {
+                  if (powerIncreaseLevel <= newLevel && powerIncreaseLevel > lastLevelUp) {
                     totalIncrease += 1;
                   }
                 }
@@ -58,14 +58,14 @@ export class AdvancementHandler {
               await createItemCopies(item.system.items, actor, "perk", item, lastLevelUp);
             }
           }
-        } else if (actor.system.level < lastLevelUp) {
+        } else if (newLevel < lastLevelUp) {
           for (const item of actor.items) {
             if (item.type == "role") {
               for (const essence in item.system.essenceLevels) {
                 let totalDecrease = 0;
                 for (let i =0; i<item.system.essenceLevels[essence].length; i++) {
                   const essenceLevel = item.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
-                  if (essenceLevel > actor.system.level && essenceLevel <= lastLevelUp) {
+                  if (essenceLevel > newLevel && essenceLevel <= lastLevelUp) {
                     totalDecrease += 1;
                   }
                 }
@@ -86,7 +86,7 @@ export class AdvancementHandler {
                 let totalDecrease = 0;
                 for (let i =0; i<item.system.powers.personal.levels.length; i++) {
                   const powerIncreaseLevel = item.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
-                  if (powerIncreaseLevel > actor.system.level && powerIncreaseLevel <= lastLevelUp) {
+                  if (powerIncreaseLevel > newLevel && powerIncreaseLevel <= lastLevelUp) {
                     totalDecrease += 1;
                   }
                 }
@@ -107,6 +107,8 @@ export class AdvancementHandler {
 
 
         }
+
+        actor.setFlag('essence20', 'lastLevelUp', newLevel);
       }
     }
   }
