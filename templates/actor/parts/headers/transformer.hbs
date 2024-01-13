@@ -5,8 +5,7 @@
   <input type="text" name="system.pronouns" value="{{system.pronouns}}" />
 </div>
 <div>
-  <label for="system.role" class="resource-label">{{localize 'E20.ActorRole'}}</label>
-  <input type="text" name="system.role" value="{{system.role}}" />
+  {{> "systems/essence20/templates/actor/parts/items/role.hbs"}}
 </div>
 <div>
   <label for="system.focus" class="resource-label">{{localize 'E20.ActorFocus'}}</label>

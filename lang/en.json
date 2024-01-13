@@ -365,6 +365,7 @@
     "RestEnergonReset": "{energon} Energon reset.",
     "RestHealthStunReset": "Health restored and stun reset.",
     "Role": "Role",
+    "RoleDrop": "Drop a Role here",
     "RoleMultipleError": "Characters can only have one Role",
     "RolePerks": "Role Perks",
     "RoleVersion": "Select Game",

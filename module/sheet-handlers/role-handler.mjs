@@ -17,7 +17,7 @@ export class RoleHandler {
     for (let actorItem of this._actor.items) {
       // Characters can only have one Role
       if (actorItem.type == 'role') {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleMulitpleError')));
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleMultipleError')));
         return false;
       }
     }
