@@ -12,7 +12,11 @@ export class AdvancementHandler {
     this._actorSheet = actorSheet;
     this._actor = actorSheet.actor;
   }
-
+  /**
+   * Updates the actor based on a level change from the attached role
+   * @param {Object} actor The actor whose level has changed
+   * @param {Number} newLevel The new level that you are changing to.
+   */
   async onLevelChange(actor, newLevel) {
     const lastLevelUp = actor.getFlag('essence20', 'lastLevelUp');
 

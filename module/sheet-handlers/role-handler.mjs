@@ -12,6 +12,11 @@ export class RoleHandler {
     this._actorSheet = actorSheet;
     this._actor = actorSheet.actor;
   }
+  /**
+   * Updates the actor wirh the role features that are there based on the level of the character.
+   * @param {Object} role The role item that is being dropped on the actor
+   * @param {Function} dropFunc The drop Function that will be used to complete the drop of the role
+   */
 
   async roleUpdate(role, dropFunc) {
     for (let actorItem of this._actor.items) {
@@ -72,6 +77,10 @@ export class RoleHandler {
   // async essenceSelect(role) {
 
   // }
+  /**
+   * Removes the role and role features that are on the actor.
+   * @param {Object} role The role item that is being deleted on the actor
+   */
 
   async onRoleDelete(role){
     for (const essence in role.system.essenceLevels) {
