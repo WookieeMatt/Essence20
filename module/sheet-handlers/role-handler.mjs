@@ -20,12 +20,12 @@ export class RoleHandler {
    */
   async roleUpdate(role, dropFunc) {
     const hasRole = await getItemsOfType("role", this._actor.items);
-    console.log(hasRole)
-      // Characters can only have one Role
-      if (hasRole.length > 0) {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleMultipleError')));
-        return false;
-      }
+
+    // Characters can only have one Role
+    if (hasRole.length > 0) {
+      ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleMultipleError')));
+      return false;
+    }
 
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
