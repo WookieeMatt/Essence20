@@ -62,7 +62,9 @@ export class RoleHandler {
         }
       }
 
-      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) + parseInt(newRole.system.powers.personal.starting) + parseInt(newRole.system.powers.personal.increase * totalIncrease);
+      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
+        + parseInt(newRole.system.powers.personal.starting)
+        + parseInt(newRole.system.powers.personal.increase * totalIncrease);
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
