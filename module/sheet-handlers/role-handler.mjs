@@ -76,9 +76,8 @@ export class RoleHandler {
 
   /**
    * Removes the role and role features that are on the actor.
-   * @param {Object} role The role item that is being deleted on the actor
+   * @param {Role} role The role item that is being deleted on the actor
    */
-
   async onRoleDelete(role){
     for (const essence in role.system.essenceLevels) {
       let totalDecrease = 0;
