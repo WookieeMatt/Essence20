@@ -17,7 +17,6 @@ export class RoleHandler {
    * @param {Role} role The role item that is being dropped on the actor
    * @param {Function} dropFunc The drop Function that will be used to complete the drop of the role
    */
-
   async roleUpdate(role, dropFunc) {
     for (let actorItem of this._actor.items) {
       // Characters can only have one Role
