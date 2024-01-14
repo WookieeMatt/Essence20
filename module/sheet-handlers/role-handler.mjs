@@ -1,6 +1,7 @@
 import {
   createItemCopies,
   deleteAttachmentsForItem,
+  getItemsOfType,
 } from "../helpers/utils.mjs";
 
 export class RoleHandler {
@@ -19,13 +20,13 @@ export class RoleHandler {
    */
 
   async roleUpdate(role, dropFunc) {
-    for (let actorItem of this._actor.items) {
+    const hasRole = await getItemsOfType("role", this._actor.items);
+    console.log(hasRole)
       // Characters can only have one Role
-      if (actorItem.type == 'role') {
+      if (hasRole.length > 0) {
         ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleMultipleError')));
         return false;
       }
-    }
 
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];

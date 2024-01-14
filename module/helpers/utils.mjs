@@ -147,8 +147,9 @@ export function rememberValues(html) {
  * @param {Actor} owner The item(s)' owner
  * @param {String} type The type of item(s) to drop
  * @param {Item} parentItem The item(s) parent item
+ * @param {Number} lastLevelUp The flag for the last time the actor changed level
  */
-export async function createItemCopies(items, owner, type, parentItem, lastLevelUp ) {
+export async function createItemCopies(items, owner, type, parentItem, lastLevelUp=null) {
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const itemToCreate = await fromUuid(item.uuid);
@@ -169,7 +170,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastLevel
           }
         }
 
-      }else {
+      } else {
         const newItem = await Item.create(itemToCreate, { parent: owner });
         newItem.setFlag('core', 'sourceId', item.uuid);
         newItem.setFlag('essence20', 'collectionId', key);
@@ -425,7 +426,7 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
 * @param {Actor} actor The actor the parent item is on
 * @param {Value} lastLevelUp (optional) The value of the last time you leveled up.
 */
-export function deleteAttachmentsForItem(item, actor, lastLevelUp) {
+export function deleteAttachmentsForItem(item, actor, lastLevelUp=null) {
   for (const actorItem of actor.items) {
     for (const [, attachment] of Object.entries(item.system.items)) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
