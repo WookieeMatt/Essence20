@@ -70,7 +70,6 @@ export class RoleHandler {
     }
 
     await createItemCopies(newRole.system.items, this._actor, "perk", newRole);
-
   }
 
   /**
