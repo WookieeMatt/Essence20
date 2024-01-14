@@ -169,7 +169,6 @@ export async function createItemCopies(items, owner, type, parentItem, lastLevel
             newItem.setFlag('essence20', 'parentId', parentItem._id);
           }
         }
-
       } else {
         const newItem = await Item.create(itemToCreate, { parent: owner });
         newItem.setFlag('core', 'sourceId', item.uuid);

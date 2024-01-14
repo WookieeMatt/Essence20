@@ -14,7 +14,7 @@ export class AdvancementHandler {
   }
   /**
    * Updates the actor based on a level change from the attached role
-   * @param {Object} actor The actor whose level has changed
+   * @param {Actor} actor The actor whose level has changed
    * @param {Number} newLevel The new level that you are changing to.
    */
   async onLevelChange(actor, newLevel) {

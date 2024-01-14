@@ -15,10 +15,9 @@ export class RoleHandler {
   }
   /**
    * Updates the actor wirh the role features that are there based on the level of the character.
-   * @param {Object} role The role item that is being dropped on the actor
+   * @param {Role} role The role item that is being dropped on the actor
    * @param {Function} dropFunc The drop Function that will be used to complete the drop of the role
    */
-
   async roleUpdate(role, dropFunc) {
     const hasRole = await getItemsOfType("role", this._actor.items);
     console.log(hasRole)
@@ -64,7 +63,9 @@ export class RoleHandler {
         }
       }
 
-      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) + parseInt(newRole.system.powers.personal.starting) + parseInt(newRole.system.powers.personal.increase * totalIncrease);
+      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
+        + parseInt(newRole.system.powers.personal.starting)
+        + parseInt(newRole.system.powers.personal.increase * totalIncrease);
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
@@ -72,17 +73,12 @@ export class RoleHandler {
     }
 
     await createItemCopies(newRole.system.items, this._actor, "perk", newRole);
-
   }
 
-  // async essenceSelect(role) {
-
-  // }
   /**
    * Removes the role and role features that are on the actor.
-   * @param {Object} role The role item that is being deleted on the actor
+   * @param {Role} role The role item that is being deleted on the actor
    */
-
   async onRoleDelete(role){
     for (const essence in role.system.essenceLevels) {
       let totalDecrease = 0;
@@ -93,11 +89,8 @@ export class RoleHandler {
         }
       }
 
-      let essenceValue = this._actor.system.essences[essence] - totalDecrease;
+      const essenceValue = Math.max(0, this._actor.system.essences[essence] - totalDecrease);
       const essenceString = `system.essences.${essence}`;
-      if (essenceValue < 0 ) {
-        essenceValue = 0;
-      }
 
       await this._actor.update({
         [essenceString]: essenceValue,
