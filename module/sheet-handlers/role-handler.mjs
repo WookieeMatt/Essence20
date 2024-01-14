@@ -30,7 +30,7 @@ export class RoleHandler {
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
 
-    this._actor.setFlag('essence20', 'lastLevelUp', this._actor.system.level);
+    this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
     if (role.system.version == 'myLittlePony') {
       await essenceSelect(newRole);
@@ -106,11 +106,7 @@ export class RoleHandler {
         }
       }
 
-      let newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease);
-
-      if (newPersonalPowerMax < 0) {
-        newPersonalPowerMax = 0;
-      }
+      const newPersonalPowerMax = Math.max(0, parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease));
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
@@ -118,6 +114,6 @@ export class RoleHandler {
     }
 
     await deleteAttachmentsForItem(role, this._actor);
-    this._actor.setFlag('essence20', 'lastLevelUp', 0);
+    this._actor.setFlag('essence20', 'previousLevel', 0);
   }
 }
