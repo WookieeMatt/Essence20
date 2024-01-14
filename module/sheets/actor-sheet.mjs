@@ -166,7 +166,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
-    const roles = []; //Used by PCs
+    const roles = []; // Used by PCs
     const classFeatures = []; // Used by PCs
     const specializations = {};
     const spells = [];
