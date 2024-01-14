@@ -74,9 +74,6 @@ export class RoleHandler {
 
   }
 
-  // async essenceSelect(role) {
-
-  // }
   /**
    * Removes the role and role features that are on the actor.
    * @param {Object} role The role item that is being deleted on the actor
