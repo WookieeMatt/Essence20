@@ -20,9 +20,7 @@ export class AdvancementHandler {
   async onLevelChange(actor, newLevel) {
     const lastLevelUp = actor.getFlag('essence20', 'lastLevelUp');
 
-    if (lastLevelUp) {
-      if (newLevel != lastLevelUp) {
-        if (newLevel > lastLevelUp) {
+    if (lastLevelUp && newLevel > lastLevelUp) {
           for (const item of actor.items) {
             if (item.type == "role") {
               for (const essence in item.system.essenceLevels) {
