@@ -88,11 +88,8 @@ export class RoleHandler {
         }
       }
 
-      let essenceValue = this._actor.system.essences[essence] - totalDecrease;
+      const essenceValue = Math.max(0, this._actor.system.essences[essence] - totalDecrease);
       const essenceString = `system.essences.${essence}`;
-      if (essenceValue < 0 ) {
-        essenceValue = 0;
-      }
 
       await this._actor.update({
         [essenceString]: essenceValue,
