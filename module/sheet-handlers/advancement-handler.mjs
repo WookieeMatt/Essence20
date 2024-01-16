@@ -38,7 +38,7 @@ export class AdvancementHandler {
 
           if (item.system.powers.personal.starting) {
 
-            const totalDecrease = await roleValueChange(this._actor, "increase", item.system.powers.personal.levels)
+            const totalIncrease = await roleValueChange(this._actor, "increase", item.system.powers.personal.levels);
 
             const newPersonalPowerMax = parseInt(actor.system.powers.personal.max) + parseInt(item.system.powers.personal.increase * totalIncrease);
 
@@ -69,7 +69,7 @@ export class AdvancementHandler {
           }
 
           if (item.system.powers.personal.starting) {
-            const totalDecrease = await roleValueChange(this._actor, "decrease", item.system.powers.personal.levels)
+            const totalDecrease = await roleValueChange(this._actor, "decrease", item.system.powers.personal.levels);
 
             let newPersonalPowerMax = parseInt(actor.system.powers.personal.max) - parseInt(item.system.powers.personal.increase * totalDecrease);
             if (newPersonalPowerMax < 0) {

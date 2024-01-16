@@ -51,7 +51,7 @@ export class RoleHandler {
 
     if (newRole.system.powers.personal.starting) {
 
-      const totalIncrease = await roleValueChange(this._actor, "increase", role.system.powers.personal.levels)
+      const totalIncrease = await roleValueChange(this._actor, "increase", role.system.powers.personal.levels);
 
       const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
         + parseInt(newRole.system.powers.personal.starting)
@@ -82,7 +82,7 @@ export class RoleHandler {
     }
 
     if (role.system.powers.personal.starting) {
-      const totalDecrease = await roleValueChange(this._actor, "decrease", role.system.powers.personal.levels)
+      const totalDecrease = await roleValueChange(this._actor, "decrease", role.system.powers.personal.levels);
 
       const newPersonalPowerMax = Math.max(0, parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease));
 
