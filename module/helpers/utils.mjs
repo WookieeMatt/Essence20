@@ -444,3 +444,37 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
     }
   }
 }
+
+export async function roleValueChange(actor, change, array, previousLevel=null) {
+  let totalChange = 0;
+  if (change == "increase") {
+    for (let i =0; i<array.length; i++) {
+      const essenceLevel = array[i].replace(/[^0-9]/g, '');
+      if (previousLevel) {
+        if (essenceLevel <= actor.system.level && essenceLevel > previousLevel) {
+          totalChange += 1
+        }
+      } else {
+        if (essenceLevel <= actor.system.level ) {
+          totalChange += 1
+        }
+      }
+    }
+  } else if (change == "decrease") {
+    for (let i =0; i<array.length; i++) {
+      const essenceLevel = array[i].replace(/[^0-9]/g, '');
+      if (previousLevel) {
+        if (essenceLevel > actor.system.level && essenceLevel <= previousLevel ) {
+          totalChange += 1;
+        }
+      } else {
+        if (essenceLevel > actor.system.level ) {
+          totalChange += 1;
+        }
+      }
+    }
+  }
+
+  return totalChange;
+}
+

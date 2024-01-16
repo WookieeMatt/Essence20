@@ -1,6 +1,7 @@
 import {
   createItemCopies,
   deleteAttachmentsForItem,
+  roleValueChange,
 } from "../helpers/utils.mjs";
 
 export class AdvancementHandler {
@@ -24,13 +25,7 @@ export class AdvancementHandler {
       for (const item of actor.items) {
         if (item.type == "role") {
           for (const essence in item.system.essenceLevels) {
-            let totalIncrease = 0;
-            for (let i =0; i<item.system.essenceLevels[essence].length; i++) {
-              const essenceLevel = item.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
-              if (essenceLevel <= newLevel && essenceLevel > previousLevel) {
-                totalIncrease += 1;
-              }
-            }
+            const totalIncrease = await roleValueChange(this._actor, "increase", item.system.essenceLevels[essence], previousLevel);
 
             const essenceValue = actor.system.essences[essence] + totalIncrease;
             const essenceString = `system.essences.${essence}`;
@@ -42,13 +37,8 @@ export class AdvancementHandler {
           }
 
           if (item.system.powers.personal.starting) {
-            let totalIncrease = 0;
-            for (let i =0; i<item.system.powers.personal.levels.length; i++) {
-              const powerIncreaseLevel = item.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
-              if (powerIncreaseLevel <= newLevel && powerIncreaseLevel > previousLevel) {
-                totalIncrease += 1;
-              }
-            }
+
+            const totalDecrease = await roleValueChange(this._actor, "increase", item.system.powers.personal.levels)
 
             const newPersonalPowerMax = parseInt(actor.system.powers.personal.max) + parseInt(item.system.powers.personal.increase * totalIncrease);
 
@@ -64,13 +54,7 @@ export class AdvancementHandler {
       for (const item of actor.items) {
         if (item.type == "role") {
           for (const essence in item.system.essenceLevels) {
-            let totalDecrease = 0;
-            for (let i =0; i<item.system.essenceLevels[essence].length; i++) {
-              const essenceLevel = item.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
-              if (essenceLevel > newLevel && essenceLevel <= previousLevel) {
-                totalDecrease += 1;
-              }
-            }
+            const totalDecrease = await roleValueChange(this._actor, "decrease", item.system.essenceLevels[essence], previousLevel);
 
             let essenceValue = actor.system.essences[essence] - totalDecrease;
             const essenceString = `system.essences.${essence}`;
@@ -85,13 +69,7 @@ export class AdvancementHandler {
           }
 
           if (item.system.powers.personal.starting) {
-            let totalDecrease = 0;
-            for (let i =0; i<item.system.powers.personal.levels.length; i++) {
-              const powerIncreaseLevel = item.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
-              if (powerIncreaseLevel > newLevel && powerIncreaseLevel <= previousLevel) {
-                totalDecrease += 1;
-              }
-            }
+            const totalDecrease = await roleValueChange(this._actor, "decrease", item.system.powers.personal.levels)
 
             let newPersonalPowerMax = parseInt(actor.system.powers.personal.max) - parseInt(item.system.powers.personal.increase * totalDecrease);
             if (newPersonalPowerMax < 0) {

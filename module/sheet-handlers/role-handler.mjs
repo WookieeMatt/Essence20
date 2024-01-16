@@ -2,6 +2,7 @@ import {
   createItemCopies,
   deleteAttachmentsForItem,
   getItemsOfType,
+  roleValueChange,
 } from "../helpers/utils.mjs";
 
 export class RoleHandler {
@@ -37,13 +38,7 @@ export class RoleHandler {
     }
 
     for (const essence in newRole.system.essenceLevels) {
-      let totalIncrease = 0;
-      for (let i =0; i<newRole.system.essenceLevels[essence].length; i++) {
-        const essenceLevel = newRole.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
-        if (essenceLevel <= this._actor.system.level ) {
-          totalIncrease += 1;
-        }
-      }
+      const totalIncrease = await roleValueChange(this._actor, "increase", newRole.system.essenceLevels[essence]);
 
       const essenceValue = this._actor.system.essences[essence] + totalIncrease;
       const essenceString = `system.essences.${essence}`;
@@ -55,13 +50,8 @@ export class RoleHandler {
     }
 
     if (newRole.system.powers.personal.starting) {
-      let totalIncrease = 0;
-      for (let i =0; i<newRole.system.powers.personal.levels.length; i++) {
-        const powerIncreaseLevel = newRole.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
-        if (powerIncreaseLevel <= this._actor.system.level ) {
-          totalIncrease += 1;
-        }
-      }
+
+      const totalIncrease = await roleValueChange(this._actor, "increase", role.system.powers.personal.levels)
 
       const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
         + parseInt(newRole.system.powers.personal.starting)
@@ -81,13 +71,7 @@ export class RoleHandler {
    */
   async onRoleDelete(role){
     for (const essence in role.system.essenceLevels) {
-      let totalDecrease = 0;
-      for (let i =0; i<role.system.essenceLevels[essence].length; i++) {
-        const essenceLevel = role.system.essenceLevels[essence][i].replace(/[^0-9]/g, '');
-        if (essenceLevel <=this._actor.system.level ) {
-          totalDecrease += 1;
-        }
-      }
+      const totalDecrease = await roleValueChange(this._actor, "decrease", role.system.essenceLevels[essence]);
 
       const essenceValue = Math.max(0, this._actor.system.essences[essence] - totalDecrease);
       const essenceString = `system.essences.${essence}`;
@@ -98,13 +82,7 @@ export class RoleHandler {
     }
 
     if (role.system.powers.personal.starting) {
-      let totalDecrease = 0;
-      for (let i =0; i<role.system.powers.personal.levels.length; i++) {
-        const powerDecreaseLevel = role.system.powers.personal.levels[i].replace(/[^0-9]/g, '');
-        if (powerDecreaseLevel <= this._actor.system.level ) {
-          totalDecrease += 1;
-        }
-      }
+      const totalDecrease = await roleValueChange(this._actor, "decrease", role.system.powers.personal.levels)
 
       const newPersonalPowerMax = Math.max(0, parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease));
 
