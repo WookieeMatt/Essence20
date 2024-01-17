@@ -143,40 +143,25 @@ export function rememberValues(html) {
 
 /**
  * Creates copies of Items for given IDs
- * @param {Item[]} items The item(s) to copy
- * @param {Actor} owner The item(s)' owner
- * @param {String} type The type of item(s) to drop
- * @param {Item} parentItem The item(s) parent item
- * @param {Number} previousLevel The flag for the last time the actor changed level
+ * @param {Object[]} items The item entries to copy
+ * @param {Actor} owner The items' owner
+ * @param {String} type The type of items to drop
+ * @param {Item} parentItem The items' parent item
+ * @param {Number} lastProcessedLevel The flag for the last time the actor changed level
  */
-export async function createItemCopies(items, owner, type, parentItem, previousLevel=null) {
+export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
-      const itemToCreate = await fromUuid(item.uuid);
-      if (parentItem.type == "role") {
-        if (!previousLevel) {
-          if (item.level <= owner.system.level && item.level){
-            const newItem = await Item.create(itemToCreate, { parent: owner });
-            newItem.setFlag('core', 'sourceId', item.uuid);
-            newItem.setFlag('essence20', 'collectionId', key);
-            newItem.setFlag('essence20', 'parentId', parentItem._id);
-          }
-        } else {
-          if (item.level <= owner.system.level && item.level > previousLevel) {
-            const newItem = await Item.create(itemToCreate, { parent: owner });
-            newItem.setFlag('core', 'sourceId', item.uuid);
-            newItem.setFlag('essence20', 'collectionId', key);
-            newItem.setFlag('essence20', 'parentId', parentItem._id);
-          }
-        }
-      } else {
+      const createNewItem =
+        parentItem.type != "role"
+        || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+
+      if (createNewItem) {
+        const itemToCreate = await fromUuid(item.uuid);
         const newItem = await Item.create(itemToCreate, { parent: owner });
         newItem.setFlag('core', 'sourceId', item.uuid);
         newItem.setFlag('essence20', 'collectionId', key);
-
-        if (parentItem) {
-          newItem.setFlag('essence20', 'parentId', parentItem._id);
-        }
+        newItem.setFlag('essence20', 'parentId', parentItem._id);
       }
     }
   }
