@@ -38,7 +38,7 @@ export class RoleHandler {
     }
 
     for (const essence in newRole.system.essenceLevels) {
-      const totalIncrease = await roleValueChange(this._actor, newRole.system.essenceLevels[essence]);
+      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
 
       const essenceValue = this._actor.system.essences[essence] + totalIncrease;
       const essenceString = `system.essences.${essence}`;
@@ -51,7 +51,7 @@ export class RoleHandler {
 
     if (newRole.system.powers.personal.starting) {
 
-      const totalIncrease = await roleValueChange(this._actor, role.system.powers.personal.levels);
+      const totalIncrease = await roleValueChange(this._actor.system.level, role.system.powers.personal.levels);
 
       const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
         + parseInt(newRole.system.powers.personal.starting)
@@ -70,10 +70,11 @@ export class RoleHandler {
    * @param {Role} role The role item that is being deleted on the actor
    */
   async onRoleDelete(role){
+    const previousLevel = this._actor.getFlag('essence20', 'previousLevel');
     for (const essence in role.system.essenceLevels) {
-      const totalDecrease = await roleValueChange(this._actor, role.system.essenceLevels[essence]);
+      const totalDecrease = await roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
 
-      const essenceValue = Math.max(0, this._actor.system.essences[essence] - totalDecrease);
+      const essenceValue = Math.max(0, this._actor.system.essences[essence] + totalDecrease);
       const essenceString = `system.essences.${essence}`;
 
       await this._actor.update({
@@ -82,9 +83,9 @@ export class RoleHandler {
     }
 
     if (role.system.powers.personal.starting) {
-      const totalDecrease = await roleValueChange(this._actor, role.system.powers.personal.levels);
+      const totalDecrease = await roleValueChange(0, role.system.powers.personal.levels, previousLevel);
 
-      const newPersonalPowerMax = Math.max(0, parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting - (role.system.powers.personal.increase * totalDecrease));
+      const newPersonalPowerMax = Math.max(0, parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting + (role.system.powers.personal.increase * totalDecrease));
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,

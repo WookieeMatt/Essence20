@@ -436,26 +436,27 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
  * @param {Integer} lastProcessedLevel The value of actor.system.level the last time a level change was processed
  * @returns {Integer} totalChange The number of level changes.
  */
-export async function roleValueChange(actor, arrayLevels, lastProcessedLevel=null) {
-  const levelDiff = actor.system.level - lastProcessedLevel;
+export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=null) {
+  const levelDiff = currentLevel - lastProcessedLevel;
   if (!levelDiff) {
     return 0;
   }
 
-  const isLevelUp = actor.system.level > lastProcessedLevel;
+  const isLevelUp = currentLevel > lastProcessedLevel;
+  const changeIncrement = isLevelUp ? 1 : -1;
   let totalChange = 0;
 
   for (const arrayLevel of arrayLevels) {
     const level = arrayLevel.replace(/[^0-9]/g, '');
     const actorReachedLevel =
-          isLevelUp && level <= actor.system.level
-      || !isLevelUp && level > actor.system.level;
+          isLevelUp && level <= currentLevel
+      || !isLevelUp && level > currentLevel;
     const levelNotYetProcessed =
       !lastProcessedLevel
       || (isLevelUp  && level >  lastProcessedLevel)
       || (!isLevelUp && level <= lastProcessedLevel);
     const valueChange = actorReachedLevel && levelNotYetProcessed;
-    totalChange += valueChange ? 1 : 0;
+    totalChange += valueChange ? changeIncrement : 0;
   }
 
   return totalChange;

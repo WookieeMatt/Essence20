@@ -1,6 +1,7 @@
 import {
   createItemCopies,
   deleteAttachmentsForItem,
+  getItemsOfType,
   roleValueChange,
 } from "../helpers/utils.mjs";
 
@@ -13,76 +14,45 @@ export class AdvancementHandler {
     this._actorSheet = actorSheet;
     this._actor = actorSheet.actor;
   }
-  /**
+
+   /**
    * Updates the actor based on a level change from the attached role
    * @param {Actor} actor The actor whose level has changed
    * @param {Number} newLevel The new level that you are changing to.
    */
-  async onLevelChange(actor, newLevel) {
+   async onLevelChange(actor, newLevel) {
     const previousLevel = actor.getFlag('essence20', 'previousLevel');
+    if (!previousLevel || previousLevel == newLevel) {
+      return;
+    }
 
-    if (previousLevel && newLevel > previousLevel) {
-      for (const item of actor.items) {
-        if (item.type == "role") {
-          for (const essence in item.system.essenceLevels) {
-            const totalIncrease = await roleValueChange(actor, item.system.essenceLevels[essence], previousLevel);
+    for (const item of getItemsOfType("role", actor.items)) {
+      for (const essence in item.system.essenceLevels) {
+        const totalChange = await roleValueChange(actor.system.level, item.system.essenceLevels[essence], previousLevel);
+        const essenceValue = Math.max(0, actor.system.essences[essence] + totalChange);
+        const essenceString = `system.essences.${essence}`;
 
-            const essenceValue = actor.system.essences[essence] + totalIncrease;
-            const essenceString = `system.essences.${essence}`;
-
-            actor.update({
-              [essenceString]: essenceValue,
-            });
-
-          }
-
-          if (item.system.powers.personal.starting) {
-
-            const totalIncrease = await roleValueChange(actor, item.system.powers.personal.levels, previousLevel);
-
-            const newPersonalPowerMax = parseInt(actor.system.powers.personal.max) + parseInt(item.system.powers.personal.increase * totalIncrease);
-
-            actor.update({
-              "system.powers.personal.max": newPersonalPowerMax,
-            });
-          }
-
-          await createItemCopies(item.system.items, actor, "perk", item, previousLevel);
-        }
+        actor.update({
+          [essenceString]: essenceValue,
+        });
       }
-    } else if (newLevel < previousLevel) {
-      for (const item of actor.items) {
-        if (item.type == "role") {
-          for (const essence in item.system.essenceLevels) {
-            const totalDecrease = await roleValueChange(this._actor, item.system.essenceLevels[essence], previousLevel);
 
-            let essenceValue = actor.system.essences[essence] - totalDecrease;
-            const essenceString = `system.essences.${essence}`;
-            if (essenceValue < 0) {
-              essenceValue = 0;
-            }
+      if (item.system.powers.personal.starting) {
+        const totalChange = await roleValueChange(actor.system.level, item.system.powers.personal.levels, previousLevel);
+        const newPersonalPowerMax = Math.max(
+          0,
+          parseInt(actor.system.powers.personal.max) + parseInt(item.system.powers.personal.increase * totalChange)
+        );
 
-            actor.update({
-              [essenceString]: essenceValue,
-            });
+        actor.update({
+          "system.powers.personal.max": newPersonalPowerMax,
+        });
+      }
 
-          }
-
-          if (item.system.powers.personal.starting) {
-            const totalDecrease = await roleValueChange(this._actor, item.system.powers.personal.levels, previousLevel);
-
-            let newPersonalPowerMax = parseInt(actor.system.powers.personal.max) - parseInt(item.system.powers.personal.increase * totalDecrease);
-            if (newPersonalPowerMax < 0) {
-              newPersonalPowerMax = 0;
-            }
-
-            actor.update({
-              "system.powers.personal.max": newPersonalPowerMax,
-            });
-          }
-
-          await deleteAttachmentsForItem(item, actor, previousLevel);
-        }
+      if (newLevel > previousLevel) {
+        await createItemCopies(item.system.items, actor, "perk", item, previousLevel);
+      } else {
+        await deleteAttachmentsForItem(item, actor, previousLevel);
       }
     }
 
