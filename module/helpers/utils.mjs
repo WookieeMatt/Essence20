@@ -444,7 +444,7 @@ export async function roleValueChange(actor, arrayLevels, lastProcessedLevel=nul
       const level = arrayLevel.replace(/[^0-9]/g, '');
       const valueChange =
         level <= actor.system.level
-        && (!lastProcessedLevel || level > lastProcessedLevel)
+        && (!lastProcessedLevel || level > lastProcessedLevel);
       totalChange += valueChange ? 1 : 0;
     }
   } else if (actor.system.level < lastProcessedLevel) {
@@ -452,7 +452,7 @@ export async function roleValueChange(actor, arrayLevels, lastProcessedLevel=nul
       const level = arrayLevel.replace(/[^0-9]/g, '');
       const valueChange =
         level > actor.system.level
-        && (!lastProcessedLevel || level <= lastProcessedLevel)
+        && (!lastProcessedLevel || level <= lastProcessedLevel);
       totalChange += valueChange ? 1 : 0;
     }
   }
