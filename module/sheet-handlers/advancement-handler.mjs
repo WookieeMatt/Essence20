@@ -25,7 +25,7 @@ export class AdvancementHandler {
       for (const item of actor.items) {
         if (item.type == "role") {
           for (const essence in item.system.essenceLevels) {
-            const totalIncrease = await roleValueChange(this._actor, "increase", item.system.essenceLevels[essence], previousLevel);
+            const totalIncrease = await roleValueChange(actor, item.system.essenceLevels[essence], previousLevel);
 
             const essenceValue = actor.system.essences[essence] + totalIncrease;
             const essenceString = `system.essences.${essence}`;
@@ -38,7 +38,7 @@ export class AdvancementHandler {
 
           if (item.system.powers.personal.starting) {
 
-            const totalIncrease = await roleValueChange(this._actor, "increase", item.system.powers.personal.levels);
+            const totalIncrease = await roleValueChange(actor, item.system.powers.personal.levels, previousLevel);
 
             const newPersonalPowerMax = parseInt(actor.system.powers.personal.max) + parseInt(item.system.powers.personal.increase * totalIncrease);
 
@@ -54,7 +54,7 @@ export class AdvancementHandler {
       for (const item of actor.items) {
         if (item.type == "role") {
           for (const essence in item.system.essenceLevels) {
-            const totalDecrease = await roleValueChange(this._actor, "decrease", item.system.essenceLevels[essence], previousLevel);
+            const totalDecrease = await roleValueChange(this._actor, item.system.essenceLevels[essence], previousLevel);
 
             let essenceValue = actor.system.essences[essence] - totalDecrease;
             const essenceString = `system.essences.${essence}`;
@@ -69,7 +69,7 @@ export class AdvancementHandler {
           }
 
           if (item.system.powers.personal.starting) {
-            const totalDecrease = await roleValueChange(this._actor, "decrease", item.system.powers.personal.levels);
+            const totalDecrease = await roleValueChange(this._actor, item.system.powers.personal.levels, previousLevel);
 
             let newPersonalPowerMax = parseInt(actor.system.powers.personal.max) - parseInt(item.system.powers.personal.increase * totalDecrease);
             if (newPersonalPowerMax < 0) {

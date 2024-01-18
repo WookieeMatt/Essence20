@@ -430,33 +430,30 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
   }
 }
 
-export async function roleValueChange(actor, change, array, previousLevel=null) {
+/**
+ *
+ * @param {Object} actor The acrot that the role is attached to
+ * @param {Array} arrayLevels An array of the levels at which a value changes
+ * @param {Integer} lastProcessedLevel The value of actor.system.level the last time a level change was processed
+ * @returns
+ */
+export async function roleValueChange(actor, arrayLevels, lastProcessedLevel=null) {
   let totalChange = 0;
-  if (change == "increase") {
-    for (let i =0; i<array.length; i++) {
-      const essenceLevel = array[i].replace(/[^0-9]/g, '');
-      if (previousLevel) {
-        if (essenceLevel <= actor.system.level && essenceLevel > previousLevel) {
-          totalChange += 1;
-        }
-      } else {
-        if (essenceLevel <= actor.system.level ) {
-          totalChange += 1;
-        }
-      }
+  if (actor.system.level > lastProcessedLevel) {
+    for (const arrayLevel of arrayLevels) {
+      const level = arrayLevel.replace(/[^0-9]/g, '');
+      const valueChange =
+        level <= actor.system.level
+        && (!lastProcessedLevel || level > lastProcessedLevel)
+      totalChange += valueChange ? 1 : 0;
     }
-  } else if (change == "decrease") {
-    for (let i =0; i<array.length; i++) {
-      const essenceLevel = array[i].replace(/[^0-9]/g, '');
-      if (previousLevel) {
-        if (essenceLevel > actor.system.level && essenceLevel <= previousLevel ) {
-          totalChange += 1;
-        }
-      } else {
-        if (essenceLevel > actor.system.level ) {
-          totalChange += 1;
-        }
-      }
+  } else if (actor.system.level < lastProcessedLevel) {
+    for (const arrayLevel of arrayLevels) {
+      const level = arrayLevel.replace(/[^0-9]/g, '');
+      const valueChange =
+        level > actor.system.level
+        && (!lastProcessedLevel || level <= lastProcessedLevel)
+      totalChange += valueChange ? 1 : 0;
     }
   }
 
