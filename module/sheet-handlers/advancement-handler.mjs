@@ -15,11 +15,11 @@ export class AdvancementHandler {
     this._actor = actorSheet.actor;
   }
 
-   /**
-   * Updates the actor based on a level change from the attached role
-   * @param {Actor} actor The actor whose level has changed
-   * @param {Number} newLevel The new level that you are changing to.
-   */
+  /**
+  * Updates the actor based on a level change from the attached role
+  * @param {Actor} actor The actor whose level has changed
+  * @param {Number} newLevel The new level that you are changing to.
+  */
    async onLevelChange(actor, newLevel) {
     const previousLevel = actor.getFlag('essence20', 'previousLevel');
     if (!previousLevel || previousLevel == newLevel) {
@@ -41,7 +41,7 @@ export class AdvancementHandler {
         const totalChange = await roleValueChange(actor.system.level, item.system.powers.personal.levels, previousLevel);
         const newPersonalPowerMax = Math.max(
           0,
-          parseInt(actor.system.powers.personal.max) + parseInt(item.system.powers.personal.increase * totalChange)
+          parseInt(actor.system.powers.personal.max) + parseInt(item.system.powers.personal.increase * totalChange),
         );
 
         actor.update({
