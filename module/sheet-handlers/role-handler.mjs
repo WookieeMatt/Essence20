@@ -40,14 +40,12 @@ export class RoleHandler {
 
     for (const essence in newRole.system.essenceLevels) {
       const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
-
       const essenceValue = this._actor.system.essences[essence] + totalIncrease;
       const essenceString = `system.essences.${essence}`;
 
       await this._actor.update({
         [essenceString]: essenceValue,
       });
-
     }
 
     if (newRole.system.powers.personal.starting) {
