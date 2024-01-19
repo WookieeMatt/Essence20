@@ -34,9 +34,9 @@ export class RoleHandler {
 
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
-    if (role.system.version == 'myLittlePony') {
-      await essenceSelect(newRole);
-    }
+    // if (role.system.version == 'myLittlePony') {
+    //   await essenceSelect(newRole);
+    // }
 
     for (const essence in newRole.system.essenceLevels) {
       const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
