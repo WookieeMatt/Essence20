@@ -20,11 +20,11 @@ export class RoleHandler {
    * @param {Roles} roles The role item that is being dropped on the actor
    * @param {Function} dropFunc The drop Function that will be used to complete the drop of the role
    */
-  async roleUpdate(roles, dropFunc) {
-    const hasRole = await getItemsOfType("role", this._actor.items);
+  async roleUpdate(role, dropFunc) {
+    const hasRole = await getItemsOfType("role", this._actor.items).length > 0;
 
     // Characters can only have one Role
-    if (hasRole.length > 0) {
+    if (hasRole) {
       ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleMultipleError')));
       return false;
     }
@@ -34,7 +34,7 @@ export class RoleHandler {
 
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
-    if (roles.system.version == 'myLittlePony') {
+    if (role.system.version == 'myLittlePony') {
       await essenceSelect(newRole);
     }
 
