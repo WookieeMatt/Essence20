@@ -417,11 +417,8 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
       if (itemSourceId == attachment.uuid) {
         if (item._id == parentId) {
-          if (previousLevel) {
-            if (attachment.level > actor.system.level && attachment.level <= previousLevel) {
-              actorItem.delete();
-            }
-          } else {
+          if (!previousLevel
+            || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
             actorItem.delete();
           }
         }
@@ -433,8 +430,8 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
 /**
  * @param {Object} actor The acrot that the role is attached to
  * @param {Array} arrayLevels An array of the levels at which a value changes
- * @param {Integer} lastProcessedLevel The value of actor.system.level the last time a level change was processed
- * @returns {Integer} totalChange The number of level changes.
+ * @param {Number} lastProcessedLevel The value of actor.system.level the last time a level change was processed
+ * @returns {Number} totalChange The number of level changes.
  */
 export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=null) {
   const levelDiff = currentLevel - lastProcessedLevel;
@@ -461,4 +458,3 @@ export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLe
 
   return totalChange;
 }
-

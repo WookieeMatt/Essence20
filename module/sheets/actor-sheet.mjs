@@ -864,7 +864,8 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-   * Handle changes to an input element, submitting the form if options.submitOnChange is true. Do not preventDefault in this handler as other interactions on the form may also be occurring.
+   * Handle changes to an input element, submitting the form if options.submitOnChange is true.
+   * Do not preventDefault in this handler as other interactions on the form may also be occurring.
    * @param {Event} event The initial change event
    */
   async _onChangeInput(event) {
@@ -874,5 +875,4 @@ export class Essence20ActorSheet extends ActorSheet {
       await this._advHandler.onLevelChange(this.actor, this.actor.system.level);
     }
   }
-
 }

@@ -14,12 +14,13 @@ export class RoleHandler {
     this._actorSheet = actorSheet;
     this._actor = actorSheet.actor;
   }
+
   /**
    * Updates the actor wirh the role features that are there based on the level of the character.
-   * @param {Role} role The role item that is being dropped on the actor
+   * @param {Roles} roles The role item that is being dropped on the actor
    * @param {Function} dropFunc The drop Function that will be used to complete the drop of the role
    */
-  async roleUpdate(role, dropFunc) {
+  async roleUpdate(roles, dropFunc) {
     const hasRole = await getItemsOfType("role", this._actor.items);
 
     // Characters can only have one Role
@@ -33,7 +34,7 @@ export class RoleHandler {
 
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
-    if (role.system.version == 'myLittlePony') {
+    if (roles.system.version == 'myLittlePony') {
       await essenceSelect(newRole);
     }
 
