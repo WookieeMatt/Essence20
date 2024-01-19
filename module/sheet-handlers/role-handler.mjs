@@ -66,11 +66,11 @@ export class RoleHandler {
    * Removes the role and role features that are on the actor.
    * @param {Role} role The role item that is being deleted on the actor
    */
-  async onRoleDelete(role){
+  async onRoleDelete(role) {
     const previousLevel = this._actor.getFlag('essence20', 'previousLevel');
+
     for (const essence in role.system.essenceLevels) {
       const totalDecrease = await roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
-
       const essenceValue = Math.max(0, this._actor.system.essences[essence] + totalDecrease);
       const essenceString = `system.essences.${essence}`;
 
