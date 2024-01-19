@@ -123,13 +123,6 @@
         "level19"
       ]
     },
-    "powers": {
-      "personal": {
-        "increase": 0,
-        "levels": [],
-        "starting": 0
-      }
-    },
     "skills": [
       "finesse",
       "targeting",
@@ -141,7 +134,7 @@
       "qualified": [],
       "trained": []
     },
-    "power": {
+    "powers": {
       "personal": {
         "starting": "2",
         "increase": "2",
@@ -163,7 +156,7 @@
       ],
       "speed": [
         "level1",
-        "level1optional",
+        "level2",
         "level6",
         "level10",
         "level14",

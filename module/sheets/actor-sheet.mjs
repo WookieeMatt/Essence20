@@ -166,6 +166,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
+    const roles = []; // Used by PCs
     const classFeatures = []; // Used by PCs
     const specializations = {};
     const spells = [];
@@ -238,6 +239,9 @@ export class Essence20ActorSheet extends ActorSheet {
       case 'spell':
         spells.push(i);
         break;
+      case 'role':
+        roles.push(i);
+        break;
       case 'classFeature':
         classFeatures.push(i);
         classFeaturesById[i._id] = i.name;
@@ -279,6 +283,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.origins = origins;
     context.perks = perks;
     context.powers = powers;
+    context.roles = roles;
     context.spells = spells;
     context.specializations = specializations;
     context.traits = traits;
@@ -363,9 +368,6 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Transform Button
     html.find('.transform').click(() => this._tfHandler.onTransform(this));
-
-    // Level Change
-    html.find('.level').change(this._advHandler.onLevelChange(this.actor));
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -687,6 +689,8 @@ export class Essence20ActorSheet extends ActorSheet {
         this._alHandler.onAlterationDelete(item);
       } else if (item.type == "perk") {
         this._pkHandler.onPerkDelete(item);
+      } else if (item.type == "role") {
+        this._rlHandler.onRoleDelete(item);
       } else if (item.type == "weapon") {
         deleteAttachmentsForItem(item, this.actor);
       }
@@ -746,6 +750,8 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'role':
+      return await this._rlHandler.roleUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'perk':
       return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':
@@ -854,6 +860,19 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     } else {
       return false;
+    }
+  }
+
+  /**
+   * Handle changes to an input element, submitting the form if options.submitOnChange is true.
+   * Do not preventDefault in this handler as other interactions on the form may also be occurring.
+   * @param {Event} event The initial change event
+   */
+  async _onChangeInput(event) {
+    await super._onChangeInput(event);
+
+    if (event.currentTarget.name == "system.level") {
+      await this._advHandler.onLevelChange(this.actor, this.actor.system.level);
     }
   }
 }

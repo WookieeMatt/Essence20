@@ -116,24 +116,6 @@
     },
     "powers": {
       "personal": {
-        "increase": 0,
-        "levels": [],
-        "starting": 0
-      }
-    },
-    "skills": [
-      "initiative",
-      "acrobatics",
-      "finesse",
-      "alertness"
-    ],
-    "version": "powerRangers",
-    "weapons": {
-      "qualified": [],
-      "trained": []
-    },
-    "power": {
-      "personal": {
         "starting": "2",
         "increase": "1",
         "levels": [
@@ -148,6 +130,17 @@
           "level19"
         ]
       }
+    },
+    "skills": [
+      "initiative",
+      "acrobatics",
+      "finesse",
+      "alertness"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
     },
     "essenceLevels": {
       "strength": [

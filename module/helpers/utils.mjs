@@ -143,20 +143,24 @@ export function rememberValues(html) {
 
 /**
  * Creates copies of Items for given IDs
- * @param {Item[]} items The item(s) to copy
- * @param {Actor} owner The item(s)' owner
- * @param {String} type The type of item(s) to drop
- * @param {Item} parentItem The item(s) parent item
+ * @param {Object[]} items The item entries to copy
+ * @param {Actor} owner The items' owner
+ * @param {String} type The type of items to drop
+ * @param {Item} parentItem The items' parent item
+ * @param {Number} lastProcessedLevel The flag for the last time the actor changed level
  */
-export async function createItemCopies(items, owner, type, parentItem) {
+export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
-      const itemToCreate = await fromUuid(item.uuid);
-      const newItem = await Item.create(itemToCreate, { parent: owner });
-      newItem.setFlag('core', 'sourceId', item.uuid);
-      newItem.setFlag('essence20', 'collectionId', key);
+      const createNewItem =
+        parentItem.type != "role"
+        || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
 
-      if (parentItem) {
+      if (createNewItem) {
+        const itemToCreate = await fromUuid(item.uuid);
+        const newItem = await Item.create(itemToCreate, { parent: owner });
+        newItem.setFlag('core', 'sourceId', item.uuid);
+        newItem.setFlag('essence20', 'collectionId', key);
         newItem.setFlag('essence20', 'parentId', parentItem._id);
       }
     }
@@ -404,17 +408,53 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
 * Handles deleting items attached to other items
 * @param {Item} item The item that was deleted
 * @param {Actor} actor The actor the parent item is on
+* @param {Value} previousLevel (optional) The value of the last time you leveled up.
 */
-export function deleteAttachmentsForItem(item, actor) {
-  for (const [, attachment] of Object.entries(item.system.items)) {
-    for (const actorItem of actor.items) {
+export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
+  for (const actorItem of actor.items) {
+    for (const [, attachment] of Object.entries(item.system.items)) {
       const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
       const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
       if (itemSourceId == attachment.uuid) {
         if (item._id == parentId) {
-          actorItem.delete();
+          if (!previousLevel
+            || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+            actorItem.delete();
+          }
         }
       }
     }
   }
+}
+
+/**
+ * @param {Object} actor The acrot that the role is attached to
+ * @param {Array} arrayLevels An array of the levels at which a value changes
+ * @param {Number} lastProcessedLevel The value of actor.system.level the last time a level change was processed
+ * @returns {Number} totalChange The number of level changes.
+ */
+export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=null) {
+  const levelDiff = currentLevel - lastProcessedLevel;
+  if (!levelDiff) {
+    return 0;
+  }
+
+  const isLevelUp = currentLevel > lastProcessedLevel;
+  const changeIncrement = isLevelUp ? 1 : -1;
+  let totalChange = 0;
+
+  for (const arrayLevel of arrayLevels) {
+    const level = arrayLevel.replace(/[^0-9]/g, '');
+    const actorReachedLevel =
+          isLevelUp && level <= currentLevel
+      || !isLevelUp && level > currentLevel;
+    const levelNotYetProcessed =
+      !lastProcessedLevel
+      || (isLevelUp  && level >  lastProcessedLevel)
+      || (!isLevelUp && level <= lastProcessedLevel);
+    const valueChange = actorReachedLevel && levelNotYetProcessed;
+    totalChange += valueChange ? changeIncrement : 0;
+  }
+
+  return totalChange;
 }

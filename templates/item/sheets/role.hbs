@@ -112,21 +112,21 @@
           {{!-- Personal Power Starting Capacity --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalStartingCapacity'}}
           {{#*inline "item-field-inputs"}}
-          <input type="text" name="system.power.personal.starting" value="{{system.power.personal.starting}}" />
+          <input type="text" name="system.powers.personal.starting" value="{{system.powers.personal.starting}}" />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
           {{!-- Personal Power Increase Amount --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalIncrease'}}
           {{#*inline "item-field-inputs"}}
-          <input type="text" name="system.power.personal.increase" value="{{system.power.personal.increase}}" />
+          <input type="text" name="system.powers.personal.increase" value="{{system.powers.personal.increase}}" />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
           {{!-- Personal Power Increase Levels --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalIncreaseLevels'}}
           {{#*inline "item-field-edit"}}
-          <a class="trait-selector" data-options="actorLevels" data-target="system.power.personal.levels"
+          <a class="trait-selector" data-options="actorLevels" data-target="system.powers.personal.levels"
             title="{{localize 'E20.EssenceSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
@@ -134,7 +134,7 @@
 
           {{#*inline "item-field-inputs"}}
           <div class="flex-group-right chip-section">
-            {{#each item.system.power.personal.levels as |name|}}
+            {{#each item.system.powers.personal.levels as |name|}}
               <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
             {{/each}}
           </div>
