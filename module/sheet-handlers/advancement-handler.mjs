@@ -20,7 +20,7 @@ export class AdvancementHandler {
   * @param {Actor} actor The actor whose level has changed
   * @param {Number} newLevel The new level that you are changing to.
   */
-   async onLevelChange(actor, newLevel) {
+  async onLevelChange(actor, newLevel) {
     const previousLevel = actor.getFlag('essence20', 'previousLevel');
     if (!previousLevel || previousLevel == newLevel) {
       return;
