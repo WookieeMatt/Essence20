@@ -49,6 +49,15 @@ export class AdvancementHandler {
         });
       }
 
+      if (item.system.adjustments.health.length) {
+        const totalIncrease = await roleValueChange(this._actor.system.level, item.system.adjustments.health, previousLevel);
+        const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalIncrease);
+
+        await this._actor.update({
+          "system.health.bonus": newHealthBonus,
+        });
+      }
+
       if (newLevel > previousLevel) {
         await createItemCopies(item.system.items, actor, "perk", item, previousLevel);
       } else {

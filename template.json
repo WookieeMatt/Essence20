@@ -850,11 +850,14 @@
         "itemDescription",
         "parentItem"
       ],
+      "adjustments": {
+        "health": []
+      },
       "armors": {
         "qualified": [],
         "trained": []
       },
-      "essencelevels": {
+      "essenceLevels": {
         "smarts":  [],
         "social":  [],
         "speed":  [],

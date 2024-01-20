@@ -2,6 +2,7 @@ import {
   createItemCopies,
   deleteAttachmentsForItem,
   getItemsOfType,
+  rememberSelect,
   roleValueChange,
 } from "../helpers/utils.mjs";
 
@@ -34,9 +35,18 @@ export class RoleHandler {
 
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
-    // if (role.system.version == 'myLittlePony') {
-    //   await essenceSelect(newRole);
-    // }
+    if (role.system.version == 'myLittlePony') {
+      try {
+        const essenceTypes = await this._essenceSelect(newRole);
+        if (!essenceTypes) {
+          console.warn("Essences Not selected")
+        } else {
+          console.log(essenceTypes)
+        }
+      } catch(error) {
+        console.error(error);
+      }
+    }
 
     for (const essence in newRole.system.essenceLevels) {
       const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
@@ -56,6 +66,15 @@ export class RoleHandler {
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
+      });
+    }
+
+    if (newRole.system.adjustments.health.length) {
+      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.adjustments.health);
+      const newHealthBonus = this._actor.system.health.bonus + totalIncrease;
+
+      await this._actor.update({
+        "system.health.bonus": newHealthBonus,
       });
     }
 
@@ -88,7 +107,65 @@ export class RoleHandler {
       });
     }
 
+    if (role.system.adjustments.health.length) {
+      const totalDecrease = await roleValueChange(0, role.system.adjustments.health, previousLevel);
+      const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalDecrease);
+
+      await this._actor.update({
+        "system.health.bonus": newHealthBonus,
+      });
+    }
+
     await deleteAttachmentsForItem(role, this._actor);
     this._actor.setFlag('essence20', 'previousLevel', 0);
+  }
+
+  async _essenceSelect(role) {
+    const choices = {};
+
+    for (const advancementName of  CONFIG.E20.AdvancementNames) {
+      choices[advancementName] = {
+        chosen: false,
+        key: advancementName,
+        label: advancementName,
+      };
+    }
+
+    await new Dialog(
+      {
+        title: game.i18n.localize('E20.EssenceSelect'),
+        content: await renderTemplate("systems/essence20/templates/dialog/essence-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: (html) => {this._verifySelection(rememberSelect(html)); this._essenceSetValues(rememberSelect(html), role); }
+          },
+        },
+      },
+    ).render(true);
+  }
+
+  async _verifySelection (options) {
+    const rankArray = []
+    for (const [, rank] of Object.entries(options)) {
+      rankArray.push (rank);
+    }
+    const isUnique = rankArray.length === new Set(rankArray).size;
+    if (!isUnique) {
+      throw new Error('Selections must be unique');
+    }
+    return isUnique;
+  }
+
+  async _essenceSetValues (options, role) {
+    for (const[essence, rank] of Object.entries(options)) {
+      const essenceString = `system.essenceLevels.${essence}`;
+      const rankValue = CONFIG.E20.MLPAdvancement[rank];
+      await role.update({
+        [essenceString]: rankValue,
+      });
+    }
   }
 }
