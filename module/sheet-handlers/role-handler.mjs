@@ -30,14 +30,11 @@ export class RoleHandler {
       return false;
     }
 
-    const newRoleList = await dropFunc();
-    const newRole = newRoleList[0];
-
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
     if (role.system.version == 'myLittlePony') {
       try {
-        const essenceTypes = await this._essenceSelect(newRole);
+        const essenceTypes = await this._essenceSelect(role,dropFunc);
         if (!essenceTypes) {
           console.warn("Essences Not selected")
         } else {
@@ -46,39 +43,13 @@ export class RoleHandler {
       } catch(error) {
         console.error(error);
       }
+    } else {
+      const newRoleList = await dropFunc();
+      const newRole = newRoleList[0];
+      await this._roleDropSetValues(newRole);
     }
 
-    for (const essence in newRole.system.essenceLevels) {
-      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
-      const essenceValue = this._actor.system.essences[essence] + totalIncrease;
-      const essenceString = `system.essences.${essence}`;
 
-      await this._actor.update({
-        [essenceString]: essenceValue,
-      });
-    }
-
-    if (newRole.system.powers.personal.starting) {
-      const totalIncrease = await roleValueChange(this._actor.system.level, role.system.powers.personal.levels);
-      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
-        + parseInt(newRole.system.powers.personal.starting)
-        + parseInt(newRole.system.powers.personal.increase * totalIncrease);
-
-      await this._actor.update({
-        "system.powers.personal.max": newPersonalPowerMax,
-      });
-    }
-
-    if (newRole.system.adjustments.health.length) {
-      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.adjustments.health);
-      const newHealthBonus = this._actor.system.health.bonus + totalIncrease;
-
-      await this._actor.update({
-        "system.health.bonus": newHealthBonus,
-      });
-    }
-
-    await createItemCopies(newRole.system.items, this._actor, "perk", newRole);
   }
 
   /**
@@ -109,6 +80,7 @@ export class RoleHandler {
 
     if (role.system.adjustments.health.length) {
       const totalDecrease = await roleValueChange(0, role.system.adjustments.health, previousLevel);
+      console.log(totalDecrease)
       const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalDecrease);
 
       await this._actor.update({
@@ -120,7 +92,7 @@ export class RoleHandler {
     this._actor.setFlag('essence20', 'previousLevel', 0);
   }
 
-  async _essenceSelect(role) {
+  async _essenceSelect(role, dropFunc) {
     const choices = {};
 
     for (const advancementName of  CONFIG.E20.AdvancementNames) {
@@ -130,8 +102,8 @@ export class RoleHandler {
         label: advancementName,
       };
     }
-
-    await new Dialog(
+    console.log(choices)
+    new Dialog(
       {
         title: game.i18n.localize('E20.EssenceSelect'),
         content: await renderTemplate("systems/essence20/templates/dialog/essence-select.hbs", {
@@ -140,14 +112,14 @@ export class RoleHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: (html) => {this._verifySelection(rememberSelect(html)); this._essenceSetValues(rememberSelect(html), role); }
+            callback: (html) => {this._verifySelection(rememberSelect(html)); this._essenceSetValues(rememberSelect(html), role, dropFunc);}
           },
         },
       },
     ).render(true);
   }
 
-  async _verifySelection (options) {
+  _verifySelection (options) {
     const rankArray = []
     for (const [, rank] of Object.entries(options)) {
       rankArray.push (rank);
@@ -159,13 +131,52 @@ export class RoleHandler {
     return isUnique;
   }
 
-  async _essenceSetValues (options, role) {
+  async _essenceSetValues (options, role, dropFunc) {
+    const newRoleList = await dropFunc();
+    const newRole = newRoleList[0];
+
     for (const[essence, rank] of Object.entries(options)) {
       const essenceString = `system.essenceLevels.${essence}`;
       const rankValue = CONFIG.E20.MLPAdvancement[rank];
-      await role.update({
+      await newRole.update({
         [essenceString]: rankValue,
       });
     }
+
+    this._roleDropSetValues(newRole);
+  }
+
+  async _roleDropSetValues(newRole) {
+    for (const essence in newRole.system.essenceLevels) {
+      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
+      const essenceValue = this._actor.system.essences[essence] + totalIncrease;
+      const essenceString = `system.essences.${essence}`;
+
+      await this._actor.update({
+        [essenceString]: essenceValue,
+      });
+    }
+
+    if (newRole.system.powers.personal.starting) {
+      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.powers.personal.levels);
+      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
+        + parseInt(newRole.system.powers.personal.starting)
+        + parseInt(newRole.system.powers.personal.increase * totalIncrease);
+
+      await this._actor.update({
+        "system.powers.personal.max": newPersonalPowerMax,
+      });
+    }
+
+    if (newRole.system.adjustments.health.length) {
+      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.adjustments.health);
+      const newHealthBonus = this._actor.system.health.bonus + totalIncrease;
+
+      await this._actor.update({
+        "system.health.bonus": newHealthBonus,
+      });
+    }
+
+    await createItemCopies(newRole.system.items, this._actor, "perk", newRole);
   }
 }
