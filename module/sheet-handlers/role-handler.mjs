@@ -126,10 +126,12 @@ export class RoleHandler {
     for (const [, rank] of Object.entries(options)) {
       rankArray.push (rank);
     }
+
     const isUnique = rankArray.length === new Set(rankArray).size;
     if (!isUnique) {
       throw new Error('Selections must be unique');
     }
+
     return isUnique;
   }
 
