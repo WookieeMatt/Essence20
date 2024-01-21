@@ -36,9 +36,9 @@ export class RoleHandler {
       try {
         const essenceTypes = await this._essenceSelect(role,dropFunc);
         if (!essenceTypes) {
-          console.warn("Essences Not selected")
+          console.warn("Essences Not selected");
         } else {
-          console.log(essenceTypes)
+          console.log(essenceTypes);
         }
       } catch(error) {
         console.error(error);
@@ -80,7 +80,6 @@ export class RoleHandler {
 
     if (role.system.adjustments.health.length) {
       const totalDecrease = await roleValueChange(0, role.system.adjustments.health, previousLevel);
-      console.log(totalDecrease)
       const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalDecrease);
 
       await this._actor.update({
@@ -102,7 +101,7 @@ export class RoleHandler {
         label: advancementName,
       };
     }
-    console.log(choices)
+
     new Dialog(
       {
         title: game.i18n.localize('E20.EssenceSelect'),
@@ -112,7 +111,10 @@ export class RoleHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: (html) => {this._verifySelection(rememberSelect(html)); this._essenceSetValues(rememberSelect(html), role, dropFunc);}
+            callback: (html) => {
+              this._verifySelection(rememberSelect(html));
+              this._essenceSetValues(rememberSelect(html), role, dropFunc);
+            },
           },
         },
       },
@@ -120,7 +122,7 @@ export class RoleHandler {
   }
 
   _verifySelection (options) {
-    const rankArray = []
+    const rankArray = [];
     for (const [, rank] of Object.entries(options)) {
       rankArray.push (rank);
     }

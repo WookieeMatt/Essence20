@@ -820,5 +820,5 @@ E20.AdvancementNames = [
   "gold",
   "silver",
   "bronze",
-]
+];
 
