@@ -100,6 +100,11 @@ export class RoleHandler {
     this._actor.setFlag('essence20', 'previousLevel', 0);
   }
 
+  /**
+   * Handles the selection of the Essence Progression Ranks
+   * @param {Object} role The role that was dropped on the actor
+   * @param {Function} dropFunc The function for the drop of the character
+   */
   async _essenceSelect(role, dropFunc) {
     const choices = {};
 
@@ -130,6 +135,11 @@ export class RoleHandler {
     ).render(true);
   }
 
+  /**
+   * Handles verifying that all of the Essences have a different rank
+   * @param {Object} options The selections made in the dialog window.
+   * @returns isUnique If all of the Essences have a different rank
+   */
   _verifySelection (options) {
     const rankArray = [];
     for (const [, rank] of Object.entries(options)) {
@@ -144,6 +154,12 @@ export class RoleHandler {
     return isUnique;
   }
 
+  /**
+   * Handles Setting the Values of what was selected in the Essence Selection Dialog
+   * @param {Object} options The selections made in the dialog window.
+   * @param {Object} role The role that was dropped on the actor
+   * @param {Function} dropFunc The function for the drop of the character
+   */
   async _essenceSetValues (options, role, dropFunc) {
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
@@ -163,6 +179,10 @@ export class RoleHandler {
     this._roleDropSetValues(newRole);
   }
 
+  /**
+   * Handles setting the Values from the role that was dropped
+   * @param {Object} newRole The newly created role on the actor.
+   */
   async _roleDropSetValues(newRole) {
     for (const essence in newRole.system.essenceLevels) {
       const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
