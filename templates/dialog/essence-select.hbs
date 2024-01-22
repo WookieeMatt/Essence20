@@ -1,29 +1,41 @@
 <form class="essence-select-dialog">
-  <div class="flexcol">
+  <div class="flexcol item-sheet">
     <div class="essence-select">
       <div>
-        <label for="system.advancement.strength" class="resource-label">{{localize 'E20.EssenceStrength'}}</label>
-        <select name="strength" id="strength">
-          {{selectOptions choices nameAttr="key" labelAttr="label"}}
-        </select>
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceStrength'}}
+        {{#*inline "item-field-inputs"}}
+          <select class="item-field-inputs" name="strength" id="strength">
+            {{selectOptions choices nameAttr="key" labelAttr="label"}}
+          </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       </div>
       <div>
-        <label for="system.advancement.speed" class="resource-label">{{localize 'E20.EssenceSpeed'}}</label>
-        <select name="speed" id="speed">
-          {{selectOptions choices nameAttr="key" labelAttr="label"}}
-        </select>
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceSpeed'}}
+        {{#*inline "item-field-inputs"}}
+          <select class="item-field-inputs" name="speed" id="speed">
+            {{selectOptions choices nameAttr="key" labelAttr="label"}}
+          </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       </div>
       <div>
-        <label for="system.advancement.smarts" class="resource-label">{{localize 'E20.EssenceSmarts'}}</label>
-        <select name="smarts" id="smarts">
-          {{selectOptions choices nameAttr="key" labelAttr="label"}}
-        </select>
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceSmarts'}}
+        {{#*inline "item-field-inputs"}}
+          <select class="item-field-inputs" name="smarts" id="smarts">
+            {{selectOptions choices nameAttr="key" labelAttr="label"}}
+          </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       </div>
       <div>
-        <label for="system.advancement.social" class="resource-label">{{localize 'E20.EssenceSocial'}}</label>
-        <select name="social" id="social">
-          {{selectOptions choices nameAttr="key" labelAttr="label"}}
-        </select>
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceSocial'}}
+        {{#*inline "item-field-inputs"}}
+          <select class="item-field-inputs" name="social" id="social">
+            {{selectOptions choices nameAttr="key" labelAttr="label"}}
+          </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       </div>
     </div>
   </div>

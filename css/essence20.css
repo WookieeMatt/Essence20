@@ -1031,6 +1031,22 @@
   width: 65%;
 }
 
+.essence20 .diamond {
+  color: #b9f2ff;
+}
+
+.essence20 .gold {
+  color: goldenrod;
+}
+
+.essence20 .silver {
+  color: silver;
+}
+
+.essence20 .bronze {
+  color: #CD7F32;
+}
+
 .essence20 .armor-trait-checkbox-label {
   flex-grow: 0;
   margin-left: 5px;

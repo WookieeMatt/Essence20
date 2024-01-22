@@ -109,6 +109,12 @@
             "total": 0
           }
         },
+        "ponyEssence": {
+          "smarts": null,
+          "social": null,
+          "speed": null,
+          "strength": null
+        },
         "powers": {
           "personal": {
             "max": 0,

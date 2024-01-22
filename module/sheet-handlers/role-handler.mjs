@@ -86,7 +86,14 @@ export class RoleHandler {
         "system.health.bonus": newHealthBonus,
       });
     }
-
+    if (role.system.version == 'myLittlePony') {
+      await this._actor.update({
+        "system.ponyEssence.smarts": null,
+        "system.ponyEssence.social": null,
+        "system.ponyEssence.speed": null,
+        "system.ponyEssence.strength": null,
+      })
+    }
     await deleteAttachmentsForItem(role, this._actor);
     this._actor.setFlag('essence20', 'previousLevel', 0);
   }
@@ -98,7 +105,7 @@ export class RoleHandler {
       choices[advancementName] = {
         chosen: false,
         key: advancementName,
-        label: advancementName,
+        label: game.i18n.localize(`E20.EssenceProgression${advancementName.capitalize()}`),
       };
     }
 
@@ -141,10 +148,14 @@ export class RoleHandler {
 
     for (const[essence, rank] of Object.entries(options)) {
       const essenceString = `system.essenceLevels.${essence}`;
+      const ponyEssenceString = `system.ponyEssence.${essence}`;
       const rankValue = CONFIG.E20.MLPAdvancement[rank];
       await newRole.update({
         [essenceString]: rankValue,
       });
+      await this._actor.update({
+        [ponyEssenceString]: rank,
+      })
     }
 
     this._roleDropSetValues(newRole);
