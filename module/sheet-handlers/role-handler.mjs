@@ -86,14 +86,16 @@ export class RoleHandler {
         "system.health.bonus": newHealthBonus,
       });
     }
+
     if (role.system.version == 'myLittlePony') {
       await this._actor.update({
         "system.ponyEssence.smarts": null,
         "system.ponyEssence.social": null,
         "system.ponyEssence.speed": null,
         "system.ponyEssence.strength": null,
-      })
+      });
     }
+
     await deleteAttachmentsForItem(role, this._actor);
     this._actor.setFlag('essence20', 'previousLevel', 0);
   }
@@ -155,7 +157,7 @@ export class RoleHandler {
       });
       await this._actor.update({
         [ponyEssenceString]: rank,
-      })
+      });
     }
 
     this._roleDropSetValues(newRole);
