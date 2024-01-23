@@ -34,7 +34,7 @@ export class RoleHandler {
 
     if (role.system.version == 'myLittlePony') {
       try {
-        const essenceTypes = await this._essenceSelect(role,dropFunc);
+        await this._essenceSelect(role,dropFunc);
       } catch(error) {
         console.error(error);
       }
