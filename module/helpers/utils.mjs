@@ -111,7 +111,6 @@ export function getItemsOfType(type, items) {
  * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
  * @param {HTML} html   The html of the dialog upon submission
  * @returns {Object>}  The dialog inputs and their submitted values
- * @private
  */
 export function rememberOptions(html) {
   const options = {};
@@ -123,10 +122,9 @@ export function rememberOptions(html) {
 }
 
 /**
- * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
+ * Returns values of inputs upon dialog submission.
  * @param {HTML} html   The html of the dialog upon submission
- * @returns {Object>}  The dialog inputs and their submitted values
- * @private
+ * @returns {Object}  The dialog inputs and their submitted values
  */
 export function rememberSelect(html) {
   const options = {};
@@ -142,7 +140,6 @@ export function rememberSelect(html) {
  * (This one does values instead of checked)
  * @param {HTML} html   The html of the dialog upon submission
  * @returns {Object}  The dialog inputs and their entered values
- * @private
  */
 export function rememberValues(html) {
   const options = {};

@@ -2,11 +2,7 @@
   {{!-- Strength --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header strength">
-      {{#if system.ponyEssence.strength}}
-        <span class="essence-label {{system.ponyEssence.strength}}">{{localize config.essences.strength}}</span>
-      {{else}}
-        <span class="essence-label">{{localize config.essences.strength}}</span>
-      {{/if}}
+      <span class="essence-label {{system.essenceRanks.strength}}">{{localize config.essences.strength}}</span>
       <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
     </div>
     <div class="essence-header">
@@ -21,11 +17,7 @@
   {{!-- Speed --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      {{#if system.ponyEssence.speed}}
-        <span class="essence-label {{system.ponyEssence.speed}}">{{localize config.essences.speed}}</span>
-      {{else}}
-        <span class="essence-label">{{localize config.essences.speed}}</span>
-      {{/if}}
+      <span class="essence-label {{system.essenceRanks.speed}}">{{localize config.essences.speed}}</span>
       <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
     </div>
     <div class="essence-header">
@@ -39,11 +31,7 @@
   {{!-- Smarts --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      {{#if system.ponyEssence.smarts}}
-        <span class="essence-label {{system.ponyEssence.smarts}}">{{localize config.essences.smarts}}</span>
-      {{else}}
-        <span class="essence-label">{{localize config.essences.smarts}}</span>
-      {{/if}}
+      <span class="essence-label {{system.essenceRanks.smarts}}">{{localize config.essences.smarts}}</span>
       <input class="two-digit-input" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" />
     </div>
    {{#each @root.config.skillsByEssence.smarts as |skill|}}
@@ -54,11 +42,7 @@
   {{!-- Social --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      {{#if system.ponyEssence.social}}
-        <span class="essence-label {{system.ponyEssence.social}}">{{localize config.essences.social}}</span>
-      {{else}}
-        <span class="essence-label">{{localize config.essences.social}}</span>
-      {{/if}}
+      <span class="essence-label {{system.essenceRanks.social}}">{{localize config.essences.social}}</span>
       <input class="two-digit-input" type="number" name="system.essences.social" value="{{system.essences.social}}" />
     </div>
     {{#each @root.config.skillsByEssence.social as |skill|}}

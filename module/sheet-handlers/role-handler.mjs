@@ -35,11 +35,6 @@ export class RoleHandler {
     if (role.system.version == 'myLittlePony') {
       try {
         const essenceTypes = await this._essenceSelect(role,dropFunc);
-        if (!essenceTypes) {
-          console.warn("Essences Not selected");
-        } else {
-          console.log(essenceTypes);
-        }
       } catch(error) {
         console.error(error);
       }
@@ -89,10 +84,10 @@ export class RoleHandler {
 
     if (role.system.version == 'myLittlePony') {
       await this._actor.update({
-        "system.ponyEssence.smarts": null,
-        "system.ponyEssence.social": null,
-        "system.ponyEssence.speed": null,
-        "system.ponyEssence.strength": null,
+        "system.essenceRanks.smarts": null,
+        "system.essenceRanks.social": null,
+        "system.essenceRanks.speed": null,
+        "system.essenceRanks.strength": null,
       });
     }
 
@@ -138,12 +133,12 @@ export class RoleHandler {
   /**
    * Handles verifying that all of the Essences have a different rank
    * @param {Object} options The selections made in the dialog window.
-   * @returns isUnique If all of the Essences have a different rank
+   * @returns {Boolean} If all of the Essences have a different rank
    */
   _verifySelection (options) {
     const rankArray = [];
     for (const [, rank] of Object.entries(options)) {
-      rankArray.push (rank);
+      rankArray.push(rank);
     }
 
     const isUnique = rankArray.length === new Set(rankArray).size;
@@ -155,10 +150,10 @@ export class RoleHandler {
   }
 
   /**
-   * Handles Setting the Values of what was selected in the Essence Selection Dialog
+   * Handles setting the values of what was selected in the Essence Selection Dialog
    * @param {Object} options The selections made in the dialog window.
-   * @param {Object} role The role that was dropped on the actor
-   * @param {Function} dropFunc The function for the drop of the character
+   * @param {Role} role The role that was dropped on the actor
+   * @param {Function} dropFunc The function for the drop of the role
    */
   async _essenceSetValues (options, role, dropFunc) {
     const newRoleList = await dropFunc();
@@ -166,13 +161,13 @@ export class RoleHandler {
 
     for (const[essence, rank] of Object.entries(options)) {
       const essenceString = `system.essenceLevels.${essence}`;
-      const ponyEssenceString = `system.ponyEssence.${essence}`;
+      const essenceRankString = `system.essenceRanks.${essence}`;
       const rankValue = CONFIG.E20.MLPAdvancement[rank];
       await newRole.update({
         [essenceString]: rankValue,
       });
       await this._actor.update({
-        [ponyEssenceString]: rank,
+        [essenceRankString]: rank,
       });
     }
 

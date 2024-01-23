@@ -50,8 +50,8 @@ export class AdvancementHandler {
       }
 
       if (item.system.adjustments.health.length) {
-        const totalIncrease = await roleValueChange(this._actor.system.level, item.system.adjustments.health, previousLevel);
-        const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalIncrease);
+        const totalChange = await roleValueChange(this._actor.system.level, item.system.adjustments.health, previousLevel);
+        const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalChange);
 
         await this._actor.update({
           "system.health.bonus": newHealthBonus,
