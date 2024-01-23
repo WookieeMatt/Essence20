@@ -33,18 +33,12 @@ export class RoleHandler {
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
     if (role.system.version == 'myLittlePony') {
-      try {
         await this._essenceSelect(role,dropFunc);
-      } catch(error) {
-        console.error(error);
-      }
     } else {
       const newRoleList = await dropFunc();
       const newRole = newRoleList[0];
       await this._roleDropSetValues(newRole);
     }
-
-
   }
 
   /**
