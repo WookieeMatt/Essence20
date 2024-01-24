@@ -1,8 +1,6 @@
 import {
-  createItemCopies,
-  deleteAttachmentsForItem,
   getItemsOfType,
-  roleValueChange,
+  setRoleValues,
 } from "../helpers/utils.mjs";
 
 export class AdvancementHandler {
@@ -26,43 +24,11 @@ export class AdvancementHandler {
       return;
     }
 
-    for (const item of getItemsOfType("role", actor.items)) {
-      for (const essence in item.system.essenceLevels) {
-        const totalChange = await roleValueChange(actor.system.level, item.system.essenceLevels[essence], previousLevel);
-        const essenceValue = Math.max(0, actor.system.essences[essence] + totalChange);
-        const essenceString = `system.essences.${essence}`;
-
-        actor.update({
-          [essenceString]: essenceValue,
-        });
-      }
-
-      if (item.system.powers.personal.starting) {
-        const totalChange = await roleValueChange(actor.system.level, item.system.powers.personal.levels, previousLevel);
-        const newPersonalPowerMax = Math.max(
-          0,
-          parseInt(actor.system.powers.personal.max) + parseInt(item.system.powers.personal.increase * totalChange),
-        );
-
-        actor.update({
-          "system.powers.personal.max": newPersonalPowerMax,
-        });
-      }
-
-      if (item.system.adjustments.health.length) {
-        const totalChange = await roleValueChange(this._actor.system.level, item.system.adjustments.health, previousLevel);
-        const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalChange);
-
-        await this._actor.update({
-          "system.health.bonus": newHealthBonus,
-        });
-      }
-
-      if (newLevel > previousLevel) {
-        await createItemCopies(item.system.items, actor, "perk", item, previousLevel);
-      } else {
-        await deleteAttachmentsForItem(item, actor, previousLevel);
-      }
+    const roles = getItemsOfType("role", actor.items)[0];
+    if (roles.length == 1) {
+      setRoleValues(roles[0], actor, newLevel, previousLevel);
+    } else {
+      return;
     }
 
     actor.setFlag('essence20', 'previousLevel', newLevel);

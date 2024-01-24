@@ -1,9 +1,9 @@
 import {
-  createItemCopies,
   deleteAttachmentsForItem,
   getItemsOfType,
   rememberSelect,
   roleValueChange,
+  setRoleValues,
 } from "../helpers/utils.mjs";
 
 export class RoleHandler {
@@ -170,39 +170,9 @@ export class RoleHandler {
 
   /**
    * Handles setting the Values from the role that was dropped
-   * @param {Object} newRole The newly created role on the actor.
+   * @param {Object} role The newly created role on the actor.
    */
-  async _roleDropSetValues(newRole) {
-    for (const essence in newRole.system.essenceLevels) {
-      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
-      const essenceValue = this._actor.system.essences[essence] + totalIncrease;
-      const essenceString = `system.essences.${essence}`;
-
-      await this._actor.update({
-        [essenceString]: essenceValue,
-      });
-    }
-
-    if (newRole.system.powers.personal.starting) {
-      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.powers.personal.levels);
-      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
-        + parseInt(newRole.system.powers.personal.starting)
-        + parseInt(newRole.system.powers.personal.increase * totalIncrease);
-
-      await this._actor.update({
-        "system.powers.personal.max": newPersonalPowerMax,
-      });
-    }
-
-    if (newRole.system.adjustments.health.length) {
-      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.adjustments.health);
-      const newHealthBonus = this._actor.system.health.bonus + totalIncrease;
-
-      await this._actor.update({
-        "system.health.bonus": newHealthBonus,
-      });
-    }
-
-    await createItemCopies(newRole.system.items, this._actor, "perk", newRole);
+  async _roleDropSetValues(role) {
+    setRoleValues(role, this._actor);
   }
 }

@@ -470,3 +470,51 @@ export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLe
 
   return totalChange;
 }
+
+/**
+ * Handles setting the values and items for an actor's role
+ * @param {Object} role The actor's Role
+ * @param {Actor} actor The actor
+ * @param {Number} newLevel (Optional) The new level that you are changing to
+ * @param {Number} previousLevel (Optional) The last level processed for the actor
+ */
+export async function setRoleValues(role, actor, newLevel=null, previousLevel=null) {
+  for (const essence in role.system.essenceLevels) {
+    const totalChange = await roleValueChange(actor.system.level, role.system.essenceLevels[essence], previousLevel);
+    const essenceValue = actor.system.essences[essence] + totalChange;
+    const essenceString = `system.essences.${essence}`;
+
+    await actor.update({
+      [essenceString]: essenceValue,
+    });
+  }
+
+  if (role.system.powers.personal.starting) {
+    const totalChange = await roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
+    const newPersonalPowerMax =
+        parseInt(actor.system.powers.personal.max)
+      + newLevel ? 0 : parseInt(role.system.powers.personal.starting)
+      + parseInt(role.system.powers.personal.increase * totalChange);
+
+    await actor.update({
+      "system.powers.personal.max": newPersonalPowerMax,
+    });
+  }
+
+  if (role.system.adjustments.health.length) {
+    const totalChange = await roleValueChange(actor.system.level, role.system.adjustments.health, previousLevel);
+    const newHealthBonus = actor.system.health.bonus + totalChange;
+
+    await actor.update({
+      "system.health.bonus": newHealthBonus,
+    });
+  }
+
+  if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
+    // Drop or level up
+    await createItemCopies(role.system.items, actor, "perk", role, previousLevel);
+  } else {
+    // Level down
+    await deleteAttachmentsForItem(role, actor, previousLevel);
+  }
+}
