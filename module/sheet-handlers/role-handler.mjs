@@ -16,6 +16,51 @@ export class RoleHandler {
     this._actor = actorSheet.actor;
   }
 
+  async focusUpdate(focus, dropFunc){
+    const hasFocus = await getItemsOfType("focus", this._actor.items).length > 0;
+    const role = await getItemsOfType("role", this._actor.items);
+     const attachedRole = [];
+    for (const [, item] of Object.entries(focus.system.items)) {
+      if (item.type == "role") {
+        attachedRole.push(item);
+      }
+    }
+
+    // Characters can only have one Role
+    if (hasFocus) {
+      ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusMultipleError')));
+      return false;
+    }
+
+    if (role) {
+      if (role[0].flags.core.sourceId == attachedRole[0].uuid) {
+        const newFocusList = await dropFunc();
+        const newFocus = newFocusList[0];
+
+        await this._focusStatUpdate(newFocus);
+
+      } else {
+        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusRoleMismatchError')));
+      return false;
+      }
+    } else {
+      ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoRoleError')));
+      return false;
+    }
+  }
+
+  async _focusStatUpdate(newFocus) {
+    const totalIncrease = await roleValueChange(this._actor.system.level, newFocus.system.essenceLevels);
+    const essenceValue = this._actor.system.essences[newFocus.system.essences] + totalIncrease;
+    const essenceString = `system.essences.${newFocus.system.essences}`;
+
+    await this._actor.update({
+      [essenceString]: essenceValue,
+    });
+
+    await createItemCopies(newFocus.system.items, this._actor, "perk", newFocus);
+  }
+
   /**
    * Updates the actor wirh the role features that are there based on the level of the character.
    * @param {Role} role The role item that is being dropped on the actor

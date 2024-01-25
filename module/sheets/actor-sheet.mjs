@@ -746,6 +746,8 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'armor':
       return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'focus':
+      return await this._rlHandler.focusUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':

@@ -769,6 +769,10 @@
         "parentItem"
       ],
       "essences": "",
+      "essenceLevels": [
+        "level1",
+        "level10"
+      ],
       "roleId": "",
       "skills": []
     },
