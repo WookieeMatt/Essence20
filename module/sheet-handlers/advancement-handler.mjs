@@ -24,7 +24,7 @@ export class AdvancementHandler {
       return;
     }
 
-    const roles = getItemsOfType("role", actor.items)[0];
+    const roles = getItemsOfType("role", actor.items);
     if (roles.length == 1) {
       setRoleValues(roles[0], actor, newLevel, previousLevel);
     } else {

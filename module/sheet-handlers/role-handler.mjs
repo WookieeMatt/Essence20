@@ -33,7 +33,7 @@ export class RoleHandler {
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
     if (role.system.version == 'myLittlePony') {
-      await this._essenceSelect(role,dropFunc);
+      await this._selectEssenceProgression(role,dropFunc);
     } else {
       const newRoleList = await dropFunc();
       const newRole = newRoleList[0];
@@ -94,20 +94,20 @@ export class RoleHandler {
    * @param {Object} role The role that was dropped on the actor
    * @param {Function} dropFunc The function for the drop of the character
    */
-  async _essenceSelect(role, dropFunc) {
+  async _selectEssenceProgression(role, dropFunc) {
     const choices = {};
 
-    for (const advancementName of  CONFIG.E20.AdvancementNames) {
-      choices[advancementName] = {
+    for (const rankName of  CONFIG.E20.EssenceRankNames) {
+      choices[rankName] = {
         chosen: false,
-        key: advancementName,
-        label: game.i18n.localize(`E20.EssenceProgression${advancementName.capitalize()}`),
+        key: rankName,
+        label: game.i18n.localize(`E20.EssenceRank${rankName.capitalize()}`),
       };
     }
 
     new Dialog(
       {
-        title: game.i18n.localize('E20.EssenceSelect'),
+        title: game.i18n.localize('E20.EssenceProgressionSelect'),
         content: await renderTemplate("systems/essence20/templates/dialog/essence-select.hbs", {
           choices,
         }),
@@ -115,8 +115,8 @@ export class RoleHandler {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
             callback: (html) => {
-              this._verifySelection(rememberSelect(html));
-              this._essenceSetValues(rememberSelect(html), role, dropFunc);
+              this._verifyEssenceProgression(rememberSelect(html));
+              this._setEssenceProgression(rememberSelect(html), role, dropFunc);
             },
           },
         },
@@ -129,7 +129,7 @@ export class RoleHandler {
    * @param {Object} options The selections made in the dialog window.
    * @returns {Boolean} If all of the Essences have a different rank
    */
-  _verifySelection (options) {
+  _verifyEssenceProgression (options) {
     const rankArray = [];
     for (const [, rank] of Object.entries(options)) {
       rankArray.push(rank);
@@ -149,7 +149,7 @@ export class RoleHandler {
    * @param {Role} role The role that was dropped on the actor
    * @param {Function} dropFunc The function for the drop of the role
    */
-  async _essenceSetValues (options, role, dropFunc) {
+  async _setEssenceProgression (options, role, dropFunc) {
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
 
