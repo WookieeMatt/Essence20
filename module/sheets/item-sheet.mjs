@@ -93,6 +93,9 @@ export class Essence20ItemSheet extends ItemSheet {
     // Delete Role Perk from Influence
     html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
 
+    // Delete Role from Focus
+    html.find('.role-delete').click(this._onObjectDelete.bind(this, ".role"));
+
   }
 
   /**
