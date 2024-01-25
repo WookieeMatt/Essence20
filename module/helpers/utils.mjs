@@ -362,6 +362,8 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
       addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == "role") {
+      addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
