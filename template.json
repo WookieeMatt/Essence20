@@ -109,6 +109,12 @@
             "total": 0
           }
         },
+        "essenceRanks": {
+          "smarts": null,
+          "social": null,
+          "speed": null,
+          "strength": null
+        },
         "powers": {
           "personal": {
             "max": 0,
@@ -850,11 +856,14 @@
         "itemDescription",
         "parentItem"
       ],
+      "adjustments": {
+        "health": []
+      },
       "armors": {
         "qualified": [],
         "trained": []
       },
-      "essencelevels": {
+      "essenceLevels": {
         "smarts":  [],
         "social":  [],
         "speed":  [],

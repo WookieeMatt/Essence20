@@ -2,7 +2,7 @@
   {{!-- Strength --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header strength">
-      <span class="essence-label">{{localize config.essences.strength}}</span>
+      <span class="essence-label {{system.essenceRanks.strength}}">{{localize config.essences.strength}}</span>
       <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
     </div>
     <div class="essence-header">
@@ -17,7 +17,7 @@
   {{!-- Speed --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{config.essences.speed}}</span>
+      <span class="essence-label {{system.essenceRanks.speed}}">{{localize config.essences.speed}}</span>
       <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
     </div>
     <div class="essence-header">
@@ -31,7 +31,7 @@
   {{!-- Smarts --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{config.essences.smarts}}</span>
+      <span class="essence-label {{system.essenceRanks.smarts}}">{{localize config.essences.smarts}}</span>
       <input class="two-digit-input" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" />
     </div>
    {{#each @root.config.skillsByEssence.smarts as |skill|}}
@@ -42,7 +42,7 @@
   {{!-- Social --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{config.essences.social}}</span>
+      <span class="essence-label {{system.essenceRanks.social}}">{{localize config.essences.social}}</span>
       <input class="two-digit-input" type="number" name="system.essences.social" value="{{system.essences.social}}" />
     </div>
     {{#each @root.config.skillsByEssence.social as |skill|}}

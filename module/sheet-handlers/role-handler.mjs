@@ -1,8 +1,9 @@
 import {
-  createItemCopies,
   deleteAttachmentsForItem,
   getItemsOfType,
+  rememberSelect,
   roleValueChange,
+  setRoleValues,
 } from "../helpers/utils.mjs";
 
 export class RoleHandler {
@@ -29,37 +30,15 @@ export class RoleHandler {
       return false;
     }
 
-    const newRoleList = await dropFunc();
-    const newRole = newRoleList[0];
-
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
-    // if (role.system.version == 'myLittlePony') {
-    //   await essenceSelect(newRole);
-    // }
-
-    for (const essence in newRole.system.essenceLevels) {
-      const totalIncrease = await roleValueChange(this._actor.system.level, newRole.system.essenceLevels[essence]);
-      const essenceValue = this._actor.system.essences[essence] + totalIncrease;
-      const essenceString = `system.essences.${essence}`;
-
-      await this._actor.update({
-        [essenceString]: essenceValue,
-      });
+    if (role.system.version == 'myLittlePony') {
+      await this._selectEssenceProgression(role,dropFunc);
+    } else {
+      const newRoleList = await dropFunc();
+      const newRole = newRoleList[0];
+      await this._roleDropSetValues(newRole);
     }
-
-    if (newRole.system.powers.personal.starting) {
-      const totalIncrease = await roleValueChange(this._actor.system.level, role.system.powers.personal.levels);
-      const newPersonalPowerMax = parseInt(this._actor.system.powers.personal.max)
-        + parseInt(newRole.system.powers.personal.starting)
-        + parseInt(newRole.system.powers.personal.increase * totalIncrease);
-
-      await this._actor.update({
-        "system.powers.personal.max": newPersonalPowerMax,
-      });
-    }
-
-    await createItemCopies(newRole.system.items, this._actor, "perk", newRole);
   }
 
   /**
@@ -88,7 +67,112 @@ export class RoleHandler {
       });
     }
 
+    if (role.system.adjustments.health.length) {
+      const totalDecrease = await roleValueChange(0, role.system.adjustments.health, previousLevel);
+      const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalDecrease);
+
+      await this._actor.update({
+        "system.health.bonus": newHealthBonus,
+      });
+    }
+
+    if (role.system.version == 'myLittlePony') {
+      await this._actor.update({
+        "system.essenceRanks.smarts": null,
+        "system.essenceRanks.social": null,
+        "system.essenceRanks.speed": null,
+        "system.essenceRanks.strength": null,
+      });
+    }
+
     await deleteAttachmentsForItem(role, this._actor);
     this._actor.setFlag('essence20', 'previousLevel', 0);
+  }
+
+  /**
+   * Handles the selection of the Essence Progression Ranks
+   * @param {Object} role The role that was dropped on the actor
+   * @param {Function} dropFunc The function for the drop of the character
+   */
+  async _selectEssenceProgression(role, dropFunc) {
+    const choices = {};
+
+    for (const rankName of  CONFIG.E20.EssenceRankNames) {
+      choices[rankName] = {
+        chosen: false,
+        key: rankName,
+        label: game.i18n.localize(`E20.EssenceRank${rankName.capitalize()}`),
+      };
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.EssenceProgressionSelect'),
+        content: await renderTemplate("systems/essence20/templates/dialog/essence-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: (html) => {
+              this._verifyEssenceProgression(rememberSelect(html));
+              this._setEssenceProgression(rememberSelect(html), role, dropFunc);
+            },
+          },
+        },
+      },
+    ).render(true);
+  }
+
+  /**
+   * Handles verifying that all of the Essences have a different rank
+   * @param {Object} options The selections made in the dialog window.
+   * @returns {Boolean} If all of the Essences have a different rank
+   */
+  _verifyEssenceProgression (options) {
+    const rankArray = [];
+    for (const [, rank] of Object.entries(options)) {
+      rankArray.push(rank);
+    }
+
+    const isUnique = rankArray.length === new Set(rankArray).size;
+    if (!isUnique) {
+      throw new Error('Selections must be unique');
+    }
+
+    return isUnique;
+  }
+
+  /**
+   * Handles setting the values of what was selected in the Essence Selection Dialog
+   * @param {Object} options The selections made in the dialog window.
+   * @param {Role} role The role that was dropped on the actor
+   * @param {Function} dropFunc The function for the drop of the role
+   */
+  async _setEssenceProgression (options, role, dropFunc) {
+    const newRoleList = await dropFunc();
+    const newRole = newRoleList[0];
+
+    for (const[essence, rank] of Object.entries(options)) {
+      const essenceString = `system.essenceLevels.${essence}`;
+      const essenceRankString = `system.essenceRanks.${essence}`;
+      const rankValue = CONFIG.E20.MLPAdvancement[rank];
+      await newRole.update({
+        [essenceString]: rankValue,
+      });
+      await this._actor.update({
+        [essenceRankString]: rank,
+      });
+    }
+
+    this._roleDropSetValues(newRole);
+  }
+
+  /**
+   * Handles setting the Values from the role that was dropped
+   * @param {Object} role The newly created role on the actor.
+   */
+  async _roleDropSetValues(role) {
+    setRoleValues(role, this._actor);
   }
 }

@@ -111,7 +111,6 @@ export function getItemsOfType(type, items) {
  * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
  * @param {HTML} html   The html of the dialog upon submission
  * @returns {Object>}  The dialog inputs and their submitted values
- * @private
  */
 export function rememberOptions(html) {
   const options = {};
@@ -123,11 +122,24 @@ export function rememberOptions(html) {
 }
 
 /**
+ * Returns values of inputs upon dialog submission.
+ * @param {HTML} html   The html of the dialog upon submission
+ * @returns {Object}  The dialog inputs and their submitted values
+ */
+export function rememberSelect(html) {
+  const options = {};
+  html.find("select").each((i, el) => {
+    options[el.id] = el.value;
+  });
+
+  return options;
+}
+
+/**
  * Returns values of inputs upon dialog submission. Used for passing data between sequential dialogs.
  * (This one does values instead of checked)
  * @param {HTML} html   The html of the dialog upon submission
  * @returns {Object}  The dialog inputs and their entered values
- * @private
  */
 export function rememberValues(html) {
   const options = {};
@@ -457,4 +469,52 @@ export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLe
   }
 
   return totalChange;
+}
+
+/**
+ * Handles setting the values and items for an actor's role
+ * @param {Object} role The actor's Role
+ * @param {Actor} actor The actor
+ * @param {Number} newLevel (Optional) The new level that you are changing to
+ * @param {Number} previousLevel (Optional) The last level processed for the actor
+ */
+export async function setRoleValues(role, actor, newLevel=null, previousLevel=null) {
+  for (const essence in role.system.essenceLevels) {
+    const totalChange = await roleValueChange(actor.system.level, role.system.essenceLevels[essence], previousLevel);
+    const essenceValue = actor.system.essences[essence] + totalChange;
+    const essenceString = `system.essences.${essence}`;
+
+    await actor.update({
+      [essenceString]: essenceValue,
+    });
+  }
+
+  if (role.system.powers.personal.starting) {
+    const totalChange = await roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
+    const newPersonalPowerMax =
+        parseInt(actor.system.powers.personal.max)
+      + newLevel ? 0 : parseInt(role.system.powers.personal.starting)
+      + parseInt(role.system.powers.personal.increase * totalChange);
+
+    await actor.update({
+      "system.powers.personal.max": newPersonalPowerMax,
+    });
+  }
+
+  if (role.system.adjustments.health.length) {
+    const totalChange = await roleValueChange(actor.system.level, role.system.adjustments.health, previousLevel);
+    const newHealthBonus = actor.system.health.bonus + totalChange;
+
+    await actor.update({
+      "system.health.bonus": newHealthBonus,
+    });
+  }
+
+  if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
+    // Drop or level up
+    await createItemCopies(role.system.items, actor, "perk", role, previousLevel);
+  } else {
+    // Level down
+    await deleteAttachmentsForItem(role, actor, previousLevel);
+  }
 }

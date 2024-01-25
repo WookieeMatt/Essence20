@@ -815,3 +815,10 @@ E20.MLPAdvancement = {
   ],
 };
 
+E20.EssenceRankNames = [
+  "diamond",
+  "gold",
+  "silver",
+  "bronze",
+];
+
