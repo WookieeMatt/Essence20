@@ -6,7 +6,7 @@
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
     {{!-- Associated Role --}}
-    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="role" label='E20.Role' items=@root.roles}}
+    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="role" label='E20.Role' items=system.items type="role"}}
 
     {{!-- Focus Essences --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusEssenceScoreIncrease'}}
@@ -63,7 +63,7 @@
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Focus Role Perks --}}
-      {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="rolePerk" label='E20.RolePerks' items=system.items}}
+      {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="rolePerk" label='E20.RolePerks' items=system.items type='perk'}}
 
     <div>
       {{!-- Description Section --}}
