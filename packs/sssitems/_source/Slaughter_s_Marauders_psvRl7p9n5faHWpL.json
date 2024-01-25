@@ -1,0 +1,37 @@
+{
+  "name": "Slaughter's Marauders",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaughter's Sourcebook",
+      "page": 15
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction"
+  },
+  "effects": [
+    "PIaYftl3cXUDgogx"
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686272263361,
+    "modifiedTime": 1704127422298,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "tKBdn5Xs6o3Kzt2M",
+  "_id": "psvRl7p9n5faHWpL",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!psvRl7p9n5faHWpL"
+}
