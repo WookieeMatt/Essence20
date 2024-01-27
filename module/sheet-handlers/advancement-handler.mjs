@@ -1,5 +1,6 @@
 import {
   getItemsOfType,
+  setFocusValues,
   setRoleValues,
 } from "../helpers/utils.mjs";
 
@@ -29,6 +30,10 @@ export class AdvancementHandler {
       setRoleValues(roles[0], actor, newLevel, previousLevel);
     } else {
       return;
+    }
+    const focus = getItemsOfType("focus", actor.items);
+    if (focus.length == 1) {
+      setFocusValues(focus[0], actor, newLevel, previousLevel);
     }
 
     actor.setFlag('essence20', 'previousLevel', newLevel);

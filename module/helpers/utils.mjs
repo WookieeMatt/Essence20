@@ -520,3 +520,13 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     await deleteAttachmentsForItem(role, actor, previousLevel);
   }
 }
+
+export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
+  const totalChange = await roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
+  const essenceValue = actor.system.essences[focus.system.essences] + totalChange;
+  const essenceString = `system.essences.${focus.system.essence}`;
+
+  await actor.update({
+    [essenceString]: essenceValue,
+  });
+}

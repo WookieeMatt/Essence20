@@ -16,7 +16,7 @@
       {{> "systems/essence20/templates/item/parts/description.hbs"}}
     </div>
 
-    <div class="tab description flexcol" data-group="primary" data-tab="details"></div>
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
       {{!-- System --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RoleVersion'}}
       {{#*inline "item-field-inputs"}}
@@ -272,7 +272,7 @@
     {{/ifEquals}}
 
       {{!-- Role Perks --}}
-      {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="rolePerk" label='E20.RolePerks' items=system.items}}
+      {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="rolePerk" label='E20.RolePerks' items=system.items type='perk'}}
     </div>
   </section>
 </form>
