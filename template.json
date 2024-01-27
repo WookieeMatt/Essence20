@@ -39,6 +39,12 @@
             "value": 0
           }
         },
+        "essenceRanks": {
+          "smarts": null,
+          "social": null,
+          "speed": null,
+          "strength": null
+        },
         "essenceShifts": {
           "any": {
             "shiftUp": 0,
@@ -61,6 +67,7 @@
             "shiftDown": 0
           }
         },
+        "focusEssence": "",
         "health": {
           "bonus": 0,
           "max": 0,
@@ -108,12 +115,6 @@
             "morphed": 0,
             "total": 0
           }
-        },
-        "essenceRanks": {
-          "smarts": null,
-          "social": null,
-          "speed": null,
-          "strength": null
         },
         "powers": {
           "personal": {

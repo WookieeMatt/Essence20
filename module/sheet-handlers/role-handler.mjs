@@ -3,6 +3,7 @@ import {
   getItemsOfType,
   rememberSelect,
   roleValueChange,
+  setFocusValues,
   setRoleValues,
 } from "../helpers/utils.mjs";
 
@@ -37,7 +38,7 @@ export class RoleHandler {
         const newFocusList = await dropFunc();
         const newFocus = newFocusList[0];
 
-        await this._focusStatUpdate(newFocus);
+        await setFocusValues(newFocus, this._actor);
 
       } else {
         ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusRoleMismatchError')));
@@ -49,16 +50,17 @@ export class RoleHandler {
     }
   }
 
-  async _focusStatUpdate(newFocus) {
-    const totalIncrease = await roleValueChange(this._actor.system.level, newFocus.system.essenceLevels);
-    const essenceValue = this._actor.system.essences[newFocus.system.essences] + totalIncrease;
-    const essenceString = `system.essences.${newFocus.system.essences}`;
+  async onFocusDelete(focus) {
+    const previousLevel = this._actor.getFlag('essence20', 'previousLevel');
+    const totalDecrease = await roleValueChange(0, focus.system.essenceLevels, previousLevel);
+    const essenceValue = Math.max(0, this._actor.system.essences[focus.system.essences[0]] + totalDecrease);
+    const essenceString = `system.essences.${focus.system.essences[0]}`;
 
     await this._actor.update({
       [essenceString]: essenceValue,
     });
 
-    await createItemCopies(newFocus.system.items, this._actor, "perk", newFocus);
+    await deleteAttachmentsForItem(focus, this._actor);
   }
 
   /**
@@ -82,7 +84,7 @@ export class RoleHandler {
     } else {
       const newRoleList = await dropFunc();
       const newRole = newRoleList[0];
-      await this._roleDropSetValues(newRole);
+      await setRoleValues(newRole, this._actor);
     }
   }
 
@@ -92,6 +94,7 @@ export class RoleHandler {
    */
   async onRoleDelete(role) {
     const previousLevel = this._actor.getFlag('essence20', 'previousLevel');
+    const focus = getItemsOfType("focus", this._actor.items);
 
     for (const essence in role.system.essenceLevels) {
       const totalDecrease = await roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
@@ -121,6 +124,9 @@ export class RoleHandler {
       });
     }
 
+    await this.onFocusDelete(focus[0]);
+
+
     if (role.system.version == 'myLittlePony') {
       await this._actor.update({
         "system.essenceRanks.smarts": null,
@@ -132,6 +138,7 @@ export class RoleHandler {
 
     await deleteAttachmentsForItem(role, this._actor);
     this._actor.setFlag('essence20', 'previousLevel', 0);
+    focus[0].delete();
   }
 
   /**
@@ -210,14 +217,7 @@ export class RoleHandler {
       });
     }
 
-    this._roleDropSetValues(newRole);
+    setRoleValues(newRole, this._actor);
   }
 
-  /**
-   * Handles setting the Values from the role that was dropped
-   * @param {Object} role The newly created role on the actor.
-   */
-  async _roleDropSetValues(role) {
-    setRoleValues(role, this._actor);
-  }
 }

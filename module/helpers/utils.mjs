@@ -165,7 +165,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const createNewItem =
-        parentItem.type != "role"
+        (parentItem.type != "role" && parentItem.type != "focus")
         || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
 
       if (createNewItem) {
@@ -448,6 +448,7 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
  * @returns {Number} totalChange The number of level changes.
  */
 export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=null) {
+
   const levelDiff = currentLevel - lastProcessedLevel;
   if (!levelDiff) {
     return 0;
@@ -523,10 +524,18 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
 export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = await roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
-  const essenceValue = actor.system.essences[focus.system.essences] + totalChange;
-  const essenceString = `system.essences.${focus.system.essence}`;
+  const essenceValue = actor.system.essences[focus.system.essences[0]] + totalChange;
+  const essenceString = `system.essences.${focus.system.essences[0]}`;
 
   await actor.update({
     [essenceString]: essenceValue,
   });
+
+  if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
+    // Drop or level up
+    await createItemCopies(focus.system.items, actor, "perk", focus, previousLevel);
+  } else {
+    // Level down
+    await deleteAttachmentsForItem(focus, actor, previousLevel);
+  }
 }
