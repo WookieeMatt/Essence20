@@ -524,8 +524,8 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
 export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = await roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
-  const essenceValue = actor.system.essences[focus.system.essences[0]] + totalChange;
-  const essenceString = `system.essences.${focus.system.essences[0]}`;
+  const essenceValue = actor.system.essences[actor.system.focusEssence] + totalChange;
+  const essenceString = `system.essences.${actor.system.focusEssence}`;
 
   await actor.update({
     [essenceString]: essenceValue,

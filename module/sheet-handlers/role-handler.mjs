@@ -1,6 +1,7 @@
 import {
   deleteAttachmentsForItem,
   getItemsOfType,
+  rememberOptions,
   rememberSelect,
   roleValueChange,
   setFocusValues,
@@ -18,6 +19,10 @@ export class RoleHandler {
   }
 
   async focusUpdate(focus, dropFunc){
+    if (!focus.system.essences.length) {
+      ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoEssenceError')));
+      return false;
+    }
     const hasFocus = await getItemsOfType("focus", this._actor.items).length > 0;
     const role = await getItemsOfType("role", this._actor.items);
      const attachedRole = [];
@@ -27,7 +32,7 @@ export class RoleHandler {
       }
     }
 
-    // Characters can only have one Role
+    // Characters can only have one Focus
     if (hasFocus) {
       ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusMultipleError')));
       return false;
@@ -35,10 +40,16 @@ export class RoleHandler {
 
     if (role) {
       if (role[0].flags.core.sourceId == attachedRole[0].uuid) {
-        const newFocusList = await dropFunc();
-        const newFocus = newFocusList[0];
-
-        await setFocusValues(newFocus, this._actor);
+        if (focus.system.essences.length > 1) {
+          await this._showEssenceDialog(focus, dropFunc);
+        } else {
+          const newFocusList = await dropFunc();
+          const newFocus = newFocusList[0];
+          await this._actor.update({
+            "system.focusEssence": newFocus.system.essences[0],
+          });
+          await setFocusValues(newFocus, this._actor);
+        }
 
       } else {
         ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusRoleMismatchError')));
@@ -50,14 +61,56 @@ export class RoleHandler {
     }
   }
 
+  async _showEssenceDialog(focus, dropFunc) {
+    const choices = {};
+    for (const essence of focus.system.essences) {
+      choices[essence] = {
+        chosen: false,
+        label: CONFIG.E20.originEssences[essence],
+      };
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.EssenceIncrease'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => this._showFocusSkillDialog(rememberOptions(html), dropFunc),
+          },
+        },
+      },
+    ).render(true);
+  }
+
+  async _showFocusSkillDialog(options, dropFunc) {
+    const essences = Object.keys(options);
+    let selectedEssence = "";
+    for (const essence in CONFIG.E20.essences) {
+      if (options[essence]) {
+        selectedEssence = essence;
+      }
+    }
+    const newFocusList = await dropFunc();
+    const newFocus = newFocusList[0];
+    await this._actor.update({
+      "system.focusEssence": selectedEssence,
+    });
+    await setFocusValues(newFocus, this._actor);
+  }
+
   async onFocusDelete(focus) {
     const previousLevel = this._actor.getFlag('essence20', 'previousLevel');
     const totalDecrease = await roleValueChange(0, focus.system.essenceLevels, previousLevel);
-    const essenceValue = Math.max(0, this._actor.system.essences[focus.system.essences[0]] + totalDecrease);
-    const essenceString = `system.essences.${focus.system.essences[0]}`;
+    const essenceValue = Math.max(0, this._actor.system.essences[this._actor.system.focusEssence] + totalDecrease);
+    const essenceString = `system.essences.${this._actor.system.focusEssence}`;
 
     await this._actor.update({
       [essenceString]: essenceValue,
+      "system.focusEssence": null,
     });
 
     await deleteAttachmentsForItem(focus, this._actor);
@@ -123,9 +176,10 @@ export class RoleHandler {
         "system.health.bonus": newHealthBonus,
       });
     }
-
-    await this.onFocusDelete(focus[0]);
-
+    if(focus[0]) {
+      await this.onFocusDelete(focus[0]);
+      await focus[0].delete();
+    }
 
     if (role.system.version == 'myLittlePony') {
       await this._actor.update({
@@ -138,7 +192,6 @@ export class RoleHandler {
 
     await deleteAttachmentsForItem(role, this._actor);
     this._actor.setFlag('essence20', 'previousLevel', 0);
-    focus[0].delete();
   }
 
   /**
