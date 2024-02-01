@@ -23,9 +23,10 @@ export class RoleHandler {
       ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoEssenceError')));
       return false;
     }
+
     const hasFocus = await getItemsOfType("focus", this._actor.items).length > 0;
     const role = await getItemsOfType("role", this._actor.items);
-     const attachedRole = [];
+    const attachedRole = [];
     for (const [, item] of Object.entries(focus.system.items)) {
       if (item.type == "role") {
         attachedRole.push(item);
@@ -53,7 +54,7 @@ export class RoleHandler {
 
       } else {
         ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusRoleMismatchError')));
-      return false;
+        return false;
       }
     } else {
       ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoRoleError')));
@@ -87,13 +88,13 @@ export class RoleHandler {
   }
 
   async _showFocusSkillDialog(options, dropFunc) {
-    const essences = Object.keys(options);
     let selectedEssence = "";
     for (const essence in CONFIG.E20.essences) {
       if (options[essence]) {
         selectedEssence = essence;
       }
     }
+
     const newFocusList = await dropFunc();
     const newFocus = newFocusList[0];
     await this._actor.update({
@@ -176,6 +177,7 @@ export class RoleHandler {
         "system.health.bonus": newHealthBonus,
       });
     }
+
     if(focus[0]) {
       await this.onFocusDelete(focus[0]);
       await focus[0].delete();

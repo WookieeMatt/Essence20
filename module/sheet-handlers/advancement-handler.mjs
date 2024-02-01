@@ -31,6 +31,7 @@ export class AdvancementHandler {
     } else {
       return;
     }
+
     const focus = getItemsOfType("focus", actor.items);
     if (focus.length == 1) {
       setFocusValues(focus[0], actor, newLevel, previousLevel);
