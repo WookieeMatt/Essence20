@@ -165,7 +165,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const createNewItem =
-        (parentItem.type != "role" && parentItem.type != "focus")
+        !["role", "focus"].includes(parentItem.type)
         || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
 
       if (createNewItem) {
@@ -448,7 +448,6 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
  * @returns {Number} totalChange The number of level changes.
  */
 export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=null) {
-
   const levelDiff = currentLevel - lastProcessedLevel;
   if (!levelDiff) {
     return 0;

@@ -1,7 +1,7 @@
 <label for="system.focus" class="resource-label">{{localize 'E20.ActorFocus'}}</label>
 
-{{#if @root.foci}}
-  {{#each @root.foci as |item|}}
+{{#if @root.focuses}}
+  {{#each @root.focuses as |item|}}
     <li class="item" style="list-style-type: none;" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
       <div class="flexrow" style="align-items: center; gap: 2px;">
         <input type="text" name="system.role" value="{{item.name}}" />

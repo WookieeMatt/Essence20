@@ -18,7 +18,7 @@ export class RoleHandler {
     this._actor = actorSheet.actor;
   }
 
-  async focusUpdate(focus, dropFunc){
+  async focusUpdate(focus, dropFunc) {
     if (!focus.system.essences.length) {
       ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoEssenceError')));
       return false;
@@ -39,26 +39,25 @@ export class RoleHandler {
       return false;
     }
 
-    if (role[0]) {
-      if (role[0].flags.core.sourceId == attachedRole[0].uuid) {
-        if (focus.system.essences.length > 1) {
-          await this._showEssenceDialog(focus, dropFunc);
-        } else {
-          const newFocusList = await dropFunc();
-          const newFocus = newFocusList[0];
-          await this._actor.update({
-            "system.focusEssence": newFocus.system.essences[0],
-          });
-          await setFocusValues(newFocus, this._actor);
-        }
-
-      } else {
-        ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusRoleMismatchError')));
-        return false;
-      }
-    } else {
+    if (!role[0]) {
       ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoRoleError')));
       return false;
+    }
+
+    if (role[0].flags.core.sourceId != attachedRole[0].uuid) {
+      ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusRoleMismatchError')));
+      return false;
+    }
+
+    if (focus.system.essences.length > 1) {
+      await this._showEssenceDialog(focus, dropFunc);
+    } else {
+      const newFocusList = await dropFunc();
+      const newFocus = newFocusList[0];
+      await this._actor.update({
+        "system.focusEssence": newFocus.system.essences[0],
+      });
+      await setFocusValues(newFocus, this._actor);
     }
   }
 
@@ -178,7 +177,7 @@ export class RoleHandler {
       });
     }
 
-    if(focus[0]) {
+    if (focus[0]) {
       await this.onFocusDelete(focus[0]);
       await focus[0].delete();
     }
