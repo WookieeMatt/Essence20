@@ -38,7 +38,7 @@ export class RoleHandler {
       return false;
     }
 
-    if (role) {
+    if (role[0]) {
       if (role[0].flags.core.sourceId == attachedRole[0].uuid) {
         if (focus.system.essences.length > 1) {
           await this._showEssenceDialog(focus, dropFunc);
