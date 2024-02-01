@@ -18,6 +18,12 @@ export class RoleHandler {
     this._actor = actorSheet.actor;
   }
 
+  /**
+   * Handles dropping a Focus on an Actor Sheet
+   * @param {Focus} focus The focus that is being dropped on the actor
+   * @param {Function} dropFunc The drop Function that will be used to complete the drop of the focus
+   * @returns
+   */
   async focusUpdate(focus, dropFunc) {
     if (!focus.system.essences.length) {
       ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoEssenceError')));
@@ -61,6 +67,11 @@ export class RoleHandler {
     }
   }
 
+  /**
+   * Handles selecting an Essence when the Focus has more then one.
+   * @param {Focus} focus The focus that is being dropped on the actor
+   * @param {Function} dropFunc The drop Function that will be used to complete the drop of the focus
+   */
   async _showEssenceDialog(focus, dropFunc) {
     const choices = {};
     for (const essence of focus.system.essences) {
@@ -79,14 +90,19 @@ export class RoleHandler {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => this._showFocusSkillDialog(rememberOptions(html), dropFunc),
+            callback: html => this._focusStatUpdate(rememberOptions(html), dropFunc),
           },
         },
       },
     ).render(true);
   }
 
-  async _showFocusSkillDialog(options, dropFunc) {
+  /**
+   *Handles writing the selected Essence to the actor.
+  * @param {Object} options    The options resulting from _showFocusSkillDialog()
+   * @param {Function} dropFunc The drop Function that will be used to complete the drop of the focus
+   */
+  async _focusStatUpdate(options, dropFunc) {
     let selectedEssence = "";
     for (const essence in CONFIG.E20.essences) {
       if (options[essence]) {
@@ -102,6 +118,10 @@ export class RoleHandler {
     await setFocusValues(newFocus, this._actor);
   }
 
+  /**
+   * Handles deleting a focus from an actor.
+   * @param {Focus} focus The focus that is being removed from the actor
+   */
   async onFocusDelete(focus) {
     const previousLevel = this._actor.getFlag('essence20', 'previousLevel');
     const totalDecrease = await roleValueChange(0, focus.system.essenceLevels, previousLevel);

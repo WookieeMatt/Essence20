@@ -521,6 +521,13 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   }
 }
 
+/**
+ * Handles setting the values and items for an actor's focus
+ * @param {Object} focus The actor's Focus
+ * @param {Actor} actor The actor
+ * @param {Number} newLevel (Optional) The new level that you are changing to
+ * @param {Number} previousLevel (Optional) The last level processed for the actor
+ */
 export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = await roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
   const essenceValue = actor.system.essences[actor.system.focusEssence] + totalChange;
