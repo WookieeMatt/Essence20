@@ -231,7 +231,7 @@
     "FactionOther": "Other",
     "Focus": "Focus",
     "FocusDrop": "Drop a Focus here",
-    "FocusMultipleError": "Characters can only select on Focus.",
+    "FocusMultipleError": "Characters can only select one Focus.",
     "FocusNoRoleError": "Characters must select a Role before adding a Focus.",
     "FocusRoleMismatchError": "This Focus is not for the character's current Role.",
     "FocusEssenceScoreIncrease": "Essence Score Increase",
