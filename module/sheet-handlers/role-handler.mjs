@@ -99,7 +99,7 @@ export class RoleHandler {
 
   /**
    *Handles writing the selected Essence to the actor.
-  * @param {Object} options    The options resulting from _showFocusSkillDialog()
+   * @param {Object} options    The options resulting from _showFocusSkillDialog()
    * @param {Function} dropFunc The drop Function that will be used to complete the drop of the focus
    */
   async _focusStatUpdate(options, dropFunc) {
