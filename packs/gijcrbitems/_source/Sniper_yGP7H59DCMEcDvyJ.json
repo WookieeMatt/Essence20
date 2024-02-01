@@ -1,0 +1,111 @@
+{
+  "name": "Sniper",
+  "type": "focus",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 75
+    },
+    "items": {
+      "e1a5": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.yxCVYAmJTk68pAQt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Spotter's Scope",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "4da4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.MD54SjlTYiCTvmBB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "In My Sights",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "ee82": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.W4PmkxBW7m3j88oF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Piercing Shot",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "ac82": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.O3w2NL8H2gCtkWzN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ghillie Suit Sniping",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "d1f4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.0MKcgJ4mUHDotl2k",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Kentucky Windage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "a270": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.civSjmz83aDYPwvo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ballistic Advantage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "2ca9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.K82Mlwef1QMEsRrP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Kill Shot",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "0d99": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6FNyO5Gy6Z0rFPhQ",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Commando",
+        "type": "role"
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "acrobatics",
+      "infiltration",
+      "targeting",
+      "alertness"
+    ]
+  },
+  "effects": [],
+  "folder": "jNsb3umtfrZnGbja",
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1705887488596,
+    "modifiedTime": 1706326625150,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "yGP7H59DCMEcDvyJ",
+  "sort": 0,
+  "_key": "!items!yGP7H59DCMEcDvyJ"
+}

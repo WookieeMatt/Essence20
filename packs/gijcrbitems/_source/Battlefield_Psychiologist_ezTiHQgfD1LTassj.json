@@ -1,0 +1,100 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Battlefield Psychiologist",
+  "type": "focus",
+  "_id": "ezTiHQgfD1LTassj",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 86
+    },
+    "items": {
+      "5dea": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Xj9ip1JaKEIdyk3w",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Officer",
+        "type": "role"
+      },
+      "bb4a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.cjAxzUXLHza3KGyu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psy Ops",
+        "type": "perk",
+        "subtype": "general",
+        "level": 1
+      },
+      "0b64": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.DVBrtxa9iiXXhDoS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Outwit",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "0b25": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.eLO9NJ7akWmoPHEK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mind Over Matter",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "060c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Q09tkHIaVX65lokl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inundation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "90d0": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.j05tN97KZNzl5jTF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inspiration",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "71e1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.3XV6tQfl7WVvjEKe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Deceptive Warfare",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "intimidation",
+      "deception",
+      "persuasion"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706460432890,
+    "modifiedTime": 1706460547771,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!ezTiHQgfD1LTassj"
+}

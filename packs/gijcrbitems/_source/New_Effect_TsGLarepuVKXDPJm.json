@@ -1,0 +1,29 @@
+{
+  "name": "New Effect",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.gi_joe_crb.Item.0a01vmWtbbYYcNvA",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "TsGLarepuVKXDPJm",
+  "changes": [
+    {
+      "key": "system.defenses.toughness.armor",
+      "mode": 2,
+      "value": "2"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!0a01vmWtbbYYcNvA.TsGLarepuVKXDPJm"
+}

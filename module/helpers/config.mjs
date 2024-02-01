@@ -127,6 +127,7 @@ preLocalize("weaponTraits");
 E20.weaponTypes = {
   assaultRifle: "E20.WeaponsAssaultRifle",
   ballistic: "E20.WeaponsBallistic",
+  blunt: "E20.WeaponsBlunt",
   closeCombatHeavyBlade: "E20.WeaponsCloseCombatHeavyBlade",
   element: "E20.WeaponsElement",
   explosives: "E20.WeaponsExplosives",

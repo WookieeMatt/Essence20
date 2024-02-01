@@ -1,0 +1,36 @@
+{
+  "name": "Friend of Darkness",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 72
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "folder": "kxHDC0UGsGm0eziQ",
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706303872438,
+    "modifiedTime": 1706325029635,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "NEBliN2pwDIEXcyv",
+  "sort": 1300000,
+  "_key": "!items!NEBliN2pwDIEXcyv"
+}

@@ -1,0 +1,117 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Spy",
+  "type": "focus",
+  "_id": "zvvc9HggT6TXYWqD",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 75
+    },
+    "items": {
+      "4525": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6FNyO5Gy6Z0rFPhQ",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Commando",
+        "type": "role"
+      },
+      "0738": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.EdP0LqcYh2tkMygI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Presence",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "a98a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.f8ik7h2S3OakNJRq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Jack Of All Trades",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d423": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.RcdgiHSkGWDOI8gW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "I'll Take That",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "c22e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.69ijP0SuQ4demwd9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Silver Tongue",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "765d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ELktMVNYsiBPTX2c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Perfect Disguise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "6dfb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.5YfAL40M8FlZvBVb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Surface Read",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "895c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Y8PlCnqD5txZKJWh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Talk Them Down",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "d40a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.q2YLQLdssomYU4Za",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Suggestion",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "intimidation",
+      "deception",
+      "persuasion",
+      "streetwise"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706326206478,
+    "modifiedTime": 1706326604824,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!zvvc9HggT6TXYWqD"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "New Effect",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.gi_joe_crb.Item.AfIrCQc7OsGiszAi",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "vEy9i4gFWsGr8gxP",
+  "changes": [
+    {
+      "key": "system.health.bonus",
+      "mode": 2,
+      "value": "1"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!AfIrCQc7OsGiszAi.vEy9i4gFWsGr8gxP"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Intimidation Social Skill",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.gi_joe_crb.Item.cjAxzUXLHza3KGyu",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "pVhcXwmmfzYak3nD",
+  "changes": [
+    {
+      "key": "system.skills.intimidation.essences.social",
+      "mode": 5,
+      "value": "true"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!cjAxzUXLHza3KGyu.pVhcXwmmfzYak3nD"
+}

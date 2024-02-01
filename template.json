@@ -875,7 +875,13 @@
         "strength":  []
       },
       "perkLevels": {
-        "general": []
+        "general": [
+          "level4",
+          "level8",
+          "level12",
+          "level16",
+          "level19"
+        ]
       },
       "powers": {
         "personal": {
