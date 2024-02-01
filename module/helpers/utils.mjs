@@ -523,7 +523,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
 /**
  * Handles setting the values and items for an actor's focus
- * @param {Object} focus The actor's Focus
+ * @param {Focus} focus The actor's Focus
  * @param {Actor} actor The actor
  * @param {Number} newLevel (Optional) The new level that you are changing to
  * @param {Number} previousLevel (Optional) The last level processed for the actor
