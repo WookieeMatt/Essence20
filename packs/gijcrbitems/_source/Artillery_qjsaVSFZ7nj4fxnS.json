@@ -1,0 +1,115 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Artillery",
+  "type": "focus",
+  "_id": "qjsaVSFZ7nj4fxnS",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 80
+    },
+    "items": {
+      "a8f4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.L8sJ8JfOeMOHFsQ7",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Infantry",
+        "type": "role"
+      },
+      "bdd8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.B7pPkcsYGscY94W3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Trajectory",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "cb9b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.8oGpBcKAnhJaSqVD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bigger Booms",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "f8b6": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Qwg8WPHHJ1Cl8M8m",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dead Man's Switch",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "a6f9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.xFMzM5pycDmmw4u3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shaped Charge",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "f01c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.a5HptfB7nYFLVHkc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shock and Awe",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "8db4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.II5giKn7vCDeB2nk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Plate Piercing",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "a134": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Kvq0MfPqSya2mf5b",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Explosive Aftershock",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "7b2d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.NYwpiTjlKxTB2rGF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Horseshoes and Handgrenades",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "alertness",
+      "science"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706407815936,
+    "modifiedTime": 1706407926300,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!qjsaVSFZ7nj4fxnS"
+}

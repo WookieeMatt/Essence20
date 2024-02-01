@@ -1,0 +1,243 @@
+{
+  "name": "Commando",
+  "type": "role",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 70
+    },
+    "items": {
+      "a0f2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "f47d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.NEBliN2pwDIEXcyv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Friend of Darkness",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "d5ba": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.vyOjiJFMtryduiFO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sneak Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ed96": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.yFwBVeGDHIf3EmGp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mobility",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "07cb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.QmCOBRBiBx1k0qMR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Think Fast",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "1e06": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.YXL5dCiLZvzDgZzJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Just a Graze",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "5d8e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Yev7VrgEKtsTGdrx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Takedown",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "9c40": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.qxqtfBobduwSkfRM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "First Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "a531": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.MKK6kj54yVmCliPd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ghost",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "14a6": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ofiG5IwlURUwORYV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Seconds Between Click & Boom",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "c056": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.HKv38GCtVdSV2qMH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Every Trick in the Book",
+        "type": "perk",
+        "subtype": "general",
+        "level": 12
+      },
+      "95fd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hx4KzTl8iQ8Z22eq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Everything's A Weapon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "0451": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GvXCxr0Uj7jPhqJR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psychological Warfare",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "86ea": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bmvvsEyoylGTA9Ui",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Safecracker",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "60a4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dYaTU9IYI3vB5eHs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Debilitating Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 16
+      },
+      "4e9b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.HG32BCzrF6Hsz7yR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Paranoia",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [
+        "tactical"
+      ],
+      "trained": [
+        "light"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ],
+      "social": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level5",
+        "level9",
+        "level14",
+        "level18",
+        "level20"
+      ],
+      "strength": [
+        "level6",
+        "level12",
+        "level17"
+      ]
+    },
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level11",
+        "level15",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "starting": 0
+      }
+    },
+    "skills": [
+      "acrobatics",
+      "infiltration",
+      "deception",
+      "streetwise"
+    ],
+    "version": "giJoe",
+    "weapons": {
+      "qualified": [
+        "submachineGun"
+      ],
+      "trained": [
+        "finesse",
+        "grenades",
+        "silent"
+      ]
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    }
+  },
+  "effects": [],
+  "folder": "puvX6tXe8TMzZ5uR",
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1705630692516,
+    "modifiedTime": 1706325482607,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "6FNyO5Gy6Z0rFPhQ",
+  "sort": 0,
+  "_key": "!items!6FNyO5Gy6Z0rFPhQ"
+}

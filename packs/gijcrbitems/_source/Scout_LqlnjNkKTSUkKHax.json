@@ -1,0 +1,100 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Scout",
+  "type": "focus",
+  "_id": "LqlnjNkKTSUkKHax",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 93
+    },
+    "items": {
+      "bc95": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6uBi60E3Fd7ASHa3",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Ranger",
+        "type": "role"
+      },
+      "73dc": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.EDBn8zHJXkRFu2TT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Recon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "c9f9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.98q6O79HKMPEh4aZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adaptable",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "0a71": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.cmj6zfGfpK9YWWfq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Taking Point",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "eec5": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.yVxdYbSfMWfaDQZR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Guidance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "cd55": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.9YCdQjHa6Kyc1h8G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Survivalist",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "83a4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Lvcu7JbfIViXshUs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Long Range Recon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "initiative",
+      "alertness",
+      "survival"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706576609402,
+    "modifiedTime": 1706576707736,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!LqlnjNkKTSUkKHax"
+}

@@ -1,0 +1,108 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Tank",
+  "type": "focus",
+  "_id": "QpbBjwRgRTB9A6Vx",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 99
+    },
+    "items": {
+      "bc10": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ogoEjEeiNxT8QiyZ",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Renegade",
+        "type": "role"
+      },
+      "e563": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.f7d5bkyxVpbR4dAe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hardened",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ffa9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.zvzta73A3ROyxv0J",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enemy Number One",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "5b34": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.srCQjZFTPhm2bK3D",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Interpose",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "0d0f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.RoIa80w6EAZR0uFP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tough Enough",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "d3e2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.cBbQVq9ZqcVUpAQs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rallying Cry",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "e023": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7758n3XWOzhSjdOk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bulwark",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "fcfe": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.0ZTjZ36gN74889am",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aegis",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "conditioning",
+      "brawn",
+      "might"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706655105117,
+    "modifiedTime": 1706655814846,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!QpbBjwRgRTB9A6Vx"
+}

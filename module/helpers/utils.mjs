@@ -165,7 +165,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const createNewItem =
-        parentItem.type != "role"
+        !["role", "focus"].includes(parentItem.type)
         || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
 
       if (createNewItem) {
@@ -362,6 +362,8 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
       addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == "role") {
+      addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -516,5 +518,30 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   } else {
     // Level down
     await deleteAttachmentsForItem(role, actor, previousLevel);
+  }
+}
+
+/**
+ * Handles setting the values and items for an actor's focus
+ * @param {Focus} focus The actor's Focus
+ * @param {Actor} actor The actor
+ * @param {Number} newLevel (Optional) The new level that you are changing to
+ * @param {Number} previousLevel (Optional) The last level processed for the actor
+ */
+export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
+  const totalChange = await roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
+  const essenceValue = actor.system.essences[actor.system.focusEssence] + totalChange;
+  const essenceString = `system.essences.${actor.system.focusEssence}`;
+
+  await actor.update({
+    [essenceString]: essenceValue,
+  });
+
+  if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
+    // Drop or level up
+    await createItemCopies(focus.system.items, actor, "perk", focus, previousLevel);
+  } else {
+    // Level down
+    await deleteAttachmentsForItem(focus, actor, previousLevel);
   }
 }

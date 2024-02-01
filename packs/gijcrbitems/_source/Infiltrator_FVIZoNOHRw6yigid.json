@@ -1,0 +1,114 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Infiltrator",
+  "type": "focus",
+  "_id": "FVIZoNOHRw6yigid",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 74
+    },
+    "items": {
+      "8be8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.PDiRwnTcNCtzJbDn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shadow",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "1bb8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.KXS6M4RyxgjItogK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Night Eyes",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "fa7c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.TGqWGjDUy24SPSGZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wire Work",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "a38b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.gO9IixdCX0fhReZk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Takedown Expert",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "a107": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jIUKR6chHdKQO2vr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Never Heard It Coming",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "0652": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.C3KxTD37krYavSgw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Silent Strider",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "6b7f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Z92UggPHdmt47A7Q",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "0487": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.UJTt3hP5OwQHBcpf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quiet As The Grave",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "c739": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6FNyO5Gy6Z0rFPhQ",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Commando",
+        "type": "role"
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "infiltration"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706325858477,
+    "modifiedTime": 1706401526104,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!FVIZoNOHRw6yigid"
+}

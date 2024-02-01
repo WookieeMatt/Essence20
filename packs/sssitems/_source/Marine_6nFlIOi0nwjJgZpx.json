@@ -1,0 +1,61 @@
+{
+  "name": "Marine",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaughter Sourcebook",
+      "page": 7
+    },
+    "items": {
+      "c027": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.IR8Rl7IXn0zKBBXV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hard Corps",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 30,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "speed"
+    ],
+    "languages": "",
+    "skills": [
+      "conditioning",
+      "initiative",
+      "athletics",
+      "brawn"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681765122294,
+    "modifiedTime": 1704127422341,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "6nFlIOi0nwjJgZpx",
+  "folder": "JuahnV9krwv4o0b9",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!6nFlIOi0nwjJgZpx"
+}

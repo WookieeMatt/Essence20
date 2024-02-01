@@ -1,0 +1,99 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Blitzer",
+  "type": "focus",
+  "_id": "OxLS4Zyt1cmXtidN",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 98
+    },
+    "items": {
+      "8c2b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ogoEjEeiNxT8QiyZ",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Renegade",
+        "type": "role"
+      },
+      "c781": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.KdfwiTaQe0VQV2Cl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wind Sprints",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "a8ef": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.FGrl4swULa62vet8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "The Hits Keep Coming",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "c211": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.NQULhy8KargPMUTX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Coin Toss",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "61d2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.C9HN9cz5Yxxb3jBj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Superior Athlete",
+        "type": "perk",
+        "subtype": "general",
+        "level": 10
+      },
+      "ec4d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.P4agerpRunniHv6G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mighty Strikes",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "8f3c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bfBFQH3sxny3BfEK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sudden Death",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "athletics",
+      "might"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706654834844,
+    "modifiedTime": 1706654942708,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!OxLS4Zyt1cmXtidN"
+}

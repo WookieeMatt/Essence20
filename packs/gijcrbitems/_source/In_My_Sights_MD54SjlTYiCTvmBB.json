@@ -1,0 +1,36 @@
+{
+  "name": "In My Sights",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 75
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "folder": "hILKi8K0qafB6cHa",
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706016867935,
+    "modifiedTime": 1706325089769,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "MD54SjlTYiCTvmBB",
+  "sort": 600000,
+  "_key": "!items!MD54SjlTYiCTvmBB"
+}

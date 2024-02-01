@@ -1,0 +1,98 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Think Tank",
+  "type": "focus",
+  "_id": "es41BZUVnotim5MI",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 104
+    },
+    "items": {
+      "ad22": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.JNWD9SJQUrbui34D",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Technician",
+        "type": "role"
+      },
+      "f25a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.3KaGPbEZp3ZDQrIF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brain Power",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "f607": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ToNsubTwuej5GAV0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Over Brawn",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d1f1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.H1ITRVeP9229PlfU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Integrated Offense",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "0847": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.kKPhxxl5NUo7eE8z",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Iron Heart",
+        "type": "perk",
+        "subtype": "general",
+        "level": 10
+      },
+      "f973": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.JxTGMCJPHgWPQWbJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Instant Kill Mode",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "265d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.IOW6tihgMy52FGNz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Warmachine",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "technology"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706658424780,
+    "modifiedTime": 1706658542205,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!es41BZUVnotim5MI"
+}

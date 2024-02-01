@@ -1,0 +1,98 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Bodyguard",
+  "type": "focus",
+  "_id": "3KdClVjgRc7uviEi",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 110
+    },
+    "items": {
+      "d112": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.tROGHpSM2RsSf7J2",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Vanguard",
+        "type": "role"
+      },
+      "8ad4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.wVwKahPEmYAABGcv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Alert",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ae7f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.llnU5dWqYlfgLA5V",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Protected Target",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "fb63": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.CBfLvmIWdbLuucts",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Body Shield",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "433f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.tGdWBibKFTYfXzVu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Protector's Shield",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "4b96": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.pJcXVybdqjcWHpJq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Caution",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "2f6d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.LuQoEjHVOM8Yoc0Y",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defender's Oath",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "alertness"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706741180185,
+    "modifiedTime": 1706741651445,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!3KdClVjgRc7uviEi"
+}

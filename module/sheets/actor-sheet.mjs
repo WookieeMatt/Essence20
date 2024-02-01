@@ -158,6 +158,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const bonds = [];
     const contacts = [];
     const features = []; // Used by Zords
+    const focuses = [];
     const gears = [];
     const hangUps = [];
     const influences = [];
@@ -205,6 +206,9 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'feature':
         features.push(i);
+        break;
+      case 'focus':
+        focuses.push(i);
         break;
       case 'gear':
         gears.push(i);
@@ -276,6 +280,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.classFeaturesById = classFeaturesById;
     context.features = features;
     context.gears = gears;
+    context.focuses = focuses;
     context.hangUps = hangUps;
     context.influences = influences;
     context.magicBaubles = magicBaubles;
@@ -687,6 +692,8 @@ export class Essence20ActorSheet extends ActorSheet {
         this._tfHandler.onAltModeDelete(item, this);
       } else if (item.type == "alteration") {
         this._alHandler.onAlterationDelete(item);
+      } else if (item.type == "focus") {
+        this._rlHandler.onFocusDelete(item);
       } else if (item.type == "perk") {
         this._pkHandler.onPerkDelete(item);
       } else if (item.type == "role") {
@@ -746,6 +753,8 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'armor':
       return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'focus':
+      return await this._rlHandler.focusUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
