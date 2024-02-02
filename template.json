@@ -890,6 +890,13 @@
           "starting": 0
         }
       },
+      "rolePoints": {
+        "has": false,
+        "increase": 0,
+        "levels": [],
+        "name": "",
+        "starting": 0
+      },
       "skills": [],
       "version": "",
       "weapons": {
