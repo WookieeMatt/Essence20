@@ -1,0 +1,216 @@
+{
+  "folder": "8GMQneo8DivUoTOK",
+  "name": "Spirit of Kindness",
+  "type": "role",
+  "_id": "FAkUbIJtd3PSgdUZ",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 81
+    },
+    "items": {
+      "2494": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.SKviFM3gryyTrJV5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "A Talent For Kindness",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "d26e": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.89GCYHXO3chKVOAj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Kindness is Magic",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "c661": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.2qyftQYtr5noeJ6e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Friendship Circle",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "a013": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.7k1UXzSKyoV8EtXZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Empathy",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "5f32": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.sqAnxRz7gnxulkNJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cure Them With Kindness",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "89fe": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.LOLY9yLoljdn9319",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vulnerability",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "afed": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.6pv6tw4OFqYYX9Dy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Counselor",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "be36": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xR4z6mV7Ab72TyVs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tender",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "0639": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.YSK9hm3OkG6jKlAJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Supportive Friend",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "75a3": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.fiyZcC8KRK5TebTk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "The Bigger The Heart",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "e3c4": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.109i9gRF2TZOtj9o",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pillar of Kindness",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "224d": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.OZrtQuRwCCzeKfV9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Support Yourself",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "b9cb": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.nqunVQB7C5ldA7SK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Supportive Friend",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "adca": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.985JSL4ANRcKb1EX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Forgiving",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "c640": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.2EDR4Je2m2dsIPXV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Return In Kind",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "9f5b": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.kh28DVKbBxMcnMmd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Kind, But Firm",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "b8e3": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.T44FMLiQpwW9cV2u",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Super Supportive Friend",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "9eab": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.nspTaeINRMztxFr5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Princess of Kindness",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": [
+        "level5",
+        "level10",
+        "level15"
+      ]
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "starting": 0
+      }
+    },
+    "skills": [],
+    "version": "myLittlePony",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706826815985,
+    "modifiedTime": 1706831159550,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!FAkUbIJtd3PSgdUZ"
+}

@@ -1,0 +1,216 @@
+{
+  "folder": "8GMQneo8DivUoTOK",
+  "name": "Spirit of Generosity",
+  "type": "role",
+  "_id": "8krVmuYeS6zxjyOG",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 72
+    },
+    "items": {
+      "72d1": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.W4zuPnXnGsb0EE91",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "A Talent For Generosity",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ce9b": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.kcsCU7i1qaekbMrn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Generosity is Magic",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "d57e": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.2qyftQYtr5noeJ6e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Friendship Circle",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "05fa": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.hufRaDWtFbAszTmq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Generosity of Spirit",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "35b2": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.lGYdVH8RWletaWyB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bits To Spare",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "71c0": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.Vb3CAaAj9d1a63p7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Secret Helper",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "0d7a": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ZZTzjEEMljWoVJu6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Putting Others Before Yourself",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "5eb8": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.CjNQHWxMjTQfcLTZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "After You",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "8f80": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.PHzAgfYygOH67l1P",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Personal Sacrifice",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "b05e": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.PldYR4nBQ9zwjBVJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Here, Let Me",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "ee72": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.0sk3XIP3FLK3FvYR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pillar Of Generosity",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "c8e8": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.kepGfqwF3OgkVgap",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Subtle Helper",
+        "type": "perk",
+        "subtype": "general",
+        "level": 11
+      },
+      "51dc": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.7CrDN77ITR9IV2nB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Take Mine",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "a136": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.NyZxFpc8Aop7PDDa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Whatever Helps",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "5ca1": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.tfRFV2g3gkug0l2a",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Desperate Times",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "e6a9": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.yWrCHyJFxQelBJQR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "No, I Insist",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "9b82": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.iJPzTlcS5A9pjy25",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stealth Helper",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "e0cd": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.8s7nIIf0XIpcoqYd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Princess of Generosity",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": [
+        "level5",
+        "level10",
+        "level15"
+      ]
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "starting": 0
+      }
+    },
+    "skills": [],
+    "version": "myLittlePony",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706819210874,
+    "modifiedTime": 1706820205334,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!8krVmuYeS6zxjyOG"
+}

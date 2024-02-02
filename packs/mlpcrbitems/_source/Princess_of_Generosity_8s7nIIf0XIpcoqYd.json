@@ -1,0 +1,36 @@
+{
+  "folder": "EssA3xKEG8i1FPxz",
+  "name": "Princess of Generosity",
+  "type": "perk",
+  "_id": "8s7nIIf0XIpcoqYd",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 75
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    "S3JyRQq1pDPp3zUU"
+  ],
+  "sort": 3400000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706819794294,
+    "modifiedTime": 1706830794493,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!8s7nIIf0XIpcoqYd"
+}
