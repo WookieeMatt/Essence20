@@ -1,0 +1,29 @@
+{
+  "name": "Persuasion Smarts Skill",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.mlp_crb.Item.ki9HVmle77qJ5Yo8",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "Le2M3bfzskXnb0uN",
+  "changes": [
+    {
+      "key": "system.skills.persuasion.essences.smarts",
+      "mode": 5,
+      "value": "true"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!ki9HVmle77qJ5Yo8.Le2M3bfzskXnb0uN"
+}

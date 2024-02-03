@@ -1,0 +1,184 @@
+{
+  "folder": "8GMQneo8DivUoTOK",
+  "name": "Spirit of Magic",
+  "type": "role",
+  "_id": "0TqFxhNcYnGim9aE",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 92
+    },
+    "items": {
+      "b404": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.0POa5TuUxinLfFBn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "A Talent for Magic",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "e890": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.oZ8y7o3JjFM2Nevm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Magic Is Friendship",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ef88": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.2qyftQYtr5noeJ6e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Friendship Circle",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "f829": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.23NeoRDRxlo0LpyQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mystical Understanding",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "a86d": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.E6GWRHzP9tOAxQP6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inner Magic",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "88bb": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.aoqbVibH10pj8rn7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Time To Think",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "f4e5": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.UVFsgco1AMzgZ595",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mind Palace",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "93a4": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.HMzPAgHtvu4KPM1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Guidance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "59a8": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.Evg7HVLPles0X9DM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Circle of Magical Friends",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "0238": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xL0lmmS7P046RNqO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expanded Mysticism",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "61c9": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.RCr63kiDUMly1OlI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pillar of Magic",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "a790": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.TwW8c51b3bCL9Rul",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extensive Research",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "99e1": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.jCh9Z1Nhb6SeiapO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Friendship Is Mystical",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "0d21": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.rz7nBLl6QTQRt3eu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Princess of Magic",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": [
+        "level5",
+        "level10",
+        "level15"
+      ]
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "starting": 0
+      }
+    },
+    "skills": [],
+    "version": "myLittlePony",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706833357575,
+    "modifiedTime": 1706833662656,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!0TqFxhNcYnGim9aE"
+}

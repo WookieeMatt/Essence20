@@ -1,0 +1,29 @@
+{
+  "name": "11th Level Willpower Bonus",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.mlp_crb.Item.UVFsgco1AMzgZ595",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "9YqxRk9FoDMuVCFu",
+  "changes": [
+    {
+      "key": "system.defenses.willpower.bonus",
+      "mode": 2,
+      "value": "1"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!UVFsgco1AMzgZ595.9YqxRk9FoDMuVCFu"
+}

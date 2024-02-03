@@ -1,0 +1,29 @@
+{
+  "name": "Willpower Defense Bonus",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.mlp_crb.Item.KakotlRk6PO2CRqu",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "F7JcBZnmMBeyGzGq",
+  "changes": [
+    {
+      "key": "system.defenses.willpower.bonus",
+      "mode": 2,
+      "value": "1"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!KakotlRk6PO2CRqu.F7JcBZnmMBeyGzGq"
+}

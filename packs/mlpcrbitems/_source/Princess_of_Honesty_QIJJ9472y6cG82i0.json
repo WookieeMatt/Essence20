@@ -1,0 +1,36 @@
+{
+  "folder": "EssA3xKEG8i1FPxz",
+  "name": "Princess of Honesty",
+  "type": "perk",
+  "_id": "QIJJ9472y6cG82i0",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 79
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    "fyGLEBNXatGqQU50"
+  ],
+  "sort": 4400000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706825381436,
+    "modifiedTime": 1706830794493,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!QIJJ9472y6cG82i0"
+}

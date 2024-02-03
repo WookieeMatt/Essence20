@@ -1,0 +1,36 @@
+{
+  "name": "Princess of Honesty",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.mlp_crb.Item.QIJJ9472y6cG82i0",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "fyGLEBNXatGqQU50",
+  "changes": [
+    {
+      "key": "system.size",
+      "mode": 5,
+      "value": "large",
+      "priority": null
+    },
+    {
+      "key": "system.health.bonus",
+      "mode": 2,
+      "value": "3",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!rz7nBLl6QTQRt3eu.fyGLEBNXatGqQU50"
+}
