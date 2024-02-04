@@ -66,7 +66,7 @@ export class RollDialog {
         default: "normal",
         close: () => resolve({ cancelled: true }),
       };
-      
+
       new Dialog(data, null).render(true);
     });
   }
@@ -79,11 +79,11 @@ export class RollDialog {
   _processSkillRollOptions(form) {
     return {
       edge: form.snagEdge.value == 'edge',
-      shiftDown: parseInt(form.shiftDown.value),
-      shiftUp: parseInt(form.shiftUp.value),
+      shiftDown: form.shiftDown.value,
+      shiftUp: form.shiftUp.value,
       snag: form.snagEdge.value == 'snag',
       isSpecialized: form.isSpecialized.checked,
-      timesToRoll: parseInt(form.timesToRoll.value),
+      timesToRoll: form.timesToRoll.value,
     };
   }
 }
