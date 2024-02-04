@@ -21,7 +21,7 @@
       {{!-- Allegiance Points --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ContactAllegiancePoints'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.allegiancePoints" value="{{system.allegiancePoints}}" />
+      {{numberInput system.allegiancePoints name="system.allegiancePoints" min=0}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
