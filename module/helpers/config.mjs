@@ -545,6 +545,11 @@ E20.alterationTypes = {
 };
 preLocalize("alterationTypes");
 
+E20.rolePointOptions = {
+  pool: "E20.RolePointPool",
+
+};
+
 /************************************************
  * Spells                                       *
  ***********************************************/

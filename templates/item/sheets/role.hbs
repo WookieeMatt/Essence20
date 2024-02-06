@@ -283,6 +283,59 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     {{/ifEquals}}
 
+    {{!-- Role has Role Points --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.hasSkillDie'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="checkbox" name="system.skillDie.has" {{checked system.skillDie.has}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{#ifEquals system.skillDie.has true}}
+      {{!-- Skill Die Name --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieName'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.skillDie.name" value="{{system.skillDie.name}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieProgression'}}
+      {{#*inline "item-field-edit"}}
+      <a class="trait-selector" data-options="actorLevels" data-target="system.skillDie.levels"
+        title="{{localize 'E20.LevelSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
+      {{/inline}}
+
+      {{#*inline "item-field-inputs"}}
+      <div class="flex-group-right chip-section">
+      {{#each item.system.skillDie.levels as |name|}}
+        <span class="chip" name="chip.skillDie.levels.{{type}}">{{lookup @root.config.actorLevels name}}</span>
+      {{/each}}
+      </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/ifEquals}}
+
+    {{#ifEquals system.version 'powerRangers'}}
+      {{!-- Grid Power Progression --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.GridPowerProgression'}}
+      {{#*inline "item-field-edit"}}
+      <a class="trait-selector" data-options="actorLevels" data-target="system.gridPowerLevels"
+        title="{{localize 'E20.LevelSelector'}}">
+        <i class="fas fa-edit"></i>
+      </a>
+      {{/inline}}
+
+      {{#*inline "item-field-inputs"}}
+      <div class="flex-group-right chip-section">
+      {{#each item.system.gridPowerLevels as |name|}}
+        <span class="chip" name="chip.gridPowerLevels.{{type}}">{{lookup @root.config.actorLevels name}}</span>
+      {{/each}}
+      </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/ifEquals}}
+
     {{!-- General Perk --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkGeneralPlural'}}
     {{#*inline "item-field-edit"}}
