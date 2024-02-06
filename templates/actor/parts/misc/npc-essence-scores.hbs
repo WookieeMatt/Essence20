@@ -2,7 +2,7 @@
   {{#each system.essences as |score skill|}}
   <div class="flexcol">
     <label>{{lookup @root.config.essences skill}}</label>
-    <input class="centered-input" type="number" name="system.essences.{{skill}}" value="{{score}}" />
+    <input class="centered-input" type="number" name="system.essences.{{skill}}" value="{{score}}" min="0" step="1" />
   </div>
   {{/each}}
 </div>

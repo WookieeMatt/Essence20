@@ -2,25 +2,25 @@
   {{#if actor.system.canTransform}}
   <label>{{localize "E20.Energon"}}</label>
     <input class="centered-input no-lock" data-field="system.energon.normal.value" type="number"
-      name="system.energon.normal.value" value="{{system.energon.normal.value}}" />
+      name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
     /
     <input class="centered-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
       value="{{system.energon.normal.max}}" />
 
   <label>{{localize "E20.EnergonDark"}}</label>
     <input class="centered-input no-lock" data-field="system.energon.dark.value" type="number"
-      name="system.energon.dark.value" value="{{system.energon.dark.value}}" />
+      name="system.energon.dark.value" value="{{system.energon.dark.value}}" min="0" step="1" />
 
   <label>{{localize "E20.EnergonPrimal"}}</label>
     <input class="centered-input no-lock" data-field="system.energon.primal.value" type="number"
-      name="system.energon.primal.value" value="{{system.energon.primal.value}}" />
+      name="system.energon.primal.value" value="{{system.energon.primal.value}}" min="0" step="1" />
 
   <label>{{localize "E20.EnergonRed"}}</label>
     <input class="centered-input no-lock" data-field="system.energon.red.value" type="number"
-      name="system.energon.red.value" value="{{system.energon.red.value}}" />
+      name="system.energon.red.value" value="{{system.energon.red.value}}" min="0" step="1" />
 
   <label>{{localize "E20.EnergonSynthEn"}}</label>
     <input class="centered-input no-lock" data-field="system.energon.synthEn.value" type="number"
-      name="system.energon.synthEn.value" value="{{system.energon.synthEn.value}}" />
+      name="system.energon.synthEn.value" value="{{system.energon.synthEn.value}}" min="0" step="1" />
   {{/if}}
 </div>

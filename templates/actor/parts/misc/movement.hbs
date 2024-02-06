@@ -11,10 +11,10 @@
           <input class="centered-input" style="background: transparent;" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
         {{else if @root.system.isTransformed}}
           {{#ifEquals @root.actor.type "npc"}}
-            <input class="centered-input" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" />
+            <input class="centered-input" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />
           {{/ifEquals}}
         {{else}}
-          <input class="centered-input" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" />
+          <input class="centered-input" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" min="0" step="5" />
         {{/if}}
       {{/with}}
     </div>

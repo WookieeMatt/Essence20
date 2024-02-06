@@ -19,7 +19,7 @@
       {{selectOptions @root.config.skillShifts selected=fields.shift}}
     </select>
     <span for="system.skills.{{skill}}.modifier">+</span>
-    <input class="one-digit-input" type="number" name="system.skills.{{skill}}.modifier" value="{{fields.modifier}}"/>
+    <input class="one-digit-input" type="number" name="system.skills.{{skill}}.modifier" value="{{fields.modifier}}" min="0" step="1" />
 
     {{#ifEquals @root.actor.type 'npc'}}
     <span class="specialized-label">{{localize 'E20.RollIsSpecialized'}}:</span>
