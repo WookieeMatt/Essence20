@@ -494,9 +494,9 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   if (role.system.powers.personal.starting) {
     const totalChange = await roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
     const newPersonalPowerMax =
-        parseInt(actor.system.powers.personal.max)
-      + newLevel ? 0 : parseInt(role.system.powers.personal.starting)
-      + parseInt(role.system.powers.personal.increase * totalChange);
+        actor.system.powers.personal.max
+      + newLevel ? 0 : role.system.powers.personal.starting
+      + role.system.powers.personal.increase * totalChange;
 
     await actor.update({
       "system.powers.personal.max": newPersonalPowerMax,

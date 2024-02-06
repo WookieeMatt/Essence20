@@ -112,14 +112,14 @@
           {{!-- Personal Power Starting Capacity --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalStartingCapacity'}}
           {{#*inline "item-field-inputs"}}
-          <input type="text" name="system.powers.personal.starting" value="{{system.powers.personal.starting}}" />
+          {{numberInput system.powers.personal.starting name="system.powers.personal.starting" min=0 step=1}}
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
           {{!-- Personal Power Increase Amount --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalIncrease'}}
           {{#*inline "item-field-inputs"}}
-          <input type="text" name="system.powers.personal.increase" value="{{system.powers.personal.increase}}" />
+          {{numberInput system.powers.personal.increase name="system.powers.personal.increase" min=0 step=1}}
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
