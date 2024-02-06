@@ -63,21 +63,21 @@
       {{!-- Base Aerial Movement--}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseAerialMovement'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.baseAerialMovement name="system.baseAerialMovement" min=0}}
+      {{numberInput system.baseAerialMovement name="system.baseAerialMovement" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Base Aquatic Movement --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseAquaticMovement'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.baseAquaticMovement name="system.baseAquaticMovement" min=0}}
+      {{numberInput system.baseAquaticMovement name="system.baseAquaticMovement" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Base Aquatic Movement --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseGroundMovement'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.baseGroundMovement name="system.baseGroundMovement" min=0}}
+      {{numberInput system.baseGroundMovement name="system.baseGroundMovement" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
