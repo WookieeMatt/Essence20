@@ -21,9 +21,9 @@
       {{!-- Uses --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ClassFeatureUses'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.uses.value name="system.uses.value" min=0}}
+      {{numberInput system.uses.value name="system.uses.value" min=0 step=1}}
       <div class="min-max-divider">/</div>
-      {{numberInput system.uses.max name="system.uses.max" min=0}}
+      {{numberInput system.uses.max name="system.uses.max" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     </div>

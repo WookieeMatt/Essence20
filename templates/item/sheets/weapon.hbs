@@ -63,7 +63,7 @@
       {{!-- Charges --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponUsesPerScene'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.usesPerScene name="system.usesPerScene" min=0}}
+      {{numberInput system.usesPerScene name="system.usesPerScene" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

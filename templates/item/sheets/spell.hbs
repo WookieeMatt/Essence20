@@ -46,7 +46,7 @@
       {{!-- Cost --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Cost'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.cost name="system.cost" min=0}}
+      {{numberInput system.cost name="system.cost" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
