@@ -34,7 +34,7 @@
       {{!-- Selection Limit --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.selectionLimit" value="{{system.selectionLimit}}" />
+      {{numberInput system.selectionLimit name="system.selectionLimit" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
