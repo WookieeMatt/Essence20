@@ -20,7 +20,7 @@
       {{!-- Starting Health --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginStartingHealth'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" class="flex-group-right" name="system.startingHealth" value="{{system.startingHealth}}" />
+      <input type="number" class="flex-group-right" name="system.startingHealth" value="{{system.startingHealth}}" min="0" step="1"/>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

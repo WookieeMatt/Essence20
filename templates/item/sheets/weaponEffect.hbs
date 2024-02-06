@@ -60,7 +60,7 @@
       {{!-- Targets --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTargets'}}
       {{#*inline "item-field-inputs"}}
-      <input class="item-field-inputs" type="number" name="system.numTargets" value="{{system.numTargets}}" />
+      <input class="item-field-inputs" type="number" name="system.numTargets" value="{{system.numTargets}}" min="0" step="1" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -89,7 +89,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRangeReachMultiplier'}}
       {{#*inline "item-field-inputs"}}
       <input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"
-        placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" />
+        placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" min="0" step="1" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -97,11 +97,11 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRange'}}
       {{#*inline "item-field-inputs"}}
       <input type="number" name="system.range.value" value="{{system.range.value}}"
-        placeholder="{{localize 'E20.WeaponRangeValue'}}" />
+        placeholder="{{localize 'E20.WeaponRangeValue'}}" min="0" step="1" />
       <input type="number" name="system.range.long" value="{{system.range.long}}"
-        placeholder="{{localize 'E20.WeaponRangeLong'}}" />
+        placeholder="{{localize 'E20.WeaponRangeLong'}}" min="0" step="1" />
       <input type="number" name="system.range.min" value="{{system.range.min}}"
-        placeholder="{{localize 'E20.WeaponRangeMin'}}" />
+        placeholder="{{localize 'E20.WeaponRangeMin'}}" min="0" step="1" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     </div>
