@@ -899,6 +899,7 @@
         "has": false,
         "increase": 0,
         "levels": [],
+        "option": "",
         "name": "",
         "starting": 0
       },

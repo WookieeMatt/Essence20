@@ -547,7 +547,9 @@ preLocalize("alterationTypes");
 
 E20.rolePointOptions = {
   pool: "E20.RolePointPool",
-
+  activation: "E20.RolePointActivation",
+  number: "E20.RolePointsNumber",
+  secondary: "E20.RolePointsSecondary",
 };
 
 /************************************************

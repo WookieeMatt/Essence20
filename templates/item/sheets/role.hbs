@@ -264,6 +264,15 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+      {{!-- Role Point Options--}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointOptions'}}
+        {{#*inline "item-field-inputs"}}
+          <select class="item-field-inputs" name="system.rolePoint.option" id="system.rolePoint.option">
+            {{selectOptions @root.config.rolePointOptions }}
+          </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
       {{!-- Role Points Increase Levels --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
       {{#*inline "item-field-edit"}}
