@@ -22,7 +22,7 @@
 </div>
 <div>
   <label for="conditioning" class="resource-label">{{ localize 'E20.ActorConditioning' }}</label>
-  <input type="number" name="system.conditioning" value="{{system.conditioning}}" />
+  {{numberInput system.conditioning name="system.conditioning" min=0 step=1}}
 </div>
 <div class="pr-header-color flex-group-center">
   <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
