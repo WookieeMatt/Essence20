@@ -22,7 +22,7 @@
       {{/inline}}
 
       {{#*inline "item-label" item}}
-        <div class="flexrow" style="align-items: center;">
+        <div class="flexrow" style="align-items: center; gap: 2px;">
           <div style="flex-grow: 1.5;">
             {{item.name}}
           </div>
@@ -34,9 +34,7 @@
             {{/select}}
           </select>
 
-          {{#ifEquals "npc" @root.actor.type}}
-            {{!-- NPCs don't have enough room for weapon effect icons --}}
-          {{else}}
+          <div class="flexrow" style="flex-wrap: nowrap; gap: 2px;">
             <div style="text-align: center;" title="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
               {{item.numTargets}} <i class="fas fa-bullseye"></i>
             </div>
@@ -62,7 +60,7 @@
                 <i class="fas fa-person-harassing"></i>
               {{/ifEquals}}
             </div>
-          {{/ifEquals}}
+          </div>
         </div>
       {{/inline}}
 
