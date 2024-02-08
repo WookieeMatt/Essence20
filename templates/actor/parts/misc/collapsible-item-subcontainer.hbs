@@ -1,6 +1,6 @@
 <div class="collapsible-item-container collapsible-item-subcontainer">
   {{!-- Header with + and v buttons --}}
-  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType parentItem=parentItem}}
+  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType parentId=parentItem._id}}
   <ol class="items-list" style="border-color: {{system.color}};">
     {{#each items as |item|}}
     {{#ifEquals item.type ../dataType}}

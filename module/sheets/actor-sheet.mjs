@@ -1,5 +1,11 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { deleteAttachmentsForItem, checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
+import {
+  deleteAttachmentsForItem,
+  checkIsLocked,
+  createItemCopies,
+  parseId,
+  setEntryAndAddItem
+} from "../helpers/utils.mjs";
 import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
@@ -602,8 +608,9 @@ export class Essence20ActorSheet extends ActorSheet {
     delete itemData.data["type"];
 
     // Set the parent item type for nested items
+    let parentItem = null;
     if (data.parentId) {
-      const parentItem = this.actor.items.get(data.parentId);
+      parentItem = this.actor.items.get(data.parentId);
       itemData.data.type = parentItem.type;
     }
 
@@ -611,13 +618,11 @@ export class Essence20ActorSheet extends ActorSheet {
     const newItem = await Item.create(itemData, { parent: this.actor });
 
     // Update parent item's ID list for nested items
-    if (data.parentId) {
-      const parentItem = this.actor.items.get(data.parentId);
-
+    if (parentItem) {
       if (newItem.type == 'upgrade' && ['armor', 'weapon'].includes(parentItem.type)) {
-        this._addChildItemToParent(parentItem, newItem, "upgradeIds");
+        setEntryAndAddItem(newItem, parentItem);
       } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
-        this._addChildItemToParent(parentItem, newItem, "weaponEffectIds");
+        setEntryAndAddItem(newItem, parentItem);
       }
     }
   }
