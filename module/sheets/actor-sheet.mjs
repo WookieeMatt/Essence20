@@ -348,12 +348,7 @@ export class Essence20ActorSheet extends ActorSheet {
     super.activateListeners(html);
 
     // Render the item sheet for viewing/editing prior to the editable check.
-    html.find('.item-edit').click(ev => {
-      const li = $(ev.currentTarget).closest(".item");
-      const itemId = li.data("itemId");
-      const item = this.actor.items.get(itemId) || game.items.get(itemId);
-      item.sheet.render(true);
-    });
+    html.find('.item-edit').click(this._onItemEdit.bind(this));
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
@@ -633,6 +628,29 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
         setEntryAndAddItem(newItem, parentItem);
       }
+    }
+  }
+
+  /**
+   * Handle editing an owned Item for the actor
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _onItemEdit(event) {
+    event.preventDefault();
+    const li = $(event.currentTarget).closest(".item");
+    let item = null;
+
+    const itemId = li.data("itemId");
+    if (itemId) {
+      item = this.actor.items.get(itemId) || game.items.get(itemId);
+    } else {
+      const itemUuid = li.data("itemUuid");
+      item = await fromUuid(itemUuid);
+    }
+
+    if (item) {
+      item.sheet.render(true);
     }
   }
 
