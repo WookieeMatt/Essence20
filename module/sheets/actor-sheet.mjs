@@ -557,9 +557,22 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (rollType == 'initiative') {
       this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
-      let keyId = element.closest('.item').dataset.itemKey;
-      const itemId = element.closest('.item').dataset.parentId || element.closest('.item').dataset.itemId;
-      const item = this.actor.items.get(itemId);
+      let item = null;
+
+      const childKey = element.closest('.item').dataset.itemKey || null;
+      if (childKey) {
+        if (rollType == 'weapon') {
+          // Special case for weapon effect attacks where we want the parent weapon as the item
+          const parentId = element.closest('.item').dataset.parentId;
+          item = this.actor.items.get(parentId);
+        } else {
+          const childUuid = element.closest('.item').dataset.itemUuid;
+          item = await fromUuid(childUuid);
+        }
+      } else {
+        const itemId = element.closest('.item').dataset.itemId
+        item = this.actor.items.get(itemId);
+      }
 
       if (rollType == 'power') {
         await this._pwHandler.powerCost(item);
@@ -569,11 +582,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       if (item) {
-        if (keyId) {
-          return item.roll(dataset, keyId);
-        } else {
-          return item.roll(dataset);
-        }
+        return item.roll(dataset, childKey);
       }
     }
   }
