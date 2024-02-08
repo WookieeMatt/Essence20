@@ -4,7 +4,7 @@ import {
   checkIsLocked,
   createItemCopies,
   parseId,
-  setEntryAndAddItem
+  setEntryAndAddItem,
 } from "../helpers/utils.mjs";
 import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
