@@ -570,7 +570,7 @@ export class Essence20ActorSheet extends ActorSheet {
           item = await fromUuid(childUuid);
         }
       } else {
-        const itemId = element.closest('.item').dataset.itemId
+        const itemId = element.closest('.item').dataset.itemId;
         item = this.actor.items.get(itemId);
       }
 
