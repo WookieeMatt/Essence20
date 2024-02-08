@@ -336,10 +336,11 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
 */
 export function setEntryAndAddItem(droppedItem, targetItem) {
   const entry = {
-    uuid: droppedItem.uuid,
+    id: droppedItem._id,
     img: droppedItem.img,
     name: droppedItem.name,
     type: droppedItem.type,
+    uuid: droppedItem.uuid,
   };
 
   switch (targetItem.type) {

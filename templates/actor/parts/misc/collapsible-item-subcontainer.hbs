@@ -4,7 +4,7 @@
   <ol class="items-list" style="border-color: {{system.color}};">
     {{#each items as |item|}}
     {{#ifEquals item.type ../dataType}}
-      <li class="item accordion-wrapper" data-item-key="{{@key}}" data-item-id="{{item._id}}" data-parent-id="{{../parentItem._id}}">
+      <li class="item accordion-wrapper" data-item-key="{{@key}}" data-item-id="{{item.id}}" data-parent-id="{{../parentItem._id}}">
         {{!-- Item label and buttons --}}
 
         {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item }}
