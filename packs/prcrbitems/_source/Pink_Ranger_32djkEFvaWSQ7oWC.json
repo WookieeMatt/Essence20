@@ -93,67 +93,16 @@
         "level": 20
       }
     },
+    "adjustments": {
+      "health": []
+    },
     "armors": {
       "qualified": [],
       "trained": [
         "light"
       ]
     },
-    "essencelevels": {
-      "smarts": [],
-      "social": [],
-      "speed": [],
-      "strength": []
-    },
-    "perkLevels": {
-      "general": [
-        "level4",
-        "level8",
-        "level12",
-        "level16",
-        "level19"
-      ]
-    },
-    "powers": {
-      "personal": {
-        "starting": "2",
-        "increase": "2",
-        "levels": [
-          "level4",
-          "level7",
-          "level10",
-          "level13",
-          "level16",
-          "level19"
-        ]
-      }
-    },
-    "skills": [
-      "finesse",
-      "targeting",
-      "persuasion"
-    ],
-    "version": "powerRangers",
-    "weapons": {
-      "qualified": [],
-      "trained": []
-    },
     "essenceLevels": {
-      "strength": [
-        "level4",
-        "level8",
-        "level12"
-      ],
-      "speed": [
-        "level1",
-        "level1optional",
-        "level5",
-        "level9",
-        "level13",
-        "level16",
-        "level18",
-        "level20"
-      ],
       "smarts": [
         "level3",
         "level7",
@@ -168,7 +117,87 @@
         "level14",
         "level17",
         "level19"
+      ],
+      "speed": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level12"
       ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level4",
+          "level7",
+          "level10",
+          "level13",
+          "level16",
+          "level19"
+        ],
+        "starting": 2
+      }
+    },
+    "rolePoints": {
+      "has": true,
+      "increase": 2,
+      "levels": [
+        "level4",
+        "level7",
+        "level10",
+        "level13",
+        "level16",
+        "level19"
+      ],
+      "option": "",
+      "name": "Volley Shots",
+      "starting": 2
+    },
+    "skills": [
+      "finesse",
+      "targeting",
+      "persuasion"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "skillDie": {
+      "has": false
+    },
+    "rolePoint": {
+      "option": "activation"
     }
   },
   "effects": [],
@@ -183,7 +212,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1705030310769,
-    "modifiedTime": 1705030703377,
+    "modifiedTime": 1707436920327,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!32djkEFvaWSQ7oWC"

@@ -101,6 +101,9 @@
         "level": 20
       }
     },
+    "adjustments": {
+      "health": []
+    },
     "armors": {
       "qualified": [],
       "trained": [
@@ -108,61 +111,7 @@
         "medium"
       ]
     },
-    "essencelevels": {
-      "smarts": [],
-      "social": [],
-      "speed": [],
-      "strength": []
-    },
-    "perkLevels": {
-      "general": [
-        "level4",
-        "level8",
-        "level12",
-        "level16",
-        "level19"
-      ]
-    },
-    "skills": [
-      "finesse",
-      "targeting",
-      "science",
-      "technology"
-    ],
-    "version": "powerRangers",
-    "weapons": {
-      "qualified": [],
-      "trained": []
-    },
-    "powers": {
-      "personal": {
-        "starting": "2",
-        "increase": "2",
-        "levels": [
-          "level4",
-          "level7",
-          "level10",
-          "level13",
-          "level16",
-          "level19"
-        ]
-      }
-    },
     "essenceLevels": {
-      "strength": [
-        "level4",
-        "level8",
-        "level12"
-      ],
-      "speed": [
-        "level1",
-        "level2",
-        "level6",
-        "level10",
-        "level14",
-        "level17",
-        "level19"
-      ],
       "smarts": [
         "level1",
         "level1optional",
@@ -178,7 +127,87 @@
         "level7",
         "level11",
         "level15"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level12"
       ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level4",
+          "level7",
+          "level10",
+          "level13",
+          "level16",
+          "level19"
+        ],
+        "starting": 2
+      }
+    },
+    "rolePoints": {
+      "has": true,
+      "increase": 2,
+      "levels": [
+        "level4",
+        "level7",
+        "level10",
+        "level13",
+        "level16",
+        "level19"
+      ],
+      "option": "",
+      "name": "Idea Points",
+      "starting": 2
+    },
+    "skills": [
+      "finesse",
+      "targeting",
+      "science",
+      "technology"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "skillDie": {
+      "has": false
+    },
+    "rolePoint": {
+      "option": "pool"
     }
   },
   "effects": [],
@@ -193,7 +222,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1705029382512,
-    "modifiedTime": 1705029859367,
+    "modifiedTime": 1707432196991,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!gwDr55UlxeDFHpQk"

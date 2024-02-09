@@ -85,6 +85,9 @@
         "level": 20
       }
     },
+    "adjustments": {
+      "health": []
+    },
     "armors": {
       "qualified": [],
       "trained": [
@@ -92,12 +95,43 @@
         "medium"
       ]
     },
-    "essencelevels": {
-      "smarts": [],
-      "social": [],
-      "speed": [],
-      "strength": []
+    "essenceLevels": {
+      "smarts": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "social": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "strength": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ]
     },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
     "perkLevels": {
       "general": [
         "level4",
@@ -109,8 +143,7 @@
     },
     "powers": {
       "personal": {
-        "starting": "2",
-        "increase": "1",
+        "increase": 1,
         "levels": [
           "level3",
           "level5",
@@ -121,8 +154,21 @@
           "level15",
           "level17",
           "level19"
-        ]
+        ],
+        "starting": 2
       }
+    },
+    "rolePoints": {
+      "has": true,
+      "increase": 1,
+      "levels": [
+        "level6",
+        "level11",
+        "level16"
+      ],
+      "option": "",
+      "name": "Solo Strike",
+      "starting": 1
     },
     "skills": [
       "conditioning",
@@ -135,37 +181,17 @@
       "qualified": [],
       "trained": []
     },
-    "essenceLevels": {
-      "strength": [
-        "level1",
-        "level1optional",
-        "level5",
-        "level9",
-        "level13",
-        "level16",
-        "level18",
-        "level20"
-      ],
-      "speed": [
-        "level1",
-        "level2",
-        "level6",
-        "level10",
-        "level14",
-        "level17",
-        "level19"
-      ],
-      "smarts": [
-        "level4",
-        "level8",
-        "level12"
-      ],
-      "social": [
-        "level3",
-        "level7",
-        "level11",
-        "level15"
-      ]
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "skillDie": {
+      "has": false
+    },
+    "rolePoint": {
+      "option": "activation"
     }
   },
   "effects": [],
@@ -180,7 +206,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1705029917210,
-    "modifiedTime": 1705030297582,
+    "modifiedTime": 1707432265925,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!8wqoVOAbJJ2vbKUy"

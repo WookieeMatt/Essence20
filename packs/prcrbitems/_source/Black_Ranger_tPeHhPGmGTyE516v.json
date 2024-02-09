@@ -77,6 +77,9 @@
         "level": 20
       }
     },
+    "adjustments": {
+      "health": []
+    },
     "armors": {
       "qualified": [],
       "trained": [
@@ -84,57 +87,7 @@
         "medium"
       ]
     },
-    "essencelevels": {
-      "smarts": [],
-      "social": [],
-      "speed": [],
-      "strength": []
-    },
-    "perkLevels": {
-      "general": [
-        "level4",
-        "level8",
-        "level12",
-        "level16",
-        "level19"
-      ]
-    },
-    "powers": {
-      "personal": {
-        "starting": "2",
-        "increase": "2",
-        "levels": [
-          "level5",
-          "level9",
-          "level13",
-          "level17"
-        ]
-      }
-    },
-    "skills": [
-      "might",
-      "performance"
-    ],
-    "version": "powerRangers",
-    "weapons": {
-      "qualified": [],
-      "trained": []
-    },
     "essenceLevels": {
-      "strength": [
-        "level1",
-        "level2",
-        "level6",
-        "level10",
-        "level14",
-        "level17",
-        "level19"
-      ],
-      "speed": [
-        "level4",
-        "level8",
-        "level12"
-      ],
       "smarts": [
         "level3",
         "level7",
@@ -150,7 +103,81 @@
         "level16",
         "level18",
         "level20"
+      ],
+      "speed": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "strength": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
       ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ],
+        "starting": 2
+      }
+    },
+    "rolePoints": {
+      "has": true,
+      "increase": 2,
+      "levels": [
+        "level5",
+        "level9",
+        "level13",
+        "level17"
+      ],
+      "option": "",
+      "name": "Quips & Speeches",
+      "starting": 2
+    },
+    "skills": [
+      "might",
+      "performance"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "skillDie": {
+      "has": false
+    },
+    "rolePoint": {
+      "option": "pool"
     }
   },
   "effects": [],
@@ -165,7 +192,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1704807677775,
-    "modifiedTime": 1705013876927,
+    "modifiedTime": 1707431784440,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!tPeHhPGmGTyE516v"

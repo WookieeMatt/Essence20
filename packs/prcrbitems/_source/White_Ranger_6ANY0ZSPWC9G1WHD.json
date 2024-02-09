@@ -85,6 +85,9 @@
         "level": 20
       }
     },
+    "adjustments": {
+      "health": []
+    },
     "armors": {
       "qualified": [],
       "trained": [
@@ -92,63 +95,7 @@
         "medium"
       ]
     },
-    "essencelevels": {
-      "smarts": [],
-      "social": [],
-      "speed": [],
-      "strength": []
-    },
-    "perkLevels": {
-      "general": [
-        "level4",
-        "level8",
-        "level12",
-        "level16",
-        "level19"
-      ]
-    },
-    "powers": {
-      "personal": {
-        "starting": "2",
-        "increase": "1",
-        "levels": [
-          "level3",
-          "level5",
-          "level7",
-          "level9",
-          "level11",
-          "level13",
-          "level15",
-          "level17",
-          "level19"
-        ]
-      }
-    },
-    "skills": [
-      "might",
-      "culture"
-    ],
-    "version": "powerRangers",
-    "weapons": {
-      "qualified": [],
-      "trained": []
-    },
     "essenceLevels": {
-      "strength": [
-        "level1",
-        "level1optional",
-        "level5",
-        "level9",
-        "level13",
-        "level16",
-        "level18",
-        "level20"
-      ],
-      "speed": [
-        "level4",
-        "level8",
-        "level12"
-      ],
       "smarts": [
         "level1",
         "level2",
@@ -163,6 +110,88 @@
         "level7",
         "level11",
         "level15"
+      ],
+      "speed": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "strength": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 1,
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ],
+        "starting": 2
+      }
+    },
+    "rolePoints": {
+      "has": false,
+      "increase": 0,
+      "levels": [],
+      "option": "",
+      "name": "",
+      "starting": 0
+    },
+    "skills": [
+      "might",
+      "culture"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "skillDie": {
+      "has": true,
+      "name": "Grid Relic",
+      "levels": [
+        "level1",
+        "level4",
+        "level7",
+        "level10",
+        "level13",
+        "level16",
+        "level19"
       ]
     }
   },
@@ -178,7 +207,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1705032732046,
-    "modifiedTime": 1705032977760,
+    "modifiedTime": 1707437664200,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!6ANY0ZSPWC9G1WHD"

@@ -93,72 +93,16 @@
         "level": 20
       }
     },
+    "adjustments": {
+      "health": []
+    },
     "armors": {
       "qualified": [],
       "trained": [
         "light"
       ]
     },
-    "essencelevels": {
-      "smarts": [],
-      "social": [],
-      "speed": [],
-      "strength": []
-    },
-    "perkLevels": {
-      "general": [
-        "level4",
-        "level8",
-        "level12",
-        "level16",
-        "level19"
-      ]
-    },
-    "powers": {
-      "personal": {
-        "starting": "2",
-        "increase": "1",
-        "levels": [
-          "level3",
-          "level5",
-          "level7",
-          "level9",
-          "level11",
-          "level13",
-          "level15",
-          "level17",
-          "level19"
-        ]
-      }
-    },
-    "skills": [
-      "initiative",
-      "acrobatics",
-      "finesse",
-      "alertness"
-    ],
-    "version": "powerRangers",
-    "weapons": {
-      "qualified": [],
-      "trained": []
-    },
     "essenceLevels": {
-      "strength": [
-        "level3",
-        "level7",
-        "level11",
-        "level15"
-      ],
-      "speed": [
-        "level1",
-        "level1optional",
-        "level5",
-        "level9",
-        "level13",
-        "level16",
-        "level18",
-        "level20"
-      ],
       "smarts": [
         "level1",
         "level2",
@@ -172,6 +116,89 @@
         "level4",
         "level8",
         "level12"
+      ],
+      "speed": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "strength": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 1,
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ],
+        "starting": 2
+      }
+    },
+    "rolePoints": {
+      "has": false,
+      "increase": 0,
+      "levels": [],
+      "option": "",
+      "name": "",
+      "starting": 0
+    },
+    "skills": [
+      "initiative",
+      "acrobatics",
+      "finesse",
+      "alertness"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "essencelevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "skillDie": {
+      "has": true,
+      "name": "Follow-Up Die",
+      "levels": [
+        "level1",
+        "level5",
+        "level9",
+        "level13",
+        "level17"
       ]
     }
   },
@@ -187,7 +214,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1705032363054,
-    "modifiedTime": 1705032702428,
+    "modifiedTime": 1707437607820,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!xWLuQ6oYU3thrTA4"
