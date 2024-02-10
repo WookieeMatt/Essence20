@@ -1,6 +1,6 @@
-export function makeZeroedInt() {
+export function makeInt(init=0) {
   return new fields.NumberField({
-    initial: 0,
+    initial: init,
     integer: true,
   });
 }

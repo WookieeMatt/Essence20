@@ -3,18 +3,18 @@ import { makeZeroedInt } from "../generic-makers.mjs";
 
 export function makeEssenceShift() {
   return new fields.SchemaField({
-    shiftUp: makeZeroedInt(),
-    shiftDown: makeZeroedInt(),
+    shiftUp: makeInt(),
+    shiftDown: makeInt(),
   });
 }
 
 export function makeMovementFields() {
   return new fields.SchemaField({
-    altMode: makeZeroedInt(),
-    base: makeZeroedInt(),
-    bonus: makeZeroedInt(),
-    morphed: makeZeroedInt(),
-    total: makeZeroedInt(),
+    altMode: makeInt(),
+    base: makeInt(),
+    bonus: makeInt(),
+    morphed: makeInt(),
+    total: makeInt(),
   });
 }
 
@@ -28,10 +28,10 @@ export function makeSkillFields() {
     }),
     edge: new fields.BooleanField({initial: false}),
     isSpecialized: new fields.BooleanField({initial: false}),
-    modifier: makeZeroedInt(),
+    modifier: makeInt(),
     shift: new fields.StringField({initial: 'd20'}),
-    shiftDown: makeZeroedInt(),
-    shiftUp: makeZeroedInt(),
+    shiftDown: makeInt(),
+    shiftUp: makeInt(),
     snag: new fields.BooleanField({initial: false}),
   });
 }
@@ -49,24 +49,24 @@ class CommonActorData extends foundry.abstract.DataModel {
       canSpellcast: new fields.BooleanField({initial: false}),
       canTransform: new fields.BooleanField({initial: false}),
       color: new fields.StringField({initial: '#b5b1b1'}),
-      conditioning: makeZeroedInt(),
+      conditioning: makeInt(),
       description: new fields.StringField({initial: ''}), // Idt we need this
       energon: new fields.SchemaField({
         dark: new fields.SchemaField({
-          value: makeZeroedInt(),
+          value: makeInt(),
         }),
         normal: new fields.SchemaField({
-          max: makeZeroedInt(),
-          value: makeZeroedInt(),
+          max: makeInt(),
+          value: makeInt(),
         }),
-        primal: makeZeroedInt(),
-        red: makeZeroedInt(),
-        synthEn: makeZeroedInt(),
+        primal: makeInt(),
+        red: makeInt(),
+        synthEn: makeInt(),
         essenceRanks: new fields.SchemaField({
-          smarts: makeZeroedInt(),
-          social: makeZeroedInt(),
-          speed: makeZeroedInt(),
-          strength: makeZeroedInt(),
+          smarts: makeInt(),
+          social: makeInt(),
+          speed: makeInt(),
+          strength: makeInt(),
         }),
         essenceShifts: new fields.SchemaField({
           any: makeEssenceShift(),
@@ -78,19 +78,19 @@ class CommonActorData extends foundry.abstract.DataModel {
       }),
       focusEssence: new fields.StringField({initial: ''}),
       health: new fields.SchemaField({
-        bonus: makeZeroedInt(),
-        max: makeZeroedInt(),
-        origin: makeZeroedInt(),
-        value: makeZeroedInt(),
+        bonus: makeInt(),
+        max: makeInt(),
+        origin: makeInt(),
+        value: makeInt(),
       }),
       initiative: new fields.SchemaField({
         edge: new fields.BooleanField({initial: false}),
         formula: new fields.StringField({initial: '2d20kl + 0'}),
-        modifier: makeZeroedInt(),
+        modifier: makeInt(),
         snag: new fields.BooleanField({initial: false}),
         shift: new fields.StringField({initial: 'd20'}),
-        shiftDown: makeZeroedInt(),
-        shiftUp: makeZeroedInt(),
+        shiftDown: makeInt(),
+        shiftUp: makeInt(),
       }),
       isLocked: new fields.BooleanField({initial: false}),
       isMorphed: new fields.BooleanField({initial: false}),
@@ -103,13 +103,13 @@ class CommonActorData extends foundry.abstract.DataModel {
       }),
       powers: new fields.SchemaField({
         personal: new fields.SchemaField({
-          max: makeZeroedInt(),
-          value: makeZeroedInt(),
+          max: makeInt(),
+          value: makeInt(),
         }),
         sorcerous: new fields.SchemaField({
-          levelTaken: makeZeroedInt(),
-          max: makeZeroedInt(),
-          value: makeZeroedInt(),
+          levelTaken: makeInt(),
+          max: makeInt(),
+          value: makeInt(),
         }),
       }),
       size: new fields.StringField({
@@ -139,9 +139,9 @@ class CommonActorData extends foundry.abstract.DataModel {
         technology: makeSkillFields(),
       }),
       stun: new fields.SchemaField({
-        max: makeZeroedInt(),
-        min: makeZeroedInt(),
-        value: makeZeroedInt(),
+        max: makeInt(),
+        min: makeInt(),
+        value: makeInt(),
       }),
     };
   }
