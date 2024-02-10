@@ -1,5 +1,5 @@
 import { E20 } from "../../helpers/config.mjs";
-import { makeZeroedInt } from "../generic-makers.mjs";
+import { makeInt } from "../generic-makers.mjs";
 
 export function makeEssenceShift() {
   return new fields.SchemaField({
