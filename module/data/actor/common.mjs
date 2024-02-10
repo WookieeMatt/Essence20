@@ -1,11 +1,5 @@
 import { E20 } from "../../helpers/config.mjs";
-
-export function makeZeroedInt() {
-  return new fields.NumberField({
-    initial: 0,
-    integer: true,
-  });
-}
+import { makeZeroedInt } from "../generic-makers.mjs";
 
 export function makeEssenceShift() {
   return new fields.SchemaField({
