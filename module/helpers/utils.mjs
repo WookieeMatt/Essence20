@@ -491,10 +491,20 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     });
   }
 
+  if (role.system.rolePoints.has) {
+    if (role.system.rolePoints.option == 'pool') {
+      const totalChange = await roleValueChange(actor.system.level, role.system.rolePoints.levels, previousLevel)
+      const newRolePointMax =
+        parseInt(actor.system.rolePoints.max)
+        + newLevel ? 0 : parseInt(role.system.rolePoints.starting)
+        + parseInt(role.system.rolePoints.increase * totalChange);
+    }
+  }
+
   if (role.system.powers.personal.starting) {
     const totalChange = await roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
     const newPersonalPowerMax =
-        parseInt(actor.system.powers.personal.max)
+      parseInt(actor.system.powers.personal.max)
       + newLevel ? 0 : parseInt(role.system.powers.personal.starting)
       + parseInt(role.system.powers.personal.increase * totalChange);
 
