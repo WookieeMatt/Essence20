@@ -3,14 +3,12 @@ import { makeInt } from "../generic-makers.mjs";
 
 export function makeDefensesFields(name, essence) {
   return new fields.SchemaField({
-    toughness: new fields.SchemaField({
-      armor: makeInt(),
-      base: makeInt(10),
-      bonus: makeInt(),
-      essence: new fields.StringField({initial: essence}),
-      morphed: makeInt(),
-      name: new fields.StringField({initial: name}),
-    }),
+    armor: makeInt(),
+    base: makeInt(10),
+    bonus: makeInt(),
+    essence: new fields.StringField({initial: essence}),
+    morphed: makeInt(),
+    name: new fields.StringField({initial: name}),
   });
 }
 
