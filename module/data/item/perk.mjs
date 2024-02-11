@@ -2,6 +2,7 @@ import { item } from './item';
 import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
 import { E20 } from "../../../helpers/config.mjs";
+import { makeInt } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
