@@ -2,6 +2,8 @@ import { item } from './item';
 import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
 
+const fields = foundry.data.fields;
+
 class InfluenceItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
