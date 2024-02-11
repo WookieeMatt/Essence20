@@ -1,5 +1,5 @@
 import { E20 } from "../../../helpers/config.mjs";
-import { makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -23,27 +23,27 @@ function makeMovementFields() {
 function makeSkillFields() {
   return new fields.SchemaField({
     essences: new fields.SchemaField({
-      smarts: new fields.BooleanField({initial: false}),
-      social: new fields.BooleanField({initial: false}),
-      speed: new fields.BooleanField({initial: false}),
-      strength: new fields.BooleanField({initial: false}),
+      smarts: makeBool(false),
+      social: makeBool(false),
+      speed: makeBool(false),
+      strength: makeBool(false),
     }),
-    edge: new fields.BooleanField({initial: false}),
-    isSpecialized: new fields.BooleanField({initial: false}),
+    edge: makeBool(false),
+    isSpecialized: makeBool(false),
     modifier: makeInt(0),
     shift: makeStrWithChoices('d20', E20.skillRollableShifts),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
-    snag: new fields.BooleanField({initial: false}),
+    snag: makeBool(false),
   });
 }
 
 export const common = () => ({
   altModeName: makeStr(''),
   altModeSize: makeStrWithChoices('common', E20.actorSizes),
-  canMorph: new fields.BooleanField({initial: false}),
-  canSpellcast: new fields.BooleanField({initial: false}),
-  canTransform: new fields.BooleanField({initial: false}),
+  canMorph: makeBool(false),
+  canSpellcast: makeBool(false),
+  canTransform: makeBool(false),
   color: new fields.ColorField({initial: '#b5b1b1'}),
   conditioning: makeInt(0),
   description: makeStr(''), // Idt we need this
@@ -80,17 +80,17 @@ export const common = () => ({
     value: makeInt(0),
   }),
   initiative: new fields.SchemaField({
-    edge: new fields.BooleanField({initial: false}),
+    edge: makeBool(false),
     formula: makeStr('2d20kl + 0'),
     modifier: makeInt(0),
-    snag: new fields.BooleanField({initial: false}),
+    snag: makeBool(false),
     shift: makeStrWithChoices('d20', E20.initiativeShiftList),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
   }),
-  isLocked: new fields.BooleanField({initial: false}),
-  isMorphed: new fields.BooleanField({initial: false}),
-  isTransformed: new fields.BooleanField({initial: false}),
+  isLocked: makeBool(false),
+  isMorphed: makeBool(false),
+  isTransformed: makeBool(false),
   movement: new fields.SchemaField({
     aerial: makeMovementFields(),
     climb: makeMovementFields(),

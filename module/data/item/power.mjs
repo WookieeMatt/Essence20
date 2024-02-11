@@ -1,7 +1,7 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
 import { E20 } from "../../../helpers/config.mjs";
-import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -11,9 +11,9 @@ class PowerItemData extends foundry.abstract.DataModel {
       ...item(),
       ...itemDescription(),
       actionType: makeStrWithChoices('free', E20.actionTypes),
-      canActivate: new fields.BooleanField({initial: false}),
+      canActivate: makeBool(false),
       classFeatureId: makeStr(null),
-      hasVariableCost: new fields.BooleanField({initial: false}),
+      hasVariableCost: makeBool(false),
       maxPowerCost: new fields.NumberField({
         initial: null,
         integer: true,

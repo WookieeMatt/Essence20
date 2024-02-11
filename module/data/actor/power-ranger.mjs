@@ -1,8 +1,7 @@
 import { common } from './common';
 import { creature } from './creature';
 import { character } from './character';
-
-const fields = foundry.data.fields;
+import { makeBool } from "../../generic-makers.mjs";
 
 class PowerRangerActorData extends foundry.abstract.DataModel {
   static defineSchema() {
@@ -10,7 +9,7 @@ class PowerRangerActorData extends foundry.abstract.DataModel {
       ...character(),
       ...common(),
       ...creature(),
-      canMorph: new fields.BooleanField({initial: false}),
+      canMorph: makeBool(false),
     };
   }
 }

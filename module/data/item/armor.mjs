@@ -1,6 +1,6 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
-import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 import { parentItem } from './parentItem';
 
 const fields = foundry.data.fields;
@@ -15,7 +15,7 @@ class ArmorItemData extends foundry.abstract.DataModel {
       bonusEvasion: makeInt(0),
       bonusToughness: makeInt(0),
       classification: makeStrWithChoices('light', E20.armorClassifications),
-      equipped: new fields.BooleanField({initial: false}),
+      equipped: makeBool(false),
       traits: new fields.ArrayField(new fields.StringField()),
       upgradeTraits: new fields.ArrayField(new fields.StringField()),
     };

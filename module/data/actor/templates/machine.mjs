@@ -1,3 +1,5 @@
+import { makeBool } from "../../generic-makers.mjs";
+
 const fields = foundry.data.fields;
 
 function makeDefensesFields(usesDrivers, init) {
@@ -11,7 +13,7 @@ function makeDefensesFields(usesDrivers, init) {
 }
 
 export const creature = () => ({
-  canHover: new fields.BooleanField({initial: false}),
+  canHover: makeBool(false),
   defenses: new fields.SchemaField({
     toughness: makeDefensesFields(false, 10),
     evasion: makeDefensesFields(false, 10),
