@@ -4,16 +4,7 @@ import { makeInt } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
-export function makeDefensesFields(init) {
-  return new fields.SchemaField({
-    value: new fields.NumberField({
-      initial: init,
-      integer: true,
-    }),
-  });
-}
-
-class PowerRangerActorData extends foundry.abstract.DataModel {
+class VehicleActorData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...common(),

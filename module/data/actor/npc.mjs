@@ -14,7 +14,7 @@ export function makeDefensesFields(init) {
   });
 }
 
-class PowerRangerActorData extends foundry.abstract.DataModel {
+class NpcActorData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...character(),

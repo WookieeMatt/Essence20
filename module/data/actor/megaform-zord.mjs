@@ -4,7 +4,7 @@ import { zordBase } from './zordBase';
 
 const fields = foundry.data.fields;
 
-class PowerRangerActorData extends foundry.abstract.DataModel {
+class MegaformZordActorData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...common(),
