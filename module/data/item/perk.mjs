@@ -3,6 +3,8 @@ import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
 import { E20 } from "../../../helpers/config.mjs";
 
+const fields = foundry.data.fields;
+
 class PerkItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
