@@ -10,7 +10,7 @@ class MagicBaubleItemData extends foundry.abstract.DataModel {
       range: new fields.StringField({initial: ''}),
       spellcastingShift: new fields.StringField({
         choices: Object.values(E20.skillRollableShifts),
-        initial: 'd20',
+        initial: 'd2',
       }),
     };
   }
