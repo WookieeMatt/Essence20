@@ -4,8 +4,6 @@ import { itemDescription } from './item-description';
 
 import { makeBool, makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
-const fields = foundry.data.fields;
-
 class PowerItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
@@ -15,14 +13,8 @@ class PowerItemData extends foundry.abstract.DataModel {
       canActivate: makeBool(false),
       classFeatureId: makeStr(null),
       hasVariableCost: makeBool(false),
-      maxPowerCost: new fields.NumberField({
-        initial: null,
-        integer: true,
-      }),
-      powerCost: new fields.NumberField({
-        initial: null,
-        integer: true,
-      }),
+      maxPowerCost: makeInt(null),
+      powerCost: makeInt(null),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices('grid', E20.powerTypes),
       usesInterval: makeStrWithChoices('perScene', E20.usesInterval),

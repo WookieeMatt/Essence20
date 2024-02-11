@@ -1,14 +1,11 @@
-import { makeBool } from "../../generic-makers.mjs";
+import { makeBool, makeInt } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
 function makeDefensesFields(usesDrivers, init) {
   return new fields.SchemaField({
     usesDrivers: makeBool(usesDrivers),
-    value: new fields.NumberField({
-      initial: init,
-      integer: true,
-    }),
+    value: makeInt(init),
   });
 }
 

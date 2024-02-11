@@ -8,10 +8,7 @@ const fields = foundry.data.fields;
 
 function makeDefensesFields(init) {
   return new fields.SchemaField({
-    value: new fields.NumberField({
-      initial: init,
-      integer: true,
-    }),
+    value: makeInt(init),
   });
 }
 

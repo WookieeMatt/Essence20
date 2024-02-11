@@ -5,10 +5,7 @@ const fields = foundry.data.fields;
 function makeEssencesFields(usesDrivers, init) {
   return new fields.SchemaField({
     usesDrivers: makeBool(usesDrivers),
-    value: new fields.NumberField({
-      initial: init,
-      integer: true,
-    }),
+    value: makeInt(init),
   });
 }
 

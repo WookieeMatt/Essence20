@@ -2,16 +2,13 @@ import { character } from './character';
 import { common } from './common';
 import { creature } from './creature';
 
-import { makeStr } from "../generic-makers.mjs";
+import { makeStr, makeInt } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
 function makeDefensesFields(init) {
   return new fields.SchemaField({
-    value: new fields.NumberField({
-      initial: init,
-      integer: true,
-    }),
+    value: makeInt(init)
   });
 }
 

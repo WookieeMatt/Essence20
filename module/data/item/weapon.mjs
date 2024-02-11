@@ -25,10 +25,7 @@ class UpgradeItemData extends foundry.abstract.DataModel {
       }),
       traits: new fields.ArrayField(new fields.StringField()),
       upgradeTraits: new fields.ArrayField(new fields.StringField()),
-      usesPerScene: new fields.NumberField({
-        initial: null,
-        integer: true,
-      }),
+      usesPerScene: makeInt(null),
     };
   }
 }
