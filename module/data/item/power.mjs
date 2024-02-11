@@ -12,7 +12,7 @@ class PowerItemData extends foundry.abstract.DataModel {
       ...itemDescription(),
       actionType: makeStrWithChoices('free', E20.actionTypes),
       canActivate: new fields.BooleanField({initial: false}),
-      classFeatureId: new fields.StringField({initial: null}),
+      classFeatureId: makeStr(null),
       hasVariableCost: new fields.BooleanField({initial: false}),
       maxPowerCost: new fields.NumberField({
         initial: null,

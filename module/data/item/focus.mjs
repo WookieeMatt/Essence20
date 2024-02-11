@@ -1,5 +1,6 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
+import { makeStr } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -8,7 +9,7 @@ class FocusItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      essences: new fields.StringField({initial: ''}),
+      essences: makeStr(''),
       essenceLevels: new fields.ArrayField(
         new fields.StringField(),
         {
@@ -18,7 +19,7 @@ class FocusItemData extends foundry.abstract.DataModel {
           ],
         },
       ),
-      roleId: new fields.StringField({initial: ''}),
+      roleId: makeStr(''),
       skills: new fields.ArrayField(new fields.StringField()),
     };
   }

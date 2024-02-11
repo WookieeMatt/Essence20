@@ -1,4 +1,4 @@
-import { makeInt } from "../../generic-makers.mjs";
+import { makeInt, makeStr } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -7,16 +7,16 @@ function makeDefensesFields(name, essence) {
     armor: makeInt(0),
     base: makeInt(10),
     bonus: makeInt(0),
-    essence: new fields.StringField({initial: essence}),
+    essence: makeStr(essence),
     morphed: makeInt(0),
-    name: new fields.StringField({initial: name}),
+    name: makeStr(name),
   });
 }
 
 export const character = () => ({
   background: new fields.SchemaField({
-    pronouns: new fields.StringField({initial: ''}),
-    role: new fields.StringField({initial: ''}),
+    pronouns: makeStr(''),
+    role: makeStr(''),
   }),
   defenses: new fields.SchemaField({
     toughness: makeDefensesFields('toughness', 'strength'),

@@ -1,6 +1,6 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
-import { makeInt } from "../generic-makers.mjs";
+import { makeInt, makeStr } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -9,9 +9,9 @@ class ContactItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      gainingTheContact: new fields.StringField({initial: ''}),
+      gainingTheContact: makeStr(''),
       allegiancePoints: makeInt(0),
-      perks: new fields.StringField({initial: ''}),
+      perks: makeStr(''),
     };
   }
 }

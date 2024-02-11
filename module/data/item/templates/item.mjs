@@ -1,5 +1,5 @@
-const fields = foundry.data.fields;
+import { makeStr } from "../../generic-makers.mjs";
 
 export const item = () => ({
-  originalId: new fields.StringField({initial: ''}), // Idt we need this
+  originalId: makeStr(''), // Idt we need this
 });

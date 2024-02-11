@@ -1,6 +1,6 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
-import { makeInt } from "../../generic-makers.mjs";
+import { makeInt, makeStr } from "../../generic-makers.mjs";
 import { parentItem } from './parentItem';
 
 const fields = foundry.data.fields;
@@ -46,7 +46,7 @@ class RoleItemData extends foundry.abstract.DataModel {
         }),
       }),
       skills: new fields.ArrayField(new fields.StringField()),
-      version: new fields.StringField({initial: ''}),
+      version: makeStr(''),
       weapons: new fields.SchemaField({
         qualified: new fields.ArrayField(new fields.StringField()),
         trained: new fields.ArrayField(new fields.StringField()),

@@ -1,6 +1,7 @@
 import { common } from './common';
 import { creature } from './creature';
 import { character } from './character';
+import { makeStr } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -19,14 +20,14 @@ class CompanionActorData extends foundry.abstract.DataModel {
       ...character(),
       ...common(),
       ...creature(),
-      availability: new fields.StringField({initial: 'standard'}),
+      availability: makeStr('standard'),
       defenses: new fields.SchemaField({
         toughness: makeDefensesFields(false, 10),
         evasion: makeDefensesFields(false, 10),
         willpower: makeDefensesFields(true, null),
         cleverness: makeDefensesFields(true, null),
       }),
-      type: new fields.StringField({initial: 'pet'}),
+      type: makeStr('pet'),
     };
   }
 }

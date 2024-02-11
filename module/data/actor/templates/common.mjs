@@ -1,5 +1,5 @@
 import { E20 } from "../../../helpers/config.mjs";
-import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -39,14 +39,14 @@ function makeSkillFields() {
 }
 
 export const common = () => ({
-  altModeName: new fields.StringField({initial: ''}),
+  altModeName: makeStr(''),
   altModeSize: makeStrWithChoices('common', E20.actorSizes),
   canMorph: new fields.BooleanField({initial: false}),
   canSpellcast: new fields.BooleanField({initial: false}),
   canTransform: new fields.BooleanField({initial: false}),
   color: new fields.ColorField({initial: '#b5b1b1'}),
   conditioning: makeInt(0),
-  description: new fields.StringField({initial: ''}), // Idt we need this
+  description: makeStr(''), // Idt we need this
   energon: new fields.SchemaField({
     dark: new fields.SchemaField({
       value: makeInt(0),
@@ -72,7 +72,7 @@ export const common = () => ({
       strength: makeEssenceShift(),
     }),
   }),
-  focusEssence: new fields.StringField({initial: ''}),
+  focusEssence: makeStr(''),
   health: new fields.SchemaField({
     bonus: makeInt(0),
     max: makeInt(0),
@@ -81,7 +81,7 @@ export const common = () => ({
   }),
   initiative: new fields.SchemaField({
     edge: new fields.BooleanField({initial: false}),
-    formula: new fields.StringField({initial: '2d20kl + 0'}),
+    formula: makeStr('2d20kl + 0'),
     modifier: makeInt(0),
     snag: new fields.BooleanField({initial: false}),
     shift: makeStrWithChoices('d20', E20.initiativeShiftList),

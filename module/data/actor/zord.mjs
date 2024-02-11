@@ -1,6 +1,7 @@
 import { common } from './common';
 import { machine } from './machine';
 import { zordBase } from './zordBase';
+import { makeStr } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -11,8 +12,8 @@ class ZordActorData extends foundry.abstract.DataModel {
       ...machine(),
       ...zordBase(),
       isCombiner: new fields.BooleanField({initial: true}),
-      prerequisite: new fields.StringField({initial: ''}),
-      ranger: new fields.StringField({initial: ''}),
+      prerequisite: makeStr(''),
+      ranger: makeStr(''),
     };
   }
 }

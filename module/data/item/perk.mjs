@@ -12,7 +12,7 @@ class PerkItemData extends foundry.abstract.DataModel {
       ...item(),
       ...itemDescription(),
       ...parentItem(),
-      prerequisite: new fields.StringField({initial: null}),
+      prerequisite: makeStr(null),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices('general', E20.perkTypes),
     };

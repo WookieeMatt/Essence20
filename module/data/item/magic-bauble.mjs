@@ -1,6 +1,6 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
-import { makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -9,8 +9,8 @@ class MagicBaubleItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      duration: new fields.StringField({initial: ''}),
-      range: new fields.StringField({initial: ''}),
+      duration: makeStr(''),
+      range: makeStr(''),
       spellcastingShift: makeStrWithChoices('d2', E20.skillRollableShifts),
     };
   }
