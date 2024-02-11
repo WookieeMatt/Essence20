@@ -20,10 +20,10 @@ export const character = () => ({
     role: new fields.StringField({initial: ''}),
   }),
   defenses: new fields.SchemaField({
-    toughness: makeDefensesFields(E20.essences.toughness, E20.essences.strength),
-    evasion: makeDefensesFields(E20.essences.evasion, E20.essences.speed),
-    willpower: makeDefensesFields(E20.essences.willpower, E20.essences.smarts),
-    cleverness: makeDefensesFields(E20.essences.cleverness, E20.essences.social),
+    toughness: makeDefensesFields('toughness', 'strength'),
+    evasion: makeDefensesFields('evasion', 'speed'),
+    willpower: makeDefensesFields('willpower', 'smarts'),
+    cleverness: makeDefensesFields('cleverness', 'social'),
   }),
   essences: new fields.SchemaField({
     strength: makeInt(3),

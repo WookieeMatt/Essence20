@@ -31,7 +31,10 @@ function makeSkillFields() {
     edge: new fields.BooleanField({initial: false}),
     isSpecialized: new fields.BooleanField({initial: false}),
     modifier: makeInt(),
-    shift: new fields.StringField({initial: 'd20'}),
+    shift: new fields.StringField({
+      choices: Object.values(E20.skillRollableShifts),
+      initial: 'd20',
+    }),
     shiftDown: makeInt(),
     shiftUp: makeInt(),
     snag: new fields.BooleanField({initial: false}),
@@ -41,13 +44,13 @@ function makeSkillFields() {
 export const common = () => ({
   altModeName: new fields.StringField({initial: ''}),
   altModeSize: new fields.StringField({
-    initial: E20.actorSizes.common,
+    initial: 'common',
     choices: Object.values(E20.actorSizes),
   }),
   canMorph: new fields.BooleanField({initial: false}),
   canSpellcast: new fields.BooleanField({initial: false}),
   canTransform: new fields.BooleanField({initial: false}),
-  color: new fields.StringField({initial: '#b5b1b1'}),
+  color: new fields.ColorField({initial: '#b5b1b1'}),
   conditioning: makeInt(),
   description: new fields.StringField({initial: ''}), // Idt we need this
   energon: new fields.SchemaField({
@@ -87,7 +90,10 @@ export const common = () => ({
     formula: new fields.StringField({initial: '2d20kl + 0'}),
     modifier: makeInt(),
     snag: new fields.BooleanField({initial: false}),
-    shift: new fields.StringField({initial: 'd20'}),
+    shift: new fields.StringField({
+      choices: Object.values(E20.initiativeShiftList),
+      initial: 'd20',
+    }),
     shiftDown: makeInt(),
     shiftUp: makeInt(),
   }),
@@ -112,8 +118,8 @@ export const common = () => ({
     }),
   }),
   size: new fields.StringField({
-    initial: E20.actorSizes.common,
     choices: Object.values(E20.actorSizes),
+    initial: 'common',
   }),
   skills: new fields.SchemaField({
     acrobatics: makeSkillFields(),
