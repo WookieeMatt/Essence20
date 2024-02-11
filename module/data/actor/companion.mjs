@@ -1,8 +1,9 @@
+import { E20 } from "../../../helpers/config.mjs";
 import { character } from './character';
 import { common } from './common';
 import { creature } from './creature';
 
-import { makeStr, makeInt } from "../generic-makers.mjs";
+import { makeInt } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -18,14 +19,14 @@ class CompanionActorData extends foundry.abstract.DataModel {
       ...character(),
       ...common(),
       ...creature(),
-      availability: makeStr('standard'),
+      availability: makeStrWithChoices('standard', E20.availabilities),
       defenses: new fields.SchemaField({
-        toughness: makeDefensesFields(false, 10),
-        evasion: makeDefensesFields(false, 10),
-        willpower: makeDefensesFields(true, null),
-        cleverness: makeDefensesFields(true, null),
+        toughness: makeDefensesFields(10),
+        evasion: makeDefensesFields(10),
+        willpower: makeDefensesFields(null),
+        cleverness: makeDefensesFields(null),
       }),
-      type: makeStr('pet'),
+      type: makeStrWithChoices('pet', E20.companionTypes),
     };
   }
 }
