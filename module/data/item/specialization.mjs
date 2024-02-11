@@ -1,5 +1,6 @@
 import { item } from './item';
 import { E20 } from "../../../helpers/config.mjs";
+import { makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -8,14 +9,8 @@ class SpecializationItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       isSpecialized: new fields.BooleanField({initial: true}),
-      shift: new fields.StringField({
-        choices: Object.values(E20.skillRollableShifts),
-        initial: 'd20',
-      }),
-      skill: new fields.StringField({
-        choices: Object.values(E20.skills),
-        initial: 'athletics',
-      }),
+      shift: makeStrWithChoices('d20', E20.skillRollableShifts),
+      skill: makeStrWithChoices('athletics', E20.skills),
     };
   }
 }

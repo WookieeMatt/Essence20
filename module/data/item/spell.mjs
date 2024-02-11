@@ -1,6 +1,6 @@
 import { item } from './item';
 import { E20 } from "../../../helpers/config.mjs";
-import { makeInt } from "../generic-makers.mjs";
+import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -9,22 +9,12 @@ class SpellItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      circle: new fields.StringField({
-        choices: Object.values(E20.spellCircles),
-        initial: 'athletics',
-      }),
+      circle: makeStrWithChoices('athletics', E20.spellCircles),
       cost: makeInt(0),
       duration: new fields.StringField({initial: ''}),
       isSpecialized: new fields.BooleanField({initial: false}),
       range: makeInt(0),
-      circle: new fields.StringField({
-        choices: Object.values(E20.spellCircles),
-        initial: 'athletics',
-      }),
-      tier: new fields.StringField({
-        choices: Object.values(E20.spellTiers),
-        initial: null,
-      }),
+      tier: makeStrWithChoices(null, E20.spellTiers),
     };
   }
 }

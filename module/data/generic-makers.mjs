@@ -6,3 +6,10 @@ export function makeInt(init) {
     integer: true,
   });
 }
+
+export function makeStrWithChoices(init, choices) {
+  return new fields.StringField({
+    choices: Object.values(choices),
+    initial: init,
+  });
+}

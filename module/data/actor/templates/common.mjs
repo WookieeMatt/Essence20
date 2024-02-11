@@ -1,5 +1,5 @@
 import { E20 } from "../../../helpers/config.mjs";
-import { makeInt } from "../../generic-makers.mjs";
+import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -31,10 +31,7 @@ function makeSkillFields() {
     edge: new fields.BooleanField({initial: false}),
     isSpecialized: new fields.BooleanField({initial: false}),
     modifier: makeInt(0),
-    shift: new fields.StringField({
-      choices: Object.values(E20.skillRollableShifts),
-      initial: 'd20',
-    }),
+    shift: makeStrWithChoices('d20', E20.skillRollableShifts),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
     snag: new fields.BooleanField({initial: false}),
@@ -43,10 +40,7 @@ function makeSkillFields() {
 
 export const common = () => ({
   altModeName: new fields.StringField({initial: ''}),
-  altModeSize: new fields.StringField({
-    initial: 'common',
-    choices: Object.values(E20.actorSizes),
-  }),
+  altModeSize: makeStrWithChoices('common', E20.actorSizes),
   canMorph: new fields.BooleanField({initial: false}),
   canSpellcast: new fields.BooleanField({initial: false}),
   canTransform: new fields.BooleanField({initial: false}),
@@ -90,10 +84,7 @@ export const common = () => ({
     formula: new fields.StringField({initial: '2d20kl + 0'}),
     modifier: makeInt(0),
     snag: new fields.BooleanField({initial: false}),
-    shift: new fields.StringField({
-      choices: Object.values(E20.initiativeShiftList),
-      initial: 'd20',
-    }),
+    shift: makeStrWithChoices('d20', E20.initiativeShiftList),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
   }),
@@ -117,10 +108,7 @@ export const common = () => ({
       value: makeInt(0),
     }),
   }),
-  size: new fields.StringField({
-    choices: Object.values(E20.actorSizes),
-    initial: 'common',
-  }),
+  size: makeStrWithChoices('common', E20.actorSizes),
   skills: new fields.SchemaField({
     acrobatics: makeSkillFields(),
     alertness: makeSkillFields(),
