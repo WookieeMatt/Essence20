@@ -10,7 +10,11 @@ class PowerRangerActorData extends foundry.abstract.DataModel {
       ...common(),
       ...machine(),
       ...zordBase(),
-      canMorph: new fields.BooleanField({initial: false}),
+      health: new fields.NumberField({
+        initial: null,
+        integer: true,
+      }),
+      zordIds: new fields.ArrayField(new fields.StringField()), // Idt we need this
     };
   }
 }
