@@ -10,8 +10,8 @@ class ClassFeatureItemData extends foundry.abstract.DataModel {
       ...item(),
       ...itemDescription(),
       uses: new fields.SchemaField({
-        max: makeInt(),
-        value: makeInt(),
+        max: makeInt(0),
+        value: makeInt(0),
       }),
     };
   }

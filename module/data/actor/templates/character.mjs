@@ -4,11 +4,11 @@ const fields = foundry.data.fields;
 
 function makeDefensesFields(name, essence) {
   return new fields.SchemaField({
-    armor: makeInt(),
+    armor: makeInt(0),
     base: makeInt(10),
-    bonus: makeInt(),
+    bonus: makeInt(0),
     essence: new fields.StringField({initial: essence}),
-    morphed: makeInt(),
+    morphed: makeInt(0),
     name: new fields.StringField({initial: name}),
   });
 }

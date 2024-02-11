@@ -9,7 +9,7 @@ class GearItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      quantity: makeInt(),
+      quantity: makeInt(0),
       type: new fields.StringField({initial: ''}),
     };
   }

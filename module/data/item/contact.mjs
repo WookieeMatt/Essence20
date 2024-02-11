@@ -10,7 +10,7 @@ class ContactItemData extends foundry.abstract.DataModel {
       ...item(),
       ...itemDescription(),
       gainingTheContact: new fields.StringField({initial: ''}),
-      allegiancePoints: makeInt(),
+      allegiancePoints: makeInt(0),
       perks: new fields.StringField({initial: ''}),
     };
   }

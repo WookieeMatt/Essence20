@@ -9,13 +9,13 @@ class OriginItemData extends foundry.abstract.DataModel {
       ...item(),
       ...itemDescription(),
       ...parentItem(),
-      baseAerialMovement: makeInt(),
-      baseAquaticMovement: makeInt(),
-      baseGroundMovement: makeInt(),
+      baseAerialMovement: makeInt(0),
+      baseAquaticMovement: makeInt(0),
+      baseGroundMovement: makeInt(0),
       essences: new fields.ArrayField(new fields.StringField()),
       languages: new fields.StringField({initial: ''}),
       skills: new fields.ArrayField(new fields.StringField()),
-      startingHealth: makeInt(),
+      startingHealth: makeInt(0),
     };
   }
 }

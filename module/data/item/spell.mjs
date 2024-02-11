@@ -13,10 +13,10 @@ class SpellItemData extends foundry.abstract.DataModel {
         choices: Object.values(E20.spellCircles),
         initial: 'athletics',
       }),
-      cost: makeInt(),
+      cost: makeInt(0),
       duration: new fields.StringField({initial: ''}),
       isSpecialized: new fields.BooleanField({initial: false}),
-      range: makeInt(),
+      range: makeInt(0),
       circle: new fields.StringField({
         choices: Object.values(E20.spellCircles),
         initial: 'athletics',

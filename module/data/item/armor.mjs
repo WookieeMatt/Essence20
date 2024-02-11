@@ -15,8 +15,8 @@ class ArmorItemData extends foundry.abstract.DataModel {
         initial: 'standard',
         choices: Object.values(E20.availabilities),
       }),
-      bonusEvasion: makeInt(),
-      bonusToughness: makeInt(),
+      bonusEvasion: makeInt(0),
+      bonusToughness: makeInt(0),
       classification: new fields.StringField({
         initial: 'light',
         choices: Object.values(E20.armorClassifications),

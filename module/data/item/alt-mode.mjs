@@ -10,12 +10,12 @@ class AltModeItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      crew: makeInt(),
-      firepoints: makeInt(),
+      crew: makeInt(0),
+      firepoints: makeInt(0),
       movement: fields.SchemaField({
-        aerial: makeInt(),
-        aquatic: makeInt(),
-        ground: makeInt(),
+        aerial: makeInt(0),
+        aquatic: makeInt(0),
+        ground: makeInt(0),
       }),
       size: new fields.StringField({
         initial: 'common',
