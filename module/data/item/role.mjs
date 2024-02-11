@@ -39,7 +39,7 @@ class RoleItemData extends foundry.abstract.DataModel {
         ),
       }),
       powers: new fields.SchemaField({
-        personal: new fields.ObjectField({
+        personal: new fields.SchemaField({
           increase: makeInt(0),
           levels: new fields.ArrayField(new fields.StringField()),
           starting: makeInt(0),
