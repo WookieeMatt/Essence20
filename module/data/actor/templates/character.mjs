@@ -1,4 +1,3 @@
-import { E20 } from "../../../helpers/config.mjs";
 import { makeInt } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
