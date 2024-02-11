@@ -2,9 +2,7 @@ import { item } from './item';
 import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
 
-import { makeBool, makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
-
-const fields = foundry.data.fields;
+import { makeBool, makeInt, makeStrArray, makeStrWithChoices } from "../../generic-makers.mjs";
 
 class ArmorItemData extends foundry.abstract.DataModel {
   static defineSchema() {
@@ -17,8 +15,8 @@ class ArmorItemData extends foundry.abstract.DataModel {
       bonusToughness: makeInt(0),
       classification: makeStrWithChoices('light', E20.armorClassifications),
       equipped: makeBool(false),
-      traits: new fields.ArrayField(new fields.StringField()),
-      upgradeTraits: new fields.ArrayField(new fields.StringField()),
+      traits: makeStrArray(),
+      upgradeTraits: makeStrArray(),
     };
   }
 }

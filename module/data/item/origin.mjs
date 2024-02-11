@@ -2,7 +2,7 @@ import { item } from './item';
 import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
 
-import { makeInt, makeStr } from "../generic-makers.mjs";
+import { makeInt, makeStr, makeStrArray } from "../generic-makers.mjs";
 
 class OriginItemData extends foundry.abstract.DataModel {
   static defineSchema() {
@@ -13,9 +13,9 @@ class OriginItemData extends foundry.abstract.DataModel {
       baseAerialMovement: makeInt(0),
       baseAquaticMovement: makeInt(0),
       baseGroundMovement: makeInt(0),
-      essences: new fields.ArrayField(new fields.StringField()),
+      essences: makeStrArray(),
       languages: makeStr(''),
-      skills: new fields.ArrayField(new fields.StringField()),
+      skills: makeStrArray(),
       startingHealth: makeInt(0),
     };
   }

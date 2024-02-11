@@ -2,9 +2,7 @@ import { common } from './common';
 import { machine } from './machine';
 import { zordBase } from './zordBase';
 
-import { makeInt } from "../generic-makers.mjs";
-
-const fields = foundry.data.fields;
+import { makeInt, makeStrArray } from "../generic-makers.mjs";
 
 class MegaformZordActorData extends foundry.abstract.DataModel {
   static defineSchema() {
@@ -13,7 +11,7 @@ class MegaformZordActorData extends foundry.abstract.DataModel {
       ...machine(),
       ...zordBase(),
       health: makeInt(null),
-      zordIds: new fields.ArrayField(new fields.StringField()), // Idt we need this
+      zordIds: makeStrArray(), // Idt we need this
     };
   }
 }

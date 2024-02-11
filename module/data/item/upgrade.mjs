@@ -2,7 +2,7 @@ import { E20 } from "../../../helpers/config.mjs";
 import { item } from './item';
 import { itemDescription } from './item-description';
 
-import { makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeInt, makeStr, makeStrArray, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -17,7 +17,7 @@ class UpgradeItemData extends foundry.abstract.DataModel {
       }),
       availability: makeStrWithChoices('standard', E20.availabilities),
       benefit: makeStr(''),
-      traits: new fields.ArrayField(new fields.StringField()),
+      traits: makeStrArray(),
       type: makeStrWithChoices('armor', E20.upgradeTypes),
       prerequisite: new fields.StringField({initial: null}),
     };

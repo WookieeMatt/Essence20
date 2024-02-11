@@ -2,9 +2,7 @@ import { item } from './item';
 import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
 
-import { makeBool, makeStr } from "../../generic-makers.mjs";
-
-const fields = foundry.data.fields;
+import { makeBool, makeStr, makeStrArray } from "../../generic-makers.mjs";
 
 class InfluenceItemData extends foundry.abstract.DataModel {
   static defineSchema() {
@@ -14,7 +12,7 @@ class InfluenceItemData extends foundry.abstract.DataModel {
       ...parentItem(),
       type: makeStr(''),
       mandatoryHangUp: makeBool(false),
-      skills: new fields.ArrayField(new fields.StringField()),
+      skills: makeStrArray(),
     };
   }
 }

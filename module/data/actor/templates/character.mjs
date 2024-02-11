@@ -1,4 +1,4 @@
-import { makeInt, makeStr } from "../generic-makers.mjs";
+import { makeInt, makeStr, makeStrArray } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -30,7 +30,7 @@ export const character = () => ({
     smarts: makeInt(3),
     social: makeInt(3),
   }),
-  influenceIds: new fields.ArrayField(new fields.StringField()), // Idt we need this
+  influenceIds: makeStrArray(), // Idt we need this
   level: makeInt(1),
   notes: new fields.HTMLField(),
 });

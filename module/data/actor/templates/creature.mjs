@@ -1,5 +1,5 @@
-const fields = foundry.data.fields;
+import { makeStrArray } from "../generic-makers.mjs";
 
 export const creature = () => ({
-  languages: new fields.ArrayField(new fields.StringField()), // Prob change to string
+  languages: makeStrArray(), // Prob change to string
 });

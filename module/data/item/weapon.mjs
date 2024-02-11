@@ -3,7 +3,7 @@ import { item } from './item';
 import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
 
-import { makeBool, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeStr, makeStrArray, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -23,8 +23,8 @@ class UpgradeItemData extends foundry.abstract.DataModel {
         skill: makeStrWithChoices(null, E20.skills),
         shift: makeStrWithChoices(null, E20.skillRollableShifts),
       }),
-      traits: new fields.ArrayField(new fields.StringField()),
-      upgradeTraits: new fields.ArrayField(new fields.StringField()),
+      traits: makeStrArray(),
+      upgradeTraits: makeStrArray(),
       usesPerScene: makeInt(null),
     };
   }

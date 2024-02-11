@@ -2,7 +2,7 @@ import { item } from './item';
 import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
 
-import { makeInt, makeStr } from "../../generic-makers.mjs";
+import { makeInt, makeStr, makeStrArray } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -13,17 +13,17 @@ class RoleItemData extends foundry.abstract.DataModel {
       ...itemDescription(),
       ...parentItem(),
       adjustments: new fields.SchemaField({
-        health: new fields.ArrayField(new fields.StringField()),
+        health: makeStrArray(),
       }),
       armors: new fields.SchemaField({
-        qualified: new fields.ArrayField(new fields.StringField()),
-        trained: new fields.ArrayField(new fields.StringField()),
+        qualified: makeStrArray(),
+        trained: makeStrArray(),
       }),
       essenceLevels: new fields.SchemaField({
-        smarts: new fields.ArrayField(new fields.StringField()),
-        social: new fields.ArrayField(new fields.StringField()),
-        speed: new fields.ArrayField(new fields.StringField()),
-        strength: new fields.ArrayField(new fields.StringField()),
+        smarts: makeStrArray(),
+        social: makeStrArray(),
+        speed: makeStrArray(),
+        strength: makeStrArray(),
       }),
       perkLevels: new fields.SchemaField({
         general: new fields.ArrayField(
@@ -42,15 +42,15 @@ class RoleItemData extends foundry.abstract.DataModel {
       powers: new fields.SchemaField({
         personal: new fields.SchemaField({
           increase: makeInt(0),
-          levels: new fields.ArrayField(new fields.StringField()),
+          levels: makeStrArray(),
           starting: makeInt(0),
         }),
       }),
-      skills: new fields.ArrayField(new fields.StringField()),
+      skills: makeStrArray(),
       version: makeStr(''),
       weapons: new fields.SchemaField({
-        qualified: new fields.ArrayField(new fields.StringField()),
-        trained: new fields.ArrayField(new fields.StringField()),
+        qualified: makeStrArray(),
+        trained: makeStrArray(),
       }),
     };
   }
