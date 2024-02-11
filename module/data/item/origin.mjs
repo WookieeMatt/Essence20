@@ -1,6 +1,7 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
+import { makeInt } from "../generic-makers.mjs";
 
 class OriginItemData extends foundry.abstract.DataModel {
   static defineSchema() {

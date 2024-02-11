@@ -1,6 +1,9 @@
 import { common } from './common';
 import { creature } from './creature';
 import { character } from './character';
+import { makeInt } from "../generic-makers.mjs";
+
+const fields = foundry.data.fields;
 
 class TransformerActorData extends foundry.abstract.DataModel {
   static defineSchema() {
