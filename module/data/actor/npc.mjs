@@ -5,7 +5,7 @@ import { makeInt } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
-export function makeDefensesFields(init) {
+function makeDefensesFields(init) {
   return new fields.SchemaField({
     value: new fields.NumberField({
       initial: init,

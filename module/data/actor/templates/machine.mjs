@@ -1,6 +1,6 @@
 const fields = foundry.data.fields;
 
-export function makeDefensesFields(usesDrivers, init) {
+function makeDefensesFields(usesDrivers, init) {
   return new fields.SchemaField({
     usesDrivers: new fields.BooleanField({initial: usesDrivers}),
     value: new fields.NumberField({

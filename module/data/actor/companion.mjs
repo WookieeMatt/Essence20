@@ -4,7 +4,7 @@ import { character } from './character';
 
 const fields = foundry.data.fields;
 
-export function makeDefensesFields(init) {
+function makeDefensesFields(init) {
   return new fields.SchemaField({
     value: new fields.NumberField({
       initial: init,

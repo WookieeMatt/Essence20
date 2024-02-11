@@ -3,14 +3,14 @@ import { makeInt } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
-export function makeEssenceShift() {
+function makeEssenceShift() {
   return new fields.SchemaField({
     shiftUp: makeInt(),
     shiftDown: makeInt(),
   });
 }
 
-export function makeMovementFields() {
+function makeMovementFields() {
   return new fields.SchemaField({
     altMode: makeInt(),
     base: makeInt(),
@@ -20,7 +20,7 @@ export function makeMovementFields() {
   });
 }
 
-export function makeSkillFields() {
+function makeSkillFields() {
   return new fields.SchemaField({
     essences: new fields.SchemaField({
       smarts: new fields.BooleanField({initial: false}),
