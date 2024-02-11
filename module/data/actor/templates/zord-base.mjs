@@ -1,10 +1,10 @@
-import { makeInt } from "../../generic-makers.mjs";
+import { makeBool, makeInt } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
 function makeEssencesFields(usesDrivers, init) {
   return new fields.SchemaField({
-    usesDrivers: new fields.BooleanField({initial: usesDrivers}),
+    usesDrivers: makeBool(usesDrivers),
     value: new fields.NumberField({
       initial: init,
       integer: true,

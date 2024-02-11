@@ -4,7 +4,7 @@ const fields = foundry.data.fields;
 
 function makeDefensesFields(usesDrivers, init) {
   return new fields.SchemaField({
-    usesDrivers: new fields.BooleanField({initial: usesDrivers}),
+    usesDrivers: makeBool(usesDrivers),
     value: new fields.NumberField({
       initial: init,
       integer: true,

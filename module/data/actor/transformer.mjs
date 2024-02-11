@@ -1,7 +1,7 @@
 import { common } from './common';
 import { creature } from './creature';
 import { character } from './character';
-import { makeInt, makeStr } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStr } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -11,7 +11,7 @@ class TransformerActorData extends foundry.abstract.DataModel {
       ...character(),
       ...common(),
       ...creature(),
-      canTransform: new fields.BooleanField({initial: true}),
+      canTransform: makeBool(true),
       externalHardpoints: makeInt(2),
       internalHarpoints: makeInt(2),
       transformerFaction: makeStr('autobots'),

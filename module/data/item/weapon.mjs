@@ -1,7 +1,7 @@
 import { item } from './item';
 import { E20 } from "../../../helpers/config.mjs";
 import { parentItem } from './parentItem';
-import { makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -15,7 +15,7 @@ class UpgradeItemData extends foundry.abstract.DataModel {
       alternateEffects: makeStr(''),
       availability: makeStrWithChoices('standard', E20.availabilities),
       classification: makeStrWithChoices('integrated', E20.weaponSizes),
-      equipped: new fields.BooleanField({initial: true}),
+      equipped: makeBool(true),
       requirements: new fields.SchemaField({
         custom: makeStr(null),
         skill: makeStrWithChoices(null, E20.skills),
