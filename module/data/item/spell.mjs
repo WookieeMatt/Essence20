@@ -1,8 +1,8 @@
-import { item } from './item';
 import { E20 } from "../../../helpers/config.mjs";
-import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { item } from './item';
+import { itemDescription } from './item-description';
 
-const fields = foundry.data.fields;
+import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 class SpellItemData extends foundry.abstract.DataModel {
   static defineSchema() {

@@ -1,8 +1,7 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
-import { makeInt, makeStr } from "../generic-makers.mjs";
 
-const fields = foundry.data.fields;
+import { makeInt, makeStr } from "../generic-makers.mjs";
 
 class GearItemData extends foundry.abstract.DataModel {
   static defineSchema() {

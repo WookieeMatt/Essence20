@@ -1,5 +1,6 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
+
 import { makeStr } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;

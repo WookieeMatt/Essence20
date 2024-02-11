@@ -1,6 +1,8 @@
-import { item } from './item';
 import { E20 } from "../../../helpers/config.mjs";
+import { item } from './item';
+import { itemDescription } from './item-description';
 import { parentItem } from './parentItem';
+
 import { makeBool, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;

@@ -1,6 +1,5 @@
 import { item } from './item';
-
-const fields = foundry.data.fields;
+import { itemDescription } from './item-description';
 
 class TraitItemData extends foundry.abstract.DataModel {
   static defineSchema() {

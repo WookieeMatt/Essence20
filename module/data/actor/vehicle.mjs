@@ -1,5 +1,6 @@
 import { common } from './common';
 import { machine } from './machine';
+
 import { makeInt, makeStr } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;

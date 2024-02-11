@@ -1,8 +1,7 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
-import { makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
-const fields = foundry.data.fields;
+import { makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 class MagicBaubleItemData extends foundry.abstract.DataModel {
   static defineSchema() {

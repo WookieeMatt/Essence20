@@ -1,6 +1,7 @@
+import { character } from './character';
 import { common } from './common';
 import { creature } from './creature';
-import { character } from './character';
+
 import { makeBool, makeInt, makeStr } from "../generic-makers.mjs";
 
 const fields = foundry.data.fields;

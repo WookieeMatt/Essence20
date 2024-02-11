@@ -1,7 +1,8 @@
 import { item } from './item';
 import { itemDescription } from './item-description';
-import { makeBool, makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 import { parentItem } from './parentItem';
+
+import { makeBool, makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
