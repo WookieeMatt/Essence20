@@ -1,6 +1,6 @@
 const fields = foundry.data.fields;
 
-export const item = () => ({
+export const itemDescription = () => ({
   description: new fields.HTMLField(),
   source: new fields.SchemaField({
     book: new fields.StringField({initial: ''}),
