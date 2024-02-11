@@ -1,6 +1,6 @@
-import {common} from './common';
-import {machine} from './machine';
-import {zordBase} from './zordBase';
+import { common } from './common';
+import { machine } from './machine';
+import { zordBase } from './zordBase';
 
 const fields = foundry.data.fields;
 

@@ -1,6 +1,6 @@
-import {common} from './common';
-import {creature} from './creature';
-import {character} from './character';
+import { common } from './common';
+import { creature } from './creature';
+import { character } from './character';
 
 const fields = foundry.data.fields;
 
