@@ -77,7 +77,7 @@ function _localizeObject(obj, keys) {
 */
 export async function parseId(uuid) {
   const parts = uuid.split(".");
-const index = parts[(parts.length-1)];
+  const index = parts[(parts.length-1)];
 
   return index || null;
 }

@@ -628,6 +628,7 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
         await setEntryAndAddItem(newItem, parentItem);
       }
+
       parentItem = await this.actor.items.get(data.parentId);
       for (const [key, item] of Object.entries(parentItem.system.items)) {
         const itemId = await parseId(item.uuid);
@@ -684,6 +685,7 @@ export class Essence20ActorSheet extends ActorSheet {
     if (checkIsLocked(this.actor)) {
       return;
     }
+
     let item = null;
     const li = $(event.currentTarget).closest(".item");
     const itemId = li.data("itemId");

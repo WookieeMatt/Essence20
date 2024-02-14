@@ -1,6 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { resizeTokens, getItemsOfType, setEntryAndAddItem } from "../helpers/utils.mjs";
+import { resizeTokens, getItemsOfType } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -246,7 +246,7 @@ export class Essence20Actor extends Actor {
             const updateString = `system.items.${key}.${name}`;
             parentItem.update({
               [updateString]: value,
-            })
+            });
           }
         } else {
           for (const [name, value] of Object.entries(changes[i])) {
@@ -254,7 +254,7 @@ export class Essence20Actor extends Actor {
               const updateString = `system.items.${key}.${name}`;
               parentItem.update({
                 [updateString]: value,
-              })
+              });
             }
           }
         }
