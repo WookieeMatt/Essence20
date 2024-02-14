@@ -75,17 +75,9 @@ function _localizeObject(obj, keys) {
 * @param {string} uuid of the item that we are parsing for the id
 * @return {string|null} index or null returned.
 */
-export function parseId(uuid) {
+export async function parseId(uuid) {
   const parts = uuid.split(".");
-  let index;
-
-  if (parts[0] === "Compendium") { // Compendium Documents
-    const [, , , , id] = parts;
-    index = id;
-  } else if (parts.length < 3) {   // World Documents
-    const [, id] = parts;
-    index = id;
-  }
+const index = parts[(parts.length-1)];
 
   return index || null;
 }
@@ -334,7 +326,7 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
 * @param {Item} droppedItem The item that is being attached on the item
 * @param {Item} atttachedItem The item that we are attaching to.
 */
-export function setEntryAndAddItem(droppedItem, targetItem) {
+export async function setEntryAndAddItem(droppedItem, targetItem) {
   const entry = {
     uuid: droppedItem.uuid,
     img: droppedItem.img,
@@ -353,7 +345,7 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -361,23 +353,23 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "role") {
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
   case "influence":
     if (droppedItem.type == "perk") {
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "hangUp") {
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
   case "origin":
     if (droppedItem.type == "perk") {
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -385,7 +377,7 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -398,7 +390,7 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
@@ -409,7 +401,7 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
-      addItemIfUnique(droppedItem, targetItem, entry);
+      await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -426,15 +418,23 @@ export function setEntryAndAddItem(droppedItem, targetItem) {
 */
 export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
   for (const actorItem of actor.items) {
-    for (const [, attachment] of Object.entries(item.system.items)) {
-      const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
-      const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
-      if (itemSourceId == attachment.uuid) {
-        if (item._id == parentId) {
-          if (!previousLevel
-            || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
-            actorItem.delete();
+    const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
+    const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
+    const collectionId = actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
+
+    for (const [key, attachment] of Object.entries(item.system.items)) {
+      if (itemSourceId) {
+        if (itemSourceId == attachment.uuid) {
+          if (item._id == parentId) {
+            if (!previousLevel
+              || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+              actorItem.delete();
+            }
           }
+        }
+      } else {
+        if (item._id == parentId && key == collectionId) {
+          actorItem.delete();
         }
       }
     }
