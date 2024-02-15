@@ -756,9 +756,26 @@ export class Essence20ActorSheet extends ActorSheet {
   async _onInlineEdit(event) {
     event.preventDefault();
     let element = event.currentTarget;
+    let isParent = false;
+    let itemKey = null;
     let itemId = element.closest(".item").dataset.itemId;
+    if (!itemId) {
+      itemId = element.closest(".item").dataset.parentId;
+      itemKey = element.closest(".item").dataset.itemKey;
+      isParent = true;
+    }
     let item = this.actor.items.get(itemId);
     let field = element.dataset.field;
+    if (isParent) {
+      const parts = field.split(".");
+      if (parts[0] == "item") {
+        field = `system.items.${itemKey}`
+        for (let i=1; i < parts.length; i++) {
+
+          field += `.${parts[i]}`;
+        }
+      }
+    }
     let newValue = element.type == 'checkbox' ? element.checked : element.value;
 
     return item.update({ [field]: newValue });
