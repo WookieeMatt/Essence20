@@ -874,6 +874,11 @@
         "speed":  [],
         "strength":  []
       },
+      "gridPowerLevels":[
+        "level6",
+        "level11",
+        "level16"
+      ],
       "perkLevels": {
         "general": [
           "level4",
@@ -890,6 +895,7 @@
           "starting": 0
         }
       },
+
       "skills": [],
       "version": "",
       "weapons": {
