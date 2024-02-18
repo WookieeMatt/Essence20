@@ -620,19 +620,20 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Finally, create the item!
     const newItem = await Item.create(itemData, { parent: this.actor });
-    // Update parent item's ID list for nested items
+
     if (parentItem) {
       newItem.setFlag('essence20', 'parentId', parentItem._id);
+
+      // Update parent item's ID list for upgrades and weapon effects
       if (newItem.type == 'upgrade' && ['armor', 'weapon'].includes(parentItem.type)) {
         await setEntryAndAddItem(newItem, parentItem);
       } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
         await setEntryAndAddItem(newItem, parentItem);
       }
 
-      parentItem = await this.actor.items.get(data.parentId);
+      // Update parent item's ID list for other nested items
       for (const [key, item] of Object.entries(parentItem.system.items)) {
         const itemId = await parseId(item.uuid);
-
         if (itemId == newItem._id) {
           newItem.setFlag('essence20', 'collectionId', key);
         }
