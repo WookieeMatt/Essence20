@@ -236,6 +236,7 @@ export class Essence20Actor extends Actor {
       if (!parentItem) {
         return;
       }
+
       const key = fullItem.getFlag('essence20', 'collectionId');
       if (change.system) { // Handle system fields
         for (const [name, value] of Object.entries(change.system)){

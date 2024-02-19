@@ -429,9 +429,9 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
           && !previousLevel
           || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
             actorItem.delete();
-        } else if (item._id == parentId && key == collectionId) {
-          actorItem.delete();
         }
+      } else if (item._id == parentId && key == collectionId) {
+        actorItem.delete();
       }
     }
   }
