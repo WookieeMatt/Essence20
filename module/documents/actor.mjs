@@ -225,37 +225,32 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   *
-   * @param {Object} parent The actor that has the item
-   * @param {String} collection The collection that the item is in
-   * @param {Array} documents The document(s) that is getting updated
-   * @param {Array} changes The changes that were made
-   * @param {Object} options The options for this type of update
-   * @param {String} userId The Id of the user making the change
+   * Override this updates the information on the parentItem when a an item attached to an item is updated.
    */
   _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
     super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
-    for (let i = 0; i< changes.length;i++) {
-      const fullItem = parent.items.get(changes[i]._id);
+    for (const change of changes) {
+      const fullItem = parent.items.get(change._id);
       const parentId = fullItem.getFlag('essence20', 'parentId');
-      const key = fullItem.getFlag('essence20', 'collectionId');
       const parentItem = parent.items.get(parentId);
-      if(parentItem) {
-        if (changes[i].system){
-          for (const [name, value] of Object.entries(changes[i].system)){
+      if (!parentItem) {
+        return;
+      }
+      const key = fullItem.getFlag('essence20', 'collectionId');
+      if (change.system) { // Handle system fields
+        for (const [name, value] of Object.entries(change.system)){
+          const updateString = `system.items.${key}.${name}`;
+          parentItem.update({
+            [updateString]: value,
+          });
+        }
+      } else { // Handle non-system fields
+        for (const [name, value] of Object.entries(change)) {
+          if (name == "name" || name == "img") {
             const updateString = `system.items.${key}.${name}`;
             parentItem.update({
               [updateString]: value,
             });
-          }
-        } else {
-          for (const [name, value] of Object.entries(changes[i])) {
-            if (name == "name" || name == "img") {
-              const updateString = `system.items.${key}.${name}`;
-              parentItem.update({
-                [updateString]: value,
-              });
-            }
           }
         }
       }

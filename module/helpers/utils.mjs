@@ -424,16 +424,12 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
-        if (itemSourceId == attachment.uuid) {
-          if (item._id == parentId) {
-            if (!previousLevel
-              || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
-              actorItem.delete();
-            }
-          }
-        }
-      } else {
-        if (item._id == parentId && key == collectionId) {
+        if (itemSourceId == attachment.uuid
+          && item._id == parentId
+          && !previousLevel
+          || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+            actorItem.delete();
+        } else if (item._id == parentId && key == collectionId) {
           actorItem.delete();
         }
       }
