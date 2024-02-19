@@ -768,9 +768,9 @@ export class Essence20ActorSheet extends ActorSheet {
       const parts = field.split(".");
       if (parts[0] == "item") {
         field = `system.items.${itemKey}`;
-        for (let i=1; i < parts.length; i++) {
+        for (const part of parts) {
 
-          field += `.${parts[i]}`;
+          field += `.${part}`;
         }
       }
     }
