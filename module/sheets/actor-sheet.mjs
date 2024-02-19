@@ -693,11 +693,11 @@ export class Essence20ActorSheet extends ActorSheet {
     const parentId = li.data("parentId");
     const parentItem = this.actor.items.get(parentId);
 
-
     if (itemId) {
       item = this.actor.items.get(itemId);
     } else {
       const keyId = li.data("itemKey");
+
       // If the deleted item is attached to another item find what it is attached to.
       for (const attachedItem of this.actor.items) {
         const collectionId = await attachedItem.getFlag('essence20', 'collectionId');
@@ -946,4 +946,3 @@ export class Essence20ActorSheet extends ActorSheet {
     }
   }
 }
-
