@@ -301,6 +301,7 @@ export function createId(items) {
 * @param {Item} droppedItem The item that was dropped
 * @param {Item} targetItem The item that was dropped on to.
 * @param {Object} entry The entry for the item being added
+* @return The key generated for the dropped item
 */
 export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
@@ -313,18 +314,20 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
   }
 
   const pathPrefix = "system.items";
-
-  const id = createId(items);
+  const key = createId(items);
 
   await targetItem.update({
-    [`${pathPrefix}.${id}`]: entry,
+    [`${pathPrefix}.${key}`]: entry,
   });
+
+  return key;
 }
 
 /**
 * Handles setting the value of the Entry variable and calling the creating function.
 * @param {Item} droppedItem The item that is being attached on the item
 * @param {Item} atttachedItem The item that we are attaching to.
+* @return The key generated for the dropped item
 */
 export async function setEntryAndAddItem(droppedItem, targetItem) {
   const entry = {
@@ -345,7 +348,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -353,23 +356,23 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      key = await addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "role") {
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
   case "influence":
     if (droppedItem.type == "perk") {
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "hangUp") {
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
   case "origin":
     if (droppedItem.type == "perk") {
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -377,7 +380,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -390,7 +393,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
@@ -401,7 +404,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
-      await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
