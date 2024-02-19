@@ -225,7 +225,8 @@ export class Essence20Actor extends Actor {
   }
 
   /**
-   * Override this updates the information on the parentItem when a an item attached to an item is updated.
+   * Updates the information on the parent Item when a child Item is updated.
+   * @override
    */
   _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
     super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
