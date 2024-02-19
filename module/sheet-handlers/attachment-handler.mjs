@@ -35,7 +35,6 @@ export class AttachmentHandler {
    * @param {Item} droppedItem   The attachment
    */
   async attachItem(droppedItem, dropFunc) {
-    console.log(dropFunc)
     let parentType = "";
     if (droppedItem.system.type) {
       parentType = droppedItem.system.type;
@@ -101,7 +100,6 @@ export class AttachmentHandler {
    * @private
    */
   async _attachItem(targetItem, droppedItem, dropFunc) {
-    console.log(dropFunc)
     const newattachedItemList = await dropFunc();
     const newattachedItem = newattachedItemList[0];
     newattachedItem.setFlag('essence20', 'parentId', targetItem._id);
