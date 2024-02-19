@@ -765,13 +765,11 @@ export class Essence20ActorSheet extends ActorSheet {
     let item = this.actor.items.get(itemId);
     let field = element.dataset.field;
     if (isChild) {
-      const parts = field.split(".");
-      if (parts[0] == "item") {
-        field = `system.items.${itemKey}`;
-        for (const part of parts) {
+      const index = field.indexOf('.');
+      const [fieldPart1, fieldPart2] = [field.slice(0, index), field.slice(index + 1)];
+      if (fieldPart1 == "item") {
+        field = `system.items.${itemKey}.${fieldPart2}`;
 
-          field += `.${part}`;
-        }
       }
     }
 
@@ -827,7 +825,7 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'weapon':
       return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
     case 'weaponEffect':
-      return this._atHandler.attachItem(sourceItem);
+      return this._atHandler.attachItem(sourceItem, super._onDropItem.bind(this, event, data));
 
     default:
       return await super._onDropItem(event, data);
@@ -849,7 +847,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
       return super._onDropItem(event, data);
     } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return this._atHandler.attachItem(upgrade);
+      return this._atHandler.attachItem(upgrade, super._onDropItem.bind(this, event, data));
     } else {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;

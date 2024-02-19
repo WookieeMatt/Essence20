@@ -34,7 +34,8 @@ export class AttachmentHandler {
    * Initiates the process to apply an attachment item to an item on the actor sheet
    * @param {Item} droppedItem   The attachment
    */
-  async attachItem(droppedItem) {
+  async attachItem(droppedItem, dropFunc) {
+    console.log(dropFunc)
     let parentType = "";
     if (droppedItem.system.type) {
       parentType = droppedItem.system.type;
@@ -45,7 +46,7 @@ export class AttachmentHandler {
     const upgradableItems = await getItemsOfType(parentType, this._actor.items);
 
     if (upgradableItems.length == 1) {
-      this._attachItem(upgradableItems[0], droppedItem);
+      this._attachItem(upgradableItems[0], droppedItem, dropFunc);
     } else if (upgradableItems.length > 1) {
       const choices = {};
       for (const upgradableItem of upgradableItems) {
@@ -65,7 +66,7 @@ export class AttachmentHandler {
             save: {
               label: game.i18n.localize('E20.AcceptButton'),
               callback: html => this._attachSelectedItemOptionHandler(
-                rememberOptions(html), droppedItem,
+                rememberOptions(html), droppedItem, dropFunc,
               ),
             },
           },
@@ -83,11 +84,11 @@ export class AttachmentHandler {
    * @param {Function} dropFunc The function to call to complete the drop
    * @private
    */
-  async _attachSelectedItemOptionHandler(options, droppedItem) {
+  async _attachSelectedItemOptionHandler(options, droppedItem, dropFunc) {
     for (const [itemId, isSelected] of Object.entries(options)) {
       if (isSelected) {
         const item = this._actor.items.get(itemId);
-        this._attachItem(item, droppedItem);
+        this._attachItem(item, droppedItem, dropFunc);
         break;
       }
     }
@@ -99,9 +100,14 @@ export class AttachmentHandler {
    * @param {Item} droppedItem The item being attached
    * @private
    */
-  async _attachItem(targetItem, droppedItem) {
+  async _attachItem(targetItem, droppedItem, dropFunc) {
+    console.log(dropFunc)
+    const newattachedItemList = await dropFunc();
+    const newattachedItem = newattachedItemList[0];
+    newattachedItem.setFlag('essence20', 'parentId', targetItem._id);
     if (targetItem) {
-      await setEntryAndAddItem(droppedItem, targetItem);
+      const key = await setEntryAndAddItem(newattachedItem, targetItem);
+      newattachedItem.setFlag('essence20', 'collectionId', key);
     }
   }
 
