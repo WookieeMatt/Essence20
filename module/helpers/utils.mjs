@@ -163,9 +163,11 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         const newItem = await Item.create(itemToCreate, { parent: owner });
-        if (newItem.type == "upgrade" || newItem.type == "weaponEffect" && parentItem.type == "weapon" || parentItem.type == "armor") {
+
+        if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
           const newKey = await setEntryAndAddItem(newItem, parentItem);
           newItem.setFlag('essence20', 'collectionId', newKey);
+
           const deleteString = `system.items.-=${key}`;
           await parentItem.update({[deleteString]: null});
         } else {
