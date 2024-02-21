@@ -172,6 +172,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
         } else {
           newItem.setFlag('essence20', 'collectionId', key);
         }
+
         newItem.setFlag('core', 'sourceId', item.uuid);
         newItem.setFlag('essence20', 'parentId', parentItem._id);
       }
