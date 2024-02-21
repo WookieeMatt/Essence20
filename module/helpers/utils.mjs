@@ -154,6 +154,7 @@ export function rememberValues(html) {
  * @param {Number} lastProcessedLevel The flag for the last time the actor changed level
  */
 export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
+
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const createNewItem =
@@ -163,8 +164,15 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         const newItem = await Item.create(itemToCreate, { parent: owner });
+        if (newItem.type == "upgrade" || newItem.type == "weaponEffect" && parentItem.type == "weapon" || parentItem.type == "armor") {
+          const newKey = await setEntryAndAddItem(newItem, parentItem);
+          newItem.setFlag('essence20', 'collectionId', newKey);
+          const deleteString = `system.items.-=${key}`;
+          await parentItem.update({[deleteString]: null});
+        } else {
+          newItem.setFlag('essence20', 'collectionId', key);
+        }
         newItem.setFlag('core', 'sourceId', item.uuid);
-        newItem.setFlag('essence20', 'collectionId', key);
         newItem.setFlag('essence20', 'parentId', parentItem._id);
       }
     }
