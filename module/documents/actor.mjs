@@ -223,4 +223,40 @@ export class Essence20Actor extends Actor {
   rollSkill(dataset) {
     this._dice.rollSkill(dataset, this);
   }
+
+  /**
+   * Updates the information on the parent Item when a child Item is updated.
+   * @override
+   */
+  _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
+    super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
+    for (const change of changes) {
+      const fullItem = parent.items.get(change._id);
+      const parentId = fullItem.getFlag('essence20', 'parentId');
+      const parentItem = parent.items.get(parentId);
+
+      if (!parentItem) {
+        return;
+      }
+
+      const key = fullItem.getFlag('essence20', 'collectionId');
+      if (change.system) { // Handle system fields
+        for (const [name, value] of Object.entries(change.system)){
+          const updateString = `system.items.${key}.${name}`;
+          parentItem.update({
+            [updateString]: value,
+          });
+        }
+      } else { // Handle non-system fields
+        for (const [name, value] of Object.entries(change)) {
+          if (name == "name" || name == "img") {
+            const updateString = `system.items.${key}.${name}`;
+            parentItem.update({
+              [updateString]: value,
+            });
+          }
+        }
+      }
+    }
+  }
 }
