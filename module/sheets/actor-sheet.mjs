@@ -753,14 +753,10 @@ export class Essence20ActorSheet extends ActorSheet {
   async _onInlineEdit(event) {
     event.preventDefault();
     let element = event.currentTarget;
-    let isChild = false;
-    let itemKey = null;
     let itemId = element.closest(".item").dataset.itemId;
 
     if (!itemId) {
       itemId = element.closest(".item").dataset.parentId;
-      itemKey = element.closest(".item").dataset.itemKey;
-      isChild = true;
     }
 
     const item = this.actor.items.get(itemId);
