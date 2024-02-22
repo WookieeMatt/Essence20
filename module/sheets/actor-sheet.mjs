@@ -756,24 +756,16 @@ export class Essence20ActorSheet extends ActorSheet {
     let isChild = false;
     let itemKey = null;
     let itemId = element.closest(".item").dataset.itemId;
+
     if (!itemId) {
       itemId = element.closest(".item").dataset.parentId;
       itemKey = element.closest(".item").dataset.itemKey;
       isChild = true;
     }
 
-    let item = this.actor.items.get(itemId);
-    let field = element.dataset.field;
-    if (isChild) {
-      const index = field.indexOf('.');
-      const [fieldPart1, fieldPart2] = [field.slice(0, index), field.slice(index + 1)];
-      if (fieldPart1 == "item") {
-        field = `system.items.${itemKey}.${fieldPart2}`;
-
-      }
-    }
-
-    let newValue = element.type == 'checkbox' ? element.checked : element.value;
+    const item = this.actor.items.get(itemId);
+    const field = element.dataset.field;
+    const newValue = element.type == 'checkbox' ? element.checked : element.value;
 
     return item.update({ [field]: newValue });
   }
