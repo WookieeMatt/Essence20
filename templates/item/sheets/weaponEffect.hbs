@@ -46,7 +46,7 @@
       {{!-- Effect Damage --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Damage'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.damageValue" value="{{system.damageValue}}" />
+      {{numberInput system.damageValue name="system.damageValue" min=0 step=1}}
       <select name="system.damageType">
         {{#select system.damageType}}
           {{#each config.damageTypes as |name type|}}
@@ -60,21 +60,21 @@
       {{!-- Targets --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTargets'}}
       {{#*inline "item-field-inputs"}}
-      <input class="item-field-inputs" type="number" name="system.numTargets" value="{{system.numTargets}}" />
+      <input class="item-field-inputs" type="number" name="system.numTargets" value="{{system.numTargets}}" min="0" step="1" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Radius --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRadius'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.radius" value="{{system.radius}}" />
+      {{numberInput system.radius name="system.radius" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Shift Down --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShiftDown'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.shiftDown" value="{{system.shiftDown}}" />
+      {{numberInput system.shiftDown name="system.shiftDown" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -89,7 +89,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRangeReachMultiplier'}}
       {{#*inline "item-field-inputs"}}
       <input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"
-        placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" />
+        placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" min="0" step="1" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -97,11 +97,11 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRange'}}
       {{#*inline "item-field-inputs"}}
       <input type="number" name="system.range.value" value="{{system.range.value}}"
-        placeholder="{{localize 'E20.WeaponRangeValue'}}" />
+        placeholder="{{localize 'E20.WeaponRangeValue'}}" min="0" step="1" />
       <input type="number" name="system.range.long" value="{{system.range.long}}"
-        placeholder="{{localize 'E20.WeaponRangeLong'}}" />
+        placeholder="{{localize 'E20.WeaponRangeLong'}}" min="0" step="1" />
       <input type="number" name="system.range.min" value="{{system.range.min}}"
-        placeholder="{{localize 'E20.WeaponRangeMin'}}" />
+        placeholder="{{localize 'E20.WeaponRangeMin'}}" min="0" step="1" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     </div>

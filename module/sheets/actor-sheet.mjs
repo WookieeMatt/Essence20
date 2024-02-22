@@ -1,5 +1,11 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { deleteAttachmentsForItem, checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
+import {
+  deleteAttachmentsForItem,
+  checkIsLocked,
+  createItemCopies,
+  parseId,
+  setEntryAndAddItem,
+} from "../helpers/utils.mjs";
 import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
@@ -342,12 +348,7 @@ export class Essence20ActorSheet extends ActorSheet {
     super.activateListeners(html);
 
     // Render the item sheet for viewing/editing prior to the editable check.
-    html.find('.item-edit').click(ev => {
-      const li = $(ev.currentTarget).closest(".item");
-      const itemId = li.data("itemId");
-      const item = this.actor.items.get(itemId) || game.items.get(itemId);
-      item.sheet.render(true);
-    });
+    html.find('.item-edit').click(this._onItemEdit.bind(this));
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
@@ -551,9 +552,22 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (rollType == 'initiative') {
       this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
-      let keyId = element.closest('.item').dataset.itemKey;
-      const itemId = element.closest('.item').dataset.itemId || element.closest('.item').dataset.parentId;
-      const item = this.actor.items.get(itemId);
+      let item = null;
+
+      const childKey = element.closest('.item').dataset.itemKey || null;
+      if (childKey) {
+        if (rollType == 'weapon') {
+          // Special case for weapon effect attacks where we want the parent weapon as the item
+          const parentId = element.closest('.item').dataset.parentId;
+          item = this.actor.items.get(parentId);
+        } else {
+          const childUuid = element.closest('.item').dataset.itemUuid;
+          item = await fromUuid(childUuid);
+        }
+      } else {
+        const itemId = element.closest('.item').dataset.itemId;
+        item = this.actor.items.get(itemId);
+      }
 
       if (rollType == 'power') {
         await this._pwHandler.powerCost(item);
@@ -563,11 +577,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       if (item) {
-        if (keyId) {
-          return item.roll(dataset, keyId);
-        } else {
-          return item.roll(dataset);
-        }
+        return item.roll(dataset, childKey);
       }
     }
   }
@@ -602,23 +612,51 @@ export class Essence20ActorSheet extends ActorSheet {
     delete itemData.data["type"];
 
     // Set the parent item type for nested items
+    let parentItem = null;
     if (data.parentId) {
-      const parentItem = this.actor.items.get(data.parentId);
+      parentItem = this.actor.items.get(data.parentId);
       itemData.data.type = parentItem.type;
     }
 
     // Finally, create the item!
     const newItem = await Item.create(itemData, { parent: this.actor });
 
-    // Update parent item's ID list for nested items
-    if (data.parentId) {
-      const parentItem = this.actor.items.get(data.parentId);
+    if (parentItem) {
+      newItem.setFlag('essence20', 'parentId', parentItem._id);
 
+      let key = null;
+
+      // Update parent item's ID list for upgrades and weapon effects
       if (newItem.type == 'upgrade' && ['armor', 'weapon'].includes(parentItem.type)) {
-        this._addChildItemToParent(parentItem, newItem, "upgradeIds");
+        key = await setEntryAndAddItem(newItem, parentItem);
       } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
-        this._addChildItemToParent(parentItem, newItem, "weaponEffectIds");
+        key = await setEntryAndAddItem(newItem, parentItem);
       }
+
+      newItem.setFlag('essence20', 'collectionId', key);
+    }
+  }
+
+  /**
+   * Handle editing an owned Item for the actor
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _onItemEdit(event) {
+    event.preventDefault();
+    const li = $(event.currentTarget).closest(".item");
+    let item = null;
+
+    const itemId = li.data("itemId");
+    if (itemId) {
+      item = this.actor.items.get(itemId) || game.items.get(itemId);
+    } else {
+      const itemUuid = li.data("itemUuid");
+      item = await fromUuid(itemUuid);
+    }
+
+    if (item) {
+      item.sheet.render(true);
     }
   }
 
@@ -716,9 +754,14 @@ export class Essence20ActorSheet extends ActorSheet {
     event.preventDefault();
     let element = event.currentTarget;
     let itemId = element.closest(".item").dataset.itemId;
-    let item = this.actor.items.get(itemId);
-    let field = element.dataset.field;
-    let newValue = element.type == 'checkbox' ? element.checked : element.value;
+
+    if (!itemId) {
+      itemId = element.closest(".item").dataset.parentId;
+    }
+
+    const item = this.actor.items.get(itemId);
+    const field = element.dataset.field;
+    const newValue = element.type == 'checkbox' ? element.checked : element.value;
 
     return item.update({ [field]: newValue });
   }
@@ -770,7 +813,7 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'weapon':
       return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
     case 'weaponEffect':
-      return this._atHandler.attachItem(sourceItem);
+      return this._atHandler.attachItem(sourceItem, super._onDropItem.bind(this, event, data));
 
     default:
       return await super._onDropItem(event, data);
@@ -792,7 +835,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
       return super._onDropItem(event, data);
     } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return this._atHandler.attachItem(upgrade);
+      return this._atHandler.attachItem(upgrade, super._onDropItem.bind(this, event, data));
     } else {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;

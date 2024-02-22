@@ -18,15 +18,15 @@
     {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentItem=parentItem}}
 
       {{#*inline "roll-button"}}
-        <a class="rollable" data-roll-type="weaponEffect" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+        <a class="rollable" data-roll-type="weapon" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
       {{/inline}}
 
       {{#*inline "item-label" item}}
-        <div class="flexrow" style="align-items: center;">
+        <div class="flexrow" style="align-items: center; gap: 2px;">
           <div style="flex-grow: 1.5;">
             {{item.name}}
           </div>
-          <select class="inline-edit" data-field="item.classification.skill" name="item.classification.skill">
+          <select class="inline-edit" data-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
             {{#select item.classification.skill}}
             {{#each @root.config.skills as |name type|}}
             <option value="{{type}}">{{name}}</option>
@@ -34,9 +34,7 @@
             {{/select}}
           </select>
 
-          {{#ifEquals "npc" @root.actor.type}}
-            {{!-- NPCs don't have enough room for weapon effect icons --}}
-          {{else}}
+          <div class="flexrow" style="flex-wrap: nowrap; gap: 2px;">
             <div style="text-align: center;" title="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
               {{item.numTargets}} <i class="fas fa-bullseye"></i>
             </div>
@@ -62,7 +60,7 @@
                 <i class="fas fa-person-harassing"></i>
               {{/ifEquals}}
             </div>
-          {{/ifEquals}}
+          </div>
         </div>
       {{/inline}}
 

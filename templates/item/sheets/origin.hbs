@@ -20,7 +20,7 @@
       {{!-- Starting Health --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginStartingHealth'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" class="flex-group-right" name="system.startingHealth" value="{{system.startingHealth}}" />
+      <input type="number" class="flex-group-right" name="system.startingHealth" value="{{system.startingHealth}}" min="0" step="1"/>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -63,21 +63,21 @@
       {{!-- Base Aerial Movement--}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseAerialMovement'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.baseAerialMovement" value="{{system.baseAerialMovement}}" />
+      {{numberInput system.baseAerialMovement name="system.baseAerialMovement" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Base Aquatic Movement --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseAquaticMovement'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.baseAquaticMovement" value="{{system.baseAquaticMovement}}" />
+      {{numberInput system.baseAquaticMovement name="system.baseAquaticMovement" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Base Aquatic Movement --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.BaseGroundMovement'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.baseGroundMovement" value="{{system.baseGroundMovement}}" />
+      {{numberInput system.baseGroundMovement name="system.baseGroundMovement" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

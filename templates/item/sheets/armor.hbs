@@ -65,14 +65,14 @@
       {{!-- Toughness --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonusToughness'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.bonusToughness" value="{{system.bonusToughness}}" />
+      {{numberInput system.bonusToughness name="system.bonusToughness" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Evasion --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonusEvasion'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.bonusEvasion" value="{{system.bonusEvasion}}" />
+      {{numberInput system.bonusEvasion name="system.bonusEvasion" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

@@ -172,6 +172,11 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 Hooks.on("renderDialog", (dialog, html) => {
   if (html[0].innerText.includes('Create New Item')) {
     const select = html[0].querySelector("select[name='type']");
+    const threatPowerOption = select.querySelector("option[value='threatPower']");
+    if (threatPowerOption) {
+      threatPowerOption.style.display = 'none';
+    }
+
     if (select) {
       select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
       select.append(setOptGroup(select, "Background", CONFIG.E20.backgroundTypes));

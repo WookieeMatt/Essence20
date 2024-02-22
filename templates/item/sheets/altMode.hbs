@@ -20,21 +20,21 @@
       {{!-- Alt Mode Movement Aerial --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeMovementAerial'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.altModeMovement.aerial" value="{{system.altModeMovement.aerial}}" />
+      {{numberInput system.altModeMovement.aerial name="system.altModeMovement.aerial" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Alt Movement Aquatic --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeMovementAquatic'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.altModeMovement.aquatic" value="{{system.altModeMovement.aquatic}}" />
+      {{numberInput system.altModeMovement.aquatic name="system.altModeMovement.aquatic" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Alt Movement Ground --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeMovementGround'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.altModeMovement.ground" value="{{system.altModeMovement.ground}}" />
+      {{numberInput system.altModeMovement.ground name="system.altModeMovement.ground" min=0 step=5}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -54,14 +54,14 @@
       {{!-- Alt Mode Crew --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeCrew'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.altModeCrew" value="{{system.altModeCrew}}" />
+      {{numberInput system.altModeCrew name="system.altModeCrew" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Alt Mode Firepoints --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeFirepoints'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.altModeFirepoints" value="{{system.altModeFirepoints}}" />
+      {{numberInput system.altModeFirepoints name="system.altModeFirepoints" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -69,4 +69,3 @@
   </section>
 
 </form>
-

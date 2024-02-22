@@ -62,7 +62,7 @@
       {{#ifEquals item.system.type 'armor'}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonus'}}
         {{#*inline "item-field-inputs"}}
-          <input type="number" name="system.armorBonus.value" value="{{system.armorBonus.value}}" />
+          {{numberInput system.armorBonus.value name="system.armorBonus.value" min=0 step=1}}
           <select name="system.armorBonus.defense">
           {{#select system.armorBonus.defense}}
           {{#each config.defenses as |name defense|}}

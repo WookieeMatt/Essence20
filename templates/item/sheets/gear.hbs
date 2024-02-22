@@ -33,7 +33,7 @@
 
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.GearQuantity'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.quantity" value="{{system.quantity}}" />
+      {{numberInput system.quantity name="system.quantity" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     </div>
