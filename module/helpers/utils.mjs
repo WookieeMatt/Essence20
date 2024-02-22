@@ -75,7 +75,7 @@ function _localizeObject(obj, keys) {
 * @param {string} uuid of the item that we are parsing for the id
 * @return {string|null} index or null returned.
 */
-export async function parseId(uuid) {
+export function parseId(uuid) {
   const parts = uuid.split(".");
   const index = parts[(parts.length-1)];
 
@@ -311,7 +311,7 @@ export function createId(items) {
 * @param {Item} droppedItem The item that was dropped
 * @param {Item} targetItem The item that was dropped on to.
 * @param {Object} entry The entry for the item being added
-* @return The key generated for the dropped item
+* @return {String} The key generated for the dropped item
 */
 export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
@@ -337,7 +337,7 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
 * Handles setting the value of the Entry variable and calling the creating function.
 * @param {Item} droppedItem The item that is being attached on the item
 * @param {Item} atttachedItem The item that we are attaching to.
-* @return The key generated for the dropped item
+* @return {String} The key generated for the dropped item
 */
 export async function setEntryAndAddItem(droppedItem, targetItem) {
   const entry = {
