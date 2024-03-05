@@ -665,6 +665,7 @@
       "perk",
       "power",
       "role",
+      "rolePoints",
       "specialization",
       "spell",
       "threatPower",
@@ -908,6 +909,12 @@
       "weapons": {
         "qualified":[],
         "trained":[]
+      },
+      "skillDie": {
+        "has": false,
+        "levels": [],
+        "name": "",
+        "specialization": []
       }
     },
     "specialization": {

@@ -457,6 +457,7 @@ E20.characterTypes = {
   perk: "E20.Perk",
   power: "E20.Power",
   role: "E20.Role",
+  rolePoints: "E20.RolePoints",
   specialization: "E20.Specialization",
   spell: "E20.Spell",
 };
