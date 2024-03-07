@@ -3,12 +3,9 @@
 
   <div style="flex-grow: 0; white-space: nowrap;">
     {{localize title}}
-    {{#if parentItem}}
-    {{else}}
     <a class="item-create" data-type={{dataType}} data-parent-id="{{parentId}}" title="{{ localize 'E20.ItemControlAdd' }}">
       <i class="fas fa-plus"></i>
     </a>
-    {{/if}}
   </div>
 
   <span class="header-accordion-wrapper">
