@@ -512,6 +512,44 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     });
   }
 
+  if (role.system.skillDie.has) {
+    const shiftList=CONFIG.E20.skillShiftList;
+    const totalChange = await roleValueChange(actor.system.level, role.system.skillDie.levels, previousLevel);
+    const initialShiftIndex = shiftList.findIndex(s => s == "d2");
+    const finalShiftIndex = Math.max(
+      0,
+      Math.min(shiftList.length - 1, initialShiftIndex-totalChange),
+    );
+    const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+    const skillStringShift = `system.skills.${skillName}.shift`;
+    const skillStringDisplayName = `system.skills.${skillName}.displayName`;
+    const skillStringEdge = `system.skills.${skillName}.edge`;
+    const skillStringEssencesSmarts = `system.skills.${skillName}.essences.smarts`;
+    const skillStringEssencesSocial = `system.skills.${skillName}.essences.social`;
+    const skillStringEssencesSpeed = `system.skills.${skillName}.essences.speed`;
+    const skillStringEssencesSrength = `system.skills.${skillName}.essences.strength`;
+    const skillStringIsSpeciailized = `system.skills.${skillName}.isSpecialized`;
+    const skillStringModifier = `system.skills.${skillName}.modifier`;
+    const skillStringSnag = `system.skills.${skillName}.snag`;
+    const skillStringShiftUp = `system.skills.${skillName}.shiftUp`;
+    const skillStringShiftDown = `system.skills.${skillName}.shiftDown`;
+
+    await actor.update({
+      [skillStringShift]: shiftList[finalShiftIndex],
+      [skillStringEssencesSmarts] : false,
+      [skillStringEssencesSocial] : false,
+      [skillStringEssencesSpeed] : false,
+      [skillStringEssencesSrength] : false,
+      [skillStringEdge] : false,
+      [skillStringSnag] : false,
+      [skillStringShiftUp] : 0,
+      [skillStringShiftDown] : 0,
+      [skillStringIsSpeciailized] : false,
+      [skillStringModifier] : 0,
+      [skillStringDisplayName] : role.system.skillDie.name,
+    });
+  }
+
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
     // Drop or level up
     await createItemCopies(role.system.items, actor, "perk", role, previousLevel);

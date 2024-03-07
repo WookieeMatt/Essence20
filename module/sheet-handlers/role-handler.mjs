@@ -188,6 +188,13 @@ export class RoleHandler {
       });
     }
 
+    if (role.system.skillDie.has) {
+      const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+      const skillString = `system.skills.-=${skillName}`;
+
+      await this._actor.update({[skillString] : null});
+    }
+
     if (role.system.adjustments.health.length) {
       const totalDecrease = await roleValueChange(0, role.system.adjustments.health, previousLevel);
       const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalDecrease);
