@@ -28,9 +28,12 @@
           </div>
           <select class="inline-edit" data-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
             {{#select item.classification.skill}}
-            {{#each @root.actor.system.skills }}
-
-            <option value="{{@key}}">{{localize (lookup @root.config.skills @key)}}</option>
+            {{#each @root.actor.system.skills}}
+              {{#if this.displayName}}
+                <option value="{{@key}}">{{this.displayName}}</option>
+              {{else}}
+                <option value="{{@key}}">{{localize (lookup @root.config.skills @key)}}</option>
+              {{/if}}
             {{/each}}
             {{/select}}
           </select>
