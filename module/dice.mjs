@@ -83,6 +83,7 @@ export class Dice {
       calculatedShiftUp = dataset.shiftUp + essenceShifts.any.shiftUp;
       calculatedShiftDown = dataset.shiftDown + essenceShifts.any.shiftDown;
     }
+
     const updatedShiftDataset = {
       ...dataset,
       shiftUp: calculatedShiftUp,
@@ -360,7 +361,7 @@ export class Dice {
    * @returns {String}   The resultant shift.
    * @private
    */
-   _getFormula(isSpecialized, skillRollOptions, finalShift, modifier) {
+  _getFormula(isSpecialized, skillRollOptions, finalShift, modifier) {
     const edge = skillRollOptions.edge;
     const snag = skillRollOptions.snag;
     const shiftOperands = [];

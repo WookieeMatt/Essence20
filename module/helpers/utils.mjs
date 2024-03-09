@@ -528,6 +528,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     if (actor.system.skills[skillName].shift) {
       initialShiftIndex = shiftList.findIndex(s => s == actor.system.skills[skillName].shift);
     }
+
     const finalShiftIndex = Math.max(
       0,
       Math.min(shiftList.length - 1, initialShiftIndex-totalChange),
