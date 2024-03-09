@@ -74,10 +74,20 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const essenceShifts = actor.system.essenceShifts;
+    let calculatedShiftUp = 0;
+    let calculatedShiftDown = 0;
+    if (rolledEssence) {
+      calculatedShiftUp = dataset.shiftUp + essenceShifts[rolledEssence].shiftUp + essenceShifts.any.shiftUp;
+      calculatedShiftDown = dataset.shiftDown + essenceShifts[rolledEssence].shiftDown + essenceShifts.any.shiftDown;
+    } else {
+      calculatedShiftUp = dataset.shiftUp + essenceShifts.any.shiftUp;
+      calculatedShiftDown = dataset.shiftDown + essenceShifts.any.shiftDown;
+    }
+
     const updatedShiftDataset = {
       ...dataset,
-      shiftUp: dataset.shiftUp + essenceShifts[rolledEssence].shiftUp + essenceShifts.any.shiftUp,
-      shiftDown: dataset.shiftDown + essenceShifts[rolledEssence].shiftDown + essenceShifts.any.shiftDown,
+      shiftUp: calculatedShiftUp,
+      shiftDown: calculatedShiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
     const skillDataset = {
