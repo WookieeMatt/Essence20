@@ -546,11 +546,11 @@ E20.alterationTypes = {
 };
 preLocalize("alterationTypes");
 
-E20.rolePointOptions = {
-  pool: "E20.RolePointPool",
-  activation: "E20.RolePointActivation",
-  number: "E20.RolePointsNumber",
-  secondary: "E20.RolePointsSecondary",
+E20.bonusType = {
+  attackUpShift: "E20.AttackUpShift",
+  damageBonus: "E20.DamageBonus",
+  healthBonus: "E20.HealthBonus",
+  defenseBonus: "E20.DefenseBonus",
 };
 
 /************************************************
