@@ -546,7 +546,6 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
       }
     }
 
-
     await actor.update({
       [skillStringShift]: shiftList[finalShiftIndex],
       [skillStringIsSpecialized] : isSpecialized,
