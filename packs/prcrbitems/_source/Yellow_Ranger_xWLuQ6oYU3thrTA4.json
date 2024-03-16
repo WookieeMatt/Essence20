@@ -165,14 +165,6 @@
         "starting": 2
       }
     },
-    "rolePoints": {
-      "has": false,
-      "increase": 0,
-      "levels": [],
-      "option": "",
-      "name": "",
-      "starting": 0
-    },
     "skills": [
       "initiative",
       "acrobatics",
@@ -191,10 +183,9 @@
       "strength": []
     },
     "skillDie": {
-      "has": true,
-      "name": "Follow-Up Die",
+      "isUsed": true,
+      "name": "Follow-Up",
       "levels": [
-        "level1",
         "level5",
         "level9",
         "level13",
@@ -214,7 +205,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1705032363054,
-    "modifiedTime": 1707437607820,
+    "modifiedTime": 1710455718297,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG"
   },
   "_key": "!items!xWLuQ6oYU3thrTA4"

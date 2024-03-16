@@ -896,6 +896,12 @@
           "starting": 0
         }
       },
+      "skillDie": {
+        "isUsed": false,
+        "name": "",
+        "levels": [],
+        "specializedLevels": []
+      },
       "skills": [],
       "version": "",
       "weapons": {
