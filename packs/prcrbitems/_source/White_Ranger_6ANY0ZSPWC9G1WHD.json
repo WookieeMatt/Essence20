@@ -174,7 +174,7 @@
       "strength": []
     },
     "skillDie": {
-      "has": true,
+      "isUsed": true,
       "name": "Grid Relic",
       "levels": [
         "level4",
@@ -184,7 +184,7 @@
         "level16",
         "level19"
       ],
-      "specialization": [
+      "specializedLevels": [
         "level1",
         "level2",
         "level3",

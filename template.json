@@ -896,10 +896,10 @@
         }
       },
       "skillDie": {
-        "has": false,
+        "isUsed": false,
         "name": "",
         "levels": [],
-        "specialized": []
+        "specializedLevels": []
       },
       "skills": [],
       "version": "",

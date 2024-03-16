@@ -520,9 +520,9 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     });
   }
 
-  if (role.system.skillDie.has) {
+  if (role.system.skillDie.isUsed) {
     const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
-    const shiftList=CONFIG.E20.skillShiftList;
+    const shiftList = CONFIG.E20.skillShiftList;
     const totalChange = await roleValueChange(actor.system.level, role.system.skillDie.levels, previousLevel);
     let initialShiftIndex = shiftList.findIndex(s => s == "d2");
     if (actor.system.skills[skillName].shift) {
@@ -538,8 +538,8 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     const skillStringIsSpecialized = `system.skills.${skillName}.isSpecialized`;
 
     let isSpecialized = false;
-    if (role.system.skillDie.specialization) {
-      for (const arrayLevel of role.system.skillDie.specialization) {
+    if (role.system.skillDie.specializedLevels) {
+      for (const arrayLevel of role.system.skillDie.specializedLevels) {
         const level = arrayLevel.replace(/[^0-9]/g, '');
         if (actor.system.level == level) {
           isSpecialized = true;

@@ -183,7 +183,7 @@
       "strength": []
     },
     "skillDie": {
-      "has": true,
+      "isUsed": true,
       "name": "Follow-Up",
       "levels": [
         "level5",

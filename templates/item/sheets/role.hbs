@@ -234,13 +234,13 @@
     {{/ifNotEquals}}
 
     {{!-- Role has SkillDie --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.hasSkillDie'}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieIsUsed'}}
     {{#*inline "item-field-inputs"}}
-    <input type="checkbox" name="system.skillDie.has" {{checked system.skillDie.has}} />
+    <input type="checkbox" name="system.skillDie.isUsed" {{checked system.skillDie.isUsed}} />
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{#ifEquals system.skillDie.has true}}
+    {{#ifEquals system.skillDie.isUsed true}}
       {{!-- Skill Die Name --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieName'}}
       {{#*inline "item-field-inputs"}}
@@ -267,7 +267,7 @@
 
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieSpecialization'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="actorLevels" data-target="system.skillDie.specialization"
+      <a class="trait-selector" data-options="actorLevels" data-target="system.skillDie.specializedLevels"
         title="{{localize 'E20.LevelSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -275,8 +275,8 @@
 
       {{#*inline "item-field-inputs"}}
       <div class="flex-group-right chip-section">
-      {{#each item.system.skillDie.specialization as |name|}}
-        <span class="chip" name="chip.skillDie.specialization.{{type}}">{{lookup @root.config.actorLevels name}}</span>
+      {{#each item.system.skillDie.specializedLevels as |name|}}
+        <span class="chip" name="chip.skillDie.specializedLevels.{{type}}">{{lookup @root.config.actorLevels name}}</span>
       {{/each}}
       </div>
       {{/inline}}

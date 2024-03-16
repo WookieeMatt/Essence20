@@ -152,7 +152,7 @@ export class RoleHandler {
 
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
-    if (role.system.skillDie.has) {
+    if (role.system.skillDie.isUsed) {
       const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
       const skillStringShift = `system.skills.${skillName}.shift`;
       const skillStringDisplayName = `system.skills.${skillName}.displayName`;
@@ -166,7 +166,6 @@ export class RoleHandler {
       const skillStringSnag = `system.skills.${skillName}.snag`;
       const skillStringShiftUp = `system.skills.${skillName}.shiftUp`;
       const skillStringShiftDown = `system.skills.${skillName}.shiftDown`;
-
 
       await this._actor.update({
         [skillStringShift]: "d2",
@@ -220,7 +219,7 @@ export class RoleHandler {
       });
     }
 
-    if (role.system.skillDie.has) {
+    if (role.system.skillDie.isUsed) {
       const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
       const skillString = `system.skills.-=${skillName}`;
 
