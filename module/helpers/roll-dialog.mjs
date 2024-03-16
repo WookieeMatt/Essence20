@@ -31,13 +31,6 @@ export class RollDialog {
    * @returns {Promise<Dialog>}   The dialog to be displayed.
    */
   async getSkillRollOptions(dataset, skillDataset, actor) {
-    let specializationBoolean = false;
-    if (dataset.isSpecialized === true || dataset.isSpecialized === false) {
-      specializationBoolean = dataset.isSpecialized;
-    } else if (dataset.isSpecialized === 'true') {
-      specializationBoolean = true;
-    }
-
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs";
     const snag =
       skillDataset.snag ||
@@ -48,7 +41,7 @@ export class RollDialog {
       {
         shiftUp: dataset.shiftUp || 0,
         shiftDown: dataset.shiftDown || 0,
-        isSpecialized: specializationBoolean,
+        isSpecialized: dataset.isSpecialized,
         snag: snag && !edge,
         edge: edge && !snag,
         normal: edge == snag,
