@@ -41,7 +41,6 @@ export class RollDialog {
       {
         shiftUp: dataset.shiftUp || 0,
         shiftDown: dataset.shiftDown || 0,
-        isSpecialized: dataset.isSpecialized,
         snag: snag && !edge,
         edge: edge && !snag,
         normal: edge == snag,
