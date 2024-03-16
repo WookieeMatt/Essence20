@@ -67,7 +67,6 @@ export class Dice {
   async rollSkill(rawDataset, actor, item) {
     const dataset = { // Converting strings to usable types
       ...rawDataset,
-      isSpecialized: dataset.isSpecialized,
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
     };
