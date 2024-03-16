@@ -37,6 +37,7 @@ export class RollDialog {
     } else if (dataset.isSpecialized === 'true') {
       specializationBoolean = true;
     }
+
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs";
     const snag =
       skillDataset.snag ||
