@@ -907,12 +907,6 @@
       "weapons": {
         "qualified":[],
         "trained":[]
-      },
-      "skillDie": {
-        "has": false,
-        "levels": [],
-        "name": "",
-        "specialization": []
       }
     },
     "specialization": {
