@@ -150,6 +150,11 @@ export class RoleHandler {
       return false;
     }
 
+    if (role.system.skillDie.isUsed && role.system.skillDie.name == "") {
+      ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleSkillDieError')));
+      return false;
+    }
+
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
 
     if (role.system.skillDie.isUsed) {
