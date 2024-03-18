@@ -548,13 +548,11 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     const skillStringIsSpecialized = `system.skills.${skillName}.isSpecialized`;
 
     let isSpecialized = false;
-    if (role.system.skillDie.specializedLevels) {
-      for (const arrayLevel of role.system.skillDie.specializedLevels) {
-        const level = arrayLevel.replace(/[^0-9]/g, '');
-        if (actor.system.level == level) {
-          isSpecialized = true;
-          break;
-        }
+    for (const arrayLevel of role.system.skillDie.specializedLevels) {
+      const level = arrayLevel.replace(/[^0-9]/g, '');
+      if (actor.system.level == level) {
+        isSpecialized = true;
+        break;
       }
     }
 

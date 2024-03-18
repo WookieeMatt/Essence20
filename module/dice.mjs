@@ -73,7 +73,6 @@ export class Dice {
     }
     const dataset = { // Converting strings to usable types
       ...rawDataset,
-      isSpecialized: specializationBoolean,
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
     };
