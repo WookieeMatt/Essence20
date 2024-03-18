@@ -41,7 +41,7 @@ export class RollDialog {
       {
         shiftUp: dataset.shiftUp || 0,
         shiftDown: dataset.shiftDown || 0,
-        isSpecialized: dataset.isSpecialized === 'true',
+        isSpecialized: dataset.isSpecialized,
         snag: snag && !edge,
         edge: edge && !snag,
         normal: edge == snag,
@@ -66,7 +66,7 @@ export class RollDialog {
         default: "normal",
         close: () => resolve({ cancelled: true }),
       };
-      
+
       new Dialog(data, null).render(true);
     });
   }

@@ -874,6 +874,11 @@
         "speed":  [],
         "strength":  []
       },
+      "gridPowerLevels":[
+        "level6",
+        "level11",
+        "level16"
+      ],
       "perkLevels": {
         "general": [
           "level4",
@@ -889,6 +894,12 @@
           "levels": [],
           "starting": 0
         }
+      },
+      "skillDie": {
+        "isUsed": false,
+        "name": "",
+        "levels": [],
+        "specializedLevels": []
       },
       "skills": [],
       "version": "",

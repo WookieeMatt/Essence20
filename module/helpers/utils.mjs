@@ -437,11 +437,10 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
-        if (itemSourceId == attachment.uuid
-          && item._id == parentId
-          && !previousLevel
-          || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
-          actorItem.delete();
+        if (itemSourceId == attachment.uuid && item._id == parentId) {
+          if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+            actorItem.delete();
+          }
         }
       } else if (item._id == parentId && key == collectionId) {
         actorItem.delete();
@@ -518,6 +517,38 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
     await actor.update({
       "system.health.bonus": newHealthBonus,
+    });
+  }
+
+  if (role.system.skillDie.isUsed) {
+    const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+    const shiftList = CONFIG.E20.skillShiftList;
+    const totalChange = await roleValueChange(actor.system.level, role.system.skillDie.levels, previousLevel);
+    let initialShiftIndex = shiftList.findIndex(s => s == "d2");
+    if (actor.system.skills[skillName].shift) {
+      initialShiftIndex = shiftList.findIndex(s => s == actor.system.skills[skillName].shift);
+    }
+
+    const finalShiftIndex = Math.max(
+      0,
+      Math.min(shiftList.length - 1, initialShiftIndex-totalChange),
+    );
+
+    const skillStringShift = `system.skills.${skillName}.shift`;
+    const skillStringIsSpecialized = `system.skills.${skillName}.isSpecialized`;
+
+    let isSpecialized = false;
+    for (const arrayLevel of role.system.skillDie.specializedLevels) {
+      const level = arrayLevel.replace(/[^0-9]/g, '');
+      if (actor.system.level == level) {
+        isSpecialized = true;
+        break;
+      }
+    }
+
+    await actor.update({
+      [skillStringShift]: shiftList[finalShiftIndex],
+      [skillStringIsSpecialized] : isSpecialized,
     });
   }
 

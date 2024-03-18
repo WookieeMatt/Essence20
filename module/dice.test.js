@@ -92,7 +92,7 @@ describe("prepareInitiativeRoll", () => {
 describe("rollSkill", () => {
   const dataset = {
     essence: 'strength',
-    isSpecialized: 'false',
+    isSpecialized: false,
     shift: 'd20',
     shiftDown: '0',
     shiftUp: '0',
@@ -173,7 +173,7 @@ describe("rollSkill", () => {
   test("specialized skill roll", async () => {
     const datasetCopy = {
       ...dataset,
-      isSpecialized: "true",
+      isSpecialized: true,
       specializationName: 'Foo Specialization',
     };
     rollDialog.getSkillRollOptions.mockReturnValue({
@@ -357,7 +357,7 @@ describe("_getSkillRollLabel", () => {
   test("specialized skill roll", () => {
     const dataset = {
       skill: 'athletics',
-      isSpecialized: "true",
+      isSpecialized: true,
       specializationName: 'Foo Specialization',
     };
     const skillRollOptions = {

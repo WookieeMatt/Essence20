@@ -150,7 +150,43 @@ export class RoleHandler {
       return false;
     }
 
+    if (role.system.skillDie.isUsed && !role.system.skillDie.name) {
+      ui.notifications.error(game.i18n.localize('E20.RoleSkillDieError'));
+      return false;
+    }
+
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
+
+    if (role.system.skillDie.isUsed) {
+      const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+      const skillStringShift = `system.skills.${skillName}.shift`;
+      const skillStringDisplayName = `system.skills.${skillName}.displayName`;
+      const skillStringEdge = `system.skills.${skillName}.edge`;
+      const skillStringEssencesSmarts = `system.skills.${skillName}.essences.smarts`;
+      const skillStringEssencesSocial = `system.skills.${skillName}.essences.social`;
+      const skillStringEssencesSpeed = `system.skills.${skillName}.essences.speed`;
+      const skillStringEssencesSrength = `system.skills.${skillName}.essences.strength`;
+      const skillStringIsSpecialized = `system.skills.${skillName}.isSpecialized`;
+      const skillStringModifier = `system.skills.${skillName}.modifier`;
+      const skillStringSnag = `system.skills.${skillName}.snag`;
+      const skillStringShiftUp = `system.skills.${skillName}.shiftUp`;
+      const skillStringShiftDown = `system.skills.${skillName}.shiftDown`;
+
+      await this._actor.update({
+        [skillStringShift]: "d2",
+        [skillStringEssencesSmarts] : false,
+        [skillStringEssencesSocial] : false,
+        [skillStringEssencesSpeed] : false,
+        [skillStringEssencesSrength] : false,
+        [skillStringEdge] : false,
+        [skillStringSnag] : false,
+        [skillStringShiftUp] : 0,
+        [skillStringShiftDown] : 0,
+        [skillStringIsSpecialized] : false,
+        [skillStringModifier] : 0,
+        [skillStringDisplayName] : role.system.skillDie.name,
+      });
+    }
 
     if (role.system.version == 'myLittlePony') {
       await this._selectEssenceProgression(role,dropFunc);
@@ -186,6 +222,13 @@ export class RoleHandler {
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
       });
+    }
+
+    if (role.system.skillDie.isUsed) {
+      const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+      const skillString = `system.skills.-=${skillName}`;
+
+      await this._actor.update({[skillString] : null});
     }
 
     if (role.system.adjustments.health.length) {
