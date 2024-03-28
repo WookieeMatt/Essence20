@@ -95,6 +95,9 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Delete Role from Focus
     html.find('.role-delete').click(this._onObjectDelete.bind(this, ".role"));
+
+    // Delete Role Points from Role
+    html.find('.rolePoints-delete').click(this._onObjectDelete.bind(this, ".rolePoints"));
   }
 
   /**

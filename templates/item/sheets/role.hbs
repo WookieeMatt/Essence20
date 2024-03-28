@@ -233,6 +233,8 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     {{/ifNotEquals}}
 
+    {{!-- Role Points --}}
+    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="rolePoints" label='E20.RolePoints' items=system.items type='rolePoints'}}
     {{!-- Role has SkillDie --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieIsUsed'}}
     {{#*inline "item-field-inputs"}}

@@ -547,11 +547,12 @@ E20.alterationTypes = {
 preLocalize("alterationTypes");
 
 E20.bonusType = {
-  attackUpShift: "E20.AttackUpShift",
-  damageBonus: "E20.DamageBonus",
-  healthBonus: "E20.HealthBonus",
-  defenseBonus: "E20.DefenseBonus",
+  attackUpShift: "E20.BonusAttackUpShift",
+  damageBonus: "E20.BonusDamage",
+  healthBonus: "E20.BonusHealth",
+  defenseBonus: "E20.BonusDefense",
 };
+preLocalize("bonusType");
 
 /************************************************
  * Spells                                       *
