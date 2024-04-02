@@ -323,6 +323,7 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
           return;
         }
       }
+
       if (item.uuid === droppedItem.uuid) {
         return;
       }
