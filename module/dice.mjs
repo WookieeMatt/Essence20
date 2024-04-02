@@ -65,12 +65,6 @@ export class Dice {
    * @param {Item} item   The item being used, if any.
    */
   async rollSkill(rawDataset, actor, item) {
-    let specializationBoolean = false;
-    if (rawDataset.isSpecialized === true || rawDataset.isSpecialized === false) {
-      specializationBoolean = rawDataset.isSpecialized;
-    } else if (rawDataset.isSpecialized === 'true') {
-      specializationBoolean = true;
-    }
     const dataset = { // Converting strings to usable types
       ...rawDataset,
       shiftDown: parseInt(rawDataset.shiftDown),
