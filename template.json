@@ -916,7 +916,7 @@
       ],
       "bonus": {
         "increase": 0,
-        "level20Advance": 0,
+        "level20Value": 0,
         "levels": [],
         "starting": 0
       },
