@@ -318,8 +318,8 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
   if (items) {
     for (const [, item] of Object.entries(items)) {
       if (droppedItem.type == 'rolePoints' && item.type == 'rolePoints') {
-          ui.notifications.error(game.i18n.localize('E20.RolePointsMultipleError'));
-          return;
+        ui.notifications.error(game.i18n.localize('E20.RolePointsMultipleError'));
+        return;
       }
 
       if (item.uuid === droppedItem.uuid) {
