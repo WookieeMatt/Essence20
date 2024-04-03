@@ -932,7 +932,7 @@
       "isBonus": false,
       "isSeperate": false,
       "isSpendable": false,
-      "level20Advance": 0,
+      "level20Value": 0,
       "levels": [],
       "starting": 0
     },
