@@ -547,7 +547,7 @@ E20.alterationTypes = {
 preLocalize("alterationTypes");
 
 E20.bonusType = {
-  attackUpShift: "E20.BonusAttackUpShift",
+  attackUpshift: "E20.BonusAttackUpshift",
   damageBonus: "E20.BonusDamage",
   healthBonus: "E20.BonusHealth",
   defenseBonus: "E20.BonusDefense",

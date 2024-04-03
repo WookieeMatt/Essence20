@@ -320,7 +320,6 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
       if (droppedItem.type == 'rolePoints' && item.type == 'rolePoints') {
           ui.notifications.error(game.i18n.localize('E20.RolePointsMultipleError'));
           return;
-        }
       }
 
       if (item.uuid === droppedItem.uuid) {
@@ -407,7 +406,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['isBonus'] = droppedItem.system.isBonus;
       entry['isSeparate'] = droppedItem.system.isSeparate;
       entry['isSpendable'] = droppedItem.system.isSpendable;
-      entry['level20Advance'] = droppedItem.system.level20Advance;
+      entry['level20Value'] = droppedItem.system.level20Value;
       entry['levels'] = droppedItem.system.levels;
       entry['source'] = droppedItem.system.source;
       entry['starting'] = droppedItem.system.starting;
