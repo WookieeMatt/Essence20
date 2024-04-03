@@ -153,7 +153,7 @@ export function rememberValues(html) {
  * @param {Item} parentItem The items' parent item
  * @param {Number} lastProcessedLevel The flag for the last time the actor changed level
  */
-export async function  createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
+export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const createNewItem =
