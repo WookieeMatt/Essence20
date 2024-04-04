@@ -144,6 +144,16 @@ Handlebars.registerHelper('ifNotEquals', function (arg1, arg2, options) {
   return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
 });
 
+Handlebars.registerHelper('itemsContainType', function (items, type, options) {
+  for (item in items) {
+    if (item.type == type) {
+      return options.fn(this)
+    }
+  }
+
+  return options.inverse(this);
+});
+
 /* -------------------------------------------- */
 /*  Misc Hooks                                  */
 /* -------------------------------------------- */
