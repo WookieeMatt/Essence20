@@ -665,6 +665,7 @@
       "perk",
       "power",
       "role",
+      "rolePoints",
       "specialization",
       "spell",
       "threatPower",
@@ -907,6 +908,33 @@
         "qualified":[],
         "trained":[]
       }
+    },
+    "rolePoints": {
+      "templates": [
+        "item",
+        "itemDescription"
+      ],
+      "bonus": {
+        "increase": 0,
+        "level20Value": 0,
+        "levels": [],
+        "starting": 0
+      },
+      "bonusType": " ",
+      "canBeActivated": false,
+      "defenseBonus": {
+        "cleverness": false,
+        "evasion": false,
+        "toughness": false,
+        "willpower": false
+      },
+      "increase": 0,
+      "isBonus": false,
+      "isSeperate": false,
+      "isSpendable": false,
+      "level20Value": 0,
+      "levels": [],
+      "starting": 0
     },
     "specialization": {
       "templates": [

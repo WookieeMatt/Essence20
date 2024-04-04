@@ -158,6 +158,14 @@
         "starting": 2
       }
     },
+    "rolePoints": {
+      "has": false,
+      "increase": 0,
+      "levels": [],
+      "option": "",
+      "name": "",
+      "starting": 0
+    },
     "skills": [
       "might",
       "culture"

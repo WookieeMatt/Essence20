@@ -1,6 +1,5 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
 <div class="chip-section">
-  {{parentItem}}
    <span class="chip" name="chip.weapon.classification">{{lookup @root.config.skills item.classification.skill}} {{lookup @root.config.weaponSizes parentItem.system.classification.size}} {{lookup @root.config.weaponStyles item.classification.style}}</span>
   <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.numHands}}</span>
   <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.numTargets}}</span>

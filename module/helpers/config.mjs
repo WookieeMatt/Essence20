@@ -457,6 +457,7 @@ E20.characterTypes = {
   perk: "E20.Perk",
   power: "E20.Power",
   role: "E20.Role",
+  rolePoints: "E20.RolePoints",
   specialization: "E20.Specialization",
   spell: "E20.Spell",
 };
@@ -544,6 +545,14 @@ E20.alterationTypes = {
   other: "E20.AlterationTypeOther",
 };
 preLocalize("alterationTypes");
+
+E20.bonusType = {
+  attackUpshift: "E20.BonusAttackUpshift",
+  damageBonus: "E20.BonusDamage",
+  healthBonus: "E20.BonusHealth",
+  defenseBonus: "E20.BonusDefense",
+};
+preLocalize("bonusType");
 
 /************************************************
  * Spells                                       *

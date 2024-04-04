@@ -304,6 +304,9 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     {{/ifEquals}}
 
+    {{!-- Role Points --}}
+    {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="rolePoints" label='E20.RolePoints' items=system.items type='rolePoints'}}
+
     {{!-- General Perk --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkGeneralPlural'}}
     {{#*inline "item-field-edit"}}

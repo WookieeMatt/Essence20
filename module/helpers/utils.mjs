@@ -317,6 +317,11 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
   if (items) {
     for (const [, item] of Object.entries(items)) {
+      if (droppedItem.type == 'rolePoints' && item.type == 'rolePoints') {
+        ui.notifications.error(game.i18n.localize('E20.RolePointsMultipleError'));
+        return;
+      }
+
       if (item.uuid === droppedItem.uuid) {
         return;
       }
@@ -390,6 +395,21 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
+      return await addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == "rolePoints") {
+      entry['bonus'] = droppedItem.system.bonus;
+      entry['bonusType'] = droppedItem.system.bonusType;
+      entry['canBeActivated'] = droppedItem.system.canBeActivated;
+      entry['defenseBonus'] = droppedItem.system.defenseBonus;
+      entry['description'] = droppedItem.system.description;
+      entry['increase'] = droppedItem.system.increase;
+      entry['isBonus'] = droppedItem.system.isBonus;
+      entry['isSeparate'] = droppedItem.system.isSeparate;
+      entry['isSpendable'] = droppedItem.system.isSpendable;
+      entry['level20Value'] = droppedItem.system.level20Value;
+      entry['levels'] = droppedItem.system.levels;
+      entry['source'] = droppedItem.system.source;
+      entry['starting'] = droppedItem.system.starting;
       return await addItemIfUnique(droppedItem, targetItem, entry);
     }
 
