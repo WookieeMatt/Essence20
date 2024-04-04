@@ -145,8 +145,8 @@ Handlebars.registerHelper('ifNotEquals', function (arg1, arg2, options) {
 });
 
 Handlebars.registerHelper('itemsContainType', function (items, type, options) {
-  for (item in items) {
-    if (item.type == type) {
+  for (const key in items) {
+    if (items[key].type == type) {
       return options.fn(this);
     }
   }
