@@ -1,6 +1,6 @@
 {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" className=className label=label items=items type=type}}
 {{#*inline "item-field-inputs"}}
-{{#if items}}
+{{#itemsContainType items type}}
   <div class="flexcol" id="rolePerkList">
     {{#each items as |item|}}
       {{#ifEquals item.type ../type}}
@@ -24,6 +24,6 @@
   </div>
 {{else}}
   <label>{{localize 'E20.ItemDrop'}}</label>
-{{/if}}
+{{/itemsContainType}}
 {{/inline}}
 {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
