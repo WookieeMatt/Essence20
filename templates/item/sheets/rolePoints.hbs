@@ -68,6 +68,20 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsHasCost'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.hasCost" {{checked system.hasCost}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#if system.hasCost}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsPersonalPowerCost'}}
+        {{#*inline "item-field-inputs"}}
+        {{numberInput system.powerCost name="system.powerCost"}}
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/if}}
+
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIsBonus'}}
       {{#*inline "item-field-inputs"}}
       <input type="checkbox" name="system.isBonus" {{checked system.isBonus}} />

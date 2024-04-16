@@ -158,7 +158,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
     if (item.type == type) {
       const createNewItem =
         !["role", "focus"].includes(parentItem.type)
-        || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+        || !item.level || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
@@ -570,6 +570,12 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
       [skillStringShift]: shiftList[finalShiftIndex],
       [skillStringIsSpecialized] : isSpecialized,
     });
+  }
+
+  for (const [,item] of Object.entries(role.system.items)) {
+    if (item.type == "rolePoints") {
+      await createItemCopies(role.system.items, actor, "rolePoints", role);
+    }
   }
 
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {

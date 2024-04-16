@@ -928,12 +928,22 @@
         "toughness": false,
         "willpower": false
       },
+      "hasCost": false,
       "increase": 0,
       "isBonus": false,
       "isSeperate": false,
       "isSpendable": false,
       "level20Value": 0,
       "levels": [],
+      "powerCost": 0,
+      "rolePoints": {
+        "max": 0,
+        "value" : 0,
+        "secondary": {
+          "max": 0,
+          "value" : 0
+        }
+      },
       "starting": 0
     },
     "specialization": {

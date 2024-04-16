@@ -44,6 +44,10 @@ export class Essence20Item extends Item {
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
     }
+
+    if (this.type == 'rolePoints') {
+      this._prepareRolePoints();
+    }
   }
 
   /**
@@ -99,6 +103,39 @@ export class Essence20Item extends Item {
 
     if (armorBonusToughness) {
       this.system.totalBonusToughness = armorBonusToughness;
+    }
+  }
+
+
+  _prepareRolePoints() {
+    if (!this.actor) return null;
+    let levelIncreases = 0;
+    for (const arrayLevel of this.system.levels) {
+
+      const level = arrayLevel.replace(/[^0-9]/g, '');
+      if (level <= this.actor.system.level) {
+        levelIncreases += 1;
+      }
+    }
+    if (this.system.level20Value != 0) {
+      this.system.rolePoints.max = this.system.level20Value;
+    } else {
+      this.system.rolePoints.max = this.system.starting + (this.system.increase * levelIncreases);
+    }
+
+    if (this.system.isSeparate) {
+      levelIncreases = 0;
+      for (const arrayLevel of this.system.bonus.levels) {
+        const level = arrayLevel.replace(/[^0-9]/g, '');
+        if (level <= this.actor.system.level) {
+          levelIncreases += 1;
+        }
+      }
+      if (this.system.bonus.level20Value != 0) {
+        this.system.rolePoints.secondary.max = this.system.bonus.level20Value;
+      } else {
+        this.system.rolePoints.secondary.max = this.system.bonus.starting + (this.system.bonus.increase * levelIncreases);
+      }
     }
   }
 
