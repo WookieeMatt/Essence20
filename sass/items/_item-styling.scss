@@ -170,7 +170,7 @@
   border: none;
 }
 
-.essence20 .item-sheet{
+.essence20 .item-sheet {
   background: v.$background-n;
   border: v.$border;
   border-radius: v.$border-radius;
@@ -184,6 +184,6 @@
 }
 
 .essence20 .item-field .item-field-inputs {
-  flex: 2;
+  flex: 1.5;
   justify-content: flex-end;
 }
