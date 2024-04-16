@@ -117,6 +117,7 @@ export class Essence20Item extends Item {
         levelIncreases += 1;
       }
     }
+
     if (this.system.level20Value != 0) {
       this.system.rolePoints.max = this.system.level20Value;
     } else {
@@ -131,6 +132,7 @@ export class Essence20Item extends Item {
           levelIncreases += 1;
         }
       }
+
       if (this.system.bonus.level20Value != 0) {
         this.system.rolePoints.secondary.max = this.system.bonus.level20Value;
       } else {
