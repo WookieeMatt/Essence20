@@ -43,9 +43,7 @@ export class Essence20Item extends Item {
 
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
-    }
-
-    if (this.type == 'rolePoints') {
+    } else if (this.type == 'rolePoints') {
       this._prepareRolePoints();
     }
   }
