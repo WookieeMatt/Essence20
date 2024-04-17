@@ -573,7 +573,8 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   }
 
   for (const [,item] of Object.entries(role.system.items)) {
-    if (item.type == "rolePoints") {
+    if (item.type == "rolePoints" && actor.flags.essence20.roleDrop) {
+
       await createItemCopies(role.system.items, actor, "rolePoints", role);
     }
   }
@@ -585,6 +586,8 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     // Level down
     await deleteAttachmentsForItem(role, actor, previousLevel);
   }
+
+  actor.setFlag('essence20', 'roleDrop', false);
 }
 
 /**
@@ -610,4 +613,17 @@ export async function setFocusValues(focus, actor, newLevel=null, previousLevel=
     // Level down
     await deleteAttachmentsForItem(focus, actor, previousLevel);
   }
+}
+
+export function getLevelIncreases(levels, currentLevel) {
+  let levelIncreases = 0;
+  for (const arrayLevel of levels) {
+
+    const level = arrayLevel.replace(/[^0-9]/g, '');
+    if (level <= currentLevel) {
+      levelIncreases += 1;
+    }
+  }
+
+  return levelIncreases;
 }

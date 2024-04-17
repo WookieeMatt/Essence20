@@ -1,5 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
+import { getLevelIncreases } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -109,34 +110,21 @@ export class Essence20Item extends Item {
 
   _prepareRolePoints() {
     if (!this.actor) return null;
-    let levelIncreases = 0;
-    for (const arrayLevel of this.system.levels) {
-
-      const level = arrayLevel.replace(/[^0-9]/g, '');
-      if (level <= this.actor.system.level) {
-        levelIncreases += 1;
-      }
-    }
+    const levelIncreases = getLevelIncreases(this.system.levels, this.actor.system.level);
 
     if (this.system.level20Value != 0) {
-      this.system.rolePoints.max = this.system.level20Value;
+      this.system.points.primary.max = this.system.level20Value;
     } else {
-      this.system.rolePoints.max = this.system.starting + (this.system.increase * levelIncreases);
+      this.system.points.primary.max = this.system.starting + (this.system.increase * levelIncreases);
     }
 
     if (this.system.isSeparate) {
-      levelIncreases = 0;
-      for (const arrayLevel of this.system.bonus.levels) {
-        const level = arrayLevel.replace(/[^0-9]/g, '');
-        if (level <= this.actor.system.level) {
-          levelIncreases += 1;
-        }
-      }
+      const levelIncreases = getLevelIncreases(this.system.bonus.levels, this.actor.system.level);
 
       if (this.system.bonus.level20Value != 0) {
-        this.system.rolePoints.secondary.max = this.system.bonus.level20Value;
+        this.system.points.secondary.max = this.system.bonus.level20Value;
       } else {
-        this.system.rolePoints.secondary.max = this.system.bonus.starting + (this.system.bonus.increase * levelIncreases);
+        this.system.points.secondary.max = this.system.bonus.starting + (this.system.bonus.increase * levelIncreases);
       }
     }
   }

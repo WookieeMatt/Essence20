@@ -156,6 +156,7 @@ export class RoleHandler {
     }
 
     this._actor.setFlag('essence20', 'previousLevel', this._actor.system.level);
+    this._actor.setFlag('essence20', 'roleDrop', true);
 
     if (role.system.skillDie.isUsed) {
       const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
