@@ -615,6 +615,12 @@ export async function setFocusValues(focus, actor, newLevel=null, previousLevel=
   }
 }
 
+/**
+ * Determines the number of increases that have occured based on the level of the actor
+ * @param {Levels} levels The array of levels that you advance at
+ * @param {CurrentLevel} currentLevel The current level of the actor
+ * @returns {LevelIncrease} The number of increases for the level of the actor
+ */
 export function getLevelIncreases(levels, currentLevel) {
   let levelIncreases = 0;
   for (const arrayLevel of levels) {

@@ -106,6 +106,9 @@ export class Essence20Item extends Item {
   }
 
 
+  /**
+   * Finds the number of Role Points the actor currently has.
+   */
   _prepareRolePoints() {
     if (!this.actor) return null;
     const levelIncreases = getLevelIncreases(this.system.levels, this.actor.system.level);
