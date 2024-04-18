@@ -158,7 +158,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
     if (item.type == type) {
       const createNewItem =
         !["role", "focus"].includes(parentItem.type)
-        || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+        || !item.level || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
@@ -572,6 +572,13 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     });
   }
 
+  for (const [,item] of Object.entries(role.system.items)) {
+    if (item.type == "rolePoints" && actor.flags.essence20.roleDrop) {
+
+      await createItemCopies(role.system.items, actor, "rolePoints", role);
+    }
+  }
+
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
     // Drop or level up
     await createItemCopies(role.system.items, actor, "perk", role, previousLevel);
@@ -579,6 +586,8 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
     // Level down
     await deleteAttachmentsForItem(role, actor, previousLevel);
   }
+
+  actor.setFlag('essence20', 'roleDrop', false);
 }
 
 /**
@@ -604,4 +613,23 @@ export async function setFocusValues(focus, actor, newLevel=null, previousLevel=
     // Level down
     await deleteAttachmentsForItem(focus, actor, previousLevel);
   }
+}
+
+/**
+ * Determines the number of increases that have occured based on the level of the actor
+ * @param {String[]} levels The array of levels that you advance at
+ * @param {Number} currentLevel The current level of the actor
+ * @returns {Number} level Increase The number of increases for the level of the actor
+ */
+export function getLevelIncreases(levels, currentLevel) {
+  let levelIncreases = 0;
+  for (const arrayLevel of levels) {
+
+    const level = arrayLevel.replace(/[^0-9]/g, '');
+    if (level <= currentLevel) {
+      levelIncreases += 1;
+    }
+  }
+
+  return levelIncreases;
 }

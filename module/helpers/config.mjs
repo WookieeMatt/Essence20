@@ -426,6 +426,8 @@ E20.defaultIcon = {
   origin: "systems/essence20/assets/icons/items/origin.svg",
   perk: "systems/essence20/assets/icons/items/perk.svg",
   power: "systems/essence20/assets/icons/items/powers.svg",
+  role: "systems/essence20/assets/icons/items/role.svg",
+  rolePoints: "systems/essence20/assets/icons/items/rolePoints.svg",
   weaponEffect: "systems/essence20/assets/icons/items/weapon_effect.svg",
 };
 

@@ -1,5 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
+import { getLevelIncreases } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -43,6 +44,8 @@ export class Essence20Item extends Item {
 
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
+    } else if (this.type == 'rolePoints') {
+      this._prepareRolePoints();
     }
   }
 
@@ -99,6 +102,31 @@ export class Essence20Item extends Item {
 
     if (armorBonusToughness) {
       this.system.totalBonusToughness = armorBonusToughness;
+    }
+  }
+
+
+  /**
+   * Finds the number of Role Points the actor currently has.
+   */
+  _prepareRolePoints() {
+    if (!this.actor) return null;
+    const levelIncreases = getLevelIncreases(this.system.levels, this.actor.system.level);
+
+    if (this.system.level20Value != 0) {
+      this.system.points.primary.max = this.system.level20Value;
+    } else {
+      this.system.points.primary.max = this.system.starting + (this.system.increase * levelIncreases);
+    }
+
+    if (this.system.isSeparate) {
+      const levelIncreases = getLevelIncreases(this.system.bonus.levels, this.actor.system.level);
+
+      if (this.system.bonus.level20Value != 0) {
+        this.system.points.secondary.max = this.system.bonus.level20Value;
+      } else {
+        this.system.points.secondary.max = this.system.bonus.starting + (this.system.bonus.increase * levelIncreases);
+      }
     }
   }
 
