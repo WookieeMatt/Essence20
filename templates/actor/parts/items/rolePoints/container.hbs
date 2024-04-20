@@ -1,0 +1,20 @@
+<div class="stats-container" style="border-color: {{system.color}};">
+  <div class="flexrow">
+    <div></div>
+
+    <div style="flex-grow: 0; white-space: nowrap;">
+      {{localize "E20.RoleFeatures"}}
+    </div>
+
+    <div></div>
+  </div>
+
+  <div class="item flexrow flex-group-center" data-item-id="{{@root.rolePoints._id}}">
+    <label>{{@root.rolePoints.name}}</label>
+    <input class="inline-edit centered-input no-lock" data-field="system.points.primary.value" type="number"
+      name="rolePoints.system.points.primary.value" value="{{@root.rolePoints.system.points.primary.value}}" min="0" step="1" />
+    /
+    <input class="centered-input no-lock" data-field="system.points.primary.max" type="number" name="rolePoints.system.points.primary.max"
+      value="{{@root.rolePoints.system.points.primary.max}}" min="0" step="1" readonly />
+  </div>
+</div>

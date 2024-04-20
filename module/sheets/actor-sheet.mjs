@@ -174,15 +174,14 @@ export class Essence20ActorSheet extends ActorSheet {
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
     const roles = []; // Used by PCs
-    const classFeatures = []; // Used by PCs
     const specializations = {};
     const spells = [];
     const upgrades = [];
     const traits = []; // Used by Vehicles
     const weapons = [];
-    const classFeaturesById = {};
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
+    let rolePoints = null;
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -249,12 +248,11 @@ export class Essence20ActorSheet extends ActorSheet {
       case 'spell':
         spells.push(i);
         break;
+      case 'rolePoints':
+        rolePoints = i;
+        break;
       case 'role':
         roles.push(i);
-        break;
-      case 'classFeature':
-        classFeatures.push(i);
-        classFeaturesById[i._id] = i.name;
         break;
       case 'specialization':
         {
@@ -282,8 +280,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.armors = armors;
     context.bonds = bonds;
     context.contacts = contacts;
-    context.classFeatures = classFeatures;
-    context.classFeaturesById = classFeaturesById;
     context.features = features;
     context.gears = gears;
     context.focuses = focuses;
@@ -294,6 +290,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.origins = origins;
     context.perks = perks;
     context.powers = powers;
+    context.rolePoints = rolePoints;
     context.roles = roles;
     context.spells = spells;
     context.specializations = specializations;
