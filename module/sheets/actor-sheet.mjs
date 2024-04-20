@@ -568,9 +568,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (rollType == 'power') {
         await this._pwHandler.powerCost(item);
-      } else if (rollType == 'classFeature') {
-        // If a Class Feature is being used, decrement uses
-        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
+      } else if (rollType == 'rolePoints') {
+        // If Role Points are being used, decrement uses
+        await item.update({ 'system.points.value': Math.max(0, item.system.points.value - 1) });
       }
 
       if (item) {
