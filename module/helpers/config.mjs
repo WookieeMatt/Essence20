@@ -178,6 +178,7 @@ E20.armorTypes = {
   impulse: "E20.ArmorsImpulse",
   light: "E20.ArmorsLight",
   medium: "E20.ArmorsMedium",
+  psycho: "E20.ArmorsPsycho",
   tactical: "E20.ArmorsTactical",
 };
 preLocalize("armorTypes");

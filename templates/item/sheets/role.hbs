@@ -31,6 +31,13 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{#ifNotEquals system.version 'myLittlePony'}}
+        {{#ifEquals system.version 'powerRangers'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AdvancedRole'}}
+          {{#*inline "item-field-inputs"}}
+          <input type="checkbox" name="system.isAdvanced" {{checked system.isAdvanced}} />
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
 
         {{#ifNotEquals system.version 'transformers'}}
           {{!-- Armor Trained --}}
