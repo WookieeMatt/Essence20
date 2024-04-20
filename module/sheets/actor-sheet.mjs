@@ -569,8 +569,24 @@ export class Essence20ActorSheet extends ActorSheet {
       if (rollType == 'power') {
         await this._pwHandler.powerCost(item);
       } else if (rollType == 'rolePoints') {
-        // If Role Points are being used, decrement uses
-        await item.update({ 'system.points.primary.value': Math.max(0, item.system.points.primary.value - 1) });
+        if (item.system.points.primary.value < 1) {
+          ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
+        } else {
+          // If Role Points are being used, decrement uses
+          await item.update({ 'system.points.primary.value': item.system.points.primary.value - 1 });
+
+          // Some also decrement Personal Power
+          if (item.system.hasCost) {
+            if (this.actor.system.powers.personal.value < item.system.powerCost) {
+              ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
+            } else {
+              await this.actor.update({
+                ['system.powers.personal.value']:
+                  this.actor.system.powers.personal.value - item.system.powerCost,
+              });
+            }
+          }
+        }
       }
 
       if (item) {

@@ -574,8 +574,8 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
   for (const [,item] of Object.entries(role.system.items)) {
     if (item.type == "rolePoints" && actor.flags.essence20.roleDrop) {
-
       await createItemCopies(role.system.items, actor, "rolePoints", role);
+      // Set points value to max?
     }
   }
 
