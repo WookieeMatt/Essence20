@@ -15,22 +15,22 @@
   "_id": "pInMc0ZhTG4Wo31X",
   "changes": [
     {
-      "key": "system.defenses.cleverness.bonus",
+      "key": "system.defenses.cleverness.morphed",
       "mode": 2,
       "value": "2"
     },
     {
-      "key": "system.defenses.evasion.bonus",
+      "key": "system.defenses.evasion.morphed",
       "mode": 2,
       "value": "2"
     },
     {
-      "key": "system.defenses.toughness.bonus",
+      "key": "system.defenses.toughness.morphed",
       "mode": 2,
       "value": "2"
     },
     {
-      "key": "system.defenses.willpower.bonus",
+      "key": "system.defenses.willpower.morphed",
       "mode": 2,
       "value": "2"
     }

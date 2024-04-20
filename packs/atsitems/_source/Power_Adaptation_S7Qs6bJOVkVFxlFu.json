@@ -1,0 +1,34 @@
+{
+  "folder": "q1eAYrImf4LNqCQo",
+  "name": "Power Adaptation",
+  "type": "perk",
+  "_id": "S7Qs6bJOVkVFxlFu",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 57
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713531212722,
+    "modifiedTime": 1713531220003,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!S7Qs6bJOVkVFxlFu"
+}

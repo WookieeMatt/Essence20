@@ -1,0 +1,36 @@
+{
+  "folder": "o1H1rzDVMNEvKJfW",
+  "name": "Let's Go Psycho",
+  "type": "perk",
+  "_id": "qMvUP1yEtsSo6KDh",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 282
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction"
+  },
+  "effects": [
+    "bXUsBU9guJnbXWkw"
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713587041756,
+    "modifiedTime": 1713587158517,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!qMvUP1yEtsSo6KDh"
+}

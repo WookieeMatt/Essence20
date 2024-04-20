@@ -1,0 +1,48 @@
+{
+  "folder": "WGMwrQ77zi7rq9gg",
+  "name": "Archaeologist",
+  "type": "influence",
+  "_id": "LVnFixsXXCBbARlw",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 32
+    },
+    "items": {
+      "bd63": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.i2sXf7gdupkXqJgh",
+        "img": "icons/svg/hazard.svg",
+        "name": "Archaeologist",
+        "type": "hangUp"
+      },
+      "c98a": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.kLipkiHHSGmMlRAm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Archaeologist",
+        "type": "perk"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713549362445,
+    "modifiedTime": 1713549386466,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!LVnFixsXXCBbARlw"
+}

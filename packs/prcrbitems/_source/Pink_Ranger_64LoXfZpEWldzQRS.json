@@ -1,0 +1,223 @@
+{
+  "folder": "UcsFO5Hku6T5zN7o",
+  "name": "Pink Ranger",
+  "type": "role",
+  "_id": "64LoXfZpEWldzQRS",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 46
+    },
+    "items": {
+      "7799": {
+        "uuid": "Compendium.essence20.pr_crb.Item.oiHSYCoybTXCzYYo",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Volley Shots",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 0,
+          "level20Value": 0,
+          "levels": [],
+          "starting": 0
+        },
+        "bonusType": " ",
+        "canBeActivated": true,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": false,
+        "isSpendable": false,
+        "level20Value": 0,
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ],
+        "source": {
+          "book": "Power Rangers Core Rulebook",
+          "page": 48
+        },
+        "starting": 2
+      },
+      "f21a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Xi2sHKmBi21c3wbu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Volley",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "48fc": {
+        "uuid": "Compendium.essence20.pr_crb.Item.9oFOf0qSLJCwCGmZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hard Target",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "a369": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rQQqFLBG7JH4d1kR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fleet of Foot",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "ad09": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "88a5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.6ay8OIRRwZTnQUV8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Penetrating Shot",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "e17f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.coGMtK50t3Ojeklx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Group Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "d351": {
+        "uuid": "Compendium.essence20.pr_crb.Item.YhdTm7qhaPCoiDab",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sidestep",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "ef16": {
+        "uuid": "Compendium.essence20.pr_crb.Item.tljdouRqNGgQQDz6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Precision Aim",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "002f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.DHYxJEp1X1BDlm6K",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pink Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "social": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "speed": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level12"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level4",
+          "level7",
+          "level10",
+          "level13",
+          "level16",
+          "level19"
+        ],
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "isAdvanced": false
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713499295918,
+    "modifiedTime": 1713499546169,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!64LoXfZpEWldzQRS"
+}

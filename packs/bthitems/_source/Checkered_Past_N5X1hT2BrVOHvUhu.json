@@ -1,0 +1,48 @@
+{
+  "folder": "WGMwrQ77zi7rq9gg",
+  "name": "Checkered Past",
+  "type": "influence",
+  "_id": "N5X1hT2BrVOHvUhu",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 32
+    },
+    "items": {
+      "28fd": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.BFIRv5V1VYLCCcps",
+        "img": "icons/svg/hazard.svg",
+        "name": "Checkered Past",
+        "type": "hangUp"
+      },
+      "a605": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.qeRHmEFB4oby9wi2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Checkered Past",
+        "type": "perk"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713549433429,
+    "modifiedTime": 1713549449436,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!N5X1hT2BrVOHvUhu"
+}

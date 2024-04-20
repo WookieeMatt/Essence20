@@ -1,0 +1,19 @@
+{
+  "name": "Roles",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "tutqIbfZE1ytmm0J",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713587177209,
+    "modifiedTime": 1713587177209,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!folders!tutqIbfZE1ytmm0J"
+}

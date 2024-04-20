@@ -1,0 +1,31 @@
+{
+  "folder": "E6DeUTYlh8aIeTMe",
+  "name": "Infiltrator",
+  "type": "hangUp",
+  "_id": "VQHWImrSS1t1sX93",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 280
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713586851117,
+    "modifiedTime": 1713586890906,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!VQHWImrSS1t1sX93"
+}

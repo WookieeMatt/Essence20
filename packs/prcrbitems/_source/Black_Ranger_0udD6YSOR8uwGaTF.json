@@ -1,0 +1,222 @@
+{
+  "folder": "UcsFO5Hku6T5zN7o",
+  "name": "Black Ranger",
+  "type": "role",
+  "_id": "0udD6YSOR8uwGaTF",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 31
+    },
+    "items": {
+      "0198": {
+        "uuid": "Compendium.essence20.pr_crb.Item.QeaZlrXKU0Ykh0YB",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Quips & Speeches",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 0,
+          "level20Value": 0,
+          "levels": [],
+          "starting": 0
+        },
+        "bonusType": " ",
+        "canBeActivated": false,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": false,
+        "isSpendable": true,
+        "level20Value": 0,
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ],
+        "source": {
+          "book": "Power Rangers Core Rulebook",
+          "page": 33
+        },
+        "starting": 2
+      },
+      "21fe": {
+        "uuid": "Compendium.essence20.pr_crb.Item.7EyU0Hf6T3YVels4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart of the Team",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "5a63": {
+        "uuid": "Compendium.essence20.pr_crb.Item.1DphEJt2hPswKDzI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Whatever We Need",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "b79c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "You Got This!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "9ff9": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "56d0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "ab9d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.8duLY5PjlpmbNkwK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "One For All",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "ff37": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Q5YDt0r21QDmBuDC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "All For One",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "603e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.nDJbufpNURXmVRJn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Black Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "social": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "speed": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "strength": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ],
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "might",
+      "performance"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "isAdvanced": false
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713453402209,
+    "modifiedTime": 1713453686403,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!0udD6YSOR8uwGaTF"
+}

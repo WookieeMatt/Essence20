@@ -1,0 +1,236 @@
+{
+  "folder": "l5vniIVjSTF7TEBi",
+  "name": "Gold Ranger",
+  "type": "role",
+  "_id": "bCboFGsaJGKtz8wK",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 50
+    },
+    "items": {
+      "4f0d": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.j7Du5Hakt3MLs2O3",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Hardened Armor",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 0,
+          "level20Value": 0,
+          "levels": [],
+          "starting": 0
+        },
+        "bonusType": "defenseBonus",
+        "canBeActivated": false,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": true,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": true,
+        "isSeparate": false,
+        "isSpendable": false,
+        "level20Value": 0,
+        "levels": [
+          "level4",
+          "level9",
+          "level12",
+          "level16"
+        ],
+        "source": {
+          "book": "Across the Stars",
+          "page": 52
+        },
+        "starting": 1
+      },
+      "d55a": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.LVyy4985HSSKCnGs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hardened Armor",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "b9b5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ce10": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.dSMZ5wMdu0Xq0VzX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Golden Guardian",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "78dc": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "f6df": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.PcezfGdjUtNUZHYH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stand Behind Me!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "d5f6": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.8mRJPvxLFVcf0egf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Counterstrike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "64da": {
+        "uuid": "Compendium.essence20.pr_crb.Item.TomU7e31oHoRsIrT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Resilience",
+        "type": "perk",
+        "subtype": "general",
+        "level": 11
+      },
+      "0814": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.q8K1UguQAQUhrduN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Multi-Counter",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "0d07": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.YGY0lYvqbsiQcpHs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Splinter Defense",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "78ee": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.jVRapLGSt8yVHL9n",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gold Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "heavy",
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "social": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "speed": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "strength": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ],
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "athletics",
+      "might",
+      "persuasion"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "isAdvanced": true
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713530202593,
+    "modifiedTime": 1713548432957,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!bCboFGsaJGKtz8wK"
+}
