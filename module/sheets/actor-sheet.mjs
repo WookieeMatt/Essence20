@@ -182,6 +182,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const weapons = [];
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
+    let role = null;
     let rolePoints = null;
 
     // Iterate through items, allocating to containers
@@ -253,6 +254,7 @@ export class Essence20ActorSheet extends ActorSheet {
         rolePoints = i;
         break;
       case 'role':
+        role = i;
         roles.push(i);
         break;
       case 'specialization':
@@ -293,6 +295,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.powers = powers;
     context.rolePoints = rolePoints;
     context.roles = roles;
+    context.role = role;
     context.spells = spells;
     context.specializations = specializations;
     context.traits = traits;
