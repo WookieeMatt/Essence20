@@ -3,6 +3,7 @@ import {
   deleteAttachmentsForItem,
   checkIsLocked,
   createItemCopies,
+  getItemsOfType,
   parseId,
   setEntryAndAddItem,
 } from "../helpers/utils.mjs";
@@ -459,6 +460,14 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       ui.notifications.info(`Energon restored by ${energonRestore}.`);
+    }
+
+    // Resetting Role Points
+    const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
+    if (rolePointsList.length) {
+      const rolePoints = rolePointsList[0]
+      rolePoints.update({ 'system.points.primary.value': rolePoints.system.points.primary.max });
+      ui.notifications.info(`${rolePoints.name} points reset.`);
     }
 
     ui.notifications.info("Health restored and stun reset.");
