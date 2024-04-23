@@ -1,0 +1,37 @@
+{
+  "folder": "21OCbfWmzoY4UuCq",
+  "name": "Get To Know",
+  "type": "spell",
+  "_id": "pyRy1dFwuiJpAKj2",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Dark Skies Over Equestria",
+      "page": 21
+    },
+    "circle": "utility",
+    "cost": 2,
+    "duration": "1 Scene",
+    "isSpecialized": false,
+    "range": "Line of Sight",
+    "tier": "elementary"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713841950434,
+    "modifiedTime": 1713841977617,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!pyRy1dFwuiJpAKj2"
+}
