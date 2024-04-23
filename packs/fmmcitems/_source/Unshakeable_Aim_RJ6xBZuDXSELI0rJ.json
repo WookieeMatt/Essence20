@@ -1,0 +1,34 @@
+{
+  "folder": "iIe1Pyq37a7rUgfJ",
+  "name": "Unshakeable Aim",
+  "type": "perk",
+  "_id": "RJ6xBZuDXSELI0rJ",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 296
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713740388596,
+    "modifiedTime": 1713740398578,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!RJ6xBZuDXSELI0rJ"
+}

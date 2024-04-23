@@ -1,0 +1,46 @@
+{
+  "folder": "giMmGFsmJY9zTxRS",
+  "name": "Massive Fists Alternate Effects",
+  "type": "weaponEffect",
+  "_id": "KUnzP9WsgbYbeKM7",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "athletics",
+      "style": "melee"
+    },
+    "damageType": "blunt",
+    "damageValue": 2,
+    "shiftDown": 1,
+    "numHands": "1",
+    "numTargets": 2,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713833794598,
+    "modifiedTime": 1713833835970,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!KUnzP9WsgbYbeKM7"
+}

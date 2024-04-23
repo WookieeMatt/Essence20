@@ -169,6 +169,7 @@
       "level11",
       "level16"
     ],
+    "isAdvanced": false,
     "perkLevels": {
       "general": [
         "level4",
@@ -187,7 +188,8 @@
           "level13",
           "level17"
         ],
-        "starting": 2
+        "starting": 2,
+        "regeneration": 2
       }
     },
     "skillDie": {
@@ -201,8 +203,7 @@
     "weapons": {
       "qualified": [],
       "trained": []
-    },
-    "isAdvanced": false
+    }
   },
   "effects": [],
   "sort": 0,
@@ -216,7 +217,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713499659437,
-    "modifiedTime": 1713499858855,
+    "modifiedTime": 1713827642689,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!f9xhmkzadalepNA8"

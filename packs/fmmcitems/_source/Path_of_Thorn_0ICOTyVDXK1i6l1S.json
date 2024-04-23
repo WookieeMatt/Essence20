@@ -1,0 +1,270 @@
+{
+  "folder": "tutqIbfZE1ytmm0J",
+  "name": "Path of Thorn",
+  "type": "role",
+  "_id": "0ICOTyVDXK1i6l1S",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 295
+    },
+    "items": {
+      "d4d1": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.yYZbvKM7s5vdXkbQ",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Loss and Gain",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 0,
+          "level20Value": 0,
+          "levels": [],
+          "starting": 0
+        },
+        "bonusType": " ",
+        "canBeActivated": false,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": false,
+        "isSpendable": false,
+        "level20Value": 0,
+        "levels": [
+          "level6",
+          "level11",
+          "level16"
+        ],
+        "source": {
+          "book": "Finster's Monster-Matic Cookbook",
+          "page": 296
+        },
+        "starting": 1
+      },
+      "f58b": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.mgTerJX1jxtVMQMJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Their Loss, My Gain",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "eaa9": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.FoCxdBbopumlIvH8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psycho Blast",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "f1c7": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.RJ6xBZuDXSELI0rJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unshakeable Aim",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "b3ed": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.iDbMl3SS6XnyADN2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Monster Morph",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "8b48": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "8e90": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.yZ3rXt8z1jlCHlu7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psycho Assault",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "dd2e": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.uVCPqt7exjXZ7kqn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhance Monster",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "b5e2": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.jGa15CyuKXhq3IV2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Maximize Flaws",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "e29a": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.WQYSawSpefEKLaG0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nemesis Drain",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "d3a8": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.SejEXXGz3edJ734e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zordbane",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "a56a": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.vEJQA3EkB0BqUaDi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pollen Cloud",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "bcdb": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.ZqE7kDEMylFQK6Oa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grow!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "a02f": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.4wCGBUae2VvEDVs9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Suffer!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "fe34": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.GKNjCEwhgEbBiKQn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Thorn Warlord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "psycho"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "social": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "speed": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level12"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 1,
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ],
+        "starting": 2,
+        "regeneration": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "alertness",
+      "survival",
+      "streetwise"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713741906388,
+    "modifiedTime": 1713827838759,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!0ICOTyVDXK1i6l1S"
+}

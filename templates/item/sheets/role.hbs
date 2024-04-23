@@ -130,6 +130,13 @@
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+          {{!-- Personal Power Regeneration Amount --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalRegeneration'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.powers.personal.regeneration name="system.powers.personal.regeneration" min=0 step=1}}
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
           {{!-- Personal Power Increase Levels --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalIncreaseLevels'}}
           {{#*inline "item-field-edit"}}

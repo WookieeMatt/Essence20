@@ -894,6 +894,7 @@
         "personal": {
           "increase": 0,
           "levels": [],
+          "regeneration": 0,
           "starting": 0
         }
       },
