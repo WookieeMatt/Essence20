@@ -6,36 +6,44 @@
   </div>
 
   {{#if @root.rolePoints}}
-    <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.rolePoints._id}}">
-      <a class="rollable" style="flex-grow: 0;" data-roll-type="info" title="{{localize 'E20.RolePoints'}}">
-        <i class="fas fa-message-lines"></i>
-      </a>
-      {{#if @root.rolePoints.system.canBeActivated}}
-      <a class="rollable" style="flex-grow: 0;" data-roll-type="rolePoints" title="{{localize 'E20.RolePointsRoll'}}"><i
+    {{#with @root.rolePoints as |rolePoints|}}
+      <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.rolePoints._id}}">
+        <a class="rollable" style="flex-grow: 0;" data-roll-type="info" title="{{localize 'E20.RolePoints'}}">
+          <i class="fas fa-message-lines"></i>
+        </a>
+
+        {{#if rolePoints.system.isSpendable}}
+        <a class="rollable" style="flex-grow: 0;" data-roll-type="rolePoints" title="{{localize 'E20.RolePointsRoll'}}"><i
           class="fas fa-hand-fist"></i></a>
-      {{/if}}
+        {{/if}}
 
-      <label>{{@root.rolePoints.name}}</label>
+        {{#if rolePoints.system.canBeActivated}}
+          <input class="inline-edit item-label-checkbox" type="checkbox" data-field="system.isActivated" name="rolePoints.system.isActivated"
+            title="{{localize 'E20.RolePointsToggleActivation'}}" {{checked rolePoints.system.isActivated}} />
+        {{/if}}
 
-      {{#if @root.rolePoints.system.isSpendable}}
-      <input class="inline-edit centered-input no-lock" data-field="system.points.primary.value" type="number"
-        name="rolePoints.system.points.primary.value" value="{{@root.rolePoints.system.points.primary.value}}" min="0"
-        step="1" />
-      /
-      {{/if}}
-      <input class="centered-input no-unlock" data-field="system.points.primary.max" type="number"
-        name="rolePoints.system.points.primary.max" value="{{@root.rolePoints.system.points.primary.max}}" min="0"
-        step="1" readonly />
-    </div>
-  {{else if @root.role.system.skillDie.isUsed}}
-    <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.role._id}}">
-      {{#with @root.system.skills.roleSkillDie as |roleSkillDie|}}
-      <div class="item-image" style="flex-grow: 0;">
-        <a class="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{roleSkillDie.displayName}}" data-is-specialized="{{roleSkillDie.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
+        <label>{{rolePoints.name}}</label>
+
+        {{#if rolePoints.system.isSpendable}}
+        <input class="inline-edit centered-input no-lock" data-field="system.points.primary.value" type="number"
+          name="rolePoints.system.points.primary.value" value="{{rolePoints.system.points.primary.value}}" min="0"
+          step="1" />
+        /
+        {{/if}}
+        <input class="centered-input no-unlock" data-field="system.points.primary.max" type="number"
+          name="rolePoints.system.points.primary.max" value="{{rolePoints.system.points.primary.max}}" min="0"
+          step="1" readonly />
       </div>
-      <div>{{@root.role.system.skillDie.name}}: {{roleSkillDie.shift}}{{#if roleSkillDie.isSpecialized}}*{{/if}}</div>
-      {{/with}}
-    </div>
+    {{/with}}
+  {{else if @root.role.system.skillDie.isUsed}}
+    {{#with @root.system.skills.roleSkillDie as |roleSkillDie|}}
+      <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.role._id}}">
+        <div class="item-image" style="flex-grow: 0;">
+          <a class="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{roleSkillDie.displayName}}" data-is-specialized="{{roleSkillDie.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
+        </div>
+        <div>{{@root.role.system.skillDie.name}}: {{roleSkillDie.shift}}{{#if roleSkillDie.isSpecialized}}*{{/if}}</div>
+      </div>
+    {{/with}}
   {{/if}}
 
   {{#unless @root.rolePoints}}
