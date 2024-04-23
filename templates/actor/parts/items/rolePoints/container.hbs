@@ -27,10 +27,12 @@
     </div>
   {{else if @root.role.system.skillDie.isUsed}}
     <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.role._id}}">
+      {{#with @root.system.skills.roleSkillDie as |roleSkillDie|}}
       <div class="item-image" style="flex-grow: 0;">
-        <a class="rollable"><i class="fas fa-dice-d20"></i></a>
+        <a class="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{roleSkillDie.displayName}}" data-is-specialized="{{roleSkillDie.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
       </div>
-      <div>{{@root.role.system.skillDie.name}}: {{@root.system.skills.roleSkillDie.shift}}{{#if @root.system.skills.roleSkillDie.isSpecialized}}*{{/if}}</div>
+      <div>{{@root.role.system.skillDie.name}}: {{roleSkillDie.shift}}{{#if roleSkillDie.isSpecialized}}*{{/if}}</div>
+      {{/with}}
     </div>
   {{/if}}
 
