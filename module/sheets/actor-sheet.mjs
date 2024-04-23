@@ -174,7 +174,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
-    const roles = []; // Used by PCs
     const specializations = {};
     const spells = [];
     const upgrades = [];
@@ -255,7 +254,6 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'role':
         role = i;
-        roles.push(i);
         break;
       case 'specialization':
         {
@@ -294,7 +292,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.perks = perks;
     context.powers = powers;
     context.rolePoints = rolePoints;
-    context.roles = roles;
     context.role = role;
     context.spells = spells;
     context.specializations = specializations;
