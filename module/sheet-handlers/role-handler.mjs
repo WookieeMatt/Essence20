@@ -226,7 +226,7 @@ export class RoleHandler {
     }
 
     if (role.system.skillDie.isUsed) {
-      const skillName = "roleSkillDie"
+      const skillName = "roleSkillDie";
       const skillString = `system.skills.-=${skillName}`;
 
       await this._actor.update({[skillString] : null});

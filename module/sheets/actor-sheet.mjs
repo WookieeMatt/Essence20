@@ -468,7 +468,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Resetting Role Points
     const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
     if (rolePointsList.length) {
-      const rolePoints = rolePointsList[0]
+      const rolePoints = rolePointsList[0];
       rolePoints.update({ 'system.points.primary.value': rolePoints.system.points.primary.max });
       ui.notifications.info(`${rolePoints.name} points reset.`);
     }

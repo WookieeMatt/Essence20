@@ -173,7 +173,7 @@ export class Dice {
     if (dataset.skill == 'roleSkillDie') {
       rolledSkillStr = dataset.roleSkillName;
     } else if (dataset.isSpecialized) {
-      rolledSkillStr = dataset.specializationName
+      rolledSkillStr = dataset.specializationName;
     } else {
       const rolledSkill = dataset.skill;
       rolledSkillStr = this._localize(E20.skills[rolledSkill]);
