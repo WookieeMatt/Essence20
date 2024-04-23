@@ -1,0 +1,37 @@
+{
+  "folder": "emRBrjlruf3ORbW4",
+  "name": "Teleporting Beam",
+  "type": "spell",
+  "_id": "RhSRS4n3dG9TQ92L",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 138
+    },
+    "circle": "beam",
+    "cost": 2,
+    "duration": "Instant",
+    "isSpecialized": false,
+    "range": "60 feet",
+    "tier": "superior"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713843395282,
+    "modifiedTime": 1713843423005,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!RhSRS4n3dG9TQ92L"
+}

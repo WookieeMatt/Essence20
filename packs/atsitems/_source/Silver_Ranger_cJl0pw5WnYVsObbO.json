@@ -1,0 +1,232 @@
+{
+  "folder": "l5vniIVjSTF7TEBi",
+  "name": "Silver Ranger",
+  "type": "role",
+  "_id": "cJl0pw5WnYVsObbO",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 54
+    },
+    "items": {
+      "1ef3": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.SzVSNFNmhbLggUyp",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Grid Surges",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 0,
+          "level20Value": 0,
+          "levels": [],
+          "starting": 0
+        },
+        "bonusType": " ",
+        "canBeActivated": true,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": false,
+        "isSpendable": true,
+        "level20Value": 0,
+        "levels": [
+          "level3",
+          "level5",
+          "level8",
+          "level11",
+          "level14",
+          "level17",
+          "level20"
+        ],
+        "source": {
+          "book": "Across the Stars",
+          "page": 56
+        },
+        "starting": 2
+      },
+      "1bfa": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.2mStsiWlvvv14YQz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Heal",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "f232": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "fb9b": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.lwzD2ZvCLLf8PGRF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Danger Sense",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "def8": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.PEDHPJkoGvvJed5u",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Surge",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "489f": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.m3Kh8PqGf3O1oMmc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Boost",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "a865": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "ba6b": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.KhV5GeGIMJNWlWhr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Duty of the Silver",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "b238": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.S7Qs6bJOVkVFxlFu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Adaptation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "28cf": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.Bl9G8fgtd30wENkX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Silver Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "social": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "speed": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "strength": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": true,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level4",
+          "level7",
+          "level10",
+          "level13",
+          "level16",
+          "level19"
+        ],
+        "starting": 2,
+        "regeneration": 4
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "finesse",
+      "targeting",
+      "technology"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713531347194,
+    "modifiedTime": 1713827506341,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!cJl0pw5WnYVsObbO"
+}

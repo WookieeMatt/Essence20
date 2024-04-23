@@ -1,0 +1,34 @@
+{
+  "folder": "iIe1Pyq37a7rUgfJ",
+  "name": "Ice Flechettes",
+  "type": "perk",
+  "_id": "qMDjmJDYOIvKLNDb",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 291
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713706032896,
+    "modifiedTime": 1713706040910,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!qMDjmJDYOIvKLNDb"
+}

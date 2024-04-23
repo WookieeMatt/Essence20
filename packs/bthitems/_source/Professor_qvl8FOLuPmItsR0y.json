@@ -1,0 +1,55 @@
+{
+  "folder": "710LplN5hkdEIeOn",
+  "name": "Professor",
+  "type": "origin",
+  "_id": "qvl8FOLuPmItsR0y",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 30
+    },
+    "items": {
+      "d2de": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.JE59xgHb7NxEV9AZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "I've Done My Research",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "speed",
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "finesse",
+      "targeting",
+      "science",
+      "survival",
+      "technology"
+    ],
+    "startingHealth": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713549035933,
+    "modifiedTime": 1713549070402,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!qvl8FOLuPmItsR0y"
+}

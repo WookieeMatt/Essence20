@@ -1,0 +1,36 @@
+{
+  "folder": "iIe1Pyq37a7rUgfJ",
+  "name": "Stone Warlord",
+  "type": "perk",
+  "_id": "QlFNI9fQZXqO5N2J",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 295
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    "1R2dN5ltvNJZS2no"
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713740331086,
+    "modifiedTime": 1713741155329,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!QlFNI9fQZXqO5N2J"
+}

@@ -1,0 +1,37 @@
+{
+  "folder": "21OCbfWmzoY4UuCq",
+  "name": "Basic Shape-Shifting",
+  "type": "spell",
+  "_id": "u2fdkjPJZmeLgalz",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Dark Skies Over Equestria",
+      "page": 22
+    },
+    "circle": "enchantment",
+    "cost": 2,
+    "duration": "3 rounds",
+    "isSpecialized": false,
+    "range": "Self",
+    "tier": "superior"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713841999693,
+    "modifiedTime": 1713842027106,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!u2fdkjPJZmeLgalz"
+}

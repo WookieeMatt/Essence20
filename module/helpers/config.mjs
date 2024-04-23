@@ -178,6 +178,7 @@ E20.armorTypes = {
   impulse: "E20.ArmorsImpulse",
   light: "E20.ArmorsLight",
   medium: "E20.ArmorsMedium",
+  psycho: "E20.ArmorsPsycho",
   tactical: "E20.ArmorsTactical",
 };
 preLocalize("armorTypes");
@@ -488,6 +489,7 @@ E20.damageTypes = {
   blunt: "E20.DamageBlunt",
   cover: "E20.DamageCover",
   element: "E20.DamageElement",
+  impaired: "E20.DamageImparied",
   intimidate: "E20.DamageIntimidate",
   maneuver: "E20.DamageManeuver",
   mesmerized: "E20.DamageMesmerized",
@@ -551,6 +553,7 @@ preLocalize("alterationTypes");
 E20.bonusType = {
   attackUpshift: "E20.BonusAttackUpshift",
   damageBonus: "E20.BonusDamage",
+  enemyDownshift: "E20.BonusEnemyDownshift",
   healthBonus: "E20.BonusHealth",
   defenseBonus: "E20.BonusDefense",
 };

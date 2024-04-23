@@ -880,6 +880,7 @@
         "level11",
         "level16"
       ],
+      "isAdvanced": false,
       "perkLevels": {
         "general": [
           "level4",
@@ -893,6 +894,7 @@
         "personal": {
           "increase": 0,
           "levels": [],
+          "regeneration": 0,
           "starting": 0
         }
       },

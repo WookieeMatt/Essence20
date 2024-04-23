@@ -1,0 +1,69 @@
+{
+  "folder": "8yrZjvUTueYj4ZEB",
+  "name": "Solo Strike",
+  "type": "rolePoints",
+  "_id": "6B9OO4YklBMUFPeG",
+  "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 44
+    },
+    "bonus": {
+      "increase": 0,
+      "level20Value": 0,
+      "levels": [],
+      "starting": 0
+    },
+    "bonusType": "attackUpshift",
+    "canBeActivated": true,
+    "defenseBonus": {
+      "cleverness": false,
+      "evasion": false,
+      "toughness": false,
+      "willpower": false
+    },
+    "hasCost": false,
+    "increase": 1,
+    "isBonus": true,
+    "isSeperate": false,
+    "isSpendable": false,
+    "level20Value": 0,
+    "levels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "points": {
+      "primary": {
+        "max": 0,
+        "value": 0
+      },
+      "secondary": {
+        "max": 0,
+        "value": 0
+      }
+    },
+    "powerCost": 0,
+    "starting": 1,
+    "isSeparate": false
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713480363351,
+    "modifiedTime": 1713480428008,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!6B9OO4YklBMUFPeG"
+}

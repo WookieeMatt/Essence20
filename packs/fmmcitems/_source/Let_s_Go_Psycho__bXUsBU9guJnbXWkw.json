@@ -1,0 +1,36 @@
+{
+  "name": "Let's Go Psycho!",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.qMvUP1yEtsSo6KDh",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "bXUsBU9guJnbXWkw",
+  "changes": [
+    {
+      "key": "system.defenses.toughness.morphed",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    },
+    {
+      "key": "system.defenses.evasion.morphed",
+      "mode": 2,
+      "value": "2",
+      "priority": null
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!qMvUP1yEtsSo6KDh.bXUsBU9guJnbXWkw"
+}

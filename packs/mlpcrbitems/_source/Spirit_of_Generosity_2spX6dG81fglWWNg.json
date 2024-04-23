@@ -1,0 +1,229 @@
+{
+  "folder": "8GMQneo8DivUoTOK",
+  "name": "Spirit of Generosity",
+  "type": "role",
+  "_id": "2spX6dG81fglWWNg",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 72
+    },
+    "items": {
+      "4cc8": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.W4zuPnXnGsb0EE91",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "A Talent For Generosity",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "72a0": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.kcsCU7i1qaekbMrn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Generosity is Magic",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "d43e": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.2qyftQYtr5noeJ6e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Friendship Circle",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "8e36": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.hufRaDWtFbAszTmq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Generosity of Spirit",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "aed0": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.lGYdVH8RWletaWyB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bits To Spare",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "9ebb": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.Vb3CAaAj9d1a63p7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Secret Helper",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "630f": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ZZTzjEEMljWoVJu6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Putting Others Before Yourself",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "db04": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.CjNQHWxMjTQfcLTZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "After You",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "2ecf": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.PHzAgfYygOH67l1P",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Personal Sacrifice",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "91dd": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.PldYR4nBQ9zwjBVJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Here, Let Me",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "fd44": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.0sk3XIP3FLK3FvYR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pillar of Generosity",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "1e87": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.kepGfqwF3OgkVgap",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Subtle Helper",
+        "type": "perk",
+        "subtype": "general",
+        "level": 11
+      },
+      "b703": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.7CrDN77ITR9IV2nB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Take Mine",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "8cd4": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.NyZxFpc8Aop7PDDa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Whatever Helps",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "384c": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.tfRFV2g3gkug0l2a",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Desperate Times",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "327b": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.yWrCHyJFxQelBJQR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "No, I Insist",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "10ba": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.iJPzTlcS5A9pjy25",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stealth Helper",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "c0a5": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.8s7nIIf0XIpcoqYd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Princess of Generosity",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": [
+        "level5",
+        "level10",
+        "level15"
+      ]
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "version": "myLittlePony",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713836901339,
+    "modifiedTime": 1713838870562,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!2spX6dG81fglWWNg"
+}

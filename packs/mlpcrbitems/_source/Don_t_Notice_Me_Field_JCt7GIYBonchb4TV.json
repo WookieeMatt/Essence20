@@ -1,0 +1,37 @@
+{
+  "folder": "emRBrjlruf3ORbW4",
+  "name": "Don't-Notice-Me-Field",
+  "type": "spell",
+  "_id": "JCt7GIYBonchb4TV",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 137
+    },
+    "circle": "enchantment",
+    "cost": 3,
+    "duration": "1 scene",
+    "isSpecialized": false,
+    "range": "30 feet",
+    "tier": "superior"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713842886503,
+    "modifiedTime": 1713842970189,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!JCt7GIYBonchb4TV"
+}

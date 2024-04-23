@@ -1,0 +1,44 @@
+{
+  "name": "Phantom Ranger Prime",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.across_the_stars.Item.PHgWjT0syOOBOOK5",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "jZ00XknvJXl7GVTU",
+  "changes": [
+    {
+      "key": "system.defenses.cleverness.morphed",
+      "mode": 2,
+      "value": "2"
+    },
+    {
+      "key": "system.defenses.evasion.morphed",
+      "mode": 2,
+      "value": "2"
+    },
+    {
+      "key": "system.defenses.toughness.morphed",
+      "mode": 2,
+      "value": "2"
+    },
+    {
+      "key": "system.defenses.willpower.morphed",
+      "mode": 2,
+      "value": "2"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!PHgWjT0syOOBOOK5.jZ00XknvJXl7GVTU"
+}
