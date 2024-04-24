@@ -3,6 +3,7 @@ import {
   deleteAttachmentsForItem,
   checkIsLocked,
   createItemCopies,
+  getItemsOfType,
   getNumActions,
   parseId,
   setEntryAndAddItem,
@@ -174,16 +175,15 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
-    const roles = []; // Used by PCs
-    const classFeatures = []; // Used by PCs
     const specializations = {};
     const spells = [];
     const upgrades = [];
     const traits = []; // Used by Vehicles
     const weapons = [];
-    const classFeaturesById = {};
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
+    let role = null;
+    let rolePoints = null;
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -250,12 +250,11 @@ export class Essence20ActorSheet extends ActorSheet {
       case 'spell':
         spells.push(i);
         break;
-      case 'role':
-        roles.push(i);
+      case 'rolePoints':
+        rolePoints = i;
         break;
-      case 'classFeature':
-        classFeatures.push(i);
-        classFeaturesById[i._id] = i.name;
+      case 'role':
+        role = i;
         break;
       case 'specialization':
         {
@@ -283,8 +282,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.armors = armors;
     context.bonds = bonds;
     context.contacts = contacts;
-    context.classFeatures = classFeatures;
-    context.classFeaturesById = classFeaturesById;
     context.features = features;
     context.gears = gears;
     context.focuses = focuses;
@@ -295,7 +292,8 @@ export class Essence20ActorSheet extends ActorSheet {
     context.origins = origins;
     context.perks = perks;
     context.powers = powers;
-    context.roles = roles;
+    context.rolePoints = rolePoints;
+    context.role = role;
     context.spells = spells;
     context.specializations = specializations;
     context.traits = traits;
@@ -450,6 +448,14 @@ export class Essence20ActorSheet extends ActorSheet {
       ui.notifications.info(`Energon restored by ${energonRestore}.`);
     }
 
+    // Resetting Role Points
+    const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
+    if (rolePointsList.length) {
+      const rolePoints = rolePointsList[0];
+      rolePoints.update({ 'system.points.primary.value': rolePoints.system.points.primary.max });
+      ui.notifications.info(`${rolePoints.name} points reset.`);
+    }
+
     ui.notifications.info("Health restored and stun reset.");
     ui.notifications.info("Rest complete!");
 
@@ -557,9 +563,25 @@ export class Essence20ActorSheet extends ActorSheet {
 
       if (rollType == 'power') {
         await this._pwHandler.powerCost(item);
-      } else if (rollType == 'classFeature') {
-        // If a Class Feature is being used, decrement uses
-        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
+      } else if (rollType == 'rolePoints') {
+        if (item.system.points.primary.value < 1) {
+          ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
+        } else {
+          // If Role Points are being used, decrement uses
+          await item.update({ 'system.points.primary.value': item.system.points.primary.value - 1 });
+
+          // Some also decrement Personal Power
+          if (item.system.hasCost) {
+            if (this.actor.system.powers.personal.value < item.system.powerCost) {
+              ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
+            } else {
+              await this.actor.update({
+                ['system.powers.personal.value']:
+                  this.actor.system.powers.personal.value - item.system.powerCost,
+              });
+            }
+          }
+        }
       }
 
       if (item) {

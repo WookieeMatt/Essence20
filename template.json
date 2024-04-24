@@ -932,6 +932,7 @@
       },
       "hasCost": false,
       "increase": 0,
+      "isActivated": false,
       "isBonus": false,
       "isSeperate": false,
       "isSpendable": false,

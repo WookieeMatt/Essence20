@@ -159,7 +159,7 @@ export class RoleHandler {
     this._actor.setFlag('essence20', 'roleDrop', true);
 
     if (role.system.skillDie.isUsed) {
-      const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+      const skillName = "roleSkillDie";
       const skillStringShift = `system.skills.${skillName}.shift`;
       const skillStringDisplayName = `system.skills.${skillName}.displayName`;
       const skillStringEdge = `system.skills.${skillName}.edge`;
@@ -226,7 +226,7 @@ export class RoleHandler {
     }
 
     if (role.system.skillDie.isUsed) {
-      const skillName = role.system.skillDie.name.toLowerCase().replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase());
+      const skillName = "roleSkillDie";
       const skillString = `system.skills.-=${skillName}`;
 
       await this._actor.update({[skillString] : null});

@@ -4,9 +4,7 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    {{#ifEquals @root.actor.type 'powerRanger'}}
-      {{>"systems/essence20/templates/actor/parts/items/classFeature/selector.hbs"}}
-    {{else ifEquals @root.actor.type 'transformer'}}
+    {{#ifEquals @root.actor.type 'transformer'}}
       {{>"systems/essence20/templates/actor/parts/misc/mode-selector.hbs"}}
     {{/ifEquals}}
 

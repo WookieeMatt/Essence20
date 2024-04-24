@@ -169,10 +169,16 @@ export class Dice {
    * @private
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
-    const rolledSkill = dataset.skill;
-    const rolledSkillStr = dataset.isSpecialized
-      ? dataset.specializationName
-      : this._localize(E20.skills[rolledSkill]);
+    let rolledSkillStr;
+    if (dataset.skill == 'roleSkillDie') {
+      rolledSkillStr = dataset.roleSkillName;
+    } else if (dataset.isSpecialized) {
+      rolledSkillStr = dataset.specializationName;
+    } else {
+      const rolledSkill = dataset.skill;
+      rolledSkillStr = this._localize(E20.skills[rolledSkill]);
+    }
+
     const rollingForStr = this._localize('E20.RollRollingFor');
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
