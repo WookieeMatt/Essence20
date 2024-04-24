@@ -2,8 +2,8 @@
   "folder": "puvX6tXe8TMzZ5uR",
   "name": "Infantry",
   "type": "role",
-  "_id": "L8sJ8JfOeMOHFsQ7",
-  "img": "icons/svg/item-bag.svg",
+  "_id": "SvByuJ6hUITwR5Q7",
+  "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,7 +12,15 @@
       "page": 77
     },
     "items": {
-      "d274": {
+      "9151": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.gZSug7lfUPTCWmbb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "In My Sights",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "a482": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Fighting Style",
@@ -20,7 +28,7 @@
         "subtype": "role",
         "level": 1
       },
-      "572d": {
+      "c5bf": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.UIMocxFcGeJUm3D4",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Gallantry",
@@ -28,7 +36,7 @@
         "subtype": "general",
         "level": 2
       },
-      "a8ca": {
+      "5a85": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.15b9YumuRnzL16XW",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Custom Gear",
@@ -36,7 +44,7 @@
         "subtype": "role",
         "level": 2
       },
-      "fab5": {
+      "e84e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.c0woQ6aEyVd4DBvA",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Rapid Reload",
@@ -44,13 +52,7 @@
         "subtype": "role",
         "level": 3
       },
-      "1ba3": {
-        "level": 5
-      },
-      "38fa": {
-        "level": 5
-      },
-      "fad7": {
+      "12a8": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.aQjUa46mn4kHvsVO",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Extra Attack",
@@ -58,7 +60,7 @@
         "subtype": "role",
         "level": 5
       },
-      "1bc6": {
+      "6fbd": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.2R3saLtDCI1q2QBz",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Duck & Cover",
@@ -66,7 +68,7 @@
         "subtype": "role",
         "level": 5
       },
-      "b460": {
+      "279b": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.YXn7VKSgEXGigNtV",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Overwatch",
@@ -74,7 +76,7 @@
         "subtype": "role",
         "level": 9
       },
-      "0cb5": {
+      "a609": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.dyjdCTOs83bLiCxC",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Tenacity",
@@ -82,7 +84,7 @@
         "subtype": "role",
         "level": 11
       },
-      "05fb": {
+      "cba3": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.TeCGfRZW9Ax9ajmB",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Adrenaline Surge",
@@ -90,7 +92,7 @@
         "subtype": "role",
         "level": 13
       },
-      "8fd6": {
+      "aeeb": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.P0ZTAlcenVw2p4P1",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Warfighter",
@@ -140,13 +142,17 @@
         "level20"
       ]
     },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
     "perkLevels": {
       "general": [
         "level4",
-        "level6",
         "level8",
         "level12",
-        "level14",
         "level16",
         "level19"
       ]
@@ -155,21 +161,24 @@
       "personal": {
         "increase": 0,
         "levels": [],
+        "regeneration": 0,
         "starting": 0
       }
     },
-    "skills": [
-      "conditioning",
-      "athletics",
-      "driving",
-      "targeting"
-    ],
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
     "version": "giJoe",
     "weapons": {
       "qualified": [],
       "trained": [
         "assaultRifle",
         "ballistic",
+        "blunt",
         "closeCombatHeavyBlade",
         "element",
         "explosives",
@@ -187,16 +196,16 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "ai0LSR3ikAGU2SmG": 3
+    "TfzSCNLMDHUjSABQ": 3
   },
   "flags": {},
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1706406176214,
-    "modifiedTime": 1706407795383,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "createdTime": 1713903432654,
+    "modifiedTime": 1713903675983,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
-  "_key": "!items!L8sJ8JfOeMOHFsQ7"
+  "_key": "!items!SvByuJ6hUITwR5Q7"
 }

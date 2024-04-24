@@ -1,0 +1,71 @@
+{
+  "folder": "qP5LQI9Pye4TeChN",
+  "name": "Sneak Attack Damage",
+  "type": "rolePoints",
+  "_id": "LWkdJQmIdA1KgaNM",
+  "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 70
+    },
+    "bonus": {
+      "increase": 0,
+      "level20Value": 0,
+      "levels": [],
+      "starting": 0
+    },
+    "bonusType": "damageBonus",
+    "canBeActivated": true,
+    "defenseBonus": {
+      "cleverness": false,
+      "evasion": false,
+      "toughness": false,
+      "willpower": false
+    },
+    "hasCost": false,
+    "increase": 1,
+    "isBonus": true,
+    "isSeperate": false,
+    "isSpendable": false,
+    "level20Value": 0,
+    "levels": [
+      "level4",
+      "level8",
+      "level13",
+      "level17",
+      "level20"
+    ],
+    "points": {
+      "primary": {
+        "max": 0,
+        "value": 0
+      },
+      "secondary": {
+        "max": 0,
+        "value": 0
+      }
+    },
+    "powerCost": 0,
+    "starting": 1,
+    "isSeparate": false
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713901432838,
+    "modifiedTime": 1713901498862,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!LWkdJQmIdA1KgaNM"
+}

@@ -2,8 +2,8 @@
   "folder": "puvX6tXe8TMzZ5uR",
   "name": "Ranger",
   "type": "role",
-  "_id": "6uBi60E3Fd7ASHa3",
-  "img": "icons/svg/item-bag.svg",
+  "_id": "jBGt0rupbF0OwAi9",
+  "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,7 +12,46 @@
       "page": 88
     },
     "items": {
-      "a36e": {
+      "0bb9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.UnOHxPiPXAVU7Jgc",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Adaption Points",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 0,
+          "level20Value": 0,
+          "levels": [],
+          "starting": 0
+        },
+        "bonusType": " ",
+        "canBeActivated": false,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": false,
+        "isSpendable": true,
+        "level20Value": 99,
+        "levels": [
+          "level2",
+          "level4",
+          "level7",
+          "level10",
+          "level13",
+          "level16",
+          "level19"
+        ],
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 91
+        },
+        "starting": 0
+      },
+      "f83d": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Environmental Expertise",
@@ -20,7 +59,7 @@
         "subtype": "role",
         "level": 1
       },
-      "e0e1": {
+      "b4bc": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.PmY8jGTiemnSdsHi",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Adaptation",
@@ -28,7 +67,7 @@
         "subtype": "role",
         "level": 2
       },
-      "96fc": {
+      "e7e3": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Environmental Exposure",
@@ -36,7 +75,7 @@
         "subtype": "general",
         "level": 2
       },
-      "be56": {
+      "96dc": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.QXpG3NuwaFgbdc0x",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Forage",
@@ -84,6 +123,12 @@
         "level16"
       ]
     },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
     "perkLevels": {
       "general": [
         "level4",
@@ -97,17 +142,17 @@
       "personal": {
         "increase": 0,
         "levels": [],
+        "regeneration": 0,
         "starting": 0
       }
     },
-    "skills": [
-      "driving",
-      "infiltration",
-      "targeting",
-      "alertness",
-      "culture",
-      "survival"
-    ],
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
     "version": "giJoe",
     "weapons": {
       "qualified": [
@@ -124,16 +169,16 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "ai0LSR3ikAGU2SmG": 3
+    "TfzSCNLMDHUjSABQ": 3
   },
   "flags": {},
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1706576021368,
-    "modifiedTime": 1706576302399,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "createdTime": 1713917604391,
+    "modifiedTime": 1713918019041,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
-  "_key": "!items!6uBi60E3Fd7ASHa3"
+  "_key": "!items!jBGt0rupbF0OwAi9"
 }

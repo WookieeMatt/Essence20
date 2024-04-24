@@ -2,8 +2,8 @@
   "folder": "puvX6tXe8TMzZ5uR",
   "name": "Vanguard",
   "type": "role",
-  "_id": "tROGHpSM2RsSf7J2",
-  "img": "icons/svg/item-bag.svg",
+  "_id": "Ub4PO0AcEYzMc93S",
+  "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,7 +12,53 @@
       "page": 106
     },
     "items": {
-      "a9c2": {
+      "308b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Sj4AQ6QOLJ8rt4EB",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Personal Shield",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 1,
+          "level20Value": 15,
+          "levels": [
+            "level3",
+            "level5",
+            "level7",
+            "level9",
+            "level11",
+            "level13",
+            "level15",
+            "level17"
+          ],
+          "starting": 2
+        },
+        "bonusType": "defenseBonus",
+        "canBeActivated": true,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": true,
+          "toughness": true,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": true,
+        "isSeparate": true,
+        "isSpendable": true,
+        "level20Value": 99,
+        "levels": [
+          "level3",
+          "level6",
+          "level11",
+          "level17"
+        ],
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 108
+        },
+        "starting": 2
+      },
+      "ec66": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.ypvMZ7LSredIU8M8",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Personal Shield",
@@ -20,7 +66,7 @@
         "subtype": "role",
         "level": 1
       },
-      "a09d": {
+      "a3cd": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Fighting Style",
@@ -28,15 +74,7 @@
         "subtype": "role",
         "level": 2
       },
-      "e2ae": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.rlD6YJSr2fgROKHo",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "The Heavy",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "12b2": {
+      "b131": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.0cGhuapOhkdwYC9G",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Inspiring Words",
@@ -44,15 +82,7 @@
         "subtype": "role",
         "level": 2
       },
-      "7f76": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.aQjUa46mn4kHvsVO",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Extra Attack",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "cc87": {
+      "aaa3": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.zbrr3W30rFTDTayX",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Empty The Mag",
@@ -60,7 +90,7 @@
         "subtype": "general",
         "level": 7
       },
-      "4a33": {
+      "10ed": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.xsFS0pGQFx1w2qTd",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Battlefield Titan",
@@ -68,7 +98,7 @@
         "subtype": "role",
         "level": 9
       },
-      "dfc9": {
+      "13cf": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.H7qXtrSfxDx2z9Wk",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Vigilance",
@@ -76,7 +106,7 @@
         "subtype": "role",
         "level": 11
       },
-      "660f": {
+      "18e8": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.16ul4Ev6b9gO5CIN",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Shield Modulation",
@@ -84,7 +114,7 @@
         "subtype": "role",
         "level": 13
       },
-      "77d0": {
+      "4a9c": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.ME4xFG31XvT6q6Qp",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Heart Of The Team",
@@ -92,15 +122,7 @@
         "subtype": "role",
         "level": 14
       },
-      "d331": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.LccKe9ZdDPvS5YbD",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Concentrate Fire",
-        "type": "perk",
-        "subtype": "role",
-        "level": 15
-      },
-      "a6c3": {
+      "f770": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWAk0QD3",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Impenetrable Shield",
@@ -153,6 +175,12 @@
         "level20"
       ]
     },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
     "perkLevels": {
       "general": [
         "level4",
@@ -166,18 +194,17 @@
       "personal": {
         "increase": 0,
         "levels": [],
+        "regeneration": 0,
         "starting": 0
       }
     },
-    "skills": [
-      "conditioning",
-      "athletics",
-      "brawn",
-      "might",
-      "performance",
-      "persuasion",
-      "streetwise"
-    ],
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
     "version": "giJoe",
     "weapons": {
       "qualified": [],
@@ -192,16 +219,16 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "ai0LSR3ikAGU2SmG": 3
+    "TfzSCNLMDHUjSABQ": 3
   },
   "flags": {},
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1706740674943,
-    "modifiedTime": 1706741128729,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "createdTime": 1713931044400,
+    "modifiedTime": 1713931549806,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
-  "_key": "!items!tROGHpSM2RsSf7J2"
+  "_key": "!items!Ub4PO0AcEYzMc93S"
 }

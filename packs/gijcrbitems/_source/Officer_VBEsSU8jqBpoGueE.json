@@ -1,93 +1,85 @@
 {
   "folder": "puvX6tXe8TMzZ5uR",
-  "name": "Technician",
+  "name": "Officer",
   "type": "role",
-  "_id": "JNWD9SJQUrbui34D",
-  "img": "icons/svg/item-bag.svg",
+  "_id": "VBEsSU8jqBpoGueE",
+  "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
     "originalId": "",
     "description": "",
     "source": {
       "book": "GI Joe Core Rulebook",
-      "page": 100
+      "page": 83
     },
     "items": {
-      "c875": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.5eOqntPaqp1g4M7k",
+      "9d22": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.PIWYZyWFw9EYZeom",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Primary Tech",
+        "name": "Battle Commander",
         "type": "perk",
         "subtype": "role",
         "level": 1
       },
-      "6fcc": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.KyEof2TD2V4WTQB4",
+      "a973": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7wsu99k8v620IB2N",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Support",
+        "name": "Plan of Action",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "efe9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.AVhNGB1h4e4eeNPD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rouse",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "0bdd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bIoMrn9aP9x6QYVL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Got To Get Tough",
         "type": "perk",
         "subtype": "role",
         "level": 2
       },
-      "b760": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.M7HNdhqViy0xbUkz",
+      "8ba8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.tLsCk8n8tqhQ6XQf",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Think On It",
+        "name": "Mobilize",
         "type": "perk",
         "subtype": "role",
         "level": 5
       },
-      "b660": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.tgzAbHlJWfzKrGyQ",
+      "9e0b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.I8yAnOEoaut76wlf",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Law Of The Instrument",
-        "type": "perk",
-        "subtype": "role",
-        "level": 7
-      },
-      "d623": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.SSLI0YINSvI554Bi",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Tech Support",
-        "type": "perk",
-        "subtype": "role",
-        "level": 9
-      },
-      "9eea": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.p301AoQlteHsA4pH",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Secondary Tech",
+        "name": "Rousing Comeback",
         "type": "perk",
         "subtype": "role",
         "level": 11
       },
-      "5b26": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.bPMgz1ct8T0kgQ6K",
+      "93cc": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.BB9Z5wEmjIvclAVx",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Fieldtest",
-        "type": "perk",
-        "subtype": "general",
-        "level": 13
-      },
-      "da7c": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.1DZCpqOqYqVjFkoG",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Extended Support",
+        "name": "Motivate",
         "type": "perk",
         "subtype": "role",
         "level": 14
       },
-      "9a2e": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.ENRpxMCws91Ny19y",
+      "f5fd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.tF2Gl0OOl2ZgFkZV",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Genius",
+        "name": "Rousing Presence",
         "type": "perk",
         "subtype": "role",
         "level": 15
       },
-      "ea55": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.SykObfZn9B25I3vs",
+      "fafc": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Czabb7MnyglRRo2P",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Of Two Minds",
+        "name": "Momentum",
         "type": "perk",
         "subtype": "role",
         "level": 18
@@ -97,16 +89,20 @@
       "health": []
     },
     "armors": {
-      "qualified": [
-        "impulse"
-      ],
+      "qualified": [],
       "trained": [
-        "computerized",
-        "light"
+        "light",
+        "medium"
       ]
     },
     "essenceLevels": {
       "smarts": [
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ],
+      "social": [
         "level1",
         "level2",
         "level5",
@@ -114,11 +110,6 @@
         "level14",
         "level18",
         "level20"
-      ],
-      "social": [
-        "level6",
-        "level12",
-        "level17"
       ],
       "speed": [
         "level1",
@@ -129,12 +120,17 @@
         "level19"
       ],
       "strength": [
-        "level4",
-        "level8",
-        "level13",
-        "level16"
+        "level6",
+        "level12",
+        "level17"
       ]
     },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
     "perkLevels": {
       "general": [
         "level4",
@@ -148,21 +144,22 @@
       "personal": {
         "increase": 0,
         "levels": [],
+        "regeneration": 0,
         "starting": 0
       }
     },
-    "skills": [
-      "initiative",
-      "driving",
-      "science",
-      "technology"
-    ],
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
     "version": "giJoe",
     "weapons": {
       "qualified": [],
       "trained": [
         "ballistic",
-        "element",
         "explosives"
       ]
     }
@@ -171,16 +168,16 @@
   "sort": 0,
   "ownership": {
     "default": 0,
-    "ai0LSR3ikAGU2SmG": 3
+    "TfzSCNLMDHUjSABQ": 3
   },
   "flags": {},
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1706658031006,
-    "modifiedTime": 1706658282862,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "createdTime": 1713909553091,
+    "modifiedTime": 1713909923445,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
-  "_key": "!items!JNWD9SJQUrbui34D"
+  "_key": "!items!VBEsSU8jqBpoGueE"
 }
