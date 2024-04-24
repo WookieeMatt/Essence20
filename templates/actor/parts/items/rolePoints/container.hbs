@@ -1,0 +1,55 @@
+<div class="collapsible-item-container" style="border-color: {{system.color}};">
+  <div class="flexrow" style="justify-content: center; margin-bottom: 5px;">
+    <div style="flex-grow: 0; white-space: nowrap;">
+      {{localize "E20.RoleFeatures"}}
+    </div>
+  </div>
+
+  {{#if @root.rolePoints}}
+    {{#with @root.rolePoints as |rolePoints|}}
+      <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.rolePoints._id}}">
+        <a class="rollable" style="flex-grow: 0;" data-roll-type="info" title="{{localize 'E20.RolePoints'}}">
+          <i class="fas fa-message-lines"></i>
+        </a>
+
+        {{#if rolePoints.system.isSpendable}}
+        <a class="rollable" style="flex-grow: 0;" data-roll-type="rolePoints" title="{{localize 'E20.RolePointsRoll'}}"><i
+          class="fas fa-hand-fist"></i></a>
+        {{/if}}
+
+        {{#if rolePoints.system.canBeActivated}}
+          <input class="inline-edit item-label-checkbox" type="checkbox" data-field="system.isActivated" name="rolePoints.system.isActivated"
+            title="{{localize 'E20.RolePointsToggleActivation'}}" {{checked rolePoints.system.isActivated}} />
+        {{/if}}
+
+        <label>{{rolePoints.name}}</label>
+
+        {{#if rolePoints.system.isSpendable}}
+        <input class="inline-edit centered-input no-lock" data-field="system.points.primary.value" type="number"
+          name="rolePoints.system.points.primary.value" value="{{rolePoints.system.points.primary.value}}" min="0"
+          step="1" />
+        /
+        {{/if}}
+        <input class="centered-input no-unlock" data-field="system.points.primary.max" type="number"
+          name="rolePoints.system.points.primary.max" value="{{rolePoints.system.points.primary.max}}" min="0"
+          step="1" readonly />
+      </div>
+    {{/with}}
+  {{else if @root.role.system.skillDie.isUsed}}
+    {{#with @root.system.skills.roleSkillDie as |roleSkillDie|}}
+      <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.role._id}}">
+        <div class="item-image" style="flex-grow: 0;">
+          <a class="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{roleSkillDie.displayName}}"
+            data-is-specialized="{{roleSkillDie.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
+        </div>
+        <div>{{@root.role.system.skillDie.name}}: {{roleSkillDie.shift}}{{#if roleSkillDie.isSpecialized}}*{{/if}}</div>
+      </div>
+    {{/with}}
+  {{/if}}
+
+  {{#unless @root.rolePoints}}
+  {{#unless @root.role.system.skillDie.isUsed}}
+    <div class="flexrow flex-group-center">{{localize 'E20.RolePointsNone'}}</div>
+  {{/unless}}
+  {{/unless}}
+</div>
