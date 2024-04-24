@@ -3,6 +3,7 @@ import {
   deleteAttachmentsForItem,
   checkIsLocked,
   createItemCopies,
+  getNumActions,
   parseId,
   setEntryAndAddItem,
 } from "../helpers/utils.mjs";
@@ -77,7 +78,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare number of actions
     if (['giJoe', 'npc', 'pony', 'powerRanger', 'transformer'].includes(actorData.type)) {
-      this._prepareNumActions(context);
+      context.numActions = getNumActions(this.actor);
     }
 
     // Add roll data for TinyMCE editors.
@@ -324,21 +325,6 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     return childItems;
-  }
-
-  /**
-   * Prepare the number of actions available for the actor.
-   * @param {Object} context The actor data to prepare.
-   * @return {undefined}
-   */
-  _prepareNumActions(context) {
-    const speed = this.actor.system.essences.speed;
-
-    context.numActions = {
-      free: Math.max(0, speed - 2),
-      movement: speed > 0 ? 1 : 0,
-      standard: speed > 1 ? 1 : 0,
-    };
   }
 
   /* -------------------------------------------- */
