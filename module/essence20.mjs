@@ -10,7 +10,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { performPreLocalization, setOptGroup } from "./helpers/utils.mjs";
+import { getNumActions, performPreLocalization, setOptGroup } from "./helpers/utils.mjs";
 import { migrateWorld } from "./migration.mjs";
 
 function registerSystemSettings() {
@@ -194,6 +194,37 @@ Hooks.on("renderDialog", (dialog, html) => {
       select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
     }
   }
+});
+
+/* Hook to support Drag Rule module */
+Hooks.once("dragRuler.ready", (SpeedProvider) => {
+  class Essence20SystemSpeedProvider extends SpeedProvider {
+    get colors() {
+      return [
+        { id: "ground", default: 0x00FF00, name: "essence20.speeds.ground" },
+        { id: "sprint", default: 0xFFFF00, name: "essence20.speeds.sprint" },
+      ];
+    }
+
+    getRanges(token) {
+      const groundSpeed = token.actor.system.movement.ground.total;
+      const ranges = [];
+      const actor = game.actors.get(token.document.actorId);
+      const numActions = getNumActions(actor);
+
+      if (numActions.movement) {
+        ranges.push({ range: groundSpeed, color: "ground" });
+      }
+
+      if (numActions.standard) {
+        ranges.push({ range: groundSpeed * 2, color: "sprint" });
+      }
+
+      return ranges;
+    }
+  }
+
+  dragRuler.registerSystem("essence20", Essence20SystemSpeedProvider);
 });
 
 /* -------------------------------------------- */

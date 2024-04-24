@@ -633,3 +633,18 @@ export function getLevelIncreases(levels, currentLevel) {
 
   return levelIncreases;
 }
+
+/**
+ * Prepare the number of actions available for the given actor
+ * @param {Actor} actor The actor to get actions for
+ * @return {Object} Action types mapped to an action count
+ */
+export function getNumActions(actor) {
+  const speed = actor.system.essences.speed;
+
+  return {
+    free: Math.max(0, speed - 2),
+    movement: speed > 0 ? 1 : 0,
+    standard: speed > 1 ? 1 : 0,
+  };
+}
