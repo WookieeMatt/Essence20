@@ -207,7 +207,7 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
     }
 
     getRanges(token) {
-      const groundSpeed = token.actor.system.movement.ground.total
+      const groundSpeed = token.actor.system.movement.ground.total;
       const ranges = [];
       const actor = game.actors.get(token.document.actorId);
       const numActions = getNumActions(actor);
@@ -225,7 +225,7 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
   }
 
   dragRuler.registerSystem("essence20", Essence20SystemSpeedProvider);
-})
+});
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
