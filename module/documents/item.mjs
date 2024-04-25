@@ -113,16 +113,16 @@ export class Essence20Item extends Item {
     if (!this.actor) return null;
 
     const actorLevel = this.actor.system.level;
-    const resourceLevelIncreases = getLevelIncreases(this.system.resource.levels, actorLevel);
+    const resourceLevelIncreases = getLevelIncreases(this.system.resource.increaseLevels, actorLevel);
 
-    if (actorLevel == 20 && this.system.level20Value) {
+    if (actorLevel == 20 && this.system.resource.level20Value) {
       this.system.resource.max = this.system.resource.level20Value;
     } else {
       this.system.resource.max = this.system.resource.startingMax + (this.system.resource.increase * resourceLevelIncreases);
     }
 
     if (this.system.bonus.type != CONFIG.E20.bonusTypes.none) {
-      const bonusLevelIncreases = getLevelIncreases(this.system.bonus.levels, actorLevel);
+      const bonusLevelIncreases = getLevelIncreases(this.system.bonus.increaseLevels, actorLevel);
 
       if (actorLevel == 20 && this.system.bonus.level20Value) {
         this.system.bonus.value = this.system.bonus.level20Value;
