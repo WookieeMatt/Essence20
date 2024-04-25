@@ -24,6 +24,10 @@
 
         <label>{{rolePoints.name}}</label>
 
+        {{#if rolePoints.system.isBonus}}
+          <div>{{rolePoints.points.secondary.max}}</div>
+        {{/if}}
+
         {{#if rolePoints.system.isSpendable}}
         <input class="inline-edit centered-input no-lock" data-field="system.points.primary.value" type="number"
           name="rolePoints.system.points.primary.value" value="{{rolePoints.system.points.primary.value}}" min="0"
