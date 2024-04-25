@@ -111,21 +111,23 @@ export class Essence20Item extends Item {
    */
   _prepareRolePoints() {
     if (!this.actor) return null;
-    const levelIncreases = getLevelIncreases(this.system.levels, this.actor.system.level);
 
-    if (this.system.level20Value != 0) {
-      this.system.points.primary.max = this.system.level20Value;
+    const actorLevel = this.actor.system.level;
+    const resourceLevelIncreases = getLevelIncreases(this.system.resource.levels, actorLevel);
+
+    if (actorLevel == 20 && this.system.level20Value) {
+      this.system.resource.max = this.system.resource.level20Value;
     } else {
-      this.system.points.primary.max = this.system.starting + (this.system.increase * levelIncreases);
+      this.system.resource.max = this.system.resource.startingMax + (this.system.resource.increase * resourceLevelIncreases);
     }
 
-    if (this.system.isSeparate) {
-      const levelIncreases = getLevelIncreases(this.system.bonus.levels, this.actor.system.level);
+    if (this.system.bonus.type != CONFIG.E20.bonusTypes.none) {
+      const bonusLevelIncreases = getLevelIncreases(this.system.bonus.levels, actorLevel);
 
-      if (this.system.bonus.level20Value != 0) {
-        this.system.points.secondary.max = this.system.bonus.level20Value;
+      if (actorLevel == 20 && this.system.bonus.level20Value) {
+        this.system.bonus.value = this.system.bonus.level20Value;
       } else {
-        this.system.points.secondary.max = this.system.bonus.starting + (this.system.bonus.increase * levelIncreases);
+        this.system.bonus.value = this.system.bonus.startingValue + (this.system.bonus.increase * bonusLevelIncreases);
       }
     }
   }

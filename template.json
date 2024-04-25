@@ -938,7 +938,7 @@
         "level20Value": 0,
         "increaseLevels": [],
         "max": 0,
-        "startingCapacity": 0,
+        "startingMax": 0,
         "value" : 0
       }
     },

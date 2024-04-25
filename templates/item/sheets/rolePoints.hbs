@@ -23,7 +23,7 @@
       {{!-- Is Activatable? --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsCanBeActivated'}}
       {{#*inline "item-field-inputs"}}
-      <input type="checkbox" name="system.canBeActivated" {{checked system.isActivatable}} />
+      <input type="checkbox" name="system.isActivatable" {{checked system.isActivatable}} />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -102,7 +102,7 @@
         {{/inline}}
         {{#*inline "item-field-inputs"}}
         <div class="flex-group-right chip-section">
-          {{#each item.system.bonus.levels as |name|}}
+          {{#each item.system.bonus.increaseLevels as |name|}}
             <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
           {{/each}}
         </div>
@@ -121,9 +121,9 @@
       <div class="flexrow" style="justify-content: center; margin: 10px 0px;">Resource</div>
 
       {{!-- Starting Value --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingCapacity'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingMax'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.resource.startingCapacity name="system.resource.startingCapacity"}}
+      {{numberInput system.resource.startingMax name="system.resource.startingMax"}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
