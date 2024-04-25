@@ -85,18 +85,18 @@
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-        {{!-- Increment --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrement'}}
+        {{!-- Increase --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrease'}}
         {{#*inline "item-field-inputs"}}
-        {{numberInput system.bonus.increment name="system.bonus.increment"}}
+        {{numberInput system.bonus.increase name="system.bonus.increase"}}
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-        {{!-- Increment Levels --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrementLevels'}}
+        {{!-- Increase Levels --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="actorLevels" data-target="system.bonus.incrementLevels"
-          title="{{localize 'E20.RolePointsIncrementLevels'}}">
+        <a class="trait-selector" data-options="actorLevels" data-target="system.bonus.increaseLevels"
+          title="{{localize 'E20.RolePointsIncreaseLevels'}}">
           <i class="fas fa-edit"></i>
         </a>
         {{/inline}}
@@ -127,24 +127,24 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Increment --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrement'}}
+      {{!-- Increase --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrease'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.resource.increment name="system.resource.increment"}}
+      {{numberInput system.resource.increase name="system.resource.increase"}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Increment Levels --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrementLevels'}}
+      {{!-- Increase Levels --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="actorLevels" data-target="system.resource.incrementLevels"
+      <a class="trait-selector" data-options="actorLevels" data-target="system.resource.increaseLevels"
         title="{{localize 'E20.EssenceSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}
       {{#*inline "item-field-inputs"}}
       <div class="flex-group-right chip-section">
-        {{#each item.system.resource.incrementLevels as |name|}}
+        {{#each item.system.resource.increaseLevels as |name|}}
           <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
         {{/each}}
       </div>

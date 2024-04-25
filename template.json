@@ -923,9 +923,9 @@
           "toughness": false,
           "willpower": false
         },
-        "increment": 0,
+        "increase": 0,
         "level20Value": 0,
-        "incrementLevels": [],
+        "increaseLevels": [],
         "startingValue": 0,
         "type": "none",
         "value" : 0
@@ -934,9 +934,9 @@
       "isActive": false,
       "powerCost": 0,
       "resource": {
-        "increment": 0,
+        "increase": 0,
         "level20Value": 0,
-        "incrementLevels": [],
+        "increaseLevels": [],
         "max": 0,
         "startingCapacity": 0,
         "value" : 0
