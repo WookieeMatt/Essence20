@@ -1,0 +1,34 @@
+{
+  "folder": "Ttp8Xr1CKJzNCrPr",
+  "name": "Quick Draw",
+  "type": "perk",
+  "_id": "YGr6vNEv9MKoVlyS",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 52
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714013539920,
+    "modifiedTime": 1714013552211,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!YGr6vNEv9MKoVlyS"
+}

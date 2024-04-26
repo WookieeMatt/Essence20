@@ -3,7 +3,7 @@
   "name": "Door-Kicker",
   "type": "focus",
   "_id": "os5os9PGlcd2WAR0",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 98
     },
     "items": {
-      "f750": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.ogoEjEeiNxT8QiyZ",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Renegade",
-        "type": "role"
-      },
       "f00c": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.rzALUHpTq12OLZ6B",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -73,6 +67,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "a32a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.1tLA4fg232GcFeIE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Renegade",
+        "type": "role"
       }
     },
     "essences": [
@@ -101,8 +101,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706654956468,
-    "modifiedTime": 1706655092451,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012267340,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!os5os9PGlcd2WAR0"
 }

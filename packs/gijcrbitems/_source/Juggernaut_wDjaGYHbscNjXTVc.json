@@ -3,7 +3,7 @@
   "name": "Juggernaut",
   "type": "focus",
   "_id": "wDjaGYHbscNjXTVc",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 112
     },
     "items": {
-      "4484": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.tROGHpSM2RsSf7J2",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Vanguard",
-        "type": "role"
-      },
       "d100": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.0a01vmWtbbYYcNvA",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -73,6 +67,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "2a21": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ub4PO0AcEYzMc93S",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Vanguard",
+        "type": "role"
       }
     },
     "essences": [
@@ -101,8 +101,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706742281768,
-    "modifiedTime": 1706742388966,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012345097,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!wDjaGYHbscNjXTVc"
 }

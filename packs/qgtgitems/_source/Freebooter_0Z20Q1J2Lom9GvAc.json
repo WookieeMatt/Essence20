@@ -1,0 +1,108 @@
+{
+  "folder": "X86fnZJnirxSNLjn",
+  "name": "Freebooter",
+  "type": "focus",
+  "_id": "0Z20Q1J2Lom9GvAc",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 24
+    },
+    "items": {
+      "8449": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.1tLA4fg232GcFeIE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Renegade",
+        "type": "role"
+      },
+      "9d93": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.X2atZm3eoIBJcwF6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Amphibious Assault",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "0b8c": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.7u3xCPPjxJlI7c61",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Feet Wet",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "b2c7": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.G7bEjhamqov7tb9w",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pillage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "24b5": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Dw5KmScLetUz6Ugg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Avast!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "b06f": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.MejI6WIShcA0GdoW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ship Shape",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "86af": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.c3tBbGzXDar3DA1E",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shark's Fin",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "fb59": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.W9Uo10pN99IuMPuR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Storm The Beaches",
+        "type": "perk",
+        "subtype": "general",
+        "level": 20
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "acrobatics",
+      "driving",
+      "infiltration"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714091759313,
+    "modifiedTime": 1714091844367,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!0Z20Q1J2Lom9GvAc"
+}

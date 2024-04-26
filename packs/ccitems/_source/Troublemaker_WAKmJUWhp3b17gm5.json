@@ -1,0 +1,111 @@
+{
+  "folder": "0gpRPqi0To5ylodI",
+  "name": "Troublemaker",
+  "type": "focus",
+  "_id": "WAKmJUWhp3b17gm5",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 62
+    },
+    "items": {
+      "4ef5": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.1tLA4fg232GcFeIE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Renegade",
+        "type": "role"
+      },
+      "d5b5": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.rEjB9I0yKQZF5zPT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Signature Weapon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ef28": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.dtB9EUFE45oZNAOR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Let It Rip",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "f64a": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.ki6d30m9O5ij5ggm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Overwhelming",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "5a63": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.91TqKfAnyL1VijZH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Harass",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "9ba7": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.0hywypfu3zEdOYLB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Signature Upgrades",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "96c9": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.04lrt1b9aCN4ts2N",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Antagonistic",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "f6b9": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.5clUVTBFl8JMpw8t",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Biker",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength",
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "athletics",
+      "brawn",
+      "intimidation",
+      "might",
+      "targeting"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714049460840,
+    "modifiedTime": 1714049558366,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!WAKmJUWhp3b17gm5"
+}

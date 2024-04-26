@@ -3,7 +3,7 @@
   "name": "Infiltrator",
   "type": "focus",
   "_id": "FVIZoNOHRw6yigid",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -76,9 +76,9 @@
         "subtype": "role",
         "level": 20
       },
-      "c739": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.6FNyO5Gy6Z0rFPhQ",
-        "img": "icons/svg/item-bag.svg",
+      "e405": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.M2ZYoyByNLkHtLzw",
+        "img": "systems/essence20/assets/icons/items/role.svg",
         "name": "Commando",
         "type": "role"
       }
@@ -107,8 +107,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706325858477,
-    "modifiedTime": 1706401526104,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012063226,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!FVIZoNOHRw6yigid"
 }

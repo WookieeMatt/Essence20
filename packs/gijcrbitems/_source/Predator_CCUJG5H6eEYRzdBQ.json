@@ -3,7 +3,7 @@
   "name": "Predator",
   "type": "focus",
   "_id": "CCUJG5H6eEYRzdBQ",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,9 +12,9 @@
       "page": 93
     },
     "items": {
-      "a882": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.6uBi60E3Fd7ASHa3",
-        "img": "icons/svg/item-bag.svg",
+      "7988": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jBGt0rupbF0OwAi9",
+        "img": "systems/essence20/assets/icons/items/role.svg",
         "name": "Ranger",
         "type": "role"
       },
@@ -92,8 +92,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706576497960,
-    "modifiedTime": 1706576598339,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012234003,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!CCUJG5H6eEYRzdBQ"
 }

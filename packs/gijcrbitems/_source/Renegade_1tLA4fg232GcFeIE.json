@@ -1,0 +1,270 @@
+{
+  "folder": "puvX6tXe8TMzZ5uR",
+  "name": "Renegade",
+  "type": "role",
+  "_id": "1tLA4fg232GcFeIE",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 94
+    },
+    "items": {
+      "e829": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.BVDs2lnvR0zBYcoB",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Reckless Abandon",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 1,
+          "level20Value": 0,
+          "levels": [
+            "level5",
+            "level9",
+            "level13",
+            "level17",
+            "level20"
+          ],
+          "starting": 1
+        },
+        "bonusType": "healthBonus",
+        "canBeActivated": true,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": true,
+        "isSeparate": true,
+        "isSpendable": true,
+        "level20Value": 99,
+        "levels": [
+          "level3",
+          "level6",
+          "level11",
+          "level17"
+        ],
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 96
+        },
+        "starting": 2
+      },
+      "0177": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.fK70bjqxEUbH8VLJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Reckless Abandon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "413e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.AfIrCQc7OsGiszAi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Additional Health",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "1bf3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.8m5s0JxTNSMU9zcj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Beast of Burden",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "a317": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.aQjUa46mn4kHvsVO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "ee9d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.wGAWnAM5zUgcNP9c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Not Done Yet",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "a660": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.5hBral7hiCPv3GqF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Roll With The Punches",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "b7dc": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.2R3saLtDCI1q2QBz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Duck & Cover",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "045a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bWJGPyaTU2OPw34y",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Not Getting Away That Easy",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "df09": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.BEAZ1oLp9XeibJoh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ready For Anything",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "58a3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.cyiPxpwROFcBZZkm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unbeatable",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "316a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dB5C6frDKWJKXVay",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bravado",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "8ae7": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Jbx3ei70ZsoabVuL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fearsome Precense",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "cf07": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.19odrVUOsp4dCiOV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fortitude",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "de32": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.y7hyuXOuARcKgahl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Didn't Even Feel It",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [
+        "tactical"
+      ],
+      "trained": [
+        "light"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ],
+      "social": [
+        "level6",
+        "level12",
+        "level17"
+      ],
+      "speed": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "strength": [
+        "level1",
+        "level2",
+        "level5",
+        "level9",
+        "level14",
+        "level18",
+        "level20"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "version": "giJoe",
+    "weapons": {
+      "qualified": [
+        "shotguns",
+        "submachineGun"
+      ],
+      "trained": [
+        "mightMelee",
+        "thrown"
+      ]
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713918188331,
+    "modifiedTime": 1713918470471,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!1tLA4fg232GcFeIE"
+}

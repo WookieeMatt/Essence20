@@ -1,0 +1,29 @@
+{
+  "name": "Investment Protection 18th",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.cobra_codex.Item.u7PxjXc5NFZojEj1",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "48N5fk9IBjHjEO4q",
+  "changes": [
+    {
+      "key": "system.health.bonus",
+      "mode": 2,
+      "value": "1"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!u7PxjXc5NFZojEj1.48N5fk9IBjHjEO4q"
+}

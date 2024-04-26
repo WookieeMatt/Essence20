@@ -3,7 +3,7 @@
   "name": "Artillery",
   "type": "focus",
   "_id": "qjsaVSFZ7nj4fxnS",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 80
     },
     "items": {
-      "a8f4": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.L8sJ8JfOeMOHFsQ7",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Infantry",
-        "type": "role"
-      },
       "bdd8": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.B7pPkcsYGscY94W3",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -81,6 +75,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 12
+      },
+      "b9c0": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.SvByuJ6hUITwR5Q7",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Infantry",
+        "type": "role"
       }
     },
     "essences": [
@@ -108,8 +108,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706407815936,
-    "modifiedTime": 1706407926300,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012097355,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!qjsaVSFZ7nj4fxnS"
 }

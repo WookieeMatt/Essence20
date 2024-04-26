@@ -1,0 +1,114 @@
+{
+  "folder": "0gpRPqi0To5ylodI",
+  "name": "Poisoner",
+  "type": "focus",
+  "_id": "vfjLDJYHLjQmWsNZ",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 49
+    },
+    "items": {
+      "9177": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.9kQxCeLIm10zB1h7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Poisonous",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "4a3c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.M2ZYoyByNLkHtLzw",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Commando",
+        "type": "role"
+      },
+      "ea5b": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.Kgcm0HoMe5wuVfuv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Poison Tipped",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "6d2d": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.tqY4YomXkTuFXZLo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Science of Subtlety",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "ba4a": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.d5xmwJqcoXyhVIVK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Medicine Cabinet",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "ac72": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.MOOrbfVEyGTDExfv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Poison Chemistry",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "bf19": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.uoNrrDfkqk5pKnwC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Intoxicate",
+        "type": "perk",
+        "subtype": "general",
+        "level": 10
+      },
+      "94f7": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.0kcuvCeRhmneAJTl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extract Poison",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "bb75": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.qkvDR7I1tBwOyStY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Poison Prodigy",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "science"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714012865861,
+    "modifiedTime": 1714012968349,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!vfjLDJYHLjQmWsNZ"
+}

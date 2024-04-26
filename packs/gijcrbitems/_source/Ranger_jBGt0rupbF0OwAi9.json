@@ -1,0 +1,184 @@
+{
+  "folder": "puvX6tXe8TMzZ5uR",
+  "name": "Ranger",
+  "type": "role",
+  "_id": "jBGt0rupbF0OwAi9",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 88
+    },
+    "items": {
+      "0bb9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.UnOHxPiPXAVU7Jgc",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Adaption Points",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 0,
+          "level20Value": 0,
+          "levels": [],
+          "starting": 0
+        },
+        "bonusType": " ",
+        "canBeActivated": false,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": false,
+        "isSpendable": true,
+        "level20Value": 99,
+        "levels": [
+          "level2",
+          "level4",
+          "level7",
+          "level10",
+          "level13",
+          "level16",
+          "level19"
+        ],
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 91
+        },
+        "starting": 0
+      },
+      "f83d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "b4bc": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.PmY8jGTiemnSdsHi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adaptation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "e7e3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Exposure",
+        "type": "perk",
+        "subtype": "general",
+        "level": 2
+      },
+      "96dc": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.QXpG3NuwaFgbdc0x",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Forage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "social": [
+        "level6",
+        "level12",
+        "level17"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level5",
+        "level9",
+        "level14",
+        "level18",
+        "level20"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "version": "giJoe",
+    "weapons": {
+      "qualified": [
+        "assaultRifle",
+        "closeCombatHeavyBlade"
+      ],
+      "trained": [
+        "mightMelee",
+        "thrown"
+      ]
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713917604391,
+    "modifiedTime": 1713918019041,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!jBGt0rupbF0OwAi9"
+}

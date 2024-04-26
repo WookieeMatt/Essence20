@@ -1,7 +1,7 @@
 {
   "name": "Sniper",
   "type": "focus",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -66,9 +66,9 @@
         "subtype": "role",
         "level": 20
       },
-      "0d99": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.6FNyO5Gy6Z0rFPhQ",
-        "img": "icons/svg/item-bag.svg",
+      "ece1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.M2ZYoyByNLkHtLzw",
+        "img": "systems/essence20/assets/icons/items/role.svg",
         "name": "Commando",
         "type": "role"
       }
@@ -102,8 +102,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1705887488596,
-    "modifiedTime": 1706326625150,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012073367,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_id": "yGP7H59DCMEcDvyJ",
   "sort": 0,

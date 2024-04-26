@@ -371,7 +371,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      key = await addItemIfUnique(droppedItem, targetItem, entry);
+      return await addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "role") {
       return await addItemIfUnique(droppedItem, targetItem, entry);
     }

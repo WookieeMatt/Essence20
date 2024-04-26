@@ -3,7 +3,7 @@
   "name": "Scout",
   "type": "focus",
   "_id": "LqlnjNkKTSUkKHax",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 93
     },
     "items": {
-      "bc95": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.6uBi60E3Fd7ASHa3",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Ranger",
-        "type": "role"
-      },
       "73dc": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.EDBn8zHJXkRFu2TT",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -65,6 +59,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "0d93": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jBGt0rupbF0OwAi9",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Ranger",
+        "type": "role"
       }
     },
     "essences": [
@@ -93,8 +93,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706576609402,
-    "modifiedTime": 1706576707736,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012241731,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!LqlnjNkKTSUkKHax"
 }

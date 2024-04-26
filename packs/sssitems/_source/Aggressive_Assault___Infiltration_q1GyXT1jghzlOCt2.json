@@ -1,0 +1,29 @@
+{
+  "name": "Aggressive Assault - Infiltration",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZthvrKqsgXR3q8bm",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "q1GyXT1jghzlOCt2",
+  "changes": [
+    {
+      "key": "system,.skills.infiltration.essences.strength",
+      "mode": 5,
+      "value": "true"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!ZthvrKqsgXR3q8bm.q1GyXT1jghzlOCt2"
+}

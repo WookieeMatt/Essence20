@@ -1,0 +1,34 @@
+{
+  "name": "Ferocious Training",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.ferocious_fighters.Item.AhwdrPcoBhuxexwj",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "NI9r6spuYDktQp55",
+  "changes": [
+    {
+      "key": "system.skills.alertness.edge",
+      "mode": 5,
+      "value": "true"
+    },
+    {
+      "key": "system.movement.ground.bonus",
+      "mode": 2,
+      "value": "5"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!AhwdrPcoBhuxexwj.NI9r6spuYDktQp55"
+}

@@ -1,0 +1,40 @@
+{
+  "folder": "j9aYiOVxVhIV1bPU",
+  "name": "Environmental Camouflage",
+  "type": "upgrade",
+  "_id": "SyHx2pheoELFpvTF",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 36
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Silent, not Computerized"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714098198948,
+    "modifiedTime": 1714098265075,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!SyHx2pheoELFpvTF"
+}

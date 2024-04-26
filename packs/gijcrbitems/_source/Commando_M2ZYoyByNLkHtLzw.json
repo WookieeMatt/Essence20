@@ -1,0 +1,281 @@
+{
+  "folder": "puvX6tXe8TMzZ5uR",
+  "name": "Commando",
+  "type": "role",
+  "_id": "M2ZYoyByNLkHtLzw",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 70
+    },
+    "items": {
+      "0f64": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.LWkdJQmIdA1KgaNM",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Sneak Attack Damage",
+        "type": "rolePoints",
+        "bonus": {
+          "increase": 0,
+          "level20Value": 0,
+          "levels": [],
+          "starting": 0
+        },
+        "bonusType": "damageBonus",
+        "canBeActivated": true,
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "description": "",
+        "increase": 1,
+        "isBonus": true,
+        "isSeparate": false,
+        "isSpendable": false,
+        "level20Value": 0,
+        "levels": [
+          "level4",
+          "level8",
+          "level13",
+          "level17",
+          "level20"
+        ],
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 70
+        },
+        "starting": 1
+      },
+      "cc5a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.vyOjiJFMtryduiFO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sneak Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "8f53": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.NEBliN2pwDIEXcyv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Friend of Darkness",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "9bcd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "b65c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.QmCOBRBiBx1k0qMR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Think Fast",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "a13f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.yFwBVeGDHIf3EmGp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mobility",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "aaf5": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Yev7VrgEKtsTGdrx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Takedown",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "c54e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.YXL5dCiLZvzDgZzJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Just a Graze",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "08ac": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.qxqtfBobduwSkfRM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "First Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "0521": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ofiG5IwlURUwORYV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Seconds Between Click & Boom",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "0550": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.MKK6kj54yVmCliPd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ghost",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "35ee": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hx4KzTl8iQ8Z22eq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Everything's A Weapon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "9d03": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.HKv38GCtVdSV2qMH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Every Trick in the Book",
+        "type": "perk",
+        "subtype": "general",
+        "level": 12
+      },
+      "889e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GvXCxr0Uj7jPhqJR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psychological Warfare",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "a3ff": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bmvvsEyoylGTA9Ui",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Safecracker",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "65ad": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dYaTU9IYI3vB5eHs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Debilitating Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 16
+      },
+      "eab2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.HG32BCzrF6Hsz7yR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Paranoia",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [
+        "tactical"
+      ],
+      "trained": [
+        "light"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ],
+      "social": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level5",
+        "level9",
+        "level14",
+        "level18",
+        "level20"
+      ],
+      "strength": [
+        "level6",
+        "level12",
+        "level17"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "version": "giJoe",
+    "weapons": {
+      "qualified": [
+        "submachineGun"
+      ],
+      "trained": [
+        "finesse",
+        "grenades",
+        "silent"
+      ]
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713901517147,
+    "modifiedTime": 1713902869262,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!M2ZYoyByNLkHtLzw"
+}

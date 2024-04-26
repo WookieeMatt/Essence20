@@ -3,7 +3,7 @@
   "name": "Tinkerer",
   "type": "focus",
   "_id": "QLnAY3WWS10sPSUB",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 105
     },
     "items": {
-      "d4bc": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.JNWD9SJQUrbui34D",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Technician",
-        "type": "role"
-      },
       "df0a": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.u3KK0V30GXDdRPAY",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -65,6 +59,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "02a1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GPdhYq7n573SR4T2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Technician",
+        "type": "role"
       }
     },
     "essences": [
@@ -91,8 +91,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706658559711,
-    "modifiedTime": 1706658655600,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012310668,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!QLnAY3WWS10sPSUB"
 }
