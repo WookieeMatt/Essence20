@@ -255,15 +255,19 @@ export class Essence20ActorSheet extends ActorSheet {
 
         {
           const defenseLetters = [];
+
           if (rolePoints.system.bonus.defenseBonus.cleverness) {
             defenseLetters.push('C');
           }
+
           if (rolePoints.system.bonus.defenseBonus.evasion) {
             defenseLetters.push('E');
           }
+
           if (rolePoints.system.bonus.defenseBonus.toughness) {
             defenseLetters.push('T');
           }
+
           if (rolePoints.system.bonus.defenseBonus.willpower) {
             defenseLetters.push('W');
           }
