@@ -55,25 +55,25 @@
         {{#ifEquals system.bonus.type "defenseBonus"}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseCleverness'}}
           {{#*inline "item-field-inputs"}}
-          <input type="checkbox" name="system.defenseBonus.cleverness" {{checked system.defenseBonus.cleverness}} />
+          <input type="checkbox" name="system.bonus.defenseBonus.cleverness" {{checked system.bonus.defenseBonus.cleverness}} />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseEvasion'}}
           {{#*inline "item-field-inputs"}}
-          <input type="checkbox" name="system.defenseBonus.evasion" {{checked system.defenseBonus.evasion}} />
+          <input type="checkbox" name="system.bonus.defenseBonus.evasion" {{checked system.bonus.defenseBonus.evasion}} />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseToughness'}}
           {{#*inline "item-field-inputs"}}
-          <input type="checkbox" name="system.defenseBonus.toughness" {{checked system.defenseBonus.toughness}} />
+          <input type="checkbox" name="system.bonus.defenseBonus.toughness" {{checked system.bonus.defenseBonus.toughness}} />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseWillpower'}}
           {{#*inline "item-field-inputs"}}
-          <input type="checkbox" name="system.defenseBonus.willpower" {{checked system.defenseBonus.willpower}} />
+          <input type="checkbox" name="system.bonus.defenseBonus.willpower" {{checked system.bonus.defenseBonus.willpower}} />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
         {{/ifEquals}}

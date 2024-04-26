@@ -252,6 +252,25 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'rolePoints':
         rolePoints = i;
+
+        {
+          const defenseLetters = [];
+          if (rolePoints.system.bonus.defenseBonus.cleverness) {
+            defenseLetters.push('C');
+          }
+          if (rolePoints.system.bonus.defenseBonus.evasion) {
+            defenseLetters.push('E');
+          }
+          if (rolePoints.system.bonus.defenseBonus.toughness) {
+            defenseLetters.push('T');
+          }
+          if (rolePoints.system.bonus.defenseBonus.willpower) {
+            defenseLetters.push('W');
+          }
+
+          rolePoints.system.bonus.defenseBonus.string = defenseLetters.join(', ');
+        }
+
         break;
       case 'role':
         role = i;
@@ -452,7 +471,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
     if (rolePointsList.length) {
       const rolePoints = rolePointsList[0];
-      rolePoints.update({ 'system.points.primary.value': rolePoints.system.points.primary.max });
+      rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
       ui.notifications.info(`${rolePoints.name} points reset.`);
     }
 

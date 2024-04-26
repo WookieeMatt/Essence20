@@ -24,19 +24,34 @@
 
         <label>{{rolePoints.name}}</label>
 
-        {{#ifNotEquals rolePoints.system.bonus.type 'none'}}
-          <div>{{rolePoints.system.bonus.value}}</div>
-        {{/ifNotEquals}}
+        <div>
+          {{#ifNotEquals rolePoints.system.bonus.type 'none'}}
+            +{{rolePoints.system.bonus.value}}
+          {{/ifNotEquals}}
+
+          {{#ifEquals rolePoints.system.bonus.type 'attackUpshift'}}
+          <i class="fas fa-arrow-up"></i>
+          {{else ifEquals rolePoints.system.bonus.type 'damageBonus'}}
+          <i class="fas fa-sword"></i>
+          {{else ifEquals rolePoints.system.bonus.type 'enemyDownshift'}}
+          <i class="fas fa-arrow-down"></i>
+          {{else ifEquals rolePoints.system.bonus.type 'healthBonus'}}
+          <i class="fas fa-heart"></i>
+          {{else ifEquals rolePoints.system.bonus.type 'defenseBonus'}}
+            <i class="fas fa-shield"></i>
+            {{rolePoints.system.bonus.defenseBonus.string}}
+          {{/ifEquals}}
+        </div>
 
         {{#if rolePoints.system.resource.max}}
-        <input class="inline-edit centered-input no-lock" data-field="rolePoints.system.resource.value" type="number"
-          name="rolePoints.system.resource.value" value="{{rolePoints.system.resource.value}}" min="0"
-          step="1" />
-        /
+          <input class="inline-edit centered-input no-lock" data-field="rolePoints.system.resource.value" type="number"
+            name="rolePoints.system.resource.value" value="{{rolePoints.system.resource.value}}" min="0"
+            step="1" />
+          /
+          <input class="centered-input no-unlock" data-field="rolePoints.system.resource.max" type="number"
+            name="rolePoints.system.resource.max" value="{{rolePoints.system.resource.max}}" min="0"
+            step="1" readonly />
         {{/if}}
-        <input class="centered-input no-unlock" data-field="rolePoints.system.resource.max" type="number"
-          name="rolePoints.system.resource.max" value="{{rolePoints.system.resource.max}}" min="0"
-          step="1" readonly />
       </div>
     {{/with}}
   {{else if @root.role.system.skillDie.isUsed}}
