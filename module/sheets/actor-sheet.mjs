@@ -252,6 +252,30 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'rolePoints':
         rolePoints = i;
+
+        {
+          const defenseLetters = [];
+
+          if (rolePoints.system.bonus.defenseBonus.cleverness) {
+            defenseLetters.push('C');
+          }
+
+          if (rolePoints.system.bonus.defenseBonus.evasion) {
+            defenseLetters.push('E');
+          }
+
+          if (rolePoints.system.bonus.defenseBonus.toughness) {
+            defenseLetters.push('T');
+          }
+
+          if (rolePoints.system.bonus.defenseBonus.willpower) {
+            defenseLetters.push('W');
+          }
+
+          rolePoints.system.bonus.defenseBonus.string = defenseLetters.join(', ');
+          rolePoints.system.isSpendable = !!(rolePoints.system.resource.max || rolePoints.system.powerCost);
+        }
+
         break;
       case 'role':
         role = i;
@@ -452,7 +476,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
     if (rolePointsList.length) {
       const rolePoints = rolePointsList[0];
-      rolePoints.update({ 'system.points.primary.value': rolePoints.system.points.primary.max });
+      rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
       ui.notifications.info(`${rolePoints.name} points reset.`);
     }
 
@@ -564,14 +588,14 @@ export class Essence20ActorSheet extends ActorSheet {
       if (rollType == 'power') {
         await this._pwHandler.powerCost(item);
       } else if (rollType == 'rolePoints') {
-        if (item.system.points.primary.value < 1) {
+        if (item.system.resource.max && item.system.resource.value < 1) {
           ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
         } else {
           // If Role Points are being used, decrement uses
-          await item.update({ 'system.points.primary.value': item.system.points.primary.value - 1 });
+          await item.update({ 'system.resource.value': item.system.resource.value - 1 });
 
           // Some also decrement Personal Power
-          if (item.system.hasCost) {
+          if (item.system.powerCost) {
             if (this.actor.system.powers.personal.value < item.system.powerCost) {
               ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
             } else {
@@ -812,6 +836,9 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'role':
       return await this._rlHandler.roleUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'rolePoints':
+      ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
+      return;
     case 'perk':
       return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':

@@ -917,39 +917,30 @@
         "itemDescription"
       ],
       "bonus": {
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
         "increase": 0,
         "level20Value": 0,
-        "levels": [],
-        "starting": 0
+        "increaseLevels": [],
+        "startingValue": 0,
+        "type": "none",
+        "value" : 0
       },
-      "bonusType": " ",
-      "canBeActivated": false,
-      "defenseBonus": {
-        "cleverness": false,
-        "evasion": false,
-        "toughness": false,
-        "willpower": false
-      },
-      "hasCost": false,
-      "increase": 0,
-      "isActivated": false,
-      "isBonus": false,
-      "isSeperate": false,
-      "isSpendable": false,
-      "level20Value": 0,
-      "levels": [],
-      "points": {
-        "primary" :{
-          "max": 0,
-          "value" : 0
-        },
-        "secondary": {
-          "max": 0,
-          "value" : 0
-        }
-      },
+      "isActivatable": false,
+      "isActive": false,
       "powerCost": 0,
-      "starting": 0
+      "resource": {
+        "increase": 0,
+        "level20Value": 0,
+        "increaseLevels": [],
+        "max": 0,
+        "startingMax": 0,
+        "value" : 0
+      }
     },
     "specialization": {
       "templates": [
