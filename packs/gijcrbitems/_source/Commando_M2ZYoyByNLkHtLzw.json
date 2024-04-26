@@ -12,44 +12,6 @@
       "page": 70
     },
     "items": {
-      "0f64": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.LWkdJQmIdA1KgaNM",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Sneak Attack Damage",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": "damageBonus",
-        "canBeActivated": true,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": true,
-        "isSeparate": false,
-        "isSpendable": false,
-        "level20Value": 0,
-        "levels": [
-          "level4",
-          "level8",
-          "level13",
-          "level17",
-          "level20"
-        ],
-        "source": {
-          "book": "GI Joe Core Rulebook",
-          "page": 70
-        },
-        "starting": 1
-      },
       "cc5a": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.vyOjiJFMtryduiFO",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -177,6 +139,43 @@
         "type": "perk",
         "subtype": "role",
         "level": 18
+      },
+      "a12d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Mrmbqza0XxVpKj6U",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Sneak Attack Damage",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level4",
+            "level8",
+            "level13",
+            "level17",
+            "level20"
+          ],
+          "startingValue": 1,
+          "type": "damageBonus",
+          "value": 0
+        },
+        "isActivatable": true,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": 0,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -274,7 +273,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713901517147,
-    "modifiedTime": 1713902869262,
+    "modifiedTime": 1714136907537,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!M2ZYoyByNLkHtLzw"

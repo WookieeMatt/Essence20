@@ -12,45 +12,6 @@
       "page": 88
     },
     "items": {
-      "0bb9": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.UnOHxPiPXAVU7Jgc",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Adaption Points",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": " ",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": false,
-        "isSpendable": true,
-        "level20Value": 99,
-        "levels": [
-          "level2",
-          "level4",
-          "level7",
-          "level10",
-          "level13",
-          "level16",
-          "level19"
-        ],
-        "source": {
-          "book": "GI Joe Core Rulebook",
-          "page": 91
-        },
-        "starting": 0
-      },
       "f83d": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -82,6 +43,45 @@
         "type": "perk",
         "subtype": "role",
         "level": 3
+      },
+      "cec2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.tqiseYDXnEngUlvd",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Adaption Points",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 99,
+          "increaseLevels": [
+            "level2",
+            "level4",
+            "level7",
+            "level10",
+            "level13",
+            "level16",
+            "level19"
+          ],
+          "max": 0,
+          "startingMax": 0,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -177,7 +177,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713917604391,
-    "modifiedTime": 1713918019041,
+    "modifiedTime": 1714137061072,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!jBGt0rupbF0OwAi9"

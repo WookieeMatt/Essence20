@@ -12,42 +12,6 @@
       "page": 37
     },
     "items": {
-      "b79f": {
-        "uuid": "Compendium.essence20.beneath_the_helmet.Item.dDivTjxpqYjsOG09",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Terror",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": " ",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": false,
-        "isSpendable": true,
-        "level20Value": 0,
-        "levels": [
-          "level5",
-          "level10",
-          "level17",
-          "level20"
-        ],
-        "source": {
-          "book": "Beneath the Helmet",
-          "page": 38
-        },
-        "starting": 1
-      },
       "ad07": {
         "uuid": "Compendium.essence20.beneath_the_helmet.Item.yBBB0Mi6fr84YcSd",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -135,6 +99,42 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "ce3c": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.8RAAEl4HabYUaV4B",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Terror Capacity",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level5",
+            "level10",
+            "level17",
+            "level20"
+          ],
+          "max": 0,
+          "startingMax": 1,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -203,8 +203,8 @@
           "level13",
           "level17"
         ],
-        "starting": 2,
-        "regeneration": 1
+        "regeneration": 1,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -235,7 +235,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713835223051,
-    "modifiedTime": 1713835593047,
+    "modifiedTime": 1714148321123,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!wDXEvv0rJ33R0a3R"

@@ -12,46 +12,6 @@
       "page": 84
     },
     "items": {
-      "fc0f": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.qXM0KynMHXg6NmfO",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Cheer Points",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": " ",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": false,
-        "isSpendable": true,
-        "level20Value": 0,
-        "levels": [
-          "level4",
-          "level7",
-          "level10",
-          "level12",
-          "level14",
-          "level16",
-          "level18",
-          "level20"
-        ],
-        "source": {
-          "book": "My Little Pony Core Rulebook",
-          "page": 85
-        },
-        "starting": 2
-      },
       "b8d2": {
         "uuid": "Compendium.essence20.mlp_crb.Item.rcaZoNtniTFDklY3",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -163,6 +123,46 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "ab8e": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.3oTdxkJmm74S559r",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Cheer Points",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level4",
+            "level7",
+            "level10",
+            "level12",
+            "level14",
+            "level16",
+            "level18",
+            "level20"
+          ],
+          "max": 0,
+          "startingMax": 2,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -230,7 +230,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713838421567,
-    "modifiedTime": 1713838870562,
+    "modifiedTime": 1714146482059,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!QM0z1FpRvn6mSKfK"

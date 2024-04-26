@@ -12,47 +12,6 @@
       "page": 35
     },
     "items": {
-      "08df": {
-        "uuid": "Compendium.essence20.jump_through_time.Item.f9SIXPOfczICKvGJ",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Emotional Range",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": " ",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": false,
-        "isSpendable": false,
-        "level20Value": 0,
-        "levels": [
-          "level3",
-          "level5",
-          "level7",
-          "level9",
-          "level11",
-          "level13",
-          "level15",
-          "level17",
-          "level19"
-        ],
-        "source": {
-          "book": "A Jump Through Time",
-          "page": 37
-        },
-        "starting": 2
-      },
       "afd7": {
         "uuid": "Compendium.essence20.jump_through_time.Item.bWAncoQxwfCLtn2v",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -148,6 +107,47 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "a878": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.lhUy6M5juoCvCVBd",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Emotional Range",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level3",
+            "level5",
+            "level7",
+            "level9",
+            "level11",
+            "level13",
+            "level15",
+            "level17",
+            "level19"
+          ],
+          "startingValue": 2,
+          "type": "other",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 1,
+        "resource": {
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": 0,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -216,8 +216,8 @@
           "level13",
           "level17"
         ],
-        "starting": 2,
-        "regeneration": 2
+        "regeneration": 2,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -250,7 +250,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713574242217,
-    "modifiedTime": 1713827705776,
+    "modifiedTime": 1714147306394,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!Eo4WnlP5D6QhhlJ9"

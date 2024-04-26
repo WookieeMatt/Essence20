@@ -12,41 +12,6 @@
       "page": 288
     },
     "items": {
-      "3c93": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.NWRgvZ8EwfB1p3os",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Static Modifier",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": "enemyDownshift",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": true,
-        "isSeparate": false,
-        "isSpendable": false,
-        "level20Value": 0,
-        "levels": [
-          "level8",
-          "level16"
-        ],
-        "source": {
-          "book": "Finster's Monster-Matic Cookbook",
-          "page": 289
-        },
-        "starting": 1
-      },
       "c5e8": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.6tTxWf1k5y3e0RWc",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -158,6 +123,40 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "e09b": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.3Ruf9irE1Mz7221L",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Static Modifier",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level8",
+            "level16"
+          ],
+          "startingValue": 1,
+          "type": "enemyDownshift",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": 0,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -226,8 +225,8 @@
           "level15",
           "level19"
         ],
-        "starting": 2,
-        "regeneration": 2
+        "regeneration": 2,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -259,7 +258,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713705755002,
-    "modifiedTime": 1713827819921,
+    "modifiedTime": 1714148046797,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!GQ5aQWbjmaO9y00w"

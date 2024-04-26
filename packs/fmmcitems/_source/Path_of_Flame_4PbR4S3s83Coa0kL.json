@@ -12,42 +12,41 @@
       "page": 285
     },
     "items": {
-      "74f6": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.lDRrfowhtCREkwjE",
+      "5988": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.1xJzvY2IBoFa9Hp3",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Defense Bonus",
         "type": "rolePoints",
         "bonus": {
+          "defenseBonus": {
+            "cleverness": true,
+            "evasion": true,
+            "toughness": true,
+            "willpower": true
+          },
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level2",
+            "level8",
+            "level14",
+            "level20"
+          ],
+          "startingValue": 0,
+          "type": "defenseBonus",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
           "increase": 0,
           "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": "defenseBonus",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": true,
-          "evasion": true,
-          "toughness": true,
-          "willpower": true
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": true,
-        "isSeparate": false,
-        "isSpendable": false,
-        "level20Value": 0,
-        "levels": [
-          "level2",
-          "level8",
-          "level14",
-          "level20"
-        ],
-        "source": {
-          "book": "Finster's Monster-Matic Cookbook",
-          "page": 286
-        },
-        "starting": 0
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": 0,
+          "value": 0
+        }
       },
       "37aa": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.bP55ciUhiMJzyTGC",
@@ -229,8 +228,8 @@
           "level15",
           "level18"
         ],
-        "starting": 2,
-        "regeneration": 3
+        "regeneration": 3,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -262,7 +261,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713668351802,
-    "modifiedTime": 1713827805779,
+    "modifiedTime": 1714148066952,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!4PbR4S3s83Coa0kL"
