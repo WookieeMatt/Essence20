@@ -1,0 +1,34 @@
+{
+  "folder": "Ttp8Xr1CKJzNCrPr",
+  "name": "Racer Abandon",
+  "type": "perk",
+  "_id": "rNESO3bo1apEjd6p",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 61
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714049023329,
+    "modifiedTime": 1714049031032,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!rNESO3bo1apEjd6p"
+}

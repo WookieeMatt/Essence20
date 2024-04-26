@@ -1,0 +1,114 @@
+{
+  "folder": "0gpRPqi0To5ylodI",
+  "name": "Saboteur",
+  "type": "focus",
+  "_id": "feoqt7sdcz4OeCws",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 50
+    },
+    "items": {
+      "90fc": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.35KMOMI1iPdBPhHl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sabotage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "e084": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.M2ZYoyByNLkHtLzw",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Commando",
+        "type": "role"
+      },
+      "a748": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.mQ0s9B2it1mqho3H",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Focused Charge",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "fe2b": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.WW5PNoq6d3CBU3FC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bomber",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "f173": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.BUqXOt90M4yAsA7b",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Improvise Bomb",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "ee8d": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.1Dsom5S1ByB6Egbk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Concentrated Explosion",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "c12b": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.wyP8hFFMzHOOPbxu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Reverse Engineer",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "d791": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.f0GAXS72eKNLB6x1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Kitted Out",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "3d23": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.QzcZLhyVvdbn09Es",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Demolition Artist",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "technology"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714013396481,
+    "modifiedTime": 1714013482438,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!feoqt7sdcz4OeCws"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Aggressive Assault - Driving",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZthvrKqsgXR3q8bm",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": true,
+  "_id": "r1T7rglpf41OT2yK",
+  "changes": [
+    {
+      "key": "system.skills.driving.essences.strength",
+      "mode": 5,
+      "value": "true"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!ZthvrKqsgXR3q8bm.r1T7rglpf41OT2yK"
+}

@@ -1,0 +1,53 @@
+{
+  "folder": "JJhHchl12k9Im2Vz",
+  "name": "Citizen of Cobra-La",
+  "type": "origin",
+  "_id": "9NzIxi1fujAOj8Xj",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 77
+    },
+    "items": {
+      "8258": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.RfYYmA2bDBVZsMl3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Avoid The Inevitable",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "science",
+      "survival",
+      "animalHandling"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714102919828,
+    "modifiedTime": 1714102969374,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!9NzIxi1fujAOj8Xj"
+}

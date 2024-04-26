@@ -1,0 +1,19 @@
+{
+  "name": "Focus",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "hRvXtu68qKkLTDlu",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714009503459,
+    "modifiedTime": 1714009503459,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!folders!hRvXtu68qKkLTDlu"
+}

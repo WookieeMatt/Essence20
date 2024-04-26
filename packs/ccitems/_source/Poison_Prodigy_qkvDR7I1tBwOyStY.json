@@ -1,0 +1,34 @@
+{
+  "folder": "Ttp8Xr1CKJzNCrPr",
+  "name": "Poison Prodigy",
+  "type": "perk",
+  "_id": "qkvDR7I1tBwOyStY",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 50
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714012804487,
+    "modifiedTime": 1714012814673,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!qkvDR7I1tBwOyStY"
+}

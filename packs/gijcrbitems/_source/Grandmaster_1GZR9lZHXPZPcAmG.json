@@ -3,7 +3,7 @@
   "name": "Grandmaster",
   "type": "focus",
   "_id": "1GZR9lZHXPZPcAmG",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 87
     },
     "items": {
-      "c525": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Xj9ip1JaKEIdyk3w",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Officer",
-        "type": "role"
-      },
       "99a9": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.CG0aeZtKsPVmvUF5",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -65,6 +59,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "48f2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.VBEsSU8jqBpoGueE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Officer",
+        "type": "role"
       }
     },
     "essences": [
@@ -91,8 +91,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706460692244,
-    "modifiedTime": 1706460794550,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012194825,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!1GZR9lZHXPZPcAmG"
 }

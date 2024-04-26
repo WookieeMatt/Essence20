@@ -1,0 +1,34 @@
+{
+  "folder": "Ttp8Xr1CKJzNCrPr",
+  "name": "Ruthless Efficiency",
+  "type": "perk",
+  "_id": "KQWE1o3PjguwjAD0",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 57
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714047852212,
+    "modifiedTime": 1714047861852,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!KQWE1o3PjguwjAD0"
+}

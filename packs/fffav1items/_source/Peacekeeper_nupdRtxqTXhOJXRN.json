@@ -1,0 +1,107 @@
+{
+  "folder": "Wolydoiv6UVQhz7O",
+  "name": "Peacekeeper",
+  "type": "focus",
+  "_id": "nupdRtxqTXhOJXRN",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 13
+    },
+    "items": {
+      "bf0e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jBGt0rupbF0OwAi9",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Ranger",
+        "type": "role"
+      },
+      "7cf8": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.m90eNtuZvLWouyRc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cultural Connection",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "6b3d": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.I4tkodAyDsVPSXCU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cordial",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "fe60": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.YP8urAbkSotNV7E8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Emissary",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "a8fd": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.DZGQX1B8UwJEBrwg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Trade Goods",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "feb0": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.2MvQyj4AUcr4QOtU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Forage Familiarity",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "bcda": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.TU96vM4aq15QOfM4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Folklorist",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "0642": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.NEdXGHwdSOZ29E46",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Lasting Alliance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "deception",
+      "persuasion"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714097969875,
+    "modifiedTime": 1714098096389,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!nupdRtxqTXhOJXRN"
+}

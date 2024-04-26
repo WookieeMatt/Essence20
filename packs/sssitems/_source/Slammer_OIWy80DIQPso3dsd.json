@@ -1,0 +1,118 @@
+{
+  "folder": "hRvXtu68qKkLTDlu",
+  "name": "Slammer",
+  "type": "focus",
+  "_id": "OIWy80DIQPso3dsd",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaugter Sourcebook",
+      "page": 11
+    },
+    "items": {
+      "cc2c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.1tLA4fg232GcFeIE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Renegade",
+        "type": "role"
+      },
+      "a8b7": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.j2lcI8kG34egHKgj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tough As Nails",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "c638": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZyWXJTkPqv8S6K3b",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Try Me",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "f202": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.b1MNR5CPCitDTj4n",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Roll with the Punches",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "ffe4": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.rbgupnDh25Pij5Gp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "This Is For Me",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "a060": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.MViU1s9KdZ1A51Qe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Knuckle Up",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "3b42": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ro5hMv4XMhOmANao",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wrestler",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ce30": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.umLteVFW35otffjg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hammer It Out",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "18d4": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.GrTEwJVEVhWtZzDT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Knock Down, Drag Out",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "conditioning",
+      "athletics",
+      "brawn",
+      "intimidation",
+      "might"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714010981099,
+    "modifiedTime": 1714011081609,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!OIWy80DIQPso3dsd"
+}

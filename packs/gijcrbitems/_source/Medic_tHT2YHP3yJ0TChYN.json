@@ -3,7 +3,7 @@
   "name": "Medic",
   "type": "focus",
   "_id": "tHT2YHP3yJ0TChYN",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 82
     },
     "items": {
-      "9bd4": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.L8sJ8JfOeMOHFsQ7",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Infantry",
-        "type": "role"
-      },
       "83a7": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.hLWet58M7NV6c0Sn",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -81,6 +75,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 18
+      },
+      "1a5a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.SvByuJ6hUITwR5Q7",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Infantry",
+        "type": "role"
       }
     },
     "essences": [
@@ -107,8 +107,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706408330361,
-    "modifiedTime": 1706408439987,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012121664,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!tHT2YHP3yJ0TChYN"
 }

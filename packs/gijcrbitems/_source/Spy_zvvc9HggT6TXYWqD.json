@@ -3,7 +3,7 @@
   "name": "Spy",
   "type": "focus",
   "_id": "zvvc9HggT6TXYWqD",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 75
     },
     "items": {
-      "4525": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.6FNyO5Gy6Z0rFPhQ",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Commando",
-        "type": "role"
-      },
       "0738": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.EdP0LqcYh2tkMygI",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -81,6 +75,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "9a69": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.M2ZYoyByNLkHtLzw",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Commando",
+        "type": "role"
       }
     },
     "essences": [
@@ -110,8 +110,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706326206478,
-    "modifiedTime": 1706326604824,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012082736,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!zvvc9HggT6TXYWqD"
 }

@@ -3,7 +3,7 @@
   "name": "Beastmaster",
   "type": "focus",
   "_id": "iY8KMm88mKuGZ6P0",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 92
     },
     "items": {
-      "965f": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.6uBi60E3Fd7ASHa3",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Ranger",
-        "type": "role"
-      },
       "85fb": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.vnjELp3JE04liHSa",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -65,6 +59,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "f1c4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jBGt0rupbF0OwAi9",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Ranger",
+        "type": "role"
       }
     },
     "essences": [
@@ -91,8 +91,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706576333086,
-    "modifiedTime": 1706576443840,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012222034,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!iY8KMm88mKuGZ6P0"
 }
