@@ -554,9 +554,10 @@ E20.bonusTypes = {
   none: "E20.BonusNone",
   attackUpshift: "E20.BonusAttackUpshift",
   damageBonus: "E20.BonusDamage",
+  defenseBonus: "E20.BonusDefense",
   enemyDownshift: "E20.BonusEnemyDownshift",
   healthBonus: "E20.BonusHealth",
-  defenseBonus: "E20.BonusDefense",
+  other: "E20.BonusOther",
 };
 preLocalize("bonusTypes");
 

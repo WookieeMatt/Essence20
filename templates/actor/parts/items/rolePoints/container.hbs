@@ -8,6 +8,7 @@
   {{#if @root.rolePoints}}
     {{#with @root.rolePoints as |rolePoints|}}
       <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.rolePoints._id}}">
+        {{!-- Label --}}
         <a class="rollable" style="flex-grow: 0;" data-roll-type="info" title="{{localize 'E20.RolePoints'}}">
           <i class="fas fa-message-lines"></i>
         </a>
@@ -24,9 +25,10 @@
 
         <label>{{rolePoints.name}}</label>
 
+        {{!-- Bonus --}}
         <div>
           {{#ifNotEquals rolePoints.system.bonus.type 'none'}}
-            +{{rolePoints.system.bonus.value}}
+            {{#ifNotEquals rolePoints.system.bonus.type 'other'}}+{{/ifNotEquals}}{{rolePoints.system.bonus.value}}
           {{/ifNotEquals}}
 
           {{#ifEquals rolePoints.system.bonus.type 'attackUpshift'}}
@@ -43,6 +45,7 @@
           {{/ifEquals}}
         </div>
 
+        {{!-- Resource --}}
         {{#if rolePoints.system.resource.max}}
           <input class="inline-edit centered-input no-lock" data-field="rolePoints.system.resource.value" type="number"
             name="rolePoints.system.resource.value" value="{{rolePoints.system.resource.value}}" min="0"
