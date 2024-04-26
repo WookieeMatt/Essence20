@@ -12,42 +12,6 @@
       "page": 281
     },
     "items": {
-      "f0f4": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.aEzvkVBqHeDr7mCb",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Gang Up",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": "attackUpshift",
-        "canBeActivated": true,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": true,
-        "isSeparate": false,
-        "isSpendable": false,
-        "level20Value": 0,
-        "levels": [
-          "level6",
-          "level11",
-          "level16"
-        ],
-        "source": {
-          "book": "Finster's Monster-Matic Cookbook",
-          "page": 282
-        },
-        "starting": 1
-      },
       "e68f": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.hW8JMqCrGLlcM5n0",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -151,6 +115,41 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "abe2": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Y18J55UVsdm2aB7E",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Gang Up",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level6",
+            "level11",
+            "level16"
+          ],
+          "startingValue": 1,
+          "type": "attackUpshift",
+          "value": 0
+        },
+        "isActivatable": true,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": 0,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -223,8 +222,8 @@
           "level17",
           "level19"
         ],
-        "starting": 2,
-        "regeneration": 2
+        "regeneration": 0,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -245,7 +244,7 @@
     }
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 0,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -256,7 +255,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713587802008,
-    "modifiedTime": 1713827793933,
+    "modifiedTime": 1714148079406,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!vWie8Dy4u54sf1hy"

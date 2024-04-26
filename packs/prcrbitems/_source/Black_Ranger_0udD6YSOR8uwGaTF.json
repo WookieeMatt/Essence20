@@ -12,47 +12,6 @@
       "page": 31
     },
     "items": {
-      "0198": {
-        "uuid": "Compendium.essence20.pr_crb.Item.QeaZlrXKU0Ykh0YB",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Quips & Speeches",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": " ",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": false,
-        "isSpendable": true,
-        "level20Value": 0,
-        "levels": [
-          "level3",
-          "level5",
-          "level7",
-          "level9",
-          "level11",
-          "level13",
-          "level15",
-          "level17",
-          "level19"
-        ],
-        "source": {
-          "book": "Power Rangers Core Rulebook",
-          "page": 33
-        },
-        "starting": 2
-      },
       "21fe": {
         "uuid": "Compendium.essence20.pr_crb.Item.7EyU0Hf6T3YVels4",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -116,6 +75,47 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "2acf": {
+        "uuid": "Compendium.essence20.pr_crb.Item.HWUKoTIRbThQgbrg",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Quips & Speeches",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level3",
+            "level5",
+            "level7",
+            "level9",
+            "level11",
+            "level13",
+            "level15",
+            "level17",
+            "level19"
+          ],
+          "max": 0,
+          "startingMax": 2,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -184,8 +184,8 @@
           "level13",
           "level17"
         ],
-        "starting": 2,
-        "regeneration": 2
+        "regeneration": 2,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -216,7 +216,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713453402209,
-    "modifiedTime": 1713827592928,
+    "modifiedTime": 1714146845545,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!0udD6YSOR8uwGaTF"

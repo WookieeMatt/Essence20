@@ -1,0 +1,68 @@
+{
+  "folder": "pym3j6CQx8YXpUGr",
+  "name": "Burst Speed",
+  "type": "rolePoints",
+  "_id": "EMyMhKEToExQEraH",
+  "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 60
+    },
+    "bonus": {
+      "defenseBonus": {
+        "cleverness": false,
+        "evasion": false,
+        "toughness": false,
+        "willpower": false
+      },
+      "increase": 5,
+      "level20Value": 0,
+      "increaseLevels": [
+        "level2",
+        "level4",
+        "level6",
+        "level8",
+        "level10",
+        "level12",
+        "level14",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "startingValue": 0,
+      "type": "other",
+      "value": 0
+    },
+    "isActivatable": false,
+    "isActive": false,
+    "powerCost": 0,
+    "resource": {
+      "increase": 0,
+      "level20Value": 0,
+      "increaseLevels": [],
+      "max": 0,
+      "startingMax": 0,
+      "value": 0
+    },
+    "level20Value": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714149975106,
+    "modifiedTime": 1714150075280,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!EMyMhKEToExQEraH"
+}

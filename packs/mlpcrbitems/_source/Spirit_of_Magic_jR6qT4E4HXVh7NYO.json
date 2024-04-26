@@ -1,5 +1,5 @@
 {
-  "folder": "zAXsxMsghAFGCj2J",
+  "folder": "8GMQneo8DivUoTOK",
   "name": "Spirit of Magic",
   "type": "role",
   "_id": "jR6qT4E4HXVh7NYO",
@@ -12,46 +12,6 @@
       "page": 92
     },
     "items": {
-      "95c3": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.YX6NczQoNHf0u9su",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Mystical Points",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": " ",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": false,
-        "isSpendable": true,
-        "level20Value": 0,
-        "levels": [
-          "level4",
-          "level7",
-          "level10",
-          "level12",
-          "level14",
-          "level16",
-          "level18",
-          "level20"
-        ],
-        "source": {
-          "book": "My Little Pony Core Rulebook",
-          "page": 93
-        },
-        "starting": 2
-      },
       "d6c9": {
         "uuid": "Compendium.essence20.mlp_crb.Item.0POa5TuUxinLfFBn",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -163,6 +123,46 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "065d": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.BEAdHEkz1oAVMhKp",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Mystical Points",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level4",
+            "level7",
+            "level10",
+            "level12",
+            "level14",
+            "level16",
+            "level18",
+            "level20"
+          ],
+          "max": 0,
+          "startingMax": 2,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -219,7 +219,7 @@
     }
   },
   "effects": [],
-  "sort": 0,
+  "sort": 50000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -230,7 +230,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713839555279,
-    "modifiedTime": 1713839840862,
+    "modifiedTime": 1714146559656,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!jR6qT4E4HXVh7NYO"

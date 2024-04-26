@@ -1,23 +1,21 @@
 {
-  "folder": "q1eAYrImf4LNqCQo",
-  "name": "Silver Ranger Prime",
+  "folder": "ZQVDbqkf0PdpdQ2c",
+  "name": "Brute Force",
   "type": "perk",
-  "_id": "Bl9G8fgtd30wENkX",
+  "_id": "3XP5RgmeyQwE5HH9",
   "img": "systems/essence20/assets/icons/items/perk.svg",
   "system": {
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Across the Stars",
-      "page": 57
+      "book": "Beneath the Helmet",
+      "page": 47
     },
     "prerequisite": "",
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [
-    "xvDsDhWwkyaTuy47"
-  ],
+  "effects": [],
   "sort": 0,
   "ownership": {
     "default": 0,
@@ -28,9 +26,9 @@
     "systemId": "essence20",
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1713531248389,
-    "modifiedTime": 1714150657096,
+    "createdTime": 1714150536443,
+    "modifiedTime": 1714150544546,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
-  "_key": "!items!Bl9G8fgtd30wENkX"
+  "_key": "!items!3XP5RgmeyQwE5HH9"
 }

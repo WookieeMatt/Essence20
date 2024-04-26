@@ -12,49 +12,6 @@
       "page": 58
     },
     "items": {
-      "acd5": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.2bOOOaqSOIBS2e6v",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Burst Speed",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": "attackUpshift",
-        "canBeActivated": true,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 5,
-        "isBonus": false,
-        "isSeparate": false,
-        "isSpendable": false,
-        "level20Value": 0,
-        "levels": [
-          "level2",
-          "level4",
-          "level6",
-          "level8",
-          "level10",
-          "level12",
-          "level14",
-          "level16",
-          "level18",
-          "level20"
-        ],
-        "source": {
-          "book": "Across the Stars",
-          "page": 60
-        },
-        "starting": 0
-      },
       "b3be": {
         "uuid": "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -142,6 +99,48 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "f678": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.EMyMhKEToExQEraH",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Burst Speed",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 5,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level2",
+            "level4",
+            "level6",
+            "level8",
+            "level10",
+            "level12",
+            "level14",
+            "level16",
+            "level18",
+            "level20"
+          ],
+          "startingValue": 0,
+          "type": "other",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": 0,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -215,8 +214,8 @@
           "level17",
           "level19"
         ],
-        "starting": 2,
-        "regeneration": 3
+        "regeneration": 3,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -248,7 +247,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713548249257,
-    "modifiedTime": 1713827523940,
+    "modifiedTime": 1714150090785,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!mwjoSoepwJNZStW3"

@@ -12,43 +12,6 @@
       "page": 50
     },
     "items": {
-      "4f0d": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.j7Du5Hakt3MLs2O3",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Hardened Armor",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": "defenseBonus",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": true,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": true,
-        "isSeparate": false,
-        "isSpendable": false,
-        "level20Value": 0,
-        "levels": [
-          "level4",
-          "level9",
-          "level12",
-          "level16"
-        ],
-        "source": {
-          "book": "Across the Stars",
-          "page": 52
-        },
-        "starting": 1
-      },
       "d55a": {
         "uuid": "Compendium.essence20.across_the_stars.Item.LVyy4985HSSKCnGs",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -128,6 +91,42 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "ca2b": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.ELRCpQpT3q1Our7p",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Hardened Armor",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": true,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level4",
+            "level8",
+            "level12",
+            "level16"
+          ],
+          "startingValue": 1,
+          "type": "defenseBonus",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": 0,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -197,8 +196,8 @@
           "level13",
           "level17"
         ],
-        "starting": 2,
-        "regeneration": 2
+        "regeneration": 2,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -230,7 +229,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713530202593,
-    "modifiedTime": 1713827487382,
+    "modifiedTime": 1714149167712,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!bCboFGsaJGKtz8wK"

@@ -1,21 +1,21 @@
 {
-  "folder": "UcsFO5Hku6T5zN7o",
-  "name": "Pink Ranger",
+  "folder": "eA1eJMUN0UyiOuWf",
+  "name": "Aqua Ranger",
   "type": "role",
-  "_id": "64LoXfZpEWldzQRS",
+  "_id": "k4GQu67Gsrv4fRYE",
   "img": "systems/essence20/assets/icons/items/role.svg",
   "system": {
     "originalId": "",
     "description": "",
     "source": {
-      "book": "Power Rangers Core Rulebook",
-      "page": 46
+      "book": "Beneath the Helmet",
+      "page": 41
     },
     "items": {
-      "5797": {
-        "uuid": "Compendium.essence20.pr_crb.Item.cJM7v6BxscuWVWkj",
+      "6b7d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zdu0i4ofdwLKM7nk",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Volley Shots",
+        "name": "Idea Points",
         "type": "rolePoints",
         "bonus": {
           "defenseBonus": {
@@ -24,55 +24,58 @@
             "toughness": false,
             "willpower": false
           },
-          "increase": 1,
-          "level20Value": 0,
-          "increaseLevels": [
-            "level5",
-            "level9",
-            "level13",
-            "level17"
-          ],
-          "startingValue": 2,
-          "type": "other",
-          "value": 0
-        },
-        "isActivatable": true,
-        "isActive": false,
-        "powerCost": 1,
-        "resource": {
           "increase": 0,
           "level20Value": 0,
           "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level2",
+            "level5",
+            "level8",
+            "level11",
+            "level14",
+            "level17",
+            "level20"
+          ],
           "max": 0,
-          "startingMax": 0,
+          "startingMax": 1,
           "value": 0
         }
       },
-      "f21a": {
-        "uuid": "Compendium.essence20.pr_crb.Item.Xi2sHKmBi21c3wbu",
+      "dfe7": {
+        "uuid": "Compendium.essence20.pr_crb.Item.DU5oZEhhd45VDmRg",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Volley",
+        "name": "Eureka!",
         "type": "perk",
         "subtype": "role",
         "level": 1
       },
-      "48fc": {
-        "uuid": "Compendium.essence20.pr_crb.Item.9oFOf0qSLJCwCGmZ",
+      "941a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.U5xY4e0Wro9XyooS",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Hard Target",
+        "name": "Helping Hands",
         "type": "perk",
         "subtype": "role",
         "level": 2
       },
-      "a369": {
-        "uuid": "Compendium.essence20.pr_crb.Item.rQQqFLBG7JH4d1kR",
+      "ca6f": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.C81ZIdSjyz5mSTkI",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Fleet of Foot",
+        "name": "Grid Science I",
         "type": "perk",
         "subtype": "role",
         "level": 2
       },
-      "ad09": {
+      "d062": {
         "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Zord",
@@ -80,42 +83,58 @@
         "subtype": "role",
         "level": 3
       },
-      "88a5": {
-        "uuid": "Compendium.essence20.pr_crb.Item.6ay8OIRRwZTnQUV8",
+      "808f": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.jNOwd35gE6Qrybdb",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Penetrating Shot",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "e17f": {
-        "uuid": "Compendium.essence20.pr_crb.Item.coGMtK50t3Ojeklx",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Group Strike",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "d351": {
-        "uuid": "Compendium.essence20.pr_crb.Item.YhdTm7qhaPCoiDab",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Sidestep",
+        "name": "Grid Science II",
         "type": "perk",
         "subtype": "role",
         "level": 7
       },
-      "ef16": {
-        "uuid": "Compendium.essence20.pr_crb.Item.tljdouRqNGgQQDz6",
+      "be6e": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.3kcNR23zhInxqKQp",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Precision Aim",
+        "name": "Elemental Shield",
         "type": "perk",
         "subtype": "role",
         "level": 9
       },
-      "002f": {
-        "uuid": "Compendium.essence20.pr_crb.Item.DHYxJEp1X1BDlm6K",
+      "e0cc": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.6IoMpj8pWmP8IpH4",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Pink Ranger Prime",
+        "name": "Elemental Storm",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "879e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "0b1a": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.6wD6guZWDrVbsMHZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Science III",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "bdd2": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.sZacBgzLZjYd6ypy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Science IV",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "e2cb": {
+        "uuid": "Compendium.essence20.pr_crb.Item.PwTnDjPfb8dKplIU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blue Ranger Prime",
         "type": "perk",
         "subtype": "role",
         "level": 20
@@ -127,26 +146,12 @@
     "armors": {
       "qualified": [],
       "trained": [
-        "light"
+        "light",
+        "medium"
       ]
     },
     "essenceLevels": {
       "smarts": [
-        "level3",
-        "level7",
-        "level11",
-        "level15"
-      ],
-      "social": [
-        "level1",
-        "level2",
-        "level6",
-        "level10",
-        "level14",
-        "level17",
-        "level19"
-      ],
-      "speed": [
         "level1",
         "level1optional",
         "level5",
@@ -155,6 +160,21 @@
         "level16",
         "level18",
         "level20"
+      ],
+      "social": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
       ],
       "strength": [
         "level4",
@@ -216,9 +236,9 @@
     "systemId": "essence20",
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
-    "createdTime": 1713499295918,
-    "modifiedTime": 1714147092699,
+    "createdTime": 1714148366623,
+    "modifiedTime": 1714148889220,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
-  "_key": "!items!64LoXfZpEWldzQRS"
+  "_key": "!items!k4GQu67Gsrv4fRYE"
 }

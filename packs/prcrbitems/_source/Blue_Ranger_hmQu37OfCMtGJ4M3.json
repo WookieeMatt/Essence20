@@ -12,45 +12,6 @@
       "page": 36
     },
     "items": {
-      "2f3a": {
-        "uuid": "Compendium.essence20.pr_crb.Item.HCcHH13DEIAJHNqz",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Idea Points",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 0,
-          "level20Value": 0,
-          "levels": [],
-          "starting": 0
-        },
-        "bonusType": " ",
-        "canBeActivated": false,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": false,
-        "isSpendable": true,
-        "level20Value": 0,
-        "levels": [
-          "level2",
-          "level5",
-          "level8",
-          "level11",
-          "level14",
-          "level17",
-          "level20"
-        ],
-        "source": {
-          "book": "Power Rangers Core Rulebook",
-          "page": 38
-        },
-        "starting": 1
-      },
       "683e": {
         "uuid": "Compendium.essence20.pr_crb.Item.DU5oZEhhd45VDmRg",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -123,7 +84,54 @@
         "subtype": "role",
         "level": 12
       },
-      "17f2": {
+      "d1d5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zdu0i4ofdwLKM7nk",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Idea Points",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level2",
+            "level5",
+            "level8",
+            "level11",
+            "level14",
+            "level17",
+            "level20"
+          ],
+          "max": 0,
+          "startingMax": 1,
+          "value": 0
+        }
+      },
+      "0de2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.dWfuzsqz30rZmX1G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Tech IV",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "bd9b": {
         "uuid": "Compendium.essence20.pr_crb.Item.PwTnDjPfb8dKplIU",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Blue Ranger Prime",
@@ -200,8 +208,8 @@
           "level16",
           "level19"
         ],
-        "starting": 2,
-        "regeneration": 4
+        "regeneration": 4,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -234,7 +242,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713453799350,
-    "modifiedTime": 1713827604669,
+    "modifiedTime": 1714148913705,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!hmQu37OfCMtGJ4M3"

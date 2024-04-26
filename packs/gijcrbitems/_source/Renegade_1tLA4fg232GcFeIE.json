@@ -12,49 +12,6 @@
       "page": 94
     },
     "items": {
-      "e829": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.BVDs2lnvR0zBYcoB",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Reckless Abandon",
-        "type": "rolePoints",
-        "bonus": {
-          "increase": 1,
-          "level20Value": 0,
-          "levels": [
-            "level5",
-            "level9",
-            "level13",
-            "level17",
-            "level20"
-          ],
-          "starting": 1
-        },
-        "bonusType": "healthBonus",
-        "canBeActivated": true,
-        "defenseBonus": {
-          "cleverness": false,
-          "evasion": false,
-          "toughness": false,
-          "willpower": false
-        },
-        "description": "",
-        "increase": 1,
-        "isBonus": true,
-        "isSeparate": true,
-        "isSpendable": true,
-        "level20Value": 99,
-        "levels": [
-          "level3",
-          "level6",
-          "level11",
-          "level17"
-        ],
-        "source": {
-          "book": "GI Joe Core Rulebook",
-          "page": 96
-        },
-        "starting": 2
-      },
       "0177": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.fK70bjqxEUbH8VLJ",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -166,6 +123,48 @@
         "type": "perk",
         "subtype": "role",
         "level": 18
+      },
+      "15e0": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Reckless Adandon",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": 0,
+          "increaseLevels": [
+            "level5",
+            "level9",
+            "level13",
+            "level17",
+            "level20"
+          ],
+          "startingValue": 1,
+          "type": "healthBonus",
+          "value": 0
+        },
+        "isActivatable": true,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 99,
+          "increaseLevels": [
+            "level3",
+            "level6",
+            "level11",
+            "level17"
+          ],
+          "max": 0,
+          "startingMax": 2,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -263,7 +262,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713918188331,
-    "modifiedTime": 1713918470471,
+    "modifiedTime": 1714137255409,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!1tLA4fg232GcFeIE"
