@@ -3,7 +3,7 @@
   "name": "Battlefield Psychiologist",
   "type": "focus",
   "_id": "ezTiHQgfD1LTassj",
-  "img": "icons/svg/item-bag.svg",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
   "system": {
     "originalId": "",
     "description": "",
@@ -12,12 +12,6 @@
       "page": 86
     },
     "items": {
-      "5dea": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Xj9ip1JaKEIdyk3w",
-        "img": "icons/svg/item-bag.svg",
-        "name": "Officer",
-        "type": "role"
-      },
       "bb4a": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.cjAxzUXLHza3KGyu",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -65,6 +59,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "dcc9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.VBEsSU8jqBpoGueE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Officer",
+        "type": "role"
       }
     },
     "essences": [
@@ -93,8 +93,8 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1706460432890,
-    "modifiedTime": 1706460547771,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714012169612,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!ezTiHQgfD1LTassj"
 }
