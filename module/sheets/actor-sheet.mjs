@@ -835,6 +835,9 @@ export class Essence20ActorSheet extends ActorSheet {
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'role':
       return await this._rlHandler.roleUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'rolePoints':
+      ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
+      return;
     case 'perk':
       return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':

@@ -18,7 +18,7 @@
     </div>
 
     <div class="tab details flexcol" data-group="primary" data-tab="details">
-      <div class="flexrow" style="justify-content: center;">General</div>
+      <div class="flexrow" style="justify-content: center;">{{localize "E20.RolePointsGeneral"}}</div>
 
       {{!-- Is Activatable? --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsCanBeActivated'}}
@@ -35,7 +35,7 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Bonus Section --}}
-      <div class="flexrow" style="justify-content: center; margin: 10px 0px;">Bonus</div>
+      <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsBonus"}}</div>
 
       {{!-- Type --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsBonusType'}}
@@ -118,7 +118,7 @@
       {{/ifNotEquals}}
 
       {{!-- Resource Section --}}
-      <div class="flexrow" style="justify-content: center; margin: 10px 0px;">Resource</div>
+      <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsResource"}}</div>
 
       {{!-- Starting Value --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingMax'}}
