@@ -13,7 +13,7 @@
           <i class="fas fa-message-lines"></i>
         </a>
 
-        {{#if rolePoints.system.resource.max}}
+        {{#if rolePoints.system.isSpendable}}
         <a class="rollable" style="flex-grow: 0;" data-roll-type="rolePoints" title="{{localize 'E20.RolePointsRoll'}}"><i
           class="fas fa-hand-fist"></i></a>
         {{/if}}
@@ -47,8 +47,8 @@
 
         {{!-- Resource --}}
         {{#if rolePoints.system.resource.max}}
-          <input class="inline-edit centered-input no-lock" data-field="rolePoints.system.resource.value" type="number"
-            name="rolePoints.system.resource.value" value="{{rolePoints.system.resource.value}}" min="0"
+          <input class="inline-edit centered-input no-lock" data-field="system.resource.value" type="number"
+            name="system.resource.value" value="{{system.resource.value}}" min="0"
             step="1" />
           /
           <input class="centered-input no-unlock" data-field="rolePoints.system.resource.max" type="number"

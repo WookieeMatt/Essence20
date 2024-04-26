@@ -273,6 +273,7 @@ export class Essence20ActorSheet extends ActorSheet {
           }
 
           rolePoints.system.bonus.defenseBonus.string = defenseLetters.join(', ');
+          rolePoints.system.isSpendable = !!(rolePoints.system.resource.max || rolePoints.system.powerCost);
         }
 
         break;
@@ -587,14 +588,14 @@ export class Essence20ActorSheet extends ActorSheet {
       if (rollType == 'power') {
         await this._pwHandler.powerCost(item);
       } else if (rollType == 'rolePoints') {
-        if (item.system.points.primary.value < 1) {
+        if (item.system.resource.max && item.system.resource.value < 1) {
           ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
         } else {
           // If Role Points are being used, decrement uses
-          await item.update({ 'system.points.primary.value': item.system.points.primary.value - 1 });
+          await item.update({ 'system.resource.value': item.system.resource.value - 1 });
 
           // Some also decrement Personal Power
-          if (item.system.hasCost) {
+          if (item.system.powerCost) {
             if (this.actor.system.powers.personal.value < item.system.powerCost) {
               ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
             } else {
