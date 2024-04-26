@@ -39,6 +39,9 @@ Drag-and-drop a Role onto your actor sheet and set your level to automatically a
 ### Token Action HUD Support
 [Token Action HUD](https://github.com/Larkinabout/fvtt-token-action-hud-core) can be used with Essence20 by installing the module found [here](https://github.com/phildominguez/token-action-hud-essence20).
 
+### Drag Ruler Support
+The [Drag Ruler](https://foundryvtt.com/packages/drag-ruler/) module is supported out of the box. Please note that only Ground movement is supported at this time.
+
 # Installation
 - In the `Game Systems` menu within Foundry, click `Install System` and paste in the Manifest URL for the version of Foundry you're using.
   - Manifest URL v11: `https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json`
