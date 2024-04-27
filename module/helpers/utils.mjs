@@ -467,7 +467,7 @@ export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
  * @param {Number} lastProcessedLevel The value of actor.system.level the last time a level change was processed
  * @returns {Number} totalChange The number of level changes.
  */
-export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=null) {
+export function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=null) {
   const levelDiff = currentLevel - lastProcessedLevel;
   if (!levelDiff) {
     return 0;
@@ -502,7 +502,7 @@ export async function roleValueChange(currentLevel, arrayLevels, lastProcessedLe
  */
 export async function setRoleValues(role, actor, newLevel=null, previousLevel=null) {
   for (const essence in role.system.essenceLevels) {
-    const totalChange = await roleValueChange(actor.system.level, role.system.essenceLevels[essence], previousLevel);
+    const totalChange = roleValueChange(actor.system.level, role.system.essenceLevels[essence], previousLevel);
     const essenceValue = actor.system.essences[essence] + totalChange;
     const essenceString = `system.essences.${essence}`;
 
@@ -512,7 +512,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   }
 
   if (role.system.powers.personal.starting) {
-    const totalChange = await roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
+    const totalChange = roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
     const newPersonalPowerMax =
         actor.system.powers.personal.max
       + newLevel ? 0 : role.system.powers.personal.starting
@@ -524,7 +524,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   }
 
   if (role.system.adjustments.health.length) {
-    const totalChange = await roleValueChange(actor.system.level, role.system.adjustments.health, previousLevel);
+    const totalChange = roleValueChange(actor.system.level, role.system.adjustments.health, previousLevel);
     const newHealthBonus = actor.system.health.bonus + totalChange;
 
     await actor.update({
@@ -535,7 +535,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   if (role.system.skillDie.isUsed) {
     const skillName = "roleSkillDie";
     const shiftList = CONFIG.E20.skillShiftList;
-    const totalChange = await roleValueChange(actor.system.level, role.system.skillDie.levels, previousLevel);
+    const totalChange = roleValueChange(actor.system.level, role.system.skillDie.levels, previousLevel);
     let initialShiftIndex = shiftList.findIndex(s => s == "d2");
     if (actor.system.skills[skillName].shift) {
       initialShiftIndex = shiftList.findIndex(s => s == actor.system.skills[skillName].shift);
@@ -590,7 +590,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
  * @param {Number} previousLevel (Optional) The last level processed for the actor
  */
 export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
-  const totalChange = await roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
+  const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
   const essenceValue = actor.system.essences[actor.system.focusEssence] + totalChange;
   const essenceString = `system.essences.${actor.system.focusEssence}`;
 
