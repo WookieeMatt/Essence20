@@ -150,7 +150,7 @@ export class Essence20Actor extends Actor {
       defense.total = base + essence + bonus + rolePointsDefense;
       defense.total += system.isMorphed ? morphed : armor;
 
-      defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`
+      defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`;
       defense.string += system.isMorphed ? ` + ${morphed} (${morphedName})` : ` + ${armor} (${armorName})`;
       defense.string += ` + ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
     }
