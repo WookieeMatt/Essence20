@@ -1,6 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { resizeTokens, getItemsOfType } from "../helpers/utils.mjs";
+import { resizeTokens, getItemsOfType, roleValueChange } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -124,20 +124,35 @@ export class Essence20Actor extends Actor {
       const armor = defense.armor;
       const bonus = defense.bonus;
       const morphed = defense.morphed;
+      let rolePointsDefense = 0;
       const essence = system.essences[defense.essence];
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
       const armorName = game.i18n.localize('E20.DefenseArmor');
       const bonusName = game.i18n.localize('E20.Bonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
+      let rolePointsName = game.i18n.localize('E20.RolePoints');
 
-      if (system.isMorphed) {
-        defense.total = base + essence + morphed + bonus;
-        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${morphed} ${morphedName} + ${bonus} ${bonusName}`;
-      } else {
-        defense.total = base + essence + armor + bonus;
-        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${armor} ${armorName} + ${bonus} ${bonusName}`;
+      // Armor from Role Points
+      const rolePointsList = getItemsOfType('rolePoints', this.items);
+      if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'defenseBonus'
+        && (!rolePointsList[0].system.isActivatable || rolePointsList[0].system.isActive)) {
+        const rolePoints = rolePointsList[0];
+        rolePointsName = rolePoints.name;
+
+        if (this.system.level == 20) {
+          rolePointsDefense = rolePoints.system.bonus.level20Value;
+        } else {
+          rolePointsDefense = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
+        }
       }
+
+      defense.total = base + essence + bonus + rolePointsDefense;
+      defense.total += system.isMorphed ? morphed : armor;
+
+      defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`
+      defense.string += system.isMorphed ? `+ ${morphed} (${morphedName})` : `+ ${armor} (${armorName})`;
+      defense.string += `+ ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
     }
   }
 
