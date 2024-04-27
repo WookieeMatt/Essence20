@@ -1,0 +1,34 @@
+{
+  "folder": "B9zu9C6TQlhBqQLr",
+  "name": "Bang Bang Bang",
+  "type": "perk",
+  "_id": "LWxBgQtPtnCOD2fn",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 69
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714190792321,
+    "modifiedTime": 1714190823690,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!LWxBgQtPtnCOD2fn"
+}

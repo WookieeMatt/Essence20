@@ -1,0 +1,36 @@
+{
+  "folder": "ydeFFRkg80sIO7Zx",
+  "name": "Grid Psychic Prime",
+  "type": "perk",
+  "_id": "gqNiUXFoLUAyPi80",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 68
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    "N9j3828OgwVU4E0W"
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714184250019,
+    "modifiedTime": 1714184376171,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!gqNiUXFoLUAyPi80"
+}

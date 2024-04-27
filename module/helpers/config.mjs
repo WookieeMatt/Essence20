@@ -135,8 +135,10 @@ E20.weaponTypes = {
   finesse: "E20.WeaponsFinesse",
   grenades: "E20.WeaponGrenades",
   mightMelee: "E20.WeaponsMightMelee",
+  oneHanded: "E20.WeaponsOneHanded",
   shotguns: "E20.WeaponsShotgun",
   silent: "E20.WeaponsSilent",
+  stun: "E20.WeaponsStun",
   submachineGun: "E20.WeaponsSubmachineGun",
   thrown: "E20.WeaponsThrown",
 };
@@ -840,5 +842,45 @@ E20.EssenceRankNames = [
   "gold",
   "silver",
   "bronze",
+];
+
+/************************************************
+ * TF Special Essence Advancement               *
+ ***********************************************/
+
+E20.TFSpecialAdvancement = {
+  first: [
+    "level2",
+    "level5",
+    "level9",
+    "level14",
+    "level18",
+    "level20",
+  ],
+  second: [
+    "level3",
+    "level7",
+    "level11",
+    "level15",
+    "level19",
+  ],
+  third: [
+    "level4",
+    "level8",
+    "level13",
+    "level16",
+  ],
+  fourth: [
+    "level6",
+    "level2",
+    "level17",
+  ],
+};
+
+E20.TFEssenceRankNames = [
+  "first",
+  "second",
+  "third",
+  "fourth",
 ];
 

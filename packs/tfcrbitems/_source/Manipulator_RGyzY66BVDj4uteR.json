@@ -1,0 +1,100 @@
+{
+  "folder": "WtQtiThqOagKNnL3",
+  "name": "Manipulator",
+  "type": "focus",
+  "_id": "RGyzY66BVDj4uteR",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 60
+    },
+    "items": {
+      "1840": {
+        "uuid": "Compendium.essence20.tf_crb.Item.LDi9BUkXFtaCSoTe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Diversion",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "d8de": {
+        "uuid": "Compendium.essence20.tf_crb.Item.1A0amCHFpk7VwtX2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Analyst",
+        "type": "role"
+      },
+      "a6f0": {
+        "uuid": "Compendium.essence20.tf_crb.Item.9UK1Q2wnZ9yZadbM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Holo-Projector",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "7d03": {
+        "uuid": "Compendium.essence20.tf_crb.Item.3BXqOi4mCW6oJwKs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "In My Sights",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "ada7": {
+        "uuid": "Compendium.essence20.tf_crb.Item.rWrU13LenH7mukyV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Holographic Doubles",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "e7ff": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Boj0xRCCDi1dpoQe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Electro-Disruptor",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "b6bd": {
+        "uuid": "Compendium.essence20.tf_crb.Item.RESovNstSU5Sq3GM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vanish",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "deception",
+      "persuasion",
+      "streetwise"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714187367171,
+    "modifiedTime": 1714187536983,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!RGyzY66BVDj4uteR"
+}

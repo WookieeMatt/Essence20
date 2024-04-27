@@ -1,0 +1,36 @@
+{
+  "folder": "B9zu9C6TQlhBqQLr",
+  "name": "Hardened",
+  "type": "perk",
+  "_id": "sWnZEyr6M1I5ciDr",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 65
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    "cbYu0iFG9YGRP9rM"
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714188966642,
+    "modifiedTime": 1714189016911,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!sWnZEyr6M1I5ciDr"
+}

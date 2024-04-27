@@ -1,0 +1,44 @@
+{
+  "name": "Grid Psychic Prime",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.field_guide_action_adventure.Item.gqNiUXFoLUAyPi80",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "N9j3828OgwVU4E0W",
+  "changes": [
+    {
+      "key": "system.defenses.cleverness.bonus",
+      "mode": 2,
+      "value": "2"
+    },
+    {
+      "key": "system.defenses.evasion.bonus",
+      "mode": 2,
+      "value": "2"
+    },
+    {
+      "key": "system.defenses.toughness.bonus",
+      "mode": 2,
+      "value": "2"
+    },
+    {
+      "key": "system.defenses.willpower.bonus",
+      "mode": 2,
+      "value": "2"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!gqNiUXFoLUAyPi80.N9j3828OgwVU4E0W"
+}
