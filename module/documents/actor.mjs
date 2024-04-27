@@ -106,6 +106,7 @@ export class Essence20Actor extends Actor {
     const conditionName = game.i18n.localize('E20.SkillConditioning');
     const bonusName = game.i18n.localize('E20.Bonus');
 
+    // Health from Origin
     const origins = getItemsOfType('origin', this.items);
     if (origins.length > 0) {
       const origin = origins[0];
@@ -113,8 +114,10 @@ export class Essence20Actor extends Actor {
       originName = origin.name;
     }
 
+    // Health from Role Points
     const rolePointsList = getItemsOfType('rolePoints', this.items);
-    if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'healthBonus') {
+    if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'healthBonus'
+      && (!rolePointsList[0].system.isActivatable || rolePointsList[0].system.isActive)) {
       const rolePoints = rolePointsList[0];
       rolePointsName = rolePoints.name;
 
