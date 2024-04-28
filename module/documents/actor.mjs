@@ -144,20 +144,38 @@ export class Essence20Actor extends Actor {
       const armor = defense.armor;
       const bonus = defense.bonus;
       const morphed = defense.morphed;
+      let rolePointsDefense = 0;
       const essence = system.essences[defense.essence];
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
       const armorName = game.i18n.localize('E20.DefenseArmor');
       const bonusName = game.i18n.localize('E20.Bonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
+      let rolePointsName = game.i18n.localize('E20.RolePoints');
 
-      if (system.isMorphed) {
-        defense.total = base + essence + morphed + bonus;
-        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${morphed} ${morphedName} + ${bonus} ${bonusName}`;
-      } else {
-        defense.total = base + essence + armor + bonus;
-        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${armor} ${armorName} + ${bonus} ${bonusName}`;
+      // Armor from Role Points
+      const rolePointsList = getItemsOfType('rolePoints', this.items);
+      if (rolePointsList.length) {
+        const rolePoints = rolePointsList[0]; // There should only be one RolePoints
+
+        if (rolePoints.system.bonus.type == 'defenseBonus' && rolePoints.system.bonus.defenseBonus[defenseType]
+          && (!rolePoints.system.isActivatable || rolePoints.system.isActive)) {
+          rolePointsName = rolePoints.name;
+
+          if (this.system.level == 20) {
+            rolePointsDefense = rolePoints.system.bonus.level20Value;
+          } else {
+            rolePointsDefense = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
+          }
+        }
       }
+
+      defense.total = base + essence + bonus + rolePointsDefense;
+      defense.total += system.isMorphed ? morphed : armor;
+
+      defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`;
+      defense.string += system.isMorphed ? ` + ${morphed} (${morphedName})` : ` + ${armor} (${armorName})`;
+      defense.string += ` + ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
     }
   }
 
