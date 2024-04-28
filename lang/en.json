@@ -409,6 +409,7 @@
     "RolePointsOverSpent": "You don't have enough points to use this Role Feature.",
     "RolePointsPersonalPowerCost": "Personal Power Cost",
     "RolePointsResource": "Resource",
+    "RolePointsResourceUnlimited": "Unlimited",
     "RolePointsRoll": "Use Roll Points",
     "RolePointsSecondaryPointIncrease": "Has Secondary Advancement",
     "RolePointsStartingMax": "Starting Max",
