@@ -154,7 +154,9 @@
       {{!-- Level 20 Value --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsLevel20ValueUnlimited'}}
       {{#*inline "item-field-inputs"}}
-      {{numberInput system.resource.level20Value name="system.resource.level20Value"}}
+      {{numberInput system.resource.level20Value name="system.resource.level20Value" disabled=system.resource.level20ValueIsUnlimited }}
+      <input type="checkbox" name="system.resource.level20ValueIsUnlimited" {{checked system.resource.level20ValueIsUnlimited}}/>
+      <div style="flex-grow: 0;">{{localize "E20.RolePointsResourceUnlimited"}}</div>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     </div>

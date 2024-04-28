@@ -76,6 +76,7 @@ export class Essence20Actor extends Actor {
       this._prepareHealth();
       this._prepareMovement();
       this._prepareSorcerousPower();
+      this._prepareResource();
     }
   }
 
@@ -233,6 +234,17 @@ export class Essence20Actor extends Actor {
     const levelMultiplier = system.level - system.powers.sorcerous.levelTaken;
 
     system.powers.sorcerous.max = (levelMultiplier * 2) + 4;
+  }
+
+  /**
+   * Prepare Resource (from Role Points) type specific data.
+   */
+  _prepareResource() {
+    const rolePointsList = getItemsOfType('rolePoints', this.items);
+    if (rolePointsList.length) {
+      const rolePoints = rolePointsList[0]; // There should only be one RolePoints
+      this.system.useUnlimitedResource = rolePoints.system.resource.level20ValueIsUnlimited && this.system.level == 20;
+    }
   }
 
   /**

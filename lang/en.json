@@ -404,7 +404,7 @@
     "RolePointsIncrease": "Increase",
     "RolePointsIncreaseLevels": "Points Increase Levels",
     "RolePointsLevel20Value": "Level 20 Value",
-    "RolePointsLevel20ValueUnlimited": "Level 20 Value (99 is unlimited)",
+    "RolePointsLevel20ValueUnlimited": "Level 20 Value",
     "RolePointsMultipleError": "Roles can only have one instance of Role Points.",
     "RolePointsOverSpent": "You don't have enough points to use this Role Feature.",
     "RolePointsPersonalPowerCost": "Personal Power Cost",
