@@ -135,15 +135,18 @@ export class Essence20Actor extends Actor {
 
       // Armor from Role Points
       const rolePointsList = getItemsOfType('rolePoints', this.items);
-      if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'defenseBonus'
-        && (!rolePointsList[0].system.isActivatable || rolePointsList[0].system.isActive)) {
-        const rolePoints = rolePointsList[0];
-        rolePointsName = rolePoints.name;
+      if (rolePointsList.length) {
+        const rolePoints = rolePointsList[0]; // There should only be one RolePoints
 
-        if (this.system.level == 20) {
-          rolePointsDefense = rolePoints.system.bonus.level20Value;
-        } else {
-          rolePointsDefense = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
+        if (rolePoints.system.bonus.type == 'defenseBonus' && rolePoints.system.bonus.defenseBonus[defenseType]
+          && (!rolePoints.system.isActivatable || rolePoints.system.isActive)) {
+          rolePointsName = rolePoints.name;
+
+          if (this.system.level == 20) {
+            rolePointsDefense = rolePoints.system.bonus.level20Value;
+          } else {
+            rolePointsDefense = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
+          }
         }
       }
 
