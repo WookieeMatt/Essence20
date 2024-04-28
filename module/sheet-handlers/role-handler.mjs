@@ -124,7 +124,7 @@ export class RoleHandler {
    */
   async onFocusDelete(focus) {
     const previousLevel = this._actor.getFlag('essence20', 'previousLevel');
-    const totalDecrease = await roleValueChange(0, focus.system.essenceLevels, previousLevel);
+    const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
     const essenceValue = Math.max(0, this._actor.system.essences[this._actor.system.focusEssence] + totalDecrease);
     const essenceString = `system.essences.${this._actor.system.focusEssence}`;
 
@@ -207,7 +207,7 @@ export class RoleHandler {
     const focus = getItemsOfType("focus", this._actor.items);
 
     for (const essence in role.system.essenceLevels) {
-      const totalDecrease = await roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
+      const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
       const essenceValue = Math.max(0, this._actor.system.essences[essence] + totalDecrease);
       const essenceString = `system.essences.${essence}`;
 
@@ -217,7 +217,7 @@ export class RoleHandler {
     }
 
     if (role.system.powers.personal.starting) {
-      const totalDecrease = await roleValueChange(0, role.system.powers.personal.levels, previousLevel);
+      const totalDecrease = roleValueChange(0, role.system.powers.personal.levels, previousLevel);
       const newPersonalPowerMax = Math.max(0, parseInt(this._actor.system.powers.personal.max) - role.system.powers.personal.starting + (role.system.powers.personal.increase * totalDecrease));
 
       await this._actor.update({
@@ -233,7 +233,7 @@ export class RoleHandler {
     }
 
     if (role.system.adjustments.health.length) {
-      const totalDecrease = await roleValueChange(0, role.system.adjustments.health, previousLevel);
+      const totalDecrease = roleValueChange(0, role.system.adjustments.health, previousLevel);
       const newHealthBonus = Math.max(0, this._actor.system.health.bonus + totalDecrease);
 
       await this._actor.update({

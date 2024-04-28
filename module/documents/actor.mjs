@@ -1,6 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { resizeTokens, getItemsOfType } from "../helpers/utils.mjs";
+import { resizeTokens, getItemsOfType, roleValueChange } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -97,21 +97,41 @@ export class Essence20Actor extends Actor {
     const system = this.system;
     system.healthIsReadOnly = true;
     const health = system.health;
-    let startingHealth = 0;
+    let originStartingHealth = 0;
+    let rolePointsBonusHealth = 0;
     const conditioning = system.conditioning;
     const bonus = system.health.bonus;
-    const originName = game.i18n.localize('E20.Origin');
+    let originName = game.i18n.localize('E20.Origin');
+    let rolePointsName = game.i18n.localize('E20.RolePoints');
     const conditionName = game.i18n.localize('E20.SkillConditioning');
     const bonusName = game.i18n.localize('E20.Bonus');
 
+    // Health from Origin
     const origins = getItemsOfType('origin', this.items);
     if (origins.length > 0) {
-      startingHealth = origins[0].system.startingHealth;
+      const origin = origins[0];
+      originStartingHealth = origin.system.startingHealth;
+      originName = origin.name;
     }
 
-    health.max = startingHealth + conditioning + bonus;
-    health.string = `${startingHealth} ${originName} + ${conditioning} ${conditionName} + ${bonus} ${bonusName}`;
+    // Health from Role Points
+    const rolePointsList = getItemsOfType('rolePoints', this.items);
+    if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'healthBonus'
+      && (!rolePointsList[0].system.isActivatable || rolePointsList[0].system.isActive)) {
+      const rolePoints = rolePointsList[0];
+      rolePointsName = rolePoints.name;
+
+      if (this.system.level == 20) {
+        rolePointsBonusHealth = rolePoints.system.bonus.level20Value;
+      } else {
+        rolePointsBonusHealth = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
+      }
+    }
+
+    health.max = originStartingHealth + rolePointsBonusHealth + conditioning + bonus;
+    health.string = `${originStartingHealth} (${originName}) + ${rolePointsBonusHealth} (${rolePointsName}) + ${conditioning} (${conditionName}) + ${bonus} (${bonusName})`;
   }
+
   /**
   * Prepare Defenses specific data.
   */

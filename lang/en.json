@@ -399,7 +399,7 @@
     "RolePointsActorDropError": "Role Points can only be dropped onto Roles.",
     "RolePointsBonus": "Bonus",
     "RolePointsBonusType": "Bonus Type",
-    "RolePointsCanBeActivated": "Can Be Activated?",
+    "RolePointsCanBeActivated": "Is Activatable?",
     "RolePointsGeneral": "General",
     "RolePointsIncrease": "Increase",
     "RolePointsIncreaseLevels": "Points Increase Levels",
