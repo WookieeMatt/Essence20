@@ -588,14 +588,13 @@ export class Essence20ActorSheet extends ActorSheet {
       if (rollType == 'power') {
         return await this._pwHandler.powerCost(item);
       } else if (rollType == 'rolePoints') {
-        if (item.system.resource.max && item.system.resource.value < 1) {
+        if (item.system.resource.max != null && item.system.resource.value < 1 && !this.actor.system.useUnlimitedResource) {
           ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
           return;
         } else {
-          // If Role Points are being used, decrement uses
-          await item.update({ 'system.resource.value': item.system.resource.value - 1 });
+          const spentStrings = [];
 
-          // Some also decrement Personal Power
+          // Ensure we have enough Personal Power, if needed
           if (item.system.powerCost) {
             if (this.actor.system.powers.personal.value < item.system.powerCost) {
               ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
@@ -605,7 +604,20 @@ export class Essence20ActorSheet extends ActorSheet {
                 ['system.powers.personal.value']:
                   this.actor.system.powers.personal.value - item.system.powerCost,
               });
+
+              spentStrings.push(`${item.system.powerCost} Power`)
             }
+          }
+
+          // If Role Points are being used and not unlimited, decrement uses
+          if (!this.actor.system.useUnlimitedResource) {
+            await item.update({ 'system.resource.value': item.system.resource.value - 1 });
+            spentStrings.push('1 point')
+          }
+
+          if (spentStrings.length) {
+            const spentString = spentStrings.join(', ')
+            ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
           }
         }
       }

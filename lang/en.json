@@ -411,6 +411,7 @@
     "RolePointsResource": "Resource",
     "RolePointsResourceUnlimited": "Unlimited",
     "RolePointsRoll": "Use Roll Points",
+    "RolePointsSpent": "Spent {spentString} for {name}!",
     "RolePointsSecondaryPointIncrease": "Has Secondary Advancement",
     "RolePointsStartingMax": "Starting Max",
     "RolePointsStartingValue": "Starting Value",
