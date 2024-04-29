@@ -605,18 +605,18 @@ export class Essence20ActorSheet extends ActorSheet {
                   this.actor.system.powers.personal.value - item.system.powerCost,
               });
 
-              spentStrings.push(`${item.system.powerCost} Power`)
+              spentStrings.push(`${item.system.powerCost} Power`);
             }
           }
 
           // If Role Points are being used and not unlimited, decrement uses
           if (!this.actor.system.useUnlimitedResource) {
             await item.update({ 'system.resource.value': item.system.resource.value - 1 });
-            spentStrings.push('1 point')
+            spentStrings.push('1 point');
           }
 
           if (spentStrings.length) {
-            const spentString = spentStrings.join(', ')
+            const spentString = spentStrings.join(', ');
             ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
           }
         }
