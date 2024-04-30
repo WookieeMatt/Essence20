@@ -385,7 +385,6 @@ export class RoleHandler {
         if (level1Essences[essence]) {
           rankValue.push("level1");
         }
-
       } else {
         rankValue = CONFIG.E20.MLPAdvancement[rank];
       }
