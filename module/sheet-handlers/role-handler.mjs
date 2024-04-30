@@ -261,7 +261,7 @@ export class RoleHandler {
     this._actor.setFlag('essence20', 'previousLevel', 0);
   }
 
- /**
+  /**
   *
   * @param {Object} role The role that is being dropped on the actor
   * @param {Function} dropFunc The function for the dropped role
