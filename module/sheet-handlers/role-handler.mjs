@@ -372,7 +372,7 @@ export class RoleHandler {
    * @param {Role} role The role that was dropped on the actor
    * @param {Function} dropFunc The function for the drop of the role
    */
-  async _setEssenceProgression (options, role, dropFunc, level1Essences) {
+  async _setEssenceProgression(options, role, dropFunc, level1Essences) {
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
 
