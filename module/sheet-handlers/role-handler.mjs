@@ -193,7 +193,7 @@ export class RoleHandler {
       await this._selectEssenceProgression(role,dropFunc);
     } else if (role.system.hasSpecialAdvancement) {
       await this._selectFirstEssences(role,dropFunc);
-    }else{
+    } else {
       const newRoleList = await dropFunc();
       const newRole = newRoleList[0];
       await setRoleValues(newRole, this._actor);
