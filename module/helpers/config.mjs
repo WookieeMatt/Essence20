@@ -98,6 +98,7 @@ E20.weaponTraits = {
   laser: "E20.WeaponTraitLaser",
   maneuver: "E20.WeaponTraitManeuver",
   martialArts: "E20.WeaponTraitMartialArts",
+  modeLock: "E20.WeaponTraitModeLock",
   mounted: "E20.WeaponTraitMounted",
   multipleTargets: "E20.WeaponTraitMultipleTargets",
   ongoing: "E20.WeaponTraitOngoing",
@@ -115,6 +116,7 @@ E20.weaponTraits = {
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
   tempermental: "E20.WeaponTraitTempermental",
+  titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
   vehicular: "E20.WeaponTraitVehicular",
   versatile: "E20.WeaponTraitVersatile",
@@ -496,10 +498,15 @@ E20.damageTypes = {
   grapple: "E20.DamageGrapple",
   impaired: "E20.DamageImparied",
   intimidate: "E20.DamageIntimidate",
+  laser: "E20.DamageLaser",
   maneuver: "E20.DamageManeuver",
   mesmerized: "E20.DamageMesmerized",
+  modelock: "E20.DamageModeLock",
   poison: "E20.DamagePoison",
+  restrained: "E20.DamageRestrained",
   sharp: "E20.DamageSharp",
+  sonic: "E20.DamageSonic",
+  spot: "E20.DamageSpot",
   stun: "E20.DamageStun",
 };
 
@@ -715,6 +722,11 @@ E20.statusEffects = [
     icon: 'systems/essence20/assets/icons/status_effects/status_mesmerized.svg',
     id: 'mesmerized',
     label: 'E20.StatusMesmerized',
+  },
+  {
+    icon: 'systems/essence20/assets/icons/status_effects/status_mode_lock.svg',
+    id: 'modeLock',
+    label: 'E20.StatusModeLock',
   },
   {
     icon: 'systems/essence20/assets/icons/status_effects/status_prone.svg',

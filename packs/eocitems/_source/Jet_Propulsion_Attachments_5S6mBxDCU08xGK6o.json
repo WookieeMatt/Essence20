@@ -1,0 +1,42 @@
+{
+  "folder": "5LcwFunP1pIl3OfG",
+  "name": "Jet Propulsion Attachments",
+  "type": "upgrade",
+  "_id": "5S6mBxDCU08xGK6o",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 54
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Driving d2"
+  },
+  "effects": [
+    "M4yuBHHyPv3FW201"
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714482885310,
+    "modifiedTime": 1714482948958,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!5S6mBxDCU08xGK6o"
+}

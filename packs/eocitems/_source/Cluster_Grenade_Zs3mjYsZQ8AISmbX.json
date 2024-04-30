@@ -1,0 +1,74 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Cluster Grenade",
+  "type": "weapon",
+  "_id": "Zs3mjYsZQ8AISmbX",
+  "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 49
+    },
+    "items": {
+      "6c89": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.EDEyKv1P18QMwrIc",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cluster Grenade",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 20,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Nil",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable",
+      "sharp",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714443897388,
+    "modifiedTime": 1714447296048,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Zs3mjYsZQ8AISmbX"
+}

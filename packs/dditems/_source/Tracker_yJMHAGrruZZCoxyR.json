@@ -1,0 +1,100 @@
+{
+  "folder": "9x5XzIEIsjZHwN7F",
+  "name": "Tracker",
+  "type": "focus",
+  "_id": "yJMHAGrruZZCoxyR",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 55
+    },
+    "items": {
+      "e63a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.7ocVl3FkXUCFWYxi",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Scout",
+        "type": "role"
+      },
+      "90a0": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.myYcCOZdN1ViBeQH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Primary Quarry",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "e84c": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.ADj30QljJZ7iNt52",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Studious Measures",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "a1e5": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.LxpkFOriqLvRT7sn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Known Accomplices",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "034e": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.GS8YX7V6rYJLnkfQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Secondary Quarry",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "3fce": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.lE4u6aGvWm86L6hY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Picking Up The Trail",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "e6c6": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.twPx4w0IshvjP31D",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "All Too Predictable",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "alertness",
+      "culture",
+      "survival"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714357415135,
+    "modifiedTime": 1714357529687,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!yJMHAGrruZZCoxyR"
+}

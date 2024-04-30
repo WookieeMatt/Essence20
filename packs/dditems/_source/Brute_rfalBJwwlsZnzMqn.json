@@ -1,0 +1,100 @@
+{
+  "folder": "9x5XzIEIsjZHwN7F",
+  "name": "Brute",
+  "type": "focus",
+  "_id": "rfalBJwwlsZnzMqn",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 57
+    },
+    "items": {
+      "2536": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.MvPfmzW4mh7TsMJo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dirty Blows",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "8d43": {
+        "uuid": "Compendium.essence20.tf_crb.Item.sl204BbCE3Iq0QzM",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Warrior",
+        "type": "role"
+      },
+      "2d7f": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.zNRAyM9Y8y13eLhU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Never Unarmed",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "92af": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.3YMSgAd60S87vCCb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Position Of Power",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "ee0a": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.SKHtIija5VRPcuBu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Crippling Blow",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "8f23": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.oeGoFl2hwcPfMWCr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bleed 'Em Dry",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "8fe1": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.PdmiiOmBYzNfXTeh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Counterstrike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "athletics",
+      "intimidation",
+      "might"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714357974100,
+    "modifiedTime": 1714358065802,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!rfalBJwwlsZnzMqn"
+}

@@ -1,0 +1,76 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Mortar Shell Cannon",
+  "type": "weapon",
+  "_id": "HliiFxXsmnriOk9F",
+  "img": "systems/essence20/assets/icons/weapons/dual_cannon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 51
+    },
+    "items": {
+      "4e16": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.eU2wRPnKYNnU0XjJ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Mortar Shell Cannon Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Huge",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "computerized",
+      "energy",
+      "indirect",
+      "mounted",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714448268721,
+    "modifiedTime": 1714448395368,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!HliiFxXsmnriOk9F"
+}

@@ -1,0 +1,99 @@
+{
+  "folder": "2IyAZHRFAHVRE1jx",
+  "name": "Component Ace",
+  "type": "focus",
+  "_id": "qVmVbpv4MD0CCLKi",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 33
+    },
+    "items": {
+      "9171": {
+        "uuid": "Compendium.essence20.tf_crb.Item.n3iC9MU8q65XW96O",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Modemaster",
+        "type": "role"
+      },
+      "b1ac": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.mWyO6mHSMG4TVw3J",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Combiner Specialization",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ee89": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.tuQaie4eX4MLl1Wp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Efficient Combination",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "e4d7": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.wdJZaFhmwu3tig6K",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Invigorating Connection",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "d95c": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.XnmVJF4XNcsaXAKL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Better As One",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "865f": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.9QdGh6Kfb1EVi4N7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Keep IT Together!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "8b10": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.mK8rk0Hy5AaLvvv4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Prime Component",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength",
+      "speed",
+      "smarts",
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714395038346,
+    "modifiedTime": 1714395280732,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!qVmVbpv4MD0CCLKi"
+}

@@ -1,0 +1,100 @@
+{
+  "folder": "9x5XzIEIsjZHwN7F",
+  "name": "Inquisitor",
+  "type": "focus",
+  "_id": "QTEDbMttneZAmT6I",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 41
+    },
+    "items": {
+      "c0d1": {
+        "uuid": "Compendium.essence20.tf_crb.Item.1A0amCHFpk7VwtX2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Analyst",
+        "type": "role"
+      },
+      "f6f3": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.nkqk7AfXUJkigqbq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Loaded Questions",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "cfb0": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.6lQNn6RY1Kclydw8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Painmonger",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "9b34": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.s3rsoMHOjWY9WfLF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shatter Resolve",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "44b1": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.o00ALKAEGOlbWXzB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Instill Weakness",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "b656": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.Op9clrbLJ3bNH8RE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Paralytic Probe",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "c5db": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.61XIiQPoIhycqgA2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Collection of Secrets",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "animalHandling",
+      "deception",
+      "persuasion"
+    ]
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714353175325,
+    "modifiedTime": 1714353824579,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!QTEDbMttneZAmT6I"
+}

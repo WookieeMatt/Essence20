@@ -1,0 +1,94 @@
+{
+  "folder": "WtQtiThqOagKNnL3",
+  "name": "Prowler",
+  "type": "focus",
+  "_id": "tfCikqap4mPZvI12",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 86
+    },
+    "items": {
+      "1d44": {
+        "uuid": "Compendium.essence20.tf_crb.Item.6KrQp4s1o2ffGHhC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stunning Surprise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "b35b": {
+        "uuid": "Compendium.essence20.tf_crb.Item.xAAzOb9sYmEN7qmv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pop Out",
+        "type": "perk",
+        "subtype": "general",
+        "level": 3
+      },
+      "9f25": {
+        "uuid": "Compendium.essence20.tf_crb.Item.53pFw1pyUU8L0c6Z",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Silent As A Shadow",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "8c76": {
+        "uuid": "Compendium.essence20.tf_crb.Item.CHkXJNjrvZUPxV7J",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Infiltrator",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "3ace": {
+        "uuid": "Compendium.essence20.tf_crb.Item.LM5pwZWroo1QKrSN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Telltale Sign",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "f4a5": {
+        "uuid": "Compendium.essence20.tf_crb.Item.7VyNmcnl9DuuIKlp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Knock Knock, Drag Out",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "finesse",
+      "infiltration",
+      "targeting"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714314262149,
+    "modifiedTime": 1714314353581,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!tfCikqap4mPZvI12"
+}

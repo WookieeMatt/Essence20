@@ -1,0 +1,72 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Blaster",
+  "type": "weapon",
+  "_id": "odEZSG8oV1Xpz0Tc",
+  "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 121
+    },
+    "items": {
+      "0690": {
+        "uuid": "Compendium.essence20.tf_crb.Item.YKjdi8RTLO1PT8wE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 25
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Nil",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714317135265,
+    "modifiedTime": 1714317218613,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!odEZSG8oV1Xpz0Tc"
+}

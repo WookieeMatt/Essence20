@@ -1,0 +1,201 @@
+{
+  "folder": "j9xCezjIU7AAGhp7",
+  "name": "Scientist",
+  "type": "role",
+  "_id": "IW2XQBjMXEk90IB3",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 77
+    },
+    "items": {
+      "01bc": {
+        "uuid": "Compendium.essence20.tf_crb.Item.7BZXi4zvS6GAhGOY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Broad Understanding",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "e9b6": {
+        "uuid": "Compendium.essence20.tf_crb.Item.9Tnrm8Nb1xDaNCao",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Circuit Breaker",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "167d": {
+        "uuid": "Compendium.essence20.tf_crb.Item.mRwjbhGpqWu7hqDM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Energon Battery",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "48da": {
+        "uuid": "Compendium.essence20.tf_crb.Item.4AyMZ0h6YkKv8vbj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Thesis",
+        "type": "perk",
+        "subtype": "general",
+        "level": 5
+      },
+      "d857": {
+        "uuid": "Compendium.essence20.tf_crb.Item.tByP34McuTkaTQWZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Augment Power",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "9a89": {
+        "uuid": "Compendium.essence20.tf_crb.Item.W87huLqKeOCJJ66L",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Energon Bank",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "b814": {
+        "uuid": "Compendium.essence20.tf_crb.Item.qjDBmRlTNvuJxyum",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Applied Science",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "c6ef": {
+        "uuid": "Compendium.essence20.tf_crb.Item.BPHwAfGvLPZuJ1m1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Overcharge Engines",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "0bb9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.l79g3PoYo7nyln4X",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Flashy",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "d451": {
+        "uuid": "Compendium.essence20.tf_crb.Item.efrhpDsdXPUKVEWt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Technobabble",
+        "type": "perk",
+        "subtype": "role",
+        "level": 16
+      },
+      "0620": {
+        "uuid": "Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Multiplication",
+        "type": "perk",
+        "subtype": "role",
+        "level": 38
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level2",
+        "level5",
+        "level9",
+        "level14",
+        "level18",
+        "level20"
+      ],
+      "social": [
+        "level6",
+        "level12",
+        "level17"
+      ],
+      "speed": [
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "strength": [
+        "level1",
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level11",
+        "level15",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "conditioning",
+      "brawn",
+      "science",
+      "technology"
+    ],
+    "version": "transformers",
+    "weapons": {
+      "qualified": [],
+      "trained": [
+        "explosives"
+      ]
+    },
+    "hasSpecialAdvancement": false
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714269963536,
+    "modifiedTime": 1714270295491,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!IW2XQBjMXEk90IB3"
+}

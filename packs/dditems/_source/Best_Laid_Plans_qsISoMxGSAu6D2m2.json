@@ -1,0 +1,34 @@
+{
+  "folder": "v8hpZLIlgfoD5DaE",
+  "name": "Best Laid Plans",
+  "type": "perk",
+  "_id": "qsISoMxGSAu6D2m2",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 62
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 800000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714358638763,
+    "modifiedTime": 1714358991509,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!qsISoMxGSAu6D2m2"
+}

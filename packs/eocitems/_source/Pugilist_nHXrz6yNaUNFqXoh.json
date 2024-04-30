@@ -1,0 +1,100 @@
+{
+  "folder": "2IyAZHRFAHVRE1jx",
+  "name": "Pugilist",
+  "type": "focus",
+  "_id": "nHXrz6yNaUNFqXoh",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 37
+    },
+    "items": {
+      "adfd": {
+        "uuid": "Compendium.essence20.tf_crb.Item.sl204BbCE3Iq0QzM",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Warrior",
+        "type": "role"
+      },
+      "0054": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.N8nkrj2hSrLv9NFP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Puissance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "36f9": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.l0STCEYBuPMYfzSt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brutal Might",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d083": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.4eA2ktw0cfdYV6Fs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bump & Run",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "029c": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.QSH8oFXlVKxq2iKJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sucker Punch",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "fcf2": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.EmL1IgnaX55NTMve",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Again and Again and Again",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "8fae": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.psPOXCaZFo7yiRzD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Smash!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "athletics",
+      "brawn",
+      "intimidation"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714434330364,
+    "modifiedTime": 1714434430439,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!nHXrz6yNaUNFqXoh"
+}

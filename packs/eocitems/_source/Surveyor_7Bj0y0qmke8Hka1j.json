@@ -1,0 +1,100 @@
+{
+  "folder": "2IyAZHRFAHVRE1jx",
+  "name": "Surveyor",
+  "type": "focus",
+  "_id": "7Bj0y0qmke8Hka1j",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 35
+    },
+    "items": {
+      "9564": {
+        "uuid": "Compendium.essence20.tf_crb.Item.7ocVl3FkXUCFWYxi",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Scout",
+        "type": "role"
+      },
+      "48cf": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.l2dioJyakPropGEx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cartography Suite",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "b2b9": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.CTt9gmibpffGC0N4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Lay of the Land",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "c6d8": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.mNVPUeKWqlQo3QIB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Traps and Obstacles",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "ee88": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.a5xcpj3rHW5EW354",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Two Steps to the Right",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "500a": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.1DFFRdEPMSLXFXmp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Eidetic Geography",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "dbd0": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.wueeFv0eN8eh7RbS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Perfect Placement",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "driving",
+      "infiltration",
+      "targeting"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714434245170,
+    "modifiedTime": 1714434311418,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!7Bj0y0qmke8Hka1j"
+}

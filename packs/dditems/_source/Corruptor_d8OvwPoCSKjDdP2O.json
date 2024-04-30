@@ -1,0 +1,100 @@
+{
+  "folder": "9x5XzIEIsjZHwN7F",
+  "name": "Corruptor",
+  "type": "focus",
+  "_id": "d8OvwPoCSKjDdP2O",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 40
+    },
+    "items": {
+      "45ef": {
+        "uuid": "Compendium.essence20.tf_crb.Item.1A0amCHFpk7VwtX2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Analyst",
+        "type": "role"
+      },
+      "b293": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.kcU17jzso2caxVJ1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Comms Probe",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "5d21": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.P7dmKCP99DAYqptj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Feedback Field",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "6fd0": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.Xo62YAhi8lULOZpR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "False Data",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "1db2": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.DlyxYU8RfDeSmS1q",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Eidetic Buffer",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "486c": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pKArYQ259zpdsR7o",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Comms Assault",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "b138": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.2ehuQcJ1nwOvxSKl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Scramble Wave",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "culture",
+      "science",
+      "technology"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714352808932,
+    "modifiedTime": 1714352873904,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!d8OvwPoCSKjDdP2O"
+}

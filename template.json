@@ -880,6 +880,7 @@
         "level11",
         "level16"
       ],
+      "hasSpecialAdvancement": false,
       "isAdvanced": false,
       "perkLevels": {
         "general": [

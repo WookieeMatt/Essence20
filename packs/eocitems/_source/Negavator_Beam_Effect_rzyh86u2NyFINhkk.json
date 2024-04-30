@@ -1,0 +1,47 @@
+{
+  "folder": "LOtmwwO5q6dMfo4E",
+  "name": "Negavator Beam Effect",
+  "type": "weaponEffect",
+  "_id": "rzyh86u2NyFINhkk",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 3,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 250,
+      "value": 80
+    },
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 53
+    },
+    "description": "<p>+1 damage against Huge or Extended targets</p>\n<p>+2 damage against Gigantic or Extended II targets</p>\n<p>+3 damage against Towering or Extended III targets</p>\n<p>+4 damage against Titanic Targets</p>"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714482124841,
+    "modifiedTime": 1714482224252,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!rzyh86u2NyFINhkk"
+}

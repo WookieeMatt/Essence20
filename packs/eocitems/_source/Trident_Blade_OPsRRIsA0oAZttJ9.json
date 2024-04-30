@@ -1,0 +1,74 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Trident Blade",
+  "type": "weapon",
+  "_id": "OPsRRIsA0oAZttJ9",
+  "img": "systems/essence20/assets/icons/weapons/long_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 50
+    },
+    "items": {
+      "b7c2": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.6CVopw1Y7fzQSIX7",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Trident Blade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "amphibious",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714444586400,
+    "modifiedTime": 1714447296048,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!OPsRRIsA0oAZttJ9"
+}

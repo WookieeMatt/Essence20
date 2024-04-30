@@ -1,0 +1,42 @@
+{
+  "folder": "5LcwFunP1pIl3OfG",
+  "name": "Ablative Matrix (Heavy)",
+  "type": "upgrade",
+  "_id": "fuztUMiuiIXsk2sI",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 54
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 5
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "traits": [
+      "deflective"
+    ],
+    "type": "armor",
+    "prerequisite": "Brawn d2"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714482762908,
+    "modifiedTime": 1714482810004,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!fuztUMiuiIXsk2sI"
+}

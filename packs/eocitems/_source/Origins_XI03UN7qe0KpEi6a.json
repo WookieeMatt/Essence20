@@ -1,0 +1,19 @@
+{
+  "name": "Origins",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "XI03UN7qe0KpEi6a",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714273675127,
+    "modifiedTime": 1714273675127,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!folders!XI03UN7qe0KpEi6a"
+}

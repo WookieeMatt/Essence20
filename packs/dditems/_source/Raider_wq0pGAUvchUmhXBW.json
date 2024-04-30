@@ -1,0 +1,210 @@
+{
+  "folder": "N96rnXgk8TNIyYbe",
+  "name": "Raider",
+  "type": "role",
+  "_id": "wq0pGAUvchUmhXBW",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 58
+    },
+    "items": {
+      "b4cb": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.JlwxiwZDpq7UkYXn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Eye For Appraisal",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "d865": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.6nLfipxx007v6vCG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Good Instincts",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "cb1a": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.NnHqdvBfYNq7J0l2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Storage Compartments",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ba62": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.8PkbCZefhf5vJHjZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Profitable Aim",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "a984": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.EEGQqqgqZEJkJDHB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cache I",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "d423": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.lBSdHGBOOVvEYW1t",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Maximize Cover",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "d122": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.iyfXCEAkkoC8vODL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cache II",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "c9a8": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.qsISoMxGSAu6D2m2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Best Laid Plans",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "cc62": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.VMd10Qb4ByeCla5q",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cache III",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "9d3c": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.FgKFLD6anmWXFwPU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fear My Name",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "8cb2": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.mzOtnEnXRhCM0v9O",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Private Barter",
+        "type": "perk",
+        "subtype": "role",
+        "level": 16
+      },
+      "a811": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.mbY2W9jiPWsDvyMt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Utility Loaders",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level2",
+        "level5",
+        "level9",
+        "level14",
+        "level18",
+        "level20"
+      ],
+      "social": [
+        "level6",
+        "level12",
+        "level17"
+      ],
+      "speed": [
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "strength": [
+        "level1",
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level11",
+        "level15",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "athletics",
+      "intimidation",
+      "alertness",
+      "culture"
+    ],
+    "version": "transformers",
+    "weapons": {
+      "qualified": [],
+      "trained": [
+        "ballistic",
+        "explosives"
+      ]
+    },
+    "hasSpecialAdvancement": false
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714358283868,
+    "modifiedTime": 1714359031436,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!wq0pGAUvchUmhXBW"
+}

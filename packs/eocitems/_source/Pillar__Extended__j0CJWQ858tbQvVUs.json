@@ -1,0 +1,47 @@
+{
+  "folder": "vW2JNQG5xUvqYmBN",
+  "name": "Pillar (Extended)",
+  "type": "altMode",
+  "_id": "j0CJWQ858tbQvVUs",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 27
+    },
+    "crew": 0,
+    "firepoints": 0,
+    "movement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 0
+    },
+    "size": "common",
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 45
+    },
+    "altModesize": "extended",
+    "altModeCrew": 2,
+    "altModeFirepoints": 4
+  },
+  "effects": [],
+  "sort": 400000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714273975023,
+    "modifiedTime": 1714274269922,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!j0CJWQ858tbQvVUs"
+}

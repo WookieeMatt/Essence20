@@ -1,0 +1,97 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Cycler Warhead Array",
+  "type": "weapon",
+  "_id": "KoyLKvHWdb6sizOz",
+  "img": "systems/essence20/assets/icons/weapons/missile-launcher.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 50
+    },
+    "items": {
+      "9dc3": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.zEJU0uFP6dLNuDk8",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cycler Warhead Array Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 180,
+          "value": 60
+        },
+        "shiftDown": 0
+      },
+      "9d00": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.4XSdrlkdJ9PUviGU",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cycler Warhead Array Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 60
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Towering",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "reload",
+      "titanClass",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 1100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714446346230,
+    "modifiedTime": 1714447296048,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!KoyLKvHWdb6sizOz"
+}

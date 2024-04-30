@@ -1,0 +1,73 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Nebulanese Blaster",
+  "type": "weapon",
+  "_id": "CnVAWnmBbQt76WWK",
+  "img": "systems/essence20/assets/icons/weapons/pistol.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 50
+    },
+    "items": {
+      "bae1": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.V5MdBqfahK6DeZFL",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Nebulanese Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 25
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Nil",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic",
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714444071901,
+    "modifiedTime": 1714447296048,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!CnVAWnmBbQt76WWK"
+}

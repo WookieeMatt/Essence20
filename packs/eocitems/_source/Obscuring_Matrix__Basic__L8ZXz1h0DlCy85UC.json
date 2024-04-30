@@ -1,0 +1,42 @@
+{
+  "folder": "5LcwFunP1pIl3OfG",
+  "name": "Obscuring Matrix (Basic)",
+  "type": "upgrade",
+  "_id": "L8ZXz1h0DlCy85UC",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 54
+    },
+    "armorBonus": {
+      "defense": "evasion",
+      "value": 2
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [
+      "computerized"
+    ],
+    "type": "armor",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714483015627,
+    "modifiedTime": 1714483050207,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!L8ZXz1h0DlCy85UC"
+}
