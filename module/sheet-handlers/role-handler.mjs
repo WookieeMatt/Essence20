@@ -297,7 +297,7 @@ export class RoleHandler {
 
   /**
    *
-   * @param {Object} options
+   * @param {Object} options The options selected in the previous dialog
    * @returns
    */
   _verifySelection(options) {
@@ -309,7 +309,7 @@ export class RoleHandler {
     }
 
     if (selectionAmount != 2) {
-      throw new Error('Must Select 2 Essences');
+      throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
     }
 
     return;
