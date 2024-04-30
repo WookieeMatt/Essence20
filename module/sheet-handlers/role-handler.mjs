@@ -270,7 +270,7 @@ export class RoleHandler {
         label: CONFIG.E20.originEssences[essence],
       };
     }
-    console.log(choices)
+
     new Dialog(
       {
         title: game.i18n.localize('E20.EssenceIncrease'),
@@ -282,8 +282,7 @@ export class RoleHandler {
             label: game.i18n.localize('E20.AcceptButton'),
             callback: html => {
               this._verifySelection(rememberOptions(html)),
-              this._selectEssenceProgression(role, dropFunc, rememberOptions(html))
-
+              this._selectEssenceProgression(role, dropFunc, rememberOptions(html));
             },
           },
         },
@@ -294,7 +293,7 @@ export class RoleHandler {
 
   _verifySelection(options) {
     let selectionAmount = 0;
-    for (const [key, selection] of Object.entries(options)) {
+    for (const [, selection] of Object.entries(options)) {
       if (selection == true) {
         selectionAmount += 1;
       }
@@ -303,7 +302,8 @@ export class RoleHandler {
     if (selectionAmount != 2) {
       throw new Error('Must Select 2 Essences');
     }
-    return
+
+    return;
   }
 
   /**
@@ -313,7 +313,6 @@ export class RoleHandler {
    */
   async _selectEssenceProgression(role, dropFunc, level1Essences) {
     const choices = {};
-    console.log(role.system.version)
     let rankNames = "";
     if (role.system.version == "transformers") {
       rankNames = CONFIG.E20.TFEssenceRankNames;
