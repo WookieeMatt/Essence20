@@ -261,7 +261,11 @@ export class RoleHandler {
     this._actor.setFlag('essence20', 'previousLevel', 0);
   }
 
-
+ /**
+  *
+  * @param {Object} role The role that is being dropped on the actor
+  * @param {Function} dropFunc The function for the dropped role
+  */
   async _selectFirstEssences(role,dropFunc) {
     const choices = {};
     for (const essence in CONFIG.E20.originEssences) {
@@ -291,6 +295,11 @@ export class RoleHandler {
 
   }
 
+  /**
+   *
+   * @param {Object} options
+   * @returns
+   */
   _verifySelection(options) {
     let selectionAmount = 0;
     for (const [, selection] of Object.entries(options)) {
