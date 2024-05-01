@@ -98,6 +98,7 @@ E20.weaponTraits = {
   laser: "E20.WeaponTraitLaser",
   maneuver: "E20.WeaponTraitManeuver",
   martialArts: "E20.WeaponTraitMartialArts",
+  modeLock: "E20.WeaponTraitModeLock",
   mounted: "E20.WeaponTraitMounted",
   multipleTargets: "E20.WeaponTraitMultipleTargets",
   ongoing: "E20.WeaponTraitOngoing",
@@ -115,6 +116,7 @@ E20.weaponTraits = {
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
   tempermental: "E20.WeaponTraitTempermental",
+  titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
   vehicular: "E20.WeaponTraitVehicular",
   versatile: "E20.WeaponTraitVersatile",
@@ -135,8 +137,10 @@ E20.weaponTypes = {
   finesse: "E20.WeaponsFinesse",
   grenades: "E20.WeaponGrenades",
   mightMelee: "E20.WeaponsMightMelee",
+  oneHanded: "E20.WeaponsOneHanded",
   shotguns: "E20.WeaponsShotgun",
   silent: "E20.WeaponsSilent",
+  stun: "E20.WeaponsStun",
   submachineGun: "E20.WeaponsSubmachineGun",
   thrown: "E20.WeaponsThrown",
 };
@@ -494,10 +498,15 @@ E20.damageTypes = {
   grapple: "E20.DamageGrapple",
   impaired: "E20.DamageImparied",
   intimidate: "E20.DamageIntimidate",
+  laser: "E20.DamageLaser",
   maneuver: "E20.DamageManeuver",
   mesmerized: "E20.DamageMesmerized",
+  modelock: "E20.DamageModeLock",
   poison: "E20.DamagePoison",
+  restrained: "E20.DamageRestrained",
   sharp: "E20.DamageSharp",
+  sonic: "E20.DamageSonic",
+  spot: "E20.DamageSpot",
   stun: "E20.DamageStun",
 };
 
@@ -715,6 +724,11 @@ E20.statusEffects = [
     label: 'E20.StatusMesmerized',
   },
   {
+    icon: 'systems/essence20/assets/icons/status_effects/status_mode_lock.svg',
+    id: 'modeLock',
+    label: 'E20.StatusModeLock',
+  },
+  {
     icon: 'systems/essence20/assets/icons/status_effects/status_prone.svg',
     id: 'prone',
     label: 'E20.StatusProne',
@@ -840,5 +854,45 @@ E20.EssenceRankNames = [
   "gold",
   "silver",
   "bronze",
+];
+
+/************************************************
+ * TF Special Essence Advancement               *
+ ***********************************************/
+
+E20.TFSpecialAdvancement = {
+  first: [
+    "level2",
+    "level5",
+    "level9",
+    "level14",
+    "level18",
+    "level20",
+  ],
+  second: [
+    "level3",
+    "level7",
+    "level11",
+    "level15",
+    "level19",
+  ],
+  third: [
+    "level4",
+    "level8",
+    "level13",
+    "level16",
+  ],
+  fourth: [
+    "level6",
+    "level2",
+    "level17",
+  ],
+};
+
+E20.TFEssenceRankNames = [
+  "first",
+  "second",
+  "third",
+  "fourth",
 ];
 

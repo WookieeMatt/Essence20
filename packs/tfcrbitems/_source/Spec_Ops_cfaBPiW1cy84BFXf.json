@@ -1,0 +1,100 @@
+{
+  "folder": "WtQtiThqOagKNnL3",
+  "name": "Spec Ops",
+  "type": "focus",
+  "_id": "cfaBPiW1cy84BFXf",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 61
+    },
+    "items": {
+      "043d": {
+        "uuid": "Compendium.essence20.tf_crb.Item.1A0amCHFpk7VwtX2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Analyst",
+        "type": "role"
+      },
+      "cc23": {
+        "uuid": "Compendium.essence20.tf_crb.Item.uTYoRiuxClI5V9aV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unassuming",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "1f17": {
+        "uuid": "Compendium.essence20.tf_crb.Item.SaHjAp42EhhOQr2g",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Target Vulnerability",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "b5a4": {
+        "uuid": "Compendium.essence20.tf_crb.Item.RO7n3LJmKQkcwZg1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Whisper Campaign",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "40d6": {
+        "uuid": "Compendium.essence20.tf_crb.Item.TpanlsVW9nobDZyy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Exploit Trust",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "da73": {
+        "uuid": "Compendium.essence20.tf_crb.Item.8JpfjvHVDHWKjMc9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Opportunist",
+        "type": "perk",
+        "subtype": "general",
+        "level": 17
+      },
+      "bf98": {
+        "uuid": "Compendium.essence20.tf_crb.Item.r6nEmY5FD3I6WQoY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Precision",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "deception",
+      "persuasion",
+      "streetwise"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714188124822,
+    "modifiedTime": 1714188206627,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!cfaBPiW1cy84BFXf"
+}

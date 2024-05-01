@@ -1,0 +1,118 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Cybertronian Glaive",
+  "type": "weapon",
+  "_id": "ZPYn6WCyUKC8MtZB",
+  "img": "systems/essence20/assets/icons/weapons/halberd.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 50
+    },
+    "items": {
+      "1604": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.4PMHgGLAVF8LchFr",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cybertronian Glaive Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "3313": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.UREwMqo0UZ0OpvV5",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cybertronian Glaive Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "b9a6": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.RQGUrTNRRoR3ZmX9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cybertronian Glaive Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 2
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 1000000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714445722640,
+    "modifiedTime": 1714447296048,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!ZPYn6WCyUKC8MtZB"
+}

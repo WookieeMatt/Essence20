@@ -1,0 +1,99 @@
+{
+  "folder": "WtQtiThqOagKNnL3",
+  "name": "Medical Officer",
+  "type": "focus",
+  "_id": "pk5Yute6NOPQcOg9",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 80
+    },
+    "items": {
+      "8457": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Jlfb8iPvT7JFvcxv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Patch Up",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "bb68": {
+        "uuid": "Compendium.essence20.tf_crb.Item.IW2XQBjMXEk90IB3",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Scientist",
+        "type": "role"
+      },
+      "8e3f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.WZA3q9BRESFVx6SS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sirens Blaring",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "b2d3": {
+        "uuid": "Compendium.essence20.tf_crb.Item.vFuXVVp6vIDFNbci",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Preventative Measures",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "b4ff": {
+        "uuid": "Compendium.essence20.tf_crb.Item.lcuxdIbryh4NloGJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rocket Surgery",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "7a6a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.lupxm8SNDLvbjoDt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Intensive",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "f9fb": {
+        "uuid": "Compendium.essence20.tf_crb.Item.B4fDw9HuMS7qAjs7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Miracle Worker",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "science",
+      "technology"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714272040674,
+    "modifiedTime": 1714272138309,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!pk5Yute6NOPQcOg9"
+}

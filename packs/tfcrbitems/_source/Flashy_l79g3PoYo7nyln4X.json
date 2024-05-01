@@ -1,0 +1,34 @@
+{
+  "folder": "B9zu9C6TQlhBqQLr",
+  "name": "Flashy",
+  "type": "perk",
+  "_id": "l79g3PoYo7nyln4X",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 80
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714269548359,
+    "modifiedTime": 1714269557564,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!l79g3PoYo7nyln4X"
+}

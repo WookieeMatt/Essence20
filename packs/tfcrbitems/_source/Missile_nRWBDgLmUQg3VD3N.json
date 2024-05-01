@@ -1,0 +1,143 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Missile",
+  "type": "weapon",
+  "_id": "nRWBDgLmUQg3VD3N",
+  "img": "systems/essence20/assets/icons/weapons/missile-launcher.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 125
+    },
+    "items": {
+      "79ae": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Px2abpt4mK5HPA7C",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Missile Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 50,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 1000,
+          "value": 500
+        },
+        "shiftDown": 0
+      },
+      "8ae7": {
+        "uuid": "Compendium.essence20.tf_crb.Item.tj228VaxwF0XpEiJ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Missile Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 1000,
+          "value": 500
+        },
+        "shiftDown": -1
+      },
+      "f5ab": {
+        "uuid": "Compendium.essence20.tf_crb.Item.3UlvKNtpy1C3GuuL",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Missile Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 1000,
+          "value": 500
+        },
+        "shiftDown": 0
+      },
+      "b2da": {
+        "uuid": "Compendium.essence20.tf_crb.Item.d1XCMhCO9pT6Wtd4",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Missile Alternate Effect 3",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 20,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 1000,
+          "value": 500
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Gigantic",
+      "skill": "brawn",
+      "shift": "d6"
+    },
+    "traits": [
+      "antiTank",
+      "computerized",
+      "consumable",
+      "energy",
+      "mounted",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714344456308,
+    "modifiedTime": 1714344545448,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!nRWBDgLmUQg3VD3N"
+}

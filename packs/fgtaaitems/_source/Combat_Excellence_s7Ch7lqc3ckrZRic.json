@@ -1,0 +1,49 @@
+{
+  "name": "Combat Excellence",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.field_guide_action_adventure.Item.es25o5EU8DoppXUu",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "s7Ch7lqc3ckrZRic",
+  "changes": [
+    {
+      "key": "system.health.bonus",
+      "mode": 2,
+      "value": "1"
+    },
+    {
+      "key": "system.defenses.cleverness.bonus",
+      "mode": 2,
+      "value": "1"
+    },
+    {
+      "key": "system.defenses.evasion.bonus",
+      "mode": 2,
+      "value": "1"
+    },
+    {
+      "key": "system.defenses.toughness.bonus",
+      "mode": 2,
+      "value": "1"
+    },
+    {
+      "key": "system.defenses.willpower.bonus",
+      "mode": 2,
+      "value": "1"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!es25o5EU8DoppXUu.s7Ch7lqc3ckrZRic"
+}

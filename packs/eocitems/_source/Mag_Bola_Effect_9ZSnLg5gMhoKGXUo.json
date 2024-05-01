@@ -1,0 +1,46 @@
+{
+  "folder": "LOtmwwO5q6dMfo4E",
+  "name": "Mag-Bola Effect",
+  "type": "weaponEffect",
+  "_id": "9ZSnLg5gMhoKGXUo",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "athletics",
+      "style": "projectile"
+    },
+    "damageType": "restrained",
+    "damageValue": 0,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 50,
+      "value": 20
+    },
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 51
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714447450417,
+    "modifiedTime": 1714447688808,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!9ZSnLg5gMhoKGXUo"
+}

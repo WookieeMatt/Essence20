@@ -1,0 +1,122 @@
+{
+  "folder": "WtQtiThqOagKNnL3",
+  "name": "Microlinked",
+  "type": "focus",
+  "_id": "4gPb9AD1PZwEU8OZ",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 74
+    },
+    "items": {
+      "557e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.n3iC9MU8q65XW96O",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Modemaster",
+        "type": "role"
+      },
+      "a5ba": {
+        "uuid": "Compendium.essence20.tf_crb.Item.izA6rip6DcYsGxbq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mini-Con Ally",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "2b26": {
+        "uuid": "Compendium.essence20.tf_crb.Item.YO5STToLRPYVnWBT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Kitted Purpose",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "9ad7": {
+        "uuid": "Compendium.essence20.tf_crb.Item.NMVCdrUBejXHGBOa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ambush Deployment",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "e070": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ChfMqJaXUxMBP9SO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Multi-Purpose",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "86c7": {
+        "uuid": "Compendium.essence20.tf_crb.Item.LqmvdLyTmhvCFYUq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Reinforced Bond",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "77fa": {
+        "uuid": "Compendium.essence20.tf_crb.Item.qorLGnvHpgo4wGq8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Emergency Deployment and Docking",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength",
+      "speed",
+      "smarts",
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "conditioning",
+      "initiative",
+      "athletics",
+      "brawn",
+      "intimidation",
+      "might",
+      "acrobatics",
+      "driving",
+      "finesse",
+      "infiltration",
+      "targeting",
+      "alertness",
+      "culture",
+      "science",
+      "survival",
+      "technology",
+      "animalHandling",
+      "deception",
+      "performance",
+      "persuasion",
+      "spellcasting",
+      "streetwise"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714268663117,
+    "modifiedTime": 1714268790339,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!4gPb9AD1PZwEU8OZ"
+}

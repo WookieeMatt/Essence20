@@ -1,0 +1,196 @@
+{
+  "folder": "Ypz0mTa1LlmFpuvL",
+  "name": "Envoy",
+  "type": "role",
+  "_id": "Bw8DHuNjBHHUaKfo",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 64
+    },
+    "items": {
+      "1a09": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.b1Ev6biHOHxXXQo4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Intervene",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ec7f": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.5IfrvMnLOMqfNWko",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Manipulate",
+        "type": "perk",
+        "subtype": "general",
+        "level": 1
+      },
+      "a34c": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.Cfdtj0YtJoBGa1Yf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Negotiate",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "73b5": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.alMONv2bzphF1OQV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Staggering",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "2e4a": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.9cASTw6nAfEr8B9B",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Contact Connection",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "a2e0": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.tLAchrH1qQxk3CBJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Show Of Hands",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "73fc": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.oT0hLaktWodWlGTv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Second Impresion",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "92de": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.DulMH7OAwrg3G85A",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Staggering Sway",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "acdc": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.H6hSIGrG2zCQa6Kr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Talk Them Up",
+        "type": "perk",
+        "subtype": "role",
+        "level": 16
+      },
+      "948b": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.Ht8KDCTIQXLo1YI3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Talk Them Down",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "heavy",
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "social": [
+        "level1",
+        "level2",
+        "level5",
+        "level9",
+        "level14",
+        "level18",
+        "level20"
+      ],
+      "speed": [
+        "level6",
+        "level12",
+        "level17"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level11",
+        "level15",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "alertness",
+      "culture",
+      "deception",
+      "persuasion"
+    ],
+    "version": "giJoe",
+    "weapons": {
+      "qualified": [],
+      "trained": [
+        "stun"
+      ]
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714158899802,
+    "modifiedTime": 1714172014562,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Bw8DHuNjBHHUaKfo"
+}

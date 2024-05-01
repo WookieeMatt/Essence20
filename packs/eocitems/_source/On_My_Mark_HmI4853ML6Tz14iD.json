@@ -1,0 +1,34 @@
+{
+  "folder": "rAuafbH9SrHyQSGZ",
+  "name": "On My Mark",
+  "type": "perk",
+  "_id": "HmI4853ML6Tz14iD",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 30
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714393771365,
+    "modifiedTime": 1714394380566,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!HmI4853ML6Tz14iD"
+}

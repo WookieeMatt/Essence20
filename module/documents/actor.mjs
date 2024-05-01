@@ -231,8 +231,11 @@ export class Essence20Actor extends Actor {
   _prepareSorcerousPower() {
     const system = this.system;
     const levelMultiplier = system.level - system.powers.sorcerous.levelTaken;
-
-    system.powers.sorcerous.max = (levelMultiplier * 2) + 4;
+    if (system.powers.sorcerous.levelTaken) {
+      system.powers.sorcerous.max = (levelMultiplier * 2) + 4;
+    } else {
+      system.powers.sorcerous.max = 0;
+    }
   }
 
   /**

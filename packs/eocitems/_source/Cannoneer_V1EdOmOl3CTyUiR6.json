@@ -1,0 +1,94 @@
+{
+  "folder": "2IyAZHRFAHVRE1jx",
+  "name": "Cannoneer",
+  "type": "focus",
+  "_id": "V1EdOmOl3CTyUiR6",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 31
+    },
+    "items": {
+      "d065": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.T0TFdu4HRK8Eh0u0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Balance and Compensation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "8d77": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.6Ov5odRU8tGhQJzu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hardware Training",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "b31b": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.A2gJlm0YEFlpVNLg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "What Cover?",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "e279": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.8NJtMXvcK3YDnwY4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Frightening Display",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "0afc": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.RQjNiRZxDFwTPHN8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dig In",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "db97": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.Y1sMUqI3JOYb0QiD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "All I Need Is One Shot",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "athletics",
+      "brawn",
+      "intimidation"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714394160496,
+    "modifiedTime": 1714394324186,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!V1EdOmOl3CTyUiR6"
+}

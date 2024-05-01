@@ -1,0 +1,95 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Breaker Bar",
+  "type": "weapon",
+  "_id": "nFlQD4klPuBwZIqg",
+  "img": "systems/essence20/assets/icons/gear/crowbar.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 49
+    },
+    "items": {
+      "afe0": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.qIgfv11HMWSlnos8",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Breaker Bar",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "6f05": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.lmDkIe8a49fF7bHS",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Breaker Bar Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 700000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714443769559,
+    "modifiedTime": 1714447296048,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!nFlQD4klPuBwZIqg"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Battle Hardened",
+  "icon": "icons/svg/aura.svg",
+  "origin": "Compendium.essence20.tf_crb.Item.u2wePwe5kCwYPZtF",
+  "duration": {
+    "startTime": null,
+    "seconds": null,
+    "combat": null,
+    "rounds": null,
+    "turns": null,
+    "startRound": null,
+    "startTurn": null
+  },
+  "disabled": false,
+  "_id": "Cp0X55pGe8WRBU8T",
+  "changes": [
+    {
+      "key": "system.health.bonus",
+      "mode": 2,
+      "value": "2"
+    }
+  ],
+  "description": "",
+  "transfer": true,
+  "statuses": [],
+  "flags": {},
+  "tint": null,
+  "_key": "!items.effects!u2wePwe5kCwYPZtF.Cp0X55pGe8WRBU8T"
+}

@@ -1,0 +1,182 @@
+{
+  "folder": "j9xCezjIU7AAGhp7",
+  "name": "Modemaster",
+  "type": "role",
+  "_id": "n3iC9MU8q65XW96O",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 71
+    },
+    "items": {
+      "9ef8": {
+        "uuid": "Compendium.essence20.tf_crb.Item.OPLiMXYUEkSQkC1p",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Mass Shifts",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": 10,
+          "increaseLevels": [
+            "level3",
+            "level6",
+            "level11",
+            "level16"
+          ],
+          "max": 0,
+          "startingMax": 2,
+          "value": 0
+        }
+      },
+      "e2a5": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Bl1WEKRnRHc5RvvS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Custom Frame",
+        "type": "perk",
+        "subtype": "general",
+        "level": 1
+      },
+      "714f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.0JiAkBjJzsuezfaI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mass Shift",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "be61": {
+        "uuid": "Compendium.essence20.tf_crb.Item.pgWBzR5IRAhucHzo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick Change",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "fba9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.R5SobOsimfa7mvdy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hybridization",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "c460": {
+        "uuid": "Compendium.essence20.tf_crb.Item.hDfaB9j4rOXhXDPa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Jack Of All Forms",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "9b7b": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Sng7P5DkHMPlxBtq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick Change II",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "672e": {
+        "uuid": "Compendium.essence20.tf_crb.Item.OmGdMZlotKHVFzhR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Helical Spring",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "e2cd": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Sa7lOgLdElBgL4v4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Master Of All Forms",
+        "type": "perk",
+        "subtype": "role",
+        "level": 16
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [],
+      "social": [],
+      "speed": [],
+      "strength": []
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level11",
+        "level15",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "version": "transformers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    },
+    "hasSpecialAdvancement": true
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714259562251,
+    "modifiedTime": 1714270185708,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!n3iC9MU8q65XW96O"
+}

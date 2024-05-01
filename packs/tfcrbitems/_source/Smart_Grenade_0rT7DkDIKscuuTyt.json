@@ -1,0 +1,74 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Smart Grenade",
+  "type": "weapon",
+  "_id": "0rT7DkDIKscuuTyt",
+  "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 125
+    },
+    "items": {
+      "dc36": {
+        "uuid": "Compendium.essence20.tf_crb.Item.u00zwliXTj96l0Wh",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Smart Grenade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": -3
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "computerized",
+      "consumable",
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714317435958,
+    "modifiedTime": 1714317757743,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!0rT7DkDIKscuuTyt"
+}

@@ -191,6 +191,8 @@ export class RoleHandler {
 
     if (role.system.version == 'myLittlePony') {
       await this._selectEssenceProgression(role,dropFunc);
+    } else if (role.system.hasSpecialAdvancement) {
+      await this._selectFirstEssences(role,dropFunc);
     } else {
       const newRoleList = await dropFunc();
       const newRole = newRoleList[0];
@@ -246,7 +248,7 @@ export class RoleHandler {
       await focus[0].delete();
     }
 
-    if (role.system.version == 'myLittlePony') {
+    if (role.system.version == 'myLittlePony' || role.system.hasSpecialAdvancement) {
       await this._actor.update({
         "system.essenceRanks.smarts": null,
         "system.essenceRanks.social": null,
@@ -260,14 +262,72 @@ export class RoleHandler {
   }
 
   /**
+  *
+  * @param {Role} role The role that is being dropped on the actor
+  * @param {Function} dropFunc The function for the dropped role
+  */
+  async _selectFirstEssences(role,dropFunc) {
+    const choices = {};
+    for (const essence in CONFIG.E20.originEssences) {
+      choices[essence] = {
+        chosen: false,
+        label: CONFIG.E20.originEssences[essence],
+      };
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.EssenceIncrease'),
+        content: await renderTemplate("systems/essence20/templates/dialog/multi-select-essence.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => {
+              this._verifySelection(rememberOptions(html)),
+              this._selectEssenceProgression(role, dropFunc, rememberOptions(html));
+            },
+          },
+        },
+      },
+    ).render(true);
+
+  }
+
+  /**
+   * @param {Object} options The options selected in the previous dialog
+   */
+  _verifySelection(options) {
+    let selectionAmount = 0;
+    for (const [, selection] of Object.entries(options)) {
+      if (selection == true) {
+        selectionAmount += 1;
+      }
+    }
+
+    if (selectionAmount != 2) {
+      throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
+    }
+
+    return;
+  }
+
+  /**
    * Handles the selection of the Essence Progression Ranks
    * @param {Object} role The role that was dropped on the actor
    * @param {Function} dropFunc The function for the drop of the character
    */
-  async _selectEssenceProgression(role, dropFunc) {
+  async _selectEssenceProgression(role, dropFunc, level1Essences) {
     const choices = {};
+    let rankNames = "";
+    if (role.system.version == "transformers") {
+      rankNames = CONFIG.E20.TFEssenceRankNames;
+    } else {
+      rankNames = CONFIG.E20.EssenceRankNames;
+    }
 
-    for (const rankName of  CONFIG.E20.EssenceRankNames) {
+    for (const rankName of rankNames) {
       choices[rankName] = {
         chosen: false,
         key: rankName,
@@ -286,7 +346,7 @@ export class RoleHandler {
             label: game.i18n.localize('E20.AcceptButton'),
             callback: (html) => {
               this._verifyEssenceProgression(rememberSelect(html));
-              this._setEssenceProgression(rememberSelect(html), role, dropFunc);
+              this._setEssenceProgression(rememberSelect(html), role, dropFunc, level1Essences);
             },
           },
         },
@@ -319,14 +379,23 @@ export class RoleHandler {
    * @param {Role} role The role that was dropped on the actor
    * @param {Function} dropFunc The function for the drop of the role
    */
-  async _setEssenceProgression (options, role, dropFunc) {
+  async _setEssenceProgression(options, role, dropFunc, level1Essences) {
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
 
     for (const[essence, rank] of Object.entries(options)) {
       const essenceString = `system.essenceLevels.${essence}`;
       const essenceRankString = `system.essenceRanks.${essence}`;
-      const rankValue = CONFIG.E20.MLPAdvancement[rank];
+      let rankValue = [];
+      if (role.system.version == "transformers"){
+        rankValue = CONFIG.E20.TFSpecialAdvancement[rank];
+        if (level1Essences[essence]) {
+          rankValue.push("level1");
+        }
+      } else {
+        rankValue = CONFIG.E20.MLPAdvancement[rank];
+      }
+
       await newRole.update({
         [essenceString]: rankValue,
       });
