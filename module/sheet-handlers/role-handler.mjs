@@ -263,7 +263,7 @@ export class RoleHandler {
 
   /**
   *
-  * @param {Object} role The role that is being dropped on the actor
+  * @param {Role} role The role that is being dropped on the actor
   * @param {Function} dropFunc The function for the dropped role
   */
   async _selectFirstEssences(role,dropFunc) {
