@@ -46,7 +46,9 @@
         </div>
 
         {{!-- Resource --}}
-        {{#if rolePoints.system.resource.max}}
+        {{#if @root.system.useUnlimitedResource}}
+          <div>{{localize 'E20.RolePointsResourceUnlimited'}}</div>
+        {{else ifNotEquals rolePoints.system.resource.max null}}
           <input class="inline-edit centered-input no-lock" data-field="system.resource.value" type="number"
             name="system.resource.value" value="{{system.resource.value}}" min="0"
             step="1" />

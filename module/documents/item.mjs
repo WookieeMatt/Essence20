@@ -115,19 +115,23 @@ export class Essence20Item extends Item {
     const actorLevel = this.actor.system.level;
     const resourceLevelIncreases = getLevelIncreases(this.system.resource.increaseLevels, actorLevel);
 
-    if (actorLevel == 20 && this.system.resource.level20Value) {
-      this.system.resource.max = this.system.resource.level20Value;
-    } else {
-      this.system.resource.max = this.system.resource.startingMax + (this.system.resource.increase * resourceLevelIncreases);
+    if (this.system.resource.startingMax != null) {
+      if (actorLevel == 20 && this.system.resource.level20Value) {
+        this.system.resource.max = this.system.resource.level20Value;
+      } else {
+        this.system.resource.max = this.system.resource.startingMax + (this.system.resource.increase * resourceLevelIncreases);
+      }
     }
 
-    if (this.system.bonus.type != CONFIG.E20.bonusTypes.none) {
-      const bonusLevelIncreases = getLevelIncreases(this.system.bonus.increaseLevels, actorLevel);
+    if (this.system.bonus.startingValue != null) {
+      if (this.system.bonus.type != CONFIG.E20.bonusTypes.none) {
+        const bonusLevelIncreases = getLevelIncreases(this.system.bonus.increaseLevels, actorLevel);
 
-      if (actorLevel == 20 && this.system.bonus.level20Value) {
-        this.system.bonus.value = this.system.bonus.level20Value;
-      } else {
-        this.system.bonus.value = this.system.bonus.startingValue + (this.system.bonus.increase * bonusLevelIncreases);
+        if (actorLevel == 20 && this.system.bonus.level20Value) {
+          this.system.bonus.value = this.system.bonus.level20Value;
+        } else {
+          this.system.bonus.value = this.system.bonus.startingValue + (this.system.bonus.increase * bonusLevelIncreases);
+        }
       }
     }
   }

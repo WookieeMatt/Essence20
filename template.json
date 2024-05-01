@@ -927,7 +927,7 @@
         "increase": 0,
         "level20Value": null,
         "increaseLevels": [],
-        "startingValue": 0,
+        "startingValue": null,
         "type": "none",
         "value" : 0
       },
@@ -937,9 +937,10 @@
       "resource": {
         "increase": 0,
         "level20Value": null,
+        "level20ValueIsUnlimited": false,
         "increaseLevels": [],
-        "max": 0,
-        "startingMax": 0,
+        "max": null,
+        "startingMax": null,
         "value" : 0
       }
     },
