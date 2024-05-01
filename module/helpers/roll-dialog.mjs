@@ -45,6 +45,7 @@ export class RollDialog {
         snag: snag && !edge,
         edge: edge && !snag,
         normal: edge == snag,
+        rolePoints: dataset.rolePoints,
       },
     );
 
@@ -84,6 +85,7 @@ export class RollDialog {
       snag: form.snagEdge.value == 'snag',
       isSpecialized: form.isSpecialized.checked,
       timesToRoll: parseInt(form.timesToRoll.value),
+      applyRolePointsUpshift: form?.applyRolePointsUpshift?.checked,
     };
   }
 }
