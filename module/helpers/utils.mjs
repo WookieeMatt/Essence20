@@ -520,6 +520,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
     await actor.update({
       "system.powers.personal.max": newPersonalPowerMax,
+      "system.powers.personal.regeneration": role.system.powers.personal.regeneration,
     });
   }
 

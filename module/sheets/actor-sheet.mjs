@@ -472,6 +472,17 @@ export class Essence20ActorSheet extends ActorSheet {
       ui.notifications.info(`Energon restored by ${energonRestore}.`);
     }
 
+    //Reseting Personal Power
+    let powerRestore = 0;
+    if (this.actor.system.powers.personal.max > 0) {
+      powerRestore = this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration;
+      if (powerRestore > this.actor.system.powers.personal.max) {
+        powerRestore = this.actor.system.powers.personal.max;
+      }
+
+      ui.notifications.info("Personal Power restored.");
+    }
+
     // Resetting Role Points
     const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
     if (rolePointsList.length) {
@@ -485,6 +496,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     await this.actor.update({
       "system.health.value": this.actor.system.health.max,
+      "system.powers.personal.value": powerRestore,
       "system.stun.value": 0,
       "system.energon.normal.value": energonRestore,
       "system.energon.dark.value": 0,

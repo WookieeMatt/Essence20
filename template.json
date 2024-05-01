@@ -119,6 +119,7 @@
         "powers": {
           "personal": {
             "max": 0,
+            "regeneration": 0,
             "value": 0
           },
           "sorcerous": {

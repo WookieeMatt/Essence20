@@ -224,6 +224,7 @@ export class RoleHandler {
 
       await this._actor.update({
         "system.powers.personal.max": newPersonalPowerMax,
+        "system.powers.personal.regeneration": 0,
       });
     }
 
