@@ -297,7 +297,6 @@ export class RoleHandler {
 
   /**
    * @param {Object} options The options selected in the previous dialog
-   * @returns
    */
   _verifySelection(options) {
     let selectionAmount = 0;
