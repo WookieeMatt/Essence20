@@ -102,7 +102,7 @@ export class Dice {
     let rolePoints = null;
     if (item?.type == 'weapon' && rolePointsList.length) {
       rolePoints = rolePointsList[0]; // There should only be one RolePoints
-      if (rolePoints.system.bonus.type == 'attackUpshift') {
+      if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
         updatedShiftDataset.rolePoints = rolePoints;
       }
     }
