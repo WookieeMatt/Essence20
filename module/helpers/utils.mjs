@@ -513,7 +513,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
   if (role.system.powers.personal.starting) {
     const totalChange = roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
-    let newPersonalPowerMax = 0
+    let newPersonalPowerMax = 0;
     if (actor.system.powers.personal.max > 0) {
       newPersonalPowerMax = actor.system.powers.personal.max + role.system.powers.personal.increase * totalChange;
     } else {
