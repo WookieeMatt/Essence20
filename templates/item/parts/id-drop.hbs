@@ -1,9 +1,10 @@
-{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" className=className label=label items=items}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" className=className label=label items=items type=type}}
 {{#*inline "item-field-inputs"}}
-{{#if items}}
+{{#itemsContainType items type}}
   <div class="flexcol">
     {{#each items as |item|}}
-      <div class="flexrow {{item.type}}" data-item-id="{{item._id}}">
+      {{#ifEquals item.type ../type}}
+      <div class="flexrow {{item.type}}" data-item-key="{{@key}}" data-item-uuid="{{item.uuid}}">
         <ul class="items-list">
           <li class="item">
           <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
@@ -17,10 +18,11 @@
           </li>
         </ul>
       </div>
+      {{/ifEquals}}
     {{/each}}
   </div>
 {{else}}
   <label>{{localize 'E20.ItemDrop'}}</label>
-{{/if}}
+{{/itemsContainType}}
 {{/inline}}
 {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

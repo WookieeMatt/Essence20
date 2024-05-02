@@ -3,96 +3,107 @@
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
+  </nav>
+
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
 
-    {{!-- Skill --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSkill'}}
-    {{#*inline "item-field-inputs"}}
-    <select class="item-field-inputs" name="system.classification.skill">
-      {{#select system.classification.skill}}
-      {{#each config.skills as |name type|}}
-      <option value="{{type}}">{{name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-    {{!-- Style --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponStyle'}}
-    {{#*inline "item-field-inputs"}}
-    <select class="item-field-inputs" name="system.classification.style">
-      {{#select system.classification.style}}
-      {{#each config.weaponStyles as |name type|}}
-      <option value="{{type}}">{{localize name}}</option>
-      {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-    {{!-- Effect Damage --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Damage'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.damageValue" value="{{system.damageValue}}" />
-    <select name="system.damageType">
-      {{#select system.damageType}}
-        {{#each config.damageTypes as |name type|}}
-          <option value="{{type}}">{{localize name}}</option>
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
+      {{!-- Skill --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSkill'}}
+      {{#*inline "item-field-inputs"}}
+      <select class="item-field-inputs" name="system.classification.skill">
+        {{#select system.classification.skill}}
+        {{#each config.skills as |name type|}}
+        <option value="{{type}}">{{name}}</option>
         {{/each}}
-      {{/select}}
-    </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Targets --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTargets'}}
-    {{#*inline "item-field-inputs"}}
-    <input class="item-field-inputs" type="number" name="system.numTargets" value="{{system.numTargets}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Style --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponStyle'}}
+      {{#*inline "item-field-inputs"}}
+      <select class="item-field-inputs" name="system.classification.style">
+        {{#select system.classification.style}}
+        {{#each config.weaponStyles as |name type|}}
+        <option value="{{type}}">{{localize name}}</option>
+        {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Radius --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRadius'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.radius" value="{{system.radius}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Effect Damage --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Damage'}}
+      {{#*inline "item-field-inputs"}}
+      {{numberInput system.damageValue name="system.damageValue" min=0 step=1}}
+      <select name="system.damageType">
+        {{#select system.damageType}}
+          {{#each config.damageTypes as |name type|}}
+            <option value="{{type}}">{{localize name}}</option>
+          {{/each}}
+        {{/select}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Shift Down --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShiftDown'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.shiftDown" value="{{system.shiftDown}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Targets --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTargets'}}
+      {{#*inline "item-field-inputs"}}
+      <input class="item-field-inputs" type="number" name="system.numTargets" value="{{system.numTargets}}" min="0" step="1" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Hands --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponHands'}}
-    {{#*inline "item-field-inputs"}}
-    <input class="item-field-inputs" type="text" name="system.numHands" value="{{system.numHands}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Radius --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRadius'}}
+      {{#*inline "item-field-inputs"}}
+      {{numberInput system.radius name="system.radius" min=0 step=1}}
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Reach --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRangeReachMultiplier'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"
-      placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Shift Down --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShiftDown'}}
+      {{#*inline "item-field-inputs"}}
+      {{numberInput system.shiftDown name="system.shiftDown" min=0 step=1}}
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{!-- Range --}}
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRange'}}
-    {{#*inline "item-field-inputs"}}
-    <input type="number" name="system.range.value" value="{{system.range.value}}"
-      placeholder="{{localize 'E20.WeaponRangeValue'}}" />
-    <input type="number" name="system.range.long" value="{{system.range.long}}"
-      placeholder="{{localize 'E20.WeaponRangeLong'}}" />
-    <input type="number" name="system.range.min" value="{{system.range.min}}"
-      placeholder="{{localize 'E20.WeaponRangeMin'}}" />
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{!-- Hands --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponHands'}}
+      {{#*inline "item-field-inputs"}}
+      <input class="item-field-inputs" type="text" name="system.numHands" value="{{system.numHands}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+      {{!-- Reach --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRangeReachMultiplier'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.range.reachMultiplier" value="{{system.range.reachMultiplier}}"
+        placeholder="{{localize 'E20.WeaponRangeReachMultiplier'}}" min="0" step="1" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Range --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRange'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="number" name="system.range.value" value="{{system.range.value}}"
+        placeholder="{{localize 'E20.WeaponRangeValue'}}" min="0" step="1" />
+      <input type="number" name="system.range.long" value="{{system.range.long}}"
+        placeholder="{{localize 'E20.WeaponRangeLong'}}" min="0" step="1" />
+      <input type="number" name="system.range.min" value="{{system.range.min}}"
+        placeholder="{{localize 'E20.WeaponRangeMin'}}" min="0" step="1" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    </div>
   </section>
 </form>

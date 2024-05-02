@@ -5,13 +5,18 @@
 
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
-    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
   </nav>
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="tab main flexcol" data-group="primary" data-tab="main">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
       {{!-- Spell Tier --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellTier'}}
       {{#*inline "item-field-inputs"}}
@@ -41,7 +46,7 @@
       {{!-- Cost --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Cost'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.cost" value="{{system.cost}}" />
+      {{numberInput system.cost name="system.cost" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -58,9 +63,6 @@
       <input type="text" name="system.range" value="{{system.range}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
     </div>
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{!-- Effects Section --}}

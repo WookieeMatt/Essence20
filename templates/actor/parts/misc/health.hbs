@@ -5,12 +5,12 @@
       <label>{{localize 'E20.ActorHealth'}}</label>
     </div>
     <div class="flexrow" style="align-items: center;">
-      <input class="centered-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" />
+      <input class="centered-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
       <span>/</span>
       {{#if @root.system.movementIsReadOnly}}
         <input class="centered-input no-unlock" type="number" name="system.health.max" value="{{system.health.max}}" title="{{system.health.string}}" readonly/>
       {{else}}
-        <input class="centered-input no-lock" type="number" name="system.health.max" value="{{system.health.max}}"/>
+        <input class="centered-input no-lock" type="number" name="system.health.max" value="{{system.health.max}}" min="0" step="1"/>
       {{/if}}
     </div>
   </div>

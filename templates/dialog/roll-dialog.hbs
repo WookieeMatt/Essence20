@@ -1,25 +1,36 @@
 <form class="roll-dialog">
   <div>
     {{localize 'E20.ShiftUp'}}
-    <input type="number" name="shiftUp" value={{shiftUp}} />
+    <input type="number" name="shiftUp" value={{shiftUp}} min="0" step="1" />
   </div>
+  
   <div>
     {{localize 'E20.ShiftDown'}}
-    <input type="number" name="shiftDown" value={{shiftDown}} />
+    <input type="number" name="shiftDown" value={{shiftDown}} min="0" step="1" />
   </div>
+
   <div>
     <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize 'E20.RollDialogSnag'}}
     <input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize 'E20.RollDialogNormal'}}
     <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}
   </div>
+
   <div>
     <label>
       <input type="checkbox" name="isSpecialized" {{checked isSpecialized}} />
       <span>{{localize 'E20.RollIsSpecialized'}}</span>
     </label>
   </div>
+
   <div>
     {{localize 'E20.RollDialogTimesToRoll'}}
-    <input type="number" name="timesToRoll" value=1 />
+    <input type="number" name="timesToRoll" value=1 min="1" step="1" />
   </div>
+
+  {{#if rolePoints}}
+  <div class="flexrow" style="align-items: center;">
+    <input type="checkbox" name="applyRolePointsUpshift" {{checked applyRolePointsUpshift}} />
+    Apply {{rolePoints.name}} to gain {{rolePoints.system.bonus.value}}<i class="fas fa-arrow-up" style="flex-grow: 0;"></i>?
+  </div>
+  {{/if}}
 </form>

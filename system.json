@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "4.1.2",
+  "version": "4.2.0",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -32,6 +32,15 @@
       "flags": {}
     },
     {
+      "name": "beneath_the_helmet",
+      "label": "Beneath The Helmet",
+      "system": "essence20",
+      "path": "packs/bthitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "cobra_codex",
       "label": "Cobra Codex",
       "system": "essence20",
@@ -41,10 +50,28 @@
       "flags": {}
     },
     {
+      "name": "dark_skies_over_equestria",
+      "label": "Dark Skies Over Equestria",
+      "system": "essence20",
+      "path": "packs/dsoeitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "decepticon_directive",
       "label": "Decpeticon Directive",
       "system": "essence20",
       "path": "packs/dditems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "enigma_of_combination",
+      "label": "The Enigma of Combination",
+      "system": "essence20",
+      "path": "packs/eocitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -113,6 +140,15 @@
       "flags": {}
     },
     {
+      "name": "quartermasters_guide_to_gear",
+      "label": "Quartermaster's Guide to Gear",
+      "system": "essence20",
+      "path": "packs/qgtgitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "sgt_slaughter_sourcebook",
       "label": "Sgt Slaughter Sourcebook",
       "system": "essence20",
@@ -137,16 +173,18 @@
       "sorting": "m",
       "packs": [
         "gi_joe_crb",
-        "sgt_slaughter_sourcebook",
         "cobra_codex",
-        "ferocious_fighters"
+        "ferocious_fighters",
+        "quartermasters_guide_to_gear",
+        "sgt_slaughter_sourcebook"
       ]
     },
     {
       "name": "My Little Pony",
       "sorting": "m",
       "packs": [
-        "mlp_crb"
+        "mlp_crb",
+        "dark_skies_over_equestria"
       ]
     },
     {
@@ -155,6 +193,7 @@
       "packs": [
         "pr_crb",
         "across_the_stars",
+        "beneath_the_helmet",
         "jump_through_time",
         "finster_s_monster_matic_cookbook"
       ]
@@ -164,7 +203,8 @@
       "sorting": "m",
       "packs": [
         "tf_crb",
-        "decepticon_directive"
+        "decepticon_directive",
+        "enigma_of_combination"
       ]
     }
   ],
@@ -187,6 +227,6 @@
     "verified": "11"
   },
   "flags": {
-    "needsMigrationVersion": "4.1.1"
+    "needsMigrationVersion": "4.2.0"
   }
 }

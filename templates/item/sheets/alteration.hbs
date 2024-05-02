@@ -5,13 +5,19 @@
 
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
     <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
   </nav>
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="tab main flexcol" data-group="primary" data-tab="main">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
 
       {{!-- Availability --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationAvailability'}}
@@ -43,7 +49,7 @@
         {{!-- Alteration Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceBonus'}}
         {{#*inline "item-field-edit"}}
-          <a class="trait-selector" style="flex-grow: 0;" data-options="originEssences" data-target="system.essenceBonus" title="{{localize 'E20.TraitSelector'}}">
+          <a class="trait-selector" data-options="originEssences" data-target="system.essenceBonus" title="{{localize 'E20.TraitSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
         {{/inline}}
@@ -60,7 +66,7 @@
         {{!-- Alteration Essence Cost --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceCost'}}
         {{#*inline "item-field-edit"}}
-          <a class="trait-selector" style="flex-grow: 0;" data-options="originEssences" data-target="system.essenceCost" title="{{localize 'E20.TraitSelector'}}">
+          <a class="trait-selector" data-options="originEssences" data-target="system.essenceCost" title="{{localize 'E20.TraitSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
         {{/inline}}
@@ -79,7 +85,7 @@
         {{!-- Alteration Movement Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationBonusMovement'}}
         {{#*inline "item-field-inputs"}}
-        <input type="number" name="system.bonusMovement" value="{{system.bonusMovement}}" />
+        {{numberInput system.bonusMovement name="system.bonusMovement" min=0 step=5}}
         <select name="system.bonusMovementType">
           {{#select system.bonusMovementType}}
           {{#each config.movementTypes as |name type|}}
@@ -93,7 +99,7 @@
         {{!-- Alteration Movement Cost --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationCostMovement'}}
         {{#*inline "item-field-inputs"}}
-        <input type="number" name="system.costMovement" value="{{system.costMovement}}" />
+        {{numberInput system.costMovement name="system.costMovement" min=0 step=5}}
         <select name="system.costMovementType">
           {{#select system.costMovementType}}
           {{#each config.movementTypes as |name type|}}
@@ -109,20 +115,18 @@
         {{!-- Alteration Non Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Bonus'}}
         {{#*inline "item-field-inputs"}}
-        <input type="number" name="system.bonus" value="{{system.bonus}}" />
+        {{numberInput system.bonus name="system.bonus" min=0 step=1}}
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
         {{!-- Alteration Non Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Cost'}}
         {{#*inline "item-field-inputs"}}
-        <input type="number" name="system.cost" value="{{system.cost}}" />
+        {{numberInput system.cost name="system.cost" min=0 step=1}}
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       {{/ifEquals}}
 
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
     </div>
 
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">

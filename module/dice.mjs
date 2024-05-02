@@ -1,4 +1,5 @@
 import { E20 } from "./helpers/config.mjs";
+import { getItemsOfType } from "./helpers/utils.mjs";
 
 export class Dice {
   /**
@@ -67,23 +68,45 @@ export class Dice {
   async rollSkill(rawDataset, actor, item) {
     const dataset = { // Converting strings to usable types
       ...rawDataset,
-      isSpecialized: rawDataset.isSpecialized === 'true',
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
+      isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false',
     };
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const essenceShifts = actor.system.essenceShifts;
+    let calculatedShiftUp = 0;
+    let calculatedShiftDown = 0;
+    if (rolledEssence) {
+      calculatedShiftUp = dataset.shiftUp + essenceShifts[rolledEssence].shiftUp + essenceShifts.any.shiftUp;
+      calculatedShiftDown = dataset.shiftDown + essenceShifts[rolledEssence].shiftDown + essenceShifts.any.shiftDown;
+    } else {
+      calculatedShiftUp = dataset.shiftUp + essenceShifts.any.shiftUp;
+      calculatedShiftDown = dataset.shiftDown + essenceShifts.any.shiftDown;
+    }
+
     const updatedShiftDataset = {
       ...dataset,
-      shiftUp: dataset.shiftUp + essenceShifts[rolledEssence].shiftUp + essenceShifts.any.shiftUp,
-      shiftDown: dataset.shiftDown + essenceShifts[rolledEssence].shiftDown + essenceShifts.any.shiftDown,
+      shiftUp: calculatedShiftUp,
+      shiftDown: calculatedShiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
     const skillDataset = {
       edge: actorSkillData.edge,
       snag: actorSkillData.snag,
     };
+
+    updatedShiftDataset.rolePoints = null;
+    const rolePointsList = getItemsOfType('rolePoints', actor.items);
+
+    let rolePoints = null;
+    if (item?.type == 'weapon' && rolePointsList.length) {
+      rolePoints = rolePointsList[0]; // There should only be one RolePoints
+      if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
+        updatedShiftDataset.rolePoints = rolePoints;
+      }
+    }
+
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
@@ -94,7 +117,7 @@ export class Dice {
     let label = '';
 
     switch(item?.type) {
-    case 'weaponEffect':
+    case 'weapon':
       label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
       break;
     case 'spell':
@@ -107,7 +130,7 @@ export class Dice {
       label = this._getSkillRollLabel(dataset, skillRollOptions);
     }
 
-    let finalShift = this._getFinalShift(skillRollOptions, initialShift);
+    let finalShift = this._getFinalShift(skillRollOptions, initialShift, E20.skillShiftList, rolePoints);
 
     if (this._handleAutoFail(finalShift, label, actor)) {
       return;
@@ -160,10 +183,16 @@ export class Dice {
    * @private
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
-    const rolledSkill = dataset.skill;
-    const rolledSkillStr = dataset.isSpecialized
-      ? dataset.specializationName
-      : this._localize(E20.skills[rolledSkill]);
+    let rolledSkillStr;
+    if (dataset.skill == 'roleSkillDie') {
+      rolledSkillStr = dataset.roleSkillName;
+    } else if (dataset.isSpecialized) {
+      rolledSkillStr = dataset.specializationName;
+    } else {
+      const rolledSkill = dataset.skill;
+      rolledSkillStr = this._localize(E20.skills[rolledSkill]);
+    }
+
     const rollingForStr = this._localize('E20.RollRollingFor');
     return `${rollingForStr} ${rolledSkillStr}` + this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag);
   }
@@ -243,9 +272,11 @@ export class Dice {
    * @returns {String}   The resultant shift.
    * @private
    */
-  _getFinalShift(skillRollOptions, initialShift, shiftList=E20.skillShiftList) {
+  _getFinalShift(skillRollOptions, initialShift, shiftList=E20.skillShiftList, rolePoints=null) {
     // Apply the skill roll options dialog shifts to the roller's normal shift
-    const optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
+    let optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
+    optionsShiftTotal += rolePoints && skillRollOptions.applyRolePointsUpshift ? rolePoints.system.bonus.value : 0;
+
     const initialShiftIndex = shiftList.findIndex(s => s == initialShift);
     const finalShiftIndex = Math.max(
       0,

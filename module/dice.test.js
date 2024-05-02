@@ -30,6 +30,7 @@ class Mocki18n {
 }
 
 const mockActor = {
+  items: [],
   system: {
     initiative: {
       formula: "",
@@ -92,7 +93,8 @@ describe("prepareInitiativeRoll", () => {
 describe("rollSkill", () => {
   const dataset = {
     essence: 'strength',
-    isSpecialized: 'false',
+    isSpecialized: false,
+    rolePoints: null,
     shift: 'd20',
     shiftDown: '0',
     shiftUp: '0',
@@ -100,6 +102,32 @@ describe("rollSkill", () => {
   };
 
   test("normal skill roll", async () => {
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(dataset, mockActor, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics");
+  });
+
+  test("normal skill roll works with isSpecialized as false string", async () => {
+    const datasetCopy = {
+      ...dataset,
+      isSpecialized: 'false',
+    };
     rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
@@ -173,7 +201,34 @@ describe("rollSkill", () => {
   test("specialized skill roll", async () => {
     const datasetCopy = {
       ...dataset,
-      isSpecialized: "true",
+      isSpecialized: true,
+      specializationName: 'Foo Specialization',
+    };
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(datasetCopy, mockActor, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization");
+  });
+
+  test("specialized skill roll works with isSpecialized as true string", async () => {
+    const datasetCopy = {
+      ...dataset,
+      isSpecialized: 'true',
       specializationName: 'Foo Specialization',
     };
     rollDialog.getSkillRollOptions.mockReturnValue({
@@ -357,7 +412,7 @@ describe("_getSkillRollLabel", () => {
   test("specialized skill roll", () => {
     const dataset = {
       skill: 'athletics',
-      isSpecialized: "true",
+      isSpecialized: true,
       specializationName: 'Foo Specialization',
     };
     const skillRollOptions = {

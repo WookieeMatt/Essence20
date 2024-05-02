@@ -41,10 +41,11 @@ export class RollDialog {
       {
         shiftUp: dataset.shiftUp || 0,
         shiftDown: dataset.shiftDown || 0,
-        isSpecialized: dataset.isSpecialized === 'true',
+        isSpecialized: dataset.isSpecialized,
         snag: snag && !edge,
         edge: edge && !snag,
         normal: edge == snag,
+        rolePoints: dataset.rolePoints,
       },
     );
 
@@ -66,7 +67,7 @@ export class RollDialog {
         default: "normal",
         close: () => resolve({ cancelled: true }),
       };
-      
+
       new Dialog(data, null).render(true);
     });
   }
@@ -84,6 +85,7 @@ export class RollDialog {
       snag: form.snagEdge.value == 'snag',
       isSpecialized: form.isSpecialized.checked,
       timesToRoll: parseInt(form.timesToRoll.value),
+      applyRolePointsUpshift: form?.applyRolePointsUpshift?.checked,
     };
   }
 }

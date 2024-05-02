@@ -39,6 +39,12 @@
             "value": 0
           }
         },
+        "essenceRanks": {
+          "smarts": null,
+          "social": null,
+          "speed": null,
+          "strength": null
+        },
         "essenceShifts": {
           "any": {
             "shiftUp": 0,
@@ -61,6 +67,7 @@
             "shiftDown": 0
           }
         },
+        "focusEssence": "",
         "health": {
           "bonus": 0,
           "max": 0,
@@ -112,6 +119,7 @@
         "powers": {
           "personal": {
             "max": 0,
+            "regeneration": 0,
             "value": 0
           },
           "sorcerous": {
@@ -648,6 +656,7 @@
       "classFeature",
       "contact",
       "feature",
+      "focus",
       "gear",
       "hangUp",
       "influence",
@@ -656,6 +665,8 @@
       "origin",
       "perk",
       "power",
+      "role",
+      "rolePoints",
       "specialization",
       "spell",
       "threatPower",
@@ -674,6 +685,9 @@
           "book": "",
           "page": null
         }
+      },
+      "parentItem": {
+        "items": {}
       }
     },
     "alteration": {
@@ -709,7 +723,8 @@
     "armor": {
       "templates": [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "availability": "standard",
       "bonusEvasion": 0,
@@ -717,7 +732,6 @@
       "classification": "light",
       "equipped": false,
       "traits": [],
-      "upgradeIds": [],
       "upgradeTraits": []
     },
     "bond": {
@@ -751,6 +765,20 @@
         "itemDescription"
       ]
     },
+    "focus": {
+      "templates": [
+        "item",
+        "itemDescription",
+        "parentItem"
+      ],
+      "essences": "",
+      "essenceLevels": [
+        "level1",
+        "level10"
+      ],
+      "roleId": "",
+      "skills": []
+    },
     "gear": {
       "templates": [
         "item",
@@ -768,11 +796,10 @@
     "influence": {
       "templates" : [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "bond": "",
-      "hangUpIds": [],
-      "perkIds": [],
       "mandatoryHangUp": false,
       "skills": []
     },
@@ -794,14 +821,14 @@
     "origin": {
       "templates": [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "baseAerialMovement": 0,
       "baseAquaticMovement": 0,
       "baseGroundMovement": 0,
       "essences": [],
       "languages": "",
-      "originPerkIds": [],
       "skills": [],
       "startingHealth": 0
     },
@@ -829,6 +856,94 @@
       "type": "grid",
       "usesInterval": "perScene",
       "usesPer": null
+    },
+    "role": {
+      "templates": [
+        "item",
+        "itemDescription",
+        "parentItem"
+      ],
+      "adjustments": {
+        "health": []
+      },
+      "armors": {
+        "qualified": [],
+        "trained": []
+      },
+      "essenceLevels": {
+        "smarts":  [],
+        "social":  [],
+        "speed":  [],
+        "strength":  []
+      },
+      "gridPowerLevels":[
+        "level6",
+        "level11",
+        "level16"
+      ],
+      "hasSpecialAdvancement": false,
+      "isAdvanced": false,
+      "perkLevels": {
+        "general": [
+          "level4",
+          "level8",
+          "level12",
+          "level16",
+          "level19"
+        ]
+      },
+      "powers": {
+        "personal": {
+          "increase": 0,
+          "levels": [],
+          "regeneration": 0,
+          "starting": 0
+        }
+      },
+      "skillDie": {
+        "isUsed": false,
+        "name": "",
+        "levels": [],
+        "specializedLevels": []
+      },
+      "skills": [],
+      "version": "",
+      "weapons": {
+        "qualified":[],
+        "trained":[]
+      }
+    },
+    "rolePoints": {
+      "templates": [
+        "item",
+        "itemDescription"
+      ],
+      "bonus": {
+        "defenseBonus": {
+          "cleverness": false,
+          "evasion": false,
+          "toughness": false,
+          "willpower": false
+        },
+        "increase": 0,
+        "level20Value": null,
+        "increaseLevels": [],
+        "startingValue": null,
+        "type": "none",
+        "value" : 0
+      },
+      "isActivatable": false,
+      "isActive": false,
+      "powerCost": 0,
+      "resource": {
+        "increase": 0,
+        "level20Value": null,
+        "level20ValueIsUnlimited": false,
+        "increaseLevels": [],
+        "max": null,
+        "startingMax": null,
+        "value" : 0
+      }
     },
     "specialization": {
       "templates": [
@@ -883,7 +998,8 @@
     "weapon": {
       "templates": [
         "item",
-        "itemDescription"
+        "itemDescription",
+        "parentItem"
       ],
       "classFeatureId": null,
       "alternateEffects": "",
@@ -898,10 +1014,8 @@
         "shift": null
       },
       "traits": [],
-      "upgradeIds": [],
       "upgradeTraits": [],
-      "usesPerScene": null,
-      "weaponEffectIds": []
+      "usesPerScene": null
     },
     "weaponEffect" : {
       "templates": [

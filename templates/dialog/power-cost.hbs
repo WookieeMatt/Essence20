@@ -5,7 +5,7 @@
         {{localize power.name}} (min {{power.system.powerCost}}, max {{maxPower}})
       </label>
       <span>
-        <input type="number" id ="{{power.name}}" value="{{power.system.powerCost}}" max="{{maxPower}}"/>
+        <input type="number" id ="{{power.name}}" value="{{power.system.powerCost}}" max="{{maxPower}}" min="0" step="1"/>
       </span>
     </div>
   </div>

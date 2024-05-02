@@ -1,5 +1,14 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { checkIsLocked, createItemCopies, parseId } from "../helpers/utils.mjs";
+import {
+  deleteAttachmentsForItem,
+  checkIsLocked,
+  createItemCopies,
+  getItemsOfType,
+  getNumActions,
+  parseId,
+  setEntryAndAddItem,
+} from "../helpers/utils.mjs";
+import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -8,12 +17,14 @@ import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
 import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
+import { RoleHandler } from "../sheet-handlers/role-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
 
     this._accordionStates = { skills: '' };
+    this._advHandler = new AdvancementHandler(this);
     this._alHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
@@ -22,6 +33,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._tfHandler = new TransformerHandler(this);
     this._pwHandler = new PowerHandler(this);
     this._pkHandler = new PerkHandler(this);
+    this._rlHandler = new RoleHandler(this);
   }
 
   /** @override */
@@ -67,7 +79,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Prepare number of actions
     if (['giJoe', 'npc', 'pony', 'powerRanger', 'transformer'].includes(actorData.type)) {
-      this._prepareNumActions(context);
+      context.numActions = getNumActions(this.actor);
     }
 
     // Add roll data for TinyMCE editors.
@@ -154,6 +166,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const bonds = [];
     const contacts = [];
     const features = []; // Used by Zords
+    const focuses = [];
     const gears = [];
     const hangUps = [];
     const influences = [];
@@ -162,15 +175,15 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
-    const classFeatures = []; // Used by PCs
     const specializations = {};
     const spells = [];
     const upgrades = [];
     const traits = []; // Used by Vehicles
     const weapons = [];
-    const classFeaturesById = {};
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
+    let role = null;
+    let rolePoints = null;
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -186,11 +199,10 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'armor':
         if (i.system.equipped) {
-          equippedArmorEvasion += parseInt(i.system.bonusEvasion);
-          equippedArmorToughness += parseInt(i.system.bonusToughness);
+          equippedArmorEvasion += parseInt(i.system.totalBonusEvasion);
+          equippedArmorToughness += parseInt(i.system.totalBonusToughness);
         }
 
-        i.upgrades = this._populateChildItems(i.system.upgradeIds);
         armors.push(i);
         break;
       case 'bond':
@@ -201,6 +213,9 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'feature':
         features.push(i);
+        break;
+      case 'focus':
+        focuses.push(i);
         break;
       case 'gear':
         gears.push(i);
@@ -235,9 +250,35 @@ export class Essence20ActorSheet extends ActorSheet {
       case 'spell':
         spells.push(i);
         break;
-      case 'classFeature':
-        classFeatures.push(i);
-        classFeaturesById[i._id] = i.name;
+      case 'rolePoints':
+        rolePoints = i;
+
+        {
+          const defenseLetters = [];
+
+          if (rolePoints.system.bonus.defenseBonus.cleverness) {
+            defenseLetters.push('C');
+          }
+
+          if (rolePoints.system.bonus.defenseBonus.evasion) {
+            defenseLetters.push('E');
+          }
+
+          if (rolePoints.system.bonus.defenseBonus.toughness) {
+            defenseLetters.push('T');
+          }
+
+          if (rolePoints.system.bonus.defenseBonus.willpower) {
+            defenseLetters.push('W');
+          }
+
+          rolePoints.system.bonus.defenseBonus.string = defenseLetters.join(', ');
+          rolePoints.system.isSpendable = !!(rolePoints.system.resource.max || rolePoints.system.powerCost);
+        }
+
+        break;
+      case 'role':
+        role = i;
         break;
       case 'specialization':
         {
@@ -254,8 +295,6 @@ export class Essence20ActorSheet extends ActorSheet {
         upgrades.push(i);
         break;
       case 'weapon':
-        i.upgrades = this._populateChildItems(i.system.upgradeIds);
-        i.weaponEffects = this._populateChildItems(i.system.weaponEffectIds);
         weapons.push(i);
         break;
       }
@@ -267,10 +306,9 @@ export class Essence20ActorSheet extends ActorSheet {
     context.armors = armors;
     context.bonds = bonds;
     context.contacts = contacts;
-    context.classFeatures = classFeatures;
-    context.classFeaturesById = classFeaturesById;
     context.features = features;
     context.gears = gears;
+    context.focuses = focuses;
     context.hangUps = hangUps;
     context.influences = influences;
     context.magicBaubles = magicBaubles;
@@ -278,6 +316,8 @@ export class Essence20ActorSheet extends ActorSheet {
     context.origins = origins;
     context.perks = perks;
     context.powers = powers;
+    context.rolePoints = rolePoints;
+    context.role = role;
     context.spells = spells;
     context.specializations = specializations;
     context.traits = traits;
@@ -309,21 +349,6 @@ export class Essence20ActorSheet extends ActorSheet {
     return childItems;
   }
 
-  /**
-   * Prepare the number of actions available for the actor.
-   * @param {Object} context The actor data to prepare.
-   * @return {undefined}
-   */
-  _prepareNumActions(context) {
-    const speed = this.actor.system.essences.speed;
-
-    context.numActions = {
-      free: Math.max(0, speed - 2),
-      movement: speed > 0 ? 1 : 0,
-      standard: speed > 1 ? 1 : 0,
-    };
-  }
-
   /* -------------------------------------------- */
 
   /** @override */
@@ -331,12 +356,7 @@ export class Essence20ActorSheet extends ActorSheet {
     super.activateListeners(html);
 
     // Render the item sheet for viewing/editing prior to the editable check.
-    html.find('.item-edit').click(ev => {
-      const li = $(ev.currentTarget).closest(".item");
-      const itemId = li.data("itemId");
-      const item = this.actor.items.get(itemId) || game.items.get(itemId);
-      item.sheet.render(true);
-    });
+    html.find('.item-edit').click(this._onItemEdit.bind(this));
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
@@ -449,14 +469,31 @@ export class Essence20ActorSheet extends ActorSheet {
         );
       }
 
-      ui.notifications.info(`Energon restored by ${energonRestore}.`);
+      ui.notifications.info(game.i18n.format('E20.RestEnergonRestored', { energonRestore: energonRestore }));
     }
 
-    ui.notifications.info("Health restored and stun reset.");
-    ui.notifications.info("Rest complete!");
+    //Reseting Personal Power
+    let powerRestore = 0;
+    if (this.actor.system.powers.personal.max > 0) {
+      powerRestore = Math.min(this.actor.system.powers.personal.max, (this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration));
+
+      ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
+    }
+
+    // Resetting Role Points
+    const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
+    if (rolePointsList.length) {
+      const rolePoints = rolePointsList[0];
+      rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
+      ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
+    }
+
+    ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
+    ui.notifications.info(game.i18n.localize("E20.RestComplete"));
 
     await this.actor.update({
       "system.health.value": this.actor.system.health.max,
+      "system.powers.personal.value": powerRestore,
       "system.stun.value": 0,
       "system.energon.normal.value": energonRestore,
       "system.energon.dark.value": 0,
@@ -540,17 +577,63 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (rollType == 'initiative') {
       this.actor.rollInitiative({createCombatants: true});
     } else { // Handle items
-      const itemId = element.closest('.item').dataset.itemId;
-      const item = this.actor.items.get(itemId);
+      let item = null;
 
-      if (rollType == 'power') {
-        await this._pwHandler.powerCost(item);
-      } else if (rollType == 'classFeature') {
-        // If a Class Feature is being used, decrement uses
-        await item.update({ 'system.uses.value': Math.max(0, item.system.uses.value - 1) });
+      const childKey = element.closest('.item').dataset.itemKey || null;
+      if (childKey) {
+        if (rollType == 'weapon') {
+          // Special case for weapon effect attacks where we want the parent weapon as the item
+          const parentId = element.closest('.item').dataset.parentId;
+          item = this.actor.items.get(parentId);
+        } else {
+          const childUuid = element.closest('.item').dataset.itemUuid;
+          item = await fromUuid(childUuid);
+        }
+      } else {
+        const itemId = element.closest('.item').dataset.itemId;
+        item = this.actor.items.get(itemId);
       }
 
-      if (item) return item.roll(dataset);
+      if (rollType == 'power') {
+        return await this._pwHandler.powerCost(item);
+      } else if (rollType == 'rolePoints') {
+        if (item.system.resource.max != null && item.system.resource.value < 1 && !this.actor.system.useUnlimitedResource) {
+          ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
+          return;
+        } else {
+          const spentStrings = [];
+
+          // Ensure we have enough Personal Power, if needed
+          if (item.system.powerCost) {
+            if (this.actor.system.powers.personal.value < item.system.powerCost) {
+              ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
+              return;
+            } else {
+              await this.actor.update({
+                ['system.powers.personal.value']:
+                  this.actor.system.powers.personal.value - item.system.powerCost,
+              });
+
+              spentStrings.push(`${item.system.powerCost} Power`);
+            }
+          }
+
+          // If Role Points are being used and not unlimited, decrement uses
+          if (!this.actor.system.useUnlimitedResource) {
+            await item.update({ 'system.resource.value': item.system.resource.value - 1 });
+            spentStrings.push('1 point');
+          }
+
+          if (spentStrings.length) {
+            const spentString = spentStrings.join(', ');
+            ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
+          }
+        }
+      }
+
+      if (item) {
+        return item.roll(dataset, childKey);
+      }
     }
   }
 
@@ -584,23 +667,51 @@ export class Essence20ActorSheet extends ActorSheet {
     delete itemData.data["type"];
 
     // Set the parent item type for nested items
+    let parentItem = null;
     if (data.parentId) {
-      const parentItem = this.actor.items.get(data.parentId);
+      parentItem = this.actor.items.get(data.parentId);
       itemData.data.type = parentItem.type;
     }
 
     // Finally, create the item!
     const newItem = await Item.create(itemData, { parent: this.actor });
 
-    // Update parent item's ID list for nested items
-    if (data.parentId) {
-      const parentItem = this.actor.items.get(data.parentId);
+    if (parentItem) {
+      newItem.setFlag('essence20', 'parentId', parentItem._id);
 
+      let key = null;
+
+      // Update parent item's ID list for upgrades and weapon effects
       if (newItem.type == 'upgrade' && ['armor', 'weapon'].includes(parentItem.type)) {
-        this._addChildItemToParent(parentItem, newItem, "upgradeIds");
+        key = await setEntryAndAddItem(newItem, parentItem);
       } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
-        this._addChildItemToParent(parentItem, newItem, "weaponEffectIds");
+        key = await setEntryAndAddItem(newItem, parentItem);
       }
+
+      newItem.setFlag('essence20', 'collectionId', key);
+    }
+  }
+
+  /**
+   * Handle editing an owned Item for the actor
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _onItemEdit(event) {
+    event.preventDefault();
+    const li = $(event.currentTarget).closest(".item");
+    let item = null;
+
+    const itemId = li.data("itemId");
+    if (itemId) {
+      item = this.actor.items.get(itemId) || game.items.get(itemId);
+    } else {
+      const itemUuid = li.data("itemUuid");
+      item = await fromUuid(itemUuid);
+    }
+
+    if (item) {
+      item.sheet.render(true);
     }
   }
 
@@ -627,39 +738,66 @@ export class Essence20ActorSheet extends ActorSheet {
       return;
     }
 
+    let item = null;
     const li = $(event.currentTarget).closest(".item");
     const itemId = li.data("itemId");
     const parentId = li.data("parentId");
-
-    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     const parentItem = this.actor.items.get(parentId);
-    if (parentItem) {
-      if (['armor', 'weapon'].includes(parentItem.type)) {
-        const remainingUpgradeIds = parentItem.system.upgradeIds.filter(u => u != itemId);
-        await parentItem.update({ ["system.upgradeIds"]: remainingUpgradeIds });
+
+    if (itemId) {
+      item = this.actor.items.get(itemId);
+    } else {
+      const keyId = li.data("itemKey");
+
+      // If the deleted item is attached to another item find what it is attached to.
+      for (const attachedItem of this.actor.items) {
+        const collectionId = await attachedItem.getFlag('essence20', 'collectionId');
+        if (collectionId) {
+          if (keyId == collectionId) {
+            item = attachedItem;
+          }
+        }
       }
     }
 
-    const item = this.actor.items.get(itemId);
-
-    if (item.type == "origin") {
-      this._bgHandler.onOriginDelete(item);
-    } else if (item.type == 'influence') {
-      this._bgHandler.onInfluenceDelete(item);
-    } else if (item.type == "altMode") {
-      this._tfHandler.onAltModeDelete(item, this);
-    } else if (item.type == "alteration") {
-      this._alHandler.onAlterationDelete(item);
-    } else if (item.type == "weapon") {
-      this._atHandler.deleteAttachments(item, ["upgrade", "weaponEffect"]);
-    } else if (item.type == "armor") {
-      this._atHandler.deleteAttachments(item, ["upgrade"]);
-    } else if (item.type == "perk") {
-      this._pkHandler.onPerkDelete(item);
+    // return if no item is found.
+    if (!item) {
+      return;
     }
 
-    item.delete();
-    li.slideUp(200, () => this.render(false));
+    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
+    if (parentItem) {
+      const id = li.data("itemKey");
+      const updateString = `system.items.-=${id}`;
+
+      await parentItem.update({[updateString]: null});
+
+      item.delete();
+      li.slideUp(200, () => this.render(false));
+    } else {
+      if (item.type == "armor") {
+        deleteAttachmentsForItem(item, this.actor);
+      } else if (item.type == "origin") {
+        this._bgHandler.onOriginDelete(item);
+      } else if (item.type == 'influence') {
+        deleteAttachmentsForItem(item, this.actor);
+      } else if (item.type == "altMode") {
+        this._tfHandler.onAltModeDelete(item, this);
+      } else if (item.type == "alteration") {
+        this._alHandler.onAlterationDelete(item);
+      } else if (item.type == "focus") {
+        this._rlHandler.onFocusDelete(item);
+      } else if (item.type == "perk") {
+        this._pkHandler.onPerkDelete(item);
+      } else if (item.type == "role") {
+        this._rlHandler.onRoleDelete(item);
+      } else if (item.type == "weapon") {
+        deleteAttachmentsForItem(item, this.actor);
+      }
+
+      item.delete();
+      li.slideUp(200, () => this.render(false));
+    }
   }
 
   /**
@@ -671,9 +809,14 @@ export class Essence20ActorSheet extends ActorSheet {
     event.preventDefault();
     let element = event.currentTarget;
     let itemId = element.closest(".item").dataset.itemId;
-    let item = this.actor.items.get(itemId);
-    let field = element.dataset.field;
-    let newValue = element.type == 'checkbox' ? element.checked : element.value;
+
+    if (!itemId) {
+      itemId = element.closest(".item").dataset.parentId;
+    }
+
+    const item = this.actor.items.get(itemId);
+    const field = element.dataset.field;
+    const newValue = element.type == 'checkbox' ? element.checked : element.value;
 
     return item.update({ [field]: newValue });
   }
@@ -706,10 +849,19 @@ export class Essence20ActorSheet extends ActorSheet {
     switch (sourceItem.type) {
     case 'alteration':
       return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'armor':
+      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'focus':
+      return await this._rlHandler.focusUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
       return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'role':
+      return await this._rlHandler.roleUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+    case 'rolePoints':
+      ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
+      return;
     case 'perk':
       return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':
@@ -717,12 +869,12 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
-      return await this._onDropWeapon(event, data);
+      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
     case 'weaponEffect':
-      return this._atHandler.attachItem('weapon', super._onDropItem.bind(this, event, data));
+      return this._atHandler.attachItem(sourceItem, super._onDropItem.bind(this, event, data));
 
     default:
-      return await this._onDropDefault(event, data);
+      return await super._onDropItem(event, data);
     }
   }
 
@@ -741,7 +893,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
       return super._onDropItem(event, data);
     } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return this._atHandler.attachItem(upgrade.system.type, super._onDropItem.bind(this, event, data));
+      return this._atHandler.attachItem(upgrade, super._onDropItem.bind(this, event, data));
     } else {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;
@@ -818,6 +970,19 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     } else {
       return false;
+    }
+  }
+
+  /**
+   * Handle changes to an input element, submitting the form if options.submitOnChange is true.
+   * Do not preventDefault in this handler as other interactions on the form may also be occurring.
+   * @param {Event} event The initial change event
+   */
+  async _onChangeInput(event) {
+    await super._onChangeInput(event);
+
+    if (event.currentTarget.name == "system.level") {
+      await this._advHandler.onLevelChange(this.actor, this.actor.system.level);
     }
   }
 }

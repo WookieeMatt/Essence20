@@ -15,10 +15,26 @@ export function onManageSelectTrait(event, owner) {
     choices: [],
     allowCustom: false,
   };
-  
+
   switch (a.dataset.options) {
   case "armor":
     options.choices = CONFIG.E20.armorTraits;
+    options.valueKey = null;
+    break;
+  case "armorType":
+    options.choices = CONFIG.E20.armorTypes;
+    options.valueKey = null;
+    break;
+  case "actorLevels":
+    options.choices = CONFIG.E20.actorLevels;
+    options.valueKey = null;
+    break;
+  case "focusEssences":
+    options.choices = CONFIG.E20.originEssences;
+    options.valueKey = null;
+    break;
+  case "focusSkills":
+    options.choices = CONFIG.E20.originSkills;
     options.valueKey = null;
     break;
   case "influenceSkill":
@@ -35,6 +51,10 @@ export function onManageSelectTrait(event, owner) {
     break;
   case "weapon":
     options.choices = CONFIG.E20.weaponTraits;
+    options.valueKey = null;
+    break;
+  case "weaponType":
+    options.choices = CONFIG.E20.weaponTypes;
     options.valueKey = null;
     break;
   }

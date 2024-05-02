@@ -1,5 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
+import { getLevelIncreases } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -12,12 +13,122 @@ export class Essence20Item extends Item {
   }
 
   /**
+   * Sets the basic values of an item after creation but before opening its sheet.
+   * @param {Object} data The information about the item.
+   * @param {Object} options The options from the sheet
+   * @param {String} userId The user creating the item
+   */
+  async _preCreate(data, options, userId) {
+    await super._preCreate(data, options, userId);
+    if (data.img === undefined) {
+      const image = CONFIG.E20.defaultIcon[this.type];
+      if (image) this.updateSource({ img: image });
+    }
+  }
+
+  /**
    * Augment the basic Item data model with additional dynamic data.
    */
   prepareData() {
     // As with the actor class, items are documents that can have their data
     // preparation methods overridden (such as prepareBaseData()).
     super.prepareData();
+  }
+
+  /**
+  * Extends the preparedDerivedData model to add system specific data.
+  */
+  prepareDerivedData() {
+    super.prepareDerivedData();
+    this._prepareTraits();
+
+    if (this.type == 'armor') {
+      this._prepareArmorBonuses();
+    } else if (this.type == 'rolePoints') {
+      this._prepareRolePoints();
+    }
+  }
+
+  /**
+  * Prepares the item and any upgrade traits currently on the item
+  */
+  _prepareTraits() {
+    let itemAndUpgradeTraits = this.system.traits;
+    let upgradeTraits = [];
+
+    if (this.type == 'weapon' || this.type == 'armor') {
+      for (const [, item] of Object.entries(this.system.items)) {
+        if (item.type == 'upgrade') {
+          upgradeTraits.push(item.traits);
+
+          for (const traits of upgradeTraits) {
+            if (traits) {
+              for (const trait of traits) {
+                if (!itemAndUpgradeTraits.includes(trait)) {
+                  itemAndUpgradeTraits.push(trait);
+                }
+              }
+            }
+          }
+        }
+      }
+
+      if (itemAndUpgradeTraits) {
+        this.system.itemAndUpgradeTraits = itemAndUpgradeTraits;
+      }
+    }
+  }
+
+  /**
+  * Prepares the combined armor bonuses from the armor and any upgrades
+  */
+  _prepareArmorBonuses() {
+    let armorBonusToughness = this.system.bonusToughness;
+    let armorBonusEvasion  = this.system.bonusEvasion;
+
+    for (const [, item] of Object.entries(this.system.items)) {
+      if (item.type == 'upgrade' && item.subtype == 'armor'){
+        if (item.armorBonus.defense == 'toughness') {
+          armorBonusToughness += item.armorBonus.value;
+        } else if (item.armorBonus.defense == 'evasion') {
+          armorBonusEvasion += item.armorBonus.value;
+        }
+      }
+    }
+
+    this.system.totalBonusEvasion = armorBonusEvasion;
+    this.system.totalBonusToughness = armorBonusToughness;
+  }
+
+
+  /**
+   * Finds the number of Role Points the actor currently has.
+   */
+  _prepareRolePoints() {
+    if (!this.actor) return null;
+
+    const actorLevel = this.actor.system.level;
+    const resourceLevelIncreases = getLevelIncreases(this.system.resource.increaseLevels, actorLevel);
+
+    if (this.system.resource.startingMax != null) {
+      if (actorLevel == 20 && this.system.resource.level20Value) {
+        this.system.resource.max = this.system.resource.level20Value;
+      } else {
+        this.system.resource.max = this.system.resource.startingMax + (this.system.resource.increase * resourceLevelIncreases);
+      }
+    }
+
+    if (this.system.bonus.startingValue != null) {
+      if (this.system.bonus.type != CONFIG.E20.bonusTypes.none) {
+        const bonusLevelIncreases = getLevelIncreases(this.system.bonus.increaseLevels, actorLevel);
+
+        if (actorLevel == 20 && this.system.bonus.level20Value) {
+          this.system.bonus.value = this.system.bonus.level20Value;
+        } else {
+          this.system.bonus.value = this.system.bonus.startingValue + (this.system.bonus.increase * bonusLevelIncreases);
+        }
+      }
+    }
   }
 
   /**
@@ -36,9 +147,10 @@ export class Essence20Item extends Item {
   /**
    * Handle clickable rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
+   * @param {String} childKey The key of the item attached to another item
    * @private
    */
-  async roll(dataset) {
+  async roll(dataset, childKey) {
     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -105,17 +217,19 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
-    } else if (this.type == 'weaponEffect') {
-      const skill = this.system.classification.skill;
+    } else if (this.type == 'weapon') {
+      const skill = this.system.items[childKey].classification.skill;
       const shift = this.actor.system.skills[skill].shift;
       const shiftUp = this.actor.system.skills[skill].shiftUp;
-      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.shiftDown;
+      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.items[childKey].shiftDown;
+      const isSpecialized = this.actor.system.skills[skill].isSpecialized;
       const weaponDataset = {
         ...dataset,
         shift,
         skill,
         shiftUp,
         shiftDown,
+        isSpecialized,
       };
 
       this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);

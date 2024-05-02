@@ -1,6 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { resizeTokens, getItemsOfType } from "../helpers/utils.mjs";
+import { resizeTokens, getItemsOfType, roleValueChange } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -76,6 +76,7 @@ export class Essence20Actor extends Actor {
       this._prepareHealth();
       this._prepareMovement();
       this._prepareSorcerousPower();
+      this._prepareResource();
     }
   }
 
@@ -97,21 +98,41 @@ export class Essence20Actor extends Actor {
     const system = this.system;
     system.healthIsReadOnly = true;
     const health = system.health;
-    let startingHealth = 0;
+    let originStartingHealth = 0;
+    let rolePointsBonusHealth = 0;
     const conditioning = system.conditioning;
     const bonus = system.health.bonus;
-    const originName = game.i18n.localize('E20.Origin');
+    let originName = game.i18n.localize('E20.Origin');
+    let rolePointsName = game.i18n.localize('E20.RolePoints');
     const conditionName = game.i18n.localize('E20.SkillConditioning');
     const bonusName = game.i18n.localize('E20.Bonus');
 
+    // Health from Origin
     const origins = getItemsOfType('origin', this.items);
     if (origins.length > 0) {
-      startingHealth = origins[0].system.startingHealth;
+      const origin = origins[0];
+      originStartingHealth = origin.system.startingHealth;
+      originName = origin.name;
     }
 
-    health.max = startingHealth + conditioning + bonus;
-    health.string = `${startingHealth} ${originName} + ${conditioning} ${conditionName} + ${bonus} ${bonusName}`;
+    // Health from Role Points
+    const rolePointsList = getItemsOfType('rolePoints', this.items);
+    if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'healthBonus'
+      && (!rolePointsList[0].system.isActivatable || rolePointsList[0].system.isActive)) {
+      const rolePoints = rolePointsList[0];
+      rolePointsName = rolePoints.name;
+
+      if (this.system.level == 20) {
+        rolePointsBonusHealth = rolePoints.system.bonus.level20Value;
+      } else {
+        rolePointsBonusHealth = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
+      }
+    }
+
+    health.max = originStartingHealth + rolePointsBonusHealth + conditioning + bonus;
+    health.string = `${originStartingHealth} (${originName}) + ${rolePointsBonusHealth} (${rolePointsName}) + ${conditioning} (${conditionName}) + ${bonus} (${bonusName})`;
   }
+
   /**
   * Prepare Defenses specific data.
   */
@@ -124,20 +145,38 @@ export class Essence20Actor extends Actor {
       const armor = defense.armor;
       const bonus = defense.bonus;
       const morphed = defense.morphed;
+      let rolePointsDefense = 0;
       const essence = system.essences[defense.essence];
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
       const armorName = game.i18n.localize('E20.DefenseArmor');
       const bonusName = game.i18n.localize('E20.Bonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
+      let rolePointsName = game.i18n.localize('E20.RolePoints');
 
-      if (system.isMorphed) {
-        defense.total = base + essence + morphed + bonus;
-        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${morphed} ${morphedName} + ${bonus} ${bonusName}`;
-      } else {
-        defense.total = base + essence + armor + bonus;
-        defense.string = `${base} ${baseName} + ${essence} ${essenceName} + ${armor} ${armorName} + ${bonus} ${bonusName}`;
+      // Armor from Role Points
+      const rolePointsList = getItemsOfType('rolePoints', this.items);
+      if (rolePointsList.length) {
+        const rolePoints = rolePointsList[0]; // There should only be one RolePoints
+
+        if (rolePoints.system.bonus.type == 'defenseBonus' && rolePoints.system.bonus.defenseBonus[defenseType]
+          && (!rolePoints.system.isActivatable || rolePoints.system.isActive)) {
+          rolePointsName = rolePoints.name;
+
+          if (this.system.level == 20) {
+            rolePointsDefense = rolePoints.system.bonus.level20Value;
+          } else {
+            rolePointsDefense = rolePoints.system.bonus.startingValue + roleValueChange(this.system.level, rolePoints.system.bonus.increaseLevels);
+          }
+        }
       }
+
+      defense.total = base + essence + bonus + rolePointsDefense;
+      defense.total += system.isMorphed ? morphed : armor;
+
+      defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`;
+      defense.string += system.isMorphed ? ` + ${morphed} (${morphedName})` : ` + ${armor} (${armorName})`;
+      defense.string += ` + ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
     }
   }
 
@@ -193,8 +232,22 @@ export class Essence20Actor extends Actor {
   _prepareSorcerousPower() {
     const system = this.system;
     const levelMultiplier = system.level - system.powers.sorcerous.levelTaken;
+    if (system.powers.sorcerous.levelTaken) {
+      system.powers.sorcerous.max = (levelMultiplier * 2) + 4;
+    } else {
+      system.powers.sorcerous.max = 0;
+    }
+  }
 
-    system.powers.sorcerous.max = (levelMultiplier * 2) + 4;
+  /**
+   * Prepare Resource (from Role Points) type specific data.
+   */
+  _prepareResource() {
+    const rolePointsList = getItemsOfType('rolePoints', this.items);
+    if (rolePointsList.length) {
+      const rolePoints = rolePointsList[0]; // There should only be one RolePoints
+      this.system.useUnlimitedResource = rolePoints.system.resource.level20ValueIsUnlimited && this.system.level == 20;
+    }
   }
 
   /**
@@ -222,5 +275,41 @@ export class Essence20Actor extends Actor {
    */
   rollSkill(dataset) {
     this._dice.rollSkill(dataset, this);
+  }
+
+  /**
+   * Updates the information on the parent Item when a child Item is updated.
+   * @override
+   */
+  _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
+    super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
+    for (const change of changes) {
+      const fullItem = parent.items.get(change._id);
+      const parentId = fullItem.getFlag('essence20', 'parentId');
+      const parentItem = parent.items.get(parentId);
+
+      if (!parentItem) {
+        return;
+      }
+
+      const key = fullItem.getFlag('essence20', 'collectionId');
+      if (change.system) { // Handle system fields
+        for (const [name, value] of Object.entries(change.system)){
+          const updateString = `system.items.${key}.${name}`;
+          parentItem.update({
+            [updateString]: value,
+          });
+        }
+      } else { // Handle non-system fields
+        for (const [name, value] of Object.entries(change)) {
+          if (name == "name" || name == "img") {
+            const updateString = `system.items.${key}.${name}`;
+            parentItem.update({
+              [updateString]: value,
+            });
+          }
+        }
+      }
+    }
   }
 }

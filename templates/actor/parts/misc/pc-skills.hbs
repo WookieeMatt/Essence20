@@ -2,12 +2,12 @@
   {{!-- Strength --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header strength">
-      <span class="essence-label">{{localize config.essences.strength}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" />
+      <span class="essence-label {{system.essenceRanks.strength}}">{{localize config.essences.strength}}</span>
+      <input class="two-digit-input" type="number" name="system.essences.strength" value="{{system.essences.strength}}" min="0" step="1" />
     </div>
     <div class="essence-header">
       <span>{{localize 'E20.ActorConditioning'}}</span>
-      <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" />
+      <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" min="0" step="1" />
     </div>
     {{#each @root.config.skillsByEssence.strength as |skill|}}
       {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill)}}
@@ -17,8 +17,8 @@
   {{!-- Speed --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{config.essences.speed}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" />
+      <span class="essence-label {{system.essenceRanks.speed}}">{{localize config.essences.speed}}</span>
+      <input class="two-digit-input" type="number" name="system.essences.speed" value="{{system.essences.speed}}" min="0" step="1" />
     </div>
     <div class="essence-header">
       <span>Actions: {{numActions.movement}}M, {{numActions.standard}}S, {{numActions.free}}F</span>
@@ -31,8 +31,8 @@
   {{!-- Smarts --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{config.essences.smarts}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" />
+      <span class="essence-label {{system.essenceRanks.smarts}}">{{localize config.essences.smarts}}</span>
+      <input class="two-digit-input" type="number" name="system.essences.smarts" value="{{system.essences.smarts}}" min="0" step="1" />
     </div>
    {{#each @root.config.skillsByEssence.smarts as |skill|}}
       {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='smarts' skill=skill fields=(lookup @root.system.skills skill)}}
@@ -42,8 +42,8 @@
   {{!-- Social --}}
   <div class="skills-container" style="border-color: {{system.color}};">
     <div class="essence-header">
-      <span class="essence-label">{{config.essences.social}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.social" value="{{system.essences.social}}" />
+      <span class="essence-label {{system.essenceRanks.social}}">{{localize config.essences.social}}</span>
+      <input class="two-digit-input" type="number" name="system.essences.social" value="{{system.essences.social}}" min="0" step="1" />
     </div>
     {{#each @root.config.skillsByEssence.social as |skill|}}
       {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}

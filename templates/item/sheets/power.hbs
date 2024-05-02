@@ -5,13 +5,19 @@
 
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
     <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
   </nav>
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="tab main flexcol" data-group="primary" data-tab="main">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab main flexcol" data-group="primary" data-tab="details">
 
       {{!--Power Type --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerTypes'}}
@@ -29,7 +35,7 @@
       {{!-- Times Selected --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.selectionLimit" value="{{system.selectionLimit}}" />
+      {{numberInput system.selectionLimit name="system.selectionLimit" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -44,7 +50,7 @@
         {{!-- Power Cost --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerCost'}}
         {{#*inline "item-field-inputs"}}
-        <input type="number" name="system.powerCost" value="{{system.powerCost}}" />
+        {{numberInput system.powerCost name="system.powerCost" min=0 step=1}}
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
@@ -59,7 +65,7 @@
           {{!-- Max Power Cost --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerMaxCost'}}
           {{#*inline "item-field-inputs"}}
-          <input type="number" name="system.maxPowerCost" value="{{system.maxPowerCost}}" />
+          {{numberInput system.maxPowerCost name="system.maxPowerCost" min=0 step=1}}
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
         {{/ifEquals}}
@@ -80,7 +86,7 @@
         {{!-- Uses Per Scene --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerUsesPer'}}
         {{#*inline "item-field-inputs"}}
-        <input type="number" name="system.usesPer" value="{{system.usesPer}}" />
+        {{numberInput system.usesPer name="system.usesPer" min=0 step=1}}
         <select name="system.usesInterval">
           {{#select system.usesInterval}}
           {{#each config.usesInterval as |name type|}}
@@ -92,10 +98,6 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{/ifEquals}}
-
-
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
 
     </div>
 

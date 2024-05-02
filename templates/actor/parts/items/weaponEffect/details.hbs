@@ -1,14 +1,13 @@
-<div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
-
+<div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
 <div class="chip-section">
-  <span class="chip" name="chip.weapon.classification">{{lookup @root.config.skills item.system.classification.skill}} {{lookup @root.config.weaponSizes item.system.classification.size}} {{lookup @root.config.weaponStyles item.system.classification.style}}</span>
-  <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.system.numHands}}</span>
-  <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.system.numTargets}}</span>
-  {{#if item.system.damageValue}}
-  <span class="chip" name="chip.weapon.damageValue">{{localize 'E20.Damage'}}: {{item.system.damageValue}}</span>
+   <span class="chip" name="chip.weapon.classification">{{lookup @root.config.skills item.classification.skill}} {{lookup @root.config.weaponSizes parentItem.system.classification.size}} {{lookup @root.config.weaponStyles item.classification.style}}</span>
+  <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.numHands}}</span>
+  <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.numTargets}}</span>
+  {{#if item.damageValue}}
+  <span class="chip" name="chip.weapon.damageValue">{{localize 'E20.Damage'}}: {{item.damageValue}}</span>
   {{/if}}
-  <span class="chip" name="chip.weapon.damageType">{{localize 'E20.DamageType'}}: {{localize (lookup @root.config.damageTypes item.system.damageType)}}</span>
-  {{#if item.system.shiftDown}}
-  <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.system.shiftDown}}</span>
+  <span class="chip" name="chip.weapon.damageType">{{localize 'E20.DamageType'}}: {{localize (lookup @root.config.damageTypes item.damageType)}}</span>
+  {{#if item.shiftDown}}
+  <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.shiftDown}}</span>
   {{/if}}
 </div>

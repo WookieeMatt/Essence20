@@ -10,7 +10,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { performPreLocalization, setOptGroup } from "./helpers/utils.mjs";
+import { getNumActions, performPreLocalization, setOptGroup } from "./helpers/utils.mjs";
 import { migrateWorld } from "./migration.mjs";
 
 function registerSystemSettings() {
@@ -140,6 +140,20 @@ Handlebars.registerHelper('inArray', function (array, value, options) {
   return (array.includes(value)) ? options.fn(this) : options.inverse(this);
 });
 
+Handlebars.registerHelper('ifNotEquals', function (arg1, arg2, options) {
+  return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
+});
+
+Handlebars.registerHelper('itemsContainType', function (items, type, options) {
+  for (const key in items) {
+    if (items[key].type == type) {
+      return options.fn(this);
+    }
+  }
+
+  return options.inverse(this);
+});
+
 /* -------------------------------------------- */
 /*  Misc Hooks                                  */
 /* -------------------------------------------- */
@@ -168,6 +182,11 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 Hooks.on("renderDialog", (dialog, html) => {
   if (html[0].innerText.includes('Create New Item')) {
     const select = html[0].querySelector("select[name='type']");
+    const threatPowerOption = select.querySelector("option[value='threatPower']");
+    if (threatPowerOption) {
+      threatPowerOption.style.display = 'none';
+    }
+
     if (select) {
       select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
       select.append(setOptGroup(select, "Background", CONFIG.E20.backgroundTypes));
@@ -175,6 +194,37 @@ Hooks.on("renderDialog", (dialog, html) => {
       select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
     }
   }
+});
+
+/* Hook to support Drag Rule module */
+Hooks.once("dragRuler.ready", (SpeedProvider) => {
+  class Essence20SystemSpeedProvider extends SpeedProvider {
+    get colors() {
+      return [
+        { id: "ground", default: 0x00FF00, name: "essence20.speeds.ground" },
+        { id: "sprint", default: 0xFFFF00, name: "essence20.speeds.sprint" },
+      ];
+    }
+
+    getRanges(token) {
+      const groundSpeed = token.actor.system.movement.ground.total;
+      const ranges = [];
+      const actor = game.actors.get(token.document.actorId);
+      const numActions = getNumActions(actor);
+
+      if (numActions.movement) {
+        ranges.push({ range: groundSpeed, color: "ground" });
+      }
+
+      if (numActions.standard) {
+        ranges.push({ range: groundSpeed * 2, color: "sprint" });
+      }
+
+      return ranges;
+    }
+  }
+
+  dragRuler.registerSystem("essence20", Essence20SystemSpeedProvider);
 });
 
 /* -------------------------------------------- */

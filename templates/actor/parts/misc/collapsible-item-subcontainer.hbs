@@ -1,27 +1,28 @@
 <div class="collapsible-item-container collapsible-item-subcontainer">
   {{!-- Header with + and v buttons --}}
-  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType parentId=parentId}}
-
+  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType parentId=parentItem._id}}
   <ol class="items-list" style="border-color: {{system.color}};">
     {{#each items as |item|}}
-    <li class="item accordion-wrapper" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
-      {{!-- Item label and buttons --}}
-      {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
-        {{#> roll-button}}
-        {{!-- Custom roll button here --}}
-        {{/roll-button}}
+    {{#ifEquals item.type ../dataType}}
+      <li class="item accordion-wrapper" data-item-key="{{@key}}" data-item-uuid="{{item.uuid}}" data-parent-id="{{../parentItem._id}}">
+        {{!-- Item label and buttons --}}
 
-        {{#> item-label item=item}}
-        {{!-- Custom item label here --}}
-        {{/item-label}}
-      {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs"}}
+        {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item }}
+          {{#> roll-button}}
+          {{!-- Custom roll button here --}}
+          {{/roll-button}}
 
-      {{!-- Item content --}}
-      {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
-    </li>
+          {{#> item-label item=item}}
+          {{!-- Custom item label here --}}
+          {{/item-label}}
+        {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs"}}
 
-    <hr>
+        {{!-- Item content --}}
+        {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item parentItem=../parentItem}}
+      </li>
 
+      <hr>
+    {{/ifEquals}}
     {{/each}}
   </ol>
 </div>

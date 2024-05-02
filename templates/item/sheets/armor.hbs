@@ -5,13 +5,19 @@
 
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="main">{{ localize "E20.TabMain" }}</a>
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
     <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
   </nav>
 
   {{!-- Item Sheet Body --}}
   <section class="sheet-body item-sheet">
-    <div class="tab main flexcol" data-group="primary" data-tab="main">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
 
       {{!-- Availability --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorAvailability'}}
@@ -42,17 +48,14 @@
       {{!-- Traits --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraits'}}
       {{#*inline "item-field-edit"}}
-        <a class="trait-selector" style="flex-grow: 0;" data-options="armor" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
+        <a class="trait-selector" data-options="armor" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
       {{/inline}}
 
       {{#*inline "item-field-inputs"}}
         <div class="chip-section">
-          {{#each item.system.traits as |trait|}}
-          <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
-          {{/each}}
-          {{#each item.system.upgradeTraits as |trait|}}
+          {{#each item.system.itemAndUpgradeTraits as |trait|}}
           <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
           {{/each}}
         </div>
@@ -62,22 +65,20 @@
       {{!-- Toughness --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonusToughness'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.bonusToughness" value="{{system.bonusToughness}}" />
+      {{numberInput system.bonusToughness name="system.bonusToughness" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Evasion --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonusEvasion'}}
       {{#*inline "item-field-inputs"}}
-      <input type="number" name="system.bonusEvasion" value="{{system.bonusEvasion}}" />
+      {{numberInput system.bonusEvasion name="system.bonusEvasion" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Armor Upgrades --}}
-      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.upgrades}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.system.items type='upgrade'}}
 
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
     </div>
 
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">

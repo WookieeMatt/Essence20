@@ -4,9 +4,7 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    {{#ifEquals @root.actor.type 'powerRanger'}}
-      {{>"systems/essence20/templates/actor/parts/items/classFeature/selector.hbs"}}
-    {{else ifEquals @root.actor.type 'transformer'}}
+    {{#ifEquals @root.actor.type 'transformer'}}
       {{>"systems/essence20/templates/actor/parts/misc/mode-selector.hbs"}}
     {{/ifEquals}}
 
@@ -15,68 +13,71 @@
 
   {{#*inline "subcontainers" parentItem}}
     {{!-- Weapon Effects --}}
-    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.weaponEffects title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentId=parentItem._id}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentItem=parentItem}}
+
       {{#*inline "roll-button"}}
-        <a class="rollable" data-roll-type="weaponEffect" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+        <a class="rollable" data-roll-type="weapon" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
       {{/inline}}
 
       {{#*inline "item-label" item}}
-        <div class="flexrow" style="align-items: center;">
+        <div class="flexrow" style="align-items: center; gap: 2px;">
           <div style="flex-grow: 1.5;">
             {{item.name}}
           </div>
-          <select class="inline-edit" data-field="system.classification.skill" name="system.classification.skill">
-            {{#select item.system.classification.skill}}
-            {{#each @root.config.skills as |name type|}}
-            <option value="{{type}}">{{name}}</option>
+          <select class="inline-edit" data-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
+            {{#select item.classification.skill}}
+            {{#each @root.actor.system.skills}}
+              {{#if this.displayName}}
+                <option value="{{@key}}">{{this.displayName}}</option>
+              {{else}}
+                <option value="{{@key}}">{{localize (lookup @root.config.skills @key)}}</option>
+              {{/if}}
             {{/each}}
             {{/select}}
           </select>
 
-          {{#ifEquals "npc" @root.actor.type}}
-            {{!-- NPCs don't have enough room for weapon effect icons --}}
-          {{else}}
-            <div style="text-align: center;" title="{{item.system.numTargets}} {{localize "E20.WeaponTargets"}}">
-              {{item.system.numTargets}} <i class="fas fa-bullseye"></i>
+          <div class="flexrow" style="flex-wrap: nowrap; gap: 2px;">
+            <div style="text-align: center;" title="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
+              {{item.numTargets}} <i class="fas fa-bullseye"></i>
             </div>
-            <div style="text-align: center;" title="{{item.system.shiftDown}} {{localize "E20.ShiftDown"}}">
-              {{item.system.shiftDown}} <i class="fas fa-arrow-down"></i>
+            <div style="text-align: center;" title="{{item.shiftDown}} {{localize "E20.ShiftDown"}}">
+              {{item.shiftDown}} <i class="fas fa-arrow-down"></i>
             </div>
-            <div style="text-align: center;" title="{{item.system.numHands}} {{localize "E20.WeaponHands"}}">
-              {{item.system.numHands}} <i class="fas fa-hand"></i>
+            <div style="text-align: center;" title="{{item.numHands}} {{localize "E20.WeaponHands"}}">
+              {{item.numHands}} <i class="fas fa-hand"></i>
             </div>
-            <div style="text-align: center;" title="{{item.system.damageValue}} {{localize (lookup @root.config.damageTypes item.system.damageType)}} {{localize "E20.Damage"}}">
-              {{item.system.damageValue}}
-              {{#ifEquals item.system.damageType 'sharp'}}
+            <div style="text-align: center;" title="{{item.damageValue}} {{localize (lookup @root.config.damageTypes item.damageType)}} {{localize "E20.Damage"}}">
+              {{item.damageValue}}
+              {{#ifEquals item.damageType 'sharp'}}
                 <i class="fas fa-sword"></i>
-              {{else ifEquals item.system.damageType 'blunt'}}
+              {{else ifEquals item.damageType 'blunt'}}
                 <i class="fas fa-hammer"></i>
-              {{else ifEquals item.system.damageType 'element'}}
+              {{else ifEquals item.damageType 'element'}}
                 <i class="fas fa-droplet"></i>
-              {{else ifEquals item.system.damageType 'maneuver'}}
+              {{else ifEquals item.damageType 'maneuver'}}
                 <i class="fas fa-person-falling"></i>
-              {{else ifEquals item.system.damageType 'stun'}}
+              {{else ifEquals item.damageType 'stun'}}
                 <i class="fas fa-face-spiral-eyes"></i>
-              {{else ifEquals item.system.damageType 'intimidate'}}
+              {{else ifEquals item.damageType 'intimidate'}}
                 <i class="fas fa-person-harassing"></i>
               {{/ifEquals}}
             </div>
-          {{/ifEquals}}
+          </div>
         </div>
       {{/inline}}
 
-      {{#*inline "expand-details" item}}
+      {{#*inline "expand-details" item parentItem}}
         {{> "systems/essence20/templates/actor/parts/items/weaponEffect/details.hbs"}}
       {{/inline}}
     {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
 
     {{!-- Upgrades --}}
-    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.upgrades title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentId=parentItem._id}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentItem=parentItem}}
       {{#*inline "item-label" item}}
         {{item.name}}
       {{/inline}}
 
-      {{#*inline "expand-details" item}}
+      {{#*inline "expand-details" item parentItem}}
         {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
       {{/inline}}
     {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}

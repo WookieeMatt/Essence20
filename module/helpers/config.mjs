@@ -3,6 +3,19 @@ import { preLocalize } from "./utils.mjs";
 export const E20 = {};
 
 /************************************************
+ * System Version                               *
+ ***********************************************/
+
+// Game Version
+E20.version = {
+  giJoe: "E20.VersionGIJoe",
+  myLittlePony: "E20.VersionMyLittlePony",
+  powerRangers: "E20.VersionPowerRangers",
+  transformers: "E20.VersionTransformers",
+};
+preLocalize("version");
+
+/************************************************
  * Defense                                      *
  ***********************************************/
 
@@ -80,10 +93,12 @@ E20.weaponTraits = {
   inaccurate: "E20.WeaponTraitInaccurate",
   indirect: "E20.WeaponTraitIndirect",
   inertial: "E20.WeaponTraitInertial",
+  injection: "E20.WeaponTraitInjection",
   intimidating: "E20.WeaponTraitIntimidating",
   laser: "E20.WeaponTraitLaser",
   maneuver: "E20.WeaponTraitManeuver",
   martialArts: "E20.WeaponTraitMartialArts",
+  modeLock: "E20.WeaponTraitModeLock",
   mounted: "E20.WeaponTraitMounted",
   multipleTargets: "E20.WeaponTraitMultipleTargets",
   ongoing: "E20.WeaponTraitOngoing",
@@ -101,6 +116,7 @@ E20.weaponTraits = {
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
   tempermental: "E20.WeaponTraitTempermental",
+  titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
   vehicular: "E20.WeaponTraitVehicular",
   versatile: "E20.WeaponTraitVersatile",
@@ -109,6 +125,26 @@ E20.weaponTraits = {
   xenotech: "E20.WeaponTraitXenotech",
 };
 preLocalize("weaponTraits");
+
+// Options for Weapon types
+E20.weaponTypes = {
+  assaultRifle: "E20.WeaponsAssaultRifle",
+  ballistic: "E20.WeaponsBallistic",
+  blunt: "E20.WeaponsBlunt",
+  closeCombatHeavyBlade: "E20.WeaponsCloseCombatHeavyBlade",
+  element: "E20.WeaponsElement",
+  explosives: "E20.WeaponsExplosives",
+  finesse: "E20.WeaponsFinesse",
+  grenades: "E20.WeaponGrenades",
+  mightMelee: "E20.WeaponsMightMelee",
+  oneHanded: "E20.WeaponsOneHanded",
+  shotguns: "E20.WeaponsShotgun",
+  silent: "E20.WeaponsSilent",
+  stun: "E20.WeaponsStun",
+  submachineGun: "E20.WeaponsSubmachineGun",
+  thrown: "E20.WeaponsThrown",
+};
+preLocalize("weaponTypes");
 
 /************************************************
  * Armor                                        *
@@ -139,6 +175,18 @@ E20.armorTraits = {
   xenotech: "E20.ArmorTraitXenotech",
 };
 preLocalize("armorTraits");
+
+// Options for Armor types
+E20.armorTypes = {
+  computerized: "E20.ArmorsComputerized",
+  heavy: "E20.ArmorsHeavy",
+  impulse: "E20.ArmorsImpulse",
+  light: "E20.ArmorsLight",
+  medium: "E20.ArmorsMedium",
+  psycho: "E20.ArmorsPsycho",
+  tactical: "E20.ArmorsTactical",
+};
+preLocalize("armorTypes");
 
 /************************************************
  * Essences and Skills                          *
@@ -229,6 +277,31 @@ E20.skillsByEssence = {
   smarts: ["alertness", "culture", "science", "survival", "technology"],
   social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"],
 };
+
+E20.actorLevels = {
+  level1: "E20.Level1",
+  level1optional: "E20.Level1Additional",
+  level2: "E20.Level2",
+  level3: "E20.Level3",
+  level4: "E20.Level4",
+  level5: "E20.Level5",
+  level6: "E20.Level6",
+  level7: "E20.Level7",
+  level8: "E20.Level8",
+  level9: "E20.Level9",
+  level10: "E20.Level10",
+  level11: "E20.Level11",
+  level12: "E20.Level12",
+  level13: "E20.Level13",
+  level14: "E20.Level14",
+  level15: "E20.Level15",
+  level16: "E20.Level16",
+  level17: "E20.Level17",
+  level18: "E20.Level18",
+  level19: "E20.Level19",
+  level20: "E20.Level20",
+};
+preLocalize("actorLevels");
 
 /************************************************
  * Rolls                                        *
@@ -348,6 +421,23 @@ preLocalize("usesInterval");
  * Items                                        *
  ***********************************************/
 
+// Default item Icons
+E20.defaultIcon = {
+  alteration: "systems/essence20/assets/icons/items/alteration.svg",
+  altMode: "systems/essence20/assets/icons/items/altmode.svg",
+  armor: "systems/essence20/assets/icons/items/armor.svg",
+  focus: "systems/essence20/assets/icons/items/focus.svg",
+  gear: "systems/essence20/assets/icons/items/gear.svg",
+  hangUp: "icons/svg/hazard.svg",
+  influence: "systems/essence20/assets/icons/items/influence.svg",
+  origin: "systems/essence20/assets/icons/items/origin.svg",
+  perk: "systems/essence20/assets/icons/items/perk.svg",
+  power: "systems/essence20/assets/icons/items/powers.svg",
+  role: "systems/essence20/assets/icons/items/role.svg",
+  rolePoints: "systems/essence20/assets/icons/items/rolePoints.svg",
+  weaponEffect: "systems/essence20/assets/icons/items/weapon_effect.svg",
+};
+
 // Options for Equipment Item Types
 E20.equipmentTypes = {
   armor: "E20.Armor",
@@ -372,8 +462,11 @@ E20.characterTypes = {
   altMode: "E20.AltMode",
   classFeature: "E20.ClassFeature",
   feature: "E20.Feature",
+  focus: "E20.Focus",
   perk: "E20.Perk",
   power: "E20.Power",
+  role: "E20.Role",
+  rolePoints: "E20.RolePoints",
   specialization: "E20.Specialization",
   spell: "E20.Spell",
 };
@@ -402,11 +495,18 @@ E20.damageTypes = {
   blunt: "E20.DamageBlunt",
   cover: "E20.DamageCover",
   element: "E20.DamageElement",
+  grapple: "E20.DamageGrapple",
+  impaired: "E20.DamageImparied",
   intimidate: "E20.DamageIntimidate",
+  laser: "E20.DamageLaser",
   maneuver: "E20.DamageManeuver",
   mesmerized: "E20.DamageMesmerized",
+  modelock: "E20.DamageModeLock",
   poison: "E20.DamagePoison",
+  restrained: "E20.DamageRestrained",
   sharp: "E20.DamageSharp",
+  sonic: "E20.DamageSonic",
+  spot: "E20.DamageSpot",
   stun: "E20.DamageStun",
 };
 
@@ -461,6 +561,17 @@ E20.alterationTypes = {
   other: "E20.AlterationTypeOther",
 };
 preLocalize("alterationTypes");
+
+E20.bonusTypes = {
+  none: "E20.BonusNone",
+  attackUpshift: "E20.BonusAttackUpshift",
+  damageBonus: "E20.BonusDamage",
+  defenseBonus: "E20.BonusDefense",
+  enemyDownshift: "E20.BonusEnemyDownshift",
+  healthBonus: "E20.BonusHealth",
+  other: "E20.BonusOther",
+};
+preLocalize("bonusTypes");
 
 /************************************************
  * Spells                                       *
@@ -613,6 +724,11 @@ E20.statusEffects = [
     label: 'E20.StatusMesmerized',
   },
   {
+    icon: 'systems/essence20/assets/icons/status_effects/status_mode_lock.svg',
+    id: 'modeLock',
+    label: 'E20.StatusModeLock',
+  },
+  {
     icon: 'systems/essence20/assets/icons/status_effects/status_prone.svg',
     id: 'prone',
     label: 'E20.StatusProne',
@@ -695,4 +811,88 @@ E20.tokenSizes = {
     width: 5,
   },
 };
+
+/************************************************
+ * MLP Essence Advancement                      *
+ ***********************************************/
+
+E20.MLPAdvancement = {
+  diamond: [
+    "level1",
+    "level1Optional",
+    "level5",
+    "level9",
+    "level13",
+    "level16",
+    "level18",
+    "level20",
+  ],
+  gold: [
+    "level1",
+    "level2",
+    "level6",
+    "level10",
+    "level14",
+    "level17",
+    "level19",
+  ],
+  silver: [
+    "level3",
+    "level7",
+    "level11",
+    "level15",
+  ],
+  bronze: [
+    "level4",
+    "level8",
+    "level12",
+  ],
+};
+
+E20.EssenceRankNames = [
+  "diamond",
+  "gold",
+  "silver",
+  "bronze",
+];
+
+/************************************************
+ * TF Special Essence Advancement               *
+ ***********************************************/
+
+E20.TFSpecialAdvancement = {
+  first: [
+    "level2",
+    "level5",
+    "level9",
+    "level14",
+    "level18",
+    "level20",
+  ],
+  second: [
+    "level3",
+    "level7",
+    "level11",
+    "level15",
+    "level19",
+  ],
+  third: [
+    "level4",
+    "level8",
+    "level13",
+    "level16",
+  ],
+  fourth: [
+    "level6",
+    "level2",
+    "level17",
+  ],
+};
+
+E20.TFEssenceRankNames = [
+  "first",
+  "second",
+  "third",
+  "fourth",
+];
 
