@@ -43,9 +43,9 @@
       "level20Value": null,
       "level20ValueIsUnlimited": false,
       "increaseLevels": [],
-      "max": 0,
+      "max": null,
       "startingMax": null,
-      "value": 0
+      "value": null
     },
     "level20Value": null
   },
