@@ -30,6 +30,7 @@ class Mocki18n {
 }
 
 const mockActor = {
+  items: [],
   system: {
     initiative: {
       formula: "",
@@ -93,6 +94,7 @@ describe("rollSkill", () => {
   const dataset = {
     essence: 'strength',
     isSpecialized: false,
+    rolePoints: null,
     shift: 'd20',
     shiftDown: '0',
     shiftUp: '0',

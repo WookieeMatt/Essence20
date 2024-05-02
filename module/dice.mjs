@@ -1,4 +1,5 @@
 import { E20 } from "./helpers/config.mjs";
+import { getItemsOfType } from "./helpers/utils.mjs";
 
 export class Dice {
   /**
@@ -94,6 +95,18 @@ export class Dice {
       edge: actorSkillData.edge,
       snag: actorSkillData.snag,
     };
+
+    updatedShiftDataset.rolePoints = null;
+    const rolePointsList = getItemsOfType('rolePoints', actor.items);
+
+    let rolePoints = null;
+    if (item?.type == 'weapon' && rolePointsList.length) {
+      rolePoints = rolePointsList[0]; // There should only be one RolePoints
+      if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
+        updatedShiftDataset.rolePoints = rolePoints;
+      }
+    }
+
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
@@ -117,7 +130,7 @@ export class Dice {
       label = this._getSkillRollLabel(dataset, skillRollOptions);
     }
 
-    let finalShift = this._getFinalShift(skillRollOptions, initialShift);
+    let finalShift = this._getFinalShift(skillRollOptions, initialShift, E20.skillShiftList, rolePoints);
 
     if (this._handleAutoFail(finalShift, label, actor)) {
       return;
@@ -259,9 +272,11 @@ export class Dice {
    * @returns {String}   The resultant shift.
    * @private
    */
-  _getFinalShift(skillRollOptions, initialShift, shiftList=E20.skillShiftList) {
+  _getFinalShift(skillRollOptions, initialShift, shiftList=E20.skillShiftList, rolePoints=null) {
     // Apply the skill roll options dialog shifts to the roller's normal shift
-    const optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
+    let optionsShiftTotal = skillRollOptions.shiftUp - skillRollOptions.shiftDown;
+    optionsShiftTotal += rolePoints && skillRollOptions.applyRolePointsUpshift ? rolePoints.system.bonus.value : 0;
+
     const initialShiftIndex = shiftList.findIndex(s => s == initialShift);
     const finalShiftIndex = Math.max(
       0,
