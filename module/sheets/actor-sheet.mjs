@@ -202,6 +202,7 @@ export class Essence20ActorSheet extends ActorSheet {
           if (i.system.totalBonusEvasion) {
             equippedArmorEvasion += parseInt(i.system.totalBonusEvasion);
           }
+
           if (i.system.totalBonusToughness) {
             equippedArmorToughness += parseInt(i.system.totalBonusToughness);
           }
