@@ -12,43 +12,6 @@
       "page": 71
     },
     "items": {
-      "9357": {
-        "uuid": "Compendium.essence20.tf_crb.Item.OPLiMXYUEkSQkC1p",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Mass Shifts",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": false,
-            "evasion": false,
-            "toughness": false,
-            "willpower": false
-          },
-          "increase": 0,
-          "level20Value": 0,
-          "increaseLevels": [],
-          "startingValue": 0,
-          "type": "none",
-          "value": 0
-        },
-        "isActivatable": false,
-        "isActive": false,
-        "powerCost": null,
-        "resource": {
-          "increase": 1,
-          "level20Value": 10,
-          "level20ValueIsUnlimited": false,
-          "increaseLevels": [
-            "level3",
-            "level6",
-            "level11",
-            "level16"
-          ],
-          "max": 0,
-          "startingMax": 2,
-          "value": 0
-        }
-      },
       "e2a5": {
         "uuid": "Compendium.essence20.tf_crb.Item.Bl1WEKRnRHc5RvvS",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -112,6 +75,43 @@
         "type": "perk",
         "subtype": "role",
         "level": 16
+      },
+      "cb87": {
+        "uuid": "Compendium.essence20.tf_crb.Item.OPLiMXYUEkSQkC1p",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Mass Shifts",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": 1,
+          "level20Value": 10,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [
+            "level3",
+            "level6",
+            "level11",
+            "level16"
+          ],
+          "max": 0,
+          "startingMax": 2,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -176,7 +176,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1714259562251,
-    "modifiedTime": 1714612315568,
+    "modifiedTime": 1714616357836,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!n3iC9MU8q65XW96O"

@@ -84,7 +84,7 @@
         "subtype": "role",
         "level": 20
       },
-      "0cf3": {
+      "71d1": {
         "uuid": "Compendium.essence20.across_the_stars.Item.utGtCSIbCZ8jAb0Q",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Grid Surges",
@@ -227,7 +227,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713531347194,
-    "modifiedTime": 1714612926097,
+    "modifiedTime": 1714616487972,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!cJl0pw5WnYVsObbO"

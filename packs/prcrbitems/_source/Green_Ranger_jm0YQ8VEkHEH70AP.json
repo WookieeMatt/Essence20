@@ -84,7 +84,7 @@
         "subtype": "role",
         "level": 20
       },
-      "5c6f": {
+      "e048": {
         "uuid": "Compendium.essence20.pr_crb.Item.9avbGWUTKKUyM18T",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Solo Strike",
@@ -115,9 +115,9 @@
           "level20Value": null,
           "level20ValueIsUnlimited": false,
           "increaseLevels": [],
-          "max": 0,
+          "max": null,
           "startingMax": null,
-          "value": 0
+          "value": null
         }
       }
     },
@@ -227,7 +227,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713481256852,
-    "modifiedTime": 1714612501239,
+    "modifiedTime": 1714616748354,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!jm0YQ8VEkHEH70AP"

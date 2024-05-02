@@ -12,49 +12,6 @@
       "page": 58
     },
     "items": {
-      "5081": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.EMyMhKEToExQEraH",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Burst Speed",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": false,
-            "evasion": false,
-            "toughness": false,
-            "willpower": false
-          },
-          "increase": 5,
-          "level20Value": null,
-          "increaseLevels": [
-            "level2",
-            "level4",
-            "level6",
-            "level8",
-            "level10",
-            "level12",
-            "level14",
-            "level16",
-            "level18",
-            "level20"
-          ],
-          "startingValue": 0,
-          "type": "other",
-          "value": 0
-        },
-        "isActivatable": false,
-        "isActive": false,
-        "powerCost": null,
-        "resource": {
-          "increase": null,
-          "level20Value": null,
-          "level20ValueIsUnlimited": false,
-          "increaseLevels": [],
-          "max": 0,
-          "startingMax": null,
-          "value": 0
-        }
-      },
       "b3be": {
         "uuid": "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -142,6 +99,49 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "07d4": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.EMyMhKEToExQEraH",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Burst Speed",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 5,
+          "level20Value": null,
+          "increaseLevels": [
+            "level2",
+            "level4",
+            "level6",
+            "level8",
+            "level10",
+            "level12",
+            "level14",
+            "level16",
+            "level18",
+            "level20"
+          ],
+          "startingValue": 0,
+          "type": "other",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": null,
+          "startingMax": null,
+          "value": null
+        }
       }
     },
     "adjustments": {
@@ -249,7 +249,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713548249257,
-    "modifiedTime": 1714612916896,
+    "modifiedTime": 1714616477414,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!mwjoSoepwJNZStW3"

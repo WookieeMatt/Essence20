@@ -100,7 +100,7 @@
         "subtype": "role",
         "level": 20
       },
-      "927f": {
+      "5c3a": {
         "uuid": "Compendium.essence20.pr_crb.Item.Zdu0i4ofdwLKM7nk",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Idea Points",
@@ -244,7 +244,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713453799350,
-    "modifiedTime": 1714612473151,
+    "modifiedTime": 1714616736991,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!hmQu37OfCMtGJ4M3"

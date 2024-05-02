@@ -124,7 +124,7 @@
         "subtype": "role",
         "level": 20
       },
-      "c8c3": {
+      "01e3": {
         "uuid": "Compendium.essence20.mlp_crb.Item.3oTdxkJmm74S559r",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Cheer Points",
@@ -232,7 +232,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713838421567,
-    "modifiedTime": 1714612382142,
+    "modifiedTime": 1714616014850,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!QM0z1FpRvn6mSKfK"

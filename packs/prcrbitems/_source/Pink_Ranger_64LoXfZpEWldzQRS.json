@@ -84,7 +84,7 @@
         "subtype": "role",
         "level": 20
       },
-      "5d6b": {
+      "5a09": {
         "uuid": "Compendium.essence20.pr_crb.Item.cJM7v6BxscuWVWkj",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Volley Shots",
@@ -116,9 +116,9 @@
           "level20Value": null,
           "level20ValueIsUnlimited": false,
           "increaseLevels": [],
-          "max": 0,
+          "max": null,
           "startingMax": null,
-          "value": 0
+          "value": null
         }
       }
     },
@@ -219,7 +219,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713499295918,
-    "modifiedTime": 1714612525131,
+    "modifiedTime": 1714616758860,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!64LoXfZpEWldzQRS"

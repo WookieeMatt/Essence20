@@ -124,7 +124,7 @@
         "subtype": "role",
         "level": 20
       },
-      "a6eb": {
+      "c47d": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.3Ruf9irE1Mz7221L",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Static Modifier",
@@ -154,9 +154,9 @@
           "level20Value": null,
           "level20ValueIsUnlimited": false,
           "increaseLevels": [],
-          "max": 0,
+          "max": null,
           "startingMax": null,
-          "value": 0
+          "value": null
         }
       }
     },
@@ -260,7 +260,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713705755002,
-    "modifiedTime": 1714612705786,
+    "modifiedTime": 1714616635773,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!GQ5aQWbjmaO9y00w"
