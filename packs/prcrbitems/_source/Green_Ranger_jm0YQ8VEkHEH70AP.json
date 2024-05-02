@@ -84,7 +84,7 @@
         "subtype": "role",
         "level": 20
       },
-      "f542": {
+      "5c6f": {
         "uuid": "Compendium.essence20.pr_crb.Item.9avbGWUTKKUyM18T",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Solo Strike",
@@ -97,7 +97,7 @@
             "willpower": false
           },
           "increase": 1,
-          "level20Value": 0,
+          "level20Value": null,
           "increaseLevels": [
             "level6",
             "level11",
@@ -109,13 +109,14 @@
         },
         "isActivatable": true,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
-          "increase": 0,
-          "level20Value": 0,
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
           "increaseLevels": [],
           "max": 0,
-          "startingMax": 0,
+          "startingMax": null,
           "value": 0
         }
       }
@@ -167,6 +168,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -225,7 +227,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713481256852,
-    "modifiedTime": 1714147073982,
+    "modifiedTime": 1714612501239,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!jm0YQ8VEkHEH70AP"

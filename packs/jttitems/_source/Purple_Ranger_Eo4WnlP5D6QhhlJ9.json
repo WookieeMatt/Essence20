@@ -12,6 +12,48 @@
       "page": 35
     },
     "items": {
+      "4668": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.lhUy6M5juoCvCVBd",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Emotional Range",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": null,
+          "increaseLevels": [
+            "level3",
+            "level5",
+            "level7",
+            "level9",
+            "level11",
+            "level13",
+            "level15",
+            "level17",
+            "level19"
+          ],
+          "startingValue": 2,
+          "type": "other",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 1,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": null,
+          "value": 0
+        }
+      },
       "afd7": {
         "uuid": "Compendium.essence20.jump_through_time.Item.bWAncoQxwfCLtn2v",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -107,47 +149,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
-      },
-      "a878": {
-        "uuid": "Compendium.essence20.jump_through_time.Item.lhUy6M5juoCvCVBd",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Emotional Range",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": false,
-            "evasion": false,
-            "toughness": false,
-            "willpower": false
-          },
-          "increase": 1,
-          "level20Value": 0,
-          "increaseLevels": [
-            "level3",
-            "level5",
-            "level7",
-            "level9",
-            "level11",
-            "level13",
-            "level15",
-            "level17",
-            "level19"
-          ],
-          "startingValue": 2,
-          "type": "other",
-          "value": 0
-        },
-        "isActivatable": false,
-        "isActive": false,
-        "powerCost": 1,
-        "resource": {
-          "increase": 0,
-          "level20Value": 0,
-          "increaseLevels": [],
-          "max": 0,
-          "startingMax": 0,
-          "value": 0
-        }
       }
     },
     "adjustments": {
@@ -197,6 +198,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -250,7 +252,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713574242217,
-    "modifiedTime": 1714147306394,
+    "modifiedTime": 1714612604365,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!Eo4WnlP5D6QhhlJ9"

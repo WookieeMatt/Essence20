@@ -12,42 +12,6 @@
       "page": 285
     },
     "items": {
-      "5988": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.1xJzvY2IBoFa9Hp3",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Defense Bonus",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": true,
-            "evasion": true,
-            "toughness": true,
-            "willpower": true
-          },
-          "increase": 1,
-          "level20Value": 0,
-          "increaseLevels": [
-            "level2",
-            "level8",
-            "level14",
-            "level20"
-          ],
-          "startingValue": 0,
-          "type": "defenseBonus",
-          "value": 0
-        },
-        "isActivatable": false,
-        "isActive": false,
-        "powerCost": 0,
-        "resource": {
-          "increase": 0,
-          "level20Value": 0,
-          "increaseLevels": [],
-          "max": 0,
-          "startingMax": 0,
-          "value": 0
-        }
-      },
       "37aa": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.bP55ciUhiMJzyTGC",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -159,6 +123,43 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "f7ab": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.1xJzvY2IBoFa9Hp3",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Defense Bonus",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": true,
+            "evasion": true,
+            "toughness": true,
+            "willpower": true
+          },
+          "increase": 1,
+          "level20Value": null,
+          "increaseLevels": [
+            "level2",
+            "level8",
+            "level14",
+            "level20"
+          ],
+          "startingValue": 0,
+          "type": "defenseBonus",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": null,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -207,6 +208,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -261,7 +263,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713668351802,
-    "modifiedTime": 1714148066952,
+    "modifiedTime": 1714612684318,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!4PbR4S3s83Coa0kL"

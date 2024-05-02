@@ -12,6 +12,42 @@
       "page": 295
     },
     "items": {
+      "1590": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.kyqh747vyQnwSWu2",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Loss And Gain",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": null,
+          "increaseLevels": [
+            "level6",
+            "level11",
+            "level16"
+          ],
+          "startingValue": 1,
+          "type": "other",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": 0,
+          "startingMax": null,
+          "value": 0
+        }
+      },
       "f58b": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.mgTerJX1jxtVMQMJ",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -123,41 +159,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
-      },
-      "119a": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.kyqh747vyQnwSWu2",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Loss And Gain",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": false,
-            "evasion": false,
-            "toughness": false,
-            "willpower": false
-          },
-          "increase": 1,
-          "level20Value": 0,
-          "increaseLevels": [
-            "level6",
-            "level11",
-            "level16"
-          ],
-          "startingValue": 1,
-          "type": "other",
-          "value": 0
-        },
-        "isActivatable": false,
-        "isActive": false,
-        "powerCost": 0,
-        "resource": {
-          "increase": 0,
-          "level20Value": 0,
-          "increaseLevels": [],
-          "max": 0,
-          "startingMax": 0,
-          "value": 0
-        }
       }
     },
     "adjustments": {
@@ -206,6 +207,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -263,7 +265,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713741906388,
-    "modifiedTime": 1714148037914,
+    "modifiedTime": 1714612731584,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!0ICOTyVDXK1i6l1S"

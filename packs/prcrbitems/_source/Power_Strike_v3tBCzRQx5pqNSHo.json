@@ -19,7 +19,7 @@
         "willpower": false
       },
       "increase": 1,
-      "level20Value": 0,
+      "level20Value": null,
       "increaseLevels": [
         "level6",
         "level11",
@@ -33,11 +33,12 @@
     "isActive": false,
     "powerCost": 1,
     "resource": {
-      "increase": 0,
-      "level20Value": 0,
+      "increase": null,
+      "level20Value": null,
+      "level20ValueIsUnlimited": false,
       "increaseLevels": [],
       "max": 0,
-      "startingMax": 0,
+      "startingMax": null,
       "value": 0
     },
     "level20Value": null
@@ -54,7 +55,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1714147111560,
-    "modifiedTime": 1714147153182,
+    "modifiedTime": 1714612542731,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!v3tBCzRQx5pqNSHo"

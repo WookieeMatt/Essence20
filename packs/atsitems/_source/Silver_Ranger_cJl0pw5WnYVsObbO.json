@@ -84,7 +84,7 @@
         "subtype": "role",
         "level": 20
       },
-      "9a15": {
+      "0cf3": {
         "uuid": "Compendium.essence20.across_the_stars.Item.utGtCSIbCZ8jAb0Q",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Grid Surges",
@@ -105,10 +105,11 @@
         },
         "isActivatable": false,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
           "increase": 1,
-          "level20Value": 0,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
           "increaseLevels": [
             "level3",
             "level5",
@@ -171,6 +172,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": true,
     "perkLevels": {
       "general": [
@@ -225,7 +227,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713531347194,
-    "modifiedTime": 1714149947517,
+    "modifiedTime": 1714612926097,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!cJl0pw5WnYVsObbO"

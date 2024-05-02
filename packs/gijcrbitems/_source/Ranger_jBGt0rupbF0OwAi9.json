@@ -44,7 +44,7 @@
         "subtype": "role",
         "level": 3
       },
-      "cec2": {
+      "90f9": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.tqiseYDXnEngUlvd",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Adaption Points",
@@ -65,10 +65,11 @@
         },
         "isActivatable": false,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
           "increase": 1,
-          "level20Value": 99,
+          "level20Value": null,
+          "level20ValueIsUnlimited": true,
           "increaseLevels": [
             "level2",
             "level4",
@@ -128,6 +129,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -177,7 +179,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713917604391,
-    "modifiedTime": 1714137061072,
+    "modifiedTime": 1714612186416,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!jBGt0rupbF0OwAi9"

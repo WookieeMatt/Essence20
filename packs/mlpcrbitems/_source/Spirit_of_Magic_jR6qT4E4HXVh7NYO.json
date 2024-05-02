@@ -124,7 +124,7 @@
         "subtype": "role",
         "level": 20
       },
-      "065d": {
+      "0670": {
         "uuid": "Compendium.essence20.mlp_crb.Item.BEAdHEkz1oAVMhKp",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Mystical Points",
@@ -145,10 +145,11 @@
         },
         "isActivatable": false,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
           "increase": 1,
-          "level20Value": 0,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
           "increaseLevels": [
             "level4",
             "level7",
@@ -187,6 +188,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -230,7 +232,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713839555279,
-    "modifiedTime": 1714146559656,
+    "modifiedTime": 1714612375895,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!jR6qT4E4HXVh7NYO"

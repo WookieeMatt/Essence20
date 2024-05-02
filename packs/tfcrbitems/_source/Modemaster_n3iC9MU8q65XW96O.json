@@ -12,7 +12,7 @@
       "page": 71
     },
     "items": {
-      "9ef8": {
+      "9357": {
         "uuid": "Compendium.essence20.tf_crb.Item.OPLiMXYUEkSQkC1p",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Mass Shifts",
@@ -33,10 +33,11 @@
         },
         "isActivatable": false,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
           "increase": 1,
           "level20Value": 10,
+          "level20ValueIsUnlimited": false,
           "increaseLevels": [
             "level3",
             "level6",
@@ -131,6 +132,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": true,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -160,8 +162,7 @@
     "weapons": {
       "qualified": [],
       "trained": []
-    },
-    "hasSpecialAdvancement": true
+    }
   },
   "effects": [],
   "sort": 0,
@@ -175,7 +176,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1714259562251,
-    "modifiedTime": 1714270185708,
+    "modifiedTime": 1714612315568,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!n3iC9MU8q65XW96O"

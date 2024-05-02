@@ -124,7 +124,7 @@
         "subtype": "role",
         "level": 18
       },
-      "15e0": {
+      "0b27": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Reckless Adandon",
@@ -137,7 +137,7 @@
             "willpower": false
           },
           "increase": 1,
-          "level20Value": 0,
+          "level20Value": null,
           "increaseLevels": [
             "level5",
             "level9",
@@ -151,10 +151,11 @@
         },
         "isActivatable": true,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
           "increase": 1,
-          "level20Value": 99,
+          "level20Value": null,
+          "level20ValueIsUnlimited": true,
           "increaseLevels": [
             "level3",
             "level6",
@@ -213,6 +214,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -262,7 +264,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713918188331,
-    "modifiedTime": 1714137255409,
+    "modifiedTime": 1714612168663,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!1tLA4fg232GcFeIE"

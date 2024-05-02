@@ -12,6 +12,52 @@
       "page": 106
     },
     "items": {
+      "9759": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.84JYgd6kZgY41wge",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Personal Shield",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": true,
+            "toughness": true,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": 15,
+          "increaseLevels": [
+            "level3",
+            "level5",
+            "level7",
+            "level9",
+            "level11",
+            "level13",
+            "level15",
+            "level17"
+          ],
+          "startingValue": 2,
+          "type": "defenseBonus",
+          "value": 0
+        },
+        "isActivatable": true,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": 1,
+          "level20Value": null,
+          "level20ValueIsUnlimited": true,
+          "increaseLevels": [
+            "level3",
+            "level6",
+            "level11",
+            "level17"
+          ],
+          "max": 0,
+          "startingMax": 2,
+          "value": 0
+        }
+      },
       "ec66": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.ypvMZ7LSredIU8M8",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -83,51 +129,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 18
-      },
-      "6b73": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.84JYgd6kZgY41wge",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Personal Shield",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": false,
-            "evasion": true,
-            "toughness": true,
-            "willpower": false
-          },
-          "increase": 1,
-          "level20Value": 0,
-          "increaseLevels": [
-            "level3",
-            "level5",
-            "level7",
-            "level9",
-            "level11",
-            "level13",
-            "level15",
-            "level17"
-          ],
-          "startingValue": 2,
-          "type": "defenseBonus",
-          "value": 0
-        },
-        "isActivatable": true,
-        "isActive": false,
-        "powerCost": 0,
-        "resource": {
-          "increase": 1,
-          "level20Value": 99,
-          "increaseLevels": [
-            "level3",
-            "level6",
-            "level11",
-            "level17"
-          ],
-          "max": 0,
-          "startingMax": 2,
-          "value": 0
-        }
       }
     },
     "adjustments": {
@@ -179,6 +180,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -226,7 +228,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713931044400,
-    "modifiedTime": 1714137405013,
+    "modifiedTime": 1714612157566,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!Ub4PO0AcEYzMc93S"
