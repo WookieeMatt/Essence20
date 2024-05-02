@@ -41,9 +41,9 @@
         "level16",
         "level19"
       ],
-      "max": 0,
+      "max": null,
       "startingMax": 0,
-      "value": 0
+      "value": null
     }
   },
   "effects": [],
