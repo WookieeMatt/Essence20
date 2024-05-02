@@ -469,7 +469,15 @@ export class Essence20ActorSheet extends ActorSheet {
         );
       }
 
-      ui.notifications.info(`Energon restored by ${energonRestore}.`);
+      ui.notifications.info(game.i18n.format('E20.RestEnergonRestored', { energonRestore: energonRestore }));
+    }
+
+    //Reseting Personal Power
+    let powerRestore = 0;
+    if (this.actor.system.powers.personal.max > 0) {
+      powerRestore = Math.min(this.actor.system.powers.personal.max, (this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration));
+
+      ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
     }
 
     // Resetting Role Points
@@ -477,14 +485,15 @@ export class Essence20ActorSheet extends ActorSheet {
     if (rolePointsList.length) {
       const rolePoints = rolePointsList[0];
       rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
-      ui.notifications.info(`${rolePoints.name} points reset.`);
+      ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
     }
 
-    ui.notifications.info("Health restored and stun reset.");
-    ui.notifications.info("Rest complete!");
+    ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
+    ui.notifications.info(game.i18n.localize("E20.RestComplete"));
 
     await this.actor.update({
       "system.health.value": this.actor.system.health.max,
+      "system.powers.personal.value": powerRestore,
       "system.stun.value": 0,
       "system.energon.normal.value": energonRestore,
       "system.energon.dark.value": 0,

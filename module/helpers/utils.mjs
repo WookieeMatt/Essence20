@@ -513,13 +513,16 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
 
   if (role.system.powers.personal.starting) {
     const totalChange = roleValueChange(actor.system.level, role.system.powers.personal.levels, previousLevel);
-    const newPersonalPowerMax =
-        actor.system.powers.personal.max
-      + newLevel ? 0 : role.system.powers.personal.starting
-      + role.system.powers.personal.increase * totalChange;
+    let newPersonalPowerMax = 0;
+    if (actor.system.powers.personal.max > 0) {
+      newPersonalPowerMax = actor.system.powers.personal.max + role.system.powers.personal.increase * totalChange;
+    } else {
+      newPersonalPowerMax = role.system.powers.personal.starting;
+    }
 
     await actor.update({
       "system.powers.personal.max": newPersonalPowerMax,
+      "system.powers.personal.regeneration": role.system.powers.personal.regeneration,
     });
   }
 
