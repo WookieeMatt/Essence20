@@ -124,7 +124,7 @@
         "subtype": "role",
         "level": 20
       },
-      "ab8e": {
+      "01e3": {
         "uuid": "Compendium.essence20.mlp_crb.Item.3oTdxkJmm74S559r",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Cheer Points",
@@ -145,10 +145,11 @@
         },
         "isActivatable": false,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
           "increase": 1,
-          "level20Value": 0,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
           "increaseLevels": [
             "level4",
             "level7",
@@ -187,6 +188,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -230,7 +232,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713838421567,
-    "modifiedTime": 1714146482059,
+    "modifiedTime": 1714616014850,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!QM0z1FpRvn6mSKfK"

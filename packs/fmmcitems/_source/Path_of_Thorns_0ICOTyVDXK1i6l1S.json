@@ -124,7 +124,7 @@
         "subtype": "role",
         "level": 20
       },
-      "119a": {
+      "f5b7": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.kyqh747vyQnwSWu2",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Loss And Gain",
@@ -137,7 +137,7 @@
             "willpower": false
           },
           "increase": 1,
-          "level20Value": 0,
+          "level20Value": null,
           "increaseLevels": [
             "level6",
             "level11",
@@ -149,14 +149,15 @@
         },
         "isActivatable": false,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
-          "increase": 0,
-          "level20Value": 0,
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
           "increaseLevels": [],
-          "max": 0,
-          "startingMax": 0,
-          "value": 0
+          "max": null,
+          "startingMax": null,
+          "value": null
         }
       }
     },
@@ -206,6 +207,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -263,7 +265,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713741906388,
-    "modifiedTime": 1714148037914,
+    "modifiedTime": 1714616651641,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!0ICOTyVDXK1i6l1S"

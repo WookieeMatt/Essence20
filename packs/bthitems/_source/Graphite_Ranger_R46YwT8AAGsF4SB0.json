@@ -12,45 +12,6 @@
       "page": 46
     },
     "items": {
-      "b5cf": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.utGtCSIbCZ8jAb0Q",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Grid Surges",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": false,
-            "evasion": false,
-            "toughness": false,
-            "willpower": false
-          },
-          "increase": 0,
-          "level20Value": 0,
-          "increaseLevels": [],
-          "startingValue": 0,
-          "type": "none",
-          "value": 0
-        },
-        "isActivatable": false,
-        "isActive": false,
-        "powerCost": 0,
-        "resource": {
-          "increase": 1,
-          "level20Value": 0,
-          "increaseLevels": [
-            "level3",
-            "level5",
-            "level8",
-            "level11",
-            "level14",
-            "level17",
-            "level20"
-          ],
-          "max": 0,
-          "startingMax": 2,
-          "value": 0
-        }
-      },
       "0947": {
         "uuid": "Compendium.essence20.across_the_stars.Item.2mStsiWlvvv14YQz",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -122,6 +83,46 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "9ea9": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.utGtCSIbCZ8jAb0Q",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Grid Surges",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": 1,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [
+            "level3",
+            "level5",
+            "level8",
+            "level11",
+            "level14",
+            "level17",
+            "level20"
+          ],
+          "max": 0,
+          "startingMax": 2,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -172,6 +173,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": true,
     "perkLevels": {
       "general": [
@@ -226,7 +228,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1714150115540,
-    "modifiedTime": 1714150723883,
+    "modifiedTime": 1714616561442,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!R46YwT8AAGsF4SB0"

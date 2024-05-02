@@ -27,10 +27,11 @@
     },
     "isActivatable": false,
     "isActive": false,
-    "powerCost": 0,
+    "powerCost": null,
     "resource": {
       "increase": 1,
-      "level20Value": 0,
+      "level20Value": null,
+      "level20ValueIsUnlimited": false,
       "increaseLevels": [
         "level5",
         "level10",
@@ -54,7 +55,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1714148246020,
-    "modifiedTime": 1714148303530,
+    "modifiedTime": 1714612794379,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!8RAAEl4HabYUaV4B"

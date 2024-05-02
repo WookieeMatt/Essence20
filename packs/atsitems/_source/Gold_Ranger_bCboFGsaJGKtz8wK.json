@@ -12,6 +12,43 @@
       "page": 50
     },
     "items": {
+      "4081": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.ELRCpQpT3q1Our7p",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Hardened Armor",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": true,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": null,
+          "increaseLevels": [
+            "level4",
+            "level8",
+            "level12",
+            "level16"
+          ],
+          "startingValue": 1,
+          "type": "defenseBonus",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": null,
+          "startingMax": null,
+          "value": null
+        }
+      },
       "d55a": {
         "uuid": "Compendium.essence20.across_the_stars.Item.LVyy4985HSSKCnGs",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -91,42 +128,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
-      },
-      "ca2b": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.ELRCpQpT3q1Our7p",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Hardened Armor",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": false,
-            "evasion": false,
-            "toughness": true,
-            "willpower": false
-          },
-          "increase": 1,
-          "level20Value": 0,
-          "increaseLevels": [
-            "level4",
-            "level8",
-            "level12",
-            "level16"
-          ],
-          "startingValue": 1,
-          "type": "defenseBonus",
-          "value": 0
-        },
-        "isActivatable": false,
-        "isActive": false,
-        "powerCost": 0,
-        "resource": {
-          "increase": 0,
-          "level20Value": 0,
-          "increaseLevels": [],
-          "max": 0,
-          "startingMax": 0,
-          "value": 0
-        }
       }
     },
     "adjustments": {
@@ -177,6 +178,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": true,
     "perkLevels": {
       "general": [
@@ -229,7 +231,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713530202593,
-    "modifiedTime": 1714149167712,
+    "modifiedTime": 1714616465383,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!bCboFGsaJGKtz8wK"

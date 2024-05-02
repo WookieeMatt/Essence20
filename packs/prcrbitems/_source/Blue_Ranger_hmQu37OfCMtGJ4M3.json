@@ -84,7 +84,23 @@
         "subtype": "role",
         "level": 12
       },
-      "d1d5": {
+      "0de2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.dWfuzsqz30rZmX1G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Tech IV",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "bd9b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.PwTnDjPfb8dKplIU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blue Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "5c3a": {
         "uuid": "Compendium.essence20.pr_crb.Item.Zdu0i4ofdwLKM7nk",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
         "name": "Idea Points",
@@ -105,10 +121,11 @@
         },
         "isActivatable": false,
         "isActive": false,
-        "powerCost": 0,
+        "powerCost": null,
         "resource": {
           "increase": 1,
-          "level20Value": 0,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
           "increaseLevels": [
             "level2",
             "level5",
@@ -122,22 +139,6 @@
           "startingMax": 1,
           "value": 0
         }
-      },
-      "0de2": {
-        "uuid": "Compendium.essence20.pr_crb.Item.dWfuzsqz30rZmX1G",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Grid Tech IV",
-        "type": "perk",
-        "subtype": "role",
-        "level": 17
-      },
-      "bd9b": {
-        "uuid": "Compendium.essence20.pr_crb.Item.PwTnDjPfb8dKplIU",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Blue Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
       }
     },
     "adjustments": {
@@ -187,6 +188,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -242,7 +244,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1713453799350,
-    "modifiedTime": 1714148913705,
+    "modifiedTime": 1714616736991,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!hmQu37OfCMtGJ4M3"

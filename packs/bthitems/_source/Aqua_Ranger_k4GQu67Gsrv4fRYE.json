@@ -12,45 +12,6 @@
       "page": 41
     },
     "items": {
-      "6b7d": {
-        "uuid": "Compendium.essence20.pr_crb.Item.Zdu0i4ofdwLKM7nk",
-        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
-        "name": "Idea Points",
-        "type": "rolePoints",
-        "bonus": {
-          "defenseBonus": {
-            "cleverness": false,
-            "evasion": false,
-            "toughness": false,
-            "willpower": false
-          },
-          "increase": 0,
-          "level20Value": 0,
-          "increaseLevels": [],
-          "startingValue": 0,
-          "type": "none",
-          "value": 0
-        },
-        "isActivatable": false,
-        "isActive": false,
-        "powerCost": 0,
-        "resource": {
-          "increase": 1,
-          "level20Value": 0,
-          "increaseLevels": [
-            "level2",
-            "level5",
-            "level8",
-            "level11",
-            "level14",
-            "level17",
-            "level20"
-          ],
-          "max": 0,
-          "startingMax": 1,
-          "value": 0
-        }
-      },
       "dfe7": {
         "uuid": "Compendium.essence20.pr_crb.Item.DU5oZEhhd45VDmRg",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -138,6 +99,46 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "3aff": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zdu0i4ofdwLKM7nk",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Idea Points",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": 1,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [
+            "level2",
+            "level5",
+            "level8",
+            "level11",
+            "level14",
+            "level17",
+            "level20"
+          ],
+          "max": 0,
+          "startingMax": 1,
+          "value": 0
+        }
       }
     },
     "adjustments": {
@@ -187,6 +188,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -237,7 +239,7 @@
     "systemVersion": "4.1.2",
     "coreVersion": "11.315",
     "createdTime": 1714148366623,
-    "modifiedTime": 1714148889220,
+    "modifiedTime": 1714616534697,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ"
   },
   "_key": "!items!k4GQu67Gsrv4fRYE"
