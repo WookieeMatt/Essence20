@@ -11,7 +11,7 @@ import {
 import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
 import { onAlterationDelete, alterationUpdate } from "../sheet-handlers/alteration-handler.mjs";
 import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers/background-handler.mjs";
-import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
+import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
 import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._coHandler = new CrossoverHandler(this);
     this._prHandler = new PowerRangerHandler(this);
     this._atHandler = new AttachmentHandler(this);
     this._tfHandler = new TransformerHandler(this);
@@ -106,7 +105,7 @@ export class Essence20ActorSheet extends ActorSheet {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => this._coHandler.showCrossoverOptions(ev, this),
+            onclick: (ev) => showCrossoverOptions(this, ev),
           },
           ...buttons,
         ];
