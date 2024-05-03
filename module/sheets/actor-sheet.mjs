@@ -8,7 +8,7 @@ import {
   parseId,
   setEntryAndAddItem,
 } from "../helpers/utils.mjs";
-import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
+import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
 import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._advHandler = new AdvancementHandler(this);
     this._alHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
@@ -948,7 +947,7 @@ export class Essence20ActorSheet extends ActorSheet {
     await super._onChangeInput(event);
 
     if (event.currentTarget.name == "system.level") {
-      await this._advHandler.onLevelChange(this.actor, this.actor.system.level);
+      await onLevelChange(this.actor, this.actor.system.level);
     }
   }
 }
