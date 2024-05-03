@@ -9,7 +9,7 @@ import {
   setEntryAndAddItem,
 } from "../helpers/utils.mjs";
 import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
-import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
+import { onAlterationDelete, alterationUpdate } from "../sheet-handlers/alteration-handler.mjs";
 import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._alHandler = new AlterationHandler(this);
     this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
     this._prHandler = new PowerRangerHandler(this);
@@ -749,7 +748,7 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (item.type == "altMode") {
         this._tfHandler.onAltModeDelete(item, this);
       } else if (item.type == "alteration") {
-        this._alHandler.onAlterationDelete(item);
+        onAlterationDelete(this.actor, item);
       } else if (item.type == "focus") {
         this._rlHandler.onFocusDelete(item);
       } else if (item.type == "perk") {
@@ -813,7 +812,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
     case 'alteration':
-      return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await alterationUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'armor':
       return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
     case 'focus':
