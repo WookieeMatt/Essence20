@@ -1,6 +1,6 @@
 /**
  * Prepare Zords for MFZs.
- * @param {Actor}  actor The Megaform Zord to prepare Zords for
+ * @param {Actor} actor The Megaform Zord to prepare Zords for
  * @param {Object} context The actor data to prepare
  */
 export function prepareZords(actor, context) {

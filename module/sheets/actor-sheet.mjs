@@ -13,7 +13,7 @@ import { onAlterationDelete, alterationUpdate } from "../sheet-handlers/alterati
 import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers/background-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
-import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
+import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
 import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._atHandler = new AttachmentHandler(this);
     this._tfHandler = new TransformerHandler(this);
     this._pwHandler = new PowerHandler(this);
     this._pkHandler = new PerkHandler(this);
@@ -811,7 +810,7 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'alteration':
       return await alterationUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'armor':
-      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
+      return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'focus':
       return await this._rlHandler.focusUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
@@ -830,9 +829,9 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
-      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
+      return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'weaponEffect':
-      return this._atHandler.attachItem(sourceItem, super._onDropItem.bind(this, event, data));
+      return attachItem(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
 
     default:
       return await super._onDropItem(event, data);
@@ -854,7 +853,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
       return super._onDropItem(event, data);
     } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return this._atHandler.attachItem(upgrade, super._onDropItem.bind(this, event, data));
+      return attachItem(this.actor, upgrade, super._onDropItem.bind(this, event, data));
     } else {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;
