@@ -819,6 +819,7 @@ export class Essence20ActorSheet extends ActorSheet {
         buttons: {
           normal: {
             label: game.i18n.localize('E20.DialogConfirmButton'),
+            /* eslint-disable no-unused-vars */
             callback: html => resolve({ cancelled: false }),
           },
           cancel: {
