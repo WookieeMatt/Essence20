@@ -12,7 +12,7 @@ import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
 import { onAlterationDelete, alterationUpdate } from "../sheet-handlers/alteration-handler.mjs";
 import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers/background-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
-import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
+import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
 import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._prHandler = new PowerRangerHandler(this);
     this._atHandler = new AttachmentHandler(this);
     this._tfHandler = new TransformerHandler(this);
     this._pwHandler = new PowerHandler(this);
@@ -85,7 +84,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
     // Prepare Zords for MFZs
-    this._prHandler.prepareZords(context);
+    prepareZords(this.actor, context);
 
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
@@ -344,7 +343,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-delete').click(this._onItemDelete.bind(this));
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(ev => this._prHandler.onZordDelete(ev));
+    html.find('.zord-delete').click(ev => onZordDelete(this, ev));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
@@ -353,7 +352,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Morph Button
-    html.find('.morph').click(() => this._prHandler.onMorph());
+    html.find('.morph').click(() => onMorph(this));
 
     // Transform Button
     html.find('.transform').click(() => this._tfHandler.onTransform(this));
