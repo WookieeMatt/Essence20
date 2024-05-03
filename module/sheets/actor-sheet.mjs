@@ -10,7 +10,7 @@ import {
 } from "../helpers/utils.mjs";
 import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
 import { onAlterationDelete, alterationUpdate } from "../sheet-handlers/alteration-handler.mjs";
-import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
+import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers/background-handler.mjs";
 import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
 import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
 import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._bgHandler = new BackgroundHandler(this);
     this._coHandler = new CrossoverHandler(this);
     this._prHandler = new PowerRangerHandler(this);
     this._atHandler = new AttachmentHandler(this);
@@ -742,7 +741,7 @@ export class Essence20ActorSheet extends ActorSheet {
       if (item.type == "armor") {
         deleteAttachmentsForItem(item, this.actor);
       } else if (item.type == "origin") {
-        this._bgHandler.onOriginDelete(item);
+        onOriginDelete(this.actor, item);
       } else if (item.type == 'influence') {
         deleteAttachmentsForItem(item, this.actor);
       } else if (item.type == "altMode") {
@@ -818,9 +817,9 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'focus':
       return await this._rlHandler.focusUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
-      return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await influenceUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
-      return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await originUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'role':
       return await this._rlHandler.roleUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'rolePoints':
