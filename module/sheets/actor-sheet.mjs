@@ -330,27 +330,6 @@ export class Essence20ActorSheet extends ActorSheet {
     }).then(this.render(false));
   }
 
-  /**
-   * Returns the upgrades associated with the given Item
-   * @param {Item} item The item to fetch upgrades for
-   * @returns {Promise<Upgrade[]>} The upgrades associated with the given Item
-   * @private
-   */
-  _populateChildItems(childItemIds) {
-    const childItems = [];
-
-    for (const id of childItemIds) {
-      const childItem = this.actor.items.get(id) || game.items.get(id);
-      if (childItem) {
-        childItems.push(childItem);
-      }
-    }
-
-    return childItems;
-  }
-
-  /* -------------------------------------------- */
-
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -713,19 +692,6 @@ export class Essence20ActorSheet extends ActorSheet {
     if (item) {
       item.sheet.render(true);
     }
-  }
-
-  /**
-  * Adds the given child Item's ID to its parent's ID list
-  * @param {Item} parent      The parent Item
-  * @param {Item} child       The child Item
-  * @param {String} listName  The name of the parent's ID list
-  * @private
-  */
-  async _addChildItemToParent(parent, child, listName) {
-    const ids = parent.system[listName];
-    ids.push(child._id);
-    await parent.update({ [`system.${listName}`]: ids });
   }
 
   /**
