@@ -765,6 +765,12 @@ export class Essence20ActorSheet extends ActorSheet {
       return;
     }
 
+    // Confirmation dialog
+    const confirmation = await this._getItemDeleteConfirmDialog(item);
+    if (confirmation.cancelled) {
+      return;
+    }
+
     // Check if this item has a parent item, such as for deleting an upgrade from a weapon
     if (parentItem) {
       const id = li.data("itemKey");
@@ -798,6 +804,35 @@ export class Essence20ActorSheet extends ActorSheet {
       item.delete();
       li.slideUp(200, () => this.render(false));
     }
+  }
+
+  /**
+   * Displays the dialog used for confirming actor item deletion.
+   * @param {Item} item           The item being deleted.
+   * @returns {Promise<Dialog>}   The dialog to be displayed.
+   */
+  async _getItemDeleteConfirmDialog(item) {
+    return new Promise(resolve => {
+      const data = {
+        title: game.i18n.localize("E20.ItemDeleteConfirmTitle"),
+        content: `<p>${game.i18n.format("E20.ItemDeleteConfirmContent", {name: item.name})}</p>`,
+        buttons: {
+          normal: {
+            label: game.i18n.localize('E20.DialogConfirmButton'),
+            callback: html => resolve({ cancelled: false }),
+          },
+          cancel: {
+            label: game.i18n.localize('E20.DialogCancelButton'),
+            /* eslint-disable no-unused-vars */
+            callback: html => resolve({ cancelled: true }),
+          },
+        },
+        default: "normal",
+        close: () => resolve({ cancelled: true }),
+      };
+
+      new Dialog(data, null).render(true);
+    });
   }
 
   /**
