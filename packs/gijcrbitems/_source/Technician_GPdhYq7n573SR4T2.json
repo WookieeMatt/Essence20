@@ -76,7 +76,15 @@
         "subtype": "role",
         "level": 14
       },
-      "54cb": {
+      "86eb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ENRpxMCws91Ny19y",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Genius",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "a4dd": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.SykObfZn9B25I3vs",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Of Two Minds",
@@ -132,6 +140,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -176,11 +185,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713930510296,
-    "modifiedTime": 1713930770585,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714850003135,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!GPdhYq7n573SR4T2"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "IW840v1DWwXuSzO9",
   "name": "Desperate Times",
   "type": "perk",
   "_id": "tfRFV2g3gkug0l2a",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 6200000,
+  "sort": 125000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706819720491,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854349105,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!tfRFV2g3gkug0l2a"
 }

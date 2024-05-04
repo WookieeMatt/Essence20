@@ -1,5 +1,5 @@
 {
-  "folder": "iIe1Pyq37a7rUgfJ",
+  "folder": "caOeuCMGaKmSYeJC",
   "name": "I Refuse!",
   "type": "perk",
   "_id": "Md0Y0dr7e69J6JD9",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713740560333,
-    "modifiedTime": 1713740567053,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865868858,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Md0Y0dr7e69J6JD9"
 }

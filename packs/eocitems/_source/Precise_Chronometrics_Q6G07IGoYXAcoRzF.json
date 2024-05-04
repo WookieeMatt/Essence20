@@ -1,5 +1,5 @@
 {
-  "folder": "rAuafbH9SrHyQSGZ",
+  "folder": "XaV9ddgHOGjG3FUM",
   "name": "Precise Chronometrics",
   "type": "perk",
   "_id": "Q6G07IGoYXAcoRzF",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 250000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714393623440,
-    "modifiedTime": 1714394376058,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855948429,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Q6G07IGoYXAcoRzF"
 }

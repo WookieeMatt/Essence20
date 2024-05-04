@@ -20,7 +20,21 @@
         "subtype": "role",
         "level": 1
       },
-      "a6f6": {
+      "0264": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.VBEsSU8jqBpoGueE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Officer",
+        "type": "role"
+      },
+      "a176": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.2SHHZs1qVMFBB2kW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rough and Takes No Guff",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "b8af": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.pqrUN5jaAbWJmgLf",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Extra Rough Training",
@@ -28,7 +42,7 @@
         "subtype": "role",
         "level": 3
       },
-      "edd0": {
+      "e8c8": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.4qibn7JQ1lHTe9gT",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "On Your Feet",
@@ -36,7 +50,7 @@
         "subtype": "role",
         "level": 3
       },
-      "19a3": {
+      "c87f": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.xsIHUoZaFoadsmma",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Hup! Hup! Hup! Hup! Hup!",
@@ -44,7 +58,7 @@
         "subtype": "role",
         "level": 6
       },
-      "c009": {
+      "f4fd": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.MHPffqgwDx7u3tlZ",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "At Ease Disease",
@@ -52,7 +66,7 @@
         "subtype": "role",
         "level": 10
       },
-      "b551": {
+      "042e": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.VtsUIbJm3HfFn12M",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Not Perfect, But Better",
@@ -60,7 +74,7 @@
         "subtype": "role",
         "level": 10
       },
-      "cd45": {
+      "023e": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.0Vca0OGRVIchK3KU",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Whip Into Shape",
@@ -68,19 +82,13 @@
         "subtype": "role",
         "level": 17
       },
-      "3c80": {
+      "e94d": {
         "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.dAoJG7ZwVEhOQZY0",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "That's Right, Perfect",
         "type": "perk",
         "subtype": "role",
         "level": 20
-      },
-      "0264": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.VBEsSU8jqBpoGueE",
-        "img": "systems/essence20/assets/icons/items/role.svg",
-        "name": "Officer",
-        "type": "role"
       }
     },
     "essences": [
@@ -106,11 +114,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714009525763,
-    "modifiedTime": 1714010303926,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853972099,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!EmyRGOQGRaVtxjit"
 }

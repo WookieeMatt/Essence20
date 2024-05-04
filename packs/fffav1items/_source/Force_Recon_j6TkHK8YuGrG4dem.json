@@ -42,23 +42,31 @@
         "subtype": "role",
         "level": 3
       },
-      "a335": {
+      "86a5": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.FWN6697ESy9ua6VI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sneak Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "8fb6": {
         "uuid": "Compendium.essence20.ferocious_fighters.Item.HTQEaadz9eZ5ZkC1",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Remote Operations",
         "type": "perk",
         "subtype": "general",
-        "level": 6
+        "level": 10
       },
-      "aa6a": {
+      "eebf": {
         "uuid": "Compendium.essence20.ferocious_fighters.Item.qZiv0m6kc4G9HYEn",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Search and Seizure",
         "type": "perk",
         "subtype": "role",
-        "level": 6
+        "level": 10
       },
-      "66fa": {
+      "ab94": {
         "uuid": "Compendium.essence20.ferocious_fighters.Item.6OxGuWzQz0Fiivas",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Veiled Attacker",
@@ -66,7 +74,7 @@
         "subtype": "role",
         "level": 17
       },
-      "df95": {
+      "8bb2": {
         "uuid": "Compendium.essence20.ferocious_fighters.Item.AyKHJdCpdtoZHlER",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Interdiction",
@@ -97,11 +105,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714101013512,
-    "modifiedTime": 1714101214804,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714848579872,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!j6TkHK8YuGrG4dem"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "cTYXWqXQU3wVJYuu",
   "name": "Resilience",
   "type": "perk",
   "_id": "TomU7e31oHoRsIrT",
@@ -16,7 +16,7 @@
     "type": "general"
   },
   "effects": [],
-  "sort": 2600000,
+  "sort": 50000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705028487214,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865297967,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!TomU7e31oHoRsIrT"
 }

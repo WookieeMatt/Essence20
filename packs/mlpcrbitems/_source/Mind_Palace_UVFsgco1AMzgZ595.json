@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "f0tVWOJnyh8AZi5f",
   "name": "Mind Palace",
   "type": "perk",
   "_id": "UVFsgco1AMzgZ595",
@@ -20,7 +20,7 @@
     "9YqxRk9FoDMuVCFu",
     "jQaufAbN4iNEUmiH"
   ],
-  "sort": 0,
+  "sort": 350000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -28,11 +28,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706832980261,
-    "modifiedTime": 1706833067639,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714855150151,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!UVFsgco1AMzgZ595"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "JYzNxHupjTRD3ujB",
   "name": "Pillar of Kindness",
   "type": "perk",
   "_id": "109i9gRF2TZOtj9o",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 7400000,
+  "sort": 25000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706826373839,
-    "modifiedTime": 1706831015670,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854748328,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!109i9gRF2TZOtj9o"
 }

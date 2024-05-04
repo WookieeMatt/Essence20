@@ -1,5 +1,5 @@
 {
-  "folder": "eLSZnCfOYYVJN6bw",
+  "folder": "rxku6PTVz0evKZwC",
   "name": "Inventive Application 2",
   "type": "perk",
   "_id": "As1eUnG5W54GwotE",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 400000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713573286555,
-    "modifiedTime": 1713573297749,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864570750,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!As1eUnG5W54GwotE"
 }

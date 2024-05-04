@@ -1,5 +1,5 @@
 {
-  "folder": "EQItmxJe3Tb2tnmP",
+  "folder": "nuWM9N0Rb86UjoUG",
   "name": "No Joy",
   "type": "perk",
   "_id": "aCDxxwzpWXCBip3g",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 125000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714081980980,
-    "modifiedTime": 1714081988015,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853195205,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!aCDxxwzpWXCBip3g"
 }

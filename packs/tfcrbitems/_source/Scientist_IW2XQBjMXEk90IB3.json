@@ -36,7 +36,15 @@
         "subtype": "role",
         "level": 1
       },
-      "48da": {
+      "b111": {
+        "uuid": "Compendium.essence20.tf_crb.Item.7eWiN6w2TIBeSMoi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Walk Them Through It",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "a745": {
         "uuid": "Compendium.essence20.tf_crb.Item.4AyMZ0h6YkKv8vbj",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Thesis",
@@ -44,7 +52,7 @@
         "subtype": "general",
         "level": 5
       },
-      "d857": {
+      "ca48": {
         "uuid": "Compendium.essence20.tf_crb.Item.tByP34McuTkaTQWZ",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Augment Power",
@@ -52,7 +60,7 @@
         "subtype": "role",
         "level": 7
       },
-      "9a89": {
+      "d813": {
         "uuid": "Compendium.essence20.tf_crb.Item.W87huLqKeOCJJ66L",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Energon Bank",
@@ -60,7 +68,7 @@
         "subtype": "role",
         "level": 9
       },
-      "b814": {
+      "30f7": {
         "uuid": "Compendium.essence20.tf_crb.Item.qjDBmRlTNvuJxyum",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Applied Science",
@@ -68,7 +76,7 @@
         "subtype": "role",
         "level": 12
       },
-      "c6ef": {
+      "f7e8": {
         "uuid": "Compendium.essence20.tf_crb.Item.BPHwAfGvLPZuJ1m1",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Overcharge Engines",
@@ -76,7 +84,7 @@
         "subtype": "role",
         "level": 13
       },
-      "0bb9": {
+      "072c": {
         "uuid": "Compendium.essence20.tf_crb.Item.l79g3PoYo7nyln4X",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Flashy",
@@ -84,7 +92,7 @@
         "subtype": "role",
         "level": 14
       },
-      "d451": {
+      "00cc": {
         "uuid": "Compendium.essence20.tf_crb.Item.efrhpDsdXPUKVEWt",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Technobabble",
@@ -92,13 +100,13 @@
         "subtype": "role",
         "level": 16
       },
-      "0620": {
+      "dbb1": {
         "uuid": "Compendium.essence20.tf_crb.Item.K3FNcAMjjek1UaJk",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Multiplication",
         "type": "perk",
         "subtype": "role",
-        "level": 38
+        "level": 18
       }
     },
     "adjustments": {
@@ -143,6 +151,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -179,8 +188,7 @@
       "trained": [
         "explosives"
       ]
-    },
-    "hasSpecialAdvancement": false
+    }
   },
   "effects": [],
   "sort": 0,
@@ -191,11 +199,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714269963536,
-    "modifiedTime": 1714270295491,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863261086,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!IW2XQBjMXEk90IB3"
 }

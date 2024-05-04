@@ -1,5 +1,5 @@
 {
-  "folder": "iIe1Pyq37a7rUgfJ",
+  "folder": "nyvQrQu2JR5sHcNJ",
   "name": "Frost Warlord",
   "type": "perk",
   "_id": "iFHlsLgUvmlT8cMK",
@@ -18,7 +18,7 @@
   "effects": [
     "v6QITJ11u6yY36iI"
   ],
-  "sort": 0,
+  "sort": 125000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713706223333,
-    "modifiedTime": 1713706306907,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865736994,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!iFHlsLgUvmlT8cMK"
 }

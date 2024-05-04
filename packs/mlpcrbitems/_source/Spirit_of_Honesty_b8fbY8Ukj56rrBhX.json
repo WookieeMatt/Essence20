@@ -1,0 +1,19 @@
+{
+  "name": "Spirit of Honesty",
+  "sorting": "a",
+  "folder": "EssA3xKEG8i1FPxz",
+  "type": "Item",
+  "_id": "b8fbY8Ukj56rrBhX",
+  "sort": 200000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": null,
+    "modifiedTime": 1714855133254,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!folders!b8fbY8Ukj56rrBhX"
+}

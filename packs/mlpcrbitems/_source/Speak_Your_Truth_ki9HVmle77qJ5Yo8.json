@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "b8fbY8Ukj56rrBhX",
   "name": "Speak Your Truth",
   "type": "perk",
   "_id": "ki9HVmle77qJ5Yo8",
@@ -20,7 +20,7 @@
     "9HX4DKrA2gALcrxv",
     "Le2M3bfzskXnb0uN"
   ],
-  "sort": 5800000,
+  "sort": 50000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -28,11 +28,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706823243928,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854448001,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!ki9HVmle77qJ5Yo8"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "q1eAYrImf4LNqCQo",
+  "folder": "tcQxTnEhIZnGNqcM",
   "name": "Unseen Strike",
   "type": "perk",
   "_id": "EYdpn9PL4iNrQPkh",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 175000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713548093621,
-    "modifiedTime": 1713548102763,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864305754,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!EYdpn9PL4iNrQPkh"
 }

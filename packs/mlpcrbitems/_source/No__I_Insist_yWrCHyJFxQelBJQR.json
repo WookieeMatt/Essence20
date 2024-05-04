@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "IW840v1DWwXuSzO9",
   "name": "No, I Insist",
   "type": "perk",
   "_id": "yWrCHyJFxQelBJQR",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 6300000,
+  "sort": 175000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706819751122,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854357407,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!yWrCHyJFxQelBJQR"
 }

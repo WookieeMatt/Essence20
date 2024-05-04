@@ -1,5 +1,5 @@
 {
-  "folder": "HWrklkmbXRAuPZzV",
+  "folder": "kAl4SDlJRP7lOr09",
   "name": "Comms Probe",
   "type": "perk",
   "_id": "kcU17jzso2caxVJ1",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 106250,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714345486144,
-    "modifiedTime": 1714352962160,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714857789866,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!kcU17jzso2caxVJ1"
 }

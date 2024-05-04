@@ -1,0 +1,19 @@
+{
+  "name": "Rigger",
+  "sorting": "a",
+  "folder": "Ttp8Xr1CKJzNCrPr",
+  "type": "Item",
+  "_id": "QlsUijsjHjpftWCO",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": null,
+    "modifiedTime": 1714847260548,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!folders!QlsUijsjHjpftWCO"
+}

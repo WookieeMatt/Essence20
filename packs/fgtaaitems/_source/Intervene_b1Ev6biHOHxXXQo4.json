@@ -1,5 +1,5 @@
 {
-  "folder": "YFxd6zFDumckZx1U",
+  "folder": "nz4sHStbnHLLAmZN",
   "name": "Intervene",
   "type": "perk",
   "_id": "b1Ev6biHOHxXXQo4",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714158575002,
-    "modifiedTime": 1714158602847,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855499941,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!b1Ev6biHOHxXXQo4"
 }

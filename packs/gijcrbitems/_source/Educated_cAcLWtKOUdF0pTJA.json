@@ -19,15 +19,15 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1686280831107,
-    "modifiedTime": 1704127409123,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714849758779,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_id": "cAcLWtKOUdF0pTJA",
   "folder": "RXPdNB9Xnw7MUk8x",
-  "sort": 0,
+  "sort": 2400000,
   "ownership": {
     "default": 0
   },

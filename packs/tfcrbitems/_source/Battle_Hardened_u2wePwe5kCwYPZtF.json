@@ -1,5 +1,5 @@
 {
-  "folder": "B9zu9C6TQlhBqQLr",
+  "folder": "dbpxrmHfKuW4q6wB",
   "name": "Battle Hardened",
   "type": "perk",
   "_id": "u2wePwe5kCwYPZtF",
@@ -18,7 +18,7 @@
   "effects": [
     "Cp0X55pGe8WRBU8T"
   ],
-  "sort": 0,
+  "sort": -400000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714315903469,
-    "modifiedTime": 1714315962044,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863049979,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!u2wePwe5kCwYPZtF"
 }

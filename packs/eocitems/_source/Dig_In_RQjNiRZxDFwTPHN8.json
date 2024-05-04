@@ -1,5 +1,5 @@
 {
-  "folder": "rAuafbH9SrHyQSGZ",
+  "folder": "CHnNxnrI4sVbeL5x",
   "name": "Dig In",
   "type": "perk",
   "_id": "RQjNiRZxDFwTPHN8",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 225000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714394102272,
-    "modifiedTime": 1714394405844,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855801380,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!RQjNiRZxDFwTPHN8"
 }

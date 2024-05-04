@@ -1,5 +1,5 @@
 {
-  "folder": "B9zu9C6TQlhBqQLr",
+  "folder": "dbpxrmHfKuW4q6wB",
   "name": "Manifest Melee Weapon",
   "type": "perk",
   "_id": "MSCVNucCT6yMtptv",
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714315745437,
-    "modifiedTime": 1714315761730,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863027353,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!MSCVNucCT6yMtptv"
 }

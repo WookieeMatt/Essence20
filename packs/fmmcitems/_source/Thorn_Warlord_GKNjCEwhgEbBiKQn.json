@@ -1,5 +1,5 @@
 {
-  "folder": "iIe1Pyq37a7rUgfJ",
+  "folder": "zMqFexIsi7zuThWo",
   "name": "Thorn Warlord",
   "type": "perk",
   "_id": "GKNjCEwhgEbBiKQn",
@@ -18,7 +18,7 @@
   "effects": [
     "kAr46xcAPbqbsdgt"
   ],
-  "sort": 0,
+  "sort": 225000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713740503063,
-    "modifiedTime": 1713741156124,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865841174,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!GKNjCEwhgEbBiKQn"
 }
