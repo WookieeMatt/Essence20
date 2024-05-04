@@ -109,16 +109,41 @@
       "trained": []
     },
     "essenceLevels": {
-      "smarts": [],
-      "social": [],
-      "speed": [],
-      "strength": []
+      "smarts": [
+        "level6",
+        "level12",
+        "level17"
+      ],
+      "social": [
+        "level1",
+        "level2",
+        "level5",
+        "level9",
+        "level14",
+        "level18",
+        "level20"
+      ],
+      "speed": [
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "strength": [
+        "level1",
+        "level4",
+        "level8",
+        "level13",
+        "level16"
+      ]
     },
     "gridPowerLevels": [
       "level6",
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -169,11 +194,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714189344511,
-    "modifiedTime": 1714189549717,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714843002713,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!6vp5PAYFTiRiMc2m"
 }
