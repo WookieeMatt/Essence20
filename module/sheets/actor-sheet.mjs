@@ -292,6 +292,17 @@ export class Essence20ActorSheet extends ActorSheet {
         traits.push(i);
         break;
       case 'upgrade':
+        if (this.actor.system.canTransform && i.system.type == "armor") {
+          try {
+            const test = i.flags.essence20.parentId;
+          } catch {
+            if (i.system.armorBonus.defense == "toughness"){
+              equippedArmorEvasion += parseInt(i.system.armorBonus.value);
+            } else if (i.system.armorBonus.defense == "evasion") {
+              equippedArmorToughness += parseInt(i.system.armorBonus.value);
+            }
+          }
+        }
         upgrades.push(i);
         break;
       case 'weapon':
