@@ -295,6 +295,7 @@ export class Essence20ActorSheet extends ActorSheet {
         if (this.actor.system.canTransform && i.system.type == "armor") {
           try {
             const test = i.flags.essence20.parentId;
+            /* eslint-disable no-unused-vars */
           } catch {
             if (i.system.armorBonus.defense == "toughness"){
               equippedArmorEvasion += parseInt(i.system.armorBonus.value);
