@@ -294,9 +294,9 @@ export class Essence20ActorSheet extends ActorSheet {
       case 'upgrade':
         // Unparented upgrades on an actor can only be alt-mode armor upgrades
         if (!i.flags?.essence20?.parentId && this.actor.system.canTransform && i.system.type == "armor") {
-          if (i.system.armorBonus.defense == "toughness"){
+          if (i.system.armorBonus.defense == "evasion"){
             equippedArmorEvasion += parseInt(i.system.armorBonus.value);
-          } else if (i.system.armorBonus.defense == "evasion") {
+          } else if (i.system.armorBonus.defense == "toughness") {
             equippedArmorToughness += parseInt(i.system.armorBonus.value);
           }
         }
