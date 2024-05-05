@@ -67,7 +67,9 @@
         "type": "role"
       }
     },
-    "essences": "",
+    "essences": [
+      "smarts"
+    ],
     "essenceLevels": [
       "level1",
       "level10"
