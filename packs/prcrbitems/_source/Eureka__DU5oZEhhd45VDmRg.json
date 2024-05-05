@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "vn5xqhlV6UbSf4SP",
   "name": "Eureka!",
   "type": "perk",
   "_id": "DU5oZEhhd45VDmRg",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 1400000,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705013909888,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865051627,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!DU5oZEhhd45VDmRg"
 }

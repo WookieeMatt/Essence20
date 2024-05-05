@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "b8fbY8Ukj56rrBhX",
   "name": "True Self",
   "type": "perk",
   "_id": "LtUei3Rd9ygf2dQa",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 3800000,
+  "sort": -5468,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706825239696,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854573586,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!LtUei3Rd9ygf2dQa"
 }

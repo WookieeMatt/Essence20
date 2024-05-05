@@ -1,5 +1,5 @@
 {
-  "folder": "kxHDC0UGsGm0eziQ",
+  "folder": "TvKA8Vc3CZBgKGfn",
   "name": "Duck & Cover",
   "type": "perk",
   "_id": "2R3saLtDCI1q2QBz",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 325000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706405357196,
-    "modifiedTime": 1706405381416,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714849117809,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!2R3saLtDCI1q2QBz"
 }

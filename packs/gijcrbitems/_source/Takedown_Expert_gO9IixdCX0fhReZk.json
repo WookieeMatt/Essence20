@@ -1,5 +1,5 @@
 {
-  "folder": "hILKi8K0qafB6cHa",
+  "folder": "MHE4JxqwdYc0L2A7",
   "name": "Takedown Expert",
   "type": "perk",
   "_id": "gO9IixdCX0fhReZk",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 300000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706325730320,
-    "modifiedTime": 1706325745459,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714851997909,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!gO9IixdCX0fhReZk"
 }

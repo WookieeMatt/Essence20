@@ -1,5 +1,5 @@
 {
-  "folder": "B9zu9C6TQlhBqQLr",
+  "folder": "eF0I5wKnf3yBuH4K",
   "name": "Bang Bang Bang",
   "type": "perk",
   "_id": "LWxBgQtPtnCOD2fn",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 125000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714190792321,
-    "modifiedTime": 1714190823690,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714861323761,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!LWxBgQtPtnCOD2fn"
 }

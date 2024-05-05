@@ -1,5 +1,5 @@
 {
-  "folder": "ydeFFRkg80sIO7Zx",
+  "folder": "rbc4uvKGrf6VswU3",
   "name": "Gifts From Beyond",
   "type": "perk",
   "_id": "vtxl3GNzywkuRUc9",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 300000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714183319274,
-    "modifiedTime": 1714183333854,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855551122,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!vtxl3GNzywkuRUc9"
 }

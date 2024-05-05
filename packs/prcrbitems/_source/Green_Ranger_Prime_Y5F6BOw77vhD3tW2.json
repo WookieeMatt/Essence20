@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "sJRgkhUKdYz9S5uO",
   "name": "Green Ranger Prime",
   "type": "perk",
   "_id": "Y5F6BOw77vhD3tW2",
@@ -18,7 +18,7 @@
   "effects": [
     "TqEhC4NVFpZ7nEWN"
   ],
-  "sort": 3200000,
+  "sort": -62500,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705015184967,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865192524,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Y5F6BOw77vhD3tW2"
 }

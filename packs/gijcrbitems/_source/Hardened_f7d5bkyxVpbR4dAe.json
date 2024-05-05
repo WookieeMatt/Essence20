@@ -1,5 +1,5 @@
 {
-  "folder": "hILKi8K0qafB6cHa",
+  "folder": "AF6Il5mqLm8E81KB",
   "name": "Hardened",
   "type": "perk",
   "_id": "f7d5bkyxVpbR4dAe",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706623947695,
-    "modifiedTime": 1706623955170,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714852973765,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!f7d5bkyxVpbR4dAe"
 }

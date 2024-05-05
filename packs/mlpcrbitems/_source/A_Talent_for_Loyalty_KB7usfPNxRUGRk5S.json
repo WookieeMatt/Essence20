@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "mCN4RGH38V7Y20P6",
   "name": "A Talent for Loyalty",
   "type": "perk",
   "_id": "KB7usfPNxRUGRk5S",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 1500000,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706830068178,
-    "modifiedTime": 1706833439805,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854969633,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!KB7usfPNxRUGRk5S"
 }

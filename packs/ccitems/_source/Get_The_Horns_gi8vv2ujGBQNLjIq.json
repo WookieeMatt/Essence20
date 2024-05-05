@@ -1,5 +1,5 @@
 {
-  "folder": "Ttp8Xr1CKJzNCrPr",
+  "folder": "95z2vSu8hmHunOOs",
   "name": "Get The Horns",
   "type": "perk",
   "_id": "gi8vv2ujGBQNLjIq",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 250000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714062599465,
-    "modifiedTime": 1714062606538,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714847715325,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!gi8vv2ujGBQNLjIq"
 }

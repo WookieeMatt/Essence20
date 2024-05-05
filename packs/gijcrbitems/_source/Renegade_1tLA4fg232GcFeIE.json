@@ -76,54 +76,6 @@
         "subtype": "role",
         "level": 7
       },
-      "df09": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.BEAZ1oLp9XeibJoh",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Ready For Anything",
-        "type": "perk",
-        "subtype": "role",
-        "level": 8
-      },
-      "58a3": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.cyiPxpwROFcBZZkm",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Unbeatable",
-        "type": "perk",
-        "subtype": "role",
-        "level": 11
-      },
-      "316a": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.dB5C6frDKWJKXVay",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Bravado",
-        "type": "perk",
-        "subtype": "role",
-        "level": 13
-      },
-      "8ae7": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.Jbx3ei70ZsoabVuL",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Fearsome Precense",
-        "type": "perk",
-        "subtype": "role",
-        "level": 14
-      },
-      "cf07": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.19odrVUOsp4dCiOV",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Fortitude",
-        "type": "perk",
-        "subtype": "role",
-        "level": 15
-      },
-      "de32": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.y7hyuXOuARcKgahl",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Didn't Even Feel It",
-        "type": "perk",
-        "subtype": "role",
-        "level": 18
-      },
       "f2b2": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.84d0XTJwKCYMJUgY",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -166,6 +118,70 @@
           "startingMax": 2,
           "value": 0
         }
+      },
+      "15a4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.avSz5022d78N6bcV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ravaging Critical",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "a490": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.BEAZ1oLp9XeibJoh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ready For Anything",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "9be6": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.cyiPxpwROFcBZZkm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unbeatable",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "2bba": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dB5C6frDKWJKXVay",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bravado",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "c67b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.yNHekVUMoKALrAWH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "The Beat Goes On",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "b5b5": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Jbx3ei70ZsoabVuL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fearsome Precense",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "c263": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.19odrVUOsp4dCiOV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fortitude",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "94ea": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.y7hyuXOuARcKgahl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Didn't Even Feel It",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
       }
     },
     "adjustments": {
@@ -261,11 +277,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713918188331,
-    "modifiedTime": 1714615967002,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714850478001,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!1tLA4fg232GcFeIE"
 }

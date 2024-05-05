@@ -1,5 +1,5 @@
 {
-  "folder": "B9zu9C6TQlhBqQLr",
+  "folder": "8BeszXGaVLRruhwj",
   "name": "Mass Shift",
   "type": "perk",
   "_id": "0JiAkBjJzsuezfaI",
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714259258581,
-    "modifiedTime": 1714259302178,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714861516566,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!0JiAkBjJzsuezfaI"
 }

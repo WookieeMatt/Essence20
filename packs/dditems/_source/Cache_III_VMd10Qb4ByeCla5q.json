@@ -1,5 +1,5 @@
 {
-  "folder": "v8hpZLIlgfoD5DaE",
+  "folder": "bFv2pB7Tb0850DhG",
   "name": "Cache III",
   "type": "perk",
   "_id": "VMd10Qb4ByeCla5q",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 900000,
+  "sort": 400000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714358683885,
-    "modifiedTime": 1714358991509,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714856209767,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!VMd10Qb4ByeCla5q"
 }

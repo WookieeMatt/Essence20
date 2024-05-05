@@ -1,5 +1,5 @@
 {
-  "folder": "ZQVDbqkf0PdpdQ2c",
+  "folder": "gzgTmePuY2wGx6Go",
   "name": "Absolute Menace",
   "type": "perk",
   "_id": "YsoS30FKigTm19CH",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 106250,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713835076202,
-    "modifiedTime": 1713835086345,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864455067,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!YsoS30FKigTm19CH"
 }

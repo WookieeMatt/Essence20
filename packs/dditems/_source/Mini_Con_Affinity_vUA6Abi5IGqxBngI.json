@@ -1,5 +1,5 @@
 {
-  "folder": "HWrklkmbXRAuPZzV",
+  "folder": "8BePsX4u8ovyzr03",
   "name": "Mini-Con Affinity",
   "type": "perk",
   "_id": "vUA6Abi5IGqxBngI",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714355500779,
-    "modifiedTime": 1714355512959,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714860618370,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!vUA6Abi5IGqxBngI"
 }

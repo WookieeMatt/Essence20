@@ -1,5 +1,5 @@
 {
-  "folder": "D5311xPVLcLGaVNe",
+  "folder": "6pIBzLCV9eFIZEdD",
   "name": "Tough As Nails",
   "type": "perk",
   "_id": "j2lcI8kG34egHKgj",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714010615554,
-    "modifiedTime": 1714010624954,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853823929,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!j2lcI8kG34egHKgj"
 }

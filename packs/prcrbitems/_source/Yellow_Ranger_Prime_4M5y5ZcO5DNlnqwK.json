@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "IXgdicMKwK7CaEAI",
   "name": "Yellow Ranger Prime",
   "type": "perk",
   "_id": "4M5y5ZcO5DNlnqwK",
@@ -18,7 +18,7 @@
   "effects": [
     "on5NpcQp1BXIxmbH"
   ],
-  "sort": 200000,
+  "sort": 96875,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705027695386,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865444766,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!4M5y5ZcO5DNlnqwK"
 }

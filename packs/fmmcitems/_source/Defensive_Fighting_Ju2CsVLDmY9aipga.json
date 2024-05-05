@@ -1,5 +1,5 @@
 {
-  "folder": "iIe1Pyq37a7rUgfJ",
+  "folder": "wbMaXGb3TtcwbBFy",
   "name": "Defensive Fighting",
   "type": "perk",
   "_id": "Ju2CsVLDmY9aipga",
@@ -16,7 +16,7 @@
     "type": "general"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713668031362,
-    "modifiedTime": 1713668046227,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865645921,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Ju2CsVLDmY9aipga"
 }

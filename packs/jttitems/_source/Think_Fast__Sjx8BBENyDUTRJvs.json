@@ -1,5 +1,5 @@
 {
-  "folder": "eLSZnCfOYYVJN6bw",
+  "folder": "rxku6PTVz0evKZwC",
   "name": "Think Fast!",
   "type": "perk",
   "_id": "Sjx8BBENyDUTRJvs",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 167969,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713573161675,
-    "modifiedTime": 1713573170999,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864758255,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Sjx8BBENyDUTRJvs"
 }

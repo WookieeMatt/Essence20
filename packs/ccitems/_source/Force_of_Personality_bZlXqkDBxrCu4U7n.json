@@ -1,5 +1,5 @@
 {
-  "folder": "Ttp8Xr1CKJzNCrPr",
+  "folder": "qbOXtkvnegElujmj",
   "name": "Force of Personality",
   "type": "perk",
   "_id": "bZlXqkDBxrCu4U7n",
@@ -18,7 +18,7 @@
   "effects": [
     "xVdZ27LS4FnTKfTx"
   ],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714047643440,
-    "modifiedTime": 1714047699988,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714847523185,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!bZlXqkDBxrCu4U7n"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "QqnF5cJhvl6MKfd2",
   "name": "Penetrating Shot",
   "type": "perk",
   "_id": "6ay8OIRRwZTnQUV8",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 500000,
+  "sort": 50000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705027244481,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865232527,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!6ay8OIRRwZTnQUV8"
 }

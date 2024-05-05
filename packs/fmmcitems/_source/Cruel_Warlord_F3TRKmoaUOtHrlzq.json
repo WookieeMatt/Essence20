@@ -1,5 +1,5 @@
 {
-  "folder": "iIe1Pyq37a7rUgfJ",
+  "folder": "cdRkhCR2WEmaewFh",
   "name": "Cruel Warlord",
   "type": "perk",
   "_id": "F3TRKmoaUOtHrlzq",
@@ -18,7 +18,7 @@
   "effects": [
     "kNP3caldvw2pNWFt"
   ],
-  "sort": 0,
+  "sort": 125000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713587550301,
-    "modifiedTime": 1713587778807,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865621157,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!F3TRKmoaUOtHrlzq"
 }

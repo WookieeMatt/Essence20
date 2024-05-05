@@ -1,5 +1,5 @@
 {
-  "folder": "HWrklkmbXRAuPZzV",
+  "folder": "qeTI6USXrdmXLRPf",
   "name": "Volatile Delivery",
   "type": "perk",
   "_id": "HJd2dd41bj3oY899",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 150000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714356141478,
-    "modifiedTime": 1714356520127,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714860405553,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!HJd2dd41bj3oY899"
 }

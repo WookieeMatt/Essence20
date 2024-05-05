@@ -1,5 +1,5 @@
 {
-  "folder": "B9zu9C6TQlhBqQLr",
+  "folder": "dbpxrmHfKuW4q6wB",
   "name": "Extended Attack",
   "type": "perk",
   "_id": "bpTOPVRx3hKkq4Yr",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": -350000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714315973550,
-    "modifiedTime": 1714315981690,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863052443,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!bpTOPVRx3hKkq4Yr"
 }

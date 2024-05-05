@@ -1,5 +1,5 @@
 {
-  "folder": "hILKi8K0qafB6cHa",
+  "folder": "QeKHLgQlrVzR6zdd",
   "name": "Expert in Your Field",
   "type": "perk",
   "_id": "mnLXHQ2TwR3A42fS",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 112500,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706656456513,
-    "modifiedTime": 1706656481050,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714851130934,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!mnLXHQ2TwR3A42fS"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "kxHDC0UGsGm0eziQ",
+  "folder": "hOBCYGwBmGloHgaq",
   "name": "Reckless Abandon",
   "type": "perk",
   "_id": "fK70bjqxEUbH8VLJ",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706622373212,
-    "modifiedTime": 1706622424375,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714849339551,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!fK70bjqxEUbH8VLJ"
 }

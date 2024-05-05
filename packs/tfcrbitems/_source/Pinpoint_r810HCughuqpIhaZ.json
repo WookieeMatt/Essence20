@@ -1,5 +1,5 @@
 {
-  "folder": "B9zu9C6TQlhBqQLr",
+  "folder": "2meKO6pff9ZPiWOc",
   "name": "Pinpoint",
   "type": "perk",
   "_id": "r810HCughuqpIhaZ",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 325000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714186098950,
-    "modifiedTime": 1714186168813,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714860943410,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!r810HCughuqpIhaZ"
 }

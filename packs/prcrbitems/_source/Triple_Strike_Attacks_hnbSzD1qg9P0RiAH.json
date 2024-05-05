@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "IXgdicMKwK7CaEAI",
   "name": "Triple Strike Attacks",
   "type": "perk",
   "_id": "hnbSzD1qg9P0RiAH",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 3900000,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705028553534,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865427705,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!hnbSzD1qg9P0RiAH"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "ydeFFRkg80sIO7Zx",
+  "folder": "rbc4uvKGrf6VswU3",
   "name": "More Than Worldly",
   "type": "perk",
   "_id": "NtRsn6nTuys26ltH",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 225000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714183387668,
-    "modifiedTime": 1714183394785,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855560902,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!NtRsn6nTuys26ltH"
 }

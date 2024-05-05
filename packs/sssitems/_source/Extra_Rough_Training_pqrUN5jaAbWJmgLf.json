@@ -1,5 +1,5 @@
 {
-  "folder": "D5311xPVLcLGaVNe",
+  "folder": "ApxJ6iSbCtl1uCuq",
   "name": "Extra Rough Training",
   "type": "perk",
   "_id": "pqrUN5jaAbWJmgLf",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714009744844,
-    "modifiedTime": 1714009752443,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853716493,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!pqrUN5jaAbWJmgLf"
 }

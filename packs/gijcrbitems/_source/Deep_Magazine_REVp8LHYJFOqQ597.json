@@ -1,5 +1,5 @@
 {
-  "folder": "hILKi8K0qafB6cHa",
+  "folder": "iABiX2zDPU1OPSiV",
   "name": "Deep Magazine",
   "type": "perk",
   "_id": "REVp8LHYJFOqQ597",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 275000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706740532783,
-    "modifiedTime": 1706740545431,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714851854479,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!REVp8LHYJFOqQ597"
 }

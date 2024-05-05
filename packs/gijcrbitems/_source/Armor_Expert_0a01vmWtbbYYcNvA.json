@@ -1,5 +1,5 @@
 {
-  "folder": "hILKi8K0qafB6cHa",
+  "folder": "xRmgWTDYTzYf0PV6",
   "name": "Armor Expert",
   "type": "perk",
   "_id": "0a01vmWtbbYYcNvA",
@@ -18,7 +18,7 @@
   "effects": [
     "TsGLarepuVKXDPJm"
   ],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706741912954,
-    "modifiedTime": 1706742117064,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714852154365,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!0a01vmWtbbYYcNvA"
 }

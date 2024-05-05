@@ -1,5 +1,5 @@
 {
-  "folder": "B9zu9C6TQlhBqQLr",
+  "folder": "dbpxrmHfKuW4q6wB",
   "name": "Foot Soldier",
   "type": "perk",
   "_id": "VXQ32nRPF4qEYTZR",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714315622217,
-    "modifiedTime": 1714315727955,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863024822,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!VXQ32nRPF4qEYTZR"
 }

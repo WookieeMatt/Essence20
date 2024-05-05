@@ -1,0 +1,19 @@
+{
+  "name": "Medic",
+  "sorting": "a",
+  "folder": "hILKi8K0qafB6cHa",
+  "type": "Item",
+  "_id": "6hlZ88SzdVszemDV",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": null,
+    "modifiedTime": 1714852314007,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!folders!6hlZ88SzdVszemDV"
+}

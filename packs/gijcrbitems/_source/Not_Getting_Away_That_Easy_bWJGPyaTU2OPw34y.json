@@ -1,5 +1,5 @@
 {
-  "folder": "kxHDC0UGsGm0eziQ",
+  "folder": "hOBCYGwBmGloHgaq",
   "name": "Not Getting Away That Easy",
   "type": "perk",
   "_id": "bWJGPyaTU2OPw34y",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 162500,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706623094576,
-    "modifiedTime": 1706623102391,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714849393515,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!bWJGPyaTU2OPw34y"
 }

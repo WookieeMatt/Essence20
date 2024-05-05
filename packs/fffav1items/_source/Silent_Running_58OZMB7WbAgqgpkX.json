@@ -1,5 +1,5 @@
 {
-  "folder": "EVHpO0v49JTN4AdX",
+  "folder": "FCVKCzkmdlqKCyeH",
   "name": "Silent Running",
   "type": "perk",
   "_id": "58OZMB7WbAgqgpkX",
@@ -16,7 +16,7 @@
     "type": "general"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714100477892,
-    "modifiedTime": 1714100495533,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714848318923,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!58OZMB7WbAgqgpkX"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "ZQVDbqkf0PdpdQ2c",
+  "folder": "QZ3GybeVUPtOX1il",
   "name": "Grid Science II",
   "type": "perk",
   "_id": "jNOwd35gE6Qrybdb",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714148479814,
-    "modifiedTime": 1714148488675,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864388066,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!jNOwd35gE6Qrybdb"
 }

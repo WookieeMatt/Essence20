@@ -1,5 +1,5 @@
 {
-  "folder": "HWrklkmbXRAuPZzV",
+  "folder": "qeTI6USXrdmXLRPf",
   "name": "Energy Mastery",
   "type": "perk",
   "_id": "bjR8V1BEc3CfrrDu",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 500000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714356579583,
-    "modifiedTime": 1714356588345,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714860423965,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!bjR8V1BEc3CfrrDu"
 }

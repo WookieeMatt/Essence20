@@ -1,5 +1,5 @@
 {
-  "folder": "iOJ37Dj9gIQ0bzzp",
+  "folder": "BqXxO65cU8UhZcQv",
   "name": "Pop Out",
   "type": "perk",
   "_id": "xAAzOb9sYmEN7qmv",
@@ -16,7 +16,7 @@
     "type": "general"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714314022791,
-    "modifiedTime": 1714314028356,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863863862,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!xAAzOb9sYmEN7qmv"
 }

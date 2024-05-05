@@ -1,5 +1,5 @@
 {
-  "folder": "eLSZnCfOYYVJN6bw",
+  "folder": "rxku6PTVz0evKZwC",
   "name": "Better Together",
   "type": "perk",
   "_id": "8ZGmg1hrNDmbO1B7",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 175000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713573209084,
-    "modifiedTime": 1713573219009,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864545612,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!8ZGmg1hrNDmbO1B7"
 }

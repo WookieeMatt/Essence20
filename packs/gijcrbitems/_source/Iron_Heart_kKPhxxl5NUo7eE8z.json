@@ -1,5 +1,5 @@
 {
-  "folder": "hILKi8K0qafB6cHa",
+  "folder": "UtBXlP8zQnlgZSgN",
   "name": "Iron Heart",
   "type": "perk",
   "_id": "kKPhxxl5NUo7eE8z",
@@ -18,7 +18,7 @@
   "effects": [
     "2U8VL8JyMfD9Mk87"
   ],
-  "sort": 0,
+  "sort": 250000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706656681386,
-    "modifiedTime": 1706656803120,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714853038232,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!kKPhxxl5NUo7eE8z"
 }

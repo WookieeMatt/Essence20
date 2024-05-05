@@ -1,5 +1,5 @@
 {
-  "folder": "EQItmxJe3Tb2tnmP",
+  "folder": "4H6TTHaIMOv9OYjf",
   "name": "Field Trials",
   "type": "perk",
   "_id": "HBSVeVpRVBXiPgSW",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 300000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714090996059,
-    "modifiedTime": 1714091008762,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853625734,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!HBSVeVpRVBXiPgSW"
 }

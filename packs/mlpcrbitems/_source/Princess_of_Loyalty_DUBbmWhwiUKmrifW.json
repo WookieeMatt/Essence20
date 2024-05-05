@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "mCN4RGH38V7Y20P6",
   "name": "Princess of Loyalty",
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -14,9 +14,7 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [
-    "fyGLEBNXatGqQU50"
-  ],
+  "effects": [],
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -26,13 +24,13 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706825381436,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714855086483,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_id": "DUBbmWhwiUKmrifW",
-  "sort": 1300000,
+  "sort": -75000,
   "_key": "!items!DUBbmWhwiUKmrifW"
 }

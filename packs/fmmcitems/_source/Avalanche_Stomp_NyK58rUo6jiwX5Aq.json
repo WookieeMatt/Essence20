@@ -1,5 +1,5 @@
 {
-  "folder": "iIe1Pyq37a7rUgfJ",
+  "folder": "y5swgXjrVNFdjImG",
   "name": "Avalanche Stomp",
   "type": "perk",
   "_id": "NyK58rUo6jiwX5Aq",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 150000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713740250298,
-    "modifiedTime": 1713740261201,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865770544,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!NyK58rUo6jiwX5Aq"
 }

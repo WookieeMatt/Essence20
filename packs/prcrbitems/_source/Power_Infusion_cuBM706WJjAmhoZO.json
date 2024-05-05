@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "vn5xqhlV6UbSf4SP",
   "name": "Power Infusion",
   "type": "perk",
   "_id": "cuBM706WJjAmhoZO",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 3600000,
+  "sort": 300000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705014389150,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865093376,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!cuBM706WJjAmhoZO"
 }

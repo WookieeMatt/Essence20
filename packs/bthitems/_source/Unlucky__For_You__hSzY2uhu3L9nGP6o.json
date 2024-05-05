@@ -1,5 +1,5 @@
 {
-  "folder": "ZQVDbqkf0PdpdQ2c",
+  "folder": "gzgTmePuY2wGx6Go",
   "name": "Unlucky (For You)",
   "type": "perk",
   "_id": "hSzY2uhu3L9nGP6o",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 187500,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713835053983,
-    "modifiedTime": 1713835062205,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864450093,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!hSzY2uhu3L9nGP6o"
 }

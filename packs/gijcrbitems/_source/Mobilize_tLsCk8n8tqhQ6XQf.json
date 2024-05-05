@@ -1,5 +1,5 @@
 {
-  "folder": "kxHDC0UGsGm0eziQ",
+  "folder": "AyWjvEHpahsJQYOh",
   "name": "Mobilize",
   "type": "perk",
   "_id": "tLsCk8n8tqhQ6XQf",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 137500,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706458012528,
-    "modifiedTime": 1706458024245,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714849228301,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!tLsCk8n8tqhQ6XQf"
 }

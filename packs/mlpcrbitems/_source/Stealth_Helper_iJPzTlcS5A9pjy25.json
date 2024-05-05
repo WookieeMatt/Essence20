@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "IW840v1DWwXuSzO9",
   "name": "Stealth Helper",
   "type": "perk",
   "_id": "iJPzTlcS5A9pjy25",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 5500000,
+  "sort": 243750,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706819772062,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854368712,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!iJPzTlcS5A9pjy25"
 }

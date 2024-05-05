@@ -1,5 +1,5 @@
 {
-  "folder": "hILKi8K0qafB6cHa",
+  "folder": "dWsAIibYe7cGFvCs",
   "name": "Presence",
   "type": "perk",
   "_id": "EdP0LqcYh2tkMygI",
@@ -18,7 +18,7 @@
   "effects": [
     "TXNXCBdY4KiqetiH"
   ],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706325967784,
-    "modifiedTime": 1706326329145,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714852714387,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!EdP0LqcYh2tkMygI"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "cTYXWqXQU3wVJYuu",
   "name": "Follow Me!",
   "type": "perk",
   "_id": "ALq37Ch25nKvZ454",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 1000000,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705028267455,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865280632,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!ALq37Ch25nKvZ454"
 }

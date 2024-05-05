@@ -1,5 +1,5 @@
 {
-  "folder": "HWrklkmbXRAuPZzV",
+  "folder": "plRo543WmC7TGGRy",
   "name": "Alt Mode Mimicry",
   "type": "perk",
   "_id": "ARtFFscnVBo183hV",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714355113760,
-    "modifiedTime": 1714355123390,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714860563133,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!ARtFFscnVBo183hV"
 }

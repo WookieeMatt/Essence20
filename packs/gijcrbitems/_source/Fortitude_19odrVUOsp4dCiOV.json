@@ -1,5 +1,5 @@
 {
-  "folder": "kxHDC0UGsGm0eziQ",
+  "folder": "hOBCYGwBmGloHgaq",
   "name": "Fortitude",
   "type": "perk",
   "_id": "19odrVUOsp4dCiOV",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 350000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706623379546,
-    "modifiedTime": 1706623387201,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714849425767,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!19odrVUOsp4dCiOV"
 }

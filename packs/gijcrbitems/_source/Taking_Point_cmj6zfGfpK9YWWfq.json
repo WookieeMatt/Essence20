@@ -1,5 +1,5 @@
 {
-  "folder": "hILKi8K0qafB6cHa",
+  "folder": "7MWMeNKSPnaKeGas",
   "name": "Taking Point",
   "type": "perk",
   "_id": "cmj6zfGfpK9YWWfq",
@@ -19,7 +19,7 @@
     "ehnuzgKHzrZxoCev",
     "Y9kJGFamzEee9kMv"
   ],
-  "sort": 0,
+  "sort": 150000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -27,11 +27,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706574704636,
-    "modifiedTime": 1706574832650,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714852549296,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!cmj6zfGfpK9YWWfq"
 }

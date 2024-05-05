@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "mCN4RGH38V7Y20P6",
   "name": "BFF",
   "type": "perk",
   "_id": "b7qT0W4L9Ito2EB2",
@@ -16,7 +16,7 @@
     "type": "general"
   },
   "effects": [],
-  "sort": 1900000,
+  "sort": 25000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706830249820,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714855000085,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!b7qT0W4L9Ito2EB2"
 }
