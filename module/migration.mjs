@@ -120,7 +120,7 @@ export const migrateWorld = async function() {
  * @param {object} actor            The actor data object to update
  * @returns {object}                The updateData to apply
  */
-export const migrateActorData = async function(actor, fullActor) {
+export const migrateActorData = async function(actor, fullActor2) {
   const updateData = {};
 
   // Migrate initiative
