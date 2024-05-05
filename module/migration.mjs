@@ -99,7 +99,8 @@ export const migrateWorld = async function() {
 
   // Migrate World Compendium Packs
   for (let p of game.packs) {
-    if (p.metadata.packageType !== "world") continue;
+    if (p.metadata.system != "essence20") continue;
+    if (!["world", "module"].includes(p.metadata.packageType)) continue;
     if (!["Actor", "Item", "Scene"].includes(p.documentName)) continue;
     await migrateCompendium(p);
   }
@@ -119,7 +120,7 @@ export const migrateWorld = async function() {
  * @param {object} actor            The actor data object to update
  * @returns {object}                The updateData to apply
  */
-export const migrateActorData = async function(actor) {
+export const migrateActorData = async function(actor, fullActor) {
   const updateData = {};
 
   // Migrate initiative
@@ -220,7 +221,13 @@ export const migrateActorData = async function(actor) {
   const items = [];
   for (const itemData of actor.items) {
     // Migrate the Owned Item
-    const fullActor = game.actors.get(actor._id);
+
+    let fullActor = "";
+    fullActor = game.actors.get(actor._id);
+    if (!fullActor) {
+      fullActor = fullActor2;
+    }
+
     const itemToDelete = fullActor.items.get(itemData._id);
 
     if (itemToDelete.type == "threatPower") {
@@ -549,7 +556,7 @@ export const migrateCompendium = async function(pack) {
     try {
       switch (documentName) {
       case "Actor":
-        updateData = await migrateActorData(doc.toObject());
+        updateData = await migrateActorData(doc.toObject(), doc);
         break;
       case "Item":
         if (doc.type == "threatPower") {
