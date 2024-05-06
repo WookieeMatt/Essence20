@@ -16,7 +16,7 @@ import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ran
 import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
 import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
-import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
+import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
 import { RoleHandler } from "../sheet-handlers/role-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._pkHandler = new PerkHandler(this);
     this._rlHandler = new RoleHandler(this);
   }
 
@@ -763,7 +762,7 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (item.type == "focus") {
         this._rlHandler.onFocusDelete(item);
       } else if (item.type == "perk") {
-        this._pkHandler.onPerkDelete(item);
+        onPerkDelete(this.actor, item);
       } else if (item.type == "role") {
         this._rlHandler.onRoleDelete(item);
       } else if (item.type == "weapon") {
@@ -868,7 +867,7 @@ export class Essence20ActorSheet extends ActorSheet {
       ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
       return;
     case 'perk':
-      return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await perkUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':
       return await powerUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
