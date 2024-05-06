@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "J2nYaT9wiAB9cSE3",
   "name": "One Pony Show",
   "type": "perk",
   "_id": "8Idk7YjylEf8c43U",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 1000000,
+  "sort": -62500,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706828823951,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854907936,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!8Idk7YjylEf8c43U"
 }

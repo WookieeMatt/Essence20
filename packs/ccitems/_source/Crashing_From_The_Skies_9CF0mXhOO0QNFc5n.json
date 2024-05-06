@@ -1,5 +1,5 @@
 {
-  "folder": "Ttp8Xr1CKJzNCrPr",
+  "folder": "LDOhAtA8FqRb1KgC",
   "name": "Crashing From The Skies",
   "type": "perk",
   "_id": "9CF0mXhOO0QNFc5n",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 175000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714061879310,
-    "modifiedTime": 1714061886599,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714847406495,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!9CF0mXhOO0QNFc5n"
 }

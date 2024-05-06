@@ -1,5 +1,5 @@
 {
-  "folder": "D5311xPVLcLGaVNe",
+  "folder": "1c7G8cWpe3YzyQOg",
   "name": "Aggressive Assault",
   "type": "perk",
   "_id": "ZthvrKqsgXR3q8bm",
@@ -19,7 +19,7 @@
     "r1T7rglpf41OT2yK",
     "q1GyXT1jghzlOCt2"
   ],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -27,11 +27,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714011161399,
-    "modifiedTime": 1714011373322,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853763411,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!ZthvrKqsgXR3q8bm"
 }

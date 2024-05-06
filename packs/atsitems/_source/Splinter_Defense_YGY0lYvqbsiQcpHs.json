@@ -1,5 +1,5 @@
 {
-  "folder": "q1eAYrImf4LNqCQo",
+  "folder": "pnDrneqmqYG190ot",
   "name": "Splinter Defense",
   "type": "perk",
   "_id": "YGY0lYvqbsiQcpHs",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 187500,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713529833491,
-    "modifiedTime": 1713529841276,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864241179,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!YGY0lYvqbsiQcpHs"
 }

@@ -1,0 +1,34 @@
+{
+  "folder": "lZ2algGajxm0TzRv",
+  "name": "Cover Job",
+  "type": "perk",
+  "_id": "3SiGvDR98s0FQtdf",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 72
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714843296148,
+    "modifiedTime": 1714843312160,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!3SiGvDR98s0FQtdf"
+}

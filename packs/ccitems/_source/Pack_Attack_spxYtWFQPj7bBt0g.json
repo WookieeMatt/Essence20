@@ -1,5 +1,5 @@
 {
-  "folder": "Ttp8Xr1CKJzNCrPr",
+  "folder": "95z2vSu8hmHunOOs",
   "name": "Pack Attack",
   "type": "perk",
   "_id": "spxYtWFQPj7bBt0g",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 150000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714062624816,
-    "modifiedTime": 1714062631975,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714847717505,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!spxYtWFQPj7bBt0g"
 }

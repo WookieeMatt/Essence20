@@ -1,5 +1,5 @@
 {
-  "folder": "HWrklkmbXRAuPZzV",
+  "folder": "25xY1f3tHIN5dwFF",
   "name": "Studious Measures",
   "type": "perk",
   "_id": "ADj30QljJZ7iNt52",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714357143020,
-    "modifiedTime": 1714357152143,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714860761556,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!ADj30QljJZ7iNt52"
 }

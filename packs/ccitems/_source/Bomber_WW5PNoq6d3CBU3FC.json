@@ -1,5 +1,5 @@
 {
-  "folder": "Ttp8Xr1CKJzNCrPr",
+  "folder": "0ghzkgxk46WrzeAc",
   "name": "Bomber",
   "type": "perk",
   "_id": "WW5PNoq6d3CBU3FC",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 150000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714013223686,
-    "modifiedTime": 1714013232182,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714847468513,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!WW5PNoq6d3CBU3FC"
 }

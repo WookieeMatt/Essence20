@@ -1,5 +1,5 @@
 {
-  "folder": "D5311xPVLcLGaVNe",
+  "folder": "1c7G8cWpe3YzyQOg",
   "name": "Jungle Fighter",
   "type": "perk",
   "_id": "RWgIeFdT0c1vIcS1",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 300000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714011420285,
-    "modifiedTime": 1714011428356,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853767822,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!RWgIeFdT0c1vIcS1"
 }

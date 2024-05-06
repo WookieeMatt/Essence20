@@ -1,5 +1,5 @@
 {
-  "folder": "B9zu9C6TQlhBqQLr",
+  "folder": "eF0I5wKnf3yBuH4K",
   "name": "Rapid Reload",
   "type": "perk",
   "_id": "Vj0RpJmj7XNKXphR",
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714190506112,
-    "modifiedTime": 1714190524323,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714861268309,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Vj0RpJmj7XNKXphR"
 }

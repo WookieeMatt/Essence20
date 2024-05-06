@@ -36,7 +36,15 @@
         "subtype": "role",
         "level": 2
       },
-      "de71": {
+      "0194": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.Sjx8BBENyDUTRJvs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Think Fast!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "c014": {
         "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Zord",
@@ -44,7 +52,7 @@
         "subtype": "role",
         "level": 3
       },
-      "8f63": {
+      "3e8b": {
         "uuid": "Compendium.essence20.jump_through_time.Item.8ZGmg1hrNDmbO1B7",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Better Together",
@@ -52,7 +60,7 @@
         "subtype": "role",
         "level": 5
       },
-      "fe80": {
+      "024c": {
         "uuid": "Compendium.essence20.jump_through_time.Item.ubR7N8PYKDMSxmkM",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Inventive Application 1",
@@ -60,7 +68,7 @@
         "subtype": "role",
         "level": 5
       },
-      "f3b2": {
+      "f721": {
         "uuid": "Compendium.essence20.jump_through_time.Item.nxgmUTaPwFcg94ia",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "I'll Make It Work",
@@ -68,7 +76,7 @@
         "subtype": "role",
         "level": 7
       },
-      "b196": {
+      "fa4e": {
         "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Extra Attack",
@@ -76,7 +84,7 @@
         "subtype": "role",
         "level": 9
       },
-      "62c9": {
+      "b9bc": {
         "uuid": "Compendium.essence20.jump_through_time.Item.htsya0fTmmQ1ZZj1",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Modified Shell II",
@@ -84,7 +92,7 @@
         "subtype": "role",
         "level": 9
       },
-      "d52c": {
+      "7eb7": {
         "uuid": "Compendium.essence20.jump_through_time.Item.JgHOsyaD5WR5lgMk",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "I Can Still Do That",
@@ -92,7 +100,7 @@
         "subtype": "role",
         "level": 10
       },
-      "8d75": {
+      "6c19": {
         "uuid": "Compendium.essence20.jump_through_time.Item.xeNNy3cjVdKHBUIR",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Modified Shell III",
@@ -100,7 +108,7 @@
         "subtype": "role",
         "level": 17
       },
-      "d614": {
+      "caaf": {
         "uuid": "Compendium.essence20.jump_through_time.Item.As1eUnG5W54GwotE",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Inventive Application 2",
@@ -108,7 +116,7 @@
         "subtype": "role",
         "level": 18
       },
-      "0788": {
+      "ddad": {
         "uuid": "Compendium.essence20.jump_through_time.Item.8s9HHpmk633e6PLM",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Orange Ranger Prime",
@@ -163,6 +171,7 @@
       "level11",
       "level16"
     ],
+    "hasSpecialAdvancement": false,
     "isAdvanced": false,
     "perkLevels": {
       "general": [
@@ -187,8 +196,8 @@
           "level17",
           "level19"
         ],
-        "starting": 2,
-        "regeneration": 3
+        "regeneration": 3,
+        "starting": 2
       }
     },
     "skillDie": {
@@ -233,11 +242,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713573821442,
-    "modifiedTime": 1713827698040,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864935231,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!sQLtABvFETkL3JQd"
 }

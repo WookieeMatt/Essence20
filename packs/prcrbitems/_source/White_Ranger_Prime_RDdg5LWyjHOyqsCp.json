@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "hrtEahWgQMWPiEmf",
   "name": "White Ranger Prime",
   "type": "perk",
   "_id": "RDdg5LWyjHOyqsCp",
@@ -18,7 +18,7 @@
   "effects": [
     "meDdTxEEFydjRJRG"
   ],
-  "sort": 2300000,
+  "sort": -50000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705027835588,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865348429,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!RDdg5LWyjHOyqsCp"
 }

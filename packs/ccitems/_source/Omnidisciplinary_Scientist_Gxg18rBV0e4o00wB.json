@@ -1,5 +1,5 @@
 {
-  "folder": "Ttp8Xr1CKJzNCrPr",
+  "folder": "yK1oeHwGm8uxmxOZ",
   "name": "Omnidisciplinary Scientist",
   "type": "perk",
   "_id": "Gxg18rBV0e4o00wB",
@@ -18,7 +18,7 @@
   "effects": [
     "svLPCH4XHkQrJVUm"
   ],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714049636853,
-    "modifiedTime": 1714049719385,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714846764083,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Gxg18rBV0e4o00wB"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "iOJ37Dj9gIQ0bzzp",
+  "folder": "Fqtiaz64XFr7TqHY",
   "name": "Snipe From The Hip",
   "type": "perk",
   "_id": "uX9x7VEUy4LCdVIg",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 175000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714191784974,
-    "modifiedTime": 1714191791548,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863990364,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!uX9x7VEUy4LCdVIg"
 }

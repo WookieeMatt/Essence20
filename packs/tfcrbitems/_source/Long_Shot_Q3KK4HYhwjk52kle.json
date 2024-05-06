@@ -1,5 +1,5 @@
 {
-  "folder": "iOJ37Dj9gIQ0bzzp",
+  "folder": "Fqtiaz64XFr7TqHY",
   "name": "Long Shot",
   "type": "perk",
   "_id": "Q3KK4HYhwjk52kle",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714191677869,
-    "modifiedTime": 1714191687772,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863970934,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Q3KK4HYhwjk52kle"
 }

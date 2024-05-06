@@ -20,70 +20,6 @@
         "subtype": "role",
         "level": 1
       },
-      "a3cd": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Fighting Style",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "b131": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.0cGhuapOhkdwYC9G",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Inspiring Words",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "aaa3": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.zbrr3W30rFTDTayX",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Empty The Mag",
-        "type": "perk",
-        "subtype": "general",
-        "level": 7
-      },
-      "10ed": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.xsFS0pGQFx1w2qTd",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Battlefield Titan",
-        "type": "perk",
-        "subtype": "role",
-        "level": 9
-      },
-      "13cf": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.H7qXtrSfxDx2z9Wk",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Vigilance",
-        "type": "perk",
-        "subtype": "role",
-        "level": 11
-      },
-      "18e8": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.16ul4Ev6b9gO5CIN",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Shield Modulation",
-        "type": "perk",
-        "subtype": "role",
-        "level": 13
-      },
-      "4a9c": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.ME4xFG31XvT6q6Qp",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Heart Of The Team",
-        "type": "perk",
-        "subtype": "role",
-        "level": 14
-      },
-      "f770": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWAk0QD3",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Impenetrable Shield",
-        "type": "perk",
-        "subtype": "role",
-        "level": 18
-      },
       "32a6": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.84JYgd6kZgY41wge",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -129,6 +65,102 @@
           "startingMax": 2,
           "value": 0
         }
+      },
+      "a607": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fighting Style",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "bb99": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.rlD6YJSr2fgROKHo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "The Heavy",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "90ac": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.0cGhuapOhkdwYC9G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inspiring Words",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "2bc5": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.aQjUa46mn4kHvsVO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "600e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.zbrr3W30rFTDTayX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Empty The Mag",
+        "type": "perk",
+        "subtype": "general",
+        "level": 7
+      },
+      "b783": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bCUlka9kCmkyKwAC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick Shield",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "7d12": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.xsFS0pGQFx1w2qTd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Battlefield Titan",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "1b7f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.H7qXtrSfxDx2z9Wk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vigilance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "79a1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.16ul4Ev6b9gO5CIN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shield Modulation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "d87e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ME4xFG31XvT6q6Qp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart Of The Team",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "e719": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.LccKe9ZdDPvS5YbD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Concentrate Fire",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "d289": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWAk0QD3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Impenetrable Shield",
+        "type": "perk",
+        "subtype": "role",
+        "level": 33
       }
     },
     "adjustments": {
@@ -225,11 +257,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713931044400,
-    "modifiedTime": 1714615976787,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714850266648,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Ub4PO0AcEYzMc93S"
 }

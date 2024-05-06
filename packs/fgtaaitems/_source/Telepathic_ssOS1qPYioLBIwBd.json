@@ -1,5 +1,5 @@
 {
-  "folder": "ydeFFRkg80sIO7Zx",
+  "folder": "fJGpgUo1WsNnjCKR",
   "name": "Telepathic",
   "type": "perk",
   "_id": "ssOS1qPYioLBIwBd",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 150000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714184156577,
-    "modifiedTime": 1714184199061,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855593768,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!ssOS1qPYioLBIwBd"
 }

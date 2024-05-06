@@ -324,7 +324,11 @@ async function _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alt
   }
 
   if (!Object.keys(choices).length) {
-    ui.notifications.warn(game.i18n.localize('E20.AlterationNoOptions'));
+    ui.notifications.error(
+      game.i18n.format(
+        'E20.AlterationNoOptions',
+        {name: alteration.name, essence: CONFIG.E20.essences[costEssence]},
+      ));
     return;
   }
 
@@ -337,7 +341,9 @@ async function _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alt
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _alterationStatUpdate(alteration, bonusSkill, costEssence, rememberOptions(html), alterationUuid, dropFunc),
+          callback: html => _alterationStatUpdate(
+            actor, alteration, bonusSkill, costEssence, rememberOptions(html), alterationUuid, dropFunc,
+          ),
         },
       },
     },
@@ -401,7 +407,7 @@ async function _alterationStatUpdate(actor, alteration, bonusSkill, costEssence,
 * @param {Alteration} alteration The Alteration being deleted
 */
 export async function onAlterationDelete(actor, alteration) {
-  if (alteration.system.movementCost) {
+  if (alteration.system.type == 'movement') {
     let totalMovementDecrease = 0;
     for (const movementReductionType in alteration.system.movementCost) {
       const movementReductionValue = alteration.system.movementCost[movementReductionType].value;
@@ -425,8 +431,7 @@ export async function onAlterationDelete(actor, alteration) {
     await actor.update ({
       [bonusMovementRemovalString]: newMovement,
     });
-
-  } else {
+  } else if (alteration.system.type == 'essence') {
     const bonusEssence = alteration.system.essenceBonus;
     const bonusEssenceValue = actor.system.essences[bonusEssence] - 1;
     const bonusEssenceString = `system.essences.${bonusEssence}`;

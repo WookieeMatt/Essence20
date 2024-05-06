@@ -1,5 +1,5 @@
 {
-  "folder": "D5311xPVLcLGaVNe",
+  "folder": "ApxJ6iSbCtl1uCuq",
   "name": "Rough and Takes No Guff",
   "type": "perk",
   "_id": "2SHHZs1qVMFBB2kW",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 150000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714009657216,
-    "modifiedTime": 1714009720872,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853903255,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!2SHHZs1qVMFBB2kW"
 }

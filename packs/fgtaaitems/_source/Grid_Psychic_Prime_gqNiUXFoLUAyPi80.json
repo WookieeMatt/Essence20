@@ -1,5 +1,5 @@
 {
-  "folder": "ydeFFRkg80sIO7Zx",
+  "folder": "fJGpgUo1WsNnjCKR",
   "name": "Grid Psychic Prime",
   "type": "perk",
   "_id": "gqNiUXFoLUAyPi80",
@@ -18,7 +18,7 @@
   "effects": [
     "N9j3828OgwVU4E0W"
   ],
-  "sort": 0,
+  "sort": 300000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714184250019,
-    "modifiedTime": 1714184376171,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855599751,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!gqNiUXFoLUAyPi80"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "EVHpO0v49JTN4AdX",
+  "folder": "FCVKCzkmdlqKCyeH",
   "name": "Interdiction",
   "type": "perk",
   "_id": "AyKHJdCpdtoZHlER",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 212500,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714100939762,
-    "modifiedTime": 1714100947109,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714848351057,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!AyKHJdCpdtoZHlER"
 }

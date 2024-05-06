@@ -1,5 +1,5 @@
 {
-  "folder": "EQItmxJe3Tb2tnmP",
+  "folder": "nuWM9N0Rb86UjoUG",
   "name": "No Factor",
   "type": "perk",
   "_id": "FgiCtgLoTRxFXCeU",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 137500,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714082019945,
-    "modifiedTime": 1714082027767,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714853201984,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!FgiCtgLoTRxFXCeU"
 }

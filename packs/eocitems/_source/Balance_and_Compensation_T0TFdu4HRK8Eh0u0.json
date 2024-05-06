@@ -1,5 +1,5 @@
 {
-  "folder": "rAuafbH9SrHyQSGZ",
+  "folder": "CHnNxnrI4sVbeL5x",
   "name": "Balance and Compensation",
   "type": "perk",
   "_id": "T0TFdu4HRK8Eh0u0",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714394029827,
-    "modifiedTime": 1714394413034,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855774928,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!T0TFdu4HRK8Eh0u0"
 }

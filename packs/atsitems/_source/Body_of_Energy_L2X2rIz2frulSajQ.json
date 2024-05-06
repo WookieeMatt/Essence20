@@ -1,5 +1,5 @@
 {
-  "folder": "q1eAYrImf4LNqCQo",
+  "folder": "tcQxTnEhIZnGNqcM",
   "name": "Body of Energy",
   "type": "perk",
   "_id": "L2X2rIz2frulSajQ",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 137500,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713548071555,
-    "modifiedTime": 1713548084064,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864301567,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!L2X2rIz2frulSajQ"
 }

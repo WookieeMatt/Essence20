@@ -1,5 +1,5 @@
 {
-  "folder": "9cbFfPvDjdZTIyqh",
+  "folder": "IXgdicMKwK7CaEAI",
   "name": "Devastating Strike",
   "type": "perk",
   "_id": "qxO7qYqdB0QUwJxe",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 4600000,
+  "sort": 93750,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1705029107529,
-    "modifiedTime": 1713574064330,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865441136,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!qxO7qYqdB0QUwJxe"
 }

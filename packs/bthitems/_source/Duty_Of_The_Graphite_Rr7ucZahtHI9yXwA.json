@@ -1,5 +1,5 @@
 {
-  "folder": "ZQVDbqkf0PdpdQ2c",
+  "folder": "OA6eAyc7oImYpsRO",
   "name": "Duty Of The Graphite",
   "type": "perk",
   "_id": "Rr7ucZahtHI9yXwA",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714150558806,
-    "modifiedTime": 1714150566205,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864490961,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Rr7ucZahtHI9yXwA"
 }

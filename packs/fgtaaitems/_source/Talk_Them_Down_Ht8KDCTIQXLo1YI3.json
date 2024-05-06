@@ -1,5 +1,5 @@
 {
-  "folder": "YFxd6zFDumckZx1U",
+  "folder": "nz4sHStbnHLLAmZN",
   "name": "Talk Them Down",
   "type": "perk",
   "_id": "Ht8KDCTIQXLo1YI3",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 100782,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714158831646,
-    "modifiedTime": 1714158840141,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855508892,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!Ht8KDCTIQXLo1YI3"
 }

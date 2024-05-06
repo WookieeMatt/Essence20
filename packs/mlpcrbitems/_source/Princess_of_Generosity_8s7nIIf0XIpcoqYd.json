@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "IW840v1DWwXuSzO9",
   "name": "Princess of Generosity",
   "type": "perk",
   "_id": "8s7nIIf0XIpcoqYd",
@@ -18,7 +18,7 @@
   "effects": [
     "S3JyRQq1pDPp3zUU"
   ],
-  "sort": 3400000,
+  "sort": 296875,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706819794294,
-    "modifiedTime": 1706830794493,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714854376525,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!8s7nIIf0XIpcoqYd"
 }

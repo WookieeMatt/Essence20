@@ -1,5 +1,5 @@
 {
-  "folder": "rAuafbH9SrHyQSGZ",
+  "folder": "Tlwt4M1j1fXebrAl",
   "name": "Efficient Combination",
   "type": "perk",
   "_id": "tuQaie4eX4MLl1Wp",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714394784122,
-    "modifiedTime": 1714394793121,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714855835510,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!tuQaie4eX4MLl1Wp"
 }

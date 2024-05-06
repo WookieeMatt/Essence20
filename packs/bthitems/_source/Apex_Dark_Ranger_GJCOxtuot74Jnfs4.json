@@ -1,5 +1,5 @@
 {
-  "folder": "ZQVDbqkf0PdpdQ2c",
+  "folder": "gzgTmePuY2wGx6Go",
   "name": "Apex Dark Ranger",
   "type": "perk",
   "_id": "GJCOxtuot74Jnfs4",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 103125,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713835107891,
-    "modifiedTime": 1713835115324,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864456697,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!GJCOxtuot74Jnfs4"
 }

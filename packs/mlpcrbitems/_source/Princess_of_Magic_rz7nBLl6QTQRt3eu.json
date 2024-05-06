@@ -1,5 +1,5 @@
 {
-  "folder": "EssA3xKEG8i1FPxz",
+  "folder": "f0tVWOJnyh8AZi5f",
   "name": "Princess of Magic",
   "type": "perk",
   "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -26,13 +26,13 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1706825381436,
-    "modifiedTime": 1706833319446,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "modifiedTime": 1714855162259,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_id": "rz7nBLl6QTQRt3eu",
-  "sort": 0,
+  "sort": 303125,
   "_key": "!items!rz7nBLl6QTQRt3eu"
 }

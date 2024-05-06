@@ -1,5 +1,5 @@
 {
-  "folder": "iIe1Pyq37a7rUgfJ",
+  "folder": "caOeuCMGaKmSYeJC",
   "name": "Toxic Terror",
   "type": "perk",
   "_id": "kh7Wk5zalucm9I7p",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 400000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713740676652,
-    "modifiedTime": 1713740689906,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714865892995,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!kh7Wk5zalucm9I7p"
 }

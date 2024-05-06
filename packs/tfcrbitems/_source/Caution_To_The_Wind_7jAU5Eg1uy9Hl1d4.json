@@ -1,5 +1,5 @@
 {
-  "folder": "iOJ37Dj9gIQ0bzzp",
+  "folder": "zBZy5jwcJ4rja6KN",
   "name": "Caution To The Wind",
   "type": "perk",
   "_id": "7jAU5Eg1uy9Hl1d4",
@@ -16,7 +16,7 @@
     "type": "role"
   },
   "effects": [],
-  "sort": 0,
+  "sort": 137500,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,11 +24,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1714313986791,
-    "modifiedTime": 1714313995106,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714863829843,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!7jAU5Eg1uy9Hl1d4"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "q1eAYrImf4LNqCQo",
+  "folder": "s4JnX94IQReK146F",
   "name": "Danger Sense",
   "type": "perk",
   "_id": "lwzD2ZvCLLf8PGRF",
@@ -18,7 +18,7 @@
   "effects": [
     "2zqqOJQWnBMFo0Qv"
   ],
-  "sort": 0,
+  "sort": 200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -26,11 +26,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.2.0",
     "coreVersion": "11.315",
     "createdTime": 1713531027406,
-    "modifiedTime": 1713531111063,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "modifiedTime": 1714864336444,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
   "_key": "!items!lwzD2ZvCLLf8PGRF"
 }
