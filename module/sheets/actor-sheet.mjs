@@ -15,7 +15,7 @@ import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
 import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
-import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
+import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
 import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
 import { RoleHandler } from "../sheet-handlers/role-handler.mjs";
 
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._pwHandler = new PowerHandler(this);
     this._pkHandler = new PerkHandler(this);
     this._rlHandler = new RoleHandler(this);
   }
@@ -458,7 +457,9 @@ export class Essence20ActorSheet extends ActorSheet {
     if (this.actor.system.powers.personal.max > 0) {
       powerRestore = Math.min(this.actor.system.powers.personal.max, (this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration));
 
-      ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
+      if (powerRestore) {
+        ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
+      }
     }
 
     // Resetting Role Points
@@ -576,7 +577,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       if (rollType == 'power') {
-        return await this._pwHandler.powerCost(item);
+        return await powerCost(this.actor, item);
       } else if (rollType == 'rolePoints') {
         if (item.system.resource.max != null && item.system.resource.value < 1 && !this.actor.system.useUnlimitedResource) {
           ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
@@ -869,7 +870,7 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'perk':
       return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':
-      return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await powerUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
