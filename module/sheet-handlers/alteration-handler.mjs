@@ -25,9 +25,9 @@ export async function alterationUpdate(actor, alteration, dropFunc) {
   }
 
   if (alteration.system.type == 'essence') {
-    await _showAlterationBonusSkillDialog(alteration, alterationUuid, dropFunc);
+    await _showAlterationBonusSkillDialog(actor, alteration, alterationUuid, dropFunc);
   } else if (alteration.system.type == 'movement') {
-    await _showAlterationCostMovementDialog(alteration, alterationUuid, dropFunc);
+    await _showAlterationCostMovementDialog(actor, alteration, alterationUuid, dropFunc);
   } else {
     const newAlterationList = await dropFunc();
     const newAlteration = newAlterationList[0];
@@ -183,7 +183,7 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _processAlterationSkillIncrease(alteration, rememberOptions(html), alterationUuid, dropFunc),
+          callback: html => _processAlterationSkillIncrease(actor, alteration, rememberOptions(html), alterationUuid, dropFunc),
         },
       },
     },
@@ -198,7 +198,7 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
 * @param {String} alterationUuid The original ID of the Alteration
 * @param {Function} dropFunc The function to call to complete the Alteration drop
 */
-async function _processAlterationSkillIncrease(alteration, options, alterationUuid, dropFunc) {
+async function _processAlterationSkillIncrease(actor, alteration, options, alterationUuid, dropFunc) {
   let bonusSkill = "";
   for (const [skill, isSelected] of Object.entries(options)) {
     if (isSelected) {
