@@ -14,7 +14,7 @@ import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
-import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
+import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
 import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
 import { RoleHandler } from "../sheet-handlers/role-handler.mjs";
@@ -24,7 +24,6 @@ export class Essence20ActorSheet extends ActorSheet {
     super(...args);
 
     this._accordionStates = { skills: '' };
-    this._tfHandler = new TransformerHandler(this);
     this._pwHandler = new PowerHandler(this);
     this._pkHandler = new PerkHandler(this);
     this._rlHandler = new RoleHandler(this);
@@ -363,7 +362,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.morph').click(() => onMorph(this));
 
     // Transform Button
-    html.find('.transform').click(() => this._tfHandler.onTransform(this));
+    html.find('.transform').click(() => onTransform(this));
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -757,7 +756,7 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (item.type == 'influence') {
         deleteAttachmentsForItem(item, this.actor);
       } else if (item.type == "altMode") {
-        this._tfHandler.onAltModeDelete(item, this);
+        onAltModeDelete(this, item);
       } else if (item.type == "alteration") {
         onAlterationDelete(this.actor, item);
       } else if (item.type == "focus") {
