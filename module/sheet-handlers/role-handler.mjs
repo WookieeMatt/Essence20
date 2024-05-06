@@ -48,7 +48,7 @@ export async function focusUpdate(actor, focus, dropFunc) {
   }
 
   if (focus.system.essences.length > 1) {
-    await showEssenceDialog(focus, dropFunc);
+    await _showEssenceDialog(focus, dropFunc);
   } else {
     const newFocusList = await dropFunc();
     const newFocus = newFocusList[0];
@@ -96,7 +96,7 @@ async function _showEssenceDialog(focus, dropFunc) {
  * @param {Object} options The options resulting from _showFocusSkillDialog()
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Focus
  */
- async function _focusStatUpdate(actor, options, dropFunc) {
+async function _focusStatUpdate(actor, options, dropFunc) {
   let selectedEssence = "";
   for (const essence in CONFIG.E20.essences) {
     if (options[essence]) {
