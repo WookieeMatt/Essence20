@@ -14,17 +14,15 @@ import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
+import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-handlers/role-handler.mjs";
 import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
 import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
-import { RoleHandler } from "../sheet-handlers/role-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
-
     this._accordionStates = { skills: '' };
-    this._rlHandler = new RoleHandler(this);
   }
 
   /** @override */
@@ -760,11 +758,11 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (item.type == "alteration") {
         onAlterationDelete(this.actor, item);
       } else if (item.type == "focus") {
-        this._rlHandler.onFocusDelete(item);
+        onFocusDelete(this.actor, item);
       } else if (item.type == "perk") {
         onPerkDelete(this.actor, item);
       } else if (item.type == "role") {
-        this._rlHandler.onRoleDelete(item);
+        onRoleDelete(this.actor, item);
       } else if (item.type == "weapon") {
         deleteAttachmentsForItem(item, this.actor);
       }
@@ -856,13 +854,13 @@ export class Essence20ActorSheet extends ActorSheet {
     case 'armor':
       return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'focus':
-      return await this._rlHandler.focusUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await focusUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
       return await influenceUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
       return await originUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'role':
-      return await this._rlHandler.roleUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await roleUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'rolePoints':
       ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
       return;
