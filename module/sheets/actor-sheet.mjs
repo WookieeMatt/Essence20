@@ -14,19 +14,15 @@ import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
-import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
-import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
-import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
 import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-handlers/role-handler.mjs";
+import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
+import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
+import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
-
     this._accordionStates = { skills: '' };
-    this._tfHandler = new TransformerHandler(this);
-    this._pwHandler = new PowerHandler(this);
-    this._pkHandler = new PerkHandler(this);
   }
 
   /** @override */
@@ -362,7 +358,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.morph').click(() => onMorph(this));
 
     // Transform Button
-    html.find('.transform').click(() => this._tfHandler.onTransform(this));
+    html.find('.transform').click(() => onTransform(this));
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -458,7 +454,9 @@ export class Essence20ActorSheet extends ActorSheet {
     if (this.actor.system.powers.personal.max > 0) {
       powerRestore = Math.min(this.actor.system.powers.personal.max, (this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration));
 
-      ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
+      if (powerRestore) {
+        ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
+      }
     }
 
     // Resetting Role Points
@@ -576,7 +574,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
 
       if (rollType == 'power') {
-        return await this._pwHandler.powerCost(item);
+        return await powerCost(this.actor, item);
       } else if (rollType == 'rolePoints') {
         if (item.system.resource.max != null && item.system.resource.value < 1 && !this.actor.system.useUnlimitedResource) {
           ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
@@ -756,13 +754,13 @@ export class Essence20ActorSheet extends ActorSheet {
       } else if (item.type == 'influence') {
         deleteAttachmentsForItem(item, this.actor);
       } else if (item.type == "altMode") {
-        this._tfHandler.onAltModeDelete(item, this);
+        onAltModeDelete(this, item);
       } else if (item.type == "alteration") {
         onAlterationDelete(this.actor, item);
       } else if (item.type == "focus") {
         onFocusDelete(this.actor, item);
       } else if (item.type == "perk") {
-        this._pkHandler.onPerkDelete(item);
+        onPerkDelete(this.actor, item);
       } else if (item.type == "role") {
         onRoleDelete(this.actor, item);
       } else if (item.type == "weapon") {
@@ -867,9 +865,9 @@ export class Essence20ActorSheet extends ActorSheet {
       ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
       return;
     case 'perk':
-      return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await perkUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':
-      return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await powerUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
