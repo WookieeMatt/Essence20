@@ -74,7 +74,8 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
     };
   }
 
-  new Dialog({
+  new Dialog(
+    {
       title: game.i18n.localize('E20.EssenceIncrease'),
       content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
         choices,
