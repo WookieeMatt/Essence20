@@ -252,7 +252,7 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization");
   });
 
-  test("normal weapon skill roll", async () => {
+  test("normal weapon effect skill roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
@@ -260,15 +260,15 @@ describe("rollSkill", () => {
       shiftDown: 0,
       timesToRoll: 1,
     });
-    const weapon = {
-      name: 'Zeo Power Clubs',
-      type: 'weapon',
+    const weaponEffect = {
+      name: 'Zeo Power Clubs Effect',
+      type: 'weaponEffect',
       system: {
-        alternateEffects: "Some alternate effects",
         classification: {
           skill: "athletics",
         },
-        effect: "Some effect",
+        damageType: "blunt",
+        damageValue: 1,
       },
     };
     mockActor.getRollData = jest.fn(() => ({
@@ -281,8 +281,12 @@ describe("rollSkill", () => {
     }));
     dice._rollSkillHelper = jest.fn();
 
-    await dice.rollSkill(dataset, mockActor, weapon);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - Some effect<br><b>E20.WeaponAlternateEffects</b> - Some alternate effects<br><b>ITEM.TypeClassfeature</b> - E20.None");
+    await dice.rollSkill(dataset, mockActor, weaponEffect);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith(
+      'd20 + 0',
+      mockActor,
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>",
+    );
   });
 
   test("normal spell skill roll", async () => {
@@ -321,7 +325,7 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
   });
 
-  test.only("essence-shifted skill roll", async () => {
+  test("essence-shifted skill roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
@@ -427,6 +431,18 @@ describe("_getSkillRollLabel", () => {
 
 /* _getWeaponRollLabel */
 describe("_getWeaponRollLabel", () => {
+  const weaponEffect = {
+    name: 'Zeo Power Clubs Effect',
+    type: 'weaponEffect',
+    system: {
+      classification: {
+        skill: "athletics",
+      },
+      damageType: "blunt",
+      damageValue: 1,
+    },
+  };
+
   test("weapon roll", () => {
     const dataset = {
       skill: 'athletics',
@@ -435,21 +451,12 @@ describe("_getWeaponRollLabel", () => {
       edge: false,
       snag: false,
     };
-    const weapon = {
-      name: 'Zeo Power Clubs',
-      type: 'weapon',
-      system: {
-        effect: "Some effect",
-        alternateEffects: "Some alternate effects",
-      },
-    };
-    const expected =
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics)<br>" +
-      "<b>E20.WeaponEffect</b> - Some effect<br>" +
-      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
-      "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
+    const expected =
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br>" +
+      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
+
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weaponEffect)).toEqual(expected);
   });
 
   test("weapon roll with Edge", () => {
@@ -460,21 +467,12 @@ describe("_getWeaponRollLabel", () => {
       edge: true,
       snag: false,
     };
-    const weapon = {
-      name: 'Zeo Power Clubs',
-      type: 'weapon',
-      system: {
-        effect: "Some effect",
-        alternateEffects: "Some alternate effects",
-      },
-    };
-    const expected =
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics) E20.RollWithAnEdge<br>" +
-      "<b>E20.WeaponEffect</b> - Some effect<br>" +
-      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
-      "<b>ITEM.TypeClassfeature</b> - E20.None";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
+    const expected =
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics) E20.RollWithAnEdge<br>" +
+      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
+
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weaponEffect)).toEqual(expected);
   });
 
   test("weapon roll with Snag", () => {
@@ -485,46 +483,12 @@ describe("_getWeaponRollLabel", () => {
       edge: false,
       snag: true,
     };
-    const weapon = {
-      name: 'Zeo Power Clubs',
-      type: 'weapon',
-      system: {
-        effect: "Some effect",
-        alternateEffects: "Some alternate effects",
-      },
-    };
+
     const expected =
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics) E20.RollWithASnag<br>" +
-      "<b>E20.WeaponEffect</b> - Some effect<br>" +
-      "<b>E20.WeaponAlternateEffects</b> - Some alternate effects<br>" +
-      "<b>ITEM.TypeClassfeature</b> - E20.None";
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics) E20.RollWithASnag<br>" +
+      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
-  });
-
-  test("no effects", () => {
-    const dataset = {
-      skill: 'athletics',
-    };
-    const skillRollOptions = {
-      edge: false,
-      snag: false,
-    };
-    const weapon = {
-      name: 'Zeo Power Clubs',
-      type: 'weapon',
-      system: {
-        effect: "",
-        alternateEffects: "",
-      },
-    };
-    const expected =
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs (E20.SkillAthletics)<br>" +
-      "<b>E20.WeaponEffect</b> - E20.None<br>" +
-      "<b>E20.WeaponAlternateEffects</b> - E20.None<br>" +
-      "<b>ITEM.TypeClassfeature</b> - E20.None";
-
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weapon)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weaponEffect)).toEqual(expected);
   });
 });
 
