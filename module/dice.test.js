@@ -456,7 +456,7 @@ describe("_getWeaponRollLabel", () => {
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br>" +
       "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weaponEffect)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect)).toEqual(expected);
   });
 
   test("weapon roll with Edge", () => {
@@ -472,7 +472,7 @@ describe("_getWeaponRollLabel", () => {
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics) E20.RollWithAnEdge<br>" +
       "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weaponEffect)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect)).toEqual(expected);
   });
 
   test("weapon roll with Snag", () => {
@@ -488,7 +488,7 @@ describe("_getWeaponRollLabel", () => {
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics) E20.RollWithASnag<br>" +
       "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
 
-    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, null, weaponEffect)).toEqual(expected);
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect)).toEqual(expected);
   });
 });
 
