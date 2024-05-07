@@ -217,11 +217,11 @@ export class Essence20Item extends Item {
         flavor: label,
         content: content,
       });
-    } else if (this.type == 'weapon') {
-      const skill = this.system.items[childKey].classification.skill;
+    } else if (this.type == 'weaponEffect') {
+      const skill = this.system.classification.skill;
       const shift = this.actor.system.skills[skill].shift;
       const shiftUp = this.actor.system.skills[skill].shiftUp;
-      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.items[childKey].shiftDown;
+      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.shiftDown;
       const isSpecialized = this.actor.system.skills[skill].isSpecialized;
       const weaponDataset = {
         ...dataset,

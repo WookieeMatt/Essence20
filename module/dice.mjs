@@ -100,7 +100,7 @@ export class Dice {
     const rolePointsList = getItemsOfType('rolePoints', actor.items);
 
     let rolePoints = null;
-    if (item?.type == 'weapon' && rolePointsList.length) {
+    if (item?.type == 'weaponEffect' && rolePointsList.length) {
       rolePoints = rolePointsList[0]; // There should only be one RolePoints
       if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
         updatedShiftDataset.rolePoints = rolePoints;
@@ -117,7 +117,7 @@ export class Dice {
     let label = '';
 
     switch(item?.type) {
-    case 'weapon':
+    case 'weaponEffect':
       label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
       break;
     case 'spell':
