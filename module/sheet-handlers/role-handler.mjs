@@ -33,22 +33,22 @@ export async function focusUpdate(actor, focus, dropFunc) {
 
   // Actors can only have one Focus
   if (hasFocus) {
-    ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusMultipleError')));
+    ui.notifications.error(game.i18n.localize('E20.FocusMultipleError'));
     return false;
   }
 
   if (!role[0]) {
-    ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoRoleError')));
+    ui.notifications.error(game.i18n.localize('E20.FocusNoRoleError'));
     return false;
   }
 
   if (role[0].flags.core.sourceId != attachedRole[0].uuid) {
-    ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusRoleMismatchError')));
+    ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
     return false;
   }
 
   if (focus.system.essences.length > 1) {
-    await _showEssenceDialog(focus, dropFunc);
+    await _showEssenceDialog(actor, focus, dropFunc);
   } else {
     const newFocusList = await dropFunc();
     const newFocus = newFocusList[0];
@@ -65,7 +65,7 @@ export async function focusUpdate(actor, focus, dropFunc) {
  * @param {Focus} focus The Focus that is being dropped on the Actor
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Focus
  */
-async function _showEssenceDialog(focus, dropFunc) {
+async function _showEssenceDialog(actor, focus, dropFunc) {
   const choices = {};
   for (const essence of focus.system.essences) {
     choices[essence] = {
@@ -74,8 +74,7 @@ async function _showEssenceDialog(focus, dropFunc) {
     };
   }
 
-  new Dialog(
-    {
+  new Dialog({
       title: game.i18n.localize('E20.EssenceIncrease'),
       content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
         choices,
@@ -83,7 +82,7 @@ async function _showEssenceDialog(focus, dropFunc) {
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _focusStatUpdate(rememberOptions(html), dropFunc),
+          callback: html => _focusStatUpdate(actor, rememberOptions(html), dropFunc),
         },
       },
     },
@@ -106,6 +105,7 @@ async function _focusStatUpdate(actor, options, dropFunc) {
 
   const newFocusList = await dropFunc();
   const newFocus = newFocusList[0];
+
   await actor.update({
     "system.focusEssence": selectedEssence,
   });
@@ -141,7 +141,7 @@ export async function roleUpdate(actor, role, dropFunc) {
   // Actors can only have one Role
   const hasRole = getItemsOfType("role", actor.items).length > 0;
   if (hasRole) {
-    ui.notifications.error(game.i18n.format(game.i18n.localize('E20.RoleMultipleError')));
+    ui.notifications.error(game.i18n.localize('E20.RoleMultipleError'));
     return false;
   }
 
@@ -185,9 +185,9 @@ export async function roleUpdate(actor, role, dropFunc) {
   }
 
   if (role.system.version == 'myLittlePony') {
-    await _selectEssenceProgression(role,dropFunc);
+    await _selectEssenceProgression(actor, role, dropFunc);
   } else if (role.system.hasSpecialAdvancement) {
-    await _selectFirstEssences(role, dropFunc);
+    await _selectFirstEssences(actor, role, dropFunc);
   } else {
     const newRoleList = await dropFunc();
     const newRole = newRoleList[0];
