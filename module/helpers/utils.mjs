@@ -227,24 +227,6 @@ export function getShiftedSkill(skill, shift, actor) {
   return [newShift, skillString];
 }
 
-/** Handle comparing skill rank
- * @param {String} shift1 The first skill
- * @param {String} shift2 The second skill
- * @param {String} operator The type of comparison
- * @return {Boolean} The result of the comparison
- */
-export function compareShift(shift1, shift2, operator) {
-  if (operator == 'greater') {
-    return CONFIG.E20.skillShiftList.indexOf(shift1) < CONFIG.E20.skillShiftList.indexOf(shift2);
-  } else if (operator == 'lesser') {
-    return CONFIG.E20.skillShiftList.indexOf(shift1) > CONFIG.E20.skillShiftList.indexOf(shift2);
-  } else if (operator == 'equal') {
-    return CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2);
-  } else {
-    throw new Error(`Operator ${operator} not expected`);
-  }
-}
-
 /**
  * Displays an error message if the sheet is locked
  * @returns {boolean} True if the sheet is locked, and false otherwise
