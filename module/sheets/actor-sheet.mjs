@@ -8,32 +8,21 @@ import {
   parseId,
   setEntryAndAddItem,
 } from "../helpers/utils.mjs";
-import { AdvancementHandler } from "../sheet-handlers/advancement-handler.mjs";
-import { AlterationHandler } from "../sheet-handlers/alteration-handler.mjs";
-import { BackgroundHandler } from "../sheet-handlers/background-handler.mjs";
-import { CrossoverHandler } from "../sheet-handlers/crossover-handler.mjs";
-import { PowerRangerHandler } from "../sheet-handlers/power-ranger-handler.mjs";
-import { AttachmentHandler } from "../sheet-handlers/attachment-handler.mjs";
-import { TransformerHandler } from "../sheet-handlers/transformer-handler.mjs";
-import { PowerHandler } from "../sheet-handlers/power-handler.mjs";
-import { PerkHandler } from "../sheet-handlers/perk-handler.mjs";
-import { RoleHandler } from "../sheet-handlers/role-handler.mjs";
+import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
+import { onAlterationDelete, alterationUpdate } from "../sheet-handlers/alteration-handler.mjs";
+import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers/background-handler.mjs";
+import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
+import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
+import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-handlers/role-handler.mjs";
+import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
+import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
+import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
-
     this._accordionStates = { skills: '' };
-    this._advHandler = new AdvancementHandler(this);
-    this._alHandler = new AlterationHandler(this);
-    this._bgHandler = new BackgroundHandler(this);
-    this._coHandler = new CrossoverHandler(this);
-    this._prHandler = new PowerRangerHandler(this);
-    this._atHandler = new AttachmentHandler(this);
-    this._tfHandler = new TransformerHandler(this);
-    this._pwHandler = new PowerHandler(this);
-    this._pkHandler = new PerkHandler(this);
-    this._rlHandler = new RoleHandler(this);
   }
 
   /** @override */
@@ -89,7 +78,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
     // Prepare Zords for MFZs
-    this._prHandler.prepareZords(context);
+    prepareZords(this.actor, context);
 
     context.accordionStates = this._accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
@@ -109,7 +98,7 @@ export class Essence20ActorSheet extends ActorSheet {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => this._coHandler.showCrossoverOptions(ev, this),
+            onclick: (ev) => showCrossoverOptions(this, ev),
           },
           ...buttons,
         ];
@@ -339,27 +328,6 @@ export class Essence20ActorSheet extends ActorSheet {
     }).then(this.render(false));
   }
 
-  /**
-   * Returns the upgrades associated with the given Item
-   * @param {Item} item The item to fetch upgrades for
-   * @returns {Promise<Upgrade[]>} The upgrades associated with the given Item
-   * @private
-   */
-  _populateChildItems(childItemIds) {
-    const childItems = [];
-
-    for (const id of childItemIds) {
-      const childItem = this.actor.items.get(id) || game.items.get(id);
-      if (childItem) {
-        childItems.push(childItem);
-      }
-    }
-
-    return childItems;
-  }
-
-  /* -------------------------------------------- */
-
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -378,7 +346,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-delete').click(this._onItemDelete.bind(this));
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(ev => this._prHandler.onZordDelete(ev));
+    html.find('.zord-delete').click(ev => onZordDelete(this, ev));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(this._onInlineEdit.bind(this));
@@ -387,10 +355,10 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Morph Button
-    html.find('.morph').click(() => this._prHandler.onMorph());
+    html.find('.morph').click(() => onMorph(this));
 
     // Transform Button
-    html.find('.transform').click(() => this._tfHandler.onTransform(this));
+    html.find('.transform').click(() => onTransform(this));
 
     // Rollable abilities.
     if (this.actor.isOwner) {
@@ -486,7 +454,9 @@ export class Essence20ActorSheet extends ActorSheet {
     if (this.actor.system.powers.personal.max > 0) {
       powerRestore = Math.min(this.actor.system.powers.personal.max, (this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration));
 
-      ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
+      if (powerRestore) {
+        ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
+      }
     }
 
     // Resetting Role Points
@@ -590,21 +560,15 @@ export class Essence20ActorSheet extends ActorSheet {
 
       const childKey = element.closest('.item').dataset.itemKey || null;
       if (childKey) {
-        if (rollType == 'weapon') {
-          // Special case for weapon effect attacks where we want the parent weapon as the item
-          const parentId = element.closest('.item').dataset.parentId;
-          item = this.actor.items.get(parentId);
-        } else {
-          const childUuid = element.closest('.item').dataset.itemUuid;
-          item = await fromUuid(childUuid);
-        }
+        const childUuid = element.closest('.item').dataset.itemUuid;
+        item = await fromUuid(childUuid);
       } else {
         const itemId = element.closest('.item').dataset.itemId;
         item = this.actor.items.get(itemId);
       }
 
       if (rollType == 'power') {
-        return await this._pwHandler.powerCost(item);
+        return await powerCost(this.actor, item);
       } else if (rollType == 'rolePoints') {
         if (item.system.resource.max != null && item.system.resource.value < 1 && !this.actor.system.useUnlimitedResource) {
           ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
@@ -725,19 +689,6 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-  * Adds the given child Item's ID to its parent's ID list
-  * @param {Item} parent      The parent Item
-  * @param {Item} child       The child Item
-  * @param {String} listName  The name of the parent's ID list
-  * @private
-  */
-  async _addChildItemToParent(parent, child, listName) {
-    const ids = parent.system[listName];
-    ids.push(child._id);
-    await parent.update({ [`system.${listName}`]: ids });
-  }
-
-  /**
   * Handle deleting Items
   * @param {Event} event The originating click event
   * @private
@@ -793,19 +744,19 @@ export class Essence20ActorSheet extends ActorSheet {
       if (item.type == "armor") {
         deleteAttachmentsForItem(item, this.actor);
       } else if (item.type == "origin") {
-        this._bgHandler.onOriginDelete(item);
+        onOriginDelete(this.actor, item);
       } else if (item.type == 'influence') {
         deleteAttachmentsForItem(item, this.actor);
       } else if (item.type == "altMode") {
-        this._tfHandler.onAltModeDelete(item, this);
+        onAltModeDelete(this, item);
       } else if (item.type == "alteration") {
-        this._alHandler.onAlterationDelete(item);
+        onAlterationDelete(this.actor, item);
       } else if (item.type == "focus") {
-        this._rlHandler.onFocusDelete(item);
+        onFocusDelete(this.actor, item);
       } else if (item.type == "perk") {
-        this._pkHandler.onPerkDelete(item);
+        onPerkDelete(this.actor, item);
       } else if (item.type == "role") {
-        this._rlHandler.onRoleDelete(item);
+        onRoleDelete(this.actor, item);
       } else if (item.type == "weapon") {
         deleteAttachmentsForItem(item, this.actor);
       }
@@ -893,30 +844,30 @@ export class Essence20ActorSheet extends ActorSheet {
 
     switch (sourceItem.type) {
     case 'alteration':
-      return await this._alHandler.alterationUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await alterationUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'armor':
-      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
+      return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'focus':
-      return await this._rlHandler.focusUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await focusUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'influence':
-      return await this._bgHandler.influenceUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await influenceUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'origin':
-      return await this._bgHandler.originUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await originUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'role':
-      return await this._rlHandler.roleUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await roleUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'rolePoints':
       ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
       return;
     case 'perk':
-      return await this._pkHandler.perkUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await perkUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'power':
-      return await this._pwHandler.powerUpdate(sourceItem, super._onDropItem.bind(this, event, data));
+      return await powerUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'upgrade':
       return await this._onDropUpgrade(sourceItem, event, data);
     case 'weapon':
-      return await this._atHandler.gearDrop(sourceItem, super._onDropItem.bind(this, event, data));
+      return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
     case 'weaponEffect':
-      return this._atHandler.attachItem(sourceItem, super._onDropItem.bind(this, event, data));
+      return attachItem(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
 
     default:
       return await super._onDropItem(event, data);
@@ -938,7 +889,7 @@ export class Essence20ActorSheet extends ActorSheet {
     } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
       return super._onDropItem(event, data);
     } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return this._atHandler.attachItem(upgrade, super._onDropItem.bind(this, event, data));
+      return attachItem(this.actor, upgrade, super._onDropItem.bind(this, event, data));
     } else {
       ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
       return false;
@@ -1027,7 +978,7 @@ export class Essence20ActorSheet extends ActorSheet {
     await super._onChangeInput(event);
 
     if (event.currentTarget.name == "system.level") {
-      await this._advHandler.onLevelChange(this.actor, this.actor.system.level);
+      await onLevelChange(this.actor, this.actor.system.level);
     }
   }
 }

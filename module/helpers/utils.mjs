@@ -205,7 +205,7 @@ export function resizeTokens(actor, width, height) {
  * @return {String} newShift The value of the new Shift
  * @return {String} skillString The name of the skill being shifted
  */
-export async function getShiftedSkill(skill, shift, actor) {
+export function getShiftedSkill(skill, shift, actor) {
   let skillString = "";
   let currentShift = "";
   let newShift = "";
