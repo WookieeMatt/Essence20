@@ -15,7 +15,7 @@ import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ran
 import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
 import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-handlers/role-handler.mjs";
 import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
-import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
+import { powerUpdate } from "../sheet-handlers/power-handler.mjs";
 import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
 import { onRest, onRoll } from "../sheet-handlers/listener-misc-handler.mjs";
 
