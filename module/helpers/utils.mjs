@@ -611,25 +611,6 @@ export async function setFocusValues(focus, actor, newLevel=null, previousLevel=
 }
 
 /**
- * Determines the number of increases that have occured based on the level of the actor
- * @param {String[]} levels The array of levels that you advance at
- * @param {Number} currentLevel The current level of the actor
- * @returns {Number} level Increase The number of increases for the level of the actor
- */
-export function getLevelIncreases(levels, currentLevel) {
-  let levelIncreases = 0;
-  for (const arrayLevel of levels) {
-
-    const level = arrayLevel.replace(/[^0-9]/g, '');
-    if (level <= currentLevel) {
-      levelIncreases += 1;
-    }
-  }
-
-  return levelIncreases;
-}
-
-/**
  * Prepare the number of actions available for the given actor
  * @param {Actor} actor The actor to get actions for
  * @return {Object} Action types mapped to an action count
