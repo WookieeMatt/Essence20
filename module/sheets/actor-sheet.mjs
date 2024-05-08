@@ -18,6 +18,7 @@ import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-h
 import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
 import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
+import { onRoll } from "../sheet-handlers/listener-misc-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -360,9 +361,9 @@ export class Essence20ActorSheet extends ActorSheet {
     // Transform Button
     html.find('.transform').click(() => onTransform(this));
 
-    // Rollable abilities.
+    // Roll buttons
     if (this.actor.isOwner) {
-      html.find('.rollable').click(this._onRoll.bind(this));
+      html.find('.rollable').click(ev => onRoll(ev, this.actor));
     }
 
     // Open and collapse Item content
@@ -531,81 +532,6 @@ export class Essence20ActorSheet extends ActorSheet {
         $(container).removeClass('open');
       } else {
         $(container).addClass('open');
-      }
-    }
-  }
-
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event The originating click event
-   * @private
-   */
-  async _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const dataset = element.dataset;
-    const rollType = dataset.rollType;
-
-    if (!rollType) {
-      return;
-    }
-
-    // Handle type-specific rolls.
-    if (rollType == 'skill') {
-      this.actor.rollSkill(dataset);
-    } else if (rollType == 'initiative') {
-      this.actor.rollInitiative({createCombatants: true});
-    } else { // Handle items
-      let item = null;
-
-      const childKey = element.closest('.item').dataset.itemKey || null;
-      if (childKey) {
-        const childUuid = element.closest('.item').dataset.itemUuid;
-        item = await fromUuid(childUuid);
-      } else {
-        const itemId = element.closest('.item').dataset.itemId;
-        item = this.actor.items.get(itemId);
-      }
-
-      if (rollType == 'power') {
-        return await powerCost(this.actor, item);
-      } else if (rollType == 'rolePoints') {
-        if (item.system.resource.max != null && item.system.resource.value < 1 && !this.actor.system.useUnlimitedResource) {
-          ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
-          return;
-        } else {
-          const spentStrings = [];
-
-          // Ensure we have enough Personal Power, if needed
-          if (item.system.powerCost) {
-            if (this.actor.system.powers.personal.value < item.system.powerCost) {
-              ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-              return;
-            } else {
-              await this.actor.update({
-                ['system.powers.personal.value']:
-                  this.actor.system.powers.personal.value - item.system.powerCost,
-              });
-
-              spentStrings.push(`${item.system.powerCost} Power`);
-            }
-          }
-
-          // If Role Points are being used and not unlimited, decrement uses
-          if (!this.actor.system.useUnlimitedResource) {
-            await item.update({ 'system.resource.value': item.system.resource.value - 1 });
-            spentStrings.push('1 point');
-          }
-
-          if (spentStrings.length) {
-            const spentString = spentStrings.join(', ');
-            ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
-          }
-        }
-      }
-
-      if (item) {
-        return item.roll(dataset, childKey);
       }
     }
   }
