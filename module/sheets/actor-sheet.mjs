@@ -3,7 +3,6 @@ import {
   deleteAttachmentsForItem,
   checkIsLocked,
   createItemCopies,
-  getItemsOfType,
   getNumActions,
   parseId,
   setEntryAndAddItem,
@@ -18,7 +17,7 @@ import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-h
 import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
 import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
-import { onRoll } from "../sheet-handlers/listener-misc-handler.mjs";
+import { onRest, onRoll } from "../sheet-handlers/listener-misc-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -383,7 +382,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Rest button
-    html.find('.rest').click(() => this._onRest());
+    html.find('.rest').click(() => onRest(this));
 
     const isLocked = this.actor.system.isLocked;
 
@@ -416,71 +415,6 @@ export class Essence20ActorSheet extends ActorSheet {
       html.find('.no-unlock').attr('readonly', true);
       html.find('select').attr('disabled', isLocked);
     });
-  }
-
-  /**
-   * Handle clicking the rest button.
-   * @private
-   */
-  async _onRest() {
-    const normalEnergon = this.actor.system.energon.normal;
-    const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
-    const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
-
-    // Notifications for resetting Energon types
-    if (this.actor.system.canTransform) {
-      let energonsReset = [];
-
-      const actorEnergons = this.actor.system.energon;
-      for (const actorEnergon of Object.keys(actorEnergons)) {
-        if (actorEnergons[actorEnergon].value) {
-          energonsReset.push(game.i18n.localize(CONFIG.E20.energonTypes[actorEnergon]));
-        }
-      }
-
-      if (energonsReset.length) {
-        ui.notifications.info(
-          game.i18n.format(
-            'E20.RestEnergonReset',
-            {energon: energonsReset.join(", ")},
-          ),
-        );
-      }
-
-      ui.notifications.info(game.i18n.format('E20.RestEnergonRestored', { energonRestore: energonRestore }));
-    }
-
-    //Reseting Personal Power
-    let powerRestore = 0;
-    if (this.actor.system.powers.personal.max > 0) {
-      powerRestore = Math.min(this.actor.system.powers.personal.max, (this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration));
-
-      if (powerRestore) {
-        ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
-      }
-    }
-
-    // Resetting Role Points
-    const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
-    if (rolePointsList.length) {
-      const rolePoints = rolePointsList[0];
-      rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
-      ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
-    }
-
-    ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
-    ui.notifications.info(game.i18n.localize("E20.RestComplete"));
-
-    await this.actor.update({
-      "system.health.value": this.actor.system.health.max,
-      "system.powers.personal.value": powerRestore,
-      "system.stun.value": 0,
-      "system.energon.normal.value": energonRestore,
-      "system.energon.dark.value": 0,
-      "system.energon.primal.value": 0,
-      "system.energon.red.value": 0,
-      "system.energon.synthEn.value": 0,
-    }).then(this.render(false));
   }
 
   /**

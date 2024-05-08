@@ -1,10 +1,9 @@
-
+import { getItemsOfType } from "../helpers/utils.mjs";
 
 /**
  * Handle clickable rolls.
  * @param {Actor} actor The Actor making the roll
  * @param {Event} event The originating click event
- * @private
  */
 export async function onRoll(event, actor) {
   event.preventDefault();
@@ -74,4 +73,73 @@ export async function onRoll(event, actor) {
       return item.roll(dataset, childKey);
     }
   }
+}
+
+/**
+ * Handle clicking the rest button.
+ * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ */
+export async function onRest(actorSheet) {
+  const actor = actorSheet.actor;
+  const normalEnergon = actor.system.energon.normal;
+  const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
+  const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
+
+  // Notifications for resetting Energon types
+  if (actor.system.canTransform) {
+    let energonsReset = [];
+
+    const actorEnergons = actor.system.energon;
+    for (const actorEnergon of Object.keys(actorEnergons)) {
+      if (actorEnergons[actorEnergon].value) {
+        energonsReset.push(game.i18n.localize(CONFIG.E20.energonTypes[actorEnergon]));
+      }
+    }
+
+    if (energonsReset.length) {
+      ui.notifications.info(
+        game.i18n.format(
+          'E20.RestEnergonReset',
+          {energon: energonsReset.join(", ")},
+        ),
+      );
+    }
+
+    ui.notifications.info(game.i18n.format('E20.RestEnergonRestored', { energonRestore: energonRestore }));
+  }
+
+  // Reseting Personal Power
+  let powerRestore = 0;
+  if (actor.system.powers.personal.max > 0) {
+    powerRestore = Math.min(
+      actor.system.powers.personal.max,
+      (actor.system.powers.personal.value + actor.system.powers.personal.regeneration),
+    );
+
+    if (powerRestore) {
+      ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
+    }
+  }
+
+  // Resetting Role Points
+  const rolePointsList = getItemsOfType('rolePoints', actor.items);
+  if (rolePointsList.length) {
+    const rolePoints = rolePointsList[0];
+    rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
+    ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
+  }
+
+  ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
+  ui.notifications.info(game.i18n.localize("E20.RestComplete"));
+
+  await actor.update({
+    "system.health.value": actor.system.health.max,
+    "system.powers.personal.value": powerRestore,
+    "system.stun.value": 0,
+    "system.energon.normal.value": energonRestore,
+    "system.energon.dark.value": 0,
+    "system.energon.primal.value": 0,
+    "system.energon.red.value": 0,
+    "system.energon.synthEn.value": 0,
+  }).then(actorSheet.render(false));
 }
