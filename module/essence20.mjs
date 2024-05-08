@@ -10,7 +10,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { getNumActions, performPreLocalization, setOptGroup } from "./helpers/utils.mjs";
+import { getNumActions, performPreLocalization } from "./helpers/utils.mjs";
 import { migrateWorld } from "./migration.mjs";
 
 function registerSystemSettings() {
@@ -276,4 +276,24 @@ async function rollItemMacro(itemId, itemName) {
 
   // Trigger the item roll
   return item.roll();
+}
+
+/*
+ * Handle organizing selects by adding optGroups
+ * @param {Select} select The select that you are organizing
+ * @param {Category} category The category that we are adding to the options
+ * @param {Items} items The types that you are putting in the category
+ */
+export function setOptGroup(select, category, items) {
+  const options = select.querySelectorAll(":scope > option");
+  const optGroup = document.createElement("optgroup");
+  optGroup.label = category;
+
+  for (const option of options) {
+    if (items[option.value]) {
+      optGroup.appendChild(option);
+    }
+  }
+
+  return optGroup;
 }

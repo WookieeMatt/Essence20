@@ -245,26 +245,6 @@ export function compareShift(shift1, shift2, operator) {
   }
 }
 
-/*
- * Handle organizing selects by adding optGroups
- * @param {Select} select The select that you are organizing
- * @param {Category} category The category that we are adding to the options
- * @param {Items} items The types that you are putting in the category
- */
-export function setOptGroup(select, category, items) {
-  const options = select.querySelectorAll(":scope > option");
-  const optGroup = document.createElement("optgroup");
-  optGroup.label = category;
-
-  for (const option of options) {
-    if (items[option.value]) {
-      optGroup.appendChild(option);
-    }
-  }
-
-  return optGroup;
-}
-
 /**
  * Displays an error message if the sheet is locked
  * @returns {boolean} True if the sheet is locked, and false otherwise
