@@ -560,14 +560,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
       const childKey = element.closest('.item').dataset.itemKey || null;
       if (childKey) {
-        if (rollType == 'weapon') {
-          // Special case for weapon effect attacks where we want the parent weapon as the item
-          const parentId = element.closest('.item').dataset.parentId;
-          item = this.actor.items.get(parentId);
-        } else {
-          const childUuid = element.closest('.item').dataset.itemUuid;
-          item = await fromUuid(childUuid);
-        }
+        const childUuid = element.closest('.item').dataset.itemUuid;
+        item = await fromUuid(childUuid);
       } else {
         const itemId = element.closest('.item').dataset.itemId;
         item = this.actor.items.get(itemId);

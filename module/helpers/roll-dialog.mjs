@@ -59,7 +59,7 @@ export class RollDialog {
             callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
           },
           cancel: {
-            label: this._localize('E20.RollDialogCancelButton'),
+            label: this._localize('E20.DialogCancelButton'),
             /* eslint-disable no-unused-vars */
             callback: html => resolve({ cancelled: true }),
           },

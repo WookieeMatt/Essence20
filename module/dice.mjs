@@ -100,7 +100,7 @@ export class Dice {
     const rolePointsList = getItemsOfType('rolePoints', actor.items);
 
     let rolePoints = null;
-    if (item?.type == 'weapon' && rolePointsList.length) {
+    if (item?.type == 'weaponEffect' && rolePointsList.length) {
       rolePoints = rolePointsList[0]; // There should only be one RolePoints
       if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
         updatedShiftDataset.rolePoints = rolePoints;
@@ -117,8 +117,8 @@ export class Dice {
     let label = '';
 
     switch(item?.type) {
-    case 'weapon':
-      label = this._getWeaponRollLabel(dataset, skillRollOptions, actor, item);
+    case 'weaponEffect':
+      label = this._getWeaponRollLabel(dataset, skillRollOptions, item);
       break;
     case 'spell':
       label = this._getSpellRollLabel(skillRollOptions, item);
@@ -211,12 +211,11 @@ export class Dice {
    * Create weapon roll label.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Object} skillRollOptions   The result of getSkillRollOptions().
-   * @param {Actor} actor   The actor performing the roll.
    * @param {Item} weaponEffect   The weapon effect being used.
    * @returns {String}   The resultant roll label.
    * @private
    */
-  _getWeaponRollLabel(dataset, skillRollOptions, actor, weaponEffect) {
+  _getWeaponRollLabel(dataset, skillRollOptions, weaponEffect) {
     const rolledSkill = dataset.skill;
     const rolledSkillStr = this._localize(E20.skills[rolledSkill]);
     const attackRollStr = this._localize('E20.RollTypeAttack');
