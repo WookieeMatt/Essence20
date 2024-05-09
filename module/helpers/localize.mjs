@@ -1,4 +1,3 @@
-
 /**
  * Storage for pre-localization configuration.
  * @type {object}
