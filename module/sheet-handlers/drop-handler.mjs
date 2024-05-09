@@ -76,7 +76,7 @@ export async function onDropItem(data, actor, dropFunc) {
  */
 async function _onDropDefault(data, dropFunc, isNewItem=true) {
   const itemUuid = await parseId(data.uuid);
-  let droppedItemList = await dropFunc;
+  let droppedItemList = await dropFunc();
 
   if (isNewItem) {
     const newItem = droppedItemList[0];
@@ -88,6 +88,28 @@ async function _onDropDefault(data, dropFunc, isNewItem=true) {
   }
 
   return droppedItemList;
+}
+
+/**
+ * Handle dropping of an Upgrade onto an Actor sheet
+ * @param {Upgrade} upgrade The Upgrade being dropped
+ * @param {Actor} actor The Actor receiving the Upgrade
+ * @param {Function} dropFunc The function to call to complete the Upgrade drop
+ * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
+ *                                    not permitted.
+ */
+async function _onDropUpgrade(upgrade, actor, dropFunc) {
+  // Drones can only accept drone Upgrades
+  if (actor.type == 'companion' && actor.system.type == 'drone' && upgrade.system.type == 'drone') {
+    return dropFunc();
+  } else if (actor.system.canTransform && upgrade.system.type == 'armor') {
+    return dropFunc();
+  } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
+    return attachItem(actor, upgrade, dropFunc);
+  } else {
+    ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
+    return false;
+  }
 }
 
 /**
@@ -117,28 +139,6 @@ export async function onDropActor(data, actorSheet) {
       }).then(actorSheet.render(false));
     }
   } else {
-    return false;
-  }
-}
-
-/**
- * Handle dropping of an Upgrade onto an Actor sheet
- * @param {Upgrade} upgrade The Upgrade being dropped
- * @param {Actor} actor The Actor receiving the Upgrade
- * @param {Function} dropFunc The function to call to complete the Upgrade drop
- * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
- *                                    not permitted.
- */
-async function _onDropUpgrade(upgrade, actor, dropFunc) {
-  // Drones can only accept drone Upgrades
-  if (actor.type == 'companion' && actor.system.type == 'drone' && upgrade.system.type == 'drone') {
-    return dropFunc();
-  } else if (actor.system.canTransform && upgrade.system.type == 'armor') {
-    return dropFunc();
-  } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-    return attachItem(actor, upgrade, dropFunc);
-  } else {
-    ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
     return false;
   }
 }
