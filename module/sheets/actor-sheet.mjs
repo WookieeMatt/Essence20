@@ -3,7 +3,6 @@ import {
   deleteAttachmentsForItem,
   checkIsLocked,
   createItemCopies,
-  getItemsOfType,
   getNumActions,
   parseId,
   setEntryAndAddItem,
@@ -16,8 +15,9 @@ import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ran
 import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
 import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-handlers/role-handler.mjs";
 import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
-import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
+import { powerUpdate } from "../sheet-handlers/power-handler.mjs";
 import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
+import { onRest, onRoll } from "../sheet-handlers/listener-misc-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -360,9 +360,9 @@ export class Essence20ActorSheet extends ActorSheet {
     // Transform Button
     html.find('.transform').click(() => onTransform(this));
 
-    // Rollable abilities.
+    // Roll buttons
     if (this.actor.isOwner) {
-      html.find('.rollable').click(this._onRoll.bind(this));
+      html.find('.rollable').click(ev => onRoll(ev, this.actor));
     }
 
     // Open and collapse Item content
@@ -382,7 +382,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Rest button
-    html.find('.rest').click(() => this._onRest());
+    html.find('.rest').click(() => onRest(this));
 
     const isLocked = this.actor.system.isLocked;
 
@@ -415,71 +415,6 @@ export class Essence20ActorSheet extends ActorSheet {
       html.find('.no-unlock').attr('readonly', true);
       html.find('select').attr('disabled', isLocked);
     });
-  }
-
-  /**
-   * Handle clicking the rest button.
-   * @private
-   */
-  async _onRest() {
-    const normalEnergon = this.actor.system.energon.normal;
-    const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
-    const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
-
-    // Notifications for resetting Energon types
-    if (this.actor.system.canTransform) {
-      let energonsReset = [];
-
-      const actorEnergons = this.actor.system.energon;
-      for (const actorEnergon of Object.keys(actorEnergons)) {
-        if (actorEnergons[actorEnergon].value) {
-          energonsReset.push(game.i18n.localize(CONFIG.E20.energonTypes[actorEnergon]));
-        }
-      }
-
-      if (energonsReset.length) {
-        ui.notifications.info(
-          game.i18n.format(
-            'E20.RestEnergonReset',
-            {energon: energonsReset.join(", ")},
-          ),
-        );
-      }
-
-      ui.notifications.info(game.i18n.format('E20.RestEnergonRestored', { energonRestore: energonRestore }));
-    }
-
-    //Reseting Personal Power
-    let powerRestore = 0;
-    if (this.actor.system.powers.personal.max > 0) {
-      powerRestore = Math.min(this.actor.system.powers.personal.max, (this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration));
-
-      if (powerRestore) {
-        ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
-      }
-    }
-
-    // Resetting Role Points
-    const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
-    if (rolePointsList.length) {
-      const rolePoints = rolePointsList[0];
-      rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
-      ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
-    }
-
-    ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
-    ui.notifications.info(game.i18n.localize("E20.RestComplete"));
-
-    await this.actor.update({
-      "system.health.value": this.actor.system.health.max,
-      "system.powers.personal.value": powerRestore,
-      "system.stun.value": 0,
-      "system.energon.normal.value": energonRestore,
-      "system.energon.dark.value": 0,
-      "system.energon.primal.value": 0,
-      "system.energon.red.value": 0,
-      "system.energon.synthEn.value": 0,
-    }).then(this.render(false));
   }
 
   /**
@@ -531,81 +466,6 @@ export class Essence20ActorSheet extends ActorSheet {
         $(container).removeClass('open');
       } else {
         $(container).addClass('open');
-      }
-    }
-  }
-
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event The originating click event
-   * @private
-   */
-  async _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const dataset = element.dataset;
-    const rollType = dataset.rollType;
-
-    if (!rollType) {
-      return;
-    }
-
-    // Handle type-specific rolls.
-    if (rollType == 'skill') {
-      this.actor.rollSkill(dataset);
-    } else if (rollType == 'initiative') {
-      this.actor.rollInitiative({createCombatants: true});
-    } else { // Handle items
-      let item = null;
-
-      const childKey = element.closest('.item').dataset.itemKey || null;
-      if (childKey) {
-        const childUuid = element.closest('.item').dataset.itemUuid;
-        item = await fromUuid(childUuid);
-      } else {
-        const itemId = element.closest('.item').dataset.itemId;
-        item = this.actor.items.get(itemId);
-      }
-
-      if (rollType == 'power') {
-        return await powerCost(this.actor, item);
-      } else if (rollType == 'rolePoints') {
-        if (item.system.resource.max != null && item.system.resource.value < 1 && !this.actor.system.useUnlimitedResource) {
-          ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
-          return;
-        } else {
-          const spentStrings = [];
-
-          // Ensure we have enough Personal Power, if needed
-          if (item.system.powerCost) {
-            if (this.actor.system.powers.personal.value < item.system.powerCost) {
-              ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-              return;
-            } else {
-              await this.actor.update({
-                ['system.powers.personal.value']:
-                  this.actor.system.powers.personal.value - item.system.powerCost,
-              });
-
-              spentStrings.push(`${item.system.powerCost} Power`);
-            }
-          }
-
-          // If Role Points are being used and not unlimited, decrement uses
-          if (!this.actor.system.useUnlimitedResource) {
-            await item.update({ 'system.resource.value': item.system.resource.value - 1 });
-            spentStrings.push('1 point');
-          }
-
-          if (spentStrings.length) {
-            const spentString = spentStrings.join(', ');
-            ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
-          }
-        }
-      }
-
-      if (item) {
-        return item.roll(dataset, childKey);
       }
     }
   }
