@@ -1,4 +1,4 @@
-import { preLocalize } from "./utils.mjs";
+import { preLocalize } from "./localize.mjs";
 
 export const E20 = {};
 
