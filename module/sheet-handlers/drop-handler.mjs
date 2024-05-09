@@ -11,12 +11,13 @@ import { focusUpdate, roleUpdate } from "./role-handler.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
- * @param {DragEvent} event           The concluding DragEvent which contains drop data
- * @param {Object} data               The data transfer extracted from the event
+ * @param {Object} data The data transfer extracted from the event
+ * @param {Actor} actor The Actor receiving the Item
+ * @param {Function} dropFunc The function to call to complete the Item drop
  * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
  *                                    not permitted.
  */
-export async function onDropItem(event, data, actor, superOnDropItem) {
+export async function onDropItem(data, actor, dropFunc) {
   if (data.type != 'Item') {
     return false;
   }
@@ -30,51 +31,52 @@ export async function onDropItem(event, data, actor, superOnDropItem) {
 
   // Don't drop a new item if they're just sorting
   if (actor.uuid === sourceItem?.parent?.uuid) {
-    return await _onDropDefault(data, superOnDropItem, false);
+    return await _onDropDefault(data, dropFunc, false);
   }
 
   switch (sourceItem.type) {
   case 'alteration':
-    return await alterationUpdate(actor, sourceItem, superOnDropItem);
+    return await alterationUpdate(actor, sourceItem, dropFunc);
   case 'armor':
-    return await gearDrop(actor, sourceItem, superOnDropItem);
+    return await gearDrop(actor, sourceItem, dropFunc);
   case 'focus':
-    return await focusUpdate(actor, sourceItem, superOnDropItem);
+    return await focusUpdate(actor, sourceItem, dropFunc);
   case 'influence':
-    return await influenceUpdate(actor, sourceItem, superOnDropItem);
+    return await influenceUpdate(actor, sourceItem, dropFunc);
   case 'origin':
-    return await originUpdate(actor, sourceItem, superOnDropItem);
+    return await originUpdate(actor, sourceItem, dropFunc);
   case 'role':
-    return await roleUpdate(actor, sourceItem, superOnDropItem);
+    return await roleUpdate(actor, sourceItem, dropFunc);
   case 'rolePoints':
     ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
     return;
   case 'perk':
-    return await perkUpdate(actor, sourceItem, superOnDropItem);
+    return await perkUpdate(actor, sourceItem, dropFunc);
   case 'power':
-    return await powerUpdate(actor, sourceItem, superOnDropItem);
+    return await powerUpdate(actor, sourceItem, dropFunc);
   case 'upgrade':
-    return await _onDropUpgrade(sourceItem, actor, superOnDropItem);
+    return await _onDropUpgrade(sourceItem, actor, dropFunc);
   case 'weapon':
-    return await gearDrop(actor, sourceItem, superOnDropItem);
+    return await gearDrop(actor, sourceItem, dropFunc);
   case 'weaponEffect':
-    return attachItem(actor, sourceItem, superOnDropItem);
+    return attachItem(actor, sourceItem, dropFunc);
 
   default:
-    return await superOnDropItem;
+    return await dropFunc;
   }
 }
 
 /**
  * Handle dropping of any other item an Actor sheet
- * @param {Object} data               The data transfer extracted from the event
- * @param {Boolean} isNewItem         Whether a new item is intended to be dropped
+ * @param {Object} data The data transfer extracted from the event
+ * @param {Function} dropFunc The function to call to complete the Item drop
+ * @param {Boolean} isNewItem Whether a new Item is intended to be dropped
  * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
  *                                    not permitted.
  */
-async function _onDropDefault(data, superOnDropItem, isNewItem=true) {
+async function _onDropDefault(data, dropFunc, isNewItem=true) {
   const itemUuid = await parseId(data.uuid);
-  let droppedItemList = await superOnDropItem;
+  let droppedItemList = await dropFunc;
 
   if (isNewItem) {
     const newItem = droppedItemList[0];
@@ -90,13 +92,12 @@ async function _onDropDefault(data, superOnDropItem, isNewItem=true) {
 
 /**
  * Handle dropping of an Actor data onto another Actor sheet
- * @param {DragEvent} event           The concluding DragEvent which contains drop data
- * @param {Object} data               The data transfer extracted from the event
+ * @param {Object} data The data transfer extracted from the event
+ * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
  * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
  *                                    not permitted.
- * @override
  */
-export async function onDropActor(event, data, actorSheet) {
+export async function onDropActor(data, actorSheet) {
   const actor = actorSheet.actor;
   if (!actor.isOwner) return false;
 
@@ -122,20 +123,20 @@ export async function onDropActor(event, data, actorSheet) {
 
 /**
  * Handle dropping of an Upgrade onto an Actor sheet
- * @param {Upgrade} upgrade           The upgrade
- * @param {DragEvent} event           The concluding DragEvent which contains drop data
- * @param {Object} data               The data transfer extracted from the event
+ * @param {Upgrade} upgrade The Upgrade being dropped
+ * @param {Actor} actor The Actor receiving the Upgrade
+ * @param {Function} dropFunc The function to call to complete the Upgrade drop
  * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
  *                                    not permitted.
  */
-async function _onDropUpgrade(upgrade, actor, superOnDropItem) {
+async function _onDropUpgrade(upgrade, actor, dropFunc) {
   // Drones can only accept drone Upgrades
   if (actor.type == 'companion' && actor.system.type == 'drone' && upgrade.system.type == 'drone') {
-    return superOnDropItem();
+    return dropFunc();
   } else if (actor.system.canTransform && upgrade.system.type == 'armor') {
-    return superOnDropItem();
+    return dropFunc();
   } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-    return attachItem(actor, upgrade, superOnDropItem);
+    return attachItem(actor, upgrade, dropFunc);
   } else {
     ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
     return false;

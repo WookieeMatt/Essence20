@@ -683,7 +683,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @override
    */
   async _onDropItem(event, data) {
-    onDropItem(event, data, this.actor, super._onDropItem.bind(this, event, data));
+    return onDropItem(data, this.actor, super._onDropItem.bind(this, event, data));
   }
 
   /**
@@ -695,7 +695,7 @@ export class Essence20ActorSheet extends ActorSheet {
    * @override
    */
   async _onDropActor(event, data) {
-    onDropActor(event, data, this.actor, super._onDropItem.bind(this, event, data));
+    return onDropActor(data, this.actor, super._onDropItem.bind(this, event, data));
   }
 
   /**
@@ -707,7 +707,7 @@ export class Essence20ActorSheet extends ActorSheet {
     await super._onChangeInput(event);
 
     if (event.currentTarget.name == "system.level") {
-      await onLevelChange(this.actor, this.actor.system.level);
+      return await onLevelChange(this.actor, this.actor.system.level);
     }
   }
 }
