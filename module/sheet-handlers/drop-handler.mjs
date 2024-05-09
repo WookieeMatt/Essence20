@@ -62,7 +62,7 @@ export async function onDropItem(data, actor, dropFunc) {
     return attachItem(actor, sourceItem, dropFunc);
 
   default:
-    return await dropFunc;
+    return await dropFunc();
   }
 }
 

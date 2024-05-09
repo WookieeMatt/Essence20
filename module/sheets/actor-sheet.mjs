@@ -676,8 +676,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle dropping an Item onto an Actor.
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
+   * @param {DragEvent} event The concluding DragEvent which contains drop data
+   * @param {Object} data The data transfer extracted from the event
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    * @override
@@ -688,14 +688,14 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle dropping of an Actor data onto another Actor sheet
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
+   * @param {DragEvent} event The concluding DragEvent which contains drop data
+   * @param {Object} data The data transfer extracted from the event
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    * @override
    */
   async _onDropActor(event, data) {
-    return onDropActor(data, this.actor, super._onDropItem.bind(this, event, data));
+    return onDropActor(data, this);
   }
 
   /**
