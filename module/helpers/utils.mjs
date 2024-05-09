@@ -227,44 +227,6 @@ export function getShiftedSkill(skill, shift, actor) {
   return [newShift, skillString];
 }
 
-/** Handle comparing skill rank
- * @param {String} shift1 The first skill
- * @param {String} shift2 The second skill
- * @param {String} operator The type of comparison
- * @return {Boolean} The result of the comparison
- */
-export function compareShift(shift1, shift2, operator) {
-  if (operator == 'greater') {
-    return CONFIG.E20.skillShiftList.indexOf(shift1) < CONFIG.E20.skillShiftList.indexOf(shift2);
-  } else if (operator == 'lesser') {
-    return CONFIG.E20.skillShiftList.indexOf(shift1) > CONFIG.E20.skillShiftList.indexOf(shift2);
-  } else if (operator == 'equal') {
-    return CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2);
-  } else {
-    throw new Error(`Operator ${operator} not expected`);
-  }
-}
-
-/*
- * Handle organizing selects by adding optGroups
- * @param {Select} select The select that you are organizing
- * @param {Category} category The category that we are adding to the options
- * @param {Items} items The types that you are putting in the category
- */
-export function setOptGroup(select, category, items) {
-  const options = select.querySelectorAll(":scope > option");
-  const optGroup = document.createElement("optgroup");
-  optGroup.label = category;
-
-  for (const option of options) {
-    if (items[option.value]) {
-      optGroup.appendChild(option);
-    }
-  }
-
-  return optGroup;
-}
-
 /**
  * Displays an error message if the sheet is locked
  * @returns {boolean} True if the sheet is locked, and false otherwise
@@ -608,25 +570,6 @@ export async function setFocusValues(focus, actor, newLevel=null, previousLevel=
     // Level down
     await deleteAttachmentsForItem(focus, actor, previousLevel);
   }
-}
-
-/**
- * Determines the number of increases that have occured based on the level of the actor
- * @param {String[]} levels The array of levels that you advance at
- * @param {Number} currentLevel The current level of the actor
- * @returns {Number} level Increase The number of increases for the level of the actor
- */
-export function getLevelIncreases(levels, currentLevel) {
-  let levelIncreases = 0;
-  for (const arrayLevel of levels) {
-
-    const level = arrayLevel.replace(/[^0-9]/g, '');
-    if (level <= currentLevel) {
-      levelIncreases += 1;
-    }
-  }
-
-  return levelIncreases;
 }
 
 /**
