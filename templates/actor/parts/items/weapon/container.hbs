@@ -24,7 +24,7 @@
           <div style="flex-grow: 1.5;">
             {{item.name}}
           </div>
-          <select class="inline-edit" data-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
+          <select class="inline-edit" data-field="system.classification.skill" data-parent-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
             {{#select item.classification.skill}}
             {{#each @root.actor.system.skills}}
               {{#if this.displayName}}

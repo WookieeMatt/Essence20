@@ -663,17 +663,27 @@ export class Essence20ActorSheet extends ActorSheet {
    */
   async _onInlineEdit(event) {
     event.preventDefault();
+
+    let item;
     let element = event.currentTarget;
-    let itemId = element.closest(".item").dataset.itemId;
-
-    if (!itemId) {
-      itemId = element.closest(".item").dataset.parentId;
-    }
-
-    const item = this.actor.items.get(itemId);
-    const field = element.dataset.field;
+    const dataset = element.closest(".item").dataset;
+    const itemId = dataset.itemId;
+    const itemUuid = dataset.itemUuid;
+    const parentId = dataset.parentId;
     const newValue = element.type == 'checkbox' ? element.checked : element.value;
 
+    // If a child item is being updated, update the parent's copy too
+    if (!itemId && itemUuid && parentId) {
+      item = await fromUuid(itemUuid);
+
+      const parentItem = this.actor.items.get(parentId);
+      const parentField = dataset.parentField;
+      await parentItem.update({ [parentField]: newValue });
+    } else {
+      item = this.actor.items.get(itemId);
+    }
+
+    const field = element.dataset.field;
     return item.update({ [field]: newValue });
   }
 
