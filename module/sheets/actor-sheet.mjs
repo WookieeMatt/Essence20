@@ -2,22 +2,19 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/
 import {
   deleteAttachmentsForItem,
   checkIsLocked,
-  createItemCopies,
   getNumActions,
-  parseId,
   setEntryAndAddItem,
 } from "../helpers/utils.mjs";
 import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
-import { onAlterationDelete, alterationUpdate } from "../sheet-handlers/alteration-handler.mjs";
-import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers/background-handler.mjs";
+import { onAlterationDelete } from "../sheet-handlers/alteration-handler.mjs";
+import { onOriginDelete } from "../sheet-handlers/background-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
-import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
-import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-handlers/role-handler.mjs";
+import { onFocusDelete, onRoleDelete } from "../sheet-handlers/role-handler.mjs";
 import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
-import { powerUpdate } from "../sheet-handlers/power-handler.mjs";
-import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
+import { onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
 import { onRest, onRoll } from "../sheet-handlers/listener-misc-handler.mjs";
+import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -679,154 +676,26 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /**
    * Handle dropping an Item onto an Actor.
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
+   * @param {DragEvent} event The concluding DragEvent which contains drop data
+   * @param {Object} data The data transfer extracted from the event
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    * @override
    */
   async _onDropItem(event, data) {
-    if (data.type != 'Item') {
-      return;
-    }
-
-    if (checkIsLocked(this.actor)) {
-      return;
-    }
-
-    const sourceItem = await fromUuid(data.uuid);
-    if (!sourceItem) return false;
-
-    // Don't drop a new item if they're just sorting
-    if (this.actor.uuid === sourceItem?.parent?.uuid) {
-      return await this._onDropDefault(event, data, false);
-    }
-
-    switch (sourceItem.type) {
-    case 'alteration':
-      return await alterationUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'armor':
-      return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'focus':
-      return await focusUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'influence':
-      return await influenceUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'origin':
-      return await originUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'role':
-      return await roleUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'rolePoints':
-      ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
-      return;
-    case 'perk':
-      return await perkUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'power':
-      return await powerUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'upgrade':
-      return await this._onDropUpgrade(sourceItem, event, data);
-    case 'weapon':
-      return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'weaponEffect':
-      return attachItem(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-
-    default:
-      return await super._onDropItem(event, data);
-    }
-  }
-
-  /**
-   * Handle dropping of an Upgrade onto an Actor sheet
-   * @param {Upgrade} upgrade           The upgrade
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
-   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
-   *                                    not permitted.
-   */
-  async _onDropUpgrade(upgrade, event, data) {
-    // Drones can only accept drone Upgrades
-    if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && upgrade.system.type == 'drone') {
-      return super._onDropItem(event, data);
-    } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
-      return super._onDropItem(event, data);
-    } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return attachItem(this.actor, upgrade, super._onDropItem.bind(this, event, data));
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
-      return false;
-    }
-  }
-
-  /**
-   * Handle dropping of any other item an Actor sheet
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
-   * @param {Boolean} isNewItem         Whether a new item is intended to be dropped
-   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
-   *                                    not permitted.
-   */
-  async _onDropDefault(event, data, isNewItem=true) {
-    // Drones can only accept drone Upgrades
-    const itemUuid = await parseId(data.uuid);
-
-    let droppedItemList = await super._onDropItem(event, data);
-
-    if (isNewItem) {
-      const newItem = droppedItemList[0];
-      await newItem.update ({
-        "system.originalId": itemUuid,
-      });
-    } else {
-      droppedItemList = [];
-    }
-
-    return droppedItemList;
-  }
-
-  /**
-   * Handle dropping of a Weapon onto an Actor sheet
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
-   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
-   *                                    not permitted.
-   */
-  async _onDropWeapon(event, data) {
-    const weaponList = await super._onDropItem(event, data);
-    const newWeapon = weaponList[0];
-    const oldWeaponEffectIds = newWeapon.system.weaponEffectIds;
-    const newWeaponEffectIds = await createItemCopies(oldWeaponEffectIds, this.actor);
-    await newWeapon.update({ ['system.weaponEffectIds']: newWeaponEffectIds });
-    return weaponList;
+    return onDropItem(data, this.actor, super._onDropItem.bind(this, event, data));
   }
 
   /**
    * Handle dropping of an Actor data onto another Actor sheet
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
+   * @param {DragEvent} event The concluding DragEvent which contains drop data
+   * @param {Object} data The data transfer extracted from the event
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    * @override
    */
   async _onDropActor(event, data) {
-    if (!this.actor.isOwner) return false;
-
-    // Get the target actor
-    let sourceActor = await fromUuid(data.uuid);
-    if (!sourceActor) return false;
-
-    // Handles dropping Zords onto Megaform Zords
-    if (this.actor.type == 'megaformZord' && sourceActor.type == 'zord') {
-      const zordIds = duplicate(this.actor.system.zordIds);
-
-      // Can't contain duplicate Zords
-      if (!zordIds.includes(sourceActor.id)) {
-        zordIds.push(sourceActor.id);
-        await this.actor.update({
-          "system.zordIds": zordIds,
-        }).then(this.render(false));
-      }
-    } else {
-      return false;
-    }
+    return onDropActor(data, this);
   }
 
   /**
@@ -838,7 +707,7 @@ export class Essence20ActorSheet extends ActorSheet {
     await super._onChangeInput(event);
 
     if (event.currentTarget.name == "system.level") {
-      await onLevelChange(this.actor, this.actor.system.level);
+      return await onLevelChange(this.actor, this.actor.system.level);
     }
   }
 }

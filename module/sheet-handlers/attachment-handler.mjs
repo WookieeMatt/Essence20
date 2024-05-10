@@ -38,7 +38,7 @@ export async function attachItem(actor, droppedItem, dropFunc) {
   const upgradableItems = getItemsOfType(parentType, actor.items);
 
   if (upgradableItems.length == 1) {
-    _attachItem(upgradableItems[0], droppedItem, dropFunc);
+    _attachItem(upgradableItems[0], dropFunc);
   } else if (upgradableItems.length > 1) {
     const choices = {};
     for (const upgradableItem of upgradableItems) {
