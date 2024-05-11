@@ -42,11 +42,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AltModeSize'}}
       {{#*inline "item-field-inputs"}}
         <select name="system.altModesize">
-          {{#select system.altModesize}}
-          {{#each config.actorSizes as |value size|}}
-            <option value="{{size}}">{{value}}</option>
-          {{/each}}
-          {{/select}}
+          {{selectOptions config.actorSizes selected=system.altModesize}}
         </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
