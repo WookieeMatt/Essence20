@@ -40,7 +40,7 @@
       {{#*inline "item-field-inputs"}}
       {{numberInput system.damageValue name="system.damageValue" min=0 step=1}}
       <select name="system.damageType">
-        {{selectOptions config.damageTypes selected=system.damageType}}
+        {{selectOptions config.damageTypes selected=system.damageType localize=true}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
