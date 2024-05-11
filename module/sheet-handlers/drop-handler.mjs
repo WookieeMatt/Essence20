@@ -1,7 +1,5 @@
-import {
-  checkIsLocked,
-  parseId,
-} from "../helpers/utils.mjs";
+import { checkIsLocked } from "../helpers/actor.mjs";
+import { parseId } from "../helpers/utils.mjs";
 import { alterationUpdate } from "./alteration-handler.mjs";
 import { attachItem, gearDrop } from "./attachment-handler.mjs";
 import { influenceUpdate, originUpdate } from "./background-handler.mjs";

@@ -1,5 +1,6 @@
 import { rememberOptions } from "../helpers/dialog.mjs";
-import { getItemsOfType, resizeTokens } from "../helpers/utils.mjs";
+import { resizeTokens } from "../helpers/actor.mjs";
+import { getItemsOfType } from "../helpers/utils.mjs";
 
 /**
  * Handles AltModes being deleted

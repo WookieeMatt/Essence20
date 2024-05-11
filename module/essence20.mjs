@@ -10,7 +10,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { getNumActions } from "./helpers/utils.mjs";
+import { getNumActions } from "./helpers/actor.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 

@@ -1,10 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import {
-  deleteAttachmentsForItem,
-  checkIsLocked,
-  getNumActions,
-  setEntryAndAddItem,
-} from "../helpers/utils.mjs";
+import { checkIsLocked, getNumActions } from "../helpers/actor.mjs";
+import { deleteAttachmentsForItem, setEntryAndAddItem } from "../helpers/utils.mjs";
 import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
 import { onAlterationDelete } from "../sheet-handlers/alteration-handler.mjs";
 import { onOriginDelete } from "../sheet-handlers/background-handler.mjs";
