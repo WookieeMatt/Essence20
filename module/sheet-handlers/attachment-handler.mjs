@@ -1,7 +1,7 @@
+import { rememberOptions } from "../helpers/dialog.mjs";
 import {
   createItemCopies,
   getItemsOfType,
-  rememberOptions,
   setEntryAndAddItem,
 } from "../helpers/utils.mjs";
 

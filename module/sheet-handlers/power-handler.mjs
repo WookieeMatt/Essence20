@@ -1,7 +1,5 @@
-import {
-  parseId,
-  rememberValues,
-} from "../helpers/utils.mjs";
+import { rememberValues} from "../helpers/dialog.mjs";
+import { parseId } from "../helpers/utils.mjs";
 
 /**
  * Handles dropping a Power on to an Actor
@@ -39,7 +37,7 @@ export async function powerUpdate(actor, power, dropFunc) {
 export async function powerCost(actor, power) {
   let maxPower = 0;
   let powerType = "";
-  
+
   if (power.system.type == "grid") {
     powerType = "personal";
   } else if (power.system.type == "sorcerous") {

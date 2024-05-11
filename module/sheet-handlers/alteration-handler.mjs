@@ -1,8 +1,11 @@
+
+import {
+  rememberOptions,
+  rememberValues,
+} from "../helpers/dialog.mjs";
 import {
   getShiftedSkill,
   parseId,
-  rememberOptions,
-  rememberValues,
 } from "../helpers/utils.mjs";
 
 /**
