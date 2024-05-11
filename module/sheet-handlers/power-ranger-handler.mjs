@@ -17,10 +17,10 @@ export function prepareZords(actor, context) {
 
 /**
  * Handle deleting Zords from MFZs
- * @param {ActorSheet} actorSheet The ActorSheet whose Zord is being deleted
  * @param {Event} event The originating click event
+ * @param {ActorSheet} actorSheet The ActorSheet whose Zord is being deleted
  */
-export async function onZordDelete(actorSheet, event) {
+export async function onZordDelete(event, actorSheet) {
   const li = $(event.currentTarget).parents(".zord");
   const zordId = li.data("zordId");
   const zordIds = actorSheet.actor.system.zordIds.filter(x => x !== zordId);

@@ -345,7 +345,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-delete').click(ev => onItemDelete(ev, this));
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(ev => onZordDelete(this, ev));
+    html.find('.zord-delete').click(ev => onZordDelete(ev, this));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(ev => onInlineEdit(ev, this.actor));
