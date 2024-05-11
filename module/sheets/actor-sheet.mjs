@@ -19,7 +19,7 @@ import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs";
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
-    this._accordionStates = { skills: '' };
+    this.accordionStates = { skills: '' };
   }
 
   /** @override */
@@ -77,7 +77,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare Zords for MFZs
     prepareZords(this.actor, context);
 
-    context.accordionStates = this._accordionStates;
+    context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
 
     return context;
