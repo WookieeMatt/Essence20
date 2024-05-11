@@ -1,8 +1,7 @@
+import { rememberOptions, rememberSelect } from "../helpers/dialog.mjs";
 import {
   deleteAttachmentsForItem,
   getItemsOfType,
-  rememberOptions,
-  rememberSelect,
   roleValueChange,
   setFocusValues,
   setRoleValues,

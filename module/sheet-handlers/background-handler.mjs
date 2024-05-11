@@ -1,9 +1,11 @@
 import {
+  rememberOptions,
+} from "../helpers/dialog.mjs";
+import {
   deleteAttachmentsForItem,
   createItemCopies,
   getItemsOfType,
   getShiftedSkill,
-  rememberOptions,
 } from "../helpers/utils.mjs";
 
 /**
