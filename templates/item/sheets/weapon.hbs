@@ -21,11 +21,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponAvailability'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.availability">
-        {{#select system.availability}}
-        {{#each config.availabilities as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.availabilities selected=system.availability}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -34,11 +30,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSize'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.classification.size">
-        {{#select system.classification.size}}
-        {{#each config.weaponSizes as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.weaponSizes selected=system.classification.size}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -73,18 +65,10 @@
       <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
         placeholder="{{ localize 'E20.WeaponRequirementsCustom' }}" />
       <select name="system.requirements.skill">
-        {{#select system.requirements.skill}}
-        {{#each config.skills as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.skills selected=system.requirements.skill}}
       </select>
       <select name="system.requirements.shift">
-        {{#select system.requirements.shift}}
-        {{#each config.weaponRequirementShifts as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.weaponRequirementShifts selected=system.requirements.shift}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

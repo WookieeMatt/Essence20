@@ -23,11 +23,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerTypes'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.type">
-        {{#select system.type}}
-        {{#each config.powerTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.powerTypes selected=system.type}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -74,11 +70,7 @@
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionTypes'}}
         {{#*inline "item-field-inputs"}}
         <select name="system.actionType">
-          {{#select system.actionType}}
-          {{#each config.actionTypes as |name type|}}
-            <option value="{{type}}">{{name}}</option>
-          {{/each}}
-          {{/select}}
+          {{selectOptions config.actionTypes selected=system.actionType}}
         </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -88,11 +80,7 @@
         {{#*inline "item-field-inputs"}}
         {{numberInput system.usesPer name="system.usesPer" min=0 step=1}}
         <select name="system.usesInterval">
-          {{#select system.usesInterval}}
-          {{#each config.usesInterval as |name type|}}
-            <option value="{{type}}">{{name}}</option>
-          {{/each}}
-          {{/select}}
+          {{selectOptions config.usesInterval selected=system.usesInterval}}
         </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

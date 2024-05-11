@@ -21,11 +21,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSkill'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.classification.skill">
-        {{#select system.classification.skill}}
-        {{#each config.skills as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.skills selected=system.classification.skill}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -34,11 +30,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponStyle'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.classification.style">
-        {{#select system.classification.style}}
-        {{#each config.weaponStyles as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.weaponStyles selected=system.classification.style}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -48,11 +40,7 @@
       {{#*inline "item-field-inputs"}}
       {{numberInput system.damageValue name="system.damageValue" min=0 step=1}}
       <select name="system.damageType">
-        {{#select system.damageType}}
-          {{#each config.damageTypes as |name type|}}
-            <option value="{{type}}">{{localize name}}</option>
-          {{/each}}
-        {{/select}}
+        {{selectOptions config.damageTypes selected=system.damageType}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

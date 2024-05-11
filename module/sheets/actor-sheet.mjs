@@ -24,7 +24,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["essence20", "sheet", "actor"],
       width: 620,
       height: 574,

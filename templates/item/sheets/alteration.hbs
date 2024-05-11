@@ -23,11 +23,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationAvailability'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.availability">
-        {{#select system.availability}}
-        {{#each config.availabilities as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.availabilities selected=system.availability}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -36,11 +32,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationOptions'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.type">
-        {{#select system.type}}
-        {{#each config.alterationTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.alterationTypes selected=system.type}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -87,11 +79,7 @@
         {{#*inline "item-field-inputs"}}
         {{numberInput system.bonusMovement name="system.bonusMovement" min=0 step=5}}
         <select name="system.bonusMovementType">
-          {{#select system.bonusMovementType}}
-          {{#each config.movementTypes as |name type|}}
-            <option value="{{type}}">{{name}}</option>
-          {{/each}}
-          {{/select}}
+          {{selectOptions config.movementTypes selected=system.bonusMovementType}}
         </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -101,11 +89,7 @@
         {{#*inline "item-field-inputs"}}
         {{numberInput system.costMovement name="system.costMovement" min=0 step=5}}
         <select name="system.costMovementType">
-          {{#select system.costMovementType}}
-          {{#each config.movementTypes as |name type|}}
-            <option value="{{type}}">{{name}}</option>
-          {{/each}}
-          {{/select}}
+          {{selectOptions config.movementTypes selected=system.costMovementType}}
         </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

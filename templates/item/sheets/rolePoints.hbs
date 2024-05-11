@@ -41,12 +41,8 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsBonusType'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.bonus.type">
-        {{#select system.bonus.type}}
-        {{#each config.bonusTypes as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
-      </select>
+        {{selectOptions config.bonusTypes selected=system.bonus.type}}
+       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
