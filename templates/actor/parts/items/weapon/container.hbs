@@ -25,7 +25,15 @@
             {{item.name}}
           </div>
           <select class="inline-edit" data-field="system.classification.skill" data-parent-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
-            {{selectOptions @root.actor.system.skills selected=item.classification.skill localize=true}}
+            {{#select item.classification.skill}}
+            {{#each @root.actor.system.skills}}
+              {{#if this.displayName}}
+                <option value="{{@key}}">{{this.displayName}}</option>
+              {{else}}
+                <option value="{{@key}}">{{localize (lookup @root.config.skills @key)}}</option>
+              {{/if}}
+            {{/each}}
+            {{/select}}
           </select>
 
           <div class="flexrow" style="flex-wrap: nowrap; gap: 2px;">
