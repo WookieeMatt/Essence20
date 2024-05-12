@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -10,12 +10,12 @@ export class SpellItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      circle: makeStrWithChoices('athletics', E20.spellCircles),
+      circle: makeStrWithChoices('athletics', Object.keys(E20.spellCircles)),
       cost: makeInt(0),
       duration: makeStr(''),
       isSpecialized: makeBool(false),
       range: makeInt(0),
-      tier: makeStrWithChoices(null, E20.spellTiers),
+      tier: makeStrWithChoices(null, Object.keys(E20.spellTiers)),
     };
   }
 }

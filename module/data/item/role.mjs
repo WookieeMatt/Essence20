@@ -1,4 +1,4 @@
-import { makeInt, makeStr, makeStrArray } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrArray } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';

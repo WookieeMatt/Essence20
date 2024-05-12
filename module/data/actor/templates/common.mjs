@@ -32,7 +32,7 @@ function makeSkillFields() {
     edge: makeBool(false),
     isSpecialized: makeBool(false),
     modifier: makeInt(0),
-    shift: makeStrWithChoices('d20', E20.skillRollableShifts),
+    shift: makeStrWithChoices('d20', Object.keys(E20.skillShifts)),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
     snag: makeBool(false),
@@ -41,7 +41,7 @@ function makeSkillFields() {
 
 export const common = () => ({
   altModeName: makeStr(''),
-  altModeSize: makeStrWithChoices('common', E20.actorSizes),
+  altModeSize: makeStrWithChoices('common', Object.keys(E20.actorSizes)),
   canMorph: makeBool(false),
   canSpellcast: makeBool(false),
   canTransform: makeBool(false),
@@ -108,7 +108,7 @@ export const common = () => ({
       value: makeInt(0),
     }),
   }),
-  size: makeStrWithChoices('common', E20.actorSizes),
+  size: makeStrWithChoices('common', Object.keys(E20.actorSizes)),
   skills: new fields.SchemaField({
     acrobatics: makeSkillFields(),
     alertness: makeSkillFields(),

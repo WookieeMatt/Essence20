@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
 import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -23,7 +23,7 @@ export class RolePointsItemData extends foundry.abstract.DataModel {
         level20Value: makeInt(null),
         increaseLevels: makeStrArray(),
         startingValue: makeInt(null),
-        type: makeStrWithChoices('none', E20.bonusTypes),
+        type: makeStrWithChoices('none', Object.keys(E20.bonusTypes)),
         value : makeInt(0),
       }),
       isActivatable: makeBool(false),

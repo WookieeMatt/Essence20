@@ -17,4 +17,3 @@ export const config = {
   transformer: TransformerActorData,
   zord: ZordActorData,
 };
-

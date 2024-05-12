@@ -1,6 +1,6 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
-import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -14,7 +14,7 @@ export class PerkItemData extends foundry.abstract.DataModel {
       ...parentItem(),
       prerequisite: makeStr(null),
       selectionLimit: makeInt(1),
-      type: makeStrWithChoices('general', E20.perkTypes),
+      type: makeStrWithChoices('general', Object.keys(E20.perkTypes)),
     };
   }
 }

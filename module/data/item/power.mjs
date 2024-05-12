@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
 import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -10,14 +10,14 @@ export class PowerItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      actionType: makeStrWithChoices('free', E20.actionTypes),
+      actionType: makeStrWithChoices('free', Object.keys(E20.actionTypes)),
       canActivate: makeBool(false),
       hasVariableCost: makeBool(false),
       maxPowerCost: makeInt(null),
       powerCost: makeInt(null),
       selectionLimit: makeInt(1),
-      type: makeStrWithChoices('grid', E20.powerTypes),
-      usesInterval: makeStrWithChoices('perScene', E20.usesInterval),
+      type: makeStrWithChoices('grid', Object.keys(E20.powerTypes)),
+      usesInterval: makeStrWithChoices('perScene', Object.keys(E20.usesInterval)),
       usesPer: makeInt(null),
     };
   }

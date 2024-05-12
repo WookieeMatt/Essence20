@@ -1,2 +1,2 @@
-export * as actorModel from './actor/index.mjs';
-export * as itemModel from './item/index.mjs';
+export * as actor from './actor/index.mjs';
+export * as item from './item/index.mjs';

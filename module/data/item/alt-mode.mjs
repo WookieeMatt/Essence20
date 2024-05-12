@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
 import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -19,7 +19,7 @@ export class AltModeItemData extends foundry.abstract.DataModel {
         aquatic: makeInt(0),
         ground: makeInt(0),
       }),
-      size: makeStrWithChoices('common', E20.actorSizes),
+      size: makeStrWithChoices('common', Object.keys(E20.actorSizes)),
     };
   }
 }

@@ -9,7 +9,7 @@ function makeEssencesFields(usesDrivers, init) {
   });
 }
 
-export const creature = () => ({
+export const zordBase = () => ({
   armor: makeInt(10),
   essences: new fields.SchemaField({
     strength: makeEssencesFields(false, 3),

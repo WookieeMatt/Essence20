@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
 import { makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 

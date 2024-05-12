@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
 import { makeInt, makeStr, makeStrArray, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -13,13 +13,13 @@ export class UpgradeItemData extends foundry.abstract.DataModel {
       ...item(),
       ...itemDescription(),
       armorBonus: new fields.SchemaField({
-        defense: makeStrWithChoices('toughness', E20.defenses),
+        defense: makeStrWithChoices('toughness', Object.keys(E20.defenses)),
         value: makeInt(0),
       }),
-      availability: makeStrWithChoices('standard', E20.availabilities),
+      availability: makeStrWithChoices('standard', Object.keys(E20.availabilities)),
       benefit: makeStr(''),
       traits: makeStrArray(),
-      type: makeStrWithChoices('armor', E20.upgradeTypes),
+      type: makeStrWithChoices('armor', Object.keys(E20.upgradeTypes)),
       prerequisite: makeStr(null),
     };
   }

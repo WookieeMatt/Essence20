@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
 import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -11,10 +11,10 @@ export class WeaponEffectItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       classification: new fields.SchemaField({
-        skill: makeStrWithChoices('athletics', E20.skills),
-        style: makeStrWithChoices('melee', E20.weaponStyles),
+        skill: makeStrWithChoices('athletics', Object.keys(E20.skills)),
+        style: makeStrWithChoices('melee', Object.keys(E20.weaponStyles)),
       }),
-      damageType: makeStrWithChoices('blunt', E20.damageTypes),
+      damageType: makeStrWithChoices('blunt', Object.keys(E20.damageTypes)),
       damageValue: makeInt(1),
       shiftDown: makeInt(0),
       numHands: makeInt(1),

@@ -1,4 +1,4 @@
-import { E20 } from "../../../helpers/config.mjs";
+import { E20 } from "../../helpers/config.mjs";
 
 import { makeBool, makeStrWithChoices } from "../generic-makers.mjs";
 
@@ -10,7 +10,7 @@ export class SpecializationItemData extends foundry.abstract.DataModel {
       ...item(),
       isSpecialized: makeBool(true),
       shift: makeStrWithChoices('d20', E20.skillRollableShifts),
-      skill: makeStrWithChoices('athletics', E20.skills),
+      skill: makeStrWithChoices('athletics', Object.keys(E20.skills)),
     };
   }
 }

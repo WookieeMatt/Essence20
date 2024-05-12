@@ -1,27 +1,28 @@
 const fields = foundry.data.fields;
 
-export function makeBool(init) {
-  return new fields.BooleanField({initial: init});
+export function makeBool(initial) {
+  return new fields.BooleanField({initial});
 }
 
-export function makeInt(init) {
+export function makeInt(initial) {
   return new fields.NumberField({
-    initial: init,
+    initial,
     integer: true,
+    nullable: initial == null,
   });
 }
 
-export function makeStr(init) {
-  return new fields.StringField({initial: init});
+export function makeStr(initial) {
+  return new fields.StringField({initial});
 }
 
 export function makeStrArray() {
   return new fields.ArrayField(new fields.StringField());
 }
 
-export function makeStrWithChoices(init, choices) {
+export function makeStrWithChoices(initial, choices) {
   return new fields.StringField({
-    choices: Object.values(choices),
-    initial: init,
+    choices,
+    initial,
   });
 }
