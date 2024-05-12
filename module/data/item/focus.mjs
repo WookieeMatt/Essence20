@@ -1,11 +1,11 @@
-import { item } from './item';
-import { itemDescription } from './item-description';
+import { item } from './item.mjs';
+import { itemDescription } from './item-description.mjs';
 
 import { makeStr, makeStrArray } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
-class FocusItemData extends foundry.abstract.DataModel {
+export class FocusItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...item(),

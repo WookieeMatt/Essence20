@@ -1,4 +1,5 @@
 import { E20 } from "../../../helpers/config.mjs";
+
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;

@@ -1,11 +1,11 @@
-import { common } from './common';
-import { machine } from './machine';
-
 import { makeInt, makeStr } from "../generic-makers.mjs";
+
+import { common } from './common.mjs';
+import { machine } from './machine.mjs';
 
 const fields = foundry.data.fields;
 
-class VehicleActorData extends foundry.abstract.DataModel {
+export class VehicleActorData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...common(),

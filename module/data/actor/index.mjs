@@ -1,12 +1,12 @@
-import { CharacterActorData } from './character';
-import { CompanionActorData } from './companion';
-import { GiJoeActorData } from './gi-joe';
-import { MegaformZordActorData } from './megaform-zord';
-import { NpcActorData } from './npc';
-import { PonyActorData } from './pony';
-import { PowerRangerActorData } from './power-ranger';
-import { TransformerActorData } from './transformer';
-import { ZordActorData } from './zord';
+import { CharacterActorData } from './character.mjs';
+import { CompanionActorData } from './companion.mjs';
+import { GiJoeActorData } from './gi-joe.mjs';
+import { MegaformZordActorData } from './megaform-zord.mjs';
+import { NpcActorData } from './npc.mjs';
+import { PonyActorData } from './pony.mjs';
+import { PowerRangerActorData } from './power-ranger.mjs';
+import { TransformerActorData } from './transformer.mjs';
+import { ZordActorData } from './zord.mjs';
 
 export const config = {
   character: CharacterActorData,

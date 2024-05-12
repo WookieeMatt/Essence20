@@ -1,9 +1,11 @@
 import { E20 } from "../../../helpers/config.mjs";
-import { character } from './character';
-import { common } from './common';
-import { creature } from './creature';
 
 import { makeInt } from "../generic-makers.mjs";
+
+import { character } from './character.mjs';
+import { common } from './common.mjs';
+import { creature } from './creature.mjs';
+
 
 const fields = foundry.data.fields;
 
@@ -13,7 +15,7 @@ function makeDefensesFields(init) {
   });
 }
 
-class CompanionActorData extends foundry.abstract.DataModel {
+export class CompanionActorData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...character(),

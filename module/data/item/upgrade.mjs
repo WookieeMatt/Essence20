@@ -1,12 +1,13 @@
 import { E20 } from "../../../helpers/config.mjs";
-import { item } from './item';
-import { itemDescription } from './item-description';
 
 import { makeInt, makeStr, makeStrArray, makeStrWithChoices } from "../../generic-makers.mjs";
 
+import { item } from './item.mjs';
+import { itemDescription } from './item-description.mjs';
+
 const fields = foundry.data.fields;
 
-class UpgradeItemData extends foundry.abstract.DataModel {
+export class UpgradeItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...item(),

@@ -1,8 +1,8 @@
-import { character } from './character';
-import { common } from './common';
-import { creature } from './creature';
+import { character } from './character.mjs';
+import { common } from './common.mjs';
+import { creature } from './creature.mjs';
 
-class GiJoeActorData extends foundry.abstract.DataModel {
+export class GiJoeActorData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...character(),

@@ -1,12 +1,10 @@
-import { character } from './character';
-import { common } from './common';
-import { creature } from './creature';
-
 import { makeBool, makeInt, makeStr } from "../generic-makers.mjs";
 
-const fields = foundry.data.fields;
+import { character } from './character.mjs';
+import { common } from './common.mjs';
+import { creature } from './creature.mjs';
 
-class TransformerActorData extends foundry.abstract.DataModel {
+export class TransformerActorData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...character(),

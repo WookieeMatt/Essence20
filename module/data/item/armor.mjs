@@ -1,11 +1,11 @@
 import { E20 } from "../../../helpers/config.mjs";
-import { item } from './item';
-import { itemDescription } from './item-description';
-import { parentItem } from './parentItem';
+import { item } from './item.mjs';
+import { itemDescription } from './item-description.mjs';
+import { parentItem } from './parentItem.mjs';
 
 import { makeBool, makeInt, makeStrArray, makeStrWithChoices } from "../../generic-makers.mjs";
 
-class ArmorItemData extends foundry.abstract.DataModel {
+export class ArmorItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...item(),

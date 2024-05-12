@@ -1,10 +1,10 @@
-import { item } from './item';
-import { itemDescription } from './item-description';
-import { parentItem } from './parentItem';
+import { item } from './item.mjs';
+import { itemDescription } from './item-description.mjs';
+import { parentItem } from './parentItem.mjs';
 
 import { makeInt, makeStr, makeStrArray } from "../generic-makers.mjs";
 
-class OriginItemData extends foundry.abstract.DataModel {
+export class OriginItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...item(),

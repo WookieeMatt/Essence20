@@ -1,7 +1,7 @@
 const fields = foundry.data.fields;
 
 export function makeBool(init) {
-  return new fields.BooleanField({initial: init})
+  return new fields.BooleanField({initial: init});
 }
 
 export function makeInt(init) {

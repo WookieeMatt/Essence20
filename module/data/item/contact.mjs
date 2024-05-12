@@ -1,9 +1,9 @@
-import { item } from './item';
-import { itemDescription } from './item-description';
+import { item } from './item.mjs';
+import { itemDescription } from './item-description.mjs';
 
 import { makeInt, makeStr } from "../generic-makers.mjs";
 
-class ContactItemData extends foundry.abstract.DataModel {
+export class ContactItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...item(),

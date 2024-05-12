@@ -1,12 +1,10 @@
-import { common } from './common';
-import { machine } from './machine';
-import { zordBase } from './zordBase';
-
 import { makeBool, makeStr } from "../generic-makers.mjs";
 
-const fields = foundry.data.fields;
+import { common } from './common.mjs';
+import { machine } from './machine.mjs';
+import { zordBase } from './zord-base.mjs';
 
-class ZordActorData extends foundry.abstract.DataModel {
+export class ZordActorData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...common(),

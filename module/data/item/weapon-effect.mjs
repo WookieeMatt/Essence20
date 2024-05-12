@@ -1,11 +1,12 @@
 import { E20 } from "../../../helpers/config.mjs";
-import { item } from './item';
 
 import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
+import { item } from './item.mjs';
+
 const fields = foundry.data.fields;
 
-class WeaponEffectItemData extends foundry.abstract.DataModel {
+export class WeaponEffectItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...item(),
