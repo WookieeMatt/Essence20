@@ -2,7 +2,6 @@ import { AltModeItemData } from './alt-mode';
 import { AlterationItemData } from './alteration';
 import { ArmorItemData } from './armor';
 import { BondItemData } from './bond';
-import { ClassFeatureItemData } from './class-feature';
 import { ContactItemData } from './contact';
 import { FeatureItemData } from './feature';
 import { FocusItemData } from './focus';
@@ -15,6 +14,7 @@ import { OriginItemData } from './origin';
 import { PerkItemData } from './perk';
 import { PowerItemData } from './power';
 import { RoleItemData } from './role';
+import { RolePointsItemData } from './role-points';
 import { SpecializationItemData } from './specialization';
 import { SpellItemData } from './spell';
 import { TraitItemData } from './trait';
@@ -27,7 +27,6 @@ export const config = {
   alteration: AlterationItemData,
   armor: ArmorItemData,
   bond: BondItemData,
-  classFeature: ClassFeatureItemData,
   contact: ContactItemData,
   feature: FeatureItemData,
   focus: FocusItemData,
@@ -40,6 +39,7 @@ export const config = {
   perk: PerkItemData,
   power: PowerItemData,
   role: RoleItemData,
+  rolePoints: RolePointsItemData,
   specialization: SpecializationItemData,
   spell: SpellItemData,
   trait: TraitItemData,
