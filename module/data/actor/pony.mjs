@@ -1,4 +1,4 @@
-import { makeBool } from "../../generic-makers.mjs";
+import { makeBool } from "../generic-makers.mjs";
 
 import { character } from './templates/character.mjs';
 import { common } from './templates/common.mjs';

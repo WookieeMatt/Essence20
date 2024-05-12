@@ -1,10 +1,10 @@
 import { E20 } from "../../../helpers/config.mjs";
 
-import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
-import { parentItem } from './templates/parentItem.mjs';
+import { parentItem } from './templates/parent-item.mjs';
 
 export class PerkItemData extends foundry.abstract.DataModel {
   static defineSchema() {

@@ -1,6 +1,6 @@
 import { E20 } from "../../../helpers/config.mjs";
 
-import { makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';

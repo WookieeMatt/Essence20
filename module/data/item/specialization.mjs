@@ -1,6 +1,6 @@
 import { E20 } from "../../../helpers/config.mjs";
 
-import { makeBool, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 

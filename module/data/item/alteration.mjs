@@ -1,4 +1,4 @@
-import { makeStr } from "../../generic-makers.mjs";
+import { makeStr } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
