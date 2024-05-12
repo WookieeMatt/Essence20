@@ -13,7 +13,10 @@ export function makeInt(initial) {
 }
 
 export function makeStr(initial) {
-  return new fields.StringField({initial});
+  return new fields.StringField({
+    initial,
+    nullable : initial == null,
+  });
 }
 
 export function makeStrArray() {
