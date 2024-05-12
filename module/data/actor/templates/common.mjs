@@ -55,22 +55,28 @@ export const common = () => ({
       max: makeInt(0),
       value: makeInt(0),
     }),
-    primal: makeInt(0),
-    red: makeInt(0),
-    synthEn: makeInt(0),
-    essenceRanks: new fields.SchemaField({
-      smarts: makeInt(0),
-      social: makeInt(0),
-      speed: makeInt(0),
-      strength: makeInt(0),
+    primal: new fields.SchemaField({
+      value: makeInt(0),
     }),
-    essenceShifts: new fields.SchemaField({
-      any: makeEssenceShift(),
-      smarts: makeEssenceShift(),
-      social: makeEssenceShift(),
-      speed: makeEssenceShift(),
-      strength: makeEssenceShift(),
+    red: new fields.SchemaField({
+      value: makeInt(0),
     }),
+    synthEn: new fields.SchemaField({
+      value: makeInt(0),
+    }),
+  }),
+  essenceRanks: new fields.SchemaField({
+    smarts: makeInt(0),
+    social: makeInt(0),
+    speed: makeInt(0),
+    strength: makeInt(0),
+  }),
+  essenceShifts: new fields.SchemaField({
+    any: makeEssenceShift(),
+    smarts: makeEssenceShift(),
+    social: makeEssenceShift(),
+    speed: makeEssenceShift(),
+    strength: makeEssenceShift(),
   }),
   focusEssence: makeStr(''),
   health: new fields.SchemaField({
