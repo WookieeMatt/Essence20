@@ -6,7 +6,6 @@ import { character } from './templates/character.mjs';
 import { common } from './templates/common.mjs';
 import { creature } from './templates/creature.mjs';
 
-
 const fields = foundry.data.fields;
 
 function makeDefensesFields(init) {
