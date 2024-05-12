@@ -40,7 +40,7 @@ function runMigrations() {
   if (!currentVersion && totalDocuments === 0) {
     console.log("No documents to migrate");
     return game.settings.set("essence20", "systemMigrationVersion", game.system.version);
-  } else if (!currentVersion || isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
+  } else if (!currentVersion || foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
     // Perform the migration, if needed
     console.log(`Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`);
     migrateWorld();

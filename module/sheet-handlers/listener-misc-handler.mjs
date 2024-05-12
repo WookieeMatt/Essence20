@@ -144,3 +144,56 @@ export async function onRest(actorSheet) {
     "system.energon.synthEn.value": 0,
   }).then(actorSheet.render(false));
 }
+
+/**
+ * Handle toggling accordion containers.
+ * @param {Event} event The originating click event
+ * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
+ */
+export async function onToggleAccordion(event, actorSheet) {
+  const el = event.currentTarget;
+  const parent = $(el).closest('.accordion-wrapper');
+
+  // Avoid collapsing NPC skills container on rerender
+  if (parent.hasClass('skills-container')) {
+    const isOpen = actorSheet.accordionStates.skills;
+    actorSheet.accordionStates.skills = isOpen ? '' : 'open';
+    actorSheet.render();
+  } else {
+    parent.toggleClass('open');
+
+    // Check if the container header toggle should be flipped
+    let oneClosed = false;
+
+    // Look for a closed Item
+    const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+    for (const accordionLabel of accordionLabels) {
+      oneClosed = !$(accordionLabel).hasClass('open');
+      if (oneClosed) break;
+    }
+
+    // Set header state to open if all Items are open; closed otherwise
+    const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
+    if (oneClosed) {
+      $(container).removeClass('open');
+    } else {
+      $(container).addClass('open');
+    }
+  }
+}
+
+/**
+ * Handle toggling accordion container headers.
+ * @param {Event} event The originating click event
+ * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
+ */
+export async function onToggleHeaderAccordion(event) {
+  const el = event.currentTarget;
+  const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
+  $(el.closest('.header-accordion-wrapper')).toggleClass('open');
+
+  const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+  for (const accordionLabel of accordionLabels) {
+    isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
+  }
+}

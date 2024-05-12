@@ -21,11 +21,8 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellTier'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.tier">
-        {{#select system.tier}}
-        {{#each config.spellTiers as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.spellTiers selected=system.tier}}
+
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -34,11 +31,8 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpellCircle'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.circle">
-        {{#select system.circle}}
-        {{#each config.spellCircles as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.spellCircles selected=system.circle}}
+
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

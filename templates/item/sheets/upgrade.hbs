@@ -22,11 +22,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeType'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.type">
-        {{#select system.type}}
-        {{#each config.upgradeTypes as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.upgradeTypes selected=system.type}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -35,11 +31,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeAvailability'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.availability">
-        {{#select system.availability}}
-        {{#each config.availabilities as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.availabilities selected=system.availability}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -64,11 +56,7 @@
         {{#*inline "item-field-inputs"}}
           {{numberInput system.armorBonus.value name="system.armorBonus.value" min=0 step=1}}
           <select name="system.armorBonus.defense">
-          {{#select system.armorBonus.defense}}
-          {{#each config.defenses as |name defense|}}
-            <option value="{{defense}}">{{localize name}}</option>
-          {{/each}}
-          {{/select}}
+            {{selectOptions config.defenses selected=system.armorBonus.defense}}
           </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

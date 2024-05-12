@@ -22,11 +22,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkType'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.type">
-        {{#select system.type}}
-        {{#each config.perkTypes as |name type|}}
-          <option value="{{type}}">{{name}}</option>
-        {{/each}}
-      {{/select}}
+        {{selectOptions config.perkTypes selected=system.type}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
