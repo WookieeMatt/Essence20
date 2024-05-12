@@ -24,5 +24,6 @@ export function makeStrWithChoices(initial, choices) {
   return new fields.StringField({
     choices,
     initial,
+    nullable : initial == null,
   });
 }
