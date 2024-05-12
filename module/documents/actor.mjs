@@ -1,6 +1,7 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { resizeTokens, getItemsOfType, roleValueChange } from "../helpers/utils.mjs";
+import { resizeTokens } from "../helpers/actor.mjs";
+import { getItemsOfType, roleValueChange } from "../helpers/utils.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.

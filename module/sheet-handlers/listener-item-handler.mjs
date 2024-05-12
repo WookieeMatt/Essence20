@@ -1,6 +1,6 @@
+import { checkIsLocked } from "../helpers/actor.mjs";
 import {
   deleteAttachmentsForItem,
-  checkIsLocked,
   setEntryAndAddItem,
 } from "../helpers/utils.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";

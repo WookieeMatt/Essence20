@@ -1,5 +1,5 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { getNumActions } from "../helpers/utils.mjs";
+import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";

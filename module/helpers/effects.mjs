@@ -1,4 +1,4 @@
-import { checkIsLocked } from "../helpers/utils.mjs";
+import { checkIsLocked } from "../helpers/actor.mjs";
 
 /**
  * Manage Active Effect instances through the Actor Sheet via effect control buttons.
