@@ -2,7 +2,7 @@ import { E20 } from "../../../helpers/config.mjs";
 
 import { makeBool, makeStrWithChoices } from "../../generic-makers.mjs";
 
-import { item } from './item.mjs';
+import { item } from './templates/item.mjs';
 
 export class SpecializationItemData extends foundry.abstract.DataModel {
   static defineSchema() {

@@ -1,7 +1,7 @@
-import { item } from './item.mjs';
-import { itemDescription } from './item-description.mjs';
-
 import { makeStr, makeStrArray } from "../../generic-makers.mjs";
+
+import { item } from './templates/item.mjs';
+import { itemDescription } from './templates/item-description.mjs';
 
 const fields = foundry.data.fields;
 

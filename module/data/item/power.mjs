@@ -2,8 +2,8 @@ import { E20 } from "../../../helpers/config.mjs";
 
 import { makeBool, makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
-import { item } from './item.mjs';
-import { itemDescription } from './item-description.mjs';
+import { item } from './templates/item.mjs';
+import { itemDescription } from './templates/item-description.mjs';
 
 export class PowerItemData extends foundry.abstract.DataModel {
   static defineSchema() {

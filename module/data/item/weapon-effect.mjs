@@ -2,7 +2,7 @@ import { E20 } from "../../../helpers/config.mjs";
 
 import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
-import { item } from './item.mjs';
+import { item } from './templates/item.mjs';
 
 const fields = foundry.data.fields;
 
