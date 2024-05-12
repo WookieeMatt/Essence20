@@ -3,7 +3,7 @@ import { makeInt, makeStr } from "../../generic-makers.mjs";
 const fields = foundry.data.fields;
 
 function makeDefensesFields(name, essence) {
-  return new fields.SchemaField({
+  return new fields.ObjectField({
     armor: makeInt(0),
     base: makeInt(10),
     bonus: makeInt(0),
