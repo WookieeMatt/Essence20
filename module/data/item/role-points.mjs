@@ -6,7 +6,7 @@ import { makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
-class AltModeItemData extends foundry.abstract.DataModel {
+class RolePointsItemData extends foundry.abstract.DataModel {
   static defineSchema() {
     return {
       ...item(),
