@@ -14,7 +14,7 @@ export class AltModeItemData extends foundry.abstract.DataModel {
       ...itemDescription(),
       crew: makeInt(0),
       firepoints: makeInt(0),
-      movement: fields.SchemaField({
+      movement: new fields.SchemaField({
         aerial: makeInt(0),
         aquatic: makeInt(0),
         ground: makeInt(0),

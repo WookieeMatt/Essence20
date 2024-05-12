@@ -1,6 +1,6 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStrArray, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -12,7 +12,7 @@ export class RolePointsItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       ...itemDescription(),
-      bonus: fields.SchemaField({
+      bonus: new fields.SchemaField({
         defenseBonus: new fields.SchemaField({
           cleverness: makeBool(false),
           evasion: makeBool(false),
@@ -29,7 +29,7 @@ export class RolePointsItemData extends foundry.abstract.DataModel {
       isActivatable: makeBool(false),
       isActive: makeBool(false),
       powerCost: makeInt(0),
-      resource: fields.SchemaField({
+      resource: new fields.SchemaField({
         increase: makeInt(0),
         level20Value: makeInt(null),
         level20ValueIsUnlimited: makeBool(false),

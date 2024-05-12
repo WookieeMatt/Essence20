@@ -9,7 +9,7 @@ export class SpecializationItemData extends foundry.abstract.DataModel {
     return {
       ...item(),
       isSpecialized: makeBool(true),
-      shift: makeStrWithChoices('d20', E20.skillRollableShifts),
+      shift: makeStrWithChoices('d20', E20.skillShiftList),
       skill: makeStrWithChoices('athletics', Object.keys(E20.skills)),
     };
   }
