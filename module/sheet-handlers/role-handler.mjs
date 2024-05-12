@@ -1,10 +1,8 @@
+import { roleValueChange, setFocusValues, setRoleValues } from "../helpers/advancement.mjs";
 import { rememberOptions, rememberSelect } from "../helpers/dialog.mjs";
 import {
   deleteAttachmentsForItem,
   getItemsOfType,
-  roleValueChange,
-  setFocusValues,
-  setRoleValues,
 } from "../helpers/utils.mjs";
 
 /**
