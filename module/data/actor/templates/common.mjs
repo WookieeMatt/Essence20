@@ -132,6 +132,7 @@ export const common = () => ({
     performance: makeSkillFields(),
     persuasion: makeSkillFields(),
     science: makeSkillFields(),
+    roleSkillDie: makeSkillFields(),
     spellcasting: makeSkillFields(),
     streetwise: makeSkillFields(),
     survival: makeSkillFields(),
