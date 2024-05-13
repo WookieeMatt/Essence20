@@ -15,12 +15,14 @@ export class WeaponItemData extends foundry.abstract.DataModel {
       ...itemDescription(),
       ...parentItem(),
       availability: makeStrWithChoices('standard', Object.keys(E20.availabilities)),
-      classification: makeStrWithChoices('integrated', Object.keys(E20.weaponSizes)),
+      classification: new fields.SchemaField({
+        size: makeStrWithChoices('integrated', Object.keys(E20.weaponSizes)),
+      }),
       equipped: makeBool(true),
       requirements: new fields.SchemaField({
         custom: makeStr(null),
         skill: makeStrWithChoices(null, Object.keys(E20.skills)),
-        shift: makeStrWithChoices(null, E20.skillRollableShifts),
+        shift: makeStrWithChoices(null, E20.weaponRequirementShifts),
       }),
       traits: makeStrArray(),
       upgradeTraits: makeStrArray(),

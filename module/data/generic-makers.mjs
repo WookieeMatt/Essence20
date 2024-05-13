@@ -15,7 +15,7 @@ export function makeInt(initial) {
 export function makeStr(initial) {
   return new fields.StringField({
     initial,
-    nullable : initial == null,
+    nullable: initial == null,
   });
 }
 
@@ -27,6 +27,6 @@ export function makeStrWithChoices(initial, choices) {
   return new fields.StringField({
     choices,
     initial,
-    nullable : initial == null,
+    nullable: initial == null,
   });
 }
