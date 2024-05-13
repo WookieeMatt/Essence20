@@ -103,6 +103,7 @@ export const common = () => ({
     ground: makeMovementFields(),
     swim: makeMovementFields(),
   }),
+  movementNotSet: makeBool(false),
   powers: new fields.SchemaField({
     personal: new fields.SchemaField({
       max: makeInt(0),
