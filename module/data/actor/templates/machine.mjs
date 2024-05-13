@@ -1,4 +1,4 @@
-// import { makeBool, makeInt } from "../../generic-makers.mjs";
+import { makeBool, makeInt } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 

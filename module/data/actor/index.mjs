@@ -5,6 +5,7 @@ import { NpcActorData } from './npc.mjs';
 import { PonyActorData } from './pony.mjs';
 import { PowerRangerActorData } from './power-ranger.mjs';
 import { TransformerActorData } from './transformer.mjs';
+import { VehicleActorData } from './vehicle.mjs';
 import { ZordActorData } from './zord.mjs';
 
 export const config = {
@@ -15,5 +16,6 @@ export const config = {
   pony: PonyActorData,
   powerRanger: PowerRangerActorData,
   transformer: TransformerActorData,
+  vehicle: VehicleActorData,
   zord: ZordActorData,
 };
