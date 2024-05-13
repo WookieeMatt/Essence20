@@ -3,13 +3,15 @@ import { makeInt, makeStr } from "../../generic-makers.mjs";
 const fields = foundry.data.fields;
 
 function makeDefensesFields(name, essence) {
-  return new fields.ObjectField({
+  return new fields.SchemaField({
     armor: makeInt(0),
     base: makeInt(10),
     bonus: makeInt(0),
     essence: makeStr(essence),
     morphed: makeInt(0),
     name: makeStr(name),
+    string: makeStr(''),
+    total: makeInt(0),
   });
 }
 
