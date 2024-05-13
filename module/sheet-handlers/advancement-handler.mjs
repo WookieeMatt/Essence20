@@ -1,8 +1,8 @@
 import {
-  getItemsOfType,
   setFocusValues,
   setRoleValues,
-} from "../helpers/utils.mjs";
+} from "../helpers/advancement.mjs";
+import { getItemsOfType } from "../helpers/utils.mjs";
 
 /**
 * Updates the Actor based on a level change from the attached Role
