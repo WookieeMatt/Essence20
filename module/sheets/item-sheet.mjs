@@ -30,7 +30,7 @@ export class Essence20ItemSheet extends ItemSheet {
   /** @override */
   async getData() {
     // Retrieve base data structure.
-    const context = super.getData();
+    const context = await super.getData();
 
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
@@ -50,7 +50,7 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
-    context.system.description = TextEditor.enrichHTML(itemData.system.description, {async: false});
+    context.system.description = await TextEditor.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
 
     return context;
