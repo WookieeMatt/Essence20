@@ -294,7 +294,6 @@ export class Essence20Actor extends Actor {
       const parentId = fullItem.getFlag('essence20', 'parentId');
       const parentItem = parent.items.get(parentId);
 
-
       if (!parentItem) {
         return;
       }
