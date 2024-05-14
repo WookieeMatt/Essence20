@@ -28,8 +28,8 @@ export function getItemsOfType(type, items) {
 }
 
 /**
-* Handles creating a unique 5 digit Id for an item
-* @param {Array} items The items keyed by IDs
+* Handles creating a unique 5 digit Id for an Item
+* @param {Item[]} items The Items keyed by IDs
 */
 export function createId(items) {
   let id = "";
