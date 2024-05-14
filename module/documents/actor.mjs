@@ -287,8 +287,13 @@ export class Essence20Actor extends Actor {
     super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
     for (const change of changes) {
       const fullItem = parent.items.get(change._id);
+      if (!fullItem) {
+        return;
+      }
+
       const parentId = fullItem.getFlag('essence20', 'parentId');
       const parentItem = parent.items.get(parentId);
+
 
       if (!parentItem) {
         return;
