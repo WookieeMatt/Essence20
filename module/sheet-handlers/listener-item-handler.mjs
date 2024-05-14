@@ -1,13 +1,10 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
-import {
-  deleteAttachmentsForItem,
-  setEntryAndAddItem,
-} from "../helpers/utils.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
+import { deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
 import { onOriginDelete } from "./background-handler.mjs";
+import { onPerkDelete } from "./perk-handler.mjs";
 import { onFocusDelete, onRoleDelete } from "./role-handler.mjs";
 import { onAltModeDelete } from "./transformer-handler.mjs";
-import { onPerkDelete } from "./perk-handler.mjs";
 
 /**
  * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset

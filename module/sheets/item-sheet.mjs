@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
-import { setEntryAndAddItem } from "../helpers/utils.mjs";
+import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
