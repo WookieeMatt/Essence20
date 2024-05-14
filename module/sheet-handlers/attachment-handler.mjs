@@ -160,7 +160,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -168,23 +168,23 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "role") {
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
   case "influence":
     if (droppedItem.type == "perk") {
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "hangUp") {
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
   case "origin":
     if (droppedItem.type == "perk") {
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -192,14 +192,14 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "rolePoints") {
       entry['bonus'] = droppedItem.system.bonus;
       entry['isActivatable'] = droppedItem.system.isActivatable;
       entry['isActive'] = droppedItem.system.isActive;
       entry['powerCost'] = droppedItem.system.powerCost;
       entry['resource'] = droppedItem.system.resource;
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -212,7 +212,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
@@ -223,7 +223,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
-      return addItemIfUnique(droppedItem, targetItem, entry);
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -239,7 +239,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 * @param {Object} entry The entry for the Item being added
 * @return {String} The key generated for the dropped Item
 */
-export async function addItemIfUnique(droppedItem, targetItem, entry) {
+export async function _addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
   if (items) {
     for (const [, item] of Object.entries(items)) {
