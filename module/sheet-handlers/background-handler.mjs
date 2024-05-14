@@ -1,4 +1,3 @@
-import { setOriginValues } from "../helpers/advancement.mjs";
 import { rememberOptions } from "../helpers/dialog.mjs";
 import {
   deleteAttachmentsForItem,
@@ -172,6 +171,49 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
       },
     },
   ).render(true);
+}
+
+/**
+ * Updates the actor with the information selected for the Origin
+ * @param {Actor} actor The Actor receiving the Origin
+ * @param {Origin} origin The Origin being dropped
+ * @param {Object} options The options resulting from _showOriginSkillDialog()
+ * @param {String} essence The essence selected in the _showOriginEssenceDialog()
+ * @param {Function} dropFunc The function to call to complete the Origin drop
+ */
+export async function setOriginValues(actor, origin, essence, options, dropFunc) {
+  let selectedSkill = "";
+  for (const [skill, isSelected] of Object.entries(options)) {
+    if (isSelected) {
+      selectedSkill = skill;
+      break;
+    }
+  }
+
+  if (!selectedSkill) {
+    ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoSkill'));
+    return;
+  }
+
+  const essenceValue = actor.system.essences[essence] + 1;
+  const essenceString = `system.essences.${essence}`;
+
+  const [newShift, skillString] = getShiftedSkill(selectedSkill, 1, actor);
+
+  const newOriginList = await dropFunc();
+  await createItemCopies(origin.system.items, actor, "perk", newOriginList[0]);
+
+  await actor.update({
+    [essenceString]: essenceValue,
+    [skillString]: newShift,
+    "system.health.max": origin.system.startingHealth,
+    "system.health.value": origin.system.startingHealth,
+    "system.movement.aerial.base": origin.system.baseAerialMovement,
+    "system.movement.swim.base": origin.system.baseAquaticMovement,
+    "system.movement.ground.base": origin.system.baseGroundMovement,
+    "system.originEssencesIncrease": essence,
+    "system.originSkillsIncrease": selectedSkill,
+  });
 }
 
 /**
