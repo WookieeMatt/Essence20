@@ -2,9 +2,9 @@ import { rememberOptions } from "../helpers/dialog.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
 
 /**
- * Handles dropping items that have attachments onto an Actor
- * @param {Actor} actor The Actor receiving the item
- * @param {Item} droppedItem The item being dropped
+ * Handles dropping Items that have attachments onto an Actor
+ * @param {Actor} actor The Actor receiving the Item
+ * @param {Item} droppedItem The Item being dropped
  * @param {Function} dropFunc The function to call to complete the drop
  */
 export async function gearDrop(actor, droppedItem, dropFunc) {
@@ -19,11 +19,11 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
 
 /**
  * Creates copies of Items for given IDs
- * @param {Object[]} items The item entries to copy
- * @param {Actor} owner The items' owner
- * @param {String} type The type of items to drop
- * @param {Item} parentItem The items' parent item
- * @param {Number} lastProcessedLevel The flag for the last time the actor changed level
+ * @param {Object[]} items The Item entries to copy
+ * @param {Actor} owner The Items' owner
+ * @param {String} type The type of Items to drop
+ * @param {Item} parentItem The Items' parent Item
+ * @param {Number} lastProcessedLevel The flag for the last time the Actor changed level
  */
 export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
   for (const [key, item] of Object.entries(items)) {
@@ -54,7 +54,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 }
 
 /**
- * Initiates the process to apply an attachment item to an item on the actor sheet
+ * Initiates the process to apply an attachment Item to an Item on the Actor sheet
  * @param {Actor} actor The Actor receiving the attachment
  * @param {Item} droppedItem The attachment being dropped
  * @param {Function} dropFunc The function to call to complete the drop
@@ -120,7 +120,7 @@ async function _attachSelectedItemOptionHandler(actor, options, dropFunc) {
 }
 
 /**
- * Creates the attachment for the actor and attaches it to the given item
+ * Creates the attachment for the Actor and attaches it to the given Item
  * @param {Item} targetItem The item to attach to
  * @param {Function} dropFunc The function to call to complete the drop
  * @private
@@ -136,9 +136,9 @@ async function _attachItem(targetItem, dropFunc) {
 }
 
 /**
-* Handles setting the value of the Entry variable and calling the creating function.
-* @param {Item} droppedItem The item that is being attached on the item
-* @param {Item} atttachedItem The item that we are attaching to.
+* Handles setting the value of the entry variable and calling the creating function
+* @param {Item} droppedItem The Item that is being attached to the other Item
+* @param {Item} atttachedItem The Item receiving the dropped Item
 * @return {String} The key generated for the dropped item
 */
 export async function setEntryAndAddItem(droppedItem, targetItem) {
@@ -233,11 +233,11 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 }
 
 /**
-* Handles validating an item being dropped is unique
-* @param {Item} droppedItem The item that was dropped
-* @param {Item} targetItem The item that was dropped on to.
-* @param {Object} entry The entry for the item being added
-* @return {String} The key generated for the dropped item
+* Handles validating an Item being dropped is unique
+* @param {Item} droppedItem The Item that was dropped
+* @param {Item} targetItem The Item that was dropped onto
+* @param {Object} entry The entry for the Item being added
+* @return {String} The key generated for the dropped Item
 */
 export async function addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
@@ -265,10 +265,10 @@ export async function addItemIfUnique(droppedItem, targetItem, entry) {
 }
 
 /**
-* Handles deleting items attached to other items
-* @param {Item} item The item that was deleted
-* @param {Actor} actor The actor the parent item is on
-* @param {Value} previousLevel (optional) The value of the last time you leveled up.
+* Handles deleting Items attached to other items
+* @param {Item} item The Item that was deleted
+* @param {Actor} actor The Actor that owns the parent Item
+* @param {Number} previousLevel (optional) The value of the last time the Actor leveled up
 */
 export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
   for (const actorItem of actor.items) {
