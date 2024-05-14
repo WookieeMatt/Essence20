@@ -37,7 +37,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
-          const newKey = await setEntryAndAddItem(newItem, parentItem);
+          const newKey = setEntryAndAddItem(newItem, parentItem);
           newItem.setFlag('essence20', 'collectionId', newKey);
 
           const deleteString = `system.items.-=${key}`;
@@ -130,7 +130,7 @@ async function _attachItem(targetItem, dropFunc) {
   const newattachedItem = newattachedItemList[0];
   newattachedItem.setFlag('essence20', 'parentId', targetItem._id);
   if (targetItem) {
-    const key = await setEntryAndAddItem(newattachedItem, targetItem);
+    const key = setEntryAndAddItem(newattachedItem, targetItem);
     newattachedItem.setFlag('essence20', 'collectionId', key);
   }
 }
@@ -160,7 +160,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -168,23 +168,23 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "role") {
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
   case "influence":
     if (droppedItem.type == "perk") {
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "hangUp") {
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
   case "origin":
     if (droppedItem.type == "perk") {
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -192,14 +192,14 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "rolePoints") {
       entry['bonus'] = droppedItem.system.bonus;
       entry['isActivatable'] = droppedItem.system.isActivatable;
       entry['isActive'] = droppedItem.system.isActive;
       entry['powerCost'] = droppedItem.system.powerCost;
       entry['resource'] = droppedItem.system.resource;
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -212,7 +212,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
@@ -223,7 +223,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
-      return await addItemIfUnique(droppedItem, targetItem, entry);
+      return addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
