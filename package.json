@@ -22,7 +22,8 @@
     "gulp-autoprefixer": "^7.0.1",
     "gulp-less": "^5.0.0",
     "gulp-sourcemaps": "^2.6.5",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "@foundryvtt/foundryvtt-cli": "^1.0.2"
   },
   "type": "module",
   "main": "gulpfile.js",
