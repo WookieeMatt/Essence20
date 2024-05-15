@@ -5,6 +5,8 @@
   "scripts": {
     "build": "node ./scripts/esbuild.mjs && npm run sass",
     "build:watch": "node ./scripts/esbuild.mjs --watch",
+    "build:db": "gulp compile",
+    "build:json": "gulp extract",
     "lint": "npx eslint module/ --ext .js,.mjs",
     "lint-fix": "npx eslint module/ --ext .js,.mjs --fix",
     "sass": "npx sass -s compressed ./sass/*.scss ./css/*.css",
@@ -21,10 +23,11 @@
     "gulp-autoprefixer": "^7.0.1",
     "gulp-less": "^5.0.0",
     "gulp-sourcemaps": "^2.6.5",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "@foundryvtt/foundryvtt-cli": "^1.0.2"
   },
   "type": "module",
-  "main": "gulpfile.js",
+  "main": "gulpfile.mjs",
   "directories": {
     "lib": "lib"
   },
