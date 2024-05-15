@@ -1,9 +1,17 @@
 import {compilePack, extractPack} from "@foundryvtt/foundryvtt-cli";
-
+import fs from "fs";
+import gulp from "gulp";
+import logger from "fancy-log";
 // const gulp = require('gulp');
 // const prefix = require('gulp-autoprefixer');
 // const sourcemaps = require('gulp-sourcemaps');
 // const sass = require('gulp-sass')(require('sass'));
+
+/**
+ * Folder where source JSON files should be located relative to the system folder.
+ * @type {string}
+ */
+const PACK_SOURCE = "/_source/";
 
 /* ----------------------------------------- */
 /*  Compile Sass
@@ -67,8 +75,7 @@ async function compilePacks() {
 
 	for(const packInfo of packs) {
 		logger.info(`Compiling pack ${packInfo.name}`);
-		await compilePack(PACK_SOURCE + packInfo.name, packInfo.path);
-		// await extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
+		await compilePack(packInfo.path + PACK_SOURCE, packInfo.path);
 	}
 }
 export const compile = gulp.series(compilePacks);
@@ -86,7 +93,7 @@ async function extractPacks() {
 
 	for(const packInfo of packs) {
 		logger.info(`Extracting pack ${packInfo.name}`);
-		await extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
+		await extractPack(packInfo.path, packInfo.path + PACK_SOURCE);
 	}
 }
 export const extract = gulp.series(extractPacks);
