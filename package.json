@@ -5,12 +5,13 @@
   "scripts": {
     "build": "node ./scripts/esbuild.mjs && npm run sass",
     "build:watch": "node ./scripts/esbuild.mjs --watch",
+    "build:db": "gulp compile",
+    "build:json": "gulp extract",
     "lint": "npx eslint module/ --ext .js,.mjs",
     "lint-fix": "npx eslint module/ --ext .js,.mjs --fix",
-    "pack": "./pack.sh",
     "sass": "npx sass -s compressed ./sass/*.scss ./css/*.css",
     "sass:watch": "npx sass -s compressed --watch ./sass/*.scss ./css/*.css",
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest"
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
   },
   "browserslist": [
     "last 3 versions"

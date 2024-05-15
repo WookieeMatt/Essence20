@@ -1,3 +1,5 @@
+import {compilePack, extractPack} from "@foundryvtt/foundryvtt-cli";
+
 const gulp = require('gulp');
 const prefix = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
@@ -51,3 +53,40 @@ exports.build = gulp.series(
   compileScss
 );
 exports.css = css;
+
+/**
+ * Compile the source JSON files into compendium packs.
+ * - `gulp compile` - Compile all JSON files into their LevelDB files.
+ */
+async function compilePacks() {
+	// Load system.json.
+	const system = JSON.parse(fs.readFileSync("./system.json", {encoding: "utf8"}));
+
+	// Determine which source packs to process.
+	const packs = system.packs;
+
+	for(const packInfo of packs) {
+		logger.info(`Compiling pack ${packInfo.name}`);
+		await compilePack(PACK_SOURCE + packInfo.name, packInfo.path);
+		// await extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
+	}
+}
+export const compile = gulp.series(compilePacks);
+
+/**
+ * Extract the contents of compendium packs to JSON files.
+ * - `gulp extract` - Extract all compendium NEDB files into JSON files.
+ */
+async function extractPacks() {
+	// Load system.json.
+	const system = JSON.parse(fs.readFileSync("./system.json", {encoding: "utf8"}));
+
+	// Determine which source packs to process.
+	const packs = system.packs;
+
+	for(const packInfo of packs) {
+		logger.info(`Extracting pack ${packInfo.name}`);
+		await extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
+	}
+}
+export const extract = gulp.series(extractPacks);

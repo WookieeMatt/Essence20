@@ -1,7 +1,7 @@
-name: Pack
+name: Release
 on: [pull_request]
 jobs:
-  Pack:
+  Compile:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -17,6 +17,6 @@ jobs:
           node-version: 17.9.x
           cache: npm
       - run: npm ci
-      - name: Pack the compendiums
-        run: npm run pack
+      - name: Compile the compendiums
+        run: gulp compile
       - run: echo "🍏 This job's status is ${{ job.status }}."
