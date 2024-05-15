@@ -1,0 +1,18 @@
+#!/bin/bash
+
+fvtt package pack -n "atsitems"
+fvtt package pack -n "bthitems"
+fvtt package pack -n "fmmcitems"
+fvtt package pack -n "jttitems"
+fvtt package pack -n "prcrbitems"
+fvtt package pack -n "ccitems"
+fvtt package pack -n "fffav1items"
+fvtt package pack -n "gijcrbitems"
+fvtt package pack -n "qgtgitems"
+fvtt package pack -n "sssitems"
+fvtt package pack -n "dditems"
+fvtt package pack -n "eocitems"
+fvtt package pack -n "tfcrbitems"
+fvtt package pack -n "dsoeitems"
+fvtt package pack -n "mlpcrbitems"
+fvtt package pack -n "fgtaaitems"
