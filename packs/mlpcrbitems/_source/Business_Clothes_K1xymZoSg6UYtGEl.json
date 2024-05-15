@@ -16,7 +16,36 @@
     "gearType": "clothes"
   },
   "effects": [
-    "xMpKmN47VJQZw1BQ"
+    {
+      "name": "Business Clothes",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.K1xymZoSg6UYtGEl",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "xMpKmN47VJQZw1BQ",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!K1xymZoSg6UYtGEl.xMpKmN47VJQZw1BQ"
+    }
   ],
   "flags": {},
   "_stats": {

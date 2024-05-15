@@ -16,7 +16,54 @@
     "type": "role"
   },
   "effects": [
-    "M7jwjkUXOIIyHcbt"
+    {
+      "name": "Black Ranger Prime",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.nDJbufpNURXmVRJn",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "M7jwjkUXOIIyHcbt",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.evasion.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.willpower.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!nDJbufpNURXmVRJn.M7jwjkUXOIIyHcbt"
+    }
   ],
   "sort": 25000,
   "ownership": {

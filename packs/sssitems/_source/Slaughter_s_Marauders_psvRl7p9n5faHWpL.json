@@ -14,7 +14,48 @@
     "type": "faction"
   },
   "effects": [
-    "PIaYftl3cXUDgogx"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.jxZp4PiwY8Orj1EJ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "PIaYftl3cXUDgogx",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.infiltration.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Oorah!",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!psvRl7p9n5faHWpL.PIaYftl3cXUDgogx"
+    }
   ],
   "flags": {
     "core": {}

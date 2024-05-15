@@ -16,7 +16,36 @@
     "type": "influence"
   },
   "effects": [
-    "F29DR91EL3w3UTS4"
+    {
+      "name": "Traitor",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.WJNadltM5sDG4fOt",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "F29DR91EL3w3UTS4",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!WJNadltM5sDG4fOt.F29DR91EL3w3UTS4"
+    }
   ],
   "flags": {},
   "_stats": {

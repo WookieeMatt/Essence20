@@ -14,7 +14,36 @@
     "type": "general"
   },
   "effects": [
-    "DS2S3NGDZjFYyn7Q"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.qZiZJooTOHbHNWAv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "DS2S3NGDZjFYyn7Q",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Evasion Bonus",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!HdgGywFzuxezzVGy.DS2S3NGDZjFYyn7Q"
+    }
   ],
   "flags": {
     "core": {}

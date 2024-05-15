@@ -16,7 +16,36 @@
     "type": "faction"
   },
   "effects": [
-    "iD4fMA2BlPrx5g6q"
+    {
+      "name": "Evasion Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.0JsEhJdM3fmp4O65",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "iD4fMA2BlPrx5g6q",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!0JsEhJdM3fmp4O65.iD4fMA2BlPrx5g6q"
+    }
   ],
   "flags": {},
   "_stats": {

@@ -16,9 +16,93 @@
     "type": "role"
   },
   "effects": [
-    "MO1rWSTZmlyGkG3i",
-    "9HX4DKrA2gALcrxv",
-    "Le2M3bfzskXnb0uN"
+    {
+      "name": "Persuasion Strength Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.ki9HVmle77qJ5Yo8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "MO1rWSTZmlyGkG3i",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.essences.strength",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ki9HVmle77qJ5Yo8.MO1rWSTZmlyGkG3i"
+    },
+    {
+      "name": "Persuasion Speed Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.ki9HVmle77qJ5Yo8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "9HX4DKrA2gALcrxv",
+      "changes": [
+        {
+          "key": "system.skills.persuasion,essences.speed",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ki9HVmle77qJ5Yo8.9HX4DKrA2gALcrxv"
+    },
+    {
+      "name": "Persuasion Smarts Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.ki9HVmle77qJ5Yo8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Le2M3bfzskXnb0uN",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.essences.smarts",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ki9HVmle77qJ5Yo8.Le2M3bfzskXnb0uN"
+    }
   ],
   "sort": 50000,
   "ownership": {

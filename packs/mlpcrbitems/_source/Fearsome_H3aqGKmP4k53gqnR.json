@@ -14,7 +14,42 @@
     "type": "general"
   },
   "effects": [
-    "3WvhvLdxmr4advqR"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.VvrwwvOCYanj9ImU",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "3WvhvLdxmr4advqR",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.essence.social",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.intimdation.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Intimidation Bonus",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!H3aqGKmP4k53gqnR.3WvhvLdxmr4advqR"
+    }
   ],
   "flags": {
     "core": {}

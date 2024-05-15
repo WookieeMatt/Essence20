@@ -16,7 +16,35 @@
     "type": "role"
   },
   "effects": [
-    "TXNXCBdY4KiqetiH"
+    {
+      "name": "Presence",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.EdP0LqcYh2tkMygI",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "TXNXCBdY4KiqetiH",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.essence.social",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!EdP0LqcYh2tkMygI.TXNXCBdY4KiqetiH"
+    }
   ],
   "sort": 100000,
   "ownership": {

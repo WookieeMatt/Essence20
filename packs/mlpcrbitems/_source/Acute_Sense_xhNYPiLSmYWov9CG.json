@@ -14,7 +14,36 @@
     "type": "general"
   },
   "effects": [
-    "oQMSdprNs0paErfa"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Ydy3ztBn3yswVlDe",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "oQMSdprNs0paErfa",
+      "changes": [
+        {
+          "key": "system.skills.alertness.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Alertness Edge",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!xhNYPiLSmYWov9CG.oQMSdprNs0paErfa"
+    }
   ],
   "flags": {
     "core": {}

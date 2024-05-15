@@ -16,7 +16,50 @@
     "type": "role"
   },
   "effects": [
-    "bbZRc8FoYNfCsrra"
+    {
+      "name": "Venom Warlord",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.9tU5tDmpOhChLfdv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "bbZRc8FoYNfCsrra",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.evasion.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.willpower.morphed",
+          "mode": 2,
+          "value": "2"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!9tU5tDmpOhChLfdv.bbZRc8FoYNfCsrra"
+    }
   ],
   "sort": 350000,
   "ownership": {

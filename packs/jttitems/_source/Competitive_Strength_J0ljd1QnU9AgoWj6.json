@@ -16,7 +16,42 @@
     "type": "general"
   },
   "effects": [
-    "bSKz2dW23HYxuLmo"
+    {
+      "name": "Competitive Strength",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.J0ljd1QnU9AgoWj6",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "bSKz2dW23HYxuLmo",
+      "changes": [
+        {
+          "key": "system.skills.athletics.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.brawn.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!J0ljd1QnU9AgoWj6.bSKz2dW23HYxuLmo"
+    }
   ],
   "flags": {},
   "_stats": {

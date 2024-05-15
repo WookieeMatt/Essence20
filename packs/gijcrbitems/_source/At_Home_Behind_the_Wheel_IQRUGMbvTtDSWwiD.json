@@ -16,7 +16,36 @@
     "type": "role"
   },
   "effects": [
-    "AsruD1ulEGnxkkuu"
+    {
+      "name": "Driving Up Shift 2",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.IQRUGMbvTtDSWwiD",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "AsruD1ulEGnxkkuu",
+      "changes": [
+        {
+          "key": "system.skills.driving.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!IQRUGMbvTtDSWwiD.AsruD1ulEGnxkkuu"
+    }
   ],
   "sort": 100000,
   "ownership": {

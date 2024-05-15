@@ -16,7 +16,50 @@
     "type": "role"
   },
   "effects": [
-    "pInMc0ZhTG4Wo31X"
+    {
+      "name": "Blue Ranger Prime",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.PwTnDjPfb8dKplIU",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "pInMc0ZhTG4Wo31X",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.evasion.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.willpower.morphed",
+          "mode": 2,
+          "value": "2"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!PwTnDjPfb8dKplIU.pInMc0ZhTG4Wo31X"
+    }
   ],
   "sort": 175000,
   "ownership": {

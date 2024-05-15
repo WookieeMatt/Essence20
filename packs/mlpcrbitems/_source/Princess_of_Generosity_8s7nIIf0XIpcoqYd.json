@@ -16,7 +16,40 @@
     "type": "role"
   },
   "effects": [
-    "S3JyRQq1pDPp3zUU"
+    {
+      "name": "New Effect",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.8s7nIIf0XIpcoqYd",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "S3JyRQq1pDPp3zUU",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "3"
+        },
+        {
+          "key": "system.size",
+          "mode": 5,
+          "value": "large"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!8s7nIIf0XIpcoqYd.S3JyRQq1pDPp3zUU"
+    }
   ],
   "sort": 296875,
   "ownership": {

@@ -16,7 +16,35 @@
     "type": "role"
   },
   "effects": [
-    "tas1qP0SX18Iq1bO"
+    {
+      "name": "New Effect",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.KdfwiTaQe0VQV2Cl",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "tas1qP0SX18Iq1bO",
+      "changes": [
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "15"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!KdfwiTaQe0VQV2Cl.tas1qP0SX18Iq1bO"
+    }
   ],
   "sort": 100000,
   "ownership": {

@@ -14,7 +14,54 @@
     "type": "general"
   },
   "effects": [
-    "qxSGZfRKalLWkDis"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.5IWpV61QlVwBkpTI",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "qxSGZfRKalLWkDis",
+      "changes": [
+        {
+          "key": "system.initiative.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        },
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        },
+        {
+          "key": "system.movement.swim.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Bonuses",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!5IWpV61QlVwBkpTI.qxSGZfRKalLWkDis"
+    }
   ],
   "flags": {
     "core": {}

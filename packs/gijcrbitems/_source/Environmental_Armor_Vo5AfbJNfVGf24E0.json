@@ -16,7 +16,50 @@
     "type": "role"
   },
   "effects": [
-    "wljwA62lkfPb0xr8"
+    {
+      "name": "Environmental Armor",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.Vo5AfbJNfVGf24E0",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "wljwA62lkfPb0xr8",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Vo5AfbJNfVGf24E0.wljwA62lkfPb0xr8"
+    }
   ],
   "sort": 150000,
   "ownership": {

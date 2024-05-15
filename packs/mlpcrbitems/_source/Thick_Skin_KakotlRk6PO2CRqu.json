@@ -16,12 +16,180 @@
     "type": "role"
   },
   "effects": [
-    "mbgYRYG8OI2zfG00",
-    "Mq522nGyKgt9wysr",
-    "Bl1dZQwFhZCg72P8",
-    "nQB5FqZGv84lddlt",
-    "F7JcBZnmMBeyGzGq",
-    "8TFmtpl8oqrQzNzz"
+    {
+      "name": "7th Level Health Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.KakotlRk6PO2CRqu",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "mbgYRYG8OI2zfG00",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!KakotlRk6PO2CRqu.mbgYRYG8OI2zfG00"
+    },
+    {
+      "name": "15th Level Health Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.KakotlRk6PO2CRqu",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Mq522nGyKgt9wysr",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!KakotlRk6PO2CRqu.Mq522nGyKgt9wysr"
+    },
+    {
+      "name": "Evasion Defense Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.KakotlRk6PO2CRqu",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Bl1dZQwFhZCg72P8",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!KakotlRk6PO2CRqu.Bl1dZQwFhZCg72P8"
+    },
+    {
+      "name": "Toughness Defense Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.KakotlRk6PO2CRqu",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "nQB5FqZGv84lddlt",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!KakotlRk6PO2CRqu.nQB5FqZGv84lddlt"
+    },
+    {
+      "name": "Willpower Defense Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.KakotlRk6PO2CRqu",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "F7JcBZnmMBeyGzGq",
+      "changes": [
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!KakotlRk6PO2CRqu.F7JcBZnmMBeyGzGq"
+    },
+    {
+      "name": "Cleverness Defense Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.KakotlRk6PO2CRqu",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "8TFmtpl8oqrQzNzz",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!KakotlRk6PO2CRqu.8TFmtpl8oqrQzNzz"
+    }
   ],
   "sort": 25000,
   "ownership": {

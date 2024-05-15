@@ -16,7 +16,36 @@
     "gearType": "clothes"
   },
   "effects": [
-    "9ZBZsOkGLxWyU0z9"
+    {
+      "name": "Desert Expedition Clothes",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.SQzr6PhXZQ338BBh",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "9ZBZsOkGLxWyU0z9",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!SQzr6PhXZQ338BBh.9ZBZsOkGLxWyU0z9"
+    }
   ],
   "flags": {},
   "_stats": {
