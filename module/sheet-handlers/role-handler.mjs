@@ -1,9 +1,6 @@
 import { rememberOptions, rememberSelect } from "../helpers/dialog.mjs";
-import {
-  createItemCopies,
-  deleteAttachmentsForItem,
-  getItemsOfType,
-} from "../helpers/utils.mjs";
+import { getItemsOfType } from "../helpers/utils.mjs";
+import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
 /**
  * Handles setting the values and Items for an Actor's Role

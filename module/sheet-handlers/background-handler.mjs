@@ -1,10 +1,6 @@
 import { rememberOptions } from "../helpers/dialog.mjs";
-import {
-  deleteAttachmentsForItem,
-  createItemCopies,
-  getItemsOfType,
-  getShiftedSkill,
-} from "../helpers/utils.mjs";
+import { getItemsOfType, getShiftedSkill } from "../helpers/utils.mjs";
+import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
 /**
  * Handle the dropping of an influence on to a character
