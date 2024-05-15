@@ -16,7 +16,42 @@
     "gearType": "hazard"
   },
   "effects": [
-    "7vMJ4U52wPbNnFmF"
+    {
+      "name": "Nuclear Biological Chemical Protection Suit",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.teDcExlkzRTGTChr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "7vMJ4U52wPbNnFmF",
+      "changes": [
+        {
+          "key": "system.essenceShifts.strength.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.essenceShifts.speed.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!teDcExlkzRTGTChr.7vMJ4U52wPbNnFmF"
+    }
   ],
   "flags": {},
   "_stats": {

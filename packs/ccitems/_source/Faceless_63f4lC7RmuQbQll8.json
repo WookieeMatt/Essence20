@@ -16,7 +16,42 @@
     "type": "general"
   },
   "effects": [
-    "YYn1mar0j2WHzVMw"
+    {
+      "name": "Conceal Identity",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.63f4lC7RmuQbQll8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "YYn1mar0j2WHzVMw",
+      "changes": [
+        {
+          "key": "system.skills.deception.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.infiltration.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!63f4lC7RmuQbQll8.YYn1mar0j2WHzVMw"
+    }
   ],
   "flags": {},
   "_stats": {

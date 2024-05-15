@@ -14,7 +14,42 @@
     "type": "general"
   },
   "effects": [
-    "pwDM3p0UDcEyrHwD"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.8GgFGdlmri0GyKNI",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "pwDM3p0UDcEyrHwD",
+      "changes": [
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.driving.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Alt Mode Bonuses",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!8GgFGdlmri0GyKNI.pwDM3p0UDcEyrHwD"
+    }
   ],
   "flags": {
     "core": {}

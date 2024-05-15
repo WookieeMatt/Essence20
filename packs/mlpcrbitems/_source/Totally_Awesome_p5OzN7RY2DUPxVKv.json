@@ -16,7 +16,35 @@
     "type": "role"
   },
   "effects": [
-    "RY1YyYu22s5Y6gRM"
+    {
+      "name": "Health Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.p5OzN7RY2DUPxVKv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "RY1YyYu22s5Y6gRM",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!p5OzN7RY2DUPxVKv.RY1YyYu22s5Y6gRM"
+    }
   ],
   "sort": -43750,
   "ownership": {

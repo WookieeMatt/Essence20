@@ -14,7 +14,36 @@
     "type": "general"
   },
   "effects": [
-    "ZZW0BS0w1xltHDcy"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.P4qrmsy7AVSuahwx",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ZZW0BS0w1xltHDcy",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.essences.social",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!P4qrmsy7AVSuahwx.ZZW0BS0w1xltHDcy"
+    }
   ],
   "flags": {
     "core": {}

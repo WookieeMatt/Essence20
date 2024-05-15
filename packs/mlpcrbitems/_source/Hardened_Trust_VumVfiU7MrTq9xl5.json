@@ -16,7 +16,55 @@
     "type": "role"
   },
   "effects": [
-    "zzX3CYHORDBh1ZGR"
+    {
+      "name": "Hardened Trust",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.VumVfiU7MrTq9xl5",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "zzX3CYHORDBh1ZGR",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!VumVfiU7MrTq9xl5.zzX3CYHORDBh1ZGR"
+    }
   ],
   "sort": 6250,
   "ownership": {

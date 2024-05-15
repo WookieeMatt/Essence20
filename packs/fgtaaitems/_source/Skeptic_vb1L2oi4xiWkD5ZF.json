@@ -14,7 +14,36 @@
     "type": "influence"
   },
   "effects": [
-    "AlrrSExmB7BJC8a9"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.vb1L2oi4xiWkD5ZF",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "AlrrSExmB7BJC8a9",
+      "changes": [
+        {
+          "key": "system.defenses.wilpower.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!vb1L2oi4xiWkD5ZF.AlrrSExmB7BJC8a9"
+    }
   ],
   "flags": {
     "core": {}

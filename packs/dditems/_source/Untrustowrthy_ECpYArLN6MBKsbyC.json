@@ -13,7 +13,36 @@
     }
   },
   "effects": [
-    "Los1snQZHhLrd5Wf"
+    {
+      "name": "Untrustworthy",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.ECpYArLN6MBKsbyC",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Los1snQZHhLrd5Wf",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ECpYArLN6MBKsbyC.Los1snQZHhLrd5Wf"
+    }
   ],
   "flags": {
     "core": {}

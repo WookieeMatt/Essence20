@@ -24,7 +24,36 @@
     "bonus": null
   },
   "effects": [
-    "PGQsE9ZkCf5PWykX"
+    {
+      "name": "Zeta Skin Transplant",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.UTJumLUCsoKuUfVT",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "PGQsE9ZkCf5PWykX",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "-1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!UTJumLUCsoKuUfVT.PGQsE9ZkCf5PWykX"
+    }
   ],
   "flags": {},
   "_stats": {

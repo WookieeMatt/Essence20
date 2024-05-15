@@ -14,7 +14,36 @@
     "type": "general"
   },
   "effects": [
-    "FrexWAQoEnltgxIB"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.LQXWdkTsiGL2vEV2",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "FrexWAQoEnltgxIB",
+      "changes": [
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Initiative Edge",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!GgeDqallWNwqvDXh.FrexWAQoEnltgxIB"
+    }
   ],
   "flags": {
     "core": {}

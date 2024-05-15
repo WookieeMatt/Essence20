@@ -14,8 +14,66 @@
     "type": "general"
   },
   "effects": [
-    "LUXly4HuCnwM5pDL",
-    "0EZFvABe6EgRX3t4"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.HPfuHLL9SBQ7lYyr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "LUXly4HuCnwM5pDL",
+      "changes": [
+        {
+          "key": "system.skills.streetwise.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Performance Bonus",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!R2kcuVGRvvtPQmQX.LUXly4HuCnwM5pDL"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.HPfuHLL9SBQ7lYyr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "0EZFvABe6EgRX3t4",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Persuade Fans",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!R2kcuVGRvvtPQmQX.0EZFvABe6EgRX3t4"
+    }
   ],
   "flags": {
     "core": {}

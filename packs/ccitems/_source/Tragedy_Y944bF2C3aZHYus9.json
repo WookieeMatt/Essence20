@@ -16,10 +16,126 @@
     "type": "influence"
   },
   "effects": [
-    "wKEgdtCNNQws2eQv",
-    "UVQbEAdVvqK2hdfW",
-    "6KTQynoxy6n5KDGb",
-    "KY1wkGK5mkZ3NY9G"
+    {
+      "name": "Cleverness Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y944bF2C3aZHYus9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "wKEgdtCNNQws2eQv",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Y944bF2C3aZHYus9.wKEgdtCNNQws2eQv"
+    },
+    {
+      "name": "Evasion Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y944bF2C3aZHYus9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "UVQbEAdVvqK2hdfW",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Y944bF2C3aZHYus9.UVQbEAdVvqK2hdfW"
+    },
+    {
+      "name": "Toughness Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y944bF2C3aZHYus9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "6KTQynoxy6n5KDGb",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Y944bF2C3aZHYus9.6KTQynoxy6n5KDGb"
+    },
+    {
+      "name": "Willpower Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y944bF2C3aZHYus9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "KY1wkGK5mkZ3NY9G",
+      "changes": [
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Y944bF2C3aZHYus9.KY1wkGK5mkZ3NY9G"
+    }
   ],
   "flags": {},
   "_stats": {

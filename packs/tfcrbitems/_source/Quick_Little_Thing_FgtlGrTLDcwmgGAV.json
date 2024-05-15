@@ -14,7 +14,36 @@
     "type": "minicon"
   },
   "effects": [
-    "J9kwRvjhfiNtY57L"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.FgtlGrTLDcwmgGAV",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "J9kwRvjhfiNtY57L",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!FgtlGrTLDcwmgGAV.J9kwRvjhfiNtY57L"
+    }
   ],
   "flags": {
     "core": {}

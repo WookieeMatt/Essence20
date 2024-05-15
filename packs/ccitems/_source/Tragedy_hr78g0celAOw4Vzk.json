@@ -13,10 +13,126 @@
     }
   },
   "effects": [
-    "x8KsYeSTE9h3pp4E",
-    "kdKLQaudZhYirMJo",
-    "iSlGYIkumWHWt6VA",
-    "pcI0W0x5MP2OIAEi"
+    {
+      "name": "Cleverness Penalty",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.hr78g0celAOw4Vzk",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "x8KsYeSTE9h3pp4E",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "-1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!hr78g0celAOw4Vzk.x8KsYeSTE9h3pp4E"
+    },
+    {
+      "name": "Evasion Penalty",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.hr78g0celAOw4Vzk",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "kdKLQaudZhYirMJo",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "-1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!hr78g0celAOw4Vzk.kdKLQaudZhYirMJo"
+    },
+    {
+      "name": "Toughness Penalty",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.hr78g0celAOw4Vzk",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "iSlGYIkumWHWt6VA",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "-1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!hr78g0celAOw4Vzk.iSlGYIkumWHWt6VA"
+    },
+    {
+      "name": "Willpower Penalty",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.hr78g0celAOw4Vzk",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "pcI0W0x5MP2OIAEi",
+      "changes": [
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "-1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!hr78g0celAOw4Vzk.pcI0W0x5MP2OIAEi"
+    }
   ],
   "flags": {},
   "_stats": {

@@ -16,7 +16,36 @@
     "type": "general"
   },
   "effects": [
-    "gK8bYT8vj9e6odim"
+    {
+      "name": "History Buff",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.b3O5i3HMtaIHl6PD",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "gK8bYT8vj9e6odim",
+      "changes": [
+        {
+          "key": "system.skills.culture.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!b3O5i3HMtaIHl6PD.gK8bYT8vj9e6odim"
+    }
   ],
   "flags": {},
   "_stats": {
