@@ -1,9 +1,8 @@
-import {compilePack, extractPack} from "@foundryvtt/foundryvtt-cli";
-
 const gulp = require('gulp');
 const prefix = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass')(require('sass'));
+const fvtt = require('@foundryvtt/foundryvtt-cli')
 
 /* ----------------------------------------- */
 /*  Compile Sass
@@ -67,7 +66,7 @@ async function compilePacks() {
 
 	for(const packInfo of packs) {
 		logger.info(`Compiling pack ${packInfo.name}`);
-		await compilePack(PACK_SOURCE + packInfo.name, packInfo.path);
+		await fvtt.compilePack(PACK_SOURCE + packInfo.name, packInfo.path);
 		// await extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
 	}
 }
@@ -86,7 +85,7 @@ async function extractPacks() {
 
 	for(const packInfo of packs) {
 		logger.info(`Extracting pack ${packInfo.name}`);
-		await extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
+		await fvtt.extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
 	}
 }
 export const extract = gulp.series(extractPacks);
