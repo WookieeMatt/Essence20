@@ -23,7 +23,36 @@
     "usesPer": null
   },
   "effects": [
-    "azlsNHHxHdnuNrNl"
+    {
+      "name": "Power Battery",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.n8ZRlinAffzDfk5V",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "azlsNHHxHdnuNrNl",
+      "changes": [
+        {
+          "key": "system.powers.personal.max",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!n8ZRlinAffzDfk5V.azlsNHHxHdnuNrNl"
+    }
   ],
   "flags": {},
   "_stats": {

@@ -26,7 +26,36 @@
     "upgradeTraits": []
   },
   "effects": [
-    "GV9jQT5lkKFnEZpC"
+    {
+      "name": "Psycho Armor",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.FD8rj4drRUHkGecW",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "GV9jQT5lkKFnEZpC",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!FD8rj4drRUHkGecW.GV9jQT5lkKFnEZpC"
+    }
   ],
   "flags": {},
   "_stats": {

@@ -14,7 +14,36 @@
     "type": "general"
   },
   "effects": [
-    "VZ0OHjSry2xQ6N9H"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.jHyKgHS0yDNBEKjw",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "VZ0OHjSry2xQ6N9H",
+      "changes": [
+        {
+          "key": "system.initiative.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Initiative Bonus",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!jHyKgHS0yDNBEKjw.VZ0OHjSry2xQ6N9H"
+    }
   ],
   "flags": {
     "core": {}

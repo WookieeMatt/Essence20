@@ -14,8 +14,72 @@
     "type": "influence"
   },
   "effects": [
-    "l56hv0VXy6zEhWcx",
-    "U0aF5sRkuPtoTZzV"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.IT3v6horcOd82vdK",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "l56hv0VXy6zEhWcx",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "",
+          "mode": 2,
+          "value": "",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "First Impression",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!IT3v6horcOd82vdK.l56hv0VXy6zEhWcx"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.IT3v6horcOd82vdK",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "U0aF5sRkuPtoTZzV",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Interact with Leaders",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!IT3v6horcOd82vdK.U0aF5sRkuPtoTZzV"
+    }
   ],
   "flags": {
     "core": {}

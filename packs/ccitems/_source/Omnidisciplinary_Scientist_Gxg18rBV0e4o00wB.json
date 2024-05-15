@@ -16,7 +16,35 @@
     "type": "role"
   },
   "effects": [
-    "svLPCH4XHkQrJVUm"
+    {
+      "name": "Omnidisciplinary Scientist",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.cobra_codex.Item.Gxg18rBV0e4o00wB",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "svLPCH4XHkQrJVUm",
+      "changes": [
+        {
+          "key": "system.skills.science.isSpecialized",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Gxg18rBV0e4o00wB.svLPCH4XHkQrJVUm"
+    }
   ],
   "sort": 100000,
   "ownership": {

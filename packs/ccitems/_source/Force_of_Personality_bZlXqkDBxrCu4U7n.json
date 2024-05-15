@@ -16,7 +16,35 @@
     "type": "role"
   },
   "effects": [
-    "xVdZ27LS4FnTKfTx"
+    {
+      "name": "Force of Personality",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.cobra_codex.Item.bZlXqkDBxrCu4U7n",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "xVdZ27LS4FnTKfTx",
+      "changes": [
+        {
+          "key": "system.skills.night.essences.social",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!bZlXqkDBxrCu4U7n.xVdZ27LS4FnTKfTx"
+    }
   ],
   "sort": 100000,
   "ownership": {

@@ -16,7 +16,36 @@
     "type": "general"
   },
   "effects": [
-    "QXN19mB72z8aWESl"
+    {
+      "name": "Driving Strength Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.M1OMp9HJJ6f7RqSl",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "QXN19mB72z8aWESl",
+      "changes": [
+        {
+          "key": "system.skills.driving.essences.strength",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!M1OMp9HJJ6f7RqSl.QXN19mB72z8aWESl"
+    }
   ],
   "flags": {},
   "_stats": {

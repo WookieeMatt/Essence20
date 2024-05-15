@@ -16,7 +16,36 @@
     "gearType": "clothes"
   },
   "effects": [
-    "mEnGL6UmtBERS4Bt"
+    {
+      "name": "Formal Clothes",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.nYxek8CSGZnAneKA",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "mEnGL6UmtBERS4Bt",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!nYxek8CSGZnAneKA.mEnGL6UmtBERS4Bt"
+    }
   ],
   "flags": {},
   "_stats": {

@@ -14,7 +14,36 @@
     "type": "general"
   },
   "effects": [
-    "9HbIZC1dEW7VNtVu"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.P0ko5W9TDsmhCGJt",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "9HbIZC1dEW7VNtVu",
+      "changes": [
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "5",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Ground Speed Increase",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!KYc9qF93mww0h1XA.9HbIZC1dEW7VNtVu"
+    }
   ],
   "flags": {
     "core": {}

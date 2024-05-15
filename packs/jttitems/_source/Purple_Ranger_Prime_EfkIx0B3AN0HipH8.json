@@ -16,7 +16,50 @@
     "type": "role"
   },
   "effects": [
-    "U1sKoQC8mKaTDqsD"
+    {
+      "name": "Purple Ranger Prime",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.jump_through_time.Item.EfkIx0B3AN0HipH8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "U1sKoQC8mKaTDqsD",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.evasion.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "2"
+        },
+        {
+          "key": "system.defenses.willpower.morphed",
+          "mode": 2,
+          "value": "2"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!EfkIx0B3AN0HipH8.U1sKoQC8mKaTDqsD"
+    }
   ],
   "sort": 229688,
   "ownership": {

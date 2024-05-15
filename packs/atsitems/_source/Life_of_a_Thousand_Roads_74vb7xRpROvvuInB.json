@@ -14,7 +14,42 @@
     "type": "general"
   },
   "effects": [
-    "6tNAE1jXZAci9eOv"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.74vb7xRpROvvuInB",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "6tNAE1jXZAci9eOv",
+      "changes": [
+        {
+          "key": "system.skills.culture.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.survival.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Life of a Thousand Raods",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!74vb7xRpROvvuInB.6tNAE1jXZAci9eOv"
+    }
   ],
   "flags": {
     "core": {}

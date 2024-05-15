@@ -14,7 +14,36 @@
     "type": "general"
   },
   "effects": [
-    "QrRkFBwciNwCIl1F"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.p19W77WzExvWmo8O",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "QrRkFBwciNwCIl1F",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Diplomacy Edge",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!TARp0NItPetoMUv2.QrRkFBwciNwCIl1F"
+    }
   ],
   "flags": {
     "core": {}

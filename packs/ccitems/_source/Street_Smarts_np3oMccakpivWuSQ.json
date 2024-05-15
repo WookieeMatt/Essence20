@@ -16,7 +16,36 @@
     "type": "origin"
   },
   "effects": [
-    "LjPHZSNPI3fIlwzf"
+    {
+      "name": "Streetwise Smarts",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.np3oMccakpivWuSQ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "LjPHZSNPI3fIlwzf",
+      "changes": [
+        {
+          "key": "system.skills.streetwise.smarts",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!np3oMccakpivWuSQ.LjPHZSNPI3fIlwzf"
+    }
   ],
   "flags": {},
   "_stats": {

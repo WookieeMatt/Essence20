@@ -16,7 +16,45 @@
     "type": "role"
   },
   "effects": [
-    "ECOgv78PJoHsCQ27"
+    {
+      "name": "Alone in Environment",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.EDBn8zHJXkRFu2TT",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "ECOgv78PJoHsCQ27",
+      "changes": [
+        {
+          "key": "system.skills.alertness.edge",
+          "mode": 5,
+          "value": "true"
+        },
+        {
+          "key": "system.skills.survival.edge",
+          "mode": 5,
+          "value": "true"
+        },
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!EDBn8zHJXkRFu2TT.ECOgv78PJoHsCQ27"
+    }
   ],
   "sort": 100000,
   "ownership": {

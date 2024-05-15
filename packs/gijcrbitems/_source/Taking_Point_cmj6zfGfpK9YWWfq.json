@@ -16,8 +16,84 @@
     "type": "role"
   },
   "effects": [
-    "ehnuzgKHzrZxoCev",
-    "Y9kJGFamzEee9kMv"
+    {
+      "name": "Taking Point",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.cmj6zfGfpK9YWWfq",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ehnuzgKHzrZxoCev",
+      "changes": [
+        {
+          "key": "system.initiative.shiftUp",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.skills.survival.shiftUp",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!cmj6zfGfpK9YWWfq.ehnuzgKHzrZxoCev"
+    },
+    {
+      "name": "Taking Point in Environment",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.cmj6zfGfpK9YWWfq",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Y9kJGFamzEee9kMv",
+      "changes": [
+        {
+          "key": "system.initiative.shiftUp",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.skills.survival.shiftUp",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!cmj6zfGfpK9YWWfq.Y9kJGFamzEee9kMv"
+    }
   ],
   "sort": 150000,
   "ownership": {

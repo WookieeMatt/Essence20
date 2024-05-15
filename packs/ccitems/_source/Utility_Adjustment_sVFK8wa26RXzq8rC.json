@@ -24,7 +24,54 @@
     "bonus": null
   },
   "effects": [
-    "67baUY5YAAVSyrve"
+    {
+      "name": "Utility Adjustment",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.sVFK8wa26RXzq8rC",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "67baUY5YAAVSyrve",
+      "changes": [
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        },
+        {
+          "key": "system.movement.climb.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        },
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        },
+        {
+          "key": "system.movement.swim.bonus",
+          "mode": 2,
+          "value": "-5",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!sVFK8wa26RXzq8rC.67baUY5YAAVSyrve"
+    }
   ],
   "flags": {},
   "_stats": {

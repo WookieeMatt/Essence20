@@ -14,7 +14,36 @@
     "type": "general"
   },
   "effects": [
-    "VixVPJ431CXmfISz"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Q9DWZNwPe66ewBuG",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "VixVPJ431CXmfISz",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!Q9DWZNwPe66ewBuG.VixVPJ431CXmfISz"
+    }
   ],
   "flags": {
     "core": {}

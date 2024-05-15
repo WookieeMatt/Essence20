@@ -14,10 +14,126 @@
     "type": "general"
   },
   "effects": [
-    "QKwFodfIXRRqrA6r",
-    "NpRY7BHmPB3gfQeG",
-    "KjnkWH6BzXFKnNXV",
-    "RMS45cfYUwYBEAL9"
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y55n77UqARhPugmy",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "QKwFodfIXRRqrA6r",
+      "changes": [
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Bonus Ground Movement",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!NU7KqcXvQbOFbU0C.QKwFodfIXRRqrA6r"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y55n77UqARhPugmy",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "NpRY7BHmPB3gfQeG",
+      "changes": [
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Bonus Aerial Movement",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!NU7KqcXvQbOFbU0C.NpRY7BHmPB3gfQeG"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y55n77UqARhPugmy",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "KjnkWH6BzXFKnNXV",
+      "changes": [
+        {
+          "key": "system.movement.swim.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Bonus Swim Movement",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!NU7KqcXvQbOFbU0C.KjnkWH6BzXFKnNXV"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y55n77UqARhPugmy",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "RMS45cfYUwYBEAL9",
+      "changes": [
+        {
+          "key": "system.initiative.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Initiative Bonus",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!NU7KqcXvQbOFbU0C.RMS45cfYUwYBEAL9"
+    }
   ],
   "flags": {
     "core": {}
