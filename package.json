@@ -11,7 +11,7 @@
     "lint-fix": "npx eslint module/ --ext .js,.mjs --fix",
     "sass": "npx sass -s compressed ./sass/*.scss ./css/*.css",
     "sass:watch": "npx sass -s compressed --watch ./sass/*.scss ./css/*.css",
-    "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest"
   },
   "browserslist": [
     "last 3 versions"
