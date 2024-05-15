@@ -71,7 +71,7 @@ async function compilePacks() {
 		// await extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
 	}
 }
-exports.compile = gulp.series(compilePacks);
+export const compile = gulp.series(compilePacks);
 
 /**
  * Extract the contents of compendium packs to JSON files.
@@ -89,4 +89,4 @@ async function extractPacks() {
 		await extractPack(packInfo.path, PACK_SOURCE + packInfo.name);
 	}
 }
-exports.extract = gulp.series(extractPacks);
+export const extract = gulp.series(extractPacks);
