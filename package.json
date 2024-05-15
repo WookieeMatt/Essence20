@@ -27,7 +27,7 @@
     "@foundryvtt/foundryvtt-cli": "^1.0.2"
   },
   "type": "module",
-  "main": "gulpfile.js",
+  "main": "gulpfile.cjs",
   "directories": {
     "lib": "lib"
   },
