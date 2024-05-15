@@ -1,8 +1,9 @@
+import * as fvtt from '@foundryvtt/foundryvtt-cli';
+
 const gulp = require('gulp');
 const prefix = require('gulp-autoprefixer');
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass')(require('sass'));
-const fvtt = require('@foundryvtt/foundryvtt-cli');
 
 /* ----------------------------------------- */
 /*  Compile Sass
