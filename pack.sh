@@ -1,5 +1,7 @@
 #!/bin/bash
 
+fvtt package workon "essence20" --type "System"
+
 fvtt package pack -n "atsitems"
 fvtt package pack -n "bthitems"
 fvtt package pack -n "fmmcitems"
