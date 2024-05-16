@@ -1,5 +1,7 @@
 name: Release
-on: [pull_request]
+on:
+  release:
+    types: [published]
 jobs:
   Compile:
     runs-on: ubuntu-latest
@@ -22,13 +24,13 @@ jobs:
       - name: Create system archive
         run: |
           zip --recurse-paths ./Essence20.zip  \
-            system.json                     \
-            template.json                   \
-            assets/                         \
-            lang/                           \
-            module/                         \
-            packs/                          \
-            css/                            \
+            system.json                        \
+            template.json                      \
+            assets/                            \
+            lang/                              \
+            module/                            \
+            packs/                             \
+            css/                               \
             templates/
       - name: Update release with files
         id: create_version_release
