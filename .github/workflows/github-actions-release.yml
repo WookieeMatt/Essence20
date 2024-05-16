@@ -36,4 +36,5 @@ jobs:
         with:
           allowUpdates: true
           artifacts: './system.json, ./Essence20.zip'
+          tag: ${{ github.event.release.tag_name }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
