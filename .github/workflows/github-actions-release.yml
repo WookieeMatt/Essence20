@@ -1,5 +1,5 @@
 name: Release
-on: [release]
+on: [pull_request]
 jobs:
   Compile:
     runs-on: ubuntu-latest
@@ -30,4 +30,10 @@ jobs:
             packs/                          \
             css/                            \
             templates/
+      - name: Update release with files
+        id: create_version_release
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifacts: './system.json, ./system.zip'
       - run: echo "🍏 This job's status is ${{ job.status }}."
