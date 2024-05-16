@@ -1,5 +1,5 @@
 name: Release
-on: [pull_request]
+on: [release]
 jobs:
   Compile:
     runs-on: ubuntu-latest
@@ -19,7 +19,7 @@ jobs:
       - run: npm ci
       - name: Compile the compendiums
         run: gulp compile
-      - name: Create System Archive
+      - name: Create system archive
         run: |
           zip --recurse-paths ./Essence20.zip  \
             system.json                     \
