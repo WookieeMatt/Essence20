@@ -35,5 +35,5 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           allowUpdates: true
-          artifacts: './system.json, ./system.zip'
+          artifacts: './system.json, ./Essence20.zip'
       - run: echo "🍏 This job's status is ${{ job.status }}."
