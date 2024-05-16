@@ -1,11 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-<<<<<<< HEAD
-  "version": "4.2.2",
-=======
   "version": "4.2.3",
->>>>>>> 62f8b853a73a9dd0b5a874665c895d9f4ed8b604
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
