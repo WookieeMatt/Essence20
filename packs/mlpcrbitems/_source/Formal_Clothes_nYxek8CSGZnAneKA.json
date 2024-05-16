@@ -1,0 +1,70 @@
+{
+  "folder": "6BKwMp735fBmaDBb",
+  "name": "Formal Clothes",
+  "type": "gear",
+  "_id": "nYxek8CSGZnAneKA",
+  "img": "systems/essence20/assets/icons/gear/clothes.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 160
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "clothes"
+  },
+  "effects": [
+    {
+      "name": "Formal Clothes",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.nYxek8CSGZnAneKA",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "mEnGL6UmtBERS4Bt",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.performance.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!nYxek8CSGZnAneKA.mEnGL6UmtBERS4Bt"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695562856920,
+    "modifiedTime": 1704127413386,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!nYxek8CSGZnAneKA"
+}

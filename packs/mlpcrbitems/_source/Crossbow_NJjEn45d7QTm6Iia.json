@@ -1,0 +1,69 @@
+{
+  "folder": "1O0Xewih7cClw7RZ",
+  "name": "Crossbow",
+  "type": "weapon",
+  "_id": "NJjEn45d7QTm6Iia",
+  "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 151
+    },
+    "items": {
+      "77ca": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.KMeyjmvfoeKwvqcf",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Crossbow Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "light"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695611023024,
+    "modifiedTime": 1704127414353,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!NJjEn45d7QTm6Iia"
+}

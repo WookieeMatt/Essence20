@@ -1,0 +1,43 @@
+{
+  "folder": "Uwn9L2dmVttE0zXj",
+  "name": "Turbo Lightning Sword Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "A2T4cCya4l1rlihY",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "element",
+    "damageValue": 3,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696192111230,
+    "modifiedTime": 1704127418247,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!A2T4cCya4l1rlihY"
+}

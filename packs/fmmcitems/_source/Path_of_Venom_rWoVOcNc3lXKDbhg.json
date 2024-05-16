@@ -1,0 +1,273 @@
+{
+  "folder": "tutqIbfZE1ytmm0J",
+  "name": "Path of Venom",
+  "type": "role",
+  "_id": "rWoVOcNc3lXKDbhg",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 298
+    },
+    "items": {
+      "15bc": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.a4gWSl5fufpIYU4C",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hard Hitter",
+        "type": "perk",
+        "subtype": "general",
+        "level": 1
+      },
+      "da71": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Md0Y0dr7e69J6JD9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "I Refuse!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "57dc": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.FoCxdBbopumlIvH8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psycho Blast",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "c50a": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.iDbMl3SS6XnyADN2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Monster Morph",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "6ce9": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.mJu5IxoVrPjp8dVU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Distraction",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "6df6": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.yZ3rXt8z1jlCHlu7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psycho Assault",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "2edb": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.uVCPqt7exjXZ7kqn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhance Monster",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "7d37": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "4ee1": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.WQYSawSpefEKLaG0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nemesis Drain",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "212c": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.SejEXXGz3edJ734e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zordbane",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "a499": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.90rddMq7sK1SrhBi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stinger Spray",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "992e": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.ZqE7kDEMylFQK6Oa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grow!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "8a9c": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.kh7Wk5zalucm9I7p",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Toxic Terror",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "089e": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.9tU5tDmpOhChLfdv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Venom Warlord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "0024": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.L8wFtP1y6PQYJJVL",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Hard Hitter",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": null,
+          "increaseLevels": [
+            "level4",
+            "level9",
+            "level14",
+            "level19"
+          ],
+          "startingValue": 0,
+          "type": "damageBonus",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 1,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": null,
+          "startingMax": null,
+          "value": null
+        }
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "psycho"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "social": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "speed": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "strength": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 1,
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ],
+        "regeneration": 2,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "athletics",
+      "might",
+      "alertness"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713742600550,
+    "modifiedTime": 1714616669120,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!rWoVOcNc3lXKDbhg"
+}

@@ -1,0 +1,48 @@
+{
+  "folder": "U7v9viwsFtcyjclc",
+  "name": "Earned Your Stripes",
+  "type": "influence",
+  "_id": "uAy3eIlxIbs5iPbB",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 12
+    },
+    "items": {
+      "748b": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.VkXcy9vJCxGqyxhw",
+        "img": "icons/svg/hazard.svg",
+        "name": "Earned Your Stripes",
+        "type": "hangUp"
+      },
+      "2f1b": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.Las5FJpqaCQVhRSU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Earned Your Stripes",
+        "type": "perk"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714097322631,
+    "modifiedTime": 1714097334798,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!uAy3eIlxIbs5iPbB"
+}

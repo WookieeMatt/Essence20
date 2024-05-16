@@ -1,0 +1,49 @@
+{
+  "name": "Once a Marauder",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaughter Sourcebook",
+      "page": 7
+    },
+    "items": {
+      "a234": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.vh7bPPAgLv9KG0N7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Once a Maurauder",
+        "type": "perk"
+      },
+      "6d85": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.Prmh2Lie5CEOp71i",
+        "img": "icons/svg/hazard.svg",
+        "name": "Once a Marauder",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686272126965,
+    "modifiedTime": 1704127422418,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "9jnif8g2KnnqVujz",
+  "_id": "cm8scG8U3jzoekP1",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!cm8scG8U3jzoekP1"
+}

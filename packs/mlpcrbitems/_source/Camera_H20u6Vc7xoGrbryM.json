@@ -1,0 +1,35 @@
+{
+  "folder": "qxnBZjvAup48KbHV",
+  "name": "Camera",
+  "type": "gear",
+  "_id": "H20u6Vc7xoGrbryM",
+  "img": "systems/essence20/assets/icons/gear/photo-camera.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 154
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "tools"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695566256281,
+    "modifiedTime": 1704127413367,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!H20u6Vc7xoGrbryM"
+}

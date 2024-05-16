@@ -1,0 +1,69 @@
+{
+  "folder": "FCVKCzkmdlqKCyeH",
+  "name": "Quick Thinking",
+  "type": "perk",
+  "_id": "FrytnQHkq1B0IMz9",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 44
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Quick Thinking",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.ferocious_fighters.Item.FrytnQHkq1B0IMz9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ECRhONNZq1iD4BsD",
+      "changes": [
+        {
+          "key": "system.skills.alertness.essences.speed",
+          "mode": 5,
+          "value": "true"
+        },
+        {
+          "key": "system.skills.infiltration.essences.smarts",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!FrytnQHkq1B0IMz9.ECRhONNZq1iD4BsD"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714099982094,
+    "modifiedTime": 1714848315846,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!FrytnQHkq1B0IMz9"
+}

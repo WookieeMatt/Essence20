@@ -1,0 +1,37 @@
+{
+  "folder": "emRBrjlruf3ORbW4",
+  "name": "Wayfinder",
+  "type": "spell",
+  "_id": "Q3gc1907NrLurvD1",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 138
+    },
+    "circle": "aid",
+    "cost": 2,
+    "duration": "1 scene",
+    "isSpecialized": false,
+    "range": "Unlimited",
+    "tier": "superior"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713843440504,
+    "modifiedTime": 1713843469729,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Q3gc1907NrLurvD1"
+}

@@ -1,0 +1,66 @@
+{
+  "name": "Gallant",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 124
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.lpT5NH2Hm6ct7sdp",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "AWKeKIE7dBkecjuw",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Social Skill Test",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!lpT5NH2Hm6ct7sdp.AWKeKIE7dBkecjuw"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686007173892,
+    "modifiedTime": 1704127413385,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "lpT5NH2Hm6ct7sdp",
+  "folder": "hTtvIMEXXET4Kkqf",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!lpT5NH2Hm6ct7sdp"
+}

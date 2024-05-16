@@ -1,0 +1,84 @@
+{
+  "name": "Fast",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 109
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.JYtupHnbYrE2cDad",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "5EpV9IiGoB682Xik",
+      "changes": [
+        {
+          "key": "system.initiative.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.movement.aerial.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        },
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        },
+        {
+          "key": "system.movement.swim.bonus",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!JYtupHnbYrE2cDad.5EpV9IiGoB682Xik"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686275727304,
+    "modifiedTime": 1704127422501,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "JYtupHnbYrE2cDad",
+  "folder": "ERY0Xs3Bi23Hjx2K",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!JYtupHnbYrE2cDad"
+}

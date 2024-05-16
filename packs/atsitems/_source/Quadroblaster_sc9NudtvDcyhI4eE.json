@@ -1,0 +1,52 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Quadroblaster",
+  "type": "weapon",
+  "_id": "sc9NudtvDcyhI4eE",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 80
+    },
+    "items": {},
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "combined",
+      "energy",
+      "inertial",
+      "powerWeapon",
+      "stun"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696086599735,
+    "modifiedTime": 1704127406009,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!sc9NudtvDcyhI4eE"
+}

@@ -1,0 +1,34 @@
+{
+  "folder": "nz4sHStbnHLLAmZN",
+  "name": "Talk Them Down",
+  "type": "perk",
+  "_id": "Ht8KDCTIQXLo1YI3",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 66
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 100782,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714158831646,
+    "modifiedTime": 1714855508892,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!Ht8KDCTIQXLo1YI3"
+}

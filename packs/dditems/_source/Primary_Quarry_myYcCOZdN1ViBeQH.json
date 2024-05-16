@@ -1,0 +1,34 @@
+{
+  "folder": "25xY1f3tHIN5dwFF",
+  "name": "Primary Quarry",
+  "type": "perk",
+  "_id": "myYcCOZdN1ViBeQH",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 55
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714357101370,
+    "modifiedTime": 1714860755415,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!myYcCOZdN1ViBeQH"
+}

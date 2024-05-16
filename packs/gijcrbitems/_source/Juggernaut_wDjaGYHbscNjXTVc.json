@@ -1,0 +1,108 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Juggernaut",
+  "type": "focus",
+  "_id": "wDjaGYHbscNjXTVc",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 112
+    },
+    "items": {
+      "d100": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.0a01vmWtbbYYcNvA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Armor Expert",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "5a64": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.xr0PvYXRNAg9cU42",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Plates",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "f24d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Txn7a7v4gQOCYPhC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Second Skin",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "ca9a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.smvGDC2LdShGs0UK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Customized Armor",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "dfd8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.DwnPEw2POcj3f0Za",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unstoppable Force",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "a4c2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.t8OnOh6dQ0FoWBsG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wrecking Ball",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "95e3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.QSHsA1peMncG196r",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Immovable Object",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "2a21": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ub4PO0AcEYzMc93S",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Vanguard",
+        "type": "role"
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "conditioning",
+      "brawn",
+      "might"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706742281768,
+    "modifiedTime": 1714012345097,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!wDjaGYHbscNjXTVc"
+}

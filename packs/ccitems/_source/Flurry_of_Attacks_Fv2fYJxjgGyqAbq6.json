@@ -1,0 +1,34 @@
+{
+  "folder": "p8Hd1CKzzpu9F5cy",
+  "name": "Flurry of Attacks",
+  "type": "perk",
+  "_id": "Fv2fYJxjgGyqAbq6",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 52
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 112500,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714013727705,
+    "modifiedTime": 1714846717332,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!Fv2fYJxjgGyqAbq6"
+}

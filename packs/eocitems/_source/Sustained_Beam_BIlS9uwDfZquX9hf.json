@@ -1,0 +1,40 @@
+{
+  "folder": "GNKNEi6DeX1MrVvC",
+  "name": "Sustained Beam",
+  "type": "upgrade",
+  "_id": "BIlS9uwDfZquX9hf",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 54
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "traits": [],
+    "type": "weapon",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714482591655,
+    "modifiedTime": 1714482646454,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!BIlS9uwDfZquX9hf"
+}

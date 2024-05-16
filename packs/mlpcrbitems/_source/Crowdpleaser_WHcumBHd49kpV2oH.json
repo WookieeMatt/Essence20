@@ -1,0 +1,51 @@
+{
+  "name": "Crowdpleaser",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 49
+    },
+    "items": {
+      "33a8": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.M7fLb600qXWY0dPm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wow the Audience",
+        "type": "perk"
+      },
+      "cc5c": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.GjOvI88JglH8yukq",
+        "img": "icons/svg/hazard.svg",
+        "name": "Out of Touch",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": [
+      "performance"
+    ]
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686262797397,
+    "modifiedTime": 1704127414886,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "WHcumBHd49kpV2oH",
+  "folder": "vjofBqKYZU3tiTmw",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!WHcumBHd49kpV2oH"
+}

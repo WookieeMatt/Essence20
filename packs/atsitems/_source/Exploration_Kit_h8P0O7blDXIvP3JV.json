@@ -1,0 +1,33 @@
+{
+  "folder": "qySR8eaMUj1PH8aM",
+  "name": "Exploration Kit",
+  "type": "gear",
+  "_id": "h8P0O7blDXIvP3JV",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 85
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695757203328,
+    "modifiedTime": 1704127399142,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!h8P0O7blDXIvP3JV"
+}

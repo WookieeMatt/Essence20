@@ -1,0 +1,34 @@
+{
+  "folder": "RTRjsqocJGFCNNc9",
+  "name": "We All Go Home or Nobody's Going Home",
+  "type": "perk",
+  "_id": "3NS825G6UdbdW7ZY",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 87
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 400000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706458739043,
+    "modifiedTime": 1714851198086,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!3NS825G6UdbdW7ZY"
+}

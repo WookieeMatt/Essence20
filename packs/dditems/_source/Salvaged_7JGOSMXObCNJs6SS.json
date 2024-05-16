@@ -1,0 +1,50 @@
+{
+  "folder": "82NMc5Rrlomtpkcr",
+  "name": "Salvaged",
+  "type": "origin",
+  "_id": "7JGOSMXObCNJs6SS",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.cGGEXSdCI170AaM4]{Salvaged}</p>",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 37
+    },
+    "items": {
+      "b2e8": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.a7KiUNWgLZgtQz6S",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Welds, Rivets, and Ideas",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 33,
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "survival",
+      "technology"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694554459191,
+    "modifiedTime": 1704127407066,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!7JGOSMXObCNJs6SS"
+}

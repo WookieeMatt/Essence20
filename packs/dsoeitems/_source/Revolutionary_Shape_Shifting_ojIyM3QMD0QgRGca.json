@@ -1,0 +1,37 @@
+{
+  "folder": "21OCbfWmzoY4UuCq",
+  "name": "Revolutionary Shape-Shifting",
+  "type": "spell",
+  "_id": "ojIyM3QMD0QgRGca",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Dark Skies Over Equestria",
+      "page": 22
+    },
+    "circle": "enchantment",
+    "cost": 3,
+    "duration": "1 scene",
+    "isSpecialized": false,
+    "range": "20 feet",
+    "tier": "virtuoso"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713842166090,
+    "modifiedTime": 1713842200710,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!ojIyM3QMD0QgRGca"
+}

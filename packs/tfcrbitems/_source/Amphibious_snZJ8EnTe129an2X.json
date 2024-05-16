@@ -1,0 +1,41 @@
+{
+  "folder": "polXxU4IYXTzgmFD",
+  "name": "Amphibious",
+  "type": "upgrade",
+  "_id": "snZJ8EnTe129an2X",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 127
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [
+      "amphibious"
+    ],
+    "type": "weapon",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695605464382,
+    "modifiedTime": 1704127422540,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!snZJ8EnTe129an2X"
+}

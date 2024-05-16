@@ -1,0 +1,34 @@
+{
+  "folder": "7m4vY7S71L5akS36",
+  "name": "Object-Shift",
+  "type": "perk",
+  "_id": "Y5v2PTCVu7ty3phD",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Dark Skies Over Equestria",
+      "page": 21
+    },
+    "prerequisite": "Ability to change shape",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713841570876,
+    "modifiedTime": 1713841591768,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Y5v2PTCVu7ty3phD"
+}

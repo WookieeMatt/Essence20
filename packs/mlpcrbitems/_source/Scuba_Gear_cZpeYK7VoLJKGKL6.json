@@ -1,0 +1,35 @@
+{
+  "folder": "qxnBZjvAup48KbHV",
+  "name": "Scuba Gear",
+  "type": "gear",
+  "_id": "cZpeYK7VoLJKGKL6",
+  "img": "systems/essence20/assets/icons/gear/scuba-mask.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 154
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "exploration"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695581267949,
+    "modifiedTime": 1704127413379,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!cZpeYK7VoLJKGKL6"
+}

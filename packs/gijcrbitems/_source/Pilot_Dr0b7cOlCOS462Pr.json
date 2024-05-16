@@ -1,0 +1,59 @@
+{
+  "name": "Pilot",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 61
+    },
+    "items": {
+      "87b2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.rFeczlniKUs8Rk3q",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fly In The Future",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "35",
+    "essences": [
+      "speed"
+    ],
+    "languages": "",
+    "skills": [
+      "initiative",
+      "driving",
+      "targeting"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681738176977,
+    "modifiedTime": 1704127410215,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "Dr0b7cOlCOS462Pr",
+  "folder": "lt3PqmG6G17ICpRK",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Dr0b7cOlCOS462Pr"
+}

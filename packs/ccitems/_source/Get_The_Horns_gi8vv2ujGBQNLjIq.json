@@ -1,0 +1,34 @@
+{
+  "folder": "95z2vSu8hmHunOOs",
+  "name": "Get The Horns",
+  "type": "perk",
+  "_id": "gi8vv2ujGBQNLjIq",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 69
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 250000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714062599465,
+    "modifiedTime": 1714847715325,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!gi8vv2ujGBQNLjIq"
+}

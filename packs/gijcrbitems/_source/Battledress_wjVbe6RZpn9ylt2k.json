@@ -1,0 +1,19 @@
+{
+  "name": "Battledress",
+  "sorting": "a",
+  "folder": "z6YKBYcIlg565ozf",
+  "type": "Item",
+  "_id": "wjVbe6RZpn9ylt2k",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695581974384,
+    "modifiedTime": 1695608055178,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "_key": "!folders!wjVbe6RZpn9ylt2k"
+}

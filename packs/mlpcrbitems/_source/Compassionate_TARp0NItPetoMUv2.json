@@ -1,0 +1,66 @@
+{
+  "name": "Compassionate",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 123
+    },
+    "prerequisite": "Social 3",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.p19W77WzExvWmo8O",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "QrRkFBwciNwCIl1F",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Diplomacy Edge",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!TARp0NItPetoMUv2.QrRkFBwciNwCIl1F"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685407830223,
+    "modifiedTime": 1704127413375,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "hTtvIMEXXET4Kkqf",
+  "_id": "TARp0NItPetoMUv2",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!TARp0NItPetoMUv2"
+}

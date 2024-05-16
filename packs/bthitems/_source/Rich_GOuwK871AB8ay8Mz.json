@@ -1,0 +1,55 @@
+{
+  "folder": "710LplN5hkdEIeOn",
+  "name": "Rich",
+  "type": "origin",
+  "_id": "GOuwK871AB8ay8Mz",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 31
+    },
+    "items": {
+      "9d7d": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.DK050W9jnCMrFMnC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Money Is No Object",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 25,
+    "essences": [
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "culture",
+      "technology",
+      "animalHandling",
+      "deception",
+      "persuasion"
+    ],
+    "startingHealth": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713549082318,
+    "modifiedTime": 1713549119665,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!GOuwK871AB8ay8Mz"
+}

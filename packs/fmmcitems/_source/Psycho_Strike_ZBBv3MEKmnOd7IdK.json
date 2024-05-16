@@ -1,0 +1,96 @@
+{
+  "folder": "BqjqEjfRFefUOSXQ",
+  "name": "Psycho Strike",
+  "type": "weapon",
+  "_id": "ZBBv3MEKmnOd7IdK",
+  "img": "systems/essence20/assets/icons/weapons/punch.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    },
+    "items": {
+      "cf91": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.HYn9BTR8nyeArZ1R",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Strike Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "9fc4": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.jO2sdiGCutguWJlI",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Psycho Strike Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "0",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Psycho Ranger Only",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "blunt",
+      "silent",
+      "stun"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713788353934,
+    "modifiedTime": 1713788458806,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!ZBBv3MEKmnOd7IdK"
+}

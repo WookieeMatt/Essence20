@@ -1,0 +1,65 @@
+{
+  "folder": "qP5LQI9Pye4TeChN",
+  "name": "Adaption Points",
+  "type": "rolePoints",
+  "_id": "tqiseYDXnEngUlvd",
+  "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 91
+    },
+    "bonus": {
+      "defenseBonus": {
+        "cleverness": false,
+        "evasion": false,
+        "toughness": false,
+        "willpower": false
+      },
+      "increase": 0,
+      "level20Value": 0,
+      "increaseLevels": [],
+      "startingValue": 0,
+      "type": "none",
+      "value": 0
+    },
+    "isActivatable": false,
+    "isActive": false,
+    "powerCost": null,
+    "resource": {
+      "increase": 1,
+      "level20Value": null,
+      "level20ValueIsUnlimited": true,
+      "increaseLevels": [
+        "level2",
+        "level4",
+        "level7",
+        "level10",
+        "level13",
+        "level16",
+        "level19"
+      ],
+      "max": null,
+      "startingMax": 0,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714136978361,
+    "modifiedTime": 1714611984849,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!tqiseYDXnEngUlvd"
+}

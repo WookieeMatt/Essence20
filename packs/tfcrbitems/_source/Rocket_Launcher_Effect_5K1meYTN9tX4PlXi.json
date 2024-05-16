@@ -1,0 +1,43 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Rocket Launcher Effect",
+  "type": "weaponEffect",
+  "_id": "5K1meYTN9tX4PlXi",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "explosive"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 20,
+    "range": {
+      "min": 30,
+      "reachMultiplier": 0,
+      "long": 200,
+      "value": 100
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695386972196,
+    "modifiedTime": 1714344434295,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "sort": 700000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!5K1meYTN9tX4PlXi"
+}

@@ -1,0 +1,64 @@
+{
+  "folder": "KFKD1bqDF9MZHapB",
+  "name": "Insectoid Components",
+  "type": "perk",
+  "_id": "dvTnIzPUg5kUVkBq",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 34
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin"
+  },
+  "effects": [
+    {
+      "name": "Insectoid Components",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.dvTnIzPUg5kUVkBq",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "PqrP0eHsbTr9Db9r",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!dvTnIzPUg5kUVkBq.PqrP0eHsbTr9Db9r"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694534942938,
+    "modifiedTime": 1704127406950,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!dvTnIzPUg5kUVkBq"
+}

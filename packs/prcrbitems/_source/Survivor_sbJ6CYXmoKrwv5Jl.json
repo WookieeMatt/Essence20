@@ -1,0 +1,64 @@
+{
+  "name": "Survivor",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 75
+    },
+    "img": "icons/svg/hazard.svg"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb_hangups.sbJ6CYXmoKrwv5Jl",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "m8xPc4jow7JQzW3Q",
+      "changes": [
+        {
+          "key": "system.skills.Alertness.snag",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Alertness Snag",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!sbJ6CYXmoKrwv5Jl.m8xPc4jow7JQzW3Q"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1680138799091,
+    "modifiedTime": 1704127415986,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "sbJ6CYXmoKrwv5Jl",
+  "folder": "uiyepoxb2PD3I4f0",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!sbJ6CYXmoKrwv5Jl"
+}

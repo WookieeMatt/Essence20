@@ -1,0 +1,259 @@
+{
+  "folder": "HtRo5BFMvtC9Hq6u",
+  "name": "Purple Ranger",
+  "type": "role",
+  "_id": "Eo4WnlP5D6QhhlJ9",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 35
+    },
+    "items": {
+      "afd7": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.bWAncoQxwfCLtn2v",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Emotional Mastery",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "175f": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.BODEMNm0GIAsMMm0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Emotional Strength",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "60f7": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.G9dBppUoBQrJgXC4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unique Strike (Melee)",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "f60d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "58e8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "fa73": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.MZIplpDN4t6ZhFwA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unique Strike (Ranged)",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "fbc4": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.diexsL5zyTuJsSPu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adaption 1",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "b219": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.bPlkdiTAN99QJ1ou",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhance Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "dc25": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.cGI21L1eFai4IfqJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Team Spirit",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "aa18": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.0bw6c3XfIYcQeGgN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adaption 2",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "e66e": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.Eg5LUM4lWf7X7yGs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart's Calling",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "572d": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.EfkIx0B3AN0HipH8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Purple Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "0156": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.lhUy6M5juoCvCVBd",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Emotional Range",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": null,
+          "increaseLevels": [
+            "level3",
+            "level5",
+            "level7",
+            "level9",
+            "level11",
+            "level13",
+            "level15",
+            "level17",
+            "level19"
+          ],
+          "startingValue": 2,
+          "type": "other",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": 1,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": null,
+          "startingMax": null,
+          "value": null
+        }
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "social": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "speed": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "strength": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ],
+        "regeneration": 2,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "athletics",
+      "intimidation",
+      "might",
+      "alertness"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713574242217,
+    "modifiedTime": 1714616698096,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Eo4WnlP5D6QhhlJ9"
+}

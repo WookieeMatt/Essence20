@@ -1,0 +1,117 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Golden Power Staff",
+  "type": "weapon",
+  "_id": "xUc6BptWvbEwPfLX",
+  "img": "systems/essence20/assets/icons/weapons/winged-scepter.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "items": {
+      "5601": {
+        "uuid": "Compendium.essence20.pr_crb.Item.YSKQyx5F4E03uZiq",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Golden Power Staff Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "0968": {
+        "uuid": "Compendium.essence20.pr_crb.Item.07nYBzl0dK4vhqaE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Golden Power Staff Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "stun",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "190f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.oAP5sJrDoXxc0Czi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Golden Power Staff Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 30
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d6"
+    },
+    "traits": [
+      "blunt",
+      "energy",
+      "stun"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696191482951,
+    "modifiedTime": 1704127422206,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!xUc6BptWvbEwPfLX"
+}

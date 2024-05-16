@@ -1,0 +1,94 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Turbo Lightning Sword",
+  "type": "weapon",
+  "_id": "PwLMbGcZkMVmhMj3",
+  "img": "systems/essence20/assets/icons/weapons/stiletto.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "items": {
+      "fec5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mJwVN8A34gnHhoww",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Lightning Sword Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d30a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.A2T4cCya4l1rlihY",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Lightning Sword Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "light"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696191948858,
+    "modifiedTime": 1704127418271,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!PwLMbGcZkMVmhMj3"
+}

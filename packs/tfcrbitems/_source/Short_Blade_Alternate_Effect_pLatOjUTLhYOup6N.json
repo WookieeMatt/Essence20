@@ -1,0 +1,43 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Short Blade Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "pLatOjUTLhYOup6N",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 1,
+    "numHands": "1",
+    "numTargets": 2,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695394096853,
+    "modifiedTime": 1714344434295,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "sort": 5000000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!pLatOjUTLhYOup6N"
+}

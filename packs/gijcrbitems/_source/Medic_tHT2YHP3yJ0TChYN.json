@@ -1,0 +1,114 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Medic",
+  "type": "focus",
+  "_id": "tHT2YHP3yJ0TChYN",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 82
+    },
+    "items": {
+      "83a7": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hLWet58M7NV6c0Sn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Safety First",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "8d83": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.5JUC0fO9hUIJFP6u",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Field Aid",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "ce76": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6wbY17kDGkxeGBPp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "I've Got You",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "c8ac": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.CUV2gVVGb7U7yU5J",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Proper Protection",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "b238": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ulES8RippJVrGbhj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Self-Revive",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "c471": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.BYVxcL7hWHPDsIJL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Up And At 'Em",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ebf7": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.5Gx1CuLTEbjFqV8F",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stim Dart",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "05df": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7hMe2hYONR6wBMFv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nano-Med Mastery",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "1a5a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.SvByuJ6hUITwR5Q7",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Infantry",
+        "type": "role"
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "science"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706408330361,
+    "modifiedTime": 1714012121664,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!tHT2YHP3yJ0TChYN"
+}

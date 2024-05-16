@@ -1,0 +1,94 @@
+{
+  "folder": "GiOF2IgYXd3FsyNR",
+  "name": "Handler",
+  "type": "perk",
+  "_id": "zu446tiCwXa7kbaR",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 19
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [
+    {
+      "name": "Handler Suggestion or Command",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.zu446tiCwXa7kbaR",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "YlSfUVxi3s67IBXJ",
+      "changes": [
+        {
+          "key": "system.skills.animalHandling.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!zu446tiCwXa7kbaR.YlSfUVxi3s67IBXJ"
+    },
+    {
+      "name": "Handler Frequent Care",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.zu446tiCwXa7kbaR",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "C89vnd4gs8Pq97w4",
+      "changes": [
+        {
+          "key": "system.skills.animalHandlingshiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!zu446tiCwXa7kbaR.C89vnd4gs8Pq97w4"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694464091689,
+    "modifiedTime": 1704127412659,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zu446tiCwXa7kbaR"
+}

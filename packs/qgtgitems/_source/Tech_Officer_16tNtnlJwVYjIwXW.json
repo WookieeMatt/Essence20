@@ -1,0 +1,116 @@
+{
+  "folder": "X86fnZJnirxSNLjn",
+  "name": "Tech Officer",
+  "type": "focus",
+  "_id": "16tNtnlJwVYjIwXW",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 21
+    },
+    "items": {
+      "4831": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.VBEsSU8jqBpoGueE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Officer",
+        "type": "role"
+      },
+      "025e": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.0IvxkCCDhF2leTlp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Precision Timing",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "e901": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Ee3GRqk0H7ph0vEs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Synchronization",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "0500": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.HBSVeVpRVBXiPgSW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Field Trials",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "f221": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.HU9eLTJr0aFxiqnd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Technically Correct",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "dd40": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Ii4gXQePcG8xg0hB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tech Specs",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "dfca": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.yR5QrBHWNUnbuiG7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Trade School",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "01e0": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.7b01zSdekhUugIod",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Technological Assistance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "a3ad": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.QKlXoVgNMq7Kv58L",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Technical Mastery",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "driving",
+      "targeting",
+      "technology"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714091192446,
+    "modifiedTime": 1714091297584,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!16tNtnlJwVYjIwXW"
+}

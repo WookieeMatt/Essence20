@@ -1,4 +1,4 @@
-import { checkIsLocked } from "../helpers/utils.mjs";
+import { checkIsLocked } from "../helpers/actor.mjs";
 
 /**
  * Manage Active Effect instances through the Actor Sheet via effect control buttons.
@@ -19,7 +19,7 @@ export function onManageActiveEffect(event, owner) {
   case "create":
     return owner.createEmbeddedDocuments("ActiveEffect", [{
       name: "New Effect",
-      icon: "icons/svg/aura.svg",
+      img: "icons/svg/aura.svg",
       origin: owner.uuid,
       "duration.rounds": li.dataset.effectType === "temporary" ? 1 : undefined,
       disabled: li.dataset.effectType === "inactive",

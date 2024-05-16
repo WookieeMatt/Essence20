@@ -1,0 +1,102 @@
+{
+  "name": "Terran Study",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 98
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.OkqQ9EcsfspN4fn1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "U0mSE3u0QwgaJ1XB",
+      "changes": [
+        {
+          "key": "system.skills.culture.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Culture Edge",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!cPEDaNdD6XwW8MD2.U0mSE3u0QwgaJ1XB"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.OkqQ9EcsfspN4fn1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "QnZtuNySYkNoDdPQ",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.alertness.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Deception, Insight, Persuasion",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!cPEDaNdD6XwW8MD2.QnZtuNySYkNoDdPQ"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685403944537,
+    "modifiedTime": 1704127415968,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "cPEDaNdD6XwW8MD2",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!cPEDaNdD6XwW8MD2"
+}

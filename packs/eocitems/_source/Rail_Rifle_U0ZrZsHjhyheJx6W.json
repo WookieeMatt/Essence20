@@ -1,0 +1,98 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Rail Rifle",
+  "type": "weapon",
+  "_id": "U0ZrZsHjhyheJx6W",
+  "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 52
+    },
+    "items": {
+      "6915": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.H2o77ZbWzB6PrGTB",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rail Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 600,
+          "value": 120
+        },
+        "shiftDown": 0
+      },
+      "9c2b": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.sj6k9xFbkt9Dztkc",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rail Rifle Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 4,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 600,
+          "value": 120
+        },
+        "shiftDown": 3
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Alertness d4",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "antiTank",
+      "ballistic",
+      "mounted",
+      "reload",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714480622905,
+    "modifiedTime": 1714480686825,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!U0ZrZsHjhyheJx6W"
+}

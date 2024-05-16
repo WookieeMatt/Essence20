@@ -1,0 +1,46 @@
+{
+  "folder": "LOtmwwO5q6dMfo4E",
+  "name": "Assault Claw Effect",
+  "type": "weaponEffect",
+  "_id": "NJxWq9kIdUJ4r8Ix",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    },
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 49
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714441882307,
+    "modifiedTime": 1714442154146,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!NJxWq9kIdUJ4r8Ix"
+}

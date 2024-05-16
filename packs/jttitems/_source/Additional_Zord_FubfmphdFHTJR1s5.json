@@ -1,0 +1,33 @@
+{
+  "folder": "6b3hGmdCMZFGC1dR",
+  "name": "Additional Zord",
+  "type": "perk",
+  "_id": "FubfmphdFHTJR1s5",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 53
+    },
+    "prerequisite": "Level 6 and Zord Role Perk",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694466257952,
+    "modifiedTime": 1704127412646,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!FubfmphdFHTJR1s5"
+}

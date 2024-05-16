@@ -1,0 +1,35 @@
+{
+  "name": "Field Repair",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 109
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686275953070,
+    "modifiedTime": 1704127422520,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "a8aIMf7h41eg8wCN",
+  "folder": "ERY0Xs3Bi23Hjx2K",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!a8aIMf7h41eg8wCN"
+}

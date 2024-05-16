@@ -1,0 +1,95 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Delta Combo Blaster",
+  "type": "weapon",
+  "_id": "Xvo979dG6lIWpHaS",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 78
+    },
+    "items": {
+      "96b8": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.IpQaykWFi9pBBgZd",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Delta Combo Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 5,
+        "damageType": "stun",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 150,
+          "value": 80
+        },
+        "shiftDown": 0
+      },
+      "72cd": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.MIvjVFJ7EI5YEOYk",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Delta Combo Blaster Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 150,
+          "value": 80
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "combined",
+      "powerWeapon",
+      "stun"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696003891352,
+    "modifiedTime": 1704127405500,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Xvo979dG6lIWpHaS"
+}

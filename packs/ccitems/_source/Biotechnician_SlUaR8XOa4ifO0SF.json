@@ -1,0 +1,98 @@
+{
+  "folder": "0gpRPqi0To5ylodI",
+  "name": "Biotechnician",
+  "type": "focus",
+  "_id": "SlUaR8XOa4ifO0SF",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 64
+    },
+    "items": {
+      "3bf7": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GPdhYq7n573SR4T2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Technician",
+        "type": "role"
+      },
+      "4bd1": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.Gxg18rBV0e4o00wB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Omnidisciplinary Scientist",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "cce0": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.qOQprOVxN5tTwas0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Genetic Support",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "db44": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.cxTzdLpTblPMMEQk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Science Fixes All",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "d448": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.SvdRlZhhycMM2RJY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "A Genius For A Patient",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "2eff": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.3I9h6aspI3Cg0Fd0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Genetic Decoding",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "62f4": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.Ze9reKJEEpzWYBxd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Necroscientist",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "science"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714049879490,
+    "modifiedTime": 1714049955541,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!SlUaR8XOa4ifO0SF"
+}

@@ -1,0 +1,251 @@
+{
+  "folder": "UcsFO5Hku6T5zN7o",
+  "name": "Blue Ranger",
+  "type": "role",
+  "_id": "hmQu37OfCMtGJ4M3",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 36
+    },
+    "items": {
+      "683e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.DU5oZEhhd45VDmRg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Eureka!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "cd4a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.U5xY4e0Wro9XyooS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Helping Hands",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "e040": {
+        "uuid": "Compendium.essence20.pr_crb.Item.R7HF3aSR3ZPURh1W",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Tech I",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "097a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d22a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.PIwAwPxbzH4hQ0WB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Tech II",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "02fe": {
+        "uuid": "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Infusion",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "f504": {
+        "uuid": "Compendium.essence20.pr_crb.Item.XfLsm5inPHekj6rY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Burst",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "8e77": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "e7f2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.qZVu4bfVFOvcgzgo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Tech III",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "0de2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.dWfuzsqz30rZmX1G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Tech IV",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "bd9b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.PwTnDjPfb8dKplIU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blue Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "5c3a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Zdu0i4ofdwLKM7nk",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Idea Points",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": 1,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [
+            "level2",
+            "level5",
+            "level8",
+            "level11",
+            "level14",
+            "level17",
+            "level20"
+          ],
+          "max": 0,
+          "startingMax": 1,
+          "value": 0
+        }
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "social": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level12"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level4",
+          "level7",
+          "level10",
+          "level13",
+          "level16",
+          "level19"
+        ],
+        "regeneration": 4,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "finesse",
+      "targeting",
+      "science",
+      "technology"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713453799350,
+    "modifiedTime": 1714616736991,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!hmQu37OfCMtGJ4M3"
+}

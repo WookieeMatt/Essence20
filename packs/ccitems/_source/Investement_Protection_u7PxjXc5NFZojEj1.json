@@ -1,0 +1,122 @@
+{
+  "folder": "iMvw2krn1d3GV0ms",
+  "name": "Investement Protection",
+  "type": "perk",
+  "_id": "u7PxjXc5NFZojEj1",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 53
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Investment Protection 3rd",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.cobra_codex.Item.u7PxjXc5NFZojEj1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "EOF9OlsG3fEg5EI0",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!u7PxjXc5NFZojEj1.EOF9OlsG3fEg5EI0"
+    },
+    {
+      "name": "Investment Protection 10th",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.cobra_codex.Item.u7PxjXc5NFZojEj1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "u7F1asWXH1LpljWH",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!u7PxjXc5NFZojEj1.u7F1asWXH1LpljWH"
+    },
+    {
+      "name": "Investment Protection 18th",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.cobra_codex.Item.u7PxjXc5NFZojEj1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "48N5fk9IBjHjEO4q",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!u7PxjXc5NFZojEj1.48N5fk9IBjHjEO4q"
+    }
+  ],
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714014069820,
+    "modifiedTime": 1714847668975,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!u7PxjXc5NFZojEj1"
+}

@@ -1,0 +1,67 @@
+{
+  "name": "Spotter's Scope",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 75
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Alertness Speed Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.XGLhX8tOpUaMttt6",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "sF9JBDBnGhIv1tra",
+      "changes": [
+        {
+          "key": "system.skills.alertness.essences.speed",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!yxCVYAmJTk68pAQt.sF9JBDBnGhIv1tra"
+    }
+  ],
+  "folder": "SC2vsobsaDHdsp8C",
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706016673192,
+    "modifiedTime": 1714852599475,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "yxCVYAmJTk68pAQt",
+  "sort": 100000,
+  "_key": "!items!yxCVYAmJTk68pAQt"
+}

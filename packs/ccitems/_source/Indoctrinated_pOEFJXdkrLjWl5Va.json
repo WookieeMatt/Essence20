@@ -1,0 +1,47 @@
+{
+  "folder": "aRlyNQZylQaPn1bO",
+  "name": "Indoctrinated",
+  "type": "influence",
+  "_id": "pOEFJXdkrLjWl5Va",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 31
+    },
+    "items": {
+      "8724": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.BctKHzpCC1XXoJPg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Indoctrinated",
+        "type": "perk"
+      },
+      "0067": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.ggsVevfXdHhZwlAm",
+        "img": "icons/svg/hazard.svg",
+        "name": "Indoctrinated",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686492042343,
+    "modifiedTime": 1704127406893,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!pOEFJXdkrLjWl5Va"
+}

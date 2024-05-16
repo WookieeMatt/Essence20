@@ -1,0 +1,96 @@
+{
+  "folder": "UCLYWNFqe5XND1kq",
+  "name": "Grappler",
+  "type": "weapon",
+  "_id": "8NfDRYoPVQJPGiVj",
+  "img": "systems/essence20/assets/icons/weapons/whip.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 112
+    },
+    "items": {
+      "a386": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ln4X4eCYWHWONcX7",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Grappler Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "maneuver",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "90e9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.KuQG7ngt1dMuwfnY",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Grappler Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "intimidate",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "d2"
+    },
+    "traits": [
+      "martialArts",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695387342244,
+    "modifiedTime": 1704127416938,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 112500,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!8NfDRYoPVQJPGiVj"
+}

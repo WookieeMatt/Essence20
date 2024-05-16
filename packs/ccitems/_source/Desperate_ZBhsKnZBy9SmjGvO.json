@@ -1,0 +1,30 @@
+{
+  "folder": "3FMemNB97tHEQvI8",
+  "name": "Desperate",
+  "type": "hangUp",
+  "_id": "ZBhsKnZBy9SmjGvO",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 29
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686420924717,
+    "modifiedTime": 1704127406337,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ZBhsKnZBy9SmjGvO"
+}

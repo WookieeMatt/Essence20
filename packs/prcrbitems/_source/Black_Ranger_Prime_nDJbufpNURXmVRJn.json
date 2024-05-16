@@ -1,0 +1,83 @@
+{
+  "folder": "S0GzNopuhwUQsi2N",
+  "name": "Black Ranger Prime",
+  "type": "perk",
+  "_id": "nDJbufpNURXmVRJn",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 34
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Black Ranger Prime",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.nDJbufpNURXmVRJn",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "M7jwjkUXOIIyHcbt",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.evasion.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.willpower.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!nDJbufpNURXmVRJn.M7jwjkUXOIIyHcbt"
+    }
+  ],
+  "sort": 25000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1704807501813,
+    "modifiedTime": 1714865016359,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!nDJbufpNURXmVRJn"
+}

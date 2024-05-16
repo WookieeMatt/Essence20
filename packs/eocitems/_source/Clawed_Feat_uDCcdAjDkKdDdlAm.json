@@ -1,0 +1,34 @@
+{
+  "folder": "IYIE9tyT0EjKbKRe",
+  "name": "Clawed Feat",
+  "type": "gear",
+  "_id": "uDCcdAjDkKdDdlAm",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 56
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "support"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714512206995,
+    "modifiedTime": 1714512219432,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!uDCcdAjDkKdDdlAm"
+}

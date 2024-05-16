@@ -1,0 +1,34 @@
+{
+  "folder": "b8fbY8Ukj56rrBhX",
+  "name": "A Talent For Honesty",
+  "type": "perk",
+  "_id": "adqw9O68ByBpwNwQ",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 77
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706823142628,
+    "modifiedTime": 1714854427202,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!adqw9O68ByBpwNwQ"
+}

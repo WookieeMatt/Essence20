@@ -1,0 +1,94 @@
+{
+  "folder": "Vp6v1H3MnV842PdP",
+  "name": "Null Ray",
+  "type": "weapon",
+  "_id": "uwh1TVLjv9vwQJKc",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 74
+    },
+    "items": {
+      "f451": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.8NsXxs6vQNyGS9iB",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Null Ray Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 180,
+          "value": 60
+        },
+        "shiftDown": 0
+      },
+      "c730": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.m3wO8XBpWMgu3zes",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Null Ray Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 180,
+          "value": 60
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "technology",
+      "shift": "d4"
+    },
+    "traits": [
+      "cold",
+      "computerized"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696169302461,
+    "modifiedTime": 1704127408141,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!uwh1TVLjv9vwQJKc"
+}

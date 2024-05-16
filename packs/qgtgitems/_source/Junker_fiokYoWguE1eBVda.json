@@ -1,0 +1,31 @@
+{
+  "folder": "HUAzm97UpkPfnHI6",
+  "name": "Junker",
+  "type": "hangUp",
+  "_id": "fiokYoWguE1eBVda",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 9
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714015477690,
+    "modifiedTime": 1714015483354,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!fiokYoWguE1eBVda"
+}

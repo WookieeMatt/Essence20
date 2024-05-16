@@ -1,0 +1,64 @@
+{
+  "folder": "nkEGjeCCjXfr5iHl",
+  "name": "Cobra!",
+  "type": "perk",
+  "_id": "0JsEhJdM3fmp4O65",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 48
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction"
+  },
+  "effects": [
+    {
+      "name": "Evasion Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.0JsEhJdM3fmp4O65",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "iD4fMA2BlPrx5g6q",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!0JsEhJdM3fmp4O65.iD4fMA2BlPrx5g6q"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686494191254,
+    "modifiedTime": 1704127406317,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!0JsEhJdM3fmp4O65"
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Inventor",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 36
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686278652471,
+    "modifiedTime": 1704127422482,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "0A8SSXo0HkjyFcEA",
+  "folder": "pjaD7pILDmkmWGn7",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!0A8SSXo0HkjyFcEA"
+}

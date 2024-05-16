@@ -1,0 +1,33 @@
+{
+  "folder": "7HOrvd6hwScvddul",
+  "name": "Cruel",
+  "type": "perk",
+  "_id": "mAhqrcJNmNAJHjA8",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 65
+    },
+    "prerequisite": "6th Level ",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694555838254,
+    "modifiedTime": 1704127406955,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!mAhqrcJNmNAJHjA8"
+}

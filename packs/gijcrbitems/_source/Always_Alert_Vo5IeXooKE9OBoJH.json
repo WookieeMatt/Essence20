@@ -1,0 +1,66 @@
+{
+  "name": "Always Alert",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 129
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Vo5IeXooKE9OBoJH",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "sruhh0axj0x8Zoz6",
+      "changes": [
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!Vo5IeXooKE9OBoJH.sruhh0axj0x8Zoz6"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1686280459027,
+    "modifiedTime": 1714849758779,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "Vo5IeXooKE9OBoJH",
+  "folder": "RXPdNB9Xnw7MUk8x",
+  "sort": 2100000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Vo5IeXooKE9OBoJH"
+}

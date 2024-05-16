@@ -1,0 +1,34 @@
+{
+  "folder": "f0tVWOJnyh8AZi5f",
+  "name": "Magic Is Friendship",
+  "type": "perk",
+  "_id": "oZ8y7o3JjFM2Nevm",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 92
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706832845571,
+    "modifiedTime": 1714855138859,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!oZ8y7o3JjFM2Nevm"
+}

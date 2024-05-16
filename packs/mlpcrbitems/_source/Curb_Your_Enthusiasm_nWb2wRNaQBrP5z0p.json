@@ -1,0 +1,34 @@
+{
+  "folder": "mCN4RGH38V7Y20P6",
+  "name": "Curb Your Enthusiasm",
+  "type": "perk",
+  "_id": "nWb2wRNaQBrP5z0p",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 90
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 37500,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706830280375,
+    "modifiedTime": 1714855003225,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!nWb2wRNaQBrP5z0p"
+}

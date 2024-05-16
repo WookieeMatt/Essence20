@@ -1,0 +1,61 @@
+{
+  "name": "Soldier",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "",
+      "page": null
+    },
+    "items": {
+      "8aff": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.NUiyY9qOCPmuyjQN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "If It Shoots",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "30",
+    "essences": [
+      "strength",
+      "speed"
+    ],
+    "languages": "",
+    "skills": [
+      "conditioning",
+      "initiative",
+      "athletics",
+      "targeting"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681603195588,
+    "modifiedTime": 1704127410591,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "PWW6w9Ose3ei1Dj1",
+  "folder": "lt3PqmG6G17ICpRK",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!PWW6w9Ose3ei1Dj1"
+}

@@ -1,0 +1,74 @@
+{
+  "folder": "7MWMeNKSPnaKeGas",
+  "name": "Recon",
+  "type": "perk",
+  "_id": "EDBn8zHJXkRFu2TT",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 93
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Alone in Environment",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.EDBn8zHJXkRFu2TT",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "ECOgv78PJoHsCQ27",
+      "changes": [
+        {
+          "key": "system.skills.alertness.edge",
+          "mode": 5,
+          "value": "true"
+        },
+        {
+          "key": "system.skills.survival.edge",
+          "mode": 5,
+          "value": "true"
+        },
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!EDBn8zHJXkRFu2TT.ECOgv78PJoHsCQ27"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706574532008,
+    "modifiedTime": 1714852539780,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!EDBn8zHJXkRFu2TT"
+}

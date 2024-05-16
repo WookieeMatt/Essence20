@@ -1,0 +1,46 @@
+{
+  "folder": "qB1ZVNkkjdBRgVZ3",
+  "name": "Hurl Stones Effect",
+  "type": "weaponEffect",
+  "_id": "pW8smq7cgX9NtTOE",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "blunt",
+    "damageValue": 2,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 5,
+    "radius": 5,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 80,
+      "value": 50
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713833509527,
+    "modifiedTime": 1713833703876,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!pW8smq7cgX9NtTOE"
+}

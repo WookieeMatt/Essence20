@@ -1,0 +1,154 @@
+{
+  "folder": "mD3NGV0g8UZq5x8r",
+  "name": "Tragedy",
+  "type": "perk",
+  "_id": "Y944bF2C3aZHYus9",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 35
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [
+    {
+      "name": "Cleverness Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y944bF2C3aZHYus9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "wKEgdtCNNQws2eQv",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Y944bF2C3aZHYus9.wKEgdtCNNQws2eQv"
+    },
+    {
+      "name": "Evasion Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y944bF2C3aZHYus9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "UVQbEAdVvqK2hdfW",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Y944bF2C3aZHYus9.UVQbEAdVvqK2hdfW"
+    },
+    {
+      "name": "Toughness Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y944bF2C3aZHYus9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "6KTQynoxy6n5KDGb",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Y944bF2C3aZHYus9.6KTQynoxy6n5KDGb"
+    },
+    {
+      "name": "Willpower Bonus",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Y944bF2C3aZHYus9",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "KY1wkGK5mkZ3NY9G",
+      "changes": [
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Y944bF2C3aZHYus9.KY1wkGK5mkZ3NY9G"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686492323390,
+    "modifiedTime": 1704127406336,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Y944bF2C3aZHYus9"
+}

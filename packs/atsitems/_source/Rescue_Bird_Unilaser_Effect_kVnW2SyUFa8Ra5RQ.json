@@ -1,0 +1,43 @@
+{
+  "folder": "Z2xK8nOrVV5BbzH4",
+  "name": "Rescue Bird Unilaser Effect",
+  "type": "weaponEffect",
+  "_id": "kVnW2SyUFa8Ra5RQ",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 3,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 200,
+      "value": 100
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696172837928,
+    "modifiedTime": 1704127404597,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!kVnW2SyUFa8Ra5RQ"
+}

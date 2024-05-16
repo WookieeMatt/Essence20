@@ -1,0 +1,41 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Close Combat Heavy Bludgeoning Effect",
+  "type": "weaponEffect",
+  "_id": "JWm06vX4u4QSDf4D",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "stun",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695303596748,
+    "modifiedTime": 1714344434295,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "sort": 1700000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!JWm06vX4u4QSDf4D"
+}

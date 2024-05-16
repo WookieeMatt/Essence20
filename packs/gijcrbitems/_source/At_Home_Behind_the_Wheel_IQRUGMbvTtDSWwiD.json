@@ -1,0 +1,65 @@
+{
+  "folder": "QbsOCib8zyJeVwhZ",
+  "name": "At Home Behind the Wheel",
+  "type": "perk",
+  "_id": "IQRUGMbvTtDSWwiD",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 81
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Driving Up Shift 2",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.IQRUGMbvTtDSWwiD",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "AsruD1ulEGnxkkuu",
+      "changes": [
+        {
+          "key": "system.skills.driving.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!IQRUGMbvTtDSWwiD.AsruD1ulEGnxkkuu"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706405851519,
+    "modifiedTime": 1714852244588,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!IQRUGMbvTtDSWwiD"
+}

@@ -1,0 +1,49 @@
+{
+  "name": "Adventurer",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 44
+    },
+    "items": {
+      "5513": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.T3XgGSGuZsFVifsS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adventurer",
+        "type": "perk"
+      },
+      "2afb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.qhdncyH998zjGB3f",
+        "img": "icons/svg/hazard.svg",
+        "name": "Adventurer",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686282710037,
+    "modifiedTime": 1704127411699,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "hjuQOBQWCXDNOrzm",
+  "folder": "848nQlbiz9DfiwL2",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!hjuQOBQWCXDNOrzm"
+}

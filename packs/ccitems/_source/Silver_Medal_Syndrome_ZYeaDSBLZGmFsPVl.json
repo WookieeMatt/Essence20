@@ -1,0 +1,73 @@
+{
+  "folder": "fNZdfcqnnNHonskV",
+  "name": "Silver Medal Syndrome",
+  "type": "origin",
+  "_id": "ZYeaDSBLZGmFsPVl",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 46
+    },
+    "items": {
+      "b651": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.vaAhMXXlzNWHIikR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Consistent",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "speed",
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "conditioning",
+      "initiative",
+      "athletics",
+      "brawn",
+      "intimidation",
+      "might",
+      "acrobatics",
+      "driving",
+      "finesse",
+      "infiltration",
+      "targeting",
+      "alertness",
+      "culture",
+      "science",
+      "survival",
+      "technology",
+      "animalHandling",
+      "deception",
+      "performance",
+      "persuasion",
+      "spellcasting",
+      "streetwise"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686494027942,
+    "modifiedTime": 1704127406732,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ZYeaDSBLZGmFsPVl"
+}

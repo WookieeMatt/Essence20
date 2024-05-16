@@ -1,0 +1,30 @@
+{
+  "folder": "TloTmcyDSbmlZYl4",
+  "name": "Always Hungry",
+  "type": "hangUp",
+  "_id": "hJaTZrQ7tao4hDPJ",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 31
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694532000512,
+    "modifiedTime": 1704127406951,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!hJaTZrQ7tao4hDPJ"
+}

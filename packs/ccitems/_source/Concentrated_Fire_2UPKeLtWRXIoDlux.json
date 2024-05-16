@@ -1,0 +1,34 @@
+{
+  "folder": "Y2LcPTjvuXfvl4G9",
+  "name": "Concentrated Fire",
+  "type": "perk",
+  "_id": "2UPKeLtWRXIoDlux",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 58
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 125000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714048255396,
+    "modifiedTime": 1714846975635,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!2UPKeLtWRXIoDlux"
+}

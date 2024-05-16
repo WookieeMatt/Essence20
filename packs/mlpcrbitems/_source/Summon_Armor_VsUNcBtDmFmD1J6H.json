@@ -1,0 +1,37 @@
+{
+  "folder": "emRBrjlruf3ORbW4",
+  "name": "Summon Armor",
+  "type": "spell",
+  "_id": "VsUNcBtDmFmD1J6H",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 138
+    },
+    "circle": "aid",
+    "cost": 2,
+    "duration": "1 scene",
+    "isSpecialized": false,
+    "range": "30 feet",
+    "tier": "superior"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713843301922,
+    "modifiedTime": 1713843334020,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!VsUNcBtDmFmD1J6H"
+}

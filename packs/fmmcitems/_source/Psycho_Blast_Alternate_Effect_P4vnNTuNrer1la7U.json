@@ -1,0 +1,46 @@
+{
+  "folder": "2V6wytEjDXEb6iKw",
+  "name": "Psycho Blast Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "P4vnNTuNrer1la7U",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "athletics",
+      "style": "melee"
+    },
+    "damageType": "impaired",
+    "damageValue": 0,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    },
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 302
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713743459085,
+    "modifiedTime": 1713788029673,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!P4vnNTuNrer1la7U"
+}

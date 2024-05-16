@@ -1,0 +1,41 @@
+{
+  "folder": "polXxU4IYXTzgmFD",
+  "name": "Firestorm",
+  "type": "upgrade",
+  "_id": "4mgTjfdagOeSJ60w",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 130
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "traits": [
+      "fire"
+    ],
+    "type": "weapon",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695685098371,
+    "modifiedTime": 1704127422486,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!4mgTjfdagOeSJ60w"
+}

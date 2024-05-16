@@ -1,0 +1,34 @@
+{
+  "folder": "UbFfZjIaaiAoMe8u",
+  "name": "One Last Chance",
+  "type": "perk",
+  "_id": "7SU3UY5WzOnlOsHM",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 44
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 250000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714353746144,
+    "modifiedTime": 1714860844562,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!7SU3UY5WzOnlOsHM"
+}

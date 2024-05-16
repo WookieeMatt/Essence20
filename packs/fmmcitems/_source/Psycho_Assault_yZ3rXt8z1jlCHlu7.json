@@ -1,0 +1,34 @@
+{
+  "folder": "iIe1Pyq37a7rUgfJ",
+  "name": "Psycho Assault",
+  "type": "perk",
+  "_id": "yZ3rXt8z1jlCHlu7",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 284
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713587397701,
+    "modifiedTime": 1713587407867,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!yZ3rXt8z1jlCHlu7"
+}

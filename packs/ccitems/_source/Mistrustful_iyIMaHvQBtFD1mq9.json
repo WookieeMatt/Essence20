@@ -1,0 +1,47 @@
+{
+  "folder": "aRlyNQZylQaPn1bO",
+  "name": "Mistrustful",
+  "type": "influence",
+  "_id": "iyIMaHvQBtFD1mq9",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 32
+    },
+    "items": {
+      "d205": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.iIRJqa8XXmRHXMIl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mistrustful",
+        "type": "perk"
+      },
+      "ebdb": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.sQ00MnGryA2GNzHF",
+        "img": "icons/svg/hazard.svg",
+        "name": "Mistrustful",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686492130839,
+    "modifiedTime": 1704127406844,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!iyIMaHvQBtFD1mq9"
+}

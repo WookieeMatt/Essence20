@@ -1,0 +1,139 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Rescue Blaster",
+  "type": "weapon",
+  "_id": "rXaEYw1MX0Zqmp6N",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 78
+    },
+    "items": {
+      "1039": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.cZheykrnV3t3BxTH",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rescue Blaster (Blaster Mode) Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 25,
+          "value": 10
+        },
+        "shiftDown": 1
+      },
+      "0b1c": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.lT7YXufRASc0roqy",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rescue Blaster (Baton Mode) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "c323": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.SI7XL6UmJViwPgPl",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rescue Blaster (Baton Mode) Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "8e48": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.hEMp7XERusyOAdk5",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rescue Blaster (Blaster Mode) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 25,
+          "value": 10
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Lightspeed Response",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "stun",
+      "versatile"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695957502660,
+    "modifiedTime": 1704127405992,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!rXaEYw1MX0Zqmp6N"
+}

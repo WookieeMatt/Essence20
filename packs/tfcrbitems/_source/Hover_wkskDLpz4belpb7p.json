@@ -1,0 +1,35 @@
+{
+  "name": "Hover",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 53
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681740964532,
+    "modifiedTime": 1704127422544,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "wkskDLpz4belpb7p",
+  "folder": "nuBD5zlaWCaBGdWT",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!wkskDLpz4belpb7p"
+}

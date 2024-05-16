@@ -1,0 +1,66 @@
+{
+  "name": "Focus",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 52
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.z1KTeMR8qjo1J0Ql",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "c5LvFWgs7npv91kg",
+      "changes": [
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Willpower Bonus",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!z1KTeMR8qjo1J0Ql.c5LvFWgs7npv91kg"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686008741341,
+    "modifiedTime": 1704127413391,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "z1KTeMR8qjo1J0Ql",
+  "folder": "Tfmw9ivxWE7QDsfv",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!z1KTeMR8qjo1J0Ql"
+}

@@ -1,0 +1,48 @@
+{
+  "folder": "dUgFcCG3h9DxRZQa",
+  "name": "Animal Magnetism",
+  "type": "alteration",
+  "_id": "ya4rL1mOsKyFruGL",
+  "img": "systems/essence20/assets/icons/items/alteration.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 86
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "bonusSkill": "",
+    "cost": null,
+    "costSkill": "",
+    "essenceBenefit": "",
+    "essenceCost": [
+      "strength",
+      "speed",
+      "smarts"
+    ],
+    "movementCost": "",
+    "selectedEssence": "",
+    "type": "essence",
+    "bonus": null,
+    "essenceBonus": [
+      "social"
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694731694008,
+    "modifiedTime": 1704127406351,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ya4rL1mOsKyFruGL"
+}

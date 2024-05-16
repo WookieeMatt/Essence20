@@ -1,0 +1,40 @@
+{
+  "folder": "JfpzK64lCwnQH5v2",
+  "name": "Clothes",
+  "type": "armor",
+  "_id": "oslZ9qF7PGSUpZT3",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 118
+    },
+    "items": {},
+    "availability": "automatic",
+    "bonusEvasion": 0,
+    "bonusToughness": 0,
+    "classification": "non",
+    "equipped": false,
+    "traits": [
+      "silent"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1692301744756,
+    "modifiedTime": 1704127421212,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!oslZ9qF7PGSUpZT3"
+}

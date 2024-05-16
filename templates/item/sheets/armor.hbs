@@ -23,11 +23,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorAvailability'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.availability">
-        {{#select system.availability}}
-        {{#each config.availabilities as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.availabilities selected=system.availability}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
@@ -36,11 +32,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorClassification'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.classification">
-        {{#select system.classification}}
-        {{#each config.armorClassifications as |name type|}}
-        <option value="{{type}}">{{localize name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions config.armorClassifications selected=system.classification}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

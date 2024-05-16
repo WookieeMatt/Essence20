@@ -1,0 +1,34 @@
+{
+  "folder": "7t9hw6bHkx39OjX4",
+  "name": "Unique Strike (Melee)",
+  "type": "perk",
+  "_id": "G9dBppUoBQrJgXC4",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 38
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1713573616810,
+    "modifiedTime": 1714864615746,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!G9dBppUoBQrJgXC4"
+}

@@ -1,6 +1,5 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
-import { getLevelIncreases } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -108,7 +107,7 @@ export class Essence20Item extends Item {
     if (!this.actor) return null;
 
     const actorLevel = this.actor.system.level;
-    const resourceLevelIncreases = getLevelIncreases(this.system.resource.increaseLevels, actorLevel);
+    const resourceLevelIncreases = this._getLevelIncreases(this.system.resource.increaseLevels, actorLevel);
 
     if (this.system.resource.startingMax != null) {
       if (actorLevel == 20 && this.system.resource.level20Value) {
@@ -120,7 +119,7 @@ export class Essence20Item extends Item {
 
     if (this.system.bonus.startingValue != null) {
       if (this.system.bonus.type != CONFIG.E20.bonusTypes.none) {
-        const bonusLevelIncreases = getLevelIncreases(this.system.bonus.increaseLevels, actorLevel);
+        const bonusLevelIncreases = this._getLevelIncreases(this.system.bonus.increaseLevels, actorLevel);
 
         if (actorLevel == 20 && this.system.bonus.level20Value) {
           this.system.bonus.value = this.system.bonus.level20Value;
@@ -129,6 +128,25 @@ export class Essence20Item extends Item {
         }
       }
     }
+  }
+
+  /**
+   * Determines the number of increases that have occured based on the level of the actor
+   * @param {String[]} levels The array of levels that you advance at
+   * @param {Number} currentLevel The current level of the actor
+   * @returns {Number} The number of increases for the level of the actor
+   */
+  _getLevelIncreases(levels, currentLevel) {
+    let levelIncreases = 0;
+    for (const arrayLevel of levels) {
+
+      const level = arrayLevel.replace(/[^0-9]/g, '');
+      if (level <= currentLevel) {
+        levelIncreases += 1;
+      }
+    }
+
+    return levelIncreases;
   }
 
   /**

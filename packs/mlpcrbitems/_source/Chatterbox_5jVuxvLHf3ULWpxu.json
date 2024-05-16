@@ -1,0 +1,32 @@
+{
+  "name": "Chatterbox",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 48
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1680142872470,
+    "modifiedTime": 1704127413361,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "5jVuxvLHf3ULWpxu",
+  "folder": "ly03UXfH1Jdy7p6W",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!5jVuxvLHf3ULWpxu"
+}

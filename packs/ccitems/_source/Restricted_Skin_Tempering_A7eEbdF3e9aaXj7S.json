@@ -1,0 +1,41 @@
+{
+  "folder": "dUgFcCG3h9DxRZQa",
+  "name": "Restricted Skin Tempering",
+  "type": "alteration",
+  "_id": "A7eEbdF3e9aaXj7S",
+  "img": "systems/essence20/assets/icons/items/alteration.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 87
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "bonusSkill": "",
+    "cost": null,
+    "costSkill": "",
+    "essenceBenefit": "",
+    "essenceCost": "",
+    "movementCost": "",
+    "selectedEssence": "",
+    "type": "other",
+    "bonus": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694732475765,
+    "modifiedTime": 1704127406321,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!A7eEbdF3e9aaXj7S"
+}

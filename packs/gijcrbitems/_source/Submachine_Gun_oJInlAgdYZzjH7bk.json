@@ -1,0 +1,116 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Submachine Gun",
+  "type": "weapon",
+  "_id": "oJInlAgdYZzjH7bk",
+  "img": "systems/essence20/assets/icons/weapons/submachine_gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Alternate Effect 2 is a 15 ft cone</p>",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 143
+    },
+    "items": {
+      "5c3c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.pdpUa2U52bIHR2lV",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Submachine Gun Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 20
+        },
+        "shiftDown": 0
+      },
+      "f052": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.TP98Peth2QvLIjZz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Submachine Gun Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 20
+        },
+        "shiftDown": 1
+      },
+      "fdfa": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.zwDdll2y89k4as0j",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Submachine Gun Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 3,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 0
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695385271876,
+    "modifiedTime": 1704127411919,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!oJInlAgdYZzjH7bk"
+}

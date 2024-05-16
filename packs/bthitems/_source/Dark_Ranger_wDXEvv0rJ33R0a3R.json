@@ -1,0 +1,244 @@
+{
+  "folder": "eA1eJMUN0UyiOuWf",
+  "name": "Dark Ranger",
+  "type": "role",
+  "_id": "wDXEvv0rJ33R0a3R",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 37
+    },
+    "items": {
+      "8135": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.8RAAEl4HabYUaV4B",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Terror Capacity",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": 0,
+          "increaseLevels": [],
+          "startingValue": 0,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": 1,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [
+            "level5",
+            "level10",
+            "level17",
+            "level20"
+          ],
+          "max": 0,
+          "startingMax": 1,
+          "value": 0
+        }
+      },
+      "ad07": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.yBBB0Mi6fr84YcSd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Terror",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "c7ab": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.eWlflRHYAVB9p5Z0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Menacing Glare",
+        "type": "perk",
+        "subtype": "general",
+        "level": 2
+      },
+      "0cc2": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.Gadtv1eSeFgNotSw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Spite",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "a0ce": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "9b00": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.ijVB6KM95RagxKQp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Terrorzord Nature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d39c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "be05": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.RzQ4LahiaHPl6ZzU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Menacing Laugh",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "6fb0": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.y3RPr4nJWVtCtdil",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fe-BURN!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "d97c": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.hSzY2uhu3L9nGP6o",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unlucky (For You)",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "c379": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.YsoS30FKigTm19CH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Absolute Menace",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "05d5": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.GJCOxtuot74Jnfs4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Apex Dark Ranger",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level4",
+        "level8",
+        "level12",
+        "level16"
+      ],
+      "social": [
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level20"
+      ],
+      "speed": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level17"
+      ],
+      "strength": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level18",
+        "level19"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ],
+        "regeneration": 1,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "intimidation",
+      "targeting"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713835223051,
+    "modifiedTime": 1714616546302,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!wDXEvv0rJ33R0a3R"
+}

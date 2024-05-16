@@ -1,0 +1,256 @@
+{
+  "folder": "l5vniIVjSTF7TEBi",
+  "name": "Phantom Ranger",
+  "type": "role",
+  "_id": "mwjoSoepwJNZStW3",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 58
+    },
+    "items": {
+      "b3be": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Ship",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "b771": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.fQgxo5c7tNOD2Q5K",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Suite",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ace7": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.QsFiUE0YYjwQHPgh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Follow Through",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "f815": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "0fee": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.t94vdRRRwxbAdG84",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mending the Grid",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "b8cf": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.peGPrJKYlx79ybbu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ageless Knowledge",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "b465": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.L2X2rIz2frulSajQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Body of Energy",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "5ff2": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.EYdpn9PL4iNrQPkh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unseen Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "16c7": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.aXGMEoVsYSttOSHn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Focus",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ba7c": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.f372LpDqqiO2XoEi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Through the Arches",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "2c5b": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.PHgWjT0syOOBOOK5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "07d4": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.EMyMhKEToExQEraH",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Burst Speed",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 5,
+          "level20Value": null,
+          "increaseLevels": [
+            "level2",
+            "level4",
+            "level6",
+            "level8",
+            "level10",
+            "level12",
+            "level14",
+            "level16",
+            "level18",
+            "level20"
+          ],
+          "startingValue": 0,
+          "type": "other",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": null,
+          "startingMax": null,
+          "value": null
+        }
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "social": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "speed": [
+        "level1",
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "strength": [
+        "level1",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "isAdvanced": true,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 1,
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ],
+        "regeneration": 3,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "athletics",
+      "finesse",
+      "culture"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713548249257,
+    "modifiedTime": 1714616477414,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!mwjoSoepwJNZStW3"
+}

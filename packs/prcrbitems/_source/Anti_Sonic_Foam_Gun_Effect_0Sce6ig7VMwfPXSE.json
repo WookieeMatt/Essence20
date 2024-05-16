@@ -1,0 +1,43 @@
+{
+  "folder": "rlLIrHD1NEOxCvA6",
+  "name": "Anti-Sonic Foam Gun Effect",
+  "type": "weaponEffect",
+  "_id": "0Sce6ig7VMwfPXSE",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "stun",
+    "damageValue": 2,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 150,
+      "value": 50
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696279600863,
+    "modifiedTime": 1704127417350,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!0Sce6ig7VMwfPXSE"
+}

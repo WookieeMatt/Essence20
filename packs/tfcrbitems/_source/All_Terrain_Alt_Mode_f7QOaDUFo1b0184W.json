@@ -1,0 +1,126 @@
+{
+  "name": "All-Terrain Alt Mode",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 108
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.f7QOaDUFo1b0184W",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "tY4QAmHLtkWyNhC0",
+      "changes": [
+        {
+          "key": "system.movement.ground.altMode",
+          "mode": 5,
+          "value": "20",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Ground Movement",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!f7QOaDUFo1b0184W.tY4QAmHLtkWyNhC0"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.f7QOaDUFo1b0184W",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "UEepQb0ndL3eC8G6",
+      "changes": [
+        {
+          "key": "system.movement.aerial.altMode",
+          "mode": 5,
+          "value": "20",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Aerial Movement",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!f7QOaDUFo1b0184W.UEepQb0ndL3eC8G6"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.f7QOaDUFo1b0184W",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "G060aSTs1oKdiyds",
+      "changes": [
+        {
+          "key": "system.movement.swim.altMode",
+          "mode": 5,
+          "value": "20",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Aquatic Movement",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!f7QOaDUFo1b0184W.G060aSTs1oKdiyds"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686274358585,
+    "modifiedTime": 1704127422526,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "f7QOaDUFo1b0184W",
+  "folder": "ERY0Xs3Bi23Hjx2K",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!f7QOaDUFo1b0184W"
+}

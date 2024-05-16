@@ -1,0 +1,156 @@
+{
+  "name": "It's Morphin Time!",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Activate the appropriate Armor Training to have gain the toughness bonus when morphed.&nbsp;</p>",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 33
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.SzZUYzsATwRq6EDv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "2s4EqAvWkXfhWIa0",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Light Armor Training",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!UFMTHB90lA9ZEvso.2s4EqAvWkXfhWIa0"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.SzZUYzsATwRq6EDv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "OYdD6Pck9oqYstGB",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Medium Armor Training",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!UFMTHB90lA9ZEvso.OYdD6Pck9oqYstGB"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.SzZUYzsATwRq6EDv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "GpDZMidEIgrvOisO",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "4",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Heavy Armor Training",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!UFMTHB90lA9ZEvso.GpDZMidEIgrvOisO"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.SzZUYzsATwRq6EDv",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "okToLXHvXkjjjV8F",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.morphed",
+          "mode": 2,
+          "value": "6",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Ultra-Heavy Armor Training",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!UFMTHB90lA9ZEvso.okToLXHvXkjjjV8F"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685376258606,
+    "modifiedTime": 1704127415955,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "VGsVGz5EMaNwYlXV",
+  "_id": "UFMTHB90lA9ZEvso",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!UFMTHB90lA9ZEvso"
+}

@@ -1,0 +1,35 @@
+{
+  "name": "Improved Weapon",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 112
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "minicon"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686277925247,
+    "modifiedTime": 1704127422520,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "ZjA5mRAFQYjLciBm",
+  "folder": "2CRvtPOcwW3nzLcI",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ZjA5mRAFQYjLciBm"
+}

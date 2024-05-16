@@ -1,0 +1,66 @@
+{
+  "name": "Razor Tongue",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 133
+    },
+    "prerequisite": "Social Essence 4",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.HdIE0t088L6PTfXn",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "vkwfvZ9B6MR7B1st",
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!HdIE0t088L6PTfXn.vkwfvZ9B6MR7B1st"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1686281644822,
+    "modifiedTime": 1714849758779,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "HdIE0t088L6PTfXn",
+  "folder": "RXPdNB9Xnw7MUk8x",
+  "sort": 1200000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!HdIE0t088L6PTfXn"
+}

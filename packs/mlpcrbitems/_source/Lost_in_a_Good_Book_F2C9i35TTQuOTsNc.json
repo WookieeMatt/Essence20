@@ -1,0 +1,32 @@
+{
+  "name": "Lost in a Good Book",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 45
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1680142706586,
+    "modifiedTime": 1704127413366,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "F2C9i35TTQuOTsNc",
+  "folder": "ly03UXfH1Jdy7p6W",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!F2C9i35TTQuOTsNc"
+}

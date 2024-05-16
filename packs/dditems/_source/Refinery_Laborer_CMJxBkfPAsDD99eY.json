@@ -1,0 +1,59 @@
+{
+  "folder": "iZ8BKXFaDzYINJ5J",
+  "name": "Refinery Laborer",
+  "type": "influence",
+  "_id": "CMJxBkfPAsDD99eY",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 28
+    },
+    "items": {
+      "3199": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.NlZIdnvFI09UnO3R",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Refinery Laborer",
+        "type": "perk"
+      },
+      "df4b": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.hJaTZrQ7tao4hDPJ",
+        "img": "icons/svg/hazard.svg",
+        "name": "Always Hungry",
+        "type": "hangUp"
+      },
+      "f05c": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.jivhlSMGRJBGhXM2",
+        "img": "icons/svg/hazard.svg",
+        "name": "I Don't Get It",
+        "type": "hangUp"
+      },
+      "4a78": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5gCV4i6hoOSowIb",
+        "img": "icons/svg/hazard.svg",
+        "name": "Subordinate",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694533564417,
+    "modifiedTime": 1704127407276,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!CMJxBkfPAsDD99eY"
+}

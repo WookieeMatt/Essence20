@@ -1,0 +1,48 @@
+{
+  "folder": "dUgFcCG3h9DxRZQa",
+  "name": "Near Omnipotence",
+  "type": "alteration",
+  "_id": "Q9mBaq3B9pvogpIp",
+  "img": "systems/essence20/assets/icons/items/alteration.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 87
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "bonusSkill": "",
+    "cost": null,
+    "costSkill": "",
+    "essenceBenefit": "",
+    "essenceCost": [
+      "speed",
+      "smarts",
+      "social"
+    ],
+    "movementCost": "",
+    "selectedEssence": "",
+    "type": "essence",
+    "bonus": null,
+    "essenceBonus": [
+      "strength"
+    ]
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694732224749,
+    "modifiedTime": 1704127406330,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Q9mBaq3B9pvogpIp"
+}

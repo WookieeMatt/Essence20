@@ -1,0 +1,49 @@
+{
+  "name": "Specialist",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 54
+    },
+    "items": {
+      "cd9c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.yOpGmmCvVaIYZf29",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Specialist",
+        "type": "perk"
+      },
+      "0449": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.U8Q6NP7B8tz7BQlu",
+        "img": "icons/svg/hazard.svg",
+        "name": "Specialist",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686283092679,
+    "modifiedTime": 1704127409416,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "11lD6RFtPwdN7Sdg",
+  "folder": "848nQlbiz9DfiwL2",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!11lD6RFtPwdN7Sdg"
+}

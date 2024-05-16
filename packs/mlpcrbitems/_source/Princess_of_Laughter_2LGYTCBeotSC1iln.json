@@ -1,0 +1,36 @@
+{
+  "folder": "J2nYaT9wiAB9cSE3",
+  "name": "Princess of Laughter",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 87
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706825381436,
+    "modifiedTime": 1714854938699,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "2LGYTCBeotSC1iln",
+  "sort": -68750,
+  "_key": "!items!2LGYTCBeotSC1iln"
+}

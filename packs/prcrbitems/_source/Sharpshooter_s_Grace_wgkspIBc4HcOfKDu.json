@@ -1,0 +1,35 @@
+{
+  "name": "Sharpshooter's Grace",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 98
+    },
+    "prerequisite": "Targeting D6 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685403851997,
+    "modifiedTime": 1704127415991,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "wgkspIBc4HcOfKDu",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!wgkspIBc4HcOfKDu"
+}

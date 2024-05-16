@@ -1,0 +1,66 @@
+{
+  "name": "Peerless Pilot",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 97
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.42cJ84m3b7hAhU44",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "uaUlTrwul0hdQP9L",
+      "changes": [
+        {
+          "key": "system.skills.driving.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Driving Edge",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!dHDCKO4k7dlzyXbC.uaUlTrwul0hdQP9L"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685401762540,
+    "modifiedTime": 1704127415969,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "dHDCKO4k7dlzyXbC",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!dHDCKO4k7dlzyXbC"
+}

@@ -1,0 +1,33 @@
+{
+  "folder": "Vut9CD4jSXSlHVjN",
+  "name": "Chain",
+  "type": "gear",
+  "_id": "zfpnAy27GnFDedZF",
+  "img": "systems/essence20/assets/icons/gear/crossed-chains.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 119
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "tools"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1692303926384,
+    "modifiedTime": 1704127415995,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!zfpnAy27GnFDedZF"
+}

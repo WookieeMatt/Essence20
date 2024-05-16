@@ -1,0 +1,61 @@
+{
+  "folder": "TloTmcyDSbmlZYl4",
+  "name": "Traitor",
+  "type": "hangUp",
+  "_id": "SBRYtQKEy0EKsYBi",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 31
+    }
+  },
+  "effects": [
+    {
+      "name": "Traitor",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.SBRYtQKEy0EKsYBi",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "n1cvgZKOe2xtEftF",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!SBRYtQKEy0EKsYBi.n1cvgZKOe2xtEftF"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694532341215,
+    "modifiedTime": 1704127406945,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!SBRYtQKEy0EKsYBi"
+}

@@ -1,0 +1,69 @@
+{
+  "folder": "1O0Xewih7cClw7RZ",
+  "name": "Large Blade",
+  "type": "weapon",
+  "_id": "A5Ze10WAihvsfMT3",
+  "img": "systems/essence20/assets/icons/weapons/blade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 151
+    },
+    "items": {
+      "f710": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ejIzNaeyXdwEuEW9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Large Blades Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695610881089,
+    "modifiedTime": 1704127413614,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!A5Ze10WAihvsfMT3"
+}

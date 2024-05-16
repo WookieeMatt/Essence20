@@ -1,0 +1,45 @@
+{
+  "folder": "dUgFcCG3h9DxRZQa",
+  "name": "Crawler",
+  "type": "alteration",
+  "_id": "WOY0sYAEFzKIhCkb",
+  "img": "systems/essence20/assets/icons/items/alteration.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 85
+    },
+    "availability": "limited",
+    "benefit": "",
+    "bonusSkill": "",
+    "cost": null,
+    "costSkill": "",
+    "essenceBenefit": "",
+    "essenceCost": "",
+    "movementCost": "",
+    "selectedEssence": "",
+    "type": "movement",
+    "bonus": null,
+    "bonusMovement": 20,
+    "bonusMovementType": "climb",
+    "costMovement": 5,
+    "costMovementType": "ground"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694731187910,
+    "modifiedTime": 1704127406335,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!WOY0sYAEFzKIhCkb"
+}

@@ -1,0 +1,33 @@
+{
+  "folder": "OsxHbWLxlbsxzTE9",
+  "name": "Fanatic",
+  "type": "perk",
+  "_id": "QhiG6aB3Z2GM1Get",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 25
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694532758551,
+    "modifiedTime": 1704127406944,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!QhiG6aB3Z2GM1Get"
+}

@@ -1,0 +1,33 @@
+{
+  "folder": "gzK5qqzuTCcXiNtW",
+  "name": "Terrorize",
+  "type": "perk",
+  "_id": "gPeFzjAOjD7GgM3u",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 67
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694609068470,
+    "modifiedTime": 1704127406951,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!gPeFzjAOjD7GgM3u"
+}

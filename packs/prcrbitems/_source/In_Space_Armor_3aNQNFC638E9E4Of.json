@@ -1,0 +1,40 @@
+{
+  "folder": "JfpzK64lCwnQH5v2",
+  "name": "In Space Armor",
+  "type": "armor",
+  "_id": "3aNQNFC638E9E4Of",
+  "img": "icons/svg/shield.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 118
+    },
+    "items": {},
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1692302220671,
+    "modifiedTime": 1704127416631,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!3aNQNFC638E9E4Of"
+}

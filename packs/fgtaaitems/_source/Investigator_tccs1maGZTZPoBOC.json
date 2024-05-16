@@ -1,0 +1,63 @@
+{
+  "name": "Investigator",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 56
+    }
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.VfthJLMhKptuhZWu",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "kNzPxGf1hkgSycZB",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Social Downshift",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!tccs1maGZTZPoBOC.kNzPxGf1hkgSycZB"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685405652385,
+    "modifiedTime": 1704127408347,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "CLjUTcIQxtCzcF0X",
+  "_id": "tccs1maGZTZPoBOC",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!tccs1maGZTZPoBOC"
+}

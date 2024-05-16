@@ -1,0 +1,58 @@
+{
+  "name": "Cutter",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.5sxhsXAHh97KTpwa]{Cutter (Common)}@UUID[Compendium.essence20.tf_crb.Item.FlN4FCnbTP7RRz8K]{Cutter (Long)}</p>",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 49
+    },
+    "items": {
+      "040c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.foFGF3OSzj9NpQ3M",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Surface Invasion",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 30,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength"
+    ],
+    "languages": "",
+    "skills": [
+      "athletics",
+      "might"
+    ],
+    "startingHealth": 3,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681743498597,
+    "modifiedTime": 1704127425217,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "rHuXEGxdagbItLxK",
+  "folder": "vECyC1kfkRvVO3FR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!rHuXEGxdagbItLxK"
+}

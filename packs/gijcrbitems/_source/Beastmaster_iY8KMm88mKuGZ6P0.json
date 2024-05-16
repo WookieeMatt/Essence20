@@ -1,0 +1,98 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Beastmaster",
+  "type": "focus",
+  "_id": "iY8KMm88mKuGZ6P0",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 92
+    },
+    "items": {
+      "85fb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.vnjELp3JE04liHSa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Handler",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "91b2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.92993RGDPLq08u1D",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "TIght Bond",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "3c85": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.UkAgppAPli6yrImr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "In Their Element",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "b4c0": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.aGD2qvPmkdeL6ObV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tough Together",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "c0cd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hvFWnzKAy4DlXtZx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mutual Understanding",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "a6e6": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7k9DzU918tm8OK9V",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pack Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "f1c4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jBGt0rupbF0OwAi9",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Ranger",
+        "type": "role"
+      }
+    },
+    "essences": [
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "animalHandling"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706576333086,
+    "modifiedTime": 1714012222034,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!iY8KMm88mKuGZ6P0"
+}

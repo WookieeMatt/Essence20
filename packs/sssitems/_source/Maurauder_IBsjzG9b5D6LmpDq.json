@@ -1,0 +1,108 @@
+{
+  "folder": "hRvXtu68qKkLTDlu",
+  "name": "Maurauder",
+  "type": "focus",
+  "_id": "IBsjzG9b5D6LmpDq",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaugter Sourcebook",
+      "page": 13
+    },
+    "items": {
+      "ba17": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ub4PO0AcEYzMc93S",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Vanguard",
+        "type": "role"
+      },
+      "12db": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZthvrKqsgXR3q8bm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aggressive Assault",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "de30": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.qplsg3JI3kmUCtU9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Catch Off Guard",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "100f": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.RWgIeFdT0c1vIcS1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Jungle Fighter",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "b72a": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.NLwbluyB9dtHMTlT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Burly",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "d5b1": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.O5vyi2mvtWAtkE92",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rolling Thunder",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "c2c3": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.mMT0yiFOtiiD32hI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rumble In The Jungle",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "6c3c": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.5jc5fjieruLuWQm1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Out of the Jungle",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "initiative",
+      "driving",
+      "infiltration"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714011846866,
+    "modifiedTime": 1714012011744,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!IBsjzG9b5D6LmpDq"
+}

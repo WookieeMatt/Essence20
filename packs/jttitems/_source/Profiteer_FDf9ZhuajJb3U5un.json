@@ -1,0 +1,61 @@
+{
+  "folder": "GZCQaHUXnjHERxw6",
+  "name": "Profiteer",
+  "type": "hangUp",
+  "_id": "FDf9ZhuajJb3U5un",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 22
+    }
+  },
+  "effects": [
+    {
+      "name": "Profiteer",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.FDf9ZhuajJb3U5un",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "zHfJNVjwsojMR2Su",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!FDf9ZhuajJb3U5un.zHfJNVjwsojMR2Su"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694463471150,
+    "modifiedTime": 1704127412646,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!FDf9ZhuajJb3U5un"
+}

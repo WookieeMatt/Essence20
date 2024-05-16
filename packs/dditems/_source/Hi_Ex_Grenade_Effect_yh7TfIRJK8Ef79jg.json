@@ -1,0 +1,43 @@
+{
+  "folder": "oKWTunb7j09H7xpd",
+  "name": "Hi-Ex Grenade Effect",
+  "type": "weaponEffect",
+  "_id": "yh7TfIRJK8Ef79jg",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "athletics",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 2,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 5,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 30,
+      "value": 10
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696128135672,
+    "modifiedTime": 1704127408156,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!yh7TfIRJK8Ef79jg"
+}

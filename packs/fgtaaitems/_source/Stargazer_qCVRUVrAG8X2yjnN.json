@@ -1,0 +1,49 @@
+{
+  "name": "Stargazer",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 59
+    },
+    "items": {
+      "9a13": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.SnAIok2KD1f77DyV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stargazer",
+        "type": "perk"
+      },
+      "ece8": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.bcx4ncWJNi3tcAxc",
+        "img": "icons/svg/hazard.svg",
+        "name": "Stargazer",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686316540342,
+    "modifiedTime": 1704127408913,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "qCVRUVrAG8X2yjnN",
+  "folder": "DK1GwBI01Dgiz7QR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!qCVRUVrAG8X2yjnN"
+}

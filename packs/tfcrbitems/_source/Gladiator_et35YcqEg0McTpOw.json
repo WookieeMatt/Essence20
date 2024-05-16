@@ -1,0 +1,61 @@
+{
+  "name": "Gladiator",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 34
+    },
+    "items": {
+      "a787": {
+        "uuid": "Compendium.essence20.tf_crb.Item.tDge4xSE9urfxwHP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gladiator",
+        "type": "perk"
+      },
+      "5ff2": {
+        "uuid": "Compendium.essence20.tf_crb.Item.V5GfafYii5GSMtzr",
+        "img": "icons/svg/hazard.svg",
+        "name": "Impulsive",
+        "type": "hangUp"
+      },
+      "d366": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ztsvCKdnaDZzBR8Q",
+        "img": "icons/svg/hazard.svg",
+        "name": "Vainglorious",
+        "type": "hangUp"
+      },
+      "b003": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aT1jR044JiN8tLQi",
+        "img": "icons/svg/hazard.svg",
+        "name": "Violent",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686279446325,
+    "modifiedTime": 1704127424730,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "et35YcqEg0McTpOw",
+  "folder": "SWtRpPu5oWtOo7vD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!et35YcqEg0McTpOw"
+}

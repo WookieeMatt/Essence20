@@ -1,0 +1,39 @@
+{
+  "folder": "mvtk7jCO431IADoK",
+  "name": "Terrifying",
+  "type": "upgrade",
+  "_id": "tXHd0LBkVCB2QPPO",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 156
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695588611306,
+    "modifiedTime": 1704127409141,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!tXHd0LBkVCB2QPPO"
+}

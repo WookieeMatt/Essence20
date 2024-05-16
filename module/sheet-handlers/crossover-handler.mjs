@@ -1,4 +1,4 @@
-import { rememberOptions } from "../helpers/utils.mjs";
+import { rememberOptions } from "../helpers/dialog.mjs";
 
 /**
  * Creates dialog window for crossover options

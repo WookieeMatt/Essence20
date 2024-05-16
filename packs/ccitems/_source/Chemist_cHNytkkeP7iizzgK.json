@@ -1,0 +1,61 @@
+{
+  "folder": "3FMemNB97tHEQvI8",
+  "name": "Chemist",
+  "type": "hangUp",
+  "_id": "cHNytkkeP7iizzgK",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 27
+    }
+  },
+  "effects": [
+    {
+      "name": "Persuasion Downshift",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.cHNytkkeP7iizzgK",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "dzJ6pr9EyHhu7caY",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!cHNytkkeP7iizzgK.dzJ6pr9EyHhu7caY"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686420652108,
+    "modifiedTime": 1704127406338,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!cHNytkkeP7iizzgK"
+}

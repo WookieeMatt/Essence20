@@ -1,0 +1,33 @@
+{
+  "folder": "r5pGAVe6pCYJ39RG",
+  "name": "Hail Megatron!",
+  "type": "perk",
+  "_id": "3IHBbGOucL4eAFAA",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 38
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694553161115,
+    "modifiedTime": 1704127406933,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!3IHBbGOucL4eAFAA"
+}

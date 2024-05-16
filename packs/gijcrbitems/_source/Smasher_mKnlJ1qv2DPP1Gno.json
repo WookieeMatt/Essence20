@@ -1,0 +1,41 @@
+{
+  "folder": "w813kMBI7fhWPpY9",
+  "name": "Smasher",
+  "type": "upgrade",
+  "_id": "mKnlJ1qv2DPP1Gno",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 150
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [
+      "wrecker"
+    ],
+    "type": "weapon",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695606520104,
+    "modifiedTime": 1704127409132,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!mKnlJ1qv2DPP1Gno"
+}

@@ -1,0 +1,69 @@
+{
+  "folder": "LMuazQzyknCUYRXJ",
+  "name": "Blend With Society",
+  "type": "perk",
+  "_id": "skdUEPpInjeM94cr",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 30
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin"
+  },
+  "effects": [
+    {
+      "name": "New Effect",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.beneath_the_helmet.Item.skdUEPpInjeM94cr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "cDR1pE5KlOxuXtFc",
+      "changes": [
+        {
+          "key": "system.skills.deception.shiftUp",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.skills.infiltration.shiftUp",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!skdUEPpInjeM94cr.cDR1pE5KlOxuXtFc"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713548745238,
+    "modifiedTime": 1713548834242,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!skdUEPpInjeM94cr"
+}

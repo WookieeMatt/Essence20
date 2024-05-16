@@ -1,0 +1,35 @@
+{
+  "name": "Iron Hands",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 96
+    },
+    "prerequisite": "Strength 3 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685401213340,
+    "modifiedTime": 1704127415988,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "uKGtcgg5cgVibGQ7",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!uKGtcgg5cgVibGQ7"
+}

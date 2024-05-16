@@ -1,0 +1,98 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Grandmaster",
+  "type": "focus",
+  "_id": "1GZR9lZHXPZPcAmG",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 87
+    },
+    "items": {
+      "99a9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.CG0aeZtKsPVmvUF5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Knight's Jump",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "9f19": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.eVRb1Fp43QMdxV1N",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "En Passant",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "066f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.wv5vpbiCZXiwTpdm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Touch Move",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "ea01": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.eB7jbgbevLVPxW4e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Castling",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "22d3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Frf5wHlBS2Tn24yB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Queen's Gambit",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "cd28": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.BcFM3JhWdk5XHIZL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Checkmate",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "48f2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.VBEsSU8jqBpoGueE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Officer",
+        "type": "role"
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "initiative"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706460692244,
+    "modifiedTime": 1714012194825,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!1GZR9lZHXPZPcAmG"
+}

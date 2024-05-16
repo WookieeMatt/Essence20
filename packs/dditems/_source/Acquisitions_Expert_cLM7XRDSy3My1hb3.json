@@ -1,0 +1,100 @@
+{
+  "folder": "9x5XzIEIsjZHwN7F",
+  "name": "Acquisitions Expert",
+  "type": "focus",
+  "_id": "cLM7XRDSy3My1hb3",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 62
+    },
+    "items": {
+      "a681": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.wq0pGAUvchUmhXBW",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Raider",
+        "type": "role"
+      },
+      "d6f8": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.7NGQHft6V1wAfGPw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mine!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ec35": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.gKa6h1IXhYeWWm1e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fast Draw",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "9f4e": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.qIqnKZHZGvjdblNv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Snap To Cover",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "c13c": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.WbXurpieXjFkmS8h",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Weapon Conversion",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "4f98": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.K2uvTIYYzCixgBD7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Disarming Shot",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "fdfb": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.TG0CSb60LTv7jNyv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hobble",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "initiative",
+      "acrobatics",
+      "infiltration"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714359339016,
+    "modifiedTime": 1714359436695,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!cLM7XRDSy3My1hb3"
+}

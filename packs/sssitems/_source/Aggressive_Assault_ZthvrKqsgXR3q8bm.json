@@ -1,0 +1,93 @@
+{
+  "folder": "1c7G8cWpe3YzyQOg",
+  "name": "Aggressive Assault",
+  "type": "perk",
+  "_id": "ZthvrKqsgXR3q8bm",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaugter Sourcebook",
+      "page": 13
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Aggressive Assault - Driving",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZthvrKqsgXR3q8bm",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "r1T7rglpf41OT2yK",
+      "changes": [
+        {
+          "key": "system.skills.driving.essences.strength",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ZthvrKqsgXR3q8bm.r1T7rglpf41OT2yK"
+    },
+    {
+      "name": "Aggressive Assault - Infiltration",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZthvrKqsgXR3q8bm",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "q1GyXT1jghzlOCt2",
+      "changes": [
+        {
+          "key": "system,.skills.infiltration.essences.strength",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ZthvrKqsgXR3q8bm.q1GyXT1jghzlOCt2"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714011161399,
+    "modifiedTime": 1714853763411,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!ZthvrKqsgXR3q8bm"
+}

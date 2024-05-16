@@ -1,0 +1,162 @@
+{
+  "folder": "oraxFPyn1k5irQtu",
+  "name": "Morph Modulation",
+  "type": "power",
+  "_id": "coviqfYhNVlhlapX",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 73
+    },
+    "actionType": "free",
+    "canActivate": false,
+    "classFeatureId": null,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": null,
+    "selectionLimit": 1,
+    "type": "grid",
+    "usesInterval": "perScene",
+    "usesPer": null
+  },
+  "effects": [
+    {
+      "name": "Toughness",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.coviqfYhNVlhlapX",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "eOMma6hcfzzxbbtx",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!coviqfYhNVlhlapX.eOMma6hcfzzxbbtx"
+    },
+    {
+      "name": "Cleverness",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.coviqfYhNVlhlapX",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "lAYF7FUjs0mQ8aSb",
+      "changes": [
+        {
+          "key": "",
+          "mode": 2,
+          "value": "",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!coviqfYhNVlhlapX.lAYF7FUjs0mQ8aSb"
+    },
+    {
+      "name": "Evasion",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.coviqfYhNVlhlapX",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "SKFJWyTaOzH13unp",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!coviqfYhNVlhlapX.SKFJWyTaOzH13unp"
+    },
+    {
+      "name": "Willpower",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.coviqfYhNVlhlapX",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "lsIfu1lj60iAbuNM",
+      "changes": [
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!coviqfYhNVlhlapX.lsIfu1lj60iAbuNM"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1699316577776,
+    "modifiedTime": 1704127399138,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!coviqfYhNVlhlapX"
+}

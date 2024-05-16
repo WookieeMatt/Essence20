@@ -1,0 +1,63 @@
+{
+  "name": "Idolizer",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 42
+    }
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.TczJQgvcGZWGFOQo",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Yw1eWWqoKP8Z1A7B",
+      "changes": [
+        {
+          "key": "system.base.willpower",
+          "mode": 5,
+          "value": "9",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Idolizer",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!DMzShKiIJk3doOpA.Yw1eWWqoKP8Z1A7B"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1680141803098,
+    "modifiedTime": 1704127422494,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "DMzShKiIJk3doOpA",
+  "folder": "VGJuFEF6el923K6k",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!DMzShKiIJk3doOpA"
+}

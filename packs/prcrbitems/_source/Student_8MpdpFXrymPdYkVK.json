@@ -1,0 +1,33 @@
+{
+  "name": "Student",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 72
+    },
+    "img": "icons/svg/hazard.svg"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1680138751177,
+    "modifiedTime": 1704127415926,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "8MpdpFXrymPdYkVK",
+  "folder": "uiyepoxb2PD3I4f0",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!8MpdpFXrymPdYkVK"
+}

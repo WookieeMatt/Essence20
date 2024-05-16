@@ -1,0 +1,116 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Spiral Saber",
+  "type": "weapon",
+  "_id": "dYi849uxhV0fvkac",
+  "img": "systems/essence20/assets/icons/weapons/coiled-nail.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "items": {
+      "8866": {
+        "uuid": "Compendium.essence20.pr_crb.Item.7ggpfXIQXed1uEKf",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spiral Saber Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "5cbc": {
+        "uuid": "Compendium.essence20.pr_crb.Item.pFLbgyKOlmuzJ5p3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spiral Saber Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "f17b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.5zKff8GYFxr7ry4z",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spiral Saber Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "cold",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696193253003,
+    "modifiedTime": 1704127420297,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!dYi849uxhV0fvkac"
+}

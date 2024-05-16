@@ -1,0 +1,43 @@
+{
+  "folder": "Z2xK8nOrVV5BbzH4",
+  "name": "Canine Cannon Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "frBEo6mwFDHomJuX",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "athletics",
+      "style": "melee"
+    },
+    "damageType": "stun",
+    "damageValue": 3,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 120,
+      "value": 75
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696178894039,
+    "modifiedTime": 1704127406184,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!frBEo6mwFDHomJuX"
+}

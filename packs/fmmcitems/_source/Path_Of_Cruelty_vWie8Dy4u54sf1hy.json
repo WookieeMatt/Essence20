@@ -1,0 +1,264 @@
+{
+  "folder": "tutqIbfZE1ytmm0J",
+  "name": "Path Of Cruelty",
+  "type": "role",
+  "_id": "vWie8Dy4u54sf1hy",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 281
+    },
+    "items": {
+      "e68f": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.hW8JMqCrGLlcM5n0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gang Up!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "3bf9": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.FoCxdBbopumlIvH8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psycho Blast",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "9e16": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.HhdIEMBVmXF8UsXu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Push Through Pain",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "7db6": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.iDbMl3SS6XnyADN2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Monster Morph",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "b250": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "95c2": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.yZ3rXt8z1jlCHlu7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psycho Assault",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "161d": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.uVCPqt7exjXZ7kqn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhance Monster",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "e688": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.WQYSawSpefEKLaG0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nemesis Drain",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "c386": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.SejEXXGz3edJ734e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zordbane",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "c052": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.GbAyS8tUInUPKRZk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Flames of Hate",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "e2a5": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.ZqE7kDEMylFQK6Oa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grow!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "048b": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.c22iQeKZY1TmPzFe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cruel Conflagration",
+        "type": "perk",
+        "subtype": "general",
+        "level": 15
+      },
+      "3a49": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.F3TRKmoaUOtHrlzq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cruel Warlord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "f335": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Y18J55UVsdm2aB7E",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Gang Up",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": null,
+          "increaseLevels": [
+            "level6",
+            "level11",
+            "level16"
+          ],
+          "startingValue": 1,
+          "type": "attackUpshift",
+          "value": 0
+        },
+        "isActivatable": true,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": null,
+          "startingMax": null,
+          "value": null
+        }
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "psycho"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "social": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "speed": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "strength": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 1,
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ],
+        "regeneration": 0,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "might",
+      "deception",
+      "persuasion"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713587802008,
+    "modifiedTime": 1714616615271,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!vWie8Dy4u54sf1hy"
+}

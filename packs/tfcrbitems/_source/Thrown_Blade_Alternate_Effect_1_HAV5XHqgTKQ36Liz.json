@@ -1,0 +1,41 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Thrown Blade Alternate Effect 1",
+  "type": "weaponEffect",
+  "_id": "HAV5XHqgTKQ36Liz",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "maneuver",
+    "damageValue": null,
+    "shiftDown": 2,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 30,
+      "value": 20
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695398793019,
+    "modifiedTime": 1714344434295,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "sort": 1500000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!HAV5XHqgTKQ36Liz"
+}

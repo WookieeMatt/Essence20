@@ -1,0 +1,66 @@
+{
+  "name": "Dodgy",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 130
+    },
+    "prerequisite": "Speed Essence 3",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.GQwhr14X9yXkAuWH",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "lUm0VSivpK7iiYPa",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!GQwhr14X9yXkAuWH.lUm0VSivpK7iiYPa"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1686280749340,
+    "modifiedTime": 1714849758779,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "GQwhr14X9yXkAuWH",
+  "folder": "RXPdNB9Xnw7MUk8x",
+  "sort": 900000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!GQwhr14X9yXkAuWH"
+}

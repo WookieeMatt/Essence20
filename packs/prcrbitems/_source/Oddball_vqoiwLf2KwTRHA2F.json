@@ -1,0 +1,69 @@
+{
+  "name": "Oddball",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 25
+    },
+    "items": {
+      "a0f8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.9nvRKN0A8N0EEXUl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nobody Like Me",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "30",
+    "essences": [
+      "strength",
+      "speed",
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "intimidation",
+      "might",
+      "infiltration",
+      "alertness",
+      "culture",
+      "survival",
+      "animalHandling",
+      "deception",
+      "performance",
+      "streetwise"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681696615337,
+    "modifiedTime": 1704127422091,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "vqoiwLf2KwTRHA2F",
+  "folder": "AXtwURx09lzKH1fD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!vqoiwLf2KwTRHA2F"
+}

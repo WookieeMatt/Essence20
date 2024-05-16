@@ -1,0 +1,74 @@
+{
+  "folder": "KRUxCZJniR9qRy0c",
+  "name": "Viscid Grenage",
+  "type": "weapon",
+  "_id": "NFbEMpioIU6ujFBI",
+  "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 94
+    },
+    "items": {
+      "0281": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.yYNiAODObpdmxteX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Viscid Grenade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 0,
+        "damageType": "grapple",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable",
+      "martialArts",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714103601505,
+    "modifiedTime": 1714103668568,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!NFbEMpioIU6ujFBI"
+}

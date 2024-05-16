@@ -1,0 +1,102 @@
+{
+  "name": "Diplomat",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 53
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.IT3v6horcOd82vdK",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "l56hv0VXy6zEhWcx",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "",
+          "mode": 2,
+          "value": "",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "First Impression",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!IT3v6horcOd82vdK.l56hv0VXy6zEhWcx"
+    },
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.IT3v6horcOd82vdK",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "U0aF5sRkuPtoTZzV",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Interact with Leaders",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!IT3v6horcOd82vdK.U0aF5sRkuPtoTZzV"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686315518613,
+    "modifiedTime": 1704127408337,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "IT3v6horcOd82vdK",
+  "folder": "Esz9SAEXytXZwm2R",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!IT3v6horcOd82vdK"
+}

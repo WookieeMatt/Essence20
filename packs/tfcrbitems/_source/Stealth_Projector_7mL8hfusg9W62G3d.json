@@ -1,0 +1,39 @@
+{
+  "folder": "zSpggN0FQabbHARC",
+  "name": "Stealth Projector",
+  "type": "upgrade",
+  "_id": "7mL8hfusg9W62G3d",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 132
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "prototype",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695678645009,
+    "modifiedTime": 1704127422489,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!7mL8hfusg9W62G3d"
+}

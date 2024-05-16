@@ -1,0 +1,19 @@
+{
+  "name": "Weapon Effects",
+  "sorting": "a",
+  "folder": "nz07wDpL3BkNm0sE",
+  "type": "Item",
+  "_id": "y6hopQhl3OPjCyRs",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695400554715,
+    "modifiedTime": 1695401669585,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "_key": "!folders!y6hopQhl3OPjCyRs"
+}

@@ -1,0 +1,33 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Optimized Part",
+  "type": "perk",
+  "_id": "zGsTAngJ2HRdKPkz",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 80
+    },
+    "prerequisite": "Enhanced Part of 12th Level",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686501638154,
+    "modifiedTime": 1704127406351,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zGsTAngJ2HRdKPkz"
+}

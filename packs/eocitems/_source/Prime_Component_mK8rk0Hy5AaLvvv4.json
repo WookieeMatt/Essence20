@@ -1,0 +1,34 @@
+{
+  "folder": "Tlwt4M1j1fXebrAl",
+  "name": "Prime Component",
+  "type": "perk",
+  "_id": "mK8rk0Hy5AaLvvv4",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 34
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 225000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714394881900,
+    "modifiedTime": 1714855852339,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!mK8rk0Hy5AaLvvv4"
+}

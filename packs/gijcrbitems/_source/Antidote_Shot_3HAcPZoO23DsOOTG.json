@@ -1,0 +1,33 @@
+{
+  "folder": "gZzqo6nZQjtFvlx5",
+  "name": "Antidote Shot",
+  "type": "gear",
+  "_id": "3HAcPZoO23DsOOTG",
+  "img": "systems/essence20/assets/icons/gear/syringe.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 162
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "medical"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695579915395,
+    "modifiedTime": 1704127409078,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!3HAcPZoO23DsOOTG"
+}

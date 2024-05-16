@@ -1,0 +1,99 @@
+{
+  "folder": "9x5XzIEIsjZHwN7F",
+  "name": "Mimic",
+  "type": "focus",
+  "_id": "1TuvHCWrfrdmWAwl",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 48
+    },
+    "items": {
+      "3bd3": {
+        "uuid": "Compendium.essence20.tf_crb.Item.n3iC9MU8q65XW96O",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Modemaster",
+        "type": "role"
+      },
+      "defb": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.ARtFFscnVBo183hV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Alt Mode Mimicry",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "0c4f": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pTHenJt0kG3umsUk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Flexible Switch",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "adbd": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.DWWXdrhaWMDnNhNQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Imaginative Engineering",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "d386": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pVpAdlWmS3psTgIp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Alt Mode Mastery",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "b2f6": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.a3CURNWBfbp03MNr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Modify Defense",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "68aa": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.LQkSWoIABnPUhecg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ultimate Utility",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength",
+      "speed",
+      "smarts",
+      "social"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714355646696,
+    "modifiedTime": 1714355735533,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!1TuvHCWrfrdmWAwl"
+}

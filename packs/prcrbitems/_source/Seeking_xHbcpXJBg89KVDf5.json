@@ -1,0 +1,43 @@
+{
+  "folder": "jqKh12PIc6n5keSU",
+  "name": "Seeking",
+  "type": "upgrade",
+  "_id": "xHbcpXJBg89KVDf5",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 118
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "traits": [
+      "indirect"
+    ],
+    "type": "weapon",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695607109170,
+    "modifiedTime": 1704127415992,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!xHbcpXJBg89KVDf5"
+}

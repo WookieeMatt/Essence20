@@ -26,7 +26,7 @@ export class StoryPointsTracker extends Application {
 
   static get defaultOptions() {
     let pos = game.user.getFlag("essence20", "storyPointsTrackerPos");
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       id: "story-points",
       template: "./systems/essence20/templates/story-points.hbs",
       classes: ["story-points"],

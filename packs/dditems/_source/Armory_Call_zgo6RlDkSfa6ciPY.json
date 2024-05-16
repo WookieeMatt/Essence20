@@ -1,0 +1,50 @@
+{
+  "folder": "82NMc5Rrlomtpkcr",
+  "name": "Armory Call",
+  "type": "origin",
+  "_id": "zgo6RlDkSfa6ciPY",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.UO5WlCGHXtPOKFFY]{Armory Call}</p>",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 32
+    },
+    "items": {
+      "2b70": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.z5xX6kylwvCblYkl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "In The Right Hands",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 40,
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "survival",
+      "technology"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694553269515,
+    "modifiedTime": 1704127408234,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zgo6RlDkSfa6ciPY"
+}

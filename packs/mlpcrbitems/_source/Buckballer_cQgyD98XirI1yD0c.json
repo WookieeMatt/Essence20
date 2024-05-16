@@ -1,0 +1,51 @@
+{
+  "name": "Buckballer",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 46
+    },
+    "items": {
+      "edd5": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.sTEcpoI5UTnGn01U",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "On Target",
+        "type": "perk"
+      },
+      "ddb8": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.r4zNwxXpkdWtIGqk",
+        "img": "icons/svg/hazard.svg",
+        "name": "Longshot",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": [
+      "targeting"
+    ]
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686262443070,
+    "modifiedTime": 1704127415049,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "cQgyD98XirI1yD0c",
+  "folder": "vjofBqKYZU3tiTmw",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!cQgyD98XirI1yD0c"
+}

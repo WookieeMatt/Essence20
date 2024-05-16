@@ -1,0 +1,33 @@
+{
+  "folder": "s3yYeYZuD9s4wWjQ",
+  "name": "Baking Kit",
+  "type": "gear",
+  "_id": "rwtVdKzYShQvE6AG",
+  "img": "systems/essence20/assets/icons/gear/baking_kit.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 152
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "kits"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695608971931,
+    "modifiedTime": 1704127413389,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!rwtVdKzYShQvE6AG"
+}

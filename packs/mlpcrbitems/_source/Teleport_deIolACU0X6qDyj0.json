@@ -1,0 +1,37 @@
+{
+  "folder": "emRBrjlruf3ORbW4",
+  "name": "Teleport",
+  "type": "spell",
+  "_id": "deIolACU0X6qDyj0",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 136
+    },
+    "circle": "utility",
+    "cost": 3,
+    "duration": "Instant",
+    "isSpecialized": false,
+    "range": "Line of Sight",
+    "tier": "elementary"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713842763081,
+    "modifiedTime": 1713842789343,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!deIolACU0X6qDyj0"
+}

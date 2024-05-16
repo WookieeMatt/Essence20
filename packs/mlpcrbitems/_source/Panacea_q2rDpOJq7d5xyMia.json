@@ -1,0 +1,37 @@
+{
+  "folder": "emRBrjlruf3ORbW4",
+  "name": "Panacea",
+  "type": "spell",
+  "_id": "q2rDpOJq7d5xyMia",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 140
+    },
+    "circle": "aid",
+    "cost": 4,
+    "duration": "Instant",
+    "isSpecialized": false,
+    "range": "30 feet",
+    "tier": "virtuoso"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713843722812,
+    "modifiedTime": 1713843747141,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!q2rDpOJq7d5xyMia"
+}
