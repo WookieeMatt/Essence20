@@ -19,4 +19,15 @@ jobs:
       - run: npm ci
       - name: Compile the compendiums
         run: gulp compile
+      - name: Create system archive
+        run: |
+          zip --recurse-paths ./Essence20.zip  \
+            system.json                     \
+            template.json                   \
+            assets/                         \
+            lang/                           \
+            module/                         \
+            packs/                          \
+            css/                            \
+            templates/
       - run: echo "🍏 This job's status is ${{ job.status }}."
