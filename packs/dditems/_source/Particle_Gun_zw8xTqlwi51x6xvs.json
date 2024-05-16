@@ -1,0 +1,72 @@
+{
+  "folder": "Vp6v1H3MnV842PdP",
+  "name": "Particle Gun",
+  "type": "weapon",
+  "_id": "zw8xTqlwi51x6xvs",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 72
+    },
+    "items": {
+      "64e9": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.wf6y3CpDoAKZmjRc",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Particle Gun Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 150,
+          "value": 60
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "computerized",
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696129779593,
+    "modifiedTime": 1704127408262,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zw8xTqlwi51x6xvs"
+}

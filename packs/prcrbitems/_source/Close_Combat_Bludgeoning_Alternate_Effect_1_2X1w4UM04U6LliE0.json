@@ -1,0 +1,43 @@
+{
+  "folder": "3biTo5jNrvQrycM8",
+  "name": "Close Combat Bludgeoning Alternate Effect 1",
+  "type": "weaponEffect",
+  "_id": "2X1w4UM04U6LliE0",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "blunt",
+    "damageValue": 1,
+    "shiftDown": 1,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695300643999,
+    "modifiedTime": 1704127415917,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 100000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!2X1w4UM04U6LliE0"
+}

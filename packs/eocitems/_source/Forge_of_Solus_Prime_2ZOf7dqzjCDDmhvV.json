@@ -1,0 +1,118 @@
+{
+  "folder": "4O4L0YhCw7Ns8nN4",
+  "name": "Forge of Solus Prime",
+  "type": "weapon",
+  "_id": "2ZOf7dqzjCDDmhvV",
+  "img": "systems/essence20/assets/icons/weapons/hammer.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 57
+    },
+    "items": {
+      "db85": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.rba7UWTXmMRrbio2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Forge of Solus Prime Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 4,
+        "damageType": "blunt",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "f890": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.iB6VAcaQN7g3va9F",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Forge of Solus Prime Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "intimidate",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "fa17": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.jvCobH6rYPMRBCfX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Forge of Solus Prime Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "stun",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "unique",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Huge-Towering",
+      "skill": "brawn",
+      "shift": "d8"
+    },
+    "traits": [
+      "antiTank",
+      "reload",
+      "titanClass"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714512671405,
+    "modifiedTime": 1714512766802,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!2ZOf7dqzjCDDmhvV"
+}

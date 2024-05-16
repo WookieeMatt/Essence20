@@ -1,0 +1,72 @@
+{
+  "name": "Daredevil",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 108
+    },
+    "prerequisite": "Driving d6 with at least one specialization.",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.8GgFGdlmri0GyKNI",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "pwDM3p0UDcEyrHwD",
+      "changes": [
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.driving.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Alt Mode Bonuses",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!8GgFGdlmri0GyKNI.pwDM3p0UDcEyrHwD"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686275048103,
+    "modifiedTime": 1704127422490,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "8GgFGdlmri0GyKNI",
+  "folder": "ERY0Xs3Bi23Hjx2K",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!8GgFGdlmri0GyKNI"
+}

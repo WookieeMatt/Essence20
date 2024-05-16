@@ -1,0 +1,61 @@
+{
+  "name": "Hunter",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 35
+    },
+    "items": {
+      "89ad": {
+        "uuid": "Compendium.essence20.tf_crb.Item.5Z0xtNOeSCD2YoRc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hunter",
+        "type": "perk"
+      },
+      "efd6": {
+        "uuid": "Compendium.essence20.tf_crb.Item.L2oBtS3KAwncY2xY",
+        "img": "icons/svg/hazard.svg",
+        "name": "Earthspoiled",
+        "type": "hangUp"
+      },
+      "b5f0": {
+        "uuid": "Compendium.essence20.tf_crb.Item.yoyifVDjpnLloHbK",
+        "img": "icons/svg/hazard.svg",
+        "name": "Skeptical",
+        "type": "hangUp"
+      },
+      "d424": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aT1jR044JiN8tLQi",
+        "img": "icons/svg/hazard.svg",
+        "name": "Violent",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686279494245,
+    "modifiedTime": 1704127425495,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "uCxkAGzvJcmMFgvn",
+  "folder": "SWtRpPu5oWtOo7vD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!uCxkAGzvJcmMFgvn"
+}

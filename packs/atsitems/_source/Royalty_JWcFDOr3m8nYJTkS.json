@@ -1,0 +1,66 @@
+{
+  "name": "Royalty",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 47
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.JWcFDOr3m8nYJTkS",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "vOBWpZmwzZdJ1CmC",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Royal Persuasion",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!JWcFDOr3m8nYJTkS.vOBWpZmwzZdJ1CmC"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686012613403,
+    "modifiedTime": 1704127399119,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "JWcFDOr3m8nYJTkS",
+  "folder": "evwLfanm5EzWeWeN",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!JWcFDOr3m8nYJTkS"
+}

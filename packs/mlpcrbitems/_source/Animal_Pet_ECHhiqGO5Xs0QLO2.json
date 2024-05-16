@@ -1,0 +1,35 @@
+{
+  "name": "Animal Pet",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 122
+    },
+    "prerequisite": "Animal Handling d4+",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685407830223,
+    "modifiedTime": 1704127413365,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "hTtvIMEXXET4Kkqf",
+  "_id": "ECHhiqGO5Xs0QLO2",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ECHhiqGO5Xs0QLO2"
+}

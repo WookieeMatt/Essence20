@@ -1,0 +1,73 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Element Grenade",
+  "type": "weapon",
+  "_id": "pcBbvGPdjOoeUnnj",
+  "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 124
+    },
+    "items": {
+      "a808": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.lKfj3HhpPrsEZKyG",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Element Grenade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 12,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "computerized",
+      "consumable",
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695337019903,
+    "modifiedTime": 1704127425078,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!pcBbvGPdjOoeUnnj"
+}

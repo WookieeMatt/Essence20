@@ -1,0 +1,35 @@
+{
+  "name": "Professional",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 52
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686282505117,
+    "modifiedTime": 1704127409138,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "quwwBGrT0bjivRsv",
+  "folder": "rmOboqnVC5bSEvP1",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!quwwBGrT0bjivRsv"
+}

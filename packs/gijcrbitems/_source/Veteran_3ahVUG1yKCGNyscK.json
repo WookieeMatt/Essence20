@@ -1,0 +1,35 @@
+{
+  "name": "Veteran",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 134
+    },
+    "prerequisite": "Level 8",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1686282058717,
+    "modifiedTime": 1714849758779,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "3ahVUG1yKCGNyscK",
+  "folder": "RXPdNB9Xnw7MUk8x",
+  "sort": 400000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!3ahVUG1yKCGNyscK"
+}

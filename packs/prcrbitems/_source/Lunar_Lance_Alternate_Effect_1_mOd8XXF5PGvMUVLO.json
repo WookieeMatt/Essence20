@@ -1,0 +1,43 @@
+{
+  "folder": "078B661hUQJMF3Dv",
+  "name": "Lunar Lance Alternate Effect 1",
+  "type": "weaponEffect",
+  "_id": "mOd8XXF5PGvMUVLO",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 2,
+    "shiftDown": 1,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 2,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696195649485,
+    "modifiedTime": 1704127419371,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!mOd8XXF5PGvMUVLO"
+}

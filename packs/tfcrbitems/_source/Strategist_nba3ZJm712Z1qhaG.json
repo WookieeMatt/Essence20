@@ -1,0 +1,100 @@
+{
+  "folder": "WtQtiThqOagKNnL3",
+  "name": "Strategist",
+  "type": "focus",
+  "_id": "nba3ZJm712Z1qhaG",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 66
+    },
+    "items": {
+      "9642": {
+        "uuid": "Compendium.essence20.tf_crb.Item.6vp5PAYFTiRiMc2m",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Field Command",
+        "type": "role"
+      },
+      "e319": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Gvh0iaxbcohFtYGe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Strategize",
+        "type": "perk",
+        "subtype": "general",
+        "level": 1
+      },
+      "61ec": {
+        "uuid": "Compendium.essence20.tf_crb.Item.PlNtZjYRW262Jh4n",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Follow My Lead",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "a4e9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.RmHSzuVLnIoqeczy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Watchful Eyes",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "7e26": {
+        "uuid": "Compendium.essence20.tf_crb.Item.YCLo0a3kpBeB67HW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Flexible Directives",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ef5b": {
+        "uuid": "Compendium.essence20.tf_crb.Item.NELFIhFMZXPlXaWc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Lock Down",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "d986": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ZeOj3mmjnXJ7iXj1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stronger Together",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "alertness",
+      "culture",
+      "survival"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714190097635,
+    "modifiedTime": 1714190199964,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!nba3ZJm712Z1qhaG"
+}

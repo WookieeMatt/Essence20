@@ -1,0 +1,117 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Zeo Power Clubs",
+  "type": "weapon",
+  "_id": "RgzDZkv7Wm3apg3c",
+  "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "items": {
+      "7958": {
+        "uuid": "Compendium.essence20.pr_crb.Item.s5aQgda3nG5qbx2O",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Power Clubs Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "05a0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.dyMByLJ4dJEVLhV3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Power Clubs Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "38de": {
+        "uuid": "Compendium.essence20.pr_crb.Item.HY6yLZbqpLHOM7S9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Zeo Power Clubs Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d4"
+    },
+    "traits": [
+      "blunt",
+      "martialArts",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696182903437,
+    "modifiedTime": 1704127418496,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!RgzDZkv7Wm3apg3c"
+}

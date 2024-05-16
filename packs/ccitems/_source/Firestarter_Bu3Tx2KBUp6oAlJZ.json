@@ -1,0 +1,107 @@
+{
+  "folder": "0gpRPqi0To5ylodI",
+  "name": "Firestarter",
+  "type": "focus",
+  "_id": "Bu3Tx2KBUp6oAlJZ",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 58
+    },
+    "items": {
+      "ddd8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jBGt0rupbF0OwAi9",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Ranger",
+        "type": "role"
+      },
+      "0ca4": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.AXmmcHK2tSzRZLqB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Natural Science",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "0138": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.gaOLMFlImcLRmQV0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fireproof",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "c5b6": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.gvpgK9oegrloYHcO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pyromania",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "ab99": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.2UPKeLtWRXIoDlux",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Concentrated Fire",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "97b0": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.zherN6ArBKv6wyGc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ignite",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "63a8": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.ifF6KRO65Yguf7K1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wildfire",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "c3cc": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.20lv1ecNs4ORVwWu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fireball",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "science",
+      "survival"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714048549842,
+    "modifiedTime": 1714048650438,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Bu3Tx2KBUp6oAlJZ"
+}

@@ -1,0 +1,72 @@
+{
+  "folder": "Vp6v1H3MnV842PdP",
+  "name": "Laser Rifle",
+  "type": "weapon",
+  "_id": "foB9scOIgFuJe3Sd",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 71
+    },
+    "items": {
+      "da89": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.VN36gOhkJUueO86N",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Laser Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 100
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "computerized",
+      "laser"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696128455011,
+    "modifiedTime": 1704127407622,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!foB9scOIgFuJe3Sd"
+}

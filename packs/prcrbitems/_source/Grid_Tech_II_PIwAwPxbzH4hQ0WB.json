@@ -1,0 +1,34 @@
+{
+  "folder": "vn5xqhlV6UbSf4SP",
+  "name": "Grid Tech II",
+  "type": "perk",
+  "_id": "PIwAwPxbzH4hQ0WB",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 38
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 150000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1705014319350,
+    "modifiedTime": 1714865066717,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!PIwAwPxbzH4hQ0WB"
+}

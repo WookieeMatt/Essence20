@@ -1,4 +1,6 @@
-import { getItemsOfType, rememberOptions, resizeTokens } from "../helpers/utils.mjs";
+import { rememberOptions } from "../helpers/dialog.mjs";
+import { resizeTokens } from "../helpers/actor.mjs";
+import { getItemsOfType } from "../helpers/utils.mjs";
 
 /**
  * Handles AltModes being deleted
@@ -6,7 +8,7 @@ import { getItemsOfType, rememberOptions, resizeTokens } from "../helpers/utils.
  * @param {AltMode} altMode The deleted Alt Mode.
  */
 export async function onAltModeDelete(actorSheet, altMode) {
-  const altModes = getItemsOfType("altMode", _actor.items);
+  const altModes = getItemsOfType("altMode", actorSheet.actor.items);
   if (altModes.length > 1) {
     if (altMode._id == actorSheet.actor.system.altModeId) {
       _transformBotMode(actorSheet);

@@ -1,0 +1,73 @@
+{
+  "folder": "wz3jDXHF9H1jTjUn",
+  "name": "Eltarian Guardian Plate",
+  "type": "armor",
+  "_id": "vmjU8nDOjER1oot0",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 84
+    },
+    "items": {},
+    "availability": "limited",
+    "bonusEvasion": 0,
+    "bonusToughness": 4,
+    "classification": "heavy",
+    "equipped": false,
+    "traits": [
+      "bulwark",
+      "deflective",
+      "regal"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [
+    {
+      "name": "Eltarian Guard Plate",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.vmjU8nDOjER1oot0",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "VGwArTuHuXjeIDnH",
+      "changes": [
+        {
+          "key": "system.helath.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!vmjU8nDOjER1oot0.VGwArTuHuXjeIDnH"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695745239120,
+    "modifiedTime": 1704127406101,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!vmjU8nDOjER1oot0"
+}

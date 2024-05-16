@@ -1,0 +1,34 @@
+{
+  "folder": "LDOhAtA8FqRb1KgC",
+  "name": "Human Bullet",
+  "type": "perk",
+  "_id": "KGdGal1EWQ3m4HTw",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 66
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 137500,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714061937137,
+    "modifiedTime": 1714847419017,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!KGdGal1EWQ3m4HTw"
+}

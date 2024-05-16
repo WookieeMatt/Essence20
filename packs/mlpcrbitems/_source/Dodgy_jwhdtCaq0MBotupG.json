@@ -1,0 +1,66 @@
+{
+  "name": "Dodgy",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 123
+    },
+    "prerequisite": "Speed 3",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Jt49Lcbub4NWynhi",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "0gYm3Tih86HRdIY0",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Evasion Bonus",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!jwhdtCaq0MBotupG.0gYm3Tih86HRdIY0"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685407830223,
+    "modifiedTime": 1704127413384,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "hTtvIMEXXET4Kkqf",
+  "_id": "jwhdtCaq0MBotupG",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!jwhdtCaq0MBotupG"
+}

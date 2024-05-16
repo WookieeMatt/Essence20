@@ -1,0 +1,19 @@
+{
+  "name": "Spirit of Kindness",
+  "sorting": "a",
+  "folder": "EssA3xKEG8i1FPxz",
+  "type": "Item",
+  "_id": "JYzNxHupjTRD3ujB",
+  "sort": 300000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": null,
+    "modifiedTime": 1714855133254,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!folders!JYzNxHupjTRD3ujB"
+}

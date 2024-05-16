@@ -1,0 +1,33 @@
+{
+  "folder": "8pILPlRg2uDTxFNq",
+  "name": "Flare Gun",
+  "type": "gear",
+  "_id": "0iNy4lpiaVTjbTVH",
+  "img": "systems/essence20/assets/icons/gear/flare_gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 163
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "clothes"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695581834755,
+    "modifiedTime": 1704127409076,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!0iNy4lpiaVTjbTVH"
+}

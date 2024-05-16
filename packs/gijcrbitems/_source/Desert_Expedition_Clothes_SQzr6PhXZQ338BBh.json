@@ -1,0 +1,64 @@
+{
+  "folder": "6BKwMp735fBmaDBb",
+  "name": "Desert Expedition Clothes",
+  "type": "gear",
+  "_id": "SQzr6PhXZQ338BBh",
+  "img": "systems/essence20/assets/icons/gear/clothes.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 160
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "clothes"
+  },
+  "effects": [
+    {
+      "name": "Desert Expedition Clothes",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.SQzr6PhXZQ338BBh",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "9ZBZsOkGLxWyU0z9",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!SQzr6PhXZQ338BBh.9ZBZsOkGLxWyU0z9"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695563225304,
+    "modifiedTime": 1704127409111,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!SQzr6PhXZQ338BBh"
+}

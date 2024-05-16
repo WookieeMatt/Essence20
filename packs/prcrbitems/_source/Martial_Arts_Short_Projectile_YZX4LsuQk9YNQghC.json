@@ -1,0 +1,119 @@
+{
+  "folder": "UCLYWNFqe5XND1kq",
+  "name": "Martial Arts Short Projectile",
+  "type": "weapon",
+  "_id": "YZX4LsuQk9YNQghC",
+  "img": "systems/essence20/assets/icons/weapons/shuriken.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 112
+    },
+    "items": {
+      "a39c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.3TUcZi1RplIBPQU2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Thrown Blade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 30,
+          "value": 20
+        },
+        "shiftDown": 0
+      },
+      "5d9f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.HAV5XHqgTKQ36Liz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Thrown Blade Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": null,
+        "damageType": "maneuver",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 30,
+          "value": 20
+        },
+        "shiftDown": 2
+      },
+      "7e56": {
+        "uuid": "Compendium.essence20.pr_crb.Item.xUJQd7LhpG5tTkEs",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Thrown Blade Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 3,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 30,
+          "value": 20
+        },
+        "shiftDown": 2
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d4"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695308295360,
+    "modifiedTime": 1704127419873,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 100782,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!YZX4LsuQk9YNQghC"
+}

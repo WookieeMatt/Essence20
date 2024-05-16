@@ -1,0 +1,51 @@
+{
+  "name": "Stylish",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 62
+    },
+    "items": {
+      "0d48": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.IgjtNiGBXQinE1GO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Natural Style",
+        "type": "perk"
+      },
+      "b076": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.nJp0pjn7yYWIZUtk",
+        "img": "icons/svg/hazard.svg",
+        "name": "Celebrity Overdrive",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": [
+      "performance"
+    ]
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686263592363,
+    "modifiedTime": 1704127415827,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "zvhBgMKnuijWNPyv",
+  "folder": "vjofBqKYZU3tiTmw",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zvhBgMKnuijWNPyv"
+}

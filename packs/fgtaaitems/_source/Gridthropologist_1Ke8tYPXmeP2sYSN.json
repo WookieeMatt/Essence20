@@ -1,0 +1,53 @@
+{
+  "name": "Gridthropologist",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 61
+    },
+    "items": {
+      "0d59": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.MS8KLmY19EyKR1Ww",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Gifted",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 35,
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "culture",
+      "science",
+      "technology"
+    ],
+    "startingHealth": 1
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685406180934,
+    "modifiedTime": 1704127408394,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "AsctL0sSYq52brFB",
+  "_id": "1Ke8tYPXmeP2sYSN",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!1Ke8tYPXmeP2sYSN"
+}

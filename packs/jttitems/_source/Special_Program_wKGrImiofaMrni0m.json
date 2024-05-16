@@ -1,0 +1,33 @@
+{
+  "folder": "o4zZWDFpD7REsRun",
+  "name": "Special Program",
+  "type": "perk",
+  "_id": "wKGrImiofaMrni0m",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 26
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694465661585,
+    "modifiedTime": 1704127412657,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!wKGrImiofaMrni0m"
+}

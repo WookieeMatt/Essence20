@@ -1,0 +1,41 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Long Blade Effect",
+  "type": "weaponEffect",
+  "_id": "uYAnV5vfucrRlJlr",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "finesse",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 2,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695307095717,
+    "modifiedTime": 1714344434295,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "sort": 5400000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!uYAnV5vfucrRlJlr"
+}

@@ -1,0 +1,41 @@
+{
+  "folder": "3B7qZm6z95xxZ3OI",
+  "name": "Charge It Up!",
+  "type": "power",
+  "_id": "eDLYdEHBTU2S2qp0",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 57
+    },
+    "actionType": "standard",
+    "canActivate": true,
+    "classFeatureId": null,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": 1,
+    "selectionLimit": 1,
+    "type": "grid",
+    "usesInterval": "perScene",
+    "usesPer": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1699279112882,
+    "modifiedTime": 1704127412655,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!eDLYdEHBTU2S2qp0"
+}

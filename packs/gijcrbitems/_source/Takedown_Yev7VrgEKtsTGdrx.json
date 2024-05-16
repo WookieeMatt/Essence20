@@ -1,0 +1,36 @@
+{
+  "name": "Takedown",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 73
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "folder": "4txCmeGYg1JUzKEl",
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706303982373,
+    "modifiedTime": 1714848828046,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "Yev7VrgEKtsTGdrx",
+  "sort": 150000,
+  "_key": "!items!Yev7VrgEKtsTGdrx"
+}

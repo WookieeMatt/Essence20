@@ -10,7 +10,8 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { getNumActions, performPreLocalization, setOptGroup } from "./helpers/utils.mjs";
+import { getNumActions } from "./helpers/actor.mjs";
+import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 
 function registerSystemSettings() {
@@ -39,7 +40,7 @@ function runMigrations() {
   if (!currentVersion && totalDocuments === 0) {
     console.log("No documents to migrate");
     return game.settings.set("essence20", "systemMigrationVersion", game.system.version);
-  } else if (!currentVersion || isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
+  } else if (!currentVersion || foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
     // Perform the migration, if needed
     console.log(`Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`);
     migrateWorld();
@@ -276,4 +277,24 @@ async function rollItemMacro(itemId, itemName) {
 
   // Trigger the item roll
   return item.roll();
+}
+
+/*
+ * Handle organizing selects by adding optGroups
+ * @param {Select} select The select that you are organizing
+ * @param {Category} category The category that we are adding to the options
+ * @param {Items} items The types that you are putting in the category
+ */
+export function setOptGroup(select, category, items) {
+  const options = select.querySelectorAll(":scope > option");
+  const optGroup = document.createElement("optgroup");
+  optGroup.label = category;
+
+  for (const option of options) {
+    if (items[option.value]) {
+      optGroup.appendChild(option);
+    }
+  }
+
+  return optGroup;
 }

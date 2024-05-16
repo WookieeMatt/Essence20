@@ -1,0 +1,96 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Energon Claymore",
+  "type": "weapon",
+  "_id": "Z3kzrK6Qdjw9Qsbv",
+  "img": "systems/essence20/assets/icons/weapons/blade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 51
+    },
+    "items": {
+      "a6f0": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.t8YpzaQUn0A1eGxw",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Energon Claymore Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 6,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "a069": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.7IKOF946J96eavYE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Energon Claymore Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "intimidate",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Towering",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "antiTank",
+      "sharp",
+      "titanClass"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714447249731,
+    "modifiedTime": 1714447300967,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Z3kzrK6Qdjw9Qsbv"
+}

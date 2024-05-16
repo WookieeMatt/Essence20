@@ -1,0 +1,40 @@
+{
+  "folder": "Sn9CVJlCvJ2tdVbp",
+  "name": "Salvaged",
+  "type": "upgrade",
+  "_id": "sA8GbXKPcRuPHzNt",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 36
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "",
+    "traits": [],
+    "type": "weapon",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714098464396,
+    "modifiedTime": 1714098479433,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!sA8GbXKPcRuPHzNt"
+}

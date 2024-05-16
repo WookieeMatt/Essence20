@@ -1,0 +1,40 @@
+{
+  "folder": "wjVbe6RZpn9ylt2k",
+  "name": "Marauder Armor",
+  "type": "armor",
+  "_id": "ZHHzilDQrZcyo3wv",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 155
+    },
+    "items": {},
+    "availability": "restricted",
+    "bonusEvasion": 0,
+    "bonusToughness": 4,
+    "classification": "ultraHeavy",
+    "equipped": false,
+    "traits": [
+      "plating"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695586647829,
+    "modifiedTime": 1704127411034,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ZHHzilDQrZcyo3wv"
+}

@@ -1,0 +1,30 @@
+{
+  "folder": "3FMemNB97tHEQvI8",
+  "name": "Conniving",
+  "type": "hangUp",
+  "_id": "w8yTnTpOIUdFVm8u",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 28
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686420799901,
+    "modifiedTime": 1704127406349,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!w8yTnTpOIUdFVm8u"
+}

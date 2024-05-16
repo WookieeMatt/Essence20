@@ -1,0 +1,49 @@
+{
+  "name": "Community Helper",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 68
+    },
+    "items": {
+      "ff8b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.6CnhyT0WBSFHwVGq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Community Helper",
+        "type": "perk"
+      },
+      "68ee": {
+        "uuid": "Compendium.essence20.pr_crb.Item.X8M8SesquSdGZiNe",
+        "img": "icons/svg/hazard.svg",
+        "name": "Community Helper",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686272770368,
+    "modifiedTime": 1704127419971,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "YecCMqDrznGYauGm",
+  "folder": "1Q1jzdGAVmJ9S5HF",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!YecCMqDrznGYauGm"
+}

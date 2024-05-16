@@ -1,0 +1,122 @@
+{
+  "folder": "b8fbY8Ukj56rrBhX",
+  "name": "Speak Your Truth",
+  "type": "perk",
+  "_id": "ki9HVmle77qJ5Yo8",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 78
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Persuasion Strength Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.ki9HVmle77qJ5Yo8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "MO1rWSTZmlyGkG3i",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.essences.strength",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ki9HVmle77qJ5Yo8.MO1rWSTZmlyGkG3i"
+    },
+    {
+      "name": "Persuasion Speed Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.ki9HVmle77qJ5Yo8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "9HX4DKrA2gALcrxv",
+      "changes": [
+        {
+          "key": "system.skills.persuasion,essences.speed",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ki9HVmle77qJ5Yo8.9HX4DKrA2gALcrxv"
+    },
+    {
+      "name": "Persuasion Smarts Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.mlp_crb.Item.ki9HVmle77qJ5Yo8",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "Le2M3bfzskXnb0uN",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.essences.smarts",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ki9HVmle77qJ5Yo8.Le2M3bfzskXnb0uN"
+    }
+  ],
+  "sort": 50000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706823243928,
+    "modifiedTime": 1714854448001,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!ki9HVmle77qJ5Yo8"
+}

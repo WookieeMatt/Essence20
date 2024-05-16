@@ -22,11 +22,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.GearType'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.gearType">
-        {{#select system.gearType}}
-        {{#each @root.config.gearTypes as |name type|}}
-        <option value="{{type}}">{{name}}</option>
-        {{/each}}
-        {{/select}}
+        {{selectOptions @root.config.gearTypes selected=system.gearType}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

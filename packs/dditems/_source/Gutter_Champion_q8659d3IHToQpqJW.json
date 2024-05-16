@@ -1,0 +1,59 @@
+{
+  "folder": "iZ8BKXFaDzYINJ5J",
+  "name": "Gutter Champion",
+  "type": "influence",
+  "_id": "q8659d3IHToQpqJW",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 26
+    },
+    "items": {
+      "5115": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.oowLckrIBcn1Zff3",
+        "img": "icons/svg/hazard.svg",
+        "name": "Show Respect",
+        "type": "hangUp"
+      },
+      "0ce6": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pByfeAj3iyANNR68",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gutter Champion",
+        "type": "perk"
+      },
+      "954f": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pTaF0TVS3ZiWerzs",
+        "img": "icons/svg/hazard.svg",
+        "name": "Bad Temper",
+        "type": "hangUp"
+      },
+      "fbe9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aT1jR044JiN8tLQi",
+        "img": "icons/svg/hazard.svg",
+        "name": "Violent",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694533275404,
+    "modifiedTime": 1704127407882,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!q8659d3IHToQpqJW"
+}

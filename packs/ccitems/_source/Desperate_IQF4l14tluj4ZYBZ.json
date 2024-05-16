@@ -1,0 +1,47 @@
+{
+  "folder": "aRlyNQZylQaPn1bO",
+  "name": "Desperate",
+  "type": "influence",
+  "_id": "IQF4l14tluj4ZYBZ",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 29
+    },
+    "items": {
+      "a731": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.RfjdqScdCbMgGESR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Desperate",
+        "type": "perk"
+      },
+      "ea60": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.ZBhsKnZBy9SmjGvO",
+        "img": "icons/svg/hazard.svg",
+        "name": "Desperate",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686420947157,
+    "modifiedTime": 1704127406596,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!IQF4l14tluj4ZYBZ"
+}

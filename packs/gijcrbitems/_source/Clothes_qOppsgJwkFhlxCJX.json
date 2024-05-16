@@ -1,0 +1,40 @@
+{
+  "folder": "wjVbe6RZpn9ylt2k",
+  "name": "Clothes",
+  "type": "armor",
+  "_id": "qOppsgJwkFhlxCJX",
+  "img": "systems/essence20/assets/icons/gear/clothes.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {},
+    "availability": "automatic",
+    "bonusEvasion": 0,
+    "bonusToughness": 0,
+    "classification": "non",
+    "equipped": false,
+    "traits": [
+      "silent"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695582018151,
+    "modifiedTime": 1704127412025,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!qOppsgJwkFhlxCJX"
+}

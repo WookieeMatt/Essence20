@@ -1,0 +1,32 @@
+{
+  "name": "Glacial",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 42
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1680141771573,
+    "modifiedTime": 1704127422488,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "79jifb9w1OlopUUY",
+  "folder": "VGJuFEF6el923K6k",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!79jifb9w1OlopUUY"
+}

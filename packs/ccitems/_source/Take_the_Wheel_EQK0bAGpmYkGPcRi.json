@@ -1,0 +1,64 @@
+{
+  "folder": "lZ2algGajxm0TzRv",
+  "name": "Take the Wheel",
+  "type": "perk",
+  "_id": "EQK0bAGpmYkGPcRi",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 77
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "division"
+  },
+  "effects": [
+    {
+      "name": "Driving Upshift",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.EQK0bAGpmYkGPcRi",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "UXvGgjWf3UwTp8kf",
+      "changes": [
+        {
+          "key": "system.skills.driving.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!EQK0bAGpmYkGPcRi.UXvGgjWf3UwTp8kf"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686495005053,
+    "modifiedTime": 1704127406324,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!EQK0bAGpmYkGPcRi"
+}

@@ -1,0 +1,76 @@
+{
+  "folder": "GiOF2IgYXd3FsyNR",
+  "name": "Local Legend",
+  "type": "perk",
+  "_id": "YbIuqKwQ1wvsuozR",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 20
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [
+    {
+      "name": "Local Legend",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.YbIuqKwQ1wvsuozR",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "kqyizC1lrnVfgzcy",
+      "changes": [
+        {
+          "key": "system.skills.intimidation.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.persuasion.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.streetwise.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!YbIuqKwQ1wvsuozR.kqyizC1lrnVfgzcy"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694464250472,
+    "modifiedTime": 1704127412652,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!YbIuqKwQ1wvsuozR"
+}

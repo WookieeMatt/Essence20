@@ -1,0 +1,64 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Aggresive Driver",
+  "type": "perk",
+  "_id": "M1OMp9HJJ6f7RqSl",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 79
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Driving Strength Skill",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.M1OMp9HJJ6f7RqSl",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "QXN19mB72z8aWESl",
+      "changes": [
+        {
+          "key": "system.skills.driving.essences.strength",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!M1OMp9HJJ6f7RqSl.QXN19mB72z8aWESl"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686499083556,
+    "modifiedTime": 1704127406328,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!M1OMp9HJJ6f7RqSl"
+}

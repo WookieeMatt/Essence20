@@ -1,0 +1,33 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Evolving Mutation",
+  "type": "perk",
+  "_id": "7cL4aUwJwqvbhYCz",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 80
+    },
+    "prerequisite": "Engrafted Mutation or 8th Level",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686501347387,
+    "modifiedTime": 1704127406320,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!7cL4aUwJwqvbhYCz"
+}

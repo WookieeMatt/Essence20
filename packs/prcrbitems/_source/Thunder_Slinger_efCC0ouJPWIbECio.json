@@ -1,0 +1,117 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Thunder Slinger",
+  "type": "weapon",
+  "_id": "efCC0ouJPWIbECio",
+  "img": "systems/essence20/assets/icons/weapons/slingshot.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "items": {
+      "4596": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Or8J0uxAifHW8mrK",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Thunder Slinger Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 1
+      },
+      "50b5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.RcWXdZlDmk71PmUt",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Thunder Slinger Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 0
+      },
+      "24d7": {
+        "uuid": "Compendium.essence20.pr_crb.Item.qf9N60YZPMIxa1l5",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Thunder Slinger Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "silent",
+      "sniper",
+      "stun"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696279326254,
+    "modifiedTime": 1704127420535,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!efCC0ouJPWIbECio"
+}

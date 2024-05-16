@@ -1,0 +1,46 @@
+{
+  "folder": "IH1Vv46XVX08gAk1",
+  "name": "Salvaged",
+  "type": "altMode",
+  "_id": "cGGEXSdCI170AaM4",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 38
+    },
+    "crew": 0,
+    "firepoints": 0,
+    "movement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 0
+    },
+    "size": "common",
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 45
+    },
+    "altModesize": "long",
+    "altModeCrew": 1,
+    "altModeFirepoints": 1
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694554739528,
+    "modifiedTime": 1704127406949,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!cGGEXSdCI170AaM4"
+}

@@ -1,0 +1,34 @@
+{
+  "folder": "hrtEahWgQMWPiEmf",
+  "name": "Grid Relic Weapon",
+  "type": "perk",
+  "_id": "82Ld65NsKwfMZaSC",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 61
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1705029157112,
+    "modifiedTime": 1714865331298,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!82Ld65NsKwfMZaSC"
+}

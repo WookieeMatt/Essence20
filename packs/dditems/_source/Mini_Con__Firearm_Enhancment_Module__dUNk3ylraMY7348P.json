@@ -1,0 +1,46 @@
+{
+  "folder": "IH1Vv46XVX08gAk1",
+  "name": "Mini-Con (Firearm Enhancment Module)",
+  "type": "altMode",
+  "_id": "dUNk3ylraMY7348P",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 36
+    },
+    "crew": 0,
+    "firepoints": 0,
+    "movement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 0
+    },
+    "size": "common",
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 0
+    },
+    "altModesize": "small",
+    "altModeCrew": 0,
+    "altModeFirepoints": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694553878913,
+    "modifiedTime": 1704127406950,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!dUNk3ylraMY7348P"
+}

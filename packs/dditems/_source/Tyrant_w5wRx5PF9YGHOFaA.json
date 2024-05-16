@@ -1,0 +1,100 @@
+{
+  "folder": "9x5XzIEIsjZHwN7F",
+  "name": "Tyrant",
+  "type": "focus",
+  "_id": "w5wRx5PF9YGHOFaA",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 43
+    },
+    "items": {
+      "5d01": {
+        "uuid": "Compendium.essence20.tf_crb.Item.6vp5PAYFTiRiMc2m",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Field Command",
+        "type": "role"
+      },
+      "cfca": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.ZQl2qzyBNHUYYHS5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fearsome Voice",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "47e6": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.8BXIvBamlet1BQ2l",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Show of Force",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "f417": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.mroTcYJKFpAAiqP5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Make An Example",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "503c": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.0uUdZ51xULcmgTQQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "No Excuses",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ab57": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.7SU3UY5WzOnlOsHM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "One Last Chance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "31c2": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.GenOc3hpdcMT3pnD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "No Mercy!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "conditioning",
+      "brawn",
+      "intimidation"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714353936066,
+    "modifiedTime": 1714354014572,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!w5wRx5PF9YGHOFaA"
+}

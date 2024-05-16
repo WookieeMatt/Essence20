@@ -1,0 +1,70 @@
+{
+  "folder": "6b3hGmdCMZFGC1dR",
+  "name": "Competitive Strength",
+  "type": "perk",
+  "_id": "J0ljd1QnU9AgoWj6",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 54
+    },
+    "prerequisite": "Brawn Skill d4 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Competitive Strength",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.J0ljd1QnU9AgoWj6",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "bSKz2dW23HYxuLmo",
+      "changes": [
+        {
+          "key": "system.skills.athletics.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.brawn.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!J0ljd1QnU9AgoWj6.bSKz2dW23HYxuLmo"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694467104219,
+    "modifiedTime": 1704127412647,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!J0ljd1QnU9AgoWj6"
+}

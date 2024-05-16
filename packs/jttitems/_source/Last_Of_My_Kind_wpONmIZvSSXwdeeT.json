@@ -1,0 +1,53 @@
+{
+  "folder": "UDtSurz6YWRnxACT",
+  "name": "Last Of My Kind",
+  "type": "origin",
+  "_id": "wpONmIZvSSXwdeeT",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 28
+    },
+    "items": {
+      "df71": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.llL4HUNxVJDNIaej",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Do Not Go Quietly",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "speed",
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "initiative",
+      "driving",
+      "culture",
+      "survival"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694465943603,
+    "modifiedTime": 1704127413255,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!wpONmIZvSSXwdeeT"
+}

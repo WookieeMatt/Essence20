@@ -1,0 +1,50 @@
+{
+  "folder": "82NMc5Rrlomtpkcr",
+  "name": "Insecticon",
+  "type": "origin",
+  "_id": "qlWm1QQKEjwuWLR3",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>@UUID[Compendium.essence20.decepticon_directive.Item.LQuQIm8rqeGu84ga]{Insecticon}</p>",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 34
+    },
+    "items": {
+      "512d": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.dvTnIzPUg5kUVkBq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Insectoid Components",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 28,
+    "essences": [
+      "strength"
+    ],
+    "languages": "",
+    "skills": [
+      "athletics",
+      "brawn"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694553585157,
+    "modifiedTime": 1704127407980,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!qlWm1QQKEjwuWLR3"
+}

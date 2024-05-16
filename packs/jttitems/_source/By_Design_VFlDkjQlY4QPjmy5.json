@@ -1,0 +1,51 @@
+{
+  "folder": "UDtSurz6YWRnxACT",
+  "name": "By Design",
+  "type": "origin",
+  "_id": "VFlDkjQlY4QPjmy5",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 26
+    },
+    "items": {
+      "7f58": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.wKGrImiofaMrni0m",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Special Program",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 40,
+    "essences": [
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "culture",
+      "science",
+      "technology"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694465693632,
+    "modifiedTime": 1704127413227,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!VFlDkjQlY4QPjmy5"
+}

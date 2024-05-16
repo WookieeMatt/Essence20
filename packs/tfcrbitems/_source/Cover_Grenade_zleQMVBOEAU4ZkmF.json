@@ -1,0 +1,94 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Cover Grenade",
+  "type": "weapon",
+  "_id": "zleQMVBOEAU4ZkmF",
+  "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 124
+    },
+    "items": {
+      "ed69": {
+        "uuid": "Compendium.essence20.tf_crb.Item.GDgpDVsVNLPweDn7",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cover Grenade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "cover",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 20,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      },
+      "ee9f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.h5y5VOQt9aqYwWfQ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cover Grenade Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 2
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695399861754,
+    "modifiedTime": 1704127426105,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zleQMVBOEAU4ZkmF"
+}

@@ -1,0 +1,19 @@
+{
+  "name": "Powers",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "2bNf2yIeSKu5hHP1",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.0",
+    "coreVersion": "11.311",
+    "createdTime": 1699317709530,
+    "modifiedTime": 1699319554479,
+    "lastModifiedBy": "iCCZI3EVfOIO2b8O"
+  },
+  "_key": "!folders!2bNf2yIeSKu5hHP1"
+}

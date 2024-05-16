@@ -1,0 +1,19 @@
+{
+  "name": "Exploration Gear",
+  "sorting": "a",
+  "folder": "xHH8ECMnC6pN4wAD",
+  "type": "Item",
+  "_id": "8pILPlRg2uDTxFNq",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "3.3.0",
+    "coreVersion": "11.307",
+    "createdTime": 1695580035370,
+    "modifiedTime": 1695608055178,
+    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+  },
+  "_key": "!folders!8pILPlRg2uDTxFNq"
+}

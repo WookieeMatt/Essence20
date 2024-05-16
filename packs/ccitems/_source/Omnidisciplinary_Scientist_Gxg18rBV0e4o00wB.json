@@ -1,0 +1,64 @@
+{
+  "folder": "yK1oeHwGm8uxmxOZ",
+  "name": "Omnidisciplinary Scientist",
+  "type": "perk",
+  "_id": "Gxg18rBV0e4o00wB",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 64
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Omnidisciplinary Scientist",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.cobra_codex.Item.Gxg18rBV0e4o00wB",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "svLPCH4XHkQrJVUm",
+      "changes": [
+        {
+          "key": "system.skills.science.isSpecialized",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Gxg18rBV0e4o00wB.svLPCH4XHkQrJVUm"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714049636853,
+    "modifiedTime": 1714846764083,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!Gxg18rBV0e4o00wB"
+}

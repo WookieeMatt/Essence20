@@ -1,0 +1,62 @@
+{
+  "name": "Popular",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 26
+    },
+    "items": {
+      "f946": {
+        "uuid": "Compendium.essence20.pr_crb.Item.ipeHMugjPNPi1uEG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Are You Who I Think You Are?",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "30",
+    "essences": [
+      "strength",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "athletics",
+      "intimidation",
+      "performance",
+      "persuasion",
+      "streetwise"
+    ],
+    "startingHealth": 1,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681696722501,
+    "modifiedTime": 1704127420742,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "iQbjOIRZ3CjdiYU6",
+  "folder": "AXtwURx09lzKH1fD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!iQbjOIRZ3CjdiYU6"
+}

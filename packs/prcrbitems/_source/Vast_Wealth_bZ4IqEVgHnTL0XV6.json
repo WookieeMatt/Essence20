@@ -1,0 +1,35 @@
+{
+  "name": "Vast Wealth",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 98
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685403906931,
+    "modifiedTime": 1704127415966,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "bZ4IqEVgHnTL0XV6",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!bZ4IqEVgHnTL0XV6"
+}

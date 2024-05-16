@@ -1,0 +1,84 @@
+{
+  "folder": "dHmsMBhNVEH0E20b",
+  "name": "Combat Excellence",
+  "type": "perk",
+  "_id": "es25o5EU8DoppXUu",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 68
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Combat Excellence",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.field_guide_action_adventure.Item.es25o5EU8DoppXUu",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "s7Ch7lqc3ckrZRic",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1"
+        },
+        {
+          "key": "system.defenses.willpower.bonus",
+          "mode": 2,
+          "value": "1"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!es25o5EU8DoppXUu.s7Ch7lqc3ckrZRic"
+    }
+  ],
+  "sort": 175000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714184622140,
+    "modifiedTime": 1714855633945,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!es25o5EU8DoppXUu"
+}

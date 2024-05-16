@@ -1,10 +1,6 @@
-import {
-  deleteAttachmentsForItem,
-  createItemCopies,
-  getItemsOfType,
-  getShiftedSkill,
-  rememberOptions,
-} from "../helpers/utils.mjs";
+import { rememberOptions } from "../helpers/dialog.mjs";
+import { getItemsOfType, getShiftedSkill } from "../helpers/utils.mjs";
+import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
 /**
  * Handle the dropping of an influence on to a character
@@ -164,7 +160,7 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _originStatUpdate(
+          callback: html => setOriginValues(
             actor, origin, selectedEssence, rememberOptions(html), dropFunc,
           ),
         },
@@ -176,12 +172,12 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
 /**
  * Updates the actor with the information selected for the Origin
  * @param {Actor} actor The Actor receiving the Origin
- * @param {Object} origin The Origin being dropped
+ * @param {Origin} origin The Origin being dropped
  * @param {Object} options The options resulting from _showOriginSkillDialog()
- * @param {Object} essence The essence selected in the _showOriginEssenceDialog()
+ * @param {String} essence The essence selected in the _showOriginEssenceDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-async function _originStatUpdate(actor, origin, essence, options, dropFunc) {
+export async function setOriginValues(actor, origin, essence, options, dropFunc) {
   let selectedSkill = "";
   for (const [skill, isSelected] of Object.entries(options)) {
     if (isSelected) {

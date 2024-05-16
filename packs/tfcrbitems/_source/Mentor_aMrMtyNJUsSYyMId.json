@@ -1,0 +1,35 @@
+{
+  "name": "Mentor",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 110
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686276207624,
+    "modifiedTime": 1704127422521,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "aMrMtyNJUsSYyMId",
+  "folder": "ERY0Xs3Bi23Hjx2K",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!aMrMtyNJUsSYyMId"
+}

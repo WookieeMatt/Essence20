@@ -1,0 +1,62 @@
+{
+  "name": "Noble Blood",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 40
+    },
+    "items": {
+      "8ba2": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.zkxPG5mwAQl1vZOT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Be An Example",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "25",
+    "essences": [
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "culture",
+      "science",
+      "technology",
+      "performance",
+      "persuasion"
+    ],
+    "startingHealth": 1,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681764355749,
+    "modifiedTime": 1704127404997,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "CtFlt7gkxQ38Bmzj",
+  "folder": "7CXPtLaacOXQ0Rwc",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!CtFlt7gkxQ38Bmzj"
+}

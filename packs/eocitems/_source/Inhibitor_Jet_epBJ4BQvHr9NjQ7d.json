@@ -1,0 +1,118 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Inhibitor Jet",
+  "type": "weapon",
+  "_id": "epBJ4BQvHr9NjQ7d",
+  "img": "systems/essence20/assets/icons/weapons/flamethrower.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 52
+    },
+    "items": {
+      "bf84": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.CvZFaC1KPR4PtYFV",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Inhibitor Jet Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 0,
+        "damageType": "modelock",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 15
+        },
+        "shiftDown": 0
+      },
+      "f26a": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.mNFPo6Qf1wy8grM8",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Inhibitor Jet Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 15
+        },
+        "shiftDown": 0
+      },
+      "d308": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.Mq6wkUvw99uVsiSl",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Inhibitor Jet Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 0,
+        "damageType": "intimidate",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 15
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "technology",
+      "shift": "d4"
+    },
+    "traits": [
+      "computerized",
+      "electromagnetic",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714480032070,
+    "modifiedTime": 1714480087281,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!epBJ4BQvHr9NjQ7d"
+}

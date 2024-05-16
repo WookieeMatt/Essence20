@@ -1,0 +1,100 @@
+{
+  "folder": "9x5XzIEIsjZHwN7F",
+  "name": "Cannonade",
+  "type": "focus",
+  "_id": "DOIFMbByvX3BxVmi",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 45
+    },
+    "items": {
+      "f3de": {
+        "uuid": "Compendium.essence20.tf_crb.Item.2sGx4CLaN68j49oh",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Gunner",
+        "type": "role"
+      },
+      "b53d": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.UkpZPsRt0YoBHcQl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Explosive Ammo",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "1b27": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.zu38NCr99BFPgEBJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Focused Blast",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d1ac": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.g3hbfgEElXvJP6x9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tooled Munitions",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "c62e": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.aQkpXIdBjHsSgSS4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Homing Shot",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "94dd": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.mDG1CXQA04xKfONn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Backblast",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "862d": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.6AoPBHXLoPhbAR8M",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Firestorm",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "athletics",
+      "brawn",
+      "intimidation"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714354848350,
+    "modifiedTime": 1714354964590,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!DOIFMbByvX3BxVmi"
+}

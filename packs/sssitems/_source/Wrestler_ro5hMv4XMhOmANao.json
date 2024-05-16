@@ -1,0 +1,34 @@
+{
+  "folder": "6pIBzLCV9eFIZEdD",
+  "name": "Wrestler",
+  "type": "perk",
+  "_id": "ro5hMv4XMhOmANao",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaugter Sourcebook",
+      "page": 12
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 112500,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714010876185,
+    "modifiedTime": 1714853833899,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!ro5hMv4XMhOmANao"
+}

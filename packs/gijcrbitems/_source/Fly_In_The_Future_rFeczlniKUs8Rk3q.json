@@ -1,0 +1,35 @@
+{
+  "name": "Fly In The Future",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 62
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681692041280,
+    "modifiedTime": 1704127409138,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "rFeczlniKUs8Rk3q",
+  "folder": "jGkkDO8t43jmzeiU",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!rFeczlniKUs8Rk3q"
+}

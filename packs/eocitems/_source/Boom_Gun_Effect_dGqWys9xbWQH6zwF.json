@@ -1,0 +1,46 @@
+{
+  "folder": "LOtmwwO5q6dMfo4E",
+  "name": "Boom Gun Effect",
+  "type": "weaponEffect",
+  "_id": "dGqWys9xbWQH6zwF",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "sonic",
+    "damageValue": 2,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 90,
+      "value": 30
+    },
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 50
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714445048290,
+    "modifiedTime": 1714445240511,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!dGqWys9xbWQH6zwF"
+}

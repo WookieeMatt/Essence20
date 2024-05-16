@@ -1,0 +1,48 @@
+{
+  "folder": "U7v9viwsFtcyjclc",
+  "name": "Beastly",
+  "type": "influence",
+  "_id": "bb2tQLHZ1lG22n7P",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 75
+    },
+    "items": {
+      "f4d2": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.3Y0ETFpJUwdUqgUQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Beastly",
+        "type": "perk"
+      },
+      "0186": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.9o0Qbe6lgqNPnm2R",
+        "img": "icons/svg/hazard.svg",
+        "name": "Beastly",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714101798771,
+    "modifiedTime": 1714101812290,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!bb2tQLHZ1lG22n7P"
+}

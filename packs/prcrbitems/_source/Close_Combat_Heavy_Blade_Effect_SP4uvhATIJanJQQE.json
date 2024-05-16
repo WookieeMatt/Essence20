@@ -1,0 +1,43 @@
+{
+  "folder": "DrShr9NxWSQjhHjx",
+  "name": "Close Combat Heavy Blade Effect",
+  "type": "weaponEffect",
+  "_id": "SP4uvhATIJanJQQE",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695303404995,
+    "modifiedTime": 1704127415953,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 200000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!SP4uvhATIJanJQQE"
+}

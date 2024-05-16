@@ -1,0 +1,267 @@
+{
+  "folder": "tutqIbfZE1ytmm0J",
+  "name": "Path of Frost",
+  "type": "role",
+  "_id": "GQ5aQWbjmaO9y00w",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 288
+    },
+    "items": {
+      "c5e8": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.6tTxWf1k5y3e0RWc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Interfering Static",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "8be1": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.u0vF75YLcwdyY8pv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Better You Than Me",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "c40b": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.FoCxdBbopumlIvH8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psycho Blast",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "da34": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.iDbMl3SS6XnyADN2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Monster Morph",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "e542": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.2nI6ckZdiIKwtRqr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Bleed",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "cd70": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.yZ3rXt8z1jlCHlu7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Psycho Assault",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "1e3d": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.uVCPqt7exjXZ7kqn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhance Monster",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "c4b5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "32ff": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.WQYSawSpefEKLaG0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nemesis Drain",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "7e59": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.SejEXXGz3edJ734e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zordbane",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "0f40": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.qMDjmJDYOIvKLNDb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ice Flechettes",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "fbf4": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.ZqE7kDEMylFQK6Oa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grow!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "db75": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.dpxjT9eTAKcZuRXs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Entropic Sponge",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "c912": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.iFHlsLgUvmlT8cMK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Frost Warlord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "c47d": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.3Ruf9irE1Mz7221L",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Static Modifier",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 1,
+          "level20Value": null,
+          "increaseLevels": [
+            "level8",
+            "level16"
+          ],
+          "startingValue": 1,
+          "type": "enemyDownshift",
+          "value": 0
+        },
+        "isActivatable": false,
+        "isActive": false,
+        "powerCost": null,
+        "resource": {
+          "increase": null,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [],
+          "max": null,
+          "startingMax": null,
+          "value": null
+        }
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "psycho"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "social": [
+        "level1",
+        "level2",
+        "level6",
+        "level11",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "speed": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level12"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level3",
+          "level7",
+          "level11",
+          "level15",
+          "level19"
+        ],
+        "regeneration": 2,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "initiative",
+      "acrobatics",
+      "persuasion"
+    ],
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 400000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713705755002,
+    "modifiedTime": 1714616635773,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!GQ5aQWbjmaO9y00w"
+}

@@ -1,0 +1,48 @@
+{
+  "folder": "U7v9viwsFtcyjclc",
+  "name": "Brutish",
+  "type": "influence",
+  "_id": "gJL3H66h4iHDwpQh",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 76
+    },
+    "items": {
+      "d381": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.29GLZcbjQhJHdsg0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brutish",
+        "type": "perk"
+      },
+      "bc0a": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.2STwn9zH3aInPsS9",
+        "img": "icons/svg/hazard.svg",
+        "name": "Brutish",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714101902965,
+    "modifiedTime": 1714101918456,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!gJL3H66h4iHDwpQh"
+}

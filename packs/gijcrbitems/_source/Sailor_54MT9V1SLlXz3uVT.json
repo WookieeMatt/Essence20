@@ -1,0 +1,63 @@
+{
+  "name": "Sailor",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 60
+    },
+    "items": {
+      "fe93": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.9Pp44hFLlC4EvMg8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sea Legs",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "30",
+    "baseGroundMovement": "30",
+    "essences": [
+      "strength",
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "conditioning",
+      "athletics",
+      "brawn",
+      "might",
+      "alertness",
+      "culture"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681683030919,
+    "modifiedTime": 1704127409672,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "54MT9V1SLlXz3uVT",
+  "folder": "lt3PqmG6G17ICpRK",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!54MT9V1SLlXz3uVT"
+}

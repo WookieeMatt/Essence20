@@ -1,0 +1,80 @@
+{
+  "folder": "wz3jDXHF9H1jTjUn",
+  "name": "Magna Defense Shell",
+  "type": "armor",
+  "_id": "Is5BR7LoMHxmqsr1",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 84
+    },
+    "items": {},
+    "availability": "restricted",
+    "bonusEvasion": 0,
+    "bonusToughness": 4,
+    "classification": "heavy",
+    "equipped": false,
+    "traits": [
+      "bulwark",
+      "enhanceSkill",
+      "enviroSealed",
+      "regal"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [
+    {
+      "name": "Magna Defense Shell",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.Is5BR7LoMHxmqsr1",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "yPIANLQ6GYeWTHHy",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.athletics.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!Is5BR7LoMHxmqsr1.yPIANLQ6GYeWTHHy"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695745627122,
+    "modifiedTime": 1704127405127,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Is5BR7LoMHxmqsr1"
+}

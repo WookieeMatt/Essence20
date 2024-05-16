@@ -1,0 +1,33 @@
+{
+  "folder": "8pILPlRg2uDTxFNq",
+  "name": "Emergency Flare",
+  "type": "gear",
+  "_id": "tAg9AM3AWBFS484k",
+  "img": "systems/essence20/assets/icons/gear/emergency_flare.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 162
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "exploration"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695581492543,
+    "modifiedTime": 1704127409140,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!tAg9AM3AWBFS484k"
+}

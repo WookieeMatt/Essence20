@@ -1,0 +1,66 @@
+{
+  "name": "Always Alert",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 122
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.7YlSqAOAlngkN3wC",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "yFtYtMyMc4rYGe5R",
+      "changes": [
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Initiative Edge",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!ZBOmQradsrZi9sc5.yFtYtMyMc4rYGe5R"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685407830223,
+    "modifiedTime": 1704127413378,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "hTtvIMEXXET4Kkqf",
+  "_id": "ZBOmQradsrZi9sc5",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ZBOmQradsrZi9sc5"
+}

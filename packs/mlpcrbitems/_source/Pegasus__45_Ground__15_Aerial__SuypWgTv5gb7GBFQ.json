@@ -1,0 +1,75 @@
+{
+  "name": "Pegasus (45 Ground, 15 Aerial)",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 35
+    },
+    "items": {
+      "176b": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.gNfN98cXAC7rEv01",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Lighter Than Air",
+        "type": "perk"
+      },
+      "0a18": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ekWiJObUf2BAhevg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Air Born",
+        "type": "perk"
+      },
+      "8ee9": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.j4U7F2wEqNJzJnI7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cutie Mark Perk",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 15,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 45,
+    "essences": [
+      "speed"
+    ],
+    "languages": "",
+    "skills": [
+      "initiative",
+      "acrobatics",
+      "driving",
+      "finesse",
+      "infiltration",
+      "targeting",
+      "spellcasting"
+    ],
+    "startingHealth": 2,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681776377877,
+    "modifiedTime": 1704127414592,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "SuypWgTv5gb7GBFQ",
+  "folder": "opM7CR9TYwSB1EQV",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!SuypWgTv5gb7GBFQ"
+}

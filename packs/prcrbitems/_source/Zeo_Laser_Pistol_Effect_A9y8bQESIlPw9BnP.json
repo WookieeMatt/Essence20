@@ -1,0 +1,43 @@
+{
+  "folder": "5zj2CgvpGqW2KOa8",
+  "name": "Zeo Laser Pistol Effect",
+  "type": "weaponEffect",
+  "_id": "A9y8bQESIlPw9BnP",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 75,
+      "value": 40
+    }
+  },
+  "effects": [],
+  "sort": 103125,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695840470322,
+    "modifiedTime": 1704127421265,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!A9y8bQESIlPw9BnP"
+}

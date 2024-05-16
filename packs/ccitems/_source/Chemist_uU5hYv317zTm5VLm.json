@@ -1,0 +1,33 @@
+{
+  "folder": "mD3NGV0g8UZq5x8r",
+  "name": "Chemist",
+  "type": "perk",
+  "_id": "uU5hYv317zTm5VLm",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 27
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686420594245,
+    "modifiedTime": 1704127406349,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!uU5hYv317zTm5VLm"
+}

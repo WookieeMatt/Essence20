@@ -1,0 +1,35 @@
+{
+  "name": "Hometown Hero",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 55
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686315796389,
+    "modifiedTime": 1704127408346,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "pJXbVsqZFoYgSBnZ",
+  "folder": "Esz9SAEXytXZwm2R",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!pJXbVsqZFoYgSBnZ"
+}

@@ -1,0 +1,106 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Heavy Ordnance",
+  "type": "focus",
+  "_id": "Hp6OkUjnfe6hRW7D",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 110
+    },
+    "items": {
+      "a394": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bB7Fiuu6BjIUlAgt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ordnance Expert",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "efe4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.MVUiiMad4HYe5xL7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Suppressing Fire",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "0dcf": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hvcOnHqXtPeuPEAE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blanket Fire",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "b125": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.U3NTi35bk2qI8oB6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brrrrrrrrrrrrrrt",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "eb56": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.REVp8LHYJFOqQ597",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Deep Magazine",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ee36": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.oUAeJZ7K1P7Fu8Bc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nowhere is Safe",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "7f43": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GHVeLpZ8opWy1Sje",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "No Need To Aim",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "b61e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ub4PO0AcEYzMc93S",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Vanguard",
+        "type": "role"
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "targeting"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706741681301,
+    "modifiedTime": 1714012332572,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Hp6OkUjnfe6hRW7D"
+}

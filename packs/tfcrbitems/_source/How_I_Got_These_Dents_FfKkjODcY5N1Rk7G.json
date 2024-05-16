@@ -1,0 +1,34 @@
+{
+  "folder": "dbpxrmHfKuW4q6wB",
+  "name": "How I Got These Dents",
+  "type": "perk",
+  "_id": "FfKkjODcY5N1Rk7G",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 90
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": -250000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714316000595,
+    "modifiedTime": 1714863054048,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!FfKkjODcY5N1Rk7G"
+}

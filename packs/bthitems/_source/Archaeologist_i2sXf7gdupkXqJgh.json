@@ -1,0 +1,31 @@
+{
+  "folder": "kzToi1NMnGnhk1Qc",
+  "name": "Archaeologist",
+  "type": "hangUp",
+  "_id": "i2sXf7gdupkXqJgh",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 32
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713549294342,
+    "modifiedTime": 1713549301154,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!i2sXf7gdupkXqJgh"
+}

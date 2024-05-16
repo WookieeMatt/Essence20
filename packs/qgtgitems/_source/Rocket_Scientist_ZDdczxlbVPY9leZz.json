@@ -1,0 +1,31 @@
+{
+  "folder": "HUAzm97UpkPfnHI6",
+  "name": "Rocket Scientist",
+  "type": "hangUp",
+  "_id": "ZDdczxlbVPY9leZz",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 11
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714015610960,
+    "modifiedTime": 1714015630656,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!ZDdczxlbVPY9leZz"
+}

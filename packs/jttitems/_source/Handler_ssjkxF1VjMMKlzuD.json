@@ -1,0 +1,30 @@
+{
+  "folder": "GZCQaHUXnjHERxw6",
+  "name": "Handler",
+  "type": "hangUp",
+  "_id": "ssjkxF1VjMMKlzuD",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 19
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694463366077,
+    "modifiedTime": 1704127412657,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ssjkxF1VjMMKlzuD"
+}

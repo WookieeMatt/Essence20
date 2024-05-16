@@ -1,0 +1,64 @@
+{
+  "folder": "nyvQrQu2JR5sHcNJ",
+  "name": "Entropic Sponge",
+  "type": "perk",
+  "_id": "dpxjT9eTAKcZuRXs",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Finster's Monster-Matic Cookbook",
+      "page": 291
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Entropic Sponge",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.dpxjT9eTAKcZuRXs",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "3UzpM54T9uhvIZP9",
+      "changes": [
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!dpxjT9eTAKcZuRXs.3UzpM54T9uhvIZP9"
+    }
+  ],
+  "sort": 150000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1713706124281,
+    "modifiedTime": 1714865734822,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!dpxjT9eTAKcZuRXs"
+}

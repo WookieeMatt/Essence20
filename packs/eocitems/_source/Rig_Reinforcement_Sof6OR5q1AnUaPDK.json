@@ -1,0 +1,40 @@
+{
+  "folder": "5LcwFunP1pIl3OfG",
+  "name": "Rig Reinforcement",
+  "type": "upgrade",
+  "_id": "Sof6OR5q1AnUaPDK",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 55
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 1
+    },
+    "availability": "limited",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Transtector Rig"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714483169592,
+    "modifiedTime": 1714483207060,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Sof6OR5q1AnUaPDK"
+}

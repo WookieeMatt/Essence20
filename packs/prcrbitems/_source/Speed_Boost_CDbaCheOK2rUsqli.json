@@ -1,0 +1,102 @@
+{
+  "folder": "7T0RaytDHGwWT02Z",
+  "name": "Speed Boost",
+  "type": "power",
+  "_id": "CDbaCheOK2rUsqli",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 101
+    },
+    "actionType": "free",
+    "canActivate": true,
+    "classFeatureId": null,
+    "hasVariableCost": true,
+    "maxPowerCost": 1,
+    "powerCost": 1,
+    "selectionLimit": 1,
+    "type": "grid",
+    "usesInterval": "perScene",
+    "usesPer": null
+  },
+  "effects": [
+    {
+      "name": "Speed Boost Ground",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.CDbaCheOK2rUsqli",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "qlqysgFPxC52aRUR",
+      "changes": [
+        {
+          "key": "system.movement.ground.morphed",
+          "mode": 2,
+          "value": "10",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!CDbaCheOK2rUsqli.qlqysgFPxC52aRUR"
+    },
+    {
+      "name": "Speed Boost Initiative Edge",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.CDbaCheOK2rUsqli",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "CwGTXu0pjUcpxVv2",
+      "changes": [
+        {
+          "key": "system.initiative.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!CDbaCheOK2rUsqli.CwGTXu0pjUcpxVv2"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1699243075098,
+    "modifiedTime": 1704127415932,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "iCCZI3EVfOIO2b8O": 3
+  },
+  "_key": "!items!CDbaCheOK2rUsqli"
+}

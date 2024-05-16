@@ -1,0 +1,73 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Long Range Automatic Rifle",
+  "type": "weapon",
+  "_id": "4cvQ7BLh0sypHBtm",
+  "img": "systems/essence20/assets/icons/weapons/sniper_rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 143
+    },
+    "items": {
+      "050c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.OE66RJI8Bs6kKvE6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Range Automatic Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 600,
+          "value": 150
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Alertness d2",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "ballistic",
+      "mounted",
+      "sniper"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695385428933,
+    "modifiedTime": 1704127409639,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!4cvQ7BLh0sypHBtm"
+}

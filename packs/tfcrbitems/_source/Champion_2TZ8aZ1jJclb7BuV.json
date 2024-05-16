@@ -1,0 +1,58 @@
+{
+  "name": "Champion",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.IFssZkdjKb6vcYfk]{Champion}</p>\n<p>&nbsp;</p>",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 48
+    },
+    "items": {
+      "ae6a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.gX2mv9sUlP99kiW5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "I Know A Bot",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 40,
+    "essences": [
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "persuasion",
+      "streetwise"
+    ],
+    "startingHealth": 3,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681742817864,
+    "modifiedTime": 1704127422732,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "2TZ8aZ1jJclb7BuV",
+  "folder": "vECyC1kfkRvVO3FR",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!2TZ8aZ1jJclb7BuV"
+}

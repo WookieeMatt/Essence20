@@ -65,11 +65,7 @@
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         {{#ifEquals @root.actor.type 'npc'}}
         <select class="inline-edit" style="flex-grow: 0;" data-field="system.shift" name="system.shift">
-          {{#select specialization.system.shift}}
-          {{#each @root.config.skillShifts as |text shift|}}
-          <option value="{{shift}}">{{text}}</option>
-          {{/each}}
-          {{/select}}
+          {{selectOptions @root.config.skillShifts selected=specialization.system.shift}}
         </select>
         <span class="specialized-label" style="flex-grow: 0;">{{localize 'E20.RollIsSpecialized'}}:</span>
         <input class="inline-edit specialized-checkbox" type="checkbox" data-field="system.isSpecialized" name="specialization.system.isSpecialized" {{checked specialization.system.isSpecialized}} data-dtype="Boolean"/>

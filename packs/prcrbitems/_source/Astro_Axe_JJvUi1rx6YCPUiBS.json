@@ -1,0 +1,115 @@
+{
+  "folder": "ePKUlzLeh1NeQ3rK",
+  "name": "Astro Axe",
+  "type": "weapon",
+  "_id": "JJvUi1rx6YCPUiBS",
+  "img": "systems/essence20/assets/icons/weapons/halberd.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Core Book",
+      "page": 110
+    },
+    "items": {
+      "9ee5": {
+        "uuid": "Compendium.essence20.pr_crb.Item.JUkzHYDLhYOjcYDv",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Astro Axe Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "eb7d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.byiRApQZZxBkcn3e",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Astro Axe Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 2
+      },
+      "f381": {
+        "uuid": "Compendium.essence20.pr_crb.Item.sRgb3N65m911Kgyl",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Astro Axe Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696195895941,
+    "modifiedTime": 1704127417717,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!JJvUi1rx6YCPUiBS"
+}

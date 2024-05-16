@@ -1,0 +1,41 @@
+{
+  "folder": "jqKh12PIc6n5keSU",
+  "name": "Flashlight",
+  "type": "upgrade",
+  "_id": "amwW5U2k9S6zVthr",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 116
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "",
+    "traits": [],
+    "type": "weapon",
+    "prerequisite": "Medium or Large"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695598752885,
+    "modifiedTime": 1704127415965,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!amwW5U2k9S6zVthr"
+}

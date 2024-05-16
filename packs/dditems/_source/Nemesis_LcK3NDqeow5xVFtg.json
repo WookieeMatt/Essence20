@@ -1,0 +1,47 @@
+{
+  "folder": "iZ8BKXFaDzYINJ5J",
+  "name": "Nemesis",
+  "type": "influence",
+  "_id": "LcK3NDqeow5xVFtg",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 27
+    },
+    "items": {
+      "1351": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.Epkm9DVktvFurYDL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nemesis",
+        "type": "perk"
+      },
+      "8862": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.6kqzh6eVugqnSn60",
+        "img": "icons/svg/hazard.svg",
+        "name": "Nemesis",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": true,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694533367502,
+    "modifiedTime": 1704127407350,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!LcK3NDqeow5xVFtg"
+}

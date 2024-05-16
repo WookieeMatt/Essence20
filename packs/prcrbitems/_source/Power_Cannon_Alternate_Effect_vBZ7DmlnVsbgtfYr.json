@@ -1,0 +1,43 @@
+{
+  "folder": "JslWJknFcca3DcGs",
+  "name": "Power Cannon Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "vBZ7DmlnVsbgtfYr",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "energy"
+    },
+    "damageType": "element",
+    "damageValue": 6,
+    "shiftDown": 2,
+    "numHands": "6",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 400,
+      "value": 100
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696279741275,
+    "modifiedTime": 1704127421867,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_key": "!items!vBZ7DmlnVsbgtfYr"
+}

@@ -1,0 +1,51 @@
+{
+  "name": "Futurist",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 50
+    },
+    "items": {
+      "14f0": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ESXOYPJ6FSPGeNHb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Reverse Engineer",
+        "type": "perk"
+      },
+      "27eb": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ZD7uEmKIlQbyoFz7",
+        "img": "icons/svg/hazard.svg",
+        "name": "Laypony Terms",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": [
+      "technology"
+    ]
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686262868973,
+    "modifiedTime": 1704127415684,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "tkdzOkh6tnzHcAfZ",
+  "folder": "vjofBqKYZU3tiTmw",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!tkdzOkh6tnzHcAfZ"
+}

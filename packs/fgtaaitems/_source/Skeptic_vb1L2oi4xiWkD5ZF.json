@@ -1,0 +1,66 @@
+{
+  "name": "Skeptic",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action and Adventure",
+      "page": 58
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.vb1L2oi4xiWkD5ZF",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "AlrrSExmB7BJC8a9",
+      "changes": [
+        {
+          "key": "system.defenses.wilpower.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!vb1L2oi4xiWkD5ZF.AlrrSExmB7BJC8a9"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686315982437,
+    "modifiedTime": 1704127408347,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "vb1L2oi4xiWkD5ZF",
+  "folder": "Esz9SAEXytXZwm2R",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!vb1L2oi4xiWkD5ZF"
+}

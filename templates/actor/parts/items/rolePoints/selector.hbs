@@ -1,8 +1,0 @@
-<select class="inline-edit" data-field="system.classFeatureId" name="system.classFeature">
-  {{#select item.system.classFeatureId}}
-  <option value="">{{localize 'E20.ClassFeatureNone'}}</option>
-  {{#each @root.classFeaturesById as |name id|}}
-  <option value="{{id}}">{{name}}</option>
-  {{/each}}
-  {{/select}}
-</select>

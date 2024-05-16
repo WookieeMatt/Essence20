@@ -1,0 +1,19 @@
+{
+  "name": "Armor",
+  "sorting": "a",
+  "folder": "yq8P9uKbPhlrh7oT",
+  "type": "Item",
+  "_id": "5LcwFunP1pIl3OfG",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": null,
+    "systemVersion": null,
+    "coreVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!5LcwFunP1pIl3OfG"
+}

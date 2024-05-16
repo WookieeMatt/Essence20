@@ -1,0 +1,62 @@
+{
+  "name": "Comedic",
+  "type": "origin",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 23
+    },
+    "items": {
+      "d0f6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.xrwFNj0NDRcWXvXN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Keep 'Em Laughing",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": "0",
+    "baseAquaticMovement": "0",
+    "baseGroundMovement": "30",
+    "essences": [
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "alertness",
+      "culture",
+      "deception",
+      "performance",
+      "persuasion"
+    ],
+    "startingHealth": 1,
+    "bonusSkillLevels": "",
+    "groundMovement": "",
+    "benefit": {
+      "name": "",
+      "description": ""
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681696128062,
+    "modifiedTime": 1704127418751,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "ULvrhpE5MQx2HzIc",
+  "folder": "AXtwURx09lzKH1fD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ULvrhpE5MQx2HzIc"
+}

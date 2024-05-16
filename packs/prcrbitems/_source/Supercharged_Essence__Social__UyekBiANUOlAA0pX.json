@@ -1,0 +1,35 @@
+{
+  "name": "Supercharged Essence (Social)",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 98
+    },
+    "prerequisite": "Essence Score at 5 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685403944537,
+    "modifiedTime": 1704127415957,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "UyekBiANUOlAA0pX",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!UyekBiANUOlAA0pX"
+}

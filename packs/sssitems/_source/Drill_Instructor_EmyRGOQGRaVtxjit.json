@@ -1,0 +1,124 @@
+{
+  "folder": "hRvXtu68qKkLTDlu",
+  "name": "Drill Instructor",
+  "type": "focus",
+  "_id": "EmyRGOQGRaVtxjit",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaugter Sourcebook",
+      "page": 9
+    },
+    "items": {
+      "a1f6": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.S9AyX2OtvvrE9oM0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brutal Verbalities",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "0264": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.VBEsSU8jqBpoGueE",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Officer",
+        "type": "role"
+      },
+      "a176": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.2SHHZs1qVMFBB2kW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rough and Takes No Guff",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "b8af": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.pqrUN5jaAbWJmgLf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Rough Training",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "e8c8": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.4qibn7JQ1lHTe9gT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "On Your Feet",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "c87f": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.xsIHUoZaFoadsmma",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hup! Hup! Hup! Hup! Hup!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "f4fd": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.MHPffqgwDx7u3tlZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "At Ease Disease",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "042e": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.VtsUIbJm3HfFn12M",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Not Perfect, But Better",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "023e": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.0Vca0OGRVIchK3KU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Whip Into Shape",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "e94d": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.dAoJG7ZwVEhOQZY0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "That's Right, Perfect",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "brawn",
+      "intimidation",
+      "might"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714009525763,
+    "modifiedTime": 1714853972099,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!EmyRGOQGRaVtxjit"
+}

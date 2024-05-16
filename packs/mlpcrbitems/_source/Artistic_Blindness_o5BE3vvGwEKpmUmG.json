@@ -1,0 +1,32 @@
+{
+  "name": "Artistic Blindness",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 44
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1680142654600,
+    "modifiedTime": 1704127413387,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "o5BE3vvGwEKpmUmG",
+  "folder": "ly03UXfH1Jdy7p6W",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!o5BE3vvGwEKpmUmG"
+}

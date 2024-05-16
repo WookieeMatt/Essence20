@@ -1,0 +1,35 @@
+{
+  "name": "I Know A Bot",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 48
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1681739292040,
+    "modifiedTime": 1704127422528,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "gX2mv9sUlP99kiW5",
+  "folder": "nuBD5zlaWCaBGdWT",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!gX2mv9sUlP99kiW5"
+}

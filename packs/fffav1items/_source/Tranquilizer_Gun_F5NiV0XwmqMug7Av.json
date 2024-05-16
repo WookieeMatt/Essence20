@@ -1,0 +1,72 @@
+{
+  "folder": "KRUxCZJniR9qRy0c",
+  "name": "Tranquilizer Gun",
+  "type": "weapon",
+  "_id": "F5NiV0XwmqMug7Av",
+  "img": "systems/essence20/assets/icons/gear/syringe.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 94
+    },
+    "items": {
+      "feb1": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.0e4qQtSTpqIp9k1U",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Tranquilzer Gun Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 40,
+          "value": 10
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "injection"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714103271026,
+    "modifiedTime": 1714103430004,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!F5NiV0XwmqMug7Av"
+}

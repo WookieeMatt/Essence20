@@ -1,0 +1,106 @@
+{
+  "folder": "X86fnZJnirxSNLjn",
+  "name": "Strafer",
+  "type": "focus",
+  "_id": "VwNVX4lVMpp4FRHX",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 27
+    },
+    "items": {
+      "a876": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Ub4PO0AcEYzMc93S",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Vanguard",
+        "type": "role"
+      },
+      "b7bd": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Etogut0TJjvuKC9J",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aerial Interface",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "a8a2": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.nCjrhYaUuN4omhDm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ground Suppression",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "cb1d": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.QAOI7O3yVmmMpFEu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "As Above",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "1a2e": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.MlEYEVW4YXT4P0sP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "So Below",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "e671": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.rraj81QR8KEg6nfC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "The Sound of Angels",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "57e4": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.FpwnwD7Pnl6uvLTZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Danger Close",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "643b": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.dXCi2IGJnV47wzqe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rifle Tally",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "driving"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714092532622,
+    "modifiedTime": 1714092638848,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!VwNVX4lVMpp4FRHX"
+}

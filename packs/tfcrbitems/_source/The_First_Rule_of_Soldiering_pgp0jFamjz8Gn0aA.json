@@ -1,0 +1,34 @@
+{
+  "folder": "kW4YRuzoHKAdSagc",
+  "name": "The First Rule of Soldiering",
+  "type": "perk",
+  "_id": "pgp0jFamjz8Gn0aA",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 65
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 156250,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714189073280,
+    "modifiedTime": 1714861172444,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!pgp0jFamjz8Gn0aA"
+}

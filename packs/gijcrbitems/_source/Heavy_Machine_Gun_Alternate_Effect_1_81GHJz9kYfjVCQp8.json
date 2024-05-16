@@ -1,0 +1,43 @@
+{
+  "folder": "drka0rofRF1H6EQg",
+  "name": "Heavy Machine Gun Alternate Effect 1",
+  "type": "weaponEffect",
+  "_id": "81GHJz9kYfjVCQp8",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 3,
+    "shiftDown": 3,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": 10,
+      "reachMultiplier": 0,
+      "long": 400,
+      "value": 100
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695384715667,
+    "modifiedTime": 1704127410649,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!81GHJz9kYfjVCQp8"
+}

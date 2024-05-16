@@ -1,0 +1,95 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Small Thrown Weapon",
+  "type": "weapon",
+  "_id": "W7iyFJTIGw7BuR3x",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 123
+    },
+    "items": {
+      "82e9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bxT99cXuxn9UPeNT",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Small Thrown Weapon Effect (Blunt)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 20,
+          "value": 10
+        },
+        "shiftDown": 0
+      },
+      "eb0d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GqfmPxPjAP8Xoll9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Small Thrown Weapon Effect (Sharp)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 20,
+          "value": 10
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Huge",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "blunt",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695329746589,
+    "modifiedTime": 1704127423882,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!W7iyFJTIGw7BuR3x"
+}

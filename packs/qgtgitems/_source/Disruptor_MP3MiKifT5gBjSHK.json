@@ -1,0 +1,100 @@
+{
+  "folder": "X86fnZJnirxSNLjn",
+  "name": "Disruptor",
+  "type": "focus",
+  "_id": "MP3MiKifT5gBjSHK",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 22
+    },
+    "items": {
+      "b9fd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jBGt0rupbF0OwAi9",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Ranger",
+        "type": "role"
+      },
+      "9a21": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.KYgAj14jx4BkjCfl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Breaking Point",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "c9f7": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.epppqB70RpfXJ1jN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Frag It",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "a92d": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.GY9fkASnSzkQIYKC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ripple Effect",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "695e": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.opTZmlt97a9TWHSk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Weak Point",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "2a93": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.oZVphHSTTBENUaFk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brute Force Works Best",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "66b7": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.qf1HjLgmRGil2N7i",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stick In The Spokes",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "strength"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "conditioning",
+      "brawn",
+      "might"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714091448445,
+    "modifiedTime": 1714091540227,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!MP3MiKifT5gBjSHK"
+}

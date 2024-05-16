@@ -1,0 +1,32 @@
+{
+  "name": "Diplomat",
+  "type": "hangUp",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 53
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685405421775,
+    "modifiedTime": 1704127408347,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "CLjUTcIQxtCzcF0X",
+  "_id": "tKhMtRMrpYHPpNnm",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!tKhMtRMrpYHPpNnm"
+}

@@ -1,0 +1,72 @@
+{
+  "name": "Humanitarian",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "system.defenses.cleverness.bonus",
+      "page": 96
+    },
+    "prerequisite": "Social 3 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.YQpJiyB0w1JqK53C",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "DvPijSKCxKDhGJcm",
+      "changes": [
+        {
+          "key": "system.skills.persuasion.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.alertness.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Insight and Diplomacy",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!hxWJxlMLbkBbx73w.DvPijSKCxKDhGJcm"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1685400730901,
+    "modifiedTime": 1704127415975,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "folder": "Vc2wR3XEEeI6BPrg",
+  "_id": "hxWJxlMLbkBbx73w",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!hxWJxlMLbkBbx73w"
+}

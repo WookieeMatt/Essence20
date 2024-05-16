@@ -1,33 +1,32 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import {
-  deleteAttachmentsForItem,
-  checkIsLocked,
-  createItemCopies,
-  getItemsOfType,
-  getNumActions,
-  parseId,
-  setEntryAndAddItem,
-} from "../helpers/utils.mjs";
-import { onLevelChange } from "../sheet-handlers/advancement-handler.mjs";
-import { onAlterationDelete, alterationUpdate } from "../sheet-handlers/alteration-handler.mjs";
-import { influenceUpdate, originUpdate, onOriginDelete } from "../sheet-handlers/background-handler.mjs";
+import { getNumActions } from "../helpers/actor.mjs";
+import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
-import { gearDrop, attachItem } from "../sheet-handlers/attachment-handler.mjs";
-import { onFocusDelete, onRoleDelete, focusUpdate, roleUpdate } from "../sheet-handlers/role-handler.mjs";
-import { onAltModeDelete, onTransform } from "../sheet-handlers/transformer-handler.mjs";
-import { powerUpdate, powerCost } from "../sheet-handlers/power-handler.mjs";
-import { perkUpdate, onPerkDelete } from "../sheet-handlers/perk-handler.mjs";
+import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
+import {
+  onRest,
+  onRoll,
+  onToggleAccordion,
+  onToggleHeaderAccordion,
+} from "../sheet-handlers/listener-misc-handler.mjs";
+import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs";
+import {
+  onItemCreate,
+  onItemEdit,
+  onItemDelete,
+  onInlineEdit,
+} from "../sheet-handlers/listener-item-handler.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
     super(...args);
-    this._accordionStates = { skills: '' };
+    this.accordionStates = { skills: '' };
   }
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["essence20", "sheet", "actor"],
       width: 620,
       height: 574,
@@ -80,7 +79,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare Zords for MFZs
     prepareZords(this.actor, context);
 
-    context.accordionStates = this._accordionStates;
+    context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
 
     return context;
@@ -333,23 +332,23 @@ export class Essence20ActorSheet extends ActorSheet {
     super.activateListeners(html);
 
     // Render the item sheet for viewing/editing prior to the editable check.
-    html.find('.item-edit').click(this._onItemEdit.bind(this));
+    html.find('.item-edit').click(ev => onItemEdit(ev, this.actor));
 
     // -------------------------------------------------------------
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
     // Add Inventory Item
-    html.find('.item-create').click(this._onItemCreate.bind(this));
+    html.find('.item-create').click(ev => onItemCreate(ev, this.actor));
 
     // Delete Inventory Item
-    html.find('.item-delete').click(this._onItemDelete.bind(this));
+    html.find('.item-delete').click(ev => onItemDelete(ev, this));
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(ev => onZordDelete(this, ev));
+    html.find('.zord-delete').click(ev => onZordDelete(ev, this));
 
     // Edit specialization name inline
-    html.find(".inline-edit").change(this._onInlineEdit.bind(this));
+    html.find(".inline-edit").change(ev => onInlineEdit(ev, this.actor));
 
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
@@ -360,16 +359,16 @@ export class Essence20ActorSheet extends ActorSheet {
     // Transform Button
     html.find('.transform').click(() => onTransform(this));
 
-    // Rollable abilities.
+    // Roll buttons
     if (this.actor.isOwner) {
-      html.find('.rollable').click(this._onRoll.bind(this));
+      html.find('.rollable').click(ev => onRoll(ev, this.actor));
     }
 
     // Open and collapse Item content
-    html.find('.accordion-label').click(this._onToggleAccordion.bind(this));
+    html.find('.accordion-label').click(ev => onToggleAccordion(ev, this));
 
     // Open and collapse all Item contents in container
-    html.find('.header-accordion-label').click(this._onToggleHeaderAccordion.bind(this));
+    html.find('.header-accordion-label').click(ev => onToggleHeaderAccordion(ev, this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -382,7 +381,7 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     // Rest button
-    html.find('.rest').click(() => this._onRest());
+    html.find('.rest').click(() => onRest(this));
 
     const isLocked = this.actor.system.isLocked;
 
@@ -418,555 +417,27 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /**
-   * Handle clicking the rest button.
-   * @private
-   */
-  async _onRest() {
-    const normalEnergon = this.actor.system.energon.normal;
-    const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
-    const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
-
-    // Notifications for resetting Energon types
-    if (this.actor.system.canTransform) {
-      let energonsReset = [];
-
-      const actorEnergons = this.actor.system.energon;
-      for (const actorEnergon of Object.keys(actorEnergons)) {
-        if (actorEnergons[actorEnergon].value) {
-          energonsReset.push(game.i18n.localize(CONFIG.E20.energonTypes[actorEnergon]));
-        }
-      }
-
-      if (energonsReset.length) {
-        ui.notifications.info(
-          game.i18n.format(
-            'E20.RestEnergonReset',
-            {energon: energonsReset.join(", ")},
-          ),
-        );
-      }
-
-      ui.notifications.info(game.i18n.format('E20.RestEnergonRestored', { energonRestore: energonRestore }));
-    }
-
-    //Reseting Personal Power
-    let powerRestore = 0;
-    if (this.actor.system.powers.personal.max > 0) {
-      powerRestore = Math.min(this.actor.system.powers.personal.max, (this.actor.system.powers.personal.value + this.actor.system.powers.personal.regeneration));
-
-      if (powerRestore) {
-        ui.notifications.info(game.i18n.localize("E20.RestPersonalPowerRegen"));
-      }
-    }
-
-    // Resetting Role Points
-    const rolePointsList = getItemsOfType('rolePoints', this.actor.items);
-    if (rolePointsList.length) {
-      const rolePoints = rolePointsList[0];
-      rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
-      ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
-    }
-
-    ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
-    ui.notifications.info(game.i18n.localize("E20.RestComplete"));
-
-    await this.actor.update({
-      "system.health.value": this.actor.system.health.max,
-      "system.powers.personal.value": powerRestore,
-      "system.stun.value": 0,
-      "system.energon.normal.value": energonRestore,
-      "system.energon.dark.value": 0,
-      "system.energon.primal.value": 0,
-      "system.energon.red.value": 0,
-      "system.energon.synthEn.value": 0,
-    }).then(this.render(false));
-  }
-
-  /**
-   * Handle toggling accordion container headers.
-   * @param {Event} event The originating click event
-   * @private
-   */
-  async _onToggleHeaderAccordion(event) {
-    const el = event.currentTarget;
-    const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
-    $(el.closest('.header-accordion-wrapper')).toggleClass('open');
-
-    const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
-    for (const accordionLabel of accordionLabels) {
-      isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
-    }
-  }
-
-  /**
-   * Handle toggling accordion containers.
-   * @param {Event} event The originating click event
-   * @private
-   */
-  async _onToggleAccordion(event) {
-    const el = event.currentTarget;
-    const parent = $(el).closest('.accordion-wrapper');
-
-    // Avoid collapsing NPC skills container on rerender
-    if (parent.hasClass('skills-container')) {
-      const isOpen = this._accordionStates.skills;
-      this._accordionStates.skills = isOpen ? '' : 'open';
-      this.render();
-    } else {
-      parent.toggleClass('open');
-
-      // Check if the container header toggle should be flipped
-      let oneClosed = false;
-
-      // Look for a closed Item
-      const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
-      for (const accordionLabel of accordionLabels) {
-        oneClosed = !$(accordionLabel).hasClass('open');
-        if (oneClosed) break;
-      }
-
-      // Set header state to open if all Items are open; closed otherwise
-      const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
-      if (oneClosed) {
-        $(container).removeClass('open');
-      } else {
-        $(container).addClass('open');
-      }
-    }
-  }
-
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event The originating click event
-   * @private
-   */
-  async _onRoll(event) {
-    event.preventDefault();
-    const element = event.currentTarget;
-    const dataset = element.dataset;
-    const rollType = dataset.rollType;
-
-    if (!rollType) {
-      return;
-    }
-
-    // Handle type-specific rolls.
-    if (rollType == 'skill') {
-      this.actor.rollSkill(dataset);
-    } else if (rollType == 'initiative') {
-      this.actor.rollInitiative({createCombatants: true});
-    } else { // Handle items
-      let item = null;
-
-      const childKey = element.closest('.item').dataset.itemKey || null;
-      if (childKey) {
-        const childUuid = element.closest('.item').dataset.itemUuid;
-        item = await fromUuid(childUuid);
-      } else {
-        const itemId = element.closest('.item').dataset.itemId;
-        item = this.actor.items.get(itemId);
-      }
-
-      if (rollType == 'power') {
-        return await powerCost(this.actor, item);
-      } else if (rollType == 'rolePoints') {
-        if (item.system.resource.max != null && item.system.resource.value < 1 && !this.actor.system.useUnlimitedResource) {
-          ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
-          return;
-        } else {
-          const spentStrings = [];
-
-          // Ensure we have enough Personal Power, if needed
-          if (item.system.powerCost) {
-            if (this.actor.system.powers.personal.value < item.system.powerCost) {
-              ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-              return;
-            } else {
-              await this.actor.update({
-                ['system.powers.personal.value']:
-                  this.actor.system.powers.personal.value - item.system.powerCost,
-              });
-
-              spentStrings.push(`${item.system.powerCost} Power`);
-            }
-          }
-
-          // If Role Points are being used and not unlimited, decrement uses
-          if (!this.actor.system.useUnlimitedResource) {
-            await item.update({ 'system.resource.value': item.system.resource.value - 1 });
-            spentStrings.push('1 point');
-          }
-
-          if (spentStrings.length) {
-            const spentString = spentStrings.join(', ');
-            ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
-          }
-        }
-      }
-
-      if (item) {
-        return item.roll(dataset, childKey);
-      }
-    }
-  }
-
-  /**
-   * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-   * @param {Event} event The originating click event
-   * @private
-   */
-  async _onItemCreate(event) {
-    event.preventDefault();
-
-    if (checkIsLocked(this.actor)) {
-      return;
-    }
-
-    const header = event.currentTarget;
-    // Get the type of item to create.
-    const type = header.dataset.type;
-    // Grab any data associated with this control.
-    const data = duplicate(header.dataset);
-    // Initialize a default name.
-    const name = `New ${type.capitalize()}`;
-    // Prepare the item object.
-    const itemData = {
-      name: name,
-      type: type,
-      data: data,
-    };
-
-    // Remove the type from the dataset since it's in the itemData.type prop.
-    delete itemData.data["type"];
-
-    // Set the parent item type for nested items
-    let parentItem = null;
-    if (data.parentId) {
-      parentItem = this.actor.items.get(data.parentId);
-      itemData.data.type = parentItem.type;
-    }
-
-    // Finally, create the item!
-    const newItem = await Item.create(itemData, { parent: this.actor });
-
-    if (parentItem) {
-      newItem.setFlag('essence20', 'parentId', parentItem._id);
-
-      let key = null;
-
-      // Update parent item's ID list for upgrades and weapon effects
-      if (newItem.type == 'upgrade' && ['armor', 'weapon'].includes(parentItem.type)) {
-        key = await setEntryAndAddItem(newItem, parentItem);
-      } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
-        key = await setEntryAndAddItem(newItem, parentItem);
-      }
-
-      newItem.setFlag('essence20', 'collectionId', key);
-    }
-  }
-
-  /**
-   * Handle editing an owned Item for the actor
-   * @param {Event} event The originating click event
-   * @private
-   */
-  async _onItemEdit(event) {
-    event.preventDefault();
-    const li = $(event.currentTarget).closest(".item");
-    let item = null;
-
-    const itemId = li.data("itemId");
-    if (itemId) {
-      item = this.actor.items.get(itemId) || game.items.get(itemId);
-    } else {
-      const itemUuid = li.data("itemUuid");
-      item = await fromUuid(itemUuid);
-    }
-
-    if (item) {
-      item.sheet.render(true);
-    }
-  }
-
-  /**
-  * Handle deleting Items
-  * @param {Event} event The originating click event
-  * @private
-  */
-  async _onItemDelete(event) {
-    if (checkIsLocked(this.actor)) {
-      return;
-    }
-
-    let item = null;
-    const li = $(event.currentTarget).closest(".item");
-    const itemId = li.data("itemId");
-    const parentId = li.data("parentId");
-    const parentItem = this.actor.items.get(parentId);
-
-    if (itemId) {
-      item = this.actor.items.get(itemId);
-    } else {
-      const keyId = li.data("itemKey");
-
-      // If the deleted item is attached to another item find what it is attached to.
-      for (const attachedItem of this.actor.items) {
-        const collectionId = await attachedItem.getFlag('essence20', 'collectionId');
-        if (collectionId) {
-          if (keyId == collectionId) {
-            item = attachedItem;
-          }
-        }
-      }
-    }
-
-    // return if no item is found.
-    if (!item) {
-      return;
-    }
-
-    // Confirmation dialog
-    const confirmation = await this._getItemDeleteConfirmDialog(item);
-    if (confirmation.cancelled) {
-      return;
-    }
-
-    // Check if this item has a parent item, such as for deleting an upgrade from a weapon
-    if (parentItem) {
-      const id = li.data("itemKey");
-      const updateString = `system.items.-=${id}`;
-
-      await parentItem.update({[updateString]: null});
-
-      item.delete();
-      li.slideUp(200, () => this.render(false));
-    } else {
-      if (item.type == "armor") {
-        deleteAttachmentsForItem(item, this.actor);
-      } else if (item.type == "origin") {
-        onOriginDelete(this.actor, item);
-      } else if (item.type == 'influence') {
-        deleteAttachmentsForItem(item, this.actor);
-      } else if (item.type == "altMode") {
-        onAltModeDelete(this, item);
-      } else if (item.type == "alteration") {
-        onAlterationDelete(this.actor, item);
-      } else if (item.type == "focus") {
-        onFocusDelete(this.actor, item);
-      } else if (item.type == "perk") {
-        onPerkDelete(this.actor, item);
-      } else if (item.type == "role") {
-        onRoleDelete(this.actor, item);
-      } else if (item.type == "weapon") {
-        deleteAttachmentsForItem(item, this.actor);
-      }
-
-      item.delete();
-      li.slideUp(200, () => this.render(false));
-    }
-  }
-
-  /**
-   * Displays the dialog used for confirming actor item deletion.
-   * @param {Item} item           The item being deleted.
-   * @returns {Promise<Dialog>}   The dialog to be displayed.
-   */
-  async _getItemDeleteConfirmDialog(item) {
-    return new Promise(resolve => {
-      const data = {
-        title: game.i18n.localize("E20.ItemDeleteConfirmTitle"),
-        content: `<p>${game.i18n.format("E20.ItemDeleteConfirmContent", {name: item.name})}</p>`,
-        buttons: {
-          normal: {
-            label: game.i18n.localize('E20.DialogConfirmButton'),
-            /* eslint-disable no-unused-vars */
-            callback: html => resolve({ cancelled: false }),
-          },
-          cancel: {
-            label: game.i18n.localize('E20.DialogCancelButton'),
-            /* eslint-disable no-unused-vars */
-            callback: html => resolve({ cancelled: true }),
-          },
-        },
-        default: "normal",
-        close: () => resolve({ cancelled: true }),
-      };
-
-      new Dialog(data, null).render(true);
-    });
-  }
-
-  /**
-   * Handle editing specialization names inline
-   * @param {Event} event The originating click event
-   * @private
-   */
-  async _onInlineEdit(event) {
-    event.preventDefault();
-    let element = event.currentTarget;
-    let itemId = element.closest(".item").dataset.itemId;
-
-    if (!itemId) {
-      itemId = element.closest(".item").dataset.parentId;
-    }
-
-    const item = this.actor.items.get(itemId);
-    const field = element.dataset.field;
-    const newValue = element.type == 'checkbox' ? element.checked : element.value;
-
-    return item.update({ [field]: newValue });
-  }
-
-  /**
    * Handle dropping an Item onto an Actor.
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
+   * @param {DragEvent} event The concluding DragEvent which contains drop data
+   * @param {Object} data The data transfer extracted from the event
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    * @override
    */
   async _onDropItem(event, data) {
-    if (data.type != 'Item') {
-      return;
-    }
-
-    if (checkIsLocked(this.actor)) {
-      return;
-    }
-
-    const sourceItem = await fromUuid(data.uuid);
-    if (!sourceItem) return false;
-
-    // Don't drop a new item if they're just sorting
-    if (this.actor.uuid === sourceItem?.parent?.uuid) {
-      return await this._onDropDefault(event, data, false);
-    }
-
-    switch (sourceItem.type) {
-    case 'alteration':
-      return await alterationUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'armor':
-      return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'focus':
-      return await focusUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'influence':
-      return await influenceUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'origin':
-      return await originUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'role':
-      return await roleUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'rolePoints':
-      ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
-      return;
-    case 'perk':
-      return await perkUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'power':
-      return await powerUpdate(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'upgrade':
-      return await this._onDropUpgrade(sourceItem, event, data);
-    case 'weapon':
-      return await gearDrop(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-    case 'weaponEffect':
-      return attachItem(this.actor, sourceItem, super._onDropItem.bind(this, event, data));
-
-    default:
-      return await super._onDropItem(event, data);
-    }
-  }
-
-  /**
-   * Handle dropping of an Upgrade onto an Actor sheet
-   * @param {Upgrade} upgrade           The upgrade
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
-   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
-   *                                    not permitted.
-   */
-  async _onDropUpgrade(upgrade, event, data) {
-    // Drones can only accept drone Upgrades
-    if (this.actor.type == 'companion' && this.actor.system.type == 'drone' && upgrade.system.type == 'drone') {
-      return super._onDropItem(event, data);
-    } else if (this.actor.system.canTransform && upgrade.system.type == 'armor') {
-      return super._onDropItem(event, data);
-    } else if (['armor', 'weapon'].includes(upgrade.system.type)) {
-      return attachItem(this.actor, upgrade, super._onDropItem.bind(this, event, data));
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.UpgradeDropError'));
-      return false;
-    }
-  }
-
-  /**
-   * Handle dropping of any other item an Actor sheet
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
-   * @param {Boolean} isNewItem         Whether a new item is intended to be dropped
-   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
-   *                                    not permitted.
-   */
-  async _onDropDefault(event, data, isNewItem=true) {
-    // Drones can only accept drone Upgrades
-    const itemUuid = await parseId(data.uuid);
-
-    let droppedItemList = await super._onDropItem(event, data);
-
-    if (isNewItem) {
-      const newItem = droppedItemList[0];
-      await newItem.update ({
-        "system.originalId": itemUuid,
-      });
-    } else {
-      droppedItemList = [];
-    }
-
-    return droppedItemList;
-  }
-
-  /**
-   * Handle dropping of a Weapon onto an Actor sheet
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
-   * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
-   *                                    not permitted.
-   */
-  async _onDropWeapon(event, data) {
-    const weaponList = await super._onDropItem(event, data);
-    const newWeapon = weaponList[0];
-    const oldWeaponEffectIds = newWeapon.system.weaponEffectIds;
-    const newWeaponEffectIds = await createItemCopies(oldWeaponEffectIds, this.actor);
-    await newWeapon.update({ ['system.weaponEffectIds']: newWeaponEffectIds });
-    return weaponList;
+    return onDropItem(data, this.actor, super._onDropItem.bind(this, event, data));
   }
 
   /**
    * Handle dropping of an Actor data onto another Actor sheet
-   * @param {DragEvent} event           The concluding DragEvent which contains drop data
-   * @param {Object} data               The data transfer extracted from the event
+   * @param {DragEvent} event The concluding DragEvent which contains drop data
+   * @param {Object} data The data transfer extracted from the event
    * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
    *                                    not permitted.
    * @override
    */
   async _onDropActor(event, data) {
-    if (!this.actor.isOwner) return false;
-
-    // Get the target actor
-    let sourceActor = await fromUuid(data.uuid);
-    if (!sourceActor) return false;
-
-    // Handles dropping Zords onto Megaform Zords
-    if (this.actor.type == 'megaformZord' && sourceActor.type == 'zord') {
-      const zordIds = duplicate(this.actor.system.zordIds);
-
-      // Can't contain duplicate Zords
-      if (!zordIds.includes(sourceActor.id)) {
-        zordIds.push(sourceActor.id);
-        await this.actor.update({
-          "system.zordIds": zordIds,
-        }).then(this.render(false));
-      }
-    } else {
-      return false;
-    }
+    return onDropActor(data, this);
   }
 
   /**
@@ -978,7 +449,7 @@ export class Essence20ActorSheet extends ActorSheet {
     await super._onChangeInput(event);
 
     if (event.currentTarget.name == "system.level") {
-      await onLevelChange(this.actor, this.actor.system.level);
+      return await onLevelChange(this.actor, this.actor.system.level);
     }
   }
 }

@@ -1,0 +1,119 @@
+{
+  "folder": "EPfL3S8nx5LSxuhK",
+  "name": "Power Tool",
+  "type": "weapon",
+  "_id": "Jnjio1DtAx0QgE85",
+  "img": "systems/essence20/assets/icons/weapons/chainsaw.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 143
+    },
+    "items": {
+      "0dd4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Xm8pvaQqI1yxZCDO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Tool Effect (Blunt)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "9e87": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.as9rtatnTYLpQX04",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Tool Effect (Sharp)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 2
+      },
+      "3e45": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.iLToQKSxMbuOQvGI",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Power Tool Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": null,
+        "damageType": "intimidate",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "antiTank",
+      "blunt",
+      "reload",
+      "sharp",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695337533747,
+    "modifiedTime": 1704127410414,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Jnjio1DtAx0QgE85"
+}

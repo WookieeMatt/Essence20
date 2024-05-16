@@ -1,0 +1,31 @@
+{
+  "folder": "eXYS96XsOrYFTEbC",
+  "name": "Deafening Silence",
+  "type": "hangUp",
+  "_id": "u0MiPZ6CXb1plk6L",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Dark Skies Over Equestria",
+      "page": 17
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713840766080,
+    "modifiedTime": 1713840778953,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!u0MiPZ6CXb1plk6L"
+}

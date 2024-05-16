@@ -1,0 +1,43 @@
+{
+  "folder": "Z2xK8nOrVV5BbzH4",
+  "name": "Zeo Power Cannon Effect",
+  "type": "weaponEffect",
+  "_id": "udUylY8q4hcePUY0",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "explosive"
+    },
+    "damageType": "stun",
+    "damageValue": 6,
+    "shiftDown": 0,
+    "numHands": "10",
+    "numTargets": 1,
+    "radius": 10,
+    "range": {
+      "min": 30,
+      "reachMultiplier": 0,
+      "long": 600,
+      "value": 200
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696174325144,
+    "modifiedTime": 1704127405526,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!udUylY8q4hcePUY0"
+}

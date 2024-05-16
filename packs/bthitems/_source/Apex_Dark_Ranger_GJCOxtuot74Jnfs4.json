@@ -1,0 +1,34 @@
+{
+  "folder": "gzgTmePuY2wGx6Go",
+  "name": "Apex Dark Ranger",
+  "type": "perk",
+  "_id": "GJCOxtuot74Jnfs4",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 40
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 103125,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1713835107891,
+    "modifiedTime": 1714864456697,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!GJCOxtuot74Jnfs4"
+}

@@ -1,0 +1,94 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Quasar Saber",
+  "type": "weapon",
+  "_id": "S4inbzIWvh4vtlKf",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 80
+    },
+    "items": {
+      "f899": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.GUbRonn7IrsTaaIA",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Quasar Saber Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "538d": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.qC3qapkQoFk4RE9F",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Quasar Saber Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696172272444,
+    "modifiedTime": 1704127405258,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!S4inbzIWvh4vtlKf"
+}

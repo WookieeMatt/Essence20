@@ -1,0 +1,61 @@
+{
+  "name": "Racer",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 38
+    },
+    "items": {
+      "6d60": {
+        "uuid": "Compendium.essence20.tf_crb.Item.KjcoQiDoT7WEVsZX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Racer",
+        "type": "perk"
+      },
+      "0bc8": {
+        "uuid": "Compendium.essence20.tf_crb.Item.V5GfafYii5GSMtzr",
+        "img": "icons/svg/hazard.svg",
+        "name": "Impulsive",
+        "type": "hangUp"
+      },
+      "5de7": {
+        "uuid": "Compendium.essence20.tf_crb.Item.SgofEgBVvg4josSR",
+        "img": "icons/svg/hazard.svg",
+        "name": "Mode Attachment",
+        "type": "hangUp"
+      },
+      "ef11": {
+        "uuid": "Compendium.essence20.tf_crb.Item.XLDVNcC9B4hnSppZ",
+        "img": "icons/svg/hazard.svg",
+        "name": "Whimsical",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686279722682,
+    "modifiedTime": 1704127424102,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "XPysWwkFqdiQIOTN",
+  "folder": "SWtRpPu5oWtOo7vD",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!XPysWwkFqdiQIOTN"
+}

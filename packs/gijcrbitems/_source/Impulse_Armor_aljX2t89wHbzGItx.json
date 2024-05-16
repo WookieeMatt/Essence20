@@ -1,0 +1,40 @@
+{
+  "folder": "wjVbe6RZpn9ylt2k",
+  "name": "Impulse Armor",
+  "type": "armor",
+  "_id": "aljX2t89wHbzGItx",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {},
+    "availability": "limited",
+    "bonusEvasion": 1,
+    "bonusToughness": 0,
+    "classification": "light",
+    "equipped": false,
+    "traits": [
+      "computerized"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695586332213,
+    "modifiedTime": 1704127411413,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!aljX2t89wHbzGItx"
+}

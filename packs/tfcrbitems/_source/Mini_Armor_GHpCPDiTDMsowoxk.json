@@ -1,0 +1,66 @@
+{
+  "name": "Mini Armor",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 112
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "minicon"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.GHpCPDiTDMsowoxk",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "fasjv1YYciglJ4Jy",
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!GHpCPDiTDMsowoxk.fasjv1YYciglJ4Jy"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686277969430,
+    "modifiedTime": 1704127422496,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "GHpCPDiTDMsowoxk",
+  "folder": "2CRvtPOcwW3nzLcI",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!GHpCPDiTDMsowoxk"
+}

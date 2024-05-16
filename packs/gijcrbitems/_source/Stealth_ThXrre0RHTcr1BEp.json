@@ -1,0 +1,70 @@
+{
+  "folder": "mvtk7jCO431IADoK",
+  "name": "Stealth",
+  "type": "upgrade",
+  "_id": "ThXrre0RHTcr1BEp",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 157
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "standard",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": "Silent"
+  },
+  "effects": [
+    {
+      "name": "Stealth",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.ThXrre0RHTcr1BEp",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "oGXsSR3y3EiZuRjA",
+      "changes": [
+        {
+          "key": "system.skills.infilitration.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ThXrre0RHTcr1BEp.oGXsSR3y3EiZuRjA"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695588928075,
+    "modifiedTime": 1704127409112,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ThXrre0RHTcr1BEp"
+}

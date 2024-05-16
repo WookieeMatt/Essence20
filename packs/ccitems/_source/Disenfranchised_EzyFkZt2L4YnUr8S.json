@@ -1,0 +1,47 @@
+{
+  "folder": "aRlyNQZylQaPn1bO",
+  "name": "Disenfranchised",
+  "type": "influence",
+  "_id": "EzyFkZt2L4YnUr8S",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 30
+    },
+    "items": {
+      "9e84": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.bZy1AxC5ZN3ZLMhZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Disenfranchised",
+        "type": "perk"
+      },
+      "dc90": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.bLBiNpqobnTDH769",
+        "img": "icons/svg/hazard.svg",
+        "name": "Disenfranchised",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686421082589,
+    "modifiedTime": 1704127406554,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!EzyFkZt2L4YnUr8S"
+}

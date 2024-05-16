@@ -1,0 +1,30 @@
+{
+  "folder": "GZCQaHUXnjHERxw6",
+  "name": "Chronicler",
+  "type": "hangUp",
+  "_id": "Psds3JLg4UmugRkT",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 18
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694463318151,
+    "modifiedTime": 1704127412649,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!Psds3JLg4UmugRkT"
+}

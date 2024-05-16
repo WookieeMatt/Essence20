@@ -1,0 +1,66 @@
+{
+  "name": "Dodgy",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 108
+    },
+    "prerequisite": "Speed Essence 3",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.smkYh73IkfzNuQUl",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "gHOZME0K5tF2FK9p",
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "Evasion Bonus",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!smkYh73IkfzNuQUl.gHOZME0K5tF2FK9p"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686275283135,
+    "modifiedTime": 1704127422539,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "smkYh73IkfzNuQUl",
+  "folder": "ERY0Xs3Bi23Hjx2K",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!smkYh73IkfzNuQUl"
+}

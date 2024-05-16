@@ -1,0 +1,70 @@
+{
+  "folder": "qwws6UjFimwPw5Jz",
+  "name": "Nuclear Biological Chemical Protection Suit",
+  "type": "gear",
+  "_id": "teDcExlkzRTGTChr",
+  "img": "systems/essence20/assets/icons/gear/hazmat-suit.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 160
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "hazard"
+  },
+  "effects": [
+    {
+      "name": "Nuclear Biological Chemical Protection Suit",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.teDcExlkzRTGTChr",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "7vMJ4U52wPbNnFmF",
+      "changes": [
+        {
+          "key": "system.essenceShifts.strength.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.essenceShifts.speed.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!teDcExlkzRTGTChr.7vMJ4U52wPbNnFmF"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695567574662,
+    "modifiedTime": 1704127409141,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!teDcExlkzRTGTChr"
+}

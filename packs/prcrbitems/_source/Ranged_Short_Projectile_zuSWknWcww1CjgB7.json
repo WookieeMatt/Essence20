@@ -1,0 +1,77 @@
+{
+  "folder": "UCLYWNFqe5XND1kq",
+  "name": "Ranged Short Projectile",
+  "type": "weapon",
+  "_id": "zuSWknWcww1CjgB7",
+  "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 112
+    },
+    "items": {
+      "b867": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.H6Z6NxpLuBFB2FJ9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Projectile Launcher Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d4"
+    },
+    "traits": [
+      "energy",
+      "martialArts",
+      "sharp",
+      "silent",
+      "sniper"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695329553415,
+    "modifiedTime": 1704127422265,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 100196,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!zuSWknWcww1CjgB7"
+}

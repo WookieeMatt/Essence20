@@ -1,0 +1,98 @@
+{
+  "folder": "jNsb3umtfrZnGbja",
+  "name": "Tinkerer",
+  "type": "focus",
+  "_id": "QLnAY3WWS10sPSUB",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 105
+    },
+    "items": {
+      "df0a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.u3KK0V30GXDdRPAY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fast Learner",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "c8db": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7JNvIGhT0awimmtY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Kitbash Upgrade",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "c6fa": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.M8D4FRcfaGm5i2jH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Seeing the Matrix",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "88b4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.4F6GJqqpHSZYFNqA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Kitbash Equipment",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "d341": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.YlihpNSSspqwfMv6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quickbash",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "8e5f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.101HiYiWfoxoO1hL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Machinesmith",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "02a1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GPdhYq7n573SR4T2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Technician",
+        "type": "role"
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "technology"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1706658559711,
+    "modifiedTime": 1714012310668,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!QLnAY3WWS10sPSUB"
+}

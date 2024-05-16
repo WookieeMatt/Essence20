@@ -1,0 +1,33 @@
+{
+  "folder": "6b3hGmdCMZFGC1dR",
+  "name": "Chrono Breaker",
+  "type": "perk",
+  "_id": "IRhlpVLUTHG0BYfc",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 54
+    },
+    "prerequisite": "Time Force Ranger",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694467064314,
+    "modifiedTime": 1704127412647,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!IRhlpVLUTHG0BYfc"
+}

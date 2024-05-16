@@ -1,0 +1,33 @@
+{
+  "folder": "6b3hGmdCMZFGC1dR",
+  "name": "Ranger Operator",
+  "type": "perk",
+  "_id": "nZYtfaowY0EH3Z0R",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 55
+    },
+    "prerequisite": "Maximum Personal Power of 2 or higher, Survival Skill of d4 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694467539832,
+    "modifiedTime": 1704127412656,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!nZYtfaowY0EH3Z0R"
+}

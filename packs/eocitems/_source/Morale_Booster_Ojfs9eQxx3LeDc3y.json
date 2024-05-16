@@ -1,0 +1,60 @@
+{
+  "folder": "4oQXDiqamMPpzv37",
+  "name": "Morale Booster",
+  "type": "influence",
+  "_id": "Ojfs9eQxx3LeDc3y",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 23
+    },
+    "items": {
+      "d9a3": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.TQCvGZe5npeJ4heO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Morale Booster",
+        "type": "perk"
+      },
+      "f4f5": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.TmWyhhRJVL6yud29",
+        "img": "icons/svg/hazard.svg",
+        "name": "Brutally Honest",
+        "type": "hangUp"
+      },
+      "68f6": {
+        "uuid": "Compendium.essence20.tf_crb.Item.DMzShKiIJk3doOpA",
+        "img": "icons/svg/hazard.svg",
+        "name": "Idolizer",
+        "type": "hangUp"
+      },
+      "cd56": {
+        "uuid": "Compendium.essence20.tf_crb.Item.XLDVNcC9B4hnSppZ",
+        "img": "icons/svg/hazard.svg",
+        "name": "Whimsical",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714273560720,
+    "modifiedTime": 1714273743904,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!Ojfs9eQxx3LeDc3y"
+}

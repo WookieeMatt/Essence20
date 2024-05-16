@@ -1,0 +1,115 @@
+{
+  "folder": "Wolydoiv6UVQhz7O",
+  "name": "Force Recon",
+  "type": "focus",
+  "_id": "j6TkHK8YuGrG4dem",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 44
+    },
+    "items": {
+      "8765": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.FrytnQHkq1B0IMz9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick Thinking",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ee98": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.SvByuJ6hUITwR5Q7",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Infantry",
+        "type": "role"
+      },
+      "8b3a": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.58OZMB7WbAgqgpkX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Silent Running",
+        "type": "perk",
+        "subtype": "general",
+        "level": 1
+      },
+      "c28c": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.pQvXMpk7uAvfuGMl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rapid Deployment Drills",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "86a5": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.FWN6697ESy9ua6VI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sneak Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "8fb6": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.HTQEaadz9eZ5ZkC1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Remote Operations",
+        "type": "perk",
+        "subtype": "general",
+        "level": 10
+      },
+      "eebf": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.qZiv0m6kc4G9HYEn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Search and Seizure",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ab94": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.6OxGuWzQz0Fiivas",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Veiled Attacker",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "8bb2": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.AyKHJdCpdtoZHlER",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Interdiction",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "infiltration",
+      "alertness"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714101013512,
+    "modifiedTime": 1714848579872,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!j6TkHK8YuGrG4dem"
+}

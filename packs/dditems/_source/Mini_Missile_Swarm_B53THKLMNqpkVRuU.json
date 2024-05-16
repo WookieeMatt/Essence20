@@ -1,0 +1,97 @@
+{
+  "folder": "Vp6v1H3MnV842PdP",
+  "name": "Mini-Missile Swarm",
+  "type": "weapon",
+  "_id": "B53THKLMNqpkVRuU",
+  "img": "icons/svg/combat.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 74
+    },
+    "items": {
+      "de3e": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.enCkdztPc5Z72xEd",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Mini-Missile Swarm Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 40,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 80
+        },
+        "shiftDown": 0
+      },
+      "4c1d": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.9a9DWHkX4EEUONgQ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Mini-Missile Swarm Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 40,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 80
+        },
+        "shiftDown": 2
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "technology",
+      "shift": "d2"
+    },
+    "traits": [
+      "computerized",
+      "energy",
+      "mounted",
+      "reload",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1696169151519,
+    "modifiedTime": 1704127407203,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!B53THKLMNqpkVRuU"
+}

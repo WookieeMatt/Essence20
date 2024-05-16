@@ -1,0 +1,73 @@
+{
+  "folder": "GZCQaHUXnjHERxw6",
+  "name": "Local Legend",
+  "type": "hangUp",
+  "_id": "ZRTxAVToyCXLbWZ3",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 20
+    }
+  },
+  "effects": [
+    {
+      "name": "Local Legend",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.ZRTxAVToyCXLbWZ3",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "CLlynUybJmNJ2v8H",
+      "changes": [
+        {
+          "key": "system.skills.deception.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.persuasion.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.streatwise.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!ZRTxAVToyCXLbWZ3.CLlynUybJmNJ2v8H"
+    }
+  ],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1694463398760,
+    "modifiedTime": 1704127412652,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ZRTxAVToyCXLbWZ3"
+}

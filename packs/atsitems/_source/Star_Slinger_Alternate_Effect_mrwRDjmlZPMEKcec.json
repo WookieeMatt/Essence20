@@ -1,0 +1,43 @@
+{
+  "folder": "Z2xK8nOrVV5BbzH4",
+  "name": "Star Slinger Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "mrwRDjmlZPMEKcec",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "element",
+    "damageValue": 2,
+    "shiftDown": 1,
+    "numHands": "1",
+    "numTargets": 4,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": 50
+    }
+  },
+  "effects": [],
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695958253504,
+    "modifiedTime": 1704127405446,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!mrwRDjmlZPMEKcec"
+}

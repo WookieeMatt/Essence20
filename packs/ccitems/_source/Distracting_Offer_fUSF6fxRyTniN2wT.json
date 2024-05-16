@@ -1,0 +1,33 @@
+{
+  "folder": "9JCXenBE33fyT4Dl",
+  "name": "Distracting Offer",
+  "type": "perk",
+  "_id": "fUSF6fxRyTniN2wT",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 42
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686493319318,
+    "modifiedTime": 1704127406340,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!fUSF6fxRyTniN2wT"
+}

@@ -1,9 +1,11 @@
+
 import {
-  compareShift,
-  getShiftedSkill,
-  parseId,
   rememberOptions,
   rememberValues,
+} from "../helpers/dialog.mjs";
+import {
+  getShiftedSkill,
+  parseId,
 } from "../helpers/utils.mjs";
 
 /**
@@ -279,7 +281,7 @@ async function _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alt
       for (const essence of essences) {
         if (options[essence]) {
           if (actor.system.skills[skill].essences[essence]) {
-            if (compareShift(actor.system.skills[skill].shift, "d20", "greater")) {
+            if (_compareShift(actor.system.skills[skill].shift, "d20", "greater")) {
               choices[skill] = {
                 chosen: false,
                 label: CONFIG.E20.originSkills[skill],
@@ -293,7 +295,7 @@ async function _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alt
     const essence = alteration.system.essenceCost;
     for (const skill in actor.system.skills) {
       if (actor.system.skills[skill].essences[essence]) {
-        if (compareShift(actor.system.skills[skill].shift, "d20", "greater")) {
+        if (_compareShift(actor.system.skills[skill].shift, "d20", "greater")) {
           choices[skill] = {
             chosen: false,
             label: CONFIG.E20.originSkills[skill],
@@ -348,6 +350,24 @@ async function _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alt
       },
     },
   ).render(true);
+}
+
+/** Handle comparing skill rank
+ * @param {String} shift1 The first skill
+ * @param {String} shift2 The second skill
+ * @param {String} operator The type of comparison
+ * @return {Boolean} The result of the comparison
+ */
+function _compareShift(shift1, shift2, operator) {
+  if (operator == 'greater') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) < CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else if (operator == 'lesser') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) > CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else if (operator == 'equal') {
+    return CONFIG.E20.skillShiftList.indexOf(shift1) == CONFIG.E20.skillShiftList.indexOf(shift2);
+  } else {
+    throw new Error(`Operator ${operator} not expected`);
+  }
 }
 
 /**

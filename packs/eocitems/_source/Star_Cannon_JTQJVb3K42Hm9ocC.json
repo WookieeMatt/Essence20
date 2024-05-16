@@ -1,0 +1,76 @@
+{
+  "folder": "cEeRlddcqrbt80q8",
+  "name": "Star Cannon",
+  "type": "weapon",
+  "_id": "JTQJVb3K42Hm9ocC",
+  "img": "systems/essence20/assets/icons/weapons/dual_cannon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 52
+    },
+    "items": {
+      "01b4": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.LoLncHZ7pTcg7DnT",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Star Cannon Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 4,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 300,
+          "value": 100
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Towering",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "fire",
+      "mounted",
+      "titanClass",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714481476911,
+    "modifiedTime": 1714481526216,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!JTQJVb3K42Hm9ocC"
+}

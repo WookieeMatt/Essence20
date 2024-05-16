@@ -1,0 +1,35 @@
+{
+  "name": "Battlizer Access (Specific Battlizer)",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 68
+    },
+    "prerequisite": "5th Level or higher, GM Approval",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686013015441,
+    "modifiedTime": 1704127399118,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "JGAOozVnu9Nou5Xj",
+  "folder": "wCReLTLx2TAq0REM",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!JGAOozVnu9Nou5Xj"
+}

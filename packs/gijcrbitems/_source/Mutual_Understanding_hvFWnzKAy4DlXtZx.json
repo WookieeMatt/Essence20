@@ -1,0 +1,34 @@
+{
+  "folder": "gWqJagJfj40RBQmH",
+  "name": "Mutual Understanding",
+  "type": "perk",
+  "_id": "hvFWnzKAy4DlXtZx",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 92
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 162500,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1706573933594,
+    "modifiedTime": 1714850790931,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!hvFWnzKAy4DlXtZx"
+}

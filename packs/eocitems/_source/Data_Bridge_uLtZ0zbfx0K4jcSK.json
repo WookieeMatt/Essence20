@@ -1,0 +1,34 @@
+{
+  "folder": "XaV9ddgHOGjG3FUM",
+  "name": "Data Bridge",
+  "type": "perk",
+  "_id": "uLtZ0zbfx0K4jcSK",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 29
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.2.0",
+    "coreVersion": "11.315",
+    "createdTime": 1714393402401,
+    "modifiedTime": 1714855931744,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!uLtZ0zbfx0K4jcSK"
+}

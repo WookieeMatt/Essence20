@@ -1,0 +1,34 @@
+{
+  "folder": "7m4vY7S71L5akS36",
+  "name": "Camouflage Hide",
+  "type": "perk",
+  "_id": "PuMnUtkl1eZ0HmY7",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Dark Skies Over Equestria",
+      "page": 20
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1713841217739,
+    "modifiedTime": 1713841225097,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!PuMnUtkl1eZ0HmY7"
+}

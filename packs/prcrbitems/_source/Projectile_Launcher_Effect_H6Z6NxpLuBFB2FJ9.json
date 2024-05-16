@@ -1,0 +1,43 @@
+{
+  "folder": "y6hopQhl3OPjCyRs",
+  "name": "Projectile Launcher Effect",
+  "type": "weaponEffect",
+  "_id": "H6Z6NxpLuBFB2FJ9",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 100,
+      "value": 50
+    }
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695323005747,
+    "modifiedTime": 1704127415938,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 1000000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!H6Z6NxpLuBFB2FJ9"
+}

@@ -1,0 +1,46 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Blaster Effect",
+  "type": "weaponEffect",
+  "_id": "YKjdi8RTLO1PT8wE",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 80,
+      "value": 25
+    },
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 121
+    }
+  },
+  "effects": [],
+  "sort": 5700000,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714317079577,
+    "modifiedTime": 1714344434295,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!YKjdi8RTLO1PT8wE"
+}

@@ -1,0 +1,49 @@
+{
+  "name": "Thrillseeker",
+  "type": "influence",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 55
+    },
+    "items": {
+      "29b9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.1a2XxfZJQczBFoJm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Thrillseeker",
+        "type": "perk"
+      },
+      "dfeb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7ISxvemsGVWGIzna",
+        "img": "icons/svg/hazard.svg",
+        "name": "Thrillseeker",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686283125548,
+    "modifiedTime": 1704127411796,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "lGgeqncDWIXpECNg",
+  "folder": "848nQlbiz9DfiwL2",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!lGgeqncDWIXpECNg"
+}

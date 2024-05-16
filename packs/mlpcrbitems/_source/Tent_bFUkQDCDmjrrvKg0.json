@@ -1,0 +1,35 @@
+{
+  "folder": "qxnBZjvAup48KbHV",
+  "name": "Tent",
+  "type": "gear",
+  "_id": "bFUkQDCDmjrrvKg0",
+  "img": "systems/essence20/assets/icons/gear/camping-tent.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 154
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "exploration"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1695580044371,
+    "modifiedTime": 1704127413378,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!bFUkQDCDmjrrvKg0"
+}

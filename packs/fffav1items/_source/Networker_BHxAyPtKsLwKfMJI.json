@@ -1,0 +1,48 @@
+{
+  "folder": "U7v9viwsFtcyjclc",
+  "name": "Networker",
+  "type": "influence",
+  "_id": "BHxAyPtKsLwKfMJI",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 8
+    },
+    "items": {
+      "b0fb": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.TfkbGe9bsMThgNUj",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Networker",
+        "type": "perk"
+      },
+      "93c6": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.q02Yuz0TvTJPRTdQ",
+        "img": "icons/svg/hazard.svg",
+        "name": "Networker",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714016774910,
+    "modifiedTime": 1714016785496,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!BHxAyPtKsLwKfMJI"
+}

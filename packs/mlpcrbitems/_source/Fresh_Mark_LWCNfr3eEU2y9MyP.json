@@ -1,0 +1,66 @@
+{
+  "name": "Fresh Mark",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 54
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence"
+  },
+  "effects": [
+    {
+      "icon": "icons/svg/aura.svg",
+      "origin": "Item.LWCNfr3eEU2y9MyP",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "SprX9BXFeGMmGS4z",
+      "changes": [
+        {
+          "key": "system.skills.deception.edge",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": null,
+      "transfer": true,
+      "flags": {},
+      "name": "First Deception",
+      "description": "",
+      "statuses": [],
+      "_key": "!items.effects!LWCNfr3eEU2y9MyP.SprX9BXFeGMmGS4z"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1686008941457,
+    "modifiedTime": 1704127413369,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+  },
+  "_id": "LWCNfr3eEU2y9MyP",
+  "folder": "Tfmw9ivxWE7QDsfv",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!LWCNfr3eEU2y9MyP"
+}

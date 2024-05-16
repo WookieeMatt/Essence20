@@ -1,0 +1,34 @@
+{
+  "folder": "i9zUKaC3eeT4j8GX",
+  "name": "Personal Munitions Pack",
+  "type": "gear",
+  "_id": "CXenUI5l8c3WZNSw",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 56
+    },
+    "quantity": 1,
+    "type": "",
+    "gearType": "other"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714512124149,
+    "modifiedTime": 1714512191758,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!CXenUI5l8c3WZNSw"
+}

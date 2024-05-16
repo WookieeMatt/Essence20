@@ -1,0 +1,34 @@
+{
+  "folder": "bhcxoAYfPveRVKcl",
+  "name": "Gestalt Combiner",
+  "type": "perk",
+  "_id": "a4BfJxhUC7hAhgdZ",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Enigma of Combination",
+      "page": 40
+    },
+    "prerequisite": "Energon Pool Max 3+",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714434598729,
+    "modifiedTime": 1714434624123,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!a4BfJxhUC7hAhgdZ"
+}

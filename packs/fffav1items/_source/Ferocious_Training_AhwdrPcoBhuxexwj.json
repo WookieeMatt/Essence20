@@ -1,0 +1,69 @@
+{
+  "folder": "2BoEhH0l50maUjLi",
+  "name": "Ferocious Training",
+  "type": "perk",
+  "_id": "AhwdrPcoBhuxexwj",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 37
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Ferocious Training",
+      "icon": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.ferocious_fighters.Item.AhwdrPcoBhuxexwj",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "NI9r6spuYDktQp55",
+      "changes": [
+        {
+          "key": "system.skills.alertness.edge",
+          "mode": 5,
+          "value": "true"
+        },
+        {
+          "key": "system.movement.ground.bonus",
+          "mode": 2,
+          "value": "5"
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": null,
+      "_key": "!items.effects!AhwdrPcoBhuxexwj.NI9r6spuYDktQp55"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "TfzSCNLMDHUjSABQ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "11.315",
+    "createdTime": 1714098639221,
+    "modifiedTime": 1714098744419,
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+  },
+  "_key": "!items!AhwdrPcoBhuxexwj"
+}
