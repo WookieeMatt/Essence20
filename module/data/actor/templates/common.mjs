@@ -106,6 +106,7 @@ export const common = () => ({
   movementNotSet: makeBool(false),
   powers: new fields.SchemaField({
     personal: new fields.SchemaField({
+      regeneration: makeInt(0),
       max: makeInt(0),
       value: makeInt(0),
     }),

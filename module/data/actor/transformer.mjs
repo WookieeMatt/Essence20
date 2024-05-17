@@ -1,4 +1,6 @@
-import { makeBool, makeInt, makeStr } from "../generic-makers.mjs";
+import { E20 } from "../../helpers/config.mjs";
+
+import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { character } from './templates/character.mjs';
 import { common } from './templates/common.mjs';
@@ -13,7 +15,7 @@ export class TransformerActorData extends foundry.abstract.TypeDataModel {
       canTransform: makeBool(true),
       externalHardpoints: makeInt(2),
       internalHarpoints: makeInt(2),
-      transformerFaction: makeStr('autobots'),
+      transformerFaction: makeStrWithChoices('autobots', Object.keys(E20.transformerFactions)),
     };
   }
 }
