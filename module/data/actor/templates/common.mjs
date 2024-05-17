@@ -66,10 +66,10 @@ export const common = () => ({
     }),
   }),
   essenceRanks: new fields.SchemaField({
-    smarts: makeInt(0),
-    social: makeInt(0),
-    speed: makeInt(0),
-    strength: makeInt(0),
+    smarts: makeStrWithChoices(null, E20.EssenceRankNames),
+    social: makeStrWithChoices(null, E20.EssenceRankNames),
+    speed: makeStrWithChoices(null, E20.EssenceRankNames),
+    strength: makeStrWithChoices(null, E20.EssenceRankNames),
   }),
   essenceShifts: new fields.SchemaField({
     any: makeEssenceShift(),
