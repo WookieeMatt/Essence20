@@ -4,7 +4,7 @@ import { makeBool, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 
-export class SpecializationItemData extends foundry.abstract.DataModel {
+export class SpecializationItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),

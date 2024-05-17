@@ -5,7 +5,7 @@ import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-maker
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 
-export class SpellItemData extends foundry.abstract.DataModel {
+export class SpellItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),

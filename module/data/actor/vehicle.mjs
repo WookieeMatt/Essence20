@@ -5,7 +5,7 @@ import { machine } from './templates/machine.mjs';
 
 const fields = foundry.data.fields;
 
-export class VehicleActorData extends foundry.abstract.DataModel {
+export class VehicleActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...common(),

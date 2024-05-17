@@ -4,7 +4,7 @@ import { character } from './templates/character.mjs';
 import { common } from './templates/common.mjs';
 import { creature } from './templates/creature.mjs';
 
-export class TransformerActorData extends foundry.abstract.DataModel {
+export class TransformerActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...character(),

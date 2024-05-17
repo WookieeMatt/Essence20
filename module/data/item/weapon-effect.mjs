@@ -6,7 +6,7 @@ import { item } from './templates/item.mjs';
 
 const fields = foundry.data.fields;
 
-export class WeaponEffectItemData extends foundry.abstract.DataModel {
+export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),

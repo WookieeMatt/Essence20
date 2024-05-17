@@ -7,7 +7,7 @@ import { itemDescription } from './templates/item-description.mjs';
 
 const fields = foundry.data.fields;
 
-export class RolePointsItemData extends foundry.abstract.DataModel {
+export class RolePointsItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),

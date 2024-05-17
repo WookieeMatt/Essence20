@@ -4,7 +4,7 @@ import { common } from './templates/common.mjs';
 import { machine } from './templates/machine.mjs';
 import { zordBase } from './templates/zord-base.mjs';
 
-export class MegaformZordActorData extends foundry.abstract.DataModel {
+export class MegaformZordActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...common(),

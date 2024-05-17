@@ -5,7 +5,7 @@ import { makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 
-export class MagicBaubleItemData extends foundry.abstract.DataModel {
+export class MagicBaubleItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),

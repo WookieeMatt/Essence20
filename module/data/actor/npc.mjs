@@ -12,7 +12,7 @@ function makeDefensesFields(init) {
   });
 }
 
-export class NpcActorData extends foundry.abstract.DataModel {
+export class NpcActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...character(),

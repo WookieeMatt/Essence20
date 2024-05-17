@@ -7,7 +7,7 @@ import { itemDescription } from './templates/item-description.mjs';
 
 const fields = foundry.data.fields;
 
-export class AltModeItemData extends foundry.abstract.DataModel {
+export class AltModeItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),

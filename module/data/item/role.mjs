@@ -6,7 +6,7 @@ import { parentItem } from './templates/parent-item.mjs';
 
 const fields = foundry.data.fields;
 
-export class RoleItemData extends foundry.abstract.DataModel {
+export class RoleItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),
