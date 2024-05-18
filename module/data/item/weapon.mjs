@@ -24,8 +24,12 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
         skill: makeStrWithChoices(null, Object.keys(E20.skills)),
         shift: makeStrWithChoices(null, E20.weaponRequirementShifts),
       }),
-      traits: makeStrArray(),
-      upgradeTraits: makeStrArray(),
+      traits: new fields.ArrayField(
+        makeStrWithChoices(Object.keys(E20.weaponTraits)),
+      ),
+      upgradeTraits: new fields.ArrayField(
+        makeStrWithChoices(Object.keys(E20.weaponTraits)),
+      ),
       usesPerScene: makeInt(null),
     };
   }

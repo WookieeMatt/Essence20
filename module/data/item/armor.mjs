@@ -6,6 +6,8 @@ import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 import { parentItem } from './templates/parent-item.mjs';
 
+const fields = foundry.data.fields;
+
 export class ArmorItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
@@ -17,8 +19,12 @@ export class ArmorItemData extends foundry.abstract.TypeDataModel {
       bonusToughness: makeInt(0),
       classification: makeStrWithChoices('light', Object.keys(E20.armorClassifications)),
       equipped: makeBool(false),
-      traits: makeStrArray(),
-      upgradeTraits: makeStrArray(),
+      traits: new fields.ArrayField(
+        makeStrWithChoices(Object.keys(E20.armorTraits)),
+      ),
+      upgradeTraits: new fields.ArrayField(
+        makeStrWithChoices(Object.keys(E20.armorTraits)),
+      ),
     };
   }
 }

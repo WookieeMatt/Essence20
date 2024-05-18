@@ -18,7 +18,9 @@ export class UpgradeItemData extends foundry.abstract.TypeDataModel {
       }),
       availability: makeStrWithChoices('standard', Object.keys(E20.availabilities)),
       benefit: makeStr(''),
-      traits: makeStrArray(),
+      traits: new fields.ArrayField(
+        makeStrWithChoices(Object.keys(E20.weaponTraits).concat(E20.armorTraits)),
+      ),
       type: makeStrWithChoices('armor', Object.keys(E20.upgradeTypes)),
       prerequisite: makeStr(null),
     };
