@@ -1,4 +1,6 @@
-import { makeBool, makeInt, makeStr, makeStrArray } from "../generic-makers.mjs";
+import { E20 } from "../../helpers/config.mjs";
+
+import { makeBool, makeInt, makeStr, makeStrArray, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -16,8 +18,12 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
         health: makeStrArray(),
       }),
       armors: new fields.SchemaField({
-        qualified: makeStrArray(),
-        trained: makeStrArray(),
+        qualified: new fields.ArrayField(
+          makeStrWithChoices(Object.keys(E20.armorTypes)),
+        ),
+        trained: new fields.ArrayField(
+          makeStrWithChoices(Object.keys(E20.armorTypes)),
+        ),
       }),
       essenceLevels: new fields.SchemaField({
         smarts: makeStrArray(),
@@ -63,11 +69,17 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
         levels: makeStrArray(),
         specializedLevels: makeStrArray(),
       }),
-      skills: makeStrArray(),
+      skills: new fields.ArrayField(
+        makeStrWithChoices(Object.keys(E20.originSkills)),
+      ),
       version: makeStr(''),
       weapons: new fields.SchemaField({
-        qualified: makeStrArray(),
-        trained: makeStrArray(),
+        qualified: new fields.ArrayField(
+          makeStrWithChoices(Object.keys(E20.weaponTypes)),
+        ),
+        trained: new fields.ArrayField(
+          makeStrWithChoices(Object.keys(E20.weaponTypes)),
+        ),
       }),
     };
   }
