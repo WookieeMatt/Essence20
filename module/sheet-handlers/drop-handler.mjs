@@ -136,6 +136,8 @@ export async function onDropActor(data, actorSheet) {
         "system.zordIds": zordIds,
       }).then(actorSheet.render(false));
     }
+  }else if (actor.type.includes("powerRanger") && sourceActor.type == 'zord') {
+
   } else {
     return false;
   }
