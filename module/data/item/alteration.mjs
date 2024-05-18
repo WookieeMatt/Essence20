@@ -20,10 +20,10 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
       costSkill: makeStrWithChoices(null, Object.keys(E20.skills)),
       essenceBenefit: makeStr(''),
       essenceBonus: new fields.ArrayField(
-        makeStrWithChoices(null, Object.keys(E20.essences)),
+        makeStrWithChoices(Object.keys(E20.essences)),
       ),
       essenceCost: new fields.ArrayField(
-        makeStrWithChoices(null, Object.keys(E20.essences)),
+        makeStrWithChoices(Object.keys(E20.essences)),
       ),
       movementCost: makeStr(''),
       selectedEssence: makeStrWithChoices(null, Object.keys(E20.essences)),
