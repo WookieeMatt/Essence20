@@ -1,7 +1,10 @@
-import { makeStr, makeStrArray } from "../generic-makers.mjs";
+import { E20 } from "../../helpers/config.mjs";
+
+import { makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
+import { parentItem } from './templates/parent-item.mjs';
 
 const fields = foundry.data.fields;
 
@@ -10,7 +13,10 @@ export class FocusItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
-      essences: makeStr(''),
+      ...parentItem(),
+      essences: new fields.ArrayField(
+        makeStrWithChoices(Object.keys(E20.essences)),
+      ),
       essenceLevels: new fields.ArrayField(
         new fields.StringField(),
         {
@@ -21,7 +27,9 @@ export class FocusItemData extends foundry.abstract.TypeDataModel {
         },
       ),
       roleId: makeStr(''),
-      skills: makeStrArray(),
+      skills: new fields.ArrayField(
+        makeStrWithChoices(Object.keys(E20.skills)),
+      ),
     };
   }
 }
