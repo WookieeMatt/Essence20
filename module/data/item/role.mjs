@@ -14,6 +14,18 @@ import { itemDescription } from './templates/item-description.mjs';
 import { parentItem } from './templates/parent-item.mjs';
 
 const fields = foundry.data.fields;
+const initGridPowerLevels = [
+  "level6",
+  "level11",
+  "level16",
+];
+const initPerkLevels = [
+  "level4",
+  "level8",
+  "level12",
+  "level16",
+  "level19",
+];
 
 export class RoleItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -29,39 +41,17 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
         trained: makeStrArrayWithChoices(Object.keys(E20.armorTypes)),
       }),
       essenceLevels: new fields.SchemaField({
-        smarts: makeStrArray(),
-        social: makeStrArray(),
-        speed: makeStrArray(),
-        strength: makeStrArray(),
+        smarts: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
+        social: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
+        speed: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
+        strength: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
       }),
-      gridPowerLevels: new fields.ArrayField(
-        new fields.StringField(),
-        {
-          initial: [
-            "level6",
-            "level11",
-            "level16",
-          ],
-        },
-      ),
-      perkLevels: new fields.SchemaField({
-        general: new fields.ArrayField(
-          new fields.StringField(),
-          {
-            initial: [
-              "level4",
-              "level8",
-              "level12",
-              "level16",
-              "level19",
-            ],
-          },
-        ),
-      }),
+      gridPowerLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), initGridPowerLevels),
+      perkLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), initPerkLevels),
       powers: new fields.SchemaField({
         personal: new fields.SchemaField({
           increase: makeInt(0),
-          levels: makeStrArray(),
+          levels: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
           regeneration: makeInt(0),
           starting: makeInt(0),
         }),
@@ -69,8 +59,8 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
       skillDie: new fields.SchemaField({
         isUsed: makeBool(false),
         name: makeStr(''),
-        levels: makeStrArray(),
-        specializedLevels: makeStrArray(),
+        levels: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
+        specializedLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
       }),
       skills: makeStrArrayWithChoices(Object.keys(E20.originSkills)),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),

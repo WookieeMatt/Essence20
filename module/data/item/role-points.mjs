@@ -1,6 +1,6 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStrArray, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -21,7 +21,7 @@ export class RolePointsItemData extends foundry.abstract.TypeDataModel {
         }),
         increase: makeInt(0),
         level20Value: makeInt(null),
-        increaseLevels: makeStrArray(),
+        increaseLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), []),
         startingValue: makeInt(null),
         type: makeStrWithChoices(Object.keys(E20.bonusTypes), 'none'),
         value : makeInt(0),
@@ -33,7 +33,7 @@ export class RolePointsItemData extends foundry.abstract.TypeDataModel {
         increase: makeInt(0),
         level20Value: makeInt(null),
         level20ValueIsUnlimited: makeBool(false),
-        increaseLevels: makeStrArray(),
+        increaseLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), []),
         max: makeInt(null),
         startingValue: makeInt(null),
         value : makeInt(0),

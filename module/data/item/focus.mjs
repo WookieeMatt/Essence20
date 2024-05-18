@@ -6,7 +6,10 @@ import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 import { parentItem } from './templates/parent-item.mjs';
 
-const fields = foundry.data.fields;
+const initEssenceLevels = [
+  'level1',
+  'level10',
+];
 
 export class FocusItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -15,15 +18,7 @@ export class FocusItemData extends foundry.abstract.TypeDataModel {
       ...itemDescription(),
       ...parentItem(),
       essences: makeStrArrayWithChoices(Object.keys(E20.essences)),
-      essenceLevels: new fields.ArrayField(
-        new fields.StringField(),
-        {
-          initial: [
-            'level1',
-            'level10',
-          ],
-        },
-      ),
+      essenceLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), initEssenceLevels),
       roleId: makeStr(''),
       skills: makeStrArrayWithChoices(Object.keys(E20.skills)),
     };
