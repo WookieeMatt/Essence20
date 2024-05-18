@@ -14,18 +14,18 @@ export class AlterationItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
-      availability: makeStrWithChoices('standard', Object.keys(E20.availabilities)),
+      availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       benefit: makeStr(''),
       bonus: makeStr(null),
-      bonusSkill: makeStrWithChoices(null, Object.keys(E20.skills)),
+      bonusSkill: makeStrWithChoices(Object.keys(E20.skills), null),
       cost: makeStr(null),
-      costSkill: makeStrWithChoices(null, Object.keys(E20.skills)),
+      costSkill: makeStrWithChoices(Object.keys(E20.skills), null),
       essenceBenefit: makeStr(''),
       essenceBonus: makeStrArrayWithChoices(Object.keys(E20.essences)),
       essenceCost: makeStrArrayWithChoices(Object.keys(E20.essences)),
       movementCost: makeStr(''),
-      selectedEssence: makeStrWithChoices(null, Object.keys(E20.essences)),
-      type: makeStrWithChoices('other', Object.keys(E20.alterationTypes)),
+      selectedEssence: makeStrWithChoices(Object.keys(E20.essences), null),
+      type: makeStrWithChoices(Object.keys(E20.alterationTypes), 'other'),
     };
   }
 }

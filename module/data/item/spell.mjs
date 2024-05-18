@@ -10,12 +10,12 @@ export class SpellItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
-      circle: makeStrWithChoices('aid', Object.keys(E20.spellCircles)),
+      circle: makeStrWithChoices(Object.keys(E20.spellCircles), 'aid'),
       cost: makeInt(0),
       duration: makeStr(''),
       isSpecialized: makeBool(false),
       range: makeInt(0),
-      tier: makeStrWithChoices('elementary', Object.keys(E20.spellTiers)),
+      tier: makeStrWithChoices(Object.keys(E20.spellTiers), 'elementary'),
     };
   }
 }

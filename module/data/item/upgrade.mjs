@@ -18,13 +18,13 @@ export class UpgradeItemData extends foundry.abstract.TypeDataModel {
       ...item(),
       ...itemDescription(),
       armorBonus: new fields.SchemaField({
-        defense: makeStrWithChoices('toughness', Object.keys(E20.defenses)),
+        defense: makeStrWithChoices(Object.keys(E20.defenses), 'toughness'),
         value: makeInt(0),
       }),
-      availability: makeStrWithChoices('standard', Object.keys(E20.availabilities)),
+      availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       benefit: makeStr(''),
       traits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits).concat(E20.armorTraits)),
-      type: makeStrWithChoices('armor', Object.keys(E20.upgradeTypes)),
+      type: makeStrWithChoices(Object.keys(E20.upgradeTypes), 'armor'),
       prerequisite: makeStr(null),
     };
   }

@@ -11,7 +11,7 @@ export class GearItemData extends foundry.abstract.TypeDataModel {
       ...item(),
       ...itemDescription(),
       quantity: makeInt(1),
-      type: makeStrWithChoices('clothes', Object.keys(E20.gearTypes)),
+      type: makeStrWithChoices(Object.keys(E20.gearTypes), 'clothes'),
     };
   }
 }

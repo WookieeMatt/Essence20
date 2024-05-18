@@ -20,14 +20,14 @@ export class CompanionActorData extends foundry.abstract.TypeDataModel {
       ...character(),
       ...common(),
       ...creature(),
-      availability: makeStrWithChoices('standard', Object.keys(E20.availabilities)),
+      availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
       defenses: new fields.SchemaField({
         toughness: makeDefensesFields(10),
         evasion: makeDefensesFields(10),
         willpower: makeDefensesFields(null),
         cleverness: makeDefensesFields(null),
       }),
-      type: makeStrWithChoices('pet', Object.keys(E20.companionTypes)),
+      type: makeStrWithChoices(Object.keys(E20.companionTypes), 'pet'),
     };
   }
 }

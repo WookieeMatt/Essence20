@@ -14,7 +14,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       ...parentItem(),
       prerequisite: makeStr(null),
       selectionLimit: makeInt(1),
-      type: makeStrWithChoices('general', Object.keys(E20.perkTypes)),
+      type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
     };
   }
 }

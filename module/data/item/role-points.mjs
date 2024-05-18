@@ -23,7 +23,7 @@ export class RolePointsItemData extends foundry.abstract.TypeDataModel {
         level20Value: makeInt(null),
         increaseLevels: makeStrArray(),
         startingValue: makeInt(null),
-        type: makeStrWithChoices('none', Object.keys(E20.bonusTypes)),
+        type: makeStrWithChoices(Object.keys(E20.bonusTypes), 'none'),
         value : makeInt(0),
       }),
       isActivatable: makeBool(false),

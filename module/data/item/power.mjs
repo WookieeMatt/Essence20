@@ -10,14 +10,14 @@ export class PowerItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
-      actionType: makeStrWithChoices('free', Object.keys(E20.actionTypes)),
+      actionType: makeStrWithChoices(Object.keys(E20.actionTypes), 'free'),
       canActivate: makeBool(false),
       hasVariableCost: makeBool(false),
       maxPowerCost: makeInt(null),
       powerCost: makeInt(null),
       selectionLimit: makeInt(1),
-      type: makeStrWithChoices('grid', Object.keys(E20.powerTypes)),
-      usesInterval: makeStrWithChoices('perScene', Object.keys(E20.usesInterval)),
+      type: makeStrWithChoices(Object.keys(E20.powerTypes), 'grid'),
+      usesInterval: makeStrWithChoices(Object.keys(E20.usesInterval), 'perScene'),
       usesPer: makeInt(null),
     };
   }

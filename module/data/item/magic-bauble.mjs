@@ -12,7 +12,7 @@ export class MagicBaubleItemData extends foundry.abstract.TypeDataModel {
       ...itemDescription(),
       duration: makeStr(''),
       range: makeStr(''),
-      spellcastingShift: makeStrWithChoices('d2', E20.skillShifts),
+      spellcastingShift: makeStrWithChoices(E20.skillShifts, 'd2'),
     };
   }
 }

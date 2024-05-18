@@ -73,7 +73,7 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
         specializedLevels: makeStrArray(),
       }),
       skills: makeStrArrayWithChoices(Object.keys(E20.originSkills)),
-      version: makeStrWithChoices('powerRangers', Object.keys(E20.gameVersions)),
+      version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
       weapons: new fields.SchemaField({
         qualified: makeStrArrayWithChoices(Object.keys(E20.weaponTypes)),
         trained: makeStrArrayWithChoices(Object.keys(E20.weaponTypes)),

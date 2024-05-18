@@ -23,7 +23,7 @@ export function makeStrArray() {
   return new fields.ArrayField(new fields.StringField());
 }
 
-export function makeStrWithChoices(initial, choices) {
+export function makeStrWithChoices(choices, initial) {
   return new fields.StringField({
     choices,
     initial,
@@ -31,10 +31,8 @@ export function makeStrWithChoices(initial, choices) {
   });
 }
 
-export function makeStrArrayWithChoices(choices) {
+export function makeStrArrayWithChoices(choices, initial=[]) {
   return new fields.ArrayField(
-    new fields.StringField({
-      choices,
-    }),
+    makeStrWithChoices(choices, initial),
   );
 }

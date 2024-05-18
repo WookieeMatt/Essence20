@@ -32,7 +32,7 @@ function makeSkillFields() {
     edge: makeBool(false),
     isSpecialized: makeBool(false),
     modifier: makeInt(0),
-    shift: makeStrWithChoices('d20', Object.keys(E20.skillShifts)),
+    shift: makeStrWithChoices(Object.keys(E20.skillShifts), 'd20'),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
     snag: makeBool(false),
@@ -41,7 +41,7 @@ function makeSkillFields() {
 
 export const common = () => ({
   altModeName: makeStr(''),
-  altModeSize: makeStrWithChoices('common', Object.keys(E20.actorSizes)),
+  altModeSize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   canMorph: makeBool(false),
   canSpellcast: makeBool(false),
   canTransform: makeBool(false),
@@ -66,10 +66,10 @@ export const common = () => ({
     }),
   }),
   essenceRanks: new fields.SchemaField({
-    smarts: makeStrWithChoices(null, E20.EssenceRankNames),
-    social: makeStrWithChoices(null, E20.EssenceRankNames),
-    speed: makeStrWithChoices(null, E20.EssenceRankNames),
-    strength: makeStrWithChoices(null, E20.EssenceRankNames),
+    smarts: makeStrWithChoices(E20.EssenceRankNames, null),
+    social: makeStrWithChoices(E20.EssenceRankNames, null),
+    speed: makeStrWithChoices(E20.EssenceRankNames, null),
+    strength: makeStrWithChoices(E20.EssenceRankNames, null),
   }),
   essenceShifts: new fields.SchemaField({
     any: makeEssenceShift(),
@@ -90,7 +90,7 @@ export const common = () => ({
     formula: makeStr('2d20kl + 0'),
     modifier: makeInt(0),
     snag: makeBool(false),
-    shift: makeStrWithChoices('d20', E20.initiativeShiftList),
+    shift: makeStrWithChoices(E20.initiativeShiftList, 'd20'),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
   }),
@@ -116,7 +116,7 @@ export const common = () => ({
       value: makeInt(0),
     }),
   }),
-  size: makeStrWithChoices('common', Object.keys(E20.actorSizes)),
+  size: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   skills: new fields.SchemaField({
     acrobatics: makeSkillFields(),
     alertness: makeSkillFields(),

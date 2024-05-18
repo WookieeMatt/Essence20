@@ -19,7 +19,7 @@ export class AltModeItemData extends foundry.abstract.TypeDataModel {
         aquatic: makeInt(0),
         ground: makeInt(0),
       }),
-      size: makeStrWithChoices('common', Object.keys(E20.actorSizes)),
+      size: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
     };
   }
 }

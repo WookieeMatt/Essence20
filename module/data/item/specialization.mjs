@@ -9,8 +9,8 @@ export class SpecializationItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       isSpecialized: makeBool(true),
-      shift: makeStrWithChoices('d20', E20.skillShiftList),
-      skill: makeStrWithChoices('athletics', Object.keys(E20.skills)),
+      shift: makeStrWithChoices(E20.skillShiftList, 'd20'),
+      skill: makeStrWithChoices(Object.keys(E20.skills), 'athletics'),
     };
   }
 }
