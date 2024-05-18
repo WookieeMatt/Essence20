@@ -1,6 +1,12 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
+import {
+  makeBool,
+  makeInt,
+  makeStr,
+  makeStrArrayWithChoices,
+  makeStrWithChoices,
+} from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -24,12 +30,8 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
         skill: makeStrWithChoices(null, Object.keys(E20.skills)),
         shift: makeStrWithChoices(null, E20.weaponRequirementShifts),
       }),
-      traits: new fields.ArrayField(
-        makeStrWithChoices(Object.keys(E20.weaponTraits)),
-      ),
-      upgradeTraits: new fields.ArrayField(
-        makeStrWithChoices(Object.keys(E20.weaponTraits)),
-      ),
+      traits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
+      upgradeTraits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
       usesPerScene: makeInt(null),
     };
   }

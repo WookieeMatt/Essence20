@@ -30,3 +30,9 @@ export function makeStrWithChoices(initial, choices) {
     nullable: initial == null,
   });
 }
+
+export function makeStrArrayWithChoices(choices) {
+  return new fields.ArrayField(
+    makeStrWithChoices(choices),
+  );
+}
