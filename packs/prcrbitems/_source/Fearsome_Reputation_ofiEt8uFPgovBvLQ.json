@@ -15,7 +15,6 @@
   },
   "effects": [
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.9gR0IJvQ9NKjonjm",
       "duration": {
         "startTime": null,
@@ -36,16 +35,29 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "Intimidation Social",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!ofiEt8uFPgovBvLQ.r3DReO5TtauwO1Rg"
     },
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.9gR0IJvQ9NKjonjm",
       "duration": {
         "rounds": 1,
@@ -66,12 +78,26 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "Morphed Intimidation Bonus",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!ofiEt8uFPgovBvLQ.jIi10O9KZ8Afmt61"
     }
   ],
@@ -81,10 +107,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1685399479313,
     "modifiedTime": 1704127415981,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "Vc2wR3XEEeI6BPrg",
   "_id": "ofiEt8uFPgovBvLQ",

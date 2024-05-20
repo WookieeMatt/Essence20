@@ -18,7 +18,6 @@
   "effects": [
     {
       "name": "Reactionary",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.mlp_crb.Item.b4rCpGE6aJuxvoB5",
       "duration": {
         "startTime": null,
@@ -43,7 +42,21 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!b4rCpGE6aJuxvoB5.ed3bwjGnIcJQBTth"
     }
   ],
@@ -56,10 +69,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1706830127851,
     "modifiedTime": 1714854987727,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!b4rCpGE6aJuxvoB5"
 }
