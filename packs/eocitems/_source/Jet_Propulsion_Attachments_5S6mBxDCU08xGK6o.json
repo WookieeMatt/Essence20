@@ -24,7 +24,6 @@
   "effects": [
     {
       "name": "New Effect",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.enigma_of_combination.Item.5S6mBxDCU08xGK6o",
       "duration": {
         "startTime": null,
@@ -41,14 +40,29 @@
         {
           "key": "system.movement.aerial.base",
           "mode": 5,
-          "value": "40"
+          "value": "40",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!5S6mBxDCU08xGK6o.M4yuBHHyPv3FW201"
     }
   ],
@@ -61,10 +75,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1714482885310,
     "modifiedTime": 1714482948958,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!5S6mBxDCU08xGK6o"
 }

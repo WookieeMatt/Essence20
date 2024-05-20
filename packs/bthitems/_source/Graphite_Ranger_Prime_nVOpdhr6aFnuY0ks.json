@@ -18,7 +18,6 @@
   "effects": [
     {
       "name": "Graphite Ranger Prime",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.beneath_the_helmet.Item.nVOpdhr6aFnuY0ks",
       "duration": {
         "startTime": null,
@@ -35,29 +34,47 @@
         {
           "key": "system.defenses.cleverness.morphed",
           "mode": 2,
-          "value": "2"
+          "value": "2",
+          "priority": null
         },
         {
           "key": "system.defenses.evasion.morphed",
           "mode": 2,
-          "value": "2"
+          "value": "2",
+          "priority": null
         },
         {
           "key": "system.defenses.toughness.morphed",
           "mode": 2,
-          "value": "2"
+          "value": "2",
+          "priority": null
         },
         {
           "key": "system.defenses.willpower.morphed",
           "mode": 2,
-          "value": "2"
+          "value": "2",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!nVOpdhr6aFnuY0ks.4TIEIS8Jkx8S3TSC"
     }
   ],
@@ -70,10 +87,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1714150590487,
     "modifiedTime": 1714864494810,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!nVOpdhr6aFnuY0ks"
 }

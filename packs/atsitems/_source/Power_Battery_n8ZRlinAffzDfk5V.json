@@ -25,7 +25,6 @@
   "effects": [
     {
       "name": "Power Battery",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.n8ZRlinAffzDfk5V",
       "duration": {
         "startTime": null,
@@ -50,7 +49,21 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!n8ZRlinAffzDfk5V.azlsNHHxHdnuNrNl"
     }
   ],
@@ -58,10 +71,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1699316824757,
     "modifiedTime": 1704127399150,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "sort": 0,
   "ownership": {

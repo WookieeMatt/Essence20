@@ -25,7 +25,6 @@
   "effects": [
     {
       "name": "Speed Boost Ground",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.CDbaCheOK2rUsqli",
       "duration": {
         "startTime": null,
@@ -50,12 +49,25 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!CDbaCheOK2rUsqli.qlqysgFPxC52aRUR"
     },
     {
       "name": "Speed Boost Initiative Edge",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.CDbaCheOK2rUsqli",
       "duration": {
         "startTime": null,
@@ -80,7 +92,21 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!CDbaCheOK2rUsqli.CwGTXu0pjUcpxVv2"
     }
   ],
@@ -88,10 +114,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1699243075098,
     "modifiedTime": 1704127415932,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "sort": 0,
   "ownership": {

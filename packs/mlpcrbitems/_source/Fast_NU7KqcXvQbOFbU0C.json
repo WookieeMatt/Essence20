@@ -15,7 +15,6 @@
   },
   "effects": [
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.Y55n77UqARhPugmy",
       "duration": {
         "startTime": null,
@@ -36,16 +35,29 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "Bonus Ground Movement",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!NU7KqcXvQbOFbU0C.QKwFodfIXRRqrA6r"
     },
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.Y55n77UqARhPugmy",
       "duration": {
         "startTime": null,
@@ -66,16 +78,29 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "Bonus Aerial Movement",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!NU7KqcXvQbOFbU0C.NpRY7BHmPB3gfQeG"
     },
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.Y55n77UqARhPugmy",
       "duration": {
         "startTime": null,
@@ -96,16 +121,29 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "Bonus Swim Movement",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!NU7KqcXvQbOFbU0C.KjnkWH6BzXFKnNXV"
     },
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.Y55n77UqARhPugmy",
       "duration": {
         "startTime": null,
@@ -126,12 +164,26 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "Initiative Bonus",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!NU7KqcXvQbOFbU0C.RMS45cfYUwYBEAL9"
     }
   ],
@@ -141,10 +193,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1685399229973,
     "modifiedTime": 1704127413372,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "hTtvIMEXXET4Kkqf",
   "_id": "NU7KqcXvQbOFbU0C",

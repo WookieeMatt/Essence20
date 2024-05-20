@@ -18,7 +18,6 @@
   "effects": [
     {
       "name": "Competitive Strength",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.J0ljd1QnU9AgoWj6",
       "duration": {
         "startTime": null,
@@ -49,7 +48,21 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!J0ljd1QnU9AgoWj6.bSKz2dW23HYxuLmo"
     }
   ],
@@ -57,10 +70,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1694467104219,
     "modifiedTime": 1704127412647,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "sort": 0,
   "ownership": {

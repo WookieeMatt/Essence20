@@ -15,7 +15,6 @@
   },
   "effects": [
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.M7fLb600qXWY0dPm",
       "duration": {
         "startTime": null,
@@ -36,16 +35,29 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "10 or more",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!M7fLb600qXWY0dPm.TXods3J1J5A4va26"
     },
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.M7fLb600qXWY0dPm",
       "duration": {
         "startTime": null,
@@ -66,16 +78,29 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "100 or more",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!M7fLb600qXWY0dPm.RIyMD6CktG1SeuvC"
     },
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.M7fLb600qXWY0dPm",
       "duration": {
         "startTime": null,
@@ -96,12 +121,26 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "1000 or more",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!M7fLb600qXWY0dPm.QJYO4UdLdb2GTTi4"
     }
   ],
@@ -111,10 +150,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1686008497717,
     "modifiedTime": 1704127413370,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "M7fLb600qXWY0dPm",
   "folder": "Tfmw9ivxWE7QDsfv",

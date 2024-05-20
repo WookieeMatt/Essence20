@@ -18,7 +18,6 @@
   "effects": [
     {
       "name": "5th Level Willpower Bonus",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.mlp_crb.Item.UVFsgco1AMzgZ595",
       "duration": {
         "startTime": null,
@@ -35,19 +34,33 @@
         {
           "key": "system.defenses.willpower.bonus",
           "mode": 2,
-          "value": "1"
+          "value": "1",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!UVFsgco1AMzgZ595.KDACxWebc7pUlHEM"
     },
     {
       "name": "11th Level Willpower Bonus",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.mlp_crb.Item.UVFsgco1AMzgZ595",
       "duration": {
         "startTime": null,
@@ -64,19 +77,33 @@
         {
           "key": "system.defenses.willpower.bonus",
           "mode": 2,
-          "value": "1"
+          "value": "1",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!UVFsgco1AMzgZ595.9YqxRk9FoDMuVCFu"
     },
     {
       "name": "17th Level Willpower Bonus",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.mlp_crb.Item.UVFsgco1AMzgZ595",
       "duration": {
         "startTime": null,
@@ -93,14 +120,29 @@
         {
           "key": "system.defenses.willpower.bonus",
           "mode": 2,
-          "value": "1"
+          "value": "1",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!UVFsgco1AMzgZ595.jQaufAbN4iNEUmiH"
     }
   ],
@@ -113,10 +155,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1706832980261,
     "modifiedTime": 1714855150151,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!UVFsgco1AMzgZ595"
 }

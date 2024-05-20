@@ -27,7 +27,6 @@
   "effects": [
     {
       "name": "Eltarian Guard Plate",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.vmjU8nDOjER1oot0",
       "duration": {
         "startTime": null,
@@ -52,7 +51,21 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!vmjU8nDOjER1oot0.VGwArTuHuXjeIDnH"
     }
   ],
@@ -60,10 +73,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1695745239120,
     "modifiedTime": 1704127406101,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "sort": 0,
   "ownership": {
