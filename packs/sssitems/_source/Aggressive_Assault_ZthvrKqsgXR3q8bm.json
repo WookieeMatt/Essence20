@@ -18,7 +18,6 @@
   "effects": [
     {
       "name": "Aggressive Assault - Driving",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZthvrKqsgXR3q8bm",
       "duration": {
         "startTime": null,
@@ -35,19 +34,33 @@
         {
           "key": "system.skills.driving.essences.strength",
           "mode": 5,
-          "value": "true"
+          "value": "true",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!ZthvrKqsgXR3q8bm.r1T7rglpf41OT2yK"
     },
     {
       "name": "Aggressive Assault - Infiltration",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.sgt_slaughter_sourcebook.Item.ZthvrKqsgXR3q8bm",
       "duration": {
         "startTime": null,
@@ -64,14 +77,29 @@
         {
           "key": "system,.skills.infiltration.essences.strength",
           "mode": 5,
-          "value": "true"
+          "value": "true",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!ZthvrKqsgXR3q8bm.q1GyXT1jghzlOCt2"
     }
   ],
@@ -84,10 +112,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1714011161399,
     "modifiedTime": 1714853763411,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!ZthvrKqsgXR3q8bm"
 }

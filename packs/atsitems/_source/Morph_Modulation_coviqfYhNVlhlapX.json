@@ -25,7 +25,6 @@
   "effects": [
     {
       "name": "Toughness",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.coviqfYhNVlhlapX",
       "duration": {
         "startTime": null,
@@ -50,12 +49,25 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!coviqfYhNVlhlapX.eOMma6hcfzzxbbtx"
     },
     {
       "name": "Cleverness",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.coviqfYhNVlhlapX",
       "duration": {
         "startTime": null,
@@ -80,12 +92,25 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!coviqfYhNVlhlapX.lAYF7FUjs0mQ8aSb"
     },
     {
       "name": "Evasion",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.coviqfYhNVlhlapX",
       "duration": {
         "startTime": null,
@@ -110,12 +135,25 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!coviqfYhNVlhlapX.SKFJWyTaOzH13unp"
     },
     {
       "name": "Willpower",
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.coviqfYhNVlhlapX",
       "duration": {
         "startTime": null,
@@ -140,7 +178,21 @@
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!coviqfYhNVlhlapX.lsIfu1lj60iAbuNM"
     }
   ],
@@ -148,10 +200,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1699316577776,
     "modifiedTime": 1704127399138,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "sort": 0,
   "ownership": {

@@ -25,10 +25,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1706656456513,
     "modifiedTime": 1714851130934,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!mnLXHQ2TwR3A42fS"
 }

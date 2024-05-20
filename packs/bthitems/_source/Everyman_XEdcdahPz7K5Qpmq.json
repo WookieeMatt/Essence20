@@ -47,10 +47,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1713548898433,
     "modifiedTime": 1713548935265,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!XEdcdahPz7K5Qpmq"
 }
