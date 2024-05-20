@@ -15,7 +15,6 @@
   },
   "effects": [
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.jHyKgHS0yDNBEKjw",
       "duration": {
         "startTime": null,
@@ -36,12 +35,26 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "Initiative Bonus",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!jHyKgHS0yDNBEKjw.VZ0OHjSry2xQ6N9H"
     }
   ],
@@ -51,10 +64,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1686013057243,
     "modifiedTime": 1704127399145,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG"
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_id": "jHyKgHS0yDNBEKjw",
   "folder": "wCReLTLx2TAq0REM",

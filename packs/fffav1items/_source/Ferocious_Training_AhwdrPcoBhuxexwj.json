@@ -18,7 +18,6 @@
   "effects": [
     {
       "name": "Ferocious Training",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.ferocious_fighters.Item.AhwdrPcoBhuxexwj",
       "duration": {
         "startTime": null,
@@ -35,19 +34,35 @@
         {
           "key": "system.skills.alertness.edge",
           "mode": 5,
-          "value": "true"
+          "value": "true",
+          "priority": null
         },
         {
           "key": "system.movement.ground.bonus",
           "mode": 2,
-          "value": "5"
+          "value": "5",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!AhwdrPcoBhuxexwj.NI9r6spuYDktQp55"
     }
   ],
@@ -60,10 +75,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1714098639221,
     "modifiedTime": 1714098744419,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ"
+    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!AhwdrPcoBhuxexwj"
 }

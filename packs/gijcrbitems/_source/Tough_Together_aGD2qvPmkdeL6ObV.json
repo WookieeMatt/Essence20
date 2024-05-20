@@ -18,7 +18,6 @@
   "effects": [
     {
       "name": "Tough Together",
-      "icon": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.gi_joe_crb.Item.aGD2qvPmkdeL6ObV",
       "duration": {
         "startTime": null,
@@ -35,14 +34,29 @@
         {
           "key": "system.health.bonus",
           "mode": 2,
-          "value": "1"
+          "value": "1",
+          "priority": null
         }
       ],
       "description": "",
       "transfer": true,
       "statuses": [],
       "flags": {},
-      "tint": null,
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!aGD2qvPmkdeL6ObV.PYndH4Xo4UKUv3dr"
     }
   ],
@@ -55,10 +69,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1706572811376,
     "modifiedTime": 1714850777075,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "_key": "!items!aGD2qvPmkdeL6ObV"
 }

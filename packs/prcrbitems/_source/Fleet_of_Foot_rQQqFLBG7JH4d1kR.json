@@ -15,7 +15,6 @@
   },
   "effects": [
     {
-      "icon": "icons/svg/aura.svg",
       "origin": "Item.Me0mD4AXvLUUo5q2",
       "duration": {
         "startTime": null,
@@ -36,12 +35,26 @@
           "priority": null
         }
       ],
-      "tint": null,
+      "tint": "#ffffff",
       "transfer": true,
       "flags": {},
       "name": "Ground Speed Increase",
       "description": "",
       "statuses": [],
+      "_stats": {
+        "coreVersion": "12.323",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
       "_key": "!items.effects!rQQqFLBG7JH4d1kR.nyJ0GLEoffFXccI0"
     }
   ],
@@ -51,10 +64,12 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "11.315",
+    "coreVersion": "12.323",
     "createdTime": 1685377531184,
     "modifiedTime": 1714865227346,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
   "folder": "QqnF5cJhvl6MKfd2",
   "_id": "rQQqFLBG7JH4d1kR",
