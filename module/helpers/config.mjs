@@ -6,14 +6,14 @@ export const E20 = {};
  * System Version                               *
  ***********************************************/
 
-// Game Version
-E20.version = {
+// Game Versions
+E20.gameVersions = {
   giJoe: "E20.VersionGIJoe",
   myLittlePony: "E20.VersionMyLittlePony",
   powerRangers: "E20.VersionPowerRangers",
   transformers: "E20.VersionTransformers",
 };
-preLocalize("version");
+preLocalize("gameVersions");
 
 /************************************************
  * Defense                                      *

@@ -21,7 +21,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RoleVersion'}}
       {{#*inline "item-field-inputs"}}
       <select class="item-field-inputs" name="system.version">
-        {{selectOptions config.version selected=system.version}}
+        {{selectOptions config.gameVersions selected=system.version}}
       </select>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

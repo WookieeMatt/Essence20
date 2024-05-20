@@ -1,3 +1,5 @@
+// Import data models
+import * as data from './data/index.mjs';
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
@@ -81,6 +83,10 @@ Hooks.once('init', async function () {
   CONFIG.Combatant.documentClass = Essence20Combatant;
   CONFIG.Item.documentClass = Essence20Item;
   CONFIG.statusEffects = foundry.utils.deepClone(E20.statusEffects);
+
+  // Register System Data Model
+  CONFIG.Actor.dataModels = data.actor.config;
+  CONFIG.Item.dataModels = data.item.config;
 
   // Register System Settings
   registerSystemSettings();
