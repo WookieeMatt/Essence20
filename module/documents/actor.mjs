@@ -44,6 +44,11 @@ export class Essence20Actor extends Actor {
     }
   }
 
+  async _preCreate(data, options, user) {
+    await super._preCreate(data, options, user);
+
+  }
+
   /** @override */
   prepareData() {
     // Prepare data for the actor. Calling the super version of this executes
