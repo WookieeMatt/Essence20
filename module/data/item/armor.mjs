@@ -23,6 +23,8 @@ export class ArmorItemData extends foundry.abstract.TypeDataModel {
       classification: makeStrWithChoices(Object.keys(E20.armorClassifications), 'light'),
       equipped: makeBool(false),
       traits: makeStrArrayWithChoices(Object.keys(E20.armorTraits)),
+      totalBonusEvasion: makeInt(0),
+      totalBonusToughness: makeInt(0),
       upgradeTraits: makeStrArrayWithChoices(Object.keys(E20.armorTraits)),
     };
   }
