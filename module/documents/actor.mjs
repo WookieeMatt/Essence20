@@ -18,6 +18,8 @@ export class Essence20Actor extends Actor {
   static async create(data, options = {}) {
     const actor = await super.create(data, options);
 
+    console.log(actor)
+
     return actor;
   }
 
@@ -46,6 +48,18 @@ export class Essence20Actor extends Actor {
 
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
+    if (data.type == "zord") {
+      const weaponEffect1 = new CONFIG.Item.documentClass({name: 'Melee Weapon Attack', type: 'weaponEffect', classification: {skill: 'driving', style:'melee'}, damageValue: 2, damageType: 'blunt', range: {reachMultiplier: 2}});
+      const weaponEffect2 = new CONFIG.Item.documentClass({name: 'Ranged Weapon Attack', type: 'weaponEffect', classification: {skill: 'driving', style:'energy'}, damageValue: 2, damageType: 'element', range: {long: 120, value: 50}});
+      const weapon = new CONFIG.Item.documentClass({name: 'Zord Weapon', type: 'weapon', classification: {size: 'integrated'}});
+      const items = this.items.map(i => i.toObject());
+      items.push(weaponEffect1.toObject());
+      items.push(weaponEffect2.toObject());
+      items.push(weapon.toObject());
+
+      this.updateSource({ items });
+
+    }
 
   }
 
