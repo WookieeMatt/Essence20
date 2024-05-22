@@ -11,7 +11,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       classification: new fields.SchemaField({
-        skill: makeStrWithChoices(Object.keys(E20.skills), 'athletics'),
+        skill: makeStrWithChoices([...Object.keys(E20.skills), 'roleSkillDie'], 'athletics'),
         style: makeStrWithChoices(Object.keys(E20.weaponStyles), 'melee'),
       }),
       damageType: makeStrWithChoices(Object.keys(E20.damageTypes), 'blunt'),
