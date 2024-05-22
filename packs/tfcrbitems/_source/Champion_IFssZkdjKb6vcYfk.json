@@ -22,7 +22,7 @@
       "aquatic": 0,
       "ground": 60
     },
-    "altModesize": "long",
+    "altModeSize": "long",
     "altModeCrew": 2,
     "altModeFirepoints": 2
   },

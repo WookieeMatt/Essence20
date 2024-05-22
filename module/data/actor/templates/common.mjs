@@ -103,6 +103,7 @@ export const common = () => ({
     ground: makeMovementFields(),
     swim: makeMovementFields(),
   }),
+  movementIsReadOnly: makeBool(false),
   movementNotSet: makeBool(false),
   powers: new fields.SchemaField({
     personal: new fields.SchemaField({

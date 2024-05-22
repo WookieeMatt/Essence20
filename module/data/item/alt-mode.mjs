@@ -12,14 +12,14 @@ export class AltModeItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
-      crew: makeInt(0),
-      firepoints: makeInt(0),
-      movement: new fields.SchemaField({
+      altModeCrew: makeInt(0),
+      altModeFirepoints: makeInt(0),
+      altModeMovement: new fields.SchemaField({
         aerial: makeInt(0),
         aquatic: makeInt(0),
         ground: makeInt(0),
       }),
-      size: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
+      altModeSize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
     };
   }
 }
