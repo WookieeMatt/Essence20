@@ -118,7 +118,9 @@ export class Dice {
 
     switch(item?.type) {
     case 'weaponEffect':
-      label = this._getWeaponRollLabel(dataset, skillRollOptions, item);
+      const roleList = getItemsOfType('role', actor.items);
+      const role = roleList.length ? roleList[0] : null;
+      label = this._getWeaponRollLabel(dataset, skillRollOptions, item, role);
       break;
     case 'spell':
       label = this._getSpellRollLabel(skillRollOptions, item);
@@ -215,9 +217,9 @@ export class Dice {
    * @returns {String}   The resultant roll label.
    * @private
    */
-  _getWeaponRollLabel(dataset, skillRollOptions, weaponEffect) {
+  _getWeaponRollLabel(dataset, skillRollOptions, weaponEffect, role) {
     const rolledSkill = dataset.skill;
-    const rolledSkillStr = this._localize(E20.skills[rolledSkill]);
+    const rolledSkillStr = this._localize(E20.skills[rolledSkill]) || role.system.skillDie.name;
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
     const damageType = this._localize(E20.damageTypes[weaponEffect.system.damageType]);
