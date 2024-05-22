@@ -115,11 +115,15 @@ export class Dice {
 
     const initialShift = dataset.shift || actorSkillData.shift;
     let label = '';
+    let roleSkillDieName = '';
 
     switch(item?.type) {
     case 'weaponEffect':
-      const roleList = getItemsOfType('role', actor.items);
-      const roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
+      {
+        const roleList = getItemsOfType('role', actor.items);
+        roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
+      }
+      
       label = this._getWeaponRollLabel(dataset, skillRollOptions, item, roleSkillDieName);
       break;
     case 'spell':
