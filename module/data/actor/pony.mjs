@@ -13,4 +13,8 @@ export class PonyActorData extends foundry.abstract.TypeDataModel {
       canSpellcast: makeBool(true),
     };
   }
+
+  prepareBaseData() {
+    this.movementIsReadOnly = true;
+  }
 }
