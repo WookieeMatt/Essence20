@@ -162,10 +162,16 @@ export async function focusUpdate(actor, focus, dropFunc) {
     ui.notifications.error(game.i18n.localize('E20.FocusNoRoleError'));
     return false;
   }
-
-  if (role[0].flags.core.sourceId != attachedRole[0].uuid) {
-    ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
-    return false;
+  if (game.version < '12') {
+    if (role[0].flags.core.sourceId != attachedRole[0].uuid) {
+      ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
+      return false;
+    }
+  } else {
+    if (role[0]._stats.compendiumSource != attachedRole[0].uuid) {
+      ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
+      return false;
+    }
   }
 
   if (focus.system.essences.length > 1) {
