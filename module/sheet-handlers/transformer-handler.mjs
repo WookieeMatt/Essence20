@@ -91,7 +91,7 @@ async function _transformAltMode(actorSheet, altMode) {
 
 /**
  * Creates the Alt Mode choice list dialog
- * @param {Actor} actor The Actor selecting an Alt Mode
+ * @param {ActorSheet} actorSheet The ActorSheet being transformed
  * @param {AltMode[]} altModes A list of the available Alt Modes
  * @param {Boolean} isTransformed Whether the Transformer is transformed or not
  * @private
@@ -133,6 +133,7 @@ async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
 
 /**
  * Handles selecting an Alt Mode from the Alt Mode dialog
+ * @param {ActorSheet} actorSheet The ActorSheet being transformed
  * @param {AltMode[]} altModes A list of the available Alt Modes
  * @param {Object} options The options resulting from _showAltModeDialog()
  * @private
