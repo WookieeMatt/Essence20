@@ -40,6 +40,7 @@ function makeSkillFields() {
 }
 
 export const common = () => ({
+  altModeId: makeStr(''),
   altModeName: makeStr(''),
   altModeSize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   canMorph: makeBool(false),

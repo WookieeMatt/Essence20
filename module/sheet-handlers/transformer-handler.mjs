@@ -25,15 +25,16 @@ export async function onAltModeDelete(actorSheet, altMode) {
 export async function onTransform(actorSheet) {
   const actor = actorSheet.actor;
   const altModes = getItemsOfType("altMode", actor.items);
+  console.log(altModes)
   const isTransformed = actor.system.isTransformed;
 
   if (!altModes.length && !isTransformed) {      // No alt-modes to transform into
     ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
   } else if (altModes.length > 1) {              // Select from multiple alt-modes
     if (!isTransformed) {
-      _showAltModeChoiceDialog(altModes, false); // More than 1 altMode and not transformed
+      _showAltModeChoiceDialog(actorSheet, altModes, false); // More than 1 altMode and not transformed
     } else {
-      _showAltModeChoiceDialog(altModes, true);  // More than 1 altMode and transformed
+      _showAltModeChoiceDialog(actorSheet, altModes, true);  // More than 1 altMode and transformed
     }
   } else {                                       // Alt-mode/bot-mode toggle
     isTransformed
@@ -96,7 +97,8 @@ async function _transformAltMode(actorSheet, altMode) {
  * @param {Boolean} isTransformed Whether the Transformer is transformed or not
  * @private
  */
-async function _showAltModeChoiceDialog(actor, altModes, isTransformed) {
+async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
+  const actor = actorSheet.actor;
   const choices = {};
   if (isTransformed) {
     choices["BotMode"] = {
@@ -104,7 +106,7 @@ async function _showAltModeChoiceDialog(actor, altModes, isTransformed) {
       label: "BotMode",
     };
   }
-
+  console.log(altModes)
   for (const altMode of altModes) {
     if (actor.system.altModeId != altMode._id) {
       choices[altMode._id] = {
@@ -123,7 +125,7 @@ async function _showAltModeChoiceDialog(actor, altModes, isTransformed) {
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _altModeSelect(altModes, rememberOptions(html)),
+          callback: html => _altModeSelect(actorSheet, altModes, rememberOptions(html)),
         },
       },
     },
@@ -136,7 +138,7 @@ async function _showAltModeChoiceDialog(actor, altModes, isTransformed) {
  * @param {Object} options The options resulting from _showAltModeDialog()
  * @private
  */
-async function _altModeSelect(altModes, options) {
+async function _altModeSelect(actorSheet, altModes, options) {
   let selectedForm = null;
   let transformation = null;
 
@@ -152,7 +154,7 @@ async function _altModeSelect(altModes, options) {
   }
 
   if (selectedForm == "BotMode") {
-    _transformBotMode();
+    _transformBotMode(actorSheet);
   } else {
     for (const mode of altModes) {
       if (selectedForm == mode._id) {
@@ -162,7 +164,7 @@ async function _altModeSelect(altModes, options) {
     }
 
     if (transformation) {
-      _transformAltMode(transformation);
+      _transformAltMode(actorSheet, transformation);
     }
   }
 }
