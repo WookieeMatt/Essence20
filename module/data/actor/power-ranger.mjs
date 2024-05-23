@@ -13,4 +13,8 @@ export class PowerRangerActorData extends foundry.abstract.TypeDataModel {
       canMorph: makeBool(true),
     };
   }
+
+  prepareBaseData() {
+    this.movementIsReadOnly = true;
+  }
 }

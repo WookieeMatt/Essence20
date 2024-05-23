@@ -103,6 +103,7 @@ export const common = () => ({
     ground: makeMovementFields(),
     swim: makeMovementFields(),
   }),
+  movementIsReadOnly: makeBool(false),
   movementNotSet: makeBool(false),
   powers: new fields.SchemaField({
     personal: new fields.SchemaField({
@@ -118,6 +119,7 @@ export const common = () => ({
   }),
   size: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   skills: new fields.SchemaField({
+    roleSkillDie: makeSkillFields(),
     acrobatics: makeSkillFields(),
     alertness: makeSkillFields(),
     animalHandling: makeSkillFields(),
@@ -133,7 +135,6 @@ export const common = () => ({
     performance: makeSkillFields(),
     persuasion: makeSkillFields(),
     science: makeSkillFields(),
-    roleSkillDie: makeSkillFields(),
     spellcasting: makeSkillFields(),
     streetwise: makeSkillFields(),
     survival: makeSkillFields(),
