@@ -25,7 +25,6 @@ export async function onAltModeDelete(actorSheet, altMode) {
 export async function onTransform(actorSheet) {
   const actor = actorSheet.actor;
   const altModes = getItemsOfType("altMode", actor.items);
-  console.log(altModes)
   const isTransformed = actor.system.isTransformed;
 
   if (!altModes.length && !isTransformed) {      // No alt-modes to transform into
@@ -106,7 +105,7 @@ async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
       label: "BotMode",
     };
   }
-  console.log(altModes)
+
   for (const altMode of altModes) {
     if (actor.system.altModeId != altMode._id) {
       choices[altMode._id] = {
