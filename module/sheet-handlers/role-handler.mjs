@@ -163,14 +163,13 @@ export async function focusUpdate(actor, focus, dropFunc) {
     return false;
   }
 
-  const sourceId = game.version < '12'
+  const sourceId = foundry.utils.isNewerVersion('12', game.version)
     ? role[0].flags.core.sourceId
     : role[0]._stats.compendiumSource
 
   if (sourceId != attachedRole[0].uuid) {
     ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
     return false;
-  }
   }
 
   if (focus.system.essences.length > 1) {
