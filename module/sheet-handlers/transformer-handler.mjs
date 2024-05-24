@@ -61,7 +61,7 @@ async function _transformBotMode(actorSheet) {
     "system.movement.ground.altMode": 0,
     "system.isTransformed": false,
     "system.altModeId": "",
-    "system.altModeSize": "",
+    "system.altModesize": "",
   }).then(actorSheet.render(false));
 }
 
@@ -73,8 +73,8 @@ async function _transformBotMode(actorSheet) {
  */
 async function _transformAltMode(actorSheet, altMode) {
   const actor = actorSheet.actor;
-  const width = CONFIG.E20.tokenSizes[altMode.system.altModeSize].width;
-  const height = CONFIG.E20.tokenSizes[altMode.system.altModeSize].height;
+  const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
+  const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
   resizeTokens(actor, width, height);
 
   await actor.update({
@@ -83,7 +83,7 @@ async function _transformAltMode(actorSheet, altMode) {
     "system.movement.aerial.altMode": altMode.system.altModeMovement.aerial,
     "system.movement.swim.altMode": altMode.system.altModeMovement.aquatic,
     "system.movement.ground.altMode": altMode.system.altModeMovement.ground,
-    "system.altModeSize": altMode.system.altModeSize,
+    "system.altModesize": altMode.system.altModesize,
     "system.altModeId": altMode._id,
     "system.isTransformed": true,
   }).then(actorSheet.render(false));

@@ -42,7 +42,7 @@ function makeSkillFields() {
 export const common = () => ({
   altModeId: makeStr(''),
   altModeName: makeStr(''),
-  altModeSize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
+  altModesize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   canMorph: makeBool(false),
   canSpellcast: makeBool(false),
   canTransform: makeBool(false),
@@ -67,10 +67,10 @@ export const common = () => ({
     }),
   }),
   essenceRanks: new fields.SchemaField({
-    smarts: makeStrWithChoices(E20.EssenceRankNames, null),
-    social: makeStrWithChoices(E20.EssenceRankNames, null),
-    speed: makeStrWithChoices(E20.EssenceRankNames, null),
-    strength: makeStrWithChoices(E20.EssenceRankNames, null),
+    smarts: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
+    social: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
+    speed: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
+    strength: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
   }),
   essenceShifts: new fields.SchemaField({
     any: makeEssenceShift(),
