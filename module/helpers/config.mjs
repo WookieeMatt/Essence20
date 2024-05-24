@@ -819,7 +819,7 @@ E20.tokenSizes = {
 E20.MLPAdvancement = {
   diamond: [
     "level1",
-    "level1Optional",
+    "level1optional",
     "level5",
     "level9",
     "level13",
@@ -894,5 +894,10 @@ E20.TFEssenceRankNames = [
   "second",
   "third",
   "fourth",
+];
+
+E20.CombinedEssenceRankNames = [
+  ...E20.EssenceRankNames,
+  ...E20.TFEssenceRankNames,
 ];
 

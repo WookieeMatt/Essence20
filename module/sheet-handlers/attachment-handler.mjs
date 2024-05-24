@@ -272,7 +272,9 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
 */
 export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
   for (const actorItem of actor.items) {
-    const itemSourceId = actor.items.get(actorItem._id).getFlag('core', 'sourceId');
+    const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
+      ? actor.items.get(actorItem._id).getFlag('core', 'sourceId')
+      : actor.items.get(actorItem._id)._stats.compendiumSource;
     const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
     const collectionId = actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
 
