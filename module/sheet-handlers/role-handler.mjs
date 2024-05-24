@@ -163,16 +163,14 @@ export async function focusUpdate(actor, focus, dropFunc) {
     return false;
   }
 
-  if (game.version < '12') {
-    if (role[0].flags.core.sourceId != attachedRole[0].uuid) {
-      ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
-      return false;
-    }
-  } else {
-    if (role[0]._stats.compendiumSource != attachedRole[0].uuid) {
-      ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
-      return false;
-    }
+  const sourceId = game.version < '12'
+    ? role[0].flags.core.sourceId
+    : role[0]._stats.compendiumSource
+
+  if (sourceId != attachedRole[0].uuid) {
+    ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
+    return false;
+  }
   }
 
   if (focus.system.essences.length > 1) {
