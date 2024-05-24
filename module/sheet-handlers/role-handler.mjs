@@ -382,7 +382,6 @@ export async function onLevelChange(actor, newLevel) {
 export async function onRoleDelete(actor, role) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const focus = getItemsOfType("focus", actor.items);
-
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
     const essenceValue = Math.max(0, actor.system.essences[essence] + totalDecrease);
@@ -420,7 +419,7 @@ export async function onRoleDelete(actor, role) {
   }
 
   if (focus[0]) {
-    await this.onFocusDelete(focus[0]);
+    await onFocusDelete(actor, focus[0]);
     await focus[0].delete();
   }
 
