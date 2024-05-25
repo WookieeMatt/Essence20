@@ -170,7 +170,7 @@ export class Essence20ActorSheet extends ActorSheet {
       }
     }
 
-    context.weaponEffectSkills = weaponEffectSkills
+    context.weaponEffectSkills = weaponEffectSkills;
   }
 
   /**
