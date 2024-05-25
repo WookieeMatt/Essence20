@@ -37,7 +37,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
-          const newKey = setEntryAndAddItem(newItem, parentItem);
+          const newKey = await setEntryAndAddItem(newItem, parentItem);
           newItem.setFlag('essence20', 'collectionId', newKey);
 
           const deleteString = `system.items.-=${key}`;
@@ -130,7 +130,7 @@ async function _attachItem(targetItem, dropFunc) {
   const newattachedItem = newattachedItemList[0];
   newattachedItem.setFlag('essence20', 'parentId', targetItem._id);
   if (targetItem) {
-    const key = setEntryAndAddItem(newattachedItem, targetItem);
+    const key = await setEntryAndAddItem(newattachedItem, targetItem);
     newattachedItem.setFlag('essence20', 'collectionId', key);
   }
 }
