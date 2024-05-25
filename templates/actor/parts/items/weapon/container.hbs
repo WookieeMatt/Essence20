@@ -25,19 +25,7 @@
             {{item.name}}
           </div>
           <select class="inline-edit" data-field="system.classification.skill" data-parent-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
-            {{#select item.classification.skill}}
-            {{#each @root.actor.system.skills as |skill skillType|}}
-              {{#ifEquals skillType "roleSkillDie"}}
-                {{#if @root.role.system.skillDie.isUsed}}
-                  <option value="{{skillType}}">{{@root.role.system.skillDie.name}}</option>
-                {{/if}}
-              {{else if skill.displayName}}
-                <option value="{{skillType}}">{{skill.displayName}}</option>
-              {{else}}
-                <option value="{{skillType}}">{{localize (lookup @root.config.skills skillType)}}</option>
-              {{/ifEquals}}
-            {{/each}}
-            {{/select}}
+            {{selectOptions @root.weaponEffectSkills selected=item.classification.skill valueAttr="key" labelAttr="label" localize=true}}
           </select>
 
           <div class="flexrow" style="flex-wrap: nowrap; gap: 2px;">
