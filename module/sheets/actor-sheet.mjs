@@ -143,7 +143,11 @@ export class Essence20ActorSheet extends ActorSheet {
 
     context.displayedNpcSkills = displayedNpcSkills;
   }
-
+  /**
+   * Prepare skill list to be used or weaponEffects on an actor
+   * @param {Object} actorData The acor data converted to an object
+   * @param {Object} context The actor data to prepare.
+   */
   _prepareWeaponEffectSkills(actorData, context) {
     let hasSkillDie = false;
     let skillDieName = null;
