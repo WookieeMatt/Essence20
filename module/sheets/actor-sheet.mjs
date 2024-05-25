@@ -17,6 +17,7 @@ import {
   onItemDelete,
   onInlineEdit,
 } from "../sheet-handlers/listener-item-handler.mjs";
+import { getItemsOfType } from "../helpers/utils.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
   constructor(...args) {
@@ -64,6 +65,9 @@ export class Essence20ActorSheet extends ActorSheet {
     if (['npc', 'zord', 'megaformZord', 'vehicle', 'companion'].includes(actorData.type)) {
       this._prepareDisplayedNpcSkills(context);
     }
+
+    // Prepare WeaponEffect Skill List
+    this._prepareActorWeaponEffectSkills(actorData, context);
 
     // Prepare number of actions
     if (['giJoe', 'npc', 'pony', 'powerRanger', 'transformer'].includes(actorData.type)) {
@@ -138,6 +142,35 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     context.displayedNpcSkills = displayedNpcSkills;
+  }
+
+  _prepareActorWeaponEffectSkills(actorData, context) {
+    let skillDie = false;
+    let skillDieName = null;
+    let weaponEffectSkills = {};
+    const items = getItemsOfType ("role", actorData.items);
+    if (items[0]) {
+      if (items[0].system.skillDie.isUsed) {
+        skillDie = true;
+        skillDieName = items[0].system.skillDie.name;
+      }
+    }
+
+    for (const skill of Object.keys(actorData.system.skills)) {
+      if (skill == 'roleSkillDie' && skillDie) {
+        weaponEffectSkills[skill] = {
+          key: skill,
+          label: skillDieName
+        }
+      } else {
+        weaponEffectSkills[skill] = {
+          key: skill,
+          label: game.i18n.localize(CONFIG.E20.skills[skill])
+        }
+      }
+    }
+
+    context.weaponEffectSkills = weaponEffectSkills
   }
 
   /**
