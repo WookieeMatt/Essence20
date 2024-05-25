@@ -157,7 +157,7 @@ export class Essence20ActorSheet extends ActorSheet {
     for (const skill of Object.keys(actorData.system.skills)) {
       weaponEffectSkills[skill] = {
         key: skill,
-        label: skill == 'roleSkillDie' && skillDie
+        label: skill == 'roleSkillDie' && hasSkillDie
           ? skillDieName
           : game.i18n.localize(CONFIG.E20.skills[skill])
       };
