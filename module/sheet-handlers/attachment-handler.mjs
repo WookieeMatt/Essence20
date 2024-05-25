@@ -139,7 +139,7 @@ async function _attachItem(targetItem, dropFunc) {
 * Handles setting the value of the entry variable and calling the creating function
 * @param {Item} droppedItem The Item that is being attached to the other Item
 * @param {Item} atttachedItem The Item receiving the dropped Item
-* @return {String} The key generated for the dropped item
+* @return {Promise<String>} The key generated for the dropped item
 */
 export async function setEntryAndAddItem(droppedItem, targetItem) {
   const entry = {
@@ -237,7 +237,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 * @param {Item} droppedItem The Item that was dropped
 * @param {Item} targetItem The Item that was dropped onto
 * @param {Object} entry The entry for the Item being added
-* @return {String} The key generated for the dropped Item
+* @return {Promise<String>} The key generated for the dropped Item
 */
 export async function _addItemIfUnique(droppedItem, targetItem, entry) {
   const items = targetItem.system.items;
