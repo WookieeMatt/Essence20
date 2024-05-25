@@ -159,7 +159,7 @@ export class Essence20ActorSheet extends ActorSheet {
         key: skill,
         label: skill == 'roleSkillDie' && hasSkillDie
           ? skillDieName
-          : game.i18n.localize(CONFIG.E20.skills[skill])
+          : game.i18n.localize(CONFIG.E20.skills[skill]),
       };
     }
 
