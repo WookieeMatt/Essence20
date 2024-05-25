@@ -18,4 +18,8 @@ export class TransformerActorData extends foundry.abstract.TypeDataModel {
       transformerFaction: makeStrWithChoices(Object.keys(E20.transformerFactions), 'autobots'),
     };
   }
+
+  prepareBaseData() {
+    this.movementIsReadOnly = true;
+  }
 }

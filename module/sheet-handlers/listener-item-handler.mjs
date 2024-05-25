@@ -214,7 +214,7 @@ export async function onInlineEdit(event, actor) {
     item = await fromUuid(itemUuid);
 
     const parentItem = actor.items.get(parentId);
-    const parentField = dataset.parentField;
+    const parentField = element.dataset.parentField;
     await parentItem.update({ [parentField]: newValue });
   } else {
     item = actor.items.get(itemId);

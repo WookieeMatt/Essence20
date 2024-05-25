@@ -5,7 +5,7 @@
  * @param {Number} height The actor's new width
  */
 export function resizeTokens(actor, width, height) {
-  const tokens = actor.getActiveTokens();
+  const tokens = actor?.getActiveTokens();
   for (const token of tokens) {
     token.document.update({
       "height": height,

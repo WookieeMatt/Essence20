@@ -490,6 +490,22 @@ describe("_getWeaponRollLabel", () => {
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect)).toEqual(expected);
   });
+
+  test("weapon roll with role skill die", () => {
+    const dataset = {
+      skill: 'roleSkillDie',
+    };
+    const skillRollOptions = {
+      edge: false,
+      snag: false,
+    };
+
+    const expected =
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (Foo Role Skill)<br>" +
+      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
+
+    expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect, 'Foo Role Skill')).toEqual(expected);
+  });
 });
 
 /* _getSpellRollLabel */

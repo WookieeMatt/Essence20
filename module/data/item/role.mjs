@@ -47,7 +47,10 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
         strength: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
       }),
       gridPowerLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), initGridPowerLevels),
-      perkLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), initPerkLevels),
+      hasSpecialAdvancement: makeBool(false),
+      perkLevels: new fields.SchemaField({
+        general: makeStrArrayWithChoices(Object.keys(E20.actorLevels), initPerkLevels),
+      }),
       powers: new fields.SchemaField({
         personal: new fields.SchemaField({
           increase: makeInt(0),

@@ -10,4 +10,8 @@ export class GiJoeActorData extends foundry.abstract.TypeDataModel {
       ...creature(),
     };
   }
+
+  prepareBaseData() {
+    this.movementIsReadOnly = true;
+  }
 }
