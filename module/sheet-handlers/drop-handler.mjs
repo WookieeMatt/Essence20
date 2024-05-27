@@ -126,19 +126,28 @@ export async function onDropActor(data, actorSheet) {
   if (!sourceActor) return false;
 
   // Handles dropping Zords onto Megaform Zords
-  if (actor.type == 'megaformZord' && sourceActor.type == 'zord') {
-    const zordIds = duplicate(actor.system.zordIds);
+  switch (actor.type) {
+    case 'megaformZord':
+      if (sourceActor.type == 'zord') {
+        const zordIds = duplicate(actor.system.zordIds);
 
-    // Can't contain duplicate Zords
-    if (!zordIds.includes(sourceActor.id)) {
-      zordIds.push(sourceActor.id);
-      await actor.update({
-        "system.zordIds": zordIds,
-      }).then(actorSheet.render(false));
-    }
-  }else if (actor.type.includes("powerRanger") && sourceActor.type == 'zord') {
-
-  } else {
-    return false;
+        // Can't contain duplicate Zords
+        if (!zordIds.includes(sourceActor.id)) {
+          zordIds.push(sourceActor.id);
+          await actor.update({
+            "system.zordIds": zordIds,
+          }).then(actorSheet.render(false));
+        }
+      }
+      break;
+    case 'zord':
+      if(["giJoe", "pony", "powerRanger", "transformer"].includes(sourceActor.type)){
+        console.log( sourceActor)
+      }
+      break
+    case 'vehicle':
+      break
+    default:
+      return false;
   }
 }
