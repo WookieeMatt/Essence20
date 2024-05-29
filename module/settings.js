@@ -73,7 +73,7 @@ export const registerSettings = function () {
     name: game.i18n.localize("E20.SptOptionPointsName"),
     scope: "world",
     config: true,
-    default: POINTS_NAME_OPTIONS.story,
+    default: "story",
     type: String,
     choices: POINTS_NAME_OPTIONS,
     onChange: debouncedReload,
