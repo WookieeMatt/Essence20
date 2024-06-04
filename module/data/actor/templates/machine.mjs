@@ -17,4 +17,5 @@ export const machine = () => ({
     willpower: makeDefensesFields(true, null),
     cleverness: makeDefensesFields(true, null),
   }),
+  passengers: new fields.ObjectField({}),
 });

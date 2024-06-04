@@ -6,6 +6,7 @@ import { influenceUpdate, originUpdate } from "./background-handler.mjs";
 import { powerUpdate } from "./power-handler.mjs";
 import { perkUpdate } from "./perk-handler.mjs";
 import { focusUpdate, roleUpdate } from "./role-handler.mjs";
+import { zordDrop } from "./zord-handler.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -118,31 +119,23 @@ async function _onDropUpgrade(upgrade, actor, dropFunc) {
  *                                    not permitted.
  */
 export async function onDropActor(data, actorSheet) {
-  const actor = actorSheet.actor;
-  if (!actor.isOwner) return false;
+  const targetActor = actorSheet.actor;
+  if (!targetActor.isOwner) return false;
 
   // Get the target actor
-  let sourceActor = await fromUuid(data.uuid);
-  if (!sourceActor) return false;
+  let dropActor = await fromUuid(data.uuid);
+  if (!dropActor) return false;
 
   // Handles dropping Zords onto Megaform Zords
-  switch (actor.type) {
+  switch (targetActor.type) {
     case 'megaformZord':
-      if (sourceActor.type == 'zord') {
-        const zordIds = duplicate(actor.system.zordIds);
-
-        // Can't contain duplicate Zords
-        if (!zordIds.includes(sourceActor.id)) {
-          zordIds.push(sourceActor.id);
-          await actor.update({
-            "system.zordIds": zordIds,
-          }).then(actorSheet.render(false));
-        }
+      if (dropActor.type == 'zord') {
+        return await zordDrop(targetActor, dropActor);
       }
       break;
     case 'zord':
-      if(["giJoe", "pony", "powerRanger", "transformer"].includes(sourceActor.type)){
-        console.log( sourceActor)
+      if(["giJoe", "pony", "powerRanger", "transformer"].includes(dropActor.type)){
+        return await zordDrop(targetActor, dropActor);
       }
       break
     case 'vehicle':

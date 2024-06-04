@@ -12,7 +12,6 @@ export class ZordActorData extends foundry.abstract.TypeDataModel {
       ...zordBase(),
       isCombiner: makeBool(true),
       prerequisite: makeStr(''),
-      ranger: makeStr(''),
     };
   }
 
