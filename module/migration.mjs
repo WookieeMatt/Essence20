@@ -36,7 +36,7 @@ export const migrateWorld = async function() {
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
 
-      if (["threatPower", "classFeature"].includes(item.type)) {
+      if (["classFeature"].includes(item.type)) {
         item.delete();
         continue;
       }
@@ -227,21 +227,19 @@ export const migrateActorData = async function(actor, compendiumActor) {
 
     const itemToDelete = fullActor.items.get(itemData._id);
 
-    if (itemToDelete.type == "threatPower") {
+  if (itemToDelete.type == "classFeature") {
+    if (itemToDelete.name == "Personal Power") {
+      updateData[`system.powers.personal.max`] = itemToDelete.system.uses.max;
+      updateData[`system.powers.personal.value`] = itemToDelete.system.uses.value;
       await itemToDelete.delete();
-    } else if (itemToDelete.type == "classFeature") {
-      if (itemToDelete.name == "Personal Power") {
-        updateData[`system.powers.personal.max`] = itemToDelete.system.uses.max;
-        updateData[`system.powers.personal.value`] = itemToDelete.system.uses.value;
-        await itemToDelete.delete();
-      } else if (itemToDelete.name == "Energon") {
-        updateData[`system.energon.normal.value`] = itemToDelete.system.uses.value;
-        updateData[`system.energon.normal.max`] = itemToDelete.system.uses.max;
-        await itemToDelete.delete();
-      } else {
-        await itemToDelete.delete();
-      }
+    } else if (itemToDelete.name == "Energon") {
+      updateData[`system.energon.normal.value`] = itemToDelete.system.uses.value;
+      updateData[`system.energon.normal.max`] = itemToDelete.system.uses.max;
+      await itemToDelete.delete();
+    } else {
+      await itemToDelete.delete();
     }
+  }
 
     let itemUpdate = await migrateItemData(itemToDelete, fullActor);
 
@@ -395,29 +393,6 @@ export async function migrateItemData(item, actor) {
       const perkType = item.system.perkType;
       updateData[`system.type`] = perkType;
     }
-  } else if (item.type == "threatPower") {
-    const itemData = item;
-    itemData.type = "power";
-    itemData.system.canActivate = true;
-    itemData.system.usesPer = item.system.charges;
-    itemData.system.type = "threat";
-    itemData.system.usesInterval = "perScene";
-
-    //This is an attempt to catch as many actions as possible by converting to camelCase.
-    if (item.system.actionType) {
-      const parsedActionType = item.system.actionType.split(" ").map((word, i) => {
-        return (i == 0 ? word[0].toLowerCase() : word[0].toUpperCase()) + word.substring(1);
-      }).join("");
-      itemData.system.actionType = Object.keys(CONFIG.E20.actionTypes).includes(parsedActionType) ? parsedActionType : "free";
-    } else {
-      itemData.system.actionType = "free";
-    }
-
-    if (actor) {
-      Item.implementation.create(itemData, {parent: actor, keepId: true});
-    } else {
-      Item.implementation.create(itemData, {keepId: true});
-    }
   } else if (item.type == 'origin') {
     if (item.system.originPerkIds) {
       for (const perkId of item.system.originPerkIds) {
@@ -559,10 +534,6 @@ export const migrateCompendium = async function(pack) {
         updateData = await migrateActorData(doc.toObject(), doc);
         break;
       case "Item":
-        if (doc.type == "threatPower") {
-          doc.delete();
-        }
-
         updateData = await migrateItemData(doc.toObject());
         if (doc.type == "origin") {
           await doc.update({"system.-=originPerkIds": null});

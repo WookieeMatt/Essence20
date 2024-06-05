@@ -189,10 +189,6 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 Hooks.on("renderDialog", (dialog, html) => {
   if (html[0].innerText.includes('Create New Item')) {
     const select = html[0].querySelector("select[name='type']");
-    const threatPowerOption = select.querySelector("option[value='threatPower']");
-    if (threatPowerOption) {
-      threatPowerOption.style.display = 'none';
-    }
 
     const classFeatureOption = select.querySelector("option[value='classFeature']");
     if (classFeatureOption) {
