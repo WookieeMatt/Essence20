@@ -238,6 +238,8 @@ export const migrateActorData = async function(actor, compendiumActor) {
         updateData[`system.energon.normal.value`] = itemToDelete.system.uses.value;
         updateData[`system.energon.normal.max`] = itemToDelete.system.uses.max;
         await itemToDelete.delete();
+      } else {
+        await itemToDelete.delete();
       }
     }
 
