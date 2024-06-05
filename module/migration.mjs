@@ -227,19 +227,19 @@ export const migrateActorData = async function(actor, compendiumActor) {
 
     const itemToDelete = fullActor.items.get(itemData._id);
 
-  if (itemToDelete.type == "classFeature") {
-    if (itemToDelete.name == "Personal Power") {
-      updateData[`system.powers.personal.max`] = itemToDelete.system.uses.max;
-      updateData[`system.powers.personal.value`] = itemToDelete.system.uses.value;
-      await itemToDelete.delete();
-    } else if (itemToDelete.name == "Energon") {
-      updateData[`system.energon.normal.value`] = itemToDelete.system.uses.value;
-      updateData[`system.energon.normal.max`] = itemToDelete.system.uses.max;
-      await itemToDelete.delete();
-    } else {
-      await itemToDelete.delete();
+    if (itemToDelete.type == "classFeature") {
+      if (itemToDelete.name == "Personal Power") {
+        updateData[`system.powers.personal.max`] = itemToDelete.system.uses.max;
+        updateData[`system.powers.personal.value`] = itemToDelete.system.uses.value;
+        await itemToDelete.delete();
+      } else if (itemToDelete.name == "Energon") {
+        updateData[`system.energon.normal.value`] = itemToDelete.system.uses.value;
+        updateData[`system.energon.normal.max`] = itemToDelete.system.uses.max;
+        await itemToDelete.delete();
+      } else {
+        await itemToDelete.delete();
+      }
     }
-  }
 
     let itemUpdate = await migrateItemData(itemToDelete, fullActor);
 
