@@ -36,8 +36,9 @@ export const migrateWorld = async function() {
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
 
-      if (item.type == "threatPower") {
+      if(["threatPower", "classFeature"].includes(item.type)) {
         item.delete();
+        continue;
       }
 
       const updateData = await migrateItemData(source);
