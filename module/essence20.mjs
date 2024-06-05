@@ -193,6 +193,10 @@ Hooks.on("renderDialog", (dialog, html) => {
     if (threatPowerOption) {
       threatPowerOption.style.display = 'none';
     }
+    const classFeatureOption = select.querySelector("option[value='classFeature']");
+    if (classFeatureOption) {
+      classFeatureOption.style.display = 'none';
+    }
 
     if (select) {
       select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
