@@ -2,6 +2,7 @@ import { AltModeItemData } from './alt-mode.mjs';
 import { AlterationItemData } from './alteration.mjs';
 import { ArmorItemData } from './armor.mjs';
 import { BondItemData } from './bond.mjs';
+import {ClassFeatureItemData } from './class-feature.mjs';
 import { ContactItemData } from './contact.mjs';
 import { FeatureItemData } from './feature.mjs';
 import { FocusItemData } from './focus.mjs';
@@ -27,6 +28,7 @@ export const config = {
   alteration: AlterationItemData,
   armor: ArmorItemData,
   bond: BondItemData,
+  classFeature: ClassFeatureItemData,
   contact: ContactItemData,
   feature: FeatureItemData,
   focus: FocusItemData,
