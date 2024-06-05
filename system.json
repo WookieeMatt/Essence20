@@ -227,6 +227,6 @@
     "verified": "12"
   },
   "flags": {
-    "needsMigrationVersion": "4.3.5"
+    "needsMigrationVersion": "4.3.6"
   }
 }
