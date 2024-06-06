@@ -460,7 +460,6 @@ E20.backgroundTypes = {
 E20.characterTypes = {
   alteration: "E20.Alteration",
   altMode: "E20.AltMode",
-  classFeature: "E20.ClassFeature",
   feature: "E20.Feature",
   focus: "E20.Focus",
   perk: "E20.Perk",

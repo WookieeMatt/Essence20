@@ -29,17 +29,17 @@ export async function onItemCreate(event, actor) {
   const itemData = {
     name: name,
     type: type,
-    data: data,
+    system: data,
   };
 
   // Remove the type from the dataset since it's in the itemData.type prop.
-  delete itemData.data["type"];
+  delete itemData.system["type"];
 
   // Set the parent item type for nested items
   let parentItem = null;
   if (data.parentId) {
     parentItem = actor.items.get(data.parentId);
-    itemData.data.type = parentItem.type;
+    itemData.system.type = parentItem.type;
   }
 
   // Finally, create the item!
