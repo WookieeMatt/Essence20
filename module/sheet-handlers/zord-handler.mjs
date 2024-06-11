@@ -2,16 +2,25 @@ import { rememberSelect } from "../helpers/dialog.mjs";
 import { createId } from "../helpers/utils.mjs";
 
 export async function zordDrop(targetActor, dropActor) {
-const choices = {};
-for (const value of CONFIG.E20.VehicleRoles) {
-  choices[value] = {
-    chosen: false,
-    key: value,
-    label: value,
-  };
+    console.log(targetActor.type)
+  if (targetActor.type == 'zord') {
+    await _positionSelect(targetActor, dropActor);
+  } else if (targetActor.type == 'megaformZord') {
+    await _attachSelectedActor(targetActor, dropActor);
+  }
 }
 
-new Dialog(
+async function _positionSelect(targetActor,dropActor){
+  const choices = {};
+  for (const value of CONFIG.E20.VehicleRoles) {
+    choices[value] = {
+      chosen: false,
+      key: value,
+      label: value,
+    };
+  }
+
+  new Dialog(
     {
       title: game.i18n.localize('E20.PassengerSelect'),
       content: await renderTemplate("systems/essence20/templates/dialog/passenger-select.hbs", {
@@ -20,21 +29,22 @@ new Dialog(
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _attachSelectedActor(targetActor, rememberSelect(html), dropActor),
+          callback: html => _attachSelectedActor(targetActor, dropActor, rememberSelect(html)),
         },
       },
     },
   ).render(true);
-
 }
 
-async function _attachSelectedActor(targetActor, options, dropActor) {
+async function _attachSelectedActor(targetActor, dropActor, options) {
+  console.log("GotHere")
   let selectedRole = '';
-  console.log(options)
-  for (const [ ,role] of Object.entries(options)){
-      selectedRole = role;
+  if (options) {
+    for (const [ ,role] of Object.entries(options)){
+        selectedRole = role;
+    }
   }
-
+  console.log(targetActor, dropActor)
   const passengers = targetActor.system.passengers;
   if (passengers) {
     for (const [, actor] of Object.entries(passengers)) {
@@ -45,11 +55,11 @@ async function _attachSelectedActor(targetActor, options, dropActor) {
   }
 
   const entry = {
-    health: dropActor.system.health,
     img: dropActor.img,
     name: dropActor.name,
     type: dropActor.type,
     uuid: dropActor.uuid,
+    color: dropActor.system.color,
   }
   if (targetActor.type == 'zord') {
     entry['level'] = dropActor.system.level;
