@@ -22,6 +22,7 @@ export class ZordActorData extends foundry.abstract.TypeDataModel {
     this.essences.speed.value = 4;
     this.essences.strength.value = 6;
     this.health.max = 6;
+    this.health.value = 6;
     this.initiative.shift = "d6";
     this.movement.ground.total = 40;
     this.size = "huge";

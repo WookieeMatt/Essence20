@@ -40,7 +40,7 @@ export class RolePointsItemData extends foundry.abstract.TypeDataModel {
         level20ValueIsUnlimited: makeBool(false),
         increaseLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), []),
         max: makeInt(null),
-        startingValue: makeInt(null),
+        startingMax: makeInt(null),
         value : makeInt(0),
       }),
     };

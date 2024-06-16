@@ -3,14 +3,13 @@
  * @param {Actor} actor The Megaform Zord to prepare Zords for
  * @param {Object} context The actor data to prepare
  */
-export function prepareZords(actor, context) {
-  if (actor.type == 'megaformZord') {
+export async function prepareZords(actor, context) {
+  if(actor.system.passengers) {
     let zords = [];
 
-    for (let zordId of actor.system.zordIds) {
-      zords.push(game.actors.get(zordId));
+    for (const [, zord] of Object.entries(actor.system.passengers)) {
+      zords.push(await fromUuid(zord.uuid));
     }
-
     context.zords = zords;
   }
 }
@@ -22,9 +21,11 @@ export function prepareZords(actor, context) {
  */
 export async function onZordDelete(event, actorSheet) {
   const li = $(event.currentTarget).parents(".zord");
-  const zordId = li.data("zordId");
-  const zordIds = actorSheet.actor.system.zordIds.filter(x => x !== zordId);
-  actorSheet.actor.update({ "system.zordIds": zordIds });
+  const id = li.data("zordKey");
+  const updateString = `system.passengers.-=${id}`;
+  console.log(updateString)
+
+  await actorSheet.actor.update({[updateString]: null});
   li.slideUp(200, () => actorSheet.render(false));
 }
 
