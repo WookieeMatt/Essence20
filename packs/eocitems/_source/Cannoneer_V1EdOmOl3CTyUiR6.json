@@ -59,6 +59,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "b48f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.2sGx4CLaN68j49oh",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Gunner",
+        "type": "role"
       }
     },
     "essences": [
@@ -84,11 +90,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.6",
     "coreVersion": "12.323",
     "createdTime": 1714394160496,
-    "modifiedTime": 1714394324186,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1718839074865,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },
