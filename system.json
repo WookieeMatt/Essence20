@@ -60,7 +60,7 @@
     },
     {
       "name": "decepticon_directive",
-      "label": "Decpeticon Directive",
+      "label": "Decepticon Directive",
       "system": "essence20",
       "path": "packs/dditems",
       "type": "Item",
