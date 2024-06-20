@@ -297,6 +297,7 @@ export async function onOriginDelete(actor, origin) {
       break;
     }
   }
+
   const essenceString = `system.essences.${essence}`;
 
   await actor.update({
