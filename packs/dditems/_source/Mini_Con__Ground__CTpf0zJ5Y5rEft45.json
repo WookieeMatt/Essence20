@@ -17,6 +17,36 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Frame Efficacy",
         "type": "perk"
+      },
+      "a1ab": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.dUNk3ylraMY7348P",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Firearm Enhancment Module)",
+        "type": "altMode"
+      },
+      "9bd9": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.i8jLfvRkKOFmPdnF",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Mini-Cassette)",
+        "type": "altMode"
+      },
+      "2e89": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.oSn5EyMwso8Z1Ohh",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Mini-Vehicle (Aerial)",
+        "type": "altMode"
+      },
+      "0c78": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.JVIOxmSpPwPQDY1z",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Mini-Vehicle (Ground))",
+        "type": "altMode"
+      },
+      "b088": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.1Phg0rsbVHuCOpJb",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Power Conduit)",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -36,11 +66,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1694553713888,
-    "modifiedTime": 1704127407296,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887996024,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

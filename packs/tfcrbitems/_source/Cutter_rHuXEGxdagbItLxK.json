@@ -4,7 +4,7 @@
   "img": "systems/essence20/assets/icons/items/origin.svg",
   "system": {
     "originalId": "",
-    "description": "<p>@UUID[Compendium.essence20.tf_crb.Item.5sxhsXAHh97KTpwa]{Cutter (Common)}@UUID[Compendium.essence20.tf_crb.Item.FlN4FCnbTP7RRz8K]{Cutter (Long)}</p>",
+    "description": "",
     "source": {
       "book": "Transformers Core Rulebook",
       "page": 49
@@ -15,6 +15,18 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Surface Invasion",
         "type": "perk"
+      },
+      "deeb": {
+        "uuid": "Compendium.essence20.tf_crb.Item.5sxhsXAHh97KTpwa",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Cutter (Common)",
+        "type": "altMode"
+      },
+      "d62b": {
+        "uuid": "Compendium.essence20.tf_crb.Item.FlN4FCnbTP7RRz8K",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Cutter (Long)",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -42,11 +54,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1681743498597,
-    "modifiedTime": 1704127425217,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887787739,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },
