@@ -188,9 +188,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 
     break;
   case "origin":
-    if (droppedItem.type =="altMode") {
-      return _addItemIfUnique(droppedItem, targetItem, entry);
-    } else if (droppedItem.type == "perk") {
+    if (["altMode", "perk"].includes(droppedItem.type)) {
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 

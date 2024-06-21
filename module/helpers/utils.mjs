@@ -67,6 +67,7 @@ export function getShiftedSkill(skill, shift, actor) {
   let skillString = "";
   let currentShift = "";
   let newShift = "";
+
   if (skill == "initiative") {
     skillString = `system.${skill}.shift`;
     currentShift = actor.system[skill].shift;

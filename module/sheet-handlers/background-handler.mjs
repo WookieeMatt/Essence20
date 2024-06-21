@@ -290,13 +290,7 @@ export async function onOriginDelete(actor, origin) {
   const [newShift, skillString] = getShiftedSkill(selectedSkill, -1, actor);
   await deleteAttachmentsForItem(origin, actor);
 
-  let hasAltMode = false;
-  for (const [, item] of Object.entries(actor.items)) {
-    if (item.type == "altMode") {
-      hasAltMode = true;
-      break;
-    }
-  }
+  const hasAltMode = !!getItemsOfType("altMode", actor.items).length;
 
   const essenceString = `system.essences.${essence}`;
 
