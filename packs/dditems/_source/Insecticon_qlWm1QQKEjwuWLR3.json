@@ -17,11 +17,17 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Insectoid Components",
         "type": "perk"
+      },
+      "7a61": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.LQuQIm8rqeGu84ga",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Insecticon",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
-    "baseGroundMovement": 28,
+    "baseGroundMovement": 30,
     "essences": [
       "strength"
     ],
@@ -36,11 +42,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1694553585157,
-    "modifiedTime": 1704127407980,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887934122,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

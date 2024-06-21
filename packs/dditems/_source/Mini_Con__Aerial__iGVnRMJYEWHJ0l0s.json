@@ -11,11 +11,41 @@
       "page": 35
     },
     "items": {
+      "1730": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.1Phg0rsbVHuCOpJb",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Power Conduit)",
+        "type": "altMode"
+      },
+      "9013": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.i8jLfvRkKOFmPdnF",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Mini-Cassette)",
+        "type": "altMode"
+      },
       "aeb9": {
         "uuid": "Compendium.essence20.decepticon_directive.Item.4NR1hsHWADKJegbh",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Frame Efficacy",
         "type": "perk"
+      },
+      "4f61": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.dUNk3ylraMY7348P",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Firearm Enhancment Module)",
+        "type": "altMode"
+      },
+      "0ae0": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.oSn5EyMwso8Z1Ohh",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Mini-Vehicle (Aerial)",
+        "type": "altMode"
+      },
+      "c407": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.JVIOxmSpPwPQDY1z",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Mini-Con (Mini-Vehicle (Ground))",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 40,
@@ -35,11 +65,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1694553713888,
-    "modifiedTime": 1704127407640,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887971880,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

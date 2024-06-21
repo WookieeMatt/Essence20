@@ -17,6 +17,30 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Til All Are One",
         "type": "perk"
+      },
+      "963f": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.ilL3CyLQDydjxBHf",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Speaker (Common/Aerial)",
+        "type": "altMode"
+      },
+      "f294": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.GPW2T5OEC0KtlJpX",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Speaker (Common/Ground)",
+        "type": "altMode"
+      },
+      "aa0c": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.wwFXrMqJd0YJHqkX",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Speaker (Large/Aerial)",
+        "type": "altMode"
+      },
+      "9a61": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.48zFIrJCoULshGtm",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Speaker (Large/Ground)",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -42,11 +66,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1714274313021,
-    "modifiedTime": 1714274368787,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1718888102095,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

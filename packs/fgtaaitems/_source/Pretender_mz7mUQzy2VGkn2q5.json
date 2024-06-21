@@ -10,11 +10,47 @@
       "page": 62
     },
     "items": {
+      "8798": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.VGMl0WRUi7JlpeHD",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Pretender (Common, Ground 30, Aerial 20)",
+        "type": "altMode"
+      },
       "c0b1": {
         "uuid": "Compendium.essence20.field_guide_action_adventure.Item.cqAShkpH0EIYZSDS",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Lifelike",
         "type": "perk"
+      },
+      "e959": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.2RdkwgXojDbxqZwG",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Pretender (Common, Ground 30, Aquatic 20)",
+        "type": "altMode"
+      },
+      "5a16": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.ca4svWchRNjMhEMf",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Pretender (Common, Ground 45)",
+        "type": "altMode"
+      },
+      "b260": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.WYhFLk3UNGrPpkDc",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Pretender (Small, Ground 30, Aerial 20)",
+        "type": "altMode"
+      },
+      "a1b3": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.YBPRmUSQ8YWltd1T",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Pretender (Small, Ground 30, Aquatic 20)",
+        "type": "altMode"
+      },
+      "303f": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.sew02e01Cw2m4cUd",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Pretender (Small, Ground 45)",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -37,11 +73,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1685406320154,
-    "modifiedTime": 1704127408873,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718888066111,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

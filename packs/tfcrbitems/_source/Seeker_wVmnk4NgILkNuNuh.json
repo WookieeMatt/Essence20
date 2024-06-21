@@ -10,6 +10,12 @@
       "page": 53
     },
     "items": {
+      "4304": {
+        "uuid": "Compendium.essence20.tf_crb.Item.RXTZuPJnnAlkgHX2",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Seeker",
+        "type": "altMode"
+      },
       "40e6": {
         "uuid": "Compendium.essence20.tf_crb.Item.wkskDLpz4belpb7p",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -42,11 +48,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1681743896725,
-    "modifiedTime": 1704127425777,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887838071,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },
