@@ -198,6 +198,7 @@ export async function setOriginValues(actor, origin, essence, options, dropFunc)
 
   const newOriginList = await dropFunc();
   await createItemCopies(origin.system.items, actor, "perk", newOriginList[0]);
+  await createItemCopies(origin.system.items, actor, "altMode", newOriginList[0]);
 
   await actor.update({
     [essenceString]: essenceValue,
@@ -289,11 +290,14 @@ export async function onOriginDelete(actor, origin) {
   const [newShift, skillString] = getShiftedSkill(selectedSkill, -1, actor);
   await deleteAttachmentsForItem(origin, actor);
 
+  const hasAltMode = !!getItemsOfType("altMode", actor.items).length;
+
   const essenceString = `system.essences.${essence}`;
 
   await actor.update({
     [essenceString]: essenceValue,
     [skillString]: newShift,
+    "system.canTransform": hasAltMode,
     "system.health.max": 0,
     "system.health.value": 0,
     "system.movement.aerial.base": 0,

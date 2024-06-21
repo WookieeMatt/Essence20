@@ -35,6 +35,11 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         const newItem = await Item.create(itemToCreate, { parent: owner });
+        if (newItem.type == "altMode") {
+          await owner.update({
+            "system.canTransform": true,
+          });
+        }
 
         if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
           const newKey = await setEntryAndAddItem(newItem, parentItem);
@@ -183,7 +188,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 
     break;
   case "origin":
-    if (droppedItem.type == "perk") {
+    if (["altMode", "perk"].includes(droppedItem.type)) {
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
