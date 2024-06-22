@@ -106,7 +106,6 @@ export class Dice {
       snag: calculatedSnag,
     };
 
-  console.log(skillDataset)
     updatedShiftDataset.rolePoints = null;
     const rolePointsList = getItemsOfType('rolePoints', actor.items);
 
