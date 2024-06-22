@@ -160,7 +160,7 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => setOriginValues(
+          callback: html => _checkForAltModes(
             actor, origin, selectedEssence, rememberOptions(html), dropFunc,
           ),
         },
@@ -169,15 +169,17 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
   ).render(true);
 }
 
+
 /**
  * Updates the actor with the information selected for the Origin
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
- * @param {Object} options The options resulting from _showOriginSkillDialog()
  * @param {String} essence The essence selected in the _showOriginEssenceDialog()
+ * @param {Object} options The options resulting from _showOriginSkillDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-export async function setOriginValues(actor, origin, essence, options, dropFunc) {
+
+export async function _checkForAltModes(actor, origin, essence, options, dropFunc) {
   let selectedSkill = "";
   for (const [skill, isSelected] of Object.entries(options)) {
     if (isSelected) {
@@ -191,14 +193,101 @@ export async function setOriginValues(actor, origin, essence, options, dropFunc)
     return;
   }
 
+  const choices = {};
+  const altModes = [];
+  for (const [, item] of Object.entries(origin.system.items)) {
+   if (item.type == "altMode") {
+    altModes.push(item);
+   }
+  }
+
+  if (altModes.length >1) {
+    for (const altMode of altModes) {
+      choices[altMode.name] = {
+        chosen: false,
+        label: altMode.name,
+      };
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.OriginAltModeSelect'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => setOriginValues(
+              actor, origin, essence, selectedSkill, dropFunc, rememberOptions(html)
+            ),
+          },
+        },
+      },
+    ).render(true);
+  } else {
+    setOriginValues(actor, origin, essence, selectedSkill, dropFunc);
+  }
+
+}
+
+/**
+ * Updates the actor with the information selected for the Origin
+ * @param {Actor} actor The Actor receiving the Origin
+ * @param {Origin} origin The Origin being dropped
+ * @param {String} essence The essence selected in the _showOriginEssenceDialog()
+ * @param {String} skill the skill selected in the _showOriginSkillEssenceDialog()
+ * @param {Function} dropFunc The function to call to complete the Origin drop
+ * @param {Object} options The options resulting from _checkForAltModes()
+ */
+export async function setOriginValues(actor, origin, essence, skill, dropFunc, options) {
+  let selectedAltMode = "";
+  if (options) {
+    for (const [altMode, isSelected] of Object.entries(options)) {
+      if (isSelected) {
+        selectedAltMode = altMode;
+        break;
+      }
+    }
+
+    if (!selectedAltMode) {
+      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoAltMode'));
+      return;
+    }
+
+  }
+  let altModeToCreate = {}
+  for (const [, item] of Object.entries(origin.system.items)) {
+    if (item.type == "altMode") {
+     if (selectedAltMode) {
+      if (selectedAltMode == item.name) {
+        altModeToCreate = item;
+      }
+     } else {
+      altModeToCreate = item;
+     }
+    }
+   }
+
   const essenceValue = actor.system.essences[essence] + 1;
   const essenceString = `system.essences.${essence}`;
 
-  const [newShift, skillString] = getShiftedSkill(selectedSkill, 1, actor);
+  const [newShift, skillString] = getShiftedSkill(skill, 1, actor);
 
   const newOriginList = await dropFunc();
   await createItemCopies(origin.system.items, actor, "perk", newOriginList[0]);
-  await createItemCopies(origin.system.items, actor, "altMode", newOriginList[0]);
+  if ('name' in altModeToCreate) {
+    const itemToCreate = await fromUuid(altModeToCreate.uuid);
+    const newItem = await Item.create(itemToCreate, { parent: actor });
+    if (newItem.type == "altMode") {
+      await actor.update({
+        "system.canTransform": true,
+      });
+    }
+
+    newItem.setFlag('core', 'sourceId', itemToCreate.uuid);
+    newItem.setFlag('essence20', 'parentId', newOriginList[0]._id);
+  }
 
   await actor.update({
     [essenceString]: essenceValue,
@@ -209,7 +298,7 @@ export async function setOriginValues(actor, origin, essence, options, dropFunc)
     "system.movement.swim.base": origin.system.baseAquaticMovement,
     "system.movement.ground.base": origin.system.baseGroundMovement,
     "system.originEssencesIncrease": essence,
-    "system.originSkillsIncrease": selectedSkill,
+    "system.originSkillsIncrease": skill,
   });
 }
 
