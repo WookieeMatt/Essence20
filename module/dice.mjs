@@ -97,6 +97,7 @@ export class Dice {
     if (actorSkillData.edge || essenceShifts[rolledEssence].edge) {
       calculatedEdge = true;
     }
+
     if (actorSkillData.snag || essenceShifts[rolledEssence].snag) {
       calculatedSnag = true;
     }
