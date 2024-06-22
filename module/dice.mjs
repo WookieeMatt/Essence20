@@ -91,11 +91,22 @@ export class Dice {
       shiftDown: calculatedShiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
+    let calculatedEdge = false;
+    let calculatedSnag = false;
+
+    if (actorSkillData.edge || essenceShifts[rolledEssence].edge) {
+      calculatedEdge = true;
+    }
+    if (actorSkillData.snag || essenceShifts[rolledEssence].snag) {
+      calculatedSnag = true;
+    }
+
     const skillDataset = {
-      edge: actorSkillData.edge,
-      snag: actorSkillData.snag,
+      edge: calculatedEdge,
+      snag: calculatedSnag,
     };
 
+  console.log(skillDataset)
     updatedShiftDataset.rolePoints = null;
     const rolePointsList = getItemsOfType('rolePoints', actor.items);
 
@@ -123,7 +134,7 @@ export class Dice {
         const roleList = getItemsOfType('role', actor.items);
         roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
       }
-      
+
       label = this._getWeaponRollLabel(dataset, skillRollOptions, item, roleSkillDieName);
       break;
     case 'spell':
