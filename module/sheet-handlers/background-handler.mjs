@@ -196,9 +196,9 @@ export async function _checkForAltModes(actor, origin, essence, options, dropFun
   const choices = {};
   const altModes = [];
   for (const [, item] of Object.entries(origin.system.items)) {
-   if (item.type == "altMode") {
-    altModes.push(item);
-   }
+    if (item.type == "altMode") {
+      altModes.push(item);
+    }
   }
 
   if (altModes.length >1) {
@@ -219,7 +219,7 @@ export async function _checkForAltModes(actor, origin, essence, options, dropFun
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
             callback: html => setOriginValues(
-              actor, origin, essence, selectedSkill, dropFunc, rememberOptions(html)
+              actor, origin, essence, selectedSkill, dropFunc, rememberOptions(html),
             ),
           },
         },
@@ -254,20 +254,20 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, o
       ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoAltMode'));
       return;
     }
-
   }
-  let altModeToCreate = {}
+
+  let altModeToCreate = {};
   for (const [, item] of Object.entries(origin.system.items)) {
     if (item.type == "altMode") {
-     if (selectedAltMode) {
-      if (selectedAltMode == item.name) {
+      if (selectedAltMode) {
+        if (selectedAltMode == item.name) {
+          altModeToCreate = item;
+        }
+      } else {
         altModeToCreate = item;
       }
-     } else {
-      altModeToCreate = item;
-     }
     }
-   }
+  }
 
   const essenceValue = actor.system.essences[essence] + 1;
   const essenceString = `system.essences.${essence}`;
