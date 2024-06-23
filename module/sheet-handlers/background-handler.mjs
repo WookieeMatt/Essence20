@@ -169,7 +169,6 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
   ).render(true);
 }
 
-
 /**
  * Updates the actor with the information selected for the Origin
  * @param {Actor} actor The Actor receiving the Origin
