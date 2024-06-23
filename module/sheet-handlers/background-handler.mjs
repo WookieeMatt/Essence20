@@ -274,7 +274,8 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, o
 
   const newOriginList = await dropFunc();
   await createItemCopies(origin.system.items, actor, "perk", newOriginList[0]);
-  if ('name' in altModeToCreate) {
+
+  if (altModeToCreate) {
     const itemToCreate = await fromUuid(altModeToCreate.uuid);
     const newItem = await Item.create(itemToCreate, { parent: actor });
     if (newItem.type == "altMode") {
