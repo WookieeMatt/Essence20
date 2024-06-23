@@ -1,0 +1,14 @@
+<div class="collapsible-item-container" style="border-color: {{system.color}};">
+  <span class="flex-group-center">{{localize 'E20.ActorWealth'}}</span>
+  <div class="initiative-dropdown flex-group-center">
+    <div class="item-image">
+      <a class="rollable" data-roll-type="skill"data-skill="wealth" data-shift-up ="{{system.skills.wealth.shiftUp}}" data-shift-down ="{{system.skills.wealth.shiftDown}}" data-shift="{{system.skills.wealth.shift}}" data-is-specialized="{{system.skills.wealth.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
+    </div>
+    <select name="system.skills.wealth.shift">
+      {{selectOptions @root.config.skillShifts selected=system.skills.wealth.shift}}
+    </select>
+    <span for="system.wealth.modifier">+</span>
+    <input class="one-digit-input" type="number" name="system.skills.wealth.modifier"
+      value="{{system.skills.wealth.modifier}}" min="0" step="1" />
+  </div>
+</div>
