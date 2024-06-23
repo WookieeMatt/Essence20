@@ -10,6 +10,7 @@ function makeDefensesFields(usesDrivers, init) {
 }
 
 export const machine = () => ({
+  actors: new fields.ObjectField({}),
   canHover: makeBool(false),
   defenses: new fields.SchemaField({
     toughness: makeDefensesFields(false, 10),
