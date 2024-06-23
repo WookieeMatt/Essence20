@@ -170,7 +170,7 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
 }
 
 /**
- * Updates the actor with the information selected for the Origin
+ * Determine if the Origin has an altMode and if there is more than one and a selection needs to be made.
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
  * @param {String} essence The essence selected in the _showOriginEssenceDialog()
@@ -193,12 +193,7 @@ export async function _checkForAltModes(actor, origin, essence, options, dropFun
   }
 
   const choices = {};
-  const altModes = [];
-  for (const [, item] of Object.entries(origin.system.items)) {
-    if (item.type == "altMode") {
-      altModes.push(item);
-    }
-  }
+  const altModes = getItemsOfType('altMode', Object.values(origin.system.items));
 
   if (altModes.length > 1) {
     for (const altMode of altModes) {
