@@ -17,6 +17,7 @@ import {
   onItemDelete,
   onInlineEdit,
 } from "../sheet-handlers/listener-item-handler.mjs";
+import { prepareAttachedActors } from "../sheet-handlers/crew-handlers.mjs"
 import { getItemsOfType } from "../helpers/utils.mjs";
 
 export class Essence20ActorSheet extends ActorSheet {
