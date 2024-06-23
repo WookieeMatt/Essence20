@@ -136,7 +136,9 @@ export async function onDropActor(data, actorSheet) {
         "system.zordIds": zordIds,
       }).then(actorSheet.render(false));
     }
-  } else {
+  } else if (actor.type == 'vehicle' && sourceActor.type == '') {
+
+    } else {
     return false;
   }
 }
