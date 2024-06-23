@@ -15,6 +15,13 @@ function makeDefensesFields(name, essence) {
   });
 }
 
+function makeEssenceFields() {
+  return new fields.SchemaField({
+    max: makeInt(3),
+    value: makeInt(3),
+  })
+}
+
 export const character = () => ({
   background: new fields.SchemaField({
     pronouns: makeStr(''),
@@ -27,10 +34,10 @@ export const character = () => ({
     cleverness: makeDefensesFields('cleverness', 'social'),
   }),
   essences: new fields.SchemaField({
-    strength: makeInt(3),
-    speed: makeInt(3),
-    smarts: makeInt(3),
-    social: makeInt(3),
+    strength: makeEssenceFields(),
+    speed: makeEssenceFields(),
+    smarts: makeEssenceFields(),
+    social: makeEssenceFields(),
   }),
   level: makeInt(1),
   notes: new fields.HTMLField(),
