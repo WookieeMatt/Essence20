@@ -83,6 +83,8 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare Zords for MFZs
     prepareZords(this.actor, context);
 
+    prepareAttachedActors(this.actor, context);
+
     context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
 
