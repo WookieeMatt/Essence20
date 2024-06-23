@@ -196,17 +196,6 @@ export const migrateActorData = async function(actor, compendiumActor) {
     }
   }
 
-  //Migrate Essences to object
-  if (typeof actor.system.essences.strength == 'number') {
-    updateData[`system.essences.strength.max`] = actor.system.essences.strength;
-    updateData[`system.essences.strength.value`] = actor.system.essences.strength;
-    updateData[`system.essences.speed.max`] = actor.system.essences.speed;
-    updateData[`system.essences.speed.value`] = actor.system.essences.speed;
-    updateData[`system.essences.smarts.max`] = actor.system.essences.smarts;
-    updateData[`system.essences.smarts.value`] = actor.system.essences.smarts;
-    updateData[`system.essences.social.max`] = actor.system.essences.social;
-    updateData[`system.essences.social.value`] = actor.system.essences.social;
-  }
 
   // Migrate Zord/MFZ essence
   if (["zord", "megaformZord"].includes(actor.type)) {
