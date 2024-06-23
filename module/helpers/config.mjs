@@ -900,3 +900,8 @@ E20.CombinedEssenceRankNames = [
   ...E20.TFEssenceRankNames,
 ];
 
+E20.VehicleRoles = [
+  "driver",
+  "gunner",
+  "passenger",
+];
