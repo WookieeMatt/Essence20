@@ -254,7 +254,7 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, o
     }
   }
 
-  let altModeToCreate = {};
+  let altModeToCreate = null;
   for (const [, item] of Object.entries(origin.system.items)) {
     if (item.type == "altMode") {
       if (selectedAltMode) {
