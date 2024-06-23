@@ -234,7 +234,7 @@ export async function _checkForAltModes(actor, origin, essence, options, dropFun
  * @param {Object} options The options resulting from _checkForAltModes()
  */
 export async function setOriginValues(actor, origin, essence, skill, dropFunc, options) {
-  let selectedAltMode = "";
+  let selectedAltMode = null;
   if (options) {
     for (const [altMode, isSelected] of Object.entries(options)) {
       if (isSelected) {
