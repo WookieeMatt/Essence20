@@ -228,7 +228,6 @@ export async function _checkForAltModes(actor, origin, essence, options, dropFun
   } else {
     setOriginValues(actor, origin, essence, selectedSkill, dropFunc);
   }
-
 }
 
 /**
