@@ -201,7 +201,7 @@ export async function _checkForAltModes(actor, origin, essence, options, dropFun
     }
   }
 
-  if (altModes.length >1) {
+  if (altModes.length > 1) {
     for (const altMode of altModes) {
       choices[altMode.name] = {
         chosen: false,
