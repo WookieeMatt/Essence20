@@ -148,7 +148,7 @@ export class Essence20Actor extends Actor {
       const bonus = defense.bonus;
       const morphed = defense.morphed;
       let rolePointsDefense = 0;
-      const essence = system.essences[defense.essence].value;
+      const essence = system.essences[defense.essence].max;
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
       const armorName = game.i18n.localize('E20.DefenseArmor');
