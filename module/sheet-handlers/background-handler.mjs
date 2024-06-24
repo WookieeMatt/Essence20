@@ -262,8 +262,8 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, o
     }
   }
 
-  const essenceValue = actor.system.essences[essence] + 1;
-  const essenceString = `system.essences.${essence}`;
+  const essenceValue = actor.system.essences[essence].max + 1;
+  const essenceString = `system.essences.${essence}.max`;
 
   const [newShift, skillString] = getShiftedSkill(skill, 1, actor);
 
@@ -367,7 +367,7 @@ async function _hangUpSelect(actor, options) {
  */
 export async function onOriginDelete(actor, origin) {
   let essence = actor.system.originEssencesIncrease;
-  let essenceValue = actor.system.essences[essence] - 1;
+  let essenceValue = actor.system.essences[essence].max - 1;
 
   let selectedSkill = actor.system.originSkillsIncrease;
   const [newShift, skillString] = getShiftedSkill(selectedSkill, -1, actor);

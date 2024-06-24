@@ -12,7 +12,7 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
 export async function setRoleValues(role, actor, newLevel=null, previousLevel=null) {
   for (const essence in role.system.essenceLevels) {
     const totalChange = roleValueChange(actor.system.level, role.system.essenceLevels[essence], previousLevel);
-    const essenceValue = actor.system.essences[essence] + totalChange;
+    const essenceValue = actor.system.essences[essence].max + totalChange;
     const essenceString = `system.essences.${essence}`;
 
     await actor.update({
@@ -383,7 +383,7 @@ export async function onRoleDelete(actor, role) {
 
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
-    const essenceValue = Math.max(0, actor.system.essences[essence] + totalDecrease);
+    const essenceValue = Math.max(0, actor.system.essences[essence].max + totalDecrease);
     const essenceString = `system.essences.${essence}`;
 
     await actor.update({
