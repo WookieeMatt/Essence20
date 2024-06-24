@@ -325,7 +325,7 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
   });
 
-  test.only("essence-shifted skill roll with edge", async () => {
+  test("essence-shifted skill roll with edge", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
