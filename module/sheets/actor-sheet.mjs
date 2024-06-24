@@ -159,10 +159,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     let weaponEffectSkills = {};
     for (const skill of Object.keys(actorData.system.skills)) {
-      if (skill == 'roleSkillDie' && !hasSkillDie) {
-      } else if (skill == 'wealth') {
-
-      } else {
+      if (skill != 'wealth' && (skill != 'roleSkillDie' || hasSkillDie)) {
         weaponEffectSkills[skill] = {
           key: skill,
           label: skill == 'roleSkillDie' && hasSkillDie
