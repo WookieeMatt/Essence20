@@ -325,7 +325,7 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
   });
 
-  test("essence-shifted skill roll", async () => {
+  test.only("essence-shifted skill roll with edge", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
       edge: false,
       snag: false,
@@ -348,7 +348,7 @@ describe("rollSkill", () => {
       shiftDown: 2,
     };
     const expectedSkillDataset = {
-      edge: false,
+      edge: true,
       snag: false,
     };
     const mockShiftedActor = {
@@ -364,6 +364,8 @@ describe("rollSkill", () => {
     };
     mockShiftedActor.system.essenceShifts.strength.shiftDown = 1;
     mockShiftedActor.system.essenceShifts.strength.shiftUp = 1;
+    mockShiftedActor.system.essenceShifts.strength.edge = true;
+    mockShiftedActor.system.essenceShifts.strength.snag = false;
     mockShiftedActor.system.essenceShifts.any.shiftDown = 1;
     dice._rollSkillHelper = jest.fn();
 
