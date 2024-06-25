@@ -12,7 +12,7 @@ export class GiJoeActorData extends foundry.abstract.TypeDataModel {
   }
 
   static migrateData(source) {
-    migrateCharacterData(source)
+    migrateCharacterData(source);
     return super.migrateData(source);
   }
 
