@@ -2,7 +2,7 @@ import { E20 } from "../../helpers/config.mjs";
 
 import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
-import { character, migrateCharacterData } from './templates/character.mjs';
+import { character } from './templates/character.mjs';
 import { common } from './templates/common.mjs';
 import { creature } from './templates/creature.mjs';
 
@@ -29,11 +29,6 @@ export class CompanionActorData extends foundry.abstract.TypeDataModel {
       }),
       type: makeStrWithChoices(Object.keys(E20.companionTypes), 'pet'),
     };
-  }
-
-  static migrateData(source) {
-    migrateCharacterData(source)
-    return super.migrateData(source);
   }
 }
 

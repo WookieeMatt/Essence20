@@ -122,7 +122,7 @@ export async function onRest(actorSheet) {
     }
   }
 
-  for (const essence of Object.entries(actor.system.essences)) {
+  for (const essence of Object.keys(actor.system.essences)) {
     console.log(essence)
     if (actor.system.essences[essence].value < actor.system.essences[essence].max) {
       const essenceString = `system.essences.${essence}.value`;
