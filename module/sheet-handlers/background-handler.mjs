@@ -375,7 +375,7 @@ export async function onOriginDelete(actor, origin) {
 
   const hasAltMode = !!getItemsOfType("altMode", actor.items).length;
 
-  const essenceString = `system.essences.${essence}`;
+  const essenceString = `system.essences.${essence}.max`;
 
   await actor.update({
     [essenceString]: essenceValue,

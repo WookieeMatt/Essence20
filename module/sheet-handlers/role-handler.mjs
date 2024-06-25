@@ -13,7 +13,7 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   for (const essence in role.system.essenceLevels) {
     const totalChange = roleValueChange(actor.system.level, role.system.essenceLevels[essence], previousLevel);
     const essenceValue = actor.system.essences[essence].max + totalChange;
-    const essenceString = `system.essences.${essence}`;
+    const essenceString = `system.essences.${essence}.max`;
 
     await actor.update({
       [essenceString]: essenceValue,
@@ -248,7 +248,7 @@ async function _focusStatUpdate(actor, options, dropFunc) {
 export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
   const essenceValue = actor.system.essences[actor.system.focusEssence] + totalChange;
-  const essenceString = `system.essences.${actor.system.focusEssence}`;
+  const essenceString = `system.essences.${actor.system.focusEssence}.max`;
 
   await actor.update({
     [essenceString]: essenceValue,
@@ -272,7 +272,7 @@ export async function onFocusDelete(actor, focus) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
   const essenceValue = Math.max(0, actor.system.essences[actor.system.focusEssence] + totalDecrease);
-  const essenceString = `system.essences.${actor.system.focusEssence}`;
+  const essenceString = `system.essences.${actor.system.focusEssence}.max`;
 
   await actor.update({
     [essenceString]: essenceValue,
@@ -384,7 +384,7 @@ export async function onRoleDelete(actor, role) {
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
     const essenceValue = Math.max(0, actor.system.essences[essence].max + totalDecrease);
-    const essenceString = `system.essences.${essence}`;
+    const essenceString = `system.essences.${essence}.max`;
 
     await actor.update({
       [essenceString]: essenceValue,
@@ -561,7 +561,7 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
   const newRole = newRoleList[0];
 
   for (const[essence, rank] of Object.entries(options)) {
-    const essenceString = `system.essenceLevels.${essence}`;
+    const essenceString = `system.essenceLevels.${essence}.max`;
     const essenceRankString = `system.essenceRanks.${essence}`;
     let rankValue = [];
     if (role.system.version == "transformers"){
