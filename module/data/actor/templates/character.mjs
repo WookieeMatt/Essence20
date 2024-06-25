@@ -19,7 +19,7 @@ export function makeEssenceFields() {
   return new fields.SchemaField({
     max: makeInt(3),
     value: makeInt(3),
-  })
+  });
 }
 
 export const character = () => ({
@@ -69,4 +69,5 @@ export function migrateCharacterData(source) {
       source.essences.social.value = social;
     }
   }
-};
+
+}
