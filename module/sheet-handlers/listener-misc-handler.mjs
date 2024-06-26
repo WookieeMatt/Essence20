@@ -122,6 +122,7 @@ export async function onRest(actorSheet) {
     }
   }
 
+  // Recovering Essence damage
   for (const essence of Object.keys(actor.system.essences)) {
     if (actor.system.essences[essence].value < actor.system.essences[essence].max) {
       const essenceString = `system.essences.${essence}.value`;
