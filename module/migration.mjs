@@ -196,7 +196,6 @@ export const migrateActorData = async function(actor, compendiumActor) {
     }
   }
 
-
   // Migrate Zord/MFZ essence
   if (["zord", "megaformZord"].includes(actor.type)) {
     const strength = actor.system.essences.strength;
