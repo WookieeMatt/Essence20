@@ -69,5 +69,4 @@ export function migrateCharacterData(source) {
       source.essences.social.value = social;
     }
   }
-
 }
