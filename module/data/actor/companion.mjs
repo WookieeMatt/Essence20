@@ -31,5 +31,3 @@ export class CompanionActorData extends foundry.abstract.TypeDataModel {
     };
   }
 }
-
-
