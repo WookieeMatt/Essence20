@@ -131,7 +131,7 @@ export async function onRest(actorSheet) {
         [essenceString]: essenceRestore,
       });
 
-      ui.notifications.info(game.i18n.format('E20.RestEssenceRestored', { essenceRestore: essenceRestore, essence: essence }));
+      ui.notifications.info(game.i18n.format('E20.RestEssenceRestored', { essenceRestore: essenceRestore, essence: CONFIG.E20.essences[essence] }));
     }
   }
 
