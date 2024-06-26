@@ -386,11 +386,14 @@ export async function onRoleDelete(actor, role) {
 
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
-    const essenceValue = Math.max(0, actor.system.essences[essence].max + totalDecrease);
-    const essenceString = `system.essences.${essence}.max`;
+    const essenceMaxValue = Math.max(0, actor.system.essences[essence].max + totalDecrease);
+    const essenceValue = Math.max(0, actor.system.essences[essence].value + totalDecrease);
+    const essenceMaxString = `system.essences.${essence}.max`;
+    const essenceString = `system.essences.${essence}.value`;
 
     await actor.update({
       [essenceString]: essenceValue,
+      [essenceMaxString]: essenceMaxValue,
     });
   }
 
