@@ -138,7 +138,7 @@ export async function onDropActor(data, actorSheet) {
     }
   } else if (actor.type == 'vehicle' && sourceActor.type == '') {
 
-    } else {
+  } else {
     return false;
   }
 }

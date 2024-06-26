@@ -5,6 +5,7 @@
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="crew"> {{ localize "E20.TabCrew" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
   </nav>
 
@@ -13,22 +14,32 @@
     {{!-- Main Tab --}}
     <div class="tab main flexcol" data-group="primary" data-tab="main">
       <div class="npc-row">
-        {{!--NPC Defenses--}}
+        <div class="npc-essence-scores">
+          {{!-- NPC Essence Scores --}}
+          {{> "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs"}}
+        </div>
+        <div class="npc-health">
+          {{!-- Health --}}
+          {{> "systems/essence20/templates/actor/parts/misc/health.hbs"}}
+        </div>
+        <div class="npc-health">
+          {{!-- Stun --}}
+          {{> "systems/essence20/templates/actor/parts/misc/stun.hbs"}}
+        </div>
+      </div>
+      <div class="npc-row">
+        {{!-- NPC Can Transform --}}
+        {{> "systems/essence20/templates/actor/parts/misc/morph-transform.hbs"}}
         <div class="npc-defenses">
+          {{!-- NPC Defenses --}}
           {{> "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs"}}
         </div>
-
-        {{!--Firepoint Descriptions--}}
-        <div class="npc-firepoints">
-          <div class="stats-container firepoints">
-            <textarea class="firepoints-input" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-             name="system.firepoints.description" placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
-          </div>
+        <div class="npc-movement">
+          {{!-- Movement --}}
+          {{> "systems/essence20/templates/actor/parts/misc/movement.hbs"}}
         </div>
       </div>
 
-      {{!--Common Details--}}
-      {{> "systems/essence20/templates/actor/parts/misc/common.hbs"}}
 
       <div class="npc-row">
         {{!-- Skills --}}
@@ -39,12 +50,16 @@
         {{!-- Items --}}
         <div class="npc-items vehicle">
           {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
-          {{> "systems/essence20/templates/actor/parts/items/trait/container.hbs"}}
           {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}
         </div>
       </div>
     </div>
 
+    {{!-- Crew Tab --}}
+    <div class="tab notes" data-group="primary" data-tab="crew">
+      {{> "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs"}}
+      {{> "systems/essence20/templates/actor/parts/misc/crew.hbs"}}
+    </div>
     {{!-- Notes Tab --}}
     <div class="tab notes" data-group="primary" data-tab="notes">
       {{> "systems/essence20/templates/actor/parts/misc/notes.hbs"}}
