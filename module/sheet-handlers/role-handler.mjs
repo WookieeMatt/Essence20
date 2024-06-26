@@ -567,7 +567,7 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
   const newRole = newRoleList[0];
 
   for (const[essence, rank] of Object.entries(options)) {
-    const essenceString = `system.essenceLevels.${essence}.max`;
+    const essenceString = `system.essenceLevels.${essence}`;
     const essenceRankString = `system.essenceRanks.${essence}`;
     let rankValue = [];
     if (role.system.version == "transformers"){
