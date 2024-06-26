@@ -130,6 +130,8 @@ export async function onRest(actorSheet) {
       await actor.update({
         [essenceString]: essenceRestore,
       });
+
+      ui.notifications.info(game.i18n.format('E20.RestEssenceRestored', { essenceRestore: essenceRestore, essence: essence }));
     }
   }
 
