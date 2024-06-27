@@ -93,8 +93,8 @@ export class Dice {
     const actorSkillData = actor.getRollData().skills[rolledSkill];
 
     const skillDataset = {
-      edge: actorSkillData.edge || essenceShifts[rolledEssence].edge,
-      snag: actorSkillData.snag || essenceShifts[rolledEssence].snag,
+      edge: actorSkillData.edge || essenceShifts[rolledEssence]?.edge,
+      snag: actorSkillData.snag || essenceShifts[rolledEssence]?.snag,
     };
 
     updatedShiftDataset.rolePoints = null;
@@ -193,6 +193,8 @@ export class Dice {
     let rolledSkillStr;
     if (dataset.skill == 'roleSkillDie') {
       rolledSkillStr = dataset.roleSkillName;
+    } else if (dataset.skill == 'wealth') {
+      rolledSkillStr = this._localize('E20.Wealth');
     } else if (dataset.isSpecialized) {
       rolledSkillStr = dataset.specializationName;
     } else {
