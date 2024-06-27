@@ -45,9 +45,10 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/power-points.hbs",
     "systems/essence20/templates/actor/parts/misc/spells.hbs",
     "systems/essence20/templates/actor/parts/misc/stun.hbs",
+    "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs",
+    "systems/essence20/templates/actor/parts/misc/wealth-die.hbs",
     "systems/essence20/templates/actor/parts/misc/zord-common.hbs",
     "systems/essence20/templates/actor/parts/misc/zordcombiner.hbs",
-    "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs",
 
     // Actor partials - Items
     "systems/essence20/templates/actor/parts/items/alteration/container.hbs",
@@ -88,7 +89,6 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/trait/details.hbs",
     "systems/essence20/templates/actor/parts/items/upgrade/container.hbs",
     "systems/essence20/templates/actor/parts/items/upgrade/details.hbs",
-    "systems/essence20/templates/actor/parts/items/wealth/container.hbs",
     "systems/essence20/templates/actor/parts/items/weaponEffect/details.hbs",
     "systems/essence20/templates/actor/parts/items/weapon/container.hbs",
     "systems/essence20/templates/actor/parts/items/weapon/details.hbs",
