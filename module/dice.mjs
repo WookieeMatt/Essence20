@@ -91,28 +91,10 @@ export class Dice {
       shiftDown: calculatedShiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
-    let calculatedEdge = false;
-    let calculatedSnag = false;
-
-    if (actorSkillData.edge) {
-      calculatedEdge = true;
-    } else if (essenceShifts[rolledEssence]) {
-      if (essenceShifts[rolledEssence].edge) {
-        calculatedEdge = true;
-      }
-    }
-
-    if (actorSkillData.snag) {
-      calculatedSnag = true;
-    } else if (essenceShifts[rolledEssence]) {
-      if (essenceShifts[rolledEssence].snag) {
-        calculatedSnag = true;
-      }
-    }
 
     const skillDataset = {
-      edge: calculatedEdge,
-      snag: calculatedSnag,
+      edge: actorSkillData.edge || essenceShifts[rolledEssence]?.edge,
+      snag: actorSkillData.snag || essenceShifts[rolledEssence]?.snag,
     };
 
     updatedShiftDataset.rolePoints = null;
