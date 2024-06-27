@@ -152,5 +152,4 @@ export const common = () => ({
     min: makeInt(0),
     value: makeInt(0),
   }),
-
 });
