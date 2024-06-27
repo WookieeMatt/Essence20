@@ -194,7 +194,7 @@ export class Dice {
     if (dataset.skill == 'roleSkillDie') {
       rolledSkillStr = dataset.roleSkillName;
     } else if (dataset.skill == 'wealth') {
-      rolledSkillStr = 'Wealth';
+      rolledSkillStr = this._localize('E20.Wealth');
     } else if (dataset.isSpecialized) {
       rolledSkillStr = dataset.specializationName;
     } else {
