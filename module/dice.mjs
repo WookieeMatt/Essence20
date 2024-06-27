@@ -191,8 +191,12 @@ export class Dice {
    */
   _getSkillRollLabel(dataset, skillRollOptions) {
     let rolledSkillStr;
+    console.log(dataset)
+    console.log(skillRollOptions)
     if (dataset.skill == 'roleSkillDie') {
       rolledSkillStr = dataset.roleSkillName;
+    } else if (dataset.skill == 'wealth') {
+      rolledSkillStr = 'Wealth';
     } else if (dataset.isSpecialized) {
       rolledSkillStr = dataset.specializationName;
     } else {
