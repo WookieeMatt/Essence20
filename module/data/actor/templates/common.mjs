@@ -145,6 +145,7 @@ export const common = () => ({
     survival: makeSkillFields(),
     targeting: makeSkillFields(),
     technology: makeSkillFields(),
+    wealth: makeSkillFields(),
   }),
   stun: new fields.SchemaField({
     max: makeInt(0),

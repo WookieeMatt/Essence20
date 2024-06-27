@@ -159,12 +159,14 @@ export class Essence20ActorSheet extends ActorSheet {
 
     let weaponEffectSkills = {};
     for (const skill of Object.keys(actorData.system.skills)) {
-      weaponEffectSkills[skill] = {
-        key: skill,
-        label: skill == 'roleSkillDie' && hasSkillDie
-          ? skillDieName
-          : game.i18n.localize(CONFIG.E20.skills[skill]),
-      };
+      if (skill != 'wealth' && (skill != 'roleSkillDie' || hasSkillDie)) {
+        weaponEffectSkills[skill] = {
+          key: skill,
+          label: skill == 'roleSkillDie' && hasSkillDie
+            ? skillDieName
+            : game.i18n.localize(CONFIG.E20.skills[skill]),
+        };
+      }
     }
 
     context.weaponEffectSkills = weaponEffectSkills;

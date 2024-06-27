@@ -392,6 +392,17 @@ E20.skillShiftList = [
   "fumble",
 ];
 
+// Shifts that are available for rolling wealth tests
+E20.wealthShifts = {
+  "d20": "d20",
+  "d2": "d2",
+  "d4": "d4",
+  "d6": "d6",
+  "d8": "d8",
+  "d10": "d10",
+  "d12": "d12",
+};
+
 /************************************************
  * Actions                                        *
  ***********************************************/
