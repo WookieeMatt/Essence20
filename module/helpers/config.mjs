@@ -192,7 +192,7 @@ preLocalize("armorTypes");
 E20.upgradeTraits = {
   ...E20.armorTraits,
   ...E20.weaponTraits,
-}
+};
 preLocalize("upgradeTraits");
 
 /************************************************
