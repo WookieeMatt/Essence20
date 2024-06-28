@@ -188,6 +188,13 @@ E20.armorTypes = {
 };
 preLocalize("armorTypes");
 
+// Options for Upgrade traits
+E20.upgradeTraits = {
+  ...E20.armorTraits,
+  ...E20.weaponTraits,
+}
+preLocalize("upgradeTraits");
+
 /************************************************
  * Essences and Skills                          *
  ***********************************************/
