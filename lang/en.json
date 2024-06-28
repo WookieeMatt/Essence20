@@ -405,6 +405,7 @@
     "RestComplete": "Rest complete!",
     "RestEnergonReset": "{energon} Energon reset.",
     "RestEnergonRestored": "Energon restored by {energonRestore}.",
+    "RestEssenceRestored": "{essence} Essence restored to {essenceRestore}",
     "RestHealthStunReset": "Health restored and stun reset.",
     "RestPersonalPowerRegen": "Personal Power restored.",
     "RestRolePointsRestored": "{name} points reset.",
