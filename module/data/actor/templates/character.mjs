@@ -15,6 +15,13 @@ function makeDefensesFields(name, essence) {
   });
 }
 
+export function makeEssenceFields() {
+  return new fields.SchemaField({
+    max: makeInt(3),
+    value: makeInt(3),
+  });
+}
+
 export const character = () => ({
   background: new fields.SchemaField({
     pronouns: makeStr(''),
@@ -27,11 +34,39 @@ export const character = () => ({
     cleverness: makeDefensesFields('cleverness', 'social'),
   }),
   essences: new fields.SchemaField({
-    strength: makeInt(3),
-    speed: makeInt(3),
-    smarts: makeInt(3),
-    social: makeInt(3),
+    strength: makeEssenceFields(),
+    speed: makeEssenceFields(),
+    smarts: makeEssenceFields(),
+    social: makeEssenceFields(),
   }),
   level: makeInt(1),
   notes: new fields.HTMLField(),
 });
+
+export function migrateCharacterData(source) {
+  if (source.essences) {
+    if (typeof source.essences.strength == 'number') {
+      const strength = source.essences.strength;
+      const speed = source.essences.speed;
+      const smarts = source.essences.smarts;
+      const social = source.essences.social;
+      source.essences.strength = null;
+      source.essences.speed = null;
+      source.essences.smarts = null;
+      source.essences.social = null;
+      source.essences.strength = makeEssenceFields(),
+      source.essences.speed = makeEssenceFields(),
+      source.essences.smarts = makeEssenceFields(),
+      source.essences.social = makeEssenceFields(),
+
+      source.essences.strength.max = strength;
+      source.essences.strength.value = strength;
+      source.essences.speed.max = speed;
+      source.essences.speed.value = speed;
+      source.essences.smarts.max = smarts;
+      source.essences.smarts.value = smarts;
+      source.essences.social.max = social;
+      source.essences.social.value = social;
+    }
+  }
+}

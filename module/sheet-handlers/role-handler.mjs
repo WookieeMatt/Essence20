@@ -12,11 +12,14 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
 export async function setRoleValues(role, actor, newLevel=null, previousLevel=null) {
   for (const essence in role.system.essenceLevels) {
     const totalChange = roleValueChange(actor.system.level, role.system.essenceLevels[essence], previousLevel);
-    const essenceValue = actor.system.essences[essence] + totalChange;
-    const essenceString = `system.essences.${essence}`;
+    const essenceMax = actor.system.essences[essence].max + totalChange;
+    const essenceMaxString = `system.essences.${essence}.max`;
+    const essenceValue = actor.system.essences[essence].value+ totalChange;
+    const essenceString = `system.essences.${essence}.value`;
 
     await actor.update({
       [essenceString]: essenceValue,
+      [essenceMaxString]: essenceMax,
     });
   }
 
@@ -248,7 +251,7 @@ async function _focusStatUpdate(actor, options, dropFunc) {
 export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
   const essenceValue = actor.system.essences[actor.system.focusEssence] + totalChange;
-  const essenceString = `system.essences.${actor.system.focusEssence}`;
+  const essenceString = `system.essences.${actor.system.focusEssence}.max`;
 
   await actor.update({
     [essenceString]: essenceValue,
@@ -272,7 +275,7 @@ export async function onFocusDelete(actor, focus) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
   const essenceValue = Math.max(0, actor.system.essences[actor.system.focusEssence] + totalDecrease);
-  const essenceString = `system.essences.${actor.system.focusEssence}`;
+  const essenceString = `system.essences.${actor.system.focusEssence}.max`;
 
   await actor.update({
     [essenceString]: essenceValue,
@@ -383,11 +386,14 @@ export async function onRoleDelete(actor, role) {
 
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
-    const essenceValue = Math.max(0, actor.system.essences[essence] + totalDecrease);
-    const essenceString = `system.essences.${essence}`;
+    const essenceMaxValue = Math.max(0, actor.system.essences[essence].max + totalDecrease);
+    const essenceValue = Math.max(0, actor.system.essences[essence].value + totalDecrease);
+    const essenceMaxString = `system.essences.${essence}.max`;
+    const essenceString = `system.essences.${essence}.value`;
 
     await actor.update({
       [essenceString]: essenceValue,
+      [essenceMaxString]: essenceMaxValue,
     });
   }
 

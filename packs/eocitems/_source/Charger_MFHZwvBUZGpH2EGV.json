@@ -17,6 +17,12 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "When Push Comes To Shove",
         "type": "perk"
+      },
+      "edfb": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.QNhq3rRVOu1EfeyD",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Charger",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -44,11 +50,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1714273843581,
-    "modifiedTime": 1714273908992,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1718888078580,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

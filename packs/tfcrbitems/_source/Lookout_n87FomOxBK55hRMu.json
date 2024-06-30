@@ -15,6 +15,12 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Look Out!",
         "type": "perk"
+      },
+      "bb99": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ZS3kX8oKogmsH6OK",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Lookout",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -45,11 +51,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1681743593292,
-    "modifiedTime": 1704127425042,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887797836,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

@@ -35,6 +35,11 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         const newItem = await Item.create(itemToCreate, { parent: owner });
+        if (newItem.type == "altMode") {
+          await owner.update({
+            "system.canTransform": true,
+          });
+        }
 
         if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
           const newKey = await setEntryAndAddItem(newItem, parentItem);
@@ -183,7 +188,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 
     break;
   case "origin":
-    if (droppedItem.type == "perk") {
+    if (["altMode", "perk"].includes(droppedItem.type)) {
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
@@ -270,23 +275,23 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
 * @param {Actor} actor The Actor that owns the parent Item
 * @param {Number} previousLevel (optional) The value of the last time the Actor leveled up
 */
-export function deleteAttachmentsForItem(item, actor, previousLevel=null) {
+export async function deleteAttachmentsForItem(item, actor, previousLevel=null) {
   for (const actorItem of actor.items) {
     const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
-      ? actor.items.get(actorItem._id).getFlag('core', 'sourceId')
-      : actor.items.get(actorItem._id)._stats.compendiumSource;
-    const parentId = actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
-    const collectionId = actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
+      ? await actor.items.get(actorItem._id).getFlag('core', 'sourceId')
+      : await actor.items.get(actorItem._id)._stats.compendiumSource;
+    const parentId = await actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
+    const collectionId = await actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
         if (itemSourceId == attachment.uuid && item._id == parentId) {
           if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
-            actorItem.delete();
+            await actorItem.delete();
           }
         }
       } else if (item._id == parentId && key == collectionId) {
-        actorItem.delete();
+        await actorItem.delete();
       }
     }
   }

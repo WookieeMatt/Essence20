@@ -6,8 +6,10 @@ const fields = foundry.data.fields;
 
 function makeEssenceShift() {
   return new fields.SchemaField({
+    edge: makeBool(false),
     shiftUp: makeInt(0),
     shiftDown: makeInt(0),
+    snag: makeBool(false),
   });
 }
 
@@ -106,6 +108,8 @@ export const common = () => ({
   }),
   movementIsReadOnly: makeBool(false),
   movementNotSet: makeBool(false),
+  originEssencesIncrease: makeStr(),
+  originSkillsIncrease: makeStr(),
   powers: new fields.SchemaField({
     personal: new fields.SchemaField({
       regeneration: makeInt(0),
@@ -141,6 +145,7 @@ export const common = () => ({
     survival: makeSkillFields(),
     targeting: makeSkillFields(),
     technology: makeSkillFields(),
+    wealth: makeSkillFields(),
   }),
   stun: new fields.SchemaField({
     max: makeInt(0),

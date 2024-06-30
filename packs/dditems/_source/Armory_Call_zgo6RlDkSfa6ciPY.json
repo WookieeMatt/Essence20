@@ -12,6 +12,12 @@
       "page": 32
     },
     "items": {
+      "7990": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.UO5WlCGHXtPOKFFY",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Armory Call",
+        "type": "altMode"
+      },
       "2b70": {
         "uuid": "Compendium.essence20.decepticon_directive.Item.z5xX6kylwvCblYkl",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -36,11 +42,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1694553269515,
-    "modifiedTime": 1704127408234,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887893705,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

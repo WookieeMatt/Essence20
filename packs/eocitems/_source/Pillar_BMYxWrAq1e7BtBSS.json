@@ -17,6 +17,18 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Face Me!",
         "type": "perk"
+      },
+      "79d9": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.j0CJWQ858tbQvVUs",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Pillar (Extended)",
+        "type": "altMode"
+      },
+      "fe06": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.SroTzxuu57HoaN9V",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Pillar (Long)",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -42,11 +54,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1714274009539,
-    "modifiedTime": 1714274103487,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1718888087843,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },
