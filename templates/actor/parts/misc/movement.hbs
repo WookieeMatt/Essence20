@@ -3,18 +3,18 @@
     <div>Set PC movement by adding an Origin</div>
   {{else}}
     {{#each @root.config.movementTypes as |name type|}}
-    <div class="flexcol">
+    <div class="flexcol flex-group-center">
       <label>{{name}}</label>
 
       {{#with (lookup @root.system.movement type) as |moveData|}}
         {{#if @root.system.movementIsReadOnly}}
-          <input class="centered-input" style="background: transparent;" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+          <input class="two-digit-input" style="background: transparent;" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
         {{else if @root.system.isTransformed}}
           {{#ifEquals @root.actor.type "npc"}}
-            <input class="centered-input" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />
+            <input class="two-digit-input" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />
           {{/ifEquals}}
         {{else}}
-          <input class="centered-input" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" min="0" step="5" />
+          <input class="two-digit-input" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" min="0" step="5" />
         {{/if}}
       {{/with}}
     </div>

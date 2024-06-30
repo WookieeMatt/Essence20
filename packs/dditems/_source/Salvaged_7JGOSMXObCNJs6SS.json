@@ -17,11 +17,17 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Welds, Rivets, and Ideas",
         "type": "perk"
+      },
+      "24da": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.cGGEXSdCI170AaM4",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Salvaged",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
-    "baseGroundMovement": 33,
+    "baseGroundMovement": 35,
     "essences": [
       "smarts"
     ],
@@ -36,11 +42,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1694554459191,
-    "modifiedTime": 1704127407066,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718888036501,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

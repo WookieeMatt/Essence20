@@ -98,6 +98,9 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Delete Role Points from Role
     html.find('.rolePoints-delete').click(this._onObjectDelete.bind(this, ".rolePoints"));
+
+    //Delete AltMode From Origin
+    html.find('.altMode-delete').click(this._onObjectDelete.bind(this, ".altMode"));
   }
 
   /**

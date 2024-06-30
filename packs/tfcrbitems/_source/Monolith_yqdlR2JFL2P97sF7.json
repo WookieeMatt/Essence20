@@ -15,6 +15,12 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Large And In Charge",
         "type": "perk"
+      },
+      "d210": {
+        "uuid": "Compendium.essence20.tf_crb.Item.62Su4NGv4ejOIvLv",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Monolith",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -42,11 +48,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1681743670134,
-    "modifiedTime": 1704127425877,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887809458,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

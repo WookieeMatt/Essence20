@@ -15,6 +15,18 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Take Point",
         "type": "perk"
+      },
+      "0c09": {
+        "uuid": "Compendium.essence20.tf_crb.Item.NaF9feAfujLYwDfO",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Outrider (Common)",
+        "type": "altMode"
+      },
+      "f2d4": {
+        "uuid": "Compendium.essence20.tf_crb.Item.WYlv5KoOv8WTUtKN",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Outrider (Long)",
+        "type": "altMode"
       }
     },
     "baseAerialMovement": 0,
@@ -42,11 +54,11 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.3.7",
     "coreVersion": "12.323",
     "createdTime": 1681743742241,
-    "modifiedTime": 1704127424778,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1718887820085,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },
