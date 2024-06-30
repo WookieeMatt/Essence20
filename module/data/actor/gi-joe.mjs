@@ -1,4 +1,4 @@
-import { character } from './templates/character.mjs';
+import { character, migrateCharacterData } from './templates/character.mjs';
 import { common } from './templates/common.mjs';
 import { creature } from './templates/creature.mjs';
 
@@ -9,6 +9,11 @@ export class GiJoeActorData extends foundry.abstract.TypeDataModel {
       ...common(),
       ...creature(),
     };
+  }
+
+  static migrateData(source) {
+    migrateCharacterData(source);
+    return super.migrateData(source);
   }
 
   prepareBaseData() {

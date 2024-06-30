@@ -33,7 +33,7 @@ export function checkIsLocked(actor) {
  * @return {Object} Action types mapped to an action count
  */
 export function getNumActions(actor) {
-  const speed = actor.system.essences.speed;
+  const speed = actor.system.essences.speed.max;
 
   return {
     free: Math.max(0, speed - 2),
