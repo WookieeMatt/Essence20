@@ -250,11 +250,14 @@ async function _focusStatUpdate(actor, options, dropFunc) {
  */
 export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
-  const essenceValue = actor.system.essences[actor.system.focusEssence].max + totalChange;
-  const essenceString = `system.essences.${actor.system.focusEssence}.max`;
+  const essenceMax = actor.system.essences[actor.system.focusEssence].max + totalChange;
+  const essenceValue = actor.system.essences[actor.system.focusEssence].value + totalChange;
+  const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
+  const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
 
   await actor.update({
-    [essenceString]: essenceValue,
+    [essenceMaxString]: essenceMax,
+    [essenceValueString]: essenceValue,
   });
 
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
@@ -274,11 +277,14 @@ export async function setFocusValues(focus, actor, newLevel=null, previousLevel=
 export async function onFocusDelete(actor, focus) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const totalDecrease = roleValueChange(0, focus.system.essenceLevels, previousLevel);
-  const essenceValue = Math.max(0, actor.system.essences[actor.system.focusEssence] + totalDecrease);
-  const essenceString = `system.essences.${actor.system.focusEssence}.max`;
+  const essenceMax = Math.max(0, actor.system.essences[actor.system.focusEssence].max + totalDecrease);
+  const essenceValue = Math.max(0, actor.system.essences[actor.system.focusEssence].value + totalDecrease);
+  const essenceMaxString = `system.essences.${actor.system.focusEssence}.max`;
+  const essenceValueString = `system.essences.${actor.system.focusEssence}.value`;
 
   await actor.update({
-    [essenceString]: essenceValue,
+    [essenceMaxString]: essenceMax,
+    [essenceValueString]: essenceValue,
     "system.focusEssence": null,
   });
 
