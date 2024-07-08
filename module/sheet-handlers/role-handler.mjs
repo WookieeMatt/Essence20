@@ -250,7 +250,7 @@ async function _focusStatUpdate(actor, options, dropFunc) {
  */
 export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
-  const essenceValue = actor.system.essences[actor.system.focusEssence] + totalChange;
+  const essenceValue = actor.system.essences[actor.system.focusEssence].max + totalChange;
   const essenceString = `system.essences.${actor.system.focusEssence}.max`;
 
   await actor.update({
