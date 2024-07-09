@@ -45,35 +45,21 @@ export const character = () => ({
 
 export function migrateCharacterData(source) {
   if (source.essences) {
-    if (typeof source.essences.strength == 'number') {
-      const strength = source.essences.strength;
-      const speed = source.essences.speed;
-      const smarts = source.essences.smarts;
-      const social = source.essences.social;
-      source.essences.strength = null;
-      source.essences.speed = null;
-      source.essences.smarts = null;
-      source.essences.social = null;
-      source.essences.strength = makeEssenceFields(),
-      source.essences.speed = makeEssenceFields(),
-      source.essences.smarts = makeEssenceFields(),
-      source.essences.social = makeEssenceFields(),
-
-      source.essences.strength.max = strength;
-      source.essences.strength.value = strength;
-      source.essences.speed.max = speed;
-      source.essences.speed.value = speed;
-      source.essences.smarts.max = smarts;
-      source.essences.smarts.value = smarts;
-      source.essences.social.max = social;
-      source.essences.social.value = social;
+    for (const [essence, value] of Object.entries(source.essences)) {
+      if (typeof value == 'number') {
+        source.essences[essence] = null;
+        source.essences[essence] = makeEssenceFields(),
+        source.essences[essence].max = value;
+        source.essences[essence].value = value;
+      }
     }
+
 
     // Fixing Essence bug introduced by Focus update
     for (const [essence, value] of Object.entries(source.essences)) {
-      if (typeof value.max == 'string') {
-        source.essences[essence].max = 0;
-        source.essences[essence].value = 0;
+      if (value?.max?.max) {
+        source.essences[essence].max = value.max.max;
+        source.essences[essence].value = value.max.max;
       }
     }
   }
