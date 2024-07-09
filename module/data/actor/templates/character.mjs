@@ -69,11 +69,10 @@ export function migrateCharacterData(source) {
       source.essences.social.value = social;
     }
 
-    // Fixing Essence bug introduced by Focus update
     for (const [essence, value] of Object.entries(source.essences)) {
-      if (typeof value.max == 'string') {
-        source.essences[essence].max = 0;
-        source.essences[essence].value = 0;
+      if (value?.max?.max) {
+        source.essences[essence].max = value.max.max;
+        source.essences[essence].value = value.max.max;
       }
     }
   }
