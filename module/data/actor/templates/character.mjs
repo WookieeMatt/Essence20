@@ -68,5 +68,12 @@ export function migrateCharacterData(source) {
       source.essences.social.max = social;
       source.essences.social.value = social;
     }
+
+    for (const [essence, value] of Object.entries(source.essences)) {
+      if (value?.max?.max) {
+        source.essences[essence].max = value.max.max;
+        source.essences[essence].value = value.max.max;
+      }
+    }
   }
 }
