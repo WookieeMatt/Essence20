@@ -48,9 +48,8 @@ export function migrateCharacterData(source) {
     for (const [essence, value] of Object.entries(source.essences)) {
       if (typeof value == 'number') {
         //source.essences[essence] = null;
-        // source.essences[essence] = makeEssenceFields(),
-        source.essences[essence].max = value;
-        source.essences[essence].value = value;
+        //source.essences[essence] = makeEssenceFields(),
+        source.essences[essence] = { max: value, value: value };
       }
     }
 
