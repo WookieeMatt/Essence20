@@ -20,7 +20,7 @@ export class FocusItemData extends foundry.abstract.TypeDataModel {
       essences: makeStrArrayWithChoices(Object.keys(E20.essences)),
       essenceLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels), initEssenceLevels),
       roleId: makeStr(''),
-      skills: makeStrArrayWithChoices(Object.keys(E20.skills)),
+      skills: makeStrArrayWithChoices(Object.keys(E20.originSkills)),
     };
   }
 }
