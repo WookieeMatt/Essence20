@@ -306,6 +306,7 @@ export class Essence20Actor extends Actor {
           });
         }
       }
+
       for (const [name, value] of Object.entries(change)) {
         if (name == "name" || name == "img") {
           const updateString = `system.items.${key}.${name}`;
