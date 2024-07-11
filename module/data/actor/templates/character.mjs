@@ -45,28 +45,16 @@ export const character = () => ({
 
 export function migrateCharacterData(source) {
   if (source.essences) {
-    if (typeof source.essences.strength == 'number') {
-      const strength = source.essences.strength;
-      const speed = source.essences.speed;
-      const smarts = source.essences.smarts;
-      const social = source.essences.social;
-      source.essences.strength = null;
-      source.essences.speed = null;
-      source.essences.smarts = null;
-      source.essences.social = null;
-      source.essences.strength = makeEssenceFields(),
-      source.essences.speed = makeEssenceFields(),
-      source.essences.smarts = makeEssenceFields(),
-      source.essences.social = makeEssenceFields(),
-
-      source.essences.strength.max = strength;
-      source.essences.strength.value = strength;
-      source.essences.speed.max = speed;
-      source.essences.speed.value = speed;
-      source.essences.smarts.max = smarts;
-      source.essences.smarts.value = smarts;
-      source.essences.social.max = social;
-      source.essences.social.value = social;
+    for (const [essence, value] of Object.entries(source.essences)) {
+      if (typeof value == 'number') { // Standard Essence damage migration
+        source.essences[essence] = { max: value, value: value };
+      } else if (value?.max?.max) { // Possible edge case
+        source.essences[essence].max = value.max.max;
+        source.essences[essence].value = value.max.max;
+      } else if (value.required) { // Previous migration may have set it to a SchemaField()
+        source.essences[essence].max = value.max || 0;
+        source.essences[essence].value = value.max || 0;
+      }
     }
   }
 }
