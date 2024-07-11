@@ -46,17 +46,14 @@ export const character = () => ({
 export function migrateCharacterData(source) {
   if (source.essences) {
     for (const [essence, value] of Object.entries(source.essences)) {
-      if (typeof value == 'number') {
+      if (typeof value == 'number') { // Standard Essence damage migration
         source.essences[essence] = { max: value, value: value };
-      }
-    }
-
-
-    // Fixing Essence bug introduced by Focus update
-    for (const [essence, value] of Object.entries(source.essences)) {
-      if (value?.max?.max) {
+      } else if (value?.max?.max) { // Possible edge case
         source.essences[essence].max = value.max.max;
         source.essences[essence].value = value.max.max;
+      } else if (value.required) { // Previous migration may have set it to a SchemaField()
+        source.essences[essence].max = value.max || 0;
+        source.essences[essence].value = value.max || 0;
       }
     }
   }
