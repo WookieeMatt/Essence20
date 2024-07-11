@@ -40,7 +40,6 @@ export const character = () => ({
     social: makeEssenceFields(),
   }),
   level: makeInt(1),
-  notes: new fields.HTMLField(),
 });
 
 export function migrateCharacterData(source) {

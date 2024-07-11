@@ -108,6 +108,7 @@ export const common = () => ({
   }),
   movementIsReadOnly: makeBool(false),
   movementNotSet: makeBool(false),
+  notes: new fields.HTMLField(),
   originEssencesIncrease: makeStr(),
   originSkillsIncrease: makeStr(),
   powers: new fields.SchemaField({
