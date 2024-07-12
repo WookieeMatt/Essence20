@@ -305,14 +305,14 @@ export class Essence20Actor extends Actor {
             [updateString]: value,
           });
         }
-      } else { // Handle non-system fields
-        for (const [name, value] of Object.entries(change)) {
-          if (name == "name" || name == "img") {
-            const updateString = `system.items.${key}.${name}`;
-            parentItem.update({
-              [updateString]: value,
-            });
-          }
+      }
+
+      for (const [name, value] of Object.entries(change)) {
+        if (name == "name" || name == "img") {
+          const updateString = `system.items.${key}.${name}`;
+          parentItem.update({
+            [updateString]: value,
+          });
         }
       }
     }
