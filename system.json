@@ -19,8 +19,10 @@
       "flags": {}
     }
   ],
-  "gridDistance": 5,
-  "gridUnits": "ft",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
   "packs": [
     {
       "name": "across_the_stars",
