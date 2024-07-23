@@ -1,4 +1,6 @@
-import { makeInt, makeStr } from "../../generic-makers.mjs";
+import { E20 } from "../../../helpers/config.mjs";
+
+import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -23,10 +25,17 @@ export function makeEssenceFields() {
 }
 
 export const character = () => ({
+  altModeId: makeStr(''),
+  altModeName: makeStr(''),
+  altModesize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   background: new fields.SchemaField({
     pronouns: makeStr(''),
     role: makeStr(''),
   }),
+  canMorph: makeBool(false),
+  canSpellcast: makeBool(false),
+  canTransform: makeBool(false),
+  conditioning: makeInt(0),
   defenses: new fields.SchemaField({
     toughness: makeDefensesFields('toughness', 'strength'),
     evasion: makeDefensesFields('evasion', 'speed'),
@@ -39,7 +48,31 @@ export const character = () => ({
     smarts: makeEssenceFields(),
     social: makeEssenceFields(),
   }),
+  essenceRanks: new fields.SchemaField({
+    smarts: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
+    social: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
+    speed: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
+    strength: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
+  }),
+  focusEssence: makeStr(''),
+  isMorphed: makeBool(false),
+  isTransformed: makeBool(false),
   level: makeInt(1),
+  originEssencesIncrease: makeStr(),
+  originSkillsIncrease: makeStr(),
+  powers: new fields.SchemaField({
+    personal: new fields.SchemaField({
+      regeneration: makeInt(0),
+      max: makeInt(0),
+      value: makeInt(0),
+    }),
+    sorcerous: new fields.SchemaField({
+      levelTaken: makeInt(0),
+      max: makeInt(0),
+      value: makeInt(0),
+    }),
+  }),
+  notes: new fields.HTMLField(),
 });
 
 export function migrateCharacterData(source) {
