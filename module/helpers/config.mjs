@@ -744,7 +744,7 @@ E20.vehicleTraits = {
   wearable: "VehicleTraitWearable",
   zeroG: "VehicleTraitZeroG",
 };
-preLocalize("vehicleTraits")
+preLocalize("vehicleTraits");
 
 /************************************************
  * Settings                                     *
