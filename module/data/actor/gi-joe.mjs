@@ -1,6 +1,7 @@
 import { character, migrateCharacterData } from './templates/character.mjs';
 import { common } from './templates/common.mjs';
 import { creature } from './templates/creature.mjs';
+import { makeBool } from "../generic-makers.mjs";
 
 export class GiJoeActorData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -8,6 +9,7 @@ export class GiJoeActorData extends foundry.abstract.TypeDataModel {
       ...character(),
       ...common(),
       ...creature(),
+      hasFocus: makeBool(true),
     };
   }
 

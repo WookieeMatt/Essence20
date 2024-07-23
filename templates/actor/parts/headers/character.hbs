@@ -7,18 +7,18 @@
 <div>
   {{> "systems/essence20/templates/actor/parts/items/role.hbs"}}
 </div>
-<div>
-  {{> "systems/essence20/templates/actor/parts/items/focus.hbs"}}
-</div>
+{{#if system.hasFocus}}
+  <div>
+    {{> "systems/essence20/templates/actor/parts/items/focus.hbs"}}
+  </div>
+{{/if}}
 <div>
   <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
   <input type="text" name="system.languages" value="{{system.languages}}" />
 </div>
 <div style="display:inline-block;">
-  <label for="system.transformerFaction" class="resource-label">{{localize 'E20.ActorFaction'}}</label>
-   <select name="system.transformerFaction" id="system.transformerFaction">
-    {{selectOptions @root.config.transformerFactions selected=system.transformerFaction}}
-  </select>
+  <label for="system.faction" class="resource-label">{{localize 'E20.ActorFaction'}}</label>
+  <input type="text" name="system.faction" value="{{system.faction}}" />
 </div>
 <div class="pr-header-level">
   <label for="system.level" class="resource-label">{{localize 'E20.ActorLevel'}}</label>

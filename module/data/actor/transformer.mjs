@@ -14,6 +14,7 @@ export class TransformerActorData extends foundry.abstract.TypeDataModel {
       ...creature(),
       canTransform: makeBool(true),
       externalHardpoints: makeInt(2),
+      hasFocus: makeBool(true),
       internalHarpoints: makeInt(2),
       transformerFaction: makeStrWithChoices(Object.keys(E20.transformerFactions), 'autobots'),
     };

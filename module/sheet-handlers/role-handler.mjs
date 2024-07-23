@@ -344,6 +344,11 @@ export async function roleUpdate(actor, role, dropFunc) {
     });
   }
 
+  if (role.system.version == 'giJoe' || role.system.version == 'transformers') {
+    await actor.update({
+    'system.hasFocus' : true,
+    });
+  }
   if (role.system.version == 'myLittlePony') {
     await _selectEssenceProgression(actor, role, dropFunc);
   } else if (role.system.hasSpecialAdvancement) {
