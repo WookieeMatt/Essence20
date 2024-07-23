@@ -676,6 +676,77 @@ E20.energonTypes = {
 preLocalize("energonTypes");
 
 /************************************************
+ * Vehicles                                     *
+ ***********************************************/
+
+E20.vehicleTraits = {
+  aerospace: "VehicleTraitAerospace",
+  ai: "VehicleTraitAI",
+  air: "VehicleTraitAir",
+  allTerrain: "VehicleTraitAllTerrain",
+  ampibious: "VehicleTraitAmphibious",
+  armoredCabin: "VehicleTraitArmoredCabin",
+  attackMode: "VehicleTraitAttackMode",
+  autopilot: "VehicleTraitAutopilot",
+  autopilotAdvanced: "VehicleTraitAutoPilotAdvanced",
+  battlePlatforms: "VehicleTraitBattlePlatforms",
+  battleShield: "VehicleTraitBattleShield",
+  battleStation: "VehicleTraitBattleStation",
+  beastOfBurden: "VehicleTraitBeastOfBurden",
+  bomber: "VehicleTraitBomber",
+  combinerCore: "VehicleTraitCombinerCore",
+  computerized: "VehicleTraitComputerized",
+  convertible: "VehicleTraitConvertible",
+  deployable: "VehicleTraitDeployable",
+  driveBy: "VehicleTraitDriveBy",
+  elusive: "VehicleTraitElusive",
+  evasiveManeuvers: "VehicleTraitEvasiveManeuvers",
+  exoskeleton: "VehicleTraitExoskeleton",
+  flyBy: "VehicleTraitFlyBy",
+  flyingPodium: "VehicleTraitFlyingPodium",
+  fragile: "VehicleTraitFragile",
+  gridjump: "VehicleTraitGridjump",
+  freightCarry: "VehicleTraitFreightCarry",
+  heavyWinch: "VehicleTraitHeavyWinch",
+  heavyWheels: "VehicleTraitHeavyWheels",
+  hissColumn: "VehicleTraitHISSColumn",
+  hover: "VehicleTraitHover",
+  hydroPortation: "VehicleTraitHydroPortation",
+  instrumentArray: "VehicleTraitInstrumentArray",
+  integratedStorage: "VehicleTraitIntegratedStorage",
+  land: "VehicleTraitLand",
+  landingPattern: "VehicleTraitLandingPattern",
+  largeObstacle: "VehicleTraitLargeObstacle",
+  linked: "VehicleTraitLinked",
+  multifrequencyCameras: "VehicleTraitMultiFrequencyCameras",
+  multiPurpose: "VehicleTraitMultiPurpose",
+  prowlMode: "VehicleTraitProwlMode",
+  pythonPaint: "VehicleTraitPythonPaint",
+  ram: "VehicleTraitRam",
+  rapidDeploymentRamps: "VehicleTraitRapidDeploymentRamps",
+  responsive: "VehicleTraitResponsive",
+  rollCage: "VehicleTraitRollCage",
+  sea: "VehicleTraitSea",
+  selfRepair: "VehicleTraitSelfRepair",
+  sensors: "VehicleTraitSensors",
+  shielded: "VehicleTraitShielded",
+  sidecar: "VehicleTraitSidecar",
+  SixWheelDrive: "VehicleTraitSixWheelDrive",
+  takeOff: "VehicleTraitTakeOff",
+  tank: "VehicleTraitTank",
+  targetingSystem: "VehicleTraitTargetingSystem",
+  thermalImaging: "VehicleTraitThermalImaging",
+  tigerStripes: "VehicleTraitTigerStripes",
+  towable: "VehicleTraitTowable",
+  treads: "VehicleTraitTreads",
+  vehicle: "VehicleTraitVehicle",
+  vtol: "VehicleTraitVTOL",
+  wearable: "VehicleTraitWearable",
+  zeroG: "VehicleTraitZeroG",
+};
+preLocalize("vehicleTraits")
+
+/************************************************
  * Settings                                     *
  ***********************************************/
 
