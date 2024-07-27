@@ -9,7 +9,6 @@ export class GiJoeActorData extends foundry.abstract.TypeDataModel {
       ...character(),
       ...common(),
       ...creature(),
-      hasFocus: makeBool(true),
     };
   }
 
