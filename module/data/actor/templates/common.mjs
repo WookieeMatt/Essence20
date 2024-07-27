@@ -42,14 +42,7 @@ function makeSkillFields() {
 }
 
 export const common = () => ({
-  altModeId: makeStr(''),
-  altModeName: makeStr(''),
-  altModesize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
-  canMorph: makeBool(false),
-  canSpellcast: makeBool(false),
-  canTransform: makeBool(false),
   color: new fields.ColorField({initial: '#b5b1b1'}),
-  conditioning: makeInt(0),
   energon: new fields.SchemaField({
     dark: new fields.SchemaField({
       value: makeInt(0),
@@ -68,12 +61,6 @@ export const common = () => ({
       value: makeInt(0),
     }),
   }),
-  essenceRanks: new fields.SchemaField({
-    smarts: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
-    social: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
-    speed: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
-    strength: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
-  }),
   essenceShifts: new fields.SchemaField({
     any: makeEssenceShift(),
     smarts: makeEssenceShift(),
@@ -81,7 +68,6 @@ export const common = () => ({
     speed: makeEssenceShift(),
     strength: makeEssenceShift(),
   }),
-  focusEssence: makeStr(''),
   health: new fields.SchemaField({
     bonus: makeInt(0),
     max: makeInt(0),
@@ -98,8 +84,6 @@ export const common = () => ({
     shiftUp: makeInt(0),
   }),
   isLocked: makeBool(false),
-  isMorphed: makeBool(false),
-  isTransformed: makeBool(false),
   movement: new fields.SchemaField({
     aerial: makeMovementFields(),
     climb: makeMovementFields(),
@@ -109,20 +93,6 @@ export const common = () => ({
   movementIsReadOnly: makeBool(false),
   movementNotSet: makeBool(false),
   notes: new fields.HTMLField(),
-  originEssencesIncrease: makeStr(),
-  originSkillsIncrease: makeStr(),
-  powers: new fields.SchemaField({
-    personal: new fields.SchemaField({
-      regeneration: makeInt(0),
-      max: makeInt(0),
-      value: makeInt(0),
-    }),
-    sorcerous: new fields.SchemaField({
-      levelTaken: makeInt(0),
-      max: makeInt(0),
-      value: makeInt(0),
-    }),
-  }),
   size: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   skills: new fields.SchemaField({
     roleSkillDie: makeSkillFields(),
