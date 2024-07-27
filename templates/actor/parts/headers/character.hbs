@@ -7,11 +7,11 @@
 <div>
   {{> "systems/essence20/templates/actor/parts/items/role.hbs"}}
 </div>
-{{#if system.hasFocus}}
+{{#inArray '["giJoe", "transformer"]' @root.role.system.version}}
   <div>
     {{> "systems/essence20/templates/actor/parts/items/focus.hbs"}}
   </div>
-{{/if}}
+{{/inArray}}
 <div>
   <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
   <input type="text" name="system.languages" value="{{system.languages}}" />
