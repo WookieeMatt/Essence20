@@ -688,7 +688,7 @@ E20.vehicleTraits = {
   armoredCabin: "E20.VehicleTraitArmoredCabin",
   attackMode: "E20.VehicleTraitAttackMode",
   autopilot: "E20.VehicleTraitAutopilot",
-  autopilotAdvanced: "E20.VehicleTraitAutoPilotAdvanced",
+  autopilotAdvanced: "E20.VehicleTraitAutopilotAdvanced",
   battlePlatforms: "E20.VehicleTraitBattlePlatforms",
   battleShield: "E20.VehicleTraitBattleShield",
   battleStation: "E20.VehicleTraitBattleStation",
