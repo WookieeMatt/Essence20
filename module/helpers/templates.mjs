@@ -7,14 +7,11 @@ export const preloadHandlebarsTemplates = async function () {
   return loadTemplates([
 
     // Actor partials - Headers
+    "systems/essence20/templates/actor/parts/headers/character.hbs",
     "systems/essence20/templates/actor/parts/headers/companion.hbs",
-    "systems/essence20/templates/actor/parts/headers/gijoe.hbs",
     "systems/essence20/templates/actor/parts/headers/common.hbs",
     "systems/essence20/templates/actor/parts/headers/megaformZord.hbs",
-    "systems/essence20/templates/actor/parts/headers/pony.hbs",
     "systems/essence20/templates/actor/parts/headers/npc.hbs",
-    "systems/essence20/templates/actor/parts/headers/pr.hbs",
-    "systems/essence20/templates/actor/parts/headers/transformer.hbs",
     "systems/essence20/templates/actor/parts/headers/vehicle.hbs",
     "systems/essence20/templates/actor/parts/headers/zord.hbs",
 
