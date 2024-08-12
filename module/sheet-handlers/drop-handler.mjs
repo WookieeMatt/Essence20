@@ -155,7 +155,6 @@ export async function onDropActor(data, actorSheet) {
   case 'zord':
     if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
-
     }
 
     break;
