@@ -167,8 +167,8 @@ export async function onDropActor(data, actorSheet) {
 
 /**
  * Function to select where the actor is being seated
- * @param {actor} droppedActor The actor that is being dropped
- * @param {actor} targetActor The actor that is being dropped on to
+ * @param {Actor} droppedActor The actor that is being dropped
+ * @param {Actor} targetActor The actor that is being dropped on to
  */
 async function _selectVehicleLocation(droppedActor, targetActor) {
   const choices = {};
