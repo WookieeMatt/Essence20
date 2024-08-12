@@ -1,21 +1,21 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 
- /**
+/**
  * Prepare Zords for MFZs.
  * @param {Actor} actor The Megaform Zord to prepare Zords for
  * @param {Object} context The actor data to prepare
- */
+*/
 export function prepareSystemActors(actor, context) {
   if (Object.keys(actor.system.actors).length > 0) {
 
     let actors = [];
 
-    for (const [ key , embeddedActor] of Object.entries(actor.system.actors)) {
+    for (const [ , embeddedActor] of Object.entries(actor.system.actors)) {
       actors.push(fromUuidSync(embeddedActor.uuid));
     }
 
-     context.actors = actors;
+    context.actors = actors;
   }
 }
 
@@ -38,11 +38,11 @@ export async function onSystemActorsDelete(event, actorSheet) {
     return;
   }
 
-  // // Confirmation dialog
-  // const confirmation = await _getItemDeleteConfirmDialog(item);
-  // if (confirmation.cancelled) {
-  //   return;
-  // }
+  // Confirmation dialog
+  const confirmation = await _getItemDeleteConfirmDialog(actor);
+  if (confirmation.cancelled) {
+    return;
+  }
 
   let keyId = null;
 
@@ -52,6 +52,7 @@ export async function onSystemActorsDelete(event, actorSheet) {
       break;
     }
   }
+
   const updateString = `system.actors.-=${keyId}`;
 
   await actor.update({[updateString]: null});
