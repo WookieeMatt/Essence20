@@ -227,8 +227,7 @@ export async function onDropActor(data, actorSheet) {
       entry['vehicleRole'] = options.vehicleRole;
     }
 
-    return addActorIfUnique (droppedActor, targetActor, entry);
-
+    return addActorIfUnique(droppedActor, targetActor, entry);
   }
 
   async function addActorIfUnique(droppedActor, targetActor, entry) {
