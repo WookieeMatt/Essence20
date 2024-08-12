@@ -123,7 +123,7 @@ export async function onDropActor(data, actorSheet) {
   if (!targetActor.isOwner) return false;
 
   // Get the target actor
-  let droppedActor = await fromUuid(data.uuid);
+  const droppedActor = await fromUuid(data.uuid);
   if (!droppedActor) return false;
 
   switch (targetActor.type) {
