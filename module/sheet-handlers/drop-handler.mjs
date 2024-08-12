@@ -1,7 +1,7 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { createId, parseId } from "../helpers/utils.mjs";
 import { alterationUpdate } from "./alteration-handler.mjs";
-import { attachItem, gearDrop, setEntryAndAddItem } from "./attachment-handler.mjs";
+import { attachItem, gearDrop } from "./attachment-handler.mjs";
 import { influenceUpdate, originUpdate } from "./background-handler.mjs";
 import { powerUpdate } from "./power-handler.mjs";
 import { perkUpdate } from "./perk-handler.mjs";
@@ -127,58 +127,58 @@ export async function onDropActor(data, actorSheet) {
   if (!droppedActor) return false;
 
   switch (targetActor.type) {
-    case 'giJoe':
-      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+  case 'giJoe':
+    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
 
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-      }
-      break;
-    case 'megaformZord':
-      if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
-        setEntryAndAddActor (droppedActor, targetActor);
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-      }
-      break;
-    case 'pony':
-      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
-        setEntryAndAddActor (droppedActor, targetActor);
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-      }
-      break;
-    case 'powerRanger':
-      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
-        setEntryAndAddActor (droppedActor, targetActor);
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-      }
-      break;
-    case 'transformer':
-      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
-        setEntryAndAddActor (droppedActor, targetActor);
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-      }
-      break;
-    case 'vehicle':
-      if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
-        _selectVehicleLocation(droppedActor, targetActor);
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-      }
-      break;
-    case 'zord':
-      if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
-        _selectVehicleLocation(droppedActor, targetActor);
-      } else {
-        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-      }
-      break;
-    default:
+    } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-      break;
+    }
+    break;
+  case 'megaformZord':
+    if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
+      setEntryAndAddActor (droppedActor, targetActor);
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+    }
+    break;
+  case 'pony':
+    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+      setEntryAndAddActor (droppedActor, targetActor);
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+    }
+    break;
+  case 'powerRanger':
+    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+      setEntryAndAddActor (droppedActor, targetActor);
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+    }
+    break;
+  case 'transformer':
+    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+      setEntryAndAddActor (droppedActor, targetActor);
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+    }
+    break;
+  case 'vehicle':
+    if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
+      _selectVehicleLocation(droppedActor, targetActor);
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+    }
+    break;
+  case 'zord':
+    if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
+      _selectVehicleLocation(droppedActor, targetActor);
+    } else {
+      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+    }
+    break;
+  default:
+    ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+    break;
   }
 
   async function _selectVehicleLocation(droppedActor, targetActor) {
