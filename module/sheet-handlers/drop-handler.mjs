@@ -219,10 +219,10 @@ async function setEntryAndAddActor(droppedActor, targetActor, options) {
 }
 
 /**
- * function to add the actor in to the system.actors object
- * @param {actor} droppedActor Actor dropped on to another actor
- * @param {actor} targetActor Actor that is being dropped on to
- * @param {object} entry The value to be written to the system.actors
+ * Adds the dropped actor into system.actors
+ * @param {Actor} droppedActor Actor dropped on to another actor
+ * @param {Actor} targetActor Actor that is being dropped on to
+ * @param {Object} entry The value to be written to the system.actors
  * @returns
  */
 async function addActorIfUnique(droppedActor, targetActor, entry) {
