@@ -8,7 +8,6 @@ import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 */
 export function prepareSystemActors(actor, context) {
   if (Object.keys(actor.system.actors).length > 0) {
-
     const actors = [];
 
     for (const [ , embeddedActor] of Object.entries(actor.system.actors)) {
