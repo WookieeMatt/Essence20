@@ -1,6 +1,9 @@
 import { rememberOptions } from "../helpers/dialog.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
 
+const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
+const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+
 /**
  * Handles dropping Items that have attachments onto an Actor
  * @param {Actor} actor The Actor receiving the Item
@@ -38,6 +41,18 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
         if (newItem.type == "altMode") {
           await owner.update({
             "system.canTransform": true,
+          });
+        }
+
+        if (item.uuid == SORCERY_PERK_ID) {
+          await actor.update ({
+            "system.powers.sorcerous.levelTaken": actor.system.level,
+          });
+        }
+
+        if (item.uuid == ZORD_PERK_ID) {
+          await owner.update ({
+            "system.canHaveZord": true,
           });
         }
 
@@ -285,6 +300,18 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
+        if (itemSourceId == ZORD_PERK_ID) {
+          await actor.update ({
+            "system.canHaveZord": false,
+          });
+        }
+
+        if (itemSourceId == SORCERY_PERK_ID) {
+          await actor.update ({
+            "system.powers.sorcerous.levelTaken": 0,
+          });
+        }
+
         if (itemSourceId == attachment.uuid && item._id == parentId) {
           if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
             await actorItem.delete();

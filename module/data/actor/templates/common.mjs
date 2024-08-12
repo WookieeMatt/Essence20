@@ -42,6 +42,7 @@ function makeSkillFields() {
 }
 
 export const common = () => ({
+  actors: new fields.ObjectField({}),
   color: new fields.ColorField({initial: '#b5b1b1'}),
   energon: new fields.SchemaField({
     dark: new fields.SchemaField({

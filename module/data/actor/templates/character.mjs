@@ -32,6 +32,7 @@ export const character = () => ({
     pronouns: makeStr(''),
     role: makeStr(''),
   }),
+  canHaveZord: makeBool(false),
   canMorph: makeBool(false),
   canSpellcast: makeBool(false),
   canTransform: makeBool(false),

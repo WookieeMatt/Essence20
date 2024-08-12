@@ -1,11 +1,12 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
-import { parseId } from "../helpers/utils.mjs";
+import { createId, parseId } from "../helpers/utils.mjs";
 import { alterationUpdate } from "./alteration-handler.mjs";
-import { attachItem, gearDrop } from "./attachment-handler.mjs";
+import { attachItem, gearDrop, setEntryAndAddItem } from "./attachment-handler.mjs";
 import { influenceUpdate, originUpdate } from "./background-handler.mjs";
 import { powerUpdate } from "./power-handler.mjs";
 import { perkUpdate } from "./perk-handler.mjs";
 import { focusUpdate, roleUpdate } from "./role-handler.mjs";
+import { rememberSelect } from "../helpers/dialog.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -118,25 +119,128 @@ async function _onDropUpgrade(upgrade, actor, dropFunc) {
  *                                    not permitted.
  */
 export async function onDropActor(data, actorSheet) {
-  const actor = actorSheet.actor;
-  if (!actor.isOwner) return false;
+  const targetActor = actorSheet.actor;
+  if (!targetActor.isOwner) return false;
 
   // Get the target actor
-  let sourceActor = await fromUuid(data.uuid);
-  if (!sourceActor) return false;
+  let droppedActor = await fromUuid(data.uuid);
+  if (!droppedActor) return false;
 
-  // Handles dropping Zords onto Megaform Zords
-  if (actor.type == 'megaformZord' && sourceActor.type == 'zord') {
-    const zordIds = duplicate(actor.system.zordIds);
+  switch (targetActor.type) {
+    case 'giJoe':
+      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
 
-    // Can't contain duplicate Zords
-    if (!zordIds.includes(sourceActor.id)) {
-      zordIds.push(sourceActor.id);
-      await actor.update({
-        "system.zordIds": zordIds,
-      }).then(actorSheet.render(false));
-    }
-  } else {
-    return false;
+      } else {
+        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      }
+      break;
+    case 'megaformZord':
+      if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
+        setEntryAndAddActor (droppedActor, targetActor);
+      } else {
+        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      }
+      break;
+    case 'pony':
+      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+        setEntryAndAddActor (droppedActor, targetActor);
+      } else {
+        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      }
+      break;
+    case 'powerRanger':
+      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+        setEntryAndAddActor (droppedActor, targetActor);
+      } else {
+        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      }
+      break;
+    case 'transformer':
+      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+        setEntryAndAddActor (droppedActor, targetActor);
+      } else {
+        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      }
+      break;
+    case 'vehicle':
+      if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
+        _selectVehicleLocation(droppedActor, targetActor);
+      } else {
+        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      }
+      break;
+    case 'zord':
+      if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
+        _selectVehicleLocation(droppedActor, targetActor);
+      } else {
+        ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      }
+      break;
+    default:
+      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      break;
   }
+
+  async function _selectVehicleLocation(droppedActor, targetActor) {
+    const choices = {};
+
+    for (const [key, name] of Object.entries(CONFIG.E20.vehicleRole)) {
+      console.log(key)
+      choices[key] = {
+        label: name,
+        value: key,
+      };
+    }
+    console.log(choices)
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.VehicleRoleSelect'),
+        content: await renderTemplate("systems/essence20/templates/dialog/vehicleRole-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html))
+          },
+        },
+      },
+    ).render(true);
+  }
+
+  async function setEntryAndAddActor(droppedActor, targetActor, options) {
+    const entry = {
+      uuid: droppedActor.uuid,
+      img: droppedActor.img,
+      name: droppedActor.name,
+      type: droppedActor.type,
+    };
+
+    if (["vehicle", "zord"].includes(targetActor.type)) {
+      entry['vehicleRole'] = options.vehicleRole;
+    }
+    return addActorIfUnique (droppedActor, targetActor, entry)
+
+  }
+
+  async function addActorIfUnique(droppedActor, targetActor, entry) {
+    const actors = targetActor.system.actors;
+    if (actors) {
+      for (const [, actor] of Object.entries(actors)) {
+        if (actor.uuid === droppedActor.uuid) {
+          return;
+        }
+      }
+    }
+
+    const pathPrefix = "system.actors";
+    const key = createId(actors);
+
+    await targetActor.update({
+      [`${pathPrefix}.${key}`]: entry,
+    });
+
+    return key;
+  }
+
 }

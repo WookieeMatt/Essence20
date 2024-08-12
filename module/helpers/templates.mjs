@@ -36,6 +36,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/notes.hbs",
     "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs",
     "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs",
+    "systems/essence20/templates/actor/parts/misc/system-actors.hbs",
     "systems/essence20/templates/actor/parts/misc/pc-body.hbs",
     "systems/essence20/templates/actor/parts/misc/pc-skills.hbs",
     "systems/essence20/templates/actor/parts/misc/pc-tabs.hbs",
@@ -45,7 +46,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs",
     "systems/essence20/templates/actor/parts/misc/wealth-die.hbs",
     "systems/essence20/templates/actor/parts/misc/zord-common.hbs",
-    "systems/essence20/templates/actor/parts/misc/zordcombiner.hbs",
+
 
     // Actor partials - Items
     "systems/essence20/templates/actor/parts/items/alteration/container.hbs",

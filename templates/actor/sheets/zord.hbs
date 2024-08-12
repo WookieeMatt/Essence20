@@ -2,20 +2,33 @@
   {{!-- Actor Sheet Header --}}
   {{> "systems/essence20/templates/actor/parts/headers/zord.hbs"}}
 
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="passengers">{{ localize "E20.TabCrew" }}</a>
+  </nav>
+
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    <div class="npc-row">
-      <div class="npc-defenses">
-        {{!-- Defenses --}}
-        {{> "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs"}}
+    <div class="tab main flexcol" data-group="primary" data-tab="main">
+      <div class="npc-row">
+        <div class="npc-defenses">
+          {{!-- Defenses --}}
+          {{> "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs"}}
+        </div>
+        <div class="npc-health">
+          {{!-- Health --}}
+          {{> "systems/essence20/templates/actor/parts/misc/health.hbs"}}
+        </div>
       </div>
-      <div class="npc-health">
-        {{!-- Health --}}
-        {{> "systems/essence20/templates/actor/parts/misc/health.hbs"}}
-      </div>
+
+      {{!-- Zord Common Stats --}}
+      {{> "systems/essence20/templates/actor/parts/misc/zord-common.hbs"}}
     </div>
 
-    {{!-- Zord Common Stats --}}
-    {{> "systems/essence20/templates/actor/parts/misc/zord-common.hbs"}}
+     {{!-- Passengers Tab --}}
+    <div class="tab combiners flexcol" data-group="primary" data-tab="passengers">
+      {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs"}}
+    </div>
   </section>
 </form>

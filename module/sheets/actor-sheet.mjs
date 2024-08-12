@@ -2,7 +2,7 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
-import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { prepareSystemActors, onSystemActorsDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onRest,
@@ -81,7 +81,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
     // Prepare Zords for MFZs
-    prepareZords(this.actor, context);
+    prepareSystemActors(this.actor, context);
 
     context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
@@ -377,7 +377,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-delete').click(ev => onItemDelete(ev, this));
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(ev => onZordDelete(ev, this));
+    html.find('.system-actors-delete').click(ev => onSystemActorsDelete(ev, this));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(ev => onInlineEdit(ev, this.actor));

@@ -1,17 +1,21 @@
-/**
+import { checkIsLocked } from "../helpers/actor.mjs";
+import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
+
+ /**
  * Prepare Zords for MFZs.
  * @param {Actor} actor The Megaform Zord to prepare Zords for
  * @param {Object} context The actor data to prepare
  */
-export function prepareZords(actor, context) {
-  if (actor.type == 'megaformZord') {
-    let zords = [];
+export function prepareSystemActors(actor, context) {
+  if (Object.keys(actor.system.actors).length > 0) {
 
-    for (let zordId of actor.system.zordIds) {
-      zords.push(game.actors.get(zordId));
+    let actors = [];
+
+    for (const [ key , embeddedActor] of Object.entries(actor.system.actors)) {
+      actors.push(fromUuidSync(embeddedActor.uuid));
     }
 
-    context.zords = zords;
+     context.actors = actors;
   }
 }
 
@@ -20,11 +24,37 @@ export function prepareZords(actor, context) {
  * @param {Event} event The originating click event
  * @param {ActorSheet} actorSheet The ActorSheet whose Zord is being deleted
  */
-export async function onZordDelete(event, actorSheet) {
-  const li = $(event.currentTarget).parents(".zord");
-  const zordId = li.data("zordId");
-  const zordIds = actorSheet.actor.system.zordIds.filter(x => x !== zordId);
-  actorSheet.actor.update({ "system.zordIds": zordIds });
+export async function onSystemActorsDelete(event, actorSheet) {
+  const actor = actorSheet.actor;
+  if (checkIsLocked(actor)) {
+    return;
+  }
+
+  const li = $(event.currentTarget).closest(".systemActors");
+  const systemActorsId = li.data("systemActorsUuid");
+
+  // return if no item is found.
+  if (!systemActorsId) {
+    return;
+  }
+
+  // // Confirmation dialog
+  // const confirmation = await _getItemDeleteConfirmDialog(item);
+  // if (confirmation.cancelled) {
+  //   return;
+  // }
+
+  let keyId = null;
+
+  for (const [ key , embeddedActor] of Object.entries(actor.system.actors)) {
+    if (embeddedActor.uuid == systemActorsId) {
+      keyId = key;
+      break;
+    }
+  }
+  const updateString = `system.actors.-=${keyId}`;
+
+  await actor.update({[updateString]: null});
   li.slideUp(200, () => actorSheet.render(false));
 }
 

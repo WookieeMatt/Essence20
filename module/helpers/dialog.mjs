@@ -18,6 +18,7 @@ export function rememberOptions(html) {
  * @returns {Object}  The dialog inputs and their submitted values
  */
 export function rememberSelect(html) {
+
   const options = {};
   html.find("select").each((i, el) => {
     options[el.id] = el.value;
