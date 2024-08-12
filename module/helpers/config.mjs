@@ -679,15 +679,15 @@ preLocalize("energonTypes");
  * Vehicles                                     *
  ***********************************************/
 
-//Vehile Roles
-E20.vehicleRole = {
+// Vehicle Roles
+E20.vehicleRoles = {
   driver: "E20.VehicleRoleDriver",
   gunner: "E20.VehicleRoleGunner",
   passenger: "E20.VehicleRolePassenger",
 };
 preLocalize("vehicleRole");
 
-//Vehicle Traits
+// Vehicle Traits
 E20.vehicleTraits = {
   aerospace: "E20.VehicleTraitAerospace",
   ai: "E20.VehicleTraitAI",
