@@ -249,5 +249,4 @@ export async function onDropActor(data, actorSheet) {
 
     return key;
   }
-
 }
