@@ -157,6 +157,7 @@ export async function onDropActor(data, actorSheet) {
     } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
     }
+
     break;
   case 'transformer':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
@@ -192,13 +193,12 @@ export async function onDropActor(data, actorSheet) {
     const choices = {};
 
     for (const [key, name] of Object.entries(CONFIG.E20.vehicleRole)) {
-      console.log(key)
       choices[key] = {
         label: name,
         value: key,
       };
     }
-    console.log(choices)
+
     new Dialog(
       {
         title: game.i18n.localize('E20.VehicleRoleSelect'),
@@ -208,7 +208,7 @@ export async function onDropActor(data, actorSheet) {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html))
+            callback: html => setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html)),
           },
         },
       },
@@ -226,7 +226,8 @@ export async function onDropActor(data, actorSheet) {
     if (["vehicle", "zord"].includes(targetActor.type)) {
       entry['vehicleRole'] = options.vehicleRole;
     }
-    return addActorIfUnique (droppedActor, targetActor, entry)
+
+    return addActorIfUnique (droppedActor, targetActor, entry);
 
   }
 

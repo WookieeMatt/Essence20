@@ -1,7 +1,3 @@
-import {
-  parseId,
-} from "../helpers/utils.mjs";
-
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
 
@@ -34,12 +30,7 @@ export async function perkUpdate(actor, perk, dropFunc) {
     }
   }
 
-  const newPerkList = await dropFunc();
-  const newPerk = newPerkList[0];
-
-  await newPerk.update ({
-    "system.originalId": perkUuid,
-  });
+  await dropFunc();
 }
 
 /**
@@ -48,13 +39,13 @@ export async function perkUpdate(actor, perk, dropFunc) {
  * @param {Perk} perk The perk
  */
 export async function onPerkDelete(actor, perk) {
-  const perkUuid = perk.system.originalId;
 
   if (perk.flags.core?.sourceId == SORCERY_PERK_ID || perk._stats.compendiumSource == SORCERY_PERK_ID ) {
     await actor.update ({
       "system.powers.sorcerous.levelTaken": 0,
     });
   }
+
   if (perk.flags.core?.sourceId == ZORD_PERK_ID || perk._stats.compendiumSource == ZORD_PERK_ID ) {
     await actor.update ({
       "system.canHaveZord": false,
