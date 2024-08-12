@@ -685,7 +685,7 @@ E20.vehicleRoles = {
   gunner: "E20.VehicleRoleGunner",
   passenger: "E20.VehicleRolePassenger",
 };
-preLocalize("vehicleRole");
+preLocalize("vehicleRoles");
 
 // Vehicle Traits
 E20.vehicleTraits = {

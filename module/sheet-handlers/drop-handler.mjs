@@ -114,7 +114,7 @@ async function _onDropUpgrade(upgrade, actor, dropFunc) {
 /**
  * Handle dropping of an Actor data onto another Actor sheet
  * @param {Object} data The data transfer extracted from the event
- * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ * @param {ActorSheet} actorSheet The ActorSheet who is being dropped on to
  * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
  *                                    not permitted.
  */
@@ -126,127 +126,122 @@ export async function onDropActor(data, actorSheet) {
   const droppedActor = await fromUuid(data.uuid);
   if (!droppedActor) return false;
 
+  let dropIsValid = false;
   switch (targetActor.type) {
   case 'giJoe':
+  case 'pony':
+  case 'powerRanger':
+  case 'transformer':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
       setEntryAndAddActor(droppedActor, targetActor);
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      dropisValid = true;
     }
 
     break;
   case 'megaformZord':
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
       setEntryAndAddActor (droppedActor, targetActor);
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-    }
-
-    break;
-  case 'pony':
-    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
-      setEntryAndAddActor (droppedActor, targetActor);
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-    }
-
-    break;
-  case 'powerRanger':
-    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
-      setEntryAndAddActor (droppedActor, targetActor);
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-    }
-
-    break;
-  case 'transformer':
-    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
-      setEntryAndAddActor (droppedActor, targetActor);
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      dropisValid = true;
     }
 
     break;
   case 'vehicle':
     if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+      dropisValid = true;
     }
 
     break;
   case 'zord':
     if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
-    } else {
-      ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
-    }
 
-    break;
-  default:
-    ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+    }
 
     break;
   }
 
-  async function _selectVehicleLocation(droppedActor, targetActor) {
-    const choices = {};
+  if (!dropIsValid) {
+    ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+  }
+}
 
-    for (const [key, name] of Object.entries(CONFIG.E20.vehicleRole)) {
-      choices[key] = {
-        label: name,
-        value: key,
-      };
-    }
+/**
+ * Function to select where the actor is being seated
+ * @param {actor} droppedActor The actor that is being dropped
+ * @param {actor} targetActor The actor that is being dropped on to
+ */
+async function _selectVehicleLocation(droppedActor, targetActor) {
+  const choices = {};
 
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.VehicleRoleSelect'),
-        content: await renderTemplate("systems/essence20/templates/dialog/vehicleRole-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html)),
-          },
+  for (const [key, name] of Object.entries(CONFIG.E20.vehicleRoles)) {
+    choices[key] = {
+      label: name,
+      value: key,
+    };
+  }
+
+  new Dialog(
+    {
+      title: game.i18n.localize('E20.VehicleRoleSelect'),
+      content: await renderTemplate("systems/essence20/templates/dialog/vehicle-role-select.hbs", {
+        choices,
+      }),
+      buttons: {
+        save: {
+          label: game.i18n.localize('E20.AcceptButton'),
+          callback: html => setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html)),
         },
       },
-    ).render(true);
+    },
+  ).render(true);
+}
+
+/**
+ * Sets the entry value that will be stored in system.actors
+ * @param {actor} droppedActor Actor dropped on to another actor
+ * @param {actor} targetActor Actor that is being dropped on to
+ * @param {role} options An optional parameter for if a vehicle role has been selected
+ * @returns
+ */
+async function setEntryAndAddActor(droppedActor, targetActor, options) {
+  const entry = {
+    uuid: droppedActor.uuid,
+    img: droppedActor.img,
+    name: droppedActor.name,
+    type: droppedActor.type,
+  };
+
+  if (["vehicle", "zord"].includes(targetActor.type)) {
+    entry['vehicleRole'] = options.vehicleRole;
   }
 
-  async function setEntryAndAddActor(droppedActor, targetActor, options) {
-    const entry = {
-      uuid: droppedActor.uuid,
-      img: droppedActor.img,
-      name: droppedActor.name,
-      type: droppedActor.type,
-    };
+  return addActorIfUnique(droppedActor, targetActor, entry);
+}
 
-    if (["vehicle", "zord"].includes(targetActor.type)) {
-      entry['vehicleRole'] = options.vehicleRole;
-    }
-
-    return addActorIfUnique(droppedActor, targetActor, entry);
-  }
-
-  async function addActorIfUnique(droppedActor, targetActor, entry) {
-    const actors = targetActor.system.actors;
-    if (actors) {
-      for (const [, actor] of Object.entries(actors)) {
-        if (actor.uuid === droppedActor.uuid) {
-          return;
-        }
+/**
+ * function to add the actor in to the system.actors object
+ * @param {actor} droppedActor Actor dropped on to another actor
+ * @param {actor} targetActor Actor that is being dropped on to
+ * @param {object} entry The value to be written to the system.actors
+ * @returns
+ */
+async function addActorIfUnique(droppedActor, targetActor, entry) {
+  const actors = targetActor.system.actors;
+  if (actors) {
+    for (const [, actor] of Object.entries(actors)) {
+      if (actor.uuid === droppedActor.uuid) {
+        return;
       }
     }
-
-    const pathPrefix = "system.actors";
-    const key = createId(actors);
-
-    await targetActor.update({
-      [`${pathPrefix}.${key}`]: entry,
-    });
-
-    return key;
   }
+
+  const pathPrefix = "system.actors";
+  const key = createId(actors);
+
+  await targetActor.update({
+    [`${pathPrefix}.${key}`]: entry,
+  });
+
+  return key;
 }

@@ -80,7 +80,7 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
-    // Prepare Zords for MFZs
+    // Prepare actors that are attached to other actors
     prepareSystemActors(this.actor, context);
 
     context.accordionStates = this.accordionStates;

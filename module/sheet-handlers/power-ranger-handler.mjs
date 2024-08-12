@@ -2,8 +2,8 @@ import { checkIsLocked } from "../helpers/actor.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 
 /**
- * Prepare Zords for MFZs.
- * @param {Actor} actor The Megaform Zord to prepare Zords for
+ * Prepare Actors that are attached to other actors
+ * @param {Actor} actor The actor that has attached actors
  * @param {Object} context The actor data to prepare
 */
 export function prepareSystemActors(actor, context) {
@@ -19,9 +19,9 @@ export function prepareSystemActors(actor, context) {
 }
 
 /**
- * Handle deleting Zords from MFZs
+ * Handle deleting of actors from other actors
  * @param {Event} event The originating click event
- * @param {ActorSheet} actorSheet The ActorSheet whose Zord is being deleted
+ * @param {ActorSheet} actorSheet The ActorSheet whose actor is being deleted
  */
 export async function onSystemActorsDelete(event, actorSheet) {
   const actor = actorSheet.actor;
