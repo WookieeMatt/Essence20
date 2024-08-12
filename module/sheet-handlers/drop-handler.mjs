@@ -129,7 +129,7 @@ export async function onDropActor(data, actorSheet) {
   switch (targetActor.type) {
   case 'giJoe':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
-      setEntryAndAddActor (droppedActor, targetActor);
+      setEntryAndAddActor(droppedActor, targetActor);
     } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
     }
