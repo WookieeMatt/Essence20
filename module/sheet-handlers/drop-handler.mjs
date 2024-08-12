@@ -129,10 +129,11 @@ export async function onDropActor(data, actorSheet) {
   switch (targetActor.type) {
   case 'giJoe':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
-
+      setEntryAndAddActor (droppedActor, targetActor);
     } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
     }
+
     break;
   case 'megaformZord':
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
@@ -140,6 +141,7 @@ export async function onDropActor(data, actorSheet) {
     } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
     }
+
     break;
   case 'pony':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
@@ -147,6 +149,7 @@ export async function onDropActor(data, actorSheet) {
     } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
     }
+
     break;
   case 'powerRanger':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
@@ -161,6 +164,7 @@ export async function onDropActor(data, actorSheet) {
     } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
     }
+
     break;
   case 'vehicle':
     if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
@@ -168,6 +172,7 @@ export async function onDropActor(data, actorSheet) {
     } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
     }
+
     break;
   case 'zord':
     if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
@@ -175,9 +180,11 @@ export async function onDropActor(data, actorSheet) {
     } else {
       ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
     }
+
     break;
   default:
     ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+
     break;
   }
 
