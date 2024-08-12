@@ -198,9 +198,9 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
 
 /**
  * Sets the entry value that will be stored in system.actors
- * @param {actor} droppedActor Actor dropped on to another actor
- * @param {actor} targetActor Actor that is being dropped on to
- * @param {role} options An optional parameter for if a vehicle role has been selected
+ * @param {Actor} droppedActor Actor dropped on to another actor
+ * @param {Actor} targetActor Actor that is being dropped on to
+ * @param {Objects} options An optional parameter for if a vehicle role has been selected
  * @returns
  */
 async function setEntryAndAddActor(droppedActor, targetActor, options) {
