@@ -1,51 +1,57 @@
 <div class="zord-combiners">
   <div class="flexrow" style="gap: 6px;">
-    {{#each @root.actors as |attachedActor|}}
-    <div class="systemActors zord item stats-container" style="border-color: {{attachedActor.system.color}};" data-system-Actors-uuid="{{attachedActor.uuid}}">
-      <div style="text-align: center;">
-        <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" title="{{attachedActor.name}}" />
-      </div>
-
-      <div class="flexrow" style="align-items:center; gap: 6px;">
-        <div style="white-space: nowrap;">{{ localize 'E20.ActorName' }}: {{attachedActor.name}}</div>
-
-        <div class="item-controls">
-          <a class="item-control system-actors-delete" title="{{localize 'E20.deletezordCombiner'}}">
-            <i class="fas fa-trash"></i>
-          </a>
+    {{#if @root.actors}}
+      {{#each @root.actors as |attachedActor|}}
+      <div class="systemActors zord item stats-container" style="border-color: {{attachedActor.system.color}};" data-system-Actors-uuid="{{attachedActor.uuid}}">
+        <div style="text-align: center;">
+          <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" title="{{attachedActor.name}}" />
         </div>
-      </div>
 
-      <div>
-        {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
-      </div>
-      {{#ifEquals @root.actor.type "megaformZord" }}
-        <div>
-          <span>{{ localize 'E20.ZordRanger' }}: {{attachedActor.system.ranger}}</span>
+        <div class="flexrow" style="align-items:center; gap: 6px;">
+          <div style="white-space: nowrap;">{{ localize 'E20.ActorName' }}: {{attachedActor.name}}</div>
+
+          <div class="item-controls">
+            <a class="item-control system-actors-delete" title="{{localize 'E20.deletezordCombiner'}}">
+              <i class="fas fa-trash"></i>
+            </a>
+          </div>
         </div>
 
         <div>
+          {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
+        </div>
+        {{#ifEquals @root.actor.type "megaformZord" }}
+          <div>
+            <span>{{ localize 'E20.ZordRanger' }}: {{attachedActor.system.ranger}}</span>
+          </div>
+
+          <div>
           <div>{{ localize 'E20.ItemTypeMegaformTraitPlural' }}:</div>
-          <ul>
-            {{#each attachedActor.items as |item|}}
-            {{#ifEquals item.type 'megaformTrait'}}
-            <li>{{item.name}}</li>
+            <ul>
+              {{#each attachedActor.items as |item|}}
+              {{#ifEquals item.type 'megaformTrait'}}
+              <li>{{item.name}}</li>
+              {{/ifEquals}}
+              {{/each}}
+            </ul>
+          </div>
+        {{/ifEquals}}
+        {{#inArray '["vehicle", "zord"]' @root.actor.type}}
+          {{#each @root.system.actors as |current|}}
+            {{#ifEquals attachedActor.uuid current.uuid}}
+              <label for="current.vehicleRole" class="resource-label">{{localize 'E20.VehicleRole'}}</label>
+              <select name="current.vehicleRole">
+                {{selectOptions @root.config.vehicleRoles selected=current.vehicleRole}}
+              </select>
             {{/ifEquals}}
-            {{/each}}
-          </ul>
-        </div>
-      {{/ifEquals}}
-      {{#inArray '["vehicle", "zord"]' @root.actor.type}}
-        {{#each @root.system.actors as |current|}}
-          {{#ifEquals attachedActor.uuid current.uuid}}
-            <label for="current.vehicleRole" class="resource-label">{{localize 'E20.VehicleRole'}}</label>
-            <select name="current.vehicleRole">
-              {{selectOptions @root.config.vehicleRoles selected=current.vehicleRole}}
-            </select>
-          {{/ifEquals}}
-        {{/each}}
-      {{/inArray}}
-    </div>
-    {{/each}}
+          {{/each}}
+        {{/inArray}}
+      </div>
+      {{/each}}
+    {{else}}
+      <div class="flexrow">
+        <input class="no-unlock" type="text" value="{{localize 'E20.ActorDrop'}}" readonly />
+      </div>
+    {{/if}}
   </div>
 </div>

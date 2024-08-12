@@ -65,6 +65,7 @@
     "ActorArmor": "Armor",
     "ActorConditioning": "Conditioning",
     "ActorDescription": "Description",
+    "ActorDrop": "Drop an Actor of the appropriate type here.",
     "ActorDropError": "The dropping of this Actor type onto this target Actor is not supported.",
     "ActorFocus": "Focus",
     "ActorHealth": "Health",
