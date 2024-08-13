@@ -1,11 +1,12 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
-import { parseId } from "../helpers/utils.mjs";
+import { createId, parseId } from "../helpers/utils.mjs";
 import { alterationUpdate } from "./alteration-handler.mjs";
 import { attachItem, gearDrop } from "./attachment-handler.mjs";
 import { influenceUpdate, originUpdate } from "./background-handler.mjs";
 import { powerUpdate } from "./power-handler.mjs";
 import { perkUpdate } from "./perk-handler.mjs";
 import { focusUpdate, roleUpdate } from "./role-handler.mjs";
+import { rememberSelect } from "../helpers/dialog.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -113,30 +114,133 @@ async function _onDropUpgrade(upgrade, actor, dropFunc) {
 /**
  * Handle dropping of an Actor data onto another Actor sheet
  * @param {Object} data The data transfer extracted from the event
- * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ * @param {ActorSheet} actorSheet The ActorSheet who is being dropped on to
  * @returns {Promise<object|boolean>} A data object which describes the result of the drop, or false if the drop was
  *                                    not permitted.
  */
 export async function onDropActor(data, actorSheet) {
-  const actor = actorSheet.actor;
-  if (!actor.isOwner) return false;
+  const targetActor = actorSheet.actor;
+  if (!targetActor.isOwner) return false;
 
   // Get the target actor
-  let sourceActor = await fromUuid(data.uuid);
-  if (!sourceActor) return false;
+  const droppedActor = await fromUuid(data.uuid);
+  if (!droppedActor) return false;
 
-  // Handles dropping Zords onto Megaform Zords
-  if (actor.type == 'megaformZord' && sourceActor.type == 'zord') {
-    const zordIds = duplicate(actor.system.zordIds);
-
-    // Can't contain duplicate Zords
-    if (!zordIds.includes(sourceActor.id)) {
-      zordIds.push(sourceActor.id);
-      await actor.update({
-        "system.zordIds": zordIds,
-      }).then(actorSheet.render(false));
+  let dropIsValid = false;
+  switch (targetActor.type) {
+  case 'giJoe':
+  case 'pony':
+  case 'powerRanger':
+  case 'transformer':
+    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+      setEntryAndAddActor(droppedActor, targetActor);
+      dropisValid = true;
     }
-  } else {
-    return false;
+
+    break;
+  case 'megaformZord':
+    if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
+      setEntryAndAddActor (droppedActor, targetActor);
+      dropisValid = true;
+    }
+
+    break;
+  case 'vehicle':
+    if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
+      _selectVehicleLocation(droppedActor, targetActor);
+      dropisValid = true;
+    }
+
+    break;
+  case 'zord':
+    if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
+      _selectVehicleLocation(droppedActor, targetActor);
+    }
+
+    break;
   }
+
+  if (!dropIsValid) {
+    ui.notifications.error(game.i18n.localize('E20.ActorDropError'));
+  }
+}
+
+/**
+ * Function to select where the actor is being seated
+ * @param {Actor} droppedActor The actor that is being dropped
+ * @param {Actor} targetActor The actor that is being dropped on to
+ */
+async function _selectVehicleLocation(droppedActor, targetActor) {
+  const choices = {};
+
+  for (const [key, name] of Object.entries(CONFIG.E20.vehicleRoles)) {
+    choices[key] = {
+      label: name,
+      value: key,
+    };
+  }
+
+  new Dialog(
+    {
+      title: game.i18n.localize('E20.VehicleRoleSelect'),
+      content: await renderTemplate("systems/essence20/templates/dialog/vehicle-role-select.hbs", {
+        choices,
+      }),
+      buttons: {
+        save: {
+          label: game.i18n.localize('E20.AcceptButton'),
+          callback: html => setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html)),
+        },
+      },
+    },
+  ).render(true);
+}
+
+/**
+ * Sets the entry value that will be stored in system.actors
+ * @param {Actor} droppedActor Actor dropped on to another actor
+ * @param {Actor} targetActor Actor that is being dropped on to
+ * @param {Objects} options An optional parameter for if a vehicle role has been selected
+ * @returns the key generated on the drop
+ */
+async function setEntryAndAddActor(droppedActor, targetActor, options) {
+  const entry = {
+    uuid: droppedActor.uuid,
+    img: droppedActor.img,
+    name: droppedActor.name,
+    type: droppedActor.type,
+  };
+
+  if (["vehicle", "zord"].includes(targetActor.type)) {
+    entry['vehicleRole'] = options.vehicleRole;
+  }
+
+  return addActorIfUnique(droppedActor, targetActor, entry);
+}
+
+/**
+ * Adds the dropped actor into system.actors
+ * @param {Actor} droppedActor Actor dropped on to another actor
+ * @param {Actor} targetActor Actor that is being dropped on to
+ * @param {Object} entry The value to be written to the system.actors
+ * @returns key that is set for the actor
+ */
+async function addActorIfUnique(droppedActor, targetActor, entry) {
+  const actors = targetActor.system.actors;
+  if (actors) {
+    for (const [, actor] of Object.entries(actors)) {
+      if (actor.uuid === droppedActor.uuid) {
+        return;
+      }
+    }
+  }
+
+  const pathPrefix = "system.actors";
+  const key = createId(actors);
+
+  await targetActor.update({
+    [`${pathPrefix}.${key}`]: entry,
+  });
+
+  return key;
 }
