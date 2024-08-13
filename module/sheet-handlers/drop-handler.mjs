@@ -201,7 +201,7 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
  * @param {Actor} droppedActor Actor dropped on to another actor
  * @param {Actor} targetActor Actor that is being dropped on to
  * @param {Objects} options An optional parameter for if a vehicle role has been selected
- * @returns
+ * @returns the key generated on the drop
  */
 async function setEntryAndAddActor(droppedActor, targetActor, options) {
   const entry = {
@@ -223,7 +223,7 @@ async function setEntryAndAddActor(droppedActor, targetActor, options) {
  * @param {Actor} droppedActor Actor dropped on to another actor
  * @param {Actor} targetActor Actor that is being dropped on to
  * @param {Object} entry The value to be written to the system.actors
- * @returns
+ * @returns key that is set for the actor
  */
 async function addActorIfUnique(droppedActor, targetActor, entry) {
   const actors = targetActor.system.actors;
