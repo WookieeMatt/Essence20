@@ -26,6 +26,12 @@ const initPerkLevels = [
   "level16",
   "level19",
 ];
+const initZordFeatureLevels = [
+  "level6",
+  "level10",
+  "level14",
+  "level17",
+];
 
 export class RoleItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
@@ -71,6 +77,7 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
         qualified: makeStrArrayWithChoices(Object.keys(E20.weaponTypes)),
         trained: makeStrArrayWithChoices(Object.keys(E20.weaponTypes)),
       }),
+      zordFeatures: makeStrArrayWithChoices(Object.keys(E20.actorLevels), initZordFeatureLevels),
     };
   }
 }

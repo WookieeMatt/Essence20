@@ -33,6 +33,7 @@ export function makeStrWithChoices(choices, initial) {
 
 export function makeStrArrayWithChoices(choices, initial=[]) {
   return new fields.ArrayField(
-    makeStrWithChoices(choices, initial),
+    makeStrWithChoices(choices),
+    { initial },
   );
 }
