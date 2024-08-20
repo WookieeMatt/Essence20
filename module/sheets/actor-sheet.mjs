@@ -152,6 +152,7 @@ export class Essence20ActorSheet extends ActorSheet {
   /**
    * Prepare skill rank allocation calculations for PCs by adding the number of shifts
    * and Specializations present for each Essence.
+   * @param {Object} context The actor data to prepare.
    */
   _prepareSkillRankAllocation(context) {
     for (const essence in CONFIG.E20.originEssences) {
