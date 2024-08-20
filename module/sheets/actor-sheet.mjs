@@ -163,7 +163,7 @@ export class Essence20ActorSheet extends ActorSheet {
         const skillData = context.system.skills[skill];
         const skillIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(skillData.shift));
         const unrankedIndex = CONFIG.E20.skillShiftList.indexOf('d20');
-        numUpshifts += unrankedIndex - skillIndex;
+        numUpshifts += Math.max(0, unrankedIndex - skillIndex);
         numSpecializations += context.specializations[skill] ? context.specializations[skill].length : 0;
       }
 
