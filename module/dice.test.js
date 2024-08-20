@@ -202,7 +202,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false);
   });
 
   test("specialized skill roll", async () => {
@@ -230,7 +230,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false);
   });
 
   test("specialized skill roll works with isSpecialized as true string", async () => {
@@ -258,7 +258,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false);
   });
 
   test("normal weapon effect skill roll", async () => {
@@ -296,6 +296,7 @@ describe("rollSkill", () => {
       'd20 + 0',
       mockActor,
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>",
+      false,
     );
   });
 
@@ -333,7 +334,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, spell);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>", false);
   });
 
   test("essence-shifted skill roll with edge", async () => {
