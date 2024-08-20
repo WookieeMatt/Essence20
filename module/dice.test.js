@@ -72,6 +72,7 @@ const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
 describe("prepareInitiativeRoll", () => {
   test("normal initiative roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       shiftDown: 0,
       shiftUp: 0,
