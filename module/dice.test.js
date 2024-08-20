@@ -11,7 +11,6 @@ chatMessage.create = jest.fn();
 const rollDialog = jest.mock();
 rollDialog.getSkillRollOptions = jest.fn();
 rollDialog.getSkillRollOptions.mockReturnValue({
-  canCritD2:false,
   edge: false,
   shiftDown: 0,
   shiftUp: 0,
@@ -73,7 +72,6 @@ const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
 describe("prepareInitiativeRoll", () => {
   test("normal initiative roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
-      canCritD2: false,
       edge: false,
       shiftDown: 0,
       shiftUp: 0,
@@ -106,7 +104,6 @@ describe("rollSkill", () => {
 
   test("normal skill roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
-      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
@@ -155,7 +152,6 @@ describe("rollSkill", () => {
 
   test("repeated normal skill roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
-      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
