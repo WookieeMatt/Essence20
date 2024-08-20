@@ -11,6 +11,7 @@ chatMessage.create = jest.fn();
 const rollDialog = jest.mock();
 rollDialog.getSkillRollOptions = jest.fn();
 rollDialog.getSkillRollOptions.mockReturnValue({
+  canCritD2: false,
   edge: false,
   shiftDown: 0,
   shiftUp: 0,
