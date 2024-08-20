@@ -71,6 +71,7 @@ export class Dice {
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
       isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false',
+      canCritD2: rawDataset.canCritD2 && rawDataset.canCritD2 != 'false',
     };
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];

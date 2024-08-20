@@ -68,7 +68,6 @@ export class RollDialog {
         default: "normal",
         close: () => resolve({ cancelled: true }),
       };
-      console.log(html)
       new Dialog(data, null).render(true);
     });
   }
