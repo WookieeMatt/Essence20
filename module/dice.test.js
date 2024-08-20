@@ -151,7 +151,6 @@ describe("rollSkill", () => {
 
   test("repeated normal skill roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
-      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
