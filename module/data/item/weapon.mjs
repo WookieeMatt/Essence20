@@ -31,6 +31,7 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
         shift: makeStrWithChoices(E20.weaponRequirementShifts, null),
       }),
       traits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
+      transformerMode : makeStrWithChoices(E20.transformerModes, 'modeBotMode'),
       upgradeTraits: makeStrArrayWithChoices(Object.keys(E20.weaponTraits)),
       usesPerScene: makeInt(null),
     };
