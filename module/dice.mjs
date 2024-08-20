@@ -71,6 +71,7 @@ export class Dice {
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
       isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false',
+      canCritD2: rawDataset.canCritD2 && rawDataset.canCritD2 != 'false',
     };
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
@@ -148,6 +149,7 @@ export class Dice {
       finalShift = E20.skillRollableShifts[E20.skillRollableShifts.length - 1];
     }
 
+    const canCritD2 = dataset.canCritD2 || skillRollOptions.canCritD2;
     const isSpecialized = dataset.isSpecialized || skillRollOptions.isSpecialized;
     const modifier = actorSkillData.modifier || 0;
     const formula = this._getFormula(isSpecialized, skillRollOptions, finalShift, modifier);
@@ -162,7 +164,7 @@ export class Dice {
         }) + '<br>';
       }
 
-      this._rollSkillHelper(formula, actor, repeatText + label);
+      this._rollSkillHelper(formula, actor, repeatText + label, canCritD2);
     }
   }
 
@@ -173,9 +175,12 @@ export class Dice {
    * @param {String} flavor   The html to use for the roll message.
    * @private
    */
-  _rollSkillHelper(formula, actor, flavor) {
+  _rollSkillHelper(formula, actor, flavor, canCritD2) {
     let roll = new Roll(formula, actor.getRollData());
     roll.toMessage({
+      flags: {
+        canCritD2: canCritD2,
+      },
       speaker: this._chatMessage.getSpeaker({ actor }),
       flavor,
       rollMode: game.settings.get('core', 'rollMode'),

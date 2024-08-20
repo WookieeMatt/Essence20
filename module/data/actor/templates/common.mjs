@@ -25,6 +25,7 @@ function makeMovementFields() {
 
 function makeSkillFields() {
   return new fields.SchemaField({
+    canCritD2: makeBool(false),
     essences: new fields.SchemaField({
       smarts: makeBool(false),
       social: makeBool(false),
