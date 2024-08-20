@@ -86,6 +86,11 @@ export class Essence20ActorSheet extends ActorSheet {
     context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
 
+    // Prepare PC skill rank allocation
+    if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+      this._prepareSkillRankAllocation(context);
+    }
+
     return context;
   }
 
@@ -143,6 +148,29 @@ export class Essence20ActorSheet extends ActorSheet {
 
     context.displayedNpcSkills = displayedNpcSkills;
   }
+
+  /**
+   * Prepare skill rank allocation calculations for PCs by adding the number of shifts
+   * and Specializations present for each Essence.
+   * @param {Object} context The actor data to prepare.
+   */
+  _prepareSkillRankAllocation(context) {
+    for (const essence in CONFIG.E20.originEssences) {
+      let numUpshifts = 0;
+      let numSpecializations = 0;
+
+      for (const skill of CONFIG.E20.skillsByEssence[essence]) {
+        const skillData = context.system.skills[skill];
+        const skillIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(skillData.shift));
+        const unrankedIndex = CONFIG.E20.skillShiftList.indexOf('d20');
+        numUpshifts += Math.max(0, unrankedIndex - skillIndex);
+        numSpecializations += context.specializations[skill] ? context.specializations[skill].length : 0;
+      }
+
+      context.system.skillRankAllocation[essence] = numUpshifts + numSpecializations;
+    }
+  }
+
   /**
    * Prepare skill list to be used or weaponEffects on an actor
    * @param {Object} actorData The acor data converted to an object
