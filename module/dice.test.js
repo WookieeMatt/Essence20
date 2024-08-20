@@ -130,6 +130,7 @@ describe("rollSkill", () => {
       isSpecialized: 'false',
     };
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
@@ -152,6 +153,7 @@ describe("rollSkill", () => {
 
   test("repeated normal skill roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
@@ -179,6 +181,7 @@ describe("rollSkill", () => {
       shift: 'autoSuccess',
     };
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
@@ -206,6 +209,7 @@ describe("rollSkill", () => {
       specializationName: 'Foo Specialization',
     };
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
@@ -233,6 +237,7 @@ describe("rollSkill", () => {
       specializationName: 'Foo Specialization',
     };
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
@@ -255,6 +260,7 @@ describe("rollSkill", () => {
 
   test("normal weapon effect skill roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
@@ -298,6 +304,7 @@ describe("rollSkill", () => {
       essence: 'any',
     };
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
@@ -328,6 +335,7 @@ describe("rollSkill", () => {
 
   test("essence-shifted skill roll with edge", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
       edge: false,
       snag: false,
       shiftUp: 0,
