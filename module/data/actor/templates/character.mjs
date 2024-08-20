@@ -74,6 +74,12 @@ export const character = () => ({
     }),
   }),
   notes: new fields.HTMLField(),
+  skillRankAllocation: new fields.SchemaField({
+    strength: makeInt(0),
+    speed: makeInt(0),
+    smarts: makeInt(0),
+    social: makeInt(0),
+  }),
 });
 
 export function migrateCharacterData(source) {
