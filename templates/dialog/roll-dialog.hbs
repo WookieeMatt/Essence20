@@ -3,7 +3,7 @@
     {{localize 'E20.ShiftUp'}}
     <input type="number" name="shiftUp" value={{shiftUp}} min="0" step="1" />
   </div>
-  
+
   <div>
     {{localize 'E20.ShiftDown'}}
     <input type="number" name="shiftDown" value={{shiftDown}} min="0" step="1" />
@@ -19,6 +19,14 @@
     <label>
       <input type="checkbox" name="isSpecialized" {{checked isSpecialized}} />
       <span>{{localize 'E20.RollIsSpecialized'}}</span>
+    </label>
+  </div>
+
+    <div>
+    <label>
+      {{canCritD2}}
+      <input type="checkbox" name="canCritD2" {{checked canCritD2}} />
+      <span>{{localize 'E20.RollCanCritD2'}}</span>
     </label>
   </div>
 
