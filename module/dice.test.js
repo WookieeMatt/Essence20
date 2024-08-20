@@ -287,7 +287,6 @@ describe("rollSkill", () => {
       'd20 + 0',
       mockActor,
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>",
-      false,
     );
   });
 
