@@ -72,7 +72,6 @@ const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
 describe("prepareInitiativeRoll", () => {
   test("normal initiative roll", async () => {
     rollDialog.getSkillRollOptions.mockReturnValue({
-      canCritD2: false,
       edge: false,
       shiftDown: 0,
       shiftUp: 0,
@@ -122,7 +121,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics");
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false);
   });
 
   test("normal skill roll works with isSpecialized as false string", async () => {
