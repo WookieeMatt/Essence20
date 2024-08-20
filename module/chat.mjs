@@ -1,6 +1,6 @@
 // Changes the color of the roll total for crits and fumbles
 // Called on the renderChatMessage hook
-export const highlightCriticalSuccessFailure = function (message, html, data) {
+export const highlightCriticalSuccessFailure = function (message, html) {
   if (!message.isRoll || !message.isContentVisible || !message.rolls.length) {
     return;
   }

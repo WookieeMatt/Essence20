@@ -148,6 +148,7 @@ export class Dice {
     if (E20.autoSuccessShifts.includes(finalShift)) {
       finalShift = E20.skillRollableShifts[E20.skillRollableShifts.length - 1];
     }
+
     const canCritD2 = dataset.canCritD2 || skillRollOptions.canCritD2;
     const isSpecialized = dataset.isSpecialized || skillRollOptions.isSpecialized;
     const modifier = actorSkillData.modifier || 0;
