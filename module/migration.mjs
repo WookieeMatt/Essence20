@@ -8,13 +8,17 @@ export const migrateWorld = async function() {
   ui.notifications.info(game.i18n.format("MIGRATION.begin", {version}), {permanent: true});
 
   const invalidActorIds = Array.from(game.actors.invalidDocumentIds);
-  for (const invalidId of invalidActorIds) {
-    const invalidActor = game.actors.getInvalid(invalidId);
-    if (invalidActor.type == "megaformZord") {
-      await invalidActor.update({
-        "type": "megaform",
-      });
+  if (invalidActorIds.length > 0) {
+    for (const invalidId of invalidActorIds) {
+      const invalidActor = game.actors.getInvalid(invalidId);
+      if (invalidActor.type == "megaformZord") {
+        await invalidActor.update({
+          "type": "megaform",
+        });
+      }
     }
+    foundry.utils.debouncedReload();
+    return
   }
 
   // Migrate World Actors
@@ -224,7 +228,25 @@ export const migrateActorData = async function(actor, compendiumActor) {
       };
     }
   }
+
   //Migrate ActorIds
+  if (actor.type == "megaform" && actor.system.zordIds) {
+    const pathPrefix = "system.actors";
+    console.log(actor.system.zordIds)
+    for (const zordId of actor.system.zordIds) {
+      console.log(zordId)
+      const droppedActor = game.actors.get(zordId);
+      console.log(droppedActor)
+      const entry = {
+        uuid: droppedActor.uuid,
+        img: droppedActor.img,
+        name: droppedActor.name,
+        type: droppedActor.type,
+      };
+      const id = await createId(actor.system.actors);
+      updateData[`${pathPrefix}.${id}`] = entry;
+    }
+  }
 
   // Migrate Owned Items
   if (!actor.items) {
