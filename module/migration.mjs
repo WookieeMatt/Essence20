@@ -8,15 +8,17 @@ export const migrateWorld = async function() {
   ui.notifications.info(game.i18n.format("MIGRATION.begin", {version}), {permanent: true});
 
   const invalidActorIds = Array.from(game.actors.invalidDocumentIds);
-  if (invalidActorIds.length > 0) {
-    for (const invalidId of invalidActorIds) {
-      const invalidActor = game.actors.getInvalid(invalidId);
-      if (invalidActor.type == "megaformZord") {
-        await invalidActor.update({
-          "type": "megaform",
-        });
-      }
+  let reloadNeeded = false;
+  for (const invalidId of invalidActorIds) {
+    const invalidActor = game.actors.getInvalid(invalidId);
+    if (invalidActor.type == "megaformZord") {
+      await invalidActor.update({
+        "type": "megaform",
+      });
+      reloadNeeded = true;
     }
+  }
+  if (reloadNeeded) {
     foundry.utils.debouncedReload();
     return
   }
@@ -234,9 +236,7 @@ export const migrateActorData = async function(actor, compendiumActor) {
     const pathPrefix = "system.actors";
     console.log(actor.system.zordIds)
     for (const zordId of actor.system.zordIds) {
-      console.log(zordId)
       const droppedActor = game.actors.get(zordId);
-      console.log(droppedActor)
       const entry = {
         uuid: droppedActor.uuid,
         img: droppedActor.img,

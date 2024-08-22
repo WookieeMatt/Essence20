@@ -12,7 +12,6 @@ export const config = {
   companion: CompanionActorData,
   giJoe: GiJoeActorData,
   megaform: MegaformActorData,
-  megaformZord: MegaformActorData,
   npc: NpcActorData,
   pony: PonyActorData,
   powerRanger: PowerRangerActorData,
