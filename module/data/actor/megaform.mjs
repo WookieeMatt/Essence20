@@ -14,11 +14,6 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       zordIds: makeStrArray(),
     };
   }
-
-  static migrateMegaformData(source) {
-    console.log(source)
-    return super.migrateData(source);
-  }
 }
 
 
