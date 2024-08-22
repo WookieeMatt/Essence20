@@ -1,6 +1,6 @@
 import { CompanionActorData } from './companion.mjs';
 import { GiJoeActorData } from './gi-joe.mjs';
-import { MegaformZordActorData } from './megaform-zord.mjs';
+import { MegaformActorData } from './megaform.mjs';
 import { NpcActorData } from './npc.mjs';
 import { PonyActorData } from './pony.mjs';
 import { PowerRangerActorData } from './power-ranger.mjs';
@@ -11,7 +11,8 @@ import { ZordActorData } from './zord.mjs';
 export const config = {
   companion: CompanionActorData,
   giJoe: GiJoeActorData,
-  megaformZord: MegaformZordActorData,
+  megaform: MegaformActorData,
+  megaformZord: MegaformActorData,
   npc: NpcActorData,
   pony: PonyActorData,
   powerRanger: PowerRangerActorData,

@@ -138,7 +138,7 @@ export async function onDropActor(data, actorSheet) {
     }
 
     break;
-  case 'megaformZord':
+  case 'megaform':
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
       setEntryAndAddActor (droppedActor, targetActor);
       dropisValid = true;

@@ -2,7 +2,7 @@
   "Actor": {
     "types": [
       "powerRanger",
-      "megaformZord",
+      "megaform",
       "npc",
       "vehicle",
       "zord",

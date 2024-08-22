@@ -20,7 +20,7 @@
         <div>
           {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
         </div>
-        {{#ifEquals @root.actor.type "megaformZord" }}
+        {{#ifEquals @root.actor.type "megaform" }}
           <div>
             <span>{{ localize 'E20.ZordRanger' }}: {{attachedActor.system.ranger}}</span>
           </div>

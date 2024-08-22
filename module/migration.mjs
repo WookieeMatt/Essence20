@@ -7,6 +7,16 @@ export const migrateWorld = async function() {
   const version = game.system.version;
   ui.notifications.info(game.i18n.format("MIGRATION.begin", {version}), {permanent: true});
 
+  const invalidActorIds = Array.from(game.actors.invalidDocumentIds);
+  for (const invalidId of invalidActorIds) {
+    const invalidActor = game.actors.getInvalid(invalidId);
+    if (invalidActor.type == "megaformZord") {
+      await invalidActor.update({
+        "type": "megaform",
+      });
+    }
+  }
+
   // Migrate World Actors
   const actors = game.actors.map(a => [a, true])
     .concat(Array.from(game.actors.invalidDocumentIds).map(id => [game.actors.getInvalid(id), false]));
@@ -36,7 +46,7 @@ export const migrateWorld = async function() {
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
 
-      if (["classFeature"].includes(item.type)) {
+      if (["giJoe", "pony", "powerRanger", "transformer"].includes(item.type)) {
         item.delete();
         continue;
       }
@@ -214,6 +224,7 @@ export const migrateActorData = async function(actor, compendiumActor) {
       };
     }
   }
+  //Migrate ActorIds
 
   // Migrate Owned Items
   if (!actor.items) {

@@ -10,7 +10,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/headers/character.hbs",
     "systems/essence20/templates/actor/parts/headers/companion.hbs",
     "systems/essence20/templates/actor/parts/headers/common.hbs",
-    "systems/essence20/templates/actor/parts/headers/megaformZord.hbs",
+    "systems/essence20/templates/actor/parts/headers/megaform.hbs",
     "systems/essence20/templates/actor/parts/headers/npc.hbs",
     "systems/essence20/templates/actor/parts/headers/vehicle.hbs",
     "systems/essence20/templates/actor/parts/headers/zord.hbs",
