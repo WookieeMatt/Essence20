@@ -18,9 +18,10 @@ export const migrateWorld = async function() {
       reloadNeeded = true;
     }
   }
+
   if (reloadNeeded) {
     foundry.utils.debouncedReload();
-    return
+    return;
   }
 
   // Migrate World Actors
@@ -234,7 +235,6 @@ export const migrateActorData = async function(actor, compendiumActor) {
   //Migrate ActorIds
   if (actor.type == "megaform" && actor.system.zordIds) {
     const pathPrefix = "system.actors";
-    console.log(actor.system.zordIds)
     for (const zordId of actor.system.zordIds) {
       const droppedActor = game.actors.get(zordId);
       const entry = {
