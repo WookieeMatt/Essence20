@@ -134,27 +134,28 @@ export async function onDropActor(data, actorSheet) {
   case 'transformer':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
       setEntryAndAddActor(droppedActor, targetActor);
-      dropisValid = true;
+      dropIsValid = true;
     }
 
     break;
   case 'megaform':
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
       setEntryAndAddActor (droppedActor, targetActor);
-      dropisValid = true;
+      dropIsValid = true;
     }
 
     break;
   case 'vehicle':
     if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
-      dropisValid = true;
+      dropIsValid = true;
     }
 
     break;
   case 'zord':
     if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
+      dropIsValid = true;
     }
 
     break;
