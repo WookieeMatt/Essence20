@@ -1,8 +1,4 @@
 <div>
   <span>{{localize 'E20.SkillRanksAllocated'}}: </span>
-  {{#ifEquals skillRankAllocation essenceMax}}
-  <span>{{skillRankAllocation}}/{{essenceMax}}</span>
-  {{else}}
-  <span style="color: orange;">{{skillRankAllocation}}/{{essenceMax}}</span>
-  {{/ifEquals}}
+  <span title="{{skillRankString}}">{{skillRankAllocation}}</span>
 </div>

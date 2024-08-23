@@ -158,23 +158,43 @@ export class Essence20ActorSheet extends ActorSheet {
     const unrankedIndex = CONFIG.E20.skillShiftList.indexOf('d20');
 
     for (const essence in CONFIG.E20.originEssences) {
-      let numUpshifts = 0;
+      let essenceUpshifts = 0;
       let numSpecializations = 0;
+      let essenceStrings = [];
 
       for (const skill of CONFIG.E20.skillsByEssence[essence]) {
         const skillData = context.system.skills[skill];
         const skillIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(skillData.shift));
-        numUpshifts += Math.max(0, unrankedIndex - skillIndex);
-        numSpecializations += context.specializations[skill] ? context.specializations[skill].length : 0;
+
+        const skillUpshifts = Math.max(0, unrankedIndex - skillIndex);
+        if (skillUpshifts) {
+          essenceStrings.push(`${skillUpshifts} ${CONFIG.E20.skills[skill]}`);
+          essenceUpshifts += skillUpshifts;
+        }
+
+        for (const specialization of context.specializations[skill] || []) {
+          numSpecializations += 1;
+          essenceStrings.push(`1 ${specialization.name}`);
+        }
       }
 
-      context.system.skillRankAllocation[essence] = numUpshifts + numSpecializations;
+      context.system.skillRankAllocation[essence].string = essenceStrings.join(' + ');
+      context.system.skillRankAllocation[essence].value = essenceUpshifts + numSpecializations;
     }
 
-    context.system.skillRankAllocation['strength'] += context.system.conditioning;
+    context.system.skillRankAllocation['strength'].string = [
+        context.system.skillRankAllocation['strength'].string,
+        `${context.system.conditioning} ${game.i18n.localize('E20.ActorConditioning')}`,
+      ].filter(Boolean).join(' + ');
+    context.system.skillRankAllocation['strength'].value += context.system.conditioning;
 
     const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.initiative.shift));
-    context.system.skillRankAllocation['speed'] += Math.max(0, unrankedIndex - initiativeIndex);
+    const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
+    context.system.skillRankAllocation['speed'].string = [
+      context.system.skillRankAllocation['speed'].string,
+      `${initiativeUpshifts} ${game.i18n.localize('E20.ActorInitiative')}`,
+    ].filter(Boolean).join(' + ');
+    context.system.skillRankAllocation['speed'].value += initiativeUpshifts
   }
 
   /**
