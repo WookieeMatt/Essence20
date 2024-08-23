@@ -183,9 +183,9 @@ export class Essence20ActorSheet extends ActorSheet {
     }
 
     context.system.skillRankAllocation['strength'].string = [
-        context.system.skillRankAllocation['strength'].string,
-        `${context.system.conditioning} ${game.i18n.localize('E20.ActorConditioning')}`,
-      ].filter(Boolean).join(' + ');
+      context.system.skillRankAllocation['strength'].string,
+      `${context.system.conditioning} ${game.i18n.localize('E20.ActorConditioning')}`,
+    ].filter(Boolean).join(' + ');
     context.system.skillRankAllocation['strength'].value += context.system.conditioning;
 
     const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.initiative.shift));
@@ -194,7 +194,7 @@ export class Essence20ActorSheet extends ActorSheet {
       context.system.skillRankAllocation['speed'].string,
       `${initiativeUpshifts} ${game.i18n.localize('E20.ActorInitiative')}`,
     ].filter(Boolean).join(' + ');
-    context.system.skillRankAllocation['speed'].value += initiativeUpshifts
+    context.system.skillRankAllocation['speed'].value += initiativeUpshifts;
   }
 
   /**
