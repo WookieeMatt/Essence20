@@ -233,8 +233,8 @@ export const migrateActorData = async function(actor, compendiumActor) {
     }
   }
 
-  //Migrate ActorIds
-  if (actor.type == "megaform" && actor.system.zordIds) {
+  // Migrate zordIds to Actor entries
+  if (actor.type == "megaform" && actor.system.zordIds.length) {
     const pathPrefix = "system.actors";
     for (const zordId of actor.system.zordIds) {
       const droppedActor = game.actors.get(zordId);
