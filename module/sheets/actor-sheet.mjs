@@ -174,7 +174,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.system.skillRankAllocation['strength'] += context.system.conditioning;
 
     const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.initiative.shift));
-    context.system.skillRankAllocation['speed'] += Math.max(0, unrankedIndex - initiativeIndex);;
+    context.system.skillRankAllocation['speed'] += Math.max(0, unrankedIndex - initiativeIndex);
   }
 
   /**
