@@ -62,7 +62,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prepareItems(context);
 
     // Prepare npc data and items.
-    if (['npc', 'zord', 'megaformZord', 'vehicle', 'companion'].includes(actorData.type)) {
+    if (['npc', 'zord', 'megaform', 'vehicle', 'companion'].includes(actorData.type)) {
       this._prepareDisplayedNpcSkills(context);
     }
 
