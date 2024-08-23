@@ -16,4 +16,3 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
   }
 }
 
-
