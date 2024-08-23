@@ -7,6 +7,7 @@ export const migrateWorld = async function() {
   const version = game.system.version;
   ui.notifications.info(game.i18n.format("MIGRATION.begin", {version}), {permanent: true});
 
+  // Attempt to fix invalid Actors
   const invalidActorIds = Array.from(game.actors.invalidDocumentIds);
   let reloadNeeded = false;
   for (const invalidId of invalidActorIds) {
