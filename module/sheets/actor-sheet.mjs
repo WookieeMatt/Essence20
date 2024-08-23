@@ -155,6 +155,8 @@ export class Essence20ActorSheet extends ActorSheet {
    * @param {Object} context The actor data to prepare.
    */
   _prepareSkillRankAllocation(context) {
+    const unrankedIndex = CONFIG.E20.skillShiftList.indexOf('d20');
+
     for (const essence in CONFIG.E20.originEssences) {
       let numUpshifts = 0;
       let numSpecializations = 0;
@@ -162,13 +164,17 @@ export class Essence20ActorSheet extends ActorSheet {
       for (const skill of CONFIG.E20.skillsByEssence[essence]) {
         const skillData = context.system.skills[skill];
         const skillIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(skillData.shift));
-        const unrankedIndex = CONFIG.E20.skillShiftList.indexOf('d20');
         numUpshifts += Math.max(0, unrankedIndex - skillIndex);
         numSpecializations += context.specializations[skill] ? context.specializations[skill].length : 0;
       }
 
       context.system.skillRankAllocation[essence] = numUpshifts + numSpecializations;
     }
+
+    context.system.skillRankAllocation['strength'] += context.system.conditioning;
+
+    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.initiative.shift));
+    context.system.skillRankAllocation['speed'] += Math.max(0, unrankedIndex - initiativeIndex);;
   }
 
   /**
