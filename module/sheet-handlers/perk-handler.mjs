@@ -22,8 +22,8 @@ export async function perkUpdate(actor, perk, dropFunc) {
 
   for (let actorItem of actor.items) {
     const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
-    ? await actor.items.get(actorItem._id).getFlag('core', 'sourceId')
-    : await actor.items.get(actorItem._id)._stats.compendiumSource;
+      ? await actor.items.get(actorItem._id).getFlag('core', 'sourceId')
+      : await actor.items.get(actorItem._id)._stats.compendiumSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
       if (perk.system.selectionLimit == timesTaken) {
