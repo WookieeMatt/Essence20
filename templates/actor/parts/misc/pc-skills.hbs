@@ -8,7 +8,7 @@
       <input class="two-digit-input" type="number" name="system.essences.strength.max" value="{{system.essences.strength.max}}" min="0" step="1" />
     </div>
     <div class="essence-header">
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" essenceMax=system.essences.strength.max skillRankAllocation=system.skillRankAllocation.strength}}
+      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.strength.value skillRankString=system.skillRankAllocation.strength.string}}
       <span>{{localize 'E20.ActorConditioning'}}</span>
       <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" min="0" step="1" />
     </div>
@@ -26,7 +26,7 @@
       <input class="two-digit-input" type="number" name="system.essences.speed.max" value="{{system.essences.speed.max}}" min="0" step="1" />
     </div>
     <div class="essence-header">
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" essenceMax=system.essences.speed.max skillRankAllocation=system.skillRankAllocation.speed}}
+      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string}}
       <span>Actions: {{numActions.movement}}M, {{numActions.standard}}S, {{numActions.free}}F</span>
     </div>
     {{#each @root.config.skillsByEssence.speed as |skill|}}
@@ -43,7 +43,7 @@
       <input class="two-digit-input" type="number" name="system.essences.smarts.max" value="{{system.essences.smarts.max}}" min="0" step="1" />
     </div>
     <div class="essence-header">
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" essenceMax=system.essences.smarts.max skillRankAllocation=system.skillRankAllocation.smarts}}
+      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.smarts.value skillRankString=system.skillRankAllocation.smarts.string}}
     </div>
    {{#each @root.config.skillsByEssence.smarts as |skill|}}
       {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='smarts' skill=skill fields=(lookup @root.system.skills skill)}}
@@ -59,7 +59,7 @@
       <input class="two-digit-input" type="number" name="system.essences.social.max" value="{{system.essences.social.max}}" min="0" step="1" />
     </div>
     <div class="essence-header">
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" essenceMax=system.essences.social.max skillRankAllocation=system.skillRankAllocation.social}}
+      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.social.value skillRankString=system.skillRankAllocation.social.string}}
     </div>
     {{#each @root.config.skillsByEssence.social as |skill|}}
       {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}

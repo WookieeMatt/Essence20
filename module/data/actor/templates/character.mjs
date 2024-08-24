@@ -17,6 +17,13 @@ function makeDefensesFields(name, essence) {
   });
 }
 
+function makeSkillRankAllocation() {
+  return new fields.SchemaField({
+    value: makeInt(0),
+    string: makeStr(''),
+  });
+}
+
 export function makeEssenceFields() {
   return new fields.SchemaField({
     max: makeInt(3),
@@ -75,10 +82,10 @@ export const character = () => ({
   }),
   notes: new fields.HTMLField(),
   skillRankAllocation: new fields.SchemaField({
-    strength: makeInt(0),
-    speed: makeInt(0),
-    smarts: makeInt(0),
-    social: makeInt(0),
+    strength: makeSkillRankAllocation(),
+    speed: makeSkillRankAllocation(),
+    smarts: makeSkillRankAllocation(),
+    social: makeSkillRankAllocation(),
   }),
 });
 
