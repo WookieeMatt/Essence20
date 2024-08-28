@@ -589,6 +589,7 @@
     "VehiclePassengers": "Passengers",
     "VehicleRole": "Role",
     "VehicleRoleDriver": "Driver",
+    "VehicleRoleError": "That position is currently maxed out.",
     "VehicleRoleGunner": "Gunner",
     "VehicleRolePassenger": "Passenger",
     "VehicleRoleSelect": "Select a Role for the Passenger",

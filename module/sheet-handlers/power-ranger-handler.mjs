@@ -37,19 +37,20 @@ export async function onSystemActorsDelete(event, actorSheet) {
     return;
   }
 
-  // Confirmation dialog
-  const confirmation = await _getItemDeleteConfirmDialog(actor);
-  if (confirmation.cancelled) {
-    return;
-  }
-
   let keyId = null;
-
+  let selectedActor = {};
   for (const [ key , embeddedActor] of Object.entries(actor.system.actors)) {
     if (embeddedActor.uuid == systemActorsId) {
       keyId = key;
+      selectedActor = embeddedActor;
       break;
     }
+  }
+
+  // Confirmation dialog
+  const confirmation = await _getItemDeleteConfirmDialog(selectedActor);
+  if (confirmation.cancelled) {
+    return;
   }
 
   const updateString = `system.actors.-=${keyId}`;
@@ -66,4 +67,42 @@ export async function onMorph(actorSheet) {
   await actorSheet.actor.update({
     "system.isMorphed": !actorSheet.actor.system.isMorphed,
   }).then(actorSheet.render(false));
+}
+
+export async function onVehicleRoleUpdate(event, actorSheet) {
+  const actor = actorSheet.actor;
+  if (checkIsLocked(actor)) {
+    return;
+  }
+
+  const key = event.currentTarget.attributes.key.value;
+  const newRole = event.currentTarget.value;
+  let numberOfType = 0;
+  let updateValue = false;
+
+  for (const [,passenger] of Object.entries(actor.system.actors)) {
+    if (passenger.vehicleRole == newRole) {
+      numberOfType++;
+    }
+  }
+  if (newRole == 'driver') {
+    if (numberOfType < actor.system.crew.numDrivers) {
+      updateValue = true;
+    }
+  } else {
+    if (numberOfType < actor.system.crew.numPassengers) {
+      updateValue = true;
+    }
+  }
+
+  if (updateValue) {
+    const updateString = `system.actors.${key}.vehicleRole`;
+
+    await actor.update ({
+      [updateString]: newRole,
+    })
+  } else {
+    ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
+    actor.render()
+  }
 }
