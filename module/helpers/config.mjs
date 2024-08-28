@@ -682,7 +682,7 @@ preLocalize("energonTypes");
 // Vehicle Roles
 E20.vehicleRoles = {
   driver: "E20.VehicleRoleDriver",
-   passenger: "E20.VehicleRolePassenger",
+  passenger: "E20.VehicleRolePassenger",
 };
 preLocalize("vehicleRoles");
 

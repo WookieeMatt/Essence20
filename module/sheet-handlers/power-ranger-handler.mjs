@@ -85,6 +85,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       numberOfType++;
     }
   }
+
   if (newRole == 'driver') {
     if (numberOfType < actor.system.crew.numDrivers) {
       updateValue = true;
@@ -100,9 +101,9 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
 
     await actor.update ({
       [updateString]: newRole,
-    })
+    });
   } else {
     ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
-    actor.render()
+    actor.render();
   }
 }
