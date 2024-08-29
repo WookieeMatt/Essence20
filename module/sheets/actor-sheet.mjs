@@ -2,7 +2,7 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
-import { prepareSystemActors, onSystemActorsDelete, onMorph, onVehicleRoleUpdate } from "../sheet-handlers/power-ranger-handler.mjs";
+import { prepareSystemActors, onSystemActorsDelete, onMorph, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onRest,
@@ -457,6 +457,8 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.header-accordion-label').click(ev => onToggleHeaderAccordion(ev, this));
 
     html.find('.vehicleRole').change(ev => onVehicleRoleUpdate(ev, this));
+
+    html.find('.numCrew').change(ev=> onCrewNumberUpdate(ev, this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {

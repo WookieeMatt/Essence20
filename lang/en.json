@@ -593,6 +593,7 @@
     "VehicleRoleGunner": "Gunner",
     "VehicleRolePassenger": "Passenger",
     "VehicleRoleSelect": "Select a Role for the Passenger",
+    "VehicleRoleErrorTooManyCrew": "There are currently more crew members in the vehicle then your change allows.",
     "VehicleTraitAerospace": "Aerospace",
     "VehicleTraitAI": "A.I.",
     "VehicleTraitAir": "Air",

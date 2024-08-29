@@ -107,3 +107,33 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
     actor.render();
   }
 }
+
+export async function onCrewNumberUpdate (event, actorSheet) {
+  const target = event.currentTarget.name;
+  let targetShortName = "";
+  if (target == "system.crew.numDrivers") {
+    targetShortName = "driver";
+  } else if (target == "system.crew.numPassengers") {
+    targetShortName = "passenger";
+  }
+  const actor = actorSheet.actor;
+  const newValue = event.currentTarget.value;
+
+  let numberOfType = 0;
+
+  for (const [,driver] of Object.entries(actor.system.actors)) {
+    if (driver.vehicleRole == targetShortName) {
+      numberOfType++;
+    }
+  }
+
+  if (numberOfType > newValue) {
+    ui.notifications.error(game.i18n.localize('E20.VehicleRoleErrorTooManyCrew'));
+    await actor.update({
+      [target]: numberOfType,
+    });
+    actor.render();
+  }
+}
+
+
