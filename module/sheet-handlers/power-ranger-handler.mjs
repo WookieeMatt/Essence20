@@ -113,7 +113,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
         no: {
           label: "No",
         },
-      }
+      },
     });
 
     if (dialogResult == "No") {
