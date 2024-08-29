@@ -103,8 +103,30 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       [updateString]: newRole,
     });
   } else {
-    ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
-    actor.render();
+    const dialogResult = await Dialog.wait({
+      title: "Flip Driver and Passenger?",
+      content: "<p>Are you trying to flip a driver and a passenger?</p>",
+      buttons: {
+        yes: {
+          label: "Yes",
+        },
+        no: {
+          label: "No",
+        },
+      }
+    });
+
+    if (dialogResult == "No") {
+      ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
+      actor.render();
+    } else {
+      const updateString = `system.actors.${key}.vehicleRole`;
+
+      await actor.update ({
+        [updateString]: newRole,
+      });
+
+    }
   }
 }
 
