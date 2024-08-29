@@ -116,6 +116,7 @@ export async function onCrewNumberUpdate (event, actorSheet) {
   } else if (target == "system.crew.numPassengers") {
     targetShortName = "passenger";
   }
+
   const actor = actorSheet.actor;
   const newValue = event.currentTarget.value;
 
