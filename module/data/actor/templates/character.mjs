@@ -50,6 +50,7 @@ export const character = () => ({
     willpower: makeDefensesFields('willpower', 'smarts'),
     cleverness: makeDefensesFields('cleverness', 'social'),
   }),
+  essencePoints: makeInt(12),
   essences: new fields.SchemaField({
     strength: makeEssenceFields(),
     speed: makeEssenceFields(),

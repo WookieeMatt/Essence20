@@ -1,3 +1,4 @@
+import { EssenceManager } from "../apps/essence-manager.mjs";
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
@@ -424,6 +425,8 @@ export class Essence20ActorSheet extends ActorSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
+    html.find('.essence-manager').click(ev => this.openEssenceApp(ev, this.actor));
+
     // Add Inventory Item
     html.find('.item-create').click(ev => onItemCreate(ev, this.actor));
 
@@ -538,4 +541,9 @@ export class Essence20ActorSheet extends ActorSheet {
       return await onLevelChange(this.actor, this.actor.system.level);
     }
   }
+
+  async openEssenceApp(event, actor) {
+    new EssenceManager (actor).render(true);
+  }
 }
+
