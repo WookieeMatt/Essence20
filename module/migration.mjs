@@ -174,6 +174,23 @@ export const migrateActorData = async function(actor, compendiumActor) {
     updateData[`system.skills`] = newSkills;
   }
 
+  if (!actor.system.skills.acrobatics.essences.speed) {
+    for (const skill of Object.keys(actor.system.skills)) {
+      if (skill != 'roleSkillDie') {
+        const essence = CONFIG.E20.skillToEssence[skill];
+        if (essence == 'any') {
+          updateData[`system.skills.${skill}.essences.smarts`] = true;
+          updateData[`system.skills.${skill}.essences.social`] = true;
+          updateData[`system.skills.${skill}.essences.speed`] = true;
+          updateData[`system.skills.${skill}.essences.strength`] = true;
+        } else {
+          updateData[`system.skills.${skill}.essences.${essence}`] = true;
+        }
+      }
+    }
+  }
+
+
   // Migrate to Base Movement
   if (Object.keys(actor.system.movement.aerial).sort() != ['altMode', 'base', 'bonus', 'morphed', 'total']) {
     updateData[`system.movement.aerial.altMode`] = 0;
