@@ -1,16 +1,19 @@
 {
-  "folder": "TewKMQk1ThtujWqq",
-  "name": "Instictual Caster",
-  "type": "hangUp",
-  "_id": "ixNXVuXWjNf8fZHY",
-  "img": "icons/svg/hazard.svg",
+  "folder": "0bpLSDRFZt3RoVGN",
+  "name": "Massive Mug of Mammoth Measurements",
+  "type": "magicBauble",
+  "_id": "YMC3WoSkJ11jrwUn",
+  "img": "icons/svg/item-bag.svg",
   "system": {
     "originalId": "",
     "description": "",
     "source": {
       "book": "Knights of Canterlot",
-      "page": 35
-    }
+      "page": 52
+    },
+    "duration": "1 scene",
+    "range": "Reach",
+    "spellcastingShift": "d4"
   },
   "effects": [],
   "sort": 0,
@@ -25,9 +28,9 @@
     "coreVersion": "12.331",
     "systemId": "essence20",
     "systemVersion": "4.4.1",
-    "createdTime": 1727441192799,
-    "modifiedTime": 1727441198172,
+    "createdTime": 1727534751612,
+    "modifiedTime": 1727534768863,
     "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
-  "_key": "!items!ixNXVuXWjNf8fZHY"
+  "_key": "!items!YMC3WoSkJ11jrwUn"
 }
