@@ -26,7 +26,7 @@
       "_id": "Yw1eWWqoKP8Z1A7B",
       "changes": [
         {
-          "key": "system.base.willpower",
+          "key": "system.defenses.willpower.base",
           "mode": 5,
           "value": "9",
           "priority": null
