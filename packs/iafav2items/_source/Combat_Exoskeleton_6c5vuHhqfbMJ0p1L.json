@@ -1,0 +1,42 @@
+{
+  "folder": "joem7izXLMMQ6Ahc",
+  "name": "Combat Exoskeleton",
+  "type": "upgrade",
+  "_id": "6c5vuHhqfbMJ0p1L",
+  "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 92
+    },
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "prototype",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1728606967474,
+    "modifiedTime": 1728606981949,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!6c5vuHhqfbMJ0p1L"
+}

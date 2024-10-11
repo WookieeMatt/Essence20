@@ -1,0 +1,51 @@
+{
+  "folder": "HmjC1x6o8jRDDzsl",
+  "name": "Magician",
+  "type": "influence",
+  "_id": "BsPn7Qpt7LREG4x4",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 17
+    },
+    "items": {
+      "a54b": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.PhK5KSV4IXpOcTYP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sorcerous Support",
+        "type": "perk"
+      },
+      "885c": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.EC7Xzefmh7AEHBrr",
+        "img": "icons/svg/hazard.svg",
+        "name": "Mired in Academia",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": [
+      "spellcasting"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727400479769,
+    "modifiedTime": 1727400499678,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!BsPn7Qpt7LREG4x4"
+}
