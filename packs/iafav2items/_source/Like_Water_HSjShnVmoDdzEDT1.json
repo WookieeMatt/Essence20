@@ -1,0 +1,124 @@
+{
+  "folder": "yyDOCXj85udfaZK7",
+  "name": "Like Water",
+  "type": "perk",
+  "_id": "HSjShnVmoDdzEDT1",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 30
+    },
+    "items": {},
+    "prerequisite": "Finesse +d10",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Toughness Bonus",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.intercontinental_adventures.Item.HSjShnVmoDdzEDT1",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "6A1USC3G0I2y1phO",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.4.1",
+        "createdTime": 1728526100334,
+        "modifiedTime": 1728526178514,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!HSjShnVmoDdzEDT1.6A1USC3G0I2y1phO"
+    },
+    {
+      "name": "Evasion Bonus",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.intercontinental_adventures.Item.HSjShnVmoDdzEDT1",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": true,
+      "_id": "hz8iNgoJza0ppAyj",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.4.1",
+        "createdTime": 1728526180200,
+        "modifiedTime": 1728526207345,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!HSjShnVmoDdzEDT1.hz8iNgoJza0ppAyj"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1728525935884,
+    "modifiedTime": 1728525962671,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!HSjShnVmoDdzEDT1"
+}

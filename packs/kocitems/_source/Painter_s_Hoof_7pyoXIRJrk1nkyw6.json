@@ -1,0 +1,39 @@
+{
+  "folder": "KbZ2VhPVbKVsqsOG",
+  "name": "Painter's Hoof",
+  "type": "spell",
+  "_id": "7pyoXIRJrk1nkyw6",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 47
+    },
+    "circle": "utility",
+    "cost": 1,
+    "duration": "1 day",
+    "isSpecialized": false,
+    "range": "60 feet",
+    "tier": "superior"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727533843509,
+    "modifiedTime": 1727533861190,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!7pyoXIRJrk1nkyw6"
+}
