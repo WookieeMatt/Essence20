@@ -190,11 +190,46 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html)),
+          callback: html => {
+            verifyDropSelection(targetActor, rememberSelect(html));
+            setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html));
+          },
         },
       },
     },
   ).render(true);
+}
+
+/**
+ *
+ * @param {Actor} targetActor Actor that is being dropped on to
+ * @param {Objects} options An optional parameter for if a vehicle role has been selected
+ * @returns {boolean} allowDrop
+ */
+function verifyDropSelection(targetActor, options){
+  let numberOfType = 0;
+  let allowDrop = false;
+  for (const [,passenger] of Object.entries(targetActor.system.actors)) {
+    if (passenger.vehicleRole == options.vehicleRole) {
+      numberOfType++;
+    }
+  }
+
+  if (options.vehicleRole == 'driver') {
+    if (numberOfType < targetActor.system.crew.numDrivers) {
+      allowDrop = true;
+    }
+  } else {
+    if (numberOfType < targetActor.system.crew.numPassengers) {
+      allowDrop = true;
+    }
+  }
+
+  if (!allowDrop) {
+    throw new Error('There are no open spaces for this type of person.');
+  }
+
+  return allowDrop;
 }
 
 /**
@@ -214,6 +249,7 @@ async function setEntryAndAddActor(droppedActor, targetActor, options) {
 
   if (["vehicle", "zord"].includes(targetActor.type)) {
     entry['vehicleRole'] = options.vehicleRole;
+
   }
 
   return addActorIfUnique(droppedActor, targetActor, entry);
