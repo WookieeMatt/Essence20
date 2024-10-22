@@ -1,23 +1,29 @@
 <div class="collapsible-item-container" style="border-color: {{system.color}};">
   {{!-- Header with + and v buttons --}}
-  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType}}
+  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType hidePlusButton=hidePlusButton}}
 
   <ol class="items-list" style="border-color: {{system.color}};">
-    {{#each items as |item|}}
-    <li class="item accordion-wrapper flexcol" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
-      {{!-- Item label and buttons --}}
-      {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
+    {{#if items.length}}
+      {{#each items as |item|}}
+      <li class="item accordion-wrapper flexcol" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
+        {{!-- Item label and buttons --}}
+        {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs" item=item}}
 
-      {{!-- Item content --}}
-      {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
+        {{!-- Item content --}}
+        {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-content.hbs" item=item}}
 
-      {{#> subcontainers parentItem=item }}
-      {{!-- Subcontainers here --}}
-      {{/subcontainers}}
-    </li>
+        {{#> subcontainers parentItem=item }}
+        {{!-- Subcontainers here --}}
+        {{/subcontainers}}
+      </li>
 
-    <hr>
+      <hr>
 
-    {{/each}}
+      {{/each}}
+    {{else}}
+      {{#if defaultText}}
+      <li style="text-align: center">{{defaultText}}</li>
+      {{/if}}
+    {{/if}}
   </ol>
 </div>

@@ -90,6 +90,7 @@ E20.weaponTraits = {
   fanning: "E20.WeaponTraitFanning",
   fire: "E20.WeaponTraitFire",
   grapple: "E20.WeaponTraitGrapple",
+  highDensity: "E20.WeaponTraitHighDensity",
   inaccurate: "E20.WeaponTraitInaccurate",
   indirect: "E20.WeaponTraitIndirect",
   inertial: "E20.WeaponTraitInertial",
@@ -453,6 +454,7 @@ E20.defaultIcon = {
   power: "systems/essence20/assets/icons/items/powers.svg",
   role: "systems/essence20/assets/icons/items/role.svg",
   rolePoints: "systems/essence20/assets/icons/items/rolePoints.svg",
+  spell: "systems/essence20/assets/icons/items/powers.svg",
   weaponEffect: "systems/essence20/assets/icons/items/weapon_effect.svg",
 };
 
@@ -731,6 +733,7 @@ E20.vehicleTraits = {
   prowlMode: "E20.VehicleTraitProwlMode",
   pythonPaint: "E20.VehicleTraitPythonPaint",
   ram: "E20.VehicleTraitRam",
+  ranshackle: "E20.VehicleTraitRamshackle",
   rapidDeploymentRamps: "E20.VehicleTraitRapidDeploymentRamps",
   responsive: "E20.VehicleTraitResponsive",
   rollCage: "E20.VehicleTraitRollCage",

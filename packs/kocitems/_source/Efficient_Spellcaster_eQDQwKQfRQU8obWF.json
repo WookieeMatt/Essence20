@@ -1,0 +1,37 @@
+{
+  "folder": "AMYdAZa9wDyQ8hpe",
+  "name": "Efficient Spellcaster",
+  "type": "perk",
+  "_id": "eQDQwKQfRQU8obWF",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 38
+    },
+    "items": {},
+    "prerequisite": "Spellcasting +d8 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727441640174,
+    "modifiedTime": 1727441662006,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!eQDQwKQfRQU8obWF"
+}

@@ -1,0 +1,116 @@
+{
+  "folder": "F6VpIIjZrmxWtx5V",
+  "name": "Silent Weapon Expert",
+  "type": "focus",
+  "_id": "y7kVrR906LAgU57g",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 12
+    },
+    "items": {
+      "a935": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.M2ZYoyByNLkHtLzw",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Commando",
+        "type": "role"
+      },
+      "508f": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.T4p7oPq8Kk0SHVb3",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Whisper Warrior",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "6e81": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.btGfoEaflxAZAw25",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Two-Handed Assault",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "3d0a": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.5D4jxcQnpSOWfQMc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blink of an Eye",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "8f54": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.TESyOcJFtd9Qn9Tk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fluid Motion",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "0763": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.RH3AFV38EBAfTvW1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "One With Your Weapon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "948e": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.KfeDIDIvLb59MVzD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Indomitable Spirit",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "cf11": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.2BYtrKD35dJ6jlV5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Precision is Perfection",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "db4a": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.30iXcdh2zEhC9wVP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Walking Weapon Rack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "speed"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "finesse"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727535894289,
+    "modifiedTime": 1727535997020,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!y7kVrR906LAgU57g"
+}

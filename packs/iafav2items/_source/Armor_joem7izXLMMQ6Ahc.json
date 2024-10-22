@@ -1,0 +1,22 @@
+{
+  "name": "Armor",
+  "sorting": "a",
+  "folder": "49A5risiHu7S5XgW",
+  "type": "Item",
+  "_id": "joem7izXLMMQ6Ahc",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!joem7izXLMMQ6Ahc"
+}

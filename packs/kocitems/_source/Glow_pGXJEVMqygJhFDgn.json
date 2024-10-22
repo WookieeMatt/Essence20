@@ -1,0 +1,39 @@
+{
+  "folder": "YkAQ5ZP6J2Qhqpmy",
+  "name": "Glow",
+  "type": "spell",
+  "_id": "pGXJEVMqygJhFDgn",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 42
+    },
+    "circle": "aid",
+    "cost": 1,
+    "duration": "Instant",
+    "isSpecialized": false,
+    "range": "20 foot radius",
+    "tier": "elementary"
+  },
+  "effects": [],
+  "sort": 103125,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727532844775,
+    "modifiedTime": 1727533146251,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!pGXJEVMqygJhFDgn"
+}
