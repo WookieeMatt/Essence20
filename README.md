@@ -47,10 +47,11 @@ The [Drag Ruler](https://foundryvtt.com/packages/drag-ruler/) module is supporte
   - Manifest URL v11/v12: `https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json`
   - Manifest URL v10: `https://raw.githubusercontent.com/WookieeMatt/Essence20/v10-Branch/system.json`
 ![image](https://github.com/WookieeMatt/Essence20/assets/41161497/f5accb7c-b51e-4b6b-816b-192001873132)
-- Note: Our v10 support stops at v3.2.4. We have now migrated to v11 and will support that version of Foundry moving forward. We've included the link for v10 for anyone not yet on v11, however, no further updates will be provided.
+- Note: Our v10 support stops at v3.2.4. We've included the link for v10 for anyone still on that version, however, no further updates will be provided.
 - If you require more detailed instructions or run into issues, please visit our [Discord](https://discord.gg/74QYVA355W) and ask in our `#general` or `#support` channel.
 
 # Support
+- Frequently asked questions about Essence20 on Foundry can be found [here](https://github.com/WookieeMatt/Essence20/wiki/Essence20-on-Foundry-VTT-FAQ).
 - For the most responsive support, join our Discord: https://discord.gg/74QYVA355W
 - Alternatively, you can open an issue [on our Github](https://github.com/WookieeMatt/Essence20/issues). If you're reporting a problem with the system, please be as descriptive as possible with the issue and include reproduction steps.
 
