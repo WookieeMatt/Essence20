@@ -96,6 +96,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
     }
   }
 
+
   if (updateValue) {
     const updateString = `system.actors.${key}.vehicleRole`;
 
@@ -115,8 +116,8 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
         },
       },
     });
-
-    if (dialogResult == "No") {
+    console.log(dialogResult)
+    if (dialogResult == "no") {
       ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
       actor.render();
     } else {
