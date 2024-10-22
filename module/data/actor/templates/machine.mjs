@@ -1,4 +1,4 @@
-import { makeBool, makeInt } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStr } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -18,6 +18,11 @@ function makeEssencesFields(usesDrivers, init) {
 
 export const machine = () => ({
   canHover: makeBool(false),
+  crew: new fields.SchemaField({
+    description: makeStr(''),
+    numDrivers: makeInt(1),
+    numPassengers: makeInt(0),
+  }),
   defenses: new fields.SchemaField({
     toughness: makeDefensesFields(false, 10),
     evasion: makeDefensesFields(false, 10),
