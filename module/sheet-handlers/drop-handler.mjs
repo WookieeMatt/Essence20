@@ -129,6 +129,7 @@ export async function onDropActor(data, actorSheet) {
   let dropIsValid = false;
   switch (targetActor.type) {
   case 'giJoe':
+  case 'playerCharacter':
   case 'pony':
   case 'powerRanger':
   case 'transformer':
@@ -146,14 +147,14 @@ export async function onDropActor(data, actorSheet) {
 
     break;
   case 'vehicle':
-    if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
+    if (["giJoe", "npc", "playerCharacter", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     }
 
     break;
   case 'zord':
-    if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
+    if (["giJoe", "npc", "playerCharacter", "pony", "powerRanger", "transformer"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     }

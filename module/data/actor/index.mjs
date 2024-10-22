@@ -2,6 +2,7 @@ import { CompanionActorData } from './companion.mjs';
 import { GiJoeActorData } from './gi-joe.mjs';
 import { MegaformActorData } from './megaform.mjs';
 import { NpcActorData } from './npc.mjs';
+import { PlayerCharacterActorData } from './player-character.mjs';
 import { PonyActorData } from './pony.mjs';
 import { PowerRangerActorData } from './power-ranger.mjs';
 import { TransformerActorData } from './transformer.mjs';
@@ -13,6 +14,7 @@ export const config = {
   giJoe: GiJoeActorData,
   megaform: MegaformActorData,
   npc: NpcActorData,
+  playerCharacter: PlayerCharacterActorData,
   pony: PonyActorData,
   powerRanger: PowerRangerActorData,
   transformer: TransformerActorData,

@@ -2,6 +2,7 @@
   "TYPES": {
    "Actor": {
       "giJoe": "GI JOE",
+      "playerCharacter": "Player Character",
       "powerRanger": "Power Ranger",
       "npc": "NPC",
       "threat": "Threat",
