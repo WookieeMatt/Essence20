@@ -141,7 +141,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
             label: "Cancel",
             callback: actor.render(),
           },
-        }
+        },
       });
     }
   }
