@@ -1,4 +1,5 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
+import { rememberOptions } from "../helpers/dialog.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 
 /**
@@ -121,14 +122,52 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
       actor.render();
     } else {
-      const updateString = `system.actors.${key}.vehicleRole`;
+      let options = "";
+      for (const [selectedKey,passenger] of Object.entries(actor.system.actors)) {
+        if (selectedKey != key && passenger.vehicleRole == newRole) {
+          options += `<div><input type="radio" id="${selectedKey}" value="${passenger.name}" name="flip"/><label for="${passenger.name}">${passenger.name}</label></div>`
+        }
+      }
 
-      await actor.update ({
-        [updateString]: newRole,
+      const changeDialogResult = await Dialog.wait({
+        title: "Select Who to Flip With?",
+        content: `${options}`,
+        buttons: {
+          ok: {
+            label: "Ok",
+            callback: html => _flipDriverAndPassenger(actor, key, newRole, rememberOptions(html)),
+          },
+          cancel: {
+            label: "Cancel",
+            callback: actor.render(),
+          }
+        }
+      });
+    }
+  }
+}
+
+function _flipDriverAndPassenger (actor, key, newRole, options) {
+  let flippedRole = "";
+  for (const [optionKey, value] of Object.entries(options)) {
+    if (value) {
+      const updateString = `system.actors.${optionKey}.vehicleRole`;
+      if (newRole == 'driver') {
+        flippedRole = 'passenger';
+      } else {
+        flippedRole = 'driver';
+      }
+      actor.update ({
+        [updateString]: flippedRole,
       });
 
     }
   }
+  const updateString = `system.actors.${key}.vehicleRole`;
+  actor.update ({
+    [updateString]: newRole,
+  });
+
 }
 
 export async function onCrewNumberUpdate (event, actorSheet) {
