@@ -125,11 +125,11 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       let options = "";
       for (const [selectedKey,passenger] of Object.entries(actor.system.actors)) {
         if (selectedKey != key && passenger.vehicleRole == newRole) {
-          options += `<div><input type="radio" id="${selectedKey}" value="${passenger.name}" name="flip"/><label for="${passenger.name}">${passenger.name}</label></div>`
+          options += `<div><input type="radio" id="${selectedKey}" value="${passenger.name}" name="flip"/><label for="${passenger.name}">${passenger.name}</label></div>`;
         }
       }
 
-      const changeDialogResult = await Dialog.wait({
+      await Dialog.wait({
         title: "Select Who to Flip With?",
         content: `${options}`,
         buttons: {
@@ -140,7 +140,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
           cancel: {
             label: "Cancel",
             callback: actor.render(),
-          }
+          },
         }
       });
     }
@@ -157,12 +157,14 @@ function _flipDriverAndPassenger (actor, key, newRole, options) {
       } else {
         flippedRole = 'driver';
       }
+
       actor.update ({
         [updateString]: flippedRole,
       });
 
     }
   }
+
   const updateString = `system.actors.${key}.vehicleRole`;
   actor.update ({
     [updateString]: newRole,
