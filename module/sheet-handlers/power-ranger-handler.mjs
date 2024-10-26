@@ -199,4 +199,3 @@ export async function onCrewNumberUpdate (event, actorSheet) {
   }
 }
 
-
