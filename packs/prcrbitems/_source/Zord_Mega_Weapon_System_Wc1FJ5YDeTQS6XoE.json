@@ -1,0 +1,33 @@
+{
+  "folder": "GnpjtrDaa4I537Te",
+  "name": "Zord Mega-Weapon System",
+  "type": "feature",
+  "_id": "Wc1FJ5YDeTQS6XoE",
+  "img": "systems/essence20/assets/icons/items/feature.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 139
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1730035428946,
+    "modifiedTime": 1730035437875,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!Wc1FJ5YDeTQS6XoE"
+}

@@ -1,0 +1,83 @@
+{
+  "folder": "GnpjtrDaa4I537Te",
+  "name": "Carrier",
+  "type": "feature",
+  "_id": "h1b0cjGJP1xqtfVv",
+  "img": "systems/essence20/assets/icons/items/feature.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 136
+    }
+  },
+  "effects": [
+    {
+      "name": "Carrier Effect",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.h1b0cjGJP1xqtfVv",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "9e8cyWRtnXhrKarV",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.essences.strength.value",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.4.1",
+        "createdTime": 1730034495830,
+        "modifiedTime": 1730034534073,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!h1b0cjGJP1xqtfVv.9e8cyWRtnXhrKarV"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1730034489749,
+    "modifiedTime": 1730034494592,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!h1b0cjGJP1xqtfVv"
+}

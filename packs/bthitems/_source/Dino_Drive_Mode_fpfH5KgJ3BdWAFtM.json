@@ -1,0 +1,33 @@
+{
+  "folder": "fcFxQir98TScNXIL",
+  "name": "Dino Drive Mode",
+  "type": "feature",
+  "_id": "fpfH5KgJ3BdWAFtM",
+  "img": "systems/essence20/assets/icons/items/feature.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 72
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1730119695933,
+    "modifiedTime": 1730119700698,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!fpfH5KgJ3BdWAFtM"
+}

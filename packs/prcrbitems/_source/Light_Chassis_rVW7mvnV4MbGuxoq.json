@@ -1,0 +1,77 @@
+{
+  "folder": "GnpjtrDaa4I537Te",
+  "name": "Light Chassis",
+  "type": "feature",
+  "_id": "rVW7mvnV4MbGuxoq",
+  "img": "systems/essence20/assets/icons/items/feature.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 137
+    }
+  },
+  "effects": [
+    {
+      "name": "New Effect",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.rVW7mvnV4MbGuxoq",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "V0LBMG9yDPFA6Cyq",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.essences.speed.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.4.1",
+        "createdTime": 1730035055849,
+        "modifiedTime": 1730035081013,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!rVW7mvnV4MbGuxoq.V0LBMG9yDPFA6Cyq"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1730035046821,
+    "modifiedTime": 1730035054498,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!rVW7mvnV4MbGuxoq"
+}

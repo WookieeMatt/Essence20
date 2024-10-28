@@ -1,0 +1,95 @@
+{
+  "folder": "GnpjtrDaa4I537Te",
+  "name": "Titan Body",
+  "type": "feature",
+  "_id": "a8qeX4JiDdAKfxyl",
+  "img": "systems/essence20/assets/icons/items/feature.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 138
+    }
+  },
+  "effects": [
+    {
+      "name": "Titan Body Effect",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.a8qeX4JiDdAKfxyl",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "hfakwF0mLk0YjBI3",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.size",
+          "mode": 5,
+          "value": "\"towering\"",
+          "priority": null
+        },
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.essences.strength.value",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.essences.speed.value",
+          "mode": 2,
+          "value": "-2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.4.1",
+        "createdTime": 1730035234879,
+        "modifiedTime": 1730035348780,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!a8qeX4JiDdAKfxyl.hfakwF0mLk0YjBI3"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1730035225588,
+    "modifiedTime": 1730035233126,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!a8qeX4JiDdAKfxyl"
+}

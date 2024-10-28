@@ -1,0 +1,83 @@
+{
+  "folder": "GnpjtrDaa4I537Te",
+  "name": "Auxiliary Zord",
+  "type": "feature",
+  "_id": "QO0kY1y359tSnPTS",
+  "img": "systems/essence20/assets/icons/items/feature.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Power Rangers Core Rulebook",
+      "page": 136
+    }
+  },
+  "effects": [
+    {
+      "name": "Auxiliary Zord Effects",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.QO0kY1y359tSnPTS",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "nKwPIk2JkNSRRND0",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.essences.strength.value",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        },
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.4.1",
+        "createdTime": 1730034344249,
+        "modifiedTime": 1730034450507,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!QO0kY1y359tSnPTS.nKwPIk2JkNSRRND0"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1730034336831,
+    "modifiedTime": 1730034342774,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!QO0kY1y359tSnPTS"
+}
