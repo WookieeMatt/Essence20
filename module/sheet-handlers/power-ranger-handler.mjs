@@ -97,7 +97,6 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
     }
   }
 
-
   if (updateValue) {
     const updateString = `system.actors.${key}.vehicleRole`;
 
@@ -107,7 +106,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
   } else {
     const dialogResult = await Dialog.wait({
       title: "Flip Driver and Passenger?",
-      content: "<p>Are you trying to flip a driver and a passenger?</p>",
+      content: game.i18n.localize('E20.VehicleDialogSwap'),
       buttons: {
         yes: {
           label: "Yes",
@@ -122,23 +121,28 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       ui.notifications.error(game.i18n.localize('E20.VehicleRoleError'));
       actor.render();
     } else {
-      let options = "";
+      let choices = {};
       for (const [selectedKey,passenger] of Object.entries(actor.system.actors)) {
         if (selectedKey != key && passenger.vehicleRole == newRole) {
-          options += `<div><input type="radio" id="${selectedKey}" value="${passenger.name}" name="flip"/><label for="${passenger.name}">${passenger.name}</label></div>`;
+          choices[selectedKey] = {
+            chosen: false,
+            label: passenger.name,
+          };
         }
       }
 
       await Dialog.wait({
-        title: "Select Who to Flip With?",
-        content: `${options}`,
+        title: game.i18n.localize('E20.VehicleDialogSwapSelect'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
         buttons: {
           ok: {
-            label: "Ok",
+            label: game.i18n.localize('E20.DialogConfirmButton'),
             callback: html => _flipDriverAndPassenger(actor, key, newRole, rememberOptions(html)),
           },
           cancel: {
-            label: "Cancel",
+            label: game.i18n.localize('E20.DialogCancelButton'),
             callback: actor.render(),
           },
         },
@@ -147,7 +151,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
   }
 }
 
-function _flipDriverAndPassenger (actor, key, newRole, options) {
+function _flipDriverAndPassenger(actor, key, newRole, options) {
   let flippedRole = "";
   for (const [optionKey, value] of Object.entries(options)) {
     if (value) {
@@ -172,7 +176,7 @@ function _flipDriverAndPassenger (actor, key, newRole, options) {
 
 }
 
-export async function onCrewNumberUpdate (event, actorSheet) {
+export async function onCrewNumberUpdate(event, actorSheet) {
   const target = event.currentTarget.name;
   let targetShortName = "";
   if (target == "system.crew.numDrivers") {
@@ -200,4 +204,3 @@ export async function onCrewNumberUpdate (event, actorSheet) {
     actor.render();
   }
 }
-

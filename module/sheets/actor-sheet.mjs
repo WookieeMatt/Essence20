@@ -456,9 +456,9 @@ export class Essence20ActorSheet extends ActorSheet {
     // Open and collapse all Item contents in container
     html.find('.header-accordion-label').click(ev => onToggleHeaderAccordion(ev, this));
 
-    html.find('.vehicleRole').change(ev => onVehicleRoleUpdate(ev, this));
+    html.find('.vehicle-role').change(ev => onVehicleRoleUpdate(ev, this));
 
-    html.find('.numCrew').change(ev=> onCrewNumberUpdate(ev, this));
+    html.find('.num-crew').change(ev=> onCrewNumberUpdate(ev, this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {

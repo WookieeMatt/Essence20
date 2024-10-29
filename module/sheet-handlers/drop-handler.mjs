@@ -226,7 +226,7 @@ function verifyDropSelection(targetActor, options){
   }
 
   if (!allowDrop) {
-    throw new Error('There are no open spaces for this type of person.');
+    throw new Error(game.i18n.localize('E20.VehicleRoleError'));
   }
 
   return allowDrop;
@@ -249,7 +249,6 @@ async function setEntryAndAddActor(droppedActor, targetActor, options) {
 
   if (["vehicle", "zord"].includes(targetActor.type)) {
     entry['vehicleRole'] = options.vehicleRole;
-
   }
 
   return addActorIfUnique(droppedActor, targetActor, entry);

@@ -40,7 +40,7 @@
           {{#each @root.system.actors as |current|}}
             {{#ifEquals attachedActor.uuid current.uuid}}
               <label for="current.vehicleRole" class="resource-label">{{localize 'E20.VehicleRole'}}</label>
-              <select class="vehicleRole" name="current.vehicleRole" key={{@key}}>
+              <select class="vehicle-role" name="current.vehicleRole" key={{@key}}>
                 {{selectOptions @root.config.vehicleRoles selected=current.vehicleRole}}
               </select>
             {{/ifEquals}}
