@@ -3,6 +3,7 @@ import { E20 } from "../../helpers/config.mjs";
 import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
+import { itemDescription } from './templates/item-description.mjs';
 
 const fields = foundry.data.fields;
 
@@ -10,6 +11,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
   static defineSchema() {
     return {
       ...item(),
+      ...itemDescription(),
       classification: new fields.SchemaField({
         skill: makeStrWithChoices([...Object.keys(E20.skills), 'roleSkillDie'], 'athletics'),
         style: makeStrWithChoices(Object.keys(E20.weaponStyles), 'melee'),

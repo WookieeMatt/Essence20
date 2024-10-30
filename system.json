@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "4.4.1",
+  "version": "4.5.0",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -19,8 +19,10 @@
       "flags": {}
     }
   ],
-  "gridDistance": 5,
-  "gridUnits": "ft",
+  "grid": {
+    "distance": 5,
+    "units": "ft"
+  },
   "packs": [
     {
       "name": "across_the_stars",
@@ -113,10 +115,28 @@
       "flags": {}
     },
     {
+      "name": "intercontinental_adventures",
+      "label": "Intercontinental Adventures: Factions in Action Vol 2",
+      "system": "essence20",
+      "path": "packs/iafav2items",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "jump_through_time",
       "label": "A Jump Through Time",
       "system": "essence20",
       "path": "packs/jttitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "knights_of_canterlot",
+      "label": "Knights of Canterlot",
+      "system": "essence20",
+      "path": "packs/kocitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -175,6 +195,7 @@
         "gi_joe_crb",
         "cobra_codex",
         "ferocious_fighters",
+        "intercontinental_adventures",
         "quartermasters_guide_to_gear",
         "sgt_slaughter_sourcebook"
       ]
@@ -184,7 +205,8 @@
       "sorting": "m",
       "packs": [
         "mlp_crb",
-        "dark_skies_over_equestria"
+        "dark_skies_over_equestria",
+        "knights_of_canterlot"
       ]
     },
     {
@@ -227,6 +249,6 @@
     "verified": "12"
   },
   "flags": {
-    "needsMigrationVersion": "4.3.6"
+    "needsMigrationVersion": "4.5.0"
   }
 }

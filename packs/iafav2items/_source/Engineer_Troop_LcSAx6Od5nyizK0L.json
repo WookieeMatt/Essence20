@@ -1,0 +1,117 @@
+{
+  "folder": "F6VpIIjZrmxWtx5V",
+  "name": "Engineer Troop",
+  "type": "focus",
+  "_id": "LcSAx6Od5nyizK0L",
+  "img": "systems/essence20/assets/icons/items/focus.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 70
+    },
+    "items": {
+      "fac8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GPdhYq7n573SR4T2",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Technician",
+        "type": "role"
+      },
+      "69a5": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.QbFchvvKkIKRjIVl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick Fix",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "eb6c": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.zhVfQgFkBM19ewI9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wrench Jockey",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "8aab": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.rouaWvDWhwCB5XEO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Engine Override",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "93ef": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.P9JXwQ2991e1Bw1G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Improvise Armor",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "4f37": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.rmQqGaQ3sqPwEQZy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Armament Upgrade",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "db1e": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.52UZXhcB7XJdcUdT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Throwing Lead",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ce63": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.PV4QvqJgT1orMm1D",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Jury Rig",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "ff16": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.0nTFK9GOpkQcjcHB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Undo Engine",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "essences": [
+      "smarts"
+    ],
+    "essenceLevels": [
+      "level1",
+      "level10"
+    ],
+    "roleId": "",
+    "skills": [
+      "driving",
+      "technology"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1728530879001,
+    "modifiedTime": 1728530997953,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!LcSAx6Od5nyizK0L"
+}

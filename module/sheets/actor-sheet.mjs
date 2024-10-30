@@ -2,7 +2,7 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
-import { prepareZords, onZordDelete, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { prepareSystemActors, onSystemActorsDelete, onMorph, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onRest,
@@ -62,7 +62,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prepareItems(context);
 
     // Prepare npc data and items.
-    if (['npc', 'zord', 'megaformZord', 'vehicle', 'companion'].includes(actorData.type)) {
+    if (['npc', 'zord', 'megaform', 'vehicle', 'companion'].includes(actorData.type)) {
       this._prepareDisplayedNpcSkills(context);
     }
 
@@ -80,11 +80,16 @@ export class Essence20ActorSheet extends ActorSheet {
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
-    // Prepare Zords for MFZs
-    prepareZords(this.actor, context);
+    // Prepare actors that are attached to other actors
+    prepareSystemActors(this.actor, context);
 
     context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
+
+    // Prepare PC skill rank allocation
+    if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+      this._prepareSkillRankAllocation(context);
+    }
 
     return context;
   }
@@ -143,6 +148,55 @@ export class Essence20ActorSheet extends ActorSheet {
 
     context.displayedNpcSkills = displayedNpcSkills;
   }
+
+  /**
+   * Prepare skill rank allocation calculations for PCs by adding the number of shifts
+   * and Specializations present for each Essence.
+   * @param {Object} context The actor data to prepare.
+   */
+  _prepareSkillRankAllocation(context) {
+    const unrankedIndex = CONFIG.E20.skillShiftList.indexOf('d20');
+
+    for (const essence in CONFIG.E20.originEssences) {
+      let essenceUpshifts = 0;
+      let numSpecializations = 0;
+      let essenceStrings = [];
+
+      for (const skill of CONFIG.E20.skillsByEssence[essence]) {
+        const skillData = context.system.skills[skill];
+        const skillIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(skillData.shift));
+
+        const skillUpshifts = Math.max(0, unrankedIndex - skillIndex);
+        if (skillUpshifts) {
+          essenceStrings.push(`${skillUpshifts} ${CONFIG.E20.skills[skill]}`);
+          essenceUpshifts += skillUpshifts;
+        }
+
+        for (const specialization of context.specializations[skill] || []) {
+          numSpecializations += 1;
+          essenceStrings.push(`1 ${specialization.name}`);
+        }
+      }
+
+      context.system.skillRankAllocation[essence].string = essenceStrings.join(' + ');
+      context.system.skillRankAllocation[essence].value = essenceUpshifts + numSpecializations;
+    }
+
+    context.system.skillRankAllocation['strength'].string = [
+      context.system.skillRankAllocation['strength'].string,
+      `${context.system.conditioning} ${game.i18n.localize('E20.ActorConditioning')}`,
+    ].filter(Boolean).join(' + ');
+    context.system.skillRankAllocation['strength'].value += context.system.conditioning;
+
+    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.initiative.shift));
+    const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
+    context.system.skillRankAllocation['speed'].string = [
+      context.system.skillRankAllocation['speed'].string,
+      `${initiativeUpshifts} ${game.i18n.localize('E20.ActorInitiative')}`,
+    ].filter(Boolean).join(' + ');
+    context.system.skillRankAllocation['speed'].value += initiativeUpshifts;
+  }
+
   /**
    * Prepare skill list to be used or weaponEffects on an actor
    * @param {Object} actorData The acor data converted to an object
@@ -377,7 +431,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.item-delete').click(ev => onItemDelete(ev, this));
 
     // Delete Zord from MFZ
-    html.find('.zord-delete').click(ev => onZordDelete(ev, this));
+    html.find('.system-actors-delete').click(ev => onSystemActorsDelete(ev, this));
 
     // Edit specialization name inline
     html.find(".inline-edit").change(ev => onInlineEdit(ev, this.actor));
@@ -401,6 +455,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Open and collapse all Item contents in container
     html.find('.header-accordion-label').click(ev => onToggleHeaderAccordion(ev, this));
+
+    html.find('.vehicle-role').change(ev => onVehicleRoleUpdate(ev, this));
+
+    html.find('.num-crew').change(ev=> onCrewNumberUpdate(ev, this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {

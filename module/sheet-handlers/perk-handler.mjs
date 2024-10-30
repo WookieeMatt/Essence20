@@ -1,8 +1,5 @@
-import {
-  parseId,
-} from "../helpers/utils.mjs";
-
-const SORCERY_PERK_ID = "xUBOE1s5pgVyUrwj";
+const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
+const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
 
 /**
  * Handle the dropping of a Perk onto an Actor
@@ -11,17 +8,23 @@ const SORCERY_PERK_ID = "xUBOE1s5pgVyUrwj";
  * @param {Function} dropFunc The function to call to complete the Power drop
  */
 export async function perkUpdate(actor, perk, dropFunc) {
-  const perkUuid = parseId(perk.uuid);
   let timesTaken = 0;
 
-  if (perkUuid == SORCERY_PERK_ID) {
+  if (perk.uuid == SORCERY_PERK_ID) {
     await actor.update ({
       "system.powers.sorcerous.levelTaken": actor.system.level,
+    });
+  } else if (perk.uuid == ZORD_PERK_ID) {
+    await actor.update ({
+      "system.canHaveZord": true,
     });
   }
 
   for (let actorItem of actor.items) {
-    if (actorItem.type == 'perk' && actorItem.system.originalId == perkUuid) {
+    const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
+      ? await actor.items.get(actorItem._id).getFlag('core', 'sourceId')
+      : await actor.items.get(actorItem._id)._stats.compendiumSource;
+    if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
       if (perk.system.selectionLimit == timesTaken) {
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
@@ -30,12 +33,7 @@ export async function perkUpdate(actor, perk, dropFunc) {
     }
   }
 
-  const newPerkList = await dropFunc();
-  const newPerk = newPerkList[0];
-
-  await newPerk.update ({
-    "system.originalId": perkUuid,
-  });
+  await dropFunc();
 }
 
 /**
@@ -44,11 +42,16 @@ export async function perkUpdate(actor, perk, dropFunc) {
  * @param {Perk} perk The perk
  */
 export async function onPerkDelete(actor, perk) {
-  const perkUuid = perk.system.originalId;
 
-  if (perkUuid == SORCERY_PERK_ID) {
+  if (perk.flags.core?.sourceId == SORCERY_PERK_ID || perk._stats.compendiumSource == SORCERY_PERK_ID ) {
     await actor.update ({
       "system.powers.sorcerous.levelTaken": 0,
+    });
+  }
+
+  if (perk.flags.core?.sourceId == ZORD_PERK_ID || perk._stats.compendiumSource == ZORD_PERK_ID ) {
+    await actor.update ({
+      "system.canHaveZord": false,
     });
   }
 }

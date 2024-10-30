@@ -5,6 +5,7 @@
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="passengers">{{ localize "E20.TabCrew" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
   </nav>
 
@@ -43,6 +44,11 @@
           {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}
         </div>
       </div>
+    </div>
+
+    {{!-- Passengers Tab --}}
+    <div class="tab combiners flexcol" data-group="primary" data-tab="passengers">
+      {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs"}}
     </div>
 
     {{!-- Notes Tab --}}

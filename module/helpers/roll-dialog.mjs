@@ -39,6 +39,7 @@ export class RollDialog {
     const html = await renderTemplate(
       template,
       {
+        canCritD2: dataset.canCritD2,
         shiftUp: dataset.shiftUp || 0,
         shiftDown: dataset.shiftDown || 0,
         isSpecialized: dataset.isSpecialized,
@@ -67,7 +68,6 @@ export class RollDialog {
         default: "normal",
         close: () => resolve({ cancelled: true }),
       };
-
       new Dialog(data, null).render(true);
     });
   }
@@ -79,6 +79,7 @@ export class RollDialog {
    */
   _processSkillRollOptions(form) {
     return {
+      canCritD2: form.canCritD2.checked,
       edge: form.snagEdge.value == 'edge',
       shiftDown: parseInt(form.shiftDown.value),
       shiftUp: parseInt(form.shiftUp.value),
