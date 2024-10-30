@@ -90,6 +90,7 @@ E20.weaponTraits = {
   fanning: "E20.WeaponTraitFanning",
   fire: "E20.WeaponTraitFire",
   grapple: "E20.WeaponTraitGrapple",
+  highDensity: "E20.WeaponTraitHighDensity",
   inaccurate: "E20.WeaponTraitInaccurate",
   indirect: "E20.WeaponTraitIndirect",
   inertial: "E20.WeaponTraitInertial",
@@ -453,6 +454,7 @@ E20.defaultIcon = {
   power: "systems/essence20/assets/icons/items/powers.svg",
   role: "systems/essence20/assets/icons/items/role.svg",
   rolePoints: "systems/essence20/assets/icons/items/rolePoints.svg",
+  spell: "systems/essence20/assets/icons/items/powers.svg",
   weaponEffect: "systems/essence20/assets/icons/items/weapon_effect.svg",
 };
 
@@ -674,6 +676,86 @@ E20.energonTypes = {
   synthEn: "E20.EnergonSynthEn",
 };
 preLocalize("energonTypes");
+
+/************************************************
+ * Vehicles                                     *
+ ***********************************************/
+
+// Vehicle Roles
+E20.vehicleRoles = {
+  driver: "E20.VehicleRoleDriver",
+  passenger: "E20.VehicleRolePassenger",
+};
+preLocalize("vehicleRoles");
+
+// Vehicle Traits
+E20.vehicleTraits = {
+  aerospace: "E20.VehicleTraitAerospace",
+  ai: "E20.VehicleTraitAI",
+  air: "E20.VehicleTraitAir",
+  allTerrain: "E20.VehicleTraitAllTerrain",
+  ampibious: "E20.VehicleTraitAmphibious",
+  armoredCabin: "E20.VehicleTraitArmoredCabin",
+  attackMode: "E20.VehicleTraitAttackMode",
+  autopilot: "E20.VehicleTraitAutopilot",
+  autopilotAdvanced: "E20.VehicleTraitAutopilotAdvanced",
+  battlePlatforms: "E20.VehicleTraitBattlePlatforms",
+  battleShield: "E20.VehicleTraitBattleShield",
+  battleStation: "E20.VehicleTraitBattleStation",
+  beastOfBurden: "E20.VehicleTraitBeastOfBurden",
+  bomber: "E20.VehicleTraitBomber",
+  combinerCore: "E20.VehicleTraitCombinerCore",
+  computerized: "E20.VehicleTraitComputerized",
+  convertible: "E20.VehicleTraitConvertible",
+  deployable: "E20.VehicleTraitDeployable",
+  driveBy: "E20.VehicleTraitDriveBy",
+  elusive: "E20.VehicleTraitElusive",
+  evasiveManeuvers: "E20.VehicleTraitEvasiveManeuvers",
+  exoskeleton: "E20.VehicleTraitExoskeleton",
+  flyBy: "E20.VehicleTraitFlyBy",
+  flyingPodium: "E20.VehicleTraitFlyingPodium",
+  fragile: "E20.VehicleTraitFragile",
+  gridjump: "E20.VehicleTraitGridjump",
+  freightCarry: "E20.VehicleTraitFreightCarry",
+  heavyWinch: "E20.VehicleTraitHeavyWinch",
+  heavyWheels: "E20.VehicleTraitHeavyWheels",
+  hissColumn: "E20.VehicleTraitHISSColumn",
+  hover: "E20.VehicleTraitHover",
+  hydroPortation: "E20.VehicleTraitHydroPortation",
+  instrumentArray: "E20.VehicleTraitInstrumentArray",
+  integratedStorage: "E20.VehicleTraitIntegratedStorage",
+  land: "E20.VehicleTraitLand",
+  landingPattern: "E20.VehicleTraitLandingPattern",
+  largeObstacle: "E20.VehicleTraitLargeObstacle",
+  linked: "E20.VehicleTraitLinked",
+  multifrequencyCameras: "E20.VehicleTraitMultiFrequencyCameras",
+  multiPurpose: "E20.VehicleTraitMultiPurpose",
+  prowlMode: "E20.VehicleTraitProwlMode",
+  pythonPaint: "E20.VehicleTraitPythonPaint",
+  ram: "E20.VehicleTraitRam",
+  ranshackle: "E20.VehicleTraitRamshackle",
+  rapidDeploymentRamps: "E20.VehicleTraitRapidDeploymentRamps",
+  responsive: "E20.VehicleTraitResponsive",
+  rollCage: "E20.VehicleTraitRollCage",
+  sea: "E20.VehicleTraitSea",
+  selfRepair: "E20.VehicleTraitSelfRepair",
+  sensors: "E20.VehicleTraitSensors",
+  shielded: "E20.VehicleTraitShielded",
+  sidecar: "E20.VehicleTraitSidecar",
+  SixWheelDrive: "E20.VehicleTraitSixWheelDrive",
+  takeOff: "E20.VehicleTraitTakeOff",
+  tank: "E20.VehicleTraitTank",
+  targetingSystem: "E20.VehicleTraitTargetingSystem",
+  thermalImaging: "E20.VehicleTraitThermalImaging",
+  tigerStripes: "E20.VehicleTraitTigerStripes",
+  towable: "E20.VehicleTraitTowable",
+  treads: "E20.VehicleTraitTreads",
+  vehicle: "E20.VehicleTraitVehicle",
+  vtol: "E20.VehicleTraitVTOL",
+  wearable: "E20.VehicleTraitWearable",
+  zeroG: "E20.VehicleTraitZeroG",
+};
+preLocalize("vehicleTraits");
 
 /************************************************
  * Settings                                     *

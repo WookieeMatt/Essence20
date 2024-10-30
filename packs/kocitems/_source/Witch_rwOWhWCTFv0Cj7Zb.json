@@ -1,0 +1,51 @@
+{
+  "folder": "HmjC1x6o8jRDDzsl",
+  "name": "Witch",
+  "type": "influence",
+  "_id": "rwOWhWCTFv0Cj7Zb",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 19
+    },
+    "items": {
+      "e947": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.sTmqok0MEmOQeboN",
+        "img": "icons/svg/hazard.svg",
+        "name": "Stumble Through the City",
+        "type": "hangUp"
+      },
+      "d46e": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.O7JuVYJXdMX1V1LI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "ID the Outdoors",
+        "type": "perk"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": [
+      "science"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727400681345,
+    "modifiedTime": 1727400699819,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!rwOWhWCTFv0Cj7Zb"
+}

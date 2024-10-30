@@ -1,0 +1,49 @@
+{
+  "folder": "RS0hWOsdisw9gBUn",
+  "name": "Arashikage Graduate",
+  "type": "influence",
+  "_id": "wNC4Juzzs3JfRvkE",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 11
+    },
+    "items": {
+      "b420": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.INjMNBbztnQSDDcE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Arashikage Graduate",
+        "type": "perk"
+      },
+      "456d": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.OhOdfAu7b0lLDO82",
+        "img": "icons/svg/hazard.svg",
+        "name": "Arashikage Graduate",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727535390485,
+    "modifiedTime": 1727535401513,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!wNC4Juzzs3JfRvkE"
+}

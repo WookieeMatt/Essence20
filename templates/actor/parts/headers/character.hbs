@@ -1,0 +1,32 @@
+{{#>"systems/essence20/templates/actor/parts/headers/common.hbs"}}
+{{#*inline "secondary-fields"}}
+<div>
+  <label for="system.background.pronouns" class="resource-label">{{localize 'E20.ActorPronouns'}}</label>
+  <input type="text" name="system.background.pronouns" value="{{system.background.pronouns}}" />
+</div>
+<div>
+  {{> "systems/essence20/templates/actor/parts/items/role.hbs"}}
+</div>
+{{#inArray '["giJoe", "transformers"]' @root.role.system.version}}
+  <div>
+    {{> "systems/essence20/templates/actor/parts/items/focus.hbs"}}
+  </div>
+{{/inArray}}
+<div>
+  <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
+  <input type="text" name="system.languages" value="{{system.languages}}" />
+</div>
+<div style="display:inline-block;">
+  <label for="system.faction" class="resource-label">{{localize 'E20.ActorFaction'}}</label>
+  <input type="text" name="system.faction" value="{{system.faction}}" />
+</div>
+<div class="pr-header-level">
+  <label for="system.level" class="resource-label">{{localize 'E20.ActorLevel'}}</label>
+  {{numberInput system.level name="system.level" min=0 step=1}}
+</div>
+<div class="pr-header-color flex-group-center">
+  <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
+  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+</div>
+{{/inline}}
+{{/"systems/essence20/templates/actor/parts/headers/common.hbs"}}

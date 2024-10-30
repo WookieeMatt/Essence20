@@ -14,7 +14,7 @@ export class SpellItemData extends foundry.abstract.TypeDataModel {
       cost: makeInt(0),
       duration: makeStr(''),
       isSpecialized: makeBool(false),
-      range: makeInt(0),
+      range: makeStr(''),
       tier: makeStrWithChoices(Object.keys(E20.spellTiers), 'elementary'),
     };
   }

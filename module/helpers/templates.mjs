@@ -7,14 +7,11 @@ export const preloadHandlebarsTemplates = async function () {
   return loadTemplates([
 
     // Actor partials - Headers
+    "systems/essence20/templates/actor/parts/headers/character.hbs",
     "systems/essence20/templates/actor/parts/headers/companion.hbs",
-    "systems/essence20/templates/actor/parts/headers/gijoe.hbs",
     "systems/essence20/templates/actor/parts/headers/common.hbs",
-    "systems/essence20/templates/actor/parts/headers/megaformZord.hbs",
-    "systems/essence20/templates/actor/parts/headers/pony.hbs",
+    "systems/essence20/templates/actor/parts/headers/megaform.hbs",
     "systems/essence20/templates/actor/parts/headers/npc.hbs",
-    "systems/essence20/templates/actor/parts/headers/pr.hbs",
-    "systems/essence20/templates/actor/parts/headers/transformer.hbs",
     "systems/essence20/templates/actor/parts/headers/vehicle.hbs",
     "systems/essence20/templates/actor/parts/headers/zord.hbs",
 
@@ -39,16 +36,17 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/notes.hbs",
     "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs",
     "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs",
+    "systems/essence20/templates/actor/parts/misc/system-actors.hbs",
     "systems/essence20/templates/actor/parts/misc/pc-body.hbs",
     "systems/essence20/templates/actor/parts/misc/pc-skills.hbs",
     "systems/essence20/templates/actor/parts/misc/pc-tabs.hbs",
     "systems/essence20/templates/actor/parts/misc/power-points.hbs",
+    "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs",
     "systems/essence20/templates/actor/parts/misc/spells.hbs",
     "systems/essence20/templates/actor/parts/misc/stun.hbs",
     "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs",
     "systems/essence20/templates/actor/parts/misc/wealth-die.hbs",
     "systems/essence20/templates/actor/parts/misc/zord-common.hbs",
-    "systems/essence20/templates/actor/parts/misc/zordcombiner.hbs",
 
     // Actor partials - Items
     "systems/essence20/templates/actor/parts/items/alteration/container.hbs",

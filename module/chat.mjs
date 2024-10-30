@@ -5,7 +5,7 @@ export const highlightCriticalSuccessFailure = function (message, html) {
     return;
   }
 
-  const [isCrit, isFumble] = _isCritIsFumble(message.rolls[0].dice);
+  const [isCrit, isFumble] = _isCritIsFumble(message.rolls[0].dice, message.flags.canCritD2);
 
   // Set roll total class to alter its color
   if (isCrit && isFumble) {
@@ -18,7 +18,7 @@ export const highlightCriticalSuccessFailure = function (message, html) {
 };
 
 // Helper to determine if the roll was a crit and/or fumble
-export const _isCritIsFumble = function (dice) {
+export const _isCritIsFumble = function (dice, canCritD2) {
   let isCrit = false;
   let isFumble = false;
 
@@ -30,7 +30,7 @@ export const _isCritIsFumble = function (dice) {
       // dieValue is an individual result from the diePool
       if (faces === 20 && dieValue === 1) {
         isFumble = true;
-      } else if (faces > 2 && faces != 20 && dieValue === faces) {
+      } else if ((faces > 2 || canCritD2) && faces != 20 && dieValue === faces) {
         isCrit = true;
         break; // Only one die needs to crit
       }

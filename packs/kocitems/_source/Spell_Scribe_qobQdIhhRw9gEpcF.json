@@ -1,0 +1,49 @@
+{
+  "folder": "HmjC1x6o8jRDDzsl",
+  "name": "Spell Scribe",
+  "type": "influence",
+  "_id": "qobQdIhhRw9gEpcF",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 34
+    },
+    "items": {
+      "1a62": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.IHwRuoKUDhYAjTqa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "If I Recall Correctly",
+        "type": "perk"
+      },
+      "78a4": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.zO84wFyLjE9y6FsH",
+        "img": "icons/svg/hazard.svg",
+        "name": "But I Should Know That",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727440866750,
+    "modifiedTime": 1727441178829,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!qobQdIhhRw9gEpcF"
+}
