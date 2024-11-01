@@ -1,7 +1,7 @@
 <div class="zord-combiners">
   <div class="flexrow" style="gap: 6px;">
     {{#if @root.actors}}
-      {{#each @root.actors as |attachedActor|}}
+      {{#each @root.actors as |attachedActor key|}}
       <div class="systemActors zord item stats-container" style="border-color: {{attachedActor.system.color}};" data-system-Actors-uuid="{{attachedActor.uuid}}">
         <div style="text-align: center;">
           <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" title="{{attachedActor.name}}" />
@@ -37,8 +37,8 @@
           </div>
         {{/ifEquals}}
         {{#inArray '["vehicle", "zord"]' @root.actor.type}}
-          {{#each @root.system.actors as |current|}}
-            {{#ifEquals attachedActor.uuid current.uuid}}
+          {{#each @root.system.actors as |current key2|}}
+            {{#ifEquals key key2}}
               <label for="current.vehicleRole" class="resource-label">{{localize 'E20.VehicleRole'}}</label>
               <select class="vehicle-role" name="current.vehicleRole" key={{@key}}>
                 {{selectOptions @root.config.vehicleRoles selected=current.vehicleRole}}
