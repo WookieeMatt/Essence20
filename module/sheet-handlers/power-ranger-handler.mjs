@@ -17,7 +17,6 @@ export function prepareSystemActors(actor, context) {
       actors[key] = fullActor;
     }
 
-    console.log(actors)
     context.actors = actors;
   }
 }
