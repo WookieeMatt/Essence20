@@ -62,6 +62,7 @@ export const character = () => ({
     speed: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
     strength: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
   }),
+  faction: makeStr(''),
   focusEssence: makeStr(''),
   isMorphed: makeBool(false),
   isTransformed: makeBool(false),

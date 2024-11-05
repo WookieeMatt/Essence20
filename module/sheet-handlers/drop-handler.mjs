@@ -266,7 +266,10 @@ async function addActorIfUnique(droppedActor, targetActor, entry) {
   if (actors) {
     for (const [, actor] of Object.entries(actors)) {
       if (actor.uuid === droppedActor.uuid) {
-        return;
+        if (actor.type != "npc") {
+          ui.notifications.error(game.i18n.localize('E20.ActorDuplicateDrop'));
+          return;
+        }
       }
     }
   }
