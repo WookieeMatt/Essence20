@@ -29,12 +29,14 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
  * @param {Number} lastProcessedLevel The flag for the last time the Actor changed level
  */
 export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
+  console.log(items, owner, type,parentItem)
+
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const createNewItem =
         !["role", "focus"].includes(parentItem.type)
         || !item.level || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
-
+      console.log(items, owner, type,parentItem)
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         const newItem = await Item.create(itemToCreate, { parent: owner });

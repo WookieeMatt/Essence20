@@ -45,6 +45,14 @@ export async function onSystemActorsDelete(event, actorSheet) {
 
   let keyId = null;
 
+  for (const item of actor.items) {
+    console.log(item)
+    const parentId = item.getFlag('essence20', 'parentId');
+    if (parentId == systemActorsId) {
+      item.delete();
+    }
+  }
+
   for (const [ key , embeddedActor] of Object.entries(actor.system.actors)) {
     if (embeddedActor.uuid == systemActorsId) {
       keyId = key;

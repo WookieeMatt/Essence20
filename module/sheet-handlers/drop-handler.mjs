@@ -1,7 +1,7 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { createId, parseId } from "../helpers/utils.mjs";
 import { alterationUpdate } from "./alteration-handler.mjs";
-import { attachItem, gearDrop } from "./attachment-handler.mjs";
+import { attachItem, createItemCopies, gearDrop } from "./attachment-handler.mjs";
 import { influenceUpdate, originUpdate } from "./background-handler.mjs";
 import { powerUpdate } from "./power-handler.mjs";
 import { perkUpdate } from "./perk-handler.mjs";
@@ -140,7 +140,8 @@ export async function onDropActor(data, actorSheet) {
     break;
   case 'megaform':
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
-      setEntryAndAddActor (droppedActor, targetActor);
+      await setEntryAndAddActor (droppedActor, targetActor);
+      transferMegaformTrait(droppedActor, targetActor);
       dropIsValid = true;
     }
 
@@ -244,4 +245,23 @@ async function addActorIfUnique(droppedActor, targetActor, entry) {
   });
 
   return key;
+}
+
+async function transferMegaformTrait(droppedActor, targetActor) {
+  for (const item of droppedActor.items) {
+    if (item.type == 'megaformTrait') {
+      const itemToCreate = await fromUuid(item.uuid);
+      const newItem = await Item.create(itemToCreate, { parent: targetActor });
+      newItem.setFlag('core', 'sourceId', item.uuid);
+      newItem.setFlag('essence20', 'parentId', droppedActor.uuid);
+
+      for (const effect of newItem.effects) {
+        if (effect) {
+          effect.update({
+            disabled: false
+          })
+        }
+      }
+    }
+  }
 }

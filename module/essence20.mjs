@@ -88,6 +88,9 @@ Hooks.once('init', async function () {
   CONFIG.Actor.dataModels = data.actor.config;
   CONFIG.Item.dataModels = data.item.config;
 
+  //Disable Legacy Active Effect Transferral
+  CONFIG.ActiveEffect.legacyTransferral = false;
+
   // Register System Settings
   registerSystemSettings();
 

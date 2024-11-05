@@ -6,6 +6,7 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
     <a class="item" style="border-color: {{system.color}};" data-tab="passengers">{{ localize "E20.TabCrew" }}</a>
+    <a class="item" style="border-color: {{system.color}};" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
   </nav>
 
   {{!-- Actor Sheet Body --}}
@@ -29,6 +30,11 @@
      {{!-- Passengers Tab --}}
     <div class="tab combiners flexcol" data-group="primary" data-tab="passengers">
       {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs"}}
+    </div>
+
+    {{!-- Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/essence20/templates/actor/parts/misc/active-effects.hbs"}}
     </div>
   </section>
 </form>
