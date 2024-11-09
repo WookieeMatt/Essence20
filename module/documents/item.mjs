@@ -167,8 +167,8 @@ export class Essence20Item extends Item {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @private
    */
-  async roll(dataset) {
-    if (dataset.rollType == 'info') {
+  async roll(dataset, actor, childKey, rollingActor) {
+     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
@@ -235,19 +235,36 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weaponEffect') {
-      const skill = this.system.classification.skill;
-      const shift = this.actor.system.skills[skill].shift;
-      const shiftUp = this.actor.system.skills[skill].shiftUp;
-      const shiftDown = this.actor.system.skills[skill].shiftDown + this.system.shiftDown;
-      const isSpecialized = this.actor.system.skills[skill].isSpecialized;
-      const weaponDataset = {
-        ...dataset,
-        shift,
-        skill,
-        shiftUp,
-        shiftDown,
-        isSpecialized,
-      };
+      let weaponDataset = {}
+      if (actor != rollingActor){
+        const skill = this.system.classification.skill;
+        const shift = rollingActor.system.skills[skill].shift;
+        const shiftUp = rollingActor.system.skills[skill].shiftUp;
+        const shiftDown = rollingActor.system.skills[skill].shiftDown + this.system.shiftDown;
+        const isSpecialized = rollingActor.system.skills[skill].isSpecialized;
+        weaponDataset = {
+          ...dataset,
+          shift,
+          skill,
+          shiftUp,
+          shiftDown,
+          isSpecialized,
+        };
+      } else {
+        const skill = this.system.classification.skill;
+        const shift = actor.system.skills[skill].shift;
+        const shiftUp = actor.system.skills[skill].shiftUp;
+        const shiftDown = actor.system.skills[skill].shiftDown + this.system.shiftDown;
+        const isSpecialized = actor.system.skills[skill].isSpecialized;
+        weaponDataset = {
+          ...dataset,
+          shift,
+          skill,
+          shiftUp,
+          shiftDown,
+          isSpecialized,
+        };
+      }
 
       this._dice.handleSkillItemRoll(weaponDataset, this.actor, this);
 

@@ -65,7 +65,7 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The item being used, if any.
    */
-  async rollSkill(rawDataset, actor, item) {
+  async rollSkill(rawDataset, actor, item, rollingActor) {
     const dataset = { // Converting strings to usable types
       ...rawDataset,
       shiftDown: parseInt(rawDataset.shiftDown),

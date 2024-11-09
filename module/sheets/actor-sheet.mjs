@@ -5,8 +5,8 @@ import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareSystemActors, onSystemActorsDelete, onMorph, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
+  actorSelector,
   onRest,
-  onRoll,
   onToggleAccordion,
   onToggleHeaderAccordion,
 } from "../sheet-handlers/listener-misc-handler.mjs";
@@ -447,7 +447,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Roll buttons
     if (this.actor.isOwner) {
-      html.find('.rollable').click(ev => onRoll(ev, this.actor));
+      html.find('.rollable').click(ev => actorSelector(ev, this.actor));
     }
 
     // Open and collapse Item content
