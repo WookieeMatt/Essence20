@@ -27,6 +27,7 @@ export async function onRoll(event, actor, rollingActor) {
       dataset.shiftUp = rollingActor.system.skills[dataset.skill].shiftUp;
       dataset.isSpecialized = rollingActor.system.skills[dataset.skill].isSpecialized;
     }
+
     actor.rollSkill(dataset, actor, null, rollingActor);
   } else if (rollType == 'initiative') {
     actor.rollInitiative({createCombatants: true});
@@ -235,6 +236,7 @@ export async function actorSelector(event, actor) {
         label: passenger.name,
       };
     }
+
     new Dialog(
       {
         title: game.i18n.localize('E20.ActorSelect'),
@@ -245,9 +247,9 @@ export async function actorSelector(event, actor) {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
             callback: html => alterDataset(actor, rememberSelect(html), event),
-          }
-        }
-      }
+          },
+        },
+      },
     ).render(true);
 
 
@@ -256,7 +258,7 @@ export async function actorSelector(event, actor) {
   }
 }
 
-async function alterDataset(actor, options, event, dataset) {
+async function alterDataset(actor, options, event) {
   let rollingActor = {};
   if (options['actor'] != '00000') {
     const fullActor = actor.system.actors[options['actor']];

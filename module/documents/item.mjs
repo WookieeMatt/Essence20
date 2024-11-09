@@ -168,7 +168,7 @@ export class Essence20Item extends Item {
    * @private
    */
   async roll(dataset, actor, childKey, rollingActor) {
-     if (dataset.rollType == 'info') {
+    if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
       const rollMode = game.settings.get('core', 'rollMode');
@@ -235,7 +235,7 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weaponEffect') {
-      let weaponDataset = {}
+      let weaponDataset = {};
       if (actor != rollingActor){
         const skill = this.system.classification.skill;
         const shift = rollingActor.system.skills[skill].shift;
