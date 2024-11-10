@@ -1,8 +1,17 @@
 import { E20 } from "../../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrArray, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
+let armor_training = {};
+let armor_qualification = {};
+for (const armor_type of Object.keys(E20.armorTypes)){
+  armor_training[armor_type] = makeBool(false);
+  armor_qualification[armor_type] = makeBool(false);
+}
+
+console.log(armor_training)
+console.log(armor_qualification)
 
 function makeDefensesFields(name, essence) {
   return new fields.SchemaField({
@@ -82,11 +91,17 @@ export const character = () => ({
     }),
   }),
   notes: new fields.HTMLField(),
+  qualifications: new fields.SchemaField({
+    armor: new fields.SchemaField(armor_qualification),
+  }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
     speed: makeSkillRankAllocation(),
     smarts: makeSkillRankAllocation(),
     social: makeSkillRankAllocation(),
+  }),
+  training: new fields.SchemaField({
+    armor: new fields.SchemaField(armor_training),
   }),
 });
 
