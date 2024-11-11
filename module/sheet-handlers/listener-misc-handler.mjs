@@ -7,7 +7,7 @@ import { rememberSelect } from "../helpers/dialog.mjs";
  * @param {Actor} actor The Actor making the roll
  * @param {Event} event The originating click event
  */
-export async function onRoll(event, actor, rollingActor) {
+export async function onRoll(event, actor, rollingActor=None) {
   event.preventDefault();
   const element = event.currentTarget;
   const dataset = element.dataset;
@@ -27,7 +27,7 @@ export async function onRoll(event, actor, rollingActor) {
       dataset.isSpecialized = rollingActor.system.skills[dataset.skill].isSpecialized;
     }
 
-    actor.rollSkill(dataset, actor, null, rollingActor);
+    actor.rollSkill(dataset, actor);
   } else if (rollType == 'initiative') {
     actor.rollInitiative({createCombatants: true});
   } else { // Handle items
@@ -80,7 +80,7 @@ export async function onRoll(event, actor, rollingActor) {
     }
 
     if (item) {
-      return item.roll(dataset, actor, childKey, rollingActor);
+      return item.roll(dataset, actor, rollingActor);
     }
   }
 }
@@ -245,25 +245,24 @@ export async function actorSelector(event, actor) {
         buttons: {
           save: {
             label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => alterDataset(actor, rememberSelect(html), event),
+            callback: html => handleActorSelector(actor, rememberSelect(html), event),
           },
         },
       },
     ).render(true);
-
 
   } else {
     onRoll(event,actor, null);
   }
 }
 
-async function alterDataset(actor, options, event) {
+async function handleActorSelector(actor, options, event) {
   let rollingActor = {};
-  if (options['actor'] != '00000') {
+  if (options['actor'] == '00000') {
+    rollingActor = actor;
+  } else {
     const fullActor = actor.system.actors[options['actor']];
     rollingActor = await fromUuid(fullActor.uuid);
-  } else {
-    rollingActor = actor;
   }
 
   onRoll(event,actor,rollingActor);

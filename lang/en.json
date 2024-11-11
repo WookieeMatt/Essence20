@@ -82,6 +82,7 @@
     "ActorColor": "Color",
     "ActorFaction": "Faction",
     "ActorRole": "Role",
+    "ActorSelect": "Select who to Roll.",
     "ActorSize": "Size",
     "ActorSizeCommon": "Common",
     "ActorSizeExtended": "Extended",
