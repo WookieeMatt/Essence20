@@ -13,7 +13,6 @@ export async function onRoll(event, actor, rollingActor) {
   const dataset = element.dataset;
   const rollType = dataset.rollType;
 
-
   if (!rollType) {
     return;
   }
