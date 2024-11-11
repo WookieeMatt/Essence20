@@ -39,6 +39,9 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
       armors: new fields.SchemaField({
         qualified: makeStrArrayWithChoices(Object.keys(E20.armorTypes)),
         trained: makeStrArrayWithChoices(Object.keys(E20.armorTypes)),
+        upgrades: new fields.SchemaField({
+          trained: makeStrArrayWithChoices(Object.keys(E20.availabilities)),
+        }),
       }),
       essenceLevels: new fields.SchemaField({
         smarts: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),

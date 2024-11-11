@@ -143,6 +143,41 @@ export const migrateWorld = async function() {
 export const migrateActorData = async function(actor, compendiumActor) {
   const updateData = {};
 
+  //Migration for Weapon and Armor Training and Qualificaitons moving to Actors from Roles
+  const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
+  console.log(currentVersion)
+  if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
+    if (actor.items) {
+      for (const item of actor.items) {
+        if (item.type == 'role') {
+          for (const armorType of item.system.armors.qualified) {
+            if (armorType) {
+              updateData[`system.qualifications.armor.${armorType}`] = true;
+            }
+          }
+
+          for (const armorType of item.system.armors.trained) {
+            if (armorType) {
+              updateData[`system.training.armor.${armorType}`] = true;
+            }
+          }
+
+          for (const weaponType of item.system.weapons.qualified) {
+            if (weaponTypee) {
+              updateData[`system.qualifications.weapon.${weaponType}`] = true;
+            }
+          }
+
+          for (const weaponType of item.system.weapons.trained) {
+            if (weaponType) {
+              updateData[`system.training.weapon.${weaponType}`] = true;
+            }
+          }
+        }
+      }
+    }
+  }
+
   // Migrate initiative
   if (typeof actor.system.initiative == "string") {
     updateData[`system.initiative`] = {

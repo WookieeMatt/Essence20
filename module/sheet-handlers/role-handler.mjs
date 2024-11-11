@@ -353,6 +353,58 @@ export async function roleUpdate(actor, role, dropFunc) {
     const newRole = newRoleList[0];
     await setRoleValues(newRole, actor);
   }
+
+  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": true,
+    });
+  }
+
+  for (const armorType of role.system.armors.qualified) {
+    if (armorType) {
+      const armorString = `system.qualifications.armor.${armorType}`;
+      await actor.update({
+        [armorString] : true,
+      });
+    }
+  }
+
+  for (const armorType of role.system.armors.trained) {
+    if (armorType) {
+      const armorString = `system.training.armor.${armorType}`;
+      await actor.update({
+        [armorString] : true,
+      });
+    }
+  }
+
+  for (const weaponType of role.system.weapons.qualified) {
+    if (weaponType) {
+      const weaponString = `system.qualifications.weapon.${weaponType}`;
+      await actor.update({
+        [weaponString] : true,
+      });
+    }
+  }
+
+  for (const weaponType of role.system.weapons.trained) {
+    if (weaponType) {
+      const weaponString = `system.training.weapon.${weaponType}`;
+      await actor.update({
+        [weaponString] : true,
+      });
+    }
+  }
+
+  for (const upgradeType of role.system.armors.upgrades.trained) {
+    if (upgradeType) {
+      const upgradeString = `system.training.upgrade.armor.${upgradeType}`;
+      await actor.update({
+        [upgradeString] : true,
+      });
+    }
+  }
+
 }
 
 /**
@@ -441,6 +493,57 @@ export async function onRoleDelete(actor, role) {
       "system.essenceRanks.speed": null,
       "system.essenceRanks.strength": null,
     });
+  }
+
+  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": false,
+    });
+  }
+
+  for (const armorType of role.system.armors.qualified) {
+    if (armorType) {
+      const armorString = `system.qualifications.armor.${armorType}`;
+      await actor.update({
+        [armorString] : false,
+      });
+    }
+  }
+
+  for (const armorType of role.system.armors.trained) {
+    if (armorType) {
+      const armorString = `system.training.armor.${armorType}`;
+      await actor.update({
+        [armorString] : false,
+      });
+    }
+  }
+
+  for (const weaponType of role.system.weapons.qualified) {
+    if (weaponType) {
+      const weaponString = `system.qualifications.weapon.${weaponType}`;
+      await actor.update({
+        [weaponString] : false,
+      });
+    }
+  }
+
+  for (const weaponType of role.system.weapons.trained) {
+    if (weaponType) {
+      const weaponString = `system.training.weapon.${weaponType}`;
+      await actor.update({
+        [weaponString] : false,
+      });
+    }
+  }
+
+  for (const upgradeType of role.system.armors.upgrades.trained) {
+    if (upgradeType) {
+      const upgradeString = `system.training.upgrade.armor.${upgradeType}`;
+      await actor.update({
+        [upgradeString] : false,
+      });
+    }
   }
 
   deleteAttachmentsForItem(role, actor);

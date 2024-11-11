@@ -1,0 +1,55 @@
+<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+  <div class="armor">
+    {{#unless @root.actor.system.canTransform}}
+    <div class="training">
+      <h4>{{localize 'E20.ArmorTraining'}}</h4>
+      {{#each system.training.armor as |armorTraining|}}
+        {{#if armorTraining}}
+          {{lookup @root.config.armorTypes @key}}
+        {{/if}}
+      {{/each}}
+    </div>
+    {{/unless}}
+    {{#if @root.actor.system.canQualify}}
+    <div class="qualifications">
+      <h4>{{localize 'E20.ArmorQualifications'}}</h4>
+      {{#each system.qualifications.armor as |armorQualifications|}}
+        {{#if armorQualifications}}
+          {{lookup @root.config.armorTypes @key}}
+        {{/if}}
+      {{/each}}
+    </div>
+    {{/if}}
+    {{#if @root.actor.system.canTransform}}
+      <div class="upgrades">
+        <h4>{{localize 'E20.ArmorUpgradeTraining'}}</h4>
+        {{#each system.training.upgrade.armor as |upgradeTraining|}}
+          {{#if upgradeTraining}}
+            {{lookup @root.config.availabilities @key}}
+          {{/if}}
+        {{/each}}
+       </div>
+    {{/if}}
+  </div>
+  <div class="weapon">
+    <div class="training">
+      <h4>{{localize 'E20.WeaponTraining'}}</h4>
+      {{#each system.training.weapon as |weaponTraining|}}
+        {{#if weaponTraining}}
+
+          {{lookup @root.config.weaponTypes @key}}
+        {{/if}}
+      {{/each}}
+    </div>
+    {{#if @root.actor.system.canQualify}}
+    <div class="qualifications">
+      <h4>{{localize 'E20.WeaponQualifications'}}</h4>
+      {{#each system.qualifications.weapon as |weaponQualifications|}}
+        {{#if weaponQualifications}}
+          {{lookup @root.config.weaponTypes @key}}
+        {{/if}}
+      {{/each}}
+    </div>
+    {{/if}}
+  </div>
+</div>

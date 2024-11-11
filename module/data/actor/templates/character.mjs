@@ -1,17 +1,35 @@
 import { E20 } from "../../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStr, makeStrArray, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
-let armor_training = {};
-let armor_qualification = {};
-for (const armor_type of Object.keys(E20.armorTypes)){
-  armor_training[armor_type] = makeBool(false);
-  armor_qualification[armor_type] = makeBool(false);
+
+function makeArmorSchema() {
+  const armorSchema = {};
+  for (const armorType of Object.keys(E20.armorTypes)){
+    armorSchema[armorType] = makeBool(false);
+  }
+
+  return armorSchema;
 }
 
-console.log(armor_training)
-console.log(armor_qualification)
+function makeAvailabilitySchema() {
+  const availabilitySchema = {};
+  for (const availabilityType of Object.keys(E20.availabilities)){
+    availabilitySchema[availabilityType] = makeBool(false);
+  }
+
+  return availabilitySchema;
+}
+
+function makeWeaponSchema() {
+  const weaponSchema = {};
+  for (const weaponType of Object.keys(E20.weaponTypes)){
+    weaponSchema[weaponType] = makeBool(false);
+  }
+
+  return weaponSchema;
+}
 
 function makeDefensesFields(name, essence) {
   return new fields.SchemaField({
@@ -50,6 +68,7 @@ export const character = () => ({
   }),
   canHaveZord: makeBool(false),
   canMorph: makeBool(false),
+  canQualify: makeBool(false),
   canSpellcast: makeBool(false),
   canTransform: makeBool(false),
   conditioning: makeInt(0),
@@ -92,7 +111,8 @@ export const character = () => ({
   }),
   notes: new fields.HTMLField(),
   qualifications: new fields.SchemaField({
-    armor: new fields.SchemaField(armor_qualification),
+    armor: new fields.SchemaField(makeArmorSchema()),
+    weapon: new fields.SchemaField(makeWeaponSchema()),
   }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
@@ -101,7 +121,11 @@ export const character = () => ({
     social: makeSkillRankAllocation(),
   }),
   training: new fields.SchemaField({
-    armor: new fields.SchemaField(armor_training),
+    armor: new fields.SchemaField(makeArmorSchema()),
+    upgrade: new fields.SchemaField({
+      armor: new fields.SchemaField(makeAvailabilitySchema()),
+    }),
+    weapon: new fields.SchemaField(makeWeaponSchema()),
   }),
 });
 
