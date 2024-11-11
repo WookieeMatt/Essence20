@@ -173,6 +173,10 @@ export const migrateActorData = async function(actor, compendiumActor) {
               updateData[`system.training.weapon.${weaponType}`] = true;
             }
           }
+
+          if (item.system.version =='giJoe') {
+            updateData[`system.canQualify`] = true;
+          }
         }
       }
     }
