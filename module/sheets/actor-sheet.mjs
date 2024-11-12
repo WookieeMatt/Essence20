@@ -5,8 +5,8 @@ import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareSystemActors, onSystemActorsDelete, onMorph, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
-  onRoll,
   onRest,
+  onRoll,
   onToggleAccordion,
   onToggleHeaderAccordion,
 } from "../sheet-handlers/listener-misc-handler.mjs";
