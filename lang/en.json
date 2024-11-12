@@ -82,6 +82,7 @@
     "ActorColor": "Color",
     "ActorFaction": "Faction",
     "ActorRole": "Role",
+    "ActorSelect": "Who is performing this roll?",
     "ActorSize": "Size",
     "ActorSizeCommon": "Common",
     "ActorSizeExtended": "Extended",
