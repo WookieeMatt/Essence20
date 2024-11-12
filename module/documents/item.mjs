@@ -167,7 +167,7 @@ export class Essence20Item extends Item {
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @private
    */
-  async roll(dataset, actor, rollingActor=None) {
+  async roll(dataset, actor, childRoller=None) {
     if (dataset.rollType == 'info') {
       // Initialize chat data.
       const speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -236,7 +236,7 @@ export class Essence20Item extends Item {
       });
     } else if (this.type == 'weaponEffect') {
       let weaponDataset = {};
-      const roller = rollingActor || actor;
+      const roller = childRoller || actor;
       const skill = roller.system.classification.skill;
       const shift = roller.system.skills[skill].shift;
       const shiftUp = roller.system.skills[skill].shiftUp;

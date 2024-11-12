@@ -7,7 +7,7 @@ import { rememberSelect } from "../helpers/dialog.mjs";
  * @param {Actor} actor The Actor making the roll
  * @param {Event} event The originating click event
  */
-export async function onRoll(event, actor, rollingActor=None) {
+export async function onRoll(event, actor, childRoller=None) {
   event.preventDefault();
   const element = event.currentTarget;
   const dataset = element.dataset;
@@ -19,12 +19,12 @@ export async function onRoll(event, actor, rollingActor=None) {
 
   // Handle type-specific rolls.
   if (rollType == 'skill') {
-    if (rollingActor) {
-      dataset.canCritD2 = rollingActor.system.skills[dataset.skill].canCritD2;
-      dataset.shift = rollingActor.system.skills[dataset.skill].shift;
-      dataset.shiftDown = rollingActor.system.skills[dataset.skill].shiftDown;
-      dataset.shiftUp = rollingActor.system.skills[dataset.skill].shiftUp;
-      dataset.isSpecialized = rollingActor.system.skills[dataset.skill].isSpecialized;
+    if (childRoller) {
+      dataset.canCritD2 = childRoller.system.skills[dataset.skill].canCritD2;
+      dataset.shift = childRoller.system.skills[dataset.skill].shift;
+      dataset.shiftDown = childRoller.system.skills[dataset.skill].shiftDown;
+      dataset.shiftUp = childRoller.system.skills[dataset.skill].shiftUp;
+      dataset.isSpecialized = childRoller.system.skills[dataset.skill].isSpecialized;
     }
 
     actor.rollSkill(dataset, actor);
@@ -80,7 +80,7 @@ export async function onRoll(event, actor, rollingActor=None) {
     }
 
     if (item) {
-      return item.roll(dataset, actor, rollingActor);
+      return item.roll(dataset, actor, childRoller);
     }
   }
 }
@@ -257,13 +257,13 @@ export async function actorSelector(event, actor) {
 }
 
 async function handleActorSelector(actor, options, event) {
-  let rollingActor = {};
+  let childRoller = {};
   if (options['actor'] == '00000') {
-    rollingActor = actor;
+    childRoller = actor;
   } else {
     const fullActor = actor.system.actors[options['actor']];
-    rollingActor = await fromUuid(fullActor.uuid);
+    childRoller = await fromUuid(fullActor.uuid);
   }
 
-  onRoll(event,actor,rollingActor);
+  onRoll(event,actor,childRoller);
 }
