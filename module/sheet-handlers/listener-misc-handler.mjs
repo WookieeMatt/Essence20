@@ -263,9 +263,8 @@ export async function onRoll(event, actor) {
 }
 
 /**
- *
  * @param {Actor} actor The Actor making the roll
- * @param {Object} options The actor selected in the dialog
+ * @param {Object} options The options selected in the dialog
  * @param {Event} event The originating click event
  */
 async function handleActorSelector(actor, options, event) {
