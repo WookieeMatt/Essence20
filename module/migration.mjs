@@ -145,7 +145,6 @@ export const migrateActorData = async function(actor, compendiumActor) {
 
   //Migration for Weapon and Armor Training and Qualificaitons moving to Actors from Roles
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
-  console.log(currentVersion)
   if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
     if (actor.items) {
       for (const item of actor.items) {
