@@ -257,7 +257,7 @@ export async function actorSelector(event, actor) {
 }
 
 async function handleActorSelector(actor, options, event) {
-  let childRoller = {};
+  const childRoller = {};
   if (options['actor'] == '00000') {
     childRoller = actor;
   } else {
