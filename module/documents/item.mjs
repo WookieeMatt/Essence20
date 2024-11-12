@@ -166,7 +166,7 @@ export class Essence20Item extends Item {
    * Handle clickable rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Actor} actor The actor who is making the roll
-   * @param {Actor} [childRoller=None] If an attached actor is making the roll
+   * @param {Actor} childRoller Optional attached Actor making the roll
    * @private
    */
   async roll(dataset, actor, childRoller=None) {
