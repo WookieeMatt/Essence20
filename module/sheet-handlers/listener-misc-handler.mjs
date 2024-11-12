@@ -2,7 +2,7 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
 import { rememberSelect } from "../helpers/dialog.mjs";
 
-const CHILD_ROLLER_KEY = "parentActor";
+const PARENT_ROLLER_KEY = "parentActor";
 
 /**
  * Handle clickable rolls.
@@ -222,12 +222,17 @@ export async function onToggleHeaderAccordion(event) {
   }
 }
 
+/**
+ *
+ * @param {Actor} actor The Actor making the roll
+ *  @param {Event} event The originating click event
+ */
 export async function onRoll(event, actor) {
   if (actor.type == 'vehicle' || actor.type == 'zord') {
     const choices = {};
-    choices[CHILD_ROLLER_KEY] = {
+    choices[PARENT_ROLLER_KEY] = {
       chosen: true,
-      key: CHILD_ROLLER_KEY,
+      key: PARENT_ROLLER_KEY,
       label: actor.name,
     };
     for (const [key, passenger] of Object.entries(actor.system.actors)) {
@@ -257,9 +262,15 @@ export async function onRoll(event, actor) {
   }
 }
 
+/**
+ *
+ * @param {Actor} actor The Actor making the roll
+ * @param {Object} options The actor selected in the dialog
+ * @param {Event} event The originating click event
+ */
 async function handleActorSelector(actor, options, event) {
   let childRoller;
-  if (options['actor'] == CHILD_ROLLER_KEY) {
+  if (options['actor'] == PARENT_ROLLER_KEY) {
     childRoller = actor;
   } else {
     const fullActor = actor.system.actors[options['actor']];
