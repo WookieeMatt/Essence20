@@ -2,7 +2,7 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
 import { rememberSelect } from "../helpers/dialog.mjs";
 
-CHILD_ROLLER_KEY = "00000";
+const CHILD_ROLLER_KEY = "parentActor";
 
 /**
  * Handle clickable rolls.
@@ -258,7 +258,7 @@ export async function onRoll(event, actor) {
 }
 
 async function handleActorSelector(actor, options, event) {
-  let childRoller = {};
+  let childRoller;
   if (options['actor'] == CHILD_ROLLER_KEY) {
     childRoller = actor;
   } else {
