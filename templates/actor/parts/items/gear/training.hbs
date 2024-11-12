@@ -1,8 +1,11 @@
 <div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+ <div class="flexrow flex-group-center">
+    <h3>{{localize 'E20.ArmorAndWeaponTraining'}}</h3>
+  </div>
   <div class="armor">
     {{#unless @root.actor.system.canTransform}}
-    <div class="training">
-      <h4>{{localize 'E20.ArmorTraining'}}</h4>
+    <div class="stats-container" style="border-color: {{system.color}};">
+      <h4>{{localize 'E20.ArmorTrained'}}</h4>
       {{#each system.training.armor as |armorTraining|}}
         {{#if armorTraining}}
           {{lookup @root.config.armorTypes @key}}
@@ -11,8 +14,8 @@
     </div>
     {{/unless}}
     {{#if @root.actor.system.canQualify}}
-    <div class="qualifications">
-      <h4>{{localize 'E20.ArmorQualifications'}}</h4>
+    <div class="stats-container" style="border-color: {{system.color}};">
+      <h4>{{localize 'E20.ArmorQualified'}}</h4>
       {{#each system.qualifications.armor as |armorQualifications|}}
         {{#if armorQualifications}}
           {{lookup @root.config.armorTypes @key}}
@@ -21,8 +24,8 @@
     </div>
     {{/if}}
     {{#if @root.actor.system.canTransform}}
-      <div class="upgrades">
-        <h4>{{localize 'E20.ArmorUpgradeTraining'}}</h4>
+      <div class="stats-container" style="border-color: {{system.color}};">
+        <h4>{{localize 'E20.ArmorUpgradeTrained'}}</h4>
         {{#each system.training.upgrade.armor as |upgradeTraining|}}
           {{#if upgradeTraining}}
             {{lookup @root.config.availabilities @key}}
@@ -32,8 +35,8 @@
     {{/if}}
   </div>
   <div class="weapon">
-    <div class="training">
-      <h4>{{localize 'E20.WeaponTraining'}}</h4>
+    <div class="stats-container" style="border-color: {{system.color}};">
+      <h4>{{localize 'E20.WeaponTrained'}}</h4>
       {{#each system.training.weapon as |weaponTraining|}}
         {{#if weaponTraining}}
 
@@ -42,8 +45,8 @@
       {{/each}}
     </div>
     {{#if @root.actor.system.canQualify}}
-    <div class="qualifications">
-      <h4>{{localize 'E20.WeaponQualifications'}}</h4>
+    <div class="stats-container" style="border-color: {{system.color}};">
+      <h4>{{localize 'E20.WeaponQualified'}}</h4>
       {{#each system.qualifications.weapon as |weaponQualifications|}}
         {{#if weaponQualifications}}
           {{lookup @root.config.weaponTypes @key}}
