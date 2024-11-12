@@ -265,5 +265,5 @@ async function handleActorSelector(actor, options, event) {
     childRoller = await fromUuid(fullActor.uuid);
   }
 
-  onRoll(event,actor,childRoller);
+  onRoll(event, actor, childRoller);
 }
