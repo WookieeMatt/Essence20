@@ -34,7 +34,7 @@ export class RollDialog {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs";
     const snag =
       skillDataset.snag ||
-      E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(dataset.shift);
+      E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(skillDataset.shift);
     const edge = skillDataset.edge;
     const html = await renderTemplate(
       template,

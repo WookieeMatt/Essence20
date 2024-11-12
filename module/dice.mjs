@@ -92,8 +92,9 @@ export class Dice {
       shiftDown: calculatedShiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
-
+    const initialShift = dataset.shift || actorSkillData.shift;
     const skillDataset = {
+      shift: initialShift,
       edge: actorSkillData.edge || essenceShifts[rolledEssence]?.edge,
       snag: actorSkillData.snag || essenceShifts[rolledEssence]?.snag,
     };
@@ -115,7 +116,6 @@ export class Dice {
       return;
     }
 
-    const initialShift = dataset.shift || actorSkillData.shift;
     let label = '';
     let roleSkillDieName = '';
 

@@ -8,18 +8,6 @@ chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
 
-const rollDialog = jest.mock();
-rollDialog.getSkillRollOptions = jest.fn();
-rollDialog.getSkillRollOptions.mockReturnValue({
-  canCritD2: false,
-  edge: false,
-  shiftDown: 0,
-  shiftUp: 0,
-  snag: false,
-  isSpecialized: false,
-  timesToRoll: 1,
-});
-
 class Mocki18n {
   localize(text) {
     return text;
@@ -65,13 +53,30 @@ const mockActor = {
   },
 };
 
-const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
+function createMockRollDialog() {
+  const rollDialog = jest.mock();
+  rollDialog.getSkillRollOptions = jest.fn();
+  rollDialog.getSkillRollOptions.mockReturnValue({
+    canCritD2: false,
+    edge: false,
+    shiftDown: 0,
+    shiftUp: 0,
+    snag: false,
+    isSpecialized: false,
+    timesToRoll: 1,
+  });
+
+  return rollDialog;
+}
+
+const dice = new Dice(chatMessage, createMockRollDialog(), new Mocki18n());
 
 /* Begin Tests */
 
 /* prepareInitiativeRoll */
 describe("prepareInitiativeRoll", () => {
   test("normal initiative roll", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -105,6 +110,7 @@ describe("rollSkill", () => {
   };
 
   test("normal skill roll", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -132,6 +138,7 @@ describe("rollSkill", () => {
       ...dataset,
       isSpecialized: 'false',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -155,6 +162,7 @@ describe("rollSkill", () => {
   });
 
   test("repeated normal skill roll", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -183,6 +191,7 @@ describe("rollSkill", () => {
       ...dataset,
       shift: 'autoSuccess',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -211,6 +220,7 @@ describe("rollSkill", () => {
       isSpecialized: true,
       specializationName: 'Foo Specialization',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -239,6 +249,7 @@ describe("rollSkill", () => {
       isSpecialized: 'true',
       specializationName: 'Foo Specialization',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -262,6 +273,7 @@ describe("rollSkill", () => {
   });
 
   test("normal weapon effect skill roll", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -307,6 +319,7 @@ describe("rollSkill", () => {
       skill: 'spellcasting',
       essence: 'any',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -338,6 +351,7 @@ describe("rollSkill", () => {
   });
 
   test("essence-shifted skill roll with edge", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -362,6 +376,7 @@ describe("rollSkill", () => {
     };
     const expectedSkillDataset = {
       edge: true,
+      shift: "d20",
       snag: false,
     };
     const mockShiftedActor = {
