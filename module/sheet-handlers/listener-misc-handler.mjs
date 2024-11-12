@@ -228,7 +228,7 @@ export async function actorSelector(event, actor) {
       key: '00000',
       label: actor.name,
     };
-    for (const [ key, passenger] of Object.entries (actor.system.actors)) {
+    for (const [key, passenger] of Object.entries(actor.system.actors)) {
       choices[key] = {
         chosen: false,
         key: key,
