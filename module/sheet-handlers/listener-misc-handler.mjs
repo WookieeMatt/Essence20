@@ -6,9 +6,9 @@ const PARENT_ROLLER_KEY = "parentActor";
 
 /**
  * Handle clickable rolls.
- * @param {Actor} actor The Actor making the roll
  * @param {Event} event The originating click event
- * @param {Actor} childRoller If chosen the attached actor that is making the roll
+ * @param {Actor} actor The Actor making the roll
+ * @param {Actor} childRoller Optional attached Actor making the roll
  */
 export async function performRoll(event, actor, childRoller=None) {
   event.preventDefault();
