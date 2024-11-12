@@ -224,9 +224,8 @@ export async function onToggleHeaderAccordion(event) {
 }
 
 /**
- *
+ * @param {Event} event The originating click event
  * @param {Actor} actor The Actor making the roll
- *  @param {Event} event The originating click event
  */
 export async function onRoll(event, actor) {
   if (actor.type == 'vehicle' || actor.type == 'zord') {
