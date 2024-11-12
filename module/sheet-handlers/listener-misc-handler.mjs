@@ -2,12 +2,14 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
 import { rememberSelect } from "../helpers/dialog.mjs";
 
+CHILD_ROLLER_KEY = "00000";
+
 /**
  * Handle clickable rolls.
  * @param {Actor} actor The Actor making the roll
  * @param {Event} event The originating click event
  */
-export async function onRoll(event, actor, childRoller=None) {
+export async function performRoll(event, actor, childRoller=None) {
   event.preventDefault();
   const element = event.currentTarget;
   const dataset = element.dataset;
@@ -220,12 +222,12 @@ export async function onToggleHeaderAccordion(event) {
   }
 }
 
-export async function actorSelector(event, actor) {
+export async function onRoll(event, actor) {
   if (actor.type == 'vehicle' || actor.type == 'zord') {
     const choices = {};
-    choices['00000'] = {
+    choices[CHILD_ROLLER_KEY] = {
       chosen: true,
-      key: '00000',
+      key: CHILD_ROLLER_KEY,
       label: actor.name,
     };
     for (const [key, passenger] of Object.entries(actor.system.actors)) {
@@ -251,18 +253,18 @@ export async function actorSelector(event, actor) {
       },
     ).render(true);
   } else {
-    onRoll(event, actor, null);
+    performRoll(event, actor, null);
   }
 }
 
 async function handleActorSelector(actor, options, event) {
-  const childRoller = {};
-  if (options['actor'] == '00000') {
+  let childRoller = {};
+  if (options['actor'] == CHILD_ROLLER_KEY) {
     childRoller = actor;
   } else {
     const fullActor = actor.system.actors[options['actor']];
     childRoller = await fromUuid(fullActor.uuid);
   }
 
-  onRoll(event, actor, childRoller);
+  performRoll(event, actor, childRoller);
 }
