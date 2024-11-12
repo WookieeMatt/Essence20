@@ -250,7 +250,6 @@ export async function actorSelector(event, actor) {
         },
       },
     ).render(true);
-
   } else {
     onRoll(event,actor, null);
   }
