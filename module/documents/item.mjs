@@ -237,7 +237,7 @@ export class Essence20Item extends Item {
     } else if (this.type == 'weaponEffect') {
       let weaponDataset = {};
       const roller = childRoller || actor;
-      const skill = roller.system.classification.skill;
+      const skill = this.system.classification.skill;
       const shift = roller.system.skills[skill].shift;
       const shiftUp = roller.system.skills[skill].shiftUp;
       const shiftDown = roller.system.skills[skill].shiftDown + this.system.shiftDown;
