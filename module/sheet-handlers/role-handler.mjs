@@ -360,50 +360,11 @@ export async function roleUpdate(actor, role, dropFunc) {
     });
   }
 
-  for (const armorType of role.system.armors.qualified) {
-    if (armorType) {
-      const armorString = `system.qualifications.armor.${armorType}`;
-      await actor.update({
-        [armorString] : true,
-      });
-    }
-  }
-
-  for (const armorType of role.system.armors.trained) {
-    if (armorType) {
-      const armorString = `system.training.armor.${armorType}`;
-      await actor.update({
-        [armorString] : true,
-      });
-    }
-  }
-
-  for (const weaponType of role.system.weapons.qualified) {
-    if (weaponType) {
-      const weaponString = `system.qualifications.weapon.${weaponType}`;
-      await actor.update({
-        [weaponString] : true,
-      });
-    }
-  }
-
-  for (const weaponType of role.system.weapons.trained) {
-    if (weaponType) {
-      const weaponString = `system.training.weapon.${weaponType}`;
-      await actor.update({
-        [weaponString] : true,
-      });
-    }
-  }
-
-  for (const upgradeType of role.system.armors.upgrades.trained) {
-    if (upgradeType) {
-      const upgradeString = `system.training.upgrade.armor.${upgradeType}`;
-      await actor.update({
-        [upgradeString] : true,
-      });
-    }
-  }
+  await trainingUpdate(actor, 'armors', 'qualified', true, role)
+  await trainingUpdate(actor, 'armors', 'trained', true, role)
+  await trainingUpdate(actor, 'weapons', 'qualified', true, role)
+  await trainingUpdate(actor, 'weapons', 'trained', true, role)
+  await trainingUpdate(actor, 'upgrades.armors', 'trained', true, role)
 
 }
 
@@ -501,50 +462,11 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
-  for (const armorType of role.system.armors.qualified) {
-    if (armorType) {
-      const armorString = `system.qualifications.armor.${armorType}`;
-      await actor.update({
-        [armorString] : false,
-      });
-    }
-  }
-
-  for (const armorType of role.system.armors.trained) {
-    if (armorType) {
-      const armorString = `system.training.armor.${armorType}`;
-      await actor.update({
-        [armorString] : false,
-      });
-    }
-  }
-
-  for (const weaponType of role.system.weapons.qualified) {
-    if (weaponType) {
-      const weaponString = `system.qualifications.weapon.${weaponType}`;
-      await actor.update({
-        [weaponString] : false,
-      });
-    }
-  }
-
-  for (const weaponType of role.system.weapons.trained) {
-    if (weaponType) {
-      const weaponString = `system.training.weapon.${weaponType}`;
-      await actor.update({
-        [weaponString] : false,
-      });
-    }
-  }
-
-  for (const upgradeType of role.system.armors.upgrades.trained) {
-    if (upgradeType) {
-      const upgradeString = `system.training.upgrade.armor.${upgradeType}`;
-      await actor.update({
-        [upgradeString] : false,
-      });
-    }
-  }
+  await trainingUpdate(actor, 'armors', 'qualified', false, role)
+  await trainingUpdate(actor, 'armors', 'trained', false, role)
+  await trainingUpdate(actor, 'weapons', 'qualified', false, role)
+  await trainingUpdate(actor, 'weapons', 'trained', false, role)
+  await trainingUpdate(actor, 'upgrades.armors', 'trained', false, role)
 
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
@@ -697,4 +619,15 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
   }
 
   setRoleValues(newRole, actor);
+}
+
+export async function trainingUpdate(actor, itemType, trainingType, updateType, role) {
+  for (const prof of role.system[itemType][trainingType]) {
+    if (prof) {
+      const profString = `system.${trainingType}.${itemType}.${prof}`;
+      await actor.update({
+        [profString] : updateType,
+      });
+    }
+  }
 }

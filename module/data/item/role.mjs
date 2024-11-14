@@ -39,9 +39,6 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
       armors: new fields.SchemaField({
         qualified: makeStrArrayWithChoices(Object.keys(E20.armorTypes)),
         trained: makeStrArrayWithChoices(Object.keys(E20.armorTypes)),
-        upgrades: new fields.SchemaField({
-          trained: makeStrArrayWithChoices(Object.keys(E20.availabilities)),
-        }),
       }),
       essenceLevels: new fields.SchemaField({
         smarts: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
@@ -69,6 +66,11 @@ export class RoleItemData extends foundry.abstract.TypeDataModel {
         specializedLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
       }),
       skills: makeStrArrayWithChoices(Object.keys(E20.originSkills)),
+      upgrades: new fields.SchemaField({
+        armors: new fields.SchemaField({
+          trained: makeStrArrayWithChoices(Object.keys(E20.availabilities)),
+        }),
+      }),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
       weapons: new fields.SchemaField({
         qualified: makeStrArrayWithChoices(Object.keys(E20.weaponTypes)),

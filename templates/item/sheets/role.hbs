@@ -57,15 +57,15 @@
           {{!-- Armor Upgrades Trained --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorUpgradesTrained'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" data-options="availabilities" data-target="system.armors.upgrades.trained" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector" data-options="availabilities" data-target="system.upgrades.armors.trained" title="{{localize 'E20.TraitSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
 
           {{#*inline "item-field-inputs"}}
             <div class="chip-section">
-              {{#each item.system.armors.upgrades.trained as |availability|}}
-              <span class="chip" name="chip.armors.upgrades.trained.{{availabilities}}">{{lookup @root.config.availabilities availability}}</span>
+              {{#each item.system.upgrades.armors.trained as |availability|}}
+              <span class="chip" name="chip.upgrades.armors.trained.{{availabilities}}">{{lookup @root.config.availabilities availability}}</span>
               {{/each}}
             </div>
           {{/inline}}

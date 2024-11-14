@@ -110,9 +110,9 @@ export const character = () => ({
     }),
   }),
   notes: new fields.HTMLField(),
-  qualifications: new fields.SchemaField({
-    armor: new fields.SchemaField(makeArmorSchema()),
-    weapon: new fields.SchemaField(makeWeaponSchema()),
+  qualified: new fields.SchemaField({
+    armors: new fields.SchemaField(makeArmorSchema()),
+    weapons: new fields.SchemaField(makeWeaponSchema()),
   }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
@@ -120,12 +120,12 @@ export const character = () => ({
     smarts: makeSkillRankAllocation(),
     social: makeSkillRankAllocation(),
   }),
-  training: new fields.SchemaField({
-    armor: new fields.SchemaField(makeArmorSchema()),
-    upgrade: new fields.SchemaField({
-      armor: new fields.SchemaField(makeAvailabilitySchema()),
+  trained: new fields.SchemaField({
+    armors: new fields.SchemaField(makeArmorSchema()),
+    upgrades: new fields.SchemaField({
+      armors: new fields.SchemaField(makeAvailabilitySchema()),
     }),
-    weapon: new fields.SchemaField(makeWeaponSchema()),
+    weapons: new fields.SchemaField(makeWeaponSchema()),
   }),
 });
 
@@ -137,7 +137,7 @@ export function migrateCharacterData(source) {
       } else if (value?.max?.max) { // Possible edge case
         source.essences[essence].max = value.max.max;
         source.essences[essence].value = value.max.max;
-      } else if (value.required) { // Previous migration may have set it to a SchemaField()
+      } else if (value?.required) { // Previous migration may have set it to a SchemaField()
         source.essences[essence].max = value.max || 0;
         source.essences[essence].value = value.max || 0;
       }

@@ -151,25 +151,31 @@ export const migrateActorData = async function(actor, compendiumActor) {
         if (item.type == 'role') {
           for (const armorType of item.system.armors.qualified) {
             if (armorType) {
-              updateData[`system.qualifications.armor.${armorType}`] = true;
+              updateData[`system.qualified.armors.${armorType}`] = true;
             }
           }
 
           for (const armorType of item.system.armors.trained) {
             if (armorType) {
-              updateData[`system.training.armor.${armorType}`] = true;
+              updateData[`system.trained.armors.${armorType}`] = true;
+            }
+          }
+
+          for (const armorType of item.system.upgrades.armors.trained) {
+            if (armorType) {
+              updateData[`system.trained.upgrades.armors.${armorType}`] = true;
             }
           }
 
           for (const weaponType of item.system.weapons.qualified) {
-            if (weaponTypee) {
-              updateData[`system.qualifications.weapon.${weaponType}`] = true;
+            if (weaponType) {
+              updateData[`system.qualified.weapons.${weaponType}`] = true;
             }
           }
 
           for (const weaponType of item.system.weapons.trained) {
             if (weaponType) {
-              updateData[`system.training.weapon.${weaponType}`] = true;
+              updateData[`system.trained.weapons.${weaponType}`] = true;
             }
           }
 
