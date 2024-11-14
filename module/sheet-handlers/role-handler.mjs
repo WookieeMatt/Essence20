@@ -364,7 +364,7 @@ export async function roleUpdate(actor, role, dropFunc) {
   await trainingUpdate(actor, 'armors', 'trained', true, role);
   await trainingUpdate(actor, 'weapons', 'qualified', true, role);
   await trainingUpdate(actor, 'weapons', 'trained', true, role);
-  await trainingUpdate(actor, 'upgrades.armors', 'trained', true, role);
+  await trainingUpdate(actor, 'armors', 'trained', true, role, true);
 
 }
 
@@ -466,7 +466,7 @@ export async function onRoleDelete(actor, role) {
   await trainingUpdate(actor, 'armors', 'trained', false, role);
   await trainingUpdate(actor, 'weapons', 'qualified', false, role);
   await trainingUpdate(actor, 'weapons', 'trained', false, role);
-  await trainingUpdate(actor, 'upgrades.armors', 'trained', false, role);
+  await trainingUpdate(actor, 'armors', 'trained', false, role, true);
 
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
@@ -621,13 +621,12 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
   setRoleValues(newRole, actor);
 }
 
-export async function trainingUpdate(actor, itemType, trainingType, updateType, role) {
-  for (const prof of role.system[itemType][trainingType]) {
-    if (prof) {
-      const profString = `system.${trainingType}.${itemType}.${prof}`;
-      await actor.update({
-        [profString] : updateType,
-      });
-    }
+export async function trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
+  const profs = useUpgradesAccessor ? role.system.upgrades[itemType][trainingType] : role.system[itemType][trainingType]
+  for (const prof of profs) {
+    const profString = `system.${trainingType}.${useUpgradesAccessor ? 'upgrades.' : ''}${itemType}.${prof}`;
+    await actor.update({
+      [profString] : updateType,
+    });
   }
 }
