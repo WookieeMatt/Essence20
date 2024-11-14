@@ -70,7 +70,7 @@ export class Dice {
       ...rawDataset,
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
-      isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false',
+      isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false' || item.system?.isSpecialized,
       canCritD2: rawDataset.canCritD2 && rawDataset.canCritD2 != 'false',
     };
     const rolledSkill = dataset.skill;
