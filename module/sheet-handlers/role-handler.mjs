@@ -622,7 +622,7 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
 }
 
 export async function trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
-  const profs = useUpgradesAccessor ? role.system.upgrades[itemType][trainingType] : role.system[itemType][trainingType]
+  const profs = useUpgradesAccessor ? role.system.upgrades[itemType][trainingType] : role.system[itemType][trainingType];
   for (const prof of profs) {
     const profString = `system.${trainingType}.${useUpgradesAccessor ? 'upgrades.' : ''}${itemType}.${prof}`;
     await actor.update({
