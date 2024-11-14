@@ -97,8 +97,8 @@ export class Dice {
     const initialShift = dataset.shift || actorSkillData.shift;
     const skillDataset = {
       shift: initialShift,
-      edge: actorSkillData.edge || essenceShifts[rolledEssence]?.edge,
-      snag: actorSkillData.snag || essenceShifts[rolledEssence]?.snag,
+      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge,
+      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag,
     };
 
     updatedShiftDataset.rolePoints = null;
