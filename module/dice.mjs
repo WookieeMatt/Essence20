@@ -65,12 +65,12 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The item being used, if any.
    */
-  async rollSkill(rawDataset, actor, item) {
+  async rollSkill(rawDataset, actor, item=None) {
     const dataset = { // Converting strings to usable types
       ...rawDataset,
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
-      isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false' || item.system?.isSpecialized,
+      isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false' || item?.system?.isSpecialized,
       canCritD2: rawDataset.canCritD2 && rawDataset.canCritD2 != 'false',
     };
     const rolledSkill = dataset.skill;
