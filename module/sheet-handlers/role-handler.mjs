@@ -360,11 +360,11 @@ export async function roleUpdate(actor, role, dropFunc) {
     });
   }
 
-  await trainingUpdate(actor, 'armors', 'qualified', true, role)
-  await trainingUpdate(actor, 'armors', 'trained', true, role)
-  await trainingUpdate(actor, 'weapons', 'qualified', true, role)
-  await trainingUpdate(actor, 'weapons', 'trained', true, role)
-  await trainingUpdate(actor, 'upgrades.armors', 'trained', true, role)
+  await trainingUpdate(actor, 'armors', 'qualified', true, role);
+  await trainingUpdate(actor, 'armors', 'trained', true, role);
+  await trainingUpdate(actor, 'weapons', 'qualified', true, role);
+  await trainingUpdate(actor, 'weapons', 'trained', true, role);
+  await trainingUpdate(actor, 'upgrades.armors', 'trained', true, role);
 
 }
 
@@ -462,11 +462,11 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
-  await trainingUpdate(actor, 'armors', 'qualified', false, role)
-  await trainingUpdate(actor, 'armors', 'trained', false, role)
-  await trainingUpdate(actor, 'weapons', 'qualified', false, role)
-  await trainingUpdate(actor, 'weapons', 'trained', false, role)
-  await trainingUpdate(actor, 'upgrades.armors', 'trained', false, role)
+  await trainingUpdate(actor, 'armors', 'qualified', false, role);
+  await trainingUpdate(actor, 'armors', 'trained', false, role);
+  await trainingUpdate(actor, 'weapons', 'qualified', false, role);
+  await trainingUpdate(actor, 'weapons', 'trained', false, role);
+  await trainingUpdate(actor, 'upgrades.armors', 'trained', false, role);
 
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
