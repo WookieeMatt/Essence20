@@ -65,12 +65,14 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The item being used, if any.
    */
-  async rollSkill(rawDataset, actor, item) {
+  async rollSkill(rawDataset, actor, item=null) {
     const dataset = { // Converting strings to usable types
       ...rawDataset,
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
-      isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false',
+      isSpecialized: rawDataset.isSpecialized
+        && rawDataset.isSpecialized != 'false'
+        || !!item?.system?.isSpecialized,
       canCritD2: rawDataset.canCritD2 && rawDataset.canCritD2 != 'false',
     };
     const rolledSkill = dataset.skill;
@@ -95,8 +97,8 @@ export class Dice {
     const initialShift = dataset.shift || actorSkillData.shift;
     const skillDataset = {
       shift: initialShift,
-      edge: actorSkillData.edge || essenceShifts[rolledEssence]?.edge,
-      snag: actorSkillData.snag || essenceShifts[rolledEssence]?.snag,
+      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge,
+      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag,
     };
 
     updatedShiftDataset.rolePoints = null;
