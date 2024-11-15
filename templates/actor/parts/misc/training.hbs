@@ -5,17 +5,17 @@
         <th></th>
         <th>
           {{#if @root.actor.system.canTransform}}
-            Armor Upgrades
+            {{ localize "E20.UpgradeTypeArmor" }} {{ localize "E20.UpgradePlural" }}
           {{else}}
-            Armor
+            {{ localize "E20.ItemTypeArmorPlural" }}
           {{/if}}
         </th>
         <th>
-          Weapons
+          {{ localize "E20.ItemTypeWeaponPlural" }}
         </th>
       </tr>
       <tr>
-        <th>Training</th>
+        <th>{{ localize "E20.Training" }}</th>
         <td>
           {{#if @root.actor.system.canTransform}}
             {{#each system.trained.upgrades.armors as |upgradeTraining|}}
@@ -29,7 +29,7 @@
             {{/each}}
           {{else}}
             {{assign 'count' 0}}
-            {{#each system.trained.armors as |armorTraining|}}
+            {{#each system.trained .armors as |armorTraining|}}
               {{#if armorTraining}}
                 {{#if @root.count}}
                   ,
@@ -55,7 +55,7 @@
       </tr>
       {{#if @root.actor.system.canQualify}}
       <tr>
-        <th>Qualifications</th>
+        <th>{{ localize "E20.Qualifications" }}</th>
         <td>
           {{assign 'count' 0}}
           {{#each system.qualified.armors as |armorQualifications|}}
