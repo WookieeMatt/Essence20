@@ -181,6 +181,8 @@ export const migrateActorData = async function(actor, compendiumActor) {
 
           if (item.system.version =='giJoe') {
             updateData[`system.canQualify`] = true;
+          } else if (item.system.version == 'myLittlePony') {
+            updateData[`system.canTrain`] = false;
           }
         }
       }
