@@ -1,0 +1,87 @@
+<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+  <div class="flexrow flex-group-center">
+    <table>
+      <tr>
+        <th></th>
+        <th>
+          {{#if @root.actor.system.canTransform}}
+            Armor Upgrades
+          {{else}}
+            Armor
+          {{/if}}
+        </th>
+        <th>
+          Weapons
+        </th>
+      </tr>
+      <tr>
+        <th>Training</th>
+        <td>
+          {{#if @root.actor.system.canTransform}}
+            {{#each system.trained.upgrades.armors as |upgradeTraining|}}
+              {{#if upgradeTraining}}
+                {{#if @root.count}}
+                  ,
+                {{/if}}
+                {{lookup @root.config.availabilities @key}}
+                {{assign 'count' 1}}
+              {{/if}}
+            {{/each}}
+          {{else}}
+            {{assign 'count' 0}}
+            {{#each system.trainedd.armors as |armorTraining|}}
+              {{#if armorTraining}}
+                {{#if @root.count}}
+                  ,
+                {{/if}}
+                {{lookup @root.config.armorTypes @key}}
+                {{assign 'count' 1}}
+              {{/if}}
+            {{/each}}
+          {{/if}}
+        </td>
+        <td>
+          {{assign 'count' 0}}
+          {{#each system.trained.weapons as |weaponTraining|}}
+            {{#if weaponTraining}}
+                {{#if @root.count}}
+                  ,
+                {{/if}}
+              {{lookup @root.config.weaponTypes @key}}
+              {{assign 'count' 1}}
+            {{/if}}
+          {{/each}}
+        </td>
+      </tr>
+      {{#if @root.actor.system.canQualify}}
+      <tr>
+        <th>Qualifications</th>
+        <td>
+          {{assign 'count' 0}}
+          {{#each system.qualified.armors as |armorQualifications|}}
+            {{#if armorQualifications}}
+                {{#if @root.count}}
+                  ,
+                {{/if}}
+              {{lookup @root.config.armorTypes @key}}
+              {{assign 'count' 1}}
+            {{/if}}
+          {{/each}}
+        </td>
+        <td>
+          {{assign 'count' 0}}
+          {{#each system.qualified.weapons as |weaponQualifications|}}
+            {{#if weaponQualifications}}
+                {{#if @root.count}}
+                  ,
+                {{/if}}
+              {{lookup @root.config.weaponTypes @key}}
+              {{assign 'count' 1}}
+            {{/if}}
+          {{/each}}
+        </td>
+      </tr>
+      {{/if}}
+    </table>
+  </div>
+</div>
