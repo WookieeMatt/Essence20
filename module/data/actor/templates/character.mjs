@@ -4,31 +4,13 @@ import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-ma
 
 const fields = foundry.data.fields;
 
-function makeArmorSchema() {
-  const armorSchema = {};
-  for (const armorType of Object.keys(E20.armorTypes)){
-    armorSchema[armorType] = makeBool(false);
+function makeTrainingSchema(itemTypes) {
+  const itemSchema = {};
+  for (const itemType of itemTypes){
+    itemSchema[itemType] = makeBool(false);
   }
 
-  return armorSchema;
-}
-
-function makeAvailabilitySchema() {
-  const availabilitySchema = {};
-  for (const availabilityType of Object.keys(E20.availabilities)){
-    availabilitySchema[availabilityType] = makeBool(false);
-  }
-
-  return availabilitySchema;
-}
-
-function makeWeaponSchema() {
-  const weaponSchema = {};
-  for (const weaponType of Object.keys(E20.weaponTypes)){
-    weaponSchema[weaponType] = makeBool(false);
-  }
-
-  return weaponSchema;
+  return itemSchema;
 }
 
 function makeDefensesFields(name, essence) {
@@ -111,8 +93,8 @@ export const character = () => ({
   }),
   notes: new fields.HTMLField(),
   qualified: new fields.SchemaField({
-    armors: new fields.SchemaField(makeArmorSchema()),
-    weapons: new fields.SchemaField(makeWeaponSchema()),
+    armors: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.armorTypes))),
+    weapons: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.weaponTypes))),
   }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
@@ -121,11 +103,11 @@ export const character = () => ({
     social: makeSkillRankAllocation(),
   }),
   trained: new fields.SchemaField({
-    armors: new fields.SchemaField(makeArmorSchema()),
+    armors: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.armorTypes))),
     upgrades: new fields.SchemaField({
-      armors: new fields.SchemaField(makeAvailabilitySchema()),
+      armors: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.availabilities))),
     }),
-    weapons: new fields.SchemaField(makeWeaponSchema()),
+    weapons: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.weaponTypes))),
   }),
 });
 
