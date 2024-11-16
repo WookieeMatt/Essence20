@@ -16,6 +16,7 @@ import { PerkItemData } from './perk.mjs';
 import { PowerItemData } from './power.mjs';
 import { RoleItemData } from './role.mjs';
 import { RolePointsItemData } from './role-points.mjs';
+import { ShieldItemData } from './shield.mjs';
 import { SpecializationItemData } from './specialization.mjs';
 import { SpellItemData } from './spell.mjs';
 import { TraitItemData } from './trait.mjs';
@@ -42,6 +43,7 @@ export const config = {
   power: PowerItemData,
   role: RoleItemData,
   rolePoints: RolePointsItemData,
+  shield: ShieldItemData,
   specialization: SpecializationItemData,
   spell: SpellItemData,
   trait: TraitItemData,
