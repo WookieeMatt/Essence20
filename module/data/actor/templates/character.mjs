@@ -6,7 +6,7 @@ const fields = foundry.data.fields;
 
 function makeTrainingSchema(itemTypes) {
   const itemSchema = {};
-  for (const itemType of itemTypes){
+  for (const itemType of Object.keys(itemTypes)){
     itemSchema[itemType] = makeBool(false);
   }
 
@@ -93,8 +93,8 @@ export const character = () => ({
   }),
   notes: new fields.HTMLField(),
   qualified: new fields.SchemaField({
-    armors: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.armorTypes))),
-    weapons: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.weaponTypes))),
+    armors: new fields.SchemaField(makeTrainingSchema(E20.armorTypes)),
+    weapons: new fields.SchemaField(makeTrainingSchema(E20.weaponTypes)),
   }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
@@ -103,11 +103,11 @@ export const character = () => ({
     social: makeSkillRankAllocation(),
   }),
   trained: new fields.SchemaField({
-    armors: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.armorTypes))),
+    armors: new fields.SchemaField(makeTrainingSchema(E20.armorTypes)),
     upgrades: new fields.SchemaField({
-      armors: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.availabilities))),
+      armors: new fields.SchemaField(makeTrainingSchema(E20.availabilities)),
     }),
-    weapons: new fields.SchemaField(makeTrainingSchema(Object.keys(E20.weaponTypes))),
+    weapons: new fields.SchemaField(makeTrainingSchema(E20.weaponTypes)),
   }),
 });
 
