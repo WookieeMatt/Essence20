@@ -10,7 +10,7 @@ function makeTrainingSchema(itemTypes) {
     itemSchema[itemType] = makeBool(false);
   }
 
-  return itemSchema;
+  return new fields.SchemaField(itemSchema);
 }
 
 function makeDefensesFields(name, essence) {
@@ -93,8 +93,8 @@ export const character = () => ({
   }),
   notes: new fields.HTMLField(),
   qualified: new fields.SchemaField({
-    armors: new fields.SchemaField(makeTrainingSchema(E20.armorTypes)),
-    weapons: new fields.SchemaField(makeTrainingSchema(E20.weaponTypes)),
+    armors: makeTrainingSchema(E20.armorTypes),
+    weapons: makeTrainingSchema(E20.weaponTypes),
   }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
@@ -103,11 +103,11 @@ export const character = () => ({
     social: makeSkillRankAllocation(),
   }),
   trained: new fields.SchemaField({
-    armors: new fields.SchemaField(makeTrainingSchema(E20.armorTypes)),
+    armors: makeTrainingSchema(E20.armorTypes),
     upgrades: new fields.SchemaField({
-      armors: new fields.SchemaField(makeTrainingSchema(E20.availabilities)),
+      armors: makeTrainingSchema(E20.availabilities),
     }),
-    weapons: new fields.SchemaField(makeTrainingSchema(E20.weaponTypes)),
+    weapons: makeTrainingSchema(E20.weaponTypes),
   }),
 });
 
