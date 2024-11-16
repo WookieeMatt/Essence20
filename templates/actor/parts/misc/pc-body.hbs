@@ -18,9 +18,11 @@
 
     {{!-- Gear Tab --}}
     <div class="tab gear flexcol" data-group="primary" data-tab="gear">
-      {{#ifNotEquals @root.role.system.version 'myLittlePony'}}
-        {{> "systems/essence20/templates/actor/parts/misc/training.hbs"}}
-      {{/ifNotEquals}}
+      {{#if @root.role}}
+        {{#ifNotEquals @root.role.system.version 'myLittlePony'}}
+          {{> "systems/essence20/templates/actor/parts/misc/training.hbs"}}
+        {{/ifNotEquals}}
+      {{/if}}
       {{> "systems/essence20/templates/actor/parts/items/gear/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/armor/container.hbs"}}
