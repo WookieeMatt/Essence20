@@ -243,6 +243,58 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false);
   });
 
+  test("specialized skill roll via weapon effect", async () => {
+    const datasetCopy = {
+      ...dataset,
+      isSpecialized: false,
+    };
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
+        },
+      },
+    }));
+    const weaponEffect = {
+      name: 'Zeo Power Clubs Effect',
+      type: 'weaponEffect',
+      system: {
+        classification: {
+          skill: "athletics",
+        },
+        damageType: "blunt",
+        damageValue: 1,
+        isSpecialized: true,
+      },
+    };
+    dice._rollSkillHelper = jest.fn();
+
+    const expectedDataset = {
+      ...dataset,
+      isSpecialized: true,
+      shiftUp: 0,
+      shiftDown: 0,
+    };
+    const expectedSkillDataset = {
+      edge: false,
+      shift: "d20",
+      snag: false,
+    };
+
+    await dice.rollSkill(datasetCopy, mockActor, weaponEffect);
+    expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(expectedDataset, expectedSkillDataset, mockActor);
+  });
+
   test("specialized skill roll works with isSpecialized as true string", async () => {
     const datasetCopy = {
       ...dataset,
@@ -360,25 +412,6 @@ describe("rollSkill", () => {
       shiftDown: 0,
       timesToRoll: 1,
     });
-    mockActor.getRollData = jest.fn(() => ({
-      skills: {
-        'athletics': {
-          modifier: '0',
-          shift: 'd20',
-        },
-      },
-    }));
-    const expectedDataset = {
-      ...dataset,
-      isSpecialized: false,
-      shiftUp: 1,
-      shiftDown: 2,
-    };
-    const expectedSkillDataset = {
-      edge: true,
-      shift: "d20",
-      snag: false,
-    };
     const mockShiftedActor = {
       ...mockActor,
       getRollData: jest.fn().mockReturnValue({
@@ -396,6 +429,18 @@ describe("rollSkill", () => {
     mockShiftedActor.system.essenceShifts.strength.snag = false;
     mockShiftedActor.system.essenceShifts.any.shiftDown = 1;
     dice._rollSkillHelper = jest.fn();
+
+    const expectedDataset = {
+      ...dataset,
+      isSpecialized: false,
+      shiftUp: 1,
+      shiftDown: 2,
+    };
+    const expectedSkillDataset = {
+      edge: true,
+      shift: "d20",
+      snag: false,
+    };
 
     await dice.rollSkill(dataset, mockShiftedActor, null);
     expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(expectedDataset, expectedSkillDataset, mockShiftedActor);
