@@ -19,6 +19,41 @@
 
     {{!-- Details Section --}}
     <div class="tab details flexcol" data-group="primary" data-tab="details">
+      {{!-- Availability --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorAvailability'}}
+      {{#*inline "item-field-inputs"}}
+      <select name="system.availability">
+        {{selectOptions config.availabilities selected=system.availability}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Classification --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorClassification'}}
+      {{#*inline "item-field-inputs"}}
+      <select name="system.classification">
+        {{selectOptions config.armorClassifications selected=system.classification}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Traits --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraits'}}
+      {{#*inline "item-field-edit"}}
+        <a class="trait-selector" data-options="armor" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
+          <i class="fas fa-edit"></i>
+        </a>
+      {{/inline}}
+
+      {{#*inline "item-field-inputs"}}
+        <div class="chip-section">
+          {{#each item.system.itemAndUpgradeTraits as |trait|}}
+          <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
+          {{/each}}
+        </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
 
     </div>
 
