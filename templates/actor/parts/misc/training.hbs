@@ -18,67 +18,23 @@
         <th>{{ localize "E20.Training" }}</th>
         <td>
           {{#if @root.actor.system.canTransform}}
-            {{#each system.trained.upgrades.armors as |upgradeTraining|}}
-              {{#if upgradeTraining}}
-                {{#if @root.count}}
-                  ,
-                {{/if}}
-                {{lookup @root.config.availabilities @key}}
-                {{assign 'count' 1}}
-              {{/if}}
-            {{/each}}
+            {{listProficiencies system.trained.upgrades.armors @root.config.availabilities}}
           {{else}}
-            {{assign 'count' 0}}
-            {{#each system.trained .armors as |armorTraining|}}
-              {{#if armorTraining}}
-                {{#if @root.count}}
-                  ,
-                {{/if}}
-                {{lookup @root.config.armorTypes @key}}
-                {{assign 'count' 1}}
-              {{/if}}
-            {{/each}}
+            {{listProficiencies @root.system.trained.armors @root.config.armorTypes}}
           {{/if}}
         </td>
         <td>
-          {{assign 'count' 0}}
-          {{#each system.trained.weapons as |weaponTraining|}}
-            {{#if weaponTraining}}
-                {{#if @root.count}}
-                  ,
-                {{/if}}
-              {{lookup @root.config.weaponTypes @key}}
-              {{assign 'count' 1}}
-            {{/if}}
-          {{/each}}
+          {{listProficiencies @root.system.trained.weapons @root.config.weaponTypes}}
         </td>
       </tr>
       {{#if @root.actor.system.canQualify}}
       <tr>
         <th>{{ localize "E20.Qualifications" }}</th>
         <td>
-          {{assign 'count' 0}}
-          {{#each system.qualified.armors as |armorQualifications|}}
-            {{#if armorQualifications}}
-                {{#if @root.count}}
-                  ,
-                {{/if}}
-              {{lookup @root.config.armorTypes @key}}
-              {{assign 'count' 1}}
-            {{/if}}
-          {{/each}}
+          {{listProficiencies @root.system.qualified.armors @root.config.armorTypes}}
         </td>
         <td>
-          {{assign 'count' 0}}
-          {{#each system.qualified.weapons as |weaponQualifications|}}
-            {{#if weaponQualifications}}
-                {{#if @root.count}}
-                  ,
-                {{/if}}
-              {{lookup @root.config.weaponTypes @key}}
-              {{assign 'count' 1}}
-            {{/if}}
-          {{/each}}
+          {{listProficiencies @root.system.qualified.weapons @root.config.weaponTypes}}
         </td>
       </tr>
       {{/if}}
