@@ -1,4 +1,5 @@
-import { createId } from "./helpers/utils.mjs";
+import { createId, getItemsOfType } from "./helpers/utils.mjs";
+
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @returns {Promise}      A Promise which resolves once the migration is completed
@@ -146,44 +147,30 @@ export const migrateActorData = async function(actor, compendiumActor) {
   //Migration for Weapon and Armor Training and Qualificaitons moving to Actors from Roles
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
   if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
-    if (actor.items) {
-      for (const item of actor.items) {
-        if (item.type == 'role') {
-          for (const armorType of item.system.armors.qualified) {
-            if (armorType) {
-              updateData[`system.qualified.armors.${armorType}`] = true;
-            }
-          }
+    const role = getItemsOfType('role', actor.items);
+    for (const armorType of role[0].system.armors.qualified) {
+      updateData[`system.qualified.armors.${armorType}`] = true;
+    }
 
-          for (const armorType of item.system.armors.trained) {
-            if (armorType) {
-              updateData[`system.trained.armors.${armorType}`] = true;
-            }
-          }
+    for (const armorType of role[0].system.armors.trained) {
+      updateData[`system.trained.armors.${armorType}`] = true;
+    }
 
-          for (const armorType of item.system.upgrades.armors.trained) {
-            if (armorType) {
-              updateData[`system.trained.upgrades.armors.${armorType}`] = true;
-            }
-          }
+    for (const armorType of role[0].system.upgrades.armors.trained) {
+      updateData[`system.trained.upgrades.armors.${armorType}`] = true;
+    }
 
-          for (const weaponType of item.system.weapons.qualified) {
-            if (weaponType) {
-              updateData[`system.qualified.weapons.${weaponType}`] = true;
-            }
-          }
 
-          for (const weaponType of item.system.weapons.trained) {
-            if (weaponType) {
-              updateData[`system.trained.weapons.${weaponType}`] = true;
-            }
-          }
+    for (const weaponType of role[0].system.weapons.qualified) {
+      updateData[`system.qualified.weapons.${weaponType}`] = true;
+    }
 
-          if (item.system.version =='giJoe') {
-            updateData[`system.canQualify`] = true;
-          }
-        }
-      }
+    for (const weaponType of role[0].system.weapons.trained) {
+      updateData[`system.trained.weapons.${weaponType}`] = true;
+    }
+
+    if (item.system.version =='giJoe') {
+      updateData[`system.canQualify`] = true;
     }
   }
 
