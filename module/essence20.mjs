@@ -174,7 +174,7 @@ Handlebars.registerHelper('listProficiencies', function (allProficiencies, frien
 
   for (const [proficiency, isProficient] of Object.entries(allProficiencies)) {
     if (isProficient) {
-      charProficiencies.push(friendlyLookup[proficiency])
+      charProficiencies.push(friendlyLookup[proficiency]);
     }
   }
 
