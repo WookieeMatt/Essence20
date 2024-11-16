@@ -160,7 +160,6 @@ export const migrateActorData = async function(actor, compendiumActor) {
       updateData[`system.trained.upgrades.armors.${armorType}`] = true;
     }
 
-
     for (const weaponType of role.system.weapons.qualified) {
       updateData[`system.qualified.weapons.${weaponType}`] = true;
     }
