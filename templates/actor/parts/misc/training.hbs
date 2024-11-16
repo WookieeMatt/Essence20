@@ -1,43 +1,46 @@
-<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
-  <div class="flexrow flex-group-center">
-    <table>
+<div class="stats-container flexrow defense-container" style="border-color: {{system.color}};">
+  <table class="tg">
+    <thead>
       <tr>
         <th></th>
-        <th>
+        <th class="tg-td">
           {{#if @root.actor.system.canTransform}}
             {{ localize "E20.UpgradeTypeArmor" }} {{ localize "E20.UpgradePlural" }}
           {{else}}
             {{ localize "E20.ItemTypeArmorPlural" }}
           {{/if}}
         </th>
-        <th>
+        <th class="tg-td">
           {{ localize "E20.ItemTypeWeaponPlural" }}
         </th>
       </tr>
+    </thead>
+
+    <tbody>
       <tr>
-        <th>{{ localize "E20.Training" }}</th>
-        <td>
+        <th class="tg-td">{{ localize "E20.Training" }}</th>
+        <td class="tg-td">
           {{#if @root.actor.system.canTransform}}
             {{listProficiencies system.trained.upgrades.armors @root.config.availabilities}}
           {{else}}
             {{listProficiencies @root.system.trained.armors @root.config.armorTypes}}
           {{/if}}
         </td>
-        <td>
+        <td class="tg-td">
           {{listProficiencies @root.system.trained.weapons @root.config.weaponTypes}}
         </td>
       </tr>
       {{#if @root.actor.system.canQualify}}
       <tr>
-        <th>{{ localize "E20.Qualifications" }}</th>
-        <td>
+        <th class="tg-td">{{ localize "E20.Qualifications" }}</th>
+        <td class="tg-td">
           {{listProficiencies @root.system.qualified.armors @root.config.armorTypes}}
         </td>
-        <td>
+        <td class="tg-td">
           {{listProficiencies @root.system.qualified.weapons @root.config.weaponTypes}}
         </td>
       </tr>
       {{/if}}
-    </table>
-  </div>
+    </tbody>
+  </table>
 </div>
