@@ -10,9 +10,11 @@
             {{ localize "E20.ItemTypeArmorPlural" }}
           {{/if}}
         </th>
+        {{#ifNotEquals @root.role.system.version 'powerRangers'}}
         <th class="tg-td">
           {{ localize "E20.ItemTypeWeaponPlural" }}
         </th>
+        {{/ifNotEquals}}
       </tr>
     </thead>
 
@@ -26,9 +28,11 @@
             {{listProficiencies @root.system.trained.armors @root.config.armorTypes}}
           {{/if}}
         </td>
+        {{#ifNotEquals @root.role.system.version 'powerRangers'}}
         <td class="tg-td">
           {{listProficiencies @root.system.trained.weapons @root.config.weaponTypes}}
         </td>
+        {{/ifNotEquals}}
       </tr>
       {{#if @root.actor.system.canQualify}}
       <tr>

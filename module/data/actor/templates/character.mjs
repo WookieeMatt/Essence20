@@ -70,7 +70,6 @@ export const character = () => ({
   canMorph: makeBool(false),
   canQualify: makeBool(false),
   canSpellcast: makeBool(false),
-  canTrain: makeBool(true),
   canTransform: makeBool(false),
   conditioning: makeInt(0),
   defenses: new fields.SchemaField({

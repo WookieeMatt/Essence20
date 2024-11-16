@@ -358,10 +358,6 @@ export async function roleUpdate(actor, role, dropFunc) {
     await actor.update({
       "system.canQualify": true,
     });
-  } else if (role.system.version == 'myLittlePony') {
-    await actor.update({
-      "system.canTrain": false,
-    });
   }
 
   await trainingUpdate(actor, 'armors', 'qualified', true, role);
@@ -463,10 +459,6 @@ export async function onRoleDelete(actor, role) {
   if (role.system.version == 'giJoe') {
     await actor.update({
       "system.canQualify": false,
-    });
-  } else if (role.system.version == 'myLittlePony') {
-    await actor.update({
-      "system.canTrain": true,
     });
   }
 
