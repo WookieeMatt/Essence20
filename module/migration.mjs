@@ -168,7 +168,7 @@ export const migrateActorData = async function(actor, compendiumActor) {
       updateData[`system.trained.weapons.${weaponType}`] = true;
     }
 
-    if (item.system.version =='giJoe') {
+    if (role.system.version =='giJoe') {
       updateData[`system.canQualify`] = true;
     }
   }
