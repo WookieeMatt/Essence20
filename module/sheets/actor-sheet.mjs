@@ -333,7 +333,9 @@ export class Essence20ActorSheet extends ActorSheet {
           activeShieldValue = i.system.activeEffect.value;
           passiveShieldValue = i.system.passiveEffect.value;
         }
+
         shields.push(i);
+        break;
       case 'spell':
         spells.push(i);
         break;
