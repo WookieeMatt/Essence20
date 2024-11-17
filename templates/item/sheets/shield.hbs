@@ -37,6 +37,33 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+      {{!-- Requirements --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldRequirements'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.requirements" value="{{system.requirements}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Passive Effect --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
+      {{#*inline "item-field-inputs"}}
+      {{numberInput system.passiveEffect.value name="system.passiveEffect.value" min=0 step=1}}
+      <select name="system.passiveEffect.type">
+        {{selectOptions config.defenses selected=system.passiveEffect.type}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Active Effect --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
+      {{#*inline "item-field-inputs"}}
+      {{numberInput system.activeEffect.value name="system.activeEffect.value" min=0 step=1}}
+      <select name="system.activeEffect.type">
+        {{selectOptions config.defenses selected=system.activeEffect.type}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
       {{!-- Traits --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraits'}}
       {{#*inline "item-field-edit"}}

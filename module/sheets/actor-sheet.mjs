@@ -249,11 +249,16 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
+    const shields = [];
     const specializations = {};
     const spells = [];
     const upgrades = [];
     const traits = []; // Used by Vehicles
     const weapons = [];
+    let activeShieldString = '';
+    let activeShieldValue = 0;
+    let passiveShieldString = '';
+    let passiveShieldValue = 0;
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
     let role = null;
@@ -321,6 +326,14 @@ export class Essence20ActorSheet extends ActorSheet {
       case 'power':
         powers.push(i);
         break;
+      case 'shield':
+        activeShieldString = `system.defenses.${i.system.activeEffect.type}.shield.active`;
+        passiveShieldString = `system.defenses.${i.system.passiveEffect.type}.shield.passive`;
+        if (i.system.equipped) {
+          activeShieldValue = i.system.activeEffect.value;
+          passiveShieldValue = i.system.passiveEffect.value;
+        }
+        shields.push(i);
       case 'spell':
         spells.push(i);
         break;
@@ -401,6 +414,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.powers = powers;
     context.rolePoints = rolePoints;
     context.role = role;
+    context.shields = shields;
     context.spells = spells;
     context.specializations = specializations;
     context.traits = traits;
@@ -410,6 +424,8 @@ export class Essence20ActorSheet extends ActorSheet {
     this.actor.update({
       "system.defenses.evasion.armor": equippedArmorEvasion,
       "system.defenses.toughness.armor": equippedArmorToughness,
+      [activeShieldString] : activeShieldValue,
+      [passiveShieldString] : passiveShieldValue,
     }).then(this.render(false));
   }
 

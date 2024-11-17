@@ -147,6 +147,7 @@ export class Essence20Actor extends Actor {
       const armor = defense.armor;
       const bonus = defense.bonus;
       const morphed = defense.morphed;
+      const shield = defense.shield;
       let rolePointsDefense = 0;
       const essence = system.essences[defense.essence].max;
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
@@ -154,6 +155,7 @@ export class Essence20Actor extends Actor {
       const armorName = game.i18n.localize('E20.DefenseArmor');
       const bonusName = game.i18n.localize('E20.Bonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
+      const shieldName = game.i18n.localize('E20.DefenseShield');
       let rolePointsName = game.i18n.localize('E20.RolePoints');
 
       // Armor from Role Points
@@ -175,9 +177,11 @@ export class Essence20Actor extends Actor {
 
       defense.total = base + essence + bonus + rolePointsDefense;
       defense.total += system.isMorphed ? morphed : armor;
+      defense.total += system.isShieldActive ? shield.active : shield.passive;
 
       defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`;
       defense.string += system.isMorphed ? ` + ${morphed} (${morphedName})` : ` + ${armor} (${armorName})`;
+      defense.string += system.isShieldActive ? ` + ${shield.active} (${shieldName})` : ` + ${shield.passive} (${shieldName})`;
       defense.string += ` + ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
     }
   }
