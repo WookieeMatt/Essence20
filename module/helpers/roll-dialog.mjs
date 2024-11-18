@@ -53,7 +53,7 @@ export class RollDialog {
     return new Promise(resolve => {
       const data = {
         title: this._localize('E20.RollDialogTitle', {
-          actor: actor.name, skill: E20.skills[dataset.skill], shift: E20.skillShifts[skillDataset.shift],
+          actor: actor.name, skill: E20.originSkills[dataset.skill], shift: E20.skillShifts[skillDataset.shift],
         }),
         content: html,
         buttons: {
