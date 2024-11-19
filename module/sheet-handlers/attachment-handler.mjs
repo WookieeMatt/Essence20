@@ -20,6 +20,49 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
   }
 }
 
+export async function shieldUpdate(actor, droppedItem, dropFunc) {
+  const newShieldList = await dropFunc();
+  let passiveDefenseString = '';
+  let activeDefenseString = '';
+  if (droppedItem.system.items) {
+    await createItemCopies(droppedItem.system.items, actor, "weaponEffect", newShieldList[0]);
+  }
+  if (droppedItem.system.passiveEffect.type == 'defenseBonus') {
+    passiveDefenseString = `system.defenses.${droppedItem.system.passiveEffect.option1.defense}.shield.passive`;
+    await actor.update({
+      passiveDefenseString: droppedItem.system.passiveEffect.option1.value,
+    });
+  } else if (droppedItem.system.passiveEffect.type == 'defenseBonusCombo') {
+    passiveDefenseString = `system.defenses.${droppedItem.system.passiveEffect.option1.defense}.shield.passive`;
+    await actor.update({
+      passiveDefenseString: droppedItem.system.passiveEffect.option1.value,
+    });
+    passiveDefenseString = `system.defenses.${droppedItem.system.passiveEffect.option2.defense}.shield.passive`;
+    await actor.update({
+      passiveDefenseString: droppedItem.system.passiveEffect.option2.value,
+    });
+  } else if (droppedItem.system.passiveEffect.type == 'defenseBonusOption') {
+
+  }
+  if (droppedItem.system.activeEffect.type == 'defenseBonus') {
+    activeDefenseString = `system.defenses.${droppedItem.system.activeEffect.option1.defense}.shield.active`;
+    await actor.update({
+      activeDefenseString: droppedItem.system.activeEffect.option1.value,
+    });
+  } else if (droppedItem.system.activeEffect.type == 'defenseBonusCombo') {
+    activeDefenseString = `system.defenses.${droppedItem.system.activeEffect.option1.defense}.shield.active`;
+    await actor.update({
+      activeDefenseString: droppedItem.system.activeEffect.option1.value,
+    });
+    activeDefenseString = `system.defenses.${droppedItem.system.activeEffect.option2.defense}.shield.active`;
+    await actor.update({
+      activeDefenseString: droppedItem.system.activeEffect.option2.value,
+    });
+  } else if (droppedItem.system.activeEffect.type == 'defenseBonusOption') {
+
+  }
+}
+
 /**
  * Creates copies of Items for given IDs
  * @param {Object[]} items The Item entries to copy
@@ -80,6 +123,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
  * @param {Function} dropFunc The function to call to complete the drop
  */
 export async function attachItem(actor, droppedItem, dropFunc) {
+  console.log(droppedItem)
   let parentType = "";
   if (droppedItem.system.type) {
     parentType = droppedItem.system.type;
@@ -222,6 +266,20 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
+    break;
+  case "shield":
+    if (droppedItem.type == "weaponEffect") {
+      entry['classification'] = droppedItem.system.classification;
+      entry['damageValue'] = droppedItem.system.damageValue;
+      entry['damageType'] = droppedItem.system.damageType;
+      entry['numHands'] = droppedItem.system.numHands;
+      entry['numTargets'] = droppedItem.system.numTargets;
+      entry['radius'] = droppedItem.system.radius;
+      entry['range'] = droppedItem.system.range;
+      entry['shiftDown'] = droppedItem.system.shiftDown;
+      entry['traits'] = droppedItem.system.traits;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
     break;
   case "weapon":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {

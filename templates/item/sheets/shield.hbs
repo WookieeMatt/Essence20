@@ -57,7 +57,7 @@
         {{!-- Passive Effect --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
         {{#*inline "item-field-inputs"}}
-        {{numberInput system.passiveEffect.value name="system.passiveEffect.option1.value" min=0 step=1}}
+        {{numberInput system.passiveEffect.option1.value name="system.passiveEffect.option1.value" min=0 step=1}}
         <select name="system.passiveEffect.option1.defense">
           {{selectOptions config.defenses selected=system.passiveEffect.option1.defense}}
         </select>
@@ -68,7 +68,7 @@
       {{#ifEquals system.passiveEffect.type 'defenseBonusCombo'}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
         {{#*inline "item-field-inputs"}}
-        {{numberInput system.passiveEffect.value name="system.passiveEffect.option2.value" min=0 step=1}}
+        {{numberInput system.passiveEffect.option2.value name="system.passiveEffect.option2.value" min=0 step=1}}
         <select name="system.passiveEffect.option2.defense">
           {{selectOptions config.defenses selected=system.passiveEffect.option2.defense}}
          </select>
@@ -79,7 +79,7 @@
       {{#ifEquals system.passiveEffect.type 'defenseBonusOption'}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
         {{#*inline "item-field-inputs"}}
-        {{numberInput system.passiveEffect.value name="system.passiveEffect.option2.value" min=0 step=1}}
+        {{numberInput system.passiveEffect.option2.value name="system.passiveEffect.option2.value" min=0 step=1}}
         <select name="system.passiveEffect.option2.defense">
           {{selectOptions config.defenses selected=system.passiveEffect.option2.defense}}
         </select>
@@ -108,7 +108,7 @@
         {{!-- Active Effect --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
         {{#*inline "item-field-inputs"}}
-        {{numberInput system.activeEffect.value name="system.activeEffect.option1.value" min=0 step=1}}
+        {{numberInput system.activeEffect.option1.value name="system.activeEffect.option1.value" min=0 step=1}}
         <select name="system.activeEffect.option1.defense">
           {{selectOptions config.defenses selected=system.activeEffect.option1.defense}}
         </select>
@@ -119,7 +119,7 @@
       {{#ifEquals system.activeEffect.type 'defenseBonusCombo'}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
         {{#*inline "item-field-inputs"}}
-        {{numberInput system.activeEffect.value name="system.activeEffect.option2.value" min=0 step=1}}
+        {{numberInput system.activeEffect.option2.value name="system.activeEffect.option2.value" min=0 step=1}}
         <select name="system.activeEffect.option2.defense">
           {{selectOptions config.defenses selected=system.activeEffect.option2.defense}}
         </select>
@@ -130,7 +130,7 @@
       {{#ifEquals system.activeEffect.type 'defenseBonusOption'}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
         {{#*inline "item-field-inputs"}}
-        {{numberInput system.activeEffect.value name="system.activeEffect.option2.value" min=0 step=1}}
+        {{numberInput system.activeEffect.option2.value name="system.activeEffect.option2.value" min=0 step=1}}
         <select name="system.activeEffect.option2.defense">
           {{selectOptions config.defenses selected=system.activeEffect.option2.defense}}
         </select>
@@ -156,13 +156,15 @@
 
       {{#*inline "item-field-inputs"}}
         <div class="chip-section">
-          {{#each item.system.itemAndUpgradeTraits as |trait|}}
-          <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
+          {{#each item.system.traits as |trait|}}
+          <span class="chip" name="chip.shield.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
           {{/each}}
         </div>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+      {{!-- Weapon Effects --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.ItemTypeWeaponEffectPlural' items=@root.system.items type='weaponEffect'}}
 
     </div>
 

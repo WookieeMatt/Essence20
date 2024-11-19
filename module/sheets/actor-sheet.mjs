@@ -327,13 +327,6 @@ export class Essence20ActorSheet extends ActorSheet {
         powers.push(i);
         break;
       case 'shield':
-        activeShieldString = `system.defenses.${i.system.activeEffect.type}.shield.active`;
-        passiveShieldString = `system.defenses.${i.system.passiveEffect.type}.shield.passive`;
-        if (i.system.equipped) {
-          activeShieldValue = i.system.activeEffect.value;
-          passiveShieldValue = i.system.passiveEffect.value;
-        }
-
         shields.push(i);
         break;
       case 'spell':
@@ -426,8 +419,6 @@ export class Essence20ActorSheet extends ActorSheet {
     this.actor.update({
       "system.defenses.evasion.armor": equippedArmorEvasion,
       "system.defenses.toughness.armor": equippedArmorToughness,
-      [activeShieldString] : activeShieldValue,
-      [passiveShieldString] : passiveShieldValue,
     }).then(this.render(false));
   }
 
