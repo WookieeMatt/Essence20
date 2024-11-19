@@ -196,6 +196,15 @@ E20.upgradeTraits = {
 };
 preLocalize("upgradeTraits");
 
+// Options for Upgrade traits
+E20.shieldEffectTypes = {
+  defenseBonus: "E20.ShieldDefenseBonus",
+  defenseBonusCombo: "E20.ShieldDefenseBonusCombo",
+  defenseBonusOption: "E20.ShieldDefenseBonusOption",
+  other: "E20.ShieldOther",
+};
+preLocalize("shieldEffectTypes");
+
 /************************************************
  * Essences and Skills                          *
  ***********************************************/
