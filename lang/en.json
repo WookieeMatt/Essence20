@@ -453,7 +453,7 @@
     "RollDialogRollButton": "Roll",
     "RollDialogSnag": "Snag",
     "RollDialogTimesToRoll": "Times to roll",
-    "RollDialogTitle": "{actor} skill roll",
+    "RollDialogTitle": "{actor} {shift} {skill} Skill Roll",
     "RollIsSpecialized": "Specialized",
     "RollRepeatText": "Roll {index} of {total}",
     "RollRollingFor": "Rolling for",

@@ -38,9 +38,11 @@ export class Dice {
       shift: actor.system.initiative.shift,
       shiftUp: actor.system.initiative.shiftUp + actor.system.essenceShifts.speed.shiftUp,
       shiftDown: actor.system.initiative.shiftDown + actor.system.essenceShifts.speed.shiftDown,
+      skill: 'initiative',
     };
     const skillDataset = {
       edge: actor.system.initiative.edge,
+      shift: actor.system.initiative.shift,
       snag: actor.system.initiative.snag,
     };
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, skillDataset, actor);
