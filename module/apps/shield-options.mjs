@@ -19,6 +19,12 @@ export class ShieldOptions extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 
+  static async _prepareContext(options) {
+    console.log("Got Here 2")
+    console.log(this)
+    const context = await super._prepareContext(options);
+  }
+
   static async onSubmit(event, form, formData) {
     console.log(event)
     console.log(form)
