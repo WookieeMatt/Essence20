@@ -1,5 +1,6 @@
 import { rememberOptions } from "../helpers/dialog.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
+import { ShieldOptions } from "../apps/shield-options.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
@@ -27,39 +28,42 @@ export async function shieldUpdate(actor, droppedItem, dropFunc) {
   if (droppedItem.system.items) {
     await createItemCopies(droppedItem.system.items, actor, "weaponEffect", newShieldList[0]);
   }
+
   if (droppedItem.system.passiveEffect.type == 'defenseBonus') {
     passiveDefenseString = `system.defenses.${droppedItem.system.passiveEffect.option1.defense}.shield.passive`;
     await actor.update({
-      passiveDefenseString: droppedItem.system.passiveEffect.option1.value,
+      [passiveDefenseString]: droppedItem.system.passiveEffect.option1.value,
     });
   } else if (droppedItem.system.passiveEffect.type == 'defenseBonusCombo') {
     passiveDefenseString = `system.defenses.${droppedItem.system.passiveEffect.option1.defense}.shield.passive`;
     await actor.update({
-      passiveDefenseString: droppedItem.system.passiveEffect.option1.value,
+      [passiveDefenseString]: droppedItem.system.passiveEffect.option1.value,
     });
     passiveDefenseString = `system.defenses.${droppedItem.system.passiveEffect.option2.defense}.shield.passive`;
     await actor.update({
-      passiveDefenseString: droppedItem.system.passiveEffect.option2.value,
+      [passiveDefenseString]: droppedItem.system.passiveEffect.option2.value,
     });
   } else if (droppedItem.system.passiveEffect.type == 'defenseBonusOption') {
-
+    console.log('Got Here')
+    new ShieldOptions(droppedItem).render(true)
   }
+
   if (droppedItem.system.activeEffect.type == 'defenseBonus') {
     activeDefenseString = `system.defenses.${droppedItem.system.activeEffect.option1.defense}.shield.active`;
     await actor.update({
-      activeDefenseString: droppedItem.system.activeEffect.option1.value,
+      [activeDefenseString]: droppedItem.system.activeEffect.option1.value,
     });
   } else if (droppedItem.system.activeEffect.type == 'defenseBonusCombo') {
     activeDefenseString = `system.defenses.${droppedItem.system.activeEffect.option1.defense}.shield.active`;
     await actor.update({
-      activeDefenseString: droppedItem.system.activeEffect.option1.value,
+      [activeDefenseString]: droppedItem.system.activeEffect.option1.value,
     });
     activeDefenseString = `system.defenses.${droppedItem.system.activeEffect.option2.defense}.shield.active`;
     await actor.update({
-      activeDefenseString: droppedItem.system.activeEffect.option2.value,
+      [activeDefenseString]: droppedItem.system.activeEffect.option2.value,
     });
   } else if (droppedItem.system.activeEffect.type == 'defenseBonusOption') {
-
+    new ShieldOptions().render(true)
   }
 }
 
