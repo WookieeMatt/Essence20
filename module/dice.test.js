@@ -243,6 +243,34 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false);
   });
 
+  test("specialized standard skill roll", async () => {
+    const datasetCopy = {
+      ...dataset,
+      isSpecialized: true,
+    };
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(datasetCopy, mockActor, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false);
+  });
+
   test("specialized skill roll via weapon effect", async () => {
     const datasetCopy = {
       ...dataset,
