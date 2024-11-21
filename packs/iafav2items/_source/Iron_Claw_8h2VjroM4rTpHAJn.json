@@ -1,0 +1,97 @@
+{
+  "folder": "45JaNQtAYrkaSVuG",
+  "name": "Iron Claw",
+  "type": "weapon",
+  "_id": "8h2VjroM4rTpHAJn",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 29
+    },
+    "items": {
+      "b09f": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.3FNuMBoWp4WtgzsS",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Iron Claw Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "d90f": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.cApOuns5qiokKyQl",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Iron Claw Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 0,
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d6"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1728525095272,
+    "modifiedTime": 1728525149584,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!8h2VjroM4rTpHAJn"
+}

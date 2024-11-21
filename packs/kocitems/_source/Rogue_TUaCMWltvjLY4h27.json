@@ -1,0 +1,51 @@
+{
+  "folder": "HmjC1x6o8jRDDzsl",
+  "name": "Rogue",
+  "type": "influence",
+  "_id": "TUaCMWltvjLY4h27",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 18
+    },
+    "items": {
+      "e503": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.Sm5LWv4KkiQJNYyI",
+        "img": "icons/svg/hazard.svg",
+        "name": "Hidden in Plain Sight",
+        "type": "hangUp"
+      },
+      "d367": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.nMS83Zn6qgFpIpmE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick and Quiet",
+        "type": "perk"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": [
+      "infiltration"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727400593787,
+    "modifiedTime": 1727400614610,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!TUaCMWltvjLY4h27"
+}

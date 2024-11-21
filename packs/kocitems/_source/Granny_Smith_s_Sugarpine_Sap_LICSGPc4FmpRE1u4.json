@@ -1,0 +1,39 @@
+{
+  "folder": "YkAQ5ZP6J2Qhqpmy",
+  "name": "Granny Smith's Sugarpine Sap",
+  "type": "spell",
+  "_id": "LICSGPc4FmpRE1u4",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 43
+    },
+    "circle": "utility",
+    "cost": 1,
+    "duration": "Instant",
+    "isSpecialized": false,
+    "range": "Reach",
+    "tier": "elementary"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727533184237,
+    "modifiedTime": 1727533204684,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!LICSGPc4FmpRE1u4"
+}

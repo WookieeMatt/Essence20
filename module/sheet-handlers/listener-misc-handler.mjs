@@ -1,12 +1,16 @@
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
+import { rememberSelect } from "../helpers/dialog.mjs";
+
+const PARENT_ROLLER_KEY = "parentActor";
 
 /**
  * Handle clickable rolls.
- * @param {Actor} actor The Actor making the roll
  * @param {Event} event The originating click event
+ * @param {Actor} actor The Actor making the roll
+ * @param {Actor} childRoller Optional attached Actor making the roll
  */
-export async function onRoll(event, actor) {
+export async function performRoll(event, actor, childRoller=None) {
   event.preventDefault();
   const element = event.currentTarget;
   const dataset = element.dataset;
@@ -18,7 +22,15 @@ export async function onRoll(event, actor) {
 
   // Handle type-specific rolls.
   if (rollType == 'skill') {
-    actor.rollSkill(dataset);
+    if (childRoller) {
+      dataset.canCritD2 = childRoller.system.skills[dataset.skill].canCritD2;
+      dataset.shift = childRoller.system.skills[dataset.skill].shift;
+      dataset.shiftDown = childRoller.system.skills[dataset.skill].shiftDown;
+      dataset.shiftUp = childRoller.system.skills[dataset.skill].shiftUp;
+      dataset.isSpecialized = childRoller.system.skills[dataset.skill].isSpecialized;
+    }
+
+    actor.rollSkill(dataset, actor);
   } else if (rollType == 'initiative') {
     actor.rollInitiative({createCombatants: true});
   } else { // Handle items
@@ -71,7 +83,7 @@ export async function onRoll(event, actor) {
     }
 
     if (item) {
-      return item.roll(dataset, childKey);
+      return item.roll(dataset, actor, childRoller);
     }
   }
 }
@@ -209,4 +221,60 @@ export async function onToggleHeaderAccordion(event) {
   for (const accordionLabel of accordionLabels) {
     isOpening ? $(accordionLabel).addClass('open') : $(accordionLabel).removeClass('open');
   }
+}
+
+/**
+ * @param {Event} event The originating click event
+ * @param {Actor} actor The Actor making the roll
+ */
+export async function onRoll(event, actor) {
+  if (actor.type == 'vehicle' || actor.type == 'zord') {
+    const choices = {};
+    choices[PARENT_ROLLER_KEY] = {
+      chosen: true,
+      key: PARENT_ROLLER_KEY,
+      label: actor.name,
+    };
+    for (const [key, passenger] of Object.entries(actor.system.actors)) {
+      choices[key] = {
+        chosen: false,
+        key: key,
+        label: passenger.name,
+      };
+    }
+
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.ActorSelect'),
+        content: await renderTemplate("systems/essence20/templates/dialog/select-dialog.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => handleActorSelector(actor, rememberSelect(html), event),
+          },
+        },
+      },
+    ).render(true);
+  } else {
+    performRoll(event, actor, null);
+  }
+}
+
+/**
+ * @param {Actor} actor The Actor making the roll
+ * @param {Object} options The options selected in the dialog
+ * @param {Event} event The originating click event
+ */
+async function handleActorSelector(actor, options, event) {
+  let childRoller;
+  if (options['actor'] == PARENT_ROLLER_KEY) {
+    childRoller = actor;
+  } else {
+    const fullActor = actor.system.actors[options['actor']];
+    childRoller = await fromUuid(fullActor.uuid);
+  }
+
+  performRoll(event, actor, childRoller);
 }

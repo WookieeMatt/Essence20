@@ -10,11 +10,6 @@ export class VehicleActorData extends foundry.abstract.TypeDataModel {
     return {
       ...common(),
       ...machine(),
-      crew: new fields.SchemaField({
-        description: makeStr(''),
-        numDrivers: makeInt(1),
-        numPassengers: makeInt(0),
-      }),
       firepoints: new fields.SchemaField({
         description: makeStr(''),
         value: makeInt(1),

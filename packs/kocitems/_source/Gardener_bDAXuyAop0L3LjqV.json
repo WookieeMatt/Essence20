@@ -1,0 +1,37 @@
+{
+  "folder": "AMYdAZa9wDyQ8hpe",
+  "name": "Gardener",
+  "type": "perk",
+  "_id": "bDAXuyAop0L3LjqV",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 13
+    },
+    "items": {},
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727389816980,
+    "modifiedTime": 1727389821666,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!bDAXuyAop0L3LjqV"
+}

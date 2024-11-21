@@ -1,0 +1,37 @@
+{
+  "folder": "yyDOCXj85udfaZK7",
+  "name": "Projectile Dancer",
+  "type": "perk",
+  "_id": "gsSxDXrq0xdmkeJp",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 31
+    },
+    "items": {},
+    "prerequisite": "Speed Essence 4",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1728526344467,
+    "modifiedTime": 1728526363445,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!gsSxDXrq0xdmkeJp"
+}

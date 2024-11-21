@@ -1,0 +1,37 @@
+{
+  "folder": "yyDOCXj85udfaZK7",
+  "name": "Steady Footing",
+  "type": "perk",
+  "_id": "U4bVJU5BpT3BTfSx",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 95
+    },
+    "items": {},
+    "prerequisite": "Acrobatics +d6 or Athletics +d6",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1728607798096,
+    "modifiedTime": 1728607827693,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!U4bVJU5BpT3BTfSx"
+}

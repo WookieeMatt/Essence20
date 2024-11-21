@@ -13,14 +13,58 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Heavy Armor Training",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.LJvxbolRImjPuAiA",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "OHMI3GttUb1SgDgt",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.trained.armors.heavy",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1731768562735,
+        "modifiedTime": 1731768588476,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!LJvxbolRImjPuAiA.OHMI3GttUb1SgDgt"
+    }
+  ],
   "flags": {
     "core": {}
   },
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "12.323",
+    "coreVersion": "12.331",
     "createdTime": 1686281246453,
     "modifiedTime": 1714849758779,
     "lastModifiedBy": "VEn5sPQRoWgUw9qd",

@@ -1,0 +1,51 @@
+{
+  "folder": "HmjC1x6o8jRDDzsl",
+  "name": "Fighter",
+  "type": "influence",
+  "_id": "pQdQteGZY9o7Epzy",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 16
+    },
+    "items": {
+      "bbf0": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.ddSnDksWfxPkekda",
+        "img": "icons/svg/hazard.svg",
+        "name": "No Fighting?!",
+        "type": "hangUp"
+      },
+      "c452": {
+        "uuid": "Compendium.essence20.knights_of_canterlot.Item.Yk2CE81sRx24gtXl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Canny Combatant",
+        "type": "perk"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": [
+      "might"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727400381576,
+    "modifiedTime": 1727400402108,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!pQdQteGZY9o7Epzy"
+}

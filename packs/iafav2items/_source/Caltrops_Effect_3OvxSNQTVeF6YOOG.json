@@ -1,0 +1,48 @@
+{
+  "folder": "Y7VLx3wOOmK72HRd",
+  "name": "Caltrops Effect",
+  "type": "weaponEffect",
+  "_id": "3OvxSNQTVeF6YOOG",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "shiftDown": 0,
+    "numHands": 1,
+    "numTargets": 3,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 20,
+      "value": 10
+    },
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 29
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727616405970,
+    "modifiedTime": 1727699470670,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!3OvxSNQTVeF6YOOG"
+}

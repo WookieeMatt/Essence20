@@ -92,6 +92,13 @@
         placeholder="{{localize 'E20.WeaponRangeMin'}}" min="0" step="1" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Specialized --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RollIsSpecialized'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.isSpecialized" {{checked system.isSpecialized}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     </div>
   </section>
 </form>

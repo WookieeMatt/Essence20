@@ -1,0 +1,33 @@
+{
+  "folder": "TewKMQk1ThtujWqq",
+  "name": "Hard Habit to Break",
+  "type": "hangUp",
+  "_id": "q9ObJy6Ipqn7lPHM",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 37
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727441438650,
+    "modifiedTime": 1727441443474,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!q9ObJy6Ipqn7lPHM"
+}

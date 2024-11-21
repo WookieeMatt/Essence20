@@ -1,0 +1,36 @@
+{
+  "folder": "0bpLSDRFZt3RoVGN",
+  "name": "Massive Mug of Mammoth Measurements",
+  "type": "magicBauble",
+  "_id": "YMC3WoSkJ11jrwUn",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 52
+    },
+    "duration": "1 scene",
+    "range": "Reach",
+    "spellcastingShift": "d4"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727534751612,
+    "modifiedTime": 1727534768863,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!YMC3WoSkJ11jrwUn"
+}

@@ -1,0 +1,39 @@
+{
+  "folder": "KbZ2VhPVbKVsqsOG",
+  "name": "Glittermane",
+  "type": "spell",
+  "_id": "WACDOLg6uFWlr2lc",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 46
+    },
+    "circle": "utility",
+    "cost": 2,
+    "duration": "1 scene",
+    "isSpecialized": false,
+    "range": "Reach",
+    "tier": "superior"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727533735354,
+    "modifiedTime": 1727533752842,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!WACDOLg6uFWlr2lc"
+}

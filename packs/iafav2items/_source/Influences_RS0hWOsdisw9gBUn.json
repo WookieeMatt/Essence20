@@ -1,0 +1,22 @@
+{
+  "name": "Influences",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "RS0hWOsdisw9gBUn",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727535170044,
+    "modifiedTime": 1727535170044,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!folders!RS0hWOsdisw9gBUn"
+}

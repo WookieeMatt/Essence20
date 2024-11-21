@@ -1,0 +1,36 @@
+{
+  "folder": "f2zVv5UY2e20kBhn",
+  "name": "10-foot Pole",
+  "type": "gear",
+  "_id": "1cb0zxrM1ZRZ6wZp",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 20
+    },
+    "quantity": 1,
+    "type": "tools",
+    "gearType": "tools"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727400917778,
+    "modifiedTime": 1727440314908,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!1cb0zxrM1ZRZ6wZp"
+}

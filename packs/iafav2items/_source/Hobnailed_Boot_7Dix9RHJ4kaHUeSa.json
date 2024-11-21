@@ -1,0 +1,76 @@
+{
+  "folder": "45JaNQtAYrkaSVuG",
+  "name": "Hobnailed Boot",
+  "type": "weapon",
+  "_id": "7Dix9RHJ4kaHUeSa",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 29
+    },
+    "items": {
+      "8ec8": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.ReeqwVjlTrE1VeJv",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hobnailed Boot Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d6"
+    },
+    "traits": [
+      "blunt",
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1728525262355,
+    "modifiedTime": 1728525339248,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!7Dix9RHJ4kaHUeSa"
+}

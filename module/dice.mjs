@@ -38,9 +38,11 @@ export class Dice {
       shift: actor.system.initiative.shift,
       shiftUp: actor.system.initiative.shiftUp + actor.system.essenceShifts.speed.shiftUp,
       shiftDown: actor.system.initiative.shiftDown + actor.system.essenceShifts.speed.shiftDown,
+      skill: 'initiative',
     };
     const skillDataset = {
       edge: actor.system.initiative.edge,
+      shift: actor.system.initiative.shift,
       snag: actor.system.initiative.snag,
     };
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, skillDataset, actor);
@@ -65,12 +67,14 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The item being used, if any.
    */
-  async rollSkill(rawDataset, actor, item) {
+  async rollSkill(rawDataset, actor, item=null) {
     const dataset = { // Converting strings to usable types
       ...rawDataset,
       shiftDown: parseInt(rawDataset.shiftDown),
       shiftUp: parseInt(rawDataset.shiftUp),
-      isSpecialized: rawDataset.isSpecialized && rawDataset.isSpecialized != 'false',
+      isSpecialized: rawDataset.isSpecialized
+        && rawDataset.isSpecialized != 'false'
+        || !!item?.system?.isSpecialized,
       canCritD2: rawDataset.canCritD2 && rawDataset.canCritD2 != 'false',
     };
     const rolledSkill = dataset.skill;
@@ -92,10 +96,11 @@ export class Dice {
       shiftDown: calculatedShiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
-
+    const initialShift = dataset.shift || actorSkillData.shift;
     const skillDataset = {
-      edge: actorSkillData.edge || essenceShifts[rolledEssence]?.edge,
-      snag: actorSkillData.snag || essenceShifts[rolledEssence]?.snag,
+      shift: initialShift,
+      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge,
+      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag,
     };
 
     updatedShiftDataset.rolePoints = null;
@@ -115,7 +120,6 @@ export class Dice {
       return;
     }
 
-    const initialShift = dataset.shift || actorSkillData.shift;
     let label = '';
     let roleSkillDieName = '';
 
@@ -201,10 +205,9 @@ export class Dice {
     } else if (dataset.skill == 'wealth') {
       rolledSkillStr = this._localize('E20.Wealth');
     } else if (dataset.isSpecialized) {
-      rolledSkillStr = dataset.specializationName;
+      rolledSkillStr = dataset.specializationName || E20.skills[dataset.skill];
     } else {
-      const rolledSkill = dataset.skill;
-      rolledSkillStr = this._localize(E20.skills[rolledSkill]);
+      rolledSkillStr = E20.skills[dataset.skill];
     }
 
     const rollingForStr = this._localize('E20.RollRollingFor');

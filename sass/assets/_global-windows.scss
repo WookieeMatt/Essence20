@@ -76,6 +76,20 @@
   background: none;
 }
 
+.minimizing {
+  list-style: none;
+  padding: v.$padding;
+  overflow-y: none;
+  color: v.$textcolor1;
+  flex-basis: auto;
+  justify-content: center;
+  height: 100%;
+  background: v.$background-n;
+  border: v.$border;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+}
+
 #module-management .package-list .package-title {
   color: v.$textcolor1;
 }

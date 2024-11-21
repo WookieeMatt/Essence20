@@ -1,4 +1,5 @@
-import { createId } from "./helpers/utils.mjs";
+import { createId, getItemsOfType } from "./helpers/utils.mjs";
+
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
  * @returns {Promise}      A Promise which resolves once the migration is completed
@@ -143,6 +144,35 @@ export const migrateWorld = async function() {
 export const migrateActorData = async function(actor, compendiumActor) {
   const updateData = {};
 
+  //Migration for Weapon and Armor Training and Qualificaitons moving to Actors from Roles
+  const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
+  if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
+    const role = getItemsOfType('role', actor.items)[0];
+    for (const armorType of role.system.armors.qualified) {
+      updateData[`system.qualified.armors.${armorType}`] = true;
+    }
+
+    for (const armorType of role.system.armors.trained) {
+      updateData[`system.trained.armors.${armorType}`] = true;
+    }
+
+    for (const armorType of role.system.upgrades.armors.trained) {
+      updateData[`system.trained.upgrades.armors.${armorType}`] = true;
+    }
+
+    for (const weaponType of role.system.weapons.qualified) {
+      updateData[`system.qualified.weapons.${weaponType}`] = true;
+    }
+
+    for (const weaponType of role.system.weapons.trained) {
+      updateData[`system.trained.weapons.${weaponType}`] = true;
+    }
+
+    if (role.system.version =='giJoe') {
+      updateData[`system.canQualify`] = true;
+    }
+  }
+
   // Migrate initiative
   if (typeof actor.system.initiative == "string") {
     updateData[`system.initiative`] = {
@@ -173,6 +203,23 @@ export const migrateActorData = async function(actor, compendiumActor) {
 
     updateData[`system.skills`] = newSkills;
   }
+
+  if (!actor.system.skills.acrobatics.essences.speed) {
+    for (const skill of Object.keys(actor.system.skills)) {
+      if (skill != 'roleSkillDie') {
+        const essence = CONFIG.E20.skillToEssence[skill];
+        if (essence == 'any') {
+          updateData[`system.skills.${skill}.essences.smarts`] = true;
+          updateData[`system.skills.${skill}.essences.social`] = true;
+          updateData[`system.skills.${skill}.essences.speed`] = true;
+          updateData[`system.skills.${skill}.essences.strength`] = true;
+        } else {
+          updateData[`system.skills.${skill}.essences.${essence}`] = true;
+        }
+      }
+    }
+  }
+
 
   // Migrate to Base Movement
   if (Object.keys(actor.system.movement.aerial).sort() != ['altMode', 'base', 'bonus', 'morphed', 'total']) {

@@ -44,6 +44,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs",
     "systems/essence20/templates/actor/parts/misc/spells.hbs",
     "systems/essence20/templates/actor/parts/misc/stun.hbs",
+    "systems/essence20/templates/actor/parts/misc/training.hbs",
     "systems/essence20/templates/actor/parts/misc/vehicle-crew.hbs",
     "systems/essence20/templates/actor/parts/misc/wealth-die.hbs",
     "systems/essence20/templates/actor/parts/misc/zord-common.hbs",

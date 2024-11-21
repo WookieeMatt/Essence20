@@ -8,18 +8,6 @@ chatMessage.getSpeaker = jest.fn();
 chatMessage.getSpeaker.mockReturnValue({});
 chatMessage.create = jest.fn();
 
-const rollDialog = jest.mock();
-rollDialog.getSkillRollOptions = jest.fn();
-rollDialog.getSkillRollOptions.mockReturnValue({
-  canCritD2: false,
-  edge: false,
-  shiftDown: 0,
-  shiftUp: 0,
-  snag: false,
-  isSpecialized: false,
-  timesToRoll: 1,
-});
-
 class Mocki18n {
   localize(text) {
     return text;
@@ -65,13 +53,30 @@ const mockActor = {
   },
 };
 
-const dice = new Dice(chatMessage, rollDialog, new Mocki18n());
+function createMockRollDialog() {
+  const rollDialog = jest.mock();
+  rollDialog.getSkillRollOptions = jest.fn();
+  rollDialog.getSkillRollOptions.mockReturnValue({
+    canCritD2: false,
+    edge: false,
+    shiftDown: 0,
+    shiftUp: 0,
+    snag: false,
+    isSpecialized: false,
+    timesToRoll: 1,
+  });
+
+  return rollDialog;
+}
+
+const dice = new Dice(chatMessage, createMockRollDialog(), new Mocki18n());
 
 /* Begin Tests */
 
 /* prepareInitiativeRoll */
 describe("prepareInitiativeRoll", () => {
   test("normal initiative roll", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -105,6 +110,7 @@ describe("rollSkill", () => {
   };
 
   test("normal skill roll", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -132,6 +138,7 @@ describe("rollSkill", () => {
       ...dataset,
       isSpecialized: 'false',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -155,6 +162,7 @@ describe("rollSkill", () => {
   });
 
   test("repeated normal skill roll", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -183,6 +191,7 @@ describe("rollSkill", () => {
       ...dataset,
       shift: 'autoSuccess',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -211,6 +220,7 @@ describe("rollSkill", () => {
       isSpecialized: true,
       specializationName: 'Foo Specialization',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -233,12 +243,93 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false);
   });
 
+  test("specialized standard skill roll", async () => {
+    const datasetCopy = {
+      ...dataset,
+      isSpecialized: true,
+    };
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
+        },
+      },
+    }));
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(datasetCopy, mockActor, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false);
+  });
+
+  test("specialized skill roll via weapon effect", async () => {
+    const datasetCopy = {
+      ...dataset,
+      isSpecialized: false,
+    };
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    mockActor.getRollData = jest.fn(() => ({
+      skills: {
+        'athletics': {
+          modifier: '0',
+          shift: 'd20',
+        },
+      },
+    }));
+    const weaponEffect = {
+      name: 'Zeo Power Clubs Effect',
+      type: 'weaponEffect',
+      system: {
+        classification: {
+          skill: "athletics",
+        },
+        damageType: "blunt",
+        damageValue: 1,
+        isSpecialized: true,
+      },
+    };
+    dice._rollSkillHelper = jest.fn();
+
+    const expectedDataset = {
+      ...dataset,
+      isSpecialized: true,
+      shiftUp: 0,
+      shiftDown: 0,
+    };
+    const expectedSkillDataset = {
+      edge: false,
+      shift: "d20",
+      snag: false,
+    };
+
+    await dice.rollSkill(datasetCopy, mockActor, weaponEffect);
+    expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(expectedDataset, expectedSkillDataset, mockActor);
+  });
+
   test("specialized skill roll works with isSpecialized as true string", async () => {
     const datasetCopy = {
       ...dataset,
       isSpecialized: 'true',
       specializationName: 'Foo Specialization',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -262,6 +353,7 @@ describe("rollSkill", () => {
   });
 
   test("normal weapon effect skill roll", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -307,6 +399,7 @@ describe("rollSkill", () => {
       skill: 'spellcasting',
       essence: 'any',
     };
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -338,6 +431,7 @@ describe("rollSkill", () => {
   });
 
   test("essence-shifted skill roll with edge", async () => {
+    const rollDialog = createMockRollDialog();
     rollDialog.getSkillRollOptions.mockReturnValue({
       canCritD2: false,
       edge: false,
@@ -346,24 +440,6 @@ describe("rollSkill", () => {
       shiftDown: 0,
       timesToRoll: 1,
     });
-    mockActor.getRollData = jest.fn(() => ({
-      skills: {
-        'athletics': {
-          modifier: '0',
-          shift: 'd20',
-        },
-      },
-    }));
-    const expectedDataset = {
-      ...dataset,
-      isSpecialized: false,
-      shiftUp: 1,
-      shiftDown: 2,
-    };
-    const expectedSkillDataset = {
-      edge: true,
-      snag: false,
-    };
     const mockShiftedActor = {
       ...mockActor,
       getRollData: jest.fn().mockReturnValue({
@@ -381,6 +457,18 @@ describe("rollSkill", () => {
     mockShiftedActor.system.essenceShifts.strength.snag = false;
     mockShiftedActor.system.essenceShifts.any.shiftDown = 1;
     dice._rollSkillHelper = jest.fn();
+
+    const expectedDataset = {
+      ...dataset,
+      isSpecialized: false,
+      shiftUp: 1,
+      shiftDown: 2,
+    };
+    const expectedSkillDataset = {
+      edge: true,
+      shift: "d20",
+      snag: false,
+    };
 
     await dice.rollSkill(dataset, mockShiftedActor, null);
     expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(expectedDataset, expectedSkillDataset, mockShiftedActor);

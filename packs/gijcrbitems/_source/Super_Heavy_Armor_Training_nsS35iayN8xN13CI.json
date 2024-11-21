@@ -13,14 +13,58 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "New Effect",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.nsS35iayN8xN13CI",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "VXsd8F2w1JPaPwBo",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.trained.armors.ultraHeavy",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1731768637281,
+        "modifiedTime": 1731768658860,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!nsS35iayN8xN13CI.VXsd8F2w1JPaPwBo"
+    }
+  ],
   "flags": {
     "core": {}
   },
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "12.323",
+    "coreVersion": "12.331",
     "createdTime": 1686281877413,
     "modifiedTime": 1714849758779,
     "lastModifiedBy": "VEn5sPQRoWgUw9qd",

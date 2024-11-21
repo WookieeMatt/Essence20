@@ -10,8 +10,8 @@ export class GearItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
+      gearType: makeStrWithChoices(Object.keys(E20.gearTypes), 'clothes'),
       quantity: makeInt(1),
-      type: makeStrWithChoices(Object.keys(E20.gearTypes), 'clothes'),
     };
   }
 }

@@ -1,0 +1,39 @@
+{
+  "folder": "KbZ2VhPVbKVsqsOG",
+  "name": "Waterrunning",
+  "type": "spell",
+  "_id": "F6mPryRgK7wLM0Yu",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 48
+    },
+    "circle": "aid",
+    "cost": 2,
+    "duration": "1 scene",
+    "isSpecialized": false,
+    "range": "Line of Sight",
+    "tier": "superior"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727534039234,
+    "modifiedTime": 1727534058372,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!F6mPryRgK7wLM0Yu"
+}

@@ -1,0 +1,39 @@
+{
+  "folder": "YkAQ5ZP6J2Qhqpmy",
+  "name": "Bloom Banquet",
+  "type": "spell",
+  "_id": "A7wd6VFj5PG80A1S",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Knights of Canterlot",
+      "page": 41
+    },
+    "circle": "utility",
+    "cost": 2,
+    "duration": "1 hour",
+    "isSpecialized": false,
+    "range": "1 plant",
+    "tier": "elementary"
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.4.1",
+    "createdTime": 1727442616473,
+    "modifiedTime": 1727533138539,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!A7wd6VFj5PG80A1S"
+}
