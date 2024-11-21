@@ -124,7 +124,7 @@ export async function onItemDelete(event, actorSheet) {
 
   // Confirmation dialog
   const confirmation = await _getItemDeleteConfirmDialog(item);
-  if (confirmation.cancelled) {
+  if (confirmation != 'confirm') {
     return;
   }
 
@@ -169,28 +169,29 @@ export async function onItemDelete(event, actorSheet) {
  * @returns {Promise<Dialog>} The dialog to be displayed.
  */
 export async function _getItemDeleteConfirmDialog(item) {
-  return new Promise(resolve => {
-    const data = {
-      title: game.i18n.localize("E20.ItemDeleteConfirmTitle"),
-      content: `<p>${game.i18n.format("E20.ItemDeleteConfirmContent", {name: item.name})}</p>`,
-      buttons: {
-        normal: {
-          label: game.i18n.localize('E20.DialogConfirmButton'),
-          /* eslint-disable no-unused-vars */
-          callback: html => resolve({ cancelled: false }),
-        },
-        cancel: {
-          label: game.i18n.localize('E20.DialogCancelButton'),
-          /* eslint-disable no-unused-vars */
-          callback: html => resolve({ cancelled: true }),
-        },
-      },
-      default: "normal",
-      close: () => resolve({ cancelled: true }),
-    };
+  const confirmation = await foundry.applications.api.DialogV2.wait({
+    window: { title: game.i18n.localize("E20.ItemDeleteConfirmTitle")},
+    classes: [
+      "window-app",
+    ],
+    content: `<p>${game.i18n.format("E20.ItemDeleteConfirmContent", {name: item.name})}</p>`,
+    modal: true,
 
-    new Dialog(data, null).render(true);
+    buttons: [
+      {
+        label: game.i18n.localize('E20.DialogConfirmButton'),
+        action: 'confirm',
+        /* eslint-disable no-unused-vars */
+      },
+      {
+        label: game.i18n.localize('E20.DialogCancelButton'),
+        action: 'cancel',
+        /* eslint-disable no-unused-vars */
+      },
+    ],
   });
+
+  return confirmation;
 }
 
 /**
