@@ -45,7 +45,8 @@ export async function shieldUpdate(actor, droppedItem, dropFunc) {
     });
   } else if (droppedItem.system.passiveEffect.type == 'defenseBonusOption') {
     console.log('Got Here')
-    new ShieldOptions(droppedItem).render(true)
+    const submitted = await new ShieldOptions(droppedItem, 'passiveEffect').render(true);
+    console.log('Got Here', submitted)
   }
 
   if (droppedItem.system.activeEffect.type == 'defenseBonus') {
