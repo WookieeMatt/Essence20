@@ -27,6 +27,7 @@ export async function shieldUpdate(actor, droppedItem, dropFunc) {
   if (droppedItem.system.items) {
     await createItemCopies(droppedItem.system.items, actor, "weaponEffect", newShieldList[0]);
   }
+
   if (droppedItem.system.passiveEffect.type == 'defenseBonus') {
     passiveDefenseString = `system.defenses.${droppedItem.system.passiveEffect.option1.defense}.shield.passive`;
     await actor.update({
@@ -44,6 +45,7 @@ export async function shieldUpdate(actor, droppedItem, dropFunc) {
   } else if (droppedItem.system.passiveEffect.type == 'defenseBonusOption') {
 
   }
+
   if (droppedItem.system.activeEffect.type == 'defenseBonus') {
     activeDefenseString = `system.defenses.${droppedItem.system.activeEffect.option1.defense}.shield.active`;
     await actor.update({
@@ -123,7 +125,6 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
  * @param {Function} dropFunc The function to call to complete the drop
  */
 export async function attachItem(actor, droppedItem, dropFunc) {
-  console.log(droppedItem)
   let parentType = "";
   if (droppedItem.system.type) {
     parentType = droppedItem.system.type;
@@ -265,8 +266,8 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['resource'] = droppedItem.system.resource;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
-
     break;
+
   case "shield":
     if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
@@ -281,6 +282,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
     break;
+
   case "weapon":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {
       entry['availability'] = droppedItem.system.availability;
