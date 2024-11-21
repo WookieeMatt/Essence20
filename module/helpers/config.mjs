@@ -187,6 +187,7 @@ E20.armorTypes = {
   medium: "E20.ArmorsMedium",
   psycho: "E20.ArmorsPsycho",
   tactical: "E20.ArmorsTactical",
+  ultraHeavy: "E20.ArmorsUltraHeavy",
 };
 preLocalize("armorTypes");
 

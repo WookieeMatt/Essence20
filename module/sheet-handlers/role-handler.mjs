@@ -353,6 +353,19 @@ export async function roleUpdate(actor, role, dropFunc) {
     const newRole = newRoleList[0];
     await setRoleValues(newRole, actor);
   }
+
+  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": true,
+    });
+  }
+
+  await _trainingUpdate(actor, 'armors', 'qualified', true, role);
+  await _trainingUpdate(actor, 'armors', 'trained', true, role);
+  await _trainingUpdate(actor, 'weapons', 'qualified', true, role);
+  await _trainingUpdate(actor, 'weapons', 'trained', true, role);
+  await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
+
 }
 
 /**
@@ -442,6 +455,18 @@ export async function onRoleDelete(actor, role) {
       "system.essenceRanks.strength": null,
     });
   }
+
+  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": false,
+    });
+  }
+
+  await _trainingUpdate(actor, 'armors', 'qualified', false, role);
+  await _trainingUpdate(actor, 'armors', 'trained', false, role);
+  await _trainingUpdate(actor, 'weapons', 'qualified', false, role);
+  await _trainingUpdate(actor, 'weapons', 'trained', false, role);
+  await _trainingUpdate(actor, 'armors', 'trained', false, role, true);
 
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
@@ -594,4 +619,23 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
   }
 
   setRoleValues(newRole, actor);
+}
+
+/**
+ *
+ * @param {Actor} actor The Actor whose training is being updated
+ * @param {String} itemType The type of item that we are training
+ * @param {String} trainingType The type of training we are applying
+ * @param {Boolean} updateType Whether we are adding or removing training
+ * @param {Object} role The role that actor has
+ * @param {Boolean} useUpgradesAccessor Whether this is targeting Upgrades or not
+ */
+async function _trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
+  const profs = useUpgradesAccessor ? role.system.upgrades[itemType][trainingType] : role.system[itemType][trainingType];
+  for (const prof of profs) {
+    const profString = `system.${trainingType}.${useUpgradesAccessor ? 'upgrades.' : ''}${itemType}.${prof}`;
+    await actor.update({
+      [profString] : updateType,
+    });
+  }
 }

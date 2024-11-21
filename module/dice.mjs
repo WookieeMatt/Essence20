@@ -38,9 +38,11 @@ export class Dice {
       shift: actor.system.initiative.shift,
       shiftUp: actor.system.initiative.shiftUp + actor.system.essenceShifts.speed.shiftUp,
       shiftDown: actor.system.initiative.shiftDown + actor.system.essenceShifts.speed.shiftDown,
+      skill: 'initiative',
     };
     const skillDataset = {
       edge: actor.system.initiative.edge,
+      shift: actor.system.initiative.shift,
       snag: actor.system.initiative.snag,
     };
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, skillDataset, actor);
@@ -203,10 +205,9 @@ export class Dice {
     } else if (dataset.skill == 'wealth') {
       rolledSkillStr = this._localize('E20.Wealth');
     } else if (dataset.isSpecialized) {
-      rolledSkillStr = dataset.specializationName;
+      rolledSkillStr = dataset.specializationName || E20.skills[dataset.skill];
     } else {
-      const rolledSkill = dataset.skill;
-      rolledSkillStr = this._localize(E20.skills[rolledSkill]);
+      rolledSkillStr = E20.skills[dataset.skill];
     }
 
     const rollingForStr = this._localize('E20.RollRollingFor');
