@@ -173,7 +173,6 @@ export async function _getItemDeleteConfirmDialog(item) {
     window: { title: game.i18n.localize("E20.ItemDeleteConfirmTitle")},
     classes: [
       "window-app",
-      "window-content"
     ],
     content: `<p>${game.i18n.format("E20.ItemDeleteConfirmContent", {name: item.name})}</p>`,
     modal: true,
@@ -189,8 +188,8 @@ export async function _getItemDeleteConfirmDialog(item) {
         action: 'cancel',
         /* eslint-disable no-unused-vars */
       },
-    ]
-  })
+    ],
+  });
 
   return confirmation;
 }
