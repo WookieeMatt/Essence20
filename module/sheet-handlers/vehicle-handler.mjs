@@ -52,7 +52,7 @@ export async function onSystemActorsDelete(event, actorSheet) {
 
   // Confirmation dialog
   const confirmation = await _getItemDeleteConfirmDialog(selectedActor);
-  if (confirmation.cancelled) {
+  if (confirmation != 'confirm') {
     return;
   }
 
