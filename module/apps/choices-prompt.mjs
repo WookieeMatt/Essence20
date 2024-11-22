@@ -1,10 +1,10 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
-class choicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     tag: "form",
     form: {
-      handler: choicesPrompt.pick,
+      handler: ChoicesPrompt.pick,
       submitOnChange: false,
       closeOnSubmit: false
     }
@@ -14,8 +14,9 @@ class choicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
     template: "templates/app/choice-select-prompt.hbs",
   }
 
-  _prepareContext(options) {
-    super._prepareContext(options)
+  async _prepareContext(options) {
+    const context = await super._prepareContext(options);
+
   }
 
   static pick() {
