@@ -1,4 +1,4 @@
-const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 import { E20 } from "../helpers/config.mjs";
 
 export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {

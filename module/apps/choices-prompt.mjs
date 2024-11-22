@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
 export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
