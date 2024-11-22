@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(data, item, actor) {
@@ -15,33 +15,33 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       "essence20",
       "trait-selector",
       "subconfig",
-      "window-app"
+      "window-app",
     ],
     tag: "form",
     form: {
       handler: ChoicesPrompt.pick,
       submitOnChange: false,
-      closeOnSubmit: true
+      closeOnSubmit: true,
     },
-  }
+  };
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/choice-select-prompt.hbs"
-    }
-  }
+      template: "systems/essence20/templates/app/choice-select-prompt.hbs",
+    },
+  };
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.choices = this._data;
     context.prompt = "Select a HangUp";
-    console.log(context)
-    return context
+
+    return context;
   }
 
   static pick(event, form, formData) {
-    console.log(event)
-    console.log(form)
-    console.log(formData)
+    console.log(event);
+    console.log(form);
+    console.log(formData);
   }
 }
