@@ -15,16 +15,16 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
       "essence20",
       "trait-selector",
       "subconfig",
-      "window-app"
+      "window-app",
     ],
     choices: {},
     customKey: "custom",
     tag: "form",
-    title: "E20.TraitSelectorTitle",
+    title: E20.TraitSelectorTitle,
     form: {
       handler: TraitSelector.myFormHandler,
       submitOnChange: false,
-      closeOnSubmit: true
+      closeOnSubmit: true,
     },
     minimum: 0,
     maximum: null,
@@ -32,7 +32,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/trait-selector.hbs"
+      template: "systems/essence20/templates/app/trait-selector.hbs",
     }
   }
 
