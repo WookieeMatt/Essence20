@@ -1,0 +1,26 @@
+<form autocomplete="off" onsubmit="event.preventDefault();">
+  {{#*inline "traitList"}}
+  <ol class="dialog-options">
+    {{#each choices as |choice key|}}
+    <li>
+      <label class="checkbox">
+        <input type="checkbox" name="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
+        {{localize choice.label}}
+      </label>
+      {{#if choice.children}}
+      {{> traitList choices=choice.children}}
+      {{/if}}
+    </li>
+    {{/each}}
+  </ol>
+  {{/inline}}
+
+  {{> traitList}}
+  {{#if allowCustom}}
+  <div class="form-group stacked">
+    <label>{{ localize "DND5E.TraitSelectorSpecial" }}</label>
+    <input type="text" name="custom" value="{{custom}}" data-dtype="String" />
+  </div>
+  {{/if}}
+  <button type="submit" name="submit" value="1"><i class="far fa-save"></i> {{ localize "E20.TraitSelectorUpdate"}}</button>
+</form>

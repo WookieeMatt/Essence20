@@ -1,17 +1,17 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
-export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     tag: "form",
     form: {
-      handler: ChoicesPrompt.pick,
+      handler: TraitSelector.choose,
       submitOnChange: false,
       closeOnSubmit: false
     }
   }
 
   static PARTS = {
-    template: "templates/app/choice-select-prompt.hbs",
+    template: "templates/app/trait-selector.hbs",
   }
 
   async _prepareContext(options) {
@@ -19,7 +19,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
 
   }
 
-  static pick() {
+  static choose() {
 
   }
 }
