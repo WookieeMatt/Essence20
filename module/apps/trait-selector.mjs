@@ -49,19 +49,19 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
 
     options.value = this._data.valueKey;
     const attr = foundry.utils.getProperty(this._owner, this._data.name);
-    const o = this._data;
-    const value = (o.valueKey) ? foundry.utils.getProperty(attr, o.valueKey) ?? [] : attr;
-    const custom = (o.customKey) ? foundry.utils.getProperty(attr, o.customKey) ?? "" : "";
+    const data = this._data;
+    const value = (data.valueKey) ? foundry.utils.getProperty(attr, data.valueKey) ?? [] : attr;
+    const custom = (data.customKey) ? foundry.utils.getProperty(attr, data.customKey) ?? "" : "";
 
     // Populate choices
-    const choices = Object.entries(o.choices).reduce((obj, e) => {
-      let [k, v] = e;
-      obj[k] = { label: v, chosen: attr ? value.includes(k) : false };
+    const choices = Object.entries(data.choices).reduce((obj, expanded) => {
+      let [key, name] = expanded;
+      obj[key] = { label: name, chosen: attr ? value.includes(key) : false };
       return obj;
     }, {});
 
     // Return data
-    context.allowCustom =  o.allowCustom;
+    context.allowCustom =  data.allowCustom;
     context.choices = choices;
     context.custom = custom;
 
@@ -69,31 +69,29 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async myFormHandler(event, form, formData) {
-    const o = this.options;
+    const options = this.options;
 
     // Obtain choices
     const chosen = [];
-    for ( let [k, v] of Object.entries(formData.object) ) {
-      if ( (k !== "custom") && v ) chosen.push(k);
+    for ( let [key, name] of Object.entries(formData.object) ) {
+      if ( (key !== "custom") && name ) chosen.push(key);
     }
 
-    console.log(chosen)
     // Object including custom data
     const updateData = {};
-    if ( o.valueKey ) updateData[`${this._data.name}.${o.valueKey}`] = chosen;
+    if ( options.valueKey ) updateData[`${this._data.name}.${options.valueKey}`] = chosen;
     else updateData[this._data.name] = chosen;
-    if ( o.allowCustom ) updateData[`${this._data.name}.${o.customKey}`] = formData.custom;
+    if ( options.allowCustom ) updateData[`${this._data.name}.${options.customKey}`] = formData.custom;
 
     // Validate the number chosen
-    if ( o.minimum && (chosen.length < o.minimum) ) {
-      return ui.notifications.error(`You must choose at least ${o.minimum} options`);
+    if ( options.minimum && (chosen.length < options.minimum) ) {
+      return ui.notifications.error(`You must choose at least ${options.minimum} options`);
     }
 
-    if ( o.maximum && (chosen.length > o.maximum) ) {
-      return ui.notifications.error(`You may choose no more than ${o.maximum} options`);
+    if ( options.maximum && (chosen.length > options.maximum) ) {
+      return ui.notifications.error(`You may choose no more than ${options.maximum} options`);
     }
 
-    console.log(updateData)
     // Update the object
     this._owner.update(updateData);
   }
