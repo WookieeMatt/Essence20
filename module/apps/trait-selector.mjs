@@ -28,13 +28,13 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     },
     minimum: 0,
     maximum: null,
-  }
+  };
 
   static PARTS = {
     form: {
       template: "systems/essence20/templates/app/trait-selector.hbs",
-    }
-  }
+    },
+  };
 
   get title() {
     return game.i18n.localize(this.options.title) || super.title;
@@ -65,7 +65,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     context.choices = choices;
     context.custom = custom;
 
-    return context
+    return context;
   }
 
   static async myFormHandler(event, form, formData) {
