@@ -1,3 +1,4 @@
+import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import { rememberOptions } from "../helpers/dialog.mjs";
 import { getItemsOfType, getShiftedSkill } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -316,23 +317,7 @@ async function _chooseHangUp(actor, influence) {
     }
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.HangUpChoice'),
-      content: await renderTemplate(
-        "systems/essence20/templates/dialog/option-select.hbs",
-        { choices },
-      ),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _hangUpSelect(
-            actor, influence, rememberOptions(html),
-          ),
-        },
-      },
-    },
-  ).render(true);
+  new ChoicesPrompt (choices, influence, actor).render(true);
 }
 
 /**
