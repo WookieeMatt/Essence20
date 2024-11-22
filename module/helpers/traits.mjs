@@ -1,4 +1,4 @@
-import TraitSelector from "../apps/trait-selector.mjs";
+import { TraitSelector } from "../apps/trait-selector.mjs";
 
 /**
  * Handle spawning the TraitSelector application for selection various options.
@@ -63,5 +63,5 @@ export function onManageSelectTrait(event, owner) {
     break;
   }
 
-  new TraitSelector(owner, options).render(true);
+  new TraitSelector().render(true);
 }
