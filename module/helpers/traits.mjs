@@ -29,10 +29,6 @@ export function onManageSelectTrait(event, owner) {
     options.choices = CONFIG.E20.actorLevels;
     options.valueKey = null;
     break;
-  case "availabilities":
-    options.choices = CONFIG.E20.availabilities;
-    options.valueKey = null;
-    break;
   case "focusEssences":
     options.choices = CONFIG.E20.originEssences;
     options.valueKey = null;
@@ -63,5 +59,5 @@ export function onManageSelectTrait(event, owner) {
     break;
   }
 
-  new TraitSelector().render(true);
+  new TraitSelector(owner, options).render(true);
 }
