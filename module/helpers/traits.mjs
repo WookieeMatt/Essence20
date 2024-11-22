@@ -1,4 +1,4 @@
-import TraitSelector from "./trait-selector.js";
+import { TraitSelector } from "../apps/trait-selector.mjs";
 
 /**
  * Handle spawning the TraitSelector application for selection various options.
