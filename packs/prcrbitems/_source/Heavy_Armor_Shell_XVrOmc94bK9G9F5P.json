@@ -13,7 +13,51 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Heavy Armor Shell",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.XVrOmc94bK9G9F5P",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Owajh2zNd10Mjffd",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.trained.armors.heavy",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1731768766322,
+        "modifiedTime": 1731768786696,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!XVrOmc94bK9G9F5P.Owajh2zNd10Mjffd"
+    }
+  ],
   "flags": {
     "core": {}
   },

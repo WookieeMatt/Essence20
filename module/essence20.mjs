@@ -161,6 +161,26 @@ Handlebars.registerHelper('itemsContainType', function (items, type, options) {
   return options.inverse(this);
 });
 
+Handlebars.registerHelper('assign', function (varName, varValue, options) {
+  if (!options.data.root) {
+    options.data.root = {};
+  }
+
+  options.data.root[varName] = varValue;
+});
+
+Handlebars.registerHelper('listProficiencies', function (allProficiencies, friendlyLookup) {
+  const charProficiencies = [];
+
+  for (const [proficiency, isProficient] of Object.entries(allProficiencies)) {
+    if (isProficient) {
+      charProficiencies.push(friendlyLookup[proficiency]);
+    }
+  }
+
+  return charProficiencies.join(", ");
+});
+
 /* -------------------------------------------- */
 /*  Misc Hooks                                  */
 /* -------------------------------------------- */

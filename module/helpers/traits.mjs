@@ -1,4 +1,4 @@
-import TraitSelector from "./trait-selector.js";
+import { TraitSelector } from "../apps/trait-selector.mjs";
 
 /**
  * Handle spawning the TraitSelector application for selection various options.
@@ -27,6 +27,10 @@ export function onManageSelectTrait(event, owner) {
     break;
   case "actorLevels":
     options.choices = CONFIG.E20.actorLevels;
+    options.valueKey = null;
+    break;
+  case "availabilities":
+    options.choices = CONFIG.E20.availabilities;
     options.valueKey = null;
     break;
   case "focusEssences":
