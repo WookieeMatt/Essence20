@@ -3,7 +3,7 @@
   <div class="choice-buttons">
     {{#each choices as |choice|}}
       <div class="choice">
-        <button type="button" value="{{choice.value}}" data-action="pick"{{#if choice.img}} class="with-image"{{/if}}>
+        <button type="button" value="{{choice.value}}" data-action="{{../type}}"{{#if choice.img}} class="with-image"{{/if}}>
         {{#if choice.img}}<img src="{{choice.img}}" />{{/if}}
           <span>{{choice.label}}</span>
         </button>
