@@ -93,8 +93,9 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
     }
   }
 
-  const prompt = "Select Essence";
-  new ChoicesPrompt(choices, origin, actor, prompt, dropFunc).render(true);
+  const prompt = "E20.SelectEssence";
+  const title = "E20.SelectOriginEssence";
+  new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc).render(true);
 }
 
 /**
@@ -138,8 +139,9 @@ export async function _showOriginSkillDialog(actor, origin, selectedEssence, dro
     }
   }
 
-  const prompt = "Select Skill";
-  new ChoicesPrompt(choices, origin, actor, prompt, dropFunc, selectedEssence).render(true);
+  const prompt = "E20.SelectSkill";
+  const title = "E20.SelectOriginSkill";
+  new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc, selectedEssence).render(true);
 }
 
 /**
@@ -169,8 +171,9 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
       };
     }
 
-    const prompt = "Select Alt Mode";
-    new ChoicesPrompt(choices, origin, actor, prompt, dropFunc, essence, selectedSkill).render(true);
+    const prompt = "E20.SelectAltMode";
+    const title = "E20.SelectOriginAltMode";
+    new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc, essence, selectedSkill).render(true);
   } else {
     setOriginValues(actor, origin, essence, selectedSkill, dropFunc);
   }
@@ -186,10 +189,6 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
  * @param {Object} options The options resulting from _checkForAltModes()
  */
 export async function setOriginValues(actor, origin, essence, skill, dropFunc, selectedAltMode) {
-  if (!selectedAltMode) {
-    ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoAltMode'));
-    return;
-  }
 
   let altModeToCreate = null;
   for (const [, item] of Object.entries(origin.system.items)) {
@@ -202,6 +201,11 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
         altModeToCreate = item;
       }
     }
+  }
+
+  if (!selectedAltMode) {
+    ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoAltMode'));
+    return;
   }
 
   const essenceValue = actor.system.essences[essence].max + 1;
@@ -247,7 +251,6 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
 async function _chooseHangUp(actor, influence) {
   const choices = {};
   let itemArray = [];
-  const prompt = "Select a HangUp";
   for (const [, item] of Object.entries(influence.system.items)) {
     if (item.type == 'hangUp') {
       itemArray.push(item);
@@ -259,7 +262,9 @@ async function _chooseHangUp(actor, influence) {
     }
   }
 
-  new ChoicesPrompt (choices, influence, actor, prompt).render(true);
+  const prompt = "E20.SelectHangUp";
+  const title = "E20.SelectInfluenceHangUp";
+  new ChoicesPrompt (choices, influence, actor, prompt, title).render(true);
 }
 
 /**

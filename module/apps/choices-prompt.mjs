@@ -2,8 +2,8 @@ import { _checkForAltModes, _hangUpSelect, _showOriginSkillDialog, setOriginValu
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(data, item, actor, prompt, dropFunc, previousSelection1, previousSelection2) {
-    super(data, item, actor, prompt, dropFunc, previousSelection1, previousSelection2);
+  constructor(data, item, actor, prompt, title, dropFunc, previousSelection1, previousSelection2) {
+    super(data, item, actor, prompt, title, dropFunc, previousSelection1, previousSelection2);
     this._data = data;
     this._item = item;
     this._actor = actor;
@@ -11,6 +11,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     this._dropFunc = dropFunc;
     this._previousSelection1 = previousSelection1;
     this._previousSelection2 = previousSelection2;
+    this._title = title;
   }
 
   static DEFAULT_OPTIONS = {
@@ -26,6 +27,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       "window-app",
     ],
     tag: "form",
+    title: "Make a Selection",
     form: {
       submitOnChange: false,
       closeOnSubmit: true,
@@ -37,6 +39,10 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       template: "systems/essence20/templates/app/choice-select-prompt.hbs",
     },
   };
+
+  get title() {
+    return game.i18n.localize(this._title) || super.title;
+  }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);

@@ -6,6 +6,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     super(owner, data);
     this._owner = owner;
     this._data = data;
+
   }
 
   static DEFAULT_OPTIONS = {
@@ -20,7 +21,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     choices: {},
     customKey: "custom",
     tag: "form",
-    title: E20.TraitSelectorTitle,
+    title: "E20.TraitSelectorTitle",
     form: {
       handler: TraitSelector.myFormHandler,
       submitOnChange: false,
@@ -38,10 +39,6 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
 
   get title() {
     return game.i18n.localize(this.options.title) || super.title;
-  }
-
-  get attribute() {
-    return this.options.name;
   }
 
   async _prepareContext(options) {
