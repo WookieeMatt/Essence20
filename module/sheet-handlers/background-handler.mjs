@@ -189,23 +189,26 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
  * @param {Object} options The options resulting from _checkForAltModes()
  */
 export async function setOriginValues(actor, origin, essence, skill, dropFunc, selectedAltMode) {
-
+  const altModes = getItemsOfType('altMode', Object.values(origin.system.items));
   let altModeToCreate = null;
-  for (const [, item] of Object.entries(origin.system.items)) {
-    if (item.type == "altMode") {
-      if (selectedAltMode) {
-        if (selectedAltMode == item.name) {
+
+  if (altModes.length >0) {
+    for (const [, item] of Object.entries(origin.system.items)) {
+      if (item.type == "altMode") {
+        if (selectedAltMode) {
+          if (selectedAltMode == item.name) {
+            altModeToCreate = item;
+          }
+        } else {
           altModeToCreate = item;
         }
-      } else {
-        altModeToCreate = item;
       }
     }
-  }
 
-  if (!selectedAltMode) {
-    ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoAltMode'));
-    return;
+    if (!altModeToCreate) {
+      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoAltMode'));
+      return;
+    }
   }
 
   const essenceValue = actor.system.essences[essence].max + 1;
