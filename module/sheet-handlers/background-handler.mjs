@@ -1,5 +1,4 @@
 import ChoicesPrompt from "../apps/choices-prompt.mjs";
-import { rememberOptions } from "../helpers/dialog.mjs";
 import { getItemsOfType, getShiftedSkill } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
@@ -93,6 +92,7 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
       }
     }
   }
+
   const prompt = "Select Essence";
   new ChoicesPrompt(choices, origin, actor, prompt, dropFunc).render(true);
 }
@@ -137,6 +137,7 @@ export async function _showOriginSkillDialog(actor, origin, selectedEssence, dro
       }
     }
   }
+
   const prompt = "Select Skill";
   new ChoicesPrompt(choices, origin, actor, prompt, dropFunc, selectedEssence).render(true);
 }
@@ -151,7 +152,6 @@ export async function _showOriginSkillDialog(actor, origin, selectedEssence, dro
  */
 
 export async function _checkForAltModes(actor, origin, essence, selectedSkill, dropFunc) {
-  console.log(essence)
   if (!selectedSkill) {
     ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoSkill'));
     return;
@@ -168,6 +168,7 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
         value: altMode.name,
       };
     }
+
     const prompt = "Select Alt Mode";
     new ChoicesPrompt(choices, origin, actor, prompt, dropFunc, essence, selectedSkill).render(true);
   } else {
