@@ -101,7 +101,7 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
  * Displays a dialog for selecting a Skill for the given Origin.
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Object} origin The Origin being dropped
- * @param {Object} options The options resulting from _showOriginEssenceDialog()
+ * @param {String} selectedEssence The essence selected from _showOriginEssenceDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
 export async function _showOriginSkillDialog(actor, origin, selectedEssence, dropFunc) {
@@ -148,7 +148,7 @@ export async function _showOriginSkillDialog(actor, origin, selectedEssence, dro
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
  * @param {String} essence The essence selected in the _showOriginEssenceDialog()
- * @param {Object} options The options resulting from _showOriginSkillDialog()
+ * @param {String} selectedSkill The skill selected from _showOriginSkillDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
 
@@ -185,7 +185,7 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
  * @param {String} essence The essence selected in the _showOriginEssenceDialog()
  * @param {String} skill the skill selected in the _showOriginSkillEssenceDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
- * @param {Object} options The options resulting from _checkForAltModes()
+ * @param {String} selectedAltMode The selected altMode resulting from _checkForAltModes()
  */
 export async function setOriginValues(actor, origin, essence, skill, dropFunc, selectedAltMode) {
   const altModes = getItemsOfType('altMode', Object.values(origin.system.items));
@@ -270,7 +270,7 @@ async function _chooseHangUp(actor, influence) {
 /**
  * Adds the chosen HangUp to the character
  * @param {Actor} actor The Actor receiving the HangUp
- * @param {Object} options The selections from the dialog
+ * @param {String} uuid The uuid of the item selected from the choice-prompt application
  */
 export async function _hangUpSelect(actor, uuid) {
 
