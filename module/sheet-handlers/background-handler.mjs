@@ -194,10 +194,10 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
   if (altModes.length > 0) {
     for (const altMode of altModes) {
       if (selectedAltMode) {
-        if (selectedAltMode == item.name) {
-          altModeToCreate = item;
+        if (selectedAltMode == altMode.name) {
+          altModeToCreate = altMode;
         } else {
-          altModeToCreate = item;
+          altModeToCreate = altMode;
         }
       }
     }
