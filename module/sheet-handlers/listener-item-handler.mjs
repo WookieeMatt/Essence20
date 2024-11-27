@@ -223,3 +223,7 @@ export async function onInlineEdit(event, actor) {
   const field = element.dataset.field;
   return item.update({ [field]: newValue });
 }
+
+export function onShieldActivate() {
+
+}

@@ -7,6 +7,7 @@ import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onRest,
   onRoll,
+  onShieldActivate,
   onToggleAccordion,
   onToggleHeaderAccordion,
 } from "../sheet-handlers/listener-misc-handler.mjs";
@@ -453,6 +454,9 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Transform Button
     html.find('.transform').click(() => onTransform(this));
+
+    //Activate Shield
+    html.find('.shield-activate').click(() => onShieldActivate(this));
 
     // Roll buttons
     if (this.actor.isOwner) {
