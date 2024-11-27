@@ -281,7 +281,6 @@ export async function _hangUpSelect(actor, uuid) {
   newItem.setFlag('core', 'sourceId', uuid);
 }
 
-
 /**
  * Handle deleting of an Origin from an Actor Sheet
  * @param {Actor} actor The Actor with the Origin
