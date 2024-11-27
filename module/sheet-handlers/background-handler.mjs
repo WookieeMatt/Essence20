@@ -82,7 +82,6 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
       for (const skill of influence.system.skills) {
         for (const influenceEssence in actor.system.skills[skill].essences) {
           if (actor.system.skills[skill].essences[influenceEssence]) {
-            console.log(influenceEssence);
             choices[influenceEssence] = {
               value: influenceEssence,
               label: CONFIG.E20.originEssences[influenceEssence],
@@ -102,7 +101,7 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
  * Displays a dialog for selecting a Skill for the given Origin.
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Object} origin The Origin being dropped
- * @param {Object} options The options resulting from _showOriginEssenceDialog()
+ * @param {String} selectedEssence The essence selected from _showOriginEssenceDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
 export async function _showOriginSkillDialog(actor, origin, selectedEssence, dropFunc) {
@@ -149,7 +148,7 @@ export async function _showOriginSkillDialog(actor, origin, selectedEssence, dro
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
  * @param {String} essence The essence selected in the _showOriginEssenceDialog()
- * @param {Object} options The options resulting from _showOriginSkillDialog()
+ * @param {String} selectedSkill The skill selected from _showOriginSkillDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
 
@@ -186,22 +185,20 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
  * @param {String} essence The essence selected in the _showOriginEssenceDialog()
  * @param {String} skill the skill selected in the _showOriginSkillEssenceDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
- * @param {Object} options The options resulting from _checkForAltModes()
+ * @param {String} selectedAltMode The selected altMode resulting from _checkForAltModes()
  */
 export async function setOriginValues(actor, origin, essence, skill, dropFunc, selectedAltMode) {
   const altModes = getItemsOfType('altMode', Object.values(origin.system.items));
   let altModeToCreate = null;
 
-  if (altModes.length >0) {
-    for (const [, item] of Object.entries(origin.system.items)) {
-      if (item.type == "altMode") {
-        if (selectedAltMode) {
-          if (selectedAltMode == item.name) {
-            altModeToCreate = item;
-          }
-        } else {
-          altModeToCreate = item;
+  if (altModes.length > 0) {
+    for (const altMode of altModes) {
+      if (selectedAltMode) {
+        if (selectedAltMode == altMode.name) {
+          altModeToCreate = altMode;
         }
+      } else {
+        altModeToCreate = altMode;
       }
     }
 
@@ -273,7 +270,7 @@ async function _chooseHangUp(actor, influence) {
 /**
  * Adds the chosen HangUp to the character
  * @param {Actor} actor The Actor receiving the HangUp
- * @param {Object} options The selections from the dialog
+ * @param {String} uuid The uuid of the item selected from the choice-prompt application
  */
 export async function _hangUpSelect(actor, uuid) {
 
@@ -281,7 +278,6 @@ export async function _hangUpSelect(actor, uuid) {
   const newItem = await Item.create(itemToCreate, { parent: actor });
   newItem.setFlag('core', 'sourceId', uuid);
 }
-
 
 /**
  * Handle deleting of an Origin from an Actor Sheet

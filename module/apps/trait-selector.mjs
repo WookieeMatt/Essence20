@@ -5,7 +5,6 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     super(owner, data);
     this._owner = owner;
     this._data = data;
-
   }
 
   static DEFAULT_OPTIONS = {

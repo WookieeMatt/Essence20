@@ -27,7 +27,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       "window-app",
     ],
     tag: "form",
-    title: "Make a Selection",
+    title: "E20.SelectDefaultTitle",
     form: {
       submitOnChange: false,
       closeOnSubmit: true,
@@ -41,7 +41,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
   };
 
   get title() {
-    return game.i18n.localize(this._title) || super.title;
+    return game.i18n.localize(this._title) || game.i18n.localize(super.title);
   }
 
   async _prepareContext(options) {
@@ -58,7 +58,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     this.close();
   }
 
-  static origin(event,selection) {
+  static origin(event, selection) {
     if (this._previousSelection1 && this._previousSelection2) {
       setOriginValues(this._actor, this._item, this._previousSelection1, this._previousSelection2, this._dropFunc, selection.value);
       this.close();
