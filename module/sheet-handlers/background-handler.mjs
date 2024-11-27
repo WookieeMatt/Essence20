@@ -82,7 +82,6 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
       for (const skill of influence.system.skills) {
         for (const influenceEssence in actor.system.skills[skill].essences) {
           if (actor.system.skills[skill].essences[influenceEssence]) {
-            console.log(influenceEssence);
             choices[influenceEssence] = {
               value: influenceEssence,
               label: CONFIG.E20.originEssences[influenceEssence],
