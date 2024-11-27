@@ -593,6 +593,64 @@
   vertical-align: middle;
 }
 
+.choices {
+  margin: auto;
+  max-width: max-content;
+}
+.choices.select-menu {
+  min-width: 18em;
+}
+.choices button,
+.choices .drop-zone {
+  cursor: pointer;
+  max-width: 100%;
+}
+.choices button:not(.with-image),
+.choices .drop-zone:not(.with-image) {
+  min-width: 120px;
+  justify-content: center;
+}
+.choices button.with-image,
+.choices .drop-zone.with-image {
+  align-items: center;
+}
+.choices button.with-image img,
+.choices .drop-zone.with-image img {
+  border: 1px solid #444;
+  height: 1.6em;
+  margin-right: 0.5em;
+}
+.choices .choice-buttons {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.choices .choice-buttons .choice {
+  align-items: center;
+  display: flex;
+  gap: 0.5em;
+  width: 100%;
+}
+.choices .choice-buttons .choice.select {
+  margin-bottom: 0.5rem;
+}
+.choices .choice-buttons .choice a.item-info {
+  align-items: center;
+  border: 1px solid var(--color-text-light-primary);
+  border-radius: 2px;
+  display: flex;
+  height: var(--font-size-20);
+  justify-content: center;
+  min-width: var(--font-size-20);
+}
+.choices .choice-buttons .choice a.item-info.disabled {
+  color: var(--color-disabled);
+  cursor: default;
+}
+.choices .choice-buttons .choice a.item-info.disabled:hover, .choices .choice-buttons .choice a.item-info.disabled:active {
+  text-shadow: none;
+}
+
 .essence20 .skill-header {
   font-size: 1.125em;
   align-items: center;

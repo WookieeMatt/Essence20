@@ -1,3 +1,5 @@
+@use '../assets/variables' as v;
+
 .choices {
   margin: auto;
   max-width: max-content;
@@ -6,6 +8,25 @@
     min-width: 18em;
   }
   button,
+  .drop-zone {
+    cursor: pointer;
+    max-width: 100%;
+
+    &:not(.with-image) {
+        min-width: 120px;
+        justify-content: center;
+    }
+
+    &.with-image {
+        align-items: center;
+
+        img {
+            border: 1px solid #444;
+            height: 1.6em;
+            margin-right: 0.5em;
+        }
+    }
+  }
 
   .choice-buttons {
     align-items: center;

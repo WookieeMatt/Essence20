@@ -1,3 +1,4 @@
+import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import { rememberOptions, rememberSelect } from "../helpers/dialog.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -203,20 +204,9 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
     };
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.EssenceIncrease'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _focusStatUpdate(actor, rememberOptions(html), dropFunc),
-        },
-      },
-    },
-  ).render(true);
+  const prompt = "E20.SelectFocus";
+  const title = "E20.SelectFocusSkills";
+  new ChoicesPrompt(choices, focus, actor, prompt, title, dropFunc).render(true);
 }
 
 /**
@@ -225,14 +215,7 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
  * @param {Object} options The options resulting from _showFocusSkillDialog()
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Focus
  */
-async function _focusStatUpdate(actor, options, dropFunc) {
-  let selectedEssence = "";
-  for (const essence in CONFIG.E20.essences) {
-    if (options[essence]) {
-      selectedEssence = essence;
-    }
-  }
-
+export async function _focusStatUpdate(actor, selectedEssence, dropFunc) {
   const newFocusList = await dropFunc();
   const newFocus = newFocusList[0];
 

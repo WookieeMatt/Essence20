@@ -165,6 +165,7 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
     for (const altMode of altModes) {
       choices[altMode.name] = {
         chosen: false,
+        img: item.img,
         label: altMode.name,
         value: altMode.name,
       };
@@ -256,6 +257,7 @@ async function _chooseHangUp(actor, influence) {
       itemArray.push(item);
       choices[item.uuid] = {
         chosen: false,
+        img: item.img,
         label: item.name,
         value: item.uuid,
       };
