@@ -58,7 +58,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     this.close();
   }
 
-  static origin(event,selection) {
+  static origin(event, selection) {
     if (this._previousSelection1 && this._previousSelection2) {
       setOriginValues(this._actor, this._item, this._previousSelection1, this._previousSelection2, this._dropFunc, selection.value);
       this.close();
