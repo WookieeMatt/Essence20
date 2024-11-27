@@ -196,9 +196,9 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
       if (selectedAltMode) {
         if (selectedAltMode == altMode.name) {
           altModeToCreate = altMode;
-        } else {
-          altModeToCreate = altMode;
         }
+      } else {
+        altModeToCreate = altMode;
       }
     }
 
