@@ -199,6 +199,7 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
     choices[essence] = {
       chosen: false,
       label: CONFIG.E20.originEssences[essence],
+      value: essence,
     };
   }
 
