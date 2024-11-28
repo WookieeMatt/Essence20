@@ -1,5 +1,4 @@
 import ChoicesPrompt from "../apps/choices-prompt.mjs";
-import { rememberOptions } from "../helpers/dialog.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
@@ -115,15 +114,13 @@ export async function attachItem(actor, droppedItem, dropFunc) {
 /**
  * Processes the options resulting from _showAttachmentDialog()
  * @param {Actor} actor The Actor receiving the attachment
- * @param {Object} options The options resulting from _showAttachmentDialog()
+ * @param {UUID} itemId The uuid of the item we are attaching to
  * @param {Function} dropFunc The function to call to complete the drop
  * @private
  */
 export async function _attachSelectedItemOptionHandler(actor, itemId, dropFunc) {
-  console.log(itemId)
   if (itemId) {
     const item = await fromUuid(itemId);
-    console.log(item)
     _attachItem(item, dropFunc);
   }
 }
