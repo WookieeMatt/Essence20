@@ -165,8 +165,9 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
     for (const altMode of altModes) {
       choices[altMode.name] = {
         chosen: false,
-        img: item.img,
+        img: altMode.img,
         label: altMode.name,
+
       };
     }
 
@@ -271,27 +272,15 @@ async function _chooseHangUp(actor, influence) {
         chosen: false,
         img: item.img,
         label: item.name,
+        uuid: item.uuid,
+        value: item.uuid,
       };
     }
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.HangUpChoice'),
-      content: await renderTemplate(
-        "systems/essence20/templates/dialog/option-select.hbs",
-        { choices },
-      ),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _hangUpSelect(
-            actor, influence, rememberOptions(html),
-          ),
-        },
-      },
-    },
-  ).render(true);
+  const prompt = "E20.SelectHangUp";
+  const title = "E20.SelectInfluenceHangUp";
+  new ChoicesPrompt (choices, influence, actor, prompt, title).render(true);
 }
 
 /**

@@ -22,6 +22,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       focus: ChoicesPrompt.focus,
       influence: ChoicesPrompt.influence,
       origin: ChoicesPrompt.origin,
+      viewItem: ChoicesPrompt.viewItem,
     },
     id: "choices-prompt",
     classes: [
@@ -83,5 +84,9 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       _showOriginSkillDialog(this._actor, this._item, selection.value, this._dropFunc);
       this.close();
     }
+  }
+
+  static viewItem(event, selection) {
+
   }
 }

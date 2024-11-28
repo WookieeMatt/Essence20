@@ -6,11 +6,12 @@
         <button type="button" value="{{choice.value}}" data-action="{{../type}}">
           <span>{{choice.label}}</span>
         </button>
-        {{#if choice.hasUUID}}
+        {{#if choice.uuid}}
           <a
             {{!--item info class here--}}
             data-action="view-item"
             data-value="{{choice.value}}"
+            data-uuid="{{choice.uuid}}"
             data-tooltip=""
           ><i class="fa-solid fa-fw fa-info-circle"></i></a>
         {{/if}}
