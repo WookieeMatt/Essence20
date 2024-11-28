@@ -182,7 +182,7 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
 
   const prompt = "E20.SelectSkill";
   const title = "E20.SelectAlterationSkill";
-  new ChoicesPrompt(choices, alteration, actor, prompt, title, alterationUuid).render(true);
+  new ChoicesPrompt(choices, alteration, actor, prompt, title, dropFunc, alterationUuid).render(true);
 }
 
 /**

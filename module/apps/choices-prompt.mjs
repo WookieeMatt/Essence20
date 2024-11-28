@@ -58,7 +58,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
   }
 
   static alteration(event, selection) {
-    _processAlterationSkillIncrease(this._actor, this._item, selection.value, this._previousSelection1, this._dropFunc)
+    _processAlterationSkillIncrease(this._actor, this._item, selection.value, this._previousSelection1, this._dropFunc);
     this.close();
   }
 
