@@ -1,5 +1,4 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-import { E20 } from "../helpers/config.mjs";
 
 export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(owner, data) {
@@ -20,7 +19,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     choices: {},
     customKey: "custom",
     tag: "form",
-    title: E20.TraitSelectorTitle,
+    title: "E20.TraitSelectorTitle",
     form: {
       handler: TraitSelector.myFormHandler,
       submitOnChange: false,
@@ -38,10 +37,6 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
 
   get title() {
     return game.i18n.localize(this.options.title) || super.title;
-  }
-
-  get attribute() {
-    return this.options.name;
   }
 
   async _prepareContext(options) {
