@@ -22,7 +22,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       focus: ChoicesPrompt.focus,
       influence: ChoicesPrompt.influence,
       origin: ChoicesPrompt.origin,
-      viewItem: ChoicesPrompt.viewItem,
+      view: ChoicesPrompt.view,
     },
     id: "choices-prompt",
     classes: [
@@ -86,7 +86,10 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     }
   }
 
-  static viewItem(event, selection) {
-
+  static async view(event, selection) {
+    const item = await fromUuid(selection.dataset.uuid);
+    if (item) {
+      item.sheet.render(true);
+    }
   }
 }
