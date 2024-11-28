@@ -167,26 +167,15 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
         chosen: false,
         img: altMode.img,
         label: altMode.name,
+        uuid: altMode.uuid,
+        value: altMode.name,
 
       };
     }
 
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.OriginAltModeSelect'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => setOriginValues(
-              actor, origin, essence, selectedSkill, dropFunc, rememberOptions(html),
-            ),
-          },
-        },
-      },
-    ).render(true);
+    const prompt = "E20.SelectAltMode";
+    const title = "E20.SelectOriginAltMode";
+    new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc, essence, selectedSkill).render(true);
   } else {
     setOriginValues(actor, origin, essence, selectedSkill, dropFunc);
   }
