@@ -1,5 +1,3 @@
-
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import {
   rememberOptions,
   rememberValues,
@@ -157,7 +155,6 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
       choices[skill] = {
         chosen: false,
         label: CONFIG.E20.originSkills[skill],
-        value: skill,
       };
     }
   }
@@ -167,7 +164,6 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
     choices[skill] = {
       chosen: false,
       label: CONFIG.E20.originSkills[skill],
-      value: skill,
     };
   }
 
@@ -176,13 +172,23 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
     choices[skill] = {
       chosen: false,
       label: CONFIG.E20.originSkills[skill],
-      value: skill,
     };
   }
 
-  const prompt = "E20.SelectSkill";
-  const title = "E20.SelectAlterationSkill";
-  new ChoicesPrompt(choices, alteration, actor, prompt, title, dropFunc, alterationUuid).render(true);
+  new Dialog(
+    {
+      title: game.i18n.localize('E20.AlterationSkillIncrease'),
+      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+        choices,
+      }),
+      buttons: {
+        save: {
+          label: game.i18n.localize('E20.AcceptButton'),
+          callback: html => _processAlterationSkillIncrease(actor, alteration, rememberOptions(html), alterationUuid, dropFunc),
+        },
+      },
+    },
+  ).render(true);
 }
 
 /**
@@ -193,7 +199,15 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
 * @param {String} alterationUuid The original ID of the Alteration
 * @param {Function} dropFunc The function to call to complete the Alteration drop
 */
-export async function _processAlterationSkillIncrease(actor, alteration, bonusSkill, alterationUuid, dropFunc) {
+async function _processAlterationSkillIncrease(actor, alteration, options, alterationUuid, dropFunc) {
+  let bonusSkill = "";
+  for (const [skill, isSelected] of Object.entries(options)) {
+    if (isSelected) {
+      bonusSkill = skill;
+      break;
+    }
+  }
+
   if (!bonusSkill) {
     ui.notifications.warn(game.i18n.localize('E20.AlterationSelectNoSkill'));
     return;

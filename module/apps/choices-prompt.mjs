@@ -18,7 +18,6 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
 
   static DEFAULT_OPTIONS = {
     actions: {
-      alteration: ChoicesPrompt.alteration,
       focus: ChoicesPrompt.focus,
       influence: ChoicesPrompt.influence,
       origin: ChoicesPrompt.origin,
@@ -56,11 +55,6 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     context.type = this._item.type;
 
     return context;
-  }
-
-  static alteration(event, selection) {
-    _processAlterationSkillIncrease(this._actor, this._item, selection.value, this._previousSelection1, this._dropFunc);
-    this.close();
   }
 
   static focus(event, selection) {
