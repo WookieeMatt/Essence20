@@ -593,51 +593,6 @@
   vertical-align: middle;
 }
 
-.choices {
-  margin: auto;
-  max-width: max-content;
-}
-.choices.select-menu {
-  min-width: 18em;
-}
-.choices button,
-.choices .choice-buttons {
-  align-items: center;
-  display: flex;
-  flex-direction: column;
-}
-.choices button .choice,
-.choices .choice-buttons .choice {
-  align-items: center;
-  display: flex;
-  gap: 0.5em;
-  width: 100%;
-}
-.choices button .choice.select,
-.choices .choice-buttons .choice.select {
-  margin-bottom: 0.5rem;
-}
-.choices button .choice a.item-info,
-.choices .choice-buttons .choice a.item-info {
-  align-items: center;
-  border: 1px solid var(--color-text-light-primary);
-  border-radius: 2px;
-  display: flex;
-  height: var(--font-size-20);
-  justify-content: center;
-  min-width: var(--font-size-20);
-}
-.choices button .choice a.item-info.disabled,
-.choices .choice-buttons .choice a.item-info.disabled {
-  color: var(--color-disabled);
-  cursor: default;
-}
-.choices button .choice a.item-info.disabled:hover, .choices button .choice a.item-info.disabled:active,
-.choices .choice-buttons .choice a.item-info.disabled:hover,
-.choices .choice-buttons .choice a.item-info.disabled:active {
-  text-shadow: none;
-}
-
 .essence20 .skill-header {
   font-size: 1.125em;
   align-items: center;
