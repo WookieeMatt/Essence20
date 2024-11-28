@@ -50,7 +50,7 @@
       "flags": {},
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.323",
+        "coreVersion": "12.331",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
@@ -75,7 +75,7 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "12.323",
+    "coreVersion": "12.331",
     "createdTime": 1714099982094,
     "modifiedTime": 1714848315846,
     "lastModifiedBy": "VEn5sPQRoWgUw9qd",

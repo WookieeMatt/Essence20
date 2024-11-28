@@ -167,14 +167,25 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
         chosen: false,
         img: item.img,
         label: altMode.name,
-        uuid: altMode.uuid,
-        value: altMode.name,
       };
     }
 
-    const prompt = "E20.SelectAltMode";
-    const title = "E20.SelectOriginAltMode";
-    new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc, essence, selectedSkill).render(true);
+    new Dialog(
+      {
+        title: game.i18n.localize('E20.OriginAltModeSelect'),
+        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
+          choices,
+        }),
+        buttons: {
+          save: {
+            label: game.i18n.localize('E20.AcceptButton'),
+            callback: html => setOriginValues(
+              actor, origin, essence, selectedSkill, dropFunc, rememberOptions(html),
+            ),
+          },
+        },
+      },
+    ).render(true);
   } else {
     setOriginValues(actor, origin, essence, selectedSkill, dropFunc);
   }
@@ -260,15 +271,27 @@ async function _chooseHangUp(actor, influence) {
         chosen: false,
         img: item.img,
         label: item.name,
-        uuid: item.uuid,
-        value: item.uuid,
       };
     }
   }
 
-  const prompt = "E20.SelectHangUp";
-  const title = "E20.SelectInfluenceHangUp";
-  new ChoicesPrompt (choices, influence, actor, prompt, title).render(true);
+  new Dialog(
+    {
+      title: game.i18n.localize('E20.HangUpChoice'),
+      content: await renderTemplate(
+        "systems/essence20/templates/dialog/option-select.hbs",
+        { choices },
+      ),
+      buttons: {
+        save: {
+          label: game.i18n.localize('E20.AcceptButton'),
+          callback: html => _hangUpSelect(
+            actor, influence, rememberOptions(html),
+          ),
+        },
+      },
+    },
+  ).render(true);
 }
 
 /**

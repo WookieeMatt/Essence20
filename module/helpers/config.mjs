@@ -446,6 +446,7 @@ E20.defaultIcon = {
   alteration: "systems/essence20/assets/icons/items/alteration.svg",
   altMode: "systems/essence20/assets/icons/items/altmode.svg",
   armor: "systems/essence20/assets/icons/items/armor.svg",
+  feature: "systems/essence20/assets/icons/items/feature.svg",
   focus: "systems/essence20/assets/icons/items/focus.svg",
   gear: "systems/essence20/assets/icons/items/gear.svg",
   hangUp: "icons/svg/hazard.svg",
