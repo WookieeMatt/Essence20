@@ -1002,3 +1002,13 @@ E20.CombinedEssenceRankNames = [
   ...E20.TFEssenceRankNames,
 ];
 
+/************************************************
+ * Megaform Types                               *
+ ***********************************************/
+
+E20.megaformTypes = {
+  megaformCombiner: "E20.MegaformTypeCombiner",
+  megaformZord: "E20.MegaformTypeZord",
+};
+preLocalize("megaformTypes");
+

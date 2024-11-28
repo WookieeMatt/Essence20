@@ -1,5 +1,11 @@
 {{#>"systems/essence20/templates/actor/parts/headers/common.hbs"}}
 {{#*inline "secondary-fields"}}
+<div class="actor-header-size">
+  <label for="system.subtype" class"resource-label">{{localize 'E20.MegaformSubtype'}}</label>
+  <select name="system.subtype">
+    {{selectOptions config.megaformTypes selected=system.subtype}}
+  </select>
+</div>
 <div>
   <label for="system.prerequisite" class="resource-label">{{localize 'E20.ZordPrerequisite'}}</label>
   <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />

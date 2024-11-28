@@ -1,4 +1,6 @@
-import { makeInt, makeStrArray } from "../generic-makers.mjs";
+import { E20 } from "../../helpers/config.mjs";
+
+import { makeInt, makeStrArray, makeStrArrayWithChoices } from "../generic-makers.mjs";
 
 import { common } from './templates/common.mjs';
 import { machine } from './templates/machine.mjs';
@@ -10,6 +12,7 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       ...common(),
       ...machine(),
       ...zordBase(),
+      subtype: makeStrArrayWithChoices(Object.keys(E20.megaformTypes), 'megaformZord'),
       health: makeInt(null),
       zordIds: makeStrArray(),
     };
