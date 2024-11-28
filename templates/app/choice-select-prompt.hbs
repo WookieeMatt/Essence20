@@ -3,8 +3,7 @@
   <div>
     {{#each choices as |choice|}}
       <div>
-        <button type="button" value="{{choice.value}}" data-action="{{../type}}"{{#if choice.img}} {{!-- image class here--}} {{/if}}>
-        {{#if choice.img}}<img src="{{choice.img}}" />{{/if}}
+        <button type="button" value="{{choice.value}}" data-action="{{../type}}">
           <span>{{choice.label}}</span>
         </button>
         {{#if choice.hasUUID}}
