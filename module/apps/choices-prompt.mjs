@@ -1,3 +1,4 @@
+import { _processAlterationSkillIncrease } from "../sheet-handlers/alteration-handler.mjs";
 import { _checkForAltModes, _hangUpSelect, _showOriginSkillDialog, setOriginValues } from "../sheet-handlers/background-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -17,6 +18,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
 
   static DEFAULT_OPTIONS = {
     actions: {
+      alteration: ChoicesPrompt.alteration,
       focus: ChoicesPrompt.focus,
       influence: ChoicesPrompt.influence,
       origin: ChoicesPrompt.origin,
@@ -55,6 +57,16 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     return context;
   }
 
+  static alteration(event, selection) {
+    _processAlterationSkillIncrease(this._actor, this._item, selection.value, this._previousSelection1, this._dropFunc)
+    this.close();
+  }
+
+  static focus(event, selection) {
+    _focusStatUpdate(this._actor, selection.value, this._dropFunc);
+    this.close();
+  }
+
   static influence(event, selection) {
     _hangUpSelect(this._actor, selection.value);
     this.close();
@@ -71,10 +83,5 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       _showOriginSkillDialog(this._actor, this._item, selection.value, this._dropFunc);
       this.close();
     }
-  }
-
-  static focus(event, selection) {
-    _focusStatUpdate(this._actor, selection.value, this._dropFunc);
-    this.close();
   }
 }

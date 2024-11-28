@@ -35,6 +35,7 @@ export async function onDropItem(data, actor, dropFunc) {
 
   switch (sourceItem.type) {
   case 'alteration':
+    console.log("Got Here. ")
     return await alterationUpdate(actor, sourceItem, dropFunc);
   case 'armor':
     return await gearDrop(actor, sourceItem, dropFunc);

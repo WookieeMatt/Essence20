@@ -167,6 +167,7 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
         chosen: false,
         img: item.img,
         label: altMode.name,
+        uuid: altMode.uuid,
         value: altMode.name,
       };
     }
@@ -259,6 +260,7 @@ async function _chooseHangUp(actor, influence) {
         chosen: false,
         img: item.img,
         label: item.name,
+        uuid: item.uuid,
         value: item.uuid,
       };
     }
