@@ -1,15 +1,14 @@
-<div class="content">
+<div>
   <h3>{{localize prompt}}</h3>
-  <div class="choice-buttons">
+  <div>
     {{#each choices as |choice|}}
-      <div class="choice">
-        <button type="button" value="{{choice.value}}" data-action="{{../type}}"{{#if choice.img}} class="with-image"{{/if}}>
-        {{#if choice.img}}<img src="{{choice.img}}" />{{/if}}
+      <div>
+        <button type="button" value="{{choice.value}}" data-action="{{../type}}">
           <span>{{choice.label}}</span>
         </button>
         {{#if choice.hasUUID}}
           <a
-            class="item-info"
+            {{!--item info class here--}}
             data-action="view-item"
             data-value="{{choice.value}}"
             data-tooltip=""
