@@ -1,4 +1,3 @@
-import { _processAlterationSkillIncrease } from "../sheet-handlers/alteration-handler.mjs";
 import { _checkForAltModes, _hangUpSelect, _showOriginSkillDialog, setOriginValues } from "../sheet-handlers/background-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
