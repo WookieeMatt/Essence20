@@ -593,6 +593,20 @@
   vertical-align: middle;
 }
 
+/* Generic Item Sheet Styling */
+.essence20 .choice-buttons {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.essence20 .choice-buttons .choice {
+  align-items: center;
+  display: flex;
+  gap: 0.5em;
+  width: 100%;
+}
+
 .essence20 .skill-header {
   font-size: 1.125em;
   align-items: center;

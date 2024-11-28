@@ -1,8 +1,8 @@
 <div>
   <h3>{{localize prompt}}</h3>
-  <div>
+  <div class="choice-buttons">
     {{#each choices as |choice|}}
-      <div>
+      <div class="choice">
         <button type="button" value="{{choice.value}}" data-action="{{../type}}">
           <span>{{choice.label}}</span>
         </button>
