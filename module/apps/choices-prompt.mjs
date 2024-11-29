@@ -1,4 +1,5 @@
 import { _checkForAltModes, _hangUpSelect, _showOriginSkillDialog, setOriginValues } from "../sheet-handlers/background-handler.mjs";
+import { _altModeSelect } from "../sheet-handlers/transformer-handler.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -16,6 +17,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
 
   static DEFAULT_OPTIONS = {
     actions: {
+      altMode: ChoicesPrompt.altMode,
       influence: ChoicesPrompt.influence,
       origin: ChoicesPrompt.origin,
     },
@@ -49,8 +51,13 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     context.choices = this._data;
     context.prompt = this._prompt;
     context.type = this._item.type;
-
+    console.log(context)
     return context;
+  }
+
+  static altMode(event, selection) {
+    _altModeSelect(this._actor, this._dropFunc, selection.value);
+    this.close();
   }
 
   static influence(event, selection) {
