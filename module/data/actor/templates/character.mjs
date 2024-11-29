@@ -21,10 +21,7 @@ function makeDefensesFields(name, essence) {
     essence: makeStr(essence),
     morphed: makeInt(0),
     name: makeStr(name),
-    shield: new fields.SchemaField({
-      active: makeInt(0),
-      passive: makeInt(0),
-    }),
+    shield: makeInt(0),
     string: makeStr(''),
     total: makeInt(0),
   });

@@ -1,6 +1,5 @@
 import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
