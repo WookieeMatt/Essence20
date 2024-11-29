@@ -63,31 +63,39 @@
         </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#ifEquals system.passiveEffect.type 'defenseBonusCombo'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.passiveEffect.option2.value name="system.passiveEffect.option2.value" min=0 step=1}}
+          <select name="system.passiveEffect.option2.defense">
+            {{selectOptions config.defenses selected=system.passiveEffect.option2.defense}}
+          </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
+
+        {{#ifEquals system.passiveEffect.type 'defenseBonusOption'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.passiveEffect.option2.value name="system.passiveEffect.option2.value" min=0 step=1}}
+          <select name="system.passiveEffect.option2.defense">
+            {{selectOptions config.defenses selected=system.passiveEffect.option2.defense}}
+          </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
       {{/ifNotEquals}}
 
-      {{#ifEquals system.passiveEffect.type 'defenseBonusCombo'}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.passiveEffect.option2.value name="system.passiveEffect.option2.value" min=0 step=1}}
-        <select name="system.passiveEffect.option2.defense">
-          {{selectOptions config.defenses selected=system.passiveEffect.option2.defense}}
-         </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifEquals}}
-
-      {{#ifEquals system.passiveEffect.type 'defenseBonusOption'}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.passiveEffect.option2.value name="system.passiveEffect.option2.value" min=0 step=1}}
-        <select name="system.passiveEffect.option2.defense">
-          {{selectOptions config.defenses selected=system.passiveEffect.option2.defense}}
-        </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifEquals}}
-
       {{#ifEquals system.passiveEffect.type 'other'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.passiveEffect.other" value="{{system.passiveEffect.other}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifEquals}}
+
+      {{#ifEquals system.passiveEffect.type 'defenseBonusMixed'}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffect'}}
         {{#*inline "item-field-inputs"}}
         <input type="text" name="system.passiveEffect.other" value="{{system.passiveEffect.other}}" />
@@ -114,31 +122,39 @@
         </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#ifEquals system.activeEffect.type 'defenseBonusCombo'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.activeEffect.option2.value name="system.activeEffect.option2.value" min=0 step=1}}
+          <select name="system.activeEffect.option2.defense">
+            {{selectOptions config.defenses selected=system.activeEffect.option2.defense}}
+          </select>
+           {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
+
+        {{#ifEquals system.activeEffect.type 'defenseBonusOption'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.activeEffect.option2.value name="system.activeEffect.option2.value" min=0 step=1}}
+          <select name="system.activeEffect.option2.defense">
+            {{selectOptions config.defenses selected=system.activeEffect.option2.defense}}
+          </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
       {{/ifNotEquals}}
 
-      {{#ifEquals system.activeEffect.type 'defenseBonusCombo'}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.activeEffect.option2.value name="system.activeEffect.option2.value" min=0 step=1}}
-        <select name="system.activeEffect.option2.defense">
-          {{selectOptions config.defenses selected=system.activeEffect.option2.defense}}
-        </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifEquals}}
-
-      {{#ifEquals system.activeEffect.type 'defenseBonusOption'}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.activeEffect.option2.value name="system.activeEffect.option2.value" min=0 step=1}}
-        <select name="system.activeEffect.option2.defense">
-          {{selectOptions config.defenses selected=system.activeEffect.option2.defense}}
-        </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifEquals}}
-
       {{#ifEquals system.activeEffect.type 'other'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.activeEffect.other" value="{{system.activeEffect.other}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifEquals}}
+
+      {{#ifEquals system.activeEffect.type 'defenseBonusMixed'}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffect'}}
         {{#*inline "item-field-inputs"}}
         <input type="text" name="system.activeEffect.other" value="{{system.activeEffect.other}}" />

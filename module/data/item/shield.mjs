@@ -29,6 +29,7 @@ export class ShieldItemData extends foundry.abstract.TypeDataModel {
       ...item(),
       ...itemDescription(),
       ...parentItem(),
+      active: makeBool(false),
       activeEffect: new fields.SchemaField({
         option1: makeOptionFields(),
         option2: makeOptionFields(),

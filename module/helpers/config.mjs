@@ -202,6 +202,7 @@ preLocalize("upgradeTraits");
 E20.shieldEffectTypes = {
   defenseBonus: "E20.ShieldDefenseBonus",
   defenseBonusCombo: "E20.ShieldDefenseBonusCombo",
+  defenseBonusMixed: "E20.ShieldDefenseBonusMixed",
   defenseBonusOption: "E20.ShieldDefenseBonusOption",
   other: "E20.ShieldOther",
 };

@@ -8,7 +8,6 @@ import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onRest,
   onRoll,
-  onShieldActivate,
   onToggleAccordion,
   onToggleHeaderAccordion,
 } from "../sheet-handlers/listener-misc-handler.mjs";
@@ -18,6 +17,7 @@ import {
   onItemEdit,
   onItemDelete,
   onInlineEdit,
+  onShieldActivate,
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 

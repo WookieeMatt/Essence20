@@ -54,7 +54,7 @@ export async function onDropItem(data, actor, dropFunc) {
   case 'power':
     return await powerUpdate(actor, sourceItem, dropFunc);
   case 'shield' :
-    return await shieldUpdate(actor, sourceItem, dropFunc);
+    return await gearDrop(actor, sourceItem, dropFunc);
   case 'upgrade':
     return await _onDropUpgrade(sourceItem, actor, dropFunc);
   case 'weapon':
