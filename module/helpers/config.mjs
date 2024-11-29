@@ -635,6 +635,13 @@ E20.actorSizes = {
 };
 preLocalize("actorSizes");
 
+// Subtypes of megaforms
+E20.megaformSubtypes = {
+  megaformCombiner: "E20.MegaformSubtypeCombiner",
+  megaformZord: "E20.MegaformSubtypeZord",
+};
+preLocalize("megaformSubtypes");
+
 // Types of movement used by Actors
 E20.movementTypes = {
   aerial: "E20.MovementTypeAerial",
@@ -1001,4 +1008,3 @@ E20.CombinedEssenceRankNames = [
   ...E20.EssenceRankNames,
   ...E20.TFEssenceRankNames,
 ];
-
