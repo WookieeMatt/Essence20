@@ -12,7 +12,7 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       ...common(),
       ...machine(),
       ...zordBase(),
-      subtype: makeStrArrayWithChoices(Object.keys(E20.megaformTypes), 'megaformZord'),
+      subtype: makeStrArrayWithChoices(Object.keys(E20.megaformSubtypes), 'megaformZord'),
       health: makeInt(null),
       zordIds: makeStrArray(),
     };
