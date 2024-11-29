@@ -260,6 +260,20 @@
   background: none;
 }
 
+.minimizing {
+  list-style: none;
+  padding: 6px;
+  overflow-y: none;
+  color: #c7c4c4;
+  flex-basis: auto;
+  justify-content: center;
+  height: 100%;
+  background: none;
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 black;
+}
+
 #module-management .package-list .package-title {
   color: #c7c4c4;
 }
@@ -579,6 +593,20 @@
   vertical-align: middle;
 }
 
+/* Generic Item Sheet Styling */
+.essence20 .choice-buttons {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.essence20 .choice-buttons .choice {
+  align-items: center;
+  display: flex;
+  gap: 0.5em;
+  width: 100%;
+}
+
 .essence20 .skill-header {
   font-size: 1.125em;
   align-items: center;
@@ -893,11 +921,11 @@
 }
 
 .essence20 .npc-skills.zord {
-  width: 22%;
+  width: 23%;
 }
 
 .essence20 .npc-items.zord {
-  width: 78%;
+  width: 77%;
 }
 
 .essence20 .skill-separator {

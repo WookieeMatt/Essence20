@@ -1,0 +1,21 @@
+<div>
+  <h3>{{localize prompt}}</h3>
+  <div class="choice-buttons">
+    {{#each choices as |choice|}}
+      <div class="choice">
+        <button type="button" value="{{choice.value}}" data-action="{{../type}}">
+          <span>{{choice.label}}</span>
+        </button>
+        {{#if choice.uuid}}
+          <a
+            {{!--item info class here--}}
+            data-action="view"
+            data-value="{{choice.value}}"
+            data-uuid="{{choice.uuid}}"
+            data-tooltip="{{choice.label}}"
+          ><i class="fa-solid fa-fw fa-info-circle"></i></a>
+        {{/if}}
+      </div>
+    {{/each}}
+  </div>
+</div>

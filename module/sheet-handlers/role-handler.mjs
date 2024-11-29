@@ -1,3 +1,4 @@
+import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import { rememberOptions, rememberSelect } from "../helpers/dialog.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -199,23 +200,13 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
     choices[essence] = {
       chosen: false,
       label: CONFIG.E20.originEssences[essence],
+      value: essence,
     };
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.EssenceIncrease'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _focusStatUpdate(actor, rememberOptions(html), dropFunc),
-        },
-      },
-    },
-  ).render(true);
+  const prompt = "E20.SelectFocus";
+  const title = "E20.SelectFocusSkills";
+  new ChoicesPrompt(choices, focus, actor, prompt, title, dropFunc).render(true);
 }
 
 /**
@@ -224,14 +215,7 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
  * @param {Object} options The options resulting from _showFocusSkillDialog()
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Focus
  */
-async function _focusStatUpdate(actor, options, dropFunc) {
-  let selectedEssence = "";
-  for (const essence in CONFIG.E20.essences) {
-    if (options[essence]) {
-      selectedEssence = essence;
-    }
-  }
-
+export async function _focusStatUpdate(actor, selectedEssence, dropFunc) {
   const newFocusList = await dropFunc();
   const newFocus = newFocusList[0];
 
@@ -353,6 +337,19 @@ export async function roleUpdate(actor, role, dropFunc) {
     const newRole = newRoleList[0];
     await setRoleValues(newRole, actor);
   }
+
+  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": true,
+    });
+  }
+
+  await _trainingUpdate(actor, 'armors', 'qualified', true, role);
+  await _trainingUpdate(actor, 'armors', 'trained', true, role);
+  await _trainingUpdate(actor, 'weapons', 'qualified', true, role);
+  await _trainingUpdate(actor, 'weapons', 'trained', true, role);
+  await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
+
 }
 
 /**
@@ -442,6 +439,18 @@ export async function onRoleDelete(actor, role) {
       "system.essenceRanks.strength": null,
     });
   }
+
+  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": false,
+    });
+  }
+
+  await _trainingUpdate(actor, 'armors', 'qualified', false, role);
+  await _trainingUpdate(actor, 'armors', 'trained', false, role);
+  await _trainingUpdate(actor, 'weapons', 'qualified', false, role);
+  await _trainingUpdate(actor, 'weapons', 'trained', false, role);
+  await _trainingUpdate(actor, 'armors', 'trained', false, role, true);
 
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
@@ -594,4 +603,23 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
   }
 
   setRoleValues(newRole, actor);
+}
+
+/**
+ *
+ * @param {Actor} actor The Actor whose training is being updated
+ * @param {String} itemType The type of item that we are training
+ * @param {String} trainingType The type of training we are applying
+ * @param {Boolean} updateType Whether we are adding or removing training
+ * @param {Object} role The role that actor has
+ * @param {Boolean} useUpgradesAccessor Whether this is targeting Upgrades or not
+ */
+async function _trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
+  const profs = useUpgradesAccessor ? role.system.upgrades[itemType][trainingType] : role.system[itemType][trainingType];
+  for (const prof of profs) {
+    const profString = `system.${trainingType}.${useUpgradesAccessor ? 'upgrades.' : ''}${itemType}.${prof}`;
+    await actor.update({
+      [profString] : updateType,
+    });
+  }
 }
