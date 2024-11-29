@@ -169,7 +169,6 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
         label: altMode.name,
         uuid: altMode.uuid,
         value: altMode.name,
-
       };
     }
 
