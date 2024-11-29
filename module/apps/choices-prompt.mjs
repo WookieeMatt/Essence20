@@ -1,4 +1,5 @@
 import { _checkForAltModes, _hangUpSelect, _showOriginSkillDialog, setOriginValues } from "../sheet-handlers/background-handler.mjs";
+import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -16,8 +17,10 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
 
   static DEFAULT_OPTIONS = {
     actions: {
+      focus: ChoicesPrompt.focus,
       influence: ChoicesPrompt.influence,
       origin: ChoicesPrompt.origin,
+      view: ChoicesPrompt.view,
     },
     id: "choices-prompt",
     classes: [
@@ -53,6 +56,11 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     return context;
   }
 
+  static focus(event, selection) {
+    _focusStatUpdate(this._actor, selection.value, this._dropFunc);
+    this.close();
+  }
+
   static influence(event, selection) {
     _hangUpSelect(this._actor, selection.value);
     this.close();
@@ -68,6 +76,13 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     } else {
       _showOriginSkillDialog(this._actor, this._item, selection.value, this._dropFunc);
       this.close();
+    }
+  }
+
+  static async view(event, selection) {
+    const item = await fromUuid(selection.dataset.uuid);
+    if (item) {
+      item.sheet.render(true);
     }
   }
 }
