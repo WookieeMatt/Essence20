@@ -1,4 +1,4 @@
-import { rememberOptions } from "../helpers/dialog.mjs";
+import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
 import ChoicesPrompt from "../apps/choices-prompt.mjs";
 
@@ -103,25 +103,14 @@ export async function attachItem(actor, droppedItem, dropFunc) {
       choices[upgradableItem._id] = {
         chosen: false,
         label: upgradableItem.name,
+        uuid: upgradableItem.uuid,
+        value: upgradableItem.uuid,
       };
     }
 
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.ItemSelect'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => _attachSelectedItemOptionHandler(
-              actor, rememberOptions(html), dropFunc,
-            ),
-          },
-        },
-      },
-    ).render(true);
+    const prompt = "E20.SelectWeaponAttach";
+    const title = "E20.SelectUpgradeOrWeaponEffect";
+    new ChoicesPrompt(choices, droppedItem, actor, prompt, title, dropFunc).render(true);
   } else {
     ui.notifications.error(game.i18n.localize('E20.NoUpgradableItemsError'));
     return false;
@@ -131,17 +120,14 @@ export async function attachItem(actor, droppedItem, dropFunc) {
 /**
  * Processes the options resulting from _showAttachmentDialog()
  * @param {Actor} actor The Actor receiving the attachment
- * @param {Object} options The options resulting from _showAttachmentDialog()
+ * @param {UUID} itemId The uuid of the item we are attaching to
  * @param {Function} dropFunc The function to call to complete the drop
  * @private
  */
-async function _attachSelectedItemOptionHandler(actor, options, dropFunc) {
-  for (const [itemId, isSelected] of Object.entries(options)) {
-    if (isSelected) {
-      const item = actor.items.get(itemId);
-      _attachItem(item, dropFunc);
-      break;
-    }
+export async function _attachSelectedItemOptionHandler(actor, itemId, dropFunc) {
+  if (itemId) {
+    const item = await fromUuid(itemId);
+    _attachItem(item, dropFunc);
   }
 }
 
