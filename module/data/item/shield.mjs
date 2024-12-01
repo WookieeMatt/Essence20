@@ -46,7 +46,6 @@ export class ShieldItemData extends foundry.abstract.TypeDataModel {
       }),
       requirements: makeStr(null),
       traits: makeStrArrayWithChoices(Object.keys(E20.armorTraits)),
-
     };
   }
 }
