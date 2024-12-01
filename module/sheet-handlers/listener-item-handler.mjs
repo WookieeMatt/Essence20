@@ -227,6 +227,12 @@ export async function onInlineEdit(event, actor) {
   return item.update({ [field]: newValue });
 }
 
+/**
+ * Handles activating and deactivating the shield
+ * @param {Event} event The activation or deactivation of the shield.
+ * @param {*} actorSheet The actorSheet that the shield is attached to.
+ * @returns
+ */
 export async function onShieldActivate(event, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await getItemsOfType('shield', actor.items);
@@ -304,6 +310,12 @@ export async function onShieldActivate(event, actorSheet) {
   });
 }
 
+/**
+ * Handles equipping a shield
+ * @param {Event} event The event that is the equip or unequip
+ * @param {*} actorSheet The actorSheet that the shield is being equipped or unequipped on
+ * @returns
+ */
 export async function onShieldEquip(event, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await getItemsOfType('shield', actor.items);
@@ -374,6 +386,15 @@ export async function onShieldEquip(event, actorSheet) {
     }
   }
 }
+
+/**
+ * Handles the setting of options selected by the Choice Prompt.
+ * @param {Actor} actor The actor with the shield.
+ * @param {Shield} shield The shield that is changing state.
+ * @param {Integer} value The bonus amount.
+ * @param {String} defense The defense that the bonus is being added to.
+ * @param {String} state Whether we are going to active or passive.
+ */
 
 export async function shieldSetOptions(actor, shield, value, defense, state) {
   if (defense) {

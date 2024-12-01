@@ -20,34 +20,6 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
   }
 }
 
-export async function setShieldDefense(actor) {
-  const shields = getItemsOfType('shield', actor.system.items)
-  for (const shield of shields) {
-    console.log(shield)
-    if (shield.system.equipped) {
-      if (active) {
-        if (shield.system.activeEffect.type == 'defenseBonus' || shield.system.activeEffect.type == 'defenseBonusCombo') {
-          const shieldString = `system.defenses.${shield.system.activeEffect.option1.defense}.shield`;
-          actor.update({
-            [shieldString]: shield.system.activeEffect.option1.value,
-          })
-          if (shield.system.activeEffect.type == 'defenseBonusCombo') {
-            const shieldString = `system.defenses.${shield.system.activeEffect.option2.defense}.shield`;
-            actor.update({
-              [shieldString]: shield.system.activeEffect.option2.value,
-            })
-          }
-        } else if (shield.system.activeEffect.type == 'defenseBonusOption' || shield.system.activeEffect.type == 'defenseBonusMixed') {
-          new ChoicesPrompt(choices, shield, actor, )
-        }
-      }
-    }
-  }
-
-}
-
-
-
 /**
  * Creates copies of Items for given IDs
  * @param {Object[]} items The Item entries to copy
