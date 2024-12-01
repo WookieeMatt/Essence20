@@ -91,7 +91,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
   }
 
   static async shield(event, selection) {
-    shieldSetOptions(this._actor, this._item, selection.value, selection.name, this._dropFunc)
+    shieldSetOptions(this._actor, this._item, selection.value, selection.name, this._dropFunc);
     this.close();
   }
 
