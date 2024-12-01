@@ -233,7 +233,7 @@ export async function onInlineEdit(event, actor) {
  * @param {*} actorSheet The actorSheet that the shield is attached to.
  * @returns
  */
-export async function onShieldActivate(event, actorSheet) {
+export async function onShieldActivationTogglee(event, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await getItemsOfType('shield', actor.items);
   let currentShield = {};

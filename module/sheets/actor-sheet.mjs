@@ -17,7 +17,7 @@ import {
   onItemEdit,
   onItemDelete,
   onInlineEdit,
-  onShieldActivate,
+  onShieldActivationToggle,
   onShieldEquip,
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
@@ -463,7 +463,7 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.shield-equip').change(ev => onShieldEquip(ev, this));
 
     //Activate Shield
-    html.find('.shield-activate').click(ev => onShieldActivate(ev, this));
+    html.find('.shield-activate').click(ev => onShieldActivationToggle(ev, this));
 
     // Roll buttons
     if (this.actor.isOwner) {
