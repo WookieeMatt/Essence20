@@ -45,7 +45,7 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!--Passive Effect Type --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PassiveEffectType'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffectType'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.passiveEffect.type">
         {{selectOptions config.shieldEffectTypes selected=system.passiveEffect.type}}
@@ -104,7 +104,7 @@
       {{/ifEquals}}
 
       {{!--Active Effect Type --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActiveEffectType'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffectType'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.activeEffect.type">
         {{selectOptions config.shieldEffectTypes selected=system.activeEffect.type}}

@@ -18,6 +18,7 @@ import {
   onItemDelete,
   onInlineEdit,
   onShieldActivate,
+  onShieldEquip,
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 
@@ -251,6 +252,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
+    let shieldEquipped = false;
     const shields = [];
     const specializations = {};
     const spells = [];
@@ -329,6 +331,9 @@ export class Essence20ActorSheet extends ActorSheet {
         powers.push(i);
         break;
       case 'shield':
+        if (i.system.equipped) {
+          shieldEquipped = true;
+        }
         shields.push(i);
         break;
       case 'spell':
@@ -412,6 +417,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.rolePoints = rolePoints;
     context.role = role;
     context.shields = shields;
+    context.shieldEquipped = shieldEquipped;
     context.spells = spells;
     context.specializations = specializations;
     context.traits = traits;
@@ -456,8 +462,11 @@ export class Essence20ActorSheet extends ActorSheet {
     // Transform Button
     html.find('.transform').click(() => onTransform(this));
 
+    //Equip Shield
+    html.find('.shield-equip').change(ev => onShieldEquip(ev, this));
+
     //Activate Shield
-    html.find('.shield-activate').click(() => onShieldActivate(this));
+    html.find('.shield-activate').click(ev => onShieldActivate(ev, this));
 
     // Roll buttons
     if (this.actor.isOwner) {

@@ -177,11 +177,11 @@ export class Essence20Actor extends Actor {
 
       defense.total = base + essence + bonus + rolePointsDefense;
       defense.total += system.isMorphed ? morphed : armor;
-      defense.total += system.isShieldActive ? shield.active : shield.passive;
+      defense.total += shield;
 
       defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`;
       defense.string += system.isMorphed ? ` + ${morphed} (${morphedName})` : ` + ${armor} (${armorName})`;
-      defense.string += system.isShieldActive ? ` + ${shield.active} (${shieldName})` : ` + ${shield.passive} (${shieldName})`;
+      defense.string += ` + ${shield} (${shieldName})`;
       defense.string += ` + ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
     }
   }

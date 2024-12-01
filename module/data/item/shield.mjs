@@ -33,6 +33,7 @@ export class ShieldItemData extends foundry.abstract.TypeDataModel {
       activeEffect: new fields.SchemaField({
         option1: makeOptionFields(),
         option2: makeOptionFields(),
+        other: makeStr(null),
         type: makeStrWithChoices(Object.keys(CONFIG.E20.shieldEffectTypes)),
       }),
       availability: makeStrWithChoices(Object.keys(E20.availabilities), 'standard'),
@@ -41,6 +42,7 @@ export class ShieldItemData extends foundry.abstract.TypeDataModel {
       passiveEffect: new fields.SchemaField({
         option1: makeOptionFields(),
         option2: makeOptionFields(),
+        other: makeStr(null),
         type: makeStrWithChoices(Object.keys(CONFIG.E20.shieldEffectTypes)),
       }),
       requirements: makeStr(null),
