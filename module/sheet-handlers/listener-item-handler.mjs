@@ -236,7 +236,7 @@ export async function onInlineEdit(event, actor) {
 export async function onShieldActivate(event, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await getItemsOfType('shield', actor.items);
-  let currentShield = {};
+  let currentShield = null;
   for (const shield of shields) {
     if (shield._id == event.currentTarget.dataset.id) {
       currentShield = shield;
