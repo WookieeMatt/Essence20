@@ -313,13 +313,13 @@ export async function onShieldEquipToggle(event, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await getItemsOfType('shield', actor.items);
   let currentShield = {};
-  if (event.currentTarget.checked) {
-    for (const shield of shields) {
-      if (shield._id == event.currentTarget.dataset.id) {
-        currentShield = shield;
-      }
+  for (const shield of shields) {
+    if (shield._id == event.currentTarget.dataset.id) {
+      currentShield = shield;
     }
+  }
 
+  if (event.currentTarget.checked) {
     const passiveEffect = currentShield.system.passiveEffect;
     if (passiveEffect.type == "defenseBonus" || passiveEffect.type == "defenseBonusCombo") {
       const shieldString = `system.defenses.${passiveEffect.option1.defense}.shield`;
@@ -367,6 +367,9 @@ export async function onShieldEquipToggle(event, actorSheet) {
         [shieldString] : 0,
       });
     }
+    currentShield.update({
+      ["system.active"]: false,
+    });
   }
 }
 

@@ -486,6 +486,7 @@
     "ShieldDefenseBonusCombo": "Multiple Defense Bonuses",
     "ShieldDefenseBonusMixed": "Different Types of Bonuses",
     "ShieldDefenseBonusOption": "An Option of Bonuses",
+    "ShieldNotEquipped": "You have no shield equipped to activate.",
     "ShieldOther": "Other",
     "ShieldPassiveEffectType": "Passive Effect Type",
     "ShieldPassiveEffect": "Passive Feature",
