@@ -12,7 +12,11 @@
   {{#ifEquals item.type "shield"}}
     <div class="item-image" style="flex-grow: 0;">
       <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
-        <a class="shield-activate" data-id="{{item._id}}" {{#if system.active}} data-tooltip="Active"{{else}}data-tooltip="Passive"{{/if}} style="flex-grow: 0;"><i class="fas fa-shield"></i></a>
+        <a class="shield-activate" data-id="{{item._id}}" style="flex-grow: 0;"
+          {{#if system.active}} data-tooltip="Active" {{else}} data-tooltip="Passive" {{/if}}
+        >
+          <i class="fas fa-shield"></i>
+        </a>
       </div>
     </div>
   {{/ifEquals}}
