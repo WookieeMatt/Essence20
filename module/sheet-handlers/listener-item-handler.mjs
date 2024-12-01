@@ -268,7 +268,7 @@ export async function onShieldActivate(event, actorSheet) {
     const shieldString = `system.defenses.${currentShield.system[stateString].option1.defense}.shield`;
     await actor.update({
       [shieldString] : currentShield.system[stateString].option1.value,
-    })
+    });
   } else if (currentShield.system[stateString].type == "defenseBonusOption" || currentShield.system[stateString].type == "defenseBonusMixed" ) {
     const choices = {};
     const label1 = game.i18n.localize(CONFIG.E20.defenses[currentShield.system[stateString].option1.defense]) + " +" + currentShield.system[stateString].option1.value;
@@ -405,6 +405,7 @@ export async function shieldSetOptions(actor, shield, value, defense, state) {
       [updateString] : value,
     });
   }
+
   if (state == "activeEffect") {
     shield.update({
       ["system.active"] : true,

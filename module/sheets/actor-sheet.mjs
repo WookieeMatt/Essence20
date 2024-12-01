@@ -259,10 +259,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const upgrades = [];
     const traits = []; // Used by Vehicles
     const weapons = [];
-    let activeShieldString = '';
-    let activeShieldValue = 0;
-    let passiveShieldString = '';
-    let passiveShieldValue = 0;
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
     let role = null;
@@ -334,6 +330,7 @@ export class Essence20ActorSheet extends ActorSheet {
         if (i.system.equipped) {
           shieldEquipped = true;
         }
+
         shields.push(i);
         break;
       case 'spell':
