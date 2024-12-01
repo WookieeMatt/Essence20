@@ -367,6 +367,7 @@ export async function onShieldEquipToggle(event, actorSheet) {
         [shieldString] : 0,
       });
     }
+
     currentShield.update({
       ["system.active"]: false,
     });
