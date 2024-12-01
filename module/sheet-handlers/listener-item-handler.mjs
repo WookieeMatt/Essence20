@@ -231,15 +231,15 @@ export async function onInlineEdit(event, actor) {
  * Handles activating and deactivating the shield
  * @param {Event} event The activation or deactivation of the shield.
  * @param {*} actorSheet The actorSheet that the shield is attached to.
- * @returns
  */
-export async function onShieldActivationTogglee(event, actorSheet) {
+export async function onShieldActivationToggle(event, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await getItemsOfType('shield', actor.items);
   let currentShield = null;
   for (const shield of shields) {
     if (shield._id == event.currentTarget.dataset.id) {
       currentShield = shield;
+      break;
     }
   }
 
@@ -255,39 +255,33 @@ export async function onShieldActivationTogglee(event, actorSheet) {
     });
   }
 
-  let stateString = '';
-  let newState = false;
-  if (currentShield.system.active) {
-    stateString = 'passiveEffect';
-  } else {
-    stateString = 'activeEffect';
-    newState = true;
-  }
+  const stateString = currentShield.system.active ?  'passiveEffect' : 'activeEffect';
+  const shieldState = currentShield.system[stateString];
 
-  if (currentShield.system[stateString].type == "defenseBonus" || currentShield.system[stateString].type == "defenseBonusCombo") {
-    const shieldString = `system.defenses.${currentShield.system[stateString].option1.defense}.shield`;
+  if (shieldState.type == "defenseBonus" || shieldState.type == "defenseBonusCombo") {
+    const shieldString = `system.defenses.${shieldState.option1.defense}.shield`;
     await actor.update({
-      [shieldString] : currentShield.system[stateString].option1.value,
+      [shieldString] : shieldState.option1.value,
     });
-  } else if (currentShield.system[stateString].type == "defenseBonusOption" || currentShield.system[stateString].type == "defenseBonusMixed" ) {
+  } else if (shieldState.type == "defenseBonusOption" || shieldState.type == "defenseBonusMixed" ) {
     const choices = {};
-    const label1 = game.i18n.localize(CONFIG.E20.defenses[currentShield.system[stateString].option1.defense]) + " +" + currentShield.system[stateString].option1.value;
+    const label1 = game.i18n.localize(CONFIG.E20.defenses[shieldState.option1.defense]) + " +" + shieldState.option1.value;
     choices["option1"] = {
-      defense: currentShield.system[stateString].option1.defense,
+      defense: shieldState.option1.defense,
       label: label1,
-      value: currentShield.system[stateString].option1.value,
+      value: shieldState.option1.value,
     };
-    if (currentShield.system[stateString].type == "defenseBonusOption") {
-      const label2 = game.i18n.localize(CONFIG.E20.defenses[currentShield.system[stateString].option2.defense]) + " +" + currentShield.system[stateString].option2.value;
+    if (shieldState.type == "defenseBonusOption") {
+      const label2 = game.i18n.localize(CONFIG.E20.defenses[shieldState.option2.defense]) + " +" + shieldState.option2.value;
       choices["option2"] = {
-        defense: currentShield.system[stateString].option2.defense,
+        defense: shieldState.option2.defense,
         label: label2,
-        value: currentShield.system[stateString].option2.value,
+        value: shieldState.option2.value,
       };
     } else {
       choices["option2"] = {
-        value: currentShield.system[stateString].other,
-        label: currentShield.system[stateString].other,
+        value: shieldState.other,
+        label: shieldState.other,
       };
     }
 
@@ -298,15 +292,15 @@ export async function onShieldActivationTogglee(event, actorSheet) {
     return;
   }
 
-  if (currentShield.system[stateString].type == "defenseBonusCombo") {
-    const shieldString = `system.defenses.${currentShield.system[stateString].option2.defense}.shield`;
+  if (shieldState.type == "defenseBonusCombo") {
+    const shieldString = `system.defenses.${shieldState.option2.defense}.shield`;
     await actor.update({
-      [shieldString] : currentShield.system[stateString].option2.value,
+      [shieldString] : shieldState.option2.value,
     });
   }
 
   currentShield.update({
-    ["system.active"] : newState,
+    ["system.active"] : !currentShield.system.active,
   });
 }
 
@@ -314,56 +308,43 @@ export async function onShieldActivationTogglee(event, actorSheet) {
  * Handles equipping a shield
  * @param {Event} event The event that is the equip or unequip
  * @param {*} actorSheet The actorSheet that the shield is being equipped or unequipped on
- * @returns
  */
-export async function onShieldEquip(event, actorSheet) {
+export async function onShieldEquipToggle(event, actorSheet) {
   const actor = actorSheet.actor;
   const shields = await getItemsOfType('shield', actor.items);
-  let shieldCount = 0;
   let currentShield = {};
   if (event.currentTarget.checked) {
     for (const shield of shields) {
-      if (shield.system.equipped) {
-        shieldCount += 1;
-      }
-
       if (shield._id == event.currentTarget.dataset.id) {
         currentShield = shield;
       }
     }
 
-    if (shieldCount >= 1 ) {
-      await currentShield.update({
-        ["system.equipped"]: false,
-      }).then(actorSheet.render(true));
-      await ui.notifications.error(game.i18n.localize('E20.ShieldTooManyError'));
-      return;
-    }
-
-    if (currentShield.system.passiveEffect.type == "defenseBonus" || currentShield.system.passiveEffect.type == "defenseBonusCombo") {
-      const shieldString = `system.defenses.${currentShield.system.passiveEffect.option1.defense}.shield`;
+    const passiveEffect = currentShield.system.passiveEffect;
+    if (passiveEffect.type == "defenseBonus" || passiveEffect.type == "defenseBonusCombo") {
+      const shieldString = `system.defenses.${passiveEffect.option1.defense}.shield`;
       await actor.update({
-        [shieldString] : currentShield.system.passiveEffect.option1.value,
+        [shieldString] : passiveEffect.option1.value,
       });
-    } else if (currentShield.system.passiveEffect.type == "defenseBonusOption" || currentShield.system.passiveEffect.type == "defenseBonusMixed" ) {
+    } else if (passiveEffect.type == "defenseBonusOption" || passiveEffect.type == "defenseBonusMixed" ) {
       const choices = {};
-      const label1 = game.i18n.localize(CONFIG.E20.defenses[currentShield.system.passiveEffect.option1.defense]) + " +" + currentShield.system.passiveEffect.option1.value;
+      const label1 = game.i18n.localize(CONFIG.E20.defenses[passiveEffect.option1.defense]) + " +" + passiveEffect.option1.value;
       choices["option1"] = {
-        defense: currentShield.system.passiveEffect.option1.defense,
+        defense: passiveEffect.option1.defense,
         label: label1,
-        value: currentShield.system.passiveEffect.option1.value,
+        value: passiveEffect.option1.value,
       };
-      if (currentShield.system.passiveEffect.type == "defenseBonusOption") {
-        const label2 = game.i18n.localize(CONFIG.E20.defenses[currentShield.system.passiveEffect.option2.defense]) + " +" + currentShield.system.passiveEffect.option2.value;
+      if (passiveEffect.type == "defenseBonusOption") {
+        const label2 = game.i18n.localize(CONFIG.E20.defenses[passiveEffect.option2.defense]) + " +" + passiveEffect.option2.value;
         choices["option2"] = {
-          defense: currentShield.system.passiveEffect.option2.defense,
+          defense: passiveEffect.option2.defense,
           label: label2,
-          value: currentShield.system.passiveEffect.option2.value,
+          value: passiveEffect.option2.value,
         };
       } else {
         choices["option2"] = {
-          value: currentShield.system.passiveEffect.other,
-          label: currentShield.system.passiveEffect.other,
+          value: passiveEffect.other,
+          label: passiveEffect.other,
         };
       }
 
@@ -373,10 +354,10 @@ export async function onShieldEquip(event, actorSheet) {
       return;
     }
 
-    if (currentShield.system.passiveEffect.type == "defenseBonusCombo") {
-      const shieldString = `system.defenses.${currentShield.system.passiveEffect.option2.defense}.shield`;
+    if (passiveEffect.type == "defenseBonusCombo") {
+      const shieldString = `system.defenses.${passiveEffect.option2.defense}.shield`;
       await actor.update({
-        [shieldString] : currentShield.system.passiveEffect.option2.value,
+        [shieldString] : passiveEffect.option2.value,
       });
     }
   } else {
@@ -398,7 +379,7 @@ export async function onShieldEquip(event, actorSheet) {
  * @param {String} state Whether we are going to active or passive.
  */
 
-export async function shieldSetOptions(actor, shield, value, defense, state) {
+export async function setShieldOptions(actor, shield, value, defense, state) {
   if (defense) {
     const updateString = `system.defenses.${defense}.shield`;
     actor.update({
@@ -406,13 +387,7 @@ export async function shieldSetOptions(actor, shield, value, defense, state) {
     });
   }
 
-  if (state == "activeEffect") {
-    shield.update({
-      ["system.active"] : true,
-    });
-  } else {
-    shield.update({
-      ["system.active"] : false,
-    });
-  }
+  shield.update({
+    ["system.active"] : state == "activeEffect",
+  });
 }
