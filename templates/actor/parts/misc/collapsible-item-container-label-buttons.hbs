@@ -18,7 +18,11 @@
   {{/ifEquals}}
   {{#if (isdefined item.system.equipped)}}
   <div style="flex-grow: 0;">
-    <input class="inline-edit item-label-checkbox {{#ifEquals item.type "shield"}} shield-equip{{/ifEquals}}" data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped" {{checked item.system.equipped}} title="{{localize 'E20.ItemToggleEquipped'}}" {{#ifCond @root.shieldEquipped "&&" item.system.equipped}}{{else}}{{#if @root.shieldEquipped}} disabled{{/if}}{{/ifCond}} />
+    <input class="inline-edit item-label-checkbox {{#ifEquals item.type "shield"}} shield-equip{{/ifEquals}}"
+      data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped"
+      {{checked item.system.equipped}} title="{{localize 'E20.ItemToggleEquipped'}}"
+      {{#ifCond @root.shieldEquipped "&&" item.system.equipped}} {{else}} {{#if @root.shieldEquipped}} disabled {{/if}} {{/ifCond}}
+    />
   </div>
   {{/if}}
   <div>
