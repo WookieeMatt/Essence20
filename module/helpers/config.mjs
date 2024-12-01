@@ -117,6 +117,7 @@ E20.weaponTraits = {
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
   tempermental: "E20.WeaponTraitTempermental",
+  thrown: "E20.WeaponTraitThrown",
   titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
   vehicular: "E20.WeaponTraitVehicular",
@@ -508,6 +509,7 @@ E20.availabilities = {
   prototype: "E20.AvailabilityPrototype",
   unique: "E20.AvailabilityUnique",
   theoretical: "E20.AvailabilityTheoretical",
+  other: "E20.AvailabilityOther",
 };
 preLocalize("availabilities");
 
@@ -519,6 +521,7 @@ E20.damageTypes = {
   grapple: "E20.DamageGrapple",
   impaired: "E20.DamageImparied",
   intimidate: "E20.DamageIntimidate",
+  knocProne: "E20.DamageKnockProne",
   laser: "E20.DamageLaser",
   maneuver: "E20.DamageManeuver",
   mesmerized: "E20.DamageMesmerized",

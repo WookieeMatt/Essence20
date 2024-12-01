@@ -1,0 +1,95 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Horse Bow",
+  "type": "weapon",
+  "_id": "dk1CDn5iKabGJ2zx",
+  "img": "icons/weapons/bows/bow-recurve-black.webp",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 76
+    },
+    "items": {
+      "11f7": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.fr5l2RSNvD7XLRyw",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Horse Bow Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 180,
+          "value": 70
+        },
+        "shiftDown": 0
+      },
+      "c9f6": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.30vs4I54PNT1vgmU",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Horse Bow Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "restrained",
+        "numHands": 2,
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 180,
+          "value": 70
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "d2"
+    },
+    "traits": [
+      "sharp"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733068886257,
+    "modifiedTime": 1733076546738,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!dk1CDn5iKabGJ2zx"
+}

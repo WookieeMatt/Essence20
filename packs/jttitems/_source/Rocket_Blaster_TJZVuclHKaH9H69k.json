@@ -1,0 +1,76 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Rocket Blaster",
+  "type": "weapon",
+  "_id": "TJZVuclHKaH9H69k",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 80
+    },
+    "items": {
+      "a9f6": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.2FINDmOsLqDV2Nhf",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rocket Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 120,
+          "value": 40
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "area",
+      "energy",
+      "inaccurate",
+      "powerWeapon"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733091019496,
+    "modifiedTime": 1733091056950,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!TJZVuclHKaH9H69k"
+}
