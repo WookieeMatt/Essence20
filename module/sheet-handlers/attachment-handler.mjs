@@ -80,7 +80,6 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
  * @param {Function} dropFunc The function to call to complete the drop
  */
 export async function attachItem(actor, droppedItem, dropFunc) {
-  console.log(droppedItem)
   let parentType = "";
   if (droppedItem.system.type) {
     parentType = droppedItem.system.type;
@@ -223,6 +222,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['traits'] = droppedItem.system.traits;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
+
     break;
   case "weapon":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {

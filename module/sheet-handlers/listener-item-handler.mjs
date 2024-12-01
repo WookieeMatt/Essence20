@@ -252,7 +252,7 @@ export async function onShieldActivate(event, actorSheet) {
     const shieldString = `system.defenses.${defenseType}.shield`;
     await actor.update({
       [shieldString] : 0,
-    })
+    });
   }
 
   let stateString = '';
@@ -302,7 +302,7 @@ export async function onShieldActivate(event, actorSheet) {
     const shieldString = `system.defenses.${currentShield.system[stateString].option2.defense}.shield`;
     await actor.update({
       [shieldString] : currentShield.system[stateString].option2.value,
-    })
+    });
   }
 
   currentShield.update({
@@ -326,10 +326,12 @@ export async function onShieldEquip(event, actorSheet) {
       if (shield.system.equipped) {
         shieldCount += 1;
       }
+
       if (shield._id == event.currentTarget.dataset.id) {
         currentShield = shield;
       }
     }
+
     if (shieldCount >= 1 ) {
       await currentShield.update({
         ["system.equipped"]: false,
@@ -342,7 +344,7 @@ export async function onShieldEquip(event, actorSheet) {
       const shieldString = `system.defenses.${currentShield.system.passiveEffect.option1.defense}.shield`;
       await actor.update({
         [shieldString] : currentShield.system.passiveEffect.option1.value,
-      })
+      });
     } else if (currentShield.system.passiveEffect.type == "defenseBonusOption" || currentShield.system.passiveEffect.type == "defenseBonusMixed" ) {
       const choices = {};
       const label1 = game.i18n.localize(CONFIG.E20.defenses[currentShield.system.passiveEffect.option1.defense]) + " +" + currentShield.system.passiveEffect.option1.value;
@@ -375,14 +377,14 @@ export async function onShieldEquip(event, actorSheet) {
       const shieldString = `system.defenses.${currentShield.system.passiveEffect.option2.defense}.shield`;
       await actor.update({
         [shieldString] : currentShield.system.passiveEffect.option2.value,
-      })
+      });
     }
   } else {
     for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
       const shieldString = `system.defenses.${defenseType}.shield`;
       await actor.update({
         [shieldString] : 0,
-      })
+      });
     }
   }
 }
