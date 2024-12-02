@@ -15,7 +15,11 @@
         <a class="shield-activate" data-id="{{item._id}}" style="flex-grow: 0;"
           {{#if system.active}} data-tooltip="Active" {{else}} data-tooltip="Passive" {{/if}}
         >
-          <i class="fas fa-shield"></i>
+          {{#if system.active}}
+            <i class="fas fa-shield-check"></i>
+          {{else}}
+            <i class="fas fa-shield"></i>
+          {{/if}}
         </a>
       </div>
     </div>
