@@ -1,0 +1,81 @@
+{
+  "folder": "z2uEgZjp1ed8E2Gx",
+  "name": "Once A Ranger",
+  "type": "perk",
+  "_id": "lhmvqRKAnfBs69H9",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 25
+    },
+    "items": {},
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Once A Ranger",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.through_the_shattered_grid.Item.lhmvqRKAnfBs69H9",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "5QAZYibevZs4JCnD",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.powers.personal.max",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1733102648917,
+        "modifiedTime": 1733102699739,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!lhmvqRKAnfBs69H9.5QAZYibevZs4JCnD"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733102616892,
+    "modifiedTime": 1733102622526,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!lhmvqRKAnfBs69H9"
+}
