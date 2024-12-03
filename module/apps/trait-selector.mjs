@@ -31,6 +31,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static PARTS = {
     form: {
+      scrollable: "",
       template: "systems/essence20/templates/app/trait-selector.hbs",
     },
   };

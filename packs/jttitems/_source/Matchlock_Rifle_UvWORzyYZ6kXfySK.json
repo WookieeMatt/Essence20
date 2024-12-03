@@ -1,0 +1,75 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Matchlock Rifle",
+  "type": "weapon",
+  "_id": "UvWORzyYZ6kXfySK",
+  "img": "icons/weapons/guns/gun-pistol-flintlock-metal.webp",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "items": {
+      "958c": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.oAA0h2Ad2VEZs6RT",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Matchlock Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 300,
+          "value": 100
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic",
+      "reload",
+      "sharp"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733071337476,
+    "modifiedTime": 1733076683425,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!UvWORzyYZ6kXfySK"
+}

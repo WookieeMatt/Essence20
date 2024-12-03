@@ -1,0 +1,93 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Turbo Plasma Launcher",
+  "type": "weapon",
+  "_id": "b6zAxEE2dvFYKRVb",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 80
+    },
+    "items": {
+      "8713": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.BKwrZC2SYSZNatJF",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Plasma Launcher Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 150,
+          "value": 65
+        },
+        "shiftDown": 0
+      },
+      "38c3": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.b13NrJilSnnsJUti",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo Plasma Launcher Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 2,
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 150,
+          "value": 65
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "technology",
+      "shift": "d2"
+    },
+    "traits": [],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733093437526,
+    "modifiedTime": 1733093467758,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!b6zAxEE2dvFYKRVb"
+}
