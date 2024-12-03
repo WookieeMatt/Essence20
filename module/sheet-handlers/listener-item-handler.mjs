@@ -382,7 +382,6 @@ export async function onShieldEquipToggle(event, actorSheet) {
  * @param {String} defense The defense that the bonus is being added to.
  * @param {String} state Whether we are going to active or passive.
  */
-
 export async function setShieldOptions(actor, shield, value, defense, state) {
   if (defense) {
     const updateString = `system.defenses.${defense}.shield`;
