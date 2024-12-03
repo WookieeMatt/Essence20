@@ -258,7 +258,7 @@ export async function onShieldActivationToggle(event, actorSheet) {
   const stateString = currentShield.system.active ?  'passiveEffect' : 'activeEffect';
   const shieldState = currentShield.system[stateString];
 
-  shieldUpdate(actor, currentShield, shieldState, stateString)
+  shieldUpdate(actor, currentShield, shieldState, stateString);
 }
 
 /**
@@ -280,7 +280,7 @@ export async function onShieldEquipToggle(event, actorSheet) {
     const shieldState = currentShield.system.passiveEffect;
     const stateString = 'passiveEffect';
 
-    shieldUpdate(actor, currentShield, shieldState, stateString)
+    shieldUpdate(actor, currentShield, shieldState, stateString);
 
   } else {
     for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
@@ -338,7 +338,7 @@ async function shieldUpdate(actor, currentShield, shieldState, stateString) {
     });
   }
 
-  if (stateString = "activeEffect") {
+  if (stateString == "activeEffect") {
     currentShield.update({
       ["system.active"] : true,
     });
