@@ -230,7 +230,7 @@ export async function onInlineEdit(event, actor) {
 /**
  * Handles activating and deactivating the shield
  * @param {Event} event The activation or deactivation of the shield.
- * @param {*} actorSheet The actorSheet that the shield is attached to.
+ * @param {ActorSheet} actorSheet The ActorSheet that the shield is attached to.
  */
 export async function onShieldActivationToggle(event, actorSheet) {
   const actor = actorSheet.actor;
