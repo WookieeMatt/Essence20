@@ -307,7 +307,7 @@ export async function onShieldActivationToggle(event, actorSheet) {
 /**
  * Handles equipping a shield
  * @param {Event} event The event that is the equip or unequip
- * @param {*} actorSheet The actorSheet that the shield is being equipped or unequipped on
+ * @param {ActorSheet} actorSheet The ActorSheet that the shield is being equipped or unequipped on
  */
 export async function onShieldEquipToggle(event, actorSheet) {
   const actor = actorSheet.actor;
