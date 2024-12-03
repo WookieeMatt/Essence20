@@ -486,6 +486,8 @@
     "SelectionLimit": "Selection Limit",
     "ShieldActiveEffect": "Active Feature",
     "ShieldActiveEffectType": "Active Effect Type",
+    "ShieldCurrentStateActive": "Current mode: Active",
+    "ShieldCurrentStatePassive": "Current mode: Passive",
     "ShieldDefenseBonus": "Defense Bonus",
     "ShieldDefenseBonusCombo": "Multiple Defense Bonuses",
     "ShieldDefenseBonusMixed": "Different Types of Bonuses",
