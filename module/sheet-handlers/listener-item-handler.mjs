@@ -353,9 +353,9 @@ async function shieldUpdate(actor, currentShield, shieldState, stateString) {
  * Handles the setting of options selected by the Choice Prompt.
  * @param {Actor} actor The actor with the shield.
  * @param {Shield} shield The shield that is changing state.
+ * @param {String} state Whether we are going to active or passive.
  * @param {Integer} value The bonus amount.
  * @param {String} defense The defense that the bonus is being added to.
- * @param {String} state Whether we are going to active or passive.
  */
 export async function setShieldOptions(actor, shield, state, value=null, defense=null) {
   if (defense) {
