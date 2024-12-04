@@ -295,6 +295,13 @@ export async function onShieldEquipToggle(event, actorSheet) {
   }
 }
 
+/**
+ * Handles setting the values of the shield that were selected from the Prompt
+ * @param {Actor} actor The actor that owns the shield
+ * @param {Item} currentShield The shield that we are setting values from
+ * @param {String} shieldState The state the shield is going to
+ * @param {String} stateString The location where we are getting the data from on the shield
+ */
 async function shieldUpdate(actor, currentShield, shieldState, stateString) {
   if (shieldState.type == "defenseBonus" || shieldState.type == "defenseBonusCombo") {
     const shieldString = `system.defenses.${shieldState.option1.defense}.shield`;
@@ -305,14 +312,14 @@ async function shieldUpdate(actor, currentShield, shieldState, stateString) {
     const choices = {};
     const label1 = game.i18n.localize(CONFIG.E20.defenses[shieldState.option1.defense]) + " +" + shieldState.option1.value;
     choices["option1"] = {
-      defense: shieldState.option1.defense,
+      name: shieldState.option1.defense,
       label: label1,
       value: shieldState.option1.value,
     };
     if (shieldState.type == "defenseBonusOption") {
       const label2 = game.i18n.localize(CONFIG.E20.defenses[shieldState.option2.defense]) + " +" + shieldState.option2.value;
       choices["option2"] = {
-        defense: shieldState.option2.defense,
+        name: shieldState.option2.defense,
         label: label2,
         value: shieldState.option2.value,
       };

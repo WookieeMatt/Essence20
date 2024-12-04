@@ -3,7 +3,7 @@
   <div class="choice-buttons">
     {{#each choices as |choice|}}
       <div class="choice">
-        <button type="button" name="{{choice.defense}}" value="{{choice.value}}" data-action="{{../type}}">
+        <button type="button" name="{{choice.name}}" value="{{choice.value}}" data-action="{{../type}}">
           <span>{{choice.label}}</span>
         </button>
         {{#if choice.uuid}}

@@ -200,11 +200,11 @@ preLocalize("upgradeTraits");
 
 // Options for Upgrade traits
 E20.shieldEffectTypes = {
-  defenseBonus: "E20.ShieldDefenseBonus",
-  defenseBonusCombo: "E20.ShieldDefenseBonusCombo",
-  defenseBonusMixed: "E20.ShieldDefenseBonusMixed",
-  defenseBonusOption: "E20.ShieldDefenseBonusOption",
-  other: "E20.ShieldOther",
+  defenseBonus: "E20.ShieldDefense1Bonus",
+  defenseBonusCombo: "E20.ShieldDefense2Bonuses",
+  defenseBonusMixed: "E20.ShieldDefenseMixedBonuses",
+  defenseBonusOption: "E20.ShieldDefense1Of2Bonuses",
+  other: "E20.ShieldDefense1OtherBonus",
 };
 preLocalize("shieldEffectTypes");
 
