@@ -296,7 +296,7 @@ export async function onShieldEquipToggle(event, actorSheet) {
 }
 
 /**
- * Handles setting the values of the shield that were selected from the Prompt
+ * Handles setting the values of the shield that were selected from the prompt
  * @param {Actor} actor The actor that owns the shield
  * @param {Shield} currentShield The shield that we are setting values from
  * @param {String} shieldState The state the shield is going to
