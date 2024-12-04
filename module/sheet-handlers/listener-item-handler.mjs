@@ -256,9 +256,7 @@ export async function onShieldActivationToggle(event, actorSheet) {
   }
 
   const stateString = currentShield.system.active ?  'passiveEffect' : 'activeEffect';
-  const shieldState = currentShield.system[stateString];
-
-  shieldUpdate(actor, currentShield, shieldState, stateString);
+  shieldUpdate(actor, currentShield, stateString);
 }
 
 /**
@@ -277,10 +275,7 @@ export async function onShieldEquipToggle(event, actorSheet) {
   }
 
   if (event.currentTarget.checked) {
-    const shieldState = currentShield.system.passiveEffect;
-    const stateString = 'passiveEffect';
-
-    shieldUpdate(actor, currentShield, shieldState, stateString);
+    shieldUpdate(actor, currentShield, 'passiveEffect');
   } else {
     for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
       const shieldString = `system.defenses.${defenseType}.shield`;
@@ -302,7 +297,9 @@ export async function onShieldEquipToggle(event, actorSheet) {
  * @param {Object} shieldState The location where we are getting the data from on the shield
  * @param {String} stateString The state the shield is going to
  */
-async function shieldUpdate(actor, currentShield, shieldState, stateString) {
+async function shieldUpdate(actor, currentShield, stateString) {
+  const shieldState = currentShield.system[stateString];
+
   if (shieldState.type == "defenseBonus" || shieldState.type == "defenseBonusCombo") {
     const shieldString = `system.defenses.${shieldState.option1.defense}.shield`;
     await actor.update({
