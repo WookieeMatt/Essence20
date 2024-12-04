@@ -299,8 +299,8 @@ export async function onShieldEquipToggle(event, actorSheet) {
  * Handles setting the values of the shield that were selected from the Prompt
  * @param {Actor} actor The actor that owns the shield
  * @param {Item} currentShield The shield that we are setting values from
- * @param {String} shieldState The state the shield is going to
- * @param {String} stateString The location where we are getting the data from on the shield
+ * @param {Object} shieldState The location where we are getting the data from on the shield
+ * @param {String} stateString The state the shield is going to
  */
 async function shieldUpdate(actor, currentShield, shieldState, stateString) {
   if (shieldState.type == "defenseBonus" || shieldState.type == "defenseBonusCombo") {
