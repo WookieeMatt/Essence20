@@ -281,7 +281,6 @@ export async function onShieldEquipToggle(event, actorSheet) {
     const stateString = 'passiveEffect';
 
     shieldUpdate(actor, currentShield, shieldState, stateString);
-
   } else {
     for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
       const shieldString = `system.defenses.${defenseType}.shield`;
