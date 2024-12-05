@@ -493,7 +493,7 @@
     "ShieldDefense1Of2Bonuses": "Applies 1 of 2 defense bonuses",
     "ShieldDefense1OtherBonus": "Applies 1 other type of bonus",
     "ShieldDefense2Bonuses": "Applies 2 defense bonuses",
-    "ShieldDefenseMixedBonuses": "Applies 1 defense bonus or 1 other type of bonus",
+    "ShieldDefenseMixedBonuses": "Applies 1 defense/other bonus",
     "ShieldNotEquipped": "This shield must be equipped to become activated.",
     "ShieldPassiveEffectType": "Passive Effect Type",
     "ShieldPassiveBonus1": "Passive Bonus 1",
