@@ -1,6 +1,8 @@
 <div class="flexrow">
+  {{#unless parentId}}
   <div></div>
-
+  {{/unless}}
+  
   <div style="flex-grow: 0; white-space: nowrap;">
     {{localize title}}
     {{#ifNotEquals hidePlusButton 'true'}}
