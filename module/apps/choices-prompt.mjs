@@ -1,6 +1,7 @@
 import { _checkForAltModes, _hangUpSelect, _showOriginSkillDialog, setOriginValues } from "../sheet-handlers/background-handler.mjs";
 import { _attachSelectedItemOptionHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
+import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -22,6 +23,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       focus: ChoicesPrompt.focus,
       influence: ChoicesPrompt.influence,
       origin: ChoicesPrompt.origin,
+      shield: ChoicesPrompt.shield,
       upgrade: ChoicesPrompt.attach,
       weaponEffect: ChoicesPrompt.attach,
       view: ChoicesPrompt.view,
@@ -86,6 +88,11 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       _showOriginSkillDialog(this._actor, this._item, selection.value, this._dropFunc);
       this.close();
     }
+  }
+
+  static async shield(event, selection) {
+    setShieldOptions(this._actor, this._item, this._dropFunc, selection.value, selection.name);
+    this.close();
   }
 
   static async view(event, selection) {

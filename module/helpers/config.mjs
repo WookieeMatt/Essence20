@@ -173,6 +173,7 @@ E20.armorTraits = {
   modular: "E20.ArmorTraitModular",
   plating: "E20.ArmorTraitPlating",
   regal: "E20.ArmorTraitRegal",
+  shield: "E20.ArmorTraitShield",
   silent: "E20.ArmorTraitSilent",
   xenotech: "E20.ArmorTraitXenotech",
 };
@@ -197,6 +198,16 @@ E20.upgradeTraits = {
   ...E20.weaponTraits,
 };
 preLocalize("upgradeTraits");
+
+// Options for Upgrade traits
+E20.shieldEffectTypes = {
+  defenseBonus: "E20.ShieldDefense1Bonus",
+  defenseBonusCombo: "E20.ShieldDefense2Bonuses",
+  defenseBonusMixed: "E20.ShieldDefenseMixedBonuses",
+  defenseBonusOption: "E20.ShieldDefense1Of2Bonuses",
+  other: "E20.ShieldDefense1OtherBonus",
+};
+preLocalize("shieldEffectTypes");
 
 /************************************************
  * Essences and Skills                          *
@@ -457,6 +468,7 @@ E20.defaultIcon = {
   power: "systems/essence20/assets/icons/items/powers.svg",
   role: "systems/essence20/assets/icons/items/role.svg",
   rolePoints: "systems/essence20/assets/icons/items/rolePoints.svg",
+  shield: "systems/essence20/assets/icons/items/shield.svg",
   spell: "systems/essence20/assets/icons/items/powers.svg",
   weaponEffect: "systems/essence20/assets/icons/items/weapon_effect.svg",
 };
@@ -466,6 +478,7 @@ E20.equipmentTypes = {
   armor: "E20.Armor",
   gear: "E20.Gear",
   magicBauble: "E20.MagicBauble",
+  shield: "E20.Shield",
   upgrade: "E20.Upgrade",
   weapon: "E20.Weapon",
   weaponEffect: "E20.WeaponEffect",

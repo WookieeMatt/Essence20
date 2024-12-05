@@ -14,7 +14,7 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
   const newGearList = await dropFunc();
   if (droppedItem.system.items) {
     await createItemCopies(droppedItem.system.items, actor, "upgrade", newGearList[0]);
-    if (droppedItem.type == 'weapon') {
+    if (droppedItem.type == 'weapon' || droppedItem.type == 'shield') {
       await createItemCopies(droppedItem.system.items, actor, "weaponEffect", newGearList[0]);
     }
   }
@@ -205,6 +205,21 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['isActive'] = droppedItem.system.isActive;
       entry['powerCost'] = droppedItem.system.powerCost;
       entry['resource'] = droppedItem.system.resource;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "shield":
+    if (droppedItem.type == "weaponEffect") {
+      entry['classification'] = droppedItem.system.classification;
+      entry['damageValue'] = droppedItem.system.damageValue;
+      entry['damageType'] = droppedItem.system.damageType;
+      entry['numHands'] = droppedItem.system.numHands;
+      entry['numTargets'] = droppedItem.system.numTargets;
+      entry['radius'] = droppedItem.system.radius;
+      entry['range'] = droppedItem.system.range;
+      entry['shiftDown'] = droppedItem.system.shiftDown;
+      entry['traits'] = droppedItem.system.traits;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
