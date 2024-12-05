@@ -2,4 +2,23 @@
   {{#*inline "expand-details" item}}
     {{> "systems/essence20/templates/actor/parts/items/shield/details.hbs"}}
   {{/inline}}
+
+  {{#*inline "subcontainers" parentItem}}
+    {{!-- Weapon Effects --}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentItem=parentItem}}
+
+      {{#*inline "roll-button"}}
+        <a class="rollable" data-roll-type="weaponEffect" title="{{localize 'E20.WeaponRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+      {{/inline}}
+
+      {{#*inline "item-label" item}}
+        {{> "systems/essence20/templates/actor/parts/items/weapon/weapon-effects.hbs"}}
+      {{/inline}}
+
+      {{#*inline "expand-details" item parentItem}}
+        {{> "systems/essence20/templates/actor/parts/items/weaponEffect/details.hbs"}}
+      {{/inline}}
+    {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
+    {{/inline}}
+
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

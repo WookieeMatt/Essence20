@@ -80,14 +80,19 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
  * @param {Function} dropFunc The function to call to complete the drop
  */
 export async function attachItem(actor, droppedItem, dropFunc) {
-  let parentType = "";
-  if (droppedItem.system.type) {
-    parentType = droppedItem.system.type;
-  } else if (droppedItem.type == 'weaponEffect') {
-    parentType = "weapon";
-  }
+  let upgradableItems = [];
 
-  const upgradableItems = getItemsOfType(parentType, actor.items);
+  if (droppedItem.system.type) {
+    upgradableItems = upgradableItems.concat(
+      getItemsOfType(droppedItem.system.type, actor.items),
+    );
+  } else if (droppedItem.type == 'weaponEffect') {
+    upgradableItems = upgradableItems
+      .concat(getItemsOfType("weapon", actor.items))
+      .concat(getItemsOfType("shield", actor.items));
+  } else {
+    return false;
+  }
 
   if (upgradableItems.length == 1) {
     _attachItem(upgradableItems[0], dropFunc);
