@@ -12,45 +12,8 @@
       {{/inline}}
 
       {{#*inline "item-label" item}}
-        <div class="flexrow" style="align-items: center; gap: 2px;">
-          <div style="flex-grow: 1.5;">
-            {{item.name}}
-          </div>
-          <select class="inline-edit" data-field="system.classification.skill" data-parent-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
-            {{selectOptions @root.weaponEffectSkills selected=item.classification.skill valueAttr="key" labelAttr="label" localize=true}}
-          </select>
-
-          <div class="flexrow" style="flex-wrap: nowrap; gap: 2px;">
-            <div style="text-align: center;" title="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
-              {{item.numTargets}} <i class="fas fa-bullseye"></i>
-            </div>
-            <div style="text-align: center;" title="{{item.shiftDown}} {{localize "E20.ShiftDown"}}">
-              {{item.shiftDown}} <i class="fas fa-arrow-down"></i>
-            </div>
-            <div style="text-align: center;" title="{{item.numHands}} {{localize "E20.WeaponHands"}}">
-              {{item.numHands}} <i class="fas fa-hand"></i>
-            </div>
-            <div style="text-align: center;" title="{{item.damageValue}} {{localize (lookup @root.config.damageTypes item.damageType)}} {{localize "E20.Damage"}}">
-              {{item.damageValue}}
-              {{#ifEquals item.damageType 'sharp'}}
-                <i class="fas fa-sword"></i>
-              {{else ifEquals item.damageType 'blunt'}}
-                <i class="fas fa-hammer"></i>
-              {{else ifEquals item.damageType 'element'}}
-                <i class="fas fa-droplet"></i>
-              {{else ifEquals item.damageType 'maneuver'}}
-                <i class="fas fa-person-falling"></i>
-              {{else ifEquals item.damageType 'stun'}}
-                <i class="fas fa-face-spiral-eyes"></i>
-              {{else ifEquals item.damageType 'intimidate'}}
-                <i class="fas fa-person-harassing"></i>
-              {{/ifEquals}}
-            </div>
-          </div>
-        </div>
+        {{> "systems/essence20/templates/actor/parts/items/weapon/weapon-effects.hbs"}}
       {{/inline}}
-
-
 
       {{#*inline "expand-details" item parentItem}}
         {{> "systems/essence20/templates/actor/parts/items/weaponEffect/details.hbs"}}
