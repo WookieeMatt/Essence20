@@ -73,7 +73,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
   }
 
   static influence(event, selection) {
-    _hangUpSelect(this._actor, selection.value);
+    _hangUpSelect(this._actor, selection.value, this._dropFunc);
     this.close();
   }
 
