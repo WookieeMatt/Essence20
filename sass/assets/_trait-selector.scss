@@ -16,5 +16,6 @@
 }
 
 .trait-selector {
-  flex-grow: 0;
+  flex-grow: auto;
+  overflow: auto;
 }

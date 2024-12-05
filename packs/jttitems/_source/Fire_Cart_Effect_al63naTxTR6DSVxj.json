@@ -1,0 +1,50 @@
+{
+  "folder": "75FIcIoYSDP5bWMt",
+  "name": "Fire Cart Effect",
+  "type": "weaponEffect",
+  "_id": "al63naTxTR6DSVxj",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 2,
+    "isSpecialized": false,
+    "numHands": 6,
+    "numTargets": 1,
+    "radius": 20,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 1500,
+      "value": 300
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733072311884,
+    "modifiedTime": 1733072357231,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!al63naTxTR6DSVxj"
+}

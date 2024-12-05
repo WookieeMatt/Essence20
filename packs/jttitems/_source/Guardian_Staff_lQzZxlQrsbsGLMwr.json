@@ -1,0 +1,97 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Guardian Staff",
+  "type": "weapon",
+  "_id": "lQzZxlQrsbsGLMwr",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 76
+    },
+    "items": {
+      "ff14": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.WDK28a9WmfkqaNFj",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Guardian Staff Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "8ce8": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.wJlBHa3mMaETS2UQ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Guardian Staff Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "stun",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "blunt",
+      "sharp",
+      "stun"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733066186046,
+    "modifiedTime": 1733066241476,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!lQzZxlQrsbsGLMwr"
+}

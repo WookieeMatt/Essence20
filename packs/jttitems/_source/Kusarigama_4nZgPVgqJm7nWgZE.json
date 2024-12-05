@@ -1,0 +1,118 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Kusarigama",
+  "type": "weapon",
+  "_id": "4nZgPVgqJm7nWgZE",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "items": {
+      "5caf": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.KDbeVRJ0rxykw9CP",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Kusarigama Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "cc23": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.DswzIdQRa925KTV9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Kusarigama Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "grapple",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "b866": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.bWTX6PXIYHLIIFJO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Kusarigama Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Acrobatics d4",
+      "skill": "athletics",
+      "shift": "d4"
+    },
+    "traits": [
+      "blunt",
+      "sharp"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733071041694,
+    "modifiedTime": 1733071103167,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!4nZgPVgqJm7nWgZE"
+}
