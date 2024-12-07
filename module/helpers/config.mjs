@@ -120,7 +120,7 @@ E20.weaponTraits = {
   sonic: "E20.WeaponTraitSonic",
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
-  tempermental: "E20.WeaponTraitTempermental",
+ temperamental: "E20.WeaponTraitTemperamental",
   thrown: "E20.WeaponTraitThrown",
   titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
@@ -179,7 +179,7 @@ E20.armorTraits = {
   regal: "E20.ArmorTraitRegal",
   shield: "E20.ArmorTraitShield",
   silent: "E20.ArmorTraitSilent",
-  tempermental: "E20.ArmorTraitTempermental",
+  temperamental: "E20.ArmorTraitTemperamental",
   xenotech: "E20.ArmorTraitXenotech",
 };
 preLocalize("armorTraits");

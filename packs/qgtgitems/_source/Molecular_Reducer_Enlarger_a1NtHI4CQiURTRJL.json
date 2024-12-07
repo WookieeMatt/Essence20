@@ -133,7 +133,7 @@
         },
         "subtype": "weapon",
         "traits": [
-          "tempermental"
+          "temperamental"
         ]
       },
       "b0ff": {
@@ -187,7 +187,7 @@
       "blinding",
       "computerized",
       "laser",
-      "tempermental",
+      "temperamental",
       "wrecker"
     ],
     "transformerMode": "modeBotMode",

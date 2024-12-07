@@ -55,7 +55,7 @@
             },
             "subtype": "weapon",
             "traits": [
-              "tempermental"
+              "temperamental"
             ]
           },
           "64d9": {
@@ -123,7 +123,7 @@
             },
             "subtype": "armor",
             "traits": [
-              "tempermental"
+              "temperamental"
             ]
           }
         }
@@ -171,7 +171,7 @@
             },
             "subtype": "weapon",
             "traits": [
-              "tempermental"
+              "temperamental"
             ]
           }
         }

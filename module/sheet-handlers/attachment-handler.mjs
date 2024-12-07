@@ -23,18 +23,18 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
 /**
  * Handles dropping Equipment Packages on Actors
  * @param {Actor} actor The actor that the Package is being dropped on
- * @param {Item} droppedItem The Item that is being dropped on the actor
+ * @param {EquipmentPackage} droppedItem The equipmentPackage that is being dropped on the actor
  */
 export async function equipmentPackageDrop(actor, droppedItem) {
   if (droppedItem.system.items) {
     for (const [, item] of Object.entries(droppedItem.system.items)) {
       const itemToCreate = await fromUuid(item.uuid);
       const parentItem = await Item.create(itemToCreate, { parent: actor });
-      if (["armor", "weapon"].includes(parentItem.type) {
+      if (["armor", "weapon"].includes(parentItem.type)) {
         await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
       }
 
-      if (["shield", "weapon"].includes(parentItem.type) {
+      if (["shield", "weapon"].includes(parentItem.type)) {
         await createItemCopies(parentItem.system.items, actor, "weaponEffect", parentItem);
       }
     }

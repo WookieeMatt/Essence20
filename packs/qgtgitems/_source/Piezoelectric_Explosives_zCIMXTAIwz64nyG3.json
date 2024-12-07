@@ -87,7 +87,7 @@
         },
         "subtype": "weapon",
         "traits": [
-          "tempermental"
+          "temperamental"
         ]
       },
       "d811": {
@@ -175,7 +175,7 @@
       "consumable",
       "electric",
       "sonic",
-      "tempermental",
+      "temperamental",
       "wrecker"
     ],
     "transformerMode": "modeBotMode",
