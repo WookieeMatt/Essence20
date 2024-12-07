@@ -197,16 +197,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 
     break;
   case "equipmentPackage":
-    if (droppedItem.type == 'armor') {
-      entry['items'] = droppedItem.system.items;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
-    } else if (droppedItem.type == 'gear') {
-      entry['items'] = droppedItem.system.items;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
-    } else if (droppedItem.type == 'weapon') {
-      entry['items'] = droppedItem.system.items;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
-    } else if (droppedItem.type == 'shield') {
+    if (["armor", "gear", "shield", "weapon"].includes(droppedItem.type)) {
       entry['items'] = droppedItem.system.items;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
