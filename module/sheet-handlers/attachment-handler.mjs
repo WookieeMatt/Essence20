@@ -21,7 +21,6 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
 }
 
 export async function equipmentPackageDrop(actor, droppedItem) {
-  console.log("Got Here")
   if (droppedItem.system.items) {
     for (const [key, item] of Object.entries(droppedItem.system.items)) {
       const itemToCreate = await fromUuid(item.uuid);
