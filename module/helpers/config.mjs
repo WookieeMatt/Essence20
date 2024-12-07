@@ -120,7 +120,7 @@ E20.weaponTraits = {
   sonic: "E20.WeaponTraitSonic",
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
- temperamental: "E20.WeaponTraitTemperamental",
+  temperamental: "E20.WeaponTraitTemperamental",
   thrown: "E20.WeaponTraitThrown",
   titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
