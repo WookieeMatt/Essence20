@@ -30,12 +30,11 @@ export async function equipmentPackageDrop(actor, droppedItem) {
     for (const [, item] of Object.entries(droppedItem.system.items)) {
       const itemToCreate = await fromUuid(item.uuid);
       const parentItem = await Item.create(itemToCreate, { parent: actor });
-      if (parentItem.type == "armor") {
+      if (["armor", "weapon"].includes(parentItem.type) {
         await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
-      } else if (parentItem.type == "weapon") {
-        await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
-        await createItemCopies(parentItem.system.items, actor, "weaponEffect", parentItem);
-      } else if (parentItem.type == "shield") {
+      }
+
+      if (["shield", "weapon"].includes(parentItem.type) {
         await createItemCopies(parentItem.system.items, actor, "weaponEffect", parentItem);
       }
     }
