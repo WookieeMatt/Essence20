@@ -10,6 +10,6 @@ export class EquipmentPackageItemData extends foundry.abstract.TypeDataModel {
       ...itemDescription(),
       ...parentItem(),
       alternateAccess: makeStr(null),
-    }
+    };
   }
 }

@@ -22,7 +22,7 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
 
 export async function equipmentPackageDrop(actor, droppedItem) {
   if (droppedItem.system.items) {
-    for (const [key, item] of Object.entries(droppedItem.system.items)) {
+    for (const [, item] of Object.entries(droppedItem.system.items)) {
       const itemToCreate = await fromUuid(item.uuid);
       const parentItem = await Item.create(itemToCreate, { parent: actor });
       if (parentItem.type == "armor") {
@@ -206,8 +206,8 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['items'] = droppedItem.system.items;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
-    break;
 
+    break;
   case "focus":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
