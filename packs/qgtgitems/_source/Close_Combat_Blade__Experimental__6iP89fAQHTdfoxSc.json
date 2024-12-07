@@ -1,0 +1,95 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Close Combat Blade (Experimental)",
+  "type": "weapon",
+  "img": "icons/svg/sword.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 141
+    },
+    "items": {
+      "bd64": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Close Combat Blade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "2d78": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.1wnVRJmUhbukg4Tu",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Experimental",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": [
+          "tempermental"
+        ]
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733532416435,
+    "modifiedTime": 1733532464446,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "6iP89fAQHTdfoxSc",
+  "sort": 0,
+  "_key": "!items!6iP89fAQHTdfoxSc"
+}

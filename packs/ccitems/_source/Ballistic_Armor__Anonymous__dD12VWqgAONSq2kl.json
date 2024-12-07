@@ -1,0 +1,66 @@
+{
+  "folder": "l456qPDYdRpxqC1Y",
+  "name": "Ballistic Armor (Anonymous)",
+  "type": "armor",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {
+      "4382": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.yFikSROr3NzaEoaL",
+        "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+        "name": "Anonymous",
+        "type": "upgrade",
+        "armorBonus": {
+          "defense": "toughness",
+          "value": 0
+        },
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "Cobra Codex",
+          "page": 100
+        },
+        "subtype": "armor",
+        "traits": []
+      }
+    },
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733510139082,
+    "modifiedTime": 1733510156195,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "dD12VWqgAONSq2kl",
+  "sort": 0,
+  "_key": "!items!dD12VWqgAONSq2kl"
+}

@@ -1,0 +1,22 @@
+{
+  "name": "Poison and Toxins",
+  "sorting": "a",
+  "folder": "ejSKHeVNjeFLZCiJ",
+  "type": "Item",
+  "_id": "R893HRFUk5f11lBF",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!R893HRFUk5f11lBF"
+}

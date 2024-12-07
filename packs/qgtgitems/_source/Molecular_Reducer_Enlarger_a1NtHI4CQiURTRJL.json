@@ -1,0 +1,215 @@
+{
+  "folder": "BfFK4H4vNJePKUGo",
+  "name": "Molecular Reducer/Enlarger",
+  "type": "weapon",
+  "_id": "a1NtHI4CQiURTRJL",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 37
+    },
+    "items": {
+      "ca7a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.1VeCvn1hnWoaNN9E",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Automated",
+        "type": "upgrade",
+        "availability": "restricted",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 150
+        },
+        "subtype": "weapon",
+        "traits": [
+          "computerized"
+        ]
+      },
+      "d1ed": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.VH8ODNK55S1yhoN2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Molecular Reducer/Enlarger Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "technology",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 75
+        },
+        "shiftDown": 0
+      },
+      "98aa": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.J3KQpBY6aI5qmQx9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Molecular Reducer/Enlarger Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "technology",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "blindingBlast",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 75
+        },
+        "shiftDown": 0
+      },
+      "5b50": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.ZyvgYSfSZJDoauUC",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Molecular Reducer/Enlarger Altenate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "technology",
+          "style": "energy"
+        },
+        "damageValue": 0,
+        "damageType": "spot",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 75
+        },
+        "shiftDown": 0
+      },
+      "89e6": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.YyzfsO8hbJrCPBS6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Molecular Reducer/Enlarger Alternate Effect 3",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "technology",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 75
+        },
+        "shiftDown": 1
+      },
+      "7a10": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.1wnVRJmUhbukg4Tu",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Experimental",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": [
+          "tempermental"
+        ]
+      },
+      "b0ff": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Bd7nMQQmv0MFrsjO",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Strobe",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Any weapon with a flashlight, the Laser trait, or that does Laser damage",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": [
+          "blinding"
+        ]
+      },
+      "be78": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.rJqjZK5eL6TUZMmF",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Surgical",
+        "type": "upgrade",
+        "availability": "restricted",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 152
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "prototype",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "isToxin": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "blinding",
+      "computerized",
+      "laser",
+      "tempermental",
+      "wrecker"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733538245438,
+    "modifiedTime": 1733538343558,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!a1NtHI4CQiURTRJL"
+}

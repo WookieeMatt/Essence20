@@ -1,0 +1,147 @@
+{
+  "folder": "BfFK4H4vNJePKUGo",
+  "name": "Anti-Material Rifle",
+  "type": "weapon",
+  "_id": "8rW1ectZidZLA6WV",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 36
+    },
+    "items": {
+      "00f8": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.hX0fJRnmQp4urkZI",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Anti-Material Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 1200,
+          "value": 300
+        },
+        "shiftDown": 0
+      },
+      "03fe": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.dD0We78dzfsH98Bw",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Integrated Bipod",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Two-handed targeting weapon",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "e09c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Bu1RZJu2q1o9mESr",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Piercing",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Ballistic",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 150
+        },
+        "subtype": "weapon",
+        "traits": [
+          "armorPiercing"
+        ]
+      },
+      "b951": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.c2lnVnudZVXHShWM",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Plate Piercing",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Ballistic",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 150
+        },
+        "subtype": "weapon",
+        "traits": [
+          "antiTank"
+        ]
+      },
+      "dec7": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.cBiD2lBLRwnxu8Rx",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Scope",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "isToxin": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "antiTank",
+      "armorPiercing",
+      "ballistic",
+      "mounted",
+      "sniper"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733536398006,
+    "modifiedTime": 1733536507460,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!8rW1ectZidZLA6WV"
+}

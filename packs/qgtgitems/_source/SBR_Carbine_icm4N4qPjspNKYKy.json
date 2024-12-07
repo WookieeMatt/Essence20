@@ -1,0 +1,98 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "SBR Carbine",
+  "type": "weapon",
+  "_id": "icm4N4qPjspNKYKy",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 34
+    },
+    "items": {
+      "b249": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.m2Fi2yDGswr8dEP1",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "SBR Carbine Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 50
+        },
+        "shiftDown": 0
+      },
+      "9a6f": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Ee4ORM1DiSissCpY",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "SBR Carbine Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 50
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "isToxin": false,
+    "requirements": {
+      "custom": "",
+      "skill": "targeting",
+      "shift": "d4"
+    },
+    "traits": [
+      "ballistic",
+      "burstFire"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 1100000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733529118030,
+    "modifiedTime": 1733532351898,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!icm4N4qPjspNKYKy"
+}

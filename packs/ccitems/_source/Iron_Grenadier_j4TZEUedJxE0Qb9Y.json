@@ -1,0 +1,196 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Iron Grenadier",
+  "type": "equipmentPackage",
+  "_id": "j4TZEUedJxE0Qb9Y",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 90
+    },
+    "items": {
+      "8d9d": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.chcplwsXv36Y3o3h",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Momentum Armor (Ceremonial)",
+        "type": "armor",
+        "items": {
+          "3a75": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.vf9rJxOwuxDzrPKp",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Ceremonial",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 101
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "8f06": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.WIHI2WILnDktfTqG",
+        "img": "systems/essence20/assets/icons/weapons/blade.svg",
+        "name": "Medium Blade (Ceremonial)",
+        "type": "weapon",
+        "items": {
+          "f70f": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.pbfLfPqG58y5bu7z",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Medium Blade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "ed23": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.qJ2FDEwfZF9R8fQX",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Medium Blade Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 2,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 1
+          },
+          "b385": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.u0quyPOQFTRbDUmJ",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Ceremonial",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 96
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "d20a": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.YrAH20CmdZJ0M426",
+        "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
+        "name": "Directed Element Rifle (Microtech, Experimental)",
+        "type": "weapon",
+        "items": {
+          "56a4": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.Hb6sY5mh0DXdgy6Y",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Directed Element Rifle Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "energy"
+            },
+            "damageValue": 1,
+            "damageType": "element",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": null,
+              "value": 75
+            },
+            "shiftDown": 0
+          },
+          "0313": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.ihSql0Px1kNgTBfP",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Microtech Weapon",
+            "type": "upgrade",
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 149
+            },
+            "subtype": "weapon",
+            "traits": []
+          },
+          "fff0": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.HkwjVfn7iILxPUJb",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Experimental",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 96
+            },
+            "subtype": "weapon",
+            "traits": [
+              "tempermental"
+            ]
+          }
+        }
+      }
+    },
+    "alternateAccess": "Recruited by a senior ranking Iron Grenadier"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733508104968,
+    "modifiedTime": 1733508288090,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!j4TZEUedJxE0Qb9Y"
+}

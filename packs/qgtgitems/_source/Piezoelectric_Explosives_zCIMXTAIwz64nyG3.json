@@ -1,0 +1,203 @@
+{
+  "folder": "BfFK4H4vNJePKUGo",
+  "name": "Piezoelectric Explosives",
+  "type": "weapon",
+  "_id": "zCIMXTAIwz64nyG3",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 37
+    },
+    "items": {
+      "af2b": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.jYDO6XBRWvUDHHNr",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Piezoelectric Explosives Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 50,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "df4e": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.6zWBlvJniJpr8ssV",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Piezoelectric Explosives Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 20,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "22b9": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hd1O6anmtNcyjpw9",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Deadly",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Sharp",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 149
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "4a24": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.1wnVRJmUhbukg4Tu",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Experimental",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": [
+          "tempermental"
+        ]
+      },
+      "d811": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.I2nS9xXN8ioV5jJ5",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Proximity Bomb",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Grenade",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 150
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "eaa2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.mXMDaPoGWmVbPNfm",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Quake Maker",
+        "type": "upgrade",
+        "availability": "restricted",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 151
+        },
+        "subtype": "weapon",
+        "traits": [
+          "sonic"
+        ]
+      },
+      "b2ad": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.mKnlJ1qv2DPP1Gno",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Smasher",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 150
+        },
+        "subtype": "weapon",
+        "traits": [
+          "wrecker"
+        ]
+      },
+      "0647": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.zXPxC1yLlK2xgGEl",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Traumatic",
+        "type": "upgrade",
+        "availability": "restricted",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 152
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "prototype",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "isToxin": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable",
+      "electric",
+      "sonic",
+      "tempermental",
+      "wrecker"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733538538930,
+    "modifiedTime": 1733538644743,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!zCIMXTAIwz64nyG3"
+}

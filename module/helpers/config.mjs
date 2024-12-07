@@ -75,7 +75,9 @@ E20.weaponTraits = {
   area: "E20.WeaponTraitArea",
   armorPiercing: "E20.WeaponTraitArmorPiercing",
   ballistic: "E20.WeaponTraitBallistic",
+  blinding: "E20.WeaponTraitBlinding",
   blunt: "E20.WeaponTraitBlunt",
+  burstFire: "E20.WeaponTraitBurstFire",
   bypassing: "E20.WeaponTraitBypassing",
   cold: "E20.WeaponTraitCold",
   combined: "E20.WeaponTraitCombined",
@@ -98,10 +100,12 @@ E20.weaponTraits = {
   intimidating: "E20.WeaponTraitIntimidating",
   laser: "E20.WeaponTraitLaser",
   maneuver: "E20.WeaponTraitManeuver",
+  marked: "E20.WeaponTraitMarked",
   martialArts: "E20.WeaponTraitMartialArts",
   modeLock: "E20.WeaponTraitModeLock",
   mounted: "E20.WeaponTraitMounted",
   multipleTargets: "E20.WeaponTraitMultipleTargets",
+  obfuscated: "E20.WeaponTraitObfuscated",
   ongoing: "E20.WeaponTraitOngoing",
   poison: "E20.WeaponTraitPoison",
   powerWeapon: "E20.WeaponTraitPowerWeapon",
@@ -175,6 +179,7 @@ E20.armorTraits = {
   regal: "E20.ArmorTraitRegal",
   shield: "E20.ArmorTraitShield",
   silent: "E20.ArmorTraitSilent",
+  tempermental: "E20.ArmorTraitTempermental",
   xenotech: "E20.ArmorTraitXenotech",
 };
 preLocalize("armorTraits");
@@ -458,6 +463,7 @@ E20.defaultIcon = {
   alteration: "systems/essence20/assets/icons/items/alteration.svg",
   altMode: "systems/essence20/assets/icons/items/altmode.svg",
   armor: "systems/essence20/assets/icons/items/armor.svg",
+  equipmentPackage: "systems/essence20/assets/icons/items/equipment_package.svg",
   feature: "systems/essence20/assets/icons/items/feature.svg",
   focus: "systems/essence20/assets/icons/items/focus.svg",
   gear: "systems/essence20/assets/icons/items/gear.svg",
@@ -476,6 +482,7 @@ E20.defaultIcon = {
 // Options for Equipment Item Types
 E20.equipmentTypes = {
   armor: "E20.Armor",
+  equipmentPackage: "E20.EquipmentPackage",
   gear: "E20.Gear",
   magicBauble: "E20.MagicBauble",
   shield: "E20.Shield",
@@ -528,6 +535,7 @@ preLocalize("availabilities");
 
 // Damage Types
 E20.damageTypes = {
+  blindingBlast: "E20.DamageBlindingBlast",
   blunt: "E20.DamageBlunt",
   cover: "E20.DamageCover",
   element: "E20.DamageElement",

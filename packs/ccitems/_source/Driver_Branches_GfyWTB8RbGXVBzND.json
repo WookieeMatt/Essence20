@@ -1,0 +1,49 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Driver Branches",
+  "type": "equipmentPackage",
+  "_id": "GfyWTB8RbGXVBzND",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 90
+    },
+    "items": {
+      "eb79": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.pMvHQXdeIr8FoPqm",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Restricted Driving (Land, Sea, or Air) Kit",
+        "type": "gear"
+      },
+      "93b3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dwydnyn3DS726TGB",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor",
+        "type": "armor",
+        "items": {}
+      }
+    },
+    "alternateAccess": "Air Division, Sea Division, or Tank Division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733507543834,
+    "modifiedTime": 1733507638948,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!GfyWTB8RbGXVBzND"
+}

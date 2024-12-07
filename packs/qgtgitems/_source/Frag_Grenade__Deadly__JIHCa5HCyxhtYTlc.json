@@ -1,0 +1,92 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Frag Grenade (Deadly)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 141
+    },
+    "items": {
+      "9bc8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.0BM1VVo7BJgyF5yv",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Frag Grenade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      },
+      "1e4d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hd1O6anmtNcyjpw9",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Deadly",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Sharp",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 149
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733531726674,
+    "modifiedTime": 1733532351898,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "JIHCa5HCyxhtYTlc",
+  "sort": 300000,
+  "_key": "!items!JIHCa5HCyxhtYTlc"
+}

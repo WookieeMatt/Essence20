@@ -20,6 +20,24 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
   }
 }
 
+export async function equipmentPackageDrop(actor, droppedItem) {
+  console.log("Got Here")
+  if (droppedItem.system.items) {
+    for (const [key, item] of Object.entries(droppedItem.system.items)) {
+      const itemToCreate = await fromUuid(item.uuid);
+      const parentItem = await Item.create(itemToCreate, { parent: actor });
+      if (parentItem.type == "armor") {
+        await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
+      } else if (parentItem.type == "weapon") {
+        await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
+        await createItemCopies(parentItem.system.items, actor, "weaponEffect", parentItem);
+      } else if (parentItem.type == "shield") {
+        await createItemCopies(parentItem.system.items, actor, "weaponEffect", parentItem);
+      }
+    }
+  }
+}
+
 /**
  * Creates copies of Items for given IDs
  * @param {Object[]} items The Item entries to copy
@@ -175,6 +193,22 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     }
 
     break;
+  case "equipmentPackage":
+    if (droppedItem.type == 'armor') {
+      entry['items'] = droppedItem.system.items;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == 'gear') {
+      entry['items'] = droppedItem.system.items;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == 'weapon') {
+      entry['items'] = droppedItem.system.items;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == 'shield') {
+      entry['items'] = droppedItem.system.items;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+    break;
+
   case "focus":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;

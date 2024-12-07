@@ -1,0 +1,134 @@
+{
+  "folder": "ejSKHeVNjeFLZCiJ",
+  "name": "Machine Gun (Ammo Belt)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/machine_gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Alternate Effect 2 is a 30 ft cone</p>\n<p> </p>",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "items": {
+      "12b6": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.eflSyq2zTBRtI4CE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Machine Gun Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": 0,
+          "long": 160,
+          "value": 40
+        },
+        "shiftDown": 0
+      },
+      "9c8e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Y0L9HpE3L8t4i6fW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Machine Gun Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": 0,
+          "long": 160,
+          "value": 40
+        },
+        "shiftDown": 1
+      },
+      "9a8e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.xMufKArRO7cnkSPU",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Machine Gun Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 2,
+        "radius": 30,
+        "range": {
+          "min": 10,
+          "reachMultiplier": 0,
+          "long": 160,
+          "value": 40
+        },
+        "shiftDown": 1
+      },
+      "e86d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.92V9QrCXJYmY2p7O",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Ammo Belt",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Reload Trait",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733509643922,
+    "modifiedTime": 1733509665888,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "gG0K5f2wuPAZsuIy",
+  "sort": 0,
+  "_key": "!items!gG0K5f2wuPAZsuIy"
+}

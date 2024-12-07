@@ -1,7 +1,7 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { createId, parseId } from "../helpers/utils.mjs";
 import { alterationUpdate } from "./alteration-handler.mjs";
-import { attachItem, gearDrop } from "./attachment-handler.mjs";
+import { attachItem, equipmentPackageDrop, gearDrop } from "./attachment-handler.mjs";
 import { influenceUpdate, originUpdate } from "./background-handler.mjs";
 import { powerUpdate } from "./power-handler.mjs";
 import { perkUpdate } from "./perk-handler.mjs";
@@ -38,6 +38,8 @@ export async function onDropItem(data, actor, dropFunc) {
     return await alterationUpdate(actor, sourceItem, dropFunc);
   case 'armor':
     return await gearDrop(actor, sourceItem, dropFunc);
+  case 'equipmentPackage':
+    return await equipmentPackageDrop(actor, sourceItem);
   case 'focus':
     return await focusUpdate(actor, sourceItem, dropFunc);
   case 'influence':
