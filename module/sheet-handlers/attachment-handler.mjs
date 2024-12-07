@@ -20,6 +20,11 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
   }
 }
 
+/**
+ * Handles dropping Equipment Packages on Actors
+ * @param {Actor} actor The actor that the Package is being dropped on
+ * @param {Item} droppedItem The Item that is being dropped on the actor
+ */
 export async function equipmentPackageDrop(actor, droppedItem) {
   if (droppedItem.system.items) {
     for (const [, item] of Object.entries(droppedItem.system.items)) {
