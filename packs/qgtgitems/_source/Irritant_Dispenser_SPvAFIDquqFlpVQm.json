@@ -1,0 +1,99 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Irritant Dispenser",
+  "type": "weapon",
+  "_id": "SPvAFIDquqFlpVQm",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 34
+    },
+    "items": {
+      "574a": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.YQOy2Ha5fYlKtun3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Irritant Disperser Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 0,
+        "damageType": "blindingBlast",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      },
+      "2a38": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.bCi9W6jjrWyq5FLD",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Irritant Dispenser Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "isToxin": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable",
+      "marked",
+      "temperamental"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 600000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733514074509,
+    "modifiedTime": 1733532351898,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!SPvAFIDquqFlpVQm"
+}

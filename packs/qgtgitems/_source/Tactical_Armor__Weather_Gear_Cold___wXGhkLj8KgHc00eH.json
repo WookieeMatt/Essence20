@@ -1,0 +1,66 @@
+{
+  "folder": "24nX3baxdoAYw2dI",
+  "name": "Tactical Armor (Weather Gear[Cold])",
+  "type": "armor",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {
+      "2698": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.toav8R7TF92WnQ8G",
+        "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+        "name": "Weather Gear",
+        "type": "upgrade",
+        "armorBonus": {
+          "defense": "toughness",
+          "value": 0
+        },
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 156
+        },
+        "subtype": "armor",
+        "traits": []
+      }
+    },
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 1,
+    "classification": "light",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733531187870,
+    "modifiedTime": 1733535492618,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "wXGhkLj8KgHc00eH",
+  "sort": 600000,
+  "_key": "!items!wXGhkLj8KgHc00eH"
+}

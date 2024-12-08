@@ -1,0 +1,162 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Demolitions",
+  "type": "equipmentPackage",
+  "_id": "tVQaFIqRqxzatKkQ",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 46
+    },
+    "items": {
+      "c411": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.6XywyAksLAowMHU9",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Ballistic Armor (Softshell)",
+        "type": "armor",
+        "items": {
+          "e6eb": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.BKn5dV9BQhSDxELk",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Softshell",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 1
+            },
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Toughness Bonus",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "f414": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.vmwc4uP9f239IXsq",
+        "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+        "name": "Frag Grenade (Time Bomb)",
+        "type": "weapon",
+        "items": {
+          "9bc8": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.0BM1VVo7BJgyF5yv",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Frag Grenade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "explosive"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 10,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 50,
+              "value": 20
+            },
+            "shiftDown": 0
+          },
+          "8cc6": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.VMZ8PDom0sJGyofl",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Time Bomb",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Grenade",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "f5c8": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.JIHCa5HCyxhtYTlc",
+        "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+        "name": "Frag Grenade (Deadly)",
+        "type": "weapon",
+        "items": {
+          "9bc8": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.0BM1VVo7BJgyF5yv",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Frag Grenade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "explosive"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 10,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 50,
+              "value": 20
+            },
+            "shiftDown": 0
+          },
+          "1e4d": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.hd1O6anmtNcyjpw9",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Deadly",
+            "type": "upgrade",
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Sharp",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 149
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "f406": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Aplhnh1cUIz4tqDm",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Technology (Explosives) Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733531618216,
+    "modifiedTime": 1733531792310,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!tVQaFIqRqxzatKkQ"
+}

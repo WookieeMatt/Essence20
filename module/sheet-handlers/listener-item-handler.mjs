@@ -140,18 +140,18 @@ export async function onItemDelete(event, actorSheet) {
     item.delete();
     li.slideUp(200, () => actorSheet.render(false));
   } else {
-    if (item.type == "armor") {
+    if (item.type == "alteration") {
+      onAlterationDelete(actor, item);
+    } else if (item.type == "altMode") {
+      onAltModeDelete(actorSheet, item);
+    } else if (item.type == "armor") {
+      deleteAttachmentsForItem(item, actor);
+    } else if (item.type == "focus") {
+      onFocusDelete(actor, item);
+    } else if (item.type == 'influence') {
       deleteAttachmentsForItem(item, actor);
     } else if (item.type == "origin") {
       onOriginDelete(actor, item);
-    } else if (item.type == 'influence') {
-      deleteAttachmentsForItem(item, actor);
-    } else if (item.type == "altMode") {
-      onAltModeDelete(actorSheet, item);
-    } else if (item.type == "alteration") {
-      onAlterationDelete(actor, item);
-    } else if (item.type == "focus") {
-      onFocusDelete(actor, item);
     } else if (item.type == "perk") {
       onPerkDelete(actor, item);
     } else if (item.type == "role") {

@@ -4,6 +4,7 @@ import { ArmorItemData } from './armor.mjs';
 import { BondItemData } from './bond.mjs';
 import {ClassFeatureItemData } from './class-feature.mjs';
 import { ContactItemData } from './contact.mjs';
+import { EquipmentPackageItemData } from './equipment-package.mjs';
 import { FeatureItemData } from './feature.mjs';
 import { FocusItemData } from './focus.mjs';
 import { GearItemData } from './gear.mjs';
@@ -31,6 +32,7 @@ export const config = {
   bond: BondItemData,
   classFeature: ClassFeatureItemData,
   contact: ContactItemData,
+  equipmentPackage: EquipmentPackageItemData,
   feature: FeatureItemData,
   focus: FocusItemData,
   gear: GearItemData,

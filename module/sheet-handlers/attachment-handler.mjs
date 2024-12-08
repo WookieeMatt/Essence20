@@ -10,7 +10,7 @@ const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
  * @param {Item} droppedItem The Item being dropped
  * @param {Function} dropFunc The function to call to complete the drop
  */
-export async function onGearDrop(actor, droppedItem, dropFunc) {
+export async function onAttachableParentDrop(actor, droppedItem, dropFunc) {
   let gearWasDropped = false;
   const newGearList = await dropFunc();
 
@@ -24,6 +24,27 @@ export async function onGearDrop(actor, droppedItem, dropFunc) {
   }
 
   return gearWasDropped;
+}
+
+/**
+ * Handles dropping Equipment Packages on Actors
+ * @param {Actor} actor The actor that the Package is being dropped on
+ * @param {EquipmentPackage} droppedItem The equipmentPackage that is being dropped on the actor
+ */
+export async function onEquipmentPackageDrop(actor, droppedItem) {
+  for (const [, item] of Object.entries(droppedItem.system.items)) {
+    const itemToCreate = await fromUuid(item.uuid);
+    const parentItem = await Item.create(itemToCreate, { parent: actor });
+    if (["armor", "weapon"].includes(parentItem.type)) {
+      await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
+    }
+
+    if (["shield", "weapon"].includes(parentItem.type)) {
+      await createItemCopies(parentItem.system.items, actor, "weaponEffect", parentItem);
+    }
+  }
+
+  return true;
 }
 
 /**
@@ -183,6 +204,13 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "equipmentPackage":
+    if (["armor", "gear", "shield", "weapon"].includes(droppedItem.type)) {
+      entry['items'] = droppedItem.system.items;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 

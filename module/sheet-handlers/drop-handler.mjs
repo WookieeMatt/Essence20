@@ -1,7 +1,7 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { createId, parseId } from "../helpers/utils.mjs";
 import { onAlterationDrop } from "./alteration-handler.mjs";
-import { onAttachmentDrop, onGearDrop } from "./attachment-handler.mjs";
+import { onAttachmentDrop, onAttachableParentDrop, onEquipmentPackageDrop } from "./attachment-handler.mjs";
 import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
 import { onPowerDrop } from "./power-handler.mjs";
 import { onPerkDrop } from "./perk-handler.mjs";
@@ -40,7 +40,10 @@ export async function onDropItem(data, actor, dropFunc) {
     result = await onAlterationDrop(actor, sourceItem, dropFunc);
     break;
   case 'armor':
-    result = await onGearDrop(actor, sourceItem, dropFunc);
+    result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
+    break;
+  case 'equipmentPackage':
+    result = await onEquipmentPackageDrop(actor, sourceItem);
     break;
   case 'focus':
     result = await onFocusDrop(actor, sourceItem, dropFunc);
@@ -64,13 +67,13 @@ export async function onDropItem(data, actor, dropFunc) {
     result = await onPowerDrop(actor, sourceItem, dropFunc);
     break;
   case 'shield' :
-    result = await onGearDrop(actor, sourceItem, dropFunc);
+    result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
     break;
   case 'upgrade':
     result = await _onUpgradeDrop(sourceItem, actor, dropFunc);
     break;
   case 'weapon':
-    result = await onGearDrop(actor, sourceItem, dropFunc);
+    result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
     break;
   case 'weaponEffect':
     result = onAttachmentDrop(actor, sourceItem, dropFunc);

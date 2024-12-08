@@ -1,0 +1,137 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Rescue Operations",
+  "type": "equipmentPackage",
+  "_id": "Afs9RwxkERS6cDBV",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 47
+    },
+    "items": {
+      "4539": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.EElUaUZ1bxfiDs6x",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Smoke Cannister",
+        "type": "weapon",
+        "items": {
+          "2c6a": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.IhXrUyDfSYIYiLa2",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Smoke Cannister Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 0,
+            "damageType": "cover",
+            "numHands": 1,
+            "numTargets": 1,
+            "radius": 10,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 50,
+              "value": 20
+            },
+            "shiftDown": 0
+          }
+        }
+      },
+      "c1e1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dwydnyn3DS726TGB",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor",
+        "type": "armor",
+        "items": {}
+      },
+      "b905": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.SPvAFIDquqFlpVQm",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Irritant Dispenser",
+        "type": "weapon",
+        "items": {
+          "574a": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.YQOy2Ha5fYlKtun3",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Irritant Disperser Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "explosive"
+            },
+            "damageValue": 0,
+            "damageType": "blindingBlast",
+            "numHands": 1,
+            "numTargets": 1,
+            "radius": 10,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 50,
+              "value": 20
+            },
+            "shiftDown": 0
+          },
+          "2a38": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.bCi9W6jjrWyq5FLD",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Irritant Dispenser Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "explosive"
+            },
+            "damageValue": 1,
+            "damageType": "stun",
+            "numHands": 1,
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 50,
+              "value": 20
+            },
+            "shiftDown": 1
+          }
+        }
+      },
+      "6f46": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.4VFJj8OSRzWd2oYp",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Science (Medicine) Kit",
+        "type": "gear"
+      },
+      "b276": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.v7nXrrBA0AQGf5ce",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Technology (Engineering) Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733535775490,
+    "modifiedTime": 1733535895030,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!Afs9RwxkERS6cDBV"
+}

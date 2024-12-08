@@ -1,0 +1,111 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Rifle (Scope and Silencer)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 141
+    },
+    "items": {
+      "9704": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.cBiD2lBLRwnxu8Rx",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Scope",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "e273": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 400,
+          "value": 100
+        },
+        "shiftDown": 0
+      },
+      "cfb8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Sliencer",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": [
+          "silent"
+        ]
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic",
+      "martialArts",
+      "sniper"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733533098326,
+    "modifiedTime": 1733533118077,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "bUPyBJt6g11F7R4p",
+  "sort": 0,
+  "_key": "!items!bUPyBJt6g11F7R4p"
+}

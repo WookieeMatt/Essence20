@@ -1,0 +1,157 @@
+{
+  "folder": "BfFK4H4vNJePKUGo",
+  "name": "Laser Lash",
+  "type": "weapon",
+  "_id": "UFdIukYQFKJbNC5s",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 37
+    },
+    "items": {
+      "d206": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.9AdlgLXF9KuPYkKK",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Laser Lash Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "laser",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "0196": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.WqEcYRDaBcCTPKSF",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Laser Lash Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "937a": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.CBYxhwjNBSf2ONZk",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lash Laser Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "grapple",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "e296": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.GF9MwUTQuZS6z5lc",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Arched",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Melee Weapon",
+        "source": {
+          "book": "Cobra Codex",
+          "page": 96
+        },
+        "subtype": "weapon",
+        "traits": [
+          "bypassing"
+        ]
+      },
+      "09cf": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.2nAPVgXfIfUEnn33",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Extended",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "prototype",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "isToxin": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "bypassing",
+      "grapple",
+      "laser",
+      "maneuver",
+      "martialArts"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733537639305,
+    "modifiedTime": 1733537712157,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!UFdIukYQFKJbNC5s"
+}
