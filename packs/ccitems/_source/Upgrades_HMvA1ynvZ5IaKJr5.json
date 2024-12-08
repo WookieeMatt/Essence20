@@ -5,7 +5,7 @@
   "type": "Item",
   "_id": "HMvA1ynvZ5IaKJr5",
   "description": "",
-  "sort": 100000,
+  "sort": 0,
   "color": null,
   "flags": {},
   "_stats": {
@@ -15,8 +15,8 @@
     "systemId": "essence20",
     "systemVersion": "4.5.0",
     "createdTime": null,
-    "modifiedTime": 1733593618544,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "modifiedTime": null,
+    "lastModifiedBy": null
   },
   "_key": "!folders!HMvA1ynvZ5IaKJr5"
 }

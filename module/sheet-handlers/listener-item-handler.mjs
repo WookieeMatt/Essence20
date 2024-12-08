@@ -55,7 +55,7 @@ export async function onItemCreate(event, actor) {
     // Update parent item's ID list for upgrades and weapon effects
     if (newItem.type == 'upgrade' && ['armor', 'weapon'].includes(parentItem.type)) {
       key = await setEntryAndAddItem(newItem, parentItem);
-    } else if (newItem.type == 'weaponEffect' && parentItem.type == 'weapon') {
+    } else if (newItem.type == 'weaponEffect' && (parentItem.type == 'weapon' || parentItem.type == 'shield')) {
       key = await setEntryAndAddItem(newItem, parentItem);
     }
 
