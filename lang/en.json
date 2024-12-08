@@ -374,6 +374,7 @@
     "NoUpgradableItemsError": "No upgradable items exist on this actor sheet",
     "None": "None",
     "NpcThreatLevel": "Threat Level",
+    "OpenItem": "Open Item",
     "Origin": "Origin",
     "OriginBenefitDescription": "Benefit Description",
     "OriginBenefit": "Origin Benefit",
