@@ -31,6 +31,25 @@ preLocalize("defenses");
 /************************************************
  * Weapons                                      *
  ***********************************************/
+E20.poisonApplications = {
+  contact: "E20.PoisonApplicationContact",
+  ingested: "E20.PoisonApplicationIngested",
+  inhaled: "E20.PoisonApplicationInhaled",
+};
+preLocalize("poisonApplications");
+
+E20.poisonTypes = {
+  poison: "E20.PoisonTypePoison",
+  toxin: "E20.PoisonTypeToxin",
+};
+preLocalize("poisonTypes");
+
+E20.poisonTraining = {
+  all: "E20.PoisonTrainingAll",
+  standard: "E20.PoisonTrainingStandard",
+  limited: "E20.PoisonTrainingLimited",
+};
+preLocalize("poisonTraining");
 
 // Shifts required to use a weapon
 E20.weaponRequirementShifts = {
@@ -122,6 +141,7 @@ E20.weaponTraits = {
   stun: "E20.WeaponTraitStun",
   temperamental: "E20.WeaponTraitTemperamental",
   thrown: "E20.WeaponTraitThrown",
+  toxin: "E20.WeaponTraitToxin",
   titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
   vehicular: "E20.WeaponTraitVehicular",
@@ -539,6 +559,7 @@ E20.damageTypes = {
   blunt: "E20.DamageBlunt",
   cover: "E20.DamageCover",
   element: "E20.DamageElement",
+  frightened: "E20.DamageFrightened",
   grapple: "E20.DamageGrapple",
   impaired: "E20.DamageImparied",
   intimidate: "E20.DamageIntimidate",
@@ -551,8 +572,10 @@ E20.damageTypes = {
   restrained: "E20.DamageRestrained",
   sharp: "E20.DamageSharp",
   sonic: "E20.DamageSonic",
+  special: "E20.DamageSpecial",
   spot: "E20.DamageSpot",
   stun: "E20.DamageStun",
+  unconscious: "E20.DamageUnconscious",
 };
 
 // Perk types
