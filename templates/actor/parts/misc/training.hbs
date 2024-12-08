@@ -1,3 +1,4 @@
+{{#if @root.role}}
 <div class="stats-container flexrow defense-container" style="border-color: {{system.color}};">
   <table class="tg">
     <thead>
@@ -43,8 +44,8 @@
           {{formatBooleanList @root.system.trained.weapons @root.config.weaponTypes 'unit'}}
         </td>
         {{/ifNotEquals}}
-        <td class="tg-td">
         {{#if @root.actor.system.poisonTraining}}
+          <td class="tg-td">
             {{#if @root.actor.system.trained.poisons.all}}
               {{localize "E20.PoisonTrainingAll"}}
             {{else}}
@@ -53,8 +54,8 @@
           {{#if @root.actor.system.trained.toxins.all}}
               {{localize "E20.PoisonTrainingAll"}}
           {{/if}}
+          </td>
         {{/if}}
-        </td>
       </tr>
       {{#if @root.actor.system.canQualify}}
       <tr>
@@ -79,3 +80,13 @@
     </tbody>
   </table>
 </div>
+{{else}}
+<div class="collapsible-item-container" style="border-color: {{system.color}};">
+  <div class="flexrow" style="justify-content: center; margin-bottom: 5px;">
+    <div style="flex-grow: 0; white-space: nowrap;">
+      {{localize "E20.TrainingAndQualifications"}}
+    </div>
+  </div>
+  <div class="flexrow flex-group-center">{{localize 'E20.TrainingDropRole'}}</div>
+</div>
+{{/if}}
