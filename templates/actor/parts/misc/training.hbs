@@ -19,11 +19,11 @@
           <th class="tg-td">
             {{ localize "E20.ItemTypePoisonPlural" }}
           </th>
-          {{#ifCond @root.actor.system.poisonTraining '>' 4}}
+          {{#if @root.actor.system.trained.toxins.all}}
             <th class="tg-td">
               {{ localize "E20.ItemTypeToxinPlural" }}
             </th>
-          {{/ifCond}}
+          {{/if}}
         {{/if}}
       </tr>
     </thead>
@@ -51,11 +51,11 @@
               {{formatBooleanList @root.system.trained.poisons @root.config.poisonTraining 'unit'}}
             {{/if}}
           </td>
-          {{#ifCond @root.actor.system.poisonTraining '>' 4}}
+          {{#if @root.actor.system.trained.toxins.all}}
             <td>
-              All
+              {{localize "E20.PoisonTrainingAll"}}
             </td>
-          {{/ifCond}}
+          {{/if}}
         {{/if}}
       </tr>
       {{#if @root.actor.system.canQualify}}
