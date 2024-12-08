@@ -9,18 +9,18 @@
     {{#with @root.rolePoints as |rolePoints|}}
       <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.rolePoints._id}}">
         {{!-- Label --}}
-        <a class="rollable" style="flex-grow: 0;" data-roll-type="info" title="{{localize 'E20.RolePoints'}}">
+        <a class="rollable" style="flex-grow: 0;" data-roll-type="info" data-tooltip="{{localize 'E20.RolePoints'}}">
           <i class="fas fa-message-lines"></i>
         </a>
 
         {{#ifNotEquals rolePoints.system.resource.max null}}
-        <a class="rollable" style="flex-grow: 0;" data-roll-type="rolePoints" title="{{localize 'E20.RolePointsRoll'}}"><i
+        <a class="rollable" style="flex-grow: 0;" data-roll-type="rolePoints" data-tooltip="{{localize 'E20.RolePointsRoll'}}"><i
           class="fas fa-hand-fist"></i></a>
         {{/ifNotEquals}}
 
         {{#if rolePoints.system.isActivatable}}
           <input class="inline-edit item-label-checkbox" type="checkbox" data-field="system.isActive" name="rolePoints.system.isActive"
-            title="{{localize 'E20.RolePointsToggleActivation'}}" {{checked rolePoints.system.isActive}} />
+            data-tooltip="{{localize 'E20.RolePointsToggleActivation'}}" {{checked rolePoints.system.isActive}} />
         {{/if}}
 
         <label>{{rolePoints.name}}</label>
