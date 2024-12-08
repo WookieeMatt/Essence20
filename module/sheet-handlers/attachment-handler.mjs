@@ -10,14 +10,41 @@ const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
  * @param {Item} droppedItem The Item being dropped
  * @param {Function} dropFunc The function to call to complete the drop
  */
-export async function gearDrop(actor, droppedItem, dropFunc) {
+export async function onAttachableParentDrop(actor, droppedItem, dropFunc) {
+  let gearWasDropped = false;
   const newGearList = await dropFunc();
+
   if (droppedItem.system.items) {
     await createItemCopies(droppedItem.system.items, actor, "upgrade", newGearList[0]);
-    if (droppedItem.type == 'weapon') {
+    gearWasDropped = true;
+
+    if (droppedItem.type == 'weapon' || droppedItem.type == 'shield') {
       await createItemCopies(droppedItem.system.items, actor, "weaponEffect", newGearList[0]);
     }
   }
+
+  return gearWasDropped;
+}
+
+/**
+ * Handles dropping Equipment Packages on Actors
+ * @param {Actor} actor The actor that the Package is being dropped on
+ * @param {EquipmentPackage} droppedItem The equipmentPackage that is being dropped on the actor
+ */
+export async function onEquipmentPackageDrop(actor, droppedItem) {
+  for (const [, item] of Object.entries(droppedItem.system.items)) {
+    const itemToCreate = await fromUuid(item.uuid);
+    const parentItem = await Item.create(itemToCreate, { parent: actor });
+    if (["armor", "weapon"].includes(parentItem.type)) {
+      await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
+    }
+
+    if (["shield", "weapon"].includes(parentItem.type)) {
+      await createItemCopies(parentItem.system.items, actor, "weaponEffect", parentItem);
+    }
+  }
+
+  return true;
 }
 
 /**
@@ -29,6 +56,8 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
  * @param {Number} lastProcessedLevel The flag for the last time the Actor changed level
  */
 export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
+  let copyWasCreated = false;
+
   for (const [key, item] of Object.entries(items)) {
     if (item.type == type) {
       const createNewItem =
@@ -38,6 +67,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         const newItem = await Item.create(itemToCreate, { parent: owner });
+
         if (newItem.type == "altMode") {
           await owner.update({
             "system.canTransform": true,
@@ -68,9 +98,12 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 
         newItem.setFlag('core', 'sourceId', item.uuid);
         newItem.setFlag('essence20', 'parentId', parentItem._id);
+        copyWasCreated = true;
       }
     }
   }
+
+  return copyWasCreated;
 }
 
 /**
@@ -79,15 +112,20 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
  * @param {Item} droppedItem The attachment being dropped
  * @param {Function} dropFunc The function to call to complete the drop
  */
-export async function attachItem(actor, droppedItem, dropFunc) {
-  let parentType = "";
-  if (droppedItem.system.type) {
-    parentType = droppedItem.system.type;
-  } else if (droppedItem.type == 'weaponEffect') {
-    parentType = "weapon";
-  }
+export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
+  let upgradableItems = [];
 
-  const upgradableItems = getItemsOfType(parentType, actor.items);
+  if (droppedItem.system.type) {
+    upgradableItems = upgradableItems.concat(
+      getItemsOfType(droppedItem.system.type, actor.items),
+    );
+  } else if (droppedItem.type == 'weaponEffect') {
+    upgradableItems = upgradableItems
+      .concat(getItemsOfType("weapon", actor.items))
+      .concat(getItemsOfType("shield", actor.items));
+  } else {
+    return false;
+  }
 
   if (upgradableItems.length == 1) {
     _attachItem(upgradableItems[0], dropFunc);
@@ -170,6 +208,13 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     }
 
     break;
+  case "equipmentPackage":
+    if (["armor", "gear", "shield", "weapon"].includes(droppedItem.type)) {
+      entry['items'] = droppedItem.system.items;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
   case "focus":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
@@ -205,6 +250,21 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['isActive'] = droppedItem.system.isActive;
       entry['powerCost'] = droppedItem.system.powerCost;
       entry['resource'] = droppedItem.system.resource;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "shield":
+    if (droppedItem.type == "weaponEffect") {
+      entry['classification'] = droppedItem.system.classification;
+      entry['damageValue'] = droppedItem.system.damageValue;
+      entry['damageType'] = droppedItem.system.damageType;
+      entry['numHands'] = droppedItem.system.numHands;
+      entry['numTargets'] = droppedItem.system.numTargets;
+      entry['radius'] = droppedItem.system.radius;
+      entry['range'] = droppedItem.system.range;
+      entry['shiftDown'] = droppedItem.system.shiftDown;
+      entry['traits'] = droppedItem.system.traits;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 

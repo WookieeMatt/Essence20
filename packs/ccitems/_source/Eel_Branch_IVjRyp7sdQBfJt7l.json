@@ -1,0 +1,120 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Eel Branch",
+  "type": "equipmentPackage",
+  "_id": "IVjRyp7sdQBfJt7l",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 90
+    },
+    "items": {
+      "8926": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.EpeJA8kiyhnVrUWn",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Athletics (Swimming) Kit",
+        "type": "gear"
+      },
+      "b3be": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.YmXgXORGeyuovY9q",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Impulse Armor (Silent)",
+        "type": "armor",
+        "items": {
+          "f99d": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Silent",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Not Silent",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": [
+              "silent"
+            ]
+          }
+        }
+      },
+      "8c6a": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.JpqrcQSXRlPziXUL",
+        "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
+        "name": "Projectile Launcher (Amphibious)",
+        "type": "weapon",
+        "items": {
+          "a2a1": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.H6Z6NxpLuBFB2FJ9",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Projectile Launcher Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 100,
+              "value": 50
+            },
+            "shiftDown": 0
+          },
+          "19f1": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.snZJ8EnTe129an2X",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Amphibious",
+            "type": "upgrade",
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 149
+            },
+            "subtype": "weapon",
+            "traits": [
+              "amphibious"
+            ]
+          }
+        }
+      }
+    },
+    "alternateAccess": "Sea Division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733507651614,
+    "modifiedTime": 1733507749097,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!IVjRyp7sdQBfJt7l"
+}

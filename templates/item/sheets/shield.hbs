@@ -1,0 +1,193 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+   {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
+    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+  </nav>
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+    {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    {{!-- Details Section --}}
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
+      {{!-- Availability --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorAvailability'}}
+      {{#*inline "item-field-inputs"}}
+      <select name="system.availability">
+        {{selectOptions config.availabilities selected=system.availability}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Classification --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorClassification'}}
+      {{#*inline "item-field-inputs"}}
+      <select name="system.classification">
+        {{selectOptions config.armorClassifications selected=system.classification}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Requirements --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldRequirements'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.requirements" value="{{system.requirements}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!--Passive Effect Type --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveEffectType'}}
+      {{#*inline "item-field-inputs"}}
+      <select name="system.passiveEffect.type">
+        {{selectOptions config.shieldEffectTypes selected=system.passiveEffect.type}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#ifNotEquals system.passiveEffect.type 'other'}}
+        {{!-- Passive Effect --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveBonus1'}}
+        {{#*inline "item-field-inputs"}}
+        {{numberInput system.passiveEffect.option1.value name="system.passiveEffect.option1.value" min=0 step=1}}
+        <select name="system.passiveEffect.option1.defense">
+          {{selectOptions config.defenses selected=system.passiveEffect.option1.defense}}
+        </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#ifEquals system.passiveEffect.type 'defenseBonusCombo'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveBonus2'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.passiveEffect.option2.value name="system.passiveEffect.option2.value" min=0 step=1}}
+          <select name="system.passiveEffect.option2.defense">
+            {{selectOptions config.defenses selected=system.passiveEffect.option2.defense}}
+          </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
+
+        {{#ifEquals system.passiveEffect.type 'defenseBonusOption'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveBonus2'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.passiveEffect.option2.value name="system.passiveEffect.option2.value" min=0 step=1}}
+          <select name="system.passiveEffect.option2.defense">
+            {{selectOptions config.defenses selected=system.passiveEffect.option2.defense}}
+          </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
+      {{/ifNotEquals}}
+
+      {{#ifEquals system.passiveEffect.type 'other'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveBonus1'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.passiveEffect.other" value="{{system.passiveEffect.other}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifEquals}}
+
+      {{#ifEquals system.passiveEffect.type 'defenseBonusMixed'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldPassiveBonus2'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.passiveEffect.other" value="{{system.passiveEffect.other}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifEquals}}
+
+      {{!--Active Effect Type --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveEffectType'}}
+      {{#*inline "item-field-inputs"}}
+      <select name="system.activeEffect.type">
+        {{selectOptions config.shieldEffectTypes selected=system.activeEffect.type}}
+      </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#ifNotEquals system.activeEffect.type 'other'}}
+        {{!-- Active Effect --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveBonus1'}}
+        {{#*inline "item-field-inputs"}}
+        {{numberInput system.activeEffect.option1.value name="system.activeEffect.option1.value" min=0 step=1}}
+        <select name="system.activeEffect.option1.defense">
+          {{selectOptions config.defenses selected=system.activeEffect.option1.defense}}
+        </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#ifEquals system.activeEffect.type 'defenseBonusCombo'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveBonus2'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.activeEffect.option2.value name="system.activeEffect.option2.value" min=0 step=1}}
+          <select name="system.activeEffect.option2.defense">
+            {{selectOptions config.defenses selected=system.activeEffect.option2.defense}}
+          </select>
+           {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
+
+        {{#ifEquals system.activeEffect.type 'defenseBonusOption'}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveBonus2'}}
+          {{#*inline "item-field-inputs"}}
+          {{numberInput system.activeEffect.option2.value name="system.activeEffect.option2.value" min=0 step=1}}
+          <select name="system.activeEffect.option2.defense">
+            {{selectOptions config.defenses selected=system.activeEffect.option2.defense}}
+          </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/ifEquals}}
+      {{/ifNotEquals}}
+
+      {{#ifEquals system.activeEffect.type 'other'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveBonus1'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.activeEffect.other" value="{{system.activeEffect.other}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifEquals}}
+
+      {{#ifEquals system.activeEffect.type 'defenseBonusMixed'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShieldActiveBonus2'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.activeEffect.other" value="{{system.activeEffect.other}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifEquals}}
+
+      {{!-- Traits --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraits'}}
+      {{#*inline "item-field-edit"}}
+        <a class="trait-selector" data-options="armor" data-target="system.traits" title="{{localize 'E20.TraitSelector'}}">
+          <i class="fas fa-edit"></i>
+        </a>
+      {{/inline}}
+
+      {{#*inline "item-field-inputs"}}
+        <div class="chip-section">
+          {{#each item.system.traits as |trait|}}
+          <span class="chip" name="chip.shield.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
+          {{/each}}
+        </div>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Weapon Effects --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.ItemTypeWeaponEffectPlural' items=@root.system.items type='weaponEffect'}}
+
+    </div>
+
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{!-- Effects Section --}}
+      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
+    </div>
+  </section>
+
+</form>

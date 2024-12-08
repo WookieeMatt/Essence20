@@ -101,6 +101,18 @@ export class Essence20ItemSheet extends ItemSheet {
 
     //Delete AltMode From Origin
     html.find('.altMode-delete').click(this._onObjectDelete.bind(this, ".altMode"));
+
+    //Delete Armor from Equipment Packages
+    html.find('.armor-delete').click(this._onObjectDelete.bind(this, ".armor"));
+
+    //Delete Shield from Equipment Packages
+    html.find('.shield-delete').click(this._onObjectDelete.bind(this, ".shield"));
+
+    //Delete Weapons from Equipment Packages
+    html.find('.weapon-delete').click(this._onObjectDelete.bind(this, ".weapon"));
+
+    //Delete Gear from Equipment Packages
+    html.find('.gear-delete').click(this._onObjectDelete.bind(this, ".gear"));
   }
 
   /**

@@ -1,0 +1,22 @@
+{
+  "name": "Fire Cart",
+  "sorting": "a",
+  "folder": "AlRm84i22z2oKSqt",
+  "type": "Item",
+  "_id": "75FIcIoYSDP5bWMt",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!75FIcIoYSDP5bWMt"
+}

@@ -8,7 +8,7 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
  * @param {Influence} influence The Influence being updated
  * @param {Function} dropFunc The function to call to complete the Influence drop
  */
-export async function influenceUpdate(actor, influence, dropFunc) {
+export async function onInfluenceDrop(actor, influence, dropFunc) {
   let addHangUp = false;
 
   for (const item of actor.items) {
@@ -30,7 +30,7 @@ export async function influenceUpdate(actor, influence, dropFunc) {
     }
 
     if (hangUpIds.length > 1) {
-      _chooseHangUp(actor, influence);
+      _chooseHangUp(actor, influence, newInfluenceList[0]);
     } else {
       await createItemCopies(influence.system.items, actor, "hangUp", newInfluenceList[0]);
     }
@@ -43,7 +43,7 @@ export async function influenceUpdate(actor, influence, dropFunc) {
  * @param {Origin} origin The Origin being dropped
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-export async function originUpdate(actor, origin, dropFunc) {
+export async function onOriginDrop(actor, origin, dropFunc) {
   if (!origin.system.essences.length) {
     ui.notifications.error(game.i18n.format(game.i18n.localize('E20.OriginNoEssenceError')));
     return false;
@@ -248,9 +248,10 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
  * Displays a dialog for selecting a Hang Up from an Influence
  * @param {Actor} actor The Actor receiving the Influence
  * @param {Influence} influence The Influence being dropped
+ * @param {Object} newInfluence The new Influence created as part of the drop
  * @private
  */
-async function _chooseHangUp(actor, influence) {
+async function _chooseHangUp(actor, influence, newInfluence) {
   const choices = {};
   let itemArray = [];
   for (const [, item] of Object.entries(influence.system.items)) {
@@ -268,19 +269,21 @@ async function _chooseHangUp(actor, influence) {
 
   const prompt = "E20.SelectHangUp";
   const title = "E20.SelectInfluenceHangUp";
-  new ChoicesPrompt (choices, influence, actor, prompt, title).render(true);
+  new ChoicesPrompt (choices, influence, actor, prompt, title, newInfluence).render(true);
 }
 
 /**
  * Adds the chosen HangUp to the character
  * @param {Actor} actor The Actor receiving the HangUp
  * @param {String} uuid The uuid of the item selected from the choice-prompt application
+ * @param {Object} parentItem The new Influence created as part of the drop
  */
-export async function _hangUpSelect(actor, uuid) {
+export async function _hangUpSelect(actor, uuid, parentItem) {
 
   const itemToCreate = await fromUuid(uuid);
   const newItem = await Item.create(itemToCreate, { parent: actor });
   newItem.setFlag('core', 'sourceId', uuid);
+  newItem.setFlag('essence20', 'parentId', parentItem._id);
 }
 
 /**

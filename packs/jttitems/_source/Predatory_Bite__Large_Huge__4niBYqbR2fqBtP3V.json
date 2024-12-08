@@ -1,0 +1,118 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Predatory Bite (Large-Huge)",
+  "type": "weapon",
+  "_id": "4niBYqbR2fqBtP3V",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 76
+    },
+    "items": {
+      "8b7c": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.Yz5UrVSNiXCDu7bz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Predatory Bite (Large-Huge) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "intimidation",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "0ad2": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.VnuLKvbClkeWaCqQ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Predatory Bite (Large-Huge) Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "ea54": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.o2Ng9MW8RlerW8e0",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Predatory Bite (Large-Huge) Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "grapple",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "sharp",
+      "silent"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733067365306,
+    "modifiedTime": 1733067395209,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!4niBYqbR2fqBtP3V"
+}

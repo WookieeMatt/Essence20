@@ -1,0 +1,145 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Heavy Gunner",
+  "type": "equipmentPackage",
+  "_id": "YvwCkqBkzDbnWFFi",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 46
+    },
+    "items": {
+      "19ec": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.8jugiRuQC0EJcCtu",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Hard Body Armor",
+        "type": "armor",
+        "items": {}
+      },
+      "ac86": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.oZhcbgSuydpcPGr8",
+        "img": "systems/essence20/assets/icons/weapons/heavy_machine_gun.svg",
+        "name": "Heavy Machine Gun (Integrated Bipod)",
+        "type": "weapon",
+        "items": {
+          "999e": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.ECO1gweDlxZmIswo",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Heavy Machine Gun Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 2,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": 10,
+              "reachMultiplier": 0,
+              "long": 400,
+              "value": 100
+            },
+            "shiftDown": 0
+          },
+          "ed6c": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.81GHJz9kYfjVCQp8",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Heavy Machine Gun Alternate Effect 1",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 3,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": 10,
+              "reachMultiplier": 0,
+              "long": 400,
+              "value": 100
+            },
+            "shiftDown": 3
+          },
+          "15ad": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.6tH1eOUjVEAThu7A",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Heavy Machine Gun Alternate Effect 2",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 15,
+            "radius": 30,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": null,
+              "value": 0
+            },
+            "shiftDown": 3
+          },
+          "4ede": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.dD0We78dzfsH98Bw",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Integrated Bipod",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Two-handed targeting weapon",
+            "source": {
+              "book": "Quartermaster's Guide to Gear",
+              "page": 34
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "ab78": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.1hDr636H7JyZurF8",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Technology (Repair) Kit",
+        "type": "gear"
+      },
+      "e743": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.zvKkNat4nr9muXyR",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Brawn (Heavyweight Carry) Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733532706764,
+    "modifiedTime": 1733532938854,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!YvwCkqBkzDbnWFFi"
+}

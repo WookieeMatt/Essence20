@@ -1,0 +1,134 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Infiltrators",
+  "type": "equipmentPackage",
+  "_id": "ktuggPwEb87EC50h",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 46
+    },
+    "items": {
+      "87e2": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.8FrttR5AOSYGEnzA",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor (Stealth)",
+        "type": "armor",
+        "items": {
+          "8415": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.ThXrre0RHTcr1BEp",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Stealth",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Silent",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 157
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "1cdc": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.bUPyBJt6g11F7R4p",
+        "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+        "name": "Rifle (Scope and Silencer)",
+        "type": "weapon",
+        "items": {
+          "9704": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.cBiD2lBLRwnxu8Rx",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Scope",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          },
+          "e273": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Rifle Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 400,
+              "value": 100
+            },
+            "shiftDown": 0
+          },
+          "cfb8": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Sliencer",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": [
+              "silent"
+            ]
+          }
+        }
+      },
+      "90c4": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.sqm18E3uMKhqqmWY",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Standard Infiltration Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733533050945,
+    "modifiedTime": 1733533157649,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!ktuggPwEb87EC50h"
+}

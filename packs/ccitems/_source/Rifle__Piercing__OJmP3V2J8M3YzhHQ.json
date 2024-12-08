@@ -1,0 +1,93 @@
+{
+  "folder": "ejSKHeVNjeFLZCiJ",
+  "name": "Rifle (Piercing)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 141
+    },
+    "items": {
+      "e273": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 400,
+          "value": 100
+        },
+        "shiftDown": 0
+      },
+      "e295": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Bu1RZJu2q1o9mESr",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Piercing",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Ballistic",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 150
+        },
+        "subtype": "weapon",
+        "traits": [
+          "armorPiercing"
+        ]
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic",
+      "martialArts",
+      "sniper"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733494157876,
+    "modifiedTime": 1733509341569,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "OJmP3V2J8M3YzhHQ",
+  "sort": 1200000,
+  "_key": "!items!OJmP3V2J8M3YzhHQ"
+}

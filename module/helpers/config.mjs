@@ -75,7 +75,9 @@ E20.weaponTraits = {
   area: "E20.WeaponTraitArea",
   armorPiercing: "E20.WeaponTraitArmorPiercing",
   ballistic: "E20.WeaponTraitBallistic",
+  blinding: "E20.WeaponTraitBlinding",
   blunt: "E20.WeaponTraitBlunt",
+  burstFire: "E20.WeaponTraitBurstFire",
   bypassing: "E20.WeaponTraitBypassing",
   cold: "E20.WeaponTraitCold",
   combined: "E20.WeaponTraitCombined",
@@ -98,10 +100,12 @@ E20.weaponTraits = {
   intimidating: "E20.WeaponTraitIntimidating",
   laser: "E20.WeaponTraitLaser",
   maneuver: "E20.WeaponTraitManeuver",
+  marked: "E20.WeaponTraitMarked",
   martialArts: "E20.WeaponTraitMartialArts",
   modeLock: "E20.WeaponTraitModeLock",
   mounted: "E20.WeaponTraitMounted",
   multipleTargets: "E20.WeaponTraitMultipleTargets",
+  obfuscated: "E20.WeaponTraitObfuscated",
   ongoing: "E20.WeaponTraitOngoing",
   poison: "E20.WeaponTraitPoison",
   powerWeapon: "E20.WeaponTraitPowerWeapon",
@@ -116,7 +120,8 @@ E20.weaponTraits = {
   sonic: "E20.WeaponTraitSonic",
   spot: "E20.WeaponTraitSpot",
   stun: "E20.WeaponTraitStun",
-  tempermental: "E20.WeaponTraitTempermental",
+  temperamental: "E20.WeaponTraitTemperamental",
+  thrown: "E20.WeaponTraitThrown",
   titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
   vehicular: "E20.WeaponTraitVehicular",
@@ -172,7 +177,9 @@ E20.armorTraits = {
   modular: "E20.ArmorTraitModular",
   plating: "E20.ArmorTraitPlating",
   regal: "E20.ArmorTraitRegal",
+  shield: "E20.ArmorTraitShield",
   silent: "E20.ArmorTraitSilent",
+  temperamental: "E20.ArmorTraitTemperamental",
   xenotech: "E20.ArmorTraitXenotech",
 };
 preLocalize("armorTraits");
@@ -196,6 +203,16 @@ E20.upgradeTraits = {
   ...E20.weaponTraits,
 };
 preLocalize("upgradeTraits");
+
+// Options for Upgrade traits
+E20.shieldEffectTypes = {
+  defenseBonus: "E20.ShieldDefense1Bonus",
+  defenseBonusCombo: "E20.ShieldDefense2Bonuses",
+  defenseBonusMixed: "E20.ShieldDefenseMixedBonuses",
+  defenseBonusOption: "E20.ShieldDefense1Of2Bonuses",
+  other: "E20.ShieldDefense1OtherBonus",
+};
+preLocalize("shieldEffectTypes");
 
 /************************************************
  * Essences and Skills                          *
@@ -446,6 +463,7 @@ E20.defaultIcon = {
   alteration: "systems/essence20/assets/icons/items/alteration.svg",
   altMode: "systems/essence20/assets/icons/items/altmode.svg",
   armor: "systems/essence20/assets/icons/items/armor.svg",
+  equipmentPackage: "systems/essence20/assets/icons/items/equipment_package.svg",
   feature: "systems/essence20/assets/icons/items/feature.svg",
   focus: "systems/essence20/assets/icons/items/focus.svg",
   gear: "systems/essence20/assets/icons/items/gear.svg",
@@ -456,6 +474,7 @@ E20.defaultIcon = {
   power: "systems/essence20/assets/icons/items/powers.svg",
   role: "systems/essence20/assets/icons/items/role.svg",
   rolePoints: "systems/essence20/assets/icons/items/rolePoints.svg",
+  shield: "systems/essence20/assets/icons/items/shield.svg",
   spell: "systems/essence20/assets/icons/items/powers.svg",
   weaponEffect: "systems/essence20/assets/icons/items/weapon_effect.svg",
 };
@@ -463,8 +482,10 @@ E20.defaultIcon = {
 // Options for Equipment Item Types
 E20.equipmentTypes = {
   armor: "E20.Armor",
+  equipmentPackage: "E20.EquipmentPackage",
   gear: "E20.Gear",
   magicBauble: "E20.MagicBauble",
+  shield: "E20.Shield",
   upgrade: "E20.Upgrade",
   weapon: "E20.Weapon",
   weaponEffect: "E20.WeaponEffect",
@@ -508,17 +529,20 @@ E20.availabilities = {
   prototype: "E20.AvailabilityPrototype",
   unique: "E20.AvailabilityUnique",
   theoretical: "E20.AvailabilityTheoretical",
+  other: "E20.AvailabilityOther",
 };
 preLocalize("availabilities");
 
 // Damage Types
 E20.damageTypes = {
+  blindingBlast: "E20.DamageBlindingBlast",
   blunt: "E20.DamageBlunt",
   cover: "E20.DamageCover",
   element: "E20.DamageElement",
   grapple: "E20.DamageGrapple",
   impaired: "E20.DamageImparied",
   intimidate: "E20.DamageIntimidate",
+  knocProne: "E20.DamageKnockProne",
   laser: "E20.DamageLaser",
   maneuver: "E20.DamageManeuver",
   mesmerized: "E20.DamageMesmerized",

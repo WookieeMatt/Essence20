@@ -1,0 +1,182 @@
+{
+  "folder": "BfFK4H4vNJePKUGo",
+  "name": "Excalibur",
+  "type": "weapon",
+  "_id": "GNuActe2QRVyWH3o",
+  "img": "systems/essence20/assets/icons/weapons/excalibur.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 36
+    },
+    "items": {
+      "f01f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hd1O6anmtNcyjpw9",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Deadly",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Sharp",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 149
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "4df6": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.ilK322J05ooRWLht",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Excalibur Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "f7d0": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.dBhdlekgbVy3ogSj",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Excalibur Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "0f9f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.2nAPVgXfIfUEnn33",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Extended",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "e223": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.KFoF9nEHJrRaJzZA",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Limited Deflecting Weapon",
+        "type": "upgrade",
+        "availability": "restricted",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Medium or larger weapon",
+        "source": {
+          "book": "Cobra Codex",
+          "page": 97
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "953b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6bg86Fau84u1m9Vg",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Maiming",
+        "type": "upgrade",
+        "availability": "restricted",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 151
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "8ccf": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.IPpJMAO5tD8bQIKg",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Scary",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": [
+          "intimidating"
+        ]
+      }
+    },
+    "availability": "unique",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "isToxin": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "intimidating",
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733537238658,
+    "modifiedTime": 1733541551877,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!GNuActe2QRVyWH3o"
+}

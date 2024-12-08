@@ -140,7 +140,7 @@ export function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=nu
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Focus
  * @returns
  */
-export async function focusUpdate(actor, focus, dropFunc) {
+export async function onFocusDrop(actor, focus, dropFunc) {
   if (!focus.system.essences.length) {
     ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoEssenceError')));
     return false;
@@ -177,14 +177,14 @@ export async function focusUpdate(actor, focus, dropFunc) {
   }
 
   if (focus.system.essences.length > 1) {
-    await _showEssenceDialog(actor, focus, dropFunc);
+    return await _showEssenceDialog(actor, focus, dropFunc);
   } else {
     const newFocusList = await dropFunc();
     const newFocus = newFocusList[0];
     await actor.update({
       "system.focusEssence": newFocus.system.essences[0],
     });
-    await setFocusValues(newFocus, actor);
+    return await _setFocusValues(newFocus, actor);
   }
 }
 
@@ -222,7 +222,7 @@ export async function _focusStatUpdate(actor, selectedEssence, dropFunc) {
   await actor.update({
     "system.focusEssence": selectedEssence,
   });
-  await setFocusValues(newFocus, actor);
+  await _setFocusValues(newFocus, actor);
 }
 
 /**
@@ -232,7 +232,7 @@ export async function _focusStatUpdate(actor, selectedEssence, dropFunc) {
  * @param {Number} newLevel (Optional) The new level that you are changing to
  * @param {Number} previousLevel (Optional) The last level processed for the Actor
  */
-export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
+export async function _setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
   const essenceMax = actor.system.essences[actor.system.focusEssence].max + totalChange;
   const essenceValue = actor.system.essences[actor.system.focusEssence].value + totalChange;
@@ -246,10 +246,10 @@ export async function setFocusValues(focus, actor, newLevel=null, previousLevel=
 
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
     // Drop or level up
-    await createItemCopies(focus.system.items, actor, "perk", focus, previousLevel);
+    return await createItemCopies(focus.system.items, actor, "perk", focus, previousLevel);
   } else {
     // Level down
-    await deleteAttachmentsForItem(focus, actor, previousLevel);
+    return await deleteAttachmentsForItem(focus, actor, previousLevel);
   }
 }
 
@@ -281,7 +281,7 @@ export async function onFocusDelete(actor, focus) {
  * @param {Role} role The Role being dropped
  * @param {Function} dropFunc The drop Function that will be used to complete the drop of the Role
  */
-export async function roleUpdate(actor, role, dropFunc) {
+export async function onRoleDrop(actor, role, dropFunc) {
   // Actors can only have one Role
   const hasRole = getItemsOfType("role", actor.items).length > 0;
   if (hasRole) {
@@ -372,7 +372,7 @@ export async function onLevelChange(actor, newLevel) {
 
   const focus = getItemsOfType("focus", actor.items);
   if (focus.length == 1) {
-    await setFocusValues(focus[0], actor, newLevel, previousLevel);
+    await _setFocusValues(focus[0], actor, newLevel, previousLevel);
   }
 
   actor.setFlag('essence20', 'previousLevel', newLevel);

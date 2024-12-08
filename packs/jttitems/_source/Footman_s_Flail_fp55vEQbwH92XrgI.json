@@ -1,0 +1,95 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Footman's Flail",
+  "type": "weapon",
+  "_id": "fp55vEQbwH92XrgI",
+  "img": "icons/weapons/maces/flail-ball-grey.webp",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 76
+    },
+    "items": {
+      "bede": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.58OKNyz5w6nBvHWy",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Footman's Flail Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "e7ea": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.FZqIQe8UdKXCfmYj",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Footman's Flail Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Brawn d2",
+      "skill": "athletics",
+      "shift": "d2"
+    },
+    "traits": [
+      "blunt"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733068243373,
+    "modifiedTime": 1733076524213,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!fp55vEQbwH92XrgI"
+}

@@ -1,0 +1,97 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Eltarian Blaster",
+  "type": "weapon",
+  "_id": "3T8TCxGprdN5KGjS",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 76
+    },
+    "items": {
+      "754a": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.VynI5DSZTMzw18JB",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Eltarian Blaster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 70,
+          "value": 45
+        },
+        "shiftDown": 0
+      },
+      "b395": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.ZprCM70VzEVjtCsW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Eltarina Blaster Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "laser",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 70,
+          "value": 45
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "technology",
+      "shift": "d2"
+    },
+    "traits": [
+      "accurate",
+      "energy",
+      "laser"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733065208385,
+    "modifiedTime": 1733065292051,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!3T8TCxGprdN5KGjS"
+}

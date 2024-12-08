@@ -1,0 +1,141 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Airbourne Operations",
+  "type": "equipmentPackage",
+  "_id": "R6udrkWPBWSZc32U",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 45
+    },
+    "items": {
+      "9779": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.YQzdBQv8KsGrFZh8",
+        "img": "systems/essence20/assets/icons/weapons/assault_rifle.svg",
+        "name": "Assault Rifle (Folding Stock)",
+        "type": "weapon",
+        "items": {
+          "7766": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.DsqI04j3cWxcHV3Y",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Assault Rifle Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 100,
+              "value": 60
+            },
+            "shiftDown": 0
+          },
+          "e70a": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.RjJbQsuqe1Gxtpmt",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Assault Rifle Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "melee"
+            },
+            "damageValue": 2,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 100,
+              "value": 60
+            },
+            "shiftDown": 2
+          },
+          "caf6": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.bChPSldjpYZgAnIh",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Floding Stock",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Two-handed targeting weapon",
+            "source": {
+              "book": "Quartermaster's Guide to Gear",
+              "page": 34
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "da4a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dwydnyn3DS726TGB",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor",
+        "type": "armor",
+        "items": {}
+      },
+      "a41b": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.EElUaUZ1bxfiDs6x",
+        "img": "icons/svg/item-bag.svg",
+        "name": "Smoke Cannister",
+        "type": "weapon",
+        "items": {
+          "2c6a": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.IhXrUyDfSYIYiLa2",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Smoke Cannister Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 0,
+            "damageType": "cover",
+            "numHands": 1,
+            "numTargets": 1,
+            "radius": 10,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 50,
+              "value": 20
+            },
+            "shiftDown": 0
+          }
+        }
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733531027765,
+    "modifiedTime": 1733531253012,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!R6udrkWPBWSZc32U"
+}

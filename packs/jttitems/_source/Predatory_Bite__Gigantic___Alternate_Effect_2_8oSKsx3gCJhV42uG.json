@@ -1,0 +1,50 @@
+{
+  "folder": "IswssmE9dYNpEOXA",
+  "name": "Predatory Bite (Gigantic+) Alternate Effect 2",
+  "type": "weaponEffect",
+  "_id": "8oSKsx3gCJhV42uG",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 76
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "grapple",
+    "damageValue": 0,
+    "isSpecialized": false,
+    "numHands": 0,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    },
+    "shiftDown": -1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733067256523,
+    "modifiedTime": 1733067276862,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!8oSKsx3gCJhV42uG"
+}
