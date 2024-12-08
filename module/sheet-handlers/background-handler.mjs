@@ -8,7 +8,7 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
  * @param {Influence} influence The Influence being updated
  * @param {Function} dropFunc The function to call to complete the Influence drop
  */
-export async function influenceUpdate(actor, influence, dropFunc) {
+export async function onInfluenceDrop(actor, influence, dropFunc) {
   let addHangUp = false;
 
   for (const item of actor.items) {
@@ -43,7 +43,7 @@ export async function influenceUpdate(actor, influence, dropFunc) {
  * @param {Origin} origin The Origin being dropped
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-export async function originUpdate(actor, origin, dropFunc) {
+export async function onOriginDrop(actor, origin, dropFunc) {
   if (!origin.system.essences.length) {
     ui.notifications.error(game.i18n.format(game.i18n.localize('E20.OriginNoEssenceError')));
     return false;
