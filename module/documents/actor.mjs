@@ -262,31 +262,34 @@ export class Essence20Actor extends Actor {
   _preparePoisonTraining(){
     const system = this.system;
     for (const key of Object.keys(system.trained.poisons)) {
-        system.trained.poisons[key] = false;
+      system.trained.poisons[key] = false;
     }
+
     for (const key of Object.keys(system.trained.toxins)) {
       system.trained.toxins[key] = false;
     }
+
     for (const key of Object.keys(system.qualified.poisons)) {
       system.qualified.poisons[key] = false;
     }
+
     switch(system.poisonTraining) {
-      case 5:
-        system.trained.toxins.all = true;
-        system.trained.toxins.standard = true;
-        system.trained.toxins.limited = true;
-      case 4:
-        system.qualified.poisons.all = true;
-      case 3:
-        system.qualified.poisons.limited = true;
-      case 2:
-        system.qualified.poisons.standard = true;
-      case 1:
-        system.trained.poisons.all = true;
-        system.trained.poisons.standard = true;
-        system.trained.poisons.limited = true;
-      default:
-        break;
+    case 5:
+      system.trained.toxins.all = true;
+      system.trained.toxins.standard = true;
+      system.trained.toxins.limited = true;
+    case 4:
+      system.qualified.poisons.all = true;
+    case 3:
+      system.qualified.poisons.limited = true;
+    case 2:
+      system.qualified.poisons.standard = true;
+    case 1:
+      system.trained.poisons.all = true;
+      system.trained.poisons.standard = true;
+      system.trained.poisons.limited = true;
+    default:
+      break;
     }
   }
 
