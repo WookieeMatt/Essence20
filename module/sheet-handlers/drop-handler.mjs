@@ -85,7 +85,7 @@ export async function onDropItem(data, actor, dropFunc) {
       game.i18n.format(
         'E20.ItemDropSuccess',
         {itemName: sourceItem.name, actorName: actor.name},
-      )
+      ),
     );
   }
 }
