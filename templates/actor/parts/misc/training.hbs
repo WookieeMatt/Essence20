@@ -44,8 +44,8 @@
           {{formatBooleanList @root.system.trained.weapons @root.config.weaponTypes 'unit'}}
         </td>
         {{/ifNotEquals}}
-        <td class="tg-td">
         {{#if @root.actor.system.poisonTraining}}
+          <td class="tg-td">
             {{#if @root.actor.system.trained.poisons.all}}
               {{localize "E20.PoisonTrainingAll"}}
             {{else}}
@@ -54,8 +54,8 @@
           {{#if @root.actor.system.trained.toxins.all}}
               {{localize "E20.PoisonTrainingAll"}}
           {{/if}}
+          </td>
         {{/if}}
-        </td>
       </tr>
       {{#if @root.actor.system.canQualify}}
       <tr>
