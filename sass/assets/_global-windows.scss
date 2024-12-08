@@ -25,6 +25,10 @@
   box-shadow: v.$boxshadow;
 }
 
+body.game .window-app {
+  --color-select-option-bg: #5f5f5f;
+}
+
 .essence20 .sheet {
   min-width: fit-content;
   max-width: 55%;
