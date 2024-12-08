@@ -1,0 +1,104 @@
+{
+  "folder": "ejSKHeVNjeFLZCiJ",
+  "name": "V.E.N.O.M",
+  "type": "weapon",
+  "_id": "WfsF1kGzDwldrXCA",
+  "img": "systems/essence20/assets/icons/weapons/toxin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 94
+    },
+    "items": {
+      "d52e": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.uZugE36PfcdcQyil",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "V.E.N.O.M. Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "deception",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "special",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "e2ef": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.8GZvVml7C7CQLFMz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "V.E.N.O.M. Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "deception",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "special",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "isPoison": true,
+    "poisonSubType": {
+      "contact": false,
+      "ingested": true,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "Science d8",
+      "skill": "infiltration",
+      "shift": "d8"
+    },
+    "traits": [
+      "consumable",
+      "ongoing",
+      "toxin"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "poisonType": "toxin"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733595522536,
+    "modifiedTime": 1733595569400,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!WfsF1kGzDwldrXCA"
+}

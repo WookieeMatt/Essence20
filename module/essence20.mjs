@@ -196,16 +196,15 @@ Handlebars.registerHelper('assign', function (varName, varValue, options) {
   options.data.root[varName] = varValue;
 });
 
-Handlebars.registerHelper('listProficiencies', function (allProficiencies, friendlyLookup) {
-  const charProficiencies = [];
-
-  for (const [proficiency, isProficient] of Object.entries(allProficiencies)) {
-    if (isProficient) {
-      charProficiencies.push(friendlyLookup[proficiency]);
+Handlebars.registerHelper('formatBooleanList', function (objectToList, friendlyLookup, listType) {
+  const unformattedList = [];
+  for (const [key, isTrue] of Object.entries(objectToList)) {
+    if (isTrue) {
+      unformattedList.push(friendlyLookup[key]);
     }
   }
 
-  return charProficiencies.join(", ");
+  return game.i18n.getListFormatter({ style: "long", type: listType }).format(unformattedList);
 });
 
 /* -------------------------------------------- */

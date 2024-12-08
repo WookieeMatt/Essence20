@@ -93,8 +93,10 @@ export const character = () => ({
     }),
   }),
   notes: new fields.HTMLField(),
+  poisonTraining:makeInt(0),
   qualified: new fields.SchemaField({
     armors: makeTrainingSchema(E20.armorTypes),
+    poisons: makeTrainingSchema(E20.poisonTraining),
     weapons: makeTrainingSchema(E20.weaponTypes),
   }),
   skillRankAllocation: new fields.SchemaField({
@@ -105,6 +107,8 @@ export const character = () => ({
   }),
   trained: new fields.SchemaField({
     armors: makeTrainingSchema(E20.armorTypes),
+    poisons: makeTrainingSchema(E20.poisonTraining),
+    toxins: makeTrainingSchema(E20.poisonTraining),
     upgrades: new fields.SchemaField({
       armors: makeTrainingSchema(E20.availabilities),
     }),

@@ -1,0 +1,81 @@
+{
+  "folder": "R893HRFUk5f11lBF",
+  "name": "Sludge",
+  "type": "weapon",
+  "_id": "9p2a8H4RU9c6mGpu",
+  "img": "systems/essence20/assets/icons/weapons/toxin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 94
+    },
+    "items": {
+      "f6c3": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.hfRaGuJGmOh9Jb3j",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Sludge Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "special",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "isPoison": true,
+    "poisonSubType": {
+      "contact": true,
+      "ingested": true,
+      "inhaled": true
+    },
+    "requirements": {
+      "custom": "Science d8",
+      "skill": "infiltration",
+      "shift": "d8"
+    },
+    "traits": [
+      "consumable",
+      "toxin"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "poisonType": "toxin"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733595273983,
+    "modifiedTime": 1733595327588,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!9p2a8H4RU9c6mGpu"
+}

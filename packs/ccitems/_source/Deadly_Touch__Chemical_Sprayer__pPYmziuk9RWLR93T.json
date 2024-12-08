@@ -1,0 +1,94 @@
+{
+  "folder": "ejSKHeVNjeFLZCiJ",
+  "name": "Deadly Touch (Chemical Sprayer)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/poison.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 94
+    },
+    "items": {
+      "9aa0": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.cvMfCf14h1VLMtTG",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Deadly Touch Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "poison",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "dee0": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.PeOeKaDjkhtUWk10",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Chemical Sprayer",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Contact of Inhaled Poison or Toxin",
+        "source": {
+          "book": "Cobra Codex",
+          "page": 97
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "isPoison": true,
+    "poisonSubType": {
+      "contact": true,
+      "ingested": false,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "Science d4",
+      "skill": "infiltration",
+      "shift": "d4"
+    },
+    "traits": [],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "poisonType": "poison"
+  },
+  "effects": [],
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733593972127,
+    "modifiedTime": 1733593972127,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "pPYmziuk9RWLR93T",
+  "sort": 0,
+  "_key": "!items!pPYmziuk9RWLR93T"
+}

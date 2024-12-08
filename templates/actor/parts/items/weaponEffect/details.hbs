@@ -2,9 +2,14 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
 <div class="chip-section">
   <span class="chip" name="chip.weapon.classification">
-    {{lookup @root.config.skills item.system.classification.skill}}
-    {{lookup @root.config.weaponSizes parentItem.system.classification.size}}
-    {{lookup @root.config.weaponStyles item.system.classification.style}}
+    {{#if parentItem.system.isPoison}}
+      {{formatBooleanList parentItem.system.poisonSubType @root.config.poisonSubTypes 'disjunction'}}
+      {{lookup @root.config.poisonTypes parentItem.system.poisonType}}
+    {{else}}
+      {{lookup @root.config.skills item.system.classification.skill}}
+      {{lookup @root.config.weaponSizes parentItem.system.classification.size}}
+      {{lookup @root.config.weaponStyles item.system.classification.style}}
+    {{/if}}
   </span>
   <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.system.numHands}}</span>
   <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.system.numTargets}}</span>
@@ -20,9 +25,14 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
 <div class="chip-section">
   <span class="chip" name="chip.weapon.classification">
-    {{lookup @root.config.skills item.classification.skill}}
-    {{lookup @root.config.weaponSizes parentItem.system.classification.size}}
-    {{lookup @root.config.weaponStyles item.classification.style}}
+    {{#if parentItem.system.isPoison}}
+      {{formatBooleanList parentItem.system.poisonSubType @root.config.poisonSubTypes 'disjunction'}}
+      {{lookup @root.config.poisonTypes parentItem.system.poisonType}}
+    {{else}}
+      {{lookup @root.config.skills item.system.classification.skill}}
+      {{lookup @root.config.weaponSizes parentItem.system.classification.size}}
+      {{lookup @root.config.weaponStyles item.system.classification.style}}
+    {{/if}}
   </span>
   <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.numHands}}</span>
   <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.numTargets}}</span>
