@@ -113,6 +113,9 @@ export class Essence20ItemSheet extends ItemSheet {
 
     //Delete Gear from Equipment Packages
     html.find('.gear-delete').click(this._onObjectDelete.bind(this, ".gear"));
+
+    html.find('.view-info').click(this._onObjectInfo.bind(this));
+
   }
 
   /**
@@ -143,6 +146,13 @@ export class Essence20ItemSheet extends ItemSheet {
     await this.item.update({[updateString]: null});
 
     li.slideUp(200, () => this.render(false));
+  }
+
+  async _onObjectInfo(data) {
+    const item = await fromUuid(data.currentTarget.dataset.uuid);
+    if (item) {
+      item.sheet.render(true);
+    }
   }
 
 }
