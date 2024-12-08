@@ -159,5 +159,4 @@ export class Essence20ItemSheet extends ItemSheet {
       item.sheet.render(true);
     }
   }
-
 }
