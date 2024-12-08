@@ -1,0 +1,75 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Smoke Cannister",
+  "type": "weapon",
+  "_id": "EElUaUZ1bxfiDs6x",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 34
+    },
+    "items": {
+      "2c6a": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.IhXrUyDfSYIYiLa2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Smoke Cannister Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 0,
+        "damageType": "cover",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "isToxin": false,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "consumable"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 800000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733528746500,
+    "modifiedTime": 1733532351898,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!EElUaUZ1bxfiDs6x"
+}

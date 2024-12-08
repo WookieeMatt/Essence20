@@ -21,6 +21,25 @@ export async function gearDrop(actor, droppedItem, dropFunc) {
 }
 
 /**
+ * Handles dropping Equipment Packages on Actors
+ * @param {Actor} actor The actor that the Package is being dropped on
+ * @param {EquipmentPackage} droppedItem The equipmentPackage that is being dropped on the actor
+ */
+export async function equipmentPackageDrop(actor, droppedItem) {
+  for (const [, item] of Object.entries(droppedItem.system.items)) {
+    const itemToCreate = await fromUuid(item.uuid);
+    const parentItem = await Item.create(itemToCreate, { parent: actor });
+    if (["armor", "weapon"].includes(parentItem.type)) {
+      await createItemCopies(parentItem.system.items, actor, "upgrade", parentItem);
+    }
+
+    if (["shield", "weapon"].includes(parentItem.type)) {
+      await createItemCopies(parentItem.system.items, actor, "weaponEffect", parentItem);
+    }
+  }
+}
+
+/**
  * Creates copies of Items for given IDs
  * @param {Object[]} items The Item entries to copy
  * @param {Actor} owner The Items' owner
@@ -171,6 +190,13 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
+  case "equipmentPackage":
+    if (["armor", "gear", "shield", "weapon"].includes(droppedItem.type)) {
+      entry['items'] = droppedItem.system.items;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 

@@ -1,0 +1,138 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Driver & Pilots",
+  "type": "equipmentPackage",
+  "_id": "5FLellPl3yEBVHpf",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 46
+    },
+    "items": {
+      "6e66": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.CaEW54wJQGRy7qTA",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Ballistic Armor (Radar Tempered Camo)",
+        "type": "armor",
+        "items": {
+          "816d": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.JdYUvcFdYIn9YE83",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Radar Tempered Camo",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "fa38": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.YQzdBQv8KsGrFZh8",
+        "img": "systems/essence20/assets/icons/weapons/assault_rifle.svg",
+        "name": "Assault Rifle (Folding Stock)",
+        "type": "weapon",
+        "items": {
+          "7766": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.DsqI04j3cWxcHV3Y",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Assault Rifle Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 100,
+              "value": 60
+            },
+            "shiftDown": 0
+          },
+          "e70a": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.RjJbQsuqe1Gxtpmt",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Assault Rifle Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "melee"
+            },
+            "damageValue": 2,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 100,
+              "value": 60
+            },
+            "shiftDown": 2
+          },
+          "caf6": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.bChPSldjpYZgAnIh",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Floding Stock",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Two-handed targeting weapon",
+            "source": {
+              "book": "Quartermaster's Guide to Gear",
+              "page": 34
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "35eb": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.6lGobkbLLWQPELwa",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Driving (Land, Sea, or Air) Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733532020284,
+    "modifiedTime": 1733532143677,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!5FLellPl3yEBVHpf"
+}

@@ -1,0 +1,66 @@
+{
+  "folder": "24nX3baxdoAYw2dI",
+  "name": "Hard Body Armor (Handling)",
+  "type": "armor",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {
+      "8ed1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.UGxj1x56VBfJj9fQ",
+        "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+        "name": "Handling",
+        "type": "upgrade",
+        "armorBonus": {
+          "defense": "toughness",
+          "value": 0
+        },
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 156
+        },
+        "subtype": "armor",
+        "traits": []
+      }
+    },
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 3,
+    "classification": "heavy",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733535492530,
+    "modifiedTime": 1733535505553,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "FMGeEpbwUYySKxc5",
+  "sort": 300000,
+  "_key": "!items!FMGeEpbwUYySKxc5"
+}

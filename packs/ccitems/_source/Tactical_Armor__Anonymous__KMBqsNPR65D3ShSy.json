@@ -1,0 +1,66 @@
+{
+  "folder": "l456qPDYdRpxqC1Y",
+  "name": "Tactical Armor (Anonymous)",
+  "type": "armor",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {
+      "644a": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.yFikSROr3NzaEoaL",
+        "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+        "name": "Anonymous",
+        "type": "upgrade",
+        "armorBonus": {
+          "defense": "toughness",
+          "value": 0
+        },
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "Cobra Codex",
+          "page": 100
+        },
+        "subtype": "armor",
+        "traits": []
+      }
+    },
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 1,
+    "classification": "light",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733492592963,
+    "modifiedTime": 1733509877986,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "KMBqsNPR65D3ShSy",
+  "sort": 700000,
+  "_key": "!items!KMBqsNPR65D3ShSy"
+}

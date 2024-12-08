@@ -1,0 +1,66 @@
+{
+  "folder": "24nX3baxdoAYw2dI",
+  "name": "Hard Body Armor (Terrifying)",
+  "type": "armor",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {
+      "05b2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.tXHd0LBkVCB2QPPO",
+        "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+        "name": "Terrifying",
+        "type": "upgrade",
+        "armorBonus": {
+          "defense": "toughness",
+          "value": 0
+        },
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 156
+        },
+        "subtype": "armor",
+        "traits": []
+      }
+    },
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 3,
+    "classification": "heavy",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733536069556,
+    "modifiedTime": 1733536092579,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "v2Fz1qsAGwF2y1Tu",
+  "sort": 0,
+  "_key": "!items!v2Fz1qsAGwF2y1Tu"
+}

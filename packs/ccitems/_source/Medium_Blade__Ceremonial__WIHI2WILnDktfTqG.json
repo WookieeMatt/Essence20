@@ -1,0 +1,113 @@
+{
+  "folder": "ejSKHeVNjeFLZCiJ",
+  "name": "Medium Blade (Ceremonial)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/blade.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 141
+    },
+    "items": {
+      "f70f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.pbfLfPqG58y5bu7z",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Medium Blade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "ed23": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.qJ2FDEwfZF9R8fQX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Medium Blade Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "b385": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.u0quyPOQFTRbDUmJ",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Ceremonial",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "Cobra Codex",
+          "page": 96
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733508155109,
+    "modifiedTime": 1733509341569,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "WIHI2WILnDktfTqG",
+  "sort": 500000,
+  "_key": "!items!WIHI2WILnDktfTqG"
+}

@@ -1,0 +1,95 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Rock-Viper Branch",
+  "type": "equipmentPackage",
+  "_id": "CiuyLsHoJfcVHq42",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 91
+    },
+    "items": {
+      "ffd0": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.sGh4U5JNDaqRNea4",
+        "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+        "name": "Rifle (Scope)",
+        "type": "weapon",
+        "items": {
+          "e273": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Rifle Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 400,
+              "value": 100
+            },
+            "shiftDown": 0
+          },
+          "0c1f": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.cBiD2lBLRwnxu8Rx",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Scope",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "9b54": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.ptLHSmt7op82U9Ku",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Restricted Athletics (Climbing) Kit",
+        "type": "gear"
+      },
+      "c311": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dwydnyn3DS726TGB",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor",
+        "type": "armor",
+        "items": {}
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733509492739,
+    "modifiedTime": 1733509584025,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!CiuyLsHoJfcVHq42"
+}

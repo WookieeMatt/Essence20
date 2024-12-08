@@ -1,0 +1,244 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Martial Artists",
+  "type": "equipmentPackage",
+  "_id": "XeNgNZrYkWNWAXsA",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 46
+    },
+    "items": {
+      "6927": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7CFO4VIOM5VE4PyI",
+        "img": "systems/essence20/assets/icons/weapons/blade.svg",
+        "name": "Medium Blade",
+        "type": "weapon",
+        "items": {
+          "f70f": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.pbfLfPqG58y5bu7z",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Medium Blade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "ed23": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.qJ2FDEwfZF9R8fQX",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Medium Blade Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 2,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 1
+          }
+        }
+      },
+      "a4e1": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.7LhY3Jni10S4ttHc",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor (Silent)",
+        "type": "armor",
+        "items": {
+          "4a88": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Silent",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Not Silent",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": [
+              "silent"
+            ]
+          }
+        }
+      },
+      "dc4c": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.sqm18E3uMKhqqmWY",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Standard Infiltration Kit",
+        "type": "gear"
+      },
+      "1ddb": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.aRBWUHeBjdevKh4Q",
+        "img": "systems/essence20/assets/icons/weapons/nunchaku.svg",
+        "name": "Short Bludgeoning",
+        "type": "weapon",
+        "items": {
+          "ce5d": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.7ah23fiimnJq6HIL",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Short Bludgeoning Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "stun",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "2f24": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.rMg6ZhYEEHTeZ8Db",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Short Bludgeoning Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "blunt",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 1
+          }
+        }
+      },
+      "926f": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.WYVuwQwX2QCuWSD1",
+        "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+        "name": "Small Thrown Weapon (Aerodynamics)",
+        "type": "weapon",
+        "items": {
+          "870a": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.bxT99cXuxn9UPeNT",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Small Thrown Weapon Effect (Blunt)",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "athletics",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "blunt",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 20,
+              "value": 10
+            },
+            "shiftDown": 0
+          },
+          "372b": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.GqfmPxPjAP8Xoll9",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Small Thrown Weapon Effect (Sharp)",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "athletics",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 20,
+              "value": 10
+            },
+            "shiftDown": 0
+          },
+          "33a1": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.NoENOcMYq0YkkhAk",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Aerodynamics",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Grenade or Thrown",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733535237099,
+    "modifiedTime": 1733535346716,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!XeNgNZrYkWNWAXsA"
+}
