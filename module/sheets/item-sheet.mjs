@@ -114,6 +114,7 @@ export class Essence20ItemSheet extends ItemSheet {
     //Delete Gear from Equipment Packages
     html.find('.gear-delete').click(this._onObjectDelete.bind(this, ".gear"));
 
+    //Open Attached Item Sheet
     html.find('.view-info').click(this._onObjectInfo.bind(this));
 
   }
@@ -148,6 +149,10 @@ export class Essence20ItemSheet extends ItemSheet {
     li.slideUp(200, () => this.render(false));
   }
 
+  /**
+   * Handles opening the item sheet of an attached item from the info button
+   * @param {Event} data The data from the click event
+   */
   async _onObjectInfo(data) {
     const item = await fromUuid(data.currentTarget.dataset.uuid);
     if (item) {
