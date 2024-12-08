@@ -259,7 +259,7 @@ export class Essence20Actor extends Actor {
   /**
   * Prepare Poison and Toxin Training and Qualifications
   */
-  _preparePoisonTraining(){
+  _preparePoisonTraining() {
     const system = this.system;
     for (const key of Object.keys(system.trained.poisons)) {
       system.trained.poisons[key] = false;
