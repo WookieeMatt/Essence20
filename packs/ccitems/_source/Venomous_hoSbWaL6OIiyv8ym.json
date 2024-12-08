@@ -15,7 +15,51 @@
     "selectionLimit": 1,
     "type": "general"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "New Effect",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.cobra_codex.Item.hoSbWaL6OIiyv8ym",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "qmocYC4JxC6CphFM",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.poisonTraining",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1733626508525,
+        "modifiedTime": 1733626521734,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!hoSbWaL6OIiyv8ym.qmocYC4JxC6CphFM"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
