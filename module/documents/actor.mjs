@@ -273,25 +273,25 @@ export class Essence20Actor extends Actor {
       system.qualified.poisons[key] = false;
     }
 
-    if (system.poisonTraining >=5) {
+    if (system.poisonTraining >= 5) {
       system.trained.toxins.all = true;
       system.trained.toxins.standard = true;
       system.trained.toxins.limited = true;
     }
 
-    if (system.poisonTraining >=4) {
+    if (system.poisonTraining >= 4) {
       system.qualified.poisons.all = true;
     }
 
-    if (system.poisonTraining >=3) {
+    if (system.poisonTraining >= 3) {
       system.qualified.poisons.limited = true;
     }
 
-    if (system.poisonTraining >=2) {
+    if (system.poisonTraining >= 2) {
       system.qualified.poisons.standard = true;
     }
 
-    if (system.poisonTraining >=1) {
+    if (system.poisonTraining >= 1) {
       system.trained.poisons.all = true;
       system.trained.poisons.standard = true;
       system.trained.poisons.limited = true;
