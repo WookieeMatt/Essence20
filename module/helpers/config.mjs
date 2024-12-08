@@ -31,12 +31,12 @@ preLocalize("defenses");
 /************************************************
  * Weapons                                      *
  ***********************************************/
-E20.poisonSubTypes = {
-  contact: "E20.PoisonSubTypeContact",
-  ingested: "E20.PoisonSubTypeIngested",
-  inhaled: "E20.PoisonSubTypeInhaled",
+E20.poisonApplications = {
+  contact: "E20.PoisonApplicationContact",
+  ingested: "E20.PoisonApplicationIngested",
+  inhaled: "E20.PoisonApplicationInhaled",
 };
-preLocalize("poisonSubTypes");
+preLocalize("poisonApplications");
 
 E20.poisonTypes = {
   poison: "E20.PoisonTypePoison",

@@ -41,7 +41,7 @@
     },
     "equipped": true,
     "isPoison": true,
-    "poisonSubType": {
+    "poisonApplication": {
       "contact": true,
       "ingested": true,
       "inhaled": true

@@ -27,7 +27,7 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
       equipped: makeBool(true),
       isPoison: makeBool(false),
       poisonType: makeStrWithChoices(Object.keys(E20.poisonTypes)),
-      poisonSubType: new fields.SchemaField({
+      poisonApplication: new fields.SchemaField({
         contact: makeBool (false),
         ingested: makeBool (false),
         inhaled: makeBool (false),

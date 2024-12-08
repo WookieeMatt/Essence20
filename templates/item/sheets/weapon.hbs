@@ -44,14 +44,14 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
         {{!-- Poison Subtype --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponPoisonSubType'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponPoisonApplication'}}
         {{#*inline "item-field-inputs"}}
-          <input type="checkbox" id="system.poisonSubType.contact" name="system.poisonSubType.contact" {{checked system.poisonSubType.contact}} />
-          <label for="system.poisonSubType.contact">{{localize 'E20.PoisonSubTypeContact'}}</label>
-          <input type="checkbox" id="system.poisonSubType.ingested" name="system.poisonSubType.ingested" {{checked system.poisonSubType.ingested}} />
-          <label for="system.poisonSubType.ingested">{{localize 'E20.PoisonSubTypeIngested'}}</label>
-          <input type="checkbox" id="system.poisonSubType.inhaled" name="system.poisonSubType.inhaled" {{checked system.poisonSubType.inhaled}} />
-          <label for="system.poisonSubType.inhaled">{{localize 'E20.PoisonSubTypeInhaled'}}</label>
+          <input type="checkbox" id="system.poisonApplication.contact" name="system.poisonApplication.contact" {{checked system.poisonApplication.contact}} />
+          <label for="system.poisonApplication.contact">{{localize 'E20.PoisonApplicationContact'}}</label>
+          <input type="checkbox" id="system.poisonApplication.ingested" name="system.poisonApplication.ingested" {{checked system.poisonApplication.ingested}} />
+          <label for="system.poisonApplication.ingested">{{localize 'E20.PoisonApplicationIngested'}}</label>
+          <input type="checkbox" id="system.poisonApplication.inhaled" name="system.poisonApplication.inhaled" {{checked system.poisonApplication.inhaled}} />
+          <label for="system.poisonApplication.inhaled">{{localize 'E20.PoisonApplicationInhaled'}}</label>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

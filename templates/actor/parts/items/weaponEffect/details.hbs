@@ -3,7 +3,7 @@
 <div class="chip-section">
   <span class="chip" name="chip.weapon.classification">
     {{#if parentItem.system.isPoison}}
-      {{formatBooleanList parentItem.system.poisonSubType @root.config.poisonSubTypes 'disjunction'}}
+      {{formatBooleanList parentItem.system.poisonApplication @root.config.poisonApplications 'disjunction'}}
       {{lookup @root.config.poisonTypes parentItem.system.poisonType}}
     {{else}}
       {{lookup @root.config.skills item.system.classification.skill}}
@@ -26,7 +26,7 @@
 <div class="chip-section">
   <span class="chip" name="chip.weapon.classification">
     {{#if parentItem.system.isPoison}}
-      {{formatBooleanList parentItem.system.poisonSubType @root.config.poisonSubTypes 'disjunction'}}
+      {{formatBooleanList parentItem.system.poisonApplication @root.config.poisonApplications 'disjunction'}}
       {{lookup @root.config.poisonTypes parentItem.system.poisonType}}
     {{else}}
       {{lookup @root.config.skills item.system.classification.skill}}
