@@ -1,0 +1,22 @@
+{
+  "name": "Kits",
+  "sorting": "a",
+  "folder": "rV3aK8ayET8Y2o7k",
+  "type": "Item",
+  "_id": "90Lz4xuaubskSVR3",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!90Lz4xuaubskSVR3"
+}

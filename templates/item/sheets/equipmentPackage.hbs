@@ -1,0 +1,41 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+
+   {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
+    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+  </nav>
+
+  <section class="sheet-body item-sheet">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlternateAccess'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.alternateAccess" value="{{system.alternateAccess}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
+      {{!-- Armor --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="armor" label='E20.ItemTypeArmorPlural' items=@root.system.items type='armor'}}
+
+      {{!-- Shield --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="shield" label='E20.ItemTypeShieldPlural' items=@root.system.items type='shield'}}
+
+      {{!-- Weapons --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weapon" label='E20.ItemTypeWeaponPlural' items=@root.system.items type='weapon'}}
+
+      {{!-- Gear --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="gear" label='E20.ItemTypeGearPlural' items=@root.system.items type='gear'}}
+    </div>
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{!-- Effects Section --}}
+      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
+    </div>
+  </section>
+</form>

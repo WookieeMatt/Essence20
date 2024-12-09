@@ -1,10 +1,12 @@
 <div class="flexrow">
+  {{#unless parentId}}
   <div></div>
+  {{/unless}}
 
   <div style="flex-grow: 0; white-space: nowrap;">
     {{localize title}}
     {{#ifNotEquals hidePlusButton 'true'}}
-    <a class="item-create" data-type={{dataType}} data-parent-id="{{parentId}}" title="{{ localize 'E20.ItemControlAdd' }}">
+    <a class="item-create" data-type={{dataType}} data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
       <i class="fas fa-plus"></i>
     </a>
     {{/ifNotEquals}}
@@ -12,7 +14,7 @@
 
   <span class="header-accordion-wrapper">
     {{#if items.length}}
-    <a class="header-accordion-label" data-type={{dataType}} title="{{ localize 'E20.ItemControlExpand' }}">
+    <a class="header-accordion-label" data-type={{dataType}} data-tooltip="{{ localize 'E20.ItemControlExpandAll' }}">
       <i class="accordion-icon fas fa-chevron-down"></i>
     </a>
     {{/if}}

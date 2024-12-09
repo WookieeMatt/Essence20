@@ -1,0 +1,22 @@
+{
+  "name": "Tyrannosaurus Sentry Glaive",
+  "sorting": "a",
+  "folder": "15CS4XfH53N06Aqf",
+  "type": "Item",
+  "_id": "4R04lqRK2Py03Q4l",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!4R04lqRK2Py03Q4l"
+}

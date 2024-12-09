@@ -1,0 +1,100 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Range-Viper Branch",
+  "type": "equipmentPackage",
+  "_id": "b8w8DsiIrQw4KJ5e",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 91
+    },
+    "items": {
+      "3b6e": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.aN0Vv0C9sUaALbyS",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor (Terrifying)",
+        "type": "armor",
+        "items": {
+          "11d6": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.tXHd0LBkVCB2QPPO",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Terrifying",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "edea": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dRtyqdPeYHC1BKHW",
+        "img": "systems/essence20/assets/icons/weapons/mortar.svg",
+        "name": "Artillery Lobber",
+        "type": "weapon",
+        "items": {
+          "fa89": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.6SNB0WmDWMUkpr2X",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Artillery Lobber Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "explosive"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 12,
+            "radius": 10,
+            "range": {
+              "min": 30,
+              "reachMultiplier": 0,
+              "long": 200,
+              "value": 100
+            },
+            "shiftDown": 0
+          }
+        }
+      },
+      "663d": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.va2vPiwiqV7v7Whx",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Survival Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": "Arctic Division, Desert Division, Jungle Division, or Wildlife Division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733509401906,
+    "modifiedTime": 1733509472777,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!b8w8DsiIrQw4KJ5e"
+}

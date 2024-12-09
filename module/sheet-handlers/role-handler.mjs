@@ -1,3 +1,4 @@
+import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import { rememberOptions, rememberSelect } from "../helpers/dialog.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
@@ -139,7 +140,7 @@ export function roleValueChange(currentLevel, arrayLevels, lastProcessedLevel=nu
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Focus
  * @returns
  */
-export async function focusUpdate(actor, focus, dropFunc) {
+export async function onFocusDrop(actor, focus, dropFunc) {
   if (!focus.system.essences.length) {
     ui.notifications.error(game.i18n.format(game.i18n.localize('E20.FocusNoEssenceError')));
     return false;
@@ -176,14 +177,14 @@ export async function focusUpdate(actor, focus, dropFunc) {
   }
 
   if (focus.system.essences.length > 1) {
-    await _showEssenceDialog(actor, focus, dropFunc);
+    return await _showEssenceDialog(actor, focus, dropFunc);
   } else {
     const newFocusList = await dropFunc();
     const newFocus = newFocusList[0];
     await actor.update({
       "system.focusEssence": newFocus.system.essences[0],
     });
-    await setFocusValues(newFocus, actor);
+    return await _setFocusValues(newFocus, actor);
   }
 }
 
@@ -199,23 +200,13 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
     choices[essence] = {
       chosen: false,
       label: CONFIG.E20.originEssences[essence],
+      value: essence,
     };
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.EssenceIncrease'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _focusStatUpdate(actor, rememberOptions(html), dropFunc),
-        },
-      },
-    },
-  ).render(true);
+  const prompt = "E20.SelectFocus";
+  const title = "E20.SelectFocusSkills";
+  new ChoicesPrompt(choices, focus, actor, prompt, title, dropFunc).render(true);
 }
 
 /**
@@ -224,21 +215,14 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
  * @param {Object} options The options resulting from _showFocusSkillDialog()
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Focus
  */
-async function _focusStatUpdate(actor, options, dropFunc) {
-  let selectedEssence = "";
-  for (const essence in CONFIG.E20.essences) {
-    if (options[essence]) {
-      selectedEssence = essence;
-    }
-  }
-
+export async function _focusStatUpdate(actor, selectedEssence, dropFunc) {
   const newFocusList = await dropFunc();
   const newFocus = newFocusList[0];
 
   await actor.update({
     "system.focusEssence": selectedEssence,
   });
-  await setFocusValues(newFocus, actor);
+  await _setFocusValues(newFocus, actor);
 }
 
 /**
@@ -248,7 +232,7 @@ async function _focusStatUpdate(actor, options, dropFunc) {
  * @param {Number} newLevel (Optional) The new level that you are changing to
  * @param {Number} previousLevel (Optional) The last level processed for the Actor
  */
-export async function setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
+export async function _setFocusValues(focus, actor, newLevel=null, previousLevel=null) {
   const totalChange = roleValueChange(actor.system.level, focus.system.essenceLevels, previousLevel);
   const essenceMax = actor.system.essences[actor.system.focusEssence].max + totalChange;
   const essenceValue = actor.system.essences[actor.system.focusEssence].value + totalChange;
@@ -262,10 +246,10 @@ export async function setFocusValues(focus, actor, newLevel=null, previousLevel=
 
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
     // Drop or level up
-    await createItemCopies(focus.system.items, actor, "perk", focus, previousLevel);
+    return await createItemCopies(focus.system.items, actor, "perk", focus, previousLevel);
   } else {
     // Level down
-    await deleteAttachmentsForItem(focus, actor, previousLevel);
+    return await deleteAttachmentsForItem(focus, actor, previousLevel);
   }
 }
 
@@ -297,7 +281,7 @@ export async function onFocusDelete(actor, focus) {
  * @param {Role} role The Role being dropped
  * @param {Function} dropFunc The drop Function that will be used to complete the drop of the Role
  */
-export async function roleUpdate(actor, role, dropFunc) {
+export async function onRoleDrop(actor, role, dropFunc) {
   // Actors can only have one Role
   const hasRole = getItemsOfType("role", actor.items).length > 0;
   if (hasRole) {
@@ -353,6 +337,19 @@ export async function roleUpdate(actor, role, dropFunc) {
     const newRole = newRoleList[0];
     await setRoleValues(newRole, actor);
   }
+
+  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": true,
+    });
+  }
+
+  await _trainingUpdate(actor, 'armors', 'qualified', true, role);
+  await _trainingUpdate(actor, 'armors', 'trained', true, role);
+  await _trainingUpdate(actor, 'weapons', 'qualified', true, role);
+  await _trainingUpdate(actor, 'weapons', 'trained', true, role);
+  await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
+
 }
 
 /**
@@ -375,7 +372,7 @@ export async function onLevelChange(actor, newLevel) {
 
   const focus = getItemsOfType("focus", actor.items);
   if (focus.length == 1) {
-    await setFocusValues(focus[0], actor, newLevel, previousLevel);
+    await _setFocusValues(focus[0], actor, newLevel, previousLevel);
   }
 
   actor.setFlag('essence20', 'previousLevel', newLevel);
@@ -442,6 +439,18 @@ export async function onRoleDelete(actor, role) {
       "system.essenceRanks.strength": null,
     });
   }
+
+  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": false,
+    });
+  }
+
+  await _trainingUpdate(actor, 'armors', 'qualified', false, role);
+  await _trainingUpdate(actor, 'armors', 'trained', false, role);
+  await _trainingUpdate(actor, 'weapons', 'qualified', false, role);
+  await _trainingUpdate(actor, 'weapons', 'trained', false, role);
+  await _trainingUpdate(actor, 'armors', 'trained', false, role, true);
 
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
@@ -594,4 +603,23 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
   }
 
   setRoleValues(newRole, actor);
+}
+
+/**
+ *
+ * @param {Actor} actor The Actor whose training is being updated
+ * @param {String} itemType The type of item that we are training
+ * @param {String} trainingType The type of training we are applying
+ * @param {Boolean} updateType Whether we are adding or removing training
+ * @param {Object} role The role that actor has
+ * @param {Boolean} useUpgradesAccessor Whether this is targeting Upgrades or not
+ */
+async function _trainingUpdate(actor, itemType, trainingType, updateType, role, useUpgradesAccessor) {
+  const profs = useUpgradesAccessor ? role.system.upgrades[itemType][trainingType] : role.system[itemType][trainingType];
+  for (const prof of profs) {
+    const profString = `system.${trainingType}.${useUpgradesAccessor ? 'upgrades.' : ''}${itemType}.${prof}`;
+    await actor.update({
+      [profString] : updateType,
+    });
+  }
 }

@@ -1,0 +1,13 @@
+<form class="select-dialog">
+  <div class="flexcol">
+    <div class="select">
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActorSelect'}}
+      {{#*inline "item-field-inputs"}}
+        <select class="item-field-inputs" name="actor" id="actor">
+          {{selectOptions choices valueAttr="key" labelAttr="label"}}
+        </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    </div>
+  </div>
+ </form>

@@ -1,0 +1,66 @@
+{
+  "folder": "8YSahwtNA8ue6B3Z",
+  "name": "Eltarian Tech",
+  "type": "rolePoints",
+  "_id": "Yl1vk2WdkuTGPBiN",
+  "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 72
+    },
+    "bonus": {
+      "defenseBonus": {
+        "cleverness": false,
+        "evasion": false,
+        "toughness": false,
+        "willpower": false
+      },
+      "increase": 0,
+      "level20Value": null,
+      "increaseLevels": [],
+      "startingValue": null,
+      "type": "none",
+      "value": 0
+    },
+    "isActivatable": true,
+    "isActive": false,
+    "powerCost": 0,
+    "resource": {
+      "increase": 1,
+      "level20Value": null,
+      "level20ValueIsUnlimited": false,
+      "increaseLevels": [
+        "level2",
+        "level4",
+        "level7",
+        "level10",
+        "level14",
+        "level18"
+      ],
+      "max": null,
+      "startingMax": 1,
+      "value": 0
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733108069594,
+    "modifiedTime": 1733108196622,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!Yl1vk2WdkuTGPBiN"
+}

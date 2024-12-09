@@ -1,0 +1,57 @@
+{
+  "folder": "WNKj7e7HarOqSgm8",
+  "name": "Coinless Resistance",
+  "type": "origin",
+  "_id": "1oCjSeeK98SCVjO7",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 20
+    },
+    "items": {
+      "b461": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.DRHPP4jmrjNa53ZA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "We Are The Coinless",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 35,
+    "essences": [
+      "speed",
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "driving",
+      "infiltration",
+      "targeting",
+      "alertness",
+      "survival"
+    ],
+    "startingHealth": 2
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733100429291,
+    "modifiedTime": 1733100563208,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!1oCjSeeK98SCVjO7"
+}

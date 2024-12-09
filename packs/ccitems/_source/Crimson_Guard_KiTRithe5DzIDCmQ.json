@@ -1,0 +1,140 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Crimson Guard",
+  "type": "equipmentPackage",
+  "_id": "KiTRithe5DzIDCmQ",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 90
+    },
+    "items": {
+      "0b8a": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.nO0KPYXRk0XuHWEo",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor (Ceremonial)",
+        "type": "armor",
+        "items": {
+          "d78c": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.vf9rJxOwuxDzrPKp",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Ceremonial",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 101
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "3f2d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.8lNIijY5XompKHH7",
+        "img": "icons/svg/sword.svg",
+        "name": "Close Combat Blade",
+        "type": "weapon",
+        "items": {
+          "bd64": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Close Combat Blade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          }
+        }
+      },
+      "06dc": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.rtqN1irbsUt2dRlT",
+        "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+        "name": "Rifle (Modular Standard Weapon [Close Combat Blade])",
+        "type": "weapon",
+        "items": {
+          "e273": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Rifle Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 400,
+              "value": 100
+            },
+            "shiftDown": 0
+          },
+          "e807": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.YiQEwRAKA8k5aswJ",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Modular Standard Weapon",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Medium or Larger",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      }
+    },
+    "alternateAccess": "Recruited by Senior Crimson Guard, or Crimson Guard Division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733494486648,
+    "modifiedTime": 1733494660718,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!KiTRithe5DzIDCmQ"
+}

@@ -1,0 +1,123 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Dreadhead",
+  "type": "equipmentPackage",
+  "_id": "racJLc6bp810aaFY",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 90
+    },
+    "items": {
+      "5ec4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.dwydnyn3DS726TGB",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor",
+        "type": "armor",
+        "items": {}
+      },
+      "0b3d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Jnjio1DtAx0QgE85",
+        "img": "systems/essence20/assets/icons/weapons/chainsaw.svg",
+        "name": "Power Tool",
+        "type": "weapon",
+        "items": {
+          "0dd4": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.Xm8pvaQqI1yxZCDO",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Power Tool Effect (Blunt)",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 2,
+            "damageType": "blunt",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 2,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 1
+          },
+          "9e87": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.as9rtatnTYLpQX04",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Power Tool Effect (Sharp)",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 2,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 2,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 2
+          },
+          "3e45": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.iLToQKSxMbuOQvGI",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Power Tool Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": null,
+            "damageType": "intimidate",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 2,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          }
+        }
+      },
+      "93b4": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.Vm3kSLHi3h39fycs",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Standard Technology (Engineering) Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": "Recruited by senior Dreadnok, or Urban or Wetlands Division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733494684401,
+    "modifiedTime": 1733507478593,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!racJLc6bp810aaFY"
+}

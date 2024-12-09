@@ -39,12 +39,56 @@
     ],
     "startingHealth": 2
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "New Effect",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.cobra_codex.Item.HCIbetyFvjJGuDcV",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "2x6E3dqEvhqE23VJ",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.poisonTraining",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1733626468630,
+        "modifiedTime": 1733626486443,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!HCIbetyFvjJGuDcV.2x6E3dqEvhqE23VJ"
+    }
+  ],
   "flags": {},
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "12.323",
+    "coreVersion": "12.331",
     "createdTime": 1686493157143,
     "modifiedTime": 1704127406568,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG",

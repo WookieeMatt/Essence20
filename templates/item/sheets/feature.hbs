@@ -1,20 +1,25 @@
 <form class="{{cssClass}}" autocomplete="off">
 
-  <section class="feature-sheet-body">
-    <div class="outer-border">
-      <div class="inner-border">
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
-        {{!-- Item Sheet Header --}}
-        {{> "systems/essence20/templates/item/parts/header.hbs"}}
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+  </nav>
 
-        {{!-- Item Sheet Body --}}
-
-        <div class="feature-description item-sheet">
-          {{!-- Description Section --}}
-          {{> "systems/essence20/templates/item/parts/description.hbs"}}
-        </div>
-      </div>
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
     </div>
-  </section>
 
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{!-- Effects Section --}}
+      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
+    </div>
+
+  </section>
 </form>

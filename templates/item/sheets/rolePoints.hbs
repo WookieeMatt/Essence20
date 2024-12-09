@@ -92,7 +92,7 @@
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
         {{#*inline "item-field-edit"}}
         <a class="trait-selector" data-options="actorLevels" data-target="system.bonus.increaseLevels"
-          title="{{localize 'E20.RolePointsIncreaseLevels'}}">
+          data-tooltip="{{localize 'E20.RolePointsIncreaseLevels'}}">
           <i class="fas fa-edit"></i>
         </a>
         {{/inline}}
@@ -134,7 +134,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="actorLevels" data-target="system.resource.increaseLevels"
-        title="{{localize 'E20.EssenceSelector'}}">
+        data-tooltip="{{localize 'E20.RolePointsIncreaseLevels'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}

@@ -1,0 +1,50 @@
+{
+  "folder": "klHDgS0mNo3oW0gl",
+  "name": "Ballista Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "yJHMDPMtfSsVLzDJ",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "knocProne",
+    "damageValue": 0,
+    "isSpecialized": false,
+    "numHands": 6,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 1500,
+      "value": 450
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733071454097,
+    "modifiedTime": 1733071774687,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!yJHMDPMtfSsVLzDJ"
+}

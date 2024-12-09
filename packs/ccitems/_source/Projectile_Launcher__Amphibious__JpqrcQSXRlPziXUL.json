@@ -1,0 +1,94 @@
+{
+  "folder": "ejSKHeVNjeFLZCiJ",
+  "name": "Projectile Launcher (Amphibious)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/crossbow.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "items": {
+      "a2a1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.H6Z6NxpLuBFB2FJ9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Projectile Launcher Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 50
+        },
+        "shiftDown": 0
+      },
+      "19f1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.snZJ8EnTe129an2X",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Amphibious",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 149
+        },
+        "subtype": "weapon",
+        "traits": [
+          "amphibious"
+        ]
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "martialArts",
+      "sharp",
+      "silent",
+      "sniper"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733507684537,
+    "modifiedTime": 1733509341569,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "JpqrcQSXRlPziXUL",
+  "sort": 400000,
+  "_key": "!items!JpqrcQSXRlPziXUL"
+}

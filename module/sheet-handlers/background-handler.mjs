@@ -1,4 +1,4 @@
-import { rememberOptions } from "../helpers/dialog.mjs";
+import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import { getItemsOfType, getShiftedSkill } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
@@ -8,7 +8,7 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
  * @param {Influence} influence The Influence being updated
  * @param {Function} dropFunc The function to call to complete the Influence drop
  */
-export async function influenceUpdate(actor, influence, dropFunc) {
+export async function onInfluenceDrop(actor, influence, dropFunc) {
   let addHangUp = false;
 
   for (const item of actor.items) {
@@ -30,7 +30,7 @@ export async function influenceUpdate(actor, influence, dropFunc) {
     }
 
     if (hangUpIds.length > 1) {
-      _chooseHangUp(actor, influence);
+      _chooseHangUp(actor, influence, newInfluenceList[0]);
     } else {
       await createItemCopies(influence.system.items, actor, "hangUp", newInfluenceList[0]);
     }
@@ -43,7 +43,7 @@ export async function influenceUpdate(actor, influence, dropFunc) {
  * @param {Origin} origin The Origin being dropped
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-export async function originUpdate(actor, origin, dropFunc) {
+export async function onOriginDrop(actor, origin, dropFunc) {
   if (!origin.system.essences.length) {
     ui.notifications.error(game.i18n.format(game.i18n.localize('E20.OriginNoEssenceError')));
     return false;
@@ -71,6 +71,7 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
   for (const essence of origin.system.essences) {
     choices[essence] = {
       chosen: false,
+      value: essence,
       label: CONFIG.E20.originEssences[essence],
     };
   }
@@ -82,7 +83,7 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
         for (const influenceEssence in actor.system.skills[skill].essences) {
           if (actor.system.skills[skill].essences[influenceEssence]) {
             choices[influenceEssence] = {
-              chosen: false,
+              value: influenceEssence,
               label: CONFIG.E20.originEssences[influenceEssence],
             };
           }
@@ -91,41 +92,32 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
     }
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.EssenceIncrease'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _showOriginSkillDialog(actor, origin, rememberOptions(html), dropFunc),
-        },
-      },
-    },
-  ).render(true);
+  const prompt = "E20.SelectEssence";
+  const title = "E20.SelectOriginEssence";
+  new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc).render(true);
 }
 
 /**
  * Displays a dialog for selecting a Skill for the given Origin.
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Object} origin The Origin being dropped
- * @param {Object} options The options resulting from _showOriginEssenceDialog()
+ * @param {String} selectedEssence The essence selected from _showOriginEssenceDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
-  const essences = Object.keys(options);
-  const choices = {};
-  let selectedEssence = "";
+export async function _showOriginSkillDialog(actor, origin, selectedEssence, dropFunc) {
+  if (!selectedEssence) {
+    ui.notifications.error(game.i18n.localize('E20.OriginSelectNoEssence'));
+    return;
+  }
 
+  const choices = {};
   for (const skill of origin.system.skills) {
     const essence = CONFIG.E20.skillToEssence[skill];
-    if (options[essence] && essences.includes(essence)) {
-      selectedEssence = essence;
+    if (selectedEssence == essence) {
       choices[skill] = {
         chosen: false,
         label: CONFIG.E20.originSkills[skill],
+        value: skill,
       };
     }
   }
@@ -135,38 +127,20 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
     if (influence.system.skills) {
       for (const skill of influence.system.skills) {
         const essence = CONFIG.E20.skillToEssence[skill];
-        if (options[essence] && essences.includes(essence)) {
-          selectedEssence = essence;
+        if (selectedEssence == essence) {
           choices[skill] = {
             chosen: false,
             label: CONFIG.E20.originSkills[skill],
+            value: skill,
           };
         }
       }
     }
   }
 
-  if (!selectedEssence) {
-    ui.notifications.error(game.i18n.localize('E20.OriginSelectNoEssence'));
-    return;
-  }
-
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.OriginBonusSkill'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _checkForAltModes(
-            actor, origin, selectedEssence, rememberOptions(html), dropFunc,
-          ),
-        },
-      },
-    },
-  ).render(true);
+  const prompt = "E20.SelectSkill";
+  const title = "E20.SelectOriginSkill";
+  new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc, selectedEssence).render(true);
 }
 
 /**
@@ -174,19 +148,11 @@ async function _showOriginSkillDialog(actor, origin, options, dropFunc) {
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
  * @param {String} essence The essence selected in the _showOriginEssenceDialog()
- * @param {Object} options The options resulting from _showOriginSkillDialog()
+ * @param {String} selectedSkill The skill selected from _showOriginSkillDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
 
-export async function _checkForAltModes(actor, origin, essence, options, dropFunc) {
-  let selectedSkill = "";
-  for (const [skill, isSelected] of Object.entries(options)) {
-    if (isSelected) {
-      selectedSkill = skill;
-      break;
-    }
-  }
-
+export async function _checkForAltModes(actor, origin, essence, selectedSkill, dropFunc) {
   if (!selectedSkill) {
     ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoSkill'));
     return;
@@ -199,26 +165,16 @@ export async function _checkForAltModes(actor, origin, essence, options, dropFun
     for (const altMode of altModes) {
       choices[altMode.name] = {
         chosen: false,
+        img: altMode.img,
         label: altMode.name,
+        uuid: altMode.uuid,
+        value: altMode.name,
       };
     }
 
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.OriginAltModeSelect'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => setOriginValues(
-              actor, origin, essence, selectedSkill, dropFunc, rememberOptions(html),
-            ),
-          },
-        },
-      },
-    ).render(true);
+    const prompt = "E20.SelectAltMode";
+    const title = "E20.SelectOriginAltMode";
+    new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc, essence, selectedSkill).render(true);
   } else {
     setOriginValues(actor, origin, essence, selectedSkill, dropFunc);
   }
@@ -231,34 +187,26 @@ export async function _checkForAltModes(actor, origin, essence, options, dropFun
  * @param {String} essence The essence selected in the _showOriginEssenceDialog()
  * @param {String} skill the skill selected in the _showOriginSkillEssenceDialog()
  * @param {Function} dropFunc The function to call to complete the Origin drop
- * @param {Object} options The options resulting from _checkForAltModes()
+ * @param {String} selectedAltMode The selected altMode resulting from _checkForAltModes()
  */
-export async function setOriginValues(actor, origin, essence, skill, dropFunc, options) {
-  let selectedAltMode = null;
-  if (options) {
-    for (const [altMode, isSelected] of Object.entries(options)) {
-      if (isSelected) {
-        selectedAltMode = altMode;
-        break;
-      }
-    }
-
-    if (!selectedAltMode) {
-      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoAltMode'));
-      return;
-    }
-  }
-
+export async function setOriginValues(actor, origin, essence, skill, dropFunc, selectedAltMode) {
+  const altModes = getItemsOfType('altMode', Object.values(origin.system.items));
   let altModeToCreate = null;
-  for (const [, item] of Object.entries(origin.system.items)) {
-    if (item.type == "altMode") {
+
+  if (altModes.length > 0) {
+    for (const altMode of altModes) {
       if (selectedAltMode) {
-        if (selectedAltMode == item.name) {
-          altModeToCreate = item;
+        if (selectedAltMode == altMode.name) {
+          altModeToCreate = altMode;
         }
       } else {
-        altModeToCreate = item;
+        altModeToCreate = altMode;
       }
+    }
+
+    if (!altModeToCreate) {
+      ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoAltMode'));
+      return;
     }
   }
 
@@ -300,64 +248,42 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, o
  * Displays a dialog for selecting a Hang Up from an Influence
  * @param {Actor} actor The Actor receiving the Influence
  * @param {Influence} influence The Influence being dropped
+ * @param {Object} newInfluence The new Influence created as part of the drop
  * @private
  */
-async function _chooseHangUp(actor, influence) {
+async function _chooseHangUp(actor, influence, newInfluence) {
   const choices = {};
   let itemArray = [];
-
   for (const [, item] of Object.entries(influence.system.items)) {
     if (item.type == 'hangUp') {
       itemArray.push(item);
       choices[item.uuid] = {
         chosen: false,
+        img: item.img,
         label: item.name,
+        uuid: item.uuid,
+        value: item.uuid,
       };
     }
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.HangUpChoice'),
-      content: await renderTemplate(
-        "systems/essence20/templates/dialog/option-select.hbs",
-        { choices },
-      ),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _hangUpSelect(
-            actor, influence, rememberOptions(html),
-          ),
-        },
-      },
-    },
-  ).render(true);
+  const prompt = "E20.SelectHangUp";
+  const title = "E20.SelectInfluenceHangUp";
+  new ChoicesPrompt (choices, influence, actor, prompt, title, newInfluence).render(true);
 }
 
 /**
  * Adds the chosen HangUp to the character
  * @param {Actor} actor The Actor receiving the HangUp
- * @param {Object} options The selections from the dialog
+ * @param {String} uuid The uuid of the item selected from the choice-prompt application
+ * @param {Object} parentItem The new Influence created as part of the drop
  */
-async function _hangUpSelect(actor, options) {
-  let selectedHangUp = null;
-  const owner = actor;
+export async function _hangUpSelect(actor, uuid, parentItem) {
 
-  for (const [hangUp, isSelected] of Object.entries(options)) {
-    if (isSelected) {
-      selectedHangUp = hangUp;
-      break;
-    }
-  }
-
-  if (!selectedHangUp) {
-    return;
-  }
-
-  const itemToCreate = await fromUuid(selectedHangUp);
-  const newItem = await Item.create(itemToCreate, { parent: owner });
-  newItem.setFlag('core', 'sourceId', selectedHangUp);
+  const itemToCreate = await fromUuid(uuid);
+  const newItem = await Item.create(itemToCreate, { parent: actor });
+  newItem.setFlag('core', 'sourceId', uuid);
+  newItem.setFlag('essence20', 'parentId', parentItem._id);
 }
 
 /**
