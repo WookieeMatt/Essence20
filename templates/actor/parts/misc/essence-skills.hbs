@@ -4,7 +4,7 @@
     <a
       class="rollable" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}"
       data-shift-up ="{{fields.shiftUp}}" data-shift-down ="{{fields.shiftDown}}"
-      data-shift="{{fields.shift}}" data-is-specialized="{{fields.isSpecialized}}" data-can-crit-d2="{{fields.canCritD2}}"
+      data-shift="{{fields.shift}}" data-is-specialized="{{fields.isSpecialized}}" data-can-crit-d2="{{fields.canCritD2}}" data-tooltip="{{localize 'E20.SkillRollTitle'}}"
     >
       <i class="fas fa-dice-d20"></i>
     </a>
@@ -50,13 +50,13 @@
             class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}"
             data-shift-up ="{{../fields.shiftUp}}" data-shift-down ="{{../fields.shiftDown}}"
             data-shift="{{specialization.system.shift}}" data-specialization-name="{{specialization.name}}"
-            data-is-specialized="{{specialization.system.isSpecialized}}"
+            data-is-specialized="{{specialization.system.isSpecialized}}" data-tooltip="{{localize 'E20.SkillRollTitle'}}"
           >
           {{else}}
           <a
             class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}"
             data-shift-up ="{{../fields.shiftDown}}" data-shift-down ="{{../fields.shiftDown}}"
-            data-shift="{{../fields.shift}}" data-specialization-name="{{specialization.name}}" data-is-specialized="true"
+            data-shift="{{../fields.shift}}" data-specialization-name="{{specialization.name}}" data-is-specialized="true" data-tooltip="{{ localize 'E20.SkillRollTitle'}}"
           >
           {{/ifEquals}}
             <i class="fas fa-dice-d20"></i>

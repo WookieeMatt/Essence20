@@ -8,7 +8,7 @@
       <input class="two-digit-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
       <span>/</span>
       {{#if @root.system.movementIsReadOnly}}
-        <input class="two-digit-input no-unlock" type="number" name="system.health.max" value="{{system.health.max}}" data-tooltip="{{system.health.string}}" readonly/>
+        <input class="two-digit-input no-unlock" type="number" name="system.health.max" value="{{system.health.max}}" title="{{system.health.string}}" readonly/>
       {{else}}
         <input class="two-digit-input no-lock" type="number" name="system.health.max" value="{{system.health.max}}" min="0" step="1"/>
       {{/if}}
