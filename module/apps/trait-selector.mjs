@@ -19,7 +19,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     choices: {},
     customKey: "custom",
     tag: "form",
-    title: "E20.TraitSelectorTitle",
+    title: "asdf",
     form: {
       handler: TraitSelector.myFormHandler,
       submitOnChange: false,
@@ -34,6 +34,9 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
       scrollable: "",
       template: "systems/essence20/templates/app/trait-selector.hbs",
     },
+    footer: {
+      template: "templates/generic/form-footer.hbs",
+  }
   };
 
   get title() {
@@ -60,6 +63,9 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     context.allowCustom =  data.allowCustom;
     context.choices = choices;
     context.custom = custom;
+    context.buttons = [
+      { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
+    ]
 
     return context;
   }
