@@ -1,9 +1,9 @@
 {
-  "name": "Shields",
+  "name": "Weapon Effects",
   "sorting": "a",
-  "folder": null,
+  "folder": "NQysu71miXwuC0DK",
   "type": "Item",
-  "_id": "MHNOvPSOTbdzIaIM",
+  "_id": "15CS4XfH53N06Aqf",
   "description": "",
   "sort": 0,
   "color": null,
@@ -15,8 +15,8 @@
     "systemId": "essence20",
     "systemVersion": "4.5.0",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null
+    "modifiedTime": 1733103262176,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
-  "_key": "!folders!MHNOvPSOTbdzIaIM"
+  "_key": "!folders!15CS4XfH53N06Aqf"
 }

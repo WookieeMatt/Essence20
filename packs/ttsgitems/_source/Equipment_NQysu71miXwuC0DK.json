@@ -1,9 +1,9 @@
 {
-  "name": "Shields",
+  "name": "Equipment",
   "sorting": "a",
   "folder": null,
   "type": "Item",
-  "_id": "MHNOvPSOTbdzIaIM",
+  "_id": "NQysu71miXwuC0DK",
   "description": "",
   "sort": 0,
   "color": null,
@@ -14,9 +14,9 @@
     "coreVersion": "12.331",
     "systemId": "essence20",
     "systemVersion": "4.5.0",
-    "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null
+    "createdTime": 1733103245745,
+    "modifiedTime": 1733103245745,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
-  "_key": "!folders!MHNOvPSOTbdzIaIM"
+  "_key": "!folders!NQysu71miXwuC0DK"
 }

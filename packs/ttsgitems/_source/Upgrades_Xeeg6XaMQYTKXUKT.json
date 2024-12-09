@@ -1,9 +1,9 @@
 {
-  "name": "Shields",
+  "name": "Upgrades",
   "sorting": "a",
-  "folder": null,
+  "folder": "NQysu71miXwuC0DK",
   "type": "Item",
-  "_id": "MHNOvPSOTbdzIaIM",
+  "_id": "Xeeg6XaMQYTKXUKT",
   "description": "",
   "sort": 0,
   "color": null,
@@ -18,5 +18,5 @@
     "modifiedTime": null,
     "lastModifiedBy": null
   },
-  "_key": "!folders!MHNOvPSOTbdzIaIM"
+  "_key": "!folders!Xeeg6XaMQYTKXUKT"
 }

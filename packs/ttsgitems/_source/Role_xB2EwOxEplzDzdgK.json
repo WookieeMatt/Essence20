@@ -1,9 +1,9 @@
 {
-  "name": "Equipment",
+  "name": "Role",
   "sorting": "a",
-  "folder": null,
+  "folder": "scznNQNPNgr2WN7U",
   "type": "Item",
-  "_id": "VFcmkybCc4ZOeg9U",
+  "_id": "xB2EwOxEplzDzdgK",
   "description": "",
   "sort": 0,
   "color": null,
@@ -14,9 +14,9 @@
     "coreVersion": "12.331",
     "systemId": "essence20",
     "systemVersion": "4.5.0",
-    "createdTime": 1733022056565,
-    "modifiedTime": 1733022056565,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
   },
-  "_key": "!folders!VFcmkybCc4ZOeg9U"
+  "_key": "!folders!xB2EwOxEplzDzdgK"
 }
