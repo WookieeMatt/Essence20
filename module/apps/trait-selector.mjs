@@ -19,7 +19,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     choices: {},
     customKey: "custom",
     tag: "form",
-    title: "asdf",
+    title: "E20.TraitSelectorTitle",
     form: {
       handler: TraitSelector.myFormHandler,
       submitOnChange: false,
