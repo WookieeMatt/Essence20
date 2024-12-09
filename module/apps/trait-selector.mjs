@@ -36,7 +36,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     },
     footer: {
       template: "templates/generic/form-footer.hbs",
-  }
+    },
   };
 
   get title() {
@@ -65,7 +65,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     context.custom = custom;
     context.buttons = [
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
-    ]
+    ];
 
     return context;
   }
