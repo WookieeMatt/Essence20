@@ -1,0 +1,62 @@
+{
+  "folder": "WNKj7e7HarOqSgm8",
+  "name": "Reflection",
+  "type": "origin",
+  "_id": "9YeMvZ7WkyfTxvfG",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 21
+    },
+    "items": {
+      "aec7": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.vBtEuEhoKbw0BksR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mirror-Mirror",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "speed",
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "athletics",
+      "brawn",
+      "finesse",
+      "targeting",
+      "survival",
+      "technology",
+      "deception",
+      "persuasion"
+    ],
+    "startingHealth": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733100604419,
+    "modifiedTime": 1733100684089,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!9YeMvZ7WkyfTxvfG"
+}

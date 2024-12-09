@@ -1,0 +1,81 @@
+{
+  "folder": "JNfco2IbN66QAPhu",
+  "name": "Trustworthy",
+  "type": "perk",
+  "_id": "8h7PzFKPoGh6RLYX",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 51
+    },
+    "items": {},
+    "prerequisite": "Social 3 or higher",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "name": "Trustworthy",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.beneath_the_helmet.Item.8h7PzFKPoGh6RLYX",
+      "duration": {
+        "rounds": null,
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "mSBruHPjlB6i7wMR",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "essence20",
+        "systemVersion": "4.5.0",
+        "createdTime": 1733106291561,
+        "modifiedTime": 1733106314098,
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+      },
+      "_key": "!items.effects!8h7PzFKPoGh6RLYX.mSBruHPjlB6i7wMR"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733106266945,
+    "modifiedTime": 1733106284928,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!8h7PzFKPoGh6RLYX"
+}

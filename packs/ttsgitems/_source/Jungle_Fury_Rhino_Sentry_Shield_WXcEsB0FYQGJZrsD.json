@@ -1,0 +1,115 @@
+{
+  "folder": "8Lr1X17sWgNIKnxT",
+  "name": "Jungle Fury Rhino Sentry Shield",
+  "type": "shield",
+  "_id": "WXcEsB0FYQGJZrsD",
+  "img": "systems/essence20/assets/icons/items/shield.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 32
+    },
+    "items": {
+      "2003": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.41lfuiC3UiYdIQKX",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Jungle Fury Rhino Sentry Shield Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "ac6f": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.qX1rRfWGnJNLpCKv",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Jungle Fury Rhino Sentry Shield Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "active": false,
+    "activeEffect": {
+      "option1": {
+        "defense": "toughness",
+        "other": "",
+        "value": 3
+      },
+      "option2": {
+        "defense": "toughness",
+        "other": "",
+        "value": 0
+      },
+      "other": null,
+      "type": "defenseBonus"
+    },
+    "availability": "other",
+    "classification": "ultraHeavy",
+    "equipped": false,
+    "passiveEffect": {
+      "option1": {
+        "defense": "toughness",
+        "other": "",
+        "value": 2
+      },
+      "option2": {
+        "defense": "toughness",
+        "other": "",
+        "value": 0
+      },
+      "other": null,
+      "type": "defenseBonus"
+    },
+    "requirements": "Brawn d6",
+    "traits": [
+      "shield"
+    ]
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733632807504,
+    "modifiedTime": 1733632871278,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!WXcEsB0FYQGJZrsD"
+}

@@ -1,0 +1,97 @@
+{
+  "folder": "dZQznuv1y8t9ym3l",
+  "name": "Tyrannosaurus Sentry Glaive",
+  "type": "weapon",
+  "_id": "Zcihmp2cXzLwqlQ0",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 31
+    },
+    "items": {
+      "3287": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.M16LS5mP1EGpePdD",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Tyrannosaurus Sentry Glaive Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 21,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "c702": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.nFp14UNBFte8yGA3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Tyrannosaurus Sentry Glaive Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "other",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "electric",
+      "sharp",
+      "silent"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733702541809,
+    "modifiedTime": 1733702585647,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!Zcihmp2cXzLwqlQ0"
+}

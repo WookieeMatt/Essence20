@@ -1,0 +1,42 @@
+{
+  "folder": "qqtEjdD7oUKF5TRB",
+  "name": "Longevity",
+  "type": "power",
+  "_id": "2PWhz49B168yOdU6",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 57
+    },
+    "actionType": "free",
+    "canActivate": true,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": 1,
+    "selectionLimit": 1,
+    "type": "grid",
+    "usesInterval": "perScene",
+    "usesPer": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733106723453,
+    "modifiedTime": 1733106741425,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!2PWhz49B168yOdU6"
+}

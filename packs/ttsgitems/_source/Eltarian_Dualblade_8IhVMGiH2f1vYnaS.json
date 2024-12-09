@@ -1,0 +1,96 @@
+{
+  "folder": "dZQznuv1y8t9ym3l",
+  "name": "Eltarian Dualblade",
+  "type": "weapon",
+  "_id": "8IhVMGiH2f1vYnaS",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 77
+    },
+    "items": {
+      "1f7c": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.3tnfVJnFxLRl3QEq",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Eltarian Dualblade Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "c6d7": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.A6qKsyoSRgY0MN9M",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Eltarian Dualblade Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 3,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 45
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "other",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Access to Alien Technology",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "powerWeapon",
+      "versatile"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733703393256,
+    "modifiedTime": 1733703448551,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!8IhVMGiH2f1vYnaS"
+}

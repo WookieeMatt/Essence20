@@ -1,0 +1,49 @@
+{
+  "folder": "h5iZSFQpvLw3lXtW",
+  "name": "Eltarian Obxerver",
+  "type": "influence",
+  "_id": "4p7TV8HDFk1jCsrW",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 69
+    },
+    "items": {
+      "e426": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.DhqiP8bB8J70eFLI",
+        "img": "icons/svg/hazard.svg",
+        "name": "Eltarian Observer",
+        "type": "hangUp"
+      },
+      "a3c0": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.gciLJWb6a60uMXNT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Eltarian Observer",
+        "type": "perk"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733107703292,
+    "modifiedTime": 1733107715188,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!4p7TV8HDFk1jCsrW"
+}

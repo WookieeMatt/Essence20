@@ -1,0 +1,22 @@
+{
+  "name": "Influence",
+  "sorting": "a",
+  "folder": "scznNQNPNgr2WN7U",
+  "type": "Item",
+  "_id": "sroOiZpu4gNpZgM0",
+  "description": "",
+  "sort": 100000,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": null,
+    "modifiedTime": 1733099462361,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!folders!sroOiZpu4gNpZgM0"
+}

@@ -1,0 +1,98 @@
+{
+  "folder": "dZQznuv1y8t9ym3l",
+  "name": "Pteradon Sniper Rifle",
+  "type": "weapon",
+  "_id": "czCRkPYZQZxtdCbG",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 31
+    },
+    "items": {
+      "cf66": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.jsYN7qx7pTo8L5P3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pteradon Sniper Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 300,
+          "value": 100
+        },
+        "shiftDown": 0
+      },
+      "0681": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.0YDtIOuyPg1G78Gm",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Pteradon Sniper Rifle Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 3,
+        "damageType": "element",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 300,
+          "value": 100
+        },
+        "shiftDown": 2
+      }
+    },
+    "availability": "other",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Targeting d4",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "antiTank",
+      "ballistic",
+      "energy",
+      "sniper"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733701982633,
+    "modifiedTime": 1733702059219,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!czCRkPYZQZxtdCbG"
+}

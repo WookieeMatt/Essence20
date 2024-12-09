@@ -1,0 +1,73 @@
+{
+  "folder": "dZQznuv1y8t9ym3l",
+  "name": "Blue Samurai Sentry Spark Shuriken",
+  "type": "weapon",
+  "_id": "Z3lliEwWBhL9KdKH",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 31
+    },
+    "items": {
+      "9975": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.6uGU6ck2lJiqNdgc",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Blue Samurai Sentry Spark Shuriken Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "unique",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733104103555,
+    "modifiedTime": 1733104130792,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!Z3lliEwWBhL9KdKH"
+}
