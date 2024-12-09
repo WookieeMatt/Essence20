@@ -306,7 +306,7 @@
     "ItemDeleteConfirmTitle": "Confirm item deletion",
     "ItemDeleteConfirmContent": "Are you sure you want to delete {name}?",
     "ItemDescription": "Description",
-    "ItemDrop": "None; drag an item of the appropriate type onto this sheet to add.",
+    "ItemDrop": "None; drop {type} items here to add",
     "ItemDropSuccess": "{itemName} was successfully added to {actorName}",
     "ItemRollTitle": "Display in chat",
     "ItemSource": "Source",
