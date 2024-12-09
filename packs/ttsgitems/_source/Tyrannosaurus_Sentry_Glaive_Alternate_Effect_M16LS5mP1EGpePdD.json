@@ -1,0 +1,50 @@
+{
+  "folder": "4R04lqRK2Py03Q4l",
+  "name": "Tyrannosaurus Sentry Glaive Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "M16LS5mP1EGpePdD",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 31
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "element",
+    "damageValue": 1,
+    "isSpecialized": false,
+    "numHands": 21,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 2,
+      "long": null,
+      "value": null
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733702494008,
+    "modifiedTime": 1733702550060,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!M16LS5mP1EGpePdD"
+}

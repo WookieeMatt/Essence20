@@ -1,11 +1,11 @@
 {
-  "name": "Shields",
+  "name": "Influence",
   "sorting": "a",
-  "folder": null,
+  "folder": "scznNQNPNgr2WN7U",
   "type": "Item",
-  "_id": "MHNOvPSOTbdzIaIM",
+  "_id": "sroOiZpu4gNpZgM0",
   "description": "",
-  "sort": 0,
+  "sort": 100000,
   "color": null,
   "flags": {},
   "_stats": {
@@ -15,8 +15,8 @@
     "systemId": "essence20",
     "systemVersion": "4.5.0",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null
+    "modifiedTime": 1733099462361,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
   },
-  "_key": "!folders!MHNOvPSOTbdzIaIM"
+  "_key": "!folders!sroOiZpu4gNpZgM0"
 }
