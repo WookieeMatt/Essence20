@@ -1,3 +1,4 @@
+{{#if @root.role}}
 <div class="stats-container flexrow defense-container" style="border-color: {{system.color}};">
   <table class="tg">
     <thead>
@@ -15,6 +16,16 @@
           {{ localize "E20.ItemTypeWeaponPlural" }}
         </th>
         {{/ifNotEquals}}
+        {{#if @root.actor.system.poisonTraining}}
+          <th class="tg-td">
+            {{ localize "E20.ItemTypePoisonPlural" }}
+          </th>
+          {{#if @root.actor.system.trained.toxins.all}}
+            <th class="tg-td">
+              {{ localize "E20.ItemTypeToxinPlural" }}
+            </th>
+          {{/if}}
+        {{/if}}
       </tr>
     </thead>
 
@@ -23,28 +34,59 @@
         <th class="tg-td">{{ localize "E20.Training" }}</th>
         <td class="tg-td">
           {{#if @root.actor.system.canTransform}}
-            {{listProficiencies system.trained.upgrades.armors @root.config.availabilities}}
+            {{formatBooleanList system.trained.upgrades.armors @root.config.availabilities 'unit'}}
           {{else}}
-            {{listProficiencies @root.system.trained.armors @root.config.armorTypes}}
+            {{formatBooleanList @root.system.trained.armors @root.config.armorTypes 'unit'}}
           {{/if}}
         </td>
         {{#ifNotEquals @root.role.system.version 'powerRangers'}}
         <td class="tg-td">
-          {{listProficiencies @root.system.trained.weapons @root.config.weaponTypes}}
+          {{formatBooleanList @root.system.trained.weapons @root.config.weaponTypes 'unit'}}
         </td>
         {{/ifNotEquals}}
+        {{#if @root.actor.system.poisonTraining}}
+          <td class="tg-td">
+            {{#if @root.actor.system.trained.poisons.all}}
+              {{localize "E20.PoisonTrainingAll"}}
+            {{else}}
+              {{formatBooleanList @root.system.trained.poisons @root.config.poisonTraining 'unit'}}
+            {{/if}}
+          {{#if @root.actor.system.trained.toxins.all}}
+              {{localize "E20.PoisonTrainingAll"}}
+          {{/if}}
+          </td>
+        {{/if}}
       </tr>
       {{#if @root.actor.system.canQualify}}
       <tr>
         <th class="tg-td">{{ localize "E20.Qualifications" }}</th>
         <td class="tg-td">
-          {{listProficiencies @root.system.qualified.armors @root.config.armorTypes}}
+          {{formatBooleanList @root.system.qualified.armors @root.config.armorTypes 'unit'}}
         </td>
         <td class="tg-td">
-          {{listProficiencies @root.system.qualified.weapons @root.config.weaponTypes}}
+          {{formatBooleanList @root.system.qualified.weapons @root.config.weaponTypes 'unit'}}
         </td>
-      </tr>
+        {{#if @root.actor.system.poisonTraining}}
+          <td class="tg-td">
+            {{#if @root.actor.system.qualified.poisons.all}}
+              {{localize "E20.PoisonTrainingAll"}}
+            {{else}}
+              {{formatBooleanList @root.system.qualified.poisons @root.config.poisonTraining 'unit'}}
+            {{/if}}
+          </td>
+        {{/if}}
+        </tr>
       {{/if}}
     </tbody>
   </table>
 </div>
+{{else}}
+<div class="collapsible-item-container" style="border-color: {{system.color}};">
+  <div class="flexrow" style="justify-content: center; margin-bottom: 5px;">
+    <div style="flex-grow: 0; white-space: nowrap;">
+      {{localize "E20.TrainingAndQualifications"}}
+    </div>
+  </div>
+  <div class="flexrow flex-group-center">{{localize 'E20.TrainingDropRole'}}</div>
+</div>
+{{/if}}

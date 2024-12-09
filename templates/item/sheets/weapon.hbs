@@ -26,14 +26,45 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Size --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSize'}}
+      {{!-- Is Poison? --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponIsPoison'}}
       {{#*inline "item-field-inputs"}}
-      <select class="item-field-inputs" name="system.classification.size">
-        {{selectOptions config.weaponSizes selected=system.classification.size}}
-      </select>
+      <input type="checkbox" name="system.isPoison" {{checked system.isPoison}} />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#if system.isPoison}}
+        {{!-- Poison Type --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponPoisonType'}}
+        {{#*inline "item-field-inputs"}}
+        <select class="item-field-inputs" name="system.poisonType">
+          {{selectOptions config.poisonTypes selected=system.poisonType}}
+        </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{!-- Poison Subtype --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponPoisonApplication'}}
+        {{#*inline "item-field-inputs"}}
+          <input type="checkbox" id="system.poisonApplication.contact" name="system.poisonApplication.contact" {{checked system.poisonApplication.contact}} />
+          <label for="system.poisonApplication.contact">{{localize 'E20.PoisonApplicationContact'}}</label>
+          <input type="checkbox" id="system.poisonApplication.ingested" name="system.poisonApplication.ingested" {{checked system.poisonApplication.ingested}} />
+          <label for="system.poisonApplication.ingested">{{localize 'E20.PoisonApplicationIngested'}}</label>
+          <input type="checkbox" id="system.poisonApplication.inhaled" name="system.poisonApplication.inhaled" {{checked system.poisonApplication.inhaled}} />
+          <label for="system.poisonApplication.inhaled">{{localize 'E20.PoisonApplicationInhaled'}}</label>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{else}}
+        {{!-- Size --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSize'}}
+        {{#*inline "item-field-inputs"}}
+        <select class="item-field-inputs" name="system.classification.size">
+          {{selectOptions config.weaponSizes selected=system.classification.size}}
+        </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/if}}
 
       {{!-- Traits --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTraits'}}
