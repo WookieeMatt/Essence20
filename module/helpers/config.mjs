@@ -105,7 +105,7 @@ E20.weaponTraits = {
   modeLock: "E20.WeaponTraitModeLock",
   mounted: "E20.WeaponTraitMounted",
   multipleTargets: "E20.WeaponTraitMultipleTargets",
-  mythicalModular: "E20.WeaponTraitMythicallyModular",
+  mythicallyModular: "E20.WeaponTraitMythicallyModular",
   obfuscated: "E20.WeaponTraitObfuscated",
   ongoing: "E20.WeaponTraitOngoing",
   poison: "E20.WeaponTraitPoison",
