@@ -24,7 +24,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusEssenceScoreIncrease'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="focusEssences" data-target="system.essences"
-        title="{{localize 'E20.EssenceSelector'}}">
+        data-tooltip="{{localize 'E20.EssenceSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}
@@ -42,7 +42,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoosts'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels"
-        title="{{localize 'E20.EssenceSelector'}}">
+        data-tooltip="{{localize 'E20.EssenceSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}
@@ -60,7 +60,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusStartingSkills'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="focusSkills" data-target="system.skills"
-        title="{{localize 'E20.SkillSelector'}}">
+        data-tooltip="{{localize 'E20.SkillSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}

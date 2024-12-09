@@ -33,7 +33,7 @@
   {{!-- Specializations header --}}
   <div class="specializations-header">
     <span>{{localize 'E20.ItemTypeSpecializationPlural'}}</span>
-    <a class="item-create" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" title="{{ localize 'E20.ItemControlAdd' }}">
+    <a class="item-create" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
       <i class="fas fa-plus"></i>
     </a>
   </div>
@@ -71,7 +71,7 @@
         <input class="inline-edit specialized-checkbox" type="checkbox" data-field="system.isSpecialized" name="specialization.system.isSpecialized" {{checked specialization.system.isSpecialized}} data-dtype="Boolean"/>
         {{/ifEquals}}
         <span class="item-button-container">
-          <a class="item-control item-delete" title="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
+          <a class="item-control item-delete" data-tooltip="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
         </span>
       </div>
     </li>

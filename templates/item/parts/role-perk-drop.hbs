@@ -11,7 +11,7 @@
               <label style="white-space: nowrap; overflow: hidden;">{{item.name}}</label>
               <input type="number" class="level" placeholder="Level" value="{{item.level}}" name="system.items.{{@key}}.level" min="0" step="1" />
               <div class="item-controls">
-                <a class="item-control {{../className}}-delete flex-right" title="{{localize 'E20.DeleteItem'}}">
+                <a class="item-control {{../className}}-delete flex-right" data-tooltip="{{localize 'E20.DeleteItem'}}">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>

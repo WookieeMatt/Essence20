@@ -29,7 +29,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginEssenceScoreIncrease'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="originEssences" data-target="system.essences"
-        title="{{localize 'E20.EssenceSelector'}}">
+        data-tooltip="{{localize 'E20.EssenceSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}
@@ -47,7 +47,7 @@
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginSkill'}}
     {{#*inline "item-field-edit"}}
     <a class="trait-selector" data-options="originSkills" data-target="system.skills"
-      title="{{localize 'E20.SkillSelector'}}">
+      data-tooltip="{{localize 'E20.SkillSelector'}}">
       <i class="fas fa-edit"></i>
     </a>
     {{/inline}}

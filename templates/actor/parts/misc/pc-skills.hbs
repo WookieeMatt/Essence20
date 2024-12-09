@@ -27,7 +27,7 @@
     </div>
     <div class="essence-header">
       {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string}}
-      <span title="{{localize 'E20.SpeedActionsTitle'}}">
+      <span data-tooltip="{{localize 'E20.SpeedActionsTitle'}}">
         {{localize "E20.SpeedActionsLabel"}}: {{numActions.movement}}{{localize "E20.SpeedActionsLabelMovement"}}, {{numActions.standard}}{{localize "E20.SpeedActionsLabelStandard"}}, {{numActions.free}}{{localize "E20.SpeedActionsLabelFree"}}
       </span>
     </div>
