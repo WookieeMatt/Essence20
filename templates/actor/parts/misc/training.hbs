@@ -51,9 +51,11 @@
             {{else}}
               {{formatBooleanList @root.system.trained.poisons @root.config.poisonTraining 'unit'}}
             {{/if}}
-          {{#if @root.actor.system.trained.toxins.all}}
-              {{localize "E20.PoisonTrainingAll"}}
-          {{/if}}
+          </td>
+        {{/if}}
+        {{#if @root.actor.system.trained.toxins.all}}
+          <td class="tg-td">
+            {{localize "E20.PoisonTrainingAll"}}
           </td>
         {{/if}}
       </tr>
