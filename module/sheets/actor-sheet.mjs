@@ -2,7 +2,8 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
-import { prepareSystemActors, onSystemActorsDelete, onMorph, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/power-ranger-handler.mjs";
+import { prepareSystemActors, onSystemActorsDelete, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/vehicle-handler.mjs";
+import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onRest,
@@ -16,6 +17,8 @@ import {
   onItemEdit,
   onItemDelete,
   onInlineEdit,
+  onShieldActivationToggle,
+  onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 
@@ -249,6 +252,8 @@ export class Essence20ActorSheet extends ActorSheet {
     const origins = []; // Used by PCs
     const perks = []; // Used by PCs
     const powers = []; // Used by PCs
+    let shieldEquipped = false;
+    const shields = [];
     const specializations = {};
     const spells = [];
     const upgrades = [];
@@ -320,6 +325,13 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'power':
         powers.push(i);
+        break;
+      case 'shield':
+        if (i.system.equipped) {
+          shieldEquipped = true;
+        }
+
+        shields.push(i);
         break;
       case 'spell':
         spells.push(i);
@@ -401,6 +413,8 @@ export class Essence20ActorSheet extends ActorSheet {
     context.powers = powers;
     context.rolePoints = rolePoints;
     context.role = role;
+    context.shields = shields;
+    context.shieldEquipped = shieldEquipped;
     context.spells = spells;
     context.specializations = specializations;
     context.traits = traits;
@@ -444,6 +458,12 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Transform Button
     html.find('.transform').click(() => onTransform(this));
+
+    //Equip Shield
+    html.find('.shield-equip').change(ev => onShieldEquipToggle(ev, this));
+
+    //Activate Shield
+    html.find('.shield-activate').click(ev => onShieldActivationToggle(ev, this));
 
     // Roll buttons
     if (this.actor.isOwner) {

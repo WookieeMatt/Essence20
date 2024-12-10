@@ -1,0 +1,50 @@
+{
+  "folder": "LJeAefZRWalUk3w2",
+  "name": "Tricera Shield Weapon Effect",
+  "type": "weaponEffect",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 67
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "blunt",
+    "damageValue": 1,
+    "isSpecialized": false,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": null
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733021855317,
+    "modifiedTime": 1733021855339,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_id": "s36rhG4iugp301WJ",
+  "sort": 200000,
+  "_key": "!items!s36rhG4iugp301WJ"
+}

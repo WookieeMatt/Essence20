@@ -1,0 +1,91 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "H.E.A.T.-Viper Branch",
+  "type": "equipmentPackage",
+  "_id": "X48aKfr7ljxos7az",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 90
+    },
+    "items": {
+      "b807": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.PvdqhkcS7kZZljJu",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Momentum Armor",
+        "type": "armor",
+        "items": {}
+      },
+      "e13e": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.tlM9alh0InrWd6j2",
+        "img": "systems/essence20/assets/icons/weapons/rocket_launcher.svg",
+        "name": "Rocket Launcher (Experimental)",
+        "type": "weapon",
+        "items": {
+          "11b7": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.5K1meYTN9tX4PlXi",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Rocket Launcher Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "explosive"
+            },
+            "damageValue": 2,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 20,
+            "range": {
+              "min": 30,
+              "reachMultiplier": 0,
+              "long": 200,
+              "value": 100
+            },
+            "shiftDown": 0
+          },
+          "d664": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.HkwjVfn7iILxPUJb",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Experimental",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 96
+            },
+            "subtype": "weapon",
+            "traits": [
+              "temperamental"
+            ]
+          }
+        }
+      }
+    },
+    "alternateAccess": "Weapon Specialist Division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733507770095,
+    "modifiedTime": 1733507846944,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!X48aKfr7ljxos7az"
+}

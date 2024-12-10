@@ -1,0 +1,138 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Heavy Machine Gun (Integrated Bipod)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/heavy_machine_gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Alternate Effect 2 is a 30 ft cone</p>",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 143
+    },
+    "items": {
+      "999e": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ECO1gweDlxZmIswo",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Heavy Machine Gun Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": 0,
+          "long": 400,
+          "value": 100
+        },
+        "shiftDown": 0
+      },
+      "ed6c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.81GHJz9kYfjVCQp8",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Heavy Machine Gun Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 3,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": 0,
+          "long": 400,
+          "value": 100
+        },
+        "shiftDown": 3
+      },
+      "15ad": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6tH1eOUjVEAThu7A",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Heavy Machine Gun Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 15,
+        "radius": 30,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 0
+        },
+        "shiftDown": 3
+      },
+      "4ede": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.dD0We78dzfsH98Bw",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Integrated Bipod",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Two-handed targeting weapon",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "antiTank",
+      "ballistic",
+      "mounted",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733532736342,
+    "modifiedTime": 1733532840986,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "oZhcbgSuydpcPGr8",
+  "sort": 0,
+  "_key": "!items!oZhcbgSuydpcPGr8"
+}

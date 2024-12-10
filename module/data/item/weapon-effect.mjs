@@ -1,6 +1,6 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -18,7 +18,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       }),
       damageType: makeStrWithChoices(Object.keys(E20.damageTypes), 'blunt'),
       damageValue: makeInt(1),
-      shiftDown: makeInt(0),
+      isSpecialized: makeBool(false),
       numHands: makeInt(1),
       numTargets: makeInt(1),
       radius: makeInt(0),
@@ -28,6 +28,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
         long: makeInt(null),
         value: makeInt(null),
       }),
+      shiftDown: makeInt(0),
     };
   }
 }

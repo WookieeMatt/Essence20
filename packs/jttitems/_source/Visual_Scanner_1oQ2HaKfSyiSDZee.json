@@ -1,0 +1,35 @@
+{
+  "folder": "CAUR4uttIJZ0azqp",
+  "name": "Visual Scanner",
+  "type": "gear",
+  "_id": "1oQ2HaKfSyiSDZee",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 69
+    },
+    "gearType": "other",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733028117943,
+    "modifiedTime": 1733028126489,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!1oQ2HaKfSyiSDZee"
+}

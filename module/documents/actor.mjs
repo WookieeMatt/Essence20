@@ -79,6 +79,7 @@ export class Essence20Actor extends Actor {
       this._prepareMovement();
       this._prepareSorcerousPower();
       this._prepareResource();
+      this._preparePoisonTraining();
     }
   }
 
@@ -147,6 +148,7 @@ export class Essence20Actor extends Actor {
       const armor = defense.armor;
       const bonus = defense.bonus;
       const morphed = defense.morphed;
+      const shield = defense.shield;
       let rolePointsDefense = 0;
       const essence = system.essences[defense.essence].max;
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
@@ -154,6 +156,7 @@ export class Essence20Actor extends Actor {
       const armorName = game.i18n.localize('E20.DefenseArmor');
       const bonusName = game.i18n.localize('E20.Bonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
+      const shieldName = game.i18n.localize('E20.DefenseShield');
       let rolePointsName = game.i18n.localize('E20.RolePoints');
 
       // Armor from Role Points
@@ -175,9 +178,11 @@ export class Essence20Actor extends Actor {
 
       defense.total = base + essence + bonus + rolePointsDefense;
       defense.total += system.isMorphed ? morphed : armor;
+      defense.total += shield;
 
       defense.string = `${base} (${baseName}) + ${essence} (${essenceName})`;
       defense.string += system.isMorphed ? ` + ${morphed} (${morphedName})` : ` + ${armor} (${armorName})`;
+      defense.string += ` + ${shield} (${shieldName})`;
       defense.string += ` + ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
     }
   }
@@ -248,6 +253,48 @@ export class Essence20Actor extends Actor {
     if (rolePointsList.length) {
       const rolePoints = rolePointsList[0]; // There should only be one RolePoints
       this.system.useUnlimitedResource = rolePoints.system.resource.level20ValueIsUnlimited && this.system.level == 20;
+    }
+  }
+
+  /**
+  * Prepare Poison and Toxin Training and Qualifications
+  */
+  _preparePoisonTraining() {
+    const system = this.system;
+    for (const key of Object.keys(system.trained.poisons)) {
+      system.trained.poisons[key] = false;
+    }
+
+    for (const key of Object.keys(system.trained.toxins)) {
+      system.trained.toxins[key] = false;
+    }
+
+    for (const key of Object.keys(system.qualified.poisons)) {
+      system.qualified.poisons[key] = false;
+    }
+
+    if (system.poisonTraining >= 5) {
+      system.trained.toxins.all = true;
+      system.trained.toxins.standard = true;
+      system.trained.toxins.limited = true;
+    }
+
+    if (system.poisonTraining >= 4) {
+      system.qualified.poisons.all = true;
+    }
+
+    if (system.poisonTraining >= 3) {
+      system.qualified.poisons.limited = true;
+    }
+
+    if (system.poisonTraining >= 2) {
+      system.qualified.poisons.standard = true;
+    }
+
+    if (system.poisonTraining >= 1) {
+      system.trained.poisons.all = true;
+      system.trained.poisons.standard = true;
+      system.trained.poisons.limited = true;
     }
   }
 

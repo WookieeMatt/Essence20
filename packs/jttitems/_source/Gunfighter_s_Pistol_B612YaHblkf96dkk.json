@@ -1,0 +1,75 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Gunfighter's Pistol",
+  "type": "weapon",
+  "_id": "B612YaHblkf96dkk",
+  "img": "icons/weapons/guns/gun-purple.webp",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "items": {
+      "958e": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.exJp0IMXCBPfGymO",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Gunfighter's Pistol Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 25
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic",
+      "fanning",
+      "sharp"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733077052039,
+    "modifiedTime": 1733077149288,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!B612YaHblkf96dkk"
+}

@@ -1,0 +1,50 @@
+{
+  "folder": "ZTp6EuBaSUEjnMhq",
+  "name": "Tactical Shotgun Effect",
+  "type": "weaponEffect",
+  "_id": "wJ6HSlIzydTRQQzz",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>15 ft cone</p>",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 38
+    },
+    "classification": {
+      "skill": "athletics",
+      "style": "melee"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "isSpecialized": false,
+    "numHands": 2,
+    "numTargets": 2,
+    "radius": 15,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 60,
+      "value": 20
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733539348092,
+    "modifiedTime": 1733539401115,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!wJ6HSlIzydTRQQzz"
+}

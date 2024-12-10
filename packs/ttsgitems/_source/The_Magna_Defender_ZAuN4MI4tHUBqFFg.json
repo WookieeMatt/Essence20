@@ -1,0 +1,236 @@
+{
+  "folder": "NXkEr1Sl60451YZ5",
+  "name": "The Magna Defender",
+  "type": "role",
+  "_id": "ZAuN4MI4tHUBqFFg",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 21
+    },
+    "items": {
+      "2ce1": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.EJtFB6Gk2bQ8N4uZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Magna Sword",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "ecce": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.R2C760BXAI1XKVtm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Combat Stance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "0dfb": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.X59RRGMww6UZQJ78",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defender Step",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "d590": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.gx0xOFKcKOPyaUto",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d8fa": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.rZjP9CN55D5qKW0s",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mega Defender",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "3fe3": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.8GrSnFescEVUt1nn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defender Torozord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "d025": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "b74b": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Torozord Feature",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "86cf": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.cZtUjIzieAFxTwH2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Retribution",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "a7d1": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.yNtX8ky7O8v50C5l",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Continuous Stance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "8b85": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.MPAZdtX3Ob76h90Y",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Swift Defender",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "0735": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.TGnqQAWWi1hBGqeh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "At All Cost",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "b197": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.ukfZOGZeuyJv6I5M",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ultimate Magna Defender",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": [
+        "heavy",
+        "light",
+        "medium"
+      ]
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level3",
+        "level7",
+        "level11",
+        "level15"
+      ],
+      "social": [
+        "level4",
+        "level8",
+        "level12"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "strength": [
+        "level1",
+        "level1optional",
+        "level5",
+        "level9",
+        "level13",
+        "level16",
+        "level18",
+        "level20"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 1,
+        "levels": [
+          "level3",
+          "level5",
+          "level7",
+          "level9",
+          "level11",
+          "level13",
+          "level15",
+          "level17",
+          "level19"
+        ],
+        "regeneration": 3,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "intimidation",
+      "might",
+      "targeting"
+    ],
+    "upgrades": {
+      "armors": {
+        "trained": []
+      }
+    },
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733100715235,
+    "modifiedTime": 1733101838179,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!ZAuN4MI4tHUBqFFg"
+}

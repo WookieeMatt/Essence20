@@ -1,0 +1,158 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Sharpshooters",
+  "type": "equipmentPackage",
+  "_id": "mKWrcs46LEogi9aP",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 47
+    },
+    "items": {
+      "9569": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.cxmVYqjcS61Hr4vP",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Alertness (Investigation) Kit",
+        "type": "gear"
+      },
+      "409a": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.7LhY3Jni10S4ttHc",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor (Silent)",
+        "type": "armor",
+        "items": {
+          "4a88": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Silent",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Not Silent",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": [
+              "silent"
+            ]
+          }
+        }
+      },
+      "8bac": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Ig6xwN4sADLNTBTN",
+        "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+        "name": "Rifle (Deadly, Scope, and Silencer)",
+        "type": "weapon",
+        "items": {
+          "e273": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Rifle Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 400,
+              "value": 100
+            },
+            "shiftDown": 0
+          },
+          "d371": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.hd1O6anmtNcyjpw9",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Deadly",
+            "type": "upgrade",
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Sharp",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 149
+            },
+            "subtype": "weapon",
+            "traits": []
+          },
+          "14ab": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.cBiD2lBLRwnxu8Rx",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Scope",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          },
+          "afdd": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Sliencer",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": [
+              "silent"
+            ]
+          }
+        }
+      },
+      "ead7": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.7LPSRA6LWYCxZ215",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Alertness (Perception) Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733535908372,
+    "modifiedTime": 1733536034178,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!mKWrcs46LEogi9aP"
+}

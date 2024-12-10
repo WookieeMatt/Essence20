@@ -1,0 +1,14 @@
+<div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
+
+<div class="chip-section">
+  <span class="chip" name="chip.shield.availability">{{lookup @root.config.availabilities item.system.availability}}</span>
+  <span class="chip" name="chip.shield.classification">{{lookup @root.config.armorClassifications item.system.classification}}</span>
+
+  {{#each item.system.traits as |trait|}}
+  <span class="chip" name="chip.shield.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
+  {{/each}}
+
+  {{#if item.system.source.book}}
+  <span class="chip" name="chip.source.book">{{item.system.source.book}}</span>
+  {{/if}}
+</div>

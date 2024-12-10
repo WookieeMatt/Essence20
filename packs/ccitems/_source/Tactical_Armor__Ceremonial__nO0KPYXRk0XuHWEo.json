@@ -1,0 +1,66 @@
+{
+  "folder": "l456qPDYdRpxqC1Y",
+  "name": "Tactical Armor (Ceremonial)",
+  "type": "armor",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {
+      "d78c": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.vf9rJxOwuxDzrPKp",
+        "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+        "name": "Ceremonial",
+        "type": "upgrade",
+        "armorBonus": {
+          "defense": "toughness",
+          "value": 0
+        },
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "Cobra Codex",
+          "page": 101
+        },
+        "subtype": "armor",
+        "traits": []
+      }
+    },
+    "availability": "standard",
+    "bonusEvasion": 0,
+    "bonusToughness": 1,
+    "classification": "light",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733494545595,
+    "modifiedTime": 1733509877986,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "nO0KPYXRk0XuHWEo",
+  "sort": 900000,
+  "_key": "!items!nO0KPYXRk0XuHWEo"
+}
