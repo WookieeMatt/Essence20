@@ -52,12 +52,17 @@ export const migrateWorld = async function() {
   const items = game.items.map(i => [i, true])
     .concat(Array.from(game.items.invalidDocumentIds).map(id => [game.items.getInvalid(id), false]));
   for (const [item, valid] of items) {
+    console.log(item)
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
 
       if (["giJoe", "pony", "powerRanger", "transformer"].includes(item.type)) {
         item.delete();
         continue;
+      }
+      if (item.type == "contact") {
+        item.delete();
+        break;
       }
 
       const updateData = await migrateItemData(source);
@@ -148,28 +153,31 @@ export const migrateActorData = async function(actor, compendiumActor) {
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
   if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
     const role = getItemsOfType('role', actor.items)[0];
-    for (const armorType of role.system.armors.qualified) {
-      updateData[`system.qualified.armors.${armorType}`] = true;
-    }
 
-    for (const armorType of role.system.armors.trained) {
-      updateData[`system.trained.armors.${armorType}`] = true;
-    }
+    if (role) {
+      for (const armorType of role.system.armors.qualified) {
+        updateData[`system.qualified.armors.${armorType}`] = true;
+      }
 
-    for (const armorType of role.system.upgrades.armors.trained) {
-      updateData[`system.trained.upgrades.armors.${armorType}`] = true;
-    }
+      for (const armorType of role.system.armors.trained) {
+        updateData[`system.trained.armors.${armorType}`] = true;
+      }
 
-    for (const weaponType of role.system.weapons.qualified) {
-      updateData[`system.qualified.weapons.${weaponType}`] = true;
-    }
+      for (const armorType of role.system.upgrades.armors.trained) {
+        updateData[`system.trained.upgrades.armors.${armorType}`] = true;
+      }
 
-    for (const weaponType of role.system.weapons.trained) {
-      updateData[`system.trained.weapons.${weaponType}`] = true;
-    }
+      for (const weaponType of role.system.weapons.qualified) {
+        updateData[`system.qualified.weapons.${weaponType}`] = true;
+      }
 
-    if (role.system.version =='giJoe') {
-      updateData[`system.canQualify`] = true;
+      for (const weaponType of role.system.weapons.trained) {
+        updateData[`system.trained.weapons.${weaponType}`] = true;
+      }
+
+      if (role.system.version =='giJoe') {
+        updateData[`system.canQualify`] = true;
+      }
     }
   }
 
@@ -320,6 +328,10 @@ export const migrateActorData = async function(actor, compendiumActor) {
       } else {
         await itemToDelete.delete();
       }
+    }
+
+    if (itemToDelete.type == "contact") {
+      await itemToDelete.delete();
     }
 
     let itemUpdate = await migrateItemData(itemToDelete, fullActor);
