@@ -59,6 +59,12 @@
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "a28b": {
+        "uuid": "Compendium.essence20.tf_crb.Item.7ocVl3FkXUCFWYxi",
+        "img": "systems/essence20/assets/icons/items/role.svg",
+        "name": "Scout",
+        "type": "role"
       }
     },
     "essences": [
@@ -84,11 +90,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.323",
+    "systemVersion": "4.5.0",
+    "coreVersion": "12.331",
     "createdTime": 1714314262149,
-    "modifiedTime": 1714314353581,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1731130291302,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
     "duplicateSource": null
   },

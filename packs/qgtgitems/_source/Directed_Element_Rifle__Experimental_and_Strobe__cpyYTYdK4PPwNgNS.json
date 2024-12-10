@@ -1,0 +1,112 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Directed Element Rifle (Experimental and Strobe)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/ray-gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "items": {
+      "56a4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.Hb6sY5mh0DXdgy6Y",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Directed Element Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 75
+        },
+        "shiftDown": 0
+      },
+      "f8de": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.1wnVRJmUhbukg4Tu",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Experimental",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": [
+          "temperamental"
+        ]
+      },
+      "64d9": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Bd7nMQQmv0MFrsjO",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Strobe",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Any weapon with a flashlight, the Laser trait, or that does Laser damage",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": [
+          "blinding"
+        ]
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "technology",
+      "shift": "d2"
+    },
+    "traits": [
+      "computerized",
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733532351856,
+    "modifiedTime": 1733532401420,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "cpyYTYdK4PPwNgNS",
+  "sort": 400000,
+  "_key": "!items!cpyYTYdK4PPwNgNS"
+}

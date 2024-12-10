@@ -4,16 +4,19 @@
   "folder": null,
   "type": "Item",
   "_id": "fNZdfcqnnNHonskV",
-  "sort": 0,
+  "sort": 700000,
   "color": null,
   "flags": {},
   "_stats": {
     "systemId": null,
     "systemVersion": null,
-    "coreVersion": null,
+    "coreVersion": "12.331",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null
+    "modifiedTime": 1733511923675,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
+  "description": "",
   "_key": "!folders!fNZdfcqnnNHonskV"
 }

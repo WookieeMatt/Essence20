@@ -14,7 +14,7 @@ import {
 * @param {Alteration} alteration The Alteration being dropped
 * @param {Function} dropFunc The function to call to complete the Alteration drop
 */
-export async function alterationUpdate(actor, alteration, dropFunc) {
+export async function onAlterationDrop(actor, alteration, dropFunc) {
   const alterationUuid = parseId(alteration.uuid);
 
   for (let actorItem of actor.items) {

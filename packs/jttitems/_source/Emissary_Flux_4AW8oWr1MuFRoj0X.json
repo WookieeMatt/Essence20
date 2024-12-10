@@ -1,0 +1,96 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Emissary Flux",
+  "type": "weapon",
+  "_id": "4AW8oWr1MuFRoj0X",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 76
+    },
+    "items": {
+      "ffb0": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.uZ7WK6svxRFNKf6m",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Emissary Flux Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "bbbf": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.fRjT1pO0iQTgAAUJ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Emissary Flux Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 8,
+        "radius": 5,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "powerWeapon"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733064888702,
+    "modifiedTime": 1733064942470,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!4AW8oWr1MuFRoj0X"
+}

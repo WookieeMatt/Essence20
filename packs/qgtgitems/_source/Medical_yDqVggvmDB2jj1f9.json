@@ -1,0 +1,88 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Medical",
+  "type": "equipmentPackage",
+  "_id": "yDqVggvmDB2jj1f9",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 46
+    },
+    "items": {
+      "a94b": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.jG66RwYaezGP2bDi",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Restricted Science (Medicine) Kit",
+        "type": "gear"
+      },
+      "ce40": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.VjmSYnaGqvpKuNu7",
+        "img": "icons/svg/sword.svg",
+        "name": "Close Combat Blade (Nonleathal)",
+        "type": "weapon",
+        "items": {
+          "bd64": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Close Combat Blade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "518e": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.QbfY2NGNmUmKa6uO",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Nonleathal",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733535363148,
+    "modifiedTime": 1733535453281,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!yDqVggvmDB2jj1f9"
+}

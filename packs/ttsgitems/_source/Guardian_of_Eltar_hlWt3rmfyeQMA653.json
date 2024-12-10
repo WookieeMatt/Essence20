@@ -1,0 +1,250 @@
+{
+  "folder": "NXkEr1Sl60451YZ5",
+  "name": "Guardian of Eltar",
+  "type": "role",
+  "_id": "hlWt3rmfyeQMA653",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 70
+    },
+    "items": {
+      "27f1": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.Yl1vk2WdkuTGPBiN",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Eltarian Tech",
+        "type": "rolePoints",
+        "bonus": {
+          "defenseBonus": {
+            "cleverness": false,
+            "evasion": false,
+            "toughness": false,
+            "willpower": false
+          },
+          "increase": 0,
+          "level20Value": null,
+          "increaseLevels": [],
+          "startingValue": null,
+          "type": "none",
+          "value": 0
+        },
+        "isActivatable": true,
+        "isActive": false,
+        "powerCost": 0,
+        "resource": {
+          "increase": 1,
+          "level20Value": null,
+          "level20ValueIsUnlimited": false,
+          "increaseLevels": [
+            "level2",
+            "level4",
+            "level7",
+            "level10",
+            "level14",
+            "level18"
+          ],
+          "max": null,
+          "startingMax": 1,
+          "value": 0
+        }
+      },
+      "cc96": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.jaqxs1OPQuaI9KJZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Eltarian Tech",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "0785": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.34O7Y77lZpuhng3G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Charge Into Battle",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "8be9": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.s68pRzqIk5ApctTd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zeal",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "529a": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.FhQLam5IgFFIuzah",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rally Guardians",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "2c44": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "171d": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.vJYXOqRQIDEUmuDE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rally Guardians Features",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "9b37": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.bDgQ7jyTgisY42kt",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Eltarian Mettle",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "204c": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.SB6FAYA0qIqV9F3G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wisdom of the Eldars",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "1f55": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.PTkqeQ8D4x9cstlZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Observer",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "5d3a": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.EjrGEruXHcggMKoW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Chief Guardian",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "e78f": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.wrBndkBQoKkn3dLy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Supreme Guardian",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level3",
+        "level6",
+        "level11",
+        "level15"
+      ],
+      "social": [
+        "level1",
+        "level4",
+        "level9",
+        "level12",
+        "level14",
+        "level17",
+        "level19"
+      ],
+      "speed": [
+        "level2",
+        "level7",
+        "level10",
+        "level16"
+      ],
+      "strength": [
+        "level1",
+        "level5",
+        "level8",
+        "level13",
+        "level18",
+        "level20"
+      ]
+    },
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level19"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 2,
+        "levels": [
+          "level5",
+          "level9",
+          "level13",
+          "level17"
+        ],
+        "regeneration": 1,
+        "starting": 2
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [
+      "might",
+      "technology",
+      "performance"
+    ],
+    "upgrades": {
+      "armors": {
+        "trained": []
+      }
+    },
+    "version": "powerRangers",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733107965303,
+    "modifiedTime": 1733108862982,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!hlWt3rmfyeQMA653"
+}

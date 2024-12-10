@@ -1,0 +1,68 @@
+{
+  "folder": "l456qPDYdRpxqC1Y",
+  "name": "Impulse Armor (Silent)",
+  "type": "armor",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 154
+    },
+    "items": {
+      "f99d": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.nftZIaQ3MVn2nviU",
+        "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+        "name": "Silent",
+        "type": "upgrade",
+        "armorBonus": {
+          "defense": "toughness",
+          "value": 0
+        },
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Not Silent",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 156
+        },
+        "subtype": "armor",
+        "traits": [
+          "silent"
+        ]
+      }
+    },
+    "availability": "limited",
+    "bonusEvasion": 1,
+    "bonusToughness": 0,
+    "classification": "light",
+    "equipped": false,
+    "traits": [
+      "computerized"
+    ],
+    "upgradeTraits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 0
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733507574323,
+    "modifiedTime": 1733509877986,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "YmXgXORGeyuovY9q",
+  "sort": 800000,
+  "_key": "!items!YmXgXORGeyuovY9q"
+}

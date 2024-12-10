@@ -4,6 +4,15 @@ import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-ma
 
 const fields = foundry.data.fields;
 
+function makeTrainingSchema(itemTypes) {
+  const itemSchema = {};
+  for (const itemType of Object.keys(itemTypes)){
+    itemSchema[itemType] = makeBool(false);
+  }
+
+  return new fields.SchemaField(itemSchema);
+}
+
 function makeDefensesFields(name, essence) {
   return new fields.SchemaField({
     armor: makeInt(0),
@@ -12,6 +21,7 @@ function makeDefensesFields(name, essence) {
     essence: makeStr(essence),
     morphed: makeInt(0),
     name: makeStr(name),
+    shield: makeInt(0),
     string: makeStr(''),
     total: makeInt(0),
   });
@@ -41,6 +51,7 @@ export const character = () => ({
   }),
   canHaveZord: makeBool(false),
   canMorph: makeBool(false),
+  canQualify: makeBool(false),
   canSpellcast: makeBool(false),
   canTransform: makeBool(false),
   conditioning: makeInt(0),
@@ -62,6 +73,7 @@ export const character = () => ({
     speed: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
     strength: makeStrWithChoices(E20.CombinedEssenceRankNames, null),
   }),
+  faction: makeStr(''),
   focusEssence: makeStr(''),
   isMorphed: makeBool(false),
   isTransformed: makeBool(false),
@@ -81,11 +93,26 @@ export const character = () => ({
     }),
   }),
   notes: new fields.HTMLField(),
+  poisonTraining:makeInt(0),
+  qualified: new fields.SchemaField({
+    armors: makeTrainingSchema(E20.armorTypes),
+    poisons: makeTrainingSchema(E20.poisonTraining),
+    weapons: makeTrainingSchema(E20.weaponTypes),
+  }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
     speed: makeSkillRankAllocation(),
     smarts: makeSkillRankAllocation(),
     social: makeSkillRankAllocation(),
+  }),
+  trained: new fields.SchemaField({
+    armors: makeTrainingSchema(E20.armorTypes),
+    poisons: makeTrainingSchema(E20.poisonTraining),
+    toxins: makeTrainingSchema(E20.poisonTraining),
+    upgrades: new fields.SchemaField({
+      armors: makeTrainingSchema(E20.availabilities),
+    }),
+    weapons: makeTrainingSchema(E20.weaponTypes),
   }),
 });
 
@@ -97,7 +124,7 @@ export function migrateCharacterData(source) {
       } else if (value?.max?.max) { // Possible edge case
         source.essences[essence].max = value.max.max;
         source.essences[essence].value = value.max.max;
-      } else if (value.required) { // Previous migration may have set it to a SchemaField()
+      } else if (value?.required) { // Previous migration may have set it to a SchemaField()
         source.essences[essence].max = value.max || 0;
         source.essences[essence].value = value.max || 0;
       }

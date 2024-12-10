@@ -1,0 +1,82 @@
+{
+  "folder": "R893HRFUk5f11lBF",
+  "name": "Neuromuscular Blocker",
+  "type": "weapon",
+  "_id": "1j4QRs7qeIBBszxf",
+  "img": "systems/essence20/assets/icons/weapons/poison.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 94
+    },
+    "items": {
+      "d0d6": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.h82PfU9UaMWZmitW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Neuromuscular Blocker Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "restrained",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "isPoison": true,
+    "poisonApplication": {
+      "contact": true,
+      "ingested": false,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "Science d6",
+      "skill": "infiltration",
+      "shift": "d6"
+    },
+    "traits": [
+      "consumable",
+      "ongoing",
+      "poison"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "poisonType": "poison"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733594325891,
+    "modifiedTime": 1733594378955,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!1j4QRs7qeIBBszxf"
+}

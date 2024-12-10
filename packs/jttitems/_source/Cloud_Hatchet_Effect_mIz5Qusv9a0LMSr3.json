@@ -1,0 +1,50 @@
+{
+  "folder": "xmm1K2v4dEvSxYl1",
+  "name": "Cloud Hatchet Effect",
+  "type": "weaponEffect",
+  "_id": "mIz5Qusv9a0LMSr3",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Choose Element</p>",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 80
+    },
+    "classification": {
+      "skill": "athletics",
+      "style": "melee"
+    },
+    "damageType": "element",
+    "damageValue": 1,
+    "isSpecialized": false,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": 30
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733092685530,
+    "modifiedTime": 1733092728728,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!mIz5Qusv9a0LMSr3"
+}

@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "4.5.0",
+  "version": "4.6.0",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -178,6 +178,15 @@
       "flags": {}
     },
     {
+      "name": "through_the_shattered_grid",
+      "label": "Through The Shattered Grid",
+      "system": "essence20",
+      "path": "packs/ttsgitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "tf_crb",
       "label": "Transformers Core Rulebook",
       "system": "essence20",
@@ -217,7 +226,8 @@
         "across_the_stars",
         "beneath_the_helmet",
         "jump_through_time",
-        "finster_s_monster_matic_cookbook"
+        "finster_s_monster_matic_cookbook",
+        "through_the_shattered_grid"
       ]
     },
     {

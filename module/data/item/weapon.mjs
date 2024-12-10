@@ -25,6 +25,13 @@ export class WeaponItemData extends foundry.abstract.TypeDataModel {
         size: makeStrWithChoices(Object.keys(E20.weaponSizes), 'integrated'),
       }),
       equipped: makeBool(true),
+      isPoison: makeBool(false),
+      poisonType: makeStrWithChoices(Object.keys(E20.poisonTypes)),
+      poisonApplication: new fields.SchemaField({
+        contact: makeBool (false),
+        ingested: makeBool (false),
+        inhaled: makeBool (false),
+      }),
       requirements: new fields.SchemaField({
         custom: makeStr(null),
         skill: makeStrWithChoices(Object.keys(E20.skills), null),

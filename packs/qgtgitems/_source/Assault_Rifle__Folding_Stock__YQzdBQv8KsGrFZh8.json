@@ -1,0 +1,111 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Assault Rifle (Folding Stock)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/assault_rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "items": {
+      "7766": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.DsqI04j3cWxcHV3Y",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Assault Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 60
+        },
+        "shiftDown": 0
+      },
+      "e70a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.RjJbQsuqe1Gxtpmt",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Assault Rifle Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 60
+        },
+        "shiftDown": 2
+      },
+      "caf6": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.bChPSldjpYZgAnIh",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Floding Stock",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Two-handed targeting weapon",
+        "source": {
+          "book": "Quartermaster's Guide to Gear",
+          "page": 34
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733531076654,
+    "modifiedTime": 1733532351898,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "YQzdBQv8KsGrFZh8",
+  "sort": 1000000,
+  "_key": "!items!YQzdBQv8KsGrFZh8"
+}

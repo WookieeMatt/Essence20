@@ -1,0 +1,97 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Quantum Defender (Blaster)",
+  "type": "weapon",
+  "_id": "gOZtlnZubOZ01ZdF",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 74
+    },
+    "items": {
+      "9d38": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.VX7MDGN6iWIWkVa4",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Quantum Defender (Blaster) Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 60,
+          "value": 45
+        },
+        "shiftDown": 0
+      },
+      "b327": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.DI240rGEAedakTJi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Quantum Defender (Blaster) Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 60,
+          "value": 45
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "energy",
+      "powerWeapon",
+      "versatile"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733030619254,
+    "modifiedTime": 1733030652668,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!gOZtlnZubOZ01ZdF"
+}

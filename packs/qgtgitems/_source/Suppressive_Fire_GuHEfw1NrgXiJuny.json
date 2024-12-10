@@ -1,0 +1,206 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Suppressive Fire",
+  "type": "equipmentPackage",
+  "_id": "GuHEfw1NrgXiJuny",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 47
+    },
+    "items": {
+      "c7c5": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.v2Fz1qsAGwF2y1Tu",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Hard Body Armor (Terrifying)",
+        "type": "armor",
+        "items": {
+          "05b2": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.tXHd0LBkVCB2QPPO",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Terrifying",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "dd13": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.akKi42tVvWLbrkm1",
+        "img": "systems/essence20/assets/icons/weapons/machine_gun.svg",
+        "name": "Machine Gun (Ammo Belt)",
+        "type": "weapon",
+        "items": {
+          "12b6": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.eflSyq2zTBRtI4CE",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Machine Gun Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": 10,
+              "reachMultiplier": 0,
+              "long": 160,
+              "value": 40
+            },
+            "shiftDown": 0
+          },
+          "9c8e": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.Y0L9HpE3L8t4i6fW",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Machine Gun Alternate Effect 1",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 2,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": 10,
+              "reachMultiplier": 0,
+              "long": 160,
+              "value": 40
+            },
+            "shiftDown": 1
+          },
+          "9a8e": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.xMufKArRO7cnkSPU",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Machine Gun Alternate Effect 2",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 2,
+            "radius": 30,
+            "range": {
+              "min": 10,
+              "reachMultiplier": 0,
+              "long": 160,
+              "value": 40
+            },
+            "shiftDown": 1
+          },
+          "bc7c": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.92V9QrCXJYmY2p7O",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Ammo Belt",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Reload Trait",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "0068": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.vy8VGcdoFiacJ3bT",
+        "img": "systems/essence20/assets/icons/weapons/flamethrower.svg",
+        "name": "Element Jet",
+        "type": "weapon",
+        "items": {
+          "aa7e": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.ZqAWG11mWqPzei5E",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Element Jet Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "energy"
+            },
+            "damageValue": 1,
+            "damageType": "element",
+            "numHands": "2",
+            "numTargets": 6,
+            "radius": 15,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": null,
+              "value": 15
+            },
+            "shiftDown": 0
+          },
+          "454f": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.Wf7FBuKNkke4uxOF",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Element Jet Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "energy"
+            },
+            "damageValue": null,
+            "damageType": "intimidate",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": null,
+              "value": 15
+            },
+            "shiftDown": 0
+          }
+        }
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733536055220,
+    "modifiedTime": 1733536142755,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!GuHEfw1NrgXiJuny"
+}

@@ -1,0 +1,79 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Cloud Hatchet",
+  "type": "weapon",
+  "_id": "RNP5lNTQLostQKSB",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 80
+    },
+    "items": {
+      "c59c": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.mIz5Qusv9a0LMSr3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cloud Hatchet Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": 30
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "cold",
+      "electric",
+      "energy",
+      "fire",
+      "laser",
+      "powerWeapon",
+      "sharp"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733092749319,
+    "modifiedTime": 1733092803496,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!RNP5lNTQLostQKSB"
+}

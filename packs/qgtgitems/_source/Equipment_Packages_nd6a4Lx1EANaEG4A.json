@@ -1,0 +1,22 @@
+{
+  "name": "Equipment Packages",
+  "sorting": "a",
+  "folder": "tfSiCIkYFCQOypCy",
+  "type": "Item",
+  "_id": "nd6a4Lx1EANaEG4A",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!nd6a4Lx1EANaEG4A"
+}

@@ -7,7 +7,7 @@ const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
  * @param {Perk} perk The Perk being dropped
  * @param {Function} dropFunc The function to call to complete the Power drop
  */
-export async function perkUpdate(actor, perk, dropFunc) {
+export async function onPerkDrop(actor, perk, dropFunc) {
   let timesTaken = 0;
 
   if (perk.uuid == SORCERY_PERK_ID) {
@@ -33,7 +33,7 @@ export async function perkUpdate(actor, perk, dropFunc) {
     }
   }
 
-  await dropFunc();
+  return await dropFunc();
 }
 
 /**

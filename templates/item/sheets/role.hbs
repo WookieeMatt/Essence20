@@ -39,7 +39,7 @@
           {{!-- Armor Trained --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTrained'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" data-options="armorType" data-target="system.armors.trained" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector" data-options="armorType" data-target="system.armors.trained" data-tooltip="{{localize 'E20.TrainingSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
@@ -52,13 +52,31 @@
             </div>
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{else}}
+          {{!-- Armor Upgrades Trained --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorUpgradesTrained'}}
+          {{#*inline "item-field-edit"}}
+            <a class="trait-selector" data-options="availabilities" data-target="system.upgrades.armors.trained" data-tooltip="{{localize 'E20.TrainingSelector'}}">
+              <i class="fas fa-edit"></i>
+            </a>
+          {{/inline}}
+
+          {{#*inline "item-field-inputs"}}
+            <div class="chip-section">
+              {{#each item.system.upgrades.armors.trained as |availability|}}
+              <span class="chip" name="chip.upgrades.armors.trained.{{availabilities}}">{{lookup @root.config.availabilities availability}}</span>
+              {{/each}}
+            </div>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
         {{/ifNotEquals}}
 
         {{#ifEquals system.version 'giJoe'}}
           {{!-- Armor Quailfication --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorQualified'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" data-options="armorType" data-target="system.armors.qualified" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector" data-options="armorType" data-target="system.armors.qualified" data-tooltip="{{localize 'E20.TrainingSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
@@ -77,7 +95,7 @@
           {{!-- Weapon Trained --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTrained'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" data-options="weaponType" data-target="system.weapons.trained" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector" data-options="weaponType" data-target="system.weapons.trained" data-tooltip="{{localize 'E20.TrainingSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
@@ -96,7 +114,7 @@
           {{!-- Weapon Qualified --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponQualified'}}
           {{#*inline "item-field-edit"}}
-            <a class="trait-selector" data-options="weaponType" data-target="system.weapons.qualified" title="{{localize 'E20.TraitSelector'}}">
+            <a class="trait-selector" data-options="weaponType" data-target="system.weapons.qualified" data-tooltip="{{localize 'E20.TrainingSelector'}}">
               <i class="fas fa-edit"></i>
             </a>
           {{/inline}}
@@ -137,7 +155,7 @@
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalIncreaseLevels'}}
           {{#*inline "item-field-edit"}}
           <a class="trait-selector" data-options="actorLevels" data-target="system.powers.personal.levels"
-            title="{{localize 'E20.EssenceSelector'}}">
+            data-tooltip="{{localize 'E20.EssenceSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
           {{/inline}}
@@ -164,7 +182,7 @@
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsStrength'}}
           {{#*inline "item-field-edit"}}
           <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels.strength"
-            title="{{localize 'E20.EssenceSelector'}}">
+            data-tooltip="{{localize 'E20.EssenceSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
           {{/inline}}
@@ -182,7 +200,7 @@
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSpeed'}}
           {{#*inline "item-field-edit"}}
           <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels.speed"
-            title="{{localize 'E20.EssenceSelector'}}">
+            data-tooltip="{{localize 'E20.EssenceSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
           {{/inline}}
@@ -200,7 +218,7 @@
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSmarts'}}
           {{#*inline "item-field-edit"}}
           <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels.smarts"
-            title="{{localize 'E20.EssenceSelector'}}">
+            data-tooltip="{{localize 'E20.EssenceSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
           {{/inline}}
@@ -218,7 +236,7 @@
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsSocial'}}
           {{#*inline "item-field-edit"}}
           <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels.social"
-            title="{{localize 'E20.EssenceSelector'}}">
+            data-tooltip="{{localize 'E20.EssenceSelector'}}">
             <i class="fas fa-edit"></i>
           </a>
           {{/inline}}
@@ -237,7 +255,7 @@
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.StartingRoleSkills'}}
         {{#*inline "item-field-edit"}}
         <a class="trait-selector" data-options="originSkills" data-target="system.skills"
-          title="{{localize 'E20.SkillSelector'}}">
+          data-tooltip="{{localize 'E20.SkillSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
         {{/inline}}
@@ -270,7 +288,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieProgression'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="actorLevels" data-target="system.skillDie.levels"
-        title="{{localize 'E20.LevelSelector'}}">
+        data-tooltip="{{localize 'E20.LevelSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}
@@ -287,7 +305,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieSpecializedLevels'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="actorLevels" data-target="system.skillDie.specializedLevels"
-        title="{{localize 'E20.LevelSelector'}}">
+        data-tooltip="{{localize 'E20.LevelSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}
@@ -308,7 +326,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.GridPowerProgression'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="actorLevels" data-target="system.gridPowerLevels"
-        title="{{localize 'E20.LevelSelector'}}">
+        data-tooltip="{{localize 'E20.LevelSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}
@@ -330,7 +348,7 @@
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkGeneralPlural'}}
     {{#*inline "item-field-edit"}}
     <a class="trait-selector" data-options="actorLevels" data-target="system.perkLevels.general"
-      title="{{localize 'E20.LevelSelector'}}">
+      data-tooltip="{{localize 'E20.LevelSelector'}}">
       <i class="fas fa-edit"></i>
     </a>
     {{/inline}}
@@ -349,7 +367,7 @@
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.HealthAdjustment'}}
       {{#*inline "item-field-edit"}}
       <a class="trait-selector" data-options="actorLevels" data-target="system.adjustments.health"
-        title="{{localize 'E20.LevelSelector'}}">
+        data-tooltip="{{localize 'E20.LevelSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
       {{/inline}}

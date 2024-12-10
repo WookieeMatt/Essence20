@@ -1,7 +1,7 @@
 <div class="flexrow item-label">
   <div class="item-image" style="flex-grow: 0;">
     <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
-      <a class="rollable" data-roll-type="info" title="{{localize 'E20.ItemRollTitle'}}">
+      <a class="rollable" data-roll-type="info" data-tooltip="{{localize 'E20.ItemRollTitle'}}">
         <i class="fas fa-message-lines"></i>
       </a>
       {{#> roll-button}}
@@ -9,10 +9,28 @@
       {{/roll-button}}
     </div>
   </div>
+  {{#ifEquals item.type "shield"}}
+    <div class="item-image" style="flex-grow: 0;">
+      <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
+        <a class="shield-activate" data-id="{{item._id}}" style="flex-grow: 0;"
+          {{#if system.active}} data-tooltip="{{localize 'E20.ShieldCurrentStateActive'}}" {{else}} data-tooltip="{{localize 'E20.ShieldCurrentStatePassive'}}" {{/if}}
+        >
+          {{#if system.active}}
+            <i class="fas fa-shield-check fa-lg"></i>
+          {{else}}
+            <i class="fas fa-shield fa-lg"></i>
+          {{/if}}
+        </a>
+      </div>
+    </div>
+  {{/ifEquals}}
   {{#if (isdefined item.system.equipped)}}
   <div style="flex-grow: 0;">
-    <input class="inline-edit item-label-checkbox" data-field="system.equipped" type="checkbox"
-      name="armor.{{@index}}.equipped" {{checked item.system.equipped}} title="{{localize 'E20.ItemToggleEquipped'}}" />
+    <input class="inline-edit item-label-checkbox {{#ifEquals item.type "shield"}} shield-equip{{/ifEquals}}"
+      data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped"
+      {{checked item.system.equipped}} data-tooltip="{{localize 'E20.ItemToggleEquipped'}}"
+      {{#if @root.shieldEquipped}} {{#unless item.system.equipped}} disabled {{/unless}} {{/if}}
+    />
   </div>
   {{/if}}
   <div>
@@ -22,8 +40,10 @@
     {{/item-label}}
   </div>
   <div class="item-controls">
-    <a class="item-control item-edit" title="{{localize 'E20.ItemControlEdit'}}"><i class="fas fa-edit"></i></a>
-    <a class="item-control item-delete" title="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
-    <a class="item-control accordion-label"><i class="accordion-icon fas fa-chevron-down"></i></a>
+    <a class="item-control item-edit" data-tooltip="{{localize 'E20.ItemControlEdit'}}"><i class="fas fa-edit"></i></a>
+    <a class="item-control item-delete" data-tooltip="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
+    <a class="item-control accordion-label" data-tooltip="{{ localize 'E20.ItemControlExpand' }}">
+      <i class="accordion-icon fas fa-chevron-down"></i>
+    </a>
   </div>
 </div>

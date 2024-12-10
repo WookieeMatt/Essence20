@@ -4,6 +4,7 @@ import { ArmorItemData } from './armor.mjs';
 import { BondItemData } from './bond.mjs';
 import {ClassFeatureItemData } from './class-feature.mjs';
 import { ContactItemData } from './contact.mjs';
+import { EquipmentPackageItemData } from './equipment-package.mjs';
 import { FeatureItemData } from './feature.mjs';
 import { FocusItemData } from './focus.mjs';
 import { GearItemData } from './gear.mjs';
@@ -16,6 +17,7 @@ import { PerkItemData } from './perk.mjs';
 import { PowerItemData } from './power.mjs';
 import { RoleItemData } from './role.mjs';
 import { RolePointsItemData } from './role-points.mjs';
+import { ShieldItemData } from './shield.mjs';
 import { SpecializationItemData } from './specialization.mjs';
 import { SpellItemData } from './spell.mjs';
 import { TraitItemData } from './trait.mjs';
@@ -30,6 +32,7 @@ export const config = {
   bond: BondItemData,
   classFeature: ClassFeatureItemData,
   contact: ContactItemData,
+  equipmentPackage: EquipmentPackageItemData,
   feature: FeatureItemData,
   focus: FocusItemData,
   gear: GearItemData,
@@ -42,6 +45,7 @@ export const config = {
   power: PowerItemData,
   role: RoleItemData,
   rolePoints: RolePointsItemData,
+  shield: ShieldItemData,
   specialization: SpecializationItemData,
   spell: SpellItemData,
   trait: TraitItemData,

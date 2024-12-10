@@ -1,0 +1,148 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Arctic Operations",
+  "type": "equipmentPackage",
+  "_id": "AAvHOuAYqrRu2IKh",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 45
+    },
+    "items": {
+      "7120": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.BQvohqsmTU5lb7yv",
+        "img": "icons/svg/sword.svg",
+        "name": "Close Combat Blade (Blazing)",
+        "type": "weapon",
+        "items": {
+          "7827": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.72EPUPkKLWbRTMZg",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Blazing",
+            "type": "upgrade",
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 149
+            },
+            "subtype": "weapon",
+            "traits": [
+              "fire"
+            ]
+          },
+          "bd64": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.hb5fKPK5GNTSlKvY",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Close Combat Blade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          }
+        }
+      },
+      "3ef8": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.wXGhkLj8KgHc00eH",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor (Weather Gear[Cold])",
+        "type": "armor",
+        "items": {
+          "2698": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.toav8R7TF92WnQ8G",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Weather Gear",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "cc7c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.pcBbvGPdjOoeUnnj",
+        "img": "systems/essence20/assets/icons/weapons/grenade.svg",
+        "name": "Element Grenade",
+        "type": "weapon",
+        "items": {
+          "f84c": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.lKfj3HhpPrsEZKyG",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Element Grenade Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "energy"
+            },
+            "damageValue": 1,
+            "damageType": "element",
+            "numHands": "1",
+            "numTargets": 12,
+            "radius": 10,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 50,
+              "value": 20
+            },
+            "shiftDown": 0
+          }
+        }
+      },
+      "d72e": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.XsDCBLNrVYHeOxbN",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Survival (Arctic) Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733531158699,
+    "modifiedTime": 1733531365841,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!AAvHOuAYqrRu2IKh"
+}

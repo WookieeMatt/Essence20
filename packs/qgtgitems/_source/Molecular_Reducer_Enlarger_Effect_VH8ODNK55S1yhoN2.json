@@ -1,0 +1,50 @@
+{
+  "folder": "ZTp6EuBaSUEjnMhq",
+  "name": "Molecular Reducer/Enlarger Effect",
+  "type": "weaponEffect",
+  "_id": "VH8ODNK55S1yhoN2",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 37
+    },
+    "classification": {
+      "skill": "technology",
+      "style": "energy"
+    },
+    "damageType": "blunt",
+    "damageValue": 1,
+    "isSpecialized": false,
+    "numHands": 2,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": null,
+      "value": 75
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733537757049,
+    "modifiedTime": 1733538113325,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!VH8ODNK55S1yhoN2"
+}

@@ -1,0 +1,86 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Toxo-Viper Branch",
+  "type": "equipmentPackage",
+  "_id": "aHSy7Grf8NUoa7qJ",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 92
+    },
+    "items": {
+      "b925": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.zsnFggIsHDIG2t5N",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Ballistic Armor (Experimental and Poison Resistance)",
+        "type": "armor",
+        "items": {
+          "d9b9": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.8t6bdhzNWHZaCUmy",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Experimental",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 100
+            },
+            "subtype": "armor",
+            "traits": [
+              "temperamental"
+            ]
+          },
+          "e36b": {
+            "uuid": "Compendium.essence20.cobra_codex.Item.TLTJHkOpPC07D2dB",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Poison Resistance",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "Cobra Codex",
+              "page": 101
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      }
+    },
+    "alternateAccess": "Experimental Division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733510035669,
+    "modifiedTime": 1733510102461,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!aHSy7Grf8NUoa7qJ"
+}

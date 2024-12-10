@@ -1,0 +1,50 @@
+{
+  "folder": "IyQyTl89rRHKP9iR",
+  "name": "Footman's Flail Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "FZqIQe8UdKXCfmYj",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 76
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "maneuver",
+    "damageValue": 0,
+    "isSpecialized": false,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733068162272,
+    "modifiedTime": 1733068219390,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!FZqIQe8UdKXCfmYj"
+}
