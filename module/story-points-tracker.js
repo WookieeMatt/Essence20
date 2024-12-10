@@ -220,8 +220,7 @@ Hooks.on('dragEndStoryPointsTracker', (app) => {
 // Init the button in the controls for toggling the dialog
 Hooks.on("getSceneControlButtons", (controls) => {
   if (setting("sptShow") == 'toggle' && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
-    let tokenControls = controls.find(control => control.name === "token");
-    tokenControls.tools.push({
+    controls.tokens.tools.toggleDialog = {
       name: "toggleDialog",
       title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
       icon: "fas fa-circle-s",
@@ -238,6 +237,6 @@ Hooks.on("getSceneControlButtons", (controls) => {
           game.StoryPointsTracker.closeSpt();
         }
       },
-    });
+    };
   }
 });
