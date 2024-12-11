@@ -19,6 +19,7 @@ export const migrateWorld = async function() {
       });
       reloadNeeded = true;
     }
+
     if (["giJoe", "pony", "powerRanger", "transformer"].includes(invalidActor.type)) {
       await invalidActor.update({
         "type": "playerCharacter",
@@ -307,6 +308,7 @@ export const migrateActorData = async function(actor, compendiumActor) {
   if (["giJoe", "pony", "powerRanger", "transformer"].includes(actor.type)) {
     updateData['type'] = 'playerCharacter';
   }
+
   // Migrate Owned Items
   if (!actor.items) {
     return updateData;
