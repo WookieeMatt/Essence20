@@ -1,4 +1,4 @@
-{{!-- Skill header and shift selector --}}
+{{!-- Skill header --}}
 <div class="flexrow skill-header" style="background-color: {{@root.system.color}}50">
   <span class="skill-roll">
     <a
@@ -10,32 +10,23 @@
     </a>
   </span>
   <span class="skill-name">{{lookup @root.config.skills skill}}</span>
+  <a class="item-create add-specialization" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.AddSpecialization' }}">
+    <i class="fas fa-plus"></i>
+  </a>
 </div>
 
 <div class="skill-body">
-  {{!-- Mod and Spec inputs --}}
   <div class="shift-select">
     <select name="system.skills.{{skill}}.shift">
       {{selectOptions @root.config.skillShifts selected=fields.shift}}
     </select>
-    <span for="system.skills.{{skill}}.modifier">+</span>
+    <span class="modifier-plus" for="system.skills.{{skill}}.modifier">+</span>
     <input class="one-digit-input" type="number" name="system.skills.{{skill}}.modifier" value="{{fields.modifier}}" min="0" step="1" />
 
-    {{#ifEquals @root.actor.type 'npc'}}
+    {{#inArray '["companion", "npc", "vehicle", "zord"]' @root.actor.type}}
     <span class="specialized-label">{{localize 'E20.RollIsSpecialized'}}:</span>
     <input class="specialized-checkbox" type="checkbox" name="system.skills.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
-    {{/ifEquals}}
-  </div>
-
-  {{!-- Only PCs and NPCs get Specializations. Update this as new PC types are added. --}}
-  {{#inArray '["companion", "playerCharacter", "npc"]' @root.actor.type}}
-
-  {{!-- Specializations header --}}
-  <div class="specializations-header">
-    <span>{{localize 'E20.ItemTypeSpecializationPlural'}}</span>
-    <a class="item-create" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
-      <i class="fas fa-plus"></i>
-    </a>
+    {{/inArray}}
   </div>
 
   {{!-- Specializations list --}}
@@ -44,7 +35,7 @@
     <li class="item specializations-list" data-item-id="{{specialization._id}}">
       <div class="flexrow specializations-item">
         <span class="item-button-container">
-          {{#ifEquals @root.actor.type 'npc'}}
+          {{#inArray '["companion", "npc", "vehicle", "zord"]' @root.actor.type}}
           {{!-- NPCs can have unspecialized specializations, but PCs are always specialized --}}
           <a
             class="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}"
@@ -58,18 +49,18 @@
             data-shift-up ="{{../fields.shiftDown}}" data-shift-down ="{{../fields.shiftDown}}"
             data-shift="{{../fields.shift}}" data-specialization-name="{{specialization.name}}" data-is-specialized="true" data-tooltip="{{ localize 'E20.SkillRollTitle'}}"
           >
-          {{/ifEquals}}
+          {{/inArray}}
             <i class="fas fa-dice-d20"></i>
           </a>
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
-        {{#ifEquals @root.actor.type 'npc'}}
+        {{#inArray '["companion", "npc", "vehicle", "zord"]' @root.actor.type}}
         <select class="inline-edit" style="flex-grow: 0;" data-field="system.shift" name="system.shift">
           {{selectOptions @root.config.skillShifts selected=specialization.system.shift}}
         </select>
         <span class="specialized-label" style="flex-grow: 0;">{{localize 'E20.RollIsSpecialized'}}:</span>
         <input class="inline-edit specialized-checkbox" type="checkbox" data-field="system.isSpecialized" name="specialization.system.isSpecialized" {{checked specialization.system.isSpecialized}} data-dtype="Boolean"/>
-        {{/ifEquals}}
+        {{/inArray}}
         <span class="item-button-container">
           <a class="item-control item-delete" data-tooltip="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
         </span>
@@ -77,6 +68,4 @@
     </li>
     {{/each}}
   </ol>
-
-  {{/inArray}}
 </div>
