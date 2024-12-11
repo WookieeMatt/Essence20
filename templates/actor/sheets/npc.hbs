@@ -4,7 +4,12 @@
 
   {{!-- Tabs --}}
   <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" style="border-color: {{system.color}};" data-tab="main"> {{ localize "E20.TabMain" }}</a>
+    {{#if system.isNPC}}
+      <a class="item" style="border-color: {{system.color}};" data-tab="npc"> {{ localize "E20.TabNPC" }}</a>
+    {{/if}}
+    {{#if system.isContact}}
+      <a class="item" style="border-color: {{system.color}};" data-tab="contact"> {{ localize "E20.TabContact" }}</a>
+    {{/if}}
     {{#if system.canTransform}}
       <a class="item" style="border-color: {{system.color}};" data-tab="altmode">{{ localize "E20.TabAltMode" }}</a>
     {{/if}}
@@ -13,8 +18,8 @@
 
   {{!-- Actor Sheet Body --}}
   <section class="sheet-body flexcol">
-    {{!-- Main Tab --}}
-    <div class="tab main flexcol" data-group="primary" data-tab="main">
+    {{!-- NPC Tab --}}
+    <div class="tab main flexcol" data-group="primary" data-tab="npc">
       <div class="npc-row">
         <div class="npc-essence-scores">
           {{!-- NPC Essence Scores --}}
@@ -65,6 +70,10 @@
       </div>
     </div>
 
+    {{!-- Contact Tab --}}
+    <div class="tab contact" data-group="primary" data-tab="contact">
+
+    </div>
     {{!-- Alt Mode Tab --}}
     <div class="tab altmode" data-group="primary" data-tab="altmode">
       {{> "systems/essence20/templates/actor/parts/misc/energon.hbs"}}
