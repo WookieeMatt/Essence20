@@ -1,32 +1,32 @@
 <form autocomplete="off" onsubmit="event.preventDefault();">
   <div class="flexcol">
-    {{#inArray '["powerRanger"]' actor.type}}
+    {{#if system.CanMorph}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanMorph'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canMorph" name="system.canMorph" {{checked system.canMorph}} />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/inArray}}
+    {{/if}}
   </div>
   <div class="flexcol">
-    {{#inArray '["pony", "npc"]' actor.type}}
+    {{#if system.canSpellcast}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanSpellcast'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canSpellcast" name="system.canSpellcast" {{checked system.canSpellcast}}/>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/inArray}}
+    {{/if}}
   </div>
   <div class="flexcol">
-    {{#ifEquals actor.type 'transformer'}}
+    {{#if system.canTransform}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanTransform'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canTransform" name="system.canTransform" {{checked system.canTransform}}/>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifEquals}}
+    {{/if}}
   </div>
 </form>
