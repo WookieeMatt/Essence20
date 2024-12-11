@@ -1,4 +1,4 @@
-{{!-- Skill header and shift selector --}}
+{{!-- Skill header --}}
 <div class="flexrow skill-header" style="background-color: {{@root.system.color}}50">
   <span class="skill-roll">
     <a
@@ -10,15 +10,17 @@
     </a>
   </span>
   <span class="skill-name">{{lookup @root.config.skills skill}}</span>
+  <a class="item-create add-specialization" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.AddSpecialization' }}">
+    <i class="fas fa-plus"></i>
+  </a>
 </div>
 
 <div class="skill-body">
-  {{!-- Mod and Spec inputs --}}
   <div class="shift-select">
     <select name="system.skills.{{skill}}.shift">
       {{selectOptions @root.config.skillShifts selected=fields.shift}}
     </select>
-    <span for="system.skills.{{skill}}.modifier">+</span>
+    <span class="modifier-plus" for="system.skills.{{skill}}.modifier">+</span>
     <input class="one-digit-input" type="number" name="system.skills.{{skill}}.modifier" value="{{fields.modifier}}" min="0" step="1" />
 
     {{#ifEquals @root.actor.type 'npc'}}
@@ -29,14 +31,6 @@
 
   {{!-- Only PCs and NPCs get Specializations. Update this as new PC types are added. --}}
   {{#inArray '["companion", "giJoe", "powerRanger", "npc", "transformer", "pony"]' @root.actor.type}}
-
-  {{!-- Specializations header --}}
-  <div class="specializations-header">
-    <span>{{localize 'E20.ItemTypeSpecializationPlural'}}</span>
-    <a class="item-create" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
-      <i class="fas fa-plus"></i>
-    </a>
-  </div>
 
   {{!-- Specializations list --}}
   <ol class="items-list"></ol>
