@@ -1,15 +1,12 @@
 {
   "TYPES": {
    "Actor": {
-      "giJoe": "GI JOE",
-      "powerRanger": "Power Ranger",
+      "playerCharacter": "Player Character",
       "npc": "NPC",
       "threat": "Threat",
       "vehicle": "Vehicle",
       "zord": "Zord",
       "megaform": "Megaform",
-      "transformer": "Transformer",
-      "pony": "Pony",
       "companion": "Companion"
     },
     "Item": {

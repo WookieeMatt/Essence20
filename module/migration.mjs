@@ -19,6 +19,13 @@ export const migrateWorld = async function() {
       });
       reloadNeeded = true;
     }
+
+    if (["giJoe", "pony", "powerRanger", "transformer"].includes(invalidActor.type)) {
+      await invalidActor.update({
+        "type": "playerCharacter",
+      });
+      reloadNeeded = true;
+    }
   }
 
   if (reloadNeeded) {
@@ -148,28 +155,30 @@ export const migrateActorData = async function(actor, compendiumActor) {
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
   if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
     const role = getItemsOfType('role', actor.items)[0];
-    for (const armorType of role.system.armors.qualified) {
-      updateData[`system.qualified.armors.${armorType}`] = true;
-    }
+    if (role) {
+      for (const armorType of role.system.armors.qualified) {
+        updateData[`system.qualified.armors.${armorType}`] = true;
+      }
 
-    for (const armorType of role.system.armors.trained) {
-      updateData[`system.trained.armors.${armorType}`] = true;
-    }
+      for (const armorType of role.system.armors.trained) {
+        updateData[`system.trained.armors.${armorType}`] = true;
+      }
 
-    for (const armorType of role.system.upgrades.armors.trained) {
-      updateData[`system.trained.upgrades.armors.${armorType}`] = true;
-    }
+      for (const armorType of role.system.upgrades.armors.trained) {
+        updateData[`system.trained.upgrades.armors.${armorType}`] = true;
+      }
 
-    for (const weaponType of role.system.weapons.qualified) {
-      updateData[`system.qualified.weapons.${weaponType}`] = true;
-    }
+      for (const weaponType of role.system.weapons.qualified) {
+        updateData[`system.qualified.weapons.${weaponType}`] = true;
+      }
 
-    for (const weaponType of role.system.weapons.trained) {
-      updateData[`system.trained.weapons.${weaponType}`] = true;
-    }
+      for (const weaponType of role.system.weapons.trained) {
+        updateData[`system.trained.weapons.${weaponType}`] = true;
+      }
 
-    if (role.system.version =='giJoe') {
-      updateData[`system.canQualify`] = true;
+      if (role.system.version =='giJoe') {
+        updateData[`system.canQualify`] = true;
+      }
     }
   }
 
@@ -294,6 +303,10 @@ export const migrateActorData = async function(actor, compendiumActor) {
       const id = await createId(actor.system.actors);
       updateData[`${pathPrefix}.${id}`] = entry;
     }
+  }
+
+  if (["giJoe", "pony", "powerRanger", "transformer"].includes(actor.type)) {
+    updateData['type'] = 'playerCharacter';
   }
 
   // Migrate Owned Items
