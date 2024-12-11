@@ -1,0 +1,97 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Ballista",
+  "type": "weapon",
+  "_id": "vGpMgg04pFdfXUV4",
+  "img": "icons/weapons/artillery/ballista-wood-green.webp",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "items": {
+      "dbde": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.UmrjGv7dLO6UESL9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Ballista Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 3,
+        "damageType": "sharp",
+        "numHands": 6,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 1500,
+          "value": 450
+        },
+        "shiftDown": 0
+      },
+      "cca5": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.yJHMDPMtfSsVLzDJ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Ballista Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 0,
+        "damageType": "knocProne",
+        "numHands": 6,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 1500,
+          "value": 450
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "other",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "armorPiercing",
+      "reload",
+      "sharp"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733071788490,
+    "modifiedTime": 1733076487921,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!vGpMgg04pFdfXUV4"
+}

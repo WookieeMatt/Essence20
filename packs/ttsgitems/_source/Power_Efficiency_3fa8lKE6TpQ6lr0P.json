@@ -1,0 +1,42 @@
+{
+  "folder": "1pniIJKClYawi7Bc",
+  "name": "Power Efficiency",
+  "type": "power",
+  "_id": "3fa8lKE6TpQ6lr0P",
+  "img": "systems/essence20/assets/icons/items/powers.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 26
+    },
+    "actionType": "free",
+    "canActivate": false,
+    "hasVariableCost": false,
+    "maxPowerCost": null,
+    "powerCost": null,
+    "selectionLimit": 1,
+    "type": "grid",
+    "usesInterval": "perScene",
+    "usesPer": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733102879026,
+    "modifiedTime": 1733102885247,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!3fa8lKE6TpQ6lr0P"
+}

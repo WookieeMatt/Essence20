@@ -1,0 +1,109 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Rifle (Flashlight and Scope)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 141
+    },
+    "items": {
+      "e273": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 400,
+          "value": 100
+        },
+        "shiftDown": 0
+      },
+      "4a84": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.BWtmIdj7rUkmfw4r",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Flashlight",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Medium or Large",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": []
+      },
+      "d837": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.cBiD2lBLRwnxu8Rx",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Scope",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic",
+      "martialArts",
+      "sniper"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733531855373,
+    "modifiedTime": 1733532351898,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "r5iMecYl3BNrHyoS",
+  "sort": 500000,
+  "_key": "!items!r5iMecYl3BNrHyoS"
+}

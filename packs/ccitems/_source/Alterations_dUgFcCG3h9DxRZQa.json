@@ -4,16 +4,19 @@
   "folder": null,
   "type": "Item",
   "_id": "dUgFcCG3h9DxRZQa",
-  "sort": 0,
+  "sort": 600000,
   "color": null,
   "flags": {},
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "3.3.0",
-    "coreVersion": "11.307",
+    "coreVersion": "12.331",
     "createdTime": 1694728946354,
-    "modifiedTime": 1694735973934,
-    "lastModifiedBy": "Mvvtv1SHd99VKNXD"
+    "modifiedTime": 1733511923675,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "compendiumSource": null,
+    "duplicateSource": null
   },
+  "description": "",
   "_key": "!folders!dUgFcCG3h9DxRZQa"
 }

@@ -1,0 +1,35 @@
+{
+  "folder": "90Lz4xuaubskSVR3",
+  "name": "Limited Infiltration (Burglary) Kit",
+  "type": "gear",
+  "_id": "0pL8x4GRMoMuBoa6",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 90
+    },
+    "gearType": "kits",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733508077303,
+    "modifiedTime": 1733508085184,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!0pL8x4GRMoMuBoa6"
+}

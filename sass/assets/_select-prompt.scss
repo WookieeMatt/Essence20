@@ -1,0 +1,15 @@
+@use 'variables' as v;
+
+.essence20 .choice-buttons {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+
+  .choice {
+    align-items: center;
+    display: flex;
+    gap: 0.5em;
+    width: 100%;
+  }
+}

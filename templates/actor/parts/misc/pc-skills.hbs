@@ -27,7 +27,9 @@
     </div>
     <div class="essence-header">
       {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string}}
-      <span>Actions: {{numActions.movement}}M, {{numActions.standard}}S, {{numActions.free}}F</span>
+      <span data-tooltip="{{localize 'E20.SpeedActionsTitle'}}">
+        {{localize "E20.SpeedActionsLabel"}}: {{numActions.movement}}{{localize "E20.SpeedActionsLabelMovement"}}, {{numActions.standard}}{{localize "E20.SpeedActionsLabelStandard"}}, {{numActions.free}}{{localize "E20.SpeedActionsLabelFree"}}
+      </span>
     </div>
     {{#each @root.config.skillsByEssence.speed as |skill|}}
       {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='speed' skill=skill fields=(lookup @root.system.skills skill)}}

@@ -1,0 +1,95 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Artillery Lobber (Eruptive)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/mortar.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Effect also has Trip</p>",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "items": {
+      "fa89": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.6SNB0WmDWMUkpr2X",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Artillery Lobber Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 12,
+        "radius": 10,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 100
+        },
+        "shiftDown": 0
+      },
+      "029b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.0Q21VhUK1PNu1pTM",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Eruptive",
+        "type": "upgrade",
+        "availability": "limited",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Explosive",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 149
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "science",
+      "shift": "d2"
+    },
+    "traits": [
+      "antiTank",
+      "indirect",
+      "reload",
+      "sharp",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733532591423,
+    "modifiedTime": 1733532608223,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "Uxzvus9gionXvNGA",
+  "sort": 0,
+  "_key": "!items!Uxzvus9gionXvNGA"
+}

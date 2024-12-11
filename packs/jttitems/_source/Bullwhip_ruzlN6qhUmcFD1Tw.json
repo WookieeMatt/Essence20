@@ -1,0 +1,118 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Bullwhip",
+  "type": "weapon",
+  "_id": "ruzlN6qhUmcFD1Tw",
+  "img": "systems/essence20/assets/icons/weapons/whip.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "items": {
+      "29e3": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.p6VEFj9p5SBacqWF",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Bullwhip Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "5c85": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.DIeoWDNLsYvM1lAG",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Bullwhip Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "grapple",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "bf33": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.0LzJYRHDpWfjCzoo",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Bullwhip Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 3,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "Acriobatics d4",
+      "skill": "athletics",
+      "shift": "d4"
+    },
+    "traits": [
+      "sharp",
+      "stun"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733076222871,
+    "modifiedTime": 1733076311139,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!ruzlN6qhUmcFD1Tw"
+}

@@ -1,0 +1,176 @@
+{
+  "folder": "nd6a4Lx1EANaEG4A",
+  "name": "Urban Operations",
+  "type": "equipmentPackage",
+  "_id": "sFaIgcUVRL14vdIi",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 47
+    },
+    "items": {
+      "1808": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.LnLZk1m5h7t8PvlR",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Ballistic Armor (Sentry System)",
+        "type": "armor",
+        "items": {
+          "552f": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.uCvk20c4PzwoP3Ta",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Sentry System",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Not Computerized",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": [
+              "computerized"
+            ]
+          }
+        }
+      },
+      "881e": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.icm4N4qPjspNKYKy",
+        "img": "icons/svg/item-bag.svg",
+        "name": "SBR Carbine",
+        "type": "weapon",
+        "items": {
+          "b249": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.m2Fi2yDGswr8dEP1",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "SBR Carbine Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": 2,
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 80,
+              "value": 50
+            },
+            "shiftDown": 0
+          },
+          "9a6f": {
+            "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.Ee4ORM1DiSissCpY",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "SBR Carbine Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": 1,
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 80,
+              "value": 50
+            },
+            "shiftDown": 1
+          }
+        }
+      },
+      "c611": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.xthnRWfhbfXvpmZN",
+        "img": "systems/essence20/assets/icons/weapons/hammer.svg",
+        "name": "Close Combat Heavy Bludgeoning",
+        "type": "weapon",
+        "items": {
+          "8fa4": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.JWm06vX4u4QSDf4D",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Close Combat Heavy Bludgeoning Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "blunt",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "a47f": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.SdBelSCDxdO7XM0j",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Close Combat Heavy Bludgeoning Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 2,
+            "damageType": "blunt",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          }
+        }
+      },
+      "ad01": {
+        "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.kmGtc2baNI0qI9Lz",
+        "img": "systems/essence20/assets/icons/items/gear.svg",
+        "name": "Limited Alertness (Situational Awareness) Kit",
+        "type": "gear"
+      }
+    },
+    "alternateAccess": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733536164703,
+    "modifiedTime": 1733536255100,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!sFaIgcUVRL14vdIi"
+}

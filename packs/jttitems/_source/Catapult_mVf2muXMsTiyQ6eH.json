@@ -1,0 +1,98 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Catapult",
+  "type": "weapon",
+  "_id": "mVf2muXMsTiyQ6eH",
+  "img": "icons/weapons/artillery/catapult-simple.webp",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 78
+    },
+    "items": {
+      "a8ac": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.paVmTBawQZW2uzT1",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Catapult Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 3,
+        "damageType": "blunt",
+        "numHands": 8,
+        "numTargets": 1,
+        "radius": 25,
+        "range": {
+          "min": 100,
+          "reachMultiplier": 0,
+          "long": 1000,
+          "value": 500
+        },
+        "shiftDown": 0
+      },
+      "fb13": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.AYBMlxhJWlFAaZ2i",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Catapult Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 8,
+        "numTargets": 1,
+        "radius": 25,
+        "range": {
+          "min": 100,
+          "reachMultiplier": 0,
+          "long": 1000,
+          "value": 500
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "other",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "science",
+      "shift": "d2"
+    },
+    "traits": [
+      "blunt",
+      "fire",
+      "inaccurate",
+      "reload"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733071981541,
+    "modifiedTime": 1733076496900,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!mVf2muXMsTiyQ6eH"
+}

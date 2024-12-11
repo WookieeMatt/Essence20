@@ -1,0 +1,136 @@
+{
+  "folder": "ejSKHeVNjeFLZCiJ",
+  "name": "Submachine Gun (Silencer)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/submachine_gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "<p>Alternate Effect 2 is a 15 ft cone</p>",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 143
+    },
+    "items": {
+      "5c3c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.pdpUa2U52bIHR2lV",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Submachine Gun Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 20
+        },
+        "shiftDown": 0
+      },
+      "f052": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.TP98Peth2QvLIjZz",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Submachine Gun Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 80,
+          "value": 20
+        },
+        "shiftDown": 1
+      },
+      "fdfa": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.zwDdll2y89k4as0j",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Submachine Gun Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 3,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": null,
+          "value": 0
+        },
+        "shiftDown": 1
+      },
+      "3e6c": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.rSP76BWjYaifJLIZ",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Sliencer",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": [
+          "silent"
+        ]
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733509341510,
+    "modifiedTime": 1733509377782,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "iOyJiO5hWi5ARNNk",
+  "sort": 600000,
+  "_key": "!items!iOyJiO5hWi5ARNNk"
+}

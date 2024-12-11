@@ -1,0 +1,115 @@
+{
+  "folder": "MHkJRqa9JFTMYVqF",
+  "name": "Small Thrown Weapon (Aerodynamics)",
+  "type": "weapon",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 142
+    },
+    "items": {
+      "870a": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.bxT99cXuxn9UPeNT",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Small Thrown Weapon Effect (Blunt)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "blunt",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 20,
+          "value": 10
+        },
+        "shiftDown": 0
+      },
+      "372b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.GqfmPxPjAP8Xoll9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Small Thrown Weapon Effect (Sharp)",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 20,
+          "value": 10
+        },
+        "shiftDown": 0
+      },
+      "33a1": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.NoENOcMYq0YkkhAk",
+        "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+        "name": "Aerodynamics",
+        "type": "upgrade",
+        "availability": "standard",
+        "benefit": "",
+        "description": "",
+        "prerequisite": "Grenade or Thrown",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": 148
+        },
+        "subtype": "weapon",
+        "traits": []
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "blunt",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "isPoison": false,
+    "isToxin": false,
+    "transformerMode": "modeBotMode"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733535326249,
+    "modifiedTime": 1733535345070,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "_id": "WYVuwQwX2QCuWSD1",
+  "sort": 0,
+  "_key": "!items!WYVuwQwX2QCuWSD1"
+}

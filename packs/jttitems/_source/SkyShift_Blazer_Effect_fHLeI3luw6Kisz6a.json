@@ -1,0 +1,50 @@
+{
+  "folder": "Z14gp56Nw4rK6LkY",
+  "name": "SkyShift Blazer Effect",
+  "type": "weaponEffect",
+  "_id": "fHLeI3luw6Kisz6a",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 80
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "element",
+    "damageValue": 3,
+    "isSpecialized": false,
+    "numHands": 2,
+    "numTargets": 1,
+    "radius": 15,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 180,
+      "value": 75
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733092828598,
+    "modifiedTime": 1733092880309,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!fHLeI3luw6Kisz6a"
+}

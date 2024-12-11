@@ -135,6 +135,33 @@ Handlebars.registerHelper('sum', function () {
   return total;
 });
 
+Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+  switch (operator) {
+  case '==':
+    return (v1 == v2) ? options.fn(this) : options.inverse(this);
+  case '===':
+    return (v1 === v2) ? options.fn(this) : options.inverse(this);
+  case '!=':
+    return (v1 != v2) ? options.fn(this) : options.inverse(this);
+  case '!==':
+    return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+  case '<':
+    return (v1 < v2) ? options.fn(this) : options.inverse(this);
+  case '<=':
+    return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+  case '>':
+    return (v1 > v2) ? options.fn(this) : options.inverse(this);
+  case '>=':
+    return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+  case '&&':
+    return (v1 && v2) ? options.fn(this) : options.inverse(this);
+  case '||':
+    return (v1 || v2) ? options.fn(this) : options.inverse(this);
+  default:
+    return options.inverse(this);
+  }
+});
+
 Handlebars.registerHelper('isdefined', function (value) {
   return value !== undefined;
 });
@@ -159,6 +186,25 @@ Handlebars.registerHelper('itemsContainType', function (items, type, options) {
   }
 
   return options.inverse(this);
+});
+
+Handlebars.registerHelper('assign', function (varName, varValue, options) {
+  if (!options.data.root) {
+    options.data.root = {};
+  }
+
+  options.data.root[varName] = varValue;
+});
+
+Handlebars.registerHelper('formatBooleanList', function (objectToList, friendlyLookup, listType) {
+  const unformattedList = [];
+  for (const [key, isTrue] of Object.entries(objectToList)) {
+    if (isTrue) {
+      unformattedList.push(friendlyLookup[key]);
+    }
+  }
+
+  return game.i18n.getListFormatter({ style: "long", type: listType }).format(unformattedList);
 });
 
 /* -------------------------------------------- */

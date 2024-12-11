@@ -7,7 +7,7 @@ import { parseId } from "../helpers/utils.mjs";
  * @param {Power} power The Power being dropped
  * @param {Function} dropFunc The function to call to complete the Power drop
  */
-export async function powerUpdate(actor, power, dropFunc) {
+export async function onPowerDrop(actor, power, dropFunc) {
   const powerUuid = parseId(power.uuid);
   let timesTaken = 0;
 
@@ -15,8 +15,11 @@ export async function powerUpdate(actor, power, dropFunc) {
     if (actorItem.type == 'power' && actorItem.system.originalId == powerUuid) {
       timesTaken++;
       if (power.system.selectionLimit == timesTaken) {
-        ui.notifications.error(game.i18n.localize('E20.PowerAlreadyTaken'));
-        return;
+        ui.notifications.error(game.i18n.format(
+          'E20.PowerAlreadyTaken',
+          {actorName: actor.name, selectionLimit: power.system.selectionLimit}),
+        );
+        return false;
       }
     }
   }
@@ -24,7 +27,7 @@ export async function powerUpdate(actor, power, dropFunc) {
   const newPowerList = await dropFunc();
   const newPower = newPowerList[0];
 
-  await newPower.update ({
+  return await newPower.update ({
     "system.originalId": powerUuid,
   });
 }

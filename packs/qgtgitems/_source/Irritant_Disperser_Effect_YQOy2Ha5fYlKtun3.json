@@ -1,0 +1,50 @@
+{
+  "folder": "ZTp6EuBaSUEjnMhq",
+  "name": "Irritant Disperser Effect",
+  "type": "weaponEffect",
+  "_id": "YQOy2Ha5fYlKtun3",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Quartermaster's Guide to Gear",
+      "page": 34
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "explosive"
+    },
+    "damageType": "blindingBlast",
+    "damageValue": 0,
+    "isSpecialized": false,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 50,
+      "value": 20
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733513729035,
+    "modifiedTime": 1733529435553,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!YQOy2Ha5fYlKtun3"
+}

@@ -34,7 +34,7 @@ export class RollDialog {
     const template = "systems/essence20/templates/dialog/roll-dialog.hbs";
     const snag =
       skillDataset.snag ||
-      E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(dataset.shift);
+      E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(skillDataset.shift);
     const edge = skillDataset.edge;
     const html = await renderTemplate(
       template,
@@ -52,7 +52,9 @@ export class RollDialog {
 
     return new Promise(resolve => {
       const data = {
-        title: this._localize('E20.RollDialogTitle', {actor: actor.name}),
+        title: this._localize('E20.RollDialogTitle', {
+          actor: actor.name, skill: E20.originSkills[dataset.skill], shift: E20.skillShifts[skillDataset.shift],
+        }),
         content: html,
         buttons: {
           normal: {

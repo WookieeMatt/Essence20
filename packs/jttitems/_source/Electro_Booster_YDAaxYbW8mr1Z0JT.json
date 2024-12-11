@@ -1,0 +1,97 @@
+{
+  "folder": "18xeUCvy64Mw8gy4",
+  "name": "Electro Booster",
+  "type": "weapon",
+  "_id": "YDAaxYbW8mr1Z0JT",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 74
+    },
+    "items": {
+      "2c2b": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.dRNQgf8TyIJuDVIC",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Electro Booster Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 45
+        },
+        "shiftDown": 0
+      },
+      "d498": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.EMDDmQv890esQJxF",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Electro Booster Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 3,
+        "damageType": "stun",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 45
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "electric",
+      "powerWeapon",
+      "stun"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733029503943,
+    "modifiedTime": 1733029678668,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!YDAaxYbW8mr1Z0JT"
+}

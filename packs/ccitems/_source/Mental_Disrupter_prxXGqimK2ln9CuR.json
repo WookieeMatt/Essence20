@@ -1,0 +1,82 @@
+{
+  "folder": "R893HRFUk5f11lBF",
+  "name": "Mental Disrupter",
+  "type": "weapon",
+  "_id": "prxXGqimK2ln9CuR",
+  "img": "systems/essence20/assets/icons/weapons/poison.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 94
+    },
+    "items": {
+      "a8b1": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.YsKqEYbjwLK0pyHM",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Mental Disrupter Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "deception",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "frightened",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "standard",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "isPoison": true,
+    "poisonApplication": {
+      "contact": false,
+      "ingested": true,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "Science d2",
+      "skill": "infiltration",
+      "shift": "d2"
+    },
+    "traits": [
+      "consumable",
+      "ongoing",
+      "poison"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null,
+    "poisonType": "poison"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733593645700,
+    "modifiedTime": 1733593712403,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!prxXGqimK2ln9CuR"
+}

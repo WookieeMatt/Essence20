@@ -1,0 +1,178 @@
+{
+  "folder": "tvRdJiobogkCTToE",
+  "name": "Command Branch",
+  "type": "equipmentPackage",
+  "_id": "g39o74UIiMTqKvKA",
+  "img": "systems/essence20/assets/icons/items/equipment_package.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 90
+    },
+    "items": {
+      "680b": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.aN0Vv0C9sUaALbyS",
+        "img": "systems/essence20/assets/icons/items/armor.svg",
+        "name": "Tactical Armor (Terrifying)",
+        "type": "armor",
+        "items": {
+          "11d6": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.tXHd0LBkVCB2QPPO",
+            "img": "systems/essence20/assets/icons/items/upgrade_armor.svg",
+            "name": "Terrifying",
+            "type": "upgrade",
+            "armorBonus": {
+              "defense": "toughness",
+              "value": 0
+            },
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 156
+            },
+            "subtype": "armor",
+            "traits": []
+          }
+        }
+      },
+      "95f4": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.03LaFsxctdvH35ev",
+        "img": "systems/essence20/assets/icons/weapons/baseball-bat.svg",
+        "name": "Close Combat Bludgeoning (Manipulative)",
+        "type": "weapon",
+        "items": {
+          "fb3e": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.Ty7ZBubtYM7BIwbT",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Close Combat Bludgeoning Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "blunt",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 0
+          },
+          "e8e5": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.2X1w4UM04U6LliE0",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Close Combat Bludgeoning Alternate Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "finesse",
+              "style": "melee"
+            },
+            "damageValue": 1,
+            "damageType": "stun",
+            "numHands": "1",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 1,
+              "long": null,
+              "value": null
+            },
+            "shiftDown": 1
+          },
+          "e3e8": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.IJBeoPW2yUDWh2Wh",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Manipulative (add Effect)",
+            "type": "upgrade",
+            "availability": "limited",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 149
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      },
+      "74fc": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.oS6WZnwl6SLebqTH",
+        "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+        "name": "Rifle (Laser Sight)",
+        "type": "weapon",
+        "items": {
+          "e273": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.w5ttn6zTXISDWqtD",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Rifle Effect",
+            "type": "weaponEffect",
+            "classification": {
+              "skill": "targeting",
+              "style": "projectile"
+            },
+            "damageValue": 1,
+            "damageType": "sharp",
+            "numHands": "2",
+            "numTargets": 1,
+            "radius": 0,
+            "range": {
+              "min": null,
+              "reachMultiplier": 0,
+              "long": 400,
+              "value": 100
+            },
+            "shiftDown": 0
+          },
+          "671e": {
+            "uuid": "Compendium.essence20.gi_joe_crb.Item.Yo1la1g1Mc3fNBbH",
+            "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+            "name": "Laser Sight",
+            "type": "upgrade",
+            "availability": "standard",
+            "benefit": "",
+            "description": "",
+            "prerequisite": "Ballistic",
+            "source": {
+              "book": "GI Joe Core Rulebook",
+              "page": 148
+            },
+            "subtype": "weapon",
+            "traits": []
+          }
+        }
+      }
+    },
+    "alternateAccess": "Cobra Corps Division"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "VEn5sPQRoWgUw9qd": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "essence20",
+    "systemVersion": "4.5.0",
+    "createdTime": 1733494295183,
+    "modifiedTime": 1733494466595,
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+  },
+  "_key": "!items!g39o74UIiMTqKvKA"
+}
