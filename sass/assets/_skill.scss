@@ -17,36 +17,56 @@
   white-space: nowrap;
   overflow: hidden;
   color: white;
+  margin-top: 2px;
+}
+
+.essence20 .skill-header .add-specialization {
+  flex-grow: 0;
+  margin-right: 8px;
+  margin-top: 3px;
 }
 
 .essence20 .skill-body {
-  margin-left: 10px;
-  margin-right: 10px;
+  display: flex;
+  flex-direction: column;
 }
 
 .essence20 .skill-body .shift-select {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  justify-content: center;
   margin-top: 5px;
+  margin-bottom: 5px;
+  align-items: center;
 }
 
 .essence20 .skill-body .shift-select > * {
   vertical-align: middle;
 }
 
-.essence20 .skill-body .shift-select .specialized-label {
-  margin-left: 5px;
+.essence20 .skill-body .shift-select .modifier-plus {
+  display: flex;
+  align-items: center;
 }
 
-.essence20 .skill-body .shift-select .specialized-checkbox {
-  margin-left: 2px;
+.essence20 .skill-body .specialized-checkbox {
+  margin: 0;
 }
 
 .essence20 .skill-body .specializations-list {
-  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .essence20 .skill-body .specializations-list .specializations-item {
   align-items: center;
   gap: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.essence20 .skill-body .specializations-list .specializations-item .item-button-container {
+  padding-top: 3px;
 }
 
 .essence20 .skill-body .specializations-header {
