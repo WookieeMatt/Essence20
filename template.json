@@ -2,14 +2,10 @@
   "Actor": {
     "types": [
       "playerCharacter",
-      "powerRanger",
       "megaform",
       "npc",
       "vehicle",
       "zord",
-      "giJoe",
-      "transformer",
-      "pony",
       "companion"
     ],
     "htmlFields": ["notes"]

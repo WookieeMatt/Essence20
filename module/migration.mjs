@@ -19,6 +19,12 @@ export const migrateWorld = async function() {
       });
       reloadNeeded = true;
     }
+    if (["giJoe", "pony", "powerRanger", "transformer"].includes(invalidActor.type)) {
+      await invalidActor.update({
+        "type": "playerCharacter",
+      });
+      reloadNeeded = true;
+    }
   }
 
   if (reloadNeeded) {
