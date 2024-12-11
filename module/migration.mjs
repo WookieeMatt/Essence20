@@ -52,7 +52,6 @@ export const migrateWorld = async function() {
   const items = game.items.map(i => [i, true])
     .concat(Array.from(game.items.invalidDocumentIds).map(id => [game.items.getInvalid(id), false]));
   for (const [item, valid] of items) {
-    console.log(item)
     try {
       const source = valid ? item.toObject() : game.data.items.find(i => i._id === item.id);
 
@@ -60,6 +59,7 @@ export const migrateWorld = async function() {
         item.delete();
         continue;
       }
+
       if (item.type == "contact") {
         item.delete();
         break;
