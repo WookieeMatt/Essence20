@@ -328,6 +328,16 @@ export async function onRoleDrop(actor, role, dropFunc) {
     });
   }
 
+  if (role.system.version =='powerRangers') {
+    await actor.update({
+      "system.canMorph": true,
+    });
+  } else if (role.system.version =='myLittlePony') {
+    await actor.update({
+      "system.canSpellcast": true,
+    });
+  }
+
   if (role.system.version == 'myLittlePony') {
     await _selectEssenceProgression(actor, role, dropFunc);
   } else if (role.system.hasSpecialAdvancement) {
@@ -397,6 +407,16 @@ export async function onRoleDelete(actor, role) {
     await actor.update({
       [essenceString]: essenceValue,
       [essenceMaxString]: essenceMaxValue,
+    });
+  }
+
+  if (role.system.version =='powerRangers') {
+    await actor.update({
+      "system.canMorph": false,
+    });
+  } else if (role.system.version =='myLittlePony') {
+    await actor.update({
+      "system.canSpellcast": false,
     });
   }
 

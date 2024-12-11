@@ -73,7 +73,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prepareWeaponEffectSkills(actorData, context);
 
     // Prepare number of actions
-    if (['giJoe', 'npc', 'pony', 'powerRanger', 'transformer'].includes(actorData.type)) {
+    if (actorData.type == "playerCharacter") {
       context.numActions = getNumActions(this.actor);
     }
 
@@ -90,7 +90,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
 
     // Prepare PC skill rank allocation
-    if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+    if (this.actor.type == "playerCharacter") {
       this._prepareSkillRankAllocation(context);
     }
 
@@ -103,7 +103,7 @@ export class Essence20ActorSheet extends ActorSheet {
 
     if (this.actor.isOwner) {
       // Crossover Button for Character Sheets
-      if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+      if (["npc", 'playerCharacter'].includes(this.actor.type)) {
         buttons = [
           {
             label: game.i18n.localize('E20.Crossover'),
