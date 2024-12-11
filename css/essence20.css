@@ -936,22 +936,6 @@ body.game .window-app {
   width: 50%;
 }
 
-.essence20 .npc-skills.vehicle {
-  width: 22%;
-}
-
-.essence20 .npc-items.vehicle {
-  width: 78%;
-}
-
-.essence20 .npc-skills.zord {
-  width: 23%;
-}
-
-.essence20 .npc-items.zord {
-  width: 77%;
-}
-
 .essence20 .skill-separator {
   display: flex;
   align-items: center;
