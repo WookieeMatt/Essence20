@@ -106,10 +106,10 @@ export class Essence20ActorSheet extends ActorSheet {
       if (["npc", 'playerCharacter'].includes(this.actor.type)) {
         buttons = [
           {
-            label: game.i18n.localize('E20.Crossover'),
+            label: game.i18n.localize('E20.SheetOptions'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => new SheetOptions(this, ev).render(true),
+            onclick: (ev) => new SheetOptions(this.actor, ev).render(true),
           },
           ...buttons,
         ];
