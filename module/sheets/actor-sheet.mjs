@@ -241,7 +241,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const altModes = [];
     const armors = [];
     const bonds = [];
-    const contacts = [];
     const features = []; // Used by Zords
     const focuses = [];
     const gears = [];
@@ -286,9 +285,6 @@ export class Essence20ActorSheet extends ActorSheet {
         break;
       case 'bond':
         bonds.push(i);
-        break;
-      case 'contact':
-        contacts.push(i);
         break;
       case 'feature':
         features.push(i);
@@ -400,7 +396,6 @@ export class Essence20ActorSheet extends ActorSheet {
     context.altModes = altModes;
     context.armors = armors;
     context.bonds = bonds;
-    context.contacts = contacts;
     context.features = features;
     context.gears = gears;
     context.focuses = focuses;
