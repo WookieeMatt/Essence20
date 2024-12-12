@@ -8,13 +8,11 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
   }
 
   static DEFAULT_OPTIONS = {
-    actions: {},
-    id: "shet-options",
+    allowCustom: false,
+    id: "sheet-options",
     classes: [
-      "essence20",
-      "subconfig",
-      "trait-selector",
       "window-app",
+      "sheet-options",
     ],
     tag: "form",
     title: "E20.SheetOptions",
@@ -23,13 +21,14 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
       submitOnChange: false,
       closeOnSubmit: true,
     },
-    minimum: 0,
-    maximum: null,
+    position: {
+      width: 400,
+      height: "auto"
+    }
   };
 
   static PARTS = {
     form: {
-      scrollable: "",
       template: "systems/essence20/templates/app/sheet-options.hbs",
     },
     footer: {

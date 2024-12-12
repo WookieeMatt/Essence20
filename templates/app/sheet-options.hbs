@@ -15,31 +15,34 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     </div>
   {{/ifEquals}}
-  <div class="flexcol">
-    {{#ifNotEquals role.system.version 'powerRanger'}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanMorph'}}
-      {{#*inline "item-field-inputs"}}
-        <input type="checkbox" id="canMorph" name="system.canMorph" {{checked system.canMorph}} />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifNotEquals}}
-  </div>
-  <div class="flexcol">
-    {{#ifNotEquals role.system.version 'myLittlePony'}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanSpellcast'}}
-      {{#*inline "item-field-inputs"}}
-        <input type="checkbox" id="canSpellcast" name="system.canSpellcast" {{checked system.canSpellcast}}/>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifNotEquals}}
-  </div>
-  <div class="flexcol">
-    {{#unless altMode}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanTransform'}}
-      {{#*inline "item-field-inputs"}}
-        <input type="checkbox" id="canTransform" name="system.canTransform" {{checked system.canTransform}}/>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/unless}}
+  <div class="stats-container flexrow flex-group-center" style="min-width:fit-content; border-color: {{system.color}};"id="crossoverOptions">
+    <label for="crossoverOptions">{{localize 'E20.CrossoverOptions'}}</label>
+    <div class="flexcol">
+      {{#ifNotEquals role.system.version 'powerRanger'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanMorph'}}
+        {{#*inline "item-field-inputs"}}
+          <input type="checkbox" id="canMorph" name="system.canMorph" {{checked system.canMorph}} />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifNotEquals}}
+    </div>
+    <div class="flexcol">
+      {{#ifNotEquals role.system.version 'myLittlePony'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanSpellcast'}}
+        {{#*inline "item-field-inputs"}}
+          <input type="checkbox" id="canSpellcast" name="system.canSpellcast" {{checked system.canSpellcast}}/>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/ifNotEquals}}
+    </div>
+    <div class="flexcol">
+      {{#unless altMode}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanTransform'}}
+        {{#*inline "item-field-inputs"}}
+          <input type="checkbox" id="canTransform" name="system.canTransform" {{checked system.canTransform}}/>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/unless}}
+    </div>
   </div>
 </div>
