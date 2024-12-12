@@ -1,7 +1,7 @@
+import SheetOptions from "../apps/sheet-options.mjs";
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
-import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareSystemActors, onSystemActorsDelete, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/vehicle-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
@@ -109,7 +109,7 @@ export class Essence20ActorSheet extends ActorSheet {
             label: game.i18n.localize('E20.Crossover'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => showCrossoverOptions(this, ev),
+            onclick: (ev) => new SheetOptions(this).render(true),
           },
           ...buttons,
         ];

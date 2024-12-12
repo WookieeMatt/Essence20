@@ -1,32 +1,45 @@
-<form autocomplete="off" onsubmit="event.preventDefault();">
+<div class="trait-selector">
+  {{#ifEquals actor.type "npc"}}
+    <div class="flexcol">
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.IsNPC'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="checkbox" id="isNPC" name="system.isNPC" {{checked system.isNPC}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    </div>
+    <div class="flexcol">
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.IsContact'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="checkbox" id="isContact" name="system.isContact" {{checked system.isContact}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    </div>
+  {{/ifEquals}}
   <div class="flexcol">
-    {{#if system.CanMorph}}
-    {{else}}
+    {{#ifNotEquals role.system.version 'powerRanger'}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanMorph'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canMorph" name="system.canMorph" {{checked system.canMorph}} />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/if}}
+    {{/ifNotEquals}}
   </div>
   <div class="flexcol">
-    {{#if system.canSpellcast}}
-    {{else}}
+    {{#ifNotEquals role.system.version 'myLittlePony'}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanSpellcast'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canSpellcast" name="system.canSpellcast" {{checked system.canSpellcast}}/>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/if}}
+    {{/ifNotEquals}}
   </div>
   <div class="flexcol">
-    {{#if system.canTransform}}
-    {{else}}
+    {{#unless altMode}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanTransform'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canTransform" name="system.canTransform" {{checked system.canTransform}}/>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/if}}
+    {{/unless}}
   </div>
-</form>
+</div>
