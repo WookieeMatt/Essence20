@@ -102,7 +102,7 @@ export class Essence20ActorSheet extends ActorSheet {
     let buttons = super._getHeaderButtons();
 
     if (this.actor.isOwner) {
-      // Crossover Button for Character Sheets
+      // Sheet Options Button for Character Sheets
       if (["npc", 'playerCharacter'].includes(this.actor.type)) {
         buttons = [
           {
