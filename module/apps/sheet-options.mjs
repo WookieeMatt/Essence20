@@ -2,7 +2,7 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actorSheet) {
+  constructor(actorSheet, ev) {
     super(actorSheet);
     this._actorSheet = actorSheet;
   }
@@ -17,14 +17,14 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
     tag: "form",
     title: "E20.SheetOptions",
     form: {
-        handler: SheetOptions.myFormHandler,
+      handler: SheetOptions.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },
     position: {
       width: 400,
-      height: "auto"
-    }
+      height: "auto",
+    },
   };
 
   static PARTS = {
@@ -34,7 +34,7 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
     footer: {
       template: "templates/generic/form-footer.hbs",
     },
-  }
+  };
 
   get title() {
     return game.i18n.localize(this.options.title) || super.title;
@@ -47,6 +47,7 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
     if (origin.length > 1) {
       context.altMode = true;
     }
+
     context.actor = this._actorSheet.actor;
     context.system = this._actorSheet.actor.system;
     context.buttons = [
