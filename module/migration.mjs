@@ -67,6 +67,11 @@ export const migrateWorld = async function() {
         continue;
       }
 
+      if (item.type == "contact") {
+        item.delete();
+        break;
+      }
+
       const updateData = await migrateItemData(source);
       if (!foundry.utils.isEmpty(updateData)) {
         console.log(`Migrating Item document ${item.name}`);
@@ -155,6 +160,7 @@ export const migrateActorData = async function(actor, compendiumActor) {
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
   if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
     const role = getItemsOfType('role', actor.items)[0];
+
     if (role) {
       for (const armorType of role.system.armors.qualified) {
         updateData[`system.qualified.armors.${armorType}`] = true;
@@ -333,6 +339,10 @@ export const migrateActorData = async function(actor, compendiumActor) {
       } else {
         await itemToDelete.delete();
       }
+    }
+
+    if (itemToDelete.type == "contact") {
+      await itemToDelete.delete();
     }
 
     let itemUpdate = await migrateItemData(itemToDelete, fullActor);
