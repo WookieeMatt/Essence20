@@ -2,10 +2,10 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actorSheet, ev) {
+  constructor(actor, ev) {
     console.log(ev);
-    super(actorSheet);
-    this._actorSheet = actorSheet;
+    super(actor);
+    this._actor = actor;
   }
 
   static DEFAULT_OPTIONS = {
@@ -21,10 +21,6 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
       handler: SheetOptions.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
-    },
-    position: {
-      width: 400,
-      height: "auto",
     },
   };
 
@@ -43,14 +39,14 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.role = await getItemsOfType("role", this._actorSheet.actor.items);
-    const origin = await getItemsOfType("altMode", this._actorSheet.actor.items);
+    context.role = await getItemsOfType("role", this._actor.items);
+    const origin = await getItemsOfType("altMode", this._actor.items);
     if (origin.length > 1) {
       context.altMode = true;
     }
 
-    context.actor = this._actorSheet.actor;
-    context.system = this._actorSheet.actor.system;
+    context.actor = this._actor;
+    context.system = this._actor.system;
     context.buttons = [
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
@@ -60,9 +56,9 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
   static async myFormHandler(event, form, formData) {
 
     for (const [key, value] of Object.entries(formData.object)) {
-      this._actorSheet.actor.update({
+      this._actor.update({
         [key]: value,
-      }).then(this._actorSheet.render(false));
+      });
     }
   }
 }
