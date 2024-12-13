@@ -2,8 +2,7 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actor, ev) {
-    console.log(ev);
+  constructor(actor) {
     super(actor);
     this._actor = actor;
   }
@@ -54,7 +53,6 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
   }
 
   static async myFormHandler(event, form, formData) {
-
     for (const [key, value] of Object.entries(formData.object)) {
       this._actor.update({
         [key]: value,
