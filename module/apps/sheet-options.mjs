@@ -2,8 +2,9 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actor) {
+  constructor(actor, ev) {
     super(actor);
+    this._ev = ev;
     this._actor = actor;
   }
 
