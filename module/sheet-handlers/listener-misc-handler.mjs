@@ -83,7 +83,7 @@ export async function performRoll(event, actor, childRoller=None) {
     }
 
     if (item) {
-      return item.roll(dataset, actor, childRoller);
+      return item.roll(dataset, childRoller);
     }
   }
 }
