@@ -1,4 +1,4 @@
-import { _checkForAltModes, _hangUpSelect, _showOriginSkillDialog, setOriginValues } from "../sheet-handlers/background-handler.mjs";
+import { _checkForAltModes, _hangUpSelect, _showOriginSkillPrompt, setOriginValues } from "../sheet-handlers/background-handler.mjs";
 import { _attachSelectedItemOptionHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
@@ -85,7 +85,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       _checkForAltModes(this._actor, this._item, this._previousSelection1, selection.value, this._dropFunc);
       this.close();
     } else {
-      _showOriginSkillDialog(this._actor, this._item, selection.value, this._dropFunc);
+      _showOriginSkillPrompt(this._actor, this._item, selection.value, this._dropFunc);
       this.close();
     }
   }
