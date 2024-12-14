@@ -26,6 +26,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs",
     "systems/essence20/templates/actor/parts/misc/collapsible-perk-container.hbs",
     "systems/essence20/templates/actor/parts/misc/collapsible-perk-container-header.hbs",
+    "systems/essence20/templates/actor/parts/misc/collapsible-perk-subcontainer.hbs",
     "systems/essence20/templates/actor/parts/misc/common.hbs",
     "systems/essence20/templates/actor/parts/misc/defenses.hbs",
     "systems/essence20/templates/actor/parts/misc/energon.hbs",

@@ -1,0 +1,6 @@
+{{#if (lookup @root.perks perkType)}}
+  <div class="collapsible-item-container collapsible-item-subcontainer">
+    {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-container-header.hbs" perks=(lookup @root.perks perkType) perkTypeStr=(lookup @root.config.perkTypes perkType)}}
+    {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-container.hbs" perks=(lookup @root.perks perkType)}}
+  </div>
+{{/if}}

@@ -2,13 +2,11 @@
   {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" title="E20.ItemTypePerkPlural" dataType="perk"}}
 
   <div class="items-list">
-    {{#each @root.config.perkTypes as |perkTypeStr perkType|}}
-      {{#if (lookup @root.perks perkType)}}
-        <div class="collapsible-item-container collapsible-item-subcontainer">
-          {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-container-header.hbs" perks=(lookup @root.perks perkType) perkTypeStr=perkTypeStr}}
-          {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-container.hbs" perks=(lookup @root.perks perkType)}}
-        </div>
-      {{/if}}
-    {{/each}}
+    {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-subcontainer.hbs" perkType="influence"}}
+    {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-subcontainer.hbs" perkType="origin"}}
+    {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-subcontainer.hbs" perkType="general"}}
+    {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-subcontainer.hbs" perkType="faction"}}
+    {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-subcontainer.hbs" perkType="division"}}
+    {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-subcontainer.hbs" perkType="role"}}
   </div>
 </div>
