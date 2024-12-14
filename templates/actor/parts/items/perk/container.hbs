@@ -1,5 +1,14 @@
-{{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks title='E20.ItemTypePerkPlural' dataType='perk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
+<div class="collapsible-item-container" style="border-color: {{system.color}};">
+  {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" title="E20.ItemTypePerkPlural" dataType="perk"}}
+
+  <div class="items-list">
+    {{#each @root.config.perkTypes as |perkTypeStr perkType|}}
+      {{#if (lookup @root.perks perkType)}}
+        <div class="collapsible-item-container collapsible-item-subcontainer">
+          {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-container-header.hbs" perks=(lookup @root.perks perkType) perkTypeStr=perkTypeStr}}
+          {{> "systems/essence20/templates/actor/parts/misc/collapsible-perk-container.hbs" perks=(lookup @root.perks perkType)}}
+        </div>
+      {{/if}}
+    {{/each}}
+  </div>
+</div>

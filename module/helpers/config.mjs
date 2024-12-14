@@ -581,6 +581,7 @@ E20.damageTypes = {
 
 // Perk types
 E20.perkTypes = {
+  contact: "E20.PerkContact",
   division: "E20.PerkDivision",
   faction: "E20.PerkFaction",
   general: "E20.PerkGeneral",
