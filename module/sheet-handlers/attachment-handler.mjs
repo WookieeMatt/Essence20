@@ -150,7 +150,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 }
 
 /**
- * Processes the options resulting from _showAttachmentDialog()
+ * Processes the options resulting from ChoicesPrompt
  * @param {Actor} actor The Actor receiving the attachment
  * @param {UUID} itemId The uuid of the item we are attaching to
  * @param {Function} dropFunc The function to call to complete the drop

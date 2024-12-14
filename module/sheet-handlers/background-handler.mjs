@@ -57,16 +57,16 @@ export async function onOriginDrop(actor, origin, dropFunc) {
     }
   }
 
-  await _showOriginEssenceDialog(actor, origin, dropFunc);
+  await _showOriginEssencePrompt(actor, origin, dropFunc);
 }
 
 /**
- * Displays a dialog for selecting an Essence for the given Origin.
+ * Displays a prompt for selecting an Essence for the given Origin.
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Object} origin The Origin being dropped
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-async function _showOriginEssenceDialog(actor, origin, dropFunc) {
+async function _showOriginEssencePrompt(actor, origin, dropFunc) {
   const choices = {};
   for (const essence of origin.system.essences) {
     choices[essence] = {
@@ -98,13 +98,13 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
 }
 
 /**
- * Displays a dialog for selecting a Skill for the given Origin.
+ * Displays a prompt for selecting a Skill for the given Origin.
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Object} origin The Origin being dropped
- * @param {String} selectedEssence The essence selected from _showOriginEssenceDialog()
+ * @param {String} selectedEssence The essence selected from _showOriginEssencePrompt()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-export async function _showOriginSkillDialog(actor, origin, selectedEssence, dropFunc) {
+export async function _showOriginSkillPrompt(actor, origin, selectedEssence, dropFunc) {
   if (!selectedEssence) {
     ui.notifications.error(game.i18n.localize('E20.OriginSelectNoEssence'));
     return;
@@ -147,8 +147,8 @@ export async function _showOriginSkillDialog(actor, origin, selectedEssence, dro
  * Determine if the Origin has an altMode and if there is more than one and a selection needs to be made.
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
- * @param {String} essence The essence selected in the _showOriginEssenceDialog()
- * @param {String} selectedSkill The skill selected from _showOriginSkillDialog()
+ * @param {String} essence The essence selected in the _showOriginEssencePrompt()
+ * @param {String} selectedSkill The skill selected from _showOriginSkillPrompt()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
 
@@ -184,8 +184,8 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
  * Updates the actor with the information selected for the Origin
  * @param {Actor} actor The Actor receiving the Origin
  * @param {Origin} origin The Origin being dropped
- * @param {String} essence The essence selected in the _showOriginEssenceDialog()
- * @param {String} skill the skill selected in the _showOriginSkillEssenceDialog()
+ * @param {String} essence The essence selected in the _showOriginEssencePrompt()
+ * @param {String} skill the skill selected in the _showOriginSkillEssencePrompt()
  * @param {Function} dropFunc The function to call to complete the Origin drop
  * @param {String} selectedAltMode The selected altMode resulting from _checkForAltModes()
  */
@@ -245,7 +245,7 @@ export async function setOriginValues(actor, origin, essence, skill, dropFunc, s
 }
 
 /**
- * Displays a dialog for selecting a Hang Up from an Influence
+ * Displays a Prompt for selecting a Hang Up from an Influence
  * @param {Actor} actor The Actor receiving the Influence
  * @param {Influence} influence The Influence being dropped
  * @param {Object} newInfluence The new Influence created as part of the drop
