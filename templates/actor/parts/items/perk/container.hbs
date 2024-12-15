@@ -1,5 +1,5 @@
-{{#ifCond alwaysShow "||" (lookup @root.perks perkType)}}
-  {{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=(lookup @root.perks perkType) title=(lookup @root.config.perkTypes perkType) dataType="perk"}}
+{{#ifCond alwaysShow "||" perks}}
+  {{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=perks title=title dataType="perk"}}
     {{#*inline "expand-details" item}}
       {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
     {{/inline}}
