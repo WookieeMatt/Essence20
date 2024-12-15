@@ -1,41 +1,13 @@
-{{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks.influence title='E20.PerkInfluence' dataType='influencePerk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
+{{#ifCond alwaysShow "||" (lookup @root.perks perkType)}}
+  {{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=(lookup @root.perks perkType) title=(lookup @root.config.perkTypes perkType) dataType="perk"}}
+    {{#*inline "expand-details" item}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
+    {{/inline}}
 
-{{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks.origin title='E20.PerkOrigin' dataType='originPerk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
-
-{{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks.general title='E20.PerkGeneral' dataType='generalPerk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
-
-{{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks.faction title='E20.PerkFaction' dataType='factionPerk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
-
-{{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks.division title='E20.PerkDivision' dataType='divisionPerk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
-
-{{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks.role title='E20.PerkRole' dataType='rolePerk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
-
-{{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks.contact title='E20.PerkContact' dataType='contactPerk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
+    {{#*inline "plus-button" item}}
+      <a class="item-create" data-type={{dataType}} data-perk-type={{perkType}} data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
+        <i class="fas fa-plus"></i>
+      </a>
+    {{/inline}}
+  {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
+{{/ifCond}}

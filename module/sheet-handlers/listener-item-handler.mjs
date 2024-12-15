@@ -34,8 +34,13 @@ export async function onItemCreate(event, actor) {
     system: data,
   };
 
-  // Remove the type from the dataset since it's in the itemData.type prop.
-  delete itemData.system["type"];
+  if (type == 'perk') {
+    // Each Perk type has its own add button, so handle that
+    itemData.system.type = data.perkType;
+  } else {
+    // Remove the type from the dataset since it's in the itemData.type prop.
+    delete itemData.system["type"];
+  }
 
   // Set the parent item type for nested items
   let parentItem = null;
