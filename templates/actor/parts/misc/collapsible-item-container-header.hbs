@@ -6,9 +6,12 @@
   <div style="flex-grow: 0; white-space: nowrap;">
     {{localize title}}
     {{#ifNotEquals hidePlusButton 'true'}}
-    <a class="item-create" data-type={{dataType}} data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
-      <i class="fas fa-plus"></i>
-    </a>
+      {{#> plus-button dataType=dataType parentId=parentId}}
+        {{!-- Custom plus button here, or use default below --}}
+        <a class="item-create" data-type={{dataType}} data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
+          <i class="fas fa-plus"></i>
+        </a>
+      {{/plus-button}}
     {{/ifNotEquals}}
   </div>
 

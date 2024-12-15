@@ -1,5 +1,13 @@
-{{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.perks title='E20.ItemTypePerkPlural' dataType='perk'}}
-  {{#*inline "expand-details" item}}
-    {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
+{{#ifCond alwaysShow "||" perks}}
+  {{#> "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=perks title=title dataType="perk"}}
+    {{#*inline "expand-details" item}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/details.hbs"}}
+    {{/inline}}
+
+    {{#*inline "plus-button" item}}
+      <a class="item-create" data-type={{dataType}} data-perk-type={{perkType}} data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
+        <i class="fas fa-plus"></i>
+      </a>
+    {{/inline}}
+  {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
+{{/ifCond}}
