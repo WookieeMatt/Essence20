@@ -42,8 +42,14 @@
     </div>
 
     {{!-- Perks Tab --}}
-    <div class="tab perks" data-group="primary" data-tab="perks">
-      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs"}}
+    <div class="tab perks flexcol" data-group="primary" data-tab="perks">
+      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="influence" perks=@root.perks.influence title="E20.PerkInfluence" alwaysShow="true" hidePlusButton="true" defaultText="E20.DefaultTextInfluencePerk"}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="origin" perks=@root.perks.origin title="E20.PerkOrigin" alwaysShow="true" hidePlusButton="true" defaultText="E20.DefaultTextOriginPerk"}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="general" perks=@root.perks.general title="E20.PerkGeneral" alwaysShow="true"}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="faction" perks=@root.perks.faction title="E20.PerkFaction"}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="division" perks=@root.perks.division title="E20.PerkDivision"}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="contact" perks=@root.perks.contact title="E20.PerkContact"}}
+      {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="role" perks=@root.perks.role title="E20.PerkRole" alwaysShow="true" hidePlusButton="true" defaultText="E20.DefaultTextRolePerk"}}
     </div>
 
     {{!-- Zords Tab --}}
@@ -60,7 +66,7 @@
       {{> "systems/essence20/templates/actor/parts/misc/defenses.hbs"}}
     </div>
 
-    {{!-- Origin Tab --}}
+    {{!-- Background Tab --}}
     <div class="tab background flexcol" data-group="primary" data-tab="background">
       {{> "systems/essence20/templates/actor/parts/misc/background.hbs"}}
     </div>
