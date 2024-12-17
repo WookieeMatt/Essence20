@@ -40,6 +40,9 @@
     {{/item-label}}
   </div>
   <div class="item-controls">
+    {{#> extra-controls item=item}}
+    {{!-- Extra control buttons --}}
+    {{/extra-controls}}
     <a class="item-control item-edit" data-tooltip="{{localize 'E20.ItemControlEdit'}}"><i class="fas fa-edit"></i></a>
     <a class="item-control item-delete" data-tooltip="{{localize 'E20.ItemControlDelete'}}"><i class="fas fa-trash"></i></a>
     <a class="item-control accordion-label" data-tooltip="{{ localize 'E20.ItemControlExpand' }}">

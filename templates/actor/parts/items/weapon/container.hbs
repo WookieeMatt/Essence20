@@ -11,6 +11,15 @@
     {{item.name}}
   {{/inline}}
 
+  {{#*inline "extra-controls" item}}
+    <a class="item-create" data-type="weaponEffect" data-parent-id="{{item._id}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }} {{localize 'E20.WeaponEffect'}}">
+      <i class="fas fa-burst"></i>
+    </a>
+    <a class="item-create" data-type="upgrade" data-parent-id="{{item._id}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }} {{localize 'E20.Upgrade'}}">
+      <i class="fas fa-up"></i>
+    </a>
+  {{/inline}}
+
   {{#*inline "subcontainers" parentItem}}
     {{!-- Weapon Effects --}}
     {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentItem=parentItem}}
@@ -39,5 +48,4 @@
       {{/inline}}
     {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
   {{/inline}}
-
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}
