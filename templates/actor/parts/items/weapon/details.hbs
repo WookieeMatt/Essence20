@@ -2,7 +2,19 @@
 
 <div class="chip-section">
   <span class="chip" name="chip.weapon.classification.size">{{lookup @root.config.weaponSizes item.system.classification.size}} </span>
-   <span class="chip" name="chip.weapon.availability">{{lookup @root.config.availabilities item.system.availability}}</span>
+  <span class="chip" name="chip.weapon.availability">{{lookup @root.config.availabilities item.system.availability}}</span>
+
+  {{#if item.system.usesPerScene}}
+    <span class="chip" name="chip.weapon.usesPerScene">{{localize "E20.WeaponUsesPerScene"}}: {{item.system.usesPerScene}}</span>
+  {{/if}}
+
+  {{#if item.system.isPoison}}
+    <span class="chip" name="chip.weapon.isPoison">
+    {{formatBooleanList item.system.poisonApplication @root.config.poisonApplications 'disjunction'}}
+    {{lookup @root.config.poisonTypes item.system.poisonType}}
+    </span>
+  {{/if}}
+
   {{#each item.system.traits as |trait|}}
     <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
   {{/each}}
