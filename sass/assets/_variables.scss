@@ -32,3 +32,8 @@ $boxshadow: 4px 4px 0 black;
 
 // Spacing
 $padding: 6px;
+
+:theme-light {
+    --color-light-3:  #ffffff;
+    --input-text-color: var(--color-light-3)
+}

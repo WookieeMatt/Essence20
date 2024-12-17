@@ -1,4 +1,5 @@
 import ChoicesPrompt from "../apps/choices-prompt.mjs";
+import MultiSelect from "../apps/multi-select.mjs";
 import { getItemsOfType, getShiftedSkill } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
@@ -57,7 +58,7 @@ export async function onOriginDrop(actor, origin, dropFunc) {
     }
   }
 
-  await _showOriginEssenceDialog(actor, origin, dropFunc);
+  await _showOriginEssenceMultiSelect(actor, origin, dropFunc);
 }
 
 /**
@@ -66,13 +67,23 @@ export async function onOriginDrop(actor, origin, dropFunc) {
  * @param {Object} origin The Origin being dropped
  * @param {Function} dropFunc The function to call to complete the Origin drop
  */
-async function _showOriginEssenceDialog(actor, origin, dropFunc) {
-  const choices = {};
+async function _showOriginEssenceMultiSelect(actor, origin, dropFunc) {
+  const essenceChoices = {};
   for (const essence of origin.system.essences) {
-    choices[essence] = {
+    essenceChoices[essence] = {
       chosen: false,
       value: essence,
       label: CONFIG.E20.originEssences[essence],
+    };
+  }
+
+  const skillChoices = {};
+  for (const skill of origin.system.skills) {
+    skillChoices[skill] = {
+      chosen: false,
+      essence: CONFIG.E20.skillToEssence[skill],
+      label: CONFIG.E20.originSkills[skill],
+      value: skill,
     };
   }
 
@@ -80,9 +91,17 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
   for (const influence of influences) {
     if (influence.system.skills.length) {
       for (const skill of influence.system.skills) {
+        skillChoices[skill] = {
+          chosen: false,
+          essence: CONFIG.E20.skillToEssence[skill],
+          label: CONFIG.E20.originSkills[skill],
+          value: skill,
+        };
+
         for (const influenceEssence in actor.system.skills[skill].essences) {
           if (actor.system.skills[skill].essences[influenceEssence]) {
-            choices[influenceEssence] = {
+            essenceChoices[influenceEssence] = {
+              chosen: false,
               value: influenceEssence,
               label: CONFIG.E20.originEssences[influenceEssence],
             };
@@ -92,78 +111,11 @@ async function _showOriginEssenceDialog(actor, origin, dropFunc) {
     }
   }
 
-  const prompt = "E20.SelectEssence";
-  const title = "E20.SelectOriginEssence";
-  new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc).render(true);
-}
-
-/**
- * Displays a dialog for selecting a Skill for the given Origin.
- * @param {Actor} actor The Actor receiving the Origin
- * @param {Object} origin The Origin being dropped
- * @param {String} selectedEssence The essence selected from _showOriginEssenceDialog()
- * @param {Function} dropFunc The function to call to complete the Origin drop
- */
-export async function _showOriginSkillDialog(actor, origin, selectedEssence, dropFunc) {
-  if (!selectedEssence) {
-    ui.notifications.error(game.i18n.localize('E20.OriginSelectNoEssence'));
-    return;
-  }
-
-  const choices = {};
-  for (const skill of origin.system.skills) {
-    const essence = CONFIG.E20.skillToEssence[skill];
-    if (selectedEssence == essence) {
-      choices[skill] = {
-        chosen: false,
-        label: CONFIG.E20.originSkills[skill],
-        value: skill,
-      };
-    }
-  }
-
-  const influences = getItemsOfType("influence", actor.items);
-  for (const influence of influences) {
-    if (influence.system.skills) {
-      for (const skill of influence.system.skills) {
-        const essence = CONFIG.E20.skillToEssence[skill];
-        if (selectedEssence == essence) {
-          choices[skill] = {
-            chosen: false,
-            label: CONFIG.E20.originSkills[skill],
-            value: skill,
-          };
-        }
-      }
-    }
-  }
-
-  const prompt = "E20.SelectSkill";
-  const title = "E20.SelectOriginSkill";
-  new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc, selectedEssence).render(true);
-}
-
-/**
- * Determine if the Origin has an altMode and if there is more than one and a selection needs to be made.
- * @param {Actor} actor The Actor receiving the Origin
- * @param {Origin} origin The Origin being dropped
- * @param {String} essence The essence selected in the _showOriginEssenceDialog()
- * @param {String} selectedSkill The skill selected from _showOriginSkillDialog()
- * @param {Function} dropFunc The function to call to complete the Origin drop
- */
-
-export async function _checkForAltModes(actor, origin, essence, selectedSkill, dropFunc) {
-  if (!selectedSkill) {
-    ui.notifications.warn(game.i18n.localize('E20.OriginSelectNoSkill'));
-    return;
-  }
-
-  const choices = {};
+  const altModeChoices = {};
   const altModes = getItemsOfType('altMode', Object.values(origin.system.items));
-
   if (altModes.length > 1) {
     for (const altMode of altModes) {
-      choices[altMode.name] = {
+      altModeChoices[altMode.name] = {
         chosen: false,
         img: altMode.img,
         label: altMode.name,
@@ -171,13 +123,11 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
         value: altMode.name,
       };
     }
-
-    const prompt = "E20.SelectAltMode";
-    const title = "E20.SelectOriginAltMode";
-    new ChoicesPrompt(choices, origin, actor, prompt, title, dropFunc, essence, selectedSkill).render(true);
-  } else {
-    setOriginValues(actor, origin, essence, selectedSkill, dropFunc);
   }
+
+  const prompt = "E20.SelectEssence";
+  const title = "E20.SelectOriginEssence";
+  new MultiSelect(title, prompt, actor, origin, dropFunc, essenceChoices, skillChoices, altModeChoices).render(true);
 }
 
 /**

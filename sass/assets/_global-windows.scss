@@ -39,6 +39,11 @@ body.game .window-app {
   min-height: auto;
 }
 
+.sheet-options {
+  min-width: 400px;
+  min-height: auto;
+}
+
 .directory-list .actor {
   min-width: fit-content;
 }
@@ -114,5 +119,18 @@ body.game .window-app {
 }
 
 .window-app textarea {
+  color: v.$textcolor1;
+}
+
+.window-app select {
+  --input-text-color: v.$textcolor1;
+}
+
+.window-app option {
+  background-color: v.$textcolor2;
+  color: v.$textcolor1;
+}
+
+.window-app input-text-color {
   color: v.$textcolor1;
 }
