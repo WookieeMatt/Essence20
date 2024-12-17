@@ -1,47 +1,59 @@
 {{#if item.system }}
-<div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
-<div class="chip-section">
-  <span class="chip" name="chip.weapon.classification">
-    {{#if parentItem.system.isPoison}}
-      {{formatBooleanList parentItem.system.poisonApplication @root.config.poisonApplications 'disjunction'}}
-      {{lookup @root.config.poisonTypes parentItem.system.poisonType}}
-    {{else}}
-      {{lookup @root.config.skills item.system.classification.skill}}
-      {{lookup @root.config.weaponSizes parentItem.system.classification.size}}
-      {{lookup @root.config.weaponStyles item.system.classification.style}}
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
+  <div class="chip-section">
+    <span class="chip" name="chip.weapon.classification">
+      {{#if parentItem.system.isPoison}}
+        {{formatBooleanList parentItem.system.poisonApplication @root.config.poisonApplications 'disjunction'}}
+        {{lookup @root.config.poisonTypes parentItem.system.poisonType}}
+      {{else}}
+        {{lookup @root.config.skills item.system.classification.skill}}
+        {{lookup @root.config.weaponSizes parentItem.system.classification.size}}
+        {{lookup @root.config.weaponStyles item.system.classification.style}}
+      {{/if}}
+    </span>
+    <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.system.numHands}}</span>
+    <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.system.numTargets}}</span>
+    {{#if item.system.damageValue}}
+    <span class="chip" name="chip.weapon.damageValue">{{localize 'E20.Damage'}}: {{item.system.damageValue}}</span>
     {{/if}}
-  </span>
-  <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.system.numHands}}</span>
-  <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.system.numTargets}}</span>
-  {{#if item.system.damageValue}}
-  <span class="chip" name="chip.weapon.damageValue">{{localize 'E20.Damage'}}: {{item.system.damageValue}}</span>
-  {{/if}}
-  <span class="chip" name="chip.weapon.damageType">{{localize 'E20.DamageType'}}: {{localize (lookup @root.config.damageTypes item.system.damageType)}}</span>
-  {{#if item.system.shiftDown}}
-  <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.system.shiftDown}}</span>
-  {{/if}}
-</div>
+    <span class="chip" name="chip.weapon.damageType">{{localize 'E20.DamageType'}}: {{localize (lookup @root.config.damageTypes item.system.damageType)}}</span>
+    {{#if item.system.shiftDown}}
+    <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.system.shiftDown}}</span>
+    {{/if}}
+    {{#if item.system.range.value}}
+    <span class="chip" name="chip.weapon.range.value">{{localize 'E20.WeaponRange'}}: {{item.system.range.value}}{{#if item.system.range.long}}/{{item.system.range.long}}{{/if}}</span>
+    {{/if}}
+    {{#if item.system.range.min}}
+    <span class="chip" name="chip.weapon.range.min">{{localize 'E20.WeaponRange'}} {{localize 'E20.WeaponRangeMin'}}: {{item.system.range.min}}</span>
+    {{/if}}
+  </div>
 {{else}}
-<div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
-<div class="chip-section">
-  <span class="chip" name="chip.weapon.classification">
-    {{#if parentItem.system.isPoison}}
-      {{formatBooleanList parentItem.system.poisonApplication @root.config.poisonApplications 'disjunction'}}
-      {{lookup @root.config.poisonTypes parentItem.system.poisonType}}
-    {{else}}
-      {{lookup @root.config.skills item.system.classification.skill}}
-      {{lookup @root.config.weaponSizes parentItem.system.classification.size}}
-      {{lookup @root.config.weaponStyles item.system.classification.style}}
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
+  <div class="chip-section">
+    <span class="chip" name="chip.weapon.classification">
+      {{#if parentItem.system.isPoison}}
+        {{formatBooleanList parentItem.system.poisonApplication @root.config.poisonApplications 'disjunction'}}
+        {{lookup @root.config.poisonTypes parentItem.system.poisonType}}
+      {{else}}
+        {{lookup @root.config.skills item.system.classification.skill}}
+        {{lookup @root.config.weaponSizes parentItem.system.classification.size}}
+        {{lookup @root.config.weaponStyles item.system.classification.style}}
+      {{/if}}
+    </span>
+    <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.numHands}}</span>
+    <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.numTargets}}</span>
+    {{#if item.damageValue}}
+    <span class="chip" name="chip.weapon.damageValue">{{localize 'E20.Damage'}}: {{item.damageValue}}</span>
     {{/if}}
-  </span>
-  <span class="chip" name="chip.weapon.numHands">{{localize 'E20.WeaponHands'}}: {{item.numHands}}</span>
-  <span class="chip" name="chip.weapon.numTargets">{{localize 'E20.WeaponTargets'}}: {{item.numTargets}}</span>
-  {{#if item.damageValue}}
-  <span class="chip" name="chip.weapon.damageValue">{{localize 'E20.Damage'}}: {{item.damageValue}}</span>
-  {{/if}}
-  <span class="chip" name="chip.weapon.damageType">{{localize 'E20.DamageType'}}: {{localize (lookup @root.config.damageTypes item.damageType)}}</span>
-  {{#if item.shiftDown}}
-  <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.shiftDown}}</span>
-  {{/if}}
-</div>
+    <span class="chip" name="chip.weapon.damageType">{{localize 'E20.DamageType'}}: {{localize (lookup @root.config.damageTypes item.damageType)}}</span>
+    {{#if item.shiftDown}}
+    <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.shiftDown}}</span>
+    {{/if}}
+    {{#if item.range.value}}
+    <span class="chip" name="chip.weapon.range.value">{{localize 'E20.WeaponRange'}}: {{item.range.value}}{{#if item.range.long}}/{{item.range.long}}{{/if}}</span>
+    {{/if}}
+    {{#if item.range.min}}
+    <span class="chip" name="chip.weapon.range.min">{{localize 'E20.WeaponRange'}} {{localize 'E20.WeaponRangeMin'}}: {{item.range.min}}</span>
+    {{/if}}
+  </div>
 {{/if}}
