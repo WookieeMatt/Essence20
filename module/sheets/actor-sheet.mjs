@@ -250,7 +250,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const magicBaubles = [];
     const megaformTraits = [];
     const origins = []; // Used by PCs
-    const perks = []; // Used by PCs
+    const perks = { all: [] }; // Used by PCs
     const powers = []; // Used by PCs
     let shieldEquipped = false;
     const shields = [];
@@ -321,7 +321,14 @@ export class Essence20ActorSheet extends ActorSheet {
         origins.push(i);
         break;
       case 'perk':
-        perks.push(i);
+        if (perks[i.system.type]) {
+          perks[i.system.type].push(i);
+        } else {
+          perks[i.system.type] = [i];
+        }
+
+        perks.all.push(i);
+
         break;
       case 'power':
         powers.push(i);
