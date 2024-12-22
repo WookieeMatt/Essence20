@@ -45,6 +45,7 @@ function makeSkillFields(essence) {
 export const common = () => ({
   actors: new fields.ObjectField({}),
   color: new fields.ColorField({initial: '#b5b1b1'}),
+  conditioning: makeInt(0),
   energon: new fields.SchemaField({
     dark: new fields.SchemaField({
       value: makeInt(0),
