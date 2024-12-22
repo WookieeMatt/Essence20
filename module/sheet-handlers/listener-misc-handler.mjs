@@ -123,7 +123,7 @@ export async function onRest(actorSheet) {
 
   // Reseting Personal Power
   let powerRestore = 0;
-  if (actor.system.powers.personal.max > 0) {
+  if (actor.system.powers?.personal.max) {
     powerRestore = Math.min(
       actor.system.powers.personal.max,
       (actor.system.powers.personal.value + actor.system.powers.personal.regeneration),
