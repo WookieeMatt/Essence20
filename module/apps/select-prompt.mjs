@@ -44,8 +44,8 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
     const context = await super._prepareContext(options);
     context.choices = this._choices;
     context.buttons = [
-        { type: "submit", label: "E20.AcceptButton" },
-      ];
+      { type: "submit", label: "E20.AcceptButton" },
+    ];
     return context;
   }
 
@@ -54,6 +54,7 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
     for (const [, value] of Object.entries(formData.object)) {
       key = value;
     }
+
     handleActorSelector(this._actor, key, this._event);
   }
 }

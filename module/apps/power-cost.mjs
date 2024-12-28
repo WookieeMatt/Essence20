@@ -45,8 +45,8 @@ export default class PowerCostPrompt extends HandlebarsApplicationMixin(Applicat
     context.power = this._power;
     context.maxPower = this._maxPower;
     context.buttons = [
-        { type: "submit", icon: "fa-solid fa-battery-bolt", label: "E20.PowerRollTitle" },
-      ];
+      { type: "submit", icon: "fa-solid fa-battery-bolt", label: "E20.PowerRollTitle" },
+    ];
     return context;
   }
 
@@ -55,7 +55,8 @@ export default class PowerCostPrompt extends HandlebarsApplicationMixin(Applicat
     for (const [, value] of Object.entries(formData.object)) {
       newCost = value;
     }
-    _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost)
+
+    _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost);
     this.close();
   }
 

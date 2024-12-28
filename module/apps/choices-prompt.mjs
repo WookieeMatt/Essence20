@@ -103,8 +103,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
   }
 
   static async passenger(event, selection) {
-    console.log(selection)
-    _flipDriverAndPassenger( this._actor, this._key, this._funcOrValue, selection.value)
+    _flipDriverAndPassenger( this._actor, this._key, this._funcOrValue, selection.value);
     this.close();
   }
 
