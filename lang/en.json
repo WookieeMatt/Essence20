@@ -671,7 +671,7 @@
     "UsesIntervalTurn": "Turn",
     "VehicleCrew": "Crew",
     "VehicleDialogSwap": "Are you trying to swap a driver and a passenger?",
-    "VehicleDialogSwapTitle": "Flip Driver and Passenger?",
+    "VehicleDialogSwapTitle": "Swap Driver and Passenger?",
     "VehicleDialogSwapSelect": "Who would you like to swap with?",
     "VehicleDrivers": "Drivers",
     "VehicleFirepoints": "Firepoints",
