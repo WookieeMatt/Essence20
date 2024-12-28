@@ -21,7 +21,7 @@
       "smarts",
       "social"
     ],
-    "movementCost": "",
+    "movementCost": {},
     "selectedEssence": "",
     "type": "essence",
     "bonus": null,
