@@ -8,8 +8,8 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
     this._choices = choices;
     this._event = event;
     this._title = title;
-
   }
+
   static DEFAULT_OPTIONS = {
     id: "select-prompt",
     classes: [
