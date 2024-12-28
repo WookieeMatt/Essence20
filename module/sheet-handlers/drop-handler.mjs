@@ -216,7 +216,7 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
  * @param {String} newVehiclePosition The new position that was selected
  * @returns {boolean} allowDrop
  */
-export function verifyDropSelection(targetActor, newVehiclePosition){
+export function verifyDropSelection(targetActor, newRole){
   let numberOfType = 0;
   let allowDrop = false;
   for (const [,passenger] of Object.entries(targetActor.system.actors)) {
