@@ -213,7 +213,7 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
 /**
  *
  * @param {Actor} targetActor Actor that is being dropped on to
- * @param {String} newVehiclePosition The new position that was selected
+ * @param {String} newRole The Vehicle role that was selected
  * @returns {boolean} allowDrop
  */
 export function verifyDropSelection(targetActor, newRole){
