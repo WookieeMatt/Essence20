@@ -254,7 +254,7 @@ export async function setEntryAndAddActor(droppedActor, targetActor, newVehicleP
   };
 
   if (["vehicle", "zord"].includes(targetActor.type)) {
-    entry['vehicleRole'] = newVehiclePosition;
+    entry['vehicleRole'] = newRole;
   }
 
   return addActorIfUnique(droppedActor, targetActor, entry);
