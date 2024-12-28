@@ -10,6 +10,7 @@ export default class PowerCostPrompt extends HandlebarsApplicationMixin(Applicat
     this._powerType = powerType;
     this._title = title;
   }
+
   static DEFAULT_OPTIONS = {
     id: "power-cost",
     classes: [
