@@ -15,7 +15,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     this._title = title;
     this._item = item;
     this._key = key;
-    this._dropFunc = dropFunc
+    this._dropFunc = dropFunc;
     this._staticValue = staticValue;
     this._previousSelection1 = previousSelection1;
     this._previousSelection2 = previousSelection2;
