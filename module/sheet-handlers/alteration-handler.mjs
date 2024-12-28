@@ -1,4 +1,5 @@
 
+import AlterationMovementPrompt from "../apps/alteration-movement.mjs";
 import {
   rememberOptions,
   rememberValues,
@@ -56,10 +57,11 @@ async function _showAlterationCostMovementDialog(actor, alteration, alterationUu
   }
 
   const choices = {};
+  console.log(actor.system.movement)
   for (const movementType in actor.system.movement) {
     let maxValue = 0;
     if (alteration.system.bonusMovementType != movementType) {
-      if (actor.system.movement[movementType].base) {
+      if (actor.system.movement[movementType].base > 0) {
         if (movementType == 'ground') {
           maxValue = (actor.system.movement[movementType].base / 5 - 2);
         }else {
@@ -70,26 +72,14 @@ async function _showAlterationCostMovementDialog(actor, alteration, alterationUu
           chosen: false,
           label: CONFIG.E20.movementTypes[movementType],
           value: 0,
-          maxValue: [maxValue],
+          maxValue: maxValue,
         };
       }
     }
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.AlterationMovementCost'),
-      content: await renderTemplate("systems/essence20/templates/dialog/alteration-movement.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _processAlterationMovementCost(alteration, rememberValues(html), alterationUuid, dropFunc),
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.AlterationMovementCost";
+  new AlterationMovementPrompt(actor, alteration, choices, alterationUuid, title, dropFunc).render(true);
 }
 
 /**
@@ -100,12 +90,12 @@ async function _showAlterationCostMovementDialog(actor, alteration, alterationUu
 * @param {String} alterationUuid The original ID of the Alteration
 * @param {Function} dropFunc The function to call to complete the Alteration drop
 */
-async function _processAlterationMovementCost(actor, alteration, options, alterationUuid, dropFunc) {
+export async function _processAlterationMovementCost(actor, alteration, data, alterationUuid, dropFunc) {
   let additionalBonusMovement = 0;
 
-  for (const movementReductionType in options) {
-    const movementReduction = Number(options[movementReductionType].value);
-    const movementReductionMax = options[movementReductionType].max;
+  for (const movementReductionType in data) {
+    const movementReduction = Number(data[movementReductionType].value);
+    const movementReductionMax = data[movementReductionType].max;
 
     if (movementReduction > movementReductionMax) {
       ui.notifications.warn(game.i18n.localize('E20.AlterationMovementTooBig'));
@@ -137,7 +127,7 @@ async function _processAlterationMovementCost(actor, alteration, options, altera
   });
 
   await newAlteration.update ({
-    "system.movementCost": options,
+    "system.movementCost": data,
     "system.originalId": alterationUuid,
   });
 }
@@ -431,7 +421,6 @@ export async function onAlterationDelete(actor, alteration) {
     let totalMovementDecrease = 0;
     for (const movementReductionType in alteration.system.movementCost) {
       const movementReductionValue = alteration.system.movementCost[movementReductionType].value;
-
       let movementUpdate = 0;
       if (movementReductionType == alteration.system.costMovementType) {
         movementUpdate = actor.system.movement[movementReductionType].base + (movementReductionValue * 5) + alteration.system.costMovement;
