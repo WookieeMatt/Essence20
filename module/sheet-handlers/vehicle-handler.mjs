@@ -1,5 +1,5 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
-import { rememberOptions } from "../helpers/dialog.mjs";
+import ChoicesPrompt from "../apps/choices-prompt.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 
 /**
@@ -96,17 +96,23 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       [updateString]: newRole,
     });
   } else {
-    const dialogResult = await Dialog.wait({
-      title: "Flip Driver and Passenger?",
+    const dialogResult = await foundry.applications.api.DialogV2.wait({
+      window: { title: game.i18n.localize("E20.VehicleDialogSwapTitle")},
+      classes: [
+        "window-app",
+      ],
       content: game.i18n.localize('E20.VehicleDialogSwap'),
-      buttons: {
-        yes: {
-          label: "Yes",
+      modal: true,
+      buttons: [
+        {
+          label: game.i18n.localize('E20.DialogYesButton'),
+          action: "yes",
         },
-        no: {
-          label: "No",
+        {
+          label: game.i18n.localize('E20.DialogNoButton'),
+          action: 'no',
         },
-      },
+      ],
     });
 
     if (dialogResult == "no") {
@@ -119,53 +125,36 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
           choices[selectedKey] = {
             chosen: false,
             label: passenger.name,
+            uuid: passenger.uuid,
+            value: selectedKey,
           };
         }
       }
 
-      await Dialog.wait({
-        title: game.i18n.localize('E20.VehicleDialogSwapSelect'),
-        content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-          choices,
-        }),
-        buttons: {
-          ok: {
-            label: game.i18n.localize('E20.DialogConfirmButton'),
-            callback: html => _flipDriverAndPassenger(actor, key, newRole, rememberOptions(html)),
-          },
-          cancel: {
-            label: game.i18n.localize('E20.DialogCancelButton'),
-            callback: actor.render(),
-          },
-        },
-      });
+      const prompt = "E20.SelectDriverSwap";
+      const title = "E20.VehicleDialogSwapSelect";
+      new ChoicesPrompt(choices, key, actor, prompt, title, newRole).render(true);
     }
   }
 }
 
-function _flipDriverAndPassenger(actor, key, newRole, options) {
+export function _flipDriverAndPassenger(actor, key, newRole, selectedKey) {
   let flippedRole = "";
-  for (const [optionKey, value] of Object.entries(options)) {
-    if (value) {
-      const updateString = `system.actors.${optionKey}.vehicleRole`;
-      if (newRole == 'driver') {
-        flippedRole = 'passenger';
-      } else {
-        flippedRole = 'driver';
-      }
-
-      actor.update ({
-        [updateString]: flippedRole,
-      });
-
-    }
+  let updateString = `system.actors.${selectedKey}.vehicleRole`;
+  if (newRole == 'driver') {
+    flippedRole = 'passenger';
+  } else {
+    flippedRole = 'driver';
   }
 
-  const updateString = `system.actors.${key}.vehicleRole`;
+  actor.update ({
+    [updateString]: flippedRole,
+  });
+
+  updateString = `system.actors.${key}.vehicleRole`;
   actor.update ({
     [updateString]: newRole,
   });
-
 }
 
 export async function onCrewNumberUpdate(event, actorSheet) {

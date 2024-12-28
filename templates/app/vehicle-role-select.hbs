@@ -1,0 +1,13 @@
+<div class="flexcol item-sheet">
+  <div class="essence-select">
+    <div>
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.VehicleRole'}}
+      {{#*inline "item-field-inputs"}}
+        <select class="item-field-inputs" name="vehicleRole" id="vehicleRole">
+          {{selectOptions choices valueAttr="value" labelAttr="label"}}
+        </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    </div>
+  </div>
+</div>

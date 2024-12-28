@@ -1,0 +1,11 @@
+<div class="flexcol power-cost-dialog">
+  <div class="power-cost">
+    <label>
+      {{localize power.name}} (min {{power.system.powerCost}}, max {{maxPower}})
+    </label>
+    <span>
+      <input type="number" id ="{{power.name}}" name ="{{power.name}}" value="{{power.system.powerCost}}" max="{{maxPower}}" min="0" step="1"/>
+    </span>
+  </div>
+</div>
+

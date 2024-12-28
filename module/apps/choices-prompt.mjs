@@ -2,17 +2,23 @@ import { _checkForAltModes, _hangUpSelect, _showOriginSkillPrompt, setOriginValu
 import { _attachSelectedItemOptionHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
+import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(data, item, actor, prompt, title, dropFunc, previousSelection1, previousSelection2) {
-    super(data, item, actor, prompt, title, dropFunc, previousSelection1, previousSelection2);
+  constructor(data, itemOrKey, actor, prompt, title, funcOrValue, previousSelection1, previousSelection2) {
+    super(data, itemOrKey, actor, prompt, title, funcOrValue, previousSelection1, previousSelection2);
     this._data = data;
-    this._item = item;
+    const itemType = typeof(itemOrKey);
+    if (itemType == "object") {
+      this._item = itemOrKey;
+    } else if (itemType == "string") {
+      this._key = itemOrKey;
+    }
     this._actor = actor;
     this._prompt = prompt;
-    this._dropFunc = dropFunc;
+    this._funcOrValue = funcOrValue;
     this._previousSelection1 = previousSelection1;
     this._previousSelection2 = previousSelection2;
     this._title = title;
@@ -23,6 +29,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       focus: ChoicesPrompt.focus,
       influence: ChoicesPrompt.influence,
       origin: ChoicesPrompt.origin,
+      passenger: ChoicesPrompt.passenger,
       shield: ChoicesPrompt.shield,
       upgrade: ChoicesPrompt.attach,
       weaponEffect: ChoicesPrompt.attach,
@@ -57,41 +64,52 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     const context = await super._prepareContext(options);
     context.choices = this._data;
     context.prompt = this._prompt;
-    context.type = this._item.type;
+    if (this._item) {
+      context.type = this._item.type;
+    } else if (this._key) {
+      context.type = "passenger";
+
+    }
 
     return context;
   }
 
   static attach(event, selection) {
-    _attachSelectedItemOptionHandler(this._actor, selection.value, this._dropFunc);
+    _attachSelectedItemOptionHandler(this._actor, selection.value, this._funcOrValue);
     this.close();
   }
 
   static focus(event, selection) {
-    _focusStatUpdate(this._actor, selection.value, this._dropFunc);
+    _focusStatUpdate(this._actor, selection.value, this._funcOrValue);
     this.close();
   }
 
   static influence(event, selection) {
-    _hangUpSelect(this._actor, selection.value, this._dropFunc);
+    _hangUpSelect(this._actor, selection.value, this._funcOrValue);
     this.close();
   }
 
   static origin(event, selection) {
     if (this._previousSelection1 && this._previousSelection2) {
-      setOriginValues(this._actor, this._item, this._previousSelection1, this._previousSelection2, this._dropFunc, selection.value);
+      setOriginValues(this._actor, this._item, this._previousSelection1, this._previousSelection2, this._funcOrValue, selection.value);
       this.close();
     } else if (this._previousSelection1 && !this._previousSelection2) {
-      _checkForAltModes(this._actor, this._item, this._previousSelection1, selection.value, this._dropFunc);
+      _checkForAltModes(this._actor, this._item, this._previousSelection1, selection.value, this._funcOrValue);
       this.close();
     } else {
-      _showOriginSkillPrompt(this._actor, this._item, selection.value, this._dropFunc);
+      _showOriginSkillPrompt(this._actor, this._item, selection.value, this._funcOrValue);
       this.close();
     }
   }
 
+  static async passenger(event, selection) {
+    console.log(selection)
+    _flipDriverAndPassenger( this._actor, this._key, this._funcOrValue, selection.value)
+    this.close();
+  }
+
   static async shield(event, selection) {
-    setShieldOptions(this._actor, this._item, this._dropFunc, selection.value, selection.name);
+    setShieldOptions(this._actor, this._item, this._funcOrValue, selection.value, selection.name);
     this.close();
   }
 
@@ -101,4 +119,5 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       item.sheet.render(true);
     }
   }
+
 }

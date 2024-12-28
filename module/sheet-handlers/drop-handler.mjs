@@ -7,6 +7,7 @@ import { onPowerDrop } from "./power-handler.mjs";
 import { onPerkDrop } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import { rememberSelect } from "../helpers/dialog.mjs";
+import VehicleRoleSelectPrompt from "../apps/vehicle-roll-select.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -205,24 +206,8 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
       value: key,
     };
   }
-
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.VehicleRoleSelect'),
-      content: await renderTemplate("systems/essence20/templates/dialog/vehicle-role-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => {
-            verifyDropSelection(targetActor, rememberSelect(html));
-            setEntryAndAddActor(droppedActor,targetActor, rememberSelect(html));
-          },
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.VehicleRoleSelect";
+  new VehicleRoleSelectPrompt(droppedActor, targetActor, choices, title).render(true);
 }
 
 /**
@@ -231,16 +216,16 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
  * @param {Objects} options An optional parameter for if a vehicle role has been selected
  * @returns {boolean} allowDrop
  */
-function verifyDropSelection(targetActor, options){
+export function verifyDropSelection(targetActor, newRole){
   let numberOfType = 0;
   let allowDrop = false;
   for (const [,passenger] of Object.entries(targetActor.system.actors)) {
-    if (passenger.vehicleRole == options.vehicleRole) {
+    if (passenger.vehicleRole == newRole) {
       numberOfType++;
     }
   }
 
-  if (options.vehicleRole == 'driver') {
+  if (newRole == 'driver') {
     if (numberOfType < targetActor.system.crew.numDrivers) {
       allowDrop = true;
     }
@@ -248,10 +233,6 @@ function verifyDropSelection(targetActor, options){
     if (numberOfType < targetActor.system.crew.numPassengers) {
       allowDrop = true;
     }
-  }
-
-  if (!allowDrop) {
-    throw new Error(game.i18n.localize('E20.VehicleRoleError'));
   }
 
   return allowDrop;
@@ -264,7 +245,7 @@ function verifyDropSelection(targetActor, options){
  * @param {Objects} options An optional parameter for if a vehicle role has been selected
  * @returns the key generated on the drop
  */
-async function setEntryAndAddActor(droppedActor, targetActor, options) {
+export async function setEntryAndAddActor(droppedActor, targetActor, newRole) {
   const entry = {
     uuid: droppedActor.uuid,
     img: droppedActor.img,
@@ -273,7 +254,7 @@ async function setEntryAndAddActor(droppedActor, targetActor, options) {
   };
 
   if (["vehicle", "zord"].includes(targetActor.type)) {
-    entry['vehicleRole'] = options.vehicleRole;
+    entry['vehicleRole'] = newRole;
   }
 
   return addActorIfUnique(droppedActor, targetActor, entry);

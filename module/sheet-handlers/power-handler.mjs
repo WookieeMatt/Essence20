@@ -1,3 +1,4 @@
+import PowerCostPrompt from "../apps/power-cost.mjs";
 import { rememberValues} from "../helpers/dialog.mjs";
 import { parseId } from "../helpers/utils.mjs";
 
@@ -55,22 +56,10 @@ export async function powerCost(actor, power) {
     } else {
       maxPower = actor.system.powers[powerType].value;
     }
+    const title = "E20.PowerCost";
 
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.PowerCost'),
-        content: await renderTemplate("systems/essence20/templates/dialog/power-cost.hbs", {
-          power: power,
-          maxPower: maxPower,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => _powerCountUpdate(actor, rememberValues(html), power, powerType),
-          },
-        },
-      },
-    ).render(true);
+    new PowerCostPrompt(actor, power, maxPower, powerType, title).render(true);
+
   } else if (powerType != "threat" && actor.system.powers[powerType].value >= power.system.powerCost) {
     const updateString = `system.powers.${powerType}.value`;
     actor.update({ [updateString]: Math.max(0, actor.system.powers[powerType].value - power.system.powerCost) });
@@ -88,9 +77,7 @@ export async function powerCost(actor, power) {
  * @param {Power} power The Power being activated
  * @param {String} powerType  The type of Power
  */
-function _powerCountUpdate(actor, options, power, powerType) {
-  const powerCost = options[power.name].value;
-  const powerMax = options[power.name].max;
+export function _powerCountUpdate(actor, powerMax, powerType, powerCost) {
   const updateString = `system.powers.${powerType}.value`;
 
   if ((powerCost > powerMax)

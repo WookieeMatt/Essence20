@@ -1,6 +1,6 @@
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
-import { rememberSelect } from "../helpers/dialog.mjs";
+import SelectPrompt from "../apps/select-prompt.mjs";
 
 const PARENT_ROLLER_KEY = "parentActor";
 
@@ -242,21 +242,8 @@ export async function onRoll(event, actor) {
         label: passenger.name,
       };
     }
-
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.ActorSelect'),
-        content: await renderTemplate("systems/essence20/templates/dialog/select-dialog.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => handleActorSelector(actor, rememberSelect(html), event),
-          },
-        },
-      },
-    ).render(true);
+    const title = "E20.ActorSelect";
+    new SelectPrompt(actor, choices, event, title).render(true);
   } else {
     performRoll(event, actor, null);
   }
@@ -267,12 +254,12 @@ export async function onRoll(event, actor) {
  * @param {Object} options The options selected in the dialog
  * @param {Event} event The originating click event
  */
-async function handleActorSelector(actor, options, event) {
+export async function handleActorSelector(actor, key, event) {
   let childRoller;
-  if (options['actor'] == PARENT_ROLLER_KEY) {
+  if (key == PARENT_ROLLER_KEY) {
     childRoller = actor;
   } else {
-    const fullActor = actor.system.actors[options['actor']];
+    const fullActor = actor.system.actors[key];
     childRoller = await fromUuid(fullActor.uuid);
   }
 
