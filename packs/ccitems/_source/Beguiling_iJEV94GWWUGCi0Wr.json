@@ -20,7 +20,7 @@
     "essenceCost": [
       "smarts"
     ],
-    "movementCost": "",
+    "movementCost": {},
     "selectedEssence": "",
     "type": "essence",
     "bonus": null,
