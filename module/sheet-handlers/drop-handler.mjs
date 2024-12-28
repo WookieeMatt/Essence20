@@ -245,7 +245,7 @@ export function verifyDropSelection(targetActor, newVehiclePosition){
  * @param {String} newRole the Vehicle role the dropped actor is being assigned
  * @returns the key generated on the drop
  */
-export async function setEntryAndAddActor(droppedActor, targetActor, newVehiclePosition) {
+export async function setEntryAndAddActor(droppedActor, targetActor, newRole) {
   const entry = {
     uuid: droppedActor.uuid,
     img: droppedActor.img,
