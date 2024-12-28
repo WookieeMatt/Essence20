@@ -335,7 +335,7 @@ async function shieldUpdate(actor, currentShield, stateString) {
     const prompt = "E20.SelectShieldPrompt";
     const title = "E20.SelectShieldTitle";
 
-    new ChoicesPrompt(choices, actor, prompt, title, currentShield, key=null, dropFunc=null, stateString, previousSelection1=null, previousSelection2=null).render(true);
+    new ChoicesPrompt(choices, actor, prompt, title, currentShield, null, null, stateString, null, null).render(true);
     return;
   }
 

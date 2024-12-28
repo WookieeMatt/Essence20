@@ -134,7 +134,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       const prompt = "E20.SelectDriverSwap";
       const title = "E20.VehicleDialogSwapSelect";
 
-      new ChoicesPrompt(choices, actor, prompt, title, item=null, key, dropFunc=null, newRole, previousSelection1=null, previousSelection2=null).render(true);
+      new ChoicesPrompt(choices, actor, prompt, title, null, key, null, newRole, null, null).render(true);
     }
   }
 }
