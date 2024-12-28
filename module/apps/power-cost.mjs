@@ -59,5 +59,4 @@ export default class PowerCostPrompt extends HandlebarsApplicationMixin(Applicat
     _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost);
     this.close();
   }
-
 }
