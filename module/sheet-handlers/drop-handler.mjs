@@ -6,7 +6,7 @@ import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
 import { onPowerDrop } from "./power-handler.mjs";
 import { onPerkDrop } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
-import VehicleRoleSelectPrompt from "../apps/vehicle-roll-select.mjs";
+import VehicleRoleSelectPrompt from "../apps/vehicle-role-select.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
