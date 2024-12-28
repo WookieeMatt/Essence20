@@ -220,7 +220,7 @@ export function verifyDropSelection(targetActor, newVehiclePosition){
   let numberOfType = 0;
   let allowDrop = false;
   for (const [,passenger] of Object.entries(targetActor.system.actors)) {
-    if (passenger.vehicleRole == newVehiclePosition) {
+    if (passenger.vehicleRole == newRole) {
       numberOfType++;
     }
   }
