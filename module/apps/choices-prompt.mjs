@@ -8,7 +8,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2) {
-    super(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2);
+    super();
     this._choices = choices;
     this._actor = actor;
     this._prompt = prompt;

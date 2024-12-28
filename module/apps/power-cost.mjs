@@ -3,7 +3,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class PowerCostPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(actor, power, maxPower, powerType, title){
-    super(actor, power, maxPower, powerType, title);
+    super();
     this._actor = actor;
     this._power = power;
     this._maxPower = maxPower;

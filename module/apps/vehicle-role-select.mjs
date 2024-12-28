@@ -3,7 +3,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(droppedActor, targetActor, choices, title){
-    super(droppedActor, targetActor, choices, title);
+    super();
     this._targetActor = targetActor;
     this._droppedActor = droppedActor;
     this._choices = choices;

@@ -3,7 +3,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(actor, choices, event, title){
-    super(actor, choices, event, title);
+    super();
     this._actor = actor;
     this._choices = choices;
     this._event = event;

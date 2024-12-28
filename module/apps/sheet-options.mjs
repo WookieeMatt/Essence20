@@ -3,7 +3,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(actor, ev) {
-    super(actor);
+    super();
     this._ev = ev;
     this._actor = actor;
   }
