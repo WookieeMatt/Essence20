@@ -59,7 +59,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.choices = this._data;
+    context.choices = this._choices;
     context.prompt = this._prompt;
     if (this._item) {
       context.type = this._item.type;
