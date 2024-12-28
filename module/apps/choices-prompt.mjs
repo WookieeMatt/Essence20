@@ -7,22 +7,18 @@ import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(data, itemOrKey, actor, prompt, title, funcOrValue, previousSelection1, previousSelection2) {
-    super(data, itemOrKey, actor, prompt, title, funcOrValue, previousSelection1, previousSelection2);
-    this._data = data;
-    const itemType = typeof(itemOrKey);
-    if (itemType == "object") {
-      this._item = itemOrKey;
-    } else if (itemType == "string") {
-      this._key = itemOrKey;
-    }
-
+  constructor(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2) {
+    super(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2);
+    this._choices = choices;
     this._actor = actor;
     this._prompt = prompt;
-    this._funcOrValue = funcOrValue;
+    this._title = title;
+    this._item = item;
+    this._key = key;
+    this._dropFunc = dropFunc
+    this._staticValue = staticValue;
     this._previousSelection1 = previousSelection1;
     this._previousSelection2 = previousSelection2;
-    this._title = title;
   }
 
   static DEFAULT_OPTIONS = {
@@ -76,40 +72,40 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
   }
 
   static attach(event, selection) {
-    _attachSelectedItemOptionHandler(this._actor, selection.value, this._funcOrValue);
+    _attachSelectedItemOptionHandler(this._actor, selection.value, this._dropFunc);
     this.close();
   }
 
   static focus(event, selection) {
-    _focusStatUpdate(this._actor, selection.value, this._funcOrValue);
+    _focusStatUpdate(this._actor, selection.value, this._dropFunc);
     this.close();
   }
 
   static influence(event, selection) {
-    _hangUpSelect(this._actor, selection.value, this._funcOrValue);
+    _hangUpSelect(this._actor, selection.value, this._dropFunc);
     this.close();
   }
 
   static origin(event, selection) {
     if (this._previousSelection1 && this._previousSelection2) {
-      setOriginValues(this._actor, this._item, this._previousSelection1, this._previousSelection2, this._funcOrValue, selection.value);
+      setOriginValues(this._actor, this._item, this._previousSelection1, this._previousSelection2, this._dropFunc, selection.value);
       this.close();
     } else if (this._previousSelection1 && !this._previousSelection2) {
-      _checkForAltModes(this._actor, this._item, this._previousSelection1, selection.value, this._funcOrValue);
+      _checkForAltModes(this._actor, this._item, this._previousSelection1, selection.value, this._dropFunc);
       this.close();
     } else {
-      _showOriginSkillPrompt(this._actor, this._item, selection.value, this._funcOrValue);
+      _showOriginSkillPrompt(this._actor, this._item, selection.value, this._dropFunc);
       this.close();
     }
   }
 
   static async passenger(event, selection) {
-    _flipDriverAndPassenger( this._actor, this._key, this._funcOrValue, selection.value);
+    _flipDriverAndPassenger( this._actor, this._key, this._staticValue, selection.value);
     this.close();
   }
 
   static async shield(event, selection) {
-    setShieldOptions(this._actor, this._item, this._funcOrValue, selection.value, selection.name);
+    setShieldOptions(this._actor, this._item, this._staticValue, selection.value, selection.name);
     this.close();
   }
 
