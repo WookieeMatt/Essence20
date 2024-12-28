@@ -213,19 +213,19 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
 /**
  *
  * @param {Actor} targetActor Actor that is being dropped on to
- * @param {String} newRole The new Role that was selected
+ * @param {String} newVehiclePosition The new position that was selected
  * @returns {boolean} allowDrop
  */
-export function verifyDropSelection(targetActor, newRole){
+export function verifyDropSelection(targetActor, newVehiclePosition){
   let numberOfType = 0;
   let allowDrop = false;
   for (const [,passenger] of Object.entries(targetActor.system.actors)) {
-    if (passenger.vehicleRole == newRole) {
+    if (passenger.vehicleRole == newVehiclePosition) {
       numberOfType++;
     }
   }
 
-  if (newRole == 'driver') {
+  if (newVehiclePosition == 'driver') {
     if (numberOfType < targetActor.system.crew.numDrivers) {
       allowDrop = true;
     }
@@ -245,7 +245,7 @@ export function verifyDropSelection(targetActor, newRole){
  * @param {String} newRole the Vehicle role the dropped actor is being assigned
  * @returns the key generated on the drop
  */
-export async function setEntryAndAddActor(droppedActor, targetActor, newRole) {
+export async function setEntryAndAddActor(droppedActor, targetActor, newVehiclePosition) {
   const entry = {
     uuid: droppedActor.uuid,
     img: droppedActor.img,
@@ -254,7 +254,7 @@ export async function setEntryAndAddActor(droppedActor, targetActor, newRole) {
   };
 
   if (["vehicle", "zord"].includes(targetActor.type)) {
-    entry['vehicleRole'] = newRole;
+    entry['vehicleRole'] = newVehiclePosition;
   }
 
   return addActorIfUnique(droppedActor, targetActor, entry);
