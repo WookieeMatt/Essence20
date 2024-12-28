@@ -65,7 +65,6 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       context.type = this._item.type;
     } else if (this._key) {
       context.type = "passenger";
-
     }
 
     return context;
