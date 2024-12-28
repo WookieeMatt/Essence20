@@ -85,7 +85,7 @@ async function _showAlterationCostMovementDialog(actor, alteration, alterationUu
       buttons: {
         save: {
           label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _processAlterationMovementCost(alteration, rememberValues(html), alterationUuid, dropFunc),
+          callback: html => _processAlterationMovementCost(actor, alteration, rememberValues(html), alterationUuid, dropFunc),
         },
       },
     },
