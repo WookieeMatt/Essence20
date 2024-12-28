@@ -3,7 +3,7 @@
     {{#each choices as |choice key|}}
     <li>
       <label class="checkbox">
-        <input type="radio" name="choices" id="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
+        <input type="radio" name="choices" id="{{key}}" value="{{key}}" {{checked choice.chosen}}>
         {{localize choice.label}}
       </label>
     </li>

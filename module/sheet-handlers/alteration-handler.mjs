@@ -1,5 +1,6 @@
 
 import AlterationMovementPrompt from "../apps/alteration-movement.mjs";
+import OptionSelectPrompt from "../apps/alteration-essence-prompt.mjs";
 import {
   rememberOptions,
   rememberValues,
@@ -57,7 +58,6 @@ async function _showAlterationCostMovementDialog(actor, alteration, alterationUu
   }
 
   const choices = {};
-  console.log(actor.system.movement)
   for (const movementType in actor.system.movement) {
     let maxValue = 0;
     if (alteration.system.bonusMovementType != movementType) {
@@ -139,7 +139,7 @@ export async function _processAlterationMovementCost(actor, alteration, data, al
 * @param {String} alterationUuid The original ID of the Alteration
 * @param {Function} dropFunc The function to call to complete the Alteration drop
 */
-async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid, dropFunc) {
+export async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid, dropFunc) {
   const choices = {};
   for (const skill in actor.system.skills) {
     if (actor.system.skills[skill].essences[alteration.system.essenceBonus]) {
@@ -166,20 +166,8 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
     };
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.AlterationSkillIncrease'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _processAlterationSkillIncrease(actor, alteration, rememberOptions(html), alterationUuid, dropFunc),
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.AlterationSkillIncrease";
+  new OptionSelectPrompt(choices, actor, alteration, alterationUuid, dropFunc, title, null, null).render(true);
 }
 
 /**
@@ -190,15 +178,7 @@ async function _showAlterationBonusSkillDialog(actor, alteration, alterationUuid
 * @param {String} alterationUuid The original ID of the Alteration
 * @param {Function} dropFunc The function to call to complete the Alteration drop
 */
-async function _processAlterationSkillIncrease(actor, alteration, options, alterationUuid, dropFunc) {
-  let bonusSkill = "";
-  for (const [skill, isSelected] of Object.entries(options)) {
-    if (isSelected) {
-      bonusSkill = skill;
-      break;
-    }
-  }
-
+export async function _processAlterationSkillIncrease(actor, alteration, bonusSkill, alterationUuid, dropFunc) {
   if (!bonusSkill) {
     ui.notifications.warn(game.i18n.localize('E20.AlterationSelectNoSkill'));
     return;
@@ -228,21 +208,8 @@ async function _showAlterationCostEssenceDialog(actor, alteration, bonusSkill, a
       label: CONFIG.E20.originEssences[essence],
     };
   }
-
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.AlterationCost'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alterationUuid, rememberOptions(html), dropFunc),
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.AlterationCost"
+  new OptionSelectPrompt(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, null).render(true);
 }
 
 /**
@@ -254,47 +221,21 @@ async function _showAlterationCostEssenceDialog(actor, alteration, bonusSkill, a
 * @param {String} alterationUuid The original ID of the Alteration
 * @param {Function} dropFunc The function to call to complete the Alteration drop
 */
-async function _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alterationUuid, options, dropFunc) {
+export async function _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alterationUuid, costEssence, dropFunc) {
   const choices = {};
-  let costEssence = "";
+  if (!costEssence) {
+    costEssence = alteration.system.essenceCost;
+  }
 
-  if (options) {
-    const essences = Object.keys(options);
-
-    for (const essence of essences) {
-      if (options[essence]) {
-        costEssence = essence;
+  for (const skill in actor.system.skills) {
+    if (actor.system.skills[skill].essences[costEssence]) {
+      if (_compareShift(actor.system.skills[skill].shift, "d20", "greater")) {
+        choices[skill] = {
+          chosen: false,
+          label: CONFIG.E20.originSkills[skill],
+        };
       }
     }
-
-    for (const skill in actor.system.skills) {
-      for (const essence of essences) {
-        if (options[essence]) {
-          if (actor.system.skills[skill].essences[essence]) {
-            if (_compareShift(actor.system.skills[skill].shift, "d20", "greater")) {
-              choices[skill] = {
-                chosen: false,
-                label: CONFIG.E20.originSkills[skill],
-              };
-            }
-          }
-        }
-      }
-    }
-  } else {
-    const essence = alteration.system.essenceCost;
-    for (const skill in actor.system.skills) {
-      if (actor.system.skills[skill].essences[essence]) {
-        if (_compareShift(actor.system.skills[skill].shift, "d20", "greater")) {
-          choices[skill] = {
-            chosen: false,
-            label: CONFIG.E20.originSkills[skill],
-          };
-        }
-      }
-    }
-
-    costEssence = essence;
   }
 
   if (costEssence == 'speed') {
@@ -324,22 +265,8 @@ async function _showAlterationCostSkillDialog(actor, alteration, bonusSkill, alt
     return;
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.AlterationSkillCost'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _alterationStatUpdate(
-            actor, alteration, bonusSkill, costEssence, rememberOptions(html), alterationUuid, dropFunc,
-          ),
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.AlterationSkillCost";
+  new OptionSelectPrompt(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, costEssence).render(true);
 }
 
 /** Handle comparing skill rank
@@ -370,25 +297,17 @@ function _compareShift(shift1, shift2, operator) {
 * @param {String} alterationUuid The original ID of the Alteration
 * @param {Function} dropFunc The function to call to complete the Alteration drop
 */
-async function _alterationStatUpdate(actor, alteration, bonusSkill, costEssence, options, alterationUuid, dropFunc) {
-  let costSkill = "";
-  for (const [skill, isSelected] of Object.entries(options)) {
-    if (isSelected) {
-      costSkill = skill;
-      break;
-    }
-  }
-
+export async function _alterationStatUpdate(actor, alteration, bonusSkill, costEssence, costSkill, alterationUuid, dropFunc) {
   if (!costSkill) {
     ui.notifications.warn(game.i18n.localize('E20.AlterationSelectNoSkill'));
     return;
   }
 
   const bonusEssence = alteration.system.essenceBonus;
-  const bonusEssenceValue = actor.system.essences[bonusEssence] + 1;
-  const costEssenceValue  = actor.system.essences[costEssence] - 1;
-  const bonusEssenceString = `system.essences.${bonusEssence}`;
-  const costEssenceString = `system.essences.${costEssence}`;
+  const bonusEssenceValue = actor.system.essences[bonusEssence].max + 1;
+  const costEssenceValue  = actor.system.essences[costEssence].max - 1;
+  const bonusEssenceString = `system.essences.${bonusEssence}.max`;
+  const costEssenceString = `system.essences.${costEssence}.max`;
 
   const [bonusNewShift, bonusSkillString] = getShiftedSkill(bonusSkill, 1, actor);
   const [costNewShift, costSkillString] = getShiftedSkill(costSkill, -1, actor);
@@ -442,8 +361,8 @@ export async function onAlterationDelete(actor, alteration) {
     });
   } else if (alteration.system.type == 'essence') {
     const bonusEssence = alteration.system.essenceBonus;
-    const bonusEssenceValue = actor.system.essences[bonusEssence] - 1;
-    const bonusEssenceString = `system.essences.${bonusEssence}`;
+    const bonusEssenceValue = actor.system.essences[bonusEssence].max - 1;
+    const bonusEssenceString = `system.essences.${bonusEssence}.max`;
     let costEssence = "";
 
     if (alteration.system.selectedEssence) {
@@ -452,8 +371,8 @@ export async function onAlterationDelete(actor, alteration) {
       costEssence = alteration.system.essenceCost;
     }
 
-    const costEssenceValue = actor.system.essences[costEssence] + 1;
-    const costEssenceString = `system.essences.${costEssence}`;
+    const costEssenceValue = actor.system.essences[costEssence].max + 1;
+    const costEssenceString = `system.essences.${costEssence}.max`;
     const bonusSkill = alteration.system.bonus;
     const costSkill = alteration.system.cost;
 
