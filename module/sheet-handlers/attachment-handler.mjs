@@ -142,7 +142,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 
     const prompt = "E20.SelectWeaponAttach";
     const title = "E20.SelectUpgradeOrWeaponEffect";
-    new ChoicesPrompt(choices, droppedItem, actor, prompt, title, dropFunc).render(true);
+    new ChoicesPrompt(choices, actor, prompt, title, droppedItem, null, dropFunc, null, null, null).render(true);
   } else {
     ui.notifications.error(game.i18n.localize('E20.NoUpgradableItemsError'));
     return false;

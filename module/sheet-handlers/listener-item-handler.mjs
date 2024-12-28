@@ -42,7 +42,7 @@ export async function onItemCreate(event, actor) {
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.system.type;
   }
-  
+
   // Set the parent item type for nested items
   let parentItem = null;
   if (data.parentId) {
@@ -335,7 +335,7 @@ async function shieldUpdate(actor, currentShield, stateString) {
     const prompt = "E20.SelectShieldPrompt";
     const title = "E20.SelectShieldTitle";
 
-    new ChoicesPrompt(choices, currentShield, actor, prompt, title, stateString).render(true);
+    new ChoicesPrompt(choices, actor, prompt, title, currentShield, null, null, stateString, null, null).render(true);
     return;
   }
 

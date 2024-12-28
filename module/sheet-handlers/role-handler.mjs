@@ -206,7 +206,8 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
 
   const prompt = "E20.SelectFocus";
   const title = "E20.SelectFocusSkills";
-  new ChoicesPrompt(choices, focus, actor, prompt, title, dropFunc).render(true);
+
+  new ChoicesPrompt(choices, actor, prompt, title, focus, null, dropFunc, null, null, null).render(true);
 }
 
 /**
