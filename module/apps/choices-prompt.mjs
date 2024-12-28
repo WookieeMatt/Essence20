@@ -119,5 +119,4 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
       item.sheet.render(true);
     }
   }
-
 }
