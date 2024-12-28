@@ -242,7 +242,7 @@ export function verifyDropSelection(targetActor, newVehiclePosition){
  * Sets the entry value that will be stored in system.actors
  * @param {Actor} droppedActor Actor dropped on to another actor
  * @param {Actor} targetActor Actor that is being dropped on to
- * @param {String} newRole the Vehicle role the dropped actor is being assigned
+ * @param {String} newRole The Vehicle role the dropped actor is being assigned
  * @returns the key generated on the drop
  */
 export async function setEntryAndAddActor(droppedActor, targetActor, newRole) {
