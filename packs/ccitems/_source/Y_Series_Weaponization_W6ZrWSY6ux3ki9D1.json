@@ -17,8 +17,8 @@
     "cost": null,
     "costSkill": "",
     "essenceBenefit": "",
-    "essenceCost": "",
-    "movementCost": "",
+    "essenceCost": [],
+    "movementCost": {},
     "selectedEssence": "",
     "type": "other",
     "bonus": null

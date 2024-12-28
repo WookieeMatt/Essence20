@@ -54,7 +54,6 @@ export const character = () => ({
   canQualify: makeBool(false),
   canSpellcast: makeBool(false),
   canTransform: makeBool(false),
-  conditioning: makeInt(0),
   defenses: new fields.SchemaField({
     toughness: makeDefensesFields('toughness', 'strength'),
     evasion: makeDefensesFields('evasion', 'speed'),
