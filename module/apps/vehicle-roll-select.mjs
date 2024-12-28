@@ -44,8 +44,8 @@ export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(
     const context = await super._prepareContext(options);
     context.choices = this._choices;
     context.buttons = [
-        { type: "submit", label: "E20.AcceptButton" },
-      ];
+      { type: "submit", label: "E20.AcceptButton" },
+    ];
     return context;
   }
 

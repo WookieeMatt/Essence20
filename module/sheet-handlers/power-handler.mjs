@@ -1,5 +1,4 @@
 import PowerCostPrompt from "../apps/power-cost.mjs";
-import { rememberValues} from "../helpers/dialog.mjs";
 import { parseId } from "../helpers/utils.mjs";
 
 /**
@@ -56,8 +55,8 @@ export async function powerCost(actor, power) {
     } else {
       maxPower = actor.system.powers[powerType].value;
     }
-    const title = "E20.PowerCost";
 
+    const title = "E20.PowerCost";
     new PowerCostPrompt(actor, power, maxPower, powerType, title).render(true);
 
   } else if (powerType != "threat" && actor.system.powers[powerType].value >= power.system.powerCost) {
@@ -73,9 +72,9 @@ export async function powerCost(actor, power) {
 /**
  * Handles the spending of a Power activation
  * @param {Actor} actor The Actor activating the Power
- * @param {Options} options The options selected in Power dialog.
- * @param {Power} power The Power being activated
+ * @param {Integer} powerMax The maximum power points that can be spent on the power
  * @param {String} powerType  The type of Power
+ * @param {Integer} powerCost The modified power cost
  */
 export function _powerCountUpdate(actor, powerMax, powerType, powerCost) {
   const updateString = `system.powers.${powerType}.value`;

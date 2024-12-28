@@ -6,7 +6,6 @@ import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
 import { onPowerDrop } from "./power-handler.mjs";
 import { onPerkDrop } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
-import { rememberSelect } from "../helpers/dialog.mjs";
 import VehicleRoleSelectPrompt from "../apps/vehicle-roll-select.mjs";
 
 /**
@@ -206,6 +205,7 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
       value: key,
     };
   }
+
   const title = "E20.VehicleRoleSelect";
   new VehicleRoleSelectPrompt(droppedActor, targetActor, choices, title).render(true);
 }
@@ -213,7 +213,7 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
 /**
  *
  * @param {Actor} targetActor Actor that is being dropped on to
- * @param {Objects} options An optional parameter for if a vehicle role has been selected
+ * @param {String} newRole The new Role that was selected
  * @returns {boolean} allowDrop
  */
 export function verifyDropSelection(targetActor, newRole){
@@ -242,7 +242,7 @@ export function verifyDropSelection(targetActor, newRole){
  * Sets the entry value that will be stored in system.actors
  * @param {Actor} droppedActor Actor dropped on to another actor
  * @param {Actor} targetActor Actor that is being dropped on to
- * @param {Objects} options An optional parameter for if a vehicle role has been selected
+ * @param {String} newRole the Vehicle role the dropped actor is being assigned
  * @returns the key generated on the drop
  */
 export async function setEntryAndAddActor(droppedActor, targetActor, newRole) {

@@ -242,6 +242,7 @@ export async function onRoll(event, actor) {
         label: passenger.name,
       };
     }
+
     const title = "E20.ActorSelect";
     new SelectPrompt(actor, choices, event, title).render(true);
   } else {
@@ -251,7 +252,7 @@ export async function onRoll(event, actor) {
 
 /**
  * @param {Actor} actor The Actor making the roll
- * @param {Object} options The options selected in the dialog
+ * @param {String} key the Actor key
  * @param {Event} event The originating click event
  */
 export async function handleActorSelector(actor, key, event) {

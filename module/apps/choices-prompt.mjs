@@ -16,6 +16,7 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
     } else if (itemType == "string") {
       this._key = itemOrKey;
     }
+
     this._actor = actor;
     this._prompt = prompt;
     this._funcOrValue = funcOrValue;
