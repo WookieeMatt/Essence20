@@ -8,8 +8,8 @@ export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(
     this._droppedActor = droppedActor;
     this._choices = choices;
     this._title = title;
-
   }
+
   static DEFAULT_OPTIONS = {
     id: "vehicle-role-select",
     classes: [
