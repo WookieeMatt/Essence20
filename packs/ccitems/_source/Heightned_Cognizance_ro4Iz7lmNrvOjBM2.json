@@ -21,7 +21,7 @@
       "strength",
       "speed"
     ],
-    "movementCost": "",
+    "movementCost": {},
     "selectedEssence": "",
     "type": "essence",
     "bonus": null,
