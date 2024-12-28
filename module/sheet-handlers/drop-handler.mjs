@@ -225,7 +225,7 @@ export function verifyDropSelection(targetActor, newVehiclePosition){
     }
   }
 
-  if (newVehiclePosition == 'driver') {
+  if (newRole == 'driver') {
     if (numberOfType < targetActor.system.crew.numDrivers) {
       allowDrop = true;
     }
