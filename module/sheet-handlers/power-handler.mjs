@@ -58,7 +58,6 @@ export async function powerCost(actor, power) {
 
     const title = "E20.PowerCost";
     new PowerCostPrompt(actor, power, maxPower, powerType, title).render(true);
-
   } else if (powerType != "threat" && actor.system.powers[powerType].value >= power.system.powerCost) {
     const updateString = `system.powers.${powerType}.value`;
     actor.update({ [updateString]: Math.max(0, actor.system.powers[powerType].value - power.system.powerCost) });
