@@ -52,11 +52,12 @@ export default class TransformOptionPrompt extends HandlebarsApplicationMixin(Ap
   static async myFormHandler(event, form, formData) {
     let selectedForm = null;
     for (const [, value] of Object.entries(formData.object)) {
-        if(value) {
-          selectedForm = value;
-          break;
-        }
+      if(value) {
+        selectedForm = value;
+        break;
       }
+    }
+
     _altModeSelect(this._actorSheet, this._altModes, selectedForm);
   }
 }

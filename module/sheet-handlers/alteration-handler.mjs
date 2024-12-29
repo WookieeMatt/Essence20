@@ -2,10 +2,6 @@
 import AlterationMovementPrompt from "../apps/alteration-movement.mjs";
 import OptionSelectPrompt from "../apps/alteration-essence-prompt.mjs";
 import {
-  rememberOptions,
-  rememberValues,
-} from "../helpers/dialog.mjs";
-import {
   getShiftedSkill,
   parseId,
 } from "../helpers/utils.mjs";
@@ -208,7 +204,8 @@ async function _showAlterationCostEssenceDialog(actor, alteration, bonusSkill, a
       label: CONFIG.E20.originEssences[essence],
     };
   }
-  const title = "E20.AlterationCost"
+
+  const title = "E20.AlterationCost";
   new OptionSelectPrompt(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, null).render(true);
 }
 
