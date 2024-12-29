@@ -53,7 +53,7 @@ export default class OptionSelectPrompt extends HandlebarsApplicationMixin(Appli
     return context;
   }
 
-  static async myFormHandler(event, form, formData, dataset) {
+  static async myFormHandler(event, form, formData) {
     let bonusSkill = "";
     if (!this._bonusSkill) {
       for (const [, value] of Object.entries(formData.object)) {

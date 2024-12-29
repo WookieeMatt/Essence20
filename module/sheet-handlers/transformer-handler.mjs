@@ -1,4 +1,4 @@
-import { rememberOptions } from "../helpers/dialog.mjs";
+import TransformOptionPrompt from "../apps/transform-option-prompt.mjs";
 import { resizeTokens } from "../helpers/actor.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 
@@ -115,20 +115,8 @@ async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
     }
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.AltModeChoice'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _altModeSelect(actorSheet, altModes, rememberOptions(html)),
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.AltModeChoice";
+  new TransformOptionPrompt(choices, actorSheet, altModes, title).render(true);
 }
 
 /**
@@ -138,16 +126,8 @@ async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
  * @param {Object} options The options resulting from _showAltModeDialog()
  * @private
  */
-async function _altModeSelect(actorSheet, altModes, options) {
-  let selectedForm = null;
+export async function _altModeSelect(actorSheet, altModes, selectedForm) {
   let transformation = null;
-
-  for (const [altMode, isSelected] of Object.entries(options)) {
-    if (isSelected) {
-      selectedForm = altMode;
-      break;
-    }
-  }
 
   if (!selectedForm) {
     return;
