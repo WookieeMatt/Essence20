@@ -46,7 +46,7 @@
         {{!-- Items --}}
         <div class="npc-items">
           {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
-          {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs"}}
+          {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="general" perks=@root.perks.all title="E20.ItemTypePerkPlural" alwaysShow="true"}}
           {{> "systems/essence20/templates/actor/parts/items/power/container.hbs"}}
 
           {{#ifEquals system.type "drone"}}

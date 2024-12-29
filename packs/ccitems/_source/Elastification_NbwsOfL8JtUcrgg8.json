@@ -20,7 +20,7 @@
     "essenceCost": [
       "strength"
     ],
-    "movementCost": "",
+    "movementCost": {},
     "selectedEssence": "",
     "type": "essence",
     "bonus": null,
