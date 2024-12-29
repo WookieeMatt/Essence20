@@ -62,6 +62,7 @@ export default class MultiSelectPrompt extends HandlebarsApplicationMixin(Applic
     if (selectionAmount != 2) {
       throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
     }
+
     _selectEssenceProgression(this._actor, this._role, this._dropFunc, formData.object);
   }
 }

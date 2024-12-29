@@ -1,4 +1,4 @@
-import { _alterationStatUpdate, _processAlterationSkillIncrease, _showAlterationCostSkillDialog } from "../sheet-handlers/alteration-handler.mjs"
+import { _alterationStatUpdate, _processAlterationSkillIncrease, _showAlterationCostSkillDialog } from "../sheet-handlers/alteration-handler.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class OptionSelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -62,7 +62,8 @@ export default class OptionSelectPrompt extends HandlebarsApplicationMixin(Appli
           break;
         }
       }
-      _processAlterationSkillIncrease(this._actor, this._alteration, bonusSkill, this._alterationUuid, this._dropFunc)
+
+      _processAlterationSkillIncrease(this._actor, this._alteration, bonusSkill, this._alterationUuid, this._dropFunc);
 
     } else if (!this._costEssence && this._alteration.system.essenceCost.length > 1) {
       let costEssence = "";
@@ -73,7 +74,7 @@ export default class OptionSelectPrompt extends HandlebarsApplicationMixin(Appli
         }
       }
 
-      _showAlterationCostSkillDialog(this._actor, this._alteration, this._bonusSkill, this._alterationUuid, costEssence, this._dropFunc)
+      _showAlterationCostSkillDialog(this._actor, this._alteration, this._bonusSkill, this._alterationUuid, costEssence, this._dropFunc);
 
     } else {
       let costSkill = "";
@@ -83,7 +84,8 @@ export default class OptionSelectPrompt extends HandlebarsApplicationMixin(Appli
           break;
         }
       }
-      _alterationStatUpdate(this._actor, this._alteration, this._bonusSkill, this._costEssence, costSkill, this._alterationUuid, this._dropFunc)
+
+      _alterationStatUpdate(this._actor, this._alteration, this._bonusSkill, this._costEssence, costSkill, this._alterationUuid, this._dropFunc);
     }
   }
 

@@ -59,6 +59,7 @@ export default class AlterationMovementPrompt extends HandlebarsApplicationMixin
         value: value,
       };
     }
-  _processAlterationMovementCost(this._actor, this._alteration, data, this._alterationUuid, this._dropFunc)
+
+    _processAlterationMovementCost(this._actor, this._alteration, data, this._alterationUuid, this._dropFunc);
   }
 }
