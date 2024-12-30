@@ -1,4 +1,5 @@
 import { _powerCountUpdate } from "../sheet-handlers/power-handler.mjs";
+import { getFormData } from "../helpers/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class PowerCostPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -52,10 +53,7 @@ export default class PowerCostPrompt extends HandlebarsApplicationMixin(Applicat
   }
 
   static async myFormHandler(event, form, formData) {
-    let newCost = 0;
-    for (const [, value] of Object.entries(formData.object)) {
-      newCost = value;
-    }
+    const newCost = getFormData(formData.object);
 
     _powerCountUpdate(this._actor, this._maxPower, this._powerType, newCost);
     this.close();

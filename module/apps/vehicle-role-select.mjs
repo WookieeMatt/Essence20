@@ -1,4 +1,6 @@
 import { setEntryAndAddActor, verifyDropSelection } from "../sheet-handlers/drop-handler.mjs";
+import { getFormData } from "../helpers/application.mjs";
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -50,10 +52,7 @@ export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(
   }
 
   static async myFormHandler(event, form, formData){
-    let newRole = null;
-    for (const [, value] of Object.entries(formData.object)) {
-      newRole = value;
-    }
+    const newRole = getFormData(formData.object);
 
     const allowDrop = verifyDropSelection(this._targetActor, newRole);
 

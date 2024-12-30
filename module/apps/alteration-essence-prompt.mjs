@@ -1,7 +1,8 @@
 import { _alterationStatUpdate, _processAlterationSkillIncrease, _showAlterationCostSkillDialog } from "../sheet-handlers/alteration-handler.mjs";
+import { getFormData} from "../helpers/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class OptionSelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class AlterationEssencePrompt extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, costEssence){
     super();
     this._choices = choices;
@@ -25,7 +26,7 @@ export default class OptionSelectPrompt extends HandlebarsApplicationMixin(Appli
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: OptionSelectPrompt.myFormHandler,
+      handler: AlterationEssencePrompt.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },
@@ -54,36 +55,19 @@ export default class OptionSelectPrompt extends HandlebarsApplicationMixin(Appli
   }
 
   static async myFormHandler(event, form, formData) {
-    let bonusSkill = "";
+
     if (!this._bonusSkill) {
-      for (const [, value] of Object.entries(formData.object)) {
-        if(value) {
-          bonusSkill = value;
-          break;
-        }
-      }
+      const bonusSkill = getFormData(formData.object);
 
       _processAlterationSkillIncrease(this._actor, this._alteration, bonusSkill, this._alterationUuid, this._dropFunc);
 
     } else if (!this._costEssence && this._alteration.system.essenceCost.length > 1) {
-      let costEssence = "";
-      for (const [, value] of Object.entries(formData.object)) {
-        if(value) {
-          costEssence = value;
-          break;
-        }
-      }
+      const costEssence = getFormData(formData.object);
 
       _showAlterationCostSkillDialog(this._actor, this._alteration, this._bonusSkill, this._alterationUuid, costEssence, this._dropFunc);
 
     } else {
-      let costSkill = "";
-      for (const [, value] of Object.entries(formData.object)) {
-        if(value) {
-          costSkill = value;
-          break;
-        }
-      }
+      const costSkill = getFormData(formData.object);
 
       _alterationStatUpdate(this._actor, this._alteration, this._bonusSkill, this._costEssence, costSkill, this._alterationUuid, this._dropFunc);
     }

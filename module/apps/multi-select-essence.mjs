@@ -2,7 +2,7 @@ import { _selectEssenceProgression } from "../sheet-handlers/role-handler.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class MultiSelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class MultiSelectEssencePrompt extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(choices, actor, role, dropFunc, title){
     super();
     this._choices = choices;
@@ -23,7 +23,7 @@ export default class MultiSelectPrompt extends HandlebarsApplicationMixin(Applic
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: MultiSelectPrompt.myFormHandler,
+      handler: MultiSelectEssencePrompt.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },

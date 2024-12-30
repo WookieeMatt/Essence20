@@ -1,4 +1,6 @@
 import { _altModeSelect } from "../sheet-handlers/transformer-handler.mjs";
+import { getFormData } from "../helpers/application.mjs";
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class TransformOptionPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -50,13 +52,7 @@ export default class TransformOptionPrompt extends HandlebarsApplicationMixin(Ap
   }
 
   static async myFormHandler(event, form, formData) {
-    let selectedForm = null;
-    for (const [, value] of Object.entries(formData.object)) {
-      if(value) {
-        selectedForm = value;
-        break;
-      }
-    }
+    const selectedForm = getFormData(formData.object);
 
     _altModeSelect(this._actorSheet, this._altModes, selectedForm);
   }

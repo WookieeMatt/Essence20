@@ -1,4 +1,6 @@
 import { handleActorSelector } from "../sheet-handlers/listener-misc-handler.mjs";
+import { getFormData } from "../helpers/application.mjs";
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -50,10 +52,7 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
   }
 
   static async myFormHandler(event, form, formData){
-    let key = null;
-    for (const [, value] of Object.entries(formData.object)) {
-      key = value;
-    }
+    const key = getFormData(formData.object);
 
     handleActorSelector(this._actor, key, this._event);
   }
