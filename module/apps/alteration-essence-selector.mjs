@@ -55,22 +55,13 @@ export default class AlterationEssenceSelector extends HandlebarsApplicationMixi
   }
 
   static async myFormHandler(event, form, formData) {
-
+    const selection = getFormData(formData.object);
     if (!this._bonusSkill) {
-      const bonusSkill = getFormData(formData.object);
-
-      _processAlterationSkillIncrease(this._actor, this._alteration, bonusSkill, this._alterationUuid, this._dropFunc);
-
+      _processAlterationSkillIncrease(this._actor, this._alteration, selection, this._alterationUuid, this._dropFunc);
     } else if (!this._costEssence && this._alteration.system.essenceCost.length > 1) {
-      const costEssence = getFormData(formData.object);
-
-      _showAlterationCostSkillDialog(this._actor, this._alteration, this._bonusSkill, this._alterationUuid, costEssence, this._dropFunc);
-
+      _showAlterationCostSkillDialog(this._actor, this._alteration, this._bonusSkill, this._alterationUuid, selection, this._dropFunc);
     } else {
-      const costSkill = getFormData(formData.object);
-
-      _alterationStatUpdate(this._actor, this._alteration, this._bonusSkill, this._costEssence, costSkill, this._alterationUuid, this._dropFunc);
+      _alterationStatUpdate(this._actor, this._alteration, this._bonusSkill, this._costEssence, selection, this._alterationUuid, this._dropFunc);
     }
   }
-
 }
