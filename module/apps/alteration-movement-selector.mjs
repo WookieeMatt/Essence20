@@ -1,19 +1,19 @@
-import { handleActorSelector } from "../sheet-handlers/listener-misc-handler.mjs";
-import { getFormData } from "../helpers/application.mjs";
-
+import { _processAlterationMovementCost} from "../sheet-handlers/alteration-handler.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class SelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actor, choices, event, title){
+export default class AlterationMovementSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+  constructor(actor, alteration, choices, alterationUuid, title, dropFunc){
     super();
     this._actor = actor;
+    this._alteration = alteration;
     this._choices = choices;
-    this._event = event;
+    this._alterationUuid = alterationUuid;
     this._title = title;
+    this._dropFunc = dropFunc;
   }
 
   static DEFAULT_OPTIONS = {
-    id: "select-prompt",
+    id: "alteration-movement",
     classes: [
       "essence20",
       "trait-selector",
@@ -23,7 +23,7 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: SelectPrompt.myFormHandler,
+      handler: AlterationMovementSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },
@@ -31,7 +31,7 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/select-prompt.hbs",
+      template: "systems/essence20/templates/app/alteration-movement.hbs",
     },
     footer: {
       template: "templates/generic/form-footer.hbs",
@@ -51,9 +51,15 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
     return context;
   }
 
-  static async myFormHandler(event, form, formData){
-    const key = getFormData(formData.object);
+  static async myFormHandler(event, form, formData) {
+    const data = {};
+    for (const [key, value] of Object.entries(formData.object)) {
+      data[key] = {
+        max: this._choices[key].maxValue,
+        value: value,
+      };
+    }
 
-    handleActorSelector(this._actor, key, this._event);
+    _processAlterationMovementCost(this._actor, this._alteration, data, this._alterationUuid, this._dropFunc);
   }
 }

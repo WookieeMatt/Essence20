@@ -2,7 +2,7 @@ import { _setEssenceProgression } from "../sheet-handlers/role-handler.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class EssenceProgressionSelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class EssenceProgressionSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(choices, actor, role, dropFunc, level1Essences, title){
     super();
     this._choices = choices;
@@ -14,7 +14,7 @@ export default class EssenceProgressionSelectPrompt extends HandlebarsApplicatio
   }
 
   static DEFAULT_OPTIONS = {
-    id: "essence-progression-select",
+    id: "essence-progression",
     classes: [
       "essence20",
       "trait-selector",
@@ -24,7 +24,7 @@ export default class EssenceProgressionSelectPrompt extends HandlebarsApplicatio
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: EssenceProgressionSelectPrompt.myFormHandler,
+      handler: EssenceProgressionSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },

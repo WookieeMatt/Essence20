@@ -1,6 +1,6 @@
 
-import AlterationMovementPrompt from "../apps/alteration-movement.mjs";
-import AlterationEssencePrompt from "../apps/alteration-essence-prompt.mjs";
+import AlterationMovementSelector from "../apps/alteration-movement-selector.mjs";
+import AlterationEssenceSelector from "../apps/alteration-essence-selector.mjs";
 import {
   getShiftedSkill,
   parseId,
@@ -75,7 +75,7 @@ async function _showAlterationCostMovementDialog(actor, alteration, alterationUu
   }
 
   const title = "E20.AlterationMovementCost";
-  new AlterationMovementPrompt(actor, alteration, choices, alterationUuid, title, dropFunc).render(true);
+  new AlterationMovementSelector(actor, alteration, choices, alterationUuid, title, dropFunc).render(true);
 }
 
 /**
@@ -163,7 +163,7 @@ export async function _showAlterationBonusSkillDialog(actor, alteration, alterat
   }
 
   const title = "E20.AlterationSkillIncrease";
-  new AlterationEssencePrompt(choices, actor, alteration, alterationUuid, dropFunc, title, null, null).render(true);
+  new AlterationEssenceSelector(choices, actor, alteration, alterationUuid, dropFunc, title, null, null).render(true);
 }
 
 /**
@@ -206,7 +206,7 @@ async function _showAlterationCostEssenceDialog(actor, alteration, bonusSkill, a
   }
 
   const title = "E20.AlterationCost";
-  new AlterationEssencePrompt(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, null).render(true);
+  new AlterationEssenceSelector(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, null).render(true);
 }
 
 /**
@@ -263,7 +263,7 @@ export async function _showAlterationCostSkillDialog(actor, alteration, bonusSki
   }
 
   const title = "E20.AlterationSkillCost";
-  new AlterationEssencePrompt(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, costEssence).render(true);
+  new AlterationEssenceSelector(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, costEssence).render(true);
 }
 
 /** Handle comparing skill rank

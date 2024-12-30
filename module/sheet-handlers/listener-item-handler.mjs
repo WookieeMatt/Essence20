@@ -1,4 +1,4 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
@@ -335,7 +335,7 @@ async function shieldUpdate(actor, currentShield, stateString) {
     const prompt = "E20.SelectShieldPrompt";
     const title = "E20.SelectShieldTitle";
 
-    new ChoicesPrompt(choices, actor, prompt, title, currentShield, null, null, stateString, null, null).render(true);
+    new ChoicesSelector(choices, actor, prompt, title, currentShield, null, null, stateString, null, null).render(true);
     return;
   }
 

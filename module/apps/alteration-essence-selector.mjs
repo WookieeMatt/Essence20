@@ -2,7 +2,7 @@ import { _alterationStatUpdate, _processAlterationSkillIncrease, _showAlteration
 import { getFormData} from "../helpers/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class AlterationEssencePrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class AlterationEssenceSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(choices, actor, alteration, alterationUuid, dropFunc, title, bonusSkill, costEssence){
     super();
     this._choices = choices;
@@ -16,7 +16,7 @@ export default class AlterationEssencePrompt extends HandlebarsApplicationMixin(
   }
 
   static DEFAULT_OPTIONS = {
-    id: "option-select",
+    id: "alteration-essence",
     classes: [
       "essence20",
       "trait-selector",
@@ -26,7 +26,7 @@ export default class AlterationEssencePrompt extends HandlebarsApplicationMixin(
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: AlterationEssencePrompt.myFormHandler,
+      handler: AlterationEssenceSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },

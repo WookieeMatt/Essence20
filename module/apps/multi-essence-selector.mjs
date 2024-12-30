@@ -1,19 +1,19 @@
-import { _processAlterationMovementCost} from "../sheet-handlers/alteration-handler.mjs";
+import { _selectEssenceProgression } from "../sheet-handlers/role-handler.mjs";
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class AlterationMovementPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actor, alteration, choices, alterationUuid, title, dropFunc){
+export default class MultiEssenceSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+  constructor(choices, actor, role, dropFunc, title){
     super();
-    this._actor = actor;
-    this._alteration = alteration;
     this._choices = choices;
-    this._alterationUuid = alterationUuid;
-    this._title = title;
+    this._actor = actor;
+    this._role = role;
     this._dropFunc = dropFunc;
+    this._title = title;
   }
 
   static DEFAULT_OPTIONS = {
-    id: "alteration-movement",
+    id: "mutli-essence",
     classes: [
       "essence20",
       "trait-selector",
@@ -23,7 +23,7 @@ export default class AlterationMovementPrompt extends HandlebarsApplicationMixin
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: AlterationMovementPrompt.myFormHandler,
+      handler: MultiEssenceSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },
@@ -31,7 +31,7 @@ export default class AlterationMovementPrompt extends HandlebarsApplicationMixin
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/alteration-movement.hbs",
+      template: "systems/essence20/templates/app/multi-select-essence.hbs",
     },
     footer: {
       template: "templates/generic/form-footer.hbs",
@@ -46,20 +46,23 @@ export default class AlterationMovementPrompt extends HandlebarsApplicationMixin
     const context = await super._prepareContext(options);
     context.choices = this._choices;
     context.buttons = [
-      { type: "submit", label: "E20.AcceptButton" },
+      { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
     return context;
   }
 
   static async myFormHandler(event, form, formData) {
-    const data = {};
-    for (const [key, value] of Object.entries(formData.object)) {
-      data[key] = {
-        max: this._choices[key].maxValue,
-        value: value,
-      };
+    let selectionAmount = 0;
+    for (const [, selection] of Object.entries(formData.object)) {
+      if (selection == true) {
+        selectionAmount += 1;
+      }
     }
 
-    _processAlterationMovementCost(this._actor, this._alteration, data, this._alterationUuid, this._dropFunc);
+    if (selectionAmount != 2) {
+      throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
+    }
+
+    _selectEssenceProgression(this._actor, this._role, this._dropFunc, formData.object);
   }
 }

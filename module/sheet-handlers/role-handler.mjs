@@ -1,8 +1,8 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
-import EssenceProgressionSelectPrompt from "../apps/essence-progression-select.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
+import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
-import MultiSelectEssencePrompt from "../apps/multi-select-essence.mjs";
+import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 
 /**
  * Handles setting the values and Items for an Actor's Role
@@ -208,7 +208,7 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
   const prompt = "E20.SelectFocus";
   const title = "E20.SelectFocusSkills";
 
-  new ChoicesPrompt(choices, actor, prompt, title, focus, null, dropFunc, null, null, null).render(true);
+  new ChoicesSelector(choices, actor, prompt, title, focus, null, dropFunc, null, null, null).render(true);
 }
 
 /**
@@ -494,7 +494,7 @@ async function _selectFirstEssences(actor, role, dropFunc) {
   }
 
   const title = "E20.EssenceIncrease";
-  new MultiSelectEssencePrompt(choices, actor, role, dropFunc, title).render(true);
+  new MultiEssenceSelector(choices, actor, role, dropFunc, title).render(true);
 
 }
 
@@ -522,7 +522,7 @@ export async function _selectEssenceProgression(actor, role, dropFunc, level1Ess
   }
 
   const title = "E20.EssenceProgressionSelect";
-  new EssenceProgressionSelectPrompt(choices, actor, role, dropFunc, level1Essences, title).render(true);
+  new EssenceProgressionSelector(choices, actor, role, dropFunc, level1Essences, title).render(true);
 }
 
 /**

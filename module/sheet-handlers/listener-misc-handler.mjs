@@ -1,6 +1,6 @@
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
-import SelectPrompt from "../apps/select-prompt.mjs";
+import RollerSelector from "../apps/roller-selector.mjs";
 
 const PARENT_ROLLER_KEY = "parentActor";
 
@@ -244,7 +244,7 @@ export async function onRoll(event, actor) {
     }
 
     const title = "E20.ActorSelect";
-    new SelectPrompt(actor, choices, event, title).render(true);
+    new RollerSelector(actor, choices, event, title).render(true);
   } else {
     performRoll(event, actor, null);
   }

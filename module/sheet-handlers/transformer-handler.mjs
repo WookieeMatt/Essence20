@@ -1,4 +1,4 @@
-import TransformOptionPrompt from "../apps/transform-option-prompt.mjs";
+import TransformOptionSelector from "../apps/transform-option-selector.mjs";
 import { resizeTokens } from "../helpers/actor.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 
@@ -116,7 +116,7 @@ async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
   }
 
   const title = "E20.AltModeChoice";
-  new TransformOptionPrompt(choices, actorSheet, altModes, title).render(true);
+  new TransformOptionSelector(choices, actorSheet, altModes, title).render(true);
 }
 
 /**

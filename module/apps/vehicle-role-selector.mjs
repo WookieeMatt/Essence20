@@ -1,19 +1,19 @@
-import { _altModeSelect } from "../sheet-handlers/transformer-handler.mjs";
+import { setEntryAndAddActor, verifyDropSelection } from "../sheet-handlers/drop-handler.mjs";
 import { getFormData } from "../helpers/application.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class TransformOptionPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(choices, actorSheet, altModes, title){
+export default class VehicleRoleSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+  constructor(droppedActor, targetActor, choices, title){
     super();
+    this._targetActor = targetActor;
+    this._droppedActor = droppedActor;
     this._choices = choices;
-    this._actorSheet = actorSheet;
-    this._altModes = altModes;
     this._title = title;
   }
 
   static DEFAULT_OPTIONS = {
-    id: "option-select",
+    id: "vehicle-role",
     classes: [
       "essence20",
       "trait-selector",
@@ -23,7 +23,7 @@ export default class TransformOptionPrompt extends HandlebarsApplicationMixin(Ap
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: TransformOptionPrompt.myFormHandler,
+      handler: VehicleRoleSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },
@@ -31,7 +31,7 @@ export default class TransformOptionPrompt extends HandlebarsApplicationMixin(Ap
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/option-select.hbs",
+      template: "systems/essence20/templates/app/vehicle-role-select.hbs",
     },
     footer: {
       template: "templates/generic/form-footer.hbs",
@@ -46,14 +46,20 @@ export default class TransformOptionPrompt extends HandlebarsApplicationMixin(Ap
     const context = await super._prepareContext(options);
     context.choices = this._choices;
     context.buttons = [
-      { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
+      { type: "submit", label: "E20.AcceptButton" },
     ];
     return context;
   }
 
-  static async myFormHandler(event, form, formData) {
-    const selectedForm = getFormData(formData.object);
+  static async myFormHandler(event, form, formData){
+    const newRole = getFormData(formData.object);
 
-    _altModeSelect(this._actorSheet, this._altModes, selectedForm);
+    const allowDrop = verifyDropSelection(this._targetActor, newRole);
+
+    if (!allowDrop) {
+      throw new Error(game.i18n.localize('E20.VehicleRoleError'));
+    }
+
+    setEntryAndAddActor(this._droppedActor, this._targetActor, newRole);
   }
 }

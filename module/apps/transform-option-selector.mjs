@@ -1,19 +1,19 @@
-import { _selectEssenceProgression } from "../sheet-handlers/role-handler.mjs";
+import { _altModeSelect } from "../sheet-handlers/transformer-handler.mjs";
+import { getFormData } from "../helpers/application.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class MultiSelectEssencePrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(choices, actor, role, dropFunc, title){
+export default class TransformOptionSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+  constructor(choices, actorSheet, altModes, title){
     super();
     this._choices = choices;
-    this._actor = actor;
-    this._role = role;
-    this._dropFunc = dropFunc;
+    this._actorSheet = actorSheet;
+    this._altModes = altModes;
     this._title = title;
   }
 
   static DEFAULT_OPTIONS = {
-    id: "mutli-select-prompt",
+    id: "transform-options",
     classes: [
       "essence20",
       "trait-selector",
@@ -23,7 +23,7 @@ export default class MultiSelectEssencePrompt extends HandlebarsApplicationMixin
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: MultiSelectEssencePrompt.myFormHandler,
+      handler: TransformOptionSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },
@@ -31,7 +31,7 @@ export default class MultiSelectEssencePrompt extends HandlebarsApplicationMixin
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/multi-select-essence.hbs",
+      template: "systems/essence20/templates/app/option-select.hbs",
     },
     footer: {
       template: "templates/generic/form-footer.hbs",
@@ -52,17 +52,8 @@ export default class MultiSelectEssencePrompt extends HandlebarsApplicationMixin
   }
 
   static async myFormHandler(event, form, formData) {
-    let selectionAmount = 0;
-    for (const [, selection] of Object.entries(formData.object)) {
-      if (selection == true) {
-        selectionAmount += 1;
-      }
-    }
+    const selectedForm = getFormData(formData.object);
 
-    if (selectionAmount != 2) {
-      throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
-    }
-
-    _selectEssenceProgression(this._actor, this._role, this._dropFunc, formData.object);
+    _altModeSelect(this._actorSheet, this._altModes, selectedForm);
   }
 }

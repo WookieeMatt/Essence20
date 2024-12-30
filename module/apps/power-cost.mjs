@@ -2,7 +2,7 @@ import { _powerCountUpdate } from "../sheet-handlers/power-handler.mjs";
 import { getFormData } from "../helpers/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class PowerCostPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class PowerCostSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(actor, power, maxPower, powerType, title){
     super();
     this._actor = actor;
@@ -23,7 +23,7 @@ export default class PowerCostPrompt extends HandlebarsApplicationMixin(Applicat
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: PowerCostPrompt.myFormHandler,
+      handler: PowerCostSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },

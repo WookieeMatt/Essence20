@@ -1,4 +1,4 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
@@ -142,7 +142,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 
     const prompt = "E20.SelectWeaponAttach";
     const title = "E20.SelectUpgradeOrWeaponEffect";
-    new ChoicesPrompt(choices, actor, prompt, title, droppedItem, null, dropFunc, null, null, null).render(true);
+    new ChoicesSelector(choices, actor, prompt, title, droppedItem, null, dropFunc, null, null, null).render(true);
   } else {
     ui.notifications.error(game.i18n.localize('E20.NoUpgradableItemsError'));
     return false;
@@ -150,7 +150,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 }
 
 /**
- * Processes the options resulting from ChoicesPrompt
+ * Processes the options resulting from ChoicesSelector
  * @param {Actor} actor The Actor receiving the attachment
  * @param {UUID} itemId The uuid of the item we are attaching to
  * @param {Function} dropFunc The function to call to complete the drop
