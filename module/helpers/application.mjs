@@ -10,5 +10,6 @@ export function getFormData(formData){
       break;
     }
   }
+
   return returnData;
 }
