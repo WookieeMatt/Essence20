@@ -1,4 +1,4 @@
-import PowerCostSelector from "../apps/power-cost.mjs";
+import PowerCostSelector from "../apps/power-cost-selector.mjs";
 import { parseId } from "../helpers/utils.mjs";
 
 /**
