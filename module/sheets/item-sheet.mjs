@@ -18,8 +18,8 @@ export class Essence20ItemSheet extends ItemSheet {
         onSave: () => {
           this.saveEditor(name, { remove: true });
           this.editingDescriptionTarget = null;
-        }
-      })
+        },
+      }),
     };
     return super.activateEditor(name, options, initialContent);
   }

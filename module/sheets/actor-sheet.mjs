@@ -38,8 +38,8 @@ export class Essence20ActorSheet extends ActorSheet {
         onSave: () => {
           this.saveEditor(name, { remove: true });
           this.editingDescriptionTarget = null;
-        }
-      })
+        },
+      }),
     };
     return super.activateEditor(name, options, initialContent);
   }
