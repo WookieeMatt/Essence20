@@ -9,6 +9,22 @@ import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 export class Essence20ItemSheet extends ItemSheet {
 
   /** @override */
+  async activateEditor(name, options={}, initialContent="") {
+    options.relativeLinks = true;
+    options.plugins = {
+      menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
+        compact: true,
+        destroyOnSave: true,
+        onSave: () => {
+          this.saveEditor(name, { remove: true });
+          this.editingDescriptionTarget = null;
+        },
+      }),
+    };
+    return super.activateEditor(name, options, initialContent);
+  }
+
+  /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["essence20", "sheet", "item"],

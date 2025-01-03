@@ -29,6 +29,22 @@ export class Essence20ActorSheet extends ActorSheet {
   }
 
   /** @override */
+  async activateEditor(name, options={}, initialContent="") {
+    options.relativeLinks = true;
+    options.plugins = {
+      menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
+        compact: true,
+        destroyOnSave: true,
+        onSave: () => {
+          this.saveEditor(name, { remove: true });
+          this.editingDescriptionTarget = null;
+        },
+      }),
+    };
+    return super.activateEditor(name, options, initialContent);
+  }
+
+  /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["essence20", "sheet", "actor"],
