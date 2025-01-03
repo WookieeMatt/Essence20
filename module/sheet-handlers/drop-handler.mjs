@@ -6,7 +6,7 @@ import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
 import { onPowerDrop } from "./power-handler.mjs";
 import { onPerkDrop } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
-import VehicleRoleSelectPrompt from "../apps/vehicle-role-select.mjs";
+import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -207,7 +207,7 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
   }
 
   const title = "E20.VehicleRoleSelect";
-  new VehicleRoleSelectPrompt(droppedActor, targetActor, choices, title).render(true);
+  new VehicleRoleSelector(droppedActor, targetActor, choices, title).render(true);
 }
 
 /**

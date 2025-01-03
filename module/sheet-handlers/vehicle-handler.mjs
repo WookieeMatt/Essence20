@@ -1,5 +1,5 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 
 /**
@@ -134,7 +134,7 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
       const prompt = "E20.SelectDriverSwap";
       const title = "E20.VehicleDialogSwapSelect";
 
-      new ChoicesPrompt(choices, actor, prompt, title, null, key, null, newRole, null, null).render(true);
+      new ChoicesSelector(choices, actor, prompt, title, null, key, null, newRole, null, null).render(true);
     }
   }
 }

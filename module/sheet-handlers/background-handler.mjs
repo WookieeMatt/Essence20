@@ -1,4 +1,4 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
 import { getItemsOfType, getShiftedSkill } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
@@ -94,7 +94,7 @@ async function _showOriginEssencePrompt(actor, origin, dropFunc) {
 
   const prompt = "E20.SelectEssence";
   const title = "E20.SelectOriginEssence";
-  new ChoicesPrompt(choices, actor, prompt, title, origin, null, dropFunc, null, null, null).render(true);
+  new ChoicesSelector(choices, actor, prompt, title, origin, null, dropFunc, null, null, null).render(true);
 }
 
 /**
@@ -140,7 +140,7 @@ export async function _showOriginSkillPrompt(actor, origin, selectedEssence, dro
 
   const prompt = "E20.SelectSkill";
   const title = "E20.SelectOriginSkill";
-  new ChoicesPrompt(choices, actor, prompt, title, origin, null, dropFunc, null, selectedEssence, null).render(true);
+  new ChoicesSelector(choices, actor, prompt, title, origin, null, dropFunc, null, selectedEssence, null).render(true);
 }
 
 /**
@@ -174,7 +174,7 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
 
     const prompt = "E20.SelectAltMode";
     const title = "E20.SelectOriginAltMode";
-    new ChoicesPrompt(choices, actor, prompt, title, origin, null, dropFunc, null, essence, selectedSkill).render(true);
+    new ChoicesSelector(choices, actor, prompt, title, origin, null, dropFunc, null, essence, selectedSkill).render(true);
   } else {
     setOriginValues(actor, origin, essence, selectedSkill, dropFunc);
   }
@@ -269,7 +269,7 @@ async function _chooseHangUp(actor, influence, newInfluence) {
 
   const prompt = "E20.SelectHangUp";
   const title = "E20.SelectInfluenceHangUp";
-  new ChoicesPrompt (choices, actor, prompt, title, influence, null, null, newInfluence, null, null).render(true);
+  new ChoicesSelector (choices, actor, prompt, title, influence, null, null, newInfluence, null, null).render(true);
 }
 
 /**

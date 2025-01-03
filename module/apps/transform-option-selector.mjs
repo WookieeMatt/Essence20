@@ -1,17 +1,19 @@
-import { handleActorSelector } from "../sheet-handlers/listener-misc-handler.mjs";
+import { _altModeSelect } from "../sheet-handlers/transformer-handler.mjs";
+import { getFormData } from "../helpers/application.mjs";
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class SelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(actor, choices, event, title){
+export default class TransformOptionSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+  constructor(choices, actorSheet, altModes, title){
     super();
-    this._actor = actor;
     this._choices = choices;
-    this._event = event;
+    this._actorSheet = actorSheet;
+    this._altModes = altModes;
     this._title = title;
   }
 
   static DEFAULT_OPTIONS = {
-    id: "select-prompt",
+    id: "transform-options",
     classes: [
       "essence20",
       "trait-selector",
@@ -21,7 +23,7 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: SelectPrompt.myFormHandler,
+      handler: TransformOptionSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },
@@ -29,7 +31,7 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/select-prompt.hbs",
+      template: "systems/essence20/templates/app/option-select.hbs",
     },
     footer: {
       template: "templates/generic/form-footer.hbs",
@@ -44,17 +46,14 @@ export default class SelectPrompt extends HandlebarsApplicationMixin(Application
     const context = await super._prepareContext(options);
     context.choices = this._choices;
     context.buttons = [
-      { type: "submit", label: "E20.AcceptButton" },
+      { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
     return context;
   }
 
-  static async myFormHandler(event, form, formData){
-    let key = null;
-    for (const [, value] of Object.entries(formData.object)) {
-      key = value;
-    }
+  static async myFormHandler(event, form, formData) {
+    const selectedForm = getFormData(formData.object);
 
-    handleActorSelector(this._actor, key, this._event);
+    _altModeSelect(this._actorSheet, this._altModes, selectedForm);
   }
 }

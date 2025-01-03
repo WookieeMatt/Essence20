@@ -6,7 +6,7 @@ import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class ChoicesPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class ChoicesSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2) {
     super();
     this._choices = choices;
@@ -23,16 +23,16 @@ export default class ChoicesPrompt extends HandlebarsApplicationMixin(Applicatio
 
   static DEFAULT_OPTIONS = {
     actions: {
-      focus: ChoicesPrompt.focus,
-      influence: ChoicesPrompt.influence,
-      origin: ChoicesPrompt.origin,
-      passenger: ChoicesPrompt.passenger,
-      shield: ChoicesPrompt.shield,
-      upgrade: ChoicesPrompt.attach,
-      weaponEffect: ChoicesPrompt.attach,
-      view: ChoicesPrompt.view,
+      focus: ChoicesSelector.focus,
+      influence: ChoicesSelector.influence,
+      origin: ChoicesSelector.origin,
+      passenger: ChoicesSelector.passenger,
+      shield: ChoicesSelector.shield,
+      upgrade: ChoicesSelector.attach,
+      weaponEffect: ChoicesSelector.attach,
+      view: ChoicesSelector.view,
     },
-    id: "choices-prompt",
+    id: "choices",
     classes: [
       "essence20",
       "trait-selector",
