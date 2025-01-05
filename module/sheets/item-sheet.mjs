@@ -134,7 +134,7 @@ export class Essence20ItemSheet extends ItemSheet {
     html.find('.view-info').click(this._onObjectInfo.bind(this));
 
     //copy to clipboard
-    html.find('.clipboard-copy').click(this._copyClipboard.bind(this));
+    html.find('.clipboard-copy').click(this._onCopyClipboard.bind(this));
 
   }
 
@@ -183,7 +183,7 @@ export class Essence20ItemSheet extends ItemSheet {
    * Handles copying data to the clipboard
    * @param {Event} data The data from the click event
    */
-  _copyClipboard(data){
+  _onCopyClipboard(data){
     const clipText = data.currentTarget.dataset.clipboard;
     if (clipText) {
       game.clipboard.copyPlainText(clipText);
