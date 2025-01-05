@@ -179,12 +179,15 @@ export class Essence20ItemSheet extends ItemSheet {
     }
   }
 
+  /**
+   * Handles copying data to the clipboard
+   * @param {Event} data The data from the click event
+   */
   _copyClipboard(data){
-    const clipText = data.currentTarget.dataset.uuid;
+    const clipText = data.currentTarget.dataset.clipboard;
     if (clipText) {
       game.clipboard.copyPlainText(clipText);
       ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
     }
-
   }
 }

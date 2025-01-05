@@ -11,7 +11,7 @@
   {{#*inline "item-field-inputs"}}
     <input type="text" name="item.uuid" value="{{item.uuid}}" disabled/>
     <div class="item-controls">
-      <a class="clipboard-copy" data-uuid="{{item.uuid}}" data-tooltip="{{localize 'E20.CopyClipboard'}}">
+      <a class="clipboard-copy" data-clipboard="{{item.uuid}}" data-tooltip="{{localize 'E20.CopyClipboard'}}">
         <i class="fa-solid fa-fw fa-clipboard"></i>
       </a>
     </div>
@@ -24,5 +24,3 @@
 <div class="description-tab flexrow active" data-group="primary" data-tab="description">
   {{editor system.description target="system.description" button=true owner=owner editable=editable engine="prosemirror" collaborate=false}}
 </div>
-
-
