@@ -133,6 +133,9 @@ export class Essence20ItemSheet extends ItemSheet {
     //Open Attached Item Sheet
     html.find('.view-info').click(this._onObjectInfo.bind(this));
 
+    //copy to clipboard
+    html.find('.clipboard-copy').click(this._copyClipboard.bind(this));
+
   }
 
   /**
@@ -174,5 +177,14 @@ export class Essence20ItemSheet extends ItemSheet {
     if (item) {
       item.sheet.render(true);
     }
+  }
+
+  _copyClipboard(data){
+    const clipText = data.currentTarget.dataset.uuid;
+    if (clipText) {
+      game.clipboard.copyPlainText(clipText);
+      ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
+    }
+
   }
 }
