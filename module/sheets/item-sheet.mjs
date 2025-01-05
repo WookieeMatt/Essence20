@@ -182,7 +182,7 @@ export class Essence20ItemSheet extends ItemSheet {
    * Handles copying data to the clipboard
    * @param {Event} data The data from the click event
    */
-  _onCopyClipboard(data){
+  _onCopyClipboard(data) {
     const clipText = data.currentTarget.dataset.clipboard;
     if (clipText) {
       game.clipboard.copyPlainText(clipText);
