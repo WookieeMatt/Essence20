@@ -6,6 +6,19 @@
 {{/inline}}
 {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+<div>
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ItemUuid'}}
+  {{#*inline "item-field-inputs"}}
+    <input type="text" name="item.uuid" value="{{item.uuid}}" disabled/>
+    <div class="item-controls">
+      <a class="clipboard-copy" data-clipboard="{{item.uuid}}" data-tooltip="{{localize 'E20.CopyClipboard'}}">
+        <i class="fa-solid fa-fw fa-clipboard"></i>
+      </a>
+    </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+</div>
+
 {{!-- Description --}}
 <h3>{{localize 'E20.ItemDescription'}}</h3>
 <div class="description-tab flexrow active" data-group="primary" data-tab="description">
