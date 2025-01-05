@@ -133,9 +133,8 @@ export class Essence20ItemSheet extends ItemSheet {
     //Open Attached Item Sheet
     html.find('.view-info').click(this._onObjectInfo.bind(this));
 
-    //copy to clipboard
+    //Copy to clipboard
     html.find('.clipboard-copy').click(this._onCopyClipboard.bind(this));
-
   }
 
   /**
