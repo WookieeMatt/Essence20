@@ -1,0 +1,20 @@
+<div>
+  <div>
+    {{#each system.prerequisites as |prereq|}}
+      {{#unless @first}}
+        <select>
+          <option>or</option>
+          <option>and</option>
+        </select>
+      {{/unless}}
+      {{> "prereq.partial"}}
+    {{/each}}
+  </div>
+  <select class="prereq" name="prereq-option" id="prereq-option">
+    {{selectOptions @root.config.PrereqTypes}}
+  </select>
+  <a class="add-prereq"><i class="fa-solid fa-plus"></i> {{localize "E20.NewPreRequisite"}}</a>
+</div>
+
+
+

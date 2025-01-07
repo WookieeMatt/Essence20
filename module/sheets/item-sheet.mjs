@@ -1,6 +1,7 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
+import { createId } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
@@ -135,6 +136,9 @@ export class Essence20ItemSheet extends ItemSheet {
 
     //Copy to clipboard
     html.find('.clipboard-copy').click(this._onCopyClipboard.bind(this));
+
+    //Add new Prerequisite
+    html.find('.add-prereq').click(this._onAddPrereq.bind(this));
   }
 
   /**
@@ -188,5 +192,27 @@ export class Essence20ItemSheet extends ItemSheet {
       game.clipboard.copyPlainText(clipText);
       ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
     }
+  }
+
+  _onAddPrereq(event) {
+    console.log(this.item)
+    const selected = event.currentTarget.previousElementSibling.value;
+    const entry = {
+      type: selected,
+    };
+
+    switch (selected) {
+      case "level":
+        entry['partial'] = "systems/essence20/templates/item/parts/prerequisites/level.hbs";
+        break;
+    }
+
+    const pathPrefix = "system.prerequisites";
+    const key = createId(this.item.system.prerequisites);
+
+   this.item.update({
+      [`${pathPrefix}.${key}`]: entry,
+    });
+
   }
 }

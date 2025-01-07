@@ -1057,3 +1057,11 @@ E20.CombinedEssenceRankNames = [
   ...E20.EssenceRankNames,
   ...E20.TFEssenceRankNames,
 ];
+
+/************************************************
+ * TF Prerequisistes                            *
+ ***********************************************/
+
+E20.PrereqTypes = {
+  level: "E20.Level",
+};

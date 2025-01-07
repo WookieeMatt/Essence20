@@ -7,6 +7,7 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
     <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
+    <a class="item" data-tab="prerequisites">{{ localize "E20.TabPrerequisites" }}</a>
     <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
   </nav>
 
@@ -33,14 +34,12 @@
       {{numberInput system.selectionLimit name="system.selectionLimit" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Prerequisite --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkPrerequisite'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     </div>
+
+    <div class="tab details flexcol" data-group="primary" data-tab="prerequisites">
+      {{> "systems/essence20/templates/item/parts/prerequisites.hbs"}}
+    </div>
+
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{!-- Effects Section --}}
       {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
