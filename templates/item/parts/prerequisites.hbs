@@ -7,7 +7,7 @@
           <option>and</option>
         </select>
       {{/unless}}
-      {{> "prereq.partial"}}
+      {{> (lookup . prereq.partial)}}
     {{/each}}
   </div>
   <select class="prereq" name="prereq-option" id="prereq-option">
