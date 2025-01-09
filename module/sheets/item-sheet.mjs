@@ -139,6 +139,9 @@ export class Essence20ItemSheet extends ItemSheet {
 
     //Add new Prerequisite
     html.find('.add-prereq').click(this._onAddPrereq.bind(this));
+
+    //Delete Prerequisite
+    html.find('.prereq-delete').click(this._onPrereqDelete.bind(this));
   }
 
   /**
@@ -205,6 +208,12 @@ export class Essence20ItemSheet extends ItemSheet {
       case "level":
         entry['partial'] = "systems/essence20/templates/item/parts/prerequisites/level.hbs";
         break;
+      case "perk":
+        entry['partial'] = "systems/essence20/templates/item/parts/prerequisites/item.hbs";
+        break;
+      case "role":
+        entry['partial'] = "systems/essence20/templates/item/parts/prerequisites/item.hbs";
+        break;
     }
 
     const pathPrefix = "system.prerequisites";
@@ -213,6 +222,12 @@ export class Essence20ItemSheet extends ItemSheet {
    this.item.update({
       [`${pathPrefix}.${key}`]: entry,
     });
+  }
 
+  _onPrereqDelete(data) {
+    const key = data.currentTarget.dataset.key;
+    const deleteString = `system.prerequisites.-=${key}`;
+
+    this.item.update({[deleteString]: null});
   }
 }

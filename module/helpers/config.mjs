@@ -1063,5 +1063,7 @@ E20.CombinedEssenceRankNames = [
  ***********************************************/
 
 E20.PrereqTypes = {
-  level: "E20.Level",
+  level: "E20.PrereqLevel",
+  perk: "E20.PrereqPerk",
+  role: "E20.PrereqRole",
 };

@@ -1,13 +1,15 @@
 <div>
   <div>
     {{#each system.prerequisites as |prereq|}}
-      {{#unless @first}}
-        <select>
+      {{> (lookup prereq 'partial') prereq=prereq}}
+      <input type="hidden" name="system.prerequisites.{{@key}}.previousKey" value="{{@root.previousKey}}">
+      {{#unless @last}}
+        <select name="system.prerequisites.{{@key}}.compare">
           <option>or</option>
           <option>and</option>
         </select>
       {{/unless}}
-      {{> (lookup . prereq.partial)}}
+      {{assign "previousKey" @key}}
     {{/each}}
   </div>
   <select class="prereq" name="prereq-option" id="prereq-option">

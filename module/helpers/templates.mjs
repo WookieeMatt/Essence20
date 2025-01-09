@@ -104,6 +104,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/parts/prerequisites.hbs",
     "systems/essence20/templates/item/parts/role-perk-drop.hbs",
     "systems/essence20/templates/item/parts/sheet-field.hbs",
+    "systems/essence20/templates/item/parts/prerequisites/item.hbs",
     "systems/essence20/templates/item/parts/prerequisites/level.hbs",
   ]);
 };

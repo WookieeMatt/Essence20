@@ -1,12 +1,8 @@
 <div>
-  <h3>Level Requirement</h3>
+  <h3>{{prereq.type}} Requirement</h3>
     <div class="flexrow">
       <div>
-        <select name="prereq.comparison">
-          <option>gte</option>
-          <option>lte</option>
-        </select>
-        <input type="text" name="system.prerequisites.{{@key}}.value" value="{{prereq.value}}"/>
+        <input type="text" name="system.prerequisites.{{@key}}.uuid" value="{{prereq.uuid}}"/>
       </div>
       <div class="item-controls">
         <a class="item-control prereq-delete flex-right" data-key="{{@key}}" data-tooltip="{{localize 'E20.DeleteItem'}}">
