@@ -1326,7 +1326,7 @@ form .notes, form .hint {
   background: initial;
 }
 
-.essence20 input[type=number], input[type=text] {
+input[type=number], input[type=text] {
   color: white;
   vertical-align: middle;
 }
