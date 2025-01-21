@@ -13,6 +13,34 @@ option {
   background-color: #4a4848;
 }
 
+form .form-group span.units {
+  color: v.$textcolor3;
+}
+
+form .form-group.slim .form-fields > label {
+  color: v.$textcolor3;
+}
+
+form .notes, form .hint {
+  color: v.$textcolor3;
+}
+
+.standard-form .form-group > label {
+  color: v.$textcolor3;
+}
+
+.filepicker .display-modes a {
+  background: initial;
+}
+
+.filepicker .display-modes a.active {
+  background: initial;
+}
+
+.filepicker .favorites .path {
+  background: initial;
+}
+
 .essence20 input[type="number"], input[type="text"] {
   color: white;
   vertical-align: middle;
@@ -44,11 +72,6 @@ option {
   width: 20px;
   justify-content: center;
   align-items: center;
-}
-
-form .notes,
-form .hint {
-  color: v.$textcolor1;
 }
 
 .essence20 .span {
