@@ -1298,7 +1298,35 @@ option {
   background-color: #4a4848;
 }
 
-.essence20 input[type=number], input[type=text] {
+form .form-group span.units {
+  color: #9e9b9b;
+}
+
+form .form-group.slim .form-fields > label {
+  color: #9e9b9b;
+}
+
+form .notes, form .hint {
+  color: #9e9b9b;
+}
+
+.standard-form .form-group > label {
+  color: #9e9b9b;
+}
+
+.filepicker .display-modes a {
+  background: initial;
+}
+
+.filepicker .display-modes a.active {
+  background: initial;
+}
+
+.filepicker .favorites .path {
+  background: initial;
+}
+
+input[type=number], input[type=text] {
   color: white;
   vertical-align: middle;
 }
@@ -1329,11 +1357,6 @@ option {
   width: 20px;
   justify-content: center;
   align-items: center;
-}
-
-form .notes,
-form .hint {
-  color: #c7c4c4;
 }
 
 .essence20 .span {
