@@ -9,7 +9,7 @@
       {{/roll-button}}
     </div>
   </div>
-  {{#ifEquals item.type "shield"}}
+  {{#if (eq item.type "shield")}}
     <div class="item-image" style="flex-grow: 0;">
       <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
         <a class="shield-activate" data-id="{{item._id}}" style="flex-grow: 0;"
@@ -23,10 +23,10 @@
         </a>
       </div>
     </div>
-  {{/ifEquals}}
+  {{/if}}
   {{#if (isdefined item.system.equipped)}}
   <div style="flex-grow: 0;">
-    <input class="inline-edit item-label-checkbox {{#ifEquals item.type "shield"}} shield-equip{{/ifEquals}}"
+    <input class="inline-edit item-label-checkbox {{#if (eq item.type "shield")}} shield-equip{{/if}}"
       data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped"
       {{checked item.system.equipped}} data-tooltip="{{localize 'E20.ItemToggleEquipped'}}"
       {{#if @root.shieldEquipped}} {{#unless item.system.equipped}} disabled {{/unless}} {{/if}}

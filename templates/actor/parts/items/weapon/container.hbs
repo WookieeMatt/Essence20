@@ -4,9 +4,9 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    {{#ifEquals @root.actor.type 'transformer'}}
+    {{#if (eq @root.actor.type 'transformer')}}
       {{>"systems/essence20/templates/actor/parts/misc/mode-selector.hbs"}}
-    {{/ifEquals}}
+    {{/if}}
 
     {{item.name}}
   {{/inline}}

@@ -20,7 +20,7 @@
         <div>
           {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
         </div>
-        {{#ifEquals @root.actor.type "megaform" }}
+        {{#if (eq @root.actor.type "megaform")}}
           <div>
             <span>{{ localize 'E20.ZordRanger' }}: {{attachedActor.system.ranger}}</span>
           </div>
@@ -29,21 +29,21 @@
           <div>{{ localize 'E20.ItemTypeMegaformTraitPlural' }}:</div>
             <ul>
               {{#each attachedActor.items as |item|}}
-              {{#ifEquals item.type 'megaformTrait'}}
+              {{#if (eq item.type 'megaformTrait')}}
               <li>{{item.name}}</li>
-              {{/ifEquals}}
+              {{/if}}
               {{/each}}
             </ul>
           </div>
-        {{/ifEquals}}
+        {{/if}}
         {{#inArray '["vehicle", "zord"]' @root.actor.type}}
           {{#each @root.system.actors as |current key2|}}
-            {{#ifEquals key key2}}
+            {{#if (eq key key2)}}
               <label for="current.vehicleRole" class="resource-label">{{localize 'E20.VehicleRole'}}</label>
               <select class="vehicle-role" name="current.vehicleRole" key={{@key}}>
                 {{selectOptions @root.config.vehicleRoles selected=current.vehicleRole}}
               </select>
-            {{/ifEquals}}
+            {{/if}}
           {{/each}}
         {{/inArray}}
       </div>

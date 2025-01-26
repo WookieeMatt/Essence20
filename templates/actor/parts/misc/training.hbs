@@ -11,11 +11,11 @@
             {{ localize "E20.ItemTypeArmorPlural" }}
           {{/if}}
         </th>
-        {{#ifNotEquals @root.role.system.version 'powerRangers'}}
+        {{#if (ne @root.role.system.version 'powerRangers')}}
         <th class="tg-td">
           {{ localize "E20.ItemTypeWeaponPlural" }}
         </th>
-        {{/ifNotEquals}}
+        {{/if}}
         {{#if @root.actor.system.poisonTraining}}
           <th class="tg-td">
             {{ localize "E20.ItemTypePoisonPlural" }}
@@ -39,11 +39,11 @@
             {{formatBooleanList @root.system.trained.armors @root.config.armorTypes 'unit'}}
           {{/if}}
         </td>
-        {{#ifNotEquals @root.role.system.version 'powerRangers'}}
+        {{#if (ne @root.role.system.version 'powerRangers')}}
         <td class="tg-td">
           {{formatBooleanList @root.system.trained.weapons @root.config.weaponTypes 'unit'}}
         </td>
-        {{/ifNotEquals}}
+        {{/if}}
         {{#if @root.actor.system.poisonTraining}}
           <td class="tg-td">
             {{#if @root.actor.system.trained.poisons.all}}
