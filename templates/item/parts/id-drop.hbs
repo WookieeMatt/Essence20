@@ -3,7 +3,7 @@
 {{#itemsContainType items type}}
   <div class="flexcol">
     {{#each items as |item|}}
-      {{#ifEquals item.type ../type}}
+      {{#if (eq item.type ../type)}}
       <div class="flexrow {{item.type}}" data-item-key="{{@key}}" data-item-uuid="{{item.uuid}}">
         <ul class="items-list">
           <li class="item">
@@ -21,7 +21,7 @@
           </li>
         </ul>
       </div>
-      {{/ifEquals}}
+      {{/if}}
     {{/each}}
   </div>
 {{else}}
