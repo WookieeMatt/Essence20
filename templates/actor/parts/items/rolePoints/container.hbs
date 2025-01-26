@@ -71,9 +71,7 @@
     {{/with}}
   {{/if}}
 
-  {{#unless @root.rolePoints}}
-  {{#unless @root.role.system.skillDie.isUsed}}
+  {{#unless (and @root.rolePoints @root.role.system.skillDie.isUsed)}}
     <div class="flexrow flex-group-center">{{localize 'E20.RolePointsNone'}}</div>
-  {{/unless}}
   {{/unless}}
 </div>
