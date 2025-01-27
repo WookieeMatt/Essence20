@@ -1,5 +1,5 @@
 <div class="trait-selector flexcol">
-  {{#ifEquals actor.type "npc"}}
+  {{#if (eq actor.type "npc")}}
     {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.IsNPC'}}
     {{#*inline "field-inputs"}}
       <input type="checkbox" id="isNPC" name="system.isNPC" {{checked system.isNPC}} />
@@ -11,23 +11,23 @@
       <input type="checkbox" id="isContact" name="system.isContact" {{checked system.isContact}} />
     {{/inline}}
     {{/"systems/essence20/templates/app/parts/field.hbs"}}
-  {{/ifEquals}}
+  {{/if}}
 
-  {{#ifNotEquals role.system.version 'powerRanger'}}
+  {{#if (ne role.system.version 'powerRanger')}}
     {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanMorph'}}
     {{#*inline "field-inputs"}}
       <input type="checkbox" id="canMorph" name="system.canMorph" {{checked system.canMorph}} />
     {{/inline}}
     {{/"systems/essence20/templates/app/parts/field.hbs"}}
-  {{/ifNotEquals}}
+  {{/if}}
 
-  {{#ifNotEquals role.system.version 'myLittlePony'}}
+  {{#if (ne role.system.version 'myLittlePony')}}
     {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanSpellcast'}}
     {{#*inline "field-inputs"}}
       <input type="checkbox" id="canSpellcast" name="system.canSpellcast" {{checked system.canSpellcast}}/>
     {{/inline}}
     {{/"systems/essence20/templates/app/parts/field.hbs"}}
-  {{/ifNotEquals}}
+  {{/if}}
 
   {{#unless altMode}}
     {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanTransform'}}
