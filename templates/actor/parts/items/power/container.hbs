@@ -1,8 +1,8 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.powers title='E20.ItemTypePowerPlural' dataType='power'}}
   {{#*inline "roll-button" item}}
-    {{#ifEquals item.system.canActivate true}}
+    {{#if item.system.canActivate}}
       <a class="rollable" data-roll-type={{item.type}} data-tooltip="{{localize 'E20.PowerRollTitle'}}"><i class="fas fa-battery-bolt"></i></a>
-    {{/ifEquals}}
+    {{/if}}
   {{/inline}}
 
   {{#*inline "expand-details" item}}
@@ -12,13 +12,13 @@
   {{#*inline "item-label" item}}
     <strong>
       {{item.name}}
-      {{#ifEquals @root.actor.type "npc"}}
+      {{#if (eq @root.actor.type "npc")}}
         :
         {{#if system.usesPer}}
           {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},
         {{/if}}
         {{lookup @root.config.actionTypes system.actionType}}
-      {{/ifEquals}}
+      {{/if}}
     </strong>
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

@@ -42,7 +42,7 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{#ifEquals system.canActivate true}}
+      {{#if system.canActivate}}
         {{!-- Power Cost --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerCost'}}
         {{#*inline "item-field-inputs"}}
@@ -57,14 +57,14 @@
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-        {{#ifEquals system.hasVariableCost true}}
+        {{#if system.hasVariableCost}}
           {{!-- Max Power Cost --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerMaxCost'}}
           {{#*inline "item-field-inputs"}}
           {{numberInput system.maxPowerCost name="system.maxPowerCost" min=0 step=1}}
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifEquals}}
+        {{/if}}
 
         {{!--Action Type --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionTypes'}}
@@ -85,7 +85,7 @@
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{/ifEquals}}
+      {{/if}}
 
     </div>
 
