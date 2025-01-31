@@ -54,17 +54,17 @@ export async function onDropItem(data, actor, dropFunc) {
   case 'origin':
     result = await onOriginDrop(actor, sourceItem, dropFunc);
     break;
+  case 'perk':
+    result = await onPerkDrop(actor, sourceItem, dropFunc);
+    break;  
+  case 'power':
+    result = await onPowerDrop(actor, sourceItem, dropFunc);
+    break;
   case 'role':
     result = await onRoleDrop(actor, sourceItem, dropFunc);
     break;
   case 'rolePoints':
     ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
-    break;
-  case 'perk':
-    result = await onPerkDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'power':
-    result = await onPowerDrop(actor, sourceItem, dropFunc);
     break;
   case 'shield' :
     result = await onAttachableParentDrop(actor, sourceItem, dropFunc);

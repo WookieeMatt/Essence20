@@ -40,6 +40,36 @@
       <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      
+      {{!-- Can Be Activated --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkCanBeActivated'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.canBeActivated" {{checked system.canBeActivated}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Has A Choice --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkHasChoice'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.hasChoice" {{checked system.hasChoice}}/>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#if system.hasChoice}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoicesType'}}
+        {{#*inline "item-field-inputs"}}
+        <select name="system.choiceType">
+          {{selectOptions config.perkChoicesType selected=system.choiceType}}
+        </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#if (eq system.choiceType 'perks')}}
+          {{!-- Perks Choices --}}
+          {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="perk" label='E20.PerkPlural' items=@root.system.items type='perk'}}
+        {{/if}}  
+      {{/if}}
+      
     </div>
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{!-- Effects Section --}}
