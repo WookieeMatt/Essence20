@@ -67,9 +67,9 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         if (item.type == 'perk') {
-          console.log("Got Here")
           //Do Perk Drop stuff here. 
         }
+
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (newItem.type == "altMode") {
@@ -246,7 +246,8 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
   case "perk":
     if (droppedItem.type == "perk") {
       return _addItemIfUnique(droppedItem, targetItem, entry);
-    } 
+    }
+
     break; 
   case "role":
     if (droppedItem.type == "perk") {
@@ -329,7 +330,7 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
           timesTaken += 1;
           if (droppedItem.system.selectionLimit <= timesTaken) {
             ui.notifications.error(game.i18n.localize('E20.SelectionLimitError'));
-            return
+            return;
           }
         }  
       } else if (item.uuid === droppedItem.uuid) {
