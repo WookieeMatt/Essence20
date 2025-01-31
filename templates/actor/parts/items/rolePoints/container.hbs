@@ -7,7 +7,6 @@
   
   {{#if @root.rolePoints}}
     {{#with @root.rolePoints as |rolePoints|}}
-      {{log rolePoints}}
       <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.rolePoints._id}}">
         {{!-- Label --}}
         <a class="rollable" style="flex-grow: 0;" data-roll-type="info" data-tooltip="{{localize 'E20.ItemRollTitle'}}">

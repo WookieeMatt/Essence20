@@ -99,7 +99,7 @@ export const character = () => ({
     poisons: makeTrainingSchema(E20.poisonTraining),
     weapons: makeTrainingSchema(E20.weaponTypes),
   }),
-  senses:new fields.SchemaField({}),
+  senses: new fields.SchemaField({}),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
     speed: makeSkillRankAllocation(),
