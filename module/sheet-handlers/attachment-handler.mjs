@@ -333,8 +333,8 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
               game.i18n.format(
                 'E20.SelectionLimitError',
                 {
-                   type: game.i18n.localize(`TYPES.Item.${droppedItem.type}`),
-                   limit: droppedItem.system.selectionLimit
+                  type: game.i18n.localize(`TYPES.Item.${droppedItem.type}`),
+                  limit: droppedItem.system.selectionLimit,
                 },
               ),
             );
