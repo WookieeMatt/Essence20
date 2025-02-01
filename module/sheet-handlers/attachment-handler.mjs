@@ -329,7 +329,7 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
         if (item.uuid === droppedItem.uuid) {
           timesTaken += 1;
           if (droppedItem.system.selectionLimit <= timesTaken) {
-            ui.notifications.error(game.i18n.format(game.i18n.localize('E20.SelectionLimitError'), { type: droppedItem.type, limit: droppedItem.system.selectionLimit }));
+            ui.notifications.error(game.i18n.format('E20.SelectionLimitError', { type: droppedItem.type, limit: droppedItem.system.selectionLimit }));
             return;
           }
         }  
