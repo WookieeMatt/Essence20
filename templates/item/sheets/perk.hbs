@@ -56,10 +56,10 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{#if system.hasChoice}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceType'}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceTypes'}}
         {{#*inline "item-field-inputs"}}
         <select name="system.choiceType">
-          {{selectOptions config.perkChoiceType selected=system.choiceType}}
+          {{selectOptions config.perkChoiceTypes selected=system.choiceType}}
         </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

@@ -735,14 +735,14 @@ E20.energonTypes = {
 };
 preLocalize("energonTypes");
 
-E20.perkChoiceType = {
-  environment: "E20.PerkChoiceEnvironment",
-  perk: "E20.PerkChoicePerk",
-  sense: "E20.PerkChoiceSense",
+E20.perkChoiceTypes = {
+  environments: "E20.PerkChoiceEnvironments",
+  perks: "E20.PerkChoicePerks",
+  senses: "E20.PerkChoiceSenses",
 };
 preLocalize("perkChoicesType");
 
-E20.sense = {
+E20.senses = {
   hearing: "E20.SenseHearing",
   sight: "E20.SenseSight",
   smell: "E20.SenseSmell",
@@ -751,7 +751,7 @@ E20.sense = {
 };
 preLocalize("sense");
 
-E20.environment = {
+E20.environments = {
   arctic: "E20.EnvironmentArctic",
   desert: "E20.EnvironmentDesert",
   grasslands: "E20.EnvironmentGrasslands",

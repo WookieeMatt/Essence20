@@ -13,7 +13,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       ...itemDescription(),
       ...parentItem(),
       canActivate: makeBool(false),
-      choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceType), 'perk'),
+      choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceTypes), 'perks'),
       hasChoice: makeBool(false),
       prerequisite: makeStr(null),
       selectionLimit: makeInt(1),
