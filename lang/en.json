@@ -529,6 +529,7 @@
     "SelectFocusSkills": "Focus Skill",
     "SelectHangUp": "Select a Hang-Up.",
     "SelectInfluenceHangUp": "Multiple Influence Hang-Ups",
+    "SelectionLimitError": "This {type} has already been added the maximum ({limit}) number of times.",
     "SelectOriginAltMode": "Origin Alt Modes",
     "SelectOriginEssence": "Origin Essences",
     "SelectOriginSkill": "Origin Skills",
