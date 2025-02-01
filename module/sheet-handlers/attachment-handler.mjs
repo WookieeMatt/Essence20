@@ -67,7 +67,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         if (item.type == 'perk') {
-          //Do Perk Drop stuff here. 
+          //Do Perk Drop stuff here.
         }
 
         const newItem = await Item.create(itemToCreate, { parent: owner });
@@ -248,7 +248,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
-    break; 
+    break;
   case "role":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
@@ -329,10 +329,18 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
         if (item.uuid === droppedItem.uuid) {
           timesTaken += 1;
           if (droppedItem.system.selectionLimit <= timesTaken) {
-            ui.notifications.error(game.i18n.format('E20.SelectionLimitError', { type: droppedItem.type, limit: droppedItem.system.selectionLimit }));
+            ui.notifications.error(
+              game.i18n.format(
+                'E20.SelectionLimitError',
+                {
+                   type: game.i18n.localize(`TYPES.Item.${droppedItem.type}`),
+                   limit: droppedItem.system.selectionLimit
+                },
+              ),
+            );
             return;
           }
-        }  
+        }
       } else if (item.uuid === droppedItem.uuid) {
         ui.notifications.error(game.i18n.localize('E20.AlreadyAttachedError'));
         return;
