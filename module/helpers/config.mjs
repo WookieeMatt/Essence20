@@ -740,7 +740,7 @@ E20.perkChoiceTypes = {
   perks: "E20.PerkChoicePerks",
   senses: "E20.PerkChoiceSenses",
 };
-preLocalize("perkChoicesType");
+preLocalize("perkChoiceTypes");
 
 E20.senses = {
   hearing: "E20.SenseHearing",
@@ -749,7 +749,7 @@ E20.senses = {
   taste: "E20.SenseTaste",
   touch: "E20.SenseTouch",
 };
-preLocalize("sense");
+preLocalize("senses");
 
 E20.environments = {
   arctic: "E20.EnvironmentArctic",
@@ -761,7 +761,7 @@ E20.environments = {
   wetlands: "E20.EnvironmentWetlands",
   woodlands: "E20.EnvironmentWoodlands",
 };
-preLocalize("environment");
+preLocalize("environments");
 
 /************************************************
  * Vehicles                                     *
