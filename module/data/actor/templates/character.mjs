@@ -62,7 +62,7 @@ export const character = () => ({
   }),
   environments: makeStrWithChoices(E20.Environments, null),
   essences: new fields.SchemaField({
-    strength: makeEssenceFields(), 
+    strength: makeEssenceFields(),
     speed: makeEssenceFields(),
     smarts: makeEssenceFields(),
     social: makeEssenceFields(),
