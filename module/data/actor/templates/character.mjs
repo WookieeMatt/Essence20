@@ -60,9 +60,9 @@ export const character = () => ({
     willpower: makeDefensesFields('willpower', 'smarts'),
     cleverness: makeDefensesFields('cleverness', 'social'),
   }),
-  environments: new fields.SchemaField({}),
+  environments: makeStrWithChoices(E20.Environments, null),
   essences: new fields.SchemaField({
-    strength: makeEssenceFields(),
+    strength: makeEssenceFields(), 
     speed: makeEssenceFields(),
     smarts: makeEssenceFields(),
     social: makeEssenceFields(),

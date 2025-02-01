@@ -418,6 +418,7 @@
     "PerkAlreadyTaken": "You have already taken this perk the maximum number of times.",
     "PerkCanActivate": "Can Activate",
     "PerkChoiceEnvironments": "Environments",
+    "PerkChoiceNone": "None",
     "PerkChoicePerks": "Perks",
     "PerkChoiceSenses": "Senses",
     "PerkChoiceTypes": "Choice Type",
