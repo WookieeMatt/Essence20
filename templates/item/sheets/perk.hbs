@@ -40,7 +40,7 @@
       <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      
+
       {{!-- Can Be Activated --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkCanActivate'}}
       {{#*inline "item-field-inputs"}}
@@ -48,7 +48,7 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceTypes'}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceType'}}
       {{#*inline "item-field-inputs"}}
       <select name="system.choiceType">
         {{selectOptions config.perkChoiceTypes selected=system.choiceType}}
@@ -59,8 +59,8 @@
       {{#if (eq system.choiceType 'perks')}}
         {{!-- Perks Choices --}}
         {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="perk" label='E20.PerkPlural' items=@root.system.items type='perk'}}
-      {{/if}}  
-      
+      {{/if}}
+
     </div>
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{!-- Effects Section --}}

@@ -736,8 +736,8 @@ E20.energonTypes = {
 preLocalize("energonTypes");
 
 E20.perkChoiceTypes = {
-  environments: "E20.PerkChoiceEnvironments",
   none: "E20.PerkChoiceNone",
+  environments: "E20.PerkChoiceEnvironments",
   perks: "E20.PerkChoicePerks",
   senses: "E20.PerkChoiceSenses",
 };
