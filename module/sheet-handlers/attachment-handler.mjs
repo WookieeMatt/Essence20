@@ -66,6 +66,10 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
+        if (item.type == 'perk') {
+          //Do Perk Drop stuff here.
+        }
+
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (newItem.type == "altMode") {
@@ -239,6 +243,12 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     }
 
     break;
+  case "perk":
+    if (droppedItem.type == "perk") {
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
   case "role":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
@@ -306,6 +316,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 * @return {Promise<String>} The key generated for the dropped Item
 */
 export async function _addItemIfUnique(droppedItem, targetItem, entry) {
+  let timesTaken = 0;
   const items = targetItem.system.items;
   if (items) {
     for (const [, item] of Object.entries(items)) {
@@ -314,7 +325,24 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
         return;
       }
 
-      if (item.uuid === droppedItem.uuid) {
+      if (droppedItem.type == "perk") {
+        if (item.uuid === droppedItem.uuid) {
+          timesTaken += 1;
+          if (droppedItem.system.selectionLimit <= timesTaken) {
+            ui.notifications.error(
+              game.i18n.format(
+                'E20.SelectionLimitError',
+                {
+                  type: game.i18n.localize(`TYPES.Item.${droppedItem.type}`),
+                  limit: droppedItem.system.selectionLimit,
+                },
+              ),
+            );
+            return;
+          }
+        }
+      } else if (item.uuid === droppedItem.uuid) {
+        ui.notifications.error(game.i18n.localize('E20.AlreadyAttachedError'));
         return;
       }
     }

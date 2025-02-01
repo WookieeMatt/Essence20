@@ -90,24 +90,17 @@ export class Essence20ItemSheet extends ItemSheet {
     });
 
     this.form.ondrop = (event) => this._onDrop(event);
-
-    // Delete Origin Perks from Origns
-    html.find('.originPerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
-
     // Delete Effects from Weapons
     html.find('.weaponEffect-delete').click(this._onObjectDelete.bind(this, ".weaponEffect"));
 
     // Delete Origin Upgrade from item
     html.find('.upgrade-delete').click(this._onObjectDelete.bind(this, ".upgrade"));
 
-    // Delete Influence Perk from Influence
-    html.find('.influencePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
-
     // Delete Hang Up from Influence
     html.find('.hangUp-delete').click(this._onObjectDelete.bind(this, ".hangUp"));
 
-    // Delete Role Perk from Influence
-    html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
+    //Delete a Perk off an item
+    html.find('.perk-delete').click(this._onObjectDelete.bind(this, ".perk"));
 
     // Delete Role from Focus
     html.find('.role-delete').click(this._onObjectDelete.bind(this, ".role"));
