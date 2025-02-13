@@ -1,6 +1,6 @@
 import { E20 } from "../../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrWithChoices, makeStrArrayWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -60,7 +60,7 @@ export const character = () => ({
     willpower: makeDefensesFields('willpower', 'smarts'),
     cleverness: makeDefensesFields('cleverness', 'social'),
   }),
-  environments: makeStrWithChoices(E20.Environments, null),
+  environments: makeStrArrayWithChoices(E20.Environments, null),
   essences: new fields.SchemaField({
     strength: makeEssenceFields(),
     speed: makeEssenceFields(),
@@ -99,7 +99,14 @@ export const character = () => ({
     poisons: makeTrainingSchema(E20.poisonTraining),
     weapons: makeTrainingSchema(E20.weaponTypes),
   }),
-  senses: new fields.SchemaField({}),
+  senses: new fields.SchemaField({
+    hearing: new fields.ObjectField({}),
+    sight: new fields.ObjectField({}),
+    smell: new fields.ObjectField({}),
+    taste: new fields.ObjectField({}),
+    touch: new fields.ObjectField({}),
+
+  }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
     speed: makeSkillRankAllocation(),
