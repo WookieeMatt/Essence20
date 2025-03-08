@@ -222,13 +222,13 @@ Hooks.on("getSceneControlButtons", (controls) => {
   if (setting("sptShow") == 'toggle' && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
     let tokenControls = controls.tokens;
     tokenControls.tools.sptTracker = ({
-      name: "toggleDialog",
-      title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
       icon: "fas fa-circle-s",
+      name: "sptTracker",
+      title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
       toggle: true,
-      active: setting('sptToggleState'),
-      onChange: toggled => {
-        if (toggled) {
+      visible: true,
+      onChange: (event, toggle) => {
+        if (toggle) {
           if (!game.StoryPointsTracker) {
             game.settings.set('essence20', 'sptToggleState', true);
             game.StoryPointsTracker = new StoryPointsTracker().render(true);
