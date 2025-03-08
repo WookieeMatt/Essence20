@@ -197,9 +197,9 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 });
 
 /* Hook to organize the item options by type */
-Hooks.on("renderDialog", (dialog, html) => {
-  if (html[0].innerText.includes('Create New Item')) {
-    const select = html[0].querySelector("select[name='type']");
+Hooks.on("renderDialogV2", (dialog, html) => {
+  const select = html.querySelector("select[name='type']");
+  if (select){
 
     const classFeatureOption = select.querySelector("option[value='classFeature']");
     if (classFeatureOption) {
