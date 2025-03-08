@@ -167,11 +167,9 @@ export class StoryPointsTracker extends Application {
   // Handles clicking Close button or toggling in toolbar
   async close() {
     // Deactivate in toolbar
-    let toggleDialogControl = ui.controls.controls
-      .find(control => control.name === "token").tools
-      .find(control => control.name === "toggleDialog");
+    let toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
     toggleDialogControl.active = false;
-    toggleDialogControl.onClick(false);
+    toggleDialogControl.onChange(false);
     ui.controls.render();
 
     this.closeSpt();
@@ -222,6 +220,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
   if (setting("sptShow") == 'toggle' && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
     let tokenControls = controls.tokens;
     tokenControls.tools.sptTracker = ({
+      active: false,
       icon: "fas fa-circle-s",
       name: "sptTracker",
       title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
