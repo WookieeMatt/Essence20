@@ -219,8 +219,9 @@ Hooks.on('dragEndStoryPointsTracker', (app) => {
 Hooks.on("getSceneControlButtons", (controls) => {
   if (setting("sptShow") == 'toggle' && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
     let tokenControls = controls.tokens;
+    let activeState = game.settings.get('essence20', 'sptToggleState');
     tokenControls.tools.sptTracker = ({
-      active: false,
+      active: activeState,
       icon: "fas fa-circle-s",
       name: "sptTracker",
       title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
@@ -231,10 +232,12 @@ Hooks.on("getSceneControlButtons", (controls) => {
           if (!game.StoryPointsTracker) {
             game.settings.set('essence20', 'sptToggleState', true);
             game.StoryPointsTracker = new StoryPointsTracker().render(true);
+            tokenControls.tools.sptTracker.active = true;
           }
         } else {
           game.settings.set('essence20', 'sptToggleState', false);
           game.StoryPointsTracker.closeSpt();
+          tokenControls.tools.sptTracker.active = false;
         }
       },
     });
