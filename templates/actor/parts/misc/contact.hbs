@@ -1,0 +1,13 @@
+<div style="border: 4px solid {{system.color}}; border-radius: 15px">
+  <div class="flexrow">
+    <label class="flexcol">Gaining {{actor.name}} as a Contact</label>
+    <textarea class="flexcol" name="system.gainingTheContact">{{system.gainingTheContact}}</textarea>
+  </div>
+  <div class="flexrow">
+    <label class="flexcol">Allegiance Points</label>
+    {{numberInput system.allegiancePoints name="system.allegiancePoints" min=0 step=1}}
+  </div>
+</div>
+<div>
+  {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="contact" perks=@root.perks.contact title="E20.ItemTypePerkPlural" alwaysShow="true"}}
+</div>
