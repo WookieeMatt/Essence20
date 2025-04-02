@@ -7,7 +7,7 @@ export default class DefenseModificationSelector extends HandlebarsApplicationMi
     this._actor = actor;
     this._prompt = prompt;
     this._title = title;
-    this._selected = selected
+    this._selected = selected;
   }
 
   static DEFAULT_OPTIONS = {
@@ -25,7 +25,7 @@ export default class DefenseModificationSelector extends HandlebarsApplicationMi
       submitOnChange: false,
       closeOnSubmit: true,
     },
-  }
+  };
 
   static PARTS = {
     form: {

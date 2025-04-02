@@ -1,7 +1,7 @@
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
-import DefenseModificationSelector from "../apps/defense-modification.mjs"
+import DefenseModificationSelector from "../apps/defense-modification.mjs";
 
 const PARENT_ROLLER_KEY = "parentActor";
 
@@ -276,6 +276,7 @@ export async function onEditMorphToughnessBonus(event, actorSheet){
     if (actor.system.defenses.toughness.morphed == 6) {
       selected = "ultraHeavy";
     }
+
     choices["ultraHeavy"] = {
       key: "ultraHeavy",
       label: CONFIG.E20.armorClassifications.ultraHeavy,
@@ -287,6 +288,7 @@ export async function onEditMorphToughnessBonus(event, actorSheet){
     if (actor.system.defenses.toughness.morphed == 4) {
       selected = "heavy";
     }
+
     choices["heavy"] = {
       key: "heavy",
       label: CONFIG.E20.armorClassifications.heavy,
@@ -298,6 +300,7 @@ export async function onEditMorphToughnessBonus(event, actorSheet){
     if (actor.system.defenses.toughness.morphed == 2) {
       selected = "medium";
     }
+
     choices["medium"] = {
       key: "medium",
       label: CONFIG.E20.armorClassifications.medium,
@@ -309,6 +312,7 @@ export async function onEditMorphToughnessBonus(event, actorSheet){
     if (actor.system.defenses.toughness.morphed == 1) {
       selected = "light";
     }
+
     choices["light"] = {
       key: "light",
       label: CONFIG.E20.armorClassifications.light,
@@ -322,7 +326,8 @@ export async function onEditMorphToughnessBonus(event, actorSheet){
   if (Object.keys(choices).length == 0) {
     ui.notifications.warn(game.i18n.localize('E20.NoArmorChoices'));
   } else {
-  new DefenseModificationSelector(choices, actor, prompt, title, selected).render(true);
+    new DefenseModificationSelector(choices, actor, prompt, title, selected).render(true);
   }
+
   return;
 }
