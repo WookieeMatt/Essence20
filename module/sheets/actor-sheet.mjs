@@ -339,6 +339,7 @@ export class Essence20ActorSheet extends ActorSheet {
           perks[i.system.type] = [i];
         }
 
+        //removes contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
         if (this.actor.type == "npc" && i.system.type != "contact") {
           perks.all.push(i);
         }
