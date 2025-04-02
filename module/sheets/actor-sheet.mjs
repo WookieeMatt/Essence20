@@ -339,12 +339,9 @@ export class Essence20ActorSheet extends ActorSheet {
           perks[i.system.type] = [i];
         }
 
-        if (this.actor.type == "npc") {
-          if(i.system.type != "contact") {
-            perks.all.push(i);
-          }
+        if (this.actor.type == "npc" && i.system.type != "contact") {
+          perks.all.push(i);
         }
-
 
         break;
       case 'power':
