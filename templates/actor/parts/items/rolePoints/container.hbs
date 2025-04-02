@@ -4,7 +4,7 @@
       {{localize "E20.RoleFeatures"}}
     </div>
   </div>
-
+  
   {{#if @root.rolePoints}}
     {{#with @root.rolePoints as |rolePoints|}}
       <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.rolePoints._id}}">
@@ -13,10 +13,10 @@
           <i class="fas fa-message-lines"></i>
         </a>
 
-        {{#ifNotEquals rolePoints.system.resource.max null}}
+        {{#if (ne rolePoints.system.resource.max null)}}
         <a class="rollable" style="flex-grow: 0;" data-roll-type="rolePoints" data-tooltip="{{localize 'E20.RolePointsRoll'}}"><i
           class="fas fa-hand-fist"></i></a>
-        {{/ifNotEquals}}
+        {{/if}}
 
         {{#if rolePoints.system.isActivatable}}
           <input class="inline-edit item-label-checkbox" type="checkbox" data-field="system.isActive" name="rolePoints.system.isActive"
@@ -27,28 +27,27 @@
 
         {{!-- Bonus --}}
         <div>
-          {{#ifNotEquals rolePoints.system.bonus.type 'none'}}
-            {{#ifNotEquals rolePoints.system.bonus.type 'other'}}+{{/ifNotEquals}}{{rolePoints.system.bonus.value}}
-          {{/ifNotEquals}}
-
-          {{#ifEquals rolePoints.system.bonus.type 'attackUpshift'}}
-          <i class="fas fa-arrow-up"></i>
-          {{else ifEquals rolePoints.system.bonus.type 'damageBonus'}}
-          <i class="fas fa-sword"></i>
-          {{else ifEquals rolePoints.system.bonus.type 'enemyDownshift'}}
-          <i class="fas fa-arrow-down"></i>
-          {{else ifEquals rolePoints.system.bonus.type 'healthBonus'}}
-          <i class="fas fa-heart"></i>
-          {{else ifEquals rolePoints.system.bonus.type 'defenseBonus'}}
+          {{#if (ne rolePoints.system.bonus.type 'none')}}
+            {{#if (ne rolePoints.system.bonus.type 'other')}}+{{/if}}{{rolePoints.system.bonus.value}}
+          {{/if}}
+          
+          {{#if (eq rolePoints.system.bonus.type 'attackUpshift')}}
+            <i class="fas fa-arrow-up"></i>
+          {{else if (eq rolePoints.system.bonus.type 'damageBonus')}}
+             <i class="fas fa-sword"></i>
+          {{else if (eq rolePoints.system.bonus.type 'enemyDownshift')}}
+            <i class="fas fa-arrow-down"></i>
+          {{else if (eq rolePoints.system.bonus.type 'healthBonus')}}
+            <i class="fas fa-heart"></i>
+          {{else if (eq rolePoints.system.bonus.type 'defenseBonus')}}
             <i class="fas fa-shield"></i>
             {{rolePoints.system.bonus.defenseBonus.string}}
-          {{/ifEquals}}
+          {{/if}}
         </div>
-
         {{!-- Resource --}}
         {{#if @root.system.useUnlimitedResource}}
           <div>{{localize 'E20.RolePointsResourceUnlimited'}}</div>
-        {{else ifNotEquals rolePoints.system.resource.max null}}
+        {{else if (ne rolePoints.system.resource.max null)}}
           <input class="inline-edit centered-input no-lock" data-field="system.resource.value" type="number"
             name="system.resource.value" value="{{system.resource.value}}" min="0"
             step="1" />
@@ -71,9 +70,7 @@
     {{/with}}
   {{/if}}
 
-  {{#unless @root.rolePoints}}
-  {{#unless @root.role.system.skillDie.isUsed}}
+  {{#if (not (or @root.rolePoints @root.role.system.skillDie.isUsed))}}
     <div class="flexrow flex-group-center">{{localize 'E20.RolePointsNone'}}</div>
-  {{/unless}}
-  {{/unless}}
+  {{/if}}
 </div>

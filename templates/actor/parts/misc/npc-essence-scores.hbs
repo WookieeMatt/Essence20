@@ -2,7 +2,11 @@
   {{#each system.essences as |essence|}}
   <div class="flexcol">
     <label>{{lookup @root.config.essences @key}}</label>
-    <input class="centered-input" type="number" name="system.essences.{{@key}}.value" value={{essence.value}} min="0" step="1" />
+    <div class="flexrow flex-group-center">
+      <input class="two-digit-input" type="number" name="system.essences.{{@key}}.value" value="{{essence.value}}" min="0" step="1" />
+        /
+      <input class="two-digit-input" type="number" name="system.essences.{{@key}}.max" value="{{essence.max}}" min="0" step="1" />
+    </div>
   </div>
   {{/each}}
 </div>

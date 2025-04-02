@@ -735,6 +735,35 @@ E20.energonTypes = {
 };
 preLocalize("energonTypes");
 
+E20.perkChoiceTypes = {
+  none: "E20.PerkChoiceNone",
+  environments: "E20.PerkChoiceEnvironments",
+  perks: "E20.PerkChoicePerks",
+  senses: "E20.PerkChoiceSenses",
+};
+preLocalize("perkChoiceTypes");
+
+E20.senses = {
+  hearing: "E20.SenseHearing",
+  sight: "E20.SenseSight",
+  smell: "E20.SenseSmell",
+  taste: "E20.SenseTaste",
+  touch: "E20.SenseTouch",
+};
+preLocalize("senses");
+
+E20.environments = {
+  arctic: "E20.EnvironmentArctic",
+  desert: "E20.EnvironmentDesert",
+  grasslands: "E20.EnvironmentGrasslands",
+  mountains: "E20.EnvironmentMountains",
+  sea: "E20.EnvironmentSea",
+  urban: "E20.EnvironmentUrban",
+  wetlands: "E20.EnvironmentWetlands",
+  woodlands: "E20.EnvironmentWoodlands",
+};
+preLocalize("environments");
+
 /************************************************
  * Vehicles                                     *
  ***********************************************/

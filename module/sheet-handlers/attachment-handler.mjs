@@ -1,4 +1,4 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
@@ -66,6 +66,10 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
+        if (item.type == 'perk') {
+          //Do Perk Drop stuff here.
+        }
+
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (newItem.type == "altMode") {
@@ -142,7 +146,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 
     const prompt = "E20.SelectWeaponAttach";
     const title = "E20.SelectUpgradeOrWeaponEffect";
-    new ChoicesPrompt(choices, actor, prompt, title, droppedItem, null, dropFunc, null, null, null).render(true);
+    new ChoicesSelector(choices, actor, prompt, title, droppedItem, null, dropFunc, null, null, null).render(true);
   } else {
     ui.notifications.error(game.i18n.localize('E20.NoUpgradableItemsError'));
     return false;
@@ -150,7 +154,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 }
 
 /**
- * Processes the options resulting from ChoicesPrompt
+ * Processes the options resulting from ChoicesSelector
  * @param {Actor} actor The Actor receiving the attachment
  * @param {UUID} itemId The uuid of the item we are attaching to
  * @param {Function} dropFunc The function to call to complete the drop
@@ -239,6 +243,12 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     }
 
     break;
+  case "perk":
+    if (droppedItem.type == "perk") {
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
   case "role":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
@@ -306,6 +316,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 * @return {Promise<String>} The key generated for the dropped Item
 */
 export async function _addItemIfUnique(droppedItem, targetItem, entry) {
+  let timesTaken = 0;
   const items = targetItem.system.items;
   if (items) {
     for (const [, item] of Object.entries(items)) {
@@ -314,7 +325,24 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
         return;
       }
 
-      if (item.uuid === droppedItem.uuid) {
+      if (droppedItem.type == "perk") {
+        if (item.uuid === droppedItem.uuid) {
+          timesTaken += 1;
+          if (droppedItem.system.selectionLimit <= timesTaken) {
+            ui.notifications.error(
+              game.i18n.format(
+                'E20.SelectionLimitError',
+                {
+                  type: game.i18n.localize(`TYPES.Item.${droppedItem.type}`),
+                  limit: droppedItem.system.selectionLimit,
+                },
+              ),
+            );
+            return;
+          }
+        }
+      } else if (item.uuid === droppedItem.uuid) {
+        ui.notifications.error(game.i18n.localize('E20.AlreadyAttachedError'));
         return;
       }
     }

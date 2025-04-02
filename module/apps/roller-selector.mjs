@@ -1,17 +1,19 @@
-import { setEntryAndAddActor, verifyDropSelection } from "../sheet-handlers/drop-handler.mjs";
+import { handleActorSelector } from "../sheet-handlers/listener-misc-handler.mjs";
+import { getFormData } from "../helpers/application.mjs";
+
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(droppedActor, targetActor, choices, title){
+export default class RollerSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+  constructor(actor, choices, event, title){
     super();
-    this._targetActor = targetActor;
-    this._droppedActor = droppedActor;
+    this._actor = actor;
     this._choices = choices;
+    this._event = event;
     this._title = title;
   }
 
   static DEFAULT_OPTIONS = {
-    id: "vehicle-role-select",
+    id: "roller",
     classes: [
       "essence20",
       "trait-selector",
@@ -21,7 +23,7 @@ export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(
     tag: "form",
     title: "E20.SelectDefaultTitle",
     form: {
-      handler: VehicleRoleSelectPrompt.myFormHandler,
+      handler: RollerSelector.myFormHandler,
       submitOnChange: false,
       closeOnSubmit: true,
     },
@@ -29,7 +31,7 @@ export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/vehicle-role-select.hbs",
+      template: "systems/essence20/templates/app/select-prompt.hbs",
     },
     footer: {
       template: "templates/generic/form-footer.hbs",
@@ -50,17 +52,8 @@ export default class VehicleRoleSelectPrompt extends HandlebarsApplicationMixin(
   }
 
   static async myFormHandler(event, form, formData){
-    let newRole = null;
-    for (const [, value] of Object.entries(formData.object)) {
-      newRole = value;
-    }
+    const key = getFormData(formData.object);
 
-    const allowDrop = verifyDropSelection(this._targetActor, newRole);
-
-    if (!allowDrop) {
-      throw new Error(game.i18n.localize('E20.VehicleRoleError'));
-    }
-
-    setEntryAndAddActor(this._droppedActor, this._targetActor, newRole);
+    handleActorSelector(this._actor, key, this._event);
   }
 }

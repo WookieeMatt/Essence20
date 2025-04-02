@@ -6,7 +6,7 @@ import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
 import { onPowerDrop } from "./power-handler.mjs";
 import { onPerkDrop } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
-import VehicleRoleSelectPrompt from "../apps/vehicle-role-select.mjs";
+import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 
 /**
  * Handle dropping an Item onto an Actor.
@@ -54,17 +54,17 @@ export async function onDropItem(data, actor, dropFunc) {
   case 'origin':
     result = await onOriginDrop(actor, sourceItem, dropFunc);
     break;
+  case 'perk':
+    result = await onPerkDrop(actor, sourceItem, dropFunc);
+    break;  
+  case 'power':
+    result = await onPowerDrop(actor, sourceItem, dropFunc);
+    break;
   case 'role':
     result = await onRoleDrop(actor, sourceItem, dropFunc);
     break;
   case 'rolePoints':
     ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
-    break;
-  case 'perk':
-    result = await onPerkDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'power':
-    result = await onPowerDrop(actor, sourceItem, dropFunc);
     break;
   case 'shield' :
     result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
@@ -207,7 +207,7 @@ async function _selectVehicleLocation(droppedActor, targetActor) {
   }
 
   const title = "E20.VehicleRoleSelect";
-  new VehicleRoleSelectPrompt(droppedActor, targetActor, choices, title).render(true);
+  new VehicleRoleSelector(droppedActor, targetActor, choices, title).render(true);
 }
 
 /**

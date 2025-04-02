@@ -60,6 +60,7 @@ export const character = () => ({
     willpower: makeDefensesFields('willpower', 'smarts'),
     cleverness: makeDefensesFields('cleverness', 'social'),
   }),
+  environments: makeStrWithChoices(E20.Environments, null),
   essences: new fields.SchemaField({
     strength: makeEssenceFields(),
     speed: makeEssenceFields(),
@@ -98,6 +99,7 @@ export const character = () => ({
     poisons: makeTrainingSchema(E20.poisonTraining),
     weapons: makeTrainingSchema(E20.weaponTypes),
   }),
+  senses: new fields.SchemaField({}),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),
     speed: makeSkillRankAllocation(),

@@ -9,6 +9,22 @@ import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 export class Essence20ItemSheet extends ItemSheet {
 
   /** @override */
+  async activateEditor(name, options={}, initialContent="") {
+    options.relativeLinks = true;
+    options.plugins = {
+      menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
+        compact: true,
+        destroyOnSave: true,
+        onSave: () => {
+          this.saveEditor(name, { remove: true });
+          this.editingDescriptionTarget = null;
+        },
+      }),
+    };
+    return super.activateEditor(name, options, initialContent);
+  }
+
+  /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["essence20", "sheet", "item"],
@@ -74,24 +90,17 @@ export class Essence20ItemSheet extends ItemSheet {
     });
 
     this.form.ondrop = (event) => this._onDrop(event);
-
-    // Delete Origin Perks from Origns
-    html.find('.originPerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
-
     // Delete Effects from Weapons
     html.find('.weaponEffect-delete').click(this._onObjectDelete.bind(this, ".weaponEffect"));
 
     // Delete Origin Upgrade from item
     html.find('.upgrade-delete').click(this._onObjectDelete.bind(this, ".upgrade"));
 
-    // Delete Influence Perk from Influence
-    html.find('.influencePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
-
     // Delete Hang Up from Influence
     html.find('.hangUp-delete').click(this._onObjectDelete.bind(this, ".hangUp"));
 
-    // Delete Role Perk from Influence
-    html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
+    //Delete a Perk off an item
+    html.find('.perk-delete').click(this._onObjectDelete.bind(this, ".perk"));
 
     // Delete Role from Focus
     html.find('.role-delete').click(this._onObjectDelete.bind(this, ".role"));
@@ -117,6 +126,8 @@ export class Essence20ItemSheet extends ItemSheet {
     //Open Attached Item Sheet
     html.find('.view-info').click(this._onObjectInfo.bind(this));
 
+    //Copy to clipboard
+    html.find('.clipboard-copy').click(this._onCopyClipboard.bind(this));
   }
 
   /**
@@ -157,6 +168,18 @@ export class Essence20ItemSheet extends ItemSheet {
     const item = await fromUuid(data.currentTarget.dataset.uuid);
     if (item) {
       item.sheet.render(true);
+    }
+  }
+
+  /**
+   * Handles copying data to the clipboard
+   * @param {Event} data The data from the click event
+   */
+  _onCopyClipboard(data) {
+    const clipText = data.currentTarget.dataset.clipboard;
+    if (clipText) {
+      game.clipboard.copyPlainText(clipText);
+      ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
     }
   }
 }

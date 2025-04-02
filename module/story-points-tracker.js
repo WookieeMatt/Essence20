@@ -167,11 +167,9 @@ export class StoryPointsTracker extends Application {
   // Handles clicking Close button or toggling in toolbar
   async close() {
     // Deactivate in toolbar
-    let toggleDialogControl = ui.controls.controls
-      .find(control => control.name === "token").tools
-      .find(control => control.name === "toggleDialog");
+    let toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
     toggleDialogControl.active = false;
-    toggleDialogControl.onClick(false);
+    toggleDialogControl.onChange(false);
     ui.controls.render();
 
     this.closeSpt();
@@ -220,22 +218,26 @@ Hooks.on('dragEndStoryPointsTracker', (app) => {
 // Init the button in the controls for toggling the dialog
 Hooks.on("getSceneControlButtons", (controls) => {
   if (setting("sptShow") == 'toggle' && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
-    let tokenControls = controls.find(control => control.name === "token");
-    tokenControls.tools.push({
-      name: "toggleDialog",
-      title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
+    let tokenControls = controls.tokens;
+    let activeState = game.settings.get('essence20', 'sptToggleState');
+    tokenControls.tools.sptTracker = ({
+      active: activeState,
       icon: "fas fa-circle-s",
+      name: "sptTracker",
+      title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
       toggle: true,
-      active: setting('sptToggleState'),
-      onClick: toggled => {
-        if (toggled) {
+      visible: true,
+      onChange: (event, toggle) => {
+        if (toggle) {
           if (!game.StoryPointsTracker) {
             game.settings.set('essence20', 'sptToggleState', true);
             game.StoryPointsTracker = new StoryPointsTracker().render(true);
+            tokenControls.tools.sptTracker.active = true;
           }
         } else {
           game.settings.set('essence20', 'sptToggleState', false);
           game.StoryPointsTracker.closeSpt();
+          tokenControls.tools.sptTracker.active = false;
         }
       },
     });

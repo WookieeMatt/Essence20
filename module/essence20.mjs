@@ -135,47 +135,12 @@ Handlebars.registerHelper('sum', function () {
   return total;
 });
 
-Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
-  switch (operator) {
-  case '==':
-    return (v1 == v2) ? options.fn(this) : options.inverse(this);
-  case '===':
-    return (v1 === v2) ? options.fn(this) : options.inverse(this);
-  case '!=':
-    return (v1 != v2) ? options.fn(this) : options.inverse(this);
-  case '!==':
-    return (v1 !== v2) ? options.fn(this) : options.inverse(this);
-  case '<':
-    return (v1 < v2) ? options.fn(this) : options.inverse(this);
-  case '<=':
-    return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-  case '>':
-    return (v1 > v2) ? options.fn(this) : options.inverse(this);
-  case '>=':
-    return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-  case '&&':
-    return (v1 && v2) ? options.fn(this) : options.inverse(this);
-  case '||':
-    return (v1 || v2) ? options.fn(this) : options.inverse(this);
-  default:
-    return options.inverse(this);
-  }
-});
-
 Handlebars.registerHelper('isdefined', function (value) {
   return value !== undefined;
 });
 
-Handlebars.registerHelper('ifEquals', function (arg1, arg2, options) {
-  return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
-});
-
 Handlebars.registerHelper('inArray', function (array, value, options) {
   return (array.includes(value)) ? options.fn(this) : options.inverse(this);
-});
-
-Handlebars.registerHelper('ifNotEquals', function (arg1, arg2, options) {
-  return (arg1 != arg2) ? options.fn(this) : options.inverse(this);
 });
 
 Handlebars.registerHelper('itemsContainType', function (items, type, options) {
@@ -232,10 +197,9 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 });
 
 /* Hook to organize the item options by type */
-Hooks.on("renderDialog", (dialog, html) => {
-  if (html[0].innerText.includes('Create New Item')) {
-    const select = html[0].querySelector("select[name='type']");
-
+Hooks.on("renderDialogV2", (dialog, html) => {
+  const select = html.querySelector("select[name='type']");
+  if (select) {
     const classFeatureOption = select.querySelector("option[value='classFeature']");
     if (classFeatureOption) {
       classFeatureOption.style.display = 'none';

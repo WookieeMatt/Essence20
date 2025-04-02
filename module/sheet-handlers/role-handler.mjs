@@ -1,7 +1,8 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
-import { rememberOptions, rememberSelect } from "../helpers/dialog.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
+import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 
 /**
  * Handles setting the values and Items for an Actor's Role
@@ -207,7 +208,7 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
   const prompt = "E20.SelectFocus";
   const title = "E20.SelectFocusSkills";
 
-  new ChoicesPrompt(choices, actor, prompt, title, focus, null, dropFunc, null, null, null).render(true);
+  new ChoicesSelector(choices, actor, prompt, title, focus, null, dropFunc, null, null, null).render(true);
 }
 
 /**
@@ -492,43 +493,9 @@ async function _selectFirstEssences(actor, role, dropFunc) {
     };
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.EssenceIncrease'),
-      content: await renderTemplate("systems/essence20/templates/dialog/multi-select-essence.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => {
-            _verifySelection(rememberOptions(html)),
-            _selectEssenceProgression(actor, role, dropFunc, rememberOptions(html));
-          },
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.EssenceIncrease";
+  new MultiEssenceSelector(choices, actor, role, dropFunc, title).render(true);
 
-}
-
-/**
- * Displays an error to the user if invalid Essence dialog selections were made.
- * @param {Object} options The options selected in the previous dialog
- */
-function _verifySelection(options) {
-  let selectionAmount = 0;
-  for (const [, selection] of Object.entries(options)) {
-    if (selection == true) {
-      selectionAmount += 1;
-    }
-  }
-
-  if (selectionAmount != 2) {
-    throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
-  }
-
-  return;
 }
 
 /**
@@ -537,7 +504,7 @@ function _verifySelection(options) {
  * @param {Object} role The Role that was dropped on the Actor
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Role
  */
-async function _selectEssenceProgression(actor, role, dropFunc, level1Essences) {
+export async function _selectEssenceProgression(actor, role, dropFunc, level1Essences) {
   const choices = {};
   let rankNames = "";
   if (role.system.version == "transformers") {
@@ -554,42 +521,8 @@ async function _selectEssenceProgression(actor, role, dropFunc, level1Essences) 
     };
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.EssenceProgressionSelect'),
-      content: await renderTemplate("systems/essence20/templates/dialog/essence-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: (html) => {
-            _verifyEssenceProgression(rememberSelect(html));
-            _setEssenceProgression(actor, rememberSelect(html), role, dropFunc, level1Essences);
-          },
-        },
-      },
-    },
-  ).render(true);
-}
-
-/**
- * Handles verifying that all of the Essences have a different Rank.
- * @param {Object} options The selections made in the dialog window
- * @returns {Boolean} True if all of the Essences have a different rank and false otherwise
- */
-function _verifyEssenceProgression(options) {
-  const rankArray = [];
-  for (const [, rank] of Object.entries(options)) {
-    rankArray.push(rank);
-  }
-
-  const isUnique = rankArray.length === new Set(rankArray).size;
-  if (!isUnique) {
-    throw new Error('Selections must be unique');
-  }
-
-  return isUnique;
+  const title = "E20.EssenceProgressionSelect";
+  new EssenceProgressionSelector(choices, actor, role, dropFunc, level1Essences, title).render(true);
 }
 
 /**
@@ -598,7 +531,7 @@ function _verifyEssenceProgression(options) {
  * @param {Role} role The Role that was dropped on the Actor
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Role
  */
-async function _setEssenceProgression(actor, options, role, dropFunc, level1Essences) {
+export async function _setEssenceProgression(actor, options, role, dropFunc, level1Essences) {
   const newRoleList = await dropFunc();
   const newRole = newRoleList[0];
 
