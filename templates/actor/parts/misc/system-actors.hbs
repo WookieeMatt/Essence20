@@ -3,7 +3,7 @@
     {{#if @root.actors}}
       {{#each @root.actors as |attachedActor key|}}
       <div class="systemActors zord item stats-container" style="border-color: {{attachedActor.system.color}};" data-system-Actors-uuid="{{attachedActor.uuid}}">
-        <div style="text-align: center;">
+        <div style="display: flex; justify-content: center;">
           <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" data-tooltip="{{attachedActor.name}}" />
         </div>
 
@@ -16,10 +16,11 @@
             </a>
           </div>
         </div>
-
-        <div>
-          {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
-        </div>
+        {{#if (ne attachedActor.type "npc")}}
+          <div>
+            {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
+          </div>
+        {{/if}}
         {{#if (eq @root.actor.type "megaform")}}
           <div>
             <span>{{ localize 'E20.ZordRanger' }}: {{attachedActor.system.ranger}}</span>
