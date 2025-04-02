@@ -6,6 +6,7 @@ import { prepareSystemActors, onSystemActorsDelete, onVehicleRoleUpdate, onCrewN
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
+  onEditMorphToughnessBonus,
   onRest,
   onRoll,
   onToggleAccordion,
@@ -497,6 +498,8 @@ export class Essence20ActorSheet extends ActorSheet {
     html.find('.vehicle-role').change(ev => onVehicleRoleUpdate(ev, this));
 
     html.find('.num-crew').change(ev=> onCrewNumberUpdate(ev, this));
+
+    html.find('.morph-toughness-edit').click(ev=> onEditMorphToughnessBonus(ev, this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {

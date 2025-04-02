@@ -1,6 +1,6 @@
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
-
+const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 /**
  * Handle the dropping of a Perk onto an Actor
  * @param {Actor} actor The Actor receiving the Perk
@@ -17,6 +17,22 @@ export async function onPerkDrop(actor, perk, dropFunc) {
   } else if (perk.uuid == ZORD_PERK_ID) {
     await actor.update ({
       "system.canHaveZord": true,
+    });
+  } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
+    let morphedBonus = 0;
+    if (actor.system.trained.armors.ultraHeavy){
+      morphedBonus = 6;
+    } else if (actor.system.trained.armors.heavy){
+      morphedBonus = 4;
+    } else if (actor.system.trained.armors.medium){
+      morphedBonus = 2;
+    } else if (actor.system.trained.armors.light){
+      morphedBonus = 1;
+    }
+
+    await actor.update ({
+      "system.canSetToughnessBonus": true,
+      "system.defenses.toughness.morphed": morphedBonus,
     });
   }
 
@@ -52,6 +68,13 @@ export async function onPerkDelete(actor, perk) {
   if (perk.flags.core?.sourceId == ZORD_PERK_ID || perk._stats.compendiumSource == ZORD_PERK_ID ) {
     await actor.update ({
       "system.canHaveZord": false,
+    });
+  }
+
+  if (perk.flags.core?.sourceId == MORPHIN_TIME_PERK_ID || perk._stats.compendiumSource == MORPHIN_TIME_PERK_ID ) {
+    await actor.update ({
+      "system.canSetToughnessBonus": false,
+      "system.defenses.toughness.morphed": 0,
     });
   }
 }

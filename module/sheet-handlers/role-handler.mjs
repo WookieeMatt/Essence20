@@ -4,6 +4,7 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 
+const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 /**
  * Handles setting the values and Items for an Actor's Role
  * @param {Role} role The Actor's Role
@@ -362,6 +363,26 @@ export async function onRoleDrop(actor, role, dropFunc) {
   await _trainingUpdate(actor, 'weapons', 'trained', true, role);
   await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
 
+  for (const item of actor.items) {
+    if (item._stats.compendiumSource == MORPHIN_TIME_PERK_ID) {
+      let morphedBonus = 0;
+      if (actor.system.trained.armors.ultraHeavy){
+        morphedBonus = 6;
+      } else if (actor.system.trained.armors.heavy){
+        morphedBonus = 4;
+      } else if (actor.system.trained.armors.medium){
+        morphedBonus = 2;
+      } else if (actor.system.trained.armors.light){
+        morphedBonus = 1;
+      }
+
+      await actor.update ({
+        "system.defenses.toughness.morphed": morphedBonus,
+      });
+    }
+
+  }
+
 }
 
 /**
@@ -474,8 +495,15 @@ export async function onRoleDelete(actor, role) {
   await _trainingUpdate(actor, 'weapons', 'trained', false, role);
   await _trainingUpdate(actor, 'armors', 'trained', false, role, true);
 
+  await actor.update ({
+    "system.defenses.toughness.morphed": 0,
+  });
+
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
+
+
+
 }
 
 /**
