@@ -1,0 +1,13 @@
+<div class="stats-container">
+  <div class="flexrow">
+    <label class="flexcol">{{localize "E20.ContactGainingTheContact" name=actor.name}}</label>
+    <textarea class="flexcol" name="system.gainingTheContact">{{system.gainingTheContact}}</textarea>
+  </div>
+  <div class="flexrow">
+    <label class="flexcol">{{localize "E20.ContactAllegiancePoints"}}</label>
+    {{numberInput system.allegiancePoints name="system.allegiancePoints" min=0 step=1}}
+  </div>
+</div>
+<div>
+  {{> "systems/essence20/templates/actor/parts/items/perk/container.hbs" perkType="contact" perks=@root.perks.contact title="E20.ItemTypePerkPlural" alwaysShow="true"}}
+</div>

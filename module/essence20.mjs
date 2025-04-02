@@ -198,18 +198,20 @@ Hooks.on("renderChatMessage", (app, html, data) => {
 
 /* Hook to organize the item options by type */
 Hooks.on("renderDialogV2", (dialog, html) => {
-  const select = html.querySelector("select[name='type']");
-  if (select) {
-    const classFeatureOption = select.querySelector("option[value='classFeature']");
-    if (classFeatureOption) {
-      classFeatureOption.style.display = 'none';
-    }
-
+  if (html.innerText.includes('Create Item')) {
+    const select = html.querySelector("select[name='type']");
     if (select) {
-      select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
-      select.append(setOptGroup(select, "Background", CONFIG.E20.backgroundTypes));
-      select.append(setOptGroup(select, "Character Options", CONFIG.E20.characterTypes));
-      select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
+      const classFeatureOption = select.querySelector("option[value='classFeature']");
+      if (classFeatureOption) {
+        classFeatureOption.style.display = 'none';
+      }
+
+      if (select) {
+        select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
+        select.append(setOptGroup(select, "Background", CONFIG.E20.backgroundTypes));
+        select.append(setOptGroup(select, "Character Options", CONFIG.E20.characterTypes));
+        select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
+      }
     }
   }
 });
