@@ -19,21 +19,7 @@ export async function onPerkDrop(actor, perk, dropFunc) {
       "system.canHaveZord": true,
     });
   } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
-    let morphedBonus = 0;
-    if (actor.system.trained.armors.ultraHeavy){
-      morphedBonus = 6;
-    } else if (actor.system.trained.armors.heavy){
-      morphedBonus = 4;
-    } else if (actor.system.trained.armors.medium){
-      morphedBonus = 2;
-    } else if (actor.system.trained.armors.light){
-      morphedBonus = 1;
-    }
-
-    await actor.update ({
-      "system.canSetToughnessBonus": true,
-      "system.defenses.toughness.morphed": morphedBonus,
-    });
+    setMorphedBonus(actor);
   }
 
   for (let actorItem of actor.items) {
@@ -77,4 +63,22 @@ export async function onPerkDelete(actor, perk) {
       "system.defenses.toughness.morphed": 0,
     });
   }
+}
+
+export async function setMorphedBonus(actor) {
+  let morphedBonus = 0;
+  if (actor.system.trained.armors.ultraHeavy){
+    morphedBonus = CONFIG.E20.morphedToughness.ultraHeavy;
+  } else if (actor.system.trained.armors.heavy){
+    morphedBonus = CONFIG.E20.morphedToughness.heavy;
+  } else if (actor.system.trained.armors.medium){
+    morphedBonus = CONFIG.E20.morphedToughness.medium;
+  } else if (actor.system.trained.armors.light){
+    morphedBonus = CONFIG.E20.morphedToughness.light;
+  }
+
+  await actor.update ({
+    "system.canSetToughnessBonus": true,
+    "system.defenses.toughness.morphed": morphedBonus,
+  });
 }

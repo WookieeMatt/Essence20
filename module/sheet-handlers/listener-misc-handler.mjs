@@ -272,52 +272,19 @@ export async function onEditMorphToughnessBonus(event, actorSheet){
   const actor = actorSheet.actor;
   const choices = {};
   let selected = null;
-  if (actor.system.trained.armors.ultraHeavy) {
-    if (actor.system.defenses.toughness.morphed == 6) {
-      selected = "ultraHeavy";
+
+  for (const [armor, value] of Object.entries(CONFIG.E20.morphedToughness )) {
+    if (actor.system.trained.armors[armor]) {
+      choices[armor] = {
+        key: armor,
+        label: CONFIG.E20.armorClassifications[armor],
+        value,
+      };
     }
 
-    choices["ultraHeavy"] = {
-      key: "ultraHeavy",
-      label: CONFIG.E20.armorClassifications.ultraHeavy,
-      value: 6,
-    };
-  }
-
-  if (actor.system.trained.armors.heavy) {
-    if (actor.system.defenses.toughness.morphed == 4) {
-      selected = "heavy";
+    if (actor.system.defenses.toughness.morphed == value) {
+      selected = armor;
     }
-
-    choices["heavy"] = {
-      key: "heavy",
-      label: CONFIG.E20.armorClassifications.heavy,
-      value: 4,
-    };
-  }
-
-  if (actor.system.trained.armors.medium) {
-    if (actor.system.defenses.toughness.morphed == 2) {
-      selected = "medium";
-    }
-
-    choices["medium"] = {
-      key: "medium",
-      label: CONFIG.E20.armorClassifications.medium,
-      value: 2,
-    };
-  }
-
-  if (actor.system.trained.armors.light) {
-    if (actor.system.defenses.toughness.morphed == 1) {
-      selected = "light";
-    }
-
-    choices["light"] = {
-      key: "light",
-      label: CONFIG.E20.armorClassifications.light,
-      value: 1,
-    };
   }
 
   const prompt = "E20.DefenseModificationPrompt";

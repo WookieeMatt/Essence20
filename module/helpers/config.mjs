@@ -218,6 +218,13 @@ E20.armorTypes = {
 };
 preLocalize("armorTypes");
 
+E20.morphedToughness = {
+  light: 1,
+  medium: 2,
+  heavy: 4,
+  ultraHeavy: 6,
+}
+
 // Options for Upgrade traits
 E20.upgradeTraits = {
   ...E20.armorTraits,
