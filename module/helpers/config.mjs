@@ -223,7 +223,7 @@ E20.morphedToughness = {
   medium: 2,
   heavy: 4,
   ultraHeavy: 6,
-}
+};
 
 // Options for Upgrade traits
 E20.upgradeTraits = {
