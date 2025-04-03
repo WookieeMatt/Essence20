@@ -501,9 +501,6 @@ export async function onRoleDelete(actor, role) {
 
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
-
-
-
 }
 
 /**
