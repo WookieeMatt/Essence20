@@ -380,9 +380,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
         "system.defenses.toughness.morphed": morphedBonus,
       });
     }
-
   }
-
 }
 
 /**
