@@ -19,7 +19,7 @@ export async function onPerkDrop(actor, perk, dropFunc) {
       "system.canHaveZord": true,
     });
   } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
-    setMorphedBonus(actor);
+    setMorphedToughnessBonus(actor);
   }
 
   for (let actorItem of actor.items) {
@@ -65,7 +65,7 @@ export async function onPerkDelete(actor, perk) {
   }
 }
 
-export async function setMorphedBonus(actor) {
+export async function setMorphedToughnessBonus(actor) {
   let morphedBonus = 0;
   if (actor.system.trained.armors.ultraHeavy){
     morphedBonus = CONFIG.E20.morphedToughness.ultraHeavy;

@@ -3,7 +3,7 @@ import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
-import { setMorphedBonus } from "./perk-handler.mjs";
+import { setMorphedToughnessBonus } from "./perk-handler.mjs";
 
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 /**
@@ -366,7 +366,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
 
   for (const item of actor.items) {
     if (item._stats.compendiumSource == MORPHIN_TIME_PERK_ID) {
-      setMorphedBonus(actor);
+      setMorphedToughnessBonus(actor);
     }
   }
 }
