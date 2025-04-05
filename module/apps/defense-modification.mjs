@@ -1,7 +1,7 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class DefenseModificationSelector extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(choices, actor, prompt, title, selected){
+  constructor(choices, actor, prompt, title, selected) {
     super();
     this._choices = choices;
     this._actor = actor;
