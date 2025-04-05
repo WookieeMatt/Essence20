@@ -69,6 +69,31 @@ export class Essence20ItemSheet extends ItemSheet {
     context.system.description = await TextEditor.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
 
+    const versionRoles = {};
+    for (const pack of game.packs) {
+      const selection = await pack.getDocuments({ type: "role" });
+      for (const role of selection) {
+        if (role.system.version == itemData.system.version){
+          versionRoles[role.name] = {
+            type: role.type,
+          };
+        }
+      }
+    }
+
+    const worldItems = game.items
+    for (const worldItem of worldItems) {
+      if (worldItem.type == "role") {
+        if (worldItem.system.version == itemData.system.version) {
+          versionRoles[worldItem.name] = {
+            type: worldItem.type,
+          };
+        }
+      }
+    }
+
+    context.roles = versionRoles;
+
     return context;
   }
 

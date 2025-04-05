@@ -1,5 +1,6 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
+import { onPerkDrop } from "./perk-handler.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
@@ -67,7 +68,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
         if (item.type == 'perk') {
-          //Do Perk Drop stuff here.
+          onPerkDrop(owner, item, null);
         }
 
         const newItem = await Item.create(itemToCreate, { parent: owner });
@@ -245,6 +246,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     break;
   case "perk":
     if (droppedItem.type == "perk") {
+      entry ['role'] = null;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 

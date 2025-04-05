@@ -45,7 +45,7 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
         {{#if system.isRoleVariant}}
-
+          {{> "systems/essence20/templates/item/parts/sub-perk-drop.hbs" className="perk" label='E20.SubPerks' items=system.items roles=roles type='perk'}}
         {{/if}}
 
       {{else}}

@@ -14,9 +14,11 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       ...parentItem(),
       canActivate: makeBool(false),
       choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceTypes), 'none'),
+      isRoleVariant:makeBool(false),
       prerequisite: makeStr(null),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
+      version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
     };
   }
 }
