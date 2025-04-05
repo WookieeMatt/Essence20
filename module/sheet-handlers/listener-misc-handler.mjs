@@ -273,7 +273,7 @@ export async function onEditMorphToughnessBonus(event, actorSheet){
   const choices = {};
   let selected = null;
 
-  for (const [armor, value] of Object.entries(CONFIG.E20.morphedToughness )) {
+  for (const [armor, value] of Object.entries(CONFIG.E20.morphedToughness)) {
     if (actor.system.trained.armors[armor]) {
       choices[armor] = {
         key: armor,
