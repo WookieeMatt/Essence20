@@ -67,7 +67,7 @@ export async function onPerkDelete(actor, perk) {
 
 /**
  * Handles the changing of the Defense Toughness Morphed bonus.
- * @param {Actor} actor The actor who's bonus is changing
+ * @param {Actor} actor The Actor whose bonus is changing
  */
 export async function setMorphedToughnessBonus(actor) {
   let morphedBonus = 0;
