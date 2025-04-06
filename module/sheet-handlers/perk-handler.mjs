@@ -86,6 +86,14 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
 
     if (itemToCreate.system.choiceType != 'none') {
       setPerkValues(actor, itemToCreate, newPerk, null);
+    } else {
+      const createdPerk = await Item.create(itemToCreate, { parent: actor });
+      createdPerk.setFlag('essence20', 'collectionId', selection);
+      createdPerk.setFlag('essence20', 'parentId', newPerk._id);
+      createdPerk.update({
+        "_stats.compendiumSource": itemToCreate.uuid,
+      });
+
     }
   }
 
