@@ -158,7 +158,7 @@ export async function onDropActor(data, actorSheet) {
   let dropIsValid = false;
   switch (targetActor.type) {
   case 'playerCharacter':
-    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'contact') {
+    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'npc') {
       setEntryAndAddActor(droppedActor, targetActor);
       dropIsValid = true;
     }
