@@ -166,11 +166,9 @@ export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
     } else {
       await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, null, null).render(true);
     }
-
   } else {
     return await onPerkDrop(actor, perk, dropFunc, null, null);
   }
-
 }
 
 /**
