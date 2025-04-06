@@ -30,20 +30,7 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
     })
   }
 
-
   let timesTaken = 0;
-
-  if (perk.uuid == SORCERY_PERK_ID) {
-    await actor.update ({
-      "system.powers.sorcerous.levelTaken": actor.system.level,
-    });
-  } else if (perk.uuid == ZORD_PERK_ID) {
-    await actor.update ({
-      "system.canHaveZord": true,
-    });
-  } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
-    setMorphedToughnessBonus(actor);
-  }
 
   for (let actorItem of actor.items) {
     const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
@@ -104,6 +91,8 @@ export async function setPerkValues(actor, perk, dropFunc) {
     await actor.update ({
       "system.canHaveZord": true,
     });
+  } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
+    setMorphedToughnessBonus(actor);
   }
 
   if (perk.system.choiceType != 'none') {
