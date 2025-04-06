@@ -4,7 +4,7 @@ import { onAlterationDrop } from "./alteration-handler.mjs";
 import { onAttachmentDrop, onAttachableParentDrop, onEquipmentPackageDrop } from "./attachment-handler.mjs";
 import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
 import { onPowerDrop } from "./power-handler.mjs";
-import { onPerkDrop } from "./perk-handler.mjs";
+import { setPerkValues } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 
@@ -55,7 +55,7 @@ export async function onDropItem(data, actor, dropFunc) {
     result = await onOriginDrop(actor, sourceItem, dropFunc);
     break;
   case 'perk':
-    result = await onPerkDrop(actor, sourceItem, dropFunc);
+    result = await setPerkValues(actor, sourceItem, null, dropFunc);
     break;
   case 'power':
     result = await onPowerDrop(actor, sourceItem, dropFunc);
