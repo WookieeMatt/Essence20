@@ -11,6 +11,9 @@ const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso"
  * @param {Actor} actor The Actor receiving the Perk
  * @param {Perk} perk The Perk being dropped
  * @param {Function} dropFunc The function to call to complete the Power drop
+ * @param {String} selection The selection from the Choices Selector App
+ * @param {String} selectionType The type of selection that was made in the Choices Selector App
+ * @param {Perk} parentPerk The perk that the current perk was attached to
  */
 export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType, parentPerk) {
   let updateString = null;
@@ -92,6 +95,7 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
  * Handles setting values for specific perks and creating an options for perks
  * @param {Actor} actor The Actor receiving the Perk
  * @param {Perk} perk The Perk being dropped
+ * @param {parentPerk} perk The perk this perk is attached to
  * @param {Function} dropFunc The function to call to complete the Power drop
  */
 export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
