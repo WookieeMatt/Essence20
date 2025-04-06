@@ -135,7 +135,6 @@ export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
           };
         }
       }
-
     } else if (perk.system.choiceType == 'senses') {
       prompt = game.i18n.localize("E20.SelectSense");
       for (const sense of Object.keys(CONFIG.E20.senses)) {
@@ -149,7 +148,6 @@ export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
           };
         }
       }
-
     } else if (perk.system.choiceType == 'perks') {
       prompt = game.i18n.localize("E20.SelectPerk");
       for (const [key, item] of Object.entries(perk.system.items)) {
