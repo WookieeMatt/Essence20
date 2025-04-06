@@ -3,6 +3,7 @@ import { E20 } from "../helpers/config.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 
 /**
  * Handle the dropping of a Perk onto an Actor
@@ -31,6 +32,18 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
 
 
   let timesTaken = 0;
+
+  if (perk.uuid == SORCERY_PERK_ID) {
+    await actor.update ({
+      "system.powers.sorcerous.levelTaken": actor.system.level,
+    });
+  } else if (perk.uuid == ZORD_PERK_ID) {
+    await actor.update ({
+      "system.canHaveZord": true,
+    });
+  } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
+    setMorphedToughnessBonus(actor);
+  }
 
   for (let actorItem of actor.items) {
     const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
@@ -161,20 +174,5 @@ export async function onPerkDelete(actor, perk) {
     await actor.update ({
       "system.canHaveZord": false,
     });
-  }
-  if (perk.system.choice) {
-    if (perk.system.choiceType == "environments") {
-      const newEnvironments = actor.system.environments;
-      const index = actor.system.environments.indexOf(perk.system.choice);
-      newEnvironments.splice(index, 1);
-      await actor.update ({
-        "system.environments": newEnvironments,
-      })
-    } else if (perk.system.choiceType == "senses") {
-      const updateString = `system.senses.${perk.system.choice}.acute`;
-      await actor.update ({
-        [updateString]: false,
-      })
-    }
   }
 }

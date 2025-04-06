@@ -1,6 +1,7 @@
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
+import DefenseModificationSelector from "../apps/defense-modification.mjs";
 
 const PARENT_ROLLER_KEY = "parentActor";
 
@@ -265,4 +266,35 @@ export async function handleActorSelector(actor, key, event) {
   }
 
   performRoll(event, actor, childRoller);
+}
+
+export async function onEditMorphToughnessBonus(event, actorSheet){
+  const actor = actorSheet.actor;
+  const choices = {};
+  let selected = null;
+
+  for (const [armor, value] of Object.entries(CONFIG.E20.morphedToughness)) {
+    if (actor.system.trained.armors[armor]) {
+      choices[armor] = {
+        key: armor,
+        label: CONFIG.E20.armorClassifications[armor],
+        value,
+      };
+    }
+
+    if (actor.system.defenses.toughness.morphed == value) {
+      selected = armor;
+    }
+  }
+
+  const prompt = "E20.DefenseModificationPrompt";
+  const title = "E20.DefenseModificationTitle";
+
+  if (Object.keys(choices).length == 0) {
+    ui.notifications.warn(game.i18n.localize('E20.NoArmorChoices'));
+  } else {
+    new DefenseModificationSelector(choices, actor, prompt, title, selected).render(true);
+  }
+
+  return;
 }
