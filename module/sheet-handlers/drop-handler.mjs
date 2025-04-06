@@ -56,7 +56,7 @@ export async function onDropItem(data, actor, dropFunc) {
     result = await onOriginDrop(actor, sourceItem, dropFunc);
     break;
   case 'perk':
-    result = await setPerkValues(actor, sourceItem, dropFunc);
+    result = await setPerkValues(actor, sourceItem, null, dropFunc);
     break;
   case 'power':
     result = await onPowerDrop(actor, sourceItem, dropFunc);
