@@ -1,5 +1,6 @@
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 
 /**
  * Handle the dropping of a Perk onto an Actor
@@ -18,6 +19,8 @@ export async function onPerkDrop(actor, perk, dropFunc) {
     await actor.update ({
       "system.canHaveZord": true,
     });
+  } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
+    setMorphedToughnessBonus(actor);
   }
 
   for (let actorItem of actor.items) {
@@ -53,4 +56,33 @@ export async function onPerkDelete(actor, perk) {
       "system.canHaveZord": false,
     });
   }
+
+  if (perk.flags.core?.sourceId == MORPHIN_TIME_PERK_ID || perk._stats.compendiumSource == MORPHIN_TIME_PERK_ID ) {
+    await actor.update ({
+      "system.canSetToughnessBonus": false,
+      "system.defenses.toughness.morphed": 0,
+    });
+  }
+}
+
+/**
+ * Handles the changing of the Defense Toughness Morphed bonus.
+ * @param {Actor} actor The Actor whose bonus is changing
+ */
+export async function setMorphedToughnessBonus(actor) {
+  let morphedBonus = 0;
+  if (actor.system.trained.armors.ultraHeavy) {
+    morphedBonus = CONFIG.E20.morphedToughness.ultraHeavy;
+  } else if (actor.system.trained.armors.heavy) {
+    morphedBonus = CONFIG.E20.morphedToughness.heavy;
+  } else if (actor.system.trained.armors.medium) {
+    morphedBonus = CONFIG.E20.morphedToughness.medium;
+  } else if (actor.system.trained.armors.light) {
+    morphedBonus = CONFIG.E20.morphedToughness.light;
+  }
+
+  await actor.update ({
+    "system.canSetToughnessBonus": true,
+    "system.defenses.toughness.morphed": morphedBonus,
+  });
 }

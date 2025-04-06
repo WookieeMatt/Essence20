@@ -13,6 +13,7 @@ export class PlayerCharacterActorData extends foundry.abstract.TypeDataModel {
       ...common(),
       ...creature(),
       canMorph: makeBool(false),
+      canSetToughnessBonus: makeBool(false),
       canSpellcast: makeBool(false),
       canTransform: makeBool(false),
       externalHardpoints: makeInt(2),
