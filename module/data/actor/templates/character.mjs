@@ -105,7 +105,6 @@ export const character = () => ({
     smell: new fields.ObjectField({}),
     taste: new fields.ObjectField({}),
     touch: new fields.ObjectField({}),
-
   }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),

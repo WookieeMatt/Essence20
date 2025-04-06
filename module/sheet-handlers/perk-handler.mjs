@@ -13,7 +13,7 @@ const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso"
  * @param {Function} dropFunc The function to call to complete the Power drop
  * @param {String} selection The selection from the Choices Selector App
  * @param {String} selectionType The type of selection that was made in the Choices Selector App
- * @param {Perk} parentPerk The perk that the current perk was attached to
+ * @param {Perk} parentPerk The Perk that the current Perk was attached to
  */
 export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, selectionType=null, parentPerk=null) {
   let updateString = null;
@@ -61,7 +61,6 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     newPerk.update({
       "_stats.compendiumSource": perk.uuid,
     });
-
   } else {
     const perkDrop = await dropFunc();
     newPerk = perkDrop[0];
@@ -88,18 +87,16 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
       createdPerk.update({
         "_stats.compendiumSource": itemToCreate.uuid,
       });
-
     }
   }
-
 }
 
 /**
- * Handles setting values for specific perks and creating an options for perks
+ * Handles setting values for specific Perks and and displays a ChoicesSelector if needed
  * @param {Actor} actor The Actor receiving the Perk
  * @param {Perk} perk The Perk being dropped
- * @param {parentPerk} perk The perk this perk is attached to
- * @param {Function} dropFunc The function to call to complete the Power drop
+ * @param {Perk} parentPerk The Perk this perk is attached to
+ * @param {Function} dropFunc The function to call to complete the Perk drop
  */
 export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null) {
   if (perk.uuid == SORCERY_PERK_ID) {
@@ -132,7 +129,6 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
-
     } else if (perk.system.choiceType == 'senses') {
       prompt = game.i18n.localize("E20.SelectSense");
       for (const sense of Object.keys(CONFIG.E20.senses)) {
@@ -146,7 +142,6 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
-
     } else if (perk.system.choiceType == 'perks') {
       prompt = game.i18n.localize("E20.SelectPerk");
       for (const [key, item] of Object.entries(perk.system.items)) {
@@ -165,7 +160,6 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
   } else {
     return await onPerkDrop(actor, perk, dropFunc, null, null);
   }
-
 }
 
 /**

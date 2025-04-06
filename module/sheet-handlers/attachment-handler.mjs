@@ -1,6 +1,6 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
-import { onPerkDelete} from "./perk-handler.mjs";
+import { onPerkDelete } from "./perk-handler.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
@@ -384,7 +384,6 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
             await actorItem.delete();
           }
         }
-
       } else if (item._id == parentId && key == collectionId) {
         if (item.type == "perk") {
           onPerkDelete(actor, actorItem);
