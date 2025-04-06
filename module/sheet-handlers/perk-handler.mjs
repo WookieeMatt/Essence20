@@ -61,7 +61,6 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
     newPerk.update({
       "_stats.compendiumSource": perk.uuid,
     });
-
   } else {
     const perkDrop = await dropFunc();
     newPerk = perkDrop[0];
