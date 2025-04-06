@@ -15,7 +15,7 @@ const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso"
  * @param {String} selectionType The type of selection that was made in the Choices Selector App
  * @param {Perk} parentPerk The perk that the current perk was attached to
  */
-export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType, parentPerk) {
+export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, selectionType=null, parentPerk=null) {
   let updateString = null;
   let updateValue = null;
   let newPerk = null;
@@ -68,12 +68,7 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
   }
 
   if (selectionType == 'environments' || selectionType == 'senses') {
-    let localizedSelection = null;
-    if (selectionType == 'environments') {
-      localizedSelection = game.i18n.localize(E20.environments[selection]);
-    } else if (selectionType == 'senses') {
-      localizedSelection = game.i18n.localize(E20.senses[selection]);
-    }
+    const localizedSelection = game.i18n.localize(E20[selectionType][selection]);
 
     const newName = `${newPerk.name} (${localizedSelection})`;
     newPerk.update({
@@ -106,7 +101,7 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
  * @param {parentPerk} perk The perk this perk is attached to
  * @param {Function} dropFunc The function to call to complete the Power drop
  */
-export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
+export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null) {
   if (perk.uuid == SORCERY_PERK_ID) {
     await actor.update ({
       "system.powers.sorcerous.levelTaken": actor.system.level,
@@ -165,11 +160,7 @@ export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
       }
     }
 
-    if (parentPerk){
-      await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
-    } else {
-      await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, null, null).render(true);
-    }
+    await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
 
   } else {
     return await onPerkDrop(actor, perk, dropFunc, null, null);
