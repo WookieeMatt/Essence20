@@ -1,3 +1,7 @@
+import ChoicesSelector from "../apps/choices-selector.mjs";
+import { E20 } from "../helpers/config.mjs";
+import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
+
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
@@ -7,21 +11,30 @@ const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso"
  * @param {Actor} actor The Actor receiving the Perk
  * @param {Perk} perk The Perk being dropped
  * @param {Function} dropFunc The function to call to complete the Power drop
+ * @param {String} selection The selection from the Choices Selector App
+ * @param {String} selectionType The type of selection that was made in the Choices Selector App
+ * @param {Perk} parentPerk The Perk that the current Perk was attached to
  */
-export async function onPerkDrop(actor, perk, dropFunc) {
-  let timesTaken = 0;
+export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, selectionType=null, parentPerk=null) {
+  let updateString = null;
+  let updateValue = null;
+  let newPerk = null;
 
-  if (perk.uuid == SORCERY_PERK_ID) {
-    await actor.update ({
-      "system.powers.sorcerous.levelTaken": actor.system.level,
+  if (selectionType == 'environments') {
+    updateString = "system.environments";
+    updateValue = actor.system.environments;
+    updateValue.push(selection);
+    actor.update({
+      [updateString]: updateValue,
     });
-  } else if (perk.uuid == ZORD_PERK_ID) {
-    await actor.update ({
-      "system.canHaveZord": true,
+  } else if (selectionType == 'senses') {
+    updateString = `system.senses.${selection}.acute`;
+    actor.update({
+      [updateString]: true,
     });
-  } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
-    setMorphedToughnessBonus(actor);
   }
+
+  let timesTaken = 0;
 
   for (let actorItem of actor.items) {
     const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
@@ -36,7 +49,117 @@ export async function onPerkDrop(actor, perk, dropFunc) {
     }
   }
 
-  return await dropFunc();
+  if (parentPerk) {
+    newPerk = await Item.create(perk, { parent: actor });
+    for (const [key, attachment] of Object.entries(parentPerk.system.items)) {
+      if (perk.uuid == attachment.uuid){
+        newPerk.setFlag('essence20', 'collectionId', key);
+      }
+    }
+
+    newPerk.setFlag('essence20', 'parentId', parentPerk._id);
+    newPerk.update({
+      "_stats.compendiumSource": perk.uuid,
+    });
+  } else {
+    const perkDrop = await dropFunc();
+    newPerk = perkDrop[0];
+  }
+
+  if (selectionType == 'environments' || selectionType == 'senses') {
+    const localizedSelection = game.i18n.localize(E20[selectionType][selection]);
+
+    const newName = `${newPerk.name} (${localizedSelection})`;
+    newPerk.update({
+      "name": newName,
+      "system.choice": selection,
+    });
+  } else if (selectionType == 'perks') {
+    const chosenPerk = perk.system.items[selection];
+    const itemToCreate = await fromUuid(chosenPerk.uuid);
+
+    if (itemToCreate.system.choiceType != 'none') {
+      setPerkValues(actor, itemToCreate, newPerk, null);
+    } else {
+      const createdPerk = await Item.create(itemToCreate, { parent: actor });
+      createdPerk.setFlag('essence20', 'collectionId', selection);
+      createdPerk.setFlag('essence20', 'parentId', newPerk._id);
+      createdPerk.update({
+        "_stats.compendiumSource": itemToCreate.uuid,
+      });
+    }
+  }
+}
+
+/**
+ * Handles setting values for specific Perks and and displays a ChoicesSelector if needed
+ * @param {Actor} actor The Actor receiving the Perk
+ * @param {Perk} perk The Perk being dropped
+ * @param {Perk} parentPerk The Perk this perk is attached to
+ * @param {Function} dropFunc The function to call to complete the Perk drop
+ */
+export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null) {
+  if (perk.uuid == SORCERY_PERK_ID) {
+    await actor.update ({
+      "system.powers.sorcerous.levelTaken": actor.system.level,
+    });
+  } else if (perk.uuid == ZORD_PERK_ID) {
+    await actor.update ({
+      "system.canHaveZord": true,
+    });
+  } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
+    setMorphedToughnessBonus(actor);
+  }
+
+  if (perk.system.choiceType != 'none') {
+    let choices = {};
+    let prompt = null;
+    let title = game.i18n.localize("E20.PerkSelect");
+
+    if (perk.system.choiceType == 'environments') {
+      prompt = game.i18n.localize("E20.SelectEnvironment");
+      for (const environment of Object.keys(CONFIG.E20.environments)) {
+        if (!actor.system.environments.includes(environment)) {
+          const localizedLabel = game.i18n.localize(E20.environments[environment]);
+          choices[environment] = {
+            chosen: false,
+            value: environment,
+            label: localizedLabel,
+            type: perk.system.choiceType,
+          };
+        }
+      }
+    } else if (perk.system.choiceType == 'senses') {
+      prompt = game.i18n.localize("E20.SelectSense");
+      for (const sense of Object.keys(CONFIG.E20.senses)) {
+        if (!actor.system.senses[sense].acute) {
+          const localizedLabel = game.i18n.localize(E20.senses[sense]);
+          choices[sense] = {
+            chosen: false,
+            value: sense,
+            label: localizedLabel,
+            type: perk.system.choiceType,
+          };
+        }
+      }
+    } else if (perk.system.choiceType == 'perks') {
+      prompt = game.i18n.localize("E20.SelectPerk");
+      for (const [key, item] of Object.entries(perk.system.items)) {
+        choices[key] = {
+          chosen: false,
+          value: key,
+          label: item.name,
+          uuid: item.uuid,
+          type: perk.system.choiceType,
+        };
+      }
+    }
+
+    await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
+
+  } else {
+    return await onPerkDrop(actor, perk, dropFunc, null, null);
+  }
 }
 
 /**
@@ -45,7 +168,6 @@ export async function onPerkDrop(actor, perk, dropFunc) {
  * @param {Perk} perk The perk
  */
 export async function onPerkDelete(actor, perk) {
-
   if (perk.flags.core?.sourceId == SORCERY_PERK_ID || perk._stats.compendiumSource == SORCERY_PERK_ID ) {
     await actor.update ({
       "system.powers.sorcerous.levelTaken": 0,
@@ -64,6 +186,28 @@ export async function onPerkDelete(actor, perk) {
       "system.defenses.toughness.morphed": 0,
     });
   }
+
+  let updateString = null;
+  let updateValue = null;
+  if (perk.system.choiceType != "none") {
+    const selectionType = perk.system.choiceType;
+    if (selectionType == 'environments') {
+      updateString = "system.environments";
+      updateValue = actor.system.environments;
+      const index = updateValue.indexOf(perk.system.choice);
+      updateValue.splice(index, 1);
+      actor.update({
+        [updateString]: updateValue,
+      });
+    } else if (selectionType == 'senses') {
+      updateString = `system.senses.${perk.system.choice}.acute`;
+      actor.update({
+        [updateString]: false,
+      });
+    }
+  }
+
+  deleteAttachmentsForItem(perk, actor);
 }
 
 /**
@@ -87,3 +231,4 @@ export async function setMorphedToughnessBonus(actor) {
     "system.defenses.toughness.morphed": morphedBonus,
   });
 }
+

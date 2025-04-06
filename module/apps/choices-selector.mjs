@@ -2,6 +2,7 @@ import { _checkForAltModes, _hangUpSelect, _showOriginSkillPrompt, setOriginValu
 import { _attachSelectedItemOptionHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
+import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
 import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -26,6 +27,7 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
       focus: ChoicesSelector.focus,
       influence: ChoicesSelector.influence,
       origin: ChoicesSelector.origin,
+      perk: ChoicesSelector.perk,
       passenger: ChoicesSelector.passenger,
       shield: ChoicesSelector.shield,
       upgrade: ChoicesSelector.attach,
@@ -100,6 +102,11 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
 
   static async passenger(event, selection) {
     _flipDriverAndPassenger( this._actor, this._key, this._staticValue, selection.value);
+    this.close();
+  }
+
+  static async perk (event, selection) {
+    onPerkDrop(this._actor, this._item, this._dropFunc, selection.value, this._choices[selection.value].type, this._previousSelection1);
     this.close();
   }
 

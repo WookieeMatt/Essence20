@@ -1,5 +1,6 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
+import { onPerkDelete } from "./perk-handler.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
@@ -374,24 +375,20 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
-        if (itemSourceId == ZORD_PERK_ID) {
-          await actor.update ({
-            "system.canHaveZord": false,
-          });
-        }
-
-        if (itemSourceId == SORCERY_PERK_ID) {
-          await actor.update ({
-            "system.powers.sorcerous.levelTaken": 0,
-          });
-        }
-
         if (itemSourceId == attachment.uuid && item._id == parentId) {
           if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+            if (item.type == "perk") {
+              onPerkDelete(actor, actorItem);
+            }
+
             await actorItem.delete();
           }
         }
       } else if (item._id == parentId && key == collectionId) {
+        if (item.type == "perk") {
+          onPerkDelete(actor, actorItem);
+        }
+
         await actorItem.delete();
       }
     }
