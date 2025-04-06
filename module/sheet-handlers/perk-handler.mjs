@@ -72,13 +72,13 @@ export async function onPerkDelete(actor, perk) {
  */
 export async function setMorphedToughnessBonus(actor) {
   let morphedBonus = 0;
-  if (actor.system.trained.armors.ultraHeavy){
+  if (actor.system.trained.armors.ultraHeavy) {
     morphedBonus = CONFIG.E20.morphedToughness.ultraHeavy;
-  } else if (actor.system.trained.armors.heavy){
+  } else if (actor.system.trained.armors.heavy) {
     morphedBonus = CONFIG.E20.morphedToughness.heavy;
-  } else if (actor.system.trained.armors.medium){
+  } else if (actor.system.trained.armors.medium) {
     morphedBonus = CONFIG.E20.morphedToughness.medium;
-  } else if (actor.system.trained.armors.light){
+  } else if (actor.system.trained.armors.light) {
     morphedBonus = CONFIG.E20.morphedToughness.light;
   }
 
