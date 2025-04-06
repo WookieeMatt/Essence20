@@ -375,19 +375,21 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
-         if (itemSourceId == attachment.uuid && item._id == parentId) {
+        if (itemSourceId == attachment.uuid && item._id == parentId) {
           if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
             if (item.type == "perk") {
-              onPerkDelete(actor, actorItem)
+              onPerkDelete(actor, actorItem);
             }
+
             await actorItem.delete();
           }
         }
 
       } else if (item._id == parentId && key == collectionId) {
         if (item.type == "perk") {
-          onPerkDelete(actor, actorItem)
+          onPerkDelete(actor, actorItem);
         }
+
         await actorItem.delete();
       }
     }

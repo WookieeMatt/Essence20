@@ -23,12 +23,12 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
     updateValue.push(selection);
     actor.update({
       [updateString]: updateValue,
-    })
+    });
   } else if (selectionType == 'senses') {
     updateString = `system.senses.${selection}.acute`;
     actor.update({
       [updateString]: true,
-    })
+    });
   }
 
   let timesTaken = 0;
@@ -48,12 +48,12 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
 
   if (parentPerk) {
     newPerk = await Item.create(perk, { parent: actor });
-    let perkKey = null;
     for (const [key, attachment] of Object.entries(parentPerk.system.items)) {
       if (perk.uuid == attachment.uuid){
         newPerk.setFlag('essence20', 'collectionId', key);
       }
     }
+
     newPerk.setFlag('essence20', 'parentId', parentPerk._id);
     newPerk.update({
       "_stats.compendiumSource": perk.uuid,

@@ -34,7 +34,6 @@ export async function onDropItem(data, actor, dropFunc) {
   }
 
   let result = null;
-  let selection = null;
 
   switch (sourceItem.type) {
   case 'alteration':
