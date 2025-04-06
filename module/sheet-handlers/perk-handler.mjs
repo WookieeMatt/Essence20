@@ -93,10 +93,8 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
       createdPerk.update({
         "_stats.compendiumSource": itemToCreate.uuid,
       });
-
     }
   }
-
 }
 
 /**
