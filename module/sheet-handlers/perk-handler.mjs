@@ -71,17 +71,18 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
     } else if (selectionType == 'senses') {
       localizedSelection = game.i18n.localize(E20.senses[selection]);
     }
+
     const newName = `${newPerk.name} (${localizedSelection})`;
     newPerk.update({
       "name": newName,
       "system.choice": selection,
-    })
+    });
   } else if (selectionType == 'perks') {
     const chosenPerk = perk.system.items[selection];
     const itemToCreate = await fromUuid(chosenPerk.uuid);
 
     if (itemToCreate.system.choiceType != 'none') {
-      setPerkValues(actor, itemToCreate, newPerk, null)
+      setPerkValues(actor, itemToCreate, newPerk, null);
     }
   }
 
@@ -110,7 +111,7 @@ export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
   if (perk.system.choiceType != 'none') {
     let choices = {};
     let prompt = null;
-    let title = game.i18n.localize("E20.PerkSelect");;
+    let title = game.i18n.localize("E20.PerkSelect");
 
     if (perk.system.choiceType == 'environments') {
       prompt = game.i18n.localize("E20.SelectEnvironment");
@@ -149,17 +150,18 @@ export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
           label: item.name,
           uuid: item.uuid,
           type: perk.system.choiceType,
-        }
+        };
       }
     }
+
     if (parentPerk){
-      selection = await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true)
+      await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
     } else {
-      selection = await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, null, null).render(true)
+      await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, null, null).render(true);
     }
 
   } else {
-    return await onPerkDrop(actor, perk, dropFunc, null, null)
+    return await onPerkDrop(actor, perk, dropFunc, null, null);
   }
 
 }
