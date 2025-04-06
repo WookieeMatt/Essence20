@@ -95,7 +95,6 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
  * @param {Function} dropFunc The function to call to complete the Power drop
  */
 export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
-  let selection = null;
   if (perk.uuid == SORCERY_PERK_ID) {
     await actor.update ({
       "system.powers.sorcerous.levelTaken": actor.system.level,
@@ -165,6 +164,7 @@ export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
   }
 
 }
+
 /**
  * Handle the deleting of a Perk on an Actor
  * @param {Actor} actor The Actor receiving the Perk
@@ -182,6 +182,7 @@ export async function onPerkDelete(actor, perk) {
       "system.canHaveZord": false,
     });
   }
+
   if (perk.flags.core?.sourceId == MORPHIN_TIME_PERK_ID || perk._stats.compendiumSource == MORPHIN_TIME_PERK_ID ) {
     await actor.update ({
       "system.canSetToughnessBonus": false,
@@ -200,16 +201,16 @@ export async function onPerkDelete(actor, perk) {
       updateValue.splice(index, 1);
       actor.update({
         [updateString]: updateValue,
-      })
+      });
     } else if (selectionType == 'senses') {
       updateString = `system.senses.${perk.system.choice}.acute`;
       actor.update({
         [updateString]: false,
-      })
+      });
     }
   }
 
-  deleteAttachmentsForItem(perk, actor)
+  deleteAttachmentsForItem(perk, actor);
 }
 
 /**
