@@ -98,11 +98,11 @@ export async function onPerkDrop(actor, perk, dropFunc, selection, selectionType
 }
 
 /**
- * Handles setting values for specific perks and creating an options for perks
+ * Handles setting values for specific Perks and and displays a ChoicesSelector if needed
  * @param {Actor} actor The Actor receiving the Perk
  * @param {Perk} perk The Perk being dropped
- * @param {parentPerk} perk The perk this perk is attached to
- * @param {Function} dropFunc The function to call to complete the Power drop
+ * @param {Perk} parentPerk The Perk this perk is attached to
+ * @param {Function} dropFunc The function to call to complete the Perk drop
  */
 export async function setPerkValues(actor, perk, parentPerk, dropFunc) {
   if (perk.uuid == SORCERY_PERK_ID) {
