@@ -1,11 +1,8 @@
-<div class="flexcol">
-  <div class="select">
-    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseModificationPrompt'}}
-    {{#*inline "item-field-inputs"}}
-      <select class="item-field-inputs" name="armorTraining" id="armorTraining"">
-        {{selectOptions choices selected=selected valueAttr="key" labelAttr="label"}}
-      </select>
-    {{/inline}}
-    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+<div class="flexcol" style="margin: 7px">
+  <div class="select flexrow">
+    <label>{{localize 'E20.DefenseModificationPrompt'}}</label>
+    <select class="item-field-inputs" name="armorTraining" id="armorTraining">
+      {{selectOptions choices selected=selected valueAttr="key" labelAttr="label"}}
+    </select>
   </div>
 </div>
