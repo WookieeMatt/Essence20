@@ -19,6 +19,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   let updateString = null;
   let updateValue = null;
   let newPerk = null;
+  let currentRole = null;
 
   if (selectionType == 'environments') {
     updateString = "system.environments";
@@ -37,6 +38,9 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   let timesTaken = 0;
 
   for (let actorItem of actor.items) {
+    if (actorItem.type == "role"){
+      currentRole = actorItem;
+    }
     const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
@@ -59,6 +63,8 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     newPerk.update({
       "_stats.compendiumSource": perk.uuid,
     });
+  } else if (!dropFunc) {
+    newPerk = perk;
   } else {
     const perkDrop = await dropFunc();
     newPerk = perkDrop[0];
@@ -86,6 +92,30 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
         "_stats.compendiumSource": itemToCreate.uuid,
       });
     }
+  }
+
+  if (newPerk?.system.isRoleVariant) {
+    console.log("Got Here4")
+    console.log(newPerk)
+    for (const [key, perk] of Object.entries(newPerk.system.items)) {
+      console.log(currentRole)
+      console.log(perk)
+      if (currentRole?.name == perk.role) {
+        const itemToCreate = await fromUuid(perk.uuid);
+        if (itemToCreate.system.choiceType != 'none') {
+          setPerkValues(actor, itemToCreate, perk, null);
+        } else {
+          const createdPerk = await Item.create(itemToCreate, { parent: actor });
+          createdPerk.setFlag('essence20', 'collectionId', key);
+          createdPerk.setFlag('essence20', 'parentId', newPerk._id);
+          createdPerk.update({
+            "_stats.compendiumSource": newPerk.uuid,
+          });
+        }
+
+      }
+    }
+
   }
 }
 
@@ -187,22 +217,20 @@ export async function onPerkDelete(actor, perk) {
 
   let updateString = null;
   let updateValue = null;
-  if (perk.system.choiceType != "none") {
-    const selectionType = perk.system.choiceType;
-    if (selectionType == 'environments') {
-      updateString = "system.environments";
-      updateValue = actor.system.environments;
-      const index = updateValue.indexOf(perk.system.choice);
-      updateValue.splice(index, 1);
-      actor.update({
-        [updateString]: updateValue,
-      });
-    } else if (selectionType == 'senses') {
-      updateString = `system.senses.${perk.system.choice}.acute`;
-      actor.update({
-        [updateString]: false,
-      });
-    }
+  const selectionType = perk.system.choiceType;
+  if (selectionType == 'environments') {
+    updateString = "system.environments";
+    updateValue = actor.system.environments;
+    const index = updateValue.indexOf(perk.system.choice);
+    updateValue.splice(index, 1);
+    actor.update({
+      [updateString]: updateValue,
+    });
+  } else if (selectionType == 'senses') {
+    updateString = `system.senses.${perk.system.choice}.acute`;
+    actor.update({
+      [updateString]: false,
+    });
   }
 
   deleteAttachmentsForItem(perk, actor);

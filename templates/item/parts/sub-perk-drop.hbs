@@ -8,8 +8,8 @@
           <ul class="items-list">
             <li class="item">
             <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
-              <label style="white-space: nowrap; overflow: hidden;">{{item.name}}</label>
-              <select name="system.items.{{@key}}.role">
+              <label class="flexcol">{{item.name}}</label>
+              <select name="system.items.{{@key}}.role" class="flexcol">
                 {{selectOptions @root.roles selected=item.role}}
               </select>
               <div class="item-controls">

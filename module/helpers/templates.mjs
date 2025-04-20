@@ -4,7 +4,7 @@
  * @return {Promise}
  */
 export const preloadHandlebarsTemplates = async function () {
-  return loadTemplates([
+  return foundry.applications.handlebars.loadTemplates([
 
     // Actor partials - Headers
     "systems/essence20/templates/actor/parts/headers/character.hbs",

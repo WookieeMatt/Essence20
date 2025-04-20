@@ -1,7 +1,6 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
-import { onPerkDelete } from "./perk-handler.mjs";
-import { onPerkDrop } from "./perk-handler.mjs";
+import { onPerkDelete, setPerkValues } from "./perk-handler.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
@@ -68,27 +67,15 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
-        if (item.type == 'perk') {
-          onPerkDrop(owner, item, null);
-        }
-
         const newItem = await Item.create(itemToCreate, { parent: owner });
+
+        if (item.type == 'perk') {
+          setPerkValues(owner, newItem, null);
+        }
 
         if (newItem.type == "altMode") {
           await owner.update({
             "system.canTransform": true,
-          });
-        }
-
-        if (item.uuid == SORCERY_PERK_ID) {
-          await actor.update ({
-            "system.powers.sorcerous.levelTaken": actor.system.level,
-          });
-        }
-
-        if (item.uuid == ZORD_PERK_ID) {
-          await owner.update ({
-            "system.canHaveZord": true,
           });
         }
 
@@ -379,19 +366,20 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
       if (itemSourceId) {
         if (itemSourceId == attachment.uuid && item._id == parentId) {
           if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
-            if (item.type == "perk") {
+            if (attachment.type == "perk") {
               onPerkDelete(actor, actorItem);
             }
 
             await actorItem.delete();
           }
-        }
-      } else if (item._id == parentId && key == collectionId) {
-        if (item.type == "perk") {
-          onPerkDelete(actor, actorItem);
-        }
+        }else if (item._id == parentId && key == collectionId) {
 
-        await actorItem.delete();
+          if (attachment.type == "perk") {
+            onPerkDelete(actor, actorItem);
+          }
+
+          await actorItem.delete();
+        }
       }
     }
   }

@@ -203,8 +203,8 @@ Hooks.on('ready', () => {
   }
 
   // Create hook that helps with persisting dialog position
-  let oldDragMouseUp = Draggable.prototype._onDragMouseUp;
-  Draggable.prototype._onDragMouseUp = function (event) {
+  let oldDragMouseUp = foundry.applications.ux.Draggable.prototype._onDragMouseUp;
+  foundry.applications.ux.Draggable.prototype._onDragMouseUp = function (event) {
     Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
     return oldDragMouseUp.call(this, event);
   };

@@ -23,7 +23,7 @@ import {
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 
-export class Essence20ActorSheet extends ActorSheet {
+export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   constructor(...args) {
     super(...args);
     this.accordionStates = { skills: '' };

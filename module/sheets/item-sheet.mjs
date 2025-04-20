@@ -6,7 +6,7 @@ import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class Essence20ItemSheet extends ItemSheet {
+export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
 
   /** @override */
   async activateEditor(name, options={}, initialContent="") {
