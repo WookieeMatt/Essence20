@@ -81,7 +81,7 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
       }
     }
 
-    const worldItems = game.items
+    const worldItems = game.items;
     for (const worldItem of worldItems) {
       if (worldItem.type == "role") {
         if (worldItem.system.version == itemData.system.version) {

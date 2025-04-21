@@ -41,6 +41,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     if (actorItem.type == "role"){
       currentRole = actorItem;
     }
+
     const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
