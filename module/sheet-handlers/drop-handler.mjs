@@ -6,6 +6,7 @@ import { onInfluenceDrop, onOriginDrop } from "./background-handler.mjs";
 import { onPowerDrop } from "./power-handler.mjs";
 import { setPerkValues } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
+import { onFactionDrop } from "./faction-handler.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 
 /**
@@ -44,6 +45,9 @@ export async function onDropItem(data, actor, dropFunc) {
     break;
   case 'equipmentPackage':
     result = await onEquipmentPackageDrop(actor, sourceItem);
+    break;
+  case 'faction':
+    result = await onFactionDrop(actor, dropFunc);
     break;
   case 'focus':
     result = await onFocusDrop(actor, sourceItem, dropFunc);

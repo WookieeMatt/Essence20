@@ -3,7 +3,7 @@ import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
-import { setMorphedToughnessBonus } from "./perk-handler.mjs";
+import { onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
 
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 /**
@@ -293,6 +293,21 @@ export async function onRoleDrop(actor, role, dropFunc) {
     return false;
   }
 
+  const faction = getItemsOfType("faction", actor.items);
+
+  if (faction[0]){
+    for (const item of actor.items) {
+      if (item.type == "perk" && item.system.isRoleVariant) {
+        for (const [, attachment] of Object.entries(item.system.items)) {
+          if (attachment.role == role.name) {
+            const itemToCreate = await fromUuid(attachment.uuid);
+            onPerkDrop(actor, itemToCreate, null, null, null, item);
+          }
+        }
+      }
+    }
+  }
+
   if (role.system.skillDie.isUsed && !role.system.skillDie.name) {
     ui.notifications.error(game.i18n.localize('E20.RoleSkillDieError'));
     return false;
@@ -405,6 +420,15 @@ export async function onLevelChange(actor, newLevel) {
 export async function onRoleDelete(actor, role) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const focus = getItemsOfType("focus", actor.items);
+  const faction = getItemsOfType("faction", actor.items);
+
+  if (faction[0]){
+    for (const item of actor.items) {
+      if (item.type == "perk" && item.system.isRoleVariant) {
+        deleteAttachmentsForItem(item, actor);
+      }
+    }
+  }
 
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);

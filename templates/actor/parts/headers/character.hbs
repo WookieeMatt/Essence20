@@ -16,9 +16,8 @@
   <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
   <input type="text" name="system.languages" value="{{system.languages}}" />
 </div>
-<div style="display:inline-block;">
-  <label for="system.faction" class="resource-label">{{localize 'E20.ActorFaction'}}</label>
-  <input type="text" name="system.faction" value="{{system.faction}}" />
+<div>
+  {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
 </div>
 <div class="pr-header-level">
   <label for="system.level" class="resource-label">{{localize 'E20.ActorLevel'}}</label>

@@ -95,11 +95,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   }
 
   if (newPerk?.system.isRoleVariant) {
-    console.log("Got Here4")
-    console.log(newPerk)
     for (const [key, perk] of Object.entries(newPerk.system.items)) {
-      console.log(currentRole)
-      console.log(perk)
       if (currentRole?.name == perk.role) {
         const itemToCreate = await fromUuid(perk.uuid);
         if (itemToCreate.system.choiceType != 'none') {

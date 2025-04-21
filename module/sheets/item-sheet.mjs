@@ -66,7 +66,7 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
-    context.system.description = await TextEditor.enrichHTML(itemData.system.description);
+    context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
 
     const versionRoles = {};
@@ -161,7 +161,7 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
   * @private
   */
   async _onDrop(event) {
-    const data = TextEditor.getDragEventData(event);
+    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.item;
     await setEntryAndAddItem(droppedItem, targetItem);

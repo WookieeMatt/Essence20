@@ -208,6 +208,12 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     }
 
     break;
+  case "faction":
+    if (droppedItem.type == "perk") {
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
   case "focus":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;

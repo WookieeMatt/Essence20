@@ -277,6 +277,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     const weapons = [];
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
+    let faction = null;
     let role = null;
     let rolePoints = null;
 
@@ -302,6 +303,9 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
         break;
       case 'bond':
         bonds.push(i);
+        break;
+      case 'faction':
+        faction = i;
         break;
       case 'feature':
         features.push(i);
@@ -423,6 +427,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     context.altModes = altModes;
     context.armors = armors;
     context.bonds = bonds;
+    context.faction = faction;
     context.features = features;
     context.gears = gears;
     context.focuses = focuses;

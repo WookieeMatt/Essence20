@@ -7,6 +7,7 @@ import { onOriginDelete } from "./background-handler.mjs";
 import { onPerkDelete } from "./perk-handler.mjs";
 import { onFocusDelete, onRoleDelete } from "./role-handler.mjs";
 import { onAltModeDelete } from "./transformer-handler.mjs";
+import { onFactionDelete } from "./faction-handler.mjs";
 
 /**
  * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
@@ -152,6 +153,8 @@ export async function onItemDelete(event, actorSheet) {
       onAltModeDelete(actorSheet, item);
     } else if (item.type == "armor") {
       deleteAttachmentsForItem(item, actor);
+    } else if (item.type == "faction") {
+      onFactionDelete(item, actor);
     } else if (item.type == "focus") {
       onFocusDelete(actor, item);
     } else if (item.type == 'influence') {
