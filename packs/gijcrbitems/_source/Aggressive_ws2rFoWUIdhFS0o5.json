@@ -1,0 +1,43 @@
+{
+  "folder": "V4wWMrCQv2tf5Tq4",
+  "name": "Aggressive",
+  "type": "perk",
+  "_id": "ws2rFoWUIdhFS0o5",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Gi Joe Core Rulebook",
+      "page": 94
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction",
+    "version": "giJoe"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "AuDjDlDgiKS5wxrI": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.340",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1745284941101,
+    "modifiedTime": 1745284971485,
+    "lastModifiedBy": "AuDjDlDgiKS5wxrI"
+  },
+  "_key": "!items!ws2rFoWUIdhFS0o5"
+}

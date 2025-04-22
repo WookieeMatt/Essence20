@@ -1,0 +1,48 @@
+{
+  "folder": "M6eEfQqDy48NkZNk",
+  "name": "Autobots",
+  "type": "faction",
+  "_id": "kVhGMz7PUpBo9UYT",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 56
+    },
+    "items": {
+      "fb5f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.UMlH70vmM3kJzWvS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "For The Allspark!",
+        "type": "perk"
+      },
+      "c22f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.Mk1A3ol5hZqoQsT7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cybertronian Perk (Autobots)",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "AuDjDlDgiKS5wxrI": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.340",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1745282670914,
+    "modifiedTime": 1745284081389,
+    "lastModifiedBy": "AuDjDlDgiKS5wxrI"
+  },
+  "_key": "!items!kVhGMz7PUpBo9UYT"
+}

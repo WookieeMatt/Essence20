@@ -10,8 +10,9 @@
       "page": 107
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "general"
+    "selectionLimit": 5,
+    "type": "general",
+    "choiceType": "senses"
   },
   "effects": [],
   "flags": {
@@ -19,13 +20,14 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.340",
     "createdTime": 1686274133848,
-    "modifiedTime": 1704127422539,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1745285603645,
+    "lastModifiedBy": "AuDjDlDgiKS5wxrI",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_id": "rl8hs6ezb6VSDahM",
   "folder": "ERY0Xs3Bi23Hjx2K",

@@ -1,0 +1,35 @@
+{
+  "folder": "t10NDeLvuEcDeCOI",
+  "name": "GI Joe",
+  "type": "faction",
+  "_id": "7TEXd77DTl93Sdym",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Gi Joe Core Rulebook",
+      "page": 69
+    },
+    "items": {}
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "AuDjDlDgiKS5wxrI": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.340",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1745284414881,
+    "modifiedTime": 1745284444160,
+    "lastModifiedBy": "AuDjDlDgiKS5wxrI"
+  },
+  "_key": "!items!7TEXd77DTl93Sdym"
+}
