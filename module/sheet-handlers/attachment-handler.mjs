@@ -375,8 +375,7 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
 
             await actorItem.delete();
           }
-        }else if (item._id == parentId && key == collectionId) {
-
+        } else if (item._id == parentId && key == collectionId) {
           if (attachment.type == "perk") {
             onPerkDelete(actor, actorItem);
           }
