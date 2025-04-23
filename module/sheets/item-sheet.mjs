@@ -206,7 +206,7 @@ async function _getVersionRoles(itemData) {
     }
   }
 
-  const worldItems = game.items
+  const worldItems = game.items;
   for (const worldItem of worldItems) {
     if (worldItem.type == "role") {
       if (worldItem.system.version == itemData.system.version) {
