@@ -18,11 +18,11 @@ export async function onFactionDrop(actor, dropFunc) {
   const factionDrop = await dropFunc();
   const newFaction = factionDrop[0];
 
-  for (const [, item] of Object.entries(newFaction.system.items)) {
-    if (item.type == "perk") {
-      const itemToCreate = await fromUuid(item.uuid);
-      onPerkDrop(actor, itemToCreate, null, null, null, newFaction);
-    }
+  const perks = getItemsOfType('perk', Object.values(newFaction.system.items));
+
+  for (const perk of perks) {
+    const itemToCreate = await fromUuid(perk.uuid);
+    onPerkDrop(actor, itemToCreate, null, null, null, newFaction);
   }
 }
 
