@@ -422,7 +422,7 @@ export async function onRoleDelete(actor, role) {
   const focus = getItemsOfType("focus", actor.items);
   const faction = getItemsOfType("faction", actor.items);
 
-  if (faction[0]){
+  if (faction[0]) {
     for (const item of actor.items) {
       if (item.type == "perk" && item.system.isRoleVariant) {
         deleteAttachmentsForItem(item, actor);
