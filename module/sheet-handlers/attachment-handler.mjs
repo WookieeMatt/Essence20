@@ -237,7 +237,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     break;
   case "perk":
     if (droppedItem.type == "perk") {
-      entry ['role'] = null;
+      entry['role'] = null;
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
