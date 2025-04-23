@@ -2,7 +2,7 @@ import { AltModeItemData } from './alt-mode.mjs';
 import { AlterationItemData } from './alteration.mjs';
 import { ArmorItemData } from './armor.mjs';
 import { BondItemData } from './bond.mjs';
-import {ClassFeatureItemData } from './class-feature.mjs';
+import { ClassFeatureItemData } from './class-feature.mjs';
 import { EquipmentPackageItemData } from './equipment-package.mjs';
 import { FactionItemData } from './faction.mjs';
 import { FeatureItemData } from './feature.mjs';
