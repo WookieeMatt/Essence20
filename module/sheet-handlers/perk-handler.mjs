@@ -237,23 +237,29 @@ export async function setMorphedToughnessBonus(actor) {
     "system.canSetToughnessBonus": true,
     "system.defenses.toughness.morphed": morphedBonus,
   });
+}
 
-  async function setRoleVatiantPerks(newPerk, currentRole, actor) {
-    for (const [key, perk] of Object.entries(newPerk.system.items)) {
-      if (currentRole?.name == perk.role) {
-        const itemToCreate = await fromUuid(perk.uuid);
-        if (itemToCreate.system.choiceType != 'none') {
-          setPerkValues(actor, itemToCreate, perk, null);
-        } else {
-          const createdPerk = await Item.create(itemToCreate, { parent: actor });
-          createdPerk.setFlag('essence20', 'collectionId', key);
-          createdPerk.setFlag('essence20', 'parentId', newPerk._id);
-          createdPerk.update({
-            "_stats.compendiumSource": newPerk.uuid,
-          });
-        }
-
+/**
+ * Handles adding subperks that have an associated role
+ * @param {Perk} newPerk The new perk that is being added to the actor from the faction.
+ * @param {Role} currentRole The current role assigned to the actor.
+ * @param {Actor} actor The actor that the faction is being dropped on.
+ */
+async function setRoleVatiantPerks(newPerk, currentRole, actor) {
+  for (const [key, perk] of Object.entries(newPerk.system.items)) {
+    if (currentRole?.name == perk.role) {
+      const itemToCreate = await fromUuid(perk.uuid);
+      if (itemToCreate.system.choiceType != 'none') {
+        setPerkValues(actor, itemToCreate, perk, null);
+      } else {
+        const createdPerk = await Item.create(itemToCreate, { parent: actor });
+        createdPerk.setFlag('essence20', 'collectionId', key);
+        createdPerk.setFlag('essence20', 'parentId', newPerk._id);
+        createdPerk.update({
+          "_stats.compendiumSource": newPerk.uuid,
+        });
       }
+
     }
   }
 }

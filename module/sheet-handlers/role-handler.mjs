@@ -295,18 +295,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
 
   const faction = getItemsOfType("faction", actor.items);
 
-  if (faction[0]){
-    for (const item of actor.items) {
-      if (item.type == "perk" && item.system.isRoleVariant) {
-        for (const [, attachment] of Object.entries(item.system.items)) {
-          if (attachment.role == role.name) {
-            const itemToCreate = await fromUuid(attachment.uuid);
-            onPerkDrop(actor, itemToCreate, null, null, null, item);
-          }
-        }
-      }
-    }
-  }
+  addFactionPerks(faction, actor, role);
 
   if (role.system.skillDie.isUsed && !role.system.skillDie.name) {
     ui.notifications.error(game.i18n.localize('E20.RoleSkillDieError'));
@@ -610,5 +599,26 @@ async function _trainingUpdate(actor, itemType, trainingType, updateType, role, 
     await actor.update({
       [profString] : updateType,
     });
+  }
+}
+
+/**
+ * Handles adding subperks for existing factions for the role being added.
+ * @param {Faction} faction The Existing Faction.
+ * @param {Actor} actor The actor the role is being added to.
+ * @param {Role} role The role that is being added.
+ */
+async function addFactionPerks(faction, actor, role) {
+  if (faction[0]){
+    for (const item of actor.items) {
+      if (item.type == "perk" && item.system.isRoleVariant) {
+        for (const [, attachment] of Object.entries(item.system.items)) {
+          if (attachment.role == role.name) {
+            const itemToCreate = await fromUuid(attachment.uuid);
+            onPerkDrop(actor, itemToCreate, null, null, null, item);
+          }
+        }
+      }
+    }
   }
 }

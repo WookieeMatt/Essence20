@@ -69,30 +69,9 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
 
-    const versionRoles = {};
-    for (const pack of game.packs) {
-      const selection = await pack.getDocuments({ type: "role" });
-      for (const role of selection) {
-        if (role.system.version == itemData.system.version){
-          versionRoles[role.name] = {
-            type: role.type,
-          };
-        }
-      }
-    }
 
-    const worldItems = game.items
-    for (const worldItem of worldItems) {
-      if (worldItem.type == "role") {
-        if (worldItem.system.version == itemData.system.version) {
-          versionRoles[worldItem.name] = {
-            type: worldItem.type,
-          };
-        }
-      }
-    }
 
-    context.roles = versionRoles;
+    context.roles = await _getVersionRoles(itemData);
 
     return context;
   }
@@ -207,8 +186,36 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
       ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
     }
   }
+}
 
-  _getVersionRoles() {
-
+/**
+ * Handles retrieving all existing roles of the system version selected.
+ * @param {ItemData} itemData The data of the item that is being opened.
+ * @returns versionRoles the roles of the system version that is selected.
+ */
+async function _getVersionRoles(itemData) {
+  const versionRoles = {};
+  for (const pack of game.packs) {
+    const selection = await pack.getDocuments({ type: "role" });
+    for (const role of selection) {
+      if (role.system.version == itemData.system.version){
+        versionRoles[role.name] = {
+          type: role.type,
+        };
+      }
+    }
   }
+
+  const worldItems = game.items
+  for (const worldItem of worldItems) {
+    if (worldItem.type == "role") {
+      if (worldItem.system.version == itemData.system.version) {
+        versionRoles[worldItem.name] = {
+          type: worldItem.type,
+        };
+      }
+    }
+  }
+
+  return versionRoles;
 }

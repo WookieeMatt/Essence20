@@ -58,15 +58,11 @@
   display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 0;
-  -ms-flex: 0 0 100px;
-  flex: 0 0 100px;
+  -ms-flex: 0 0 50px;
+  flex: 0 0 50px;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   justify-content: flex-end;
-}
-
-.essence20 .item-controls {
-  flex-grow: 0;
 }
 
 .essence20 .items-list .item-controls a {
