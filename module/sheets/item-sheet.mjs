@@ -81,7 +81,7 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
       }
     }
 
-    const worldItems = game.items;
+    const worldItems = game.items
     for (const worldItem of worldItems) {
       if (worldItem.type == "role") {
         if (worldItem.system.version == itemData.system.version) {
@@ -206,5 +206,9 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
       game.clipboard.copyPlainText(clipText);
       ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
     }
+  }
+
+  _getVersionRoles() {
+
   }
 }

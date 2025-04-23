@@ -96,23 +96,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   }
 
   if (newPerk?.system.isRoleVariant) {
-    for (const [key, perk] of Object.entries(newPerk.system.items)) {
-      if (currentRole?.name == perk.role) {
-        const itemToCreate = await fromUuid(perk.uuid);
-        if (itemToCreate.system.choiceType != 'none') {
-          setPerkValues(actor, itemToCreate, perk, null);
-        } else {
-          const createdPerk = await Item.create(itemToCreate, { parent: actor });
-          createdPerk.setFlag('essence20', 'collectionId', key);
-          createdPerk.setFlag('essence20', 'parentId', newPerk._id);
-          createdPerk.update({
-            "_stats.compendiumSource": newPerk.uuid,
-          });
-        }
-
-      }
-    }
-
+    setRoleVatiantPerks(newPerk, currentRole, actor);
   }
 }
 
@@ -253,5 +237,24 @@ export async function setMorphedToughnessBonus(actor) {
     "system.canSetToughnessBonus": true,
     "system.defenses.toughness.morphed": morphedBonus,
   });
+
+  async function setRoleVatiantPerks(newPerk, currentRole, actor) {
+    for (const [key, perk] of Object.entries(newPerk.system.items)) {
+      if (currentRole?.name == perk.role) {
+        const itemToCreate = await fromUuid(perk.uuid);
+        if (itemToCreate.system.choiceType != 'none') {
+          setPerkValues(actor, itemToCreate, perk, null);
+        } else {
+          const createdPerk = await Item.create(itemToCreate, { parent: actor });
+          createdPerk.setFlag('essence20', 'collectionId', key);
+          createdPerk.setFlag('essence20', 'parentId', newPerk._id);
+          createdPerk.update({
+            "_stats.compendiumSource": newPerk.uuid,
+          });
+        }
+
+      }
+    }
+  }
 }
 
