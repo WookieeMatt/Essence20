@@ -295,7 +295,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
 
   const factionList = getItemsOfType("faction", actor.items);
   if (factionList.length) {
-    addFactionPerks(factionList[0], actor, role);
+    addFactionPerks(actor, role);
   }
 
   if (role.system.skillDie.isUsed && !role.system.skillDie.name) {
@@ -609,7 +609,7 @@ async function _trainingUpdate(actor, itemType, trainingType, updateType, role, 
  * @param {Actor} actor The actor the role is being added to.
  * @param {Role} role The role that is being added.
  */
-async function addFactionPerks(faction, actor, role) {
+async function addFactionPerks(actor, role) {
   for (const item of actor.items) {
     if (item.type == "perk" && item.system.isRoleVariant) {
       for (const [, attachment] of Object.entries(item.system.items)) {
