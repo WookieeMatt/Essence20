@@ -409,9 +409,9 @@ export async function onLevelChange(actor, newLevel) {
 export async function onRoleDelete(actor, role) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const focus = getItemsOfType("focus", actor.items);
-  const faction = getItemsOfType("faction", actor.items);
+  const factionList = getItemsOfType("faction", actor.items);
 
-  if (faction[0]) {
+  if (factionList.length) {
     for (const item of actor.items) {
       if (item.type == "perk" && item.system.isRoleVariant) {
         deleteAttachmentsForItem(item, actor);
