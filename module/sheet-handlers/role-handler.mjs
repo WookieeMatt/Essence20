@@ -609,14 +609,12 @@ async function _trainingUpdate(actor, itemType, trainingType, updateType, role, 
  * @param {Role} role The role that is being added.
  */
 async function addFactionPerks(faction, actor, role) {
-  if (faction[0]){
-    for (const item of actor.items) {
-      if (item.type == "perk" && item.system.isRoleVariant) {
-        for (const [, attachment] of Object.entries(item.system.items)) {
-          if (attachment.role == role.name) {
-            const itemToCreate = await fromUuid(attachment.uuid);
-            onPerkDrop(actor, itemToCreate, null, null, null, item);
-          }
+  for (const item of actor.items) {
+    if (item.type == "perk" && item.system.isRoleVariant) {
+      for (const [, attachment] of Object.entries(item.system.items)) {
+        if (attachment.role == role.name) {
+          const itemToCreate = await fromUuid(attachment.uuid);
+          onPerkDrop(actor, itemToCreate, null, null, null, item);
         }
       }
     }
