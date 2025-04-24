@@ -68,9 +68,6 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     context.system = itemData.system;
     context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
-
-
-
     context.roles = await _getVersionRoles(itemData);
 
     return context;
