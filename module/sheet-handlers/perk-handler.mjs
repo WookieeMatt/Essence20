@@ -259,7 +259,6 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
           "_stats.compendiumSource": newPerk.uuid,
         });
       }
-
     }
   }
 }

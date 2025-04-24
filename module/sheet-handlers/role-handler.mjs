@@ -293,9 +293,10 @@ export async function onRoleDrop(actor, role, dropFunc) {
     return false;
   }
 
-  const faction = getItemsOfType("faction", actor.items);
-
-  addFactionPerks(faction, actor, role);
+  const factionList = getItemsOfType("faction", actor.items);
+  if (factionList.length) {
+    addFactionPerks(factionList[0], actor, role);
+  }
 
   if (role.system.skillDie.isUsed && !role.system.skillDie.name) {
     ui.notifications.error(game.i18n.localize('E20.RoleSkillDieError'));
@@ -409,9 +410,9 @@ export async function onLevelChange(actor, newLevel) {
 export async function onRoleDelete(actor, role) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const focus = getItemsOfType("focus", actor.items);
-  const faction = getItemsOfType("faction", actor.items);
+  const factionList = getItemsOfType("faction", actor.items);
 
-  if (faction[0]) {
+  if (factionList.length) {
     for (const item of actor.items) {
       if (item.type == "perk" && item.system.isRoleVariant) {
         deleteAttachmentsForItem(item, actor);
