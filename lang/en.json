@@ -291,6 +291,7 @@
     "EssenceStrength": "Strength",
     "FactionAutobots": "Autobots",
     "FactionDecepticons": "Decepticons",
+    "FactionDrop": "Drop a Faction here",
     "FactionMultipleError": "Characters can only select one Faction.",
     "FactionOther": "Other",
     "Focus": "Focus",
