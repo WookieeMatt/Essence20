@@ -293,9 +293,10 @@ export async function onRoleDrop(actor, role, dropFunc) {
     return false;
   }
 
-  const faction = getItemsOfType("faction", actor.items);
-
-  addFactionPerks(faction, actor, role);
+  const factionList = getItemsOfType("faction", actor.items);
+  if (factionList.length) {
+    addFactionPerks(factionList[0], actor, role);
+  }
 
   if (role.system.skillDie.isUsed && !role.system.skillDie.name) {
     ui.notifications.error(game.i18n.localize('E20.RoleSkillDieError'));
