@@ -1,4 +1,4 @@
-{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" className=className label=label items=items type=type}}
+{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" className=className label=label items=items roles=roles type=type}}
 {{#*inline "item-field-inputs"}}
 {{#itemsContainType items type}}
   <div class="flexcol" id="rolePerkList">
@@ -9,7 +9,9 @@
             <li class="item">
             <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
               <label class="flexcol">{{item.name}}</label>
-              <input type="number" class="level" placeholder="Level" value="{{item.level}}" name="system.items.{{@key}}.level" min="0" step="1" />
+              <select name="system.items.{{@key}}.role" class="flexcol">
+                {{selectOptions @root.roles selected=item.role}}
+              </select>
               <div class="item-controls">
                 <a class="item-control {{../className}}-delete flex-right" data-tooltip="{{localize 'E20.DeleteItem'}}">
                   <i class="fas fa-trash"></i>
@@ -23,7 +25,7 @@
     {{/each}}
   </div>
 {{else}}
-  <label>{{localize 'E20.ItemDrop' type=(localize (concat "TYPES.Item." type))}}</label>
+  <label>{{localize 'E20.ItemDrop'}}</label>
 {{/itemsContainType}}
 {{/inline}}
 {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

@@ -1,0 +1,31 @@
+<form class="{{cssClass}}" autocomplete="off">
+
+  {{!-- Item Sheet Header --}}
+  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+
+  {{!-- Tabs --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
+    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
+    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
+  </nav>
+
+  {{!-- Item Sheet Body --}}
+  <section class="sheet-body item-sheet">
+    <div class="tab description flexcol" data-group="primary" data-tab="description">
+      {{!-- Description Section --}}
+      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+    </div>
+
+    <div class="tab details flexcol" data-group="primary" data-tab="details">
+      {{!-- Faction Perks --}}
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="factionPerk" label='E20.RolePerks' items=system.items type='perk'}}
+    </div>
+
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{!-- Effects Section --}}
+      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
+    </div>
+
+  </section>
+</form>

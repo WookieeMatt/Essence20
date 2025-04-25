@@ -19,6 +19,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   let updateString = null;
   let updateValue = null;
   let newPerk = null;
+  let currentRole = null;
 
   if (selectionType == 'environments') {
     updateString = "system.environments";
@@ -37,9 +38,11 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   let timesTaken = 0;
 
   for (let actorItem of actor.items) {
-    const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
-      ? await actor.items.get(actorItem._id).getFlag('core', 'sourceId')
-      : await actor.items.get(actorItem._id)._stats.compendiumSource;
+    if (actorItem.type == "role"){
+      currentRole = actorItem;
+    }
+
+    const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
       if (perk.system.selectionLimit == timesTaken) {
@@ -61,6 +64,8 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     newPerk.update({
       "_stats.compendiumSource": perk.uuid,
     });
+  } else if (!dropFunc) {
+    newPerk = perk;
   } else {
     const perkDrop = await dropFunc();
     newPerk = perkDrop[0];
@@ -88,6 +93,10 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
         "_stats.compendiumSource": itemToCreate.uuid,
       });
     }
+  }
+
+  if (newPerk?.system.isRoleVariant) {
+    setRoleVatiantPerks(newPerk, currentRole, actor);
   }
 }
 
@@ -189,22 +198,20 @@ export async function onPerkDelete(actor, perk) {
 
   let updateString = null;
   let updateValue = null;
-  if (perk.system.choiceType != "none") {
-    const selectionType = perk.system.choiceType;
-    if (selectionType == 'environments') {
-      updateString = "system.environments";
-      updateValue = actor.system.environments;
-      const index = updateValue.indexOf(perk.system.choice);
-      updateValue.splice(index, 1);
-      actor.update({
-        [updateString]: updateValue,
-      });
-    } else if (selectionType == 'senses') {
-      updateString = `system.senses.${perk.system.choice}.acute`;
-      actor.update({
-        [updateString]: false,
-      });
-    }
+  const selectionType = perk.system.choiceType;
+  if (selectionType == 'environments') {
+    updateString = "system.environments";
+    updateValue = actor.system.environments;
+    const index = updateValue.indexOf(perk.system.choice);
+    updateValue.splice(index, 1);
+    actor.update({
+      [updateString]: updateValue,
+    });
+  } else if (selectionType == 'senses') {
+    updateString = `system.senses.${perk.system.choice}.acute`;
+    actor.update({
+      [updateString]: false,
+    });
   }
 
   deleteAttachmentsForItem(perk, actor);
@@ -230,5 +237,29 @@ export async function setMorphedToughnessBonus(actor) {
     "system.canSetToughnessBonus": true,
     "system.defenses.toughness.morphed": morphedBonus,
   });
+}
+
+/**
+ * Handles adding subperks that have an associated role
+ * @param {Perk} newPerk The new perk that is being added to the actor from the faction.
+ * @param {Role} currentRole The current role assigned to the actor.
+ * @param {Actor} actor The actor that the faction is being dropped on.
+ */
+async function setRoleVatiantPerks(newPerk, currentRole, actor) {
+  for (const [key, perk] of Object.entries(newPerk.system.items)) {
+    if (currentRole?.name == perk.role) {
+      const itemToCreate = await fromUuid(perk.uuid);
+      if (itemToCreate.system.choiceType != 'none') {
+        setPerkValues(actor, itemToCreate, perk, null);
+      } else {
+        const createdPerk = await Item.create(itemToCreate, { parent: actor });
+        createdPerk.setFlag('essence20', 'collectionId', key);
+        createdPerk.setFlag('essence20', 'parentId', newPerk._id);
+        createdPerk.update({
+          "_stats.compendiumSource": newPerk.uuid,
+        });
+      }
+    }
+  }
 }
 

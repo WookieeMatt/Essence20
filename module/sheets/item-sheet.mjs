@@ -6,7 +6,7 @@ import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class Essence20ItemSheet extends ItemSheet {
+export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
 
   /** @override */
   async activateEditor(name, options={}, initialContent="") {
@@ -66,8 +66,9 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
-    context.system.description = await TextEditor.enrichHTML(itemData.system.description);
+    context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
+    context.roles = await _getVersionRoles(itemData);
 
     return context;
   }
@@ -136,7 +137,7 @@ export class Essence20ItemSheet extends ItemSheet {
   * @private
   */
   async _onDrop(event) {
-    const data = TextEditor.getDragEventData(event);
+    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.item;
     await setEntryAndAddItem(droppedItem, targetItem);
@@ -182,4 +183,36 @@ export class Essence20ItemSheet extends ItemSheet {
       ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
     }
   }
+}
+
+/**
+ * Handles retrieving all existing roles of the system version selected.
+ * @param {ItemData} itemData The data of the item that is being opened.
+ * @returns versionRoles the roles of the system version that is selected.
+ */
+async function _getVersionRoles(itemData) {
+  const versionRoles = {};
+  for (const pack of game.packs) {
+    const selection = await pack.getDocuments({ type: "role" });
+    for (const role of selection) {
+      if (role.system.version == itemData.system.version){
+        versionRoles[role.name] = {
+          type: role.type,
+        };
+      }
+    }
+  }
+
+  const worldItems = game.items;
+  for (const worldItem of worldItems) {
+    if (worldItem.type == "role") {
+      if (worldItem.system.version == itemData.system.version) {
+        versionRoles[worldItem.name] = {
+          type: worldItem.type,
+        };
+      }
+    }
+  }
+
+  return versionRoles;
 }

@@ -2,8 +2,9 @@ import { AltModeItemData } from './alt-mode.mjs';
 import { AlterationItemData } from './alteration.mjs';
 import { ArmorItemData } from './armor.mjs';
 import { BondItemData } from './bond.mjs';
-import {ClassFeatureItemData } from './class-feature.mjs';
+import { ClassFeatureItemData } from './class-feature.mjs';
 import { EquipmentPackageItemData } from './equipment-package.mjs';
+import { FactionItemData } from './faction.mjs';
 import { FeatureItemData } from './feature.mjs';
 import { FocusItemData } from './focus.mjs';
 import { GearItemData } from './gear.mjs';
@@ -31,6 +32,7 @@ export const config = {
   bond: BondItemData,
   classFeature: ClassFeatureItemData,
   equipmentPackage: EquipmentPackageItemData,
+  faction: FactionItemData,
   feature: FeatureItemData,
   focus: FocusItemData,
   gear: GearItemData,
