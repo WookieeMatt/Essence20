@@ -75,6 +75,11 @@ export const character = () => ({
   }),
   faction: makeStr(''),
   focusEssence: makeStr(''),
+  image: new fields.SchemaField({
+    botmode: makeStr(null),
+    morphed: makeStr(null),
+    unmorphed: makeStr(null),
+  }),
   isMorphed: makeBool(false),
   isTransformed: makeBool(false),
   level: makeInt(1),
