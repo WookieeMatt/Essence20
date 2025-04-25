@@ -30,7 +30,7 @@ export async function onTransform(actorSheet) {
   if (!actor.system.isTransformed ) {
     await actor.update ({
       "system.image.botmode": actor.prototypeToken.texture.src,
-    })
+    });
   }
 
   if (!altModes.length && !isTransformed) {      // No alt-modes to transform into

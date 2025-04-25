@@ -14,12 +14,17 @@ export function resizeTokens(actor, width, height) {
   }
 }
 
+/**
+ * Changes the image for all tokens tied to the actor
+ * @param {Actor} actor The actor who is changing
+ * @param {String} newImage The location of the image file
+ */
 export function changeTokenImage(actor, newImage){
   const tokens = actor?.getActiveTokens();
   for (const token of tokens) {
     token.document.update({
       "texture.src": newImage,
-    })
+    });
   }
 }
 

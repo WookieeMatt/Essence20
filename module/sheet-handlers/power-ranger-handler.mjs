@@ -10,13 +10,13 @@ export async function onMorph(actorSheet) {
   if (!actor.system.isMorphed ) {
     await actor.update ({
       "system.image.unmorphed": actor.prototypeToken.texture.src,
-    })
+    });
     newToken = actor.system.image.morphed;
   } else {
     newToken = actor.system.image.unmorphed;
   }
 
-  changeTokenImage(actor, newToken)
+  changeTokenImage(actor, newToken);
 
   await actor.update({
     "system.isMorphed": !actor.system.isMorphed,
