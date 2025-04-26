@@ -6,17 +6,17 @@ import { changeTokenImage } from "../helpers/actor.mjs";
  */
 export async function onMorph(actorSheet) {
   const actor = actorSheet.actor;
-  let newToken = null;
+  let newImage = null;
   if (!actor.system.isMorphed ) {
     await actor.update ({
       "system.image.unmorphed": actor.prototypeToken.texture.src,
     });
-    newToken = actor.system.image.morphed;
+    newImage = actor.system.image.morphed;
   } else {
-    newToken = actor.system.image.unmorphed;
+    newImage = actor.system.image.unmorphed;
   }
 
-  changeTokenImage(actor, newToken);
+  changeTokenImage(actor, newImage);
 
   await actor.update({
     "system.isMorphed": !actor.system.isMorphed,
