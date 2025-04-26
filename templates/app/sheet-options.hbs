@@ -36,4 +36,11 @@
     {{/inline}}
     {{/"systems/essence20/templates/app/parts/field.hbs"}}
   {{/unless}}
+
+  {{#if system.canMorph}}
+    <div class="flexrow">
+      <label for="system.image.morphed">{{localize 'E20.MorphedImage'}}</label>
+      <file-picker id="system.image.morphed" name="system.image.morphed" spellcheck="false">{{system.image.morphed}}</file-picker>
+    </div>
+  {{/if}}
 </div>
