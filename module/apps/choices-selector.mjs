@@ -4,8 +4,10 @@ import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
 import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
 import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
+import { setSpectrumShift } from "../sheet-handlers/perk-handler.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+const SPECTRUM_SHIFT_PERK_ID = "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvxt";
 
 export default class ChoicesSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2) {
@@ -30,6 +32,7 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
       perk: ChoicesSelector.perk,
       passenger: ChoicesSelector.passenger,
       shield: ChoicesSelector.shield,
+      spectrumShift: ChoicesSelector.spectrumShift,
       upgrade: ChoicesSelector.attach,
       weaponEffect: ChoicesSelector.attach,
       view: ChoicesSelector.view,
@@ -63,7 +66,10 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
     const context = await super._prepareContext(options);
     context.choices = this._choices;
     context.prompt = this._prompt;
-    if (this._item) {
+    console.log(this._item)
+    if (SPECTRUM_SHIFT_PERK_ID == this._item._stats.compendiumSource) {
+      context.type = "spectrumShift";
+    } else if (this._item) {
       context.type = this._item.type;
     } else if (this._key) {
       context.type = "passenger";
@@ -105,13 +111,19 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
     this.close();
   }
 
-  static async perk (event, selection) {
+  static async perk(event, selection) {
     onPerkDrop(this._actor, this._item, this._dropFunc, selection.value, this._choices[selection.value].type, this._previousSelection1);
     this.close();
   }
 
   static async shield(event, selection) {
     setShieldOptions(this._actor, this._item, this._staticValue, selection.value, selection.name);
+    this.close();
+  }
+
+  static async spectrumShift(event, selection){
+    console.log(this._choices)
+    setSpectrumShift(this._actor, this._item, this._choices[selection.value].uuid, this._previousSelection1);
     this.close();
   }
 

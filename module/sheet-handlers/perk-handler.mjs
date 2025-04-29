@@ -1,10 +1,14 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { E20 } from "../helpers/config.mjs";
+import { _getVersionRoles } from "../sheets/item-sheet.mjs";
 import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import { setRoleValues } from "./role-handler.mjs";
+import { onRoleDelete, onRoleDrop } from "./role-handler.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
+const SPECTRUM_SHIFT_PERK_ID = "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvxt";
 
 /**
  * Handle the dropping of a Perk onto an Actor
@@ -52,6 +56,11 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     }
   }
 
+  if (perk.uuid == SPECTRUM_SHIFT_PERK_ID && !currentRole) {
+    ui.notifications.error(game.i18n.localize('E20.NoRoleForSpectrumPerk'));
+    return;
+  }
+
   if (parentPerk) {
     newPerk = await Item.create(perk, { parent: actor });
     for (const [key, attachment] of Object.entries(parentPerk.system.items)) {
@@ -97,6 +106,10 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
 
   if (newPerk?.system.isRoleVariant) {
     setRoleVatiantPerks(newPerk, currentRole, actor);
+  }
+
+  if (perk.uuid == SPECTRUM_SHIFT_PERK_ID) {
+    onSpectrumShift(actor, newPerk, currentRole);
   }
 }
 
@@ -262,4 +275,75 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
     }
   }
 }
+
+async function onSpectrumShift(actor, spectrumShiftPerk, currentRole) {
+  let choices = {};
+  const prompt = game.i18n.localize("E20.SpectrumShiftPrompt");
+  const title = game.i18n.localize("E20.SpectrumShiftTitle");
+  const selectableRoles = await _getVersionRoles("powerRangers");
+  console.log(selectableRoles);
+
+  for (const [key, role] of Object.entries(selectableRoles)) {
+    if (role.uuid != currentRole._stats.compendiumSource) {
+      choices[key] = {
+        chosen: false,
+        value: key,
+        label: key,
+        uuid: role.uuid,
+        type: role.type,
+      };
+    }
+  }
+
+  await new ChoicesSelector (choices, actor, prompt, title, spectrumShiftPerk, null, null, null, currentRole, null).render(true);
+
+}
+
+export async function setSpectrumShift(actor, spectrumShiftPerk, value, currentRole){
+  const newRole = await fromUuid(value);
+  const newLevel = actor.system.level - 1;
+  let startingLevel = 1;
+
+  /**remove the current level increases for the currentRole */
+  setRoleValues(currentRole, actor, newLevel, actor.system.level);
+
+  const lastLevel = actor.system.level - 1;
+  if (actor.system.previousRoles.length > 0) {
+    for (const previousRole of actor.system.previousRoles) {
+      if (previousRole.lastLevel > startingLevel) {
+        startingLevel = previousRole.lastLevel + 1;
+      }
+    }
+  }
+
+  const previousRole = {
+    uuid: currentRole._stats.compendiumSource,
+    firstLevel: startingLevel,
+    lastLevel: lastLevel,
+  };
+
+  const rolesToUpdate = actor.system.previousRoles;
+  rolesToUpdate.push(previousRole);
+
+  actor.update({
+    "system.previousRoles": rolesToUpdate,
+  })
+
+  await currentRole.delete()
+  onRoleDelete(actor, currentRole);
+
+  onRoleDrop(actor, newRole, null);
+}
+
+  /**const newLevel = actor.system.level - 1;
+
+  /**remove the current level increases for the currentRole */
+  /**setRoleValues(currentRole, actor, newLevel, actor.system.level);
+
+
+  /** write essence increase from previous role to actor */
+  /**Delete current Role */
+  /** Add new Role */
+  /** on Role Drop minus setting training and essences for previous levels */
+
 

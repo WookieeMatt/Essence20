@@ -83,8 +83,10 @@ export const character = () => ({
   isMorphed: makeBool(false),
   isTransformed: makeBool(false),
   level: makeInt(1),
+  notes: new fields.HTMLField(),
   originEssencesIncrease: makeStr(),
   originSkillsIncrease: makeStr(),
+  poisonTraining:makeInt(0),
   powers: new fields.SchemaField({
     personal: new fields.SchemaField({
       regeneration: makeInt(0),
@@ -97,8 +99,12 @@ export const character = () => ({
       value: makeInt(0),
     }),
   }),
-  notes: new fields.HTMLField(),
-  poisonTraining:makeInt(0),
+  previousRoles: new fields.ArrayField(
+    new fields.SchemaField({
+      uuid: makeStr(null),
+      firstLevel: makeInt(0),
+      lastLevel: makeInt(0),
+    })),
   qualified: new fields.SchemaField({
     armors: makeTrainingSchema(E20.armorTypes),
     poisons: makeTrainingSchema(E20.poisonTraining),

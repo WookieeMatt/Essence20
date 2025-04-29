@@ -352,9 +352,14 @@ export async function onRoleDrop(actor, role, dropFunc) {
   } else if (role.system.hasSpecialAdvancement) {
     await _selectFirstEssences(actor, role, dropFunc);
   } else {
-    const newRoleList = await dropFunc();
-    const newRole = newRoleList[0];
-    await setRoleValues(newRole, actor);
+    if (dropFunc) {
+      const newRoleList = await dropFunc();
+      const newRole = newRoleList[0];
+      await setRoleValues(newRole, actor);
+    } else {
+      const newRole = await Item.create(role, { parent: actor });
+      await setRoleValues(newRole, actor);
+    }
   }
 
   if (role.system.version == 'giJoe') {
