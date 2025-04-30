@@ -295,7 +295,7 @@
     "FactionDrop": "Drop a Faction here",
     "FactionMultipleError": "Characters can only select one Faction.",
     "FactionOther": "Other",
-    "FactionsMultipleError": "Roles can only have one default faction.",
+    "FactionsMultipleError": "Roles can only have one default Faction.",
     "Focus": "Focus",
     "FocusDrop": "Drop a Focus here",
     "FocusMultipleError": "Characters can only select one Focus.",
