@@ -490,7 +490,7 @@
     "RestPersonalPowerRegen": "Personal Power restored.",
     "RestRolePointsRestored": "{name} points reset.",
     "Role": "Role",
-    "RoleDefaultFaction": "Automatic Faction",
+    "RoleDefaultFaction": "Default Faction",
     "RoleDrop": "Drop a Role here",
     "RoleFeatures": "Role Features",
     "RoleMultipleError": "Characters can only have one Role",
