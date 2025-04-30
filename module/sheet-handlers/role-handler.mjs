@@ -4,6 +4,7 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
+import { onFactionDrop } from "./faction-handler.mjs";
 
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 /**
@@ -296,6 +297,20 @@ export async function onRoleDrop(actor, role, dropFunc) {
   const factionList = getItemsOfType("faction", actor.items);
   if (factionList.length) {
     addFactionPerks(actor, role);
+  } else {
+    let defaultFaction = null;
+    for (const item of Object.values(role.system.items)) {
+      if (item.type == 'faction') {
+        defaultFaction = item;
+        break;
+      }
+    }
+
+    if (defaultFaction) {
+      const factionToCreate = await fromUuid(defaultFaction.uuid);
+      const newFaction = await Item.create(factionToCreate, { parent: actor });
+      onFactionDrop(actor, null, newFaction);
+    }
   }
 
   if (role.system.skillDie.isUsed && !role.system.skillDie.name) {
