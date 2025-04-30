@@ -254,6 +254,8 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['powerCost'] = droppedItem.system.powerCost;
       entry['resource'] = droppedItem.system.resource;
       return _addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == 'faction') {
+      return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
     break;
@@ -315,6 +317,11 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
     for (const [, item] of Object.entries(items)) {
       if (droppedItem.type == 'rolePoints' && item.type == 'rolePoints') {
         ui.notifications.error(game.i18n.localize('E20.RolePointsMultipleError'));
+        return;
+      }
+
+      if (droppedItem.type == 'faction' && item.type == 'faction') {
+        ui.notifications.error(game.i18n.localize('E20.FactionsMultipleError'));
         return;
       }
 
