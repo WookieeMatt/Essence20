@@ -302,6 +302,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
     for (const item of Object.values(role.system.items)) {
       if (item.type == 'faction') {
         defaultFaction = item;
+        break;
       }
     }
 
