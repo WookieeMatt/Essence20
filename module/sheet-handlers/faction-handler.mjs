@@ -20,9 +20,8 @@ export async function onFactionDrop(actor, dropFunc=null, newFaction=null) {
   if (dropFunc) {
     const factionDrop = await dropFunc();
     newFaction = factionDrop[0];
-  } else {
-
   }
+
   const perks = getItemsOfType('perk', Object.values(newFaction.system.items));
 
   for (const perk of perks) {

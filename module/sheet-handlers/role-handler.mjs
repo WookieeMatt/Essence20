@@ -300,16 +300,15 @@ export async function onRoleDrop(actor, role, dropFunc) {
   } else {
     let defaultFaction = null;
     for (const item of Object.values(role.system.items)) {
-      console.log(item)
       if (item.type == 'faction') {
         defaultFaction = item;
       }
     }
-    console.log(defaultFaction)
+
     if (defaultFaction) {
       const factionToCreate = await fromUuid(defaultFaction.uuid);
       const newFaction = await Item.create(factionToCreate, { parent: actor });
-      onFactionDrop(actor, null, newFaction)
+      onFactionDrop(actor, null, newFaction);
     }
   }
 
