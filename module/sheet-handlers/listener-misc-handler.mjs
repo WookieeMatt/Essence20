@@ -268,7 +268,9 @@ export async function handleActorSelector(actor, key, event) {
   performRoll(event, actor, childRoller);
 }
 
-export async function onEditMorphToughnessBonus(event, actorSheet){
+export async function onEditDefense(event, actorSheet){
+  const defense = event.currentTarget.dataset.defense;
+  console.log(defense)
   const actor = actorSheet.actor;
   const choices = {};
   let selected = null;
@@ -293,7 +295,7 @@ export async function onEditMorphToughnessBonus(event, actorSheet){
   if (Object.keys(choices).length == 0) {
     ui.notifications.warn(game.i18n.localize('E20.NoArmorChoices'));
   } else {
-    new DefenseModificationSelector(choices, actor, prompt, title, selected).render(true);
+    new DefenseModificationSelector(choices, actor, prompt, title, selected, defense).render(true);
   }
 
   return;

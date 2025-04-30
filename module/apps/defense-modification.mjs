@@ -1,13 +1,14 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class DefenseModificationSelector extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(choices, actor, prompt, title, selected) {
+  constructor(choices, actor, prompt, title, selected, defense) {
     super();
     this._choices = choices;
     this._actor = actor;
     this._prompt = prompt;
     this._title = title;
     this._selected = selected;
+    this._defense = defense
   }
 
   static DEFAULT_OPTIONS = {
@@ -42,6 +43,8 @@ export default class DefenseModificationSelector extends HandlebarsApplicationMi
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
+    context.defense = this._defense;
+    context.system = this._actor.system;
     context.choices = this._choices;
     context.selected = this._selected;
     context.buttons = [

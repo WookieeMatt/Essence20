@@ -9,21 +9,9 @@
         {{#each system.defenses as |defense|}}
         <th class="tg-td" style="border-color: {{system.color}};">
           <span>{{lookup @root.config.defenses defense.name}}
-            {{#if (eq defense.name "toughness")}}
-              {{#if @root.system.canSetToughnessBonus}}
-                <a class="morph-toughness-edit" data-action="bonusEdit" data-tooltip="E20.DefenseToughnessModifications">
-                  <i class="fas fa-gear"></i>
-                </a>
-              {{/if}}
-            {{/if}}
-          </span>
-          <span>
-            {{#if (eq ../bonusDisplayType 'input')}}
-            {{#with (lookup @root.system.defenses defense.name) as |defenseBonus|}}
-            +<input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense.name '.bonus'}}
-              value="{{defenseBonus.bonus}}" min="0" step="1" />
-            {{/with}}
-            {{/if}}
+            <a class="defense-edit" data-defense="{{defense.name}}" data-action="bonusEdit" data-tooltip="E20.DefenseToughnessModifications">
+              <i class="fas fa-gear"></i>
+            </a>
           </span>
         </th>
         {{/each}}

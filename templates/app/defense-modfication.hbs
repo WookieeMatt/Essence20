@@ -1,8 +1,17 @@
 <div class="flexcol" style="margin: 7px">
-  <div class="select flexrow">
-    <label>{{localize 'E20.DefenseModificationPrompt'}}</label>
-    <select class="item-field-inputs" name="armorTraining" id="armorTraining">
-      {{selectOptions choices selected=selected valueAttr="key" labelAttr="label"}}
-    </select>
+  <div class="flexrow">
+    <label>Something here</label>
+    <input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense '.bonus'}} value="{{concat 'system.defenses.' defense '.bonus'}}" min="0" step="1" />
   </div>
+  {{#if (eq defense.name "toughness")}}
+    {{#if @root.system.canSetToughnessBonus}}
+      <div class="select flexrow">
+        <label>{{localize 'E20.DefenseModificationPrompt'}}</label>
+        <select class="item-field-inputs" name="armorTraining" id="armorTraining">
+          {{selectOptions choices selected=selected valueAttr="key" labelAttr="label"}}
+        </select>
+      </div>
+    {{/if}}
+  {{/if}}
 </div>
+
