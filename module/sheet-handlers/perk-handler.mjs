@@ -4,7 +4,6 @@ import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
-const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 
 /**
  * Handle the dropping of a Perk onto an Actor
@@ -116,7 +115,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     await actor.update ({
       "system.canHaveZord": true,
     });
-  } else if (perk.uuid == MORPHIN_TIME_PERK_ID) {
+  } else if (perk.system.morphedToughnessBonus) {
     setMorphedToughnessBonus(actor);
   }
 
@@ -189,7 +188,7 @@ export async function onPerkDelete(actor, perk) {
     });
   }
 
-  if (perk.flags.core?.sourceId == MORPHIN_TIME_PERK_ID || perk._stats.compendiumSource == MORPHIN_TIME_PERK_ID ) {
+  if (perk.system.morphedToughnessBonus ) {
     await actor.update ({
       "system.canSetToughnessBonus": false,
       "system.defenses.toughness.morphed": 0,
