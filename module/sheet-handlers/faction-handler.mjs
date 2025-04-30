@@ -9,7 +9,7 @@ import { onPerkDrop } from "./perk-handler.mjs";
  * @returns
  */
 export async function onFactionDrop(actor, dropFunc=null, newFaction=null) {
-  if(!newFaction) {
+  if (!newFaction) {
     const hasFaction = getItemsOfType("faction", actor.items).length > 0;
     if (hasFaction) {
       ui.notifications.error(game.i18n.localize('E20.FactionMultipleError'));
