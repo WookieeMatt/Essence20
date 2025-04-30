@@ -6,6 +6,7 @@ import { onPerkDrop } from "./perk-handler.mjs";
  * Function for dropping a faction on to an actor.
  * @param {Actor} actor The actor that the faction is being dropped on.
  * @param {Function} dropFunc The drop function for the item being dropped.
+ * @param {Faction} newFaction The faction that was created by another function or the faction create in this function by the dropFunc.
  * @returns
  */
 export async function onFactionDrop(actor, dropFunc=null, newFaction=null) {
