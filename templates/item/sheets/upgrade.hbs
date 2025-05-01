@@ -51,7 +51,7 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
       {{!-- Armor Bonus --}}
-      {{#ifEquals item.system.type 'armor'}}
+      {{#if (eq item.system.type 'armor')}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonus'}}
         {{#*inline "item-field-inputs"}}
           {{numberInput system.armorBonus.value name="system.armorBonus.value" min=0 step=1}}
@@ -60,7 +60,7 @@
           </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifEquals}}
+      {{/if}}
 
       {{!-- Traits --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeTraits'}}
@@ -72,15 +72,15 @@
 
       {{#*inline "item-field-inputs"}}
         <div class="chip-section">
-        {{#ifEquals item.system.type 'armor'}}
+        {{#if (eq item.system.type 'armor')}}
           {{#each item.system.traits as |trait|}}
             <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
           {{/each}}
-        {{else ifEquals item.system.type 'weapon'}}
+        {{else if (eq item.system.type 'weapon')}}
           {{#each item.system.traits as |trait|}}
             <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
           {{/each}}
-        {{/ifEquals}}
+        {{/if}}
         </div>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}

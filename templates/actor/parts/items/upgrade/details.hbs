@@ -1,5 +1,5 @@
 {{#if item.system }}
-  {{#ifEquals system.type "drone"}}
+  {{#if (eq system.type "drone")}}
     <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
     <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.system.prerequisite}}}</div>
     <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.system.benefit}}}</div>
@@ -43,9 +43,9 @@
         {{/each}}
       </div>
     {{/if}}
-  {{/ifEquals}}
+  {{/if}}
 {{else}}
-  {{#ifEquals system.type "drone"}}
+  {{#if (eq system.type "drone")}}
     <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
     <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.prerequisite}}}</div>
     <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.benefit}}}</div>
@@ -89,5 +89,5 @@
         {{/each}}
       </div>
     {{/if}}
-  {{/ifEquals}}
+  {{/if}}
 {{/if}}

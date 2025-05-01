@@ -32,8 +32,8 @@
     {{!-- Features --}}
     {{> "systems/essence20/templates/actor/parts/items/feature/container.hbs"}}
     {{!-- Megaform Traits --}}
-    {{#ifEquals @root.actor.type 'zord'}}
+    {{#if (eq @root.actor.type 'zord')}}
     {{> "systems/essence20/templates/actor/parts/items/megaformTrait/container.hbs"}}
-    {{/ifEquals}}
+    {{/if}}
   </div>
 </div>
