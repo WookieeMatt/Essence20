@@ -1,7 +1,8 @@
 <div class="flexcol" style="margin: 7px">
   <div class="flexrow">
     <label>Something here</label>
-    <input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense '.bonus'}} value="{{concat 'system.defenses.' defense '.bonus'}}" min="0" step="1" />
+    {{log system}}
+    <input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense '.bonus'}} value="{{lookup system defenseString}}" min="0" step="1" />
   </div>
   {{#if (eq defense.name "toughness")}}
     {{#if @root.system.canSetToughnessBonus}}

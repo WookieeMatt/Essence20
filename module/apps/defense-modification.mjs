@@ -43,7 +43,9 @@ export default class DefenseModificationSelector extends HandlebarsApplicationMi
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
+    console.log(this._actor)
     context.defense = this._defense;
+    context.defenseString = `system.defenses.${this._defense}.bonus`;
     context.system = this._actor.system;
     context.choices = this._choices;
     context.selected = this._selected;
