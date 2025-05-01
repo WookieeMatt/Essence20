@@ -26,16 +26,16 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{#ifNotEquals system.version 'myLittlePony'}}
-        {{#ifEquals system.version 'powerRangers'}}
+      {{#if (ne system.version 'myLittlePony')}}
+        {{#if (eq system.version 'powerRangers')}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AdvancedRole'}}
           {{#*inline "item-field-inputs"}}
           <input type="checkbox" name="system.isAdvanced" {{checked system.isAdvanced}} />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifEquals}}
+        {{/if}}
 
-        {{#ifNotEquals system.version 'transformers'}}
+        {{#if (ne system.version 'transformers')}}
           {{!-- Armor Trained --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTrained'}}
           {{#*inline "item-field-edit"}}
@@ -70,9 +70,9 @@
             </div>
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifNotEquals}}
+        {{/if}}
 
-        {{#ifEquals system.version 'giJoe'}}
+        {{#if (eq system.version 'giJoe')}}
           {{!-- Armor Quailfication --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorQualified'}}
           {{#*inline "item-field-edit"}}
@@ -89,9 +89,9 @@
             </div>
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifEquals}}
+        {{/if}}
 
-        {{#ifNotEquals system.version 'powerRangers'}}
+        {{#if (ne system.version 'powerRangers')}}
           {{!-- Weapon Trained --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTrained'}}
           {{#*inline "item-field-edit"}}
@@ -108,9 +108,9 @@
             </div>
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifNotEquals}}
+        {{/if}}
 
-        {{#ifEquals system.version 'giJoe'}}
+        {{#if (eq system.version 'giJoe')}}
           {{!-- Weapon Qualified --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponQualified'}}
           {{#*inline "item-field-edit"}}
@@ -127,9 +127,9 @@
             </div>
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifEquals}}
+        {{/if}}
 
-        {{#ifEquals system.version 'powerRangers'}}
+        {{#if (eq system.version 'powerRangers')}}
           {{!-- Personal Power Starting Capacity --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerPersonalStartingCapacity'}}
           {{#*inline "item-field-inputs"}}
@@ -168,16 +168,16 @@
           </div>
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifEquals}}
-        {{#ifEquals system.version 'transformers'}}
+        {{/if}}
+        {{#if (eq system.version 'transformers')}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SpecialAdvancement'}}
           {{#*inline "item-field-inputs"}}
           <input type="checkbox" name="system.hasSpecialAdvancement" {{checked system.hasSpecialAdvancement}} />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifEquals}}
+        {{/if}}
 
-        {{#ifEquals system.hasSpecialAdvancement false}}
+        {{#if (eq system.hasSpecialAdvancement false)}}
           {{!-- Strength Essence Boosts --}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoostsStrength'}}
           {{#*inline "item-field-edit"}}
@@ -249,7 +249,7 @@
           </div>
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifEquals}}
+        {{/if}}
 
         {{!-- Starting Role Skills --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.StartingRoleSkills'}}
@@ -268,7 +268,7 @@
         </div>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifNotEquals}}
+    {{/if}}
 
     {{!-- Role has SkillDie --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieIsUsed'}}
@@ -277,7 +277,7 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{#ifEquals system.skillDie.isUsed true}}
+    {{#if system.skillDie.isUsed}}
       {{!-- Skill Die Name --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SkillDieName'}}
       {{#*inline "item-field-inputs"}}
@@ -319,9 +319,9 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{/ifEquals}}
+    {{/if}}
 
-    {{#ifEquals system.version 'powerRangers'}}
+    {{#if (eq system.version 'powerRangers')}}
       {{!-- Grid Power Progression --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.GridPowerProgression'}}
       {{#*inline "item-field-edit"}}
@@ -339,7 +339,7 @@
       </div>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifEquals}}
+    {{/if}}
 
     {{!-- Role Points --}}
     {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="rolePoints" label='E20.RolePoints' items=system.items type='rolePoints'}}
@@ -362,7 +362,7 @@
     {{/inline}}
     {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    {{#ifEquals system.version 'myLittlePony'}}
+    {{#if (eq system.version 'myLittlePony')}}
       {{!-- Health Adjustments --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.HealthAdjustment'}}
       {{#*inline "item-field-edit"}}
@@ -380,7 +380,7 @@
       </div>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifEquals}}
+    {{/if}}
 
       {{!-- Role Perks --}}
       {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="rolePerk" label='E20.RolePerks' items=system.items type='perk'}}

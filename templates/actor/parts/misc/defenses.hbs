@@ -9,12 +9,12 @@
         <th class="tg-td" style="border-color: {{system.color}};">
           <span>{{lookup @root.config.defenses defense.name}}</span>
           <span>
-            {{#ifEquals ../bonusDisplayType 'input'}}
+            {{#if (eq ../bonusDisplayType 'input')}}
             {{#with (lookup @root.system.defenses defense.name) as |defenseBonus|}}
             +<input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense.name '.bonus'}}
               value="{{defenseBonus.bonus}}" min="0" step="1" />
             {{/with}}
-            {{/ifEquals}}
+            {{/if}}
           </span>
         </th>
         {{/each}}

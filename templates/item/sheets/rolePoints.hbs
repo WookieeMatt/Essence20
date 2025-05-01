@@ -46,9 +46,9 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{#ifNotEquals system.bonus.type 'none'}}
+      {{#if (ne system.bonus.type 'none')}}
         {{!-- Defense Type Bonuses --}}
-        {{#ifEquals system.bonus.type "defenseBonus"}}
+        {{#if (eq system.bonus.type "defenseBonus")}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseCleverness'}}
           {{#*inline "item-field-inputs"}}
           <input type="checkbox" name="system.bonus.defenseBonus.cleverness" {{checked system.bonus.defenseBonus.cleverness}} />
@@ -72,7 +72,7 @@
           <input type="checkbox" name="system.bonus.defenseBonus.willpower" {{checked system.bonus.defenseBonus.willpower}} />
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/ifEquals}}
+        {{/if}}
 
         {{!-- Starting Value --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingValue'}}
@@ -111,7 +111,7 @@
         {{numberInput system.bonus.level20Value name="system.bonus.level20Value"}}
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifNotEquals}}
+      {{/if}}
 
       {{!-- Resource Section --}}
       <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsResource"}}</div>

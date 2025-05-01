@@ -20,13 +20,13 @@
     {{/inArray}}
   </div>
   <div class="flexcol">
-    {{#ifEquals actor.type 'transformer'}}
+    {{#if (eq actor.type 'transformer')}}
     {{else}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.CanTransform'}}
       {{#*inline "item-field-inputs"}}
         <input type="checkbox" id="canTransform" name="system.canTransform" {{checked system.canTransform}}/>
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    {{/ifEquals}}
+    {{/if}}
   </div>
 </form>

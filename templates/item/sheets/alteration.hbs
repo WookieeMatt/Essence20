@@ -37,7 +37,7 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{#ifEquals system.type 'essence'}}
+      {{#if (eq system.type 'essence')}}
         {{!-- Alteration Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationEssenceBonus'}}
         {{#*inline "item-field-edit"}}
@@ -71,9 +71,9 @@
           </div>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifEquals}}
+      {{/if}}
 
-      {{#ifEquals system.type 'movement'}}
+      {{#if (eq system.type 'movement')}}
         {{!-- Alteration Movement Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlterationBonusMovement'}}
         {{#*inline "item-field-inputs"}}
@@ -93,9 +93,9 @@
         </select>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifEquals}}
+      {{/if}}
 
-      {{#ifEquals system.type 'other'}}
+      {{#if (eq system.type 'other')}}
         {{!-- Alteration Non Essence Bonus --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.Bonus'}}
         {{#*inline "item-field-inputs"}}
@@ -109,7 +109,7 @@
         {{numberInput system.cost name="system.cost" min=0 step=1}}
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/ifEquals}}
+      {{/if}}
 
     </div>
 
