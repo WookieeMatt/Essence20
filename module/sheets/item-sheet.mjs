@@ -94,6 +94,9 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     // Delete Effects from Weapons
     html.find('.weaponEffect-delete').click(this._onObjectDelete.bind(this, ".weaponEffect"));
 
+    // Delete Faction from Role
+    html.find('.faction-delete').click(this._onObjectDelete.bind(this, ".faction"));
+
     // Delete Origin Upgrade from item
     html.find('.upgrade-delete').click(this._onObjectDelete.bind(this, ".upgrade"));
 
