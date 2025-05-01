@@ -44,6 +44,15 @@
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+        {{#if (eq system.version "powerRangers")}}
+          {{!-- Morphed Toughness Bonus --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkMorphedToughnessBonus'}}
+          {{#*inline "item-field-inputs"}}
+          <input type="checkbox" name="system.hasMorphedToughnessBonus" {{checked system.hasMorphedToughnessBonus}} />
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/if}}
+
         {{#if system.isRoleVariant}}
           {{> "systems/essence20/templates/item/parts/sub-perk-drop.hbs" className="perk" label='E20.SubPerks' items=system.items roles=roles type='perk'}}
         {{/if}}
