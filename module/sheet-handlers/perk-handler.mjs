@@ -115,7 +115,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     await actor.update ({
       "system.canHaveZord": true,
     });
-  } else if (perk.system.morphedToughnessBonus) {
+  } else if (perk.system.hasMorphedToughnessBonus) {
     setMorphedToughnessBonus(actor);
   }
 
@@ -188,7 +188,7 @@ export async function onPerkDelete(actor, perk) {
     });
   }
 
-  if (perk.system.morphedToughnessBonus ) {
+  if (perk.system.hasMorphedToughnessBonus ) {
     await actor.update ({
       "system.canSetToughnessBonus": false,
       "system.defenses.toughness.morphed": 0,
