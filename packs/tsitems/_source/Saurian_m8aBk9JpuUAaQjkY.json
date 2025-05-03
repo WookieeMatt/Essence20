@@ -1,0 +1,73 @@
+{
+  "folder": "Wp5ti6xvfOvQ2g8f",
+  "name": "Saurian",
+  "type": "origin",
+  "_id": "m8aBk9JpuUAaQjkY",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 43
+    },
+    "items": {
+      "30dd": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.HdGY7qG1aJE69N2P",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Saurian (Common)",
+        "type": "altMode"
+      },
+      "8dba": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.fO2tbcFJOmvlxOXh",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Saurian (Large)",
+        "type": "altMode"
+      },
+      "eccf": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.hsY5k4vCyBw1Xs8W",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Saurian (Long)",
+        "type": "altMode"
+      },
+      "829e": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.zey1cJ2IuWlTsjN2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vicious or Venom",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "speed"
+    ],
+    "languages": "",
+    "skills": [
+      "athletics",
+      "acrobatics"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "sort": 1100000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746242585690,
+    "modifiedTime": 1746243258024,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!m8aBk9JpuUAaQjkY"
+}

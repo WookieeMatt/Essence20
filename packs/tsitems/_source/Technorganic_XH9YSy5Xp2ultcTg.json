@@ -1,0 +1,59 @@
+{
+  "folder": "gE6lEc3pTjUOLlPQ",
+  "name": "Technorganic",
+  "type": "perk",
+  "_id": "XH9YSy5Xp2ultcTg",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 35
+    },
+    "items": {
+      "ea40": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.aemIg2WSa3gsYMMO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Telepathy",
+        "type": "perk",
+        "role": null
+      },
+      "935b": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.SwXglwZwj64m3zFF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Therapeutic Nanotechnology",
+        "type": "perk",
+        "role": null
+      }
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "perks",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence",
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746229128415,
+    "modifiedTime": 1746229254650,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!XH9YSy5Xp2ultcTg"
+}

@@ -1,0 +1,73 @@
+{
+  "folder": "YZLETJckN3jHJstL",
+  "name": "Hunter's Prowess",
+  "type": "perk",
+  "_id": "hUB8IRdRucRToty2",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 42
+    },
+    "items": {
+      "caa9": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.y7L0G2YpKN2de71A",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brute",
+        "type": "perk",
+        "role": null
+      },
+      "f529": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.c6R1pi799qETp6Sl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Burrower",
+        "type": "perk",
+        "role": null
+      },
+      "356d": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.L5P54Ismw81Lhrbe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sprinter",
+        "type": "perk",
+        "role": null
+      },
+      "81e3": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.5w6QY4Q2omCJmOTf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stalker",
+        "type": "perk",
+        "role": null
+      }
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "perks",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin",
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 1400000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746240550222,
+    "modifiedTime": 1746242979240,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!hUB8IRdRucRToty2"
+}

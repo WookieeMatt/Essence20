@@ -1,0 +1,21 @@
+{
+  "type": "Item",
+  "folder": "aYYAssV8hwPsGYrX",
+  "name": "Shields",
+  "color": null,
+  "sorting": "a",
+  "_id": "k4i5sMCmVAuFN3bK",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!k4i5sMCmVAuFN3bK"
+}

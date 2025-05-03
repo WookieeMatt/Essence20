@@ -1,0 +1,67 @@
+{
+  "folder": "Wp5ti6xvfOvQ2g8f",
+  "name": "Primate",
+  "type": "origin",
+  "_id": "8ITqA9MS4fRHLT1r",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 41
+    },
+    "items": {
+      "969e": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.OdHMLgny9aqCevAc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Prehensile Feet",
+        "type": "perk"
+      },
+      "cbfc": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.Kj8DtQoNrUf2dmI5",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Primate (Common)",
+        "type": "altMode"
+      },
+      "b88a": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.yeeGDdU2LDKyNhBd",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Primate (Large)",
+        "type": "altMode"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 20,
+    "essences": [
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "survival",
+      "persuasion"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746242348989,
+    "modifiedTime": 1746243258024,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!8ITqA9MS4fRHLT1r"
+}

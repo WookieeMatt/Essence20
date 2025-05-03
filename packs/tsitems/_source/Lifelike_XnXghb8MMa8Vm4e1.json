@@ -1,0 +1,46 @@
+{
+  "name": "Lifelike",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 45
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin",
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746242979215,
+    "modifiedTime": 1746243373338,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "folder": "YZLETJckN3jHJstL",
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "_id": "XnXghb8MMa8Vm4e1",
+  "sort": 200000,
+  "_key": "!items!XnXghb8MMa8Vm4e1"
+}

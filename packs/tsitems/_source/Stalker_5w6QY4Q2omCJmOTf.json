@@ -1,0 +1,89 @@
+{
+  "folder": "YZLETJckN3jHJstL",
+  "name": "Stalker",
+  "type": "perk",
+  "_id": "5w6QY4Q2omCJmOTf",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 42
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin",
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "name": "Stalker",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.technorganic_secrets.Item.5w6QY4Q2omCJmOTf",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "jvjGmjBHgYHnFwqu",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.infiltration.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.342",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1746241638443,
+        "modifiedTime": 1746241675474,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!5w6QY4Q2omCJmOTf.jvjGmjBHgYHnFwqu"
+    }
+  ],
+  "sort": 100000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746241618023,
+    "modifiedTime": 1746242979240,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!5w6QY4Q2omCJmOTf"
+}

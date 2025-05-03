@@ -1,0 +1,128 @@
+{
+  "folder": "AUUJvPPWOpWKtwA1",
+  "name": "Lightning Projector",
+  "type": "weapon",
+  "_id": "bnJ7OwEcIfQxH2Rv",
+  "img": "systems/essence20/assets/icons/weapons/lightning-projector.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 48
+    },
+    "items": {
+      "b78e": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.zoqWcKlfaQYblvcE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lightning Projector Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "technology",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 60,
+          "value": 20
+        },
+        "shiftDown": 1
+      },
+      "196f": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.8FvU7lzXmOnsBNij",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lightning Projector Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "technology",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 60,
+          "value": 20
+        },
+        "shiftDown": 1
+      },
+      "938e": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.8285B4gtLSHKi7TZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Lightning Projector Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "technology",
+          "style": "energy"
+        },
+        "damageValue": 1,
+        "damageType": "element",
+        "numHands": 0,
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 60,
+          "value": 20
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "poisonApplication": {
+      "contact": false,
+      "ingested": false,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "",
+      "skill": "technology",
+      "shift": "d4"
+    },
+    "traits": [
+      "antiTank",
+      "armorPiercing",
+      "computerized",
+      "electric",
+      "electromagnetic"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746246484119,
+    "modifiedTime": 1746248664802,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!bnJ7OwEcIfQxH2Rv"
+}

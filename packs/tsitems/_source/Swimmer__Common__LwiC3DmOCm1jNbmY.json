@@ -1,0 +1,43 @@
+{
+  "folder": "zBSg0VF3XHJzKerC",
+  "name": "Swimmer (Common)",
+  "type": "altMode",
+  "_id": "LwiC3DmOCm1jNbmY",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 44
+    },
+    "altModeCrew": 0,
+    "altModeFirepoints": 0,
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 50,
+      "ground": 15
+    },
+    "altModesize": "common",
+    "tokenImage": ""
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746243575871,
+    "modifiedTime": 1746243596568,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!LwiC3DmOCm1jNbmY"
+}
