@@ -1,0 +1,62 @@
+{
+  "folder": "ezKhIOPRsFXbnGl4",
+  "name": "Transmetal II",
+  "type": "influence",
+  "_id": "4HECqACQoTI5ikVH",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 34
+    },
+    "items": {
+      "e14f": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.JdKtZxmCIWqZ2s0T",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Transmetal II",
+        "type": "perk"
+      },
+      "d722": {
+        "uuid": "Compendium.essence20.tf_crb.Item.V5GfafYii5GSMtzr",
+        "img": "icons/svg/hazard.svg",
+        "name": "Impulsive",
+        "type": "hangUp"
+      },
+      "85f1": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aT1jR044JiN8tLQi",
+        "img": "icons/svg/hazard.svg",
+        "name": "Violent",
+        "type": "hangUp"
+      },
+      "d457": {
+        "uuid": "Compendium.essence20.tf_crb.Item.XLDVNcC9B4hnSppZ",
+        "img": "icons/svg/hazard.svg",
+        "name": "Whimsical",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746229043693,
+    "modifiedTime": 1746229082478,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!4HECqACQoTI5ikVH"
+}

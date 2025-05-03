@@ -1,0 +1,66 @@
+{
+  "folder": "Wp5ti6xvfOvQ2g8f",
+  "name": "Behemoth",
+  "type": "origin",
+  "_id": "ffU4K3ymlytTXbkJ",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 37
+    },
+    "items": {
+      "90e2": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.hF2rJtS3SzcjqnLr",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Behemoth (Huge)",
+        "type": "altMode"
+      },
+      "f83d": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.qZQyZDntWJdNeDQy",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Behemoth (Large)",
+        "type": "altMode"
+      },
+      "b034": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.LHdJRPNX1dQpICfe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Smash!",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 40,
+    "essences": [
+      "strength"
+    ],
+    "languages": "",
+    "skills": [
+      "brawn",
+      "might"
+    ],
+    "startingHealth": 4
+  },
+  "effects": [],
+  "sort": 1000000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746231969802,
+    "modifiedTime": 1746243258024,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!ffU4K3ymlytTXbkJ"
+}

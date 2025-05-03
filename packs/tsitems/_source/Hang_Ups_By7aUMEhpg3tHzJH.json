@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Hang-Ups",
+  "color": null,
+  "sorting": "a",
+  "_id": "By7aUMEhpg3tHzJH",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746227606173,
+    "modifiedTime": 1746227606173,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!folders!By7aUMEhpg3tHzJH"
+}

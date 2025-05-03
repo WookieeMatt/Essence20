@@ -178,6 +178,15 @@
       "flags": {}
     },
     {
+      "name": "technorganic_secrets",
+      "label": "Technorganic Secrets",
+      "system": "essence20",
+      "path": "packs/tsitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "through_the_shattered_grid",
       "label": "Through The Shattered Grid",
       "system": "essence20",
@@ -236,7 +245,8 @@
       "packs": [
         "tf_crb",
         "decepticon_directive",
-        "enigma_of_combination"
+        "enigma_of_combination",
+        "technorganic_secrets"
       ]
     }
   ],

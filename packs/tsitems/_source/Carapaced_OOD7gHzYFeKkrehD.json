@@ -1,0 +1,66 @@
+{
+  "folder": "Wp5ti6xvfOvQ2g8f",
+  "name": "Carapaced",
+  "type": "origin",
+  "_id": "OOD7gHzYFeKkrehD",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 37
+    },
+    "items": {
+      "0fef": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.KihkWHZ1lwLfcwk0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Knock, Knock!",
+        "type": "perk"
+      },
+      "6d1b": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.aTevGfLML1dlbErs",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Carapaced (Common)",
+        "type": "altMode"
+      },
+      "f2e1": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.2mSP6mVx0axvOlXf",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Carapaced (Large)",
+        "type": "altMode"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength"
+    ],
+    "languages": "",
+    "skills": [
+      "conditioning",
+      "brawn"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "sort": 700000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746238159971,
+    "modifiedTime": 1746243258024,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!OOD7gHzYFeKkrehD"
+}

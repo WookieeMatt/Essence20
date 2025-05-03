@@ -1,0 +1,21 @@
+{
+  "type": "Item",
+  "folder": "aYYAssV8hwPsGYrX",
+  "name": "Weapons",
+  "color": null,
+  "sorting": "a",
+  "_id": "AUUJvPPWOpWKtwA1",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!AUUJvPPWOpWKtwA1"
+}
