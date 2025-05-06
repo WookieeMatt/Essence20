@@ -48,6 +48,7 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
     context.choices = this._choices;
+    context.prompt = this._prompt;
     context.buttons = [
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
