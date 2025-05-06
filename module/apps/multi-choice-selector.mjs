@@ -59,7 +59,7 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
     for (const [key, selection] of Object.entries(formData.object)) {
       if (selection == true) {
         selectionAmount += 1;
-        selectionUuids.push(this._perk.system.items[key].uuid)
+        selectionUuids.push(this._perk.system.items[key].uuid);
       }
     }
 
