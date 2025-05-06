@@ -1,6 +1,6 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrWithChoices, makeStrArrayWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -15,11 +15,14 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       canActivate: makeBool(false),
       choice: makeStr(null),
       choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceTypes), 'none'),
+      choiceQuantity: makeInt(1),
       isRoleVariant: makeBool(false),
       hasMorphedToughnessBonus: makeBool(false),
       prerequisite: makeStr(null),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
+      value: makeInt(0),
+      valueLevel: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
     };
   }

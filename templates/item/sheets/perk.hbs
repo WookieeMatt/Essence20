@@ -88,6 +88,13 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
         {{#if (eq system.choiceType 'perks')}}
+
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceQuantity'}}
+          {{#*inline "item-field-inputs"}}
+            <input type="number" name="system.choiceQuantity" value="{{system.choiceQuantity}}"  min="0" step="1"/>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
           {{!-- Perks Choices --}}
           {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="perk" label='E20.PerkPlural' items=@root.system.items type='perk'}}
         {{/if}}

@@ -1,0 +1,27 @@
+<div>
+  <ol class="dialog-options">
+    {{#each choices as |choice key|}}
+    <li>
+      <div class="flexrow">
+        <div class="flexcol">
+          <label class="checkbox">
+            <input type="checkbox" id="{{key}}" name="{{key}}" value="{{key}}" data-dtype="Boolean" {{checked choice.chosen}}>
+            {{localize choice.label}}
+          </label>
+        </div>
+        <div class="flexcol">
+          {{#if choice.uuid}}
+            <a
+            {{!--item info class here--}}
+              data-action="view"
+              data-value="{{choice.value}}"
+              data-uuid="{{choice.uuid}}"
+              data-tooltip="{{choice.label}}"
+            ><i class="fa-solid fa-fw fa-info-circle"></i></a>
+          {{/if}}
+        </div>
+      </div>
+    </li>
+    {{/each}}
+  </ol>
+</div>

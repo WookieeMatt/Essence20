@@ -1,4 +1,5 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
+import MultiChoiceSelector from "../apps/multi-choice-selector.mjs";
 import { E20 } from "../helpers/config.mjs";
 import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
@@ -97,6 +98,8 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   if (newPerk?.system.isRoleVariant) {
     setRoleVatiantPerks(newPerk, currentRole, actor);
   }
+
+  return newPerk;
 }
 
 /**
@@ -153,17 +156,31 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     } else if (perk.system.choiceType == 'perks') {
       prompt = game.i18n.localize("E20.SelectPerk");
       for (const [key, item] of Object.entries(perk.system.items)) {
-        choices[key] = {
-          chosen: false,
-          value: key,
-          label: item.name,
-          uuid: item.uuid,
-          type: perk.system.choiceType,
-        };
+        let taken = false;
+        for (const attachedItem of actor.items) {
+          if (item.uuid == attachedItem._stats.compendiumSource ) {
+            taken = true;
+            break;
+          }
+        }
+
+        if (!taken) {
+          choices[key] = {
+            chosen: false,
+            value: key,
+            label: item.name,
+            uuid: item.uuid,
+            type: perk.system.choiceType,
+          };
+        }
       }
     }
 
-    await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
+    if (perk.system.choiceQuantity > 1 && perk.system.choiceType == "perks") {
+      await new MultiChoiceSelector (choices, actor, prompt, title, perk, dropFunc, parentPerk).render(true);
+    } else {
+      await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
+    }
 
   } else {
     return await onPerkDrop(actor, perk, dropFunc, null, null);
