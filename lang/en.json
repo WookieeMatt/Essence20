@@ -548,6 +548,7 @@
     "SelectInfluenceHangUp": "Multiple Influence Hang-Ups",
     "SelectionLimitError": "This {type} has already been added the maximum ({limit}) number of times.",
     "SelectionsRequiredError": "You must select ({selections}) options to continue.",
+    "SelectMultiplePerks": "Select {selections} Perks.",
     "SelectOriginAltMode": "Origin Alt Modes",
     "SelectOriginEssence": "Origin Essences",
     "SelectOriginSkill": "Origin Skills",

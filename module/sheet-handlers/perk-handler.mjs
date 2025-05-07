@@ -154,7 +154,16 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
         }
       }
     } else if (perk.system.choiceType == 'perks') {
-      prompt = game.i18n.localize("E20.SelectPerk");
+      if (perk.system.choiceQuantity > 1) {
+        prompt = game.i18n.format(
+          'E20.SelectMultiplePerks',
+          {
+            selections: perk.system.choiceQuantity,
+          },
+        );
+      } else {
+        prompt = game.i18n.localize("E20.SelectPerk");
+      }
       for (const [key, item] of Object.entries(perk.system.items)) {
         let taken = false;
         for (const attachedItem of actor.items) {

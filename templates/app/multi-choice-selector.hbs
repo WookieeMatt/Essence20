@@ -1,4 +1,5 @@
 <div>
+  <h3>{{localize prompt}}</h3>
   <ol class="dialog-options">
     {{#each choices as |choice key|}}
     <li>
@@ -9,7 +10,7 @@
             {{localize choice.label}}
           </label>
         </div>
-        <div class="flexcol">
+        <div class="align-right">
           {{#if choice.uuid}}
             <a
             {{!--item info class here--}}
@@ -24,4 +25,5 @@
     </li>
     {{/each}}
   </ol>
+  <p></p>
 </div>
