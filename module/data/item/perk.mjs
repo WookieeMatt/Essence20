@@ -17,7 +17,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceTypes), 'none'),
       isRoleVariant: makeBool(false),
       hasMorphedToughnessBonus: makeBool(false),
-     numChoices : makeInt(1),
+      numChoices : makeInt(1),
       prerequisite: makeStr(null),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
