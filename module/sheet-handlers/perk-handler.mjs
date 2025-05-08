@@ -154,11 +154,11 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
         }
       }
     } else if (perk.system.choiceType == 'perks') {
-      if (perk.system.choiceQuantity > 1) {
+      if (perk.system.numChoices > 1) {
         prompt = game.i18n.format(
           'E20.SelectMultiplePerks',
           {
-            selections: perk.system.choiceQuantity,
+            selections: perk.system.numChoices,
           },
         );
       } else {
@@ -168,7 +168,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
       for (const [key, item] of Object.entries(perk.system.items)) {
         let taken = false;
         for (const attachedItem of actor.items) {
-          if (item.uuid == attachedItem._stats.compendiumSource ) {
+          if (item.uuid == attachedItem._stats.compendiumSource) {
             taken = true;
             break;
           }
@@ -186,10 +186,10 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
       }
     }
 
-    if (perk.system.choiceQuantity > 1 && perk.system.choiceType == "perks") {
-      await new MultiChoiceSelector (choices, actor, prompt, title, perk, dropFunc, parentPerk).render(true);
+    if (perk.system.numChoices > 1 && perk.system.choiceType == "perks") {
+      await new MultiChoiceSelector(choices, actor, prompt, title, perk, dropFunc, parentPerk).render(true);
     } else {
-      await new ChoicesSelector (choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
+      await new ChoicesSelector(choices, actor, prompt, title, perk, null, dropFunc, null, parentPerk, null).render(true);
     }
 
   } else {

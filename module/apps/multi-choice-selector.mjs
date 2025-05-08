@@ -54,22 +54,24 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
     ];
     return context;
   }
+
   static async myFormHandler(event, form, formData) {
-    let selectionAmount = 0;
+    let numSelected = 0;
     const selectionUuids = [];
+
     for (const [key, selection] of Object.entries(formData.object)) {
       if (selection == true) {
-        selectionAmount += 1;
+        numSelected += 1;
         selectionUuids.push(this._perk.system.items[key].uuid);
       }
     }
 
-    if (selectionAmount != this._perk.system.choiceQuantity) {
+    if (numSelected != this._perk.system.numChoices) {
       throw new Error(
         game.i18n.format(
           'E20.SelectionsRequiredError',
           {
-            selections: this._perk.system.choiceQuantity,
+            selections: this._perk.system.numChoices,
           },
         ),
       );
@@ -81,7 +83,6 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
       const createdPerk = await fromUuid(uuid);
       onPerkDrop(this._actor, createdPerk, null, null, null, newPerk);
     }
-
   }
 
   static async view(event, selection) {

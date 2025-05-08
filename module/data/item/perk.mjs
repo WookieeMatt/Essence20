@@ -15,14 +15,14 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       canActivate: makeBool(false),
       choice: makeStr(null),
       choiceType: makeStrWithChoices(Object.keys(E20.perkChoiceTypes), 'none'),
-      choiceQuantity: makeInt(1),
       isRoleVariant: makeBool(false),
       hasMorphedToughnessBonus: makeBool(false),
+     numChoices : makeInt(1),
       prerequisite: makeStr(null),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
       value: makeInt(0),
-      valueLevel: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
+      valueLevels: makeStrArrayWithChoices(Object.keys(E20.actorLevels)),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
     };
   }
