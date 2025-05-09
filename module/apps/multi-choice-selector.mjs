@@ -57,12 +57,12 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
 
   static async myFormHandler(event, form, formData) {
     let numSelected = 0;
-    const selectionUuids = [];
+    const selectedUuids = [];
 
-    for (const [key, selection] of Object.entries(formData.object)) {
-      if (selection == true) {
+    for (const [key, isSelected] of Object.entries(formData.object)) {
+      if (isSelected) {
         numSelected += 1;
-        selectionUuids.push(this._perk.system.items[key].uuid);
+        selectedUuids.push(this._perk.system.items[key].uuid);
       }
     }
 
