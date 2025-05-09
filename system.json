@@ -23,6 +23,108 @@
     "distance": 5,
     "units": "ft"
   },
+  "documentTypes": {
+    "Actor": {
+      "playerCharacter": {
+        "htmlFields": ["notes"]
+      },
+      "megaform": {
+        "htmlFields": ["notes"]
+      },
+      "npc": {
+        "htmlFields": ["notes"]
+      },
+      "vehicle": {
+        "htmlFields": ["notes"]
+      },
+      "zord": {
+        "htmlFields": ["notes"]
+      },
+      "companion": {
+        "htmlFields": ["notes"]
+      }
+    },
+    "Item": {
+      "alteration": {
+        "htmlFields": ["notes"]
+      },
+      "altMode": {
+        "htmlFields": ["notes"]
+      },
+      "armor": {
+        "htmlFields": ["notes"]
+      },
+      "bond": {
+        "htmlFields": ["notes"]
+      },
+      "classFeature": {
+        "htmlFields": ["notes"]
+      },
+      "equipmentPackage": {
+        "htmlFields": ["notes"]
+      },
+      "faction": {
+        "htmlFields": ["notes"]
+      },
+      "feature": {
+        "htmlFields": ["notes"]
+      },
+      "focus": {
+        "htmlFields": ["notes"]
+      },
+      "gear": {
+        "htmlFields": ["notes"]
+      },
+      "hangUp": {
+        "htmlFields": ["notes"]
+      },
+      "influence": {
+        "htmlFields": ["notes"]
+      },
+      "magicBauble": {
+        "htmlFields": ["notes"]
+      },
+      "megaformTrait": {
+        "htmlFields": ["notes"]
+      },
+      "origin": {
+        "htmlFields": ["notes"]
+      },
+      "perk": {
+        "htmlFields": ["notes"]
+      },
+      "power": {
+        "htmlFields": ["notes"]
+      },
+      "role": {
+        "htmlFields": ["notes"]
+      },
+      "rolePoints": {
+        "htmlFields": ["notes"]
+      },
+      "shield": {
+        "htmlFields": ["notes"]
+      },
+      "specialization": {
+        "htmlFields": ["notes"]
+      },
+      "spell": {
+        "htmlFields": ["notes"]
+      },
+      "trait": {
+        "htmlFields": ["notes"]
+      },
+      "upgrade": {
+        "htmlFields": ["notes"]
+      },
+      "weapon": {
+        "htmlFields": ["notes"]
+      },
+      "weaponEffect": {
+        "htmlFields": ["notes"]
+      }
+    }
+  },
   "packs": [
     {
       "name": "across_the_stars",
