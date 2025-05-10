@@ -79,7 +79,7 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
 
     const newPerk = await onPerkDrop(this._actor, this._perk, this._dropFunc, null, null, this._parentPerk);
 
-    for (const uuid of selectionUuids) {
+    for (const uuid of selectedUuids) {
       const createdPerk = await fromUuid(uuid);
       onPerkDrop(this._actor, createdPerk, null, null, null, newPerk);
     }
