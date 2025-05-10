@@ -158,7 +158,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
         prompt = game.i18n.format(
           'E20.SelectMultiplePerks',
           {
-            selections: perk.system.numChoices,
+            numChoices: perk.system.numChoices,
           },
         );
       } else {
