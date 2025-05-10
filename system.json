@@ -23,6 +23,108 @@
     "distance": 5,
     "units": "ft"
   },
+  "documentTypes": {
+    "Actor": {
+      "playerCharacter": {
+        "htmlFields": ["notes"]
+      },
+      "megaform": {
+        "htmlFields": ["notes"]
+      },
+      "npc": {
+        "htmlFields": ["notes"]
+      },
+      "vehicle": {
+        "htmlFields": ["notes"]
+      },
+      "zord": {
+        "htmlFields": ["notes"]
+      },
+      "companion": {
+        "htmlFields": ["notes"]
+      }
+    },
+    "Item": {
+      "alteration": {
+        "htmlFields": ["description"]
+      },
+      "altMode": {
+        "htmlFields": ["description"]
+      },
+      "armor": {
+        "htmlFields": ["description"]
+      },
+      "bond": {
+        "htmlFields": ["description"]
+      },
+      "classFeature": {
+        "htmlFields": ["description"]
+      },
+      "equipmentPackage": {
+        "htmlFields": ["description"]
+      },
+      "faction": {
+        "htmlFields": ["description"]
+      },
+      "feature": {
+        "htmlFields": ["description"]
+      },
+      "focus": {
+        "htmlFields": ["description"]
+      },
+      "gear": {
+        "htmlFields": ["description"]
+      },
+      "hangUp": {
+        "htmlFields": ["description"]
+      },
+      "influence": {
+        "htmlFields": ["description"]
+      },
+      "magicBauble": {
+        "htmlFields": ["description"]
+      },
+      "megaformTrait": {
+        "htmlFields": ["description"]
+      },
+      "origin": {
+        "htmlFields": ["description"]
+      },
+      "perk": {
+        "htmlFields": ["description"]
+      },
+      "power": {
+        "htmlFields": ["description"]
+      },
+      "role": {
+        "htmlFields": ["description"]
+      },
+      "rolePoints": {
+        "htmlFields": ["description"]
+      },
+      "shield": {
+        "htmlFields": ["description"]
+      },
+      "specialization": {
+        "htmlFields": ["description"]
+      },
+      "spell": {
+        "htmlFields": ["description"]
+      },
+      "trait": {
+        "htmlFields": ["description"]
+      },
+      "upgrade": {
+        "htmlFields": ["description"]
+      },
+      "weapon": {
+        "htmlFields": ["description"]
+      },
+      "weaponEffect": {
+        "htmlFields": ["description"]
+      }
+    }
+  },
   "packs": [
     {
       "name": "across_the_stars",
