@@ -71,7 +71,7 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
         game.i18n.format(
           'E20.SelectionsRequiredError',
           {
-            selections: this._perk.system.numChoices,
+            numChoices: this._perk.system.numChoices,
           },
         ),
       );
