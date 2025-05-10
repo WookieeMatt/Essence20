@@ -46,82 +46,82 @@
     },
     "Item": {
       "alteration": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "altMode": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "armor": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "bond": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "classFeature": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "equipmentPackage": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "faction": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "feature": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "focus": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "gear": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "hangUp": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "influence": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "magicBauble": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "megaformTrait": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "origin": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "perk": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "power": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "role": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "rolePoints": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "shield": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "specialization": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "spell": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "trait": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "upgrade": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "weapon": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       },
       "weaponEffect": {
-        "htmlFields": ["notes"]
+        "htmlFields": ["description"]
       }
     }
   },
