@@ -329,6 +329,11 @@ body.game .window-app {
   box-shadow: 4px 4px 0 black;
 }
 
+.chat-message.emote {
+  background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
+  border: 4px solid #b5b1b1;
+}
+
 .grid,
 .grid-2col {
   display: grid;
