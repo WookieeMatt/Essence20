@@ -51,14 +51,16 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
-      if (perk.system.selectionLimit == timesTaken) {
+      if (perk.system.selectionLimit == timesTaken || (perk.system.selectionLimit == actorItem.system.advances.currentValue/actorItem.system.advances.increaseValue)) {
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
         return;
-      } else if (perk.system.advances.canAdvance) {
+      } 
+      if (perk.system.advances.canAdvance) {
         const newValue = actorItem.system.advances.currentValue + actorItem.system.advances.increaseValue;
-        actorItem.update({
+        await actorItem.update({
           "system.advances.currentValue": newValue,
         });
+        setPerkAdvancesName (actorItem, perk.name)
         return;
       }
     }
@@ -100,7 +102,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     const chosenPerk = perk.system.items[selection];
     const itemToCreate = await fromUuid(chosenPerk.uuid);
 
-    if (itemToCreate.system.choiceType != 'none') {
+    if (itemToCreate.system.hasChoice) {
       setPerkValues(actor, itemToCreate, newPerk, null);
     } else {
       const createdPerk = await Item.create(itemToCreate, { parent: actor });
@@ -116,9 +118,11 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     setRoleVatiantPerks(newPerk, currentRole, actor);
   }
   if (newPerk.system.advances.canAdvance) {
-    newPerk.update({
+    await newPerk.update({
       "system.advances.currentValue": newPerk.system.advances.baseValue,
     });
+    const originalName = newPerk.name;
+    setPerkAdvancesName(newPerk, originalName);
   }
   return newPerk;
 }
@@ -143,7 +147,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     setMorphedToughnessBonus(actor);
   }
 
-  if (perk.system.choiceType != 'none') {
+  if (perk.system.hasChoice) {
     let choices = {};
     let prompt = null;
     let title = game.i18n.localize("E20.PerkSelect");
@@ -330,3 +334,19 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
   }
 }
 
+function setPerkAdvancesName(perk, originalName) {
+  let localizedString = null;
+  if (perk.system.advances.type == 'area') {
+    localizedString = perk.system.advances.currentValue + "' x " + perk.system.advances.currentValue + "'";
+  } else if (perk.system.advances.type == 'die') {
+    localizedString = '1d' + perk.system.advances.currentValue;
+  } else if (perk.system.advances.type == 'seconds') {
+    localizedString = perk.system.advances.currentValue + "s";
+  } else if (perk.system.advances.type == 'upshift') {
+    localizedString = '\u2191' + perk.system.advances.currentValue;
+  }
+  const newName = `${originalName} (${localizedString})`;
+  perk.update({
+    "name": newName,
+  }); 
+}
