@@ -79,24 +79,67 @@
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceType'}}
+        {{!-- Can Advance --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkCanAdvance'}}
         {{#*inline "item-field-inputs"}}
-        <select name="system.choiceType">
-          {{selectOptions config.perkChoiceTypes selected=system.choiceType}}
-        </select>
+        <input type="checkbox" name="system.advances.canAdvance" {{checked system.advances.canAdvance}} />
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-        {{#if (eq system.choiceType 'perks')}}
-          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceQuantity'}}
+        {{!-- Has Choice --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkHasChoice'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="checkbox" name="system.hasChoice" {{checked system.hasChoice}} />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#if system.advances.canAdvance}}
+          {{!-- Advance Base Value --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceBaseValue'}}
           {{#*inline "item-field-inputs"}}
-            <input type="number" name="system.numChoices" value="{{system.numChoices}}"  min="0" step="1"/>
+            <input type="number" name="system.advances.baseValue" value="{{system.advances.baseValue}}"  min="0" step="1"/>
           {{/inline}}
           {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-          {{!-- Perks Choices --}}
-          {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="perk" label='E20.PerkPlural' items=@root.system.items type='perk'}}
+          {{!-- Advance Increase Level --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceIncreaseValue'}}
+          {{#*inline "item-field-inputs"}}
+            <input type="number" name="system.advances.increaseValue" value="{{system.advances.increaseValue}}"  min="0" step="1"/>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+          {{!-- Advance Type --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceType'}}
+          {{#*inline "item-field-inputs"}}
+            <select name="system.advances.type">
+              {{selectOptions config.perkAdvanceTypes selected=system.advances.type}}
+            </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
         {{/if}}
+
+        {{#if system.hasChoice}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceType'}}
+          {{#*inline "item-field-inputs"}}
+          <select name="system.choiceType">
+            {{selectOptions config.perkChoiceTypes selected=system.choiceType}}
+          </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+          {{#if (eq system.choiceType 'perks')}}
+            {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceQuantity'}}
+            {{#*inline "item-field-inputs"}}
+              <input type="number" name="system.numChoices" value="{{system.numChoices}}"  min="0" step="1"/>
+            {{/inline}}
+            {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+            {{!-- Perks Choices --}}
+            {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="perk" label='E20.PerkPlural' items=@root.system.items type='perk'}}
+          {{/if}}
+
+        {{/if}}
+
       {{/if}}
     </div>
 

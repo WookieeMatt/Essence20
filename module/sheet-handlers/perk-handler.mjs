@@ -33,6 +33,12 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     actor.update({
       [updateString]: true,
     });
+  } else if (selectionType == 'movement') {
+    updateString = `system.movement.${selection}.bonus`;
+    const updateValue = actor.system.movement[selection].bonus + 10;
+    actor.update({
+      [updateString]: updateValue,
+    });
   }
 
   let timesTaken = 0;
@@ -47,6 +53,12 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
       timesTaken++;
       if (perk.system.selectionLimit == timesTaken) {
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
+        return;
+      } else if (perk.system.advances.canAdvance) {
+        const newValue = actorItem.system.advances.currentValue + actorItem.system.advances.increaseValue;
+        actorItem.update({
+          "system.advances.currentValue": newValue,
+        });
         return;
       }
     }
@@ -71,8 +83,13 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     newPerk = perkDrop[0];
   }
 
-  if (selectionType == 'environments' || selectionType == 'senses') {
-    const localizedSelection = game.i18n.localize(E20[selectionType][selection]);
+  if (selectionType == 'environments' || selectionType == 'senses' || selectionType == 'movement') {
+    let localizedSelection = null;
+    if (selectionType == 'movement') {
+      localizedSelection = game.i18n.localize(E20.movementTypes[selection]);
+    } else {
+      localizedSelection = game.i18n.localize(E20[selectionType][selection]);
+    }
 
     const newName = `${newPerk.name} (${localizedSelection})`;
     newPerk.update({
@@ -98,7 +115,11 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   if (newPerk?.system.isRoleVariant) {
     setRoleVatiantPerks(newPerk, currentRole, actor);
   }
-
+  if (newPerk.system.advances.canAdvance) {
+    newPerk.update({
+      "system.advances.currentValue": newPerk.system.advances.baseValue,
+    });
+  }
   return newPerk;
 }
 
@@ -140,6 +161,20 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
+    } else if (perk.system.choiceType == 'movement') {
+      prompt = game.i18n.localize("E20.SelectMovement");
+      for (const movement of Object.keys(actor.system.movement)) {
+        if (actor.system.movement[movement].base > 0){
+          const localizedLabel = game.i18n.localize(E20.movementTypes[movement]);
+          choices[movement] = {
+            chosen: false,
+            value: movement,
+            label: localizedLabel,
+            type: perk.system.choiceType,
+          };
+        }
+      }
+
     } else if (perk.system.choiceType == 'senses') {
       prompt = game.i18n.localize("E20.SelectSense");
       for (const sense of Object.keys(CONFIG.E20.senses)) {
@@ -237,6 +272,12 @@ export async function onPerkDelete(actor, perk) {
     updateString = `system.senses.${perk.system.choice}.acute`;
     actor.update({
       [updateString]: false,
+    });
+  } else if (selectionType == 'movement') {
+    updateString = `system.movement.${perk.system.choice}.bonus`;
+    const updateValue = actor.system.movement[perk.system.choice].bonus - 10;
+    actor.update({
+      [updateString]: updateValue,
     });
   }
 

@@ -5,7 +5,7 @@ export const highlightCriticalSuccessFailure = function (message, html) {
     return;
   }
 
-  const [isCrit, isFumble] = _isCritIsFumble(message.rolls[0].dice, message.flags.canCritD2);
+  const [isCrit, isFumble] = _isCritIsFumble(message.rolls[0].dice, message.flags.essence20?.canCritD2);
 
   // Set roll total class to alter its color
   if (isCrit && isFumble) {
