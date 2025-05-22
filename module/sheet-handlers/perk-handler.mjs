@@ -353,6 +353,7 @@ function setPerkAdvancesName(perk, originalName) {
   } else if (perk.system.advances.type == 'upshift') {
     localizedString = '\u2191' + perk.system.advances.currentValue;
   }
+
   const newName = `${originalName} (${localizedString})`;
 
   perk.update({
