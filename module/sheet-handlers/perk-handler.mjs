@@ -86,7 +86,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     newPerk = perkDrop[0];
   }
 
-  if (selectionType == 'environments' || selectionType == 'senses' || selectionType == 'movement') {
+  if (['environments', 'senses', 'movement'].includes(selectionType)) {
     let localizedSelection = null;
     if (selectionType == 'movement') {
       localizedSelection = game.i18n.localize(E20.movementTypes[selection]);
