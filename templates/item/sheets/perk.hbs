@@ -82,14 +82,14 @@
         {{!-- Can Advance --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkCanAdvance'}}
         {{#*inline "item-field-inputs"}}
-        <input type="checkbox" name="system.advances.canAdvance" {{checked system.advances.canAdvance}} />
+        <input type="checkbox" name="system.advances.canAdvance" {{checked system.advances.canAdvance}} {{#if system.hasChoice}}disabled {{/if}}/>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
         {{!-- Has Choice --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkHasChoice'}}
         {{#*inline "item-field-inputs"}}
-        <input type="checkbox" name="system.hasChoice" {{checked system.hasChoice}} />
+        <input type="checkbox" name="system.hasChoice" {{checked system.hasChoice}} {{#if system.advances.canAdvance}}disabled {{/if}}/>
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 

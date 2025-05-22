@@ -54,7 +54,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
       if (perk.system.selectionLimit == timesTaken || (perk.system.selectionLimit == actorItem.system.advances.currentValue/actorItem.system.advances.increaseValue)) {
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
         return;
-      } 
+      }
       if (perk.system.advances.canAdvance) {
         const newValue = actorItem.system.advances.currentValue + actorItem.system.advances.increaseValue;
         await actorItem.update({
@@ -334,6 +334,11 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
   }
 }
 
+/**
+ * Handles updating the perk name with the advancement data.
+ * @param {Perk} perk The perk whose name is getting updated.
+ * @param {String} originalName The name from the perk being added.
+ */
 function setPerkAdvancesName(perk, originalName) {
   let localizedString = null;
   if (perk.system.advances.type == 'area') {
@@ -348,5 +353,5 @@ function setPerkAdvancesName(perk, originalName) {
   const newName = `${originalName} (${localizedString})`;
   perk.update({
     "name": newName,
-  }); 
+  });
 }

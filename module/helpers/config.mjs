@@ -755,7 +755,7 @@ preLocalize("energonTypes");
 E20.perkChoiceTypes = {
   none: "E20.PerkChoiceNone",
   environments: "E20.PerkChoiceEnvironments",
-  movement: "e20.PerkChoiceMovement",
+  movement: "E20.PerkChoiceMovement",
   perks: "E20.PerkChoicePerks",
   senses: "E20.PerkChoiceSenses",
 };
