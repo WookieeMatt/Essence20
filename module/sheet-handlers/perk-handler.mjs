@@ -35,7 +35,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     });
   } else if (selectionType == 'movement') {
     updateString = `system.movement.${selection}.bonus`;
-    const updateValue = actor.system.movement[selection].bonus + 10;
+    const updateValue = actor.system.movement[selection].bonus + perk.system.value;
     actor.update({
       [updateString]: updateValue,
     });
@@ -279,7 +279,7 @@ export async function onPerkDelete(actor, perk) {
     });
   } else if (selectionType == 'movement') {
     updateString = `system.movement.${perk.system.choice}.bonus`;
-    const updateValue = actor.system.movement[perk.system.choice].bonus - 10;
+    const updateValue = actor.system.movement[perk.system.choice].bonus - perk.system.value;
     actor.update({
       [updateString]: updateValue,
     });
