@@ -55,12 +55,13 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
         return;
       }
+
       if (perk.system.advances.canAdvance) {
         const newValue = actorItem.system.advances.currentValue + actorItem.system.advances.increaseValue;
         await actorItem.update({
           "system.advances.currentValue": newValue,
         });
-        setPerkAdvancesName (actorItem, perk.name)
+        setPerkAdvancesName (actorItem, perk.name);
         return;
       }
     }
@@ -117,6 +118,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   if (newPerk?.system.isRoleVariant) {
     setRoleVatiantPerks(newPerk, currentRole, actor);
   }
+
   if (newPerk.system.advances.canAdvance) {
     await newPerk.update({
       "system.advances.currentValue": newPerk.system.advances.baseValue,
@@ -124,6 +126,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     const originalName = newPerk.name;
     setPerkAdvancesName(newPerk, originalName);
   }
+
   return newPerk;
 }
 
@@ -351,6 +354,7 @@ function setPerkAdvancesName(perk, originalName) {
     localizedString = '\u2191' + perk.system.advances.currentValue;
   }
   const newName = `${originalName} (${localizedString})`;
+
   perk.update({
     "name": newName,
   });
