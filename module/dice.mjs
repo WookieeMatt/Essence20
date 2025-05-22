@@ -96,12 +96,11 @@ export class Dice {
       shiftDown: calculatedShiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
-    let initialShift = null;
-    if (essenceShifts[rolledEssence]?.untrainedBonus && dataset.shift == "d20"){
-      initialShift = "d2";
-    } else {
-      initialShift = dataset.shift || actorSkillData.shift;
-    }
+    const initialShift ? (essenceShifts[rolledEssence]?.untrainedBonus && dataset.shift == "d20")
+      "d2"
+    ?
+      dataset.shift || actorSkillData.shift
+    ;
 
     const skillDataset = {
       shift: initialShift,
