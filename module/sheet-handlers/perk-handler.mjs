@@ -222,7 +222,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
       }
     }
 
-    if (Object.entries(choices).length){
+    if (!Object.entries(choices).length){
       ui.notifications.error(game.i18n.localize('E20.NoChoicesError'));
       return false;
     }
