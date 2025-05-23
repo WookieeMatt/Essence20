@@ -19,7 +19,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
         canAdvance: makeBool(false),
         currentValue: makeInt(0),
         increaseValue: makeInt(1),
-        type: makeStrArrayWithChoices(Object.keys(E20.perkAdvanceTypes)),
+        type: makeStrWithChoices(Object.keys(E20.perkAdvanceTypes)),
       }),
       canActivate: makeBool(false),
       choice: makeStr(null),

@@ -21,24 +21,26 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   let newPerk = null;
   let currentRole = null;
 
-  if (selectionType == 'environments') {
-    updateString = "system.environments";
-    updateValue = actor.system.environments;
-    updateValue.push(selection);
-    actor.update({
-      [updateString]: updateValue,
-    });
-  } else if (selectionType == 'senses') {
-    updateString = `system.senses.${selection}.acute`;
-    actor.update({
-      [updateString]: true,
-    });
-  } else if (selectionType == 'movement') {
-    updateString = `system.movement.${selection}.bonus`;
-    const updateValue = actor.system.movement[selection].bonus + perk.system.value;
-    actor.update({
-      [updateString]: updateValue,
-    });
+  if (perk.system.hasChoice) {
+    if (selectionType == 'environments') {
+      updateString = "system.environments";
+      updateValue = actor.system.environments;
+      updateValue.push(selection);
+      actor.update({
+        [updateString]: updateValue,
+      });
+    } else if (selectionType == 'senses') {
+      updateString = `system.senses.${selection}.acute`;
+      actor.update({
+        [updateString]: true,
+      });
+    } else if (selectionType == 'movement') {
+      updateString = `system.movement.${selection}.bonus`;
+      const updateValue = actor.system.movement[selection].bonus + perk.system.value;
+      actor.update({
+        [updateString]: updateValue,
+      });
+    }
   }
 
   let timesTaken = 0;
@@ -345,6 +347,7 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
  */
 function setPerkAdvancesName(perk, originalName) {
   let localizedString = null;
+  console.log(perk.system.advances.type)
   switch (perk.system.advances.type) {
   case 'area':
     localizedString = perk.system.advances.currentValue + "' x " + perk.system.advances.currentValue + "'";
