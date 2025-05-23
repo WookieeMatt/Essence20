@@ -411,7 +411,7 @@
     "MovementTypeSwim": "Swim",
     "NoUpgradableItemsError": "No upgradable items exist on this actor sheet",
     "NoArmorChoices": "Add a Role to this Character to be able to select their morphed armor type.",
-    "NoChoicesError": "There are no choices available from this perk",
+    "NoChoicesError": "There are no choices available from this Perk",
     "None": "None",
     "NpcThreatLevel": "Threat Level",
     "OpenItem": "Open Item",

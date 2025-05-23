@@ -1,6 +1,6 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStr, makeStrWithChoices, makeStrArrayWithChoices } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -19,7 +19,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
         canAdvance: makeBool(false),
         currentValue: makeInt(0),
         increaseValue: makeInt(1),
-        type: makeStrArrayWithChoices(Object.keys(E20.perkAdvanceTypes)),
+        type: makeStrWithChoices(Object.keys(E20.perkAdvanceTypes)),
       }),
       canActivate: makeBool(false),
       choice: makeStr(null),

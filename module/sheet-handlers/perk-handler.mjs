@@ -21,24 +21,26 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   let newPerk = null;
   let currentRole = null;
 
-  if (selectionType == 'environments') {
-    updateString = "system.environments";
-    updateValue = actor.system.environments;
-    updateValue.push(selection);
-    actor.update({
-      [updateString]: updateValue,
-    });
-  } else if (selectionType == 'senses') {
-    updateString = `system.senses.${selection}.acute`;
-    actor.update({
-      [updateString]: true,
-    });
-  } else if (selectionType == 'movement') {
-    updateString = `system.movement.${selection}.bonus`;
-    const updateValue = actor.system.movement[selection].bonus + perk.system.value;
-    actor.update({
-      [updateString]: updateValue,
-    });
+  if (perk.system.hasChoice) {
+    if (selectionType == 'environments') {
+      updateString = "system.environments";
+      updateValue = actor.system.environments;
+      updateValue.push(selection);
+      actor.update({
+        [updateString]: updateValue,
+      });
+    } else if (selectionType == 'senses') {
+      updateString = `system.senses.${selection}.acute`;
+      actor.update({
+        [updateString]: true,
+      });
+    } else if (selectionType == 'movement') {
+      updateString = `system.movement.${selection}.bonus`;
+      const updateValue = actor.system.movement[selection].bonus + perk.system.value;
+      actor.update({
+        [updateString]: updateValue,
+      });
+    }
   }
 
   let timesTaken = 0;
@@ -51,7 +53,8 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
-      if (perk.system.selectionLimit == timesTaken || (perk.system.selectionLimit == actorItem.system.advances.currentValue/actorItem.system.advances.increaseValue)) {
+      const numberOfAdvances = actorItem.system.advances.currentValue/actorItem.system.advances.increaseValue;
+      if (perk.system.selectionLimit == timesTaken || (perk.system.selectionLimit == numberOfAdvances)) {
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
         return;
       }
@@ -87,7 +90,9 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   }
 
   if (['environments', 'senses', 'movement'].includes(selectionType)) {
-    const localizedSelection = (selectionType == 'movement') ? game.i18n.localize(E20.movementTypes[selection]) : game.i18n.localize(E20[selectionType][selection]);
+    const localizedSelection = selectionType == 'movement'
+      ? game.i18n.localize(E20.movementTypes[selection])
+      : game.i18n.localize(E20[selectionType][selection]);
     const newName = `${newPerk.name} (${localizedSelection})`;
     newPerk.update({
       "name": newName,
@@ -165,7 +170,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     } else if (perk.system.choiceType == 'movement') {
       prompt = game.i18n.localize("E20.SelectMovement");
       for (const movement of Object.keys(actor.system.movement)) {
-        if (actor.system.movement[movement].base > 0){
+        if (actor.system.movement[movement].base > 0) {
           const localizedLabel = game.i18n.localize(E20.movementTypes[movement]);
           choices[movement] = {
             chosen: false,
@@ -175,7 +180,6 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
-
     } else if (perk.system.choiceType == 'senses') {
       prompt = game.i18n.localize("E20.SelectSense");
       for (const sense of Object.keys(CONFIG.E20.senses)) {
@@ -222,7 +226,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
       }
     }
 
-    if (Object.entries(choices).length){
+    if (!Object.entries(choices).length){
       ui.notifications.error(game.i18n.localize('E20.NoChoicesError'));
       return false;
     }
