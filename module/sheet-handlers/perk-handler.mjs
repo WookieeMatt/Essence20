@@ -55,7 +55,6 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
         return;
       }
-
       if (perk.system.advances.canAdvance) {
         const newValue = actorItem.system.advances.currentValue + actorItem.system.advances.increaseValue;
         await actorItem.update({
