@@ -10,6 +10,7 @@ function makeEssenceShift() {
     shiftUp: makeInt(0),
     shiftDown: makeInt(0),
     snag: makeBool(false),
+    untrainedBonus: makeBool(false),
   });
 }
 

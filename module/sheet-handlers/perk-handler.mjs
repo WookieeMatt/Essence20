@@ -21,18 +21,26 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   let newPerk = null;
   let currentRole = null;
 
-  if (selectionType == 'environments') {
-    updateString = "system.environments";
-    updateValue = actor.system.environments;
-    updateValue.push(selection);
-    actor.update({
-      [updateString]: updateValue,
-    });
-  } else if (selectionType == 'senses') {
-    updateString = `system.senses.${selection}.acute`;
-    actor.update({
-      [updateString]: true,
-    });
+  if (perk.system.hasChoice) {
+    if (selectionType == 'environments') {
+      updateString = "system.environments";
+      updateValue = actor.system.environments;
+      updateValue.push(selection);
+      actor.update({
+        [updateString]: updateValue,
+      });
+    } else if (selectionType == 'senses') {
+      updateString = `system.senses.${selection}.acute`;
+      actor.update({
+        [updateString]: true,
+      });
+    } else if (selectionType == 'movement') {
+      updateString = `system.movement.${selection}.bonus`;
+      const updateValue = actor.system.movement[selection].bonus + perk.system.value;
+      actor.update({
+        [updateString]: updateValue,
+      });
+    }
   }
 
   let timesTaken = 0;
@@ -45,8 +53,18 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
-      if (perk.system.selectionLimit == timesTaken) {
+      const numberOfAdvances = actorItem.system.advances.currentValue/actorItem.system.advances.increaseValue;
+      if (perk.system.selectionLimit == timesTaken || (perk.system.selectionLimit == numberOfAdvances)) {
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
+        return;
+      }
+
+      if (perk.system.advances.canAdvance) {
+        const newValue = actorItem.system.advances.currentValue + actorItem.system.advances.increaseValue;
+        await actorItem.update({
+          "system.advances.currentValue": newValue,
+        });
+        setPerkAdvancesName (actorItem, perk.name);
         return;
       }
     }
@@ -71,9 +89,10 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     newPerk = perkDrop[0];
   }
 
-  if (selectionType == 'environments' || selectionType == 'senses') {
-    const localizedSelection = game.i18n.localize(E20[selectionType][selection]);
-
+  if (['environments', 'senses', 'movement'].includes(selectionType)) {
+    const localizedSelection = selectionType == 'movement'
+      ? game.i18n.localize(E20.movementTypes[selection])
+      : game.i18n.localize(E20[selectionType][selection]);
     const newName = `${newPerk.name} (${localizedSelection})`;
     newPerk.update({
       "name": newName,
@@ -83,7 +102,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     const chosenPerk = perk.system.items[selection];
     const itemToCreate = await fromUuid(chosenPerk.uuid);
 
-    if (itemToCreate.system.choiceType != 'none') {
+    if (itemToCreate.system.hasChoice) {
       setPerkValues(actor, itemToCreate, newPerk, null);
     } else {
       const createdPerk = await Item.create(itemToCreate, { parent: actor });
@@ -97,6 +116,14 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
 
   if (newPerk?.system.isRoleVariant) {
     setRoleVatiantPerks(newPerk, currentRole, actor);
+  }
+
+  if (newPerk.system.advances.canAdvance) {
+    await newPerk.update({
+      "system.advances.currentValue": newPerk.system.advances.baseValue,
+    });
+    const originalName = newPerk.name;
+    setPerkAdvancesName(newPerk, originalName);
   }
 
   return newPerk;
@@ -122,7 +149,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     setMorphedToughnessBonus(actor);
   }
 
-  if (perk.system.choiceType != 'none') {
+  if (perk.system.hasChoice) {
     let choices = {};
     let prompt = null;
     let title = game.i18n.localize("E20.PerkSelect");
@@ -135,6 +162,19 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           choices[environment] = {
             chosen: false,
             value: environment,
+            label: localizedLabel,
+            type: perk.system.choiceType,
+          };
+        }
+      }
+    } else if (perk.system.choiceType == 'movement') {
+      prompt = game.i18n.localize("E20.SelectMovement");
+      for (const movement of Object.keys(actor.system.movement)) {
+        if (actor.system.movement[movement].base > 0) {
+          const localizedLabel = game.i18n.localize(E20.movementTypes[movement]);
+          choices[movement] = {
+            chosen: false,
+            value: movement,
             label: localizedLabel,
             type: perk.system.choiceType,
           };
@@ -184,6 +224,11 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
+    }
+
+    if (!Object.entries(choices).length){
+      ui.notifications.error(game.i18n.localize('E20.NoChoicesError'));
+      return false;
     }
 
     if (perk.system.numChoices > 1 && perk.system.choiceType == "perks") {
@@ -238,6 +283,12 @@ export async function onPerkDelete(actor, perk) {
     actor.update({
       [updateString]: false,
     });
+  } else if (selectionType == 'movement') {
+    updateString = `system.movement.${perk.system.choice}.bonus`;
+    const updateValue = actor.system.movement[perk.system.choice].bonus - perk.system.value;
+    actor.update({
+      [updateString]: updateValue,
+    });
   }
 
   deleteAttachmentsForItem(perk, actor);
@@ -289,3 +340,31 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
   }
 }
 
+/**
+ * Handles updating the perk name with the advancement data.
+ * @param {Perk} perk The perk whose name is getting updated.
+ * @param {String} originalName The name from the perk being added.
+ */
+function setPerkAdvancesName(perk, originalName) {
+  let localizedString = null;
+  switch (perk.system.advances.type) {
+  case 'area':
+    localizedString = perk.system.advances.currentValue + "' x " + perk.system.advances.currentValue + "'";
+    break;
+  case 'die':
+    localizedString = '1d' + perk.system.advances.currentValue;
+    break;
+  case 'seconds':
+    localizedString = perk.system.advances.currentValue + "s";
+    break;
+  case 'upshift':
+    localizedString = '\u2191' + perk.system.advances.currentValue;
+    break;
+  }
+
+  const newName = `${originalName} (${localizedString})`;
+
+  perk.update({
+    "name": newName,
+  });
+}

@@ -652,6 +652,14 @@ E20.bonusTypes = {
 };
 preLocalize("bonusTypes");
 
+E20.perkAdvanceTypes = {
+  area: "E20.PerkAdvanceTypeArea",
+  die: "E20.PerkAdvanceTypeDie",
+  seconds: "E20.PerkAdvanceTypeSecond",
+  upshift: "E20.PerkAdvanceTypeUpshift",
+};
+preLocalize("perkAdvanceTypes");
+
 /************************************************
  * Spells                                       *
  ***********************************************/
@@ -747,6 +755,7 @@ preLocalize("energonTypes");
 E20.perkChoiceTypes = {
   none: "E20.PerkChoiceNone",
   environments: "E20.PerkChoiceEnvironments",
+  movement: "E20.PerkChoiceMovement",
   perks: "E20.PerkChoicePerks",
   senses: "E20.PerkChoiceSenses",
 };
