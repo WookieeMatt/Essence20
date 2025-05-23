@@ -87,13 +87,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   }
 
   if (['environments', 'senses', 'movement'].includes(selectionType)) {
-    let localizedSelection = null;
-    if (selectionType == 'movement') {
-      localizedSelection = game.i18n.localize(E20.movementTypes[selection]);
-    } else {
-      localizedSelection = game.i18n.localize(E20[selectionType][selection]);
-    }
-
+    const localizedSelection = (selectionType == 'movement') ? game.i18n.localize(E20.movementTypes[selection]) : game.i18n.localize(E20[selectionType][selection]);
     const newName = `${newPerk.name} (${localizedSelection})`;
     newPerk.update({
       "name": newName,
@@ -228,6 +222,11 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
       }
     }
 
+    if (Object.entries(choices).length){
+      ui.notifications.error(game.i18n.localize('E20.NoChoicesError'));
+      return false;
+    }
+
     if (perk.system.numChoices > 1 && perk.system.choiceType == "perks") {
       await new MultiChoiceSelector(choices, actor, prompt, title, perk, dropFunc, parentPerk).render(true);
     } else {
@@ -344,14 +343,19 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
  */
 function setPerkAdvancesName(perk, originalName) {
   let localizedString = null;
-  if (perk.system.advances.type == 'area') {
+  switch (perk.system.advances.type) {
+  case 'area':
     localizedString = perk.system.advances.currentValue + "' x " + perk.system.advances.currentValue + "'";
-  } else if (perk.system.advances.type == 'die') {
+    break;
+  case 'die':
     localizedString = '1d' + perk.system.advances.currentValue;
-  } else if (perk.system.advances.type == 'seconds') {
+    break;
+  case 'seconds':
     localizedString = perk.system.advances.currentValue + "s";
-  } else if (perk.system.advances.type == 'upshift') {
+    break;
+  case 'upshift':
     localizedString = '\u2191' + perk.system.advances.currentValue;
+    break;
   }
 
   const newName = `${originalName} (${localizedString})`;
