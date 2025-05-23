@@ -86,7 +86,9 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   }
 
   if (['environments', 'senses', 'movement'].includes(selectionType)) {
-    const localizedSelection = (selectionType == 'movement') ? game.i18n.localize(E20.movementTypes[selection]) : game.i18n.localize(E20[selectionType][selection]);
+    const localizedSelection = selectionType == 'movement'
+      ? game.i18n.localize(E20.movementTypes[selection])
+      : game.i18n.localize(E20[selectionType][selection]);
     const newName = `${newPerk.name} (${localizedSelection})`;
     newPerk.update({
       "name": newName,
