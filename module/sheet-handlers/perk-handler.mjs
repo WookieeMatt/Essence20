@@ -166,7 +166,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     } else if (perk.system.choiceType == 'movement') {
       prompt = game.i18n.localize("E20.SelectMovement");
       for (const movement of Object.keys(actor.system.movement)) {
-        if (actor.system.movement[movement].base > 0){
+        if (actor.system.movement[movement].base > 0) {
           const localizedLabel = game.i18n.localize(E20.movementTypes[movement]);
           choices[movement] = {
             chosen: false,
