@@ -347,7 +347,6 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
  */
 function setPerkAdvancesName(perk, originalName) {
   let localizedString = null;
-  console.log(perk.system.advances.type)
   switch (perk.system.advances.type) {
   case 'area':
     localizedString = perk.system.advances.currentValue + "' x " + perk.system.advances.currentValue + "'";
