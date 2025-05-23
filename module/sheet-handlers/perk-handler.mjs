@@ -49,9 +49,9 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     }
 
     const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
-    const numberOfAdvances = actorItem.system.advances.currentValue/actorItem.system.advances.increaseValue;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
+      const numberOfAdvances = actorItem.system.advances?.currentValue/actorItem.system.advances?.increaseValue;
       if (perk.system.selectionLimit == timesTaken || (perk.system.selectionLimit == numberOfAdvances)) {
         ui.notifications.error(game.i18n.localize('E20.PerkAlreadyTaken'));
         return;
