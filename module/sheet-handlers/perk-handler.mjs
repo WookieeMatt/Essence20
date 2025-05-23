@@ -176,7 +176,6 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
-
     } else if (perk.system.choiceType == 'senses') {
       prompt = game.i18n.localize("E20.SelectSense");
       for (const sense of Object.keys(CONFIG.E20.senses)) {
