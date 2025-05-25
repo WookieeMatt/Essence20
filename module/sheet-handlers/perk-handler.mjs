@@ -356,6 +356,7 @@ function setPerkAdvancesName(perk, originalName) {
     break;
   case 'number':
     localizedString = perk.system.advances.currentValue;
+    break;
   case 'seconds':
     localizedString = perk.system.advances.currentValue + "s";
     break;
