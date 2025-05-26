@@ -168,6 +168,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
+
       break;
 
     case 'movement':
@@ -183,6 +184,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
+
       break;
 
     case 'perks':
@@ -216,6 +218,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
+
       break;
 
     case 'senses':
@@ -231,6 +234,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
+
       break;
     }
 
