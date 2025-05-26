@@ -1,0 +1,137 @@
+@use '../variables' as v;
+
+/* BEM formatting with scss niceties
+  box__element --modifier
+  seperate the modifiers because they should be unique to a box/box__element. This makes the css/scss MUCH cleaner
+  -Rascal-GL
+*/
+ .e20-sheet {
+  font-family: "Rajdhani", sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-lg;
+  padding: 1rem;
+  background: var(--theme-bg-color);
+  color: var(--theme-text-color);
+  min-height: 100%;
+
+  input,
+  button,
+  select {
+    background: var(--theme-input-color);
+    color: var(--theme-text-color);
+    border: none;
+    padding: 4px;
+    border-radius: 4px;
+    text-align: center;
+  }
+  input {
+    width: 100%;
+  }
+  button {
+    border: 2px solid var(--theme-border-color);
+  }
+
+  .e20-sheet__header {
+    display: flex;
+    gap: v.$gap-md;
+
+    .header__image {
+      aspect-ratio: 1 / 1;
+      min-height: 120px; // for brave/chrome
+
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-image: url("https://assets.forge-vtt.com/64b09cfb9272601b1c0a7209/worlds/tribes-of-cybertron/Tokens/players/BashRoboToken.png");
+    }
+
+    .header__details {
+      display: flex;
+      flex-direction: column;
+      gap: v.$gap-lg;
+      justify-content: space-between;
+
+      .header__row {
+        display: flex;
+        gap: v.$gap-md;
+        width: 100%;
+        * {
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+
+  .e20-sheet__body {
+    display: flex;
+    gap: v.$gap-md;
+
+    .body__summary {
+      display: flex;
+      flex-direction: column;
+      gap: v.$gap-lg;
+
+      .sliced-border {
+        width: 100%;
+        justify-content: center;
+        span {
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .body__details {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+
+      .details__nav {
+        display: flex;
+        margin-left: 14px;
+        gap: 0.25rem;
+
+        & > * {
+          margin-bottom: -2px;
+        }
+      }
+
+      .details__wrapper {
+        height: 100%;
+        width: 100%;
+        flex-grow: 1;
+      }
+
+      .details__section {
+        display: none;
+        width: 100%;
+        height: 100%;
+        // padding: v.$gap-md;
+
+        &.--active {
+          display: flex;
+          
+          &.skills-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: v.$gap-md;
+            width: 100%;
+            padding-top: 1.5rem;
+            flex-grow: 1;
+
+            @media only screen and (max-width: 900px) {
+              grid-template-columns: 1fr 1fr;
+              row-gap: 2rem;
+            }
+
+            & > * {
+              justify-content: flex-start;
+              height: 100%;
+              width: 100%;
+              flex: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,29 +1,15 @@
-@forward '../actors/actor-powers';
-
-@forward '../actors/defense-containers';
-
-@forward '../actors/initiative-containers';
-
-@forward '../actors/essence';
-
-@forward '../actors/feature-containers';
-
-@forward '../actors/gi-joe';
-
-@forward '../actors/health-container';
-
-@forward '../actors/notes';
-
-@forward '../actors/npc';
-
-@forward '../actors/power-ranger';
-
-@forward '../actors/stat-containers';
-
-@forward '../actors/tabs';
-
-@forward '../actors/zord';
-
-@forward '../actors/megaform-zord';
-
-@forward '../actors/pony-sheet';
+@forward './actor-powers';
+@forward './defense-containers';
+@forward './initiative-containers';
+@forward './essence';
+@forward './feature-containers';
+@forward './gi-joe';
+@forward './health-container';
+@forward './notes';
+@forward './npc';
+@forward './power-ranger';
+@forward './stat-containers';
+@forward './tabs';
+@forward './zord';
+@forward './megaform-zord';
+@forward './pony-sheet';

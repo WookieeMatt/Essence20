@@ -1,33 +1,17 @@
-@forward '../assets/align';
-
-@forward '../assets/chip';
-
-@forward '../assets/collapsible';
-
-@forward '../assets/editor';
-
-@forward '../assets/flex-containers';
-
-@forward '../assets/global-windows';
-
-@forward '../assets/chat';
-
-@forward '../assets/grid';
-
-@forward '../assets/headers';
-
-@forward '../assets/itemsheet';
-
-@forward '../assets/roll-dialog';
-
-@forward '../assets/select-prompt';
-
-@forward '../assets/skill';
-
-@forward '../assets/text-styling';
-
-@forward '../assets/tox';
-
-@forward '../assets/trait-selector';
-
-@forward '../assets/variables';
+@forward './align';
+@forward './chip';
+@forward './collapsible';
+@forward './editor';
+@forward './flex-containers';
+@forward './global-windows';
+@forward './chat';
+@forward './grid';
+@forward './headers';
+@forward './itemsheet';
+@forward './roll-dialog';
+@forward './select-prompt';
+@forward './skill';
+@forward './text-styling';
+@forward './tox';
+@forward './trait-selector';
+@forward './variables';

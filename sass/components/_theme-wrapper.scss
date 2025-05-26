@@ -1,0 +1,45 @@
+@use "../variables" as v;
+
+// default vars, overridden when needed
+body {
+  --theme-border-color: var(--root-border-color);
+  --theme-bg-color: v.$bg-color-light;
+  --theme-text-color: v.$text-color-dark;
+  --theme-input-color: v.$input-color-light;
+
+  --theme-border-image: url(../../assets/borders/default-border.svg);
+  --theme-thick-border-image: url(../../assets/borders/default-border-thick.svg);
+  --theme-filled-border-image: url(../../assets/borders/default-tab-filled.svg);
+  --theme-tab-image: url(../../assets/borders/default-tab.svg);
+  --theme-filled-tab-image: url(../../assets/borders/default-tab-filled.svg);
+}
+
+.theme-wrapper {
+  &.theme-light {
+    --theme-bg-color: v.$bg-color-light;
+    --theme-text-color: v.$text-color-dark;
+    --theme-input-color: v.$input-color-light;
+  }
+
+  &.theme-dark {
+    --theme-bg-color: v.$bg-color-dark;
+    --theme-text-color: v.$text-color-light;
+    --theme-input-color: v.$input-color-dark;
+  }
+
+  &.theme-default {
+    --theme-border-image: url(../../assets/borders/default-border.svg);
+    --theme-thick-border-image: url(../../assets/borders/default-border-thick.svg);
+    --theme-filled-border-image: url(../../assets/borders/default-tab-filled.svg);
+    --theme-tab-image: url(../../assets/borders/default-tab.svg);
+    --theme-filled-tab-image: url(../../assets/borders/default-tab-filled.svg);
+  }
+
+  &.theme-pony {
+    --theme-border-image: url(../../assets/borders/pony-border.svg);
+    --theme-thick-border-image: url(../../assets/borders/pony-border-thick.svg);
+    --theme-filled-border-image: url(../../assets/borders/pony-tab-filled.svg);
+    --theme-tab-image: url(../../assets/borders/pony-tab.svg);
+    --theme-filled-tab-image: url(../../assets/borders/pony-tab-filled.svg);
+  }
+}

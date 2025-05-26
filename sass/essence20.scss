@@ -1,9 +1,15 @@
 /* importing the partials */
-@use 'assets' as v;
+@use 'variables' as v;
 @use 'actors';
 @use 'items';
+@use 'components';
 
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
+
+:root {
+  --root-border-filter: saturate(0);
+  --root-border-color: hsl(0, 0%, 50%);
+}
 
 select {
   color: white;
@@ -44,6 +50,11 @@ form .notes, form .hint {
 input[type="number"], input[type="text"] {
   color: white;
   vertical-align: middle;
+}
+
+.essence20,
+.essence20 * {
+  box-sizing: border-box;
 }
 
 .essence20 .centered-input {
