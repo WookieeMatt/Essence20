@@ -1,0 +1,42 @@
+{
+  "folder": "pqhn4ynK4hWHxbdX",
+  "name": "Guardian of Eltar",
+  "type": "faction",
+  "_id": "UcvrwsGKz0JYPZwi",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Through the Shattered Grid",
+      "page": 71
+    },
+    "items": {
+      "c107": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.d4OdAdU048WsK2kh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "A Guardian of Eltar!",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748274063969,
+    "modifiedTime": 1748274072808,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!UcvrwsGKz0JYPZwi"
+}

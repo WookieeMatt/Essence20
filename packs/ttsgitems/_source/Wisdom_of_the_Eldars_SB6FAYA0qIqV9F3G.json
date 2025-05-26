@@ -13,7 +13,7 @@
     },
     "items": {},
     "prerequisite": "",
-    "selectionLimit": 1,
+    "selectionLimit": 2,
     "type": "role"
   },
   "effects": [],
@@ -26,12 +26,13 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "systemId": "essence20",
-    "systemVersion": "4.5.0",
+    "systemVersion": "4.6.5",
     "createdTime": 1733108658291,
-    "modifiedTime": 1733108666684,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "modifiedTime": 1748274196736,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
   },
   "_key": "!items!SB6FAYA0qIqV9F3G"
 }

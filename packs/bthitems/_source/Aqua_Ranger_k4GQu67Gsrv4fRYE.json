@@ -76,30 +76,6 @@
         "subtype": "role",
         "level": 11
       },
-      "0b1a": {
-        "uuid": "Compendium.essence20.beneath_the_helmet.Item.6wD6guZWDrVbsMHZ",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Grid Science III",
-        "type": "perk",
-        "subtype": "role",
-        "level": 12
-      },
-      "bdd2": {
-        "uuid": "Compendium.essence20.beneath_the_helmet.Item.sZacBgzLZjYd6ypy",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Grid Science IV",
-        "type": "perk",
-        "subtype": "role",
-        "level": 17
-      },
-      "e2cb": {
-        "uuid": "Compendium.essence20.pr_crb.Item.PwTnDjPfb8dKplIU",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Blue Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "3aff": {
         "uuid": "Compendium.essence20.pr_crb.Item.Zdu0i4ofdwLKM7nk",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -139,6 +115,38 @@
           "startingMax": 1,
           "value": 0
         }
+      },
+      "04d1": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.6wD6guZWDrVbsMHZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Science III",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "c680": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.sZacBgzLZjYd6ypy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Science IV",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "b00f": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.3kcNR23zhInxqKQp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Elemental Shield",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "bb15": {
+        "uuid": "Compendium.essence20.pr_crb.Item.PwTnDjPfb8dKplIU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blue Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -236,13 +244,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1714148366623,
-    "modifiedTime": 1714616534697,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748228632789,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!k4GQu67Gsrv4fRYE"
 }

@@ -12,77 +12,11 @@
       "page": 54
     },
     "items": {
-      "1bfa": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.2mStsiWlvvv14YQz",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Power Heal",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "f232": {
-        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Zord",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "fb9b": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.lwzD2ZvCLLf8PGRF",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Danger Sense",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "def8": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.PEDHPJkoGvvJed5u",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Grid Surge",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "489f": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.m3Kh8PqGf3O1oMmc",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Power Boost",
-        "type": "perk",
-        "subtype": "role",
-        "level": 3
-      },
-      "a865": {
-        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Extra Attack",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "ba6b": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.KhV5GeGIMJNWlWhr",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Duty of the Silver",
-        "type": "perk",
-        "subtype": "role",
-        "level": 7
-      },
-      "b238": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.S7Qs6bJOVkVFxlFu",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Power Adaptation",
-        "type": "perk",
-        "subtype": "role",
-        "level": 9
-      },
-      "28cf": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.Bl9G8fgtd30wENkX",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Silver Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
+      "8516": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
       },
       "71d1": {
         "uuid": "Compendium.essence20.across_the_stars.Item.utGtCSIbCZ8jAb0Q",
@@ -123,6 +57,118 @@
           "startingMax": 2,
           "value": 0
         }
+      },
+      "efea": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.2mStsiWlvvv14YQz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Heal",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "bc8f": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.lwzD2ZvCLLf8PGRF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Danger Sense",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "035d": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.PEDHPJkoGvvJed5u",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Surge",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "9efe": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.m3Kh8PqGf3O1oMmc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Boost",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "a00c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "f9db": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.KhV5GeGIMJNWlWhr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Duty of the Silver",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "f5fd": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.2mStsiWlvvv14YQz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Heal",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "ef82": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.S7Qs6bJOVkVFxlFu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Adaptation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "4b59": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.m3Kh8PqGf3O1oMmc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Boost",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "f6f6": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.2mStsiWlvvv14YQz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Heal",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "8e74": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "ae1d": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.m3Kh8PqGf3O1oMmc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Boost",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "d290": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.S7Qs6bJOVkVFxlFu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Adaptation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "4d65": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.Bl9G8fgtd30wENkX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Silver Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -224,13 +270,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713531347194,
-    "modifiedTime": 1714616487972,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748225288689,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!cJl0pw5WnYVsObbO"
 }

@@ -13,7 +13,40 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 2,
+    "items": {
+      "23b2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.zEXsqbXfA6hADBuh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aptitude Augmenter",
+        "type": "perk",
+        "role": null
+      },
+      "f1a2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.WzigK03hIcczvFLK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blaster Focus",
+        "type": "perk",
+        "role": null
+      },
+      "8f6b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.fN6N13llWp5ChvIG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gridspeak Reciever",
+        "type": "perk",
+        "role": null
+      },
+      "f08d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.hhLGmyXg4zi9hEN6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gridspeak Transmitters",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 0,
@@ -24,13 +57,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1705014291481,
-    "modifiedTime": 1714865063105,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748203890238,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!R7HF3aSR3ZPURh1W"
 }

@@ -12,8 +12,47 @@
       "page": 44
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "role"
+    "selectionLimit": 3,
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "items": {
+      "c726": {
+        "uuid": "Compendium.essence20.pr_crb.Item.hdXKnjXixDqDLKUN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "360° Awareness",
+        "type": "perk",
+        "role": null
+      },
+      "c5da": {
+        "uuid": "Compendium.essence20.pr_crb.Item.IapQG8MnmalDaFUy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhanced Shell",
+        "type": "perk",
+        "role": null
+      },
+      "325e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.RbOTmVWRqCExLr3p",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Like A Shadow",
+        "type": "perk",
+        "role": null
+      },
+      "e968": {
+        "uuid": "Compendium.essence20.pr_crb.Item.3ax1l5TpluxcSp4o",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Move Like a Song",
+        "type": "perk",
+        "role": null
+      },
+      "d8d8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.AhoBVdUfPfCzDiqA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Savant",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 0,
@@ -24,13 +63,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1705014896520,
-    "modifiedTime": 1714865172012,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748212685299,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!pdSn2ZRcGm9AZ9r2"
 }

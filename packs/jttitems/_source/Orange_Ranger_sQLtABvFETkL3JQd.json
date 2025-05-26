@@ -100,7 +100,21 @@
         "subtype": "role",
         "level": 10
       },
-      "6c19": {
+      "ede0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
+      },
+      "9d98": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.8ZGmg1hrNDmbO1B7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Better Together",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "0a77": {
         "uuid": "Compendium.essence20.jump_through_time.Item.xeNNy3cjVdKHBUIR",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Modified Shell III",
@@ -108,7 +122,15 @@
         "subtype": "role",
         "level": 17
       },
-      "caaf": {
+      "a4b1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "d0b2": {
         "uuid": "Compendium.essence20.jump_through_time.Item.As1eUnG5W54GwotE",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Inventive Application 2",
@@ -116,7 +138,7 @@
         "subtype": "role",
         "level": 18
       },
-      "ddad": {
+      "b644": {
         "uuid": "Compendium.essence20.jump_through_time.Item.8s9HHpmk633e6PLM",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Orange Ranger Prime",
@@ -242,13 +264,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713573821442,
-    "modifiedTime": 1714864935231,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748273265917,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!sQLtABvFETkL3JQd"
 }

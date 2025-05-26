@@ -44,18 +44,19 @@
       "tint": "#ffffff",
       "transfer": true,
       "flags": {},
-      "name": "Unnamed Effect",
+      "name": "Supersonic (Form)",
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.344",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "modifiedTime": 1748227099077,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
@@ -70,12 +71,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1686270797034,
     "modifiedTime": 1704127399133,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_id": "Ylo4AY4LCHTXjuuE",
   "folder": "wCReLTLx2TAq0REM",

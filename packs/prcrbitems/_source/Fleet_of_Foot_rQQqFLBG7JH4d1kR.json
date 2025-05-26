@@ -10,8 +10,14 @@
       "page": 48
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "role"
+    "selectionLimit": 2,
+    "type": "role",
+    "advances": {
+      "canAdvance": false,
+      "baseValue": 10,
+      "type": "area",
+      "increaseValue": 10
+    }
   },
   "effects": [
     {
@@ -42,14 +48,15 @@
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.344",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "modifiedTime": 1748216051772,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
@@ -63,13 +70,14 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1685377531184,
-    "modifiedTime": 1714865227346,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748216038474,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "folder": "QqnF5cJhvl6MKfd2",
   "_id": "rQQqFLBG7JH4d1kR",

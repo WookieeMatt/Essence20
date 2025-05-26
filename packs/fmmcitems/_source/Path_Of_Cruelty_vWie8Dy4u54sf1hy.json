@@ -12,6 +12,12 @@
       "page": 281
     },
     "items": {
+      "6014": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.8SvWaWzK32zpUivS",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Psycho Ranger",
+        "type": "faction"
+      },
       "e68f": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.hW8JMqCrGLlcM5n0",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -60,62 +66,6 @@
         "subtype": "role",
         "level": 5
       },
-      "161d": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.uVCPqt7exjXZ7kqn",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Enhance Monster",
-        "type": "perk",
-        "subtype": "role",
-        "level": 6
-      },
-      "e688": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.WQYSawSpefEKLaG0",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Nemesis Drain",
-        "type": "perk",
-        "subtype": "role",
-        "level": 7
-      },
-      "c386": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.SejEXXGz3edJ734e",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Zordbane",
-        "type": "perk",
-        "subtype": "role",
-        "level": 8
-      },
-      "c052": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.GbAyS8tUInUPKRZk",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Flames of Hate",
-        "type": "perk",
-        "subtype": "role",
-        "level": 9
-      },
-      "e2a5": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.ZqE7kDEMylFQK6Oa",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Grow!",
-        "type": "perk",
-        "subtype": "role",
-        "level": 10
-      },
-      "048b": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.c22iQeKZY1TmPzFe",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Cruel Conflagration",
-        "type": "perk",
-        "subtype": "general",
-        "level": 15
-      },
-      "3a49": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.F3TRKmoaUOtHrlzq",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Cruel Warlord",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "f335": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.Y18J55UVsdm2aB7E",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -151,6 +101,62 @@
           "startingMax": null,
           "value": null
         }
+      },
+      "885a": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.WQYSawSpefEKLaG0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nemesis Drain",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "b182": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.SejEXXGz3edJ734e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zordbane",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "67cc": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.GbAyS8tUInUPKRZk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Flames of Hate",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "9cf4": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.ZqE7kDEMylFQK6Oa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grow!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "647d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "f206": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.c22iQeKZY1TmPzFe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cruel Conflagration",
+        "type": "perk",
+        "subtype": "general",
+        "level": 15
+      },
+      "a86c": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.F3TRKmoaUOtHrlzq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cruel Warlord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -254,13 +260,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713587802008,
-    "modifiedTime": 1714616615271,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748267678138,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!vWie8Dy4u54sf1hy"
 }

@@ -13,7 +13,68 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 2,
+    "items": {
+      "c234": {
+        "uuid": "Compendium.essence20.pr_crb.Item.zEXsqbXfA6hADBuh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aptitude Augmenter",
+        "type": "perk",
+        "role": null
+      },
+      "d78e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.WzigK03hIcczvFLK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blaster Focus",
+        "type": "perk",
+        "role": null
+      },
+      "fe6b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.xz0N8ltXFRFjr9wx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defensive Shield",
+        "type": "perk",
+        "role": null
+      },
+      "3cd0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.pmA5wQDbc5oQk5Ak",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhanced Summoner",
+        "type": "perk",
+        "role": null
+      },
+      "6e44": {
+        "uuid": "Compendium.essence20.pr_crb.Item.fN6N13llWp5ChvIG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gridspeak Reciever",
+        "type": "perk",
+        "role": null
+      },
+      "ba2b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.hhLGmyXg4zi9hEN6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gridspeak Transmitters",
+        "type": "perk",
+        "role": null
+      },
+      "22da": {
+        "uuid": "Compendium.essence20.pr_crb.Item.uDOOefcrciVe7398",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Focusers",
+        "type": "perk",
+        "role": null
+      },
+      "9cd7": {
+        "uuid": "Compendium.essence20.pr_crb.Item.c2XlLY69AX3laWPh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vision Focusers",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 150000,
@@ -24,13 +85,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1705014319350,
-    "modifiedTime": 1714865066717,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748204128926,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!PIwAwPxbzH4hQ0WB"
 }
