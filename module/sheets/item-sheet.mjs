@@ -144,7 +144,9 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.item;
     await setEntryAndAddItem(droppedItem, targetItem);
+    const newData = await fromUuid(targetItem.uuid);
 
+    this.object.system = newData.system;
     this.render(true);
   }
 
@@ -160,7 +162,9 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     const updateString = `system.items.-=${id}`;
 
     await this.item.update({[updateString]: null});
+    const newData = await fromUuid(this.item.uuid);
 
+    this.object.system = newData.system;
     li.slideUp(200, () => this.render(false));
   }
 

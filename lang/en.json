@@ -433,6 +433,7 @@
     "PerkAdvanceType": "Advancement Type",
     "PerkAdvanceTypeArea": "Area",
     "PerkAdvanceTypeDie": "Die",
+    "PerkAdvanceTypeNumber": "Number",
     "PerkAdvanceTypeSecond": "Seconds",
     "PerkAdvanceTypeUpshift": "Upshift",
     "PerkAlreadyTaken": "You have already taken this perk the maximum number of times.",
