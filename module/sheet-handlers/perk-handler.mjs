@@ -155,83 +155,83 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     let title = game.i18n.localize("E20.PerkSelect");
 
     switch (perk.system.advances.type) {
-      case 'environments':
-        prompt = game.i18n.localize("E20.SelectEnvironment");
-        for (const environment of Object.keys(CONFIG.E20.environments)) {
-          if (!actor.system.environments.includes(environment)) {
-            const localizedLabel = game.i18n.localize(E20.environments[environment]);
-            choices[environment] = {
-              chosen: false,
-              value: environment,
-              label: localizedLabel,
-              type: perk.system.choiceType,
-            };
+    case 'environments':
+      prompt = game.i18n.localize("E20.SelectEnvironment");
+      for (const environment of Object.keys(CONFIG.E20.environments)) {
+        if (!actor.system.environments.includes(environment)) {
+          const localizedLabel = game.i18n.localize(E20.environments[environment]);
+          choices[environment] = {
+            chosen: false,
+            value: environment,
+            label: localizedLabel,
+            type: perk.system.choiceType,
+          };
+        }
+      }
+      break;
+
+    case 'movement':
+      prompt = game.i18n.localize("E20.SelectMovement");
+      for (const movement of Object.keys(actor.system.movement)) {
+        if (actor.system.movement[movement].base > 0) {
+          const localizedLabel = game.i18n.localize(E20.movementTypes[movement]);
+          choices[movement] = {
+            chosen: false,
+            value: movement,
+            label: localizedLabel,
+            type: perk.system.choiceType,
+          };
+        }
+      }
+      break;
+
+    case 'perks':
+      if (perk.system.numChoices > 1) {
+        prompt = game.i18n.format(
+          'E20.SelectMultiplePerks',
+          {
+            numChoices: perk.system.numChoices,
+          },
+        );
+      } else {
+        prompt = game.i18n.localize("E20.SelectPerk");
+      }
+
+      for (const [key, item] of Object.entries(perk.system.items)) {
+        let taken = false;
+        for (const attachedItem of actor.items) {
+          if (item.uuid == attachedItem._stats.compendiumSource) {
+            taken = true;
+            break;
           }
         }
-        break;
 
-      case 'movement':
-        prompt = game.i18n.localize("E20.SelectMovement");
-        for (const movement of Object.keys(actor.system.movement)) {
-          if (actor.system.movement[movement].base > 0) {
-            const localizedLabel = game.i18n.localize(E20.movementTypes[movement]);
-            choices[movement] = {
-              chosen: false,
-              value: movement,
-              label: localizedLabel,
-              type: perk.system.choiceType,
-            };
-          }
+        if (!taken) {
+          choices[key] = {
+            chosen: false,
+            value: key,
+            label: item.name,
+            uuid: item.uuid,
+            type: perk.system.choiceType,
+          };
         }
-        break;
+      }
+      break;
 
-      case 'perks':
-        if (perk.system.numChoices > 1) {
-          prompt = game.i18n.format(
-            'E20.SelectMultiplePerks',
-            {
-              numChoices: perk.system.numChoices,
-            },
-          );
-        } else {
-          prompt = game.i18n.localize("E20.SelectPerk");
+    case 'senses':
+      prompt = game.i18n.localize("E20.SelectSense");
+      for (const sense of Object.keys(CONFIG.E20.senses)) {
+        if (!actor.system.senses[sense].acute) {
+          const localizedLabel = game.i18n.localize(E20.senses[sense]);
+          choices[sense] = {
+            chosen: false,
+            value: sense,
+            label: localizedLabel,
+            type: perk.system.choiceType,
+          };
         }
-
-        for (const [key, item] of Object.entries(perk.system.items)) {
-          let taken = false;
-          for (const attachedItem of actor.items) {
-            if (item.uuid == attachedItem._stats.compendiumSource) {
-              taken = true;
-              break;
-            }
-          }
-
-          if (!taken) {
-            choices[key] = {
-              chosen: false,
-              value: key,
-              label: item.name,
-              uuid: item.uuid,
-              type: perk.system.choiceType,
-            };
-          }
-        }
-        break;
-
-      case 'senses':
-        prompt = game.i18n.localize("E20.SelectSense");
-        for (const sense of Object.keys(CONFIG.E20.senses)) {
-          if (!actor.system.senses[sense].acute) {
-            const localizedLabel = game.i18n.localize(E20.senses[sense]);
-            choices[sense] = {
-              chosen: false,
-              value: sense,
-              label: localizedLabel,
-              type: perk.system.choiceType,
-            };
-          }
-        }
-        break;
+      }
+      break;
     }
 
     if (!Object.entries(choices).length){
