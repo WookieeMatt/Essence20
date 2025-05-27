@@ -650,11 +650,14 @@
     "SpellTierVirtuoso": "Virtuoso",
     "SptNameFriendship": "Friendship",
     "SptNameStory": "Story",
+
     "SptOptionAccess": "Who can access the SPT?",
     "SptOptionGmPointsArePublic": "Display GM Points to Players",
     "SptOptionMessage": "Display chat messages",
     "SptOptionPointsName": "Name for points",
     "SptOptionShow": "Dialog display behavior",
+    "SptOptionDefaultTheme": "Default sheet theme",
+
     "SptPoint": "Point",
     "SptPointPlural": "Points",
     "SptPointsGm": "GM Points",
@@ -663,6 +666,8 @@
     "SptShowAlways": "Always show",
     "SptShowNever": "Never show",
     "SptShowToggle": "Allow toggling",
+    "SptThemeDefault": "Sci-fi",
+    "SptThemePony": "Pony",
     "SptAddGmPoint": "A GM Point has been added!",
     "SptSetGmPoints": "GM Points have been set to ",
     "SptSpendGmPoint": "A GM Point has been spent!",

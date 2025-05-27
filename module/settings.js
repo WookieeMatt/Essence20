@@ -9,7 +9,7 @@ export const registerSettings = function () {
   );
 
   /* -------------------------------------------- */
-  /*  Story Points Tracker settings               */
+  /*  Config options                              */
   /* -------------------------------------------- */
 
   const SHOW_OPTIONS = {
@@ -27,6 +27,11 @@ export const registerSettings = function () {
   for (let [name, str] of Object.entries(CONFIG.E20.pointsNameOptions)) {
     POINTS_NAME_OPTIONS[name] = str;
   }
+
+  const THEME_OPTIONS = {
+    default: game.i18n.localize("E20.SptThemeDefault"),
+    pony: game.i18n.localize("E20.SptThemePony"),
+  };
 
   /* -------------------------------------------- */
   /*  Config settings                             */
@@ -57,6 +62,16 @@ export const registerSettings = function () {
     default: "toggle",
     type: String,
     choices: SHOW_OPTIONS,
+    onChange: debouncedReload,
+  });
+
+  game.settings.register(systemName, "sptDefaultTheme", {
+    name: game.i18n.localize("E20.SptOptionDefaultTheme"),
+    scope: "client",
+    config: true,
+    default: "default",
+    type: String,
+    choices: THEME_OPTIONS,
     onChange: debouncedReload,
   });
 

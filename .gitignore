@@ -10,12 +10,12 @@ npm-debug.log
 *.lock
 jsconfig.json
 foundry
-packs/*/*.log
-packs/*/LOG
-packs/*/LOCK
-packs/*/MANIFEST-*
-packs/*/CURRENT
-packs/*/*.old
+# packs/*/*.log
+# packs/*/LOG
+# packs/*/LOCK
+# packs/*/MANIFEST-*
+# packs/*/CURRENT
+# packs/*/*.old
 
 # SASS
 css/essence20.css.map
