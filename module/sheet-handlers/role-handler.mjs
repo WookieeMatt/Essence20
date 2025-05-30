@@ -628,7 +628,7 @@ async function addFactionPerks(actor, role) {
       for (const [, attachment] of Object.entries(item.system.items)) {
         if (attachment.role == role.name) {
           const itemToCreate = await fromUuid(attachment.uuid);
-          onPerkDrop(actor, itemToCreate, null, null, null, item);
+          await onPerkDrop(actor, itemToCreate, null, null, null, item);
         }
       }
     }

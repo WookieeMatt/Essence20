@@ -73,7 +73,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
               await ownerItem.update({
                 "system.advances.currentValue": newValue,
               });
-              setPerkAdvancesName(ownerItem, itemToCreate.name)
+              setPerkAdvancesName(ownerItem, itemToCreate.name);
               skipToNext = true;
               break;
             }
@@ -83,10 +83,11 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
             continue;
           }
         }
+
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (item.type == 'perk') {
-          setPerkValues(owner, newItem, null);
+          await setPerkValues(owner, newItem, null);
         }
 
         if (newItem.type == "altMode") {
@@ -394,14 +395,13 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
         if (itemSourceId == attachment.uuid && item._id == parentId) {
           if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
             if (attachment.type == "perk") {
-              console.log(attachment)
               if (actorItem.system.advances.canAdvance) {
                 if (actorItem.system.advances.currentValue > actorItem.system.advances.baseValue) {
                   const newValue = actorItem.system.advances.currentValue - actorItem.system.advances.increaseValue;
                   await actorItem.update({
                     "system.advances.currentValue": newValue,
                   });
-                  setPerkAdvancesName(actorItem, attachment.name)
+                  setPerkAdvancesName(actorItem, attachment.name);
                   continue;
                 }
 
