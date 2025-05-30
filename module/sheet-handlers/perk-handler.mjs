@@ -357,7 +357,7 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
  * @param {Perk} perk The perk whose name is getting updated.
  * @param {String} originalName The name from the perk being added.
  */
-function setPerkAdvancesName(perk, originalName) {
+export function setPerkAdvancesName(perk, originalName) {
   let localizedString = null;
   switch (perk.system.advances.type) {
   case 'area':

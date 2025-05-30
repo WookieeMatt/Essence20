@@ -11,15 +11,14 @@ import { onPerkDrop } from "./perk-handler.mjs";
  */
 export async function onFactionDrop(actor, dropFunc=null, defaultRoleFaction=null) {
   let newFaction = null;
-
   if (!defaultRoleFaction) {
     const hasFaction = getItemsOfType("faction", actor.items).length > 0;
     if (hasFaction) {
       ui.notifications.error(game.i18n.localize('E20.FactionMultipleError'));
       return false;
-    } else {
-      newFaction = defaultRoleFaction;
     }
+  } else {
+    newFaction = defaultRoleFaction;
   }
 
   if (dropFunc) {

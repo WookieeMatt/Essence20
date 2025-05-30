@@ -1,6 +1,6 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
-import { onPerkDelete, setPerkValues } from "./perk-handler.mjs";
+import { onPerkDelete, setPerkValues, setPerkAdvancesName } from "./perk-handler.mjs";
 
 /**
  * Handles dropping Items that have attachments onto an Actor
@@ -55,8 +55,9 @@ export async function onEquipmentPackageDrop(actor, droppedItem) {
  */
 export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
   let copyWasCreated = false;
-
+  let skipToNext = false;
   for (const [key, item] of Object.entries(items)) {
+
     if (item.type == type) {
       const createNewItem =
         !["role", "focus"].includes(parentItem.type)
@@ -64,6 +65,24 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
+
+        if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
+          for (const ownerItem of owner.items) {
+            if (ownerItem._stats.compendiumSource == itemToCreate.uuid) {
+              const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
+              await ownerItem.update({
+                "system.advances.currentValue": newValue,
+              });
+              setPerkAdvancesName(ownerItem, itemToCreate.name)
+              skipToNext = true;
+              break;
+            }
+          }
+
+          if (skipToNext) {
+            continue;
+          }
+        }
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (item.type == 'perk') {
@@ -375,12 +394,26 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
         if (itemSourceId == attachment.uuid && item._id == parentId) {
           if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
             if (attachment.type == "perk") {
-              onPerkDelete(actor, actorItem);
+              console.log(attachment)
+              if (actorItem.system.advances.canAdvance) {
+                if (actorItem.system.advances.currentValue > actorItem.system.advances.baseValue) {
+                  const newValue = actorItem.system.advances.currentValue - actorItem.system.advances.increaseValue;
+                  await actorItem.update({
+                    "system.advances.currentValue": newValue,
+                  });
+                  setPerkAdvancesName(actorItem, attachment.name)
+                  continue;
+                }
+
+              } else {
+                onPerkDelete(actor, actorItem);
+              }
             }
 
             await actorItem.delete();
             break;
           }
+
         } else if (item._id == parentId && key == collectionId) {
           if (attachment.type == "perk") {
             onPerkDelete(actor, actorItem);
