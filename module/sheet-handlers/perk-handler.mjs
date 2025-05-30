@@ -154,7 +154,7 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     let prompt = null;
     let title = game.i18n.localize("E20.PerkSelect");
 
-    switch (perk.system.advances.type) {
+    switch (perk.system.choiceType) {
     case 'environments':
       prompt = game.i18n.localize("E20.SelectEnvironment");
       for (const environment of Object.keys(CONFIG.E20.environments)) {
