@@ -372,7 +372,7 @@ function setPerkAdvancesName(perk, originalName) {
   case 'number':
     localizedString = perk.system.advances.currentValue;
     break;
-  case 'reroll':
+  case 'rerolls':
     localizedString = "Reroll " + perk.system.advances.currentValue + "s";
     break;
   case 'upshift':
