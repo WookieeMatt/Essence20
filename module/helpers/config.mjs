@@ -657,7 +657,7 @@ E20.perkAdvanceTypes = {
   damage: "E20.PerkAdvanceTypeDamage",
   die: "E20.PerkAdvanceTypeDie",
   number: "E20.PerkAdvanceTypeNumber",
-  rerolls: "E20.PerkAdvanceTypeReroll",
+  reroll: "E20.PerkAdvanceTypeReroll",
   upshift: "E20.PerkAdvanceTypeUpshift",
 };
 preLocalize("perkAdvanceTypes");
