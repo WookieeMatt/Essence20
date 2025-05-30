@@ -379,6 +379,7 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
             }
 
             await actorItem.delete();
+            break;
           }
         } else if (item._id == parentId && key == collectionId) {
           if (attachment.type == "perk") {
@@ -386,6 +387,7 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
           }
 
           await actorItem.delete();
+          break;
         }
       }
     }
