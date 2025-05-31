@@ -345,7 +345,6 @@ export async function onRoleDrop(actor, role, dropFunc) {
       [skillStringShiftDown] : 0,
       [skillStringIsSpecialized] : false,
       [skillStringModifier] : 0,
-      [skillStringDisplayName] : role.system.skillDie.name,
     });
   }
 
@@ -491,7 +490,6 @@ export async function onRoleDelete(actor, role) {
       [skillStringShiftDown] : 0,
       [skillStringIsSpecialized] : false,
       [skillStringModifier] : 0,
-      [skillStringDisplayName] : "",
     });
   }
 
