@@ -4,7 +4,7 @@
       {{localize "E20.RoleFeatures"}}
     </div>
   </div>
-  
+
   {{#if @root.rolePoints}}
     {{#with @root.rolePoints as |rolePoints|}}
       <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.rolePoints._id}}">
@@ -30,7 +30,7 @@
           {{#if (ne rolePoints.system.bonus.type 'none')}}
             {{#if (ne rolePoints.system.bonus.type 'other')}}+{{/if}}{{rolePoints.system.bonus.value}}
           {{/if}}
-          
+
           {{#if (eq rolePoints.system.bonus.type 'attackUpshift')}}
             <i class="fas fa-arrow-up"></i>
           {{else if (eq rolePoints.system.bonus.type 'damageBonus')}}
@@ -62,7 +62,7 @@
     {{#with @root.system.skills.roleSkillDie as |roleSkillDie|}}
       <div class="item flexrow" style="align-items: center;" data-item-id="{{@root.role._id}}">
         <div class="item-image" style="flex-grow: 0;">
-          <a class="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{roleSkillDie.displayName}}"
+          <a class="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{@root.role.system.skillDie.name}}"
             data-is-specialized="{{roleSkillDie.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
         </div>
         <div>{{@root.role.system.skillDie.name}}: {{roleSkillDie.shift}}{{#if roleSkillDie.isSpecialized}}*{{/if}}</div>

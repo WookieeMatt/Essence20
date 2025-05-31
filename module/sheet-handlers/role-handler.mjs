@@ -322,7 +322,6 @@ export async function onRoleDrop(actor, role, dropFunc) {
   if (role.system.skillDie.isUsed) {
     const skillName = "roleSkillDie";
     const skillStringShift = `system.skills.${skillName}.shift`;
-    const skillStringDisplayName = `system.skills.${skillName}.displayName`;
     const skillStringEdge = `system.skills.${skillName}.edge`;
     const skillStringEssencesSmarts = `system.skills.${skillName}.essences.smarts`;
     const skillStringEssencesSocial = `system.skills.${skillName}.essences.social`;
@@ -468,9 +467,32 @@ export async function onRoleDelete(actor, role) {
 
   if (role.system.skillDie.isUsed) {
     const skillName = "roleSkillDie";
-    const skillString = `system.skills.-=${skillName}`;
+    const skillStringShift = `system.skills.${skillName}.shift`;
+    const skillStringEdge = `system.skills.${skillName}.edge`;
+    const skillStringEssencesSmarts = `system.skills.${skillName}.essences.smarts`;
+    const skillStringEssencesSocial = `system.skills.${skillName}.essences.social`;
+    const skillStringEssencesSpeed = `system.skills.${skillName}.essences.speed`;
+    const skillStringEssencesSrength = `system.skills.${skillName}.essences.strength`;
+    const skillStringIsSpecialized = `system.skills.${skillName}.isSpecialized`;
+    const skillStringModifier = `system.skills.${skillName}.modifier`;
+    const skillStringSnag = `system.skills.${skillName}.snag`;
+    const skillStringShiftUp = `system.skills.${skillName}.shiftUp`;
+    const skillStringShiftDown = `system.skills.${skillName}.shiftDown`;
 
-    await actor.update({[skillString] : null});
+    await actor.update({
+      [skillStringShift]: "d20",
+      [skillStringEssencesSmarts] : false,
+      [skillStringEssencesSocial] : false,
+      [skillStringEssencesSpeed] : false,
+      [skillStringEssencesSrength] : false,
+      [skillStringEdge] : false,
+      [skillStringSnag] : false,
+      [skillStringShiftUp] : 0,
+      [skillStringShiftDown] : 0,
+      [skillStringIsSpecialized] : false,
+      [skillStringModifier] : 0,
+      [skillStringDisplayName] : "",
+    });
   }
 
   if (role.system.adjustments.health.length) {
