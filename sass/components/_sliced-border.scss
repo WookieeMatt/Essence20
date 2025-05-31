@@ -8,13 +8,10 @@
 $sb-padding: 9px;
 
 .sliced-border {
-  padding: $sb-padding;
   width: fit-content;
   height: fit-content;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: v.$gap-md;
+  padding: 4px 2px;
 
   &:has(> .sliced-border__label) {
     padding-top: $sb-padding + 3px;
@@ -24,20 +21,14 @@ $sb-padding: 9px;
     padding-top: $sb-padding + 16px;
   }
 
-  &,
-  * {
-    position: relative;
-    box-sizing: border-box;
-    z-index: 1;
-  }
-
   &::before {
+    pointer-events: none;
     filter: var(--root-border-filter);
     position: absolute;
     z-index: 0;
     content: "";
-    width: calc(100% - 31px); // remove border from width
-    height: calc(100% - 31px); // remove border from height
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
     border-style: solid;
@@ -64,7 +55,7 @@ $sb-padding: 9px;
     }
   }
 
-  &.--thicc::before {
+  &.--thick::before {
     border-image: var(--theme-thick-border-image);
     border-image-slice: 16 fill;
   }

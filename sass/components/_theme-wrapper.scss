@@ -7,11 +7,11 @@ body {
   --theme-text-color: v.$text-color-dark;
   --theme-input-color: v.$input-color-light;
 
-  --theme-border-image: url(../../assets/borders/default-border.svg);
-  --theme-thick-border-image: url(../../assets/borders/default-border-thick.svg);
-  --theme-filled-border-image: url(../../assets/borders/default-tab-filled.svg);
-  --theme-tab-image: url(../../assets/borders/default-tab.svg);
-  --theme-filled-tab-image: url(../../assets/borders/default-tab-filled.svg);
+  --theme-border-image: url(../assets/borders/default-border.svg);
+  --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
+  --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
+  --theme-tab-image: url(../assets/borders/default-tab.svg);
+  --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
 }
 
 .theme-wrapper {
@@ -28,18 +28,24 @@ body {
   }
 
   &.theme-default {
-    --theme-border-image: url(../../assets/borders/default-border.svg);
-    --theme-thick-border-image: url(../../assets/borders/default-border-thick.svg);
-    --theme-filled-border-image: url(../../assets/borders/default-tab-filled.svg);
-    --theme-tab-image: url(../../assets/borders/default-tab.svg);
-    --theme-filled-tab-image: url(../../assets/borders/default-tab-filled.svg);
+    --theme-border-image: url(../assets/borders/default-border.svg);
+    --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
+    --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
+    --theme-tab-image: url(../assets/borders/default-tab.svg);
+    --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
+    &.window-app {
+      border-radius: 22px 0 22px 0;
+    }
   }
 
   &.theme-pony {
-    --theme-border-image: url(../../assets/borders/pony-border.svg);
-    --theme-thick-border-image: url(../../assets/borders/pony-border-thick.svg);
-    --theme-filled-border-image: url(../../assets/borders/pony-tab-filled.svg);
-    --theme-tab-image: url(../../assets/borders/pony-tab.svg);
-    --theme-filled-tab-image: url(../../assets/borders/pony-tab-filled.svg);
+    --theme-border-image: url(../assets/borders/pony-border.svg);
+    --theme-thick-border-image: url(../assets/borders/pony-border-thick.svg);
+    --theme-filled-border-image: url(../assets/borders/pony-tab-filled.svg);
+    --theme-tab-image: url(../assets/borders/pony-tab.svg);
+    --theme-filled-tab-image: url(../assets/borders/pony-tab-filled.svg);
+    &.window-app {
+      border-radius: 15px;
+    }
   }
 }

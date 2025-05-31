@@ -1,4 +1,4 @@
-import { registerSettings } from "./settings.js";
+import { registerSettings, getDefaultTheme } from "./settings.js";
 
 export let i18n = (key) => {
   return game.i18n.localize(key);
@@ -25,21 +25,13 @@ export let getPointsName = (plural) => {
 export class StoryPointsTracker extends Application {
   gmPoints = game.settings.get("essence20", "sptGmPoints");
   storyPoints = game.settings.get("essence20", "sptStoryPoints");
-  defaultTheme = () => {
-    switch (game.settings.get("essence20", "sptDefaultTheme")) {
-      case game.i18n.localize("E20.SptThemeDefault"):
-        return "theme-default";
-      case game.i18n.localize("E20.SptThemePony"):
-        return "theme-pony";
-    }
-  };
 
   static get defaultOptions() {
     let pos = game.user.getFlag("essence20", "storyPointsTrackerPos");
     return foundry.utils.mergeObject(super.defaultOptions, {
       id: "story-points",
       template: "./systems/essence20/templates/story-points.hbs",
-      classes: ["story-points"],
+      classes: ["theme-wrapper", getDefaultTheme(), "sliced-border", "--thick"],
       popOut: true,
       resizable: false,
       top: pos?.top || 60,
@@ -50,9 +42,11 @@ export class StoryPointsTracker extends Application {
 
   // Data to be access within the template
   getData() {
+    console.log(getDefaultTheme());
     return {
       gmPoints: this.gmPoints,
       storyPoints: this.storyPoints,
+      defaultTheme: getDefaultTheme(),
       isGm: game.user.isGM,
       gmPointsArePublic: game.user.isGM || setting("sptGmPointsArePublic"),
       pointsName: getPointsName(true),
@@ -88,6 +82,7 @@ export class StoryPointsTracker extends Application {
     game.socket.emit("system.essence20", {
       gmPoints: this.gmPoints,
       storyPoints: this.storyPoints,
+      defaultTheme: getDefaultTheme(),
     });
   }
 
