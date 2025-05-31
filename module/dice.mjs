@@ -126,22 +126,22 @@ export class Dice {
     let roleSkillDieName = '';
 
     switch(item?.type) {
-    case 'weaponEffect':
-      {
-        const roleList = getItemsOfType('role', actor.items);
-        roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
-      }
+      case 'weaponEffect':
+        {
+          const roleList = getItemsOfType('role', actor.items);
+          roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
+        }
 
-      label = this._getWeaponRollLabel(dataset, skillRollOptions, item, roleSkillDieName);
-      break;
-    case 'spell':
-      label = this._getSpellRollLabel(skillRollOptions, item);
-      break;
-    case 'magicBauble':
-      label = this._getMagicBaubleRollLabel(skillRollOptions, item);
-      break;
-    default:
-      label = this._getSkillRollLabel(dataset, skillRollOptions);
+        label = this._getWeaponRollLabel(dataset, skillRollOptions, item, roleSkillDieName);
+        break;
+      case 'spell':
+        label = this._getSpellRollLabel(skillRollOptions, item);
+        break;
+      case 'magicBauble':
+        label = this._getMagicBaubleRollLabel(skillRollOptions, item);
+        break;
+      default:
+        label = this._getSkillRollLabel(dataset, skillRollOptions);
     }
 
     let finalShift = this._getFinalShift(skillRollOptions, initialShift, E20.skillShiftList, rolePoints);
@@ -324,12 +324,12 @@ export class Dice {
       };
 
       switch (skillShift) {
-      case 'autoFail':
-        label += ` ${this._localize('E20.RollAutoFail')}`;
-        break;
-      case 'fumble':
-        label += ` ${this._localize('E20.RollAutoFailFumble')}`;
-        break;
+        case 'autoFail':
+          label += ` ${this._localize('E20.RollAutoFail')}`;
+          break;
+        case 'fumble':
+          label += ` ${this._localize('E20.RollAutoFailFumble')}`;
+          break;
       }
 
       chatData.content = label;

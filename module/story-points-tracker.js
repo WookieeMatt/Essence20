@@ -1,6 +1,6 @@
 import { registerSettings } from "./settings.js";
 
-export let i18n = key => {
+export let i18n = (key) => {
   return game.i18n.localize(key);
 };
 
@@ -8,12 +8,14 @@ export let i18nf = (key, vars) => {
   return game.i18n.format(key, vars);
 };
 
-export let setting = key => {
+export let setting = (key) => {
   return game.settings.get("essence20", key);
 };
 
-export let getPointsName = plural => {
-  return `${CONFIG.E20.pointsNameOptions[setting('sptPointsName')]} ${i18n(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
+export let getPointsName = (plural) => {
+  return `${CONFIG.E20.pointsNameOptions[setting("sptPointsName")]} ${i18n(
+    plural ? "E20.SptPointPlural" : "E20.SptPoint",
+  )}`;
 };
 
 /* -------------------------------------------- */
@@ -21,8 +23,16 @@ export let getPointsName = plural => {
 /* -------------------------------------------- */
 
 export class StoryPointsTracker extends Application {
-  gmPoints = game.settings.get('essence20', 'sptGmPoints');
-  storyPoints = game.settings.get('essence20', 'sptStoryPoints');
+  gmPoints = game.settings.get("essence20", "sptGmPoints");
+  storyPoints = game.settings.get("essence20", "sptStoryPoints");
+  defaultTheme = () => {
+    switch (game.settings.get("essence20", "sptDefaultTheme")) {
+      case game.i18n.localize("E20.SptThemeDefault"):
+        return "theme-default";
+      case game.i18n.localize("E20.SptThemePony"):
+        return "theme-pony";
+    }
+  };
 
   static get defaultOptions() {
     let pos = game.user.getFlag("essence20", "storyPointsTrackerPos");
@@ -33,8 +43,8 @@ export class StoryPointsTracker extends Application {
       popOut: true,
       resizable: false,
       top: pos?.top || 60,
-      left: pos?.left || (($('#board').width / 2) - 150),
-      title: i18nf('E20.SptTitle', {name: getPointsName(false)}),
+      left: pos?.left || $("#board").width / 2 - 150,
+      title: i18nf("E20.SptTitle", { name: getPointsName(false) }),
     });
   }
 
@@ -44,7 +54,7 @@ export class StoryPointsTracker extends Application {
       gmPoints: this.gmPoints,
       storyPoints: this.storyPoints,
       isGm: game.user.isGM,
-      gmPointsArePublic: game.user.isGM || setting('sptGmPointsArePublic'),
+      gmPointsArePublic: game.user.isGM || setting("sptGmPointsArePublic"),
       pointsName: getPointsName(true),
     };
   }
@@ -53,11 +63,11 @@ export class StoryPointsTracker extends Application {
   changeGmPoints(value) {
     if (game.user.isGM) {
       this.gmPoints = Math.max(0, value);
-      $('#gm-points-input', this.element).val(this.gmPoints);
-      game.settings.set('essence20', 'sptGmPoints', this.gmPoints);
+      $("#gm-points-input", this.element).val(this.gmPoints);
+      game.settings.set("essence20", "sptGmPoints", this.gmPoints);
       this.updateClients();
     } else {
-      $('#gm-points-input', this.element).val(this.gmPoints);
+      $("#gm-points-input", this.element).val(this.gmPoints);
     }
   }
 
@@ -65,17 +75,17 @@ export class StoryPointsTracker extends Application {
   changeStoryPoints(value) {
     if (game.user.isGM) {
       this.storyPoints = Math.max(0, value);
-      $('#story-points-input', this.element).val(this.storyPoints);
-      game.settings.set('essence20', 'sptStoryPoints', this.storyPoints);
+      $("#story-points-input", this.element).val(this.storyPoints);
+      game.settings.set("essence20", "sptStoryPoints", this.storyPoints);
       this.updateClients();
     } else {
-      $('#story-points-input', this.element).val(this.storyPoints);
+      $("#story-points-input", this.element).val(this.storyPoints);
     }
   }
 
   // Called when the GM modifies a point value to update clients/players
   updateClients() {
-    game.socket.emit('system.essence20', {
+    game.socket.emit("system.essence20", {
       gmPoints: this.gmPoints,
       storyPoints: this.storyPoints,
     });
@@ -84,28 +94,28 @@ export class StoryPointsTracker extends Application {
   // Called when a client/player receives an update from the GM
   handleUpdate(data) {
     this.gmPoints = data.gmPoints;
-    $('#gm-points-input', this.element).val(this.gmPoints);
+    $("#gm-points-input", this.element).val(this.gmPoints);
     this.storyPoints = data.storyPoints;
-    $('#story-points-input', this.element).val(this.storyPoints);
+    $("#story-points-input", this.element).val(this.storyPoints);
   }
 
   activateListeners(html) {
     super.activateListeners(html);
 
     // GM Points changes
-    html.find('#gm-points-btn-dec').click(ev => {
+    html.find("#gm-points-btn-dec").click((ev) => {
       ev.preventDefault();
       this.changeGmPoints(this.gmPoints - 1);
       this.sendMessage(`${i18n("E20.SptSpendGmPoint")}`);
     });
-    html.find('#gm-points-btn-inc').click(ev => {
+    html.find("#gm-points-btn-inc").click((ev) => {
       ev.preventDefault();
       this.changeGmPoints(this.gmPoints + 1);
       this.sendMessage(`${i18n("E20.SptAddGmPoint")}`);
     });
-    html.find('#gm-points-input').focusout(ev => {
+    html.find("#gm-points-input").focusout((ev) => {
       ev.preventDefault();
-      let value = $('#gm-points-input', this.element).val();
+      let value = $("#gm-points-input", this.element).val();
       if (value != this.gmPoints) {
         this.changeGmPoints(value);
         this.sendMessage(`${i18n("E20.SptSetGmPoints")} ${value}!`);
@@ -113,44 +123,52 @@ export class StoryPointsTracker extends Application {
     });
 
     // Roll new major scene GM Points
-    html.find('#major-scene-points-button').click(async (ev) => {
+    html.find("#major-scene-points-button").click(async (ev) => {
       ev.preventDefault();
       const user = game.user;
       if (user.isGM) {
-        let roll = new Roll('d2 + 1');
+        let roll = new Roll("d2 + 1");
         await roll.toMessage({
           speaker: game.user.name,
           flavor: `${i18n("E20.SptRollFlavor")}`,
-          rollMode: game.settings.get('core', 'rollMode'),
+          rollMode: game.settings.get("core", "rollMode"),
         });
         this.changeGmPoints(this.gmPoints + roll.total);
       }
     });
 
     // Story Points changes
-    html.find('#story-points-btn-dec').click(ev => {
+    html.find("#story-points-btn-dec").click((ev) => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints - 1);
-      this.sendMessage(`${i18nf("E20.SptSpendStoryPoint", {name: getPointsName(false)})}`);
+      this.sendMessage(
+        `${i18nf("E20.SptSpendStoryPoint", { name: getPointsName(false) })}`,
+      );
     });
-    html.find('#story-points-btn-inc').click(ev => {
+    html.find("#story-points-btn-inc").click((ev) => {
       ev.preventDefault();
       this.changeStoryPoints(this.storyPoints + 1);
-      this.sendMessage(`${i18nf("E20.SptAddStoryPoint", {name: getPointsName(false)})}`);
+      this.sendMessage(
+        `${i18nf("E20.SptAddStoryPoint", { name: getPointsName(false) })}`,
+      );
     });
-    html.find('#story-points-input').focusout(ev => {
+    html.find("#story-points-input").focusout((ev) => {
       ev.preventDefault();
-      let value = $('#story-points-input', this.element).val();
+      let value = $("#story-points-input", this.element).val();
       if (value != this.storyPoints) {
         this.changeStoryPoints(value);
-        this.sendMessage(`${i18nf("E20.SptSetStoryPoints", {name: getPointsName(true)})} ${value}!`);
+        this.sendMessage(
+          `${i18nf("E20.SptSetStoryPoints", {
+            name: getPointsName(true),
+          })} ${value}!`,
+        );
       }
     });
   }
 
   // Outputs given message to chat
   sendMessage(content) {
-    if (setting('sptMessage')) {
+    if (setting("sptMessage")) {
       const speaker = ChatMessage.getSpeaker({ user: game.user.id });
 
       let messageData = {
@@ -186,60 +204,74 @@ export class StoryPointsTracker extends Application {
 /*  Hooks                                       */
 /* -------------------------------------------- */
 
-Hooks.on('init', () => {
+Hooks.on("init", () => {
   registerSettings();
 
   // Clients (players) listen on the socket to update the UI whenever the GM changes values
-  game.socket.on('system.essence20', (data) => {
+  game.socket.on("system.essence20", (data) => {
     game.StoryPointsTracker.handleUpdate(data);
   });
 });
 
-Hooks.on('ready', () => {
+Hooks.on("ready", () => {
   // Display the dialog if settings permit
-  if ((setting("sptShow") == 'on' || (setting("sptShow") == 'toggle' && setting("sptToggleState")))
-    && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
+  if (
+    (setting("sptShow") == "on" ||
+      (setting("sptShow") == "toggle" && setting("sptToggleState"))) &&
+    (setting("sptAccess") == "everyone" ||
+      (setting("sptAccess") == "gm") == game.user.isGM)
+  ) {
     game.StoryPointsTracker = new StoryPointsTracker().render(true);
   }
 
   // Create hook that helps with persisting dialog position
-  let oldDragMouseUp = foundry.applications.ux.Draggable.prototype._onDragMouseUp;
-  foundry.applications.ux.Draggable.prototype._onDragMouseUp = function (event) {
+  let oldDragMouseUp =
+    foundry.applications.ux.Draggable.prototype._onDragMouseUp;
+  foundry.applications.ux.Draggable.prototype._onDragMouseUp = function (
+    event,
+  ) {
     Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
     return oldDragMouseUp.call(this, event);
   };
 });
 
 // Persists dialog position when moved by the user
-Hooks.on('dragEndStoryPointsTracker', (app) => {
-  game.user.setFlag("essence20", "storyPointsTrackerPos", { left: app.position.left, top: app.position.top });
+Hooks.on("dragEndStoryPointsTracker", (app) => {
+  game.user.setFlag("essence20", "storyPointsTrackerPos", {
+    left: app.position.left,
+    top: app.position.top,
+  });
 });
 
 // Init the button in the controls for toggling the dialog
 Hooks.on("getSceneControlButtons", (controls) => {
-  if (setting("sptShow") == 'toggle' && (setting("sptAccess") == 'everyone' || (setting("sptAccess") == 'gm' == game.user.isGM))) {
+  if (
+    setting("sptShow") == "toggle" &&
+    (setting("sptAccess") == "everyone" ||
+      (setting("sptAccess") == "gm") == game.user.isGM)
+  ) {
     let tokenControls = controls.tokens;
-    let activeState = game.settings.get('essence20', 'sptToggleState');
-    tokenControls.tools.sptTracker = ({
+    let activeState = game.settings.get("essence20", "sptToggleState");
+    tokenControls.tools.sptTracker = {
       active: activeState,
       icon: "fas fa-circle-s",
       name: "sptTracker",
-      title: i18nf("E20.SptToggleDialog", {name: getPointsName(false)}),
+      title: i18nf("E20.SptToggleDialog", { name: getPointsName(false) }),
       toggle: true,
       visible: true,
       onChange: (event, toggle) => {
         if (toggle) {
           if (!game.StoryPointsTracker) {
-            game.settings.set('essence20', 'sptToggleState', true);
+            game.settings.set("essence20", "sptToggleState", true);
             game.StoryPointsTracker = new StoryPointsTracker().render(true);
             tokenControls.tools.sptTracker.active = true;
           }
         } else {
-          game.settings.set('essence20', 'sptToggleState', false);
+          game.settings.set("essence20", "sptToggleState", false);
           game.StoryPointsTracker.closeSpt();
           tokenControls.tools.sptTracker.active = false;
         }
       },
-    });
+    };
   }
 });

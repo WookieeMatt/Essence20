@@ -287,138 +287,138 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
       const itemType = i.type;
 
       switch (itemType) {
-      case 'alteration':
-        alterations.push(i);
-        break;
-      case 'altMode':
-        altModes.push(i);
-        break;
-      case 'armor':
-        if (i.system.equipped) {
-          equippedArmorEvasion += parseInt(i.system.totalBonusEvasion);
-          equippedArmorToughness += parseInt(i.system.totalBonusToughness);
-        }
-
-        armors.push(i);
-        break;
-      case 'bond':
-        bonds.push(i);
-        break;
-      case 'faction':
-        faction = i;
-        break;
-      case 'feature':
-        features.push(i);
-        break;
-      case 'focus':
-        focuses.push(i);
-        break;
-      case 'gear':
-        gears.push(i);
-        break;
-      case 'hangUp':
-        hangUps.push(i);
-        break;
-      case 'influence':
-        influences.push(i);
-        break;
-      case 'magicBauble':
-        magicBaubles.push(i);
-        break;
-      case 'megaformTrait':
-        megaformTraits.push(i);
-        break;
-      case 'origin':
-        i.skillsString = i.system.skills.map(skill => {
-          return CONFIG.E20.originSkills[skill];
-        }).join(", ");
-        i.essenceString = i.system.essences.map(essence => {
-          return CONFIG.E20.originEssences[essence];
-        }).join(", ");
-        origins.push(i);
-        break;
-      case 'perk':
-        if (perks[i.system.type]) {
-          perks[i.system.type].push(i);
-        } else {
-          perks[i.system.type] = [i];
-        }
-
-        //removes contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
-        if (this.actor.type == "npc" && i.system.type != "contact") {
-          perks.all.push(i);
-        }
-
-        break;
-      case 'power':
-        powers.push(i);
-        break;
-      case 'shield':
-        if (i.system.equipped) {
-          shieldEquipped = true;
-        }
-
-        shields.push(i);
-        break;
-      case 'spell':
-        spells.push(i);
-        break;
-      case 'rolePoints':
-        rolePoints = i;
-
-        {
-          const defenseLetters = [];
-
-          if (rolePoints.system.bonus.defenseBonus.cleverness) {
-            defenseLetters.push('C');
+        case 'alteration':
+          alterations.push(i);
+          break;
+        case 'altMode':
+          altModes.push(i);
+          break;
+        case 'armor':
+          if (i.system.equipped) {
+            equippedArmorEvasion += parseInt(i.system.totalBonusEvasion);
+            equippedArmorToughness += parseInt(i.system.totalBonusToughness);
           }
 
-          if (rolePoints.system.bonus.defenseBonus.evasion) {
-            defenseLetters.push('E');
+          armors.push(i);
+          break;
+        case 'bond':
+          bonds.push(i);
+          break;
+        case 'faction':
+          faction = i;
+          break;
+        case 'feature':
+          features.push(i);
+          break;
+        case 'focus':
+          focuses.push(i);
+          break;
+        case 'gear':
+          gears.push(i);
+          break;
+        case 'hangUp':
+          hangUps.push(i);
+          break;
+        case 'influence':
+          influences.push(i);
+          break;
+        case 'magicBauble':
+          magicBaubles.push(i);
+          break;
+        case 'megaformTrait':
+          megaformTraits.push(i);
+          break;
+        case 'origin':
+          i.skillsString = i.system.skills.map(skill => {
+            return CONFIG.E20.originSkills[skill];
+          }).join(", ");
+          i.essenceString = i.system.essences.map(essence => {
+            return CONFIG.E20.originEssences[essence];
+          }).join(", ");
+          origins.push(i);
+          break;
+        case 'perk':
+          if (perks[i.system.type]) {
+            perks[i.system.type].push(i);
+          } else {
+            perks[i.system.type] = [i];
           }
 
-          if (rolePoints.system.bonus.defenseBonus.toughness) {
-            defenseLetters.push('T');
+          //removes contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
+          if (this.actor.type == "npc" && i.system.type != "contact") {
+            perks.all.push(i);
           }
 
-          if (rolePoints.system.bonus.defenseBonus.willpower) {
-            defenseLetters.push('W');
+          break;
+        case 'power':
+          powers.push(i);
+          break;
+        case 'shield':
+          if (i.system.equipped) {
+            shieldEquipped = true;
           }
 
-          rolePoints.system.bonus.defenseBonus.string = defenseLetters.join(', ');
-          rolePoints.system.isSpendable = !!(rolePoints.system.resource.max || rolePoints.system.powerCost);
-        }
+          shields.push(i);
+          break;
+        case 'spell':
+          spells.push(i);
+          break;
+        case 'rolePoints':
+          rolePoints = i;
 
-        break;
-      case 'role':
-        role = i;
-        break;
-      case 'specialization':
-        {
-          const skill = i.system.skill;
-          const existingSkillSpecializations = specializations[skill];
-          existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
-        }
+          {
+            const defenseLetters = [];
 
-        break;
-      case 'trait':
-        traits.push(i);
-        break;
-      case 'upgrade':
+            if (rolePoints.system.bonus.defenseBonus.cleverness) {
+              defenseLetters.push('C');
+            }
+
+            if (rolePoints.system.bonus.defenseBonus.evasion) {
+              defenseLetters.push('E');
+            }
+
+            if (rolePoints.system.bonus.defenseBonus.toughness) {
+              defenseLetters.push('T');
+            }
+
+            if (rolePoints.system.bonus.defenseBonus.willpower) {
+              defenseLetters.push('W');
+            }
+
+            rolePoints.system.bonus.defenseBonus.string = defenseLetters.join(', ');
+            rolePoints.system.isSpendable = !!(rolePoints.system.resource.max || rolePoints.system.powerCost);
+          }
+
+          break;
+        case 'role':
+          role = i;
+          break;
+        case 'specialization':
+          {
+            const skill = i.system.skill;
+            const existingSkillSpecializations = specializations[skill];
+            existingSkillSpecializations ? specializations[skill].push(i) : specializations[skill] = [i];
+          }
+
+          break;
+        case 'trait':
+          traits.push(i);
+          break;
+        case 'upgrade':
         // Unparented upgrades on an actor can only be alt-mode armor upgrades
-        if (!i.flags?.essence20?.parentId && this.actor.system.canTransform && i.system.type == "armor") {
-          if (i.system.armorBonus.defense == "evasion"){
-            equippedArmorEvasion += parseInt(i.system.armorBonus.value);
-          } else if (i.system.armorBonus.defense == "toughness") {
-            equippedArmorToughness += parseInt(i.system.armorBonus.value);
+          if (!i.flags?.essence20?.parentId && this.actor.system.canTransform && i.system.type == "armor") {
+            if (i.system.armorBonus.defense == "evasion"){
+              equippedArmorEvasion += parseInt(i.system.armorBonus.value);
+            } else if (i.system.armorBonus.defense == "toughness") {
+              equippedArmorToughness += parseInt(i.system.armorBonus.value);
+            }
           }
-        }
 
-        upgrades.push(i);
-        break;
-      case 'weapon':
-        weapons.push(i);
-        break;
+          upgrades.push(i);
+          break;
+        case 'weapon':
+          weapons.push(i);
+          break;
       }
     }
 

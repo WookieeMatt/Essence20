@@ -348,18 +348,18 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
 function setPerkAdvancesName(perk, originalName) {
   let localizedString = null;
   switch (perk.system.advances.type) {
-  case 'area':
-    localizedString = perk.system.advances.currentValue + "' x " + perk.system.advances.currentValue + "'";
-    break;
-  case 'die':
-    localizedString = '1d' + perk.system.advances.currentValue;
-    break;
-  case 'seconds':
-    localizedString = perk.system.advances.currentValue + "s";
-    break;
-  case 'upshift':
-    localizedString = '\u2191' + perk.system.advances.currentValue;
-    break;
+    case 'area':
+      localizedString = perk.system.advances.currentValue + "' x " + perk.system.advances.currentValue + "'";
+      break;
+    case 'die':
+      localizedString = '1d' + perk.system.advances.currentValue;
+      break;
+    case 'seconds':
+      localizedString = perk.system.advances.currentValue + "s";
+      break;
+    case 'upshift':
+      localizedString = '\u2191' + perk.system.advances.currentValue;
+      break;
   }
 
   const newName = `${originalName} (${localizedString})`;

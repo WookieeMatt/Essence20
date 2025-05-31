@@ -37,54 +37,54 @@ export async function onDropItem(data, actor, dropFunc) {
   let result = null;
 
   switch (sourceItem.type) {
-  case 'alteration':
-    result = await onAlterationDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'armor':
-    result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'equipmentPackage':
-    result = await onEquipmentPackageDrop(actor, sourceItem);
-    break;
-  case 'faction':
-    result = await onFactionDrop(actor, dropFunc);
-    break;
-  case 'focus':
-    result = await onFocusDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'influence':
-    result = await onInfluenceDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'origin':
-    result = await onOriginDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'perk':
-    result = await setPerkValues(actor, sourceItem, null, dropFunc);
-    break;
-  case 'power':
-    result = await onPowerDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'role':
-    result = await onRoleDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'rolePoints':
-    ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
-    break;
-  case 'shield' :
-    result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'upgrade':
-    result = await _onUpgradeDrop(sourceItem, actor, dropFunc);
-    break;
-  case 'weapon':
-    result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
-    break;
-  case 'weaponEffect':
-    result = onAttachmentDrop(actor, sourceItem, dropFunc);
-    break;
+    case 'alteration':
+      result = await onAlterationDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'armor':
+      result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'equipmentPackage':
+      result = await onEquipmentPackageDrop(actor, sourceItem);
+      break;
+    case 'faction':
+      result = await onFactionDrop(actor, dropFunc);
+      break;
+    case 'focus':
+      result = await onFocusDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'influence':
+      result = await onInfluenceDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'origin':
+      result = await onOriginDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'perk':
+      result = await setPerkValues(actor, sourceItem, null, dropFunc);
+      break;
+    case 'power':
+      result = await onPowerDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'role':
+      result = await onRoleDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'rolePoints':
+      ui.notifications.error(game.i18n.localize('E20.RolePointsActorDropError'));
+      break;
+    case 'shield' :
+      result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'upgrade':
+      result = await _onUpgradeDrop(sourceItem, actor, dropFunc);
+      break;
+    case 'weapon':
+      result = await onAttachableParentDrop(actor, sourceItem, dropFunc);
+      break;
+    case 'weaponEffect':
+      result = onAttachmentDrop(actor, sourceItem, dropFunc);
+      break;
 
-  default:
-    result = await dropFunc();
+    default:
+      result = await dropFunc();
   }
 
   if (result) {
@@ -160,34 +160,34 @@ export async function onDropActor(data, actorSheet) {
 
   let dropIsValid = false;
   switch (targetActor.type) {
-  case 'playerCharacter':
-    if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'npc') {
-      setEntryAndAddActor(droppedActor, targetActor);
-      dropIsValid = true;
-    }
+    case 'playerCharacter':
+      if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'npc') {
+        setEntryAndAddActor(droppedActor, targetActor);
+        dropIsValid = true;
+      }
 
-    break;
-  case 'megaform':
-    if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
-      setEntryAndAddActor (droppedActor, targetActor);
-      dropIsValid = true;
-    }
+      break;
+    case 'megaform':
+      if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
+        setEntryAndAddActor (droppedActor, targetActor);
+        dropIsValid = true;
+      }
 
-    break;
-  case 'vehicle':
-    if (droppedActor.type == "playerCharacter") {
-      _selectVehicleLocation(droppedActor, targetActor);
-      dropIsValid = true;
-    }
+      break;
+    case 'vehicle':
+      if (droppedActor.type == "playerCharacter") {
+        _selectVehicleLocation(droppedActor, targetActor);
+        dropIsValid = true;
+      }
 
-    break;
-  case 'zord':
-    if (droppedActor.type == "playerCharacter") {
-      _selectVehicleLocation(droppedActor, targetActor);
-      dropIsValid = true;
-    }
+      break;
+    case 'zord':
+      if (droppedActor.type == "playerCharacter") {
+        _selectVehicleLocation(droppedActor, targetActor);
+        dropIsValid = true;
+      }
 
-    break;
+      break;
   }
 
   if (!dropIsValid) {

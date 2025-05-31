@@ -634,27 +634,27 @@ export const migrateCompendium = async function(pack) {
     let updateData = {};
     try {
       switch (documentName) {
-      case "Actor":
-        updateData = await migrateActorData(doc.toObject(), doc);
-        break;
-      case "Item":
-        updateData = await migrateItemData(doc.toObject());
-        if (doc.type == "origin") {
-          await doc.update({"system.-=originPerkIds": null});
-        } else if (doc.type == "influence") {
-          await doc.update({"system.-=perkIds": null});
-          await doc.update({"system.-=hangUpIds": null});
-        } else if (doc.type == "weapon") {
-          await doc.update({"system.-=upgradeIds": null});
-          await doc.update({"system.-=weaponEffectIds": null});
-        } else if (doc.type =="armor") {
-          await doc.update({"system.-=upgradeIds": null});
-        }
+        case "Actor":
+          updateData = await migrateActorData(doc.toObject(), doc);
+          break;
+        case "Item":
+          updateData = await migrateItemData(doc.toObject());
+          if (doc.type == "origin") {
+            await doc.update({"system.-=originPerkIds": null});
+          } else if (doc.type == "influence") {
+            await doc.update({"system.-=perkIds": null});
+            await doc.update({"system.-=hangUpIds": null});
+          } else if (doc.type == "weapon") {
+            await doc.update({"system.-=upgradeIds": null});
+            await doc.update({"system.-=weaponEffectIds": null});
+          } else if (doc.type =="armor") {
+            await doc.update({"system.-=upgradeIds": null});
+          }
 
-        break;
-      case "Scene":
+          break;
+        case "Scene":
         // updateData = migrateSceneData(doc.toObject());
-        break;
+          break;
       }
 
       // Save the entry, if data was changed
