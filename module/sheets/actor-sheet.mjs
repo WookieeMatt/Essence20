@@ -522,6 +522,10 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     // Rest button
     html.find('.rest').click(() => onRest(this));
 
+    // Leveling buttons
+    html.find('.level-up').click(() => this._onLevelChangeHelper(1));
+    html.find('.level-down').click(() => this._onLevelChangeHelper(-1));
+
     const isLocked = this.actor.system.isLocked;
 
     // Inputs
@@ -583,11 +587,30 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
    * Handle changes to an input element, submitting the form if options.submitOnChange is true.
    * Do not preventDefault in this handler as other interactions on the form may also be occurring.
    * @param {Event} event The initial change event
+   *
+   * @override
    */
   async _onChangeInput(event) {
     await super._onChangeInput(event);
 
-    if (event.currentTarget.name == "system.level") {
+    // Use this if we can get the manual level input working again
+    // if (event.currentTarget.name == "system.level") {
+    //   return await onLevelChange(this.actor, this.actor.system.level);
+    // }
+  }
+
+  /**
+   * Handle clicking on the leveling buttons, where the up arrow increases the
+   * level by 1 and the down arrow decreases it by 1
+   * @param {Integer} levelChange The change in the level
+   */
+  async _onLevelChangeHelper(levelChange) {
+    const newLevel = this.actor.system.level + levelChange;
+    if (newLevel > 0) {
+      await this.actor.update({
+        "system.level": this.actor.system.level + levelChange,
+      }).then(this.render(false));
+
       return await onLevelChange(this.actor, this.actor.system.level);
     }
   }
