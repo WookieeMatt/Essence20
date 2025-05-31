@@ -12,6 +12,12 @@
       "page": 288
     },
     "items": {
+      "8150": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.8SvWaWzK32zpUivS",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Psycho Ranger",
+        "type": "faction"
+      },
       "c5e8": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.6tTxWf1k5y3e0RWc",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -59,14 +65,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 5
-      },
-      "1e3d": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.uVCPqt7exjXZ7kqn",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Enhance Monster",
-        "type": "perk",
-        "subtype": "role",
-        "level": 6
       },
       "c4b5": {
         "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
@@ -116,14 +114,6 @@
         "subtype": "role",
         "level": 13
       },
-      "c912": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.iFHlsLgUvmlT8cMK",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Frost Warlord",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "c47d": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.3Ruf9irE1Mz7221L",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -158,6 +148,22 @@
           "startingMax": null,
           "value": null
         }
+      },
+      "f7f7": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "8b47": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.iFHlsLgUvmlT8cMK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Frost Warlord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -257,13 +263,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713705755002,
-    "modifiedTime": 1714616635773,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748267875736,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!GQ5aQWbjmaO9y00w"
 }

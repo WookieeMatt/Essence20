@@ -154,7 +154,8 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     let prompt = null;
     let title = game.i18n.localize("E20.PerkSelect");
 
-    if (perk.system.choiceType == 'environments') {
+    switch (perk.system.choiceType) {
+    case 'environments':
       prompt = game.i18n.localize("E20.SelectEnvironment");
       for (const environment of Object.keys(CONFIG.E20.environments)) {
         if (!actor.system.environments.includes(environment)) {
@@ -167,7 +168,10 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
-    } else if (perk.system.choiceType == 'movement') {
+
+      break;
+
+    case 'movement':
       prompt = game.i18n.localize("E20.SelectMovement");
       for (const movement of Object.keys(actor.system.movement)) {
         if (actor.system.movement[movement].base > 0) {
@@ -180,20 +184,10 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
-    } else if (perk.system.choiceType == 'senses') {
-      prompt = game.i18n.localize("E20.SelectSense");
-      for (const sense of Object.keys(CONFIG.E20.senses)) {
-        if (!actor.system.senses[sense].acute) {
-          const localizedLabel = game.i18n.localize(E20.senses[sense]);
-          choices[sense] = {
-            chosen: false,
-            value: sense,
-            label: localizedLabel,
-            type: perk.system.choiceType,
-          };
-        }
-      }
-    } else if (perk.system.choiceType == 'perks') {
+
+      break;
+
+    case 'perks':
       if (perk.system.numChoices > 1) {
         prompt = game.i18n.format(
           'E20.SelectMultiplePerks',
@@ -224,6 +218,24 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
           };
         }
       }
+
+      break;
+
+    case 'senses':
+      prompt = game.i18n.localize("E20.SelectSense");
+      for (const sense of Object.keys(CONFIG.E20.senses)) {
+        if (!actor.system.senses[sense].acute) {
+          const localizedLabel = game.i18n.localize(E20.senses[sense]);
+          choices[sense] = {
+            chosen: false,
+            value: sense,
+            label: localizedLabel,
+            type: perk.system.choiceType,
+          };
+        }
+      }
+
+      break;
     }
 
     if (!Object.entries(choices).length){
@@ -345,11 +357,14 @@ async function setRoleVatiantPerks(newPerk, currentRole, actor) {
  * @param {Perk} perk The perk whose name is getting updated.
  * @param {String} originalName The name from the perk being added.
  */
-function setPerkAdvancesName(perk, originalName) {
+export function setPerkAdvancesName(perk, originalName) {
   let localizedString = null;
   switch (perk.system.advances.type) {
   case 'area':
     localizedString = perk.system.advances.currentValue + "' x " + perk.system.advances.currentValue + "'";
+    break;
+  case 'damage':
+    localizedString = "+" + perk.system.advances.currentValue + " Damage";
     break;
   case 'die':
     localizedString = '1d' + perk.system.advances.currentValue;
@@ -357,8 +372,8 @@ function setPerkAdvancesName(perk, originalName) {
   case 'number':
     localizedString = perk.system.advances.currentValue;
     break;
-  case 'seconds':
-    localizedString = perk.system.advances.currentValue + "s";
+  case 'rerolls':
+    localizedString = "Reroll " + perk.system.advances.currentValue + "s";
     break;
   case 'upshift':
     localizedString = '\u2191' + perk.system.advances.currentValue;

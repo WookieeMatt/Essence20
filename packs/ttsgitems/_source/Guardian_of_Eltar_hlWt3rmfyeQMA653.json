@@ -91,14 +91,6 @@
         "subtype": "role",
         "level": 5
       },
-      "171d": {
-        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.vJYXOqRQIDEUmuDE",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Rally Guardians Features",
-        "type": "perk",
-        "subtype": "role",
-        "level": 6
-      },
       "9b37": {
         "uuid": "Compendium.essence20.through_the_shattered_grid.Item.bDgQ7jyTgisY42kt",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -123,15 +115,37 @@
         "subtype": "role",
         "level": 10
       },
-      "5d3a": {
+      "e364": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.UcvrwsGKz0JYPZwi",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Guardian of Eltar",
+        "type": "faction"
+      },
+      "af15": {
         "uuid": "Compendium.essence20.through_the_shattered_grid.Item.EjrGEruXHcggMKoW",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Chief Guardian",
         "type": "perk",
         "subtype": "role",
-        "level": 13
+        "level": 12
       },
-      "e78f": {
+      "b15d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "06d6": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.SB6FAYA0qIqV9F3G",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wisdom of the Eldars",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "e01a": {
         "uuid": "Compendium.essence20.through_the_shattered_grid.Item.wrBndkBQoKkn3dLy",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Supreme Guardian",
@@ -239,12 +253,13 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "systemId": "essence20",
-    "systemVersion": "4.5.0",
+    "systemVersion": "4.6.5",
     "createdTime": 1733107965303,
-    "modifiedTime": 1733108862982,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "modifiedTime": 1748274217659,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
   },
   "_key": "!items!hlWt3rmfyeQMA653"
 }

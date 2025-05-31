@@ -20,7 +20,21 @@
         "subtype": "role",
         "level": 1
       },
-      "bcf2": {
+      "07ba": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
+      },
+      "d7c8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.MhGQCZfI9eBQSS05",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nimble Fighter",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "45b4": {
         "uuid": "Compendium.essence20.pr_crb.Item.eCTmc2BbsrCLrjkw",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Strike Bonus",
@@ -28,7 +42,7 @@
         "subtype": "role",
         "level": 2
       },
-      "9e98": {
+      "e1e2": {
         "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Zord",
@@ -36,7 +50,7 @@
         "subtype": "role",
         "level": 3
       },
-      "b2c4": {
+      "2de8": {
         "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Extra Attack",
@@ -44,7 +58,15 @@
         "subtype": "role",
         "level": 5
       },
-      "3d29": {
+      "a0e4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.eCTmc2BbsrCLrjkw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Strike Bonus",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "e858": {
         "uuid": "Compendium.essence20.pr_crb.Item.BTSdvgvfKHWeV07C",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Exploit Weakness",
@@ -52,7 +74,15 @@
         "subtype": "role",
         "level": 7
       },
-      "95c0": {
+      "83e1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.eCTmc2BbsrCLrjkw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Strike Bonus",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "0c6c": {
         "uuid": "Compendium.essence20.pr_crb.Item.SV8nqua9koRB3lvm",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Whirlwind Strike",
@@ -60,7 +90,15 @@
         "subtype": "role",
         "level": 9
       },
-      "c246": {
+      "f109": {
+        "uuid": "Compendium.essence20.pr_crb.Item.eCTmc2BbsrCLrjkw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Strike Bonus",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "ba31": {
         "uuid": "Compendium.essence20.pr_crb.Item.Aws6Y5RODeyDhOxD",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Lightning Fast",
@@ -68,7 +106,23 @@
         "subtype": "role",
         "level": 13
       },
-      "c5a6": {
+      "3c34": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "4a7b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.BTSdvgvfKHWeV07C",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Exploit Weakness",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "1dd5": {
         "uuid": "Compendium.essence20.pr_crb.Item.qxO7qYqdB0QUwJxe",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Devastating Strike",
@@ -76,7 +130,7 @@
         "subtype": "role",
         "level": 18
       },
-      "b155": {
+      "b7e4": {
         "uuid": "Compendium.essence20.pr_crb.Item.4M5y5ZcO5DNlnqwK",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Yellow Ranger Prime",
@@ -186,13 +240,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713499880018,
-    "modifiedTime": 1713827658539,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748218727984,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!nhqEDdJJN9ALZEtE"
 }

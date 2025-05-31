@@ -13,10 +13,99 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 2,
+    "items": {
+      "1f96": {
+        "uuid": "Compendium.essence20.pr_crb.Item.zEXsqbXfA6hADBuh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aptitude Augmenter",
+        "type": "perk",
+        "role": null
+      },
+      "f247": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.Ib4BIJKAmuMoWKJP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Calm Beast",
+        "type": "perk",
+        "role": null
+      },
+      "ef77": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.HqQ9xhyz6yhm2fZp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Commune",
+        "type": "perk",
+        "role": null
+      },
+      "22c1": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.06JVZqlBDXIfPKw8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Elemental Adaptation",
+        "type": "perk",
+        "role": null
+      },
+      "9d40": {
+        "uuid": "Compendium.essence20.pr_crb.Item.pmA5wQDbc5oQk5Ak",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhanced Summoner",
+        "type": "perk",
+        "role": null
+      },
+      "cf5c": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.5gPWxUEkFKDQf6lM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Assist",
+        "type": "perk",
+        "role": null
+      },
+      "71fd": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.bxnYVraaRNaXRy9Y",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Warrior",
+        "type": "perk",
+        "role": null
+      },
+      "7b9c": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.zitiiHIQ4miPU5pa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Instructor",
+        "type": "perk",
+        "role": null
+      },
+      "cf5f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.02eABr4sNdGQmQx9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Morphin Grid Mapsuite",
+        "type": "perk",
+        "role": null
+      },
+      "06c1": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.EmostxHbim1OrX51",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Naturalist",
+        "type": "perk",
+        "role": null
+      },
+      "b064": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.xOhVWGL1lHJaVdqI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Survival Training",
+        "type": "perk",
+        "role": null
+      },
+      "dfb4": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.JZgbPpDoFXctLBoH",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wind Whispers",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 1600000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,13 +113,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1714148504821,
-    "modifiedTime": 1714864390416,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748228216856,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!6wD6guZWDrVbsMHZ"
 }

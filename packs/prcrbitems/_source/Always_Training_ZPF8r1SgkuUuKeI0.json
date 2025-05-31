@@ -13,19 +13,71 @@
     "selectionLimit": 1,
     "type": "origin"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Always Training",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.pr_crb.Item.ZPF8r1SgkuUuKeI0",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Fypdc5WjBu3q4YDj",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.essenceShifts.speed.untrainedBonus",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.essenceShifts.strength.untrainedBonus",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1748202173417,
+        "modifiedTime": 1748202599190,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!ZPF8r1SgkuUuKeI0.Fypdc5WjBu3q4YDj"
+    }
+  ],
   "flags": {
     "core": {}
   },
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1681687775802,
     "modifiedTime": 1704127415964,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_id": "ZPF8r1SgkuUuKeI0",
   "folder": "6JBsYFMKeBdQECxk",

@@ -84,30 +84,6 @@
         "subtype": "role",
         "level": 9
       },
-      "aa18": {
-        "uuid": "Compendium.essence20.jump_through_time.Item.0bw6c3XfIYcQeGgN",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Adaption 2",
-        "type": "perk",
-        "subtype": "role",
-        "level": 17
-      },
-      "e66e": {
-        "uuid": "Compendium.essence20.jump_through_time.Item.Eg5LUM4lWf7X7yGs",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Heart's Calling",
-        "type": "perk",
-        "subtype": "role",
-        "level": 18
-      },
-      "572d": {
-        "uuid": "Compendium.essence20.jump_through_time.Item.EfkIx0B3AN0HipH8",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Purple Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "0156": {
         "uuid": "Compendium.essence20.jump_through_time.Item.lhUy6M5juoCvCVBd",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -149,6 +125,60 @@
           "startingMax": null,
           "value": null
         }
+      },
+      "d360": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.bPlkdiTAN99QJ1ou",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhance Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "93c4": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "490b": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.bPlkdiTAN99QJ1ou",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhance Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "0b3b": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.0bw6c3XfIYcQeGgN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adaption 2",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "abe8": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.Eg5LUM4lWf7X7yGs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart's Calling",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "cb12": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.EfkIx0B3AN0HipH8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Purple Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "cc45": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
       }
     },
     "adjustments": {
@@ -249,13 +279,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713574242217,
-    "modifiedTime": 1714616698096,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748273570205,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!Eo4WnlP5D6QhhlJ9"
 }
