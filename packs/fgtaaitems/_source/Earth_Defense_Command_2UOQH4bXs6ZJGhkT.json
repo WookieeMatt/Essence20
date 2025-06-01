@@ -1,0 +1,48 @@
+{
+  "folder": "T6IrLu3S63g1Epu1",
+  "name": "Earth Defense Command",
+  "type": "faction",
+  "_id": "2UOQH4bXs6ZJGhkT",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 69
+    },
+    "items": {
+      "6e5a": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.uQQbRbwADVtVwsym",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Earth Defense Command",
+        "type": "perk"
+      },
+      "dd5e": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.pfP58nZasclFYAVk",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Earth Defenders",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748812321927,
+    "modifiedTime": 1748812469355,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!2UOQH4bXs6ZJGhkT"
+}

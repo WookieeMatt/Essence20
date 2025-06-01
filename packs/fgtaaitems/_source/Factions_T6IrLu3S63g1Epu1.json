@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Factions",
+  "color": null,
+  "sorting": "a",
+  "_id": "T6IrLu3S63g1Epu1",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748812246030,
+    "modifiedTime": 1748812246030,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!folders!T6IrLu3S63g1Epu1"
+}

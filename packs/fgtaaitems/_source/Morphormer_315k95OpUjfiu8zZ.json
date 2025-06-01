@@ -1,0 +1,48 @@
+{
+  "folder": "T6IrLu3S63g1Epu1",
+  "name": "Morphormer",
+  "type": "faction",
+  "_id": "315k95OpUjfiu8zZ",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Field Guide to Action & Adventure",
+      "page": 70
+    },
+    "items": {
+      "3199": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.9oVQjvw6FqVQyopW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Morphormer Benefits",
+        "type": "perk"
+      },
+      "e94a": {
+        "uuid": "Compendium.essence20.field_guide_action_adventure.Item.fmDJTf8pXl0Hjnyw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Accelerate Conversion",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748812629145,
+    "modifiedTime": 1748812725835,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!315k95OpUjfiu8zZ"
+}
