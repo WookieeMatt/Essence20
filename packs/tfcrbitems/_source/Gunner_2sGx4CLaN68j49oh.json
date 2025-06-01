@@ -12,6 +12,12 @@
       "page": 67
     },
     "items": {
+      "8012": {
+        "uuid": "Compendium.essence20.tf_crb.Item.pJGxl6rV8Csgapvi",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Autobots",
+        "type": "faction"
+      },
       "e401": {
         "uuid": "Compendium.essence20.tf_crb.Item.t5EC1a4cbtfwewd6",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -197,13 +203,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1714190860422,
-    "modifiedTime": 1714863148515,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748699111627,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!2sGx4CLaN68j49oh"
 }

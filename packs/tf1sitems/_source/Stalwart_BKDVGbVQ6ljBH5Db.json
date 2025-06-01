@@ -1,0 +1,98 @@
+{
+  "folder": "ylPyNBLeR086TMk8",
+  "name": "Stalwart",
+  "type": "perk",
+  "_id": "BKDVGbVQ6ljBH5Db",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 14
+    },
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "name": "Stalwart Influence Perk",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.transformers_one_sourcebook.Item.BKDVGbVQ6ljBH5Db",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "fIMuWQeo8JGMrTeK",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.initiative.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1748738696672,
+        "modifiedTime": 1748738816474,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!BKDVGbVQ6ljBH5Db.fIMuWQeo8JGMrTeK"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748738678457,
+    "modifiedTime": 1748738688408,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!BKDVGbVQ6ljBH5Db"
+}
