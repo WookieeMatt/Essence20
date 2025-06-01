@@ -1,0 +1,48 @@
+{
+  "folder": "Gn8xdjRfO4KJmttO",
+  "name": "Slaughter's Marauders",
+  "type": "faction",
+  "_id": "r9uoIZikLsOjwWuZ",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaughter Sourcebook",
+      "page": 14
+    },
+    "items": {
+      "9b94": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.7Rba9ZTL1Ee3C7hC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Always a Maurader",
+        "type": "perk"
+      },
+      "ee49": {
+        "uuid": "Compendium.essence20.sgt_slaughter_sourcebook.Item.7CuDik9Vtpou9iDJ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Oorah!",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748807555454,
+    "modifiedTime": 1748807736139,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!r9uoIZikLsOjwWuZ"
+}

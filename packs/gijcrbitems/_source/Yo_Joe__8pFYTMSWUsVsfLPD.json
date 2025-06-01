@@ -11,7 +11,8 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "faction"
+    "type": "faction",
+    "version": "giJoe"
   },
   "effects": [
     {
@@ -38,18 +39,19 @@
       "tint": "#ffffff",
       "transfer": true,
       "flags": {},
-      "name": "Unnamed Effect",
+      "name": "Yo Joe!",
       "description": "",
       "statuses": [],
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.344",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null,
+        "modifiedTime": 1748747582727,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
@@ -63,13 +65,14 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1686316660623,
-    "modifiedTime": 1704127409088,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1748747571215,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_id": "8pFYTMSWUsVsfLPD",
   "folder": "V4wWMrCQv2tf5Tq4",

@@ -1,0 +1,48 @@
+{
+  "folder": "iLSFE9MSFN2IpdZw",
+  "name": "Oktober Guard",
+  "type": "faction",
+  "_id": "ViOa6zwhdPxdEj37",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 68
+    },
+    "items": {
+      "ab13": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.sItc8nD7ockbQ1mn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Nu, Pogodi!",
+        "type": "perk"
+      },
+      "a7e4": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.jqw24LqcPoTTueVm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bogartyr",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748806143921,
+    "modifiedTime": 1748806648032,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!ViOa6zwhdPxdEj37"
+}
