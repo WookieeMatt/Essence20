@@ -540,6 +540,7 @@ export async function onRoleDelete(actor, role) {
   // Misc updates
   await actor.update ({
     "system.defenses.toughness.morphed": 0,
+    "system.level": 1,
   });
 
   deleteAttachmentsForItem(role, actor);
