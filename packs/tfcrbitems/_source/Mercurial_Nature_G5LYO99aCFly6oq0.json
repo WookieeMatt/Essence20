@@ -1,6 +1,6 @@
 {
   "folder": "7D7hhg2Qz2cH5dcq",
-  "name": "Mecurial Nature",
+  "name": "Mercurial Nature",
   "type": "perk",
   "_id": "G5LYO99aCFly6oq0",
   "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -25,12 +25,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1714268421112,
     "modifiedTime": 1714864122414,
     "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!G5LYO99aCFly6oq0"
 }

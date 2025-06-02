@@ -1,6 +1,6 @@
 {
   "folder": "TloTmcyDSbmlZYl4",
-  "name": "Untrustowrthy",
+  "name": "Untrustworthy",
   "type": "hangUp",
   "_id": "ECpYArLN6MBKsbyC",
   "img": "icons/svg/hazard.svg",
@@ -41,14 +41,15 @@
       "flags": {},
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.344",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
         "lastModifiedBy": null,
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
@@ -63,12 +64,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1694532224054,
-    "modifiedTime": 1704127406940,
-    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "modifiedTime": 1748738109505,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "sort": 0,
   "ownership": {

@@ -1,0 +1,62 @@
+{
+  "folder": "iIanzOy8c0kaFE8p",
+  "name": "High Guard Initiate",
+  "type": "influence",
+  "_id": "9z9OydCCaslBGboC",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 11
+    },
+    "items": {
+      "d811": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.jnD79CSB3PsnF0Wb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "High Guard Initiate",
+        "type": "perk"
+      },
+      "56cb": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.duMjTyfREHYmDFJs",
+        "img": "icons/svg/hazard.svg",
+        "name": "Arrogant",
+        "type": "hangUp"
+      },
+      "d581": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.2tPC2AgganNw2GgO",
+        "img": "icons/svg/hazard.svg",
+        "name": "Co-Dependent",
+        "type": "hangUp"
+      },
+      "06a4": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aT1jR044JiN8tLQi",
+        "img": "icons/svg/hazard.svg",
+        "name": "Violent",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748738328618,
+    "modifiedTime": 1748738361424,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!9z9OydCCaslBGboC"
+}

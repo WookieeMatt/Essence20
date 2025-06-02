@@ -1,0 +1,127 @@
+{
+  "folder": "r9jPcva4FgMbRyCW",
+  "name": "Turbo-Pliers",
+  "type": "weapon",
+  "_id": "Wsi0zbUrg0taIFXC",
+  "img": "systems/essence20/assets/icons/weapons/plier.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 19
+    },
+    "items": {
+      "9612": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.FtKYfRmtLtRynYo9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo-Pliers Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "blunt",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "8bc4": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.bZzV5pWZ7s8hXLbC",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo-Pliers Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      },
+      "5ccf": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.S2VhBxz48sjDasDZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Turbo-Pliers Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 0,
+        "damageType": "maneuver",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "poisonApplication": {
+      "contact": false,
+      "ingested": false,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "antiTank",
+      "reload",
+      "tool",
+      "wrecker"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748741917498,
+    "modifiedTime": 1748741960139,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!Wsi0zbUrg0taIFXC"
+}

@@ -305,6 +305,15 @@
       "type": "Item",
       "private": false,
       "flags": {}
+    },
+    {
+      "name": "transformers_one_sourcebook",
+      "label": "Transformers One Sourcebook",
+      "system": "essence20",
+      "path": "packs/tf1sitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
     }
   ],
   "packFolders": [
@@ -348,7 +357,8 @@
         "tf_crb",
         "decepticon_directive",
         "enigma_of_combination",
-        "technorganic_secrets"
+        "technorganic_secrets",
+        "transformers_one_sourcebook"
       ]
     }
   ],

@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Faction",
+  "color": null,
+  "sorting": "a",
+  "_id": "XlhSy7wKTqYbSXfw",
+  "description": "",
+  "sort": 0,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748738944504,
+    "modifiedTime": 1748738944504,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!folders!XlhSy7wKTqYbSXfw"
+}

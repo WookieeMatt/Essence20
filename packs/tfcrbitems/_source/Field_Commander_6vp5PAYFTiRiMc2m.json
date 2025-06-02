@@ -1,6 +1,6 @@
 {
   "folder": "j9xCezjIU7AAGhp7",
-  "name": "Field Command",
+  "name": "Field Commander",
   "type": "role",
   "_id": "6vp5PAYFTiRiMc2m",
   "img": "systems/essence20/assets/icons/items/role.svg",
@@ -99,6 +99,12 @@
         "type": "perk",
         "subtype": "general",
         "level": 18
+      },
+      "b47f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.pJGxl6rV8Csgapvi",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Autobots",
+        "type": "faction"
       }
     },
     "adjustments": {
@@ -194,13 +200,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1714189344511,
-    "modifiedTime": 1714843002713,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748699104961,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!6vp5PAYFTiRiMc2m"
 }

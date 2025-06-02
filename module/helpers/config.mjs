@@ -142,6 +142,7 @@ E20.weaponTraits = {
   stun: "E20.WeaponTraitStun",
   temperamental: "E20.WeaponTraitTemperamental",
   thrown: "E20.WeaponTraitThrown",
+  tool: "E20.WeaponTraitTool",
   toxin: "E20.WeaponTraitToxin",
   titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
