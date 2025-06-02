@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "4.6.5",
+  "version": "4.6.9",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -366,8 +366,8 @@
   "secondaryTokenAttribute": "stun",
   "socket": true,
   "url": "https://github.com/WookieeMatt/Essence20",
-  "manifest": "https://raw.githubusercontent.com/WookieeMatt/Essence20/main/system.json",
-  "download": "https://github.com/WookieeMatt/Essence20/releases/latest/download/Essence20.zip",
+  "manifest": "https://github.com/WookieeMatt/Essence20/releases/latest/download/system.json",
+  "download": "https://github.com/WookieeMatt/Essence20/releases/download/v4.6.9/Essence20.zip",
   "license": "LICENSE.txt",
   "id": "essence20",
   "authors": [
