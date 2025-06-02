@@ -21,7 +21,7 @@
       "ce40": {
         "uuid": "Compendium.essence20.quartermasters_guide_to_gear.Item.VjmSYnaGqvpKuNu7",
         "img": "icons/svg/sword.svg",
-        "name": "Close Combat Blade (Nonleathal)",
+        "name": "Close Combat Blade (Nonlethal)",
         "type": "weapon",
         "items": {
           "bd64": {
@@ -49,7 +49,7 @@
           "518e": {
             "uuid": "Compendium.essence20.gi_joe_crb.Item.QbfY2NGNmUmKa6uO",
             "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
-            "name": "Nonleathal",
+            "name": "Nonlethal",
             "type": "upgrade",
             "availability": "standard",
             "benefit": "",
@@ -77,12 +77,13 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "systemId": "essence20",
     "systemVersion": "4.5.0",
     "createdTime": 1733535363148,
     "modifiedTime": 1733535453281,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "exportSource": null
   },
   "_key": "!items!yDqVggvmDB2jj1f9"
 }

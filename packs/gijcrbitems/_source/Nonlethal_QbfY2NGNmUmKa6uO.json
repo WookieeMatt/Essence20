@@ -1,6 +1,6 @@
 {
   "folder": "w813kMBI7fhWPpY9",
-  "name": "Nonleathal",
+  "name": "Nonlethal",
   "type": "upgrade",
   "_id": "QbfY2NGNmUmKa6uO",
   "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
@@ -26,12 +26,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1695605191308,
     "modifiedTime": 1704127409109,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "sort": 0,
   "ownership": {

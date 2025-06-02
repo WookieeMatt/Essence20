@@ -50,12 +50,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.344",
         "systemId": "essence20",
         "systemVersion": "4.5.0",
         "createdTime": 1733628321967,
         "modifiedTime": 1733628336548,
-        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+        "exportSource": null
       },
       "_key": "!items.effects!MOOrbfVEyGTDExfv.aXTN7z9DPbpxezGB"
     }
@@ -69,12 +70,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1714012718848,
     "modifiedTime": 1714847180808,
     "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!MOOrbfVEyGTDExfv"
 }

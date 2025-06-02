@@ -1,0 +1,110 @@
+{
+  "folder": "0y1na8xxUmp1iVWN",
+  "name": "Roaming the Land",
+  "type": "perk",
+  "_id": "jdQFjlYUHaRze6as",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 75
+    },
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction",
+    "value": 0,
+    "version": "giJoe"
+  },
+  "effects": [
+    {
+      "name": "Roaming the Land",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.ferocious_fighters.Item.jdQFjlYUHaRze6as",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "CPR5Ad1pziPgBIvC",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.defenses.evasion.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.skills.intimidation.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1748796385068,
+        "modifiedTime": 1748796464288,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!jdQFjlYUHaRze6as.CPR5Ad1pziPgBIvC"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748796374315,
+    "modifiedTime": 1748796382879,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!jdQFjlYUHaRze6as"
+}
