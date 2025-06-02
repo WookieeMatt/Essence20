@@ -606,7 +606,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
    */
   async _onLevelChangeHelper(levelChange) {
     const newLevel = this.actor.system.level + levelChange;
-    if (newLevel > 0) {
+    if (newLevel > 0 && newLevel <= 20) {
       await this.actor.update({
         "system.level": this.actor.system.level + levelChange,
       }).then(this.render(false));
