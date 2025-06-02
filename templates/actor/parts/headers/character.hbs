@@ -24,15 +24,17 @@
   {{numberInput system.level name="system.level" min=0 step=1 disabled=true class="two-digit-input"}}
 </div>
 {{#unless system.isLocked}}
-  <div class="flexcol pr-header-level-buttons" style="align-items: flex-end">
-    <div></div>
-    <a class="level-up" data-tooltip="E20.LevelUp">
-      <i class="fas fa-up"></i>
-    </a>
-    <a class="level-down" data-tooltip="E20.LevelDown">
-      <i class="fas fa-down"></i>
-    </a>
-  </div>
+  {{#if @root.role}}
+    <div class="flexcol pr-header-level-buttons" style="align-items: flex-end">
+      <div></div>
+      <a class="level-up" data-tooltip="E20.LevelUp">
+        <i class="fas fa-up"></i>
+      </a>
+      <a class="level-down" data-tooltip="E20.LevelDown">
+        <i class="fas fa-down"></i>
+      </a>
+    </div>
+  {{/if}}
 {{/unless}}
 <div class="pr-header-color flex-group-center">
   <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
@@ -40,3 +42,4 @@
 </div>
 {{/inline}}
 {{/"systems/essence20/templates/actor/parts/headers/common.hbs"}}
+e
