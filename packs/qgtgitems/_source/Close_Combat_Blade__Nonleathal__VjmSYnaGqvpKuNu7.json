@@ -1,6 +1,6 @@
 {
   "folder": "MHkJRqa9JFTMYVqF",
-  "name": "Close Combat Blade (Nonleathal)",
+  "name": "Close Combat Blade (Nonlethal)",
   "type": "weapon",
   "img": "icons/svg/sword.svg",
   "system": {
@@ -36,7 +36,7 @@
       "518e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.QbfY2NGNmUmKa6uO",
         "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
-        "name": "Nonleathal",
+        "name": "Nonlathal",
         "type": "upgrade",
         "availability": "standard",
         "benefit": "",
