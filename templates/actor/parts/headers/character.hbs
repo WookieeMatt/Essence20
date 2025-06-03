@@ -27,10 +27,10 @@
   {{#if @root.role}}
     <div class="flexcol pr-header-level-buttons" style="align-items: flex-end">
       <div></div>
-      <a class="level-up" data-tooltip="E20.LevelUp" {{#if (eq system.level 20)}}disabled{{/if}}>
+      <a class="level-up" data-tooltip="E20.LevelButtonUp" {{#if (eq system.level 20)}}disabled{{/if}}>
         <i class="fa{{#if (eq system.level 20)}}-regular{{/if}} fa-up"></i>
       </a>
-      <a class="level-down" data-tooltip="E20.LevelDown" {{#if (eq system.level 1)}}disabled{{/if}}>
+      <a class="level-down" data-tooltip="E20.LevelButtonDown" {{#if (eq system.level 1)}}disabled{{/if}}>
         <i class="fa{{#if (eq system.level 1)}}-regular{{/if}} fa-down"></i>
       </a>
     </div>

@@ -386,6 +386,8 @@
     "Level18": "18th Level",
     "Level19": "19th Level",
     "Level20": "20th Level",
+    "LevelButtonDown": "Level down",
+    "LevelButtonUp": "Level up",
     "LevelSelector": "Open level selector",
     "LightRangeBright": "Bright",
     "LightRangeDim": "Dim",
