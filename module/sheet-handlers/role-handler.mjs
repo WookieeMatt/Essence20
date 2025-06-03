@@ -292,6 +292,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
     return false;
   }
 
+  // Faction updates
   const factionList = getItemsOfType("faction", actor.items);
   if (factionList.length) {
     addFactionPerks(actor, role);
@@ -319,6 +320,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
   actor.setFlag('essence20', 'previousLevel', actor.system.level);
   actor.setFlag('essence20', 'roleDrop', true);
 
+  // Skill updates
   if (role.system.skillDie.isUsed) {
     const skillName = "roleSkillDie";
     const skillStringShift = `system.skills.${skillName}.shift`;
@@ -348,6 +350,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
     });
   }
 
+  // Role version updates
   if (role.system.version =='powerRangers') {
     await actor.update({
       "system.canMorph": true,
@@ -355,6 +358,10 @@ export async function onRoleDrop(actor, role, dropFunc) {
   } else if (role.system.version =='myLittlePony') {
     await actor.update({
       "system.canSpellcast": true,
+    });
+  } else  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": true,
     });
   }
 
@@ -368,18 +375,14 @@ export async function onRoleDrop(actor, role, dropFunc) {
     await setRoleValues(newRole, actor);
   }
 
-  if (role.system.version == 'giJoe') {
-    await actor.update({
-      "system.canQualify": true,
-    });
-  }
-
+  // Training updates
   await _trainingUpdate(actor, 'armors', 'qualified', true, role);
   await _trainingUpdate(actor, 'armors', 'trained', true, role);
   await _trainingUpdate(actor, 'weapons', 'qualified', true, role);
   await _trainingUpdate(actor, 'weapons', 'trained', true, role);
   await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
 
+  // Morphed toughness bonus updates
   for (const item of actor.items) {
     if (item._stats.compendiumSource == MORPHIN_TIME_PERK_ID) {
       setMorphedToughnessBonus(actor);
@@ -423,6 +426,7 @@ export async function onRoleDelete(actor, role) {
   const focus = getItemsOfType("focus", actor.items);
   const factionList = getItemsOfType("faction", actor.items);
 
+  // Faction updates
   if (factionList.length) {
     for (const item of actor.items) {
       if (item.type == "perk" && item.system.isRoleVariant) {
@@ -431,6 +435,7 @@ export async function onRoleDelete(actor, role) {
     }
   }
 
+  // Essence updates
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
     const essenceMaxValue = Math.max(0, actor.system.essences[essence].max + totalDecrease);
@@ -444,6 +449,7 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
+  // Role version updates
   if (role.system.version =='powerRangers') {
     await actor.update({
       "system.canMorph": false,
@@ -452,8 +458,22 @@ export async function onRoleDelete(actor, role) {
     await actor.update({
       "system.canSpellcast": false,
     });
+  } else if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": false,
+    });
   }
 
+  if (role.system.version == 'myLittlePony' || role.system.hasSpecialAdvancement) {
+    await actor.update({
+      "system.essenceRanks.smarts": null,
+      "system.essenceRanks.social": null,
+      "system.essenceRanks.speed": null,
+      "system.essenceRanks.strength": null,
+    });
+  }
+
+  // Personal Power updates
   if (role.system.powers.personal.starting) {
     const totalDecrease = roleValueChange(0, role.system.powers.personal.levels, previousLevel);
     const newPersonalPowerMax = Math.max(0, parseInt(actor.system.powers.personal.max) - role.system.powers.personal.starting + (role.system.powers.personal.increase * totalDecrease));
@@ -464,6 +484,7 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
+  // Skill updates
   if (role.system.skillDie.isUsed) {
     const skillName = "roleSkillDie";
     const skillStringShift = `system.skills.${skillName}.shift`;
@@ -493,6 +514,7 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
+  // Health updates
   if (role.system.adjustments.health.length) {
     const totalDecrease = roleValueChange(0, role.system.adjustments.health, previousLevel);
     const newHealthBonus = Math.max(0, actor.system.health.bonus + totalDecrease);
@@ -502,34 +524,23 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
+  // Focus updates
   if (focus[0]) {
     await onFocusDelete(actor, focus[0]);
     await focus[0].delete();
   }
 
-  if (role.system.version == 'myLittlePony' || role.system.hasSpecialAdvancement) {
-    await actor.update({
-      "system.essenceRanks.smarts": null,
-      "system.essenceRanks.social": null,
-      "system.essenceRanks.speed": null,
-      "system.essenceRanks.strength": null,
-    });
-  }
-
-  if (role.system.version == 'giJoe') {
-    await actor.update({
-      "system.canQualify": false,
-    });
-  }
-
+  // Training updates
   await _trainingUpdate(actor, 'armors', 'qualified', false, role);
   await _trainingUpdate(actor, 'armors', 'trained', false, role);
   await _trainingUpdate(actor, 'weapons', 'qualified', false, role);
   await _trainingUpdate(actor, 'weapons', 'trained', false, role);
   await _trainingUpdate(actor, 'armors', 'trained', false, role, true);
 
+  // Misc updates
   await actor.update ({
     "system.defenses.toughness.morphed": 0,
+    "system.level": 1,
   });
 
   deleteAttachmentsForItem(role, actor);
@@ -618,11 +629,11 @@ export async function _setEssenceProgression(actor, options, role, dropFunc, lev
 }
 
 /**
- *
+ * Adds or removes Item type training for the given Actor.
  * @param {Actor} actor The Actor whose training is being updated
  * @param {String} itemType The type of item that we are training
  * @param {String} trainingType The type of training we are applying
- * @param {Boolean} updateType Whether we are adding or removing training
+ * @param {Boolean} updateType Whether we are adding (true) or removing (false) training
  * @param {Object} role The role that actor has
  * @param {Boolean} useUpgradesAccessor Whether this is targeting Upgrades or not
  */
