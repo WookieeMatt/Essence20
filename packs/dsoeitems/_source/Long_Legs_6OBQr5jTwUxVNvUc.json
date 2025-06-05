@@ -51,7 +51,7 @@
       "system": {},
       "changes": [
         {
-          "key": "system.movement.ground.base",
+          "key": "system.movement.ground.bonus",
           "mode": 2,
           "value": "10",
           "priority": null
