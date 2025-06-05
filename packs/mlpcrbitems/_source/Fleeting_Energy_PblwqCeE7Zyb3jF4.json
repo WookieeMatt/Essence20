@@ -17,12 +17,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1680142984150,
     "modifiedTime": 1704127413372,
     "lastModifiedBy": "ai0LSR3ikAGU2SmG",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_id": "PblwqCeE7Zyb3jF4",
   "folder": "ly03UXfH1Jdy7p6W",

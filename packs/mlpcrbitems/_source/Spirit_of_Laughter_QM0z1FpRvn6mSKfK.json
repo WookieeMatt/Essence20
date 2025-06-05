@@ -28,14 +28,6 @@
         "subtype": "role",
         "level": 1
       },
-      "aecd": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.2qyftQYtr5noeJ6e",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Friendship Circle",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
       "a711": {
         "uuid": "Compendium.essence20.mlp_crb.Item.VnYjQtJmU2ZIYQ9y",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -164,6 +156,12 @@
           "startingMax": 2,
           "value": 0
         }
+      },
+      "8c28": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.46R1ivWI77hUhyC4",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "My Little Pony",
+        "type": "faction"
       }
     },
     "adjustments": {
@@ -229,13 +227,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
     "createdTime": 1713838421567,
-    "modifiedTime": 1714616014850,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1749082463107,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!QM0z1FpRvn6mSKfK"
 }
