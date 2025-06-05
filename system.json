@@ -4,12 +4,11 @@
   "version": "4.6.5",
   "esmodules": [
     "module/essence20.mjs",
-    "module/story-points-tracker.js",
+    "module/story-points.js",
     "module/settings.js"
   ],
   "styles": [
-    "css/essence20.css",
-    "css/story-points-tracker.css"
+    "css/essence20.css"
   ],
   "languages": [
     {
