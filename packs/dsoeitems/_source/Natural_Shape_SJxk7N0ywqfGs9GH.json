@@ -13,7 +13,25 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "origin",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "items": {
+      "b037": {
+        "uuid": "Compendium.essence20.dark_skies_over_equestria.Item.FRUWPAePJzm7Mlf0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Colony Changeling",
+        "type": "perk",
+        "role": null
+      },
+      "ae75": {
+        "uuid": "Compendium.essence20.dark_skies_over_equestria.Item.aD130X44xDxZ6o2U",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Metamorphosed Changeling",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 0,
@@ -24,11 +42,11 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
+    "systemVersion": "4.6.9",
     "coreVersion": "13.344",
     "createdTime": 1713840635442,
-    "modifiedTime": 1713840643000,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1749089667081,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null
