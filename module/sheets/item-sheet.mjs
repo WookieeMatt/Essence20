@@ -24,6 +24,8 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     return super.activateEditor(name, options, initialContent);
   }
 
+  static _warnedAppV1 = true;
+
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
