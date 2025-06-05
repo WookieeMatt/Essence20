@@ -45,6 +45,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     return super.activateEditor(name, options, initialContent);
   }
 
+  static _warnedAppV1 = true;
+
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {

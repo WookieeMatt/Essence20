@@ -23,7 +23,8 @@ export const migrateWorld = async function() {
     if (["giJoe", "pony", "powerRanger", "transformer"].includes(invalidActor.type)) {
       await invalidActor.update({
         "type": "playerCharacter",
-      });
+        "system": invalidActor.system,
+      }, {recursive: false});
       reloadNeeded = true;
     }
   }

@@ -24,6 +24,8 @@ export class StoryPointsTracker extends Application {
   gmPoints = game.settings.get('essence20', 'sptGmPoints');
   storyPoints = game.settings.get('essence20', 'sptStoryPoints');
 
+  static _warnedAppV1 = true;
+
   static get defaultOptions() {
     let pos = game.user.getFlag("essence20", "storyPointsTrackerPos");
     return foundry.utils.mergeObject(super.defaultOptions, {

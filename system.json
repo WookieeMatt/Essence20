@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "4.6.9",
+  "version": "This is auto replaced",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -375,9 +375,9 @@
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stun",
   "socket": true,
-  "url": "https://github.com/WookieeMatt/Essence20",
-  "manifest": "https://github.com/WookieeMatt/Essence20/releases/latest/download/system.json",
-  "download": "https://github.com/WookieeMatt/Essence20/releases/download/v4.6.9/Essence20.zip",
+  "url": "This is auto replaced",
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced",
   "license": "LICENSE.txt",
   "id": "essence20",
   "authors": [
@@ -391,6 +391,6 @@
     "verified": "13"
   },
   "flags": {
-    "needsMigrationVersion": "4.5.0"
+    "needsMigrationVersion": "5.0.0"
   }
 }
