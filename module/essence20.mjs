@@ -192,7 +192,7 @@ Hooks.once("ready", async function () {
 });
 
 /* eslint-disable no-unused-vars */
-Hooks.on("renderChatMessage", (app, html, data) => {
+Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
 });
 
