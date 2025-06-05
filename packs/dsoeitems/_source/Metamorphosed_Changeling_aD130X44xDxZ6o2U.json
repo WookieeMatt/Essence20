@@ -1,0 +1,96 @@
+{
+  "folder": "Z4ExVZSQDdXuJJHC",
+  "name": "Metamorphosed Changeling",
+  "type": "perk",
+  "_id": "aD130X44xDxZ6o2U",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Dark Skies Over Equestria",
+      "page": 16
+    },
+    "items": {
+      "ed4b": {
+        "uuid": "Compendium.essence20.dark_skies_over_equestria.Item.MIqTCcA1vXERwPYv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Antlers",
+        "type": "perk",
+        "role": null
+      },
+      "a5a6": {
+        "uuid": "Compendium.essence20.dark_skies_over_equestria.Item.izErKlyglXX0NpCw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Wings",
+        "type": "perk",
+        "role": null
+      },
+      "4ac5": {
+        "uuid": "Compendium.essence20.dark_skies_over_equestria.Item.e2eojbZISwP8pmN0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enchanted Horn",
+        "type": "perk",
+        "role": null
+      },
+      "090a": {
+        "uuid": "Compendium.essence20.dark_skies_over_equestria.Item.R7qSHuF6to4Btln1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hardy",
+        "type": "perk",
+        "role": null
+      },
+      "c1af": {
+        "uuid": "Compendium.essence20.dark_skies_over_equestria.Item.6OBQr5jTwUxVNvUc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Long Legs",
+        "type": "perk",
+        "role": null
+      },
+      "98c4": {
+        "uuid": "Compendium.essence20.dark_skies_over_equestria.Item.6UjOUTwU5zIzsIcl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wings",
+        "type": "perk",
+        "role": null
+      }
+    },
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "perks",
+    "isRoleVariant": false,
+    "hasChoice": true,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 2,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1749089241915,
+    "modifiedTime": 1749089610016,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!aD130X44xDxZ6o2U"
+}

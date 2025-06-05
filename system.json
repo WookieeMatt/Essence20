@@ -280,6 +280,15 @@
       "flags": {}
     },
     {
+      "name": "story_of_the_seasons",
+      "label": "Story of the Seasons",
+      "system": "essence20",
+      "path": "packs/sotsitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "technorganic_secrets",
       "label": "Technorganic Secrets",
       "system": "essence20",
@@ -335,7 +344,8 @@
       "packs": [
         "mlp_crb",
         "dark_skies_over_equestria",
-        "knights_of_canterlot"
+        "knights_of_canterlot",
+        "story_of_the_seasons"
       ]
     },
     {

@@ -28,12 +28,13 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "systemId": "essence20",
     "systemVersion": "4.4.1",
     "createdTime": 1727533485252,
     "modifiedTime": 1727533512766,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "exportSource": null
   },
   "_key": "!items!2I9z9FdCqMZFcR2O"
 }

@@ -1,5 +1,5 @@
 {
-  "folder": "IW840v1DWwXuSzO9",
+  "folder": "zd3FTWPwruzU34lw",
   "name": "Friendship Circle",
   "type": "perk",
   "_id": "2qyftQYtr5noeJ6e",
@@ -13,10 +13,11 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "faction",
+    "version": "myLittlePony"
   },
   "effects": [],
-  "sort": 300000,
+  "sort": 100000,
   "ownership": {
     "default": 0,
     "ai0LSR3ikAGU2SmG": 3
@@ -24,13 +25,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
     "createdTime": 1706819359043,
-    "modifiedTime": 1714854211167,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1749079817762,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!2qyftQYtr5noeJ6e"
 }

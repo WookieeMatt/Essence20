@@ -1,0 +1,42 @@
+{
+  "folder": "vFjqmIue75mhktmd",
+  "name": "My Little Pony",
+  "type": "faction",
+  "_id": "46R1ivWI77hUhyC4",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 72
+    },
+    "items": {
+      "2db4": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.2qyftQYtr5noeJ6e",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Friendship Circle",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1749079721806,
+    "modifiedTime": 1749079806449,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!46R1ivWI77hUhyC4"
+}
