@@ -1,0 +1,106 @@
+@use '../variables' as v;
+
+/* BEM formatting with scss niceties
+  box__element --modifier
+  seperate the modifiers because they should be unique to a box/box__element. This makes the css/scss MUCH cleaner
+  -Rascal-GL
+
+  Reference:
+  https://codepen.io/glorenz90/pen/wBBVqxG
+*/
+$sb-padding: 9px;
+
+.sliced-border {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  padding: 4px 2px;
+
+  &:has(> .sliced-border__label) {
+    padding-top: $sb-padding + 3px;
+  }
+
+  &:has(> .sliced-border__label.sliced-border) {
+    padding-top: $sb-padding + 16px;
+  }
+
+  &::before {
+    pointer-events: none;
+    filter: var(--root-border-filter);
+    position: absolute;
+    z-index: 0;
+    content: "";
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    border-style: solid;
+    border-image-slice: 16;
+    border-width: 16px;
+  }
+
+  &.--col {
+    flex-direction: column;
+  }
+
+  &.--thin::before {
+    border-image: var(--theme-border-image);
+    border-image-slice: 16;
+  }
+
+  &.--filled {
+    color: var(--theme-bg-color) !important; // Could be included, but this is appropriate here
+    font-weight: bold;
+
+    &::before {
+      border-image: var(--theme-filled-border-image);
+      border-image-slice: 16 fill;
+    }
+  }
+
+  &.--thick::before {
+    border-image: var(--theme-thick-border-image);
+    border-image-slice: 16 fill;
+  }
+
+  &.--tab {
+    &::before {
+      border-image: var(--theme-tab-image);
+      border-image-slice: 16;
+    }
+    
+    &.--filled::before {
+      border-image: var(--theme-filled-tab-image);
+      border-image-slice: 16 fill;
+    }
+  }
+
+  .sliced-border__label {
+    z-index: 2;
+    display: flex;
+    gap: v.$gap-md;
+    justify-content: center;
+    align-items: center;
+    color: var(--theme-border-color);
+    width: fit-content;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  label.sliced-border__label {
+    padding: 0 8px;
+    line-height: 0.75rem;
+    background: var(--theme-bg-color);
+  }
+
+  .sliced-border__input-row {
+    display: flex;
+    width: 100%;
+    gap: v.$gap-md;
+    *:nth-child(1) {
+      flex-grow: 1;
+    }
+  }
+}
