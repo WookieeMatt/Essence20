@@ -1,0 +1,44 @@
+{
+  "folder": "ZJC0NpSjVjHHbmYC",
+  "name": "Cultivated Inner Biome",
+  "type": "perk",
+  "_id": "zNAx2u5yUw14LWhq",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 46
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general",
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746244012875,
+    "modifiedTime": 1746244018968,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!zNAx2u5yUw14LWhq"
+}

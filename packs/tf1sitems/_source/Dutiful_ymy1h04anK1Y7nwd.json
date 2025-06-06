@@ -1,0 +1,68 @@
+{
+  "folder": "iIanzOy8c0kaFE8p",
+  "name": "Dutiful",
+  "type": "influence",
+  "_id": "ymy1h04anK1Y7nwd",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 10
+    },
+    "items": {
+      "ad57": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.330YD4FFwbHyJOE8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dutiful",
+        "type": "perk"
+      },
+      "2b69": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.duMjTyfREHYmDFJs",
+        "img": "icons/svg/hazard.svg",
+        "name": "Arrogant",
+        "type": "hangUp"
+      },
+      "e4ad": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.TmWyhhRJVL6yud29",
+        "img": "icons/svg/hazard.svg",
+        "name": "Brutally Honest",
+        "type": "hangUp"
+      },
+      "440d": {
+        "uuid": "Compendium.essence20.tf_crb.Item.M5gCV4i6hoOSowIb",
+        "img": "icons/svg/hazard.svg",
+        "name": "Subordinate",
+        "type": "hangUp"
+      },
+      "91e9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ztsvCKdnaDZzBR8Q",
+        "img": "icons/svg/hazard.svg",
+        "name": "Vainglorious",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748738192543,
+    "modifiedTime": 1748738239555,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!ymy1h04anK1Y7nwd"
+}

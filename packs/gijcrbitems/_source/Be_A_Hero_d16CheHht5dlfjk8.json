@@ -1,0 +1,103 @@
+{
+  "folder": "V4wWMrCQv2tf5Tq4",
+  "name": "Be A Hero",
+  "type": "perk",
+  "_id": "d16CheHht5dlfjk8",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 71
+    },
+    "items": {
+      "6718": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.pgulkBoelmLBqT21",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "All Warfare Is Deception",
+        "type": "perk",
+        "role": "Commando"
+      },
+      "bb78": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.7Bz2TsR2x5WHQLLv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "In My Sights",
+        "type": "perk",
+        "role": "Infantry"
+      },
+      "9e80": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.jSmMtJ0YFCEJcXYU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Benefits of Command",
+        "type": "perk",
+        "role": "Officer"
+      },
+      "d1ac": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.UZBeflhfdJ3vZhc6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Guide",
+        "type": "perk",
+        "role": "Ranger"
+      },
+      "c959": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.HzbJFluxv3lbg9nx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aggressive",
+        "type": "perk",
+        "role": "Renegade"
+      },
+      "d6c4": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.IoOFcSJK3sHLAbgR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quick Study",
+        "type": "perk",
+        "role": "Technician"
+      },
+      "d690": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hXtchClOmMDDeWB9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Iron Hide",
+        "type": "perk",
+        "role": "Vanguard"
+      }
+    },
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": true,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction",
+    "value": 0,
+    "version": "giJoe"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748747696036,
+    "modifiedTime": 1748785627322,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!d16CheHht5dlfjk8"
+}

@@ -1,0 +1,98 @@
+{
+  "folder": "S4JSUxMCCPAUVSSp",
+  "name": "Nothing Personal",
+  "type": "perk",
+  "_id": "WsB4CydGzKF2g7Yi",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 100
+    },
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction",
+    "value": 0,
+    "version": "giJoe"
+  },
+  "effects": [
+    {
+      "name": "New Effect",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.intercontinental_adventures.Item.WsB4CydGzKF2g7Yi",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "RNFpsOi3dPQ1FU6A",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.defenses.cleverness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1748806839109,
+        "modifiedTime": 1748806858327,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!WsB4CydGzKF2g7Yi.RNFpsOi3dPQ1FU6A"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748806819595,
+    "modifiedTime": 1748806831821,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!WsB4CydGzKF2g7Yi"
+}

@@ -1,0 +1,48 @@
+{
+  "folder": "Yo11Yuvil9pJpryo",
+  "name": "Cobra-La",
+  "type": "faction",
+  "_id": "YGsv6ra4K21D8xkz",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 72
+    },
+    "items": {
+      "8743": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.qaTQqbLShvXZdKCp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hypergenetic Manipulation",
+        "type": "perk"
+      },
+      "9231": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.VAhtHpKlv4gsR0OY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "The Glory of Cobra-La",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748795964859,
+    "modifiedTime": 1748796077645,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!YGsv6ra4K21D8xkz"
+}

@@ -1,0 +1,36 @@
+{
+  "folder": "zWF44EQlAZWf0k1L",
+  "name": "Scramble Field Generator",
+  "type": "gear",
+  "_id": "cIki3qTlr4gZed5f",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 49
+    },
+    "gearType": "support",
+    "quantity": 1
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746248049190,
+    "modifiedTime": 1746248058127,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!cIki3qTlr4gZed5f"
+}

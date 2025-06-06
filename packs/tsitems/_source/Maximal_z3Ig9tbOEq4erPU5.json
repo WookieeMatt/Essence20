@@ -1,0 +1,44 @@
+{
+  "folder": "gE6lEc3pTjUOLlPQ",
+  "name": "Maximal",
+  "type": "perk",
+  "_id": "z3Ig9tbOEq4erPU5",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 26
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "influence",
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.341",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746224831140,
+    "modifiedTime": 1746224840634,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!z3Ig9tbOEq4erPU5"
+}

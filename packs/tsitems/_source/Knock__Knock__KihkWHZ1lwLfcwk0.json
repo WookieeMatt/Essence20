@@ -1,0 +1,89 @@
+{
+  "folder": "YZLETJckN3jHJstL",
+  "name": "Knock, Knock!",
+  "type": "perk",
+  "_id": "KihkWHZ1lwLfcwk0",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 37
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin",
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "name": "Knock, Knock!",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.technorganic_secrets.Item.KihkWHZ1lwLfcwk0",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "K8q1JofppwLV0Zlq",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.342",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1746237768533,
+        "modifiedTime": 1746237794942,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!KihkWHZ1lwLfcwk0.K8q1JofppwLV0Zlq"
+    }
+  ],
+  "sort": 600000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746237745350,
+    "modifiedTime": 1746242979240,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!KihkWHZ1lwLfcwk0"
+}

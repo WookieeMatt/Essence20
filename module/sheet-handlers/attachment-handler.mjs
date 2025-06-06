@@ -1,8 +1,6 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
 import { createId, getItemsOfType } from "../helpers/utils.mjs";
-
-const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
-const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+import { onPerkDelete, setPerkValues, setPerkAdvancesName } from "./perk-handler.mjs";
 
 /**
  * Handles dropping Items that have attachments onto an Actor
@@ -57,8 +55,9 @@ export async function onEquipmentPackageDrop(actor, droppedItem) {
  */
 export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
   let copyWasCreated = false;
-
+  let skipToNext = false;
   for (const [key, item] of Object.entries(items)) {
+
     if (item.type == type) {
       const createNewItem =
         !["role", "focus"].includes(parentItem.type)
@@ -66,23 +65,34 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
+
+        if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
+          for (const ownerItem of owner.items) {
+            if (ownerItem._stats.compendiumSource == itemToCreate.uuid) {
+              const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
+              await ownerItem.update({
+                "system.advances.currentValue": newValue,
+              });
+              setPerkAdvancesName(ownerItem, itemToCreate.name);
+              skipToNext = true;
+              break;
+            }
+          }
+
+          if (skipToNext) {
+            continue;
+          }
+        }
+
         const newItem = await Item.create(itemToCreate, { parent: owner });
+
+        if (item.type == 'perk') {
+          await setPerkValues(owner, newItem, null);
+        }
 
         if (newItem.type == "altMode") {
           await owner.update({
             "system.canTransform": true,
-          });
-        }
-
-        if (item.uuid == SORCERY_PERK_ID) {
-          await actor.update ({
-            "system.powers.sorcerous.levelTaken": actor.system.level,
-          });
-        }
-
-        if (item.uuid == ZORD_PERK_ID) {
-          await owner.update ({
-            "system.canHaveZord": true,
           });
         }
 
@@ -142,7 +152,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 
     const prompt = "E20.SelectWeaponAttach";
     const title = "E20.SelectUpgradeOrWeaponEffect";
-    new ChoicesPrompt(choices, droppedItem, actor, prompt, title, dropFunc).render(true);
+    new ChoicesSelector(choices, actor, prompt, title, droppedItem, null, dropFunc, null, null, null).render(true);
   } else {
     ui.notifications.error(game.i18n.localize('E20.NoUpgradableItemsError'));
     return false;
@@ -150,7 +160,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 }
 
 /**
- * Processes the options resulting from _showAttachmentDialog()
+ * Processes the options resulting from ChoicesSelector
  * @param {Actor} actor The Actor receiving the attachment
  * @param {UUID} itemId The uuid of the item we are attaching to
  * @param {Function} dropFunc The function to call to complete the drop
@@ -215,6 +225,12 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     }
 
     break;
+  case "faction":
+    if (droppedItem.type == "perk") {
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
   case "focus":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
@@ -239,6 +255,13 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     }
 
     break;
+  case "perk":
+    if (droppedItem.type == "perk") {
+      entry['role'] = null;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    }
+
+    break;
   case "role":
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
@@ -250,6 +273,8 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['isActive'] = droppedItem.system.isActive;
       entry['powerCost'] = droppedItem.system.powerCost;
       entry['resource'] = droppedItem.system.resource;
+      return _addItemIfUnique(droppedItem, targetItem, entry);
+    } else if (droppedItem.type == 'faction') {
       return _addItemIfUnique(droppedItem, targetItem, entry);
     }
 
@@ -306,6 +331,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
 * @return {Promise<String>} The key generated for the dropped Item
 */
 export async function _addItemIfUnique(droppedItem, targetItem, entry) {
+  let timesTaken = 0;
   const items = targetItem.system.items;
   if (items) {
     for (const [, item] of Object.entries(items)) {
@@ -314,7 +340,29 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
         return;
       }
 
-      if (item.uuid === droppedItem.uuid) {
+      if (droppedItem.type == 'faction' && item.type == 'faction') {
+        ui.notifications.error(game.i18n.localize('E20.FactionsMultipleError'));
+        return;
+      }
+
+      if (droppedItem.type == "perk") {
+        if (item.uuid === droppedItem.uuid) {
+          timesTaken += 1;
+          if (droppedItem.system.selectionLimit <= timesTaken) {
+            ui.notifications.error(
+              game.i18n.format(
+                'E20.SelectionLimitError',
+                {
+                  type: game.i18n.localize(`TYPES.Item.${droppedItem.type}`),
+                  limit: droppedItem.system.selectionLimit,
+                },
+              ),
+            );
+            return;
+          }
+        }
+      } else if (item.uuid === droppedItem.uuid) {
+        ui.notifications.error(game.i18n.localize('E20.AlreadyAttachedError'));
         return;
       }
     }
@@ -338,33 +386,42 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
 */
 export async function deleteAttachmentsForItem(item, actor, previousLevel=null) {
   for (const actorItem of actor.items) {
-    const itemSourceId = foundry.utils.isNewerVersion('12', game.version)
-      ? await actor.items.get(actorItem._id).getFlag('core', 'sourceId')
-      : await actor.items.get(actorItem._id)._stats.compendiumSource;
+    const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
     const parentId = await actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
     const collectionId = await actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
-        if (itemSourceId == ZORD_PERK_ID) {
-          await actor.update ({
-            "system.canHaveZord": false,
-          });
-        }
-
-        if (itemSourceId == SORCERY_PERK_ID) {
-          await actor.update ({
-            "system.powers.sorcerous.levelTaken": 0,
-          });
-        }
-
         if (itemSourceId == attachment.uuid && item._id == parentId) {
           if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+            if (attachment.type == "perk") {
+              if (actorItem.system.advances.canAdvance) {
+                if (actorItem.system.advances.currentValue > actorItem.system.advances.baseValue) {
+                  const newValue = actorItem.system.advances.currentValue - actorItem.system.advances.increaseValue;
+                  await actorItem.update({
+                    "system.advances.currentValue": newValue,
+                  });
+                  setPerkAdvancesName(actorItem, attachment.name);
+                  continue;
+                }
+
+              } else {
+                onPerkDelete(actor, actorItem);
+              }
+            }
+
             await actorItem.delete();
+            break;
           }
+
+        } else if (item._id == parentId && key == collectionId) {
+          if (attachment.type == "perk") {
+            onPerkDelete(actor, actorItem);
+          }
+
+          await actorItem.delete();
+          break;
         }
-      } else if (item._id == parentId && key == collectionId) {
-        await actorItem.delete();
       }
     }
   }

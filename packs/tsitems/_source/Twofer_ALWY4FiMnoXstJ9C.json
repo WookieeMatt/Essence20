@@ -1,0 +1,44 @@
+{
+  "folder": "YZLETJckN3jHJstL",
+  "name": "Twofer",
+  "type": "perk",
+  "_id": "ALWY4FiMnoXstJ9C",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 36
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin",
+    "version": "powerRangers"
+  },
+  "effects": [],
+  "sort": 300000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746229955084,
+    "modifiedTime": 1746242979240,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!ALWY4FiMnoXstJ9C"
+}

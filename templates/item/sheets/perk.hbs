@@ -27,20 +27,130 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Selection Limit --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
-      {{#*inline "item-field-inputs"}}
-      {{numberInput system.selectionLimit name="system.selectionLimit" min=0 step=1}}
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{#if (eq system.type "faction")}}
+        {{!-- System --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RoleVersion'}}
+        {{#*inline "item-field-inputs"}}
+        <select class="item-field-inputs" name="system.version">
+          {{selectOptions config.gameVersions selected=system.version}}
+        </select>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Prerequisite --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkPrerequisite'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{!-- Can Be Activated --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkRoleVariant'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="checkbox" name="system.isRoleVariant" {{checked system.isRoleVariant}} />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#if (eq system.version "powerRangers")}}
+          {{!-- Morphed Toughness Bonus --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkMorphedToughnessBonus'}}
+          {{#*inline "item-field-inputs"}}
+          <input type="checkbox" name="system.hasMorphedToughnessBonus" {{checked system.hasMorphedToughnessBonus}} />
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/if}}
+
+        {{#if system.isRoleVariant}}
+          {{> "systems/essence20/templates/item/parts/sub-perk-drop.hbs" className="perk" label='E20.SubPerks' items=system.items roles=roles type='perk'}}
+        {{/if}}
+
+      {{else}}
+        {{!-- Selection Limit --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
+        {{#*inline "item-field-inputs"}}
+        {{numberInput system.selectionLimit name="system.selectionLimit" min=0 step=1}}
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{!-- Prerequisite --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkPrerequisite'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{!-- Can Be Activated --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkCanActivate'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="checkbox" name="system.canActivate" {{checked system.canActivate}} />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{!-- Can Advance --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkCanAdvance'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="checkbox" name="system.advances.canAdvance" {{checked system.advances.canAdvance}} {{#if system.hasChoice}}disabled {{/if}}/>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{!-- Has Choice --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkHasChoice'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="checkbox" name="system.hasChoice" {{checked system.hasChoice}} {{#if system.advances.canAdvance}}disabled {{/if}}/>
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#if system.advances.canAdvance}}
+          {{!-- Advance Base Value --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceBaseValue'}}
+          {{#*inline "item-field-inputs"}}
+            <input type="number" name="system.advances.baseValue" value="{{system.advances.baseValue}}"  min="0" step="1"/>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+          {{!-- Advance Increase Level --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceIncreaseValue'}}
+          {{#*inline "item-field-inputs"}}
+            <input type="number" name="system.advances.increaseValue" value="{{system.advances.increaseValue}}"  min="0" step="1"/>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+          {{!-- Advance Type --}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkAdvanceType'}}
+          {{#*inline "item-field-inputs"}}
+            <select name="system.advances.type">
+              {{selectOptions config.perkAdvanceTypes selected=system.advances.type}}
+            </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+        {{/if}}
+
+        {{#if system.hasChoice}}
+          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceType'}}
+          {{#*inline "item-field-inputs"}}
+          <select name="system.choiceType">
+            {{selectOptions config.perkChoiceTypes selected=system.choiceType}}
+          </select>
+          {{/inline}}
+          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+          {{#if (eq system.choiceType 'movement')}}
+            {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MovementIncreaseValue'}}
+            {{#*inline "item-field-inputs"}}
+              <input type="number" name="system.value" value="{{system.value}}"  min="0" step="1"/>
+            {{/inline}}
+            {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+          {{/if}}
+
+          {{#if (eq system.choiceType 'perks')}}
+            {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceQuantity'}}
+            {{#*inline "item-field-inputs"}}
+              <input type="number" name="system.numChoices" value="{{system.numChoices}}"  min="0" step="1"/>
+            {{/inline}}
+            {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+            {{!-- Perks Choices --}}
+            {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="perk" label='E20.PerkPlural' items=@root.system.items type='perk'}}
+          {{/if}}
+
+        {{/if}}
+
+      {{/if}}
     </div>
+
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
       {{!-- Effects Section --}}
       {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}

@@ -1,0 +1,62 @@
+{
+  "folder": "iIanzOy8c0kaFE8p",
+  "name": "Stalwart",
+  "type": "influence",
+  "_id": "GIkpP03vk5uvGcQZ",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 14
+    },
+    "items": {
+      "fe21": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.BKDVGbVQ6ljBH5Db",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Stalwart",
+        "type": "perk"
+      },
+      "89a1": {
+        "uuid": "Compendium.essence20.enigma_of_combination.Item.duMjTyfREHYmDFJs",
+        "img": "icons/svg/hazard.svg",
+        "name": "Arrogant",
+        "type": "hangUp"
+      },
+      "f232": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pTaF0TVS3ZiWerzs",
+        "img": "icons/svg/hazard.svg",
+        "name": "Bad Temper",
+        "type": "hangUp"
+      },
+      "b1a8": {
+        "uuid": "Compendium.essence20.tf_crb.Item.V5GfafYii5GSMtzr",
+        "img": "icons/svg/hazard.svg",
+        "name": "Impulsive",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748738853254,
+    "modifiedTime": 1748738894759,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!GIkpP03vk5uvGcQZ"
+}

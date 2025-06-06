@@ -10,6 +10,7 @@ function makeEssenceShift() {
     shiftUp: makeInt(0),
     shiftDown: makeInt(0),
     snag: makeBool(false),
+    untrainedBonus: makeBool(false),
   });
 }
 
@@ -80,6 +81,7 @@ export const common = () => ({
   initiative: new fields.SchemaField({
     edge: makeBool(false),
     formula: makeStr('2d20kl + 0'),
+    isSpecialized: makeBool(false),
     modifier: makeInt(0),
     snag: makeBool(false),
     shift: makeStrWithChoices(E20.initiativeShiftList, 'd20'),

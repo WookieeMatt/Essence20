@@ -1,0 +1,45 @@
+{
+  "name": "Pretender (Small, Ground 30, Aquatic 20)",
+  "type": "altMode",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 45
+    },
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 20,
+      "ground": 30
+    },
+    "altModesize": "small",
+    "altModeCrew": 0,
+    "altModeFirepoints": 0,
+    "tokenImage": ""
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746243279523,
+    "modifiedTime": 1746243470767,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "folder": "zBSg0VF3XHJzKerC",
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "_id": "px3ggYpFhJqOU9l7",
+  "sort": 0,
+  "_key": "!items!px3ggYpFhJqOU9l7"
+}

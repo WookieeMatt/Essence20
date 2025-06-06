@@ -1,0 +1,103 @@
+{
+  "folder": "guufsTJzdW5RdIQe",
+  "name": "Be Ruthless",
+  "type": "perk",
+  "_id": "AZvnqEdVWshj46PW",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 48
+    },
+    "items": {
+      "bb62": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.G3cypoJyLtlLogzO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Sudden Strike",
+        "type": "perk",
+        "role": "Commando"
+      },
+      "bf82": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.nb4xPr4kA5ra12PL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Can't Afford to Miss",
+        "type": "perk",
+        "role": "Infantry"
+      },
+      "fe88": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.98rFJyzaoCWrLdbF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Impossible Expectations",
+        "type": "perk",
+        "role": "Officer"
+      },
+      "b9f5": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.IaxNOucyCcF6QDU1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Misguide",
+        "type": "perk",
+        "role": "Ranger"
+      },
+      "c91a": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.QN5iC2K5VaMItBVX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shoot First",
+        "type": "perk",
+        "role": "Renegade"
+      },
+      "cd82": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.AIkpuWVylCFyuLuX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Study Weaknesses",
+        "type": "perk",
+        "role": "Technician"
+      },
+      "72bb": {
+        "uuid": "Compendium.essence20.cobra_codex.Item.3OPswxxHjsYrQggY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Smashmouth Offense",
+        "type": "perk",
+        "role": "Vanguard"
+      }
+    },
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": true,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction",
+    "value": 0,
+    "version": "giJoe"
+  },
+  "effects": [],
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748785213381,
+    "modifiedTime": 1748785712766,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!AZvnqEdVWshj46PW"
+}

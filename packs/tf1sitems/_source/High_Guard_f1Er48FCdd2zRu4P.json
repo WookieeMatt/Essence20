@@ -1,0 +1,48 @@
+{
+  "folder": "XlhSy7wKTqYbSXfw",
+  "name": "High Guard",
+  "type": "faction",
+  "_id": "f1Er48FCdd2zRu4P",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 15
+    },
+    "items": {
+      "e4c9": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.OJcHMBA3QYgPp5w0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Deceptive Warfare",
+        "type": "perk"
+      },
+      "f692": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.n5dNCOPVTsqLAapp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "One Bot Over Another",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748739712332,
+    "modifiedTime": 1748739732724,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!f1Er48FCdd2zRu4P"
+}

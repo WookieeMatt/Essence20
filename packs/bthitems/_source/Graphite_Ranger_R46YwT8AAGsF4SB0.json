@@ -20,70 +20,6 @@
         "subtype": "role",
         "level": 1
       },
-      "fc25": {
-        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Zord",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "0261": {
-        "uuid": "Compendium.essence20.beneath_the_helmet.Item.7ovAtv0r6UaAsmHE",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Fight Me!",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "9b85": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.PEDHPJkoGvvJed5u",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Grid Surge",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "b2d2": {
-        "uuid": "Compendium.essence20.beneath_the_helmet.Item.3XP5RgmeyQwE5HH9",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Brute Force",
-        "type": "perk",
-        "subtype": "role",
-        "level": 3
-      },
-      "08c5": {
-        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Extra Attack",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "dbff": {
-        "uuid": "Compendium.essence20.beneath_the_helmet.Item.Rr7ucZahtHI9yXwA",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Duty Of The Graphite",
-        "type": "perk",
-        "subtype": "role",
-        "level": 7
-      },
-      "e8fd": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.S7Qs6bJOVkVFxlFu",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Power Adaptation",
-        "type": "perk",
-        "subtype": "role",
-        "level": 9
-      },
-      "bbb9": {
-        "uuid": "Compendium.essence20.beneath_the_helmet.Item.nVOpdhr6aFnuY0ks",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Graphite Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "9ea9": {
         "uuid": "Compendium.essence20.across_the_stars.Item.utGtCSIbCZ8jAb0Q",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -123,6 +59,116 @@
           "startingMax": 2,
           "value": 0
         }
+      },
+      "fe95": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.7ovAtv0r6UaAsmHE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fight Me!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "ba19": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.PEDHPJkoGvvJed5u",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grid Surge",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "1fc1": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.3XP5RgmeyQwE5HH9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brute Force",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "c9ee": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "db9c": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.Rr7ucZahtHI9yXwA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Duty Of The Graphite",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "c769": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.2mStsiWlvvv14YQz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Heal",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "0b24": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.S7Qs6bJOVkVFxlFu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Adaptation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "b5df": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.3XP5RgmeyQwE5HH9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brute Force",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "2b3f": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.2mStsiWlvvv14YQz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Heal",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "1c82": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "dce6": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.3XP5RgmeyQwE5HH9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brute Force",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "0326": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.S7Qs6bJOVkVFxlFu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Adaptation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "d4c5": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.nVOpdhr6aFnuY0ks",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Graphite Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
+      },
+      "39e3": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
       }
     },
     "adjustments": {
@@ -225,13 +271,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1714150115540,
-    "modifiedTime": 1714616561442,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748267191426,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!R46YwT8AAGsF4SB0"
 }

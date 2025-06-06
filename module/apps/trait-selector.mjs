@@ -2,7 +2,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(owner, data) {
-    super(owner, data);
+    super();
     this._owner = owner;
     this._data = data;
   }

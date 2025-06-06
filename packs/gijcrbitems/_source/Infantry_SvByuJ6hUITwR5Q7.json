@@ -68,7 +68,13 @@
         "subtype": "role",
         "level": 5
       },
-      "279b": {
+      "8dce": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.fXgb3kGl2MaZTfPc",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "GI Joe",
+        "type": "faction"
+      },
+      "be14": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.YXn7VKSgEXGigNtV",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Overwatch",
@@ -76,7 +82,15 @@
         "subtype": "role",
         "level": 9
       },
-      "a609": {
+      "27c0": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.aQjUa46mn4kHvsVO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "9a52": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.dyjdCTOs83bLiCxC",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Tenacity",
@@ -84,7 +98,7 @@
         "subtype": "role",
         "level": 11
       },
-      "cba3": {
+      "e5a0": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.TeCGfRZW9Ax9ajmB",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Adrenaline Surge",
@@ -92,13 +106,21 @@
         "subtype": "role",
         "level": 13
       },
-      "aeeb": {
+      "f244": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.P0ZTAlcenVw2p4P1",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Warfighter",
         "type": "perk",
         "subtype": "role",
         "level": 17
+      },
+      "bea8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.aQjUa46mn4kHvsVO",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -201,13 +223,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713903432654,
-    "modifiedTime": 1713903675983,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748748014642,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!SvByuJ6hUITwR5Q7"
 }

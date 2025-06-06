@@ -13,10 +13,43 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "items": {
+      "35ef": {
+        "uuid": "Compendium.essence20.pr_crb.Item.zEXsqbXfA6hADBuh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aptitude Augmenter",
+        "type": "perk",
+        "role": null
+      },
+      "206c": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.Ib4BIJKAmuMoWKJP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Calm Beast",
+        "type": "perk",
+        "role": null
+      },
+      "947f": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.HqQ9xhyz6yhm2fZp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Commune",
+        "type": "perk",
+        "role": null
+      },
+      "f9b1": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.EmostxHbim1OrX51",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Naturalist",
+        "type": "perk",
+        "role": null
+      }
+    },
+    "numChoices": 2
   },
   "effects": [],
-  "sort": 100000,
+  "sort": 1200000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,13 +57,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1714148455255,
-    "modifiedTime": 1714864386168,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748228216856,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!C81ZIdSjyz5mSTkI"
 }

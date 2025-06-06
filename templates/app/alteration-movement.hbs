@@ -1,0 +1,16 @@
+<div>
+  <label>{{localize 'E20.AlterationMovementText'}}</label>
+  <p></p>
+  <ol class="dialog-options">
+    {{#each choices as |choice key|}}
+     <li>
+      <label>
+        {{localize choice.label}} (min 0, max {{choice.maxValue}})
+      </label>
+       <span>
+        <input type="number" name={{key}} id={{key}} value= "0" min="0" step="1" max="{{choice.maxValue}}" data-max="{{choice.maxValue}}">
+      </span>
+    </li>
+    {{/each}}
+  </ol>
+</div>

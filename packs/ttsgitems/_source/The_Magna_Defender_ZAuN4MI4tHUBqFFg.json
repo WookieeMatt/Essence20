@@ -68,14 +68,6 @@
         "subtype": "role",
         "level": 5
       },
-      "b74b": {
-        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.xvd1sVIqu0sNEI1c",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Torozord Feature",
-        "type": "perk",
-        "subtype": "role",
-        "level": 6
-      },
       "86cf": {
         "uuid": "Compendium.essence20.through_the_shattered_grid.Item.cZtUjIzieAFxTwH2",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -92,7 +84,21 @@
         "subtype": "role",
         "level": 9
       },
-      "8b85": {
+      "3a63": {
+        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.YDwGfKFr9JUkRuTN",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Magna Defender",
+        "type": "faction"
+      },
+      "a9a2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "3a85": {
         "uuid": "Compendium.essence20.through_the_shattered_grid.Item.MPAZdtX3Ob76h90Y",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Swift Defender",
@@ -100,15 +106,23 @@
         "subtype": "role",
         "level": 13
       },
-      "0735": {
-        "uuid": "Compendium.essence20.through_the_shattered_grid.Item.TGnqQAWWi1hBGqeh",
+      "4e6e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "At All Cost",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "cbe7": {
+        "uuid": "Compendium.essence20.pr_crb.Item.UFwnD2CsWCWXlUyf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "At All Costs",
         "type": "perk",
         "subtype": "role",
         "level": 18
       },
-      "b197": {
+      "15e4": {
         "uuid": "Compendium.essence20.through_the_shattered_grid.Item.ukfZOGZeuyJv6I5M",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Ultimate Magna Defender",
@@ -225,12 +239,13 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "systemId": "essence20",
-    "systemVersion": "4.5.0",
+    "systemVersion": "4.6.5",
     "createdTime": 1733100715235,
-    "modifiedTime": 1733101838179,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "modifiedTime": 1748273956028,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "exportSource": null
   },
   "_key": "!items!ZAuN4MI4tHUBqFFg"
 }

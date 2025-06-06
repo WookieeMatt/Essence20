@@ -1,0 +1,67 @@
+{
+  "folder": "Wp5ti6xvfOvQ2g8f",
+  "name": "Flora",
+  "type": "origin",
+  "_id": "5z1V3CpuMF9YANCH",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 38
+    },
+    "items": {
+      "097a": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.eU8rV8li7FjzRkJT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Plant Plasticity",
+        "type": "perk"
+      },
+      "e267": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.gah8pRWSMDvXsUax",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Flora (Common)",
+        "type": "altMode"
+      },
+      "c9f0": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.TfIrQViYdkBkqR7q",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Flora (Large)",
+        "type": "altMode"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 15,
+    "essences": [
+      "smarts",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "science",
+      "persuasion"
+    ],
+    "startingHealth": 4
+  },
+  "effects": [],
+  "sort": 200000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746238895106,
+    "modifiedTime": 1746243258024,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!5z1V3CpuMF9YANCH"
+}

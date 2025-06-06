@@ -1,4 +1,5 @@
 <div class="stats-container defense-container" style="border-color: {{system.color}};">
+
   <table class="tg" style="border-color: {{system.color}};">
     <thead style="border-color: {{system.color}};">
       <tr>
@@ -7,7 +8,15 @@
         {{!-- Defense headers --}}
         {{#each system.defenses as |defense|}}
         <th class="tg-td" style="border-color: {{system.color}};">
-          <span>{{lookup @root.config.defenses defense.name}}</span>
+          <span>{{lookup @root.config.defenses defense.name}}
+            {{#if (eq defense.name "toughness")}}
+              {{#if @root.system.canSetToughnessBonus}}
+                <a class="morph-toughness-edit" data-action="bonusEdit" data-tooltip="E20.DefenseToughnessModifications">
+                  <i class="fas fa-gear"></i>
+                </a>
+              {{/if}}
+            {{/if}}
+          </span>
           <span>
             {{#if (eq ../bonusDisplayType 'input')}}
             {{#with (lookup @root.system.defenses defense.name) as |defenseBonus|}}

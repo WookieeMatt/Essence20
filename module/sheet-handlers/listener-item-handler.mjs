@@ -1,4 +1,4 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
 import { checkIsLocked } from "../helpers/actor.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
@@ -7,6 +7,7 @@ import { onOriginDelete } from "./background-handler.mjs";
 import { onPerkDelete } from "./perk-handler.mjs";
 import { onFocusDelete, onRoleDelete } from "./role-handler.mjs";
 import { onAltModeDelete } from "./transformer-handler.mjs";
+import { onFactionDelete } from "./faction-handler.mjs";
 
 /**
  * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
@@ -42,7 +43,7 @@ export async function onItemCreate(event, actor) {
     // Remove the type from the dataset since it's in the itemData.type prop.
     delete itemData.system.type;
   }
-  
+
   // Set the parent item type for nested items
   let parentItem = null;
   if (data.parentId) {
@@ -152,6 +153,8 @@ export async function onItemDelete(event, actorSheet) {
       onAltModeDelete(actorSheet, item);
     } else if (item.type == "armor") {
       deleteAttachmentsForItem(item, actor);
+    } else if (item.type == "faction") {
+      onFactionDelete(item, actor);
     } else if (item.type == "focus") {
       onFocusDelete(actor, item);
     } else if (item.type == 'influence') {
@@ -335,7 +338,7 @@ async function shieldUpdate(actor, currentShield, stateString) {
     const prompt = "E20.SelectShieldPrompt";
     const title = "E20.SelectShieldTitle";
 
-    new ChoicesPrompt(choices, currentShield, actor, prompt, title, stateString).render(true);
+    new ChoicesSelector(choices, actor, prompt, title, currentShield, null, null, stateString, null, null).render(true);
     return;
   }
 

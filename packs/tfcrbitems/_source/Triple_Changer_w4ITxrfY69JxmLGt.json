@@ -61,7 +61,7 @@
       "1cc0": {
         "uuid": "Compendium.essence20.tf_crb.Item.G5LYO99aCFly6oq0",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Mecurial Nature",
+        "name": "Mercurial Nature",
         "type": "perk",
         "subtype": "role",
         "level": 20
@@ -113,12 +113,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1714268809535,
     "modifiedTime": 1714268908971,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!w4ITxrfY69JxmLGt"
 }

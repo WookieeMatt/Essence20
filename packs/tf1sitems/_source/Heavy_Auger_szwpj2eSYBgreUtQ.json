@@ -1,0 +1,78 @@
+{
+  "folder": "r9jPcva4FgMbRyCW",
+  "name": "Heavy Auger",
+  "type": "weapon",
+  "_id": "szwpj2eSYBgreUtQ",
+  "img": "systems/essence20/assets/icons/weapons/heavy_auger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 19
+    },
+    "items": {
+      "660e": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.K6aw0q3f7D5gDHco",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Heavy Auger Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "heavy"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "poisonApplication": {
+      "contact": false,
+      "ingested": false,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748741167085,
+    "modifiedTime": 1748741350466,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!szwpj2eSYBgreUtQ"
+}

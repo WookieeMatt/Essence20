@@ -1,4 +1,4 @@
-import { rememberValues} from "../helpers/dialog.mjs";
+import PowerCostSelector from "../apps/power-cost-selector.mjs";
 import { parseId } from "../helpers/utils.mjs";
 
 /**
@@ -56,21 +56,8 @@ export async function powerCost(actor, power) {
       maxPower = actor.system.powers[powerType].value;
     }
 
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.PowerCost'),
-        content: await renderTemplate("systems/essence20/templates/dialog/power-cost.hbs", {
-          power: power,
-          maxPower: maxPower,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => _powerCountUpdate(actor, rememberValues(html), power, powerType),
-          },
-        },
-      },
-    ).render(true);
+    const title = "E20.PowerCost";
+    new PowerCostSelector(actor, power, maxPower, powerType, title).render(true);
   } else if (powerType != "threat" && actor.system.powers[powerType].value >= power.system.powerCost) {
     const updateString = `system.powers.${powerType}.value`;
     actor.update({ [updateString]: Math.max(0, actor.system.powers[powerType].value - power.system.powerCost) });
@@ -84,13 +71,11 @@ export async function powerCost(actor, power) {
 /**
  * Handles the spending of a Power activation
  * @param {Actor} actor The Actor activating the Power
- * @param {Options} options The options selected in Power dialog.
- * @param {Power} power The Power being activated
+ * @param {Integer} powerMax The maximum power points that can be spent on the power
  * @param {String} powerType  The type of Power
+ * @param {Integer} powerCost The modified power cost
  */
-function _powerCountUpdate(actor, options, power, powerType) {
-  const powerCost = options[power.name].value;
-  const powerMax = options[power.name].max;
+export function _powerCountUpdate(actor, powerMax, powerType, powerCost) {
   const updateString = `system.powers.${powerType}.value`;
 
   if ((powerCost > powerMax)

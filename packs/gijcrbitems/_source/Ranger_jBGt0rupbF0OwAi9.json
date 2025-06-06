@@ -12,38 +12,6 @@
       "page": 88
     },
     "items": {
-      "f83d": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Environmental Expertise",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "b4bc": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.PmY8jGTiemnSdsHi",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Adaptation",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "e7e3": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Environmental Exposure",
-        "type": "perk",
-        "subtype": "general",
-        "level": 2
-      },
-      "96dc": {
-        "uuid": "Compendium.essence20.gi_joe_crb.Item.QXpG3NuwaFgbdc0x",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Forage",
-        "type": "perk",
-        "subtype": "role",
-        "level": 3
-      },
       "0c13": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.tqiseYDXnEngUlvd",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -83,6 +51,132 @@
           "startingMax": 0,
           "value": null
         }
+      },
+      "df10": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "5ddc": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.PmY8jGTiemnSdsHi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adaptation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "c19b": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.fXgb3kGl2MaZTfPc",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "GI Joe",
+        "type": "faction"
+      },
+      "c935": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Exposure",
+        "type": "perk",
+        "subtype": "general",
+        "level": 2
+      },
+      "393f": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.QXpG3NuwaFgbdc0x",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Forage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "8cb3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Exposure",
+        "type": "perk",
+        "subtype": "general",
+        "level": 5
+      },
+      "3fdd": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.QXpG3NuwaFgbdc0x",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Forage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "0738": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Exposure",
+        "type": "perk",
+        "subtype": "general",
+        "level": 8
+      },
+      "d852": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "81b8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Exposure",
+        "type": "perk",
+        "subtype": "general",
+        "level": 11
+      },
+      "9e61": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.QXpG3NuwaFgbdc0x",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Forage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "c1d2": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Exposure",
+        "type": "perk",
+        "subtype": "general",
+        "level": 14
+      },
+      "fab8": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.QXpG3NuwaFgbdc0x",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Forage",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "e2de": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Exposure",
+        "type": "perk",
+        "subtype": "general",
+        "level": 17
+      },
+      "6af3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.EbbSUA2vSHyv3MjQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "c706": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.sFIWrZ2f7ejcNcJ0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Exposure",
+        "type": "perk",
+        "subtype": "general",
+        "level": 20
       }
     },
     "adjustments": {
@@ -176,13 +270,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713917604391,
-    "modifiedTime": 1714615954350,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748750333372,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!jBGt0rupbF0OwAi9"
 }

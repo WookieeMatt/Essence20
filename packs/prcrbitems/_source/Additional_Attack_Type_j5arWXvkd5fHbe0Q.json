@@ -22,12 +22,13 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "systemId": "essence20",
     "systemVersion": "4.4.1",
     "createdTime": 1730034291522,
     "modifiedTime": 1730034315319,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "exportSource": null
   },
   "_key": "!items!j5arWXvkd5fHbe0Q"
 }

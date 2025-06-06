@@ -1,0 +1,86 @@
+{
+  "folder": "iIanzOy8c0kaFE8p",
+  "name": "Ambitious",
+  "type": "influence",
+  "_id": "v0Y6mmuNpqIJLHEx",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 9
+    },
+    "items": {
+      "0bbc": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.eLoPulLITRqroJu5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ambitious",
+        "type": "perk"
+      },
+      "d7d9": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.hJaTZrQ7tao4hDPJ",
+        "img": "icons/svg/hazard.svg",
+        "name": "Always Hungry",
+        "type": "hangUp"
+      },
+      "7c74": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pTaF0TVS3ZiWerzs",
+        "img": "icons/svg/hazard.svg",
+        "name": "Bad Temper",
+        "type": "hangUp"
+      },
+      "43e0": {
+        "uuid": "Compendium.essence20.tf_crb.Item.79jifb9w1OlopUUY",
+        "img": "icons/svg/hazard.svg",
+        "name": "Glacial",
+        "type": "hangUp"
+      },
+      "c702": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.LopI86yM8zyBHU7O",
+        "img": "icons/svg/hazard.svg",
+        "name": "Something To Prove",
+        "type": "hangUp"
+      },
+      "42e3": {
+        "uuid": "Compendium.essence20.tf_crb.Item.KwvsyHeuUqRbto9u",
+        "img": "icons/svg/hazard.svg",
+        "name": "Treacherous",
+        "type": "hangUp"
+      },
+      "0557": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.ECpYArLN6MBKsbyC",
+        "img": "icons/svg/hazard.svg",
+        "name": "Untrustworthy",
+        "type": "hangUp"
+      },
+      "4b3c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.ztsvCKdnaDZzBR8Q",
+        "img": "icons/svg/hazard.svg",
+        "name": "Vainglorious",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748737989265,
+    "modifiedTime": 1748738119683,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!v0Y6mmuNpqIJLHEx"
+}

@@ -66,6 +66,7 @@ Hooks.once('init', async function () {
     rollItemMacro,
   };
 
+  CONFIG.ActiveEffect.legacyTransferral = true;
   // Add custom constants for configuration.
   CONFIG.E20 = E20;
 
@@ -92,10 +93,10 @@ Hooks.once('init', async function () {
   registerSystemSettings();
 
   // Register sheet application classes
-  Actors.unregisterSheet("core", ActorSheet);
-  Actors.registerSheet("essence20", Essence20ActorSheet, { makeDefault: true });
-  Items.unregisterSheet("core", ItemSheet);
-  Items.registerSheet("essence20", Essence20ItemSheet, { makeDefault: true });
+  foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
+  foundry.documents.collections.Actors.registerSheet("essence20", Essence20ActorSheet, { makeDefault: true });
+  foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
+  foundry.documents.collections.Items.registerSheet("essence20", Essence20ItemSheet, { makeDefault: true });
 
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
@@ -192,25 +193,26 @@ Hooks.once("ready", async function () {
 });
 
 /* eslint-disable no-unused-vars */
-Hooks.on("renderChatMessage", (app, html, data) => {
+Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
 });
 
 /* Hook to organize the item options by type */
-Hooks.on("renderDialog", (dialog, html) => {
-  if (html[0].innerText.includes('Create New Item')) {
-    const select = html[0].querySelector("select[name='type']");
-
-    const classFeatureOption = select.querySelector("option[value='classFeature']");
-    if (classFeatureOption) {
-      classFeatureOption.style.display = 'none';
-    }
-
+Hooks.on("renderDialogV2", (dialog, html) => {
+  if (html.innerText.includes('Create Item')) {
+    const select = html.querySelector("select[name='type']");
     if (select) {
-      select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
-      select.append(setOptGroup(select, "Background", CONFIG.E20.backgroundTypes));
-      select.append(setOptGroup(select, "Character Options", CONFIG.E20.characterTypes));
-      select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
+      const classFeatureOption = select.querySelector("option[value='classFeature']");
+      if (classFeatureOption) {
+        classFeatureOption.style.display = 'none';
+      }
+
+      if (select) {
+        select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
+        select.append(setOptGroup(select, "Background", CONFIG.E20.backgroundTypes));
+        select.append(setOptGroup(select, "Character Options", CONFIG.E20.characterTypes));
+        select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
+      }
     }
   }
 });
