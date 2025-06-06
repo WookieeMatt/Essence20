@@ -13,7 +13,6 @@
       {{> "systems/essence20/templates/actor/parts/items/rolePoints/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/armor/container.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/items/contact/container.hbs"}}
     </div>
 
     {{!-- Gear Tab --}}
@@ -58,8 +57,13 @@
       {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs"}}
     </div>
 
+    {{!-- Contacts Tab --}}
+    <div class="tab contacts flexcol" data-group="primary" data-tab="contacts">
+      {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs"}}
+    </div>
+
     {{!-- Alt Mode Tab --}}
-    <div class="tab background flexcol" data-group="primary" data-tab="altmode">
+    <div class="tab altmodes flexcol" data-group="primary" data-tab="altmode">
       {{> "systems/essence20/templates/actor/parts/misc/energon.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/altMode/container.hbs"}}
       {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}

@@ -33,7 +33,7 @@
     },
     "baseAerialMovement": 0,
     "baseAquaticMovement": 0,
-    "baseGroundMovement": 0,
+    "baseGroundMovement": 30,
     "essences": [
       "social"
     ],
@@ -57,13 +57,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
     "createdTime": 1713839946776,
-    "modifiedTime": 1713840683782,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1749089661703,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!vWlljMxp2twMjyZf"
 }

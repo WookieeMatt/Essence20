@@ -1,0 +1,104 @@
+{
+  "folder": "r9jPcva4FgMbRyCW",
+  "name": "10.2 Ultra-Drill",
+  "type": "weapon",
+  "_id": "fz4BlwusWNNNlo1P",
+  "img": "systems/essence20/assets/icons/weapons/drill.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers One Sourcebook",
+      "page": 18
+    },
+    "items": {
+      "dcf5": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.pLcwMZkukopcKZm4",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "10.2 Ultra-Drill Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 1
+      },
+      "f307": {
+        "uuid": "Compendium.essence20.transformers_one_sourcebook.Item.xB71ueRdieACMejP",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "10.2 Ultra-Drill Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 2,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 2
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "poisonApplication": {
+      "contact": false,
+      "ingested": false,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "armorPiercing",
+      "reload",
+      "tool"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748740568814,
+    "modifiedTime": 1748740744224,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!fz4BlwusWNNNlo1P"
+}

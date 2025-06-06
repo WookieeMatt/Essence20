@@ -1,0 +1,48 @@
+{
+  "folder": "Yo11Yuvil9pJpryo",
+  "name": "Dino Hunters",
+  "type": "faction",
+  "_id": "J0l8BFeE9bbMa8zc",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 73
+    },
+    "items": {
+      "0300": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.j6KOCP9HsyzO3UHa",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Life Finds A Way",
+        "type": "perk"
+      },
+      "f3bd": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.3ZrBd6FhV6Fep1zq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Spared No Expense",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748796091336,
+    "modifiedTime": 1748796178640,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!J0l8BFeE9bbMa8zc"
+}

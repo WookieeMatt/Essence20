@@ -13,7 +13,124 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 2,
+    "items": {
+      "821d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.8Kyl6XMzRCZGBzbW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aim Apparatus",
+        "type": "perk",
+        "role": null
+      },
+      "0406": {
+        "uuid": "Compendium.essence20.pr_crb.Item.zEXsqbXfA6hADBuh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Aptitude Augmenter",
+        "type": "perk",
+        "role": null
+      },
+      "ecef": {
+        "uuid": "Compendium.essence20.pr_crb.Item.WzigK03hIcczvFLK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Blaster Focus",
+        "type": "perk",
+        "role": null
+      },
+      "f09c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.xz0N8ltXFRFjr9wx",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Defensive Shield",
+        "type": "perk",
+        "role": null
+      },
+      "e870": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Lxmp3gfs8TmtUOI5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Energic Shields",
+        "type": "perk",
+        "role": null
+      },
+      "c1bb": {
+        "uuid": "Compendium.essence20.pr_crb.Item.pmA5wQDbc5oQk5Ak",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhanced Summoner",
+        "type": "perk",
+        "role": null
+      },
+      "8e7f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.fN6N13llWp5ChvIG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gridspeak Reciever",
+        "type": "perk",
+        "role": null
+      },
+      "b48a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.GWh7lJ9F8484bUPS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gridspeak Translator",
+        "type": "perk",
+        "role": null
+      },
+      "b5d0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.hhLGmyXg4zi9hEN6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gridspeak Transmitters",
+        "type": "perk",
+        "role": null
+      },
+      "851d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.NJfcNgMJYcatsTCB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Megaform Expeditor",
+        "type": "perk",
+        "role": null
+      },
+      "6b67": {
+        "uuid": "Compendium.essence20.pr_crb.Item.02eABr4sNdGQmQx9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Morphin Grid Mapsuite",
+        "type": "perk",
+        "role": null
+      },
+      "e332": {
+        "uuid": "Compendium.essence20.pr_crb.Item.uDOOefcrciVe7398",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Focusers",
+        "type": "perk",
+        "role": null
+      },
+      "7e49": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Tg3JwoguEbAuhybs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Survival Node",
+        "type": "perk",
+        "role": null
+      },
+      "dfad": {
+        "uuid": "Compendium.essence20.pr_crb.Item.c2XlLY69AX3laWPh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Vision Focusers",
+        "type": "perk",
+        "role": null
+      },
+      "cca9": {
+        "uuid": "Compendium.essence20.pr_crb.Item.dxWgEjATETqaFDFV",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "X-Tech Visor",
+        "type": "perk",
+        "role": null
+      },
+      "deda": {
+        "uuid": "Compendium.essence20.pr_crb.Item.3CoVG3knuxMGVZRh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zeo Tech Augment",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 112500,
@@ -24,13 +141,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1705014359482,
-    "modifiedTime": 1714865071975,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748204719005,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!dWfuzsqz30rZmX1G"
 }

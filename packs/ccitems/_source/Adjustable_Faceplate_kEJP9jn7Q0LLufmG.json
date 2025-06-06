@@ -56,12 +56,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.344",
         "systemId": "essence20",
         "systemVersion": "4.5.0",
         "createdTime": 1733493511401,
         "modifiedTime": 1733493549925,
-        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+        "exportSource": null
       },
       "_key": "!items.effects!kEJP9jn7Q0LLufmG.1fyFTY5x4dhHGj5V"
     },
@@ -99,12 +100,13 @@
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "13.344",
         "systemId": "essence20",
         "systemVersion": "4.5.0",
         "createdTime": 1733493551347,
         "modifiedTime": 1733493572297,
-        "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+        "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+        "exportSource": null
       },
       "_key": "!items.effects!kEJP9jn7Q0LLufmG.gdu8EEcyAG7rzd2C"
     }
@@ -118,12 +120,13 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "systemId": "essence20",
     "systemVersion": "4.5.0",
     "createdTime": 1733493487998,
     "modifiedTime": 1733493498715,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd"
+    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "exportSource": null
   },
   "_key": "!items!kEJP9jn7Q0LLufmG"
 }

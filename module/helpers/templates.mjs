@@ -4,7 +4,7 @@
  * @return {Promise}
  */
 export const preloadHandlebarsTemplates = async function () {
-  return loadTemplates([
+  return foundry.applications.handlebars.loadTemplates([
 
     // Actor partials - Headers
     "systems/essence20/templates/actor/parts/headers/character.hbs",
@@ -25,6 +25,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs",
     "systems/essence20/templates/actor/parts/misc/collapsible-item-container-label-buttons.hbs",
     "systems/essence20/templates/actor/parts/misc/common.hbs",
+    "systems/essence20/templates/actor/parts/misc/contact.hbs",
     "systems/essence20/templates/actor/parts/misc/defenses.hbs",
     "systems/essence20/templates/actor/parts/misc/energon.hbs",
     "systems/essence20/templates/actor/parts/misc/essence-skills.hbs",
@@ -58,12 +59,11 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/armor/details.hbs",
     "systems/essence20/templates/actor/parts/items/bond/container.hbs",
     "systems/essence20/templates/actor/parts/items/bond/details.hbs",
-    "systems/essence20/templates/actor/parts/items/contact/container.hbs",
-    "systems/essence20/templates/actor/parts/items/contact/details.hbs",
     "systems/essence20/templates/actor/parts/items/rolePoints/container.hbs",
     "systems/essence20/templates/actor/parts/items/rolePoints/details.hbs",
     "systems/essence20/templates/actor/parts/items/feature/container.hbs",
     "systems/essence20/templates/actor/parts/items/feature/details.hbs",
+    "systems/essence20/templates/actor/parts/items/faction.hbs",
     "systems/essence20/templates/actor/parts/items/focus.hbs",
     "systems/essence20/templates/actor/parts/items/gear/container.hbs",
     "systems/essence20/templates/actor/parts/items/gear/details.hbs",
@@ -95,12 +95,16 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/weapon/details.hbs",
     "systems/essence20/templates/actor/parts/items/weapon/weapon-effects.hbs",
 
+    //App Partials
+    "systems/essence20/templates/app/parts/field.hbs",
+
     // Item partials.
     "systems/essence20/templates/item/parts/active-effects.hbs",
     "systems/essence20/templates/item/parts/description.hbs",
     "systems/essence20/templates/item/parts/header.hbs",
     "systems/essence20/templates/item/parts/id-drop.hbs",
     "systems/essence20/templates/item/parts/role-perk-drop.hbs",
+    "systems/essence20/templates/item/parts/sub-perk-drop.hbs",
     "systems/essence20/templates/item/parts/sheet-field.hbs",
   ]);
 };

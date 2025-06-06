@@ -12,70 +12,6 @@
       "page": 31
     },
     "items": {
-      "21fe": {
-        "uuid": "Compendium.essence20.pr_crb.Item.7EyU0Hf6T3YVels4",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Heart of the Team",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "5a63": {
-        "uuid": "Compendium.essence20.pr_crb.Item.1DphEJt2hPswKDzI",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Whatever We Need",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "b79c": {
-        "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "You Got This!",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "9ff9": {
-        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Zord",
-        "type": "perk",
-        "subtype": "role",
-        "level": 3
-      },
-      "56d0": {
-        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Extra Attack",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "ab9d": {
-        "uuid": "Compendium.essence20.pr_crb.Item.8duLY5PjlpmbNkwK",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "One For All",
-        "type": "perk",
-        "subtype": "role",
-        "level": 11
-      },
-      "ff37": {
-        "uuid": "Compendium.essence20.pr_crb.Item.Q5YDt0r21QDmBuDC",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "All For One",
-        "type": "perk",
-        "subtype": "role",
-        "level": 18
-      },
-      "603e": {
-        "uuid": "Compendium.essence20.pr_crb.Item.nDJbufpNURXmVRJn",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Black Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "d1c6": {
         "uuid": "Compendium.essence20.pr_crb.Item.HWUKoTIRbThQgbrg",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -117,6 +53,124 @@
           "startingMax": 2,
           "value": 0
         }
+      },
+      "3e0e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
+      },
+      "c418": {
+        "uuid": "Compendium.essence20.pr_crb.Item.7EyU0Hf6T3YVels4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart of the Team",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "870d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.1DphEJt2hPswKDzI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Whatever We Need",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "d75f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "You Got This!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "271c": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "e3af": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "be62": {
+        "uuid": "Compendium.essence20.pr_crb.Item.7EyU0Hf6T3YVels4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart of the Team",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "af23": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "You Got This!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "456f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.7EyU0Hf6T3YVels4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart of the Team",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "67b0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.8duLY5PjlpmbNkwK",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "One For All",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "345b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "You Got This!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "04e9": {
+        "uuid": "Compendium.essence20.pr_crb.Item.7EyU0Hf6T3YVels4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Heart of the Team",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "eb7e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "You Got This!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "4add": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Q5YDt0r21QDmBuDC",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "All For One",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "8e86": {
+        "uuid": "Compendium.essence20.pr_crb.Item.nDJbufpNURXmVRJn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Black Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -215,13 +269,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713453402209,
-    "modifiedTime": 1714616728779,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748203375418,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!0udD6YSOR8uwGaTF"
 }

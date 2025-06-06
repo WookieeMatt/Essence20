@@ -1,5 +1,5 @@
-import { rememberOptions } from "../helpers/dialog.mjs";
-import { resizeTokens } from "../helpers/actor.mjs";
+import TransformOptionSelector from "../apps/transform-option-selector.mjs";
+import { changeTokenImage, resizeTokens } from "../helpers/actor.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 
 /**
@@ -27,6 +27,12 @@ export async function onTransform(actorSheet) {
   const altModes = getItemsOfType("altMode", actor.items);
   const isTransformed = actor.system.isTransformed;
 
+  if (!actor.system.isTransformed ) {
+    await actor.update ({
+      "system.image.botmode": actor.prototypeToken.texture.src,
+    });
+  }
+
   if (!altModes.length && !isTransformed) {      // No alt-modes to transform into
     ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
   } else if (altModes.length > 1) {              // Select from multiple alt-modes
@@ -52,6 +58,7 @@ async function _transformBotMode(actorSheet) {
   const width = CONFIG.E20.tokenSizes[actor.system.size].width;
   const height = CONFIG.E20.tokenSizes[actor.system.size].height;
   resizeTokens(actor, width, height);
+  changeTokenImage(actor, actor.system.image.botmode);
 
   await actor.update({
     "prototypeToken.height": height,
@@ -76,6 +83,7 @@ async function _transformAltMode(actorSheet, altMode) {
   const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
   const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
   resizeTokens(actor, width, height);
+  changeTokenImage(actor, altMode.system.tokenImage);
 
   await actor.update({
     "prototypeToken.height": height,
@@ -115,20 +123,8 @@ async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
     }
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.AltModeChoice'),
-      content: await renderTemplate("systems/essence20/templates/dialog/option-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => _altModeSelect(actorSheet, altModes, rememberOptions(html)),
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.AltModeChoice";
+  new TransformOptionSelector(choices, actorSheet, altModes, title).render(true);
 }
 
 /**
@@ -138,16 +134,8 @@ async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
  * @param {Object} options The options resulting from _showAltModeDialog()
  * @private
  */
-async function _altModeSelect(actorSheet, altModes, options) {
-  let selectedForm = null;
+export async function _altModeSelect(actorSheet, altModes, selectedForm) {
   let transformation = null;
-
-  for (const [altMode, isSelected] of Object.entries(options)) {
-    if (isSelected) {
-      selectedForm = altMode;
-      break;
-    }
-  }
 
   if (!selectedForm) {
     return;

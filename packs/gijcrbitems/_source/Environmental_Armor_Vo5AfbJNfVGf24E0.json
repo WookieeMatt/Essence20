@@ -62,14 +62,15 @@
       "flags": {},
       "tint": "#ffffff",
       "_stats": {
-        "coreVersion": "12.331",
+        "coreVersion": "13.344",
         "systemId": null,
         "systemVersion": null,
         "createdTime": null,
         "modifiedTime": null,
         "lastModifiedBy": null,
         "compendiumSource": null,
-        "duplicateSource": null
+        "duplicateSource": null,
+        "exportSource": null
       },
       "img": "icons/svg/aura.svg",
       "type": "base",
@@ -87,12 +88,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1706574099327,
     "modifiedTime": 1714852462029,
     "lastModifiedBy": "VEn5sPQRoWgUw9qd",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!Vo5AfbJNfVGf24E0"
 }

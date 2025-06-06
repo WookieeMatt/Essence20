@@ -9,6 +9,8 @@ export class RollDialog {
     this._i18n = i18n;
   }
 
+  static _warnedAppV1 = true;
+
   /**
    * Localizes the given text.
    * @param {String} text   The text to localize.
@@ -36,7 +38,7 @@ export class RollDialog {
       skillDataset.snag ||
       E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(skillDataset.shift);
     const edge = skillDataset.edge;
-    const html = await renderTemplate(
+    const html = await foundry.applications.handlebars.renderTemplate(
       template,
       {
         canCritD2: dataset.canCritD2,

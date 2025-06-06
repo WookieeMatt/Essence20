@@ -91,12 +91,13 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "coreVersion": "13.344",
     "createdTime": 1714048850751,
     "modifiedTime": 1714048940048,
     "lastModifiedBy": "TfzSCNLMDHUjSABQ",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!X9zmD7QBaKM3U6U4"
 }

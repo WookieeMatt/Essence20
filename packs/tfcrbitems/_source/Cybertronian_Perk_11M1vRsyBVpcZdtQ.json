@@ -1,0 +1,110 @@
+{
+  "folder": "hmxxozyWx9FCWQuR",
+  "name": "Cybertronian Perk",
+  "type": "perk",
+  "_id": "11M1vRsyBVpcZdtQ",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 58
+    },
+    "items": {
+      "03e8": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aFgXXk1gMMb4saVf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Work the Numbers",
+        "type": "perk",
+        "role": "Analyst"
+      },
+      "658a": {
+        "uuid": "Compendium.essence20.tf_crb.Item.OjgBmoL0RUCQxrRE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Never Forsaken",
+        "type": "perk",
+        "role": "Field Commander"
+      },
+      "c786": {
+        "uuid": "Compendium.essence20.tf_crb.Item.5ALxFuFqhT5WgDyb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Imprompturret",
+        "type": "perk",
+        "role": "Gunner"
+      },
+      "aff9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.NUcKkumLqw3ZEzLI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Fully Hybrid",
+        "type": "perk",
+        "role": "Modemaster"
+      },
+      "aa21": {
+        "uuid": "Compendium.essence20.tf_crb.Item.WafAMRknIe5AL40t",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Intrafilum",
+        "type": "perk",
+        "role": "Scientist"
+      },
+      "b04f": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aD6N6hTvFhsQFZnB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Disappear",
+        "type": "perk",
+        "role": "Scout"
+      },
+      "df35": {
+        "uuid": "Compendium.essence20.tf_crb.Item.sNTDJnAtY4aEZf5H",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hardcore",
+        "type": "perk",
+        "role": "Warrior"
+      },
+      "5e36": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.ZtRBGtnV5HCA7zhl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Energon Efficiency",
+        "type": "perk",
+        "role": "Raider"
+      }
+    },
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": true,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction",
+    "value": 0,
+    "version": "transformers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748696431929,
+    "modifiedTime": 1748734795374,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!11M1vRsyBVpcZdtQ"
+}

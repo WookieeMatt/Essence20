@@ -12,11 +12,15 @@
       "page": 42
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "role"
+    "selectionLimit": 2,
+    "type": "role",
+    "advances": {
+      "canAdvance": true,
+      "type": "number"
+    }
   },
   "effects": [],
-  "sort": 400000,
+  "sort": 1700000,
   "ownership": {
     "default": 0,
     "TfzSCNLMDHUjSABQ": 3
@@ -24,13 +28,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1714148560045,
-    "modifiedTime": 1714864395185,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748228603233,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!3kcNR23zhInxqKQp"
 }

@@ -1,0 +1,125 @@
+{
+  "folder": "AUUJvPPWOpWKtwA1",
+  "name": "Gattling Hand Cannon",
+  "type": "weapon",
+  "_id": "BxkSLNoeqByCh23b",
+  "img": "systems/essence20/assets/icons/weapons/gattling-gun.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 48
+    },
+    "items": {
+      "901e": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.MNoTLwXRpOqAyE5t",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Gattling Hand  Cannon Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 50
+        },
+        "shiftDown": 0
+      },
+      "804b": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.5Ie9x9riABe8iXX9",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Gattling Hand Cannon Alternate Effect 1",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 3,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 50
+        },
+        "shiftDown": 3
+      },
+      "ac8c": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.NP8cnqzge9yazSE7",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Gattling Hand Cannon Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": 1,
+        "numTargets": 5,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": 0,
+          "long": 200,
+          "value": 50
+        },
+        "shiftDown": 1
+      }
+    },
+    "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "poisonApplication": {
+      "contact": false,
+      "ingested": false,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "",
+      "skill": "athletics",
+      "shift": "none"
+    },
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746246096257,
+    "modifiedTime": 1746248656485,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!BxkSLNoeqByCh23b"
+}

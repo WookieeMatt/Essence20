@@ -60,30 +60,6 @@
         "subtype": "role",
         "level": 7
       },
-      "bb85": {
-        "uuid": "Compendium.essence20.pr_crb.Item.b4OEl1hxeFXcAAy8",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Team Player",
-        "type": "perk",
-        "subtype": "role",
-        "level": 10
-      },
-      "bc2e": {
-        "uuid": "Compendium.essence20.pr_crb.Item.UFwnD2CsWCWXlUyf",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "At All Costs",
-        "type": "perk",
-        "subtype": "role",
-        "level": 18
-      },
-      "a01b": {
-        "uuid": "Compendium.essence20.pr_crb.Item.Y5F6BOw77vhD3tW2",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Green Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "e048": {
         "uuid": "Compendium.essence20.pr_crb.Item.9avbGWUTKKUyM18T",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -119,6 +95,52 @@
           "startingMax": null,
           "value": null
         }
+      },
+      "af02": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
+      },
+      "f1f1": {
+        "uuid": "Compendium.essence20.pr_crb.Item.pdSn2ZRcGm9AZ9r2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Survival Boon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "59ff": {
+        "uuid": "Compendium.essence20.pr_crb.Item.b4OEl1hxeFXcAAy8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Team Player",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "b968": {
+        "uuid": "Compendium.essence20.pr_crb.Item.pdSn2ZRcGm9AZ9r2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Survival Boon",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "943b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.UFwnD2CsWCWXlUyf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "At All Costs",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "001f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Y5F6BOw77vhD3tW2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Green Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -224,13 +246,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713481256852,
-    "modifiedTime": 1714616748354,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748212721219,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!jm0YQ8VEkHEH70AP"
 }

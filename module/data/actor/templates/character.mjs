@@ -1,6 +1,6 @@
 import { E20 } from "../../../helpers/config.mjs";
 
-import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
+import { makeBool, makeInt, makeStr, makeStrWithChoices, makeStrArrayWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
@@ -60,6 +60,7 @@ export const character = () => ({
     willpower: makeDefensesFields('willpower', 'smarts'),
     cleverness: makeDefensesFields('cleverness', 'social'),
   }),
+  environments: makeStrArrayWithChoices(E20.Environments, null),
   essences: new fields.SchemaField({
     strength: makeEssenceFields(),
     speed: makeEssenceFields(),
@@ -74,6 +75,11 @@ export const character = () => ({
   }),
   faction: makeStr(''),
   focusEssence: makeStr(''),
+  image: new fields.SchemaField({
+    botmode: makeStr(null),
+    morphed: makeStr(null),
+    unmorphed: makeStr(null),
+  }),
   isMorphed: makeBool(false),
   isTransformed: makeBool(false),
   level: makeInt(1),
@@ -97,6 +103,13 @@ export const character = () => ({
     armors: makeTrainingSchema(E20.armorTypes),
     poisons: makeTrainingSchema(E20.poisonTraining),
     weapons: makeTrainingSchema(E20.weaponTypes),
+  }),
+  senses: new fields.SchemaField({
+    hearing: new fields.ObjectField({}),
+    sight: new fields.ObjectField({}),
+    smell: new fields.ObjectField({}),
+    taste: new fields.ObjectField({}),
+    touch: new fields.ObjectField({}),
   }),
   skillRankAllocation: new fields.SchemaField({
     strength: makeSkillRankAllocation(),

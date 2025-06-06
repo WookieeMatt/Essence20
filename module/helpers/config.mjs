@@ -142,6 +142,7 @@ E20.weaponTraits = {
   stun: "E20.WeaponTraitStun",
   temperamental: "E20.WeaponTraitTemperamental",
   thrown: "E20.WeaponTraitThrown",
+  tool: "E20.WeaponTraitTool",
   toxin: "E20.WeaponTraitToxin",
   titanClass: "E20.WeaponTraitTitanClass",
   trip: "E20.WeaponTraitTrip",
@@ -217,6 +218,13 @@ E20.armorTypes = {
   ultraHeavy: "E20.ArmorsUltraHeavy",
 };
 preLocalize("armorTypes");
+
+E20.morphedToughness = {
+  light: 1,
+  medium: 2,
+  heavy: 4,
+  ultraHeavy: 6,
+};
 
 // Options for Upgrade traits
 E20.upgradeTraits = {
@@ -486,6 +494,7 @@ E20.defaultIcon = {
   armor: "systems/essence20/assets/icons/items/armor.svg",
   equipmentPackage: "systems/essence20/assets/icons/items/equipment_package.svg",
   feature: "systems/essence20/assets/icons/items/feature.svg",
+  faction: "systems/essence20/assets/icons/items/faction.svg",
   focus: "systems/essence20/assets/icons/items/focus.svg",
   gear: "systems/essence20/assets/icons/items/gear.svg",
   hangUp: "icons/svg/hazard.svg",
@@ -525,6 +534,7 @@ E20.characterTypes = {
   alteration: "E20.Alteration",
   altMode: "E20.AltMode",
   feature: "E20.Feature",
+  faction: "E20.Faction",
   focus: "E20.Focus",
   perk: "E20.Perk",
   power: "E20.Power",
@@ -643,6 +653,16 @@ E20.bonusTypes = {
 };
 preLocalize("bonusTypes");
 
+E20.perkAdvanceTypes = {
+  area: "E20.PerkAdvanceTypeArea",
+  damage: "E20.PerkAdvanceTypeDamage",
+  die: "E20.PerkAdvanceTypeDie",
+  number: "E20.PerkAdvanceTypeNumber",
+  rerolls: "E20.PerkAdvanceTypeReroll",
+  upshift: "E20.PerkAdvanceTypeUpshift",
+};
+preLocalize("perkAdvanceTypes");
+
 /************************************************
  * Spells                                       *
  ***********************************************/
@@ -734,6 +754,36 @@ E20.energonTypes = {
   synthEn: "E20.EnergonSynthEn",
 };
 preLocalize("energonTypes");
+
+E20.perkChoiceTypes = {
+  none: "E20.PerkChoiceNone",
+  environments: "E20.PerkChoiceEnvironments",
+  movement: "E20.PerkChoiceMovement",
+  perks: "E20.PerkChoicePerks",
+  senses: "E20.PerkChoiceSenses",
+};
+preLocalize("perkChoiceTypes");
+
+E20.senses = {
+  hearing: "E20.SenseHearing",
+  sight: "E20.SenseSight",
+  smell: "E20.SenseSmell",
+  taste: "E20.SenseTaste",
+  touch: "E20.SenseTouch",
+};
+preLocalize("senses");
+
+E20.environments = {
+  arctic: "E20.EnvironmentArctic",
+  desert: "E20.EnvironmentDesert",
+  grasslands: "E20.EnvironmentGrasslands",
+  mountains: "E20.EnvironmentMountains",
+  sea: "E20.EnvironmentSea",
+  urban: "E20.EnvironmentUrban",
+  wetlands: "E20.EnvironmentWetlands",
+  woodlands: "E20.EnvironmentWoodlands",
+};
+preLocalize("environments");
 
 /************************************************
  * Vehicles                                     *

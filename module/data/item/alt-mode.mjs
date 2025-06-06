@@ -1,6 +1,6 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeInt, makeStrWithChoices } from "../generic-makers.mjs";
+import { makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
@@ -20,6 +20,7 @@ export class AltModeItemData extends foundry.abstract.TypeDataModel {
         ground: makeInt(0),
       }),
       altModesize: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
+      tokenImage: makeStr(null),
     };
   }
 }

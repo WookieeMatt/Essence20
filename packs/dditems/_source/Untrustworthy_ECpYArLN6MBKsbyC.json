@@ -1,0 +1,80 @@
+{
+  "folder": "TloTmcyDSbmlZYl4",
+  "name": "Untrustworthy",
+  "type": "hangUp",
+  "_id": "ECpYArLN6MBKsbyC",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 32
+    }
+  },
+  "effects": [
+    {
+      "name": "Untrustworthy",
+      "origin": "Item.ECpYArLN6MBKsbyC",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "Los1snQZHhLrd5Wf",
+      "changes": [
+        {
+          "key": "system.essenceShifts.social.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!ECpYArLN6MBKsbyC.Los1snQZHhLrd5Wf"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.1.2",
+    "coreVersion": "13.344",
+    "createdTime": 1694532224054,
+    "modifiedTime": 1748738109505,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!ECpYArLN6MBKsbyC"
+}

@@ -116,14 +116,6 @@
         "subtype": "role",
         "level": 13
       },
-      "089e": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.9tU5tDmpOhChLfdv",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Venom Warlord",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "0024": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.L8wFtP1y6PQYJJVL",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -160,6 +152,28 @@
           "startingMax": null,
           "value": null
         }
+      },
+      "d8e6": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.8SvWaWzK32zpUivS",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Psycho Ranger",
+        "type": "faction"
+      },
+      "2a1f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "e9c2": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.9tU5tDmpOhChLfdv",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Venom Warlord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -263,13 +277,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713742600550,
-    "modifiedTime": 1714616669120,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748268059625,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!rWoVOcNc3lXKDbhg"
 }

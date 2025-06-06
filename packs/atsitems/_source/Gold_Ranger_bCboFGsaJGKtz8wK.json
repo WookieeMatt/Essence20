@@ -49,7 +49,13 @@
           "value": null
         }
       },
-      "d55a": {
+      "a207": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
+      },
+      "ef2e": {
         "uuid": "Compendium.essence20.across_the_stars.Item.LVyy4985HSSKCnGs",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Hardened Armor",
@@ -57,7 +63,7 @@
         "subtype": "role",
         "level": 1
       },
-      "b9b5": {
+      "24a4": {
         "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Zord",
@@ -65,7 +71,7 @@
         "subtype": "role",
         "level": 1
       },
-      "ce10": {
+      "c6b5": {
         "uuid": "Compendium.essence20.across_the_stars.Item.dSMZ5wMdu0Xq0VzX",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Golden Guardian",
@@ -73,7 +79,7 @@
         "subtype": "role",
         "level": 2
       },
-      "78dc": {
+      "656c": {
         "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Extra Attack",
@@ -81,7 +87,7 @@
         "subtype": "role",
         "level": 5
       },
-      "f6df": {
+      "05d3": {
         "uuid": "Compendium.essence20.across_the_stars.Item.PcezfGdjUtNUZHYH",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Stand Behind Me!",
@@ -89,7 +95,7 @@
         "subtype": "role",
         "level": 7
       },
-      "d5f6": {
+      "174c": {
         "uuid": "Compendium.essence20.across_the_stars.Item.8mRJPvxLFVcf0egf",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Counterstrike",
@@ -97,7 +103,7 @@
         "subtype": "role",
         "level": 9
       },
-      "64da": {
+      "9c11": {
         "uuid": "Compendium.essence20.pr_crb.Item.TomU7e31oHoRsIrT",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Resilience",
@@ -105,15 +111,23 @@
         "subtype": "general",
         "level": 11
       },
-      "0814": {
+      "a638": {
         "uuid": "Compendium.essence20.across_the_stars.Item.q8K1UguQAQUhrduN",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Multi-Counter",
         "type": "perk",
         "subtype": "role",
-        "level": 11
+        "level": 13
       },
-      "0d07": {
+      "f275": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "6aee": {
         "uuid": "Compendium.essence20.across_the_stars.Item.YGY0lYvqbsiQcpHs",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Splinter Defense",
@@ -121,7 +135,7 @@
         "subtype": "role",
         "level": 18
       },
-      "78ee": {
+      "15ff": {
         "uuid": "Compendium.essence20.across_the_stars.Item.jVRapLGSt8yVHL9n",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Gold Ranger Prime",
@@ -228,13 +242,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713530202593,
-    "modifiedTime": 1714616465383,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748224352052,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!bCboFGsaJGKtz8wK"
 }

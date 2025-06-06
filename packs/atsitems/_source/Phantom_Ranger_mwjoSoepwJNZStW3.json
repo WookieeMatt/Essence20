@@ -12,6 +12,12 @@
       "page": 58
     },
     "items": {
+      "2547": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
+      },
       "b3be": {
         "uuid": "Compendium.essence20.across_the_stars.Item.OfsTu9GpONWPV88t",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -27,78 +33,6 @@
         "type": "perk",
         "subtype": "role",
         "level": 1
-      },
-      "ace7": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.QsFiUE0YYjwQHPgh",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Follow Through",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "f815": {
-        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Extra Attack",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "0fee": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.t94vdRRRwxbAdG84",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Mending the Grid",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "b8cf": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.peGPrJKYlx79ybbu",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Ageless Knowledge",
-        "type": "perk",
-        "subtype": "role",
-        "level": 6
-      },
-      "b465": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.L2X2rIz2frulSajQ",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Body of Energy",
-        "type": "perk",
-        "subtype": "role",
-        "level": 8
-      },
-      "5ff2": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.EYdpn9PL4iNrQPkh",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Unseen Strike",
-        "type": "perk",
-        "subtype": "role",
-        "level": 9
-      },
-      "16c7": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.aXGMEoVsYSttOSHn",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Phantom Focus",
-        "type": "perk",
-        "subtype": "role",
-        "level": 10
-      },
-      "ba7c": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.f372LpDqqiO2XoEi",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Through the Arches",
-        "type": "perk",
-        "subtype": "role",
-        "level": 18
-      },
-      "2c5b": {
-        "uuid": "Compendium.essence20.across_the_stars.Item.PHgWjT0syOOBOOK5",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Phantom Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
       },
       "07d4": {
         "uuid": "Compendium.essence20.across_the_stars.Item.EMyMhKEToExQEraH",
@@ -142,6 +76,118 @@
           "startingMax": null,
           "value": null
         }
+      },
+      "86c7": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.QsFiUE0YYjwQHPgh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Follow Through",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "e4fc": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "f86a": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.t94vdRRRwxbAdG84",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mending the Grid",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "a327": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.peGPrJKYlx79ybbu",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Ageless Knowledge",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "d098": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.fQgxo5c7tNOD2Q5K",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Suite",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "0af4": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.L2X2rIz2frulSajQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Body of Energy",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "b6fa": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.EYdpn9PL4iNrQPkh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Unseen Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "547a": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.aXGMEoVsYSttOSHn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Focus",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "bced": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.fQgxo5c7tNOD2Q5K",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Suite",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "bd5a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "72b0": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.aXGMEoVsYSttOSHn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Focus",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "ac7e": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.fQgxo5c7tNOD2Q5K",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Suite",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "2fc2": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.f372LpDqqiO2XoEi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Through the Arches",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "41e5": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.PHgWjT0syOOBOOK5",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Phantom Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -246,13 +292,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713548249257,
-    "modifiedTime": 1714616477414,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748225623080,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!mwjoSoepwJNZStW3"
 }

@@ -1,0 +1,48 @@
+{
+  "folder": "Yo11Yuvil9pJpryo",
+  "name": "Mega Monsters",
+  "type": "faction",
+  "_id": "mHasyxjdgkZKPe0Q",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 74
+    },
+    "items": {
+      "fe23": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.LpEBTuXVSEviSyoh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Company We Keep",
+        "type": "perk"
+      },
+      "d9f5": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.jdQFjlYUHaRze6as",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Roaming the Land",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748796310118,
+    "modifiedTime": 1748796469945,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!mHasyxjdgkZKPe0Q"
+}

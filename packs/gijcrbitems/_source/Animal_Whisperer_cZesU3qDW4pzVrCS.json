@@ -1,0 +1,98 @@
+{
+  "folder": "zvJSqDLl395gfBJ7",
+  "name": "Animal Whisperer",
+  "type": "perk",
+  "_id": "cZesU3qDW4pzVrCS",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 91
+    },
+    "items": {},
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "general",
+    "value": 0,
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "name": "Animal Whisperer",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.cZesU3qDW4pzVrCS",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "IobpZva52FJLR5VT",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.animalHandling.essences.smarts",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1748748712328,
+        "modifiedTime": 1748748750211,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!cZesU3qDW4pzVrCS.IobpZva52FJLR5VT"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748748669297,
+    "modifiedTime": 1748748677264,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!cZesU3qDW4pzVrCS"
+}

@@ -112,6 +112,12 @@
           "startingMax": 2,
           "value": 0
         }
+      },
+      "d7d9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.pJGxl6rV8Csgapvi",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Autobots",
+        "type": "faction"
       }
     },
     "adjustments": {
@@ -173,13 +179,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1714259562251,
-    "modifiedTime": 1714616357836,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748699118354,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!n3iC9MU8q65XW96O"
 }

@@ -6,7 +6,25 @@ import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class Essence20ItemSheet extends ItemSheet {
+export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
+
+  /** @override */
+  async activateEditor(name, options={}, initialContent="") {
+    options.relativeLinks = true;
+    options.plugins = {
+      menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
+        compact: true,
+        destroyOnSave: true,
+        onSave: () => {
+          this.saveEditor(name, { remove: true });
+          this.editingDescriptionTarget = null;
+        },
+      }),
+    };
+    return super.activateEditor(name, options, initialContent);
+  }
+
+  static _warnedAppV1 = true;
 
   /** @override */
   static get defaultOptions() {
@@ -50,8 +68,9 @@ export class Essence20ItemSheet extends ItemSheet {
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
-    context.system.description = await TextEditor.enrichHTML(itemData.system.description);
+    context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
+    context.roles = await _getVersionRoles(itemData);
 
     return context;
   }
@@ -74,24 +93,20 @@ export class Essence20ItemSheet extends ItemSheet {
     });
 
     this.form.ondrop = (event) => this._onDrop(event);
-
-    // Delete Origin Perks from Origns
-    html.find('.originPerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
-
     // Delete Effects from Weapons
     html.find('.weaponEffect-delete').click(this._onObjectDelete.bind(this, ".weaponEffect"));
+
+    // Delete Faction from Role
+    html.find('.faction-delete').click(this._onObjectDelete.bind(this, ".faction"));
 
     // Delete Origin Upgrade from item
     html.find('.upgrade-delete').click(this._onObjectDelete.bind(this, ".upgrade"));
 
-    // Delete Influence Perk from Influence
-    html.find('.influencePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
-
     // Delete Hang Up from Influence
     html.find('.hangUp-delete').click(this._onObjectDelete.bind(this, ".hangUp"));
 
-    // Delete Role Perk from Influence
-    html.find('.rolePerk-delete').click(this._onObjectDelete.bind(this, ".perk"));
+    //Delete a Perk off an item
+    html.find('.perk-delete').click(this._onObjectDelete.bind(this, ".perk"));
 
     // Delete Role from Focus
     html.find('.role-delete').click(this._onObjectDelete.bind(this, ".role"));
@@ -117,6 +132,8 @@ export class Essence20ItemSheet extends ItemSheet {
     //Open Attached Item Sheet
     html.find('.view-info').click(this._onObjectInfo.bind(this));
 
+    //Copy to clipboard
+    html.find('.clipboard-copy').click(this._onCopyClipboard.bind(this));
   }
 
   /**
@@ -125,11 +142,13 @@ export class Essence20ItemSheet extends ItemSheet {
   * @private
   */
   async _onDrop(event) {
-    const data = TextEditor.getDragEventData(event);
+    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.item;
     await setEntryAndAddItem(droppedItem, targetItem);
+    const newData = await fromUuid(targetItem.uuid);
 
+    this.object.system = newData.system;
     this.render(true);
   }
 
@@ -145,7 +164,9 @@ export class Essence20ItemSheet extends ItemSheet {
     const updateString = `system.items.-=${id}`;
 
     await this.item.update({[updateString]: null});
+    const newData = await fromUuid(this.item.uuid);
 
+    this.object.system = newData.system;
     li.slideUp(200, () => this.render(false));
   }
 
@@ -159,4 +180,48 @@ export class Essence20ItemSheet extends ItemSheet {
       item.sheet.render(true);
     }
   }
+
+  /**
+   * Handles copying data to the clipboard
+   * @param {Event} data The data from the click event
+   */
+  _onCopyClipboard(data) {
+    const clipText = data.currentTarget.dataset.clipboard;
+    if (clipText) {
+      game.clipboard.copyPlainText(clipText);
+      ui.notifications.info(game.i18n.format("E20.ClipboardCopy", { clipText }));
+    }
+  }
+}
+
+/**
+ * Handles retrieving all existing roles of the system version selected.
+ * @param {ItemData} itemData The data of the item that is being opened.
+ * @returns versionRoles the roles of the system version that is selected.
+ */
+async function _getVersionRoles(itemData) {
+  const versionRoles = {};
+  for (const pack of game.packs) {
+    const selection = await pack.getDocuments({ type: "role" });
+    for (const role of selection) {
+      if (role.system.version == itemData.system.version){
+        versionRoles[role.name] = {
+          type: role.type,
+        };
+      }
+    }
+  }
+
+  const worldItems = game.items;
+  for (const worldItem of worldItems) {
+    if (worldItem.type == "role") {
+      if (worldItem.system.version == itemData.system.version) {
+        versionRoles[worldItem.name] = {
+          type: worldItem.type,
+        };
+      }
+    }
+  }
+
+  return versionRoles;
 }

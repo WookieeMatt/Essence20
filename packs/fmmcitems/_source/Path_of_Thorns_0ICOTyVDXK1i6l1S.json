@@ -108,22 +108,6 @@
         "subtype": "role",
         "level": 10
       },
-      "a02f": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.4wCGBUae2VvEDVs9",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Suffer!",
-        "type": "perk",
-        "subtype": "role",
-        "level": 15
-      },
-      "fe34": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.GKNjCEwhgEbBiKQn",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Thorn Warlord",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "f5b7": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.kyqh747vyQnwSWu2",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -159,6 +143,36 @@
           "startingMax": null,
           "value": null
         }
+      },
+      "c95c": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.8SvWaWzK32zpUivS",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Psycho Ranger",
+        "type": "faction"
+      },
+      "ddac": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "28c5": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.4wCGBUae2VvEDVs9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Suffer!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "0fe9": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.GKNjCEwhgEbBiKQn",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Thorn Warlord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -262,13 +276,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713741906388,
-    "modifiedTime": 1714616651641,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748268012161,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!0ICOTyVDXK1i6l1S"
 }

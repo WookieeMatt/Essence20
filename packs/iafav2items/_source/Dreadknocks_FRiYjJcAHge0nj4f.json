@@ -1,0 +1,48 @@
+{
+  "folder": "iLSFE9MSFN2IpdZw",
+  "name": "Dreadknocks",
+  "type": "faction",
+  "_id": "FRiYjJcAHge0nj4f",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 2: Intercontinental Adventures",
+      "page": 36
+    },
+    "items": {
+      "e2d1": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.03a1UE6KBI1LIHOq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Thick Skulls",
+        "type": "perk"
+      },
+      "98b3": {
+        "uuid": "Compendium.essence20.intercontinental_adventures.Item.cNW4eInUry1g1CJF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Dreadknocks Rule",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748803440437,
+    "modifiedTime": 1748803559794,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!FRiYjJcAHge0nj4f"
+}

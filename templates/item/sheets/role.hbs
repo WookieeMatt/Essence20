@@ -26,6 +26,8 @@
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="faction" label='E20.RoleDefaultFaction' items=system.items type='faction'}}
+
       {{#if (ne system.version 'myLittlePony')}}
         {{#if (eq system.version 'powerRangers')}}
           {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AdvancedRole'}}
@@ -383,7 +385,7 @@
     {{/if}}
 
       {{!-- Role Perks --}}
-      {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="rolePerk" label='E20.RolePerks' items=system.items type='perk'}}
+      {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="perk" label='E20.RolePerks' items=system.items type='perk'}}
     </div>
   </section>
 </form>

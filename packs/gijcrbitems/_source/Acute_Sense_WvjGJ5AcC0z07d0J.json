@@ -11,7 +11,9 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "general",
+    "hasChoice": true,
+    "choiceType": "senses"
   },
   "effects": [],
   "flags": {
@@ -19,13 +21,14 @@
   },
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1686280333207,
-    "modifiedTime": 1714849758779,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748782783621,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_id": "WvjGJ5AcC0z07d0J",
   "folder": "RXPdNB9Xnw7MUk8x",

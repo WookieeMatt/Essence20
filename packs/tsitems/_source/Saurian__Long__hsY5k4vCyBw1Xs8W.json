@@ -1,0 +1,43 @@
+{
+  "folder": "zBSg0VF3XHJzKerC",
+  "name": "Saurian (Long)",
+  "type": "altMode",
+  "_id": "hsY5k4vCyBw1Xs8W",
+  "img": "systems/essence20/assets/icons/items/altmode.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 43
+    },
+    "altModeCrew": 0,
+    "altModeFirepoints": 0,
+    "altModeMovement": {
+      "aerial": 0,
+      "aquatic": 0,
+      "ground": 50
+    },
+    "altModesize": "long",
+    "tokenImage": ""
+  },
+  "effects": [],
+  "sort": 1700000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746242144464,
+    "modifiedTime": 1746243267011,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!hsY5k4vCyBw1Xs8W"
+}

@@ -580,6 +580,10 @@ body.game .window-app {
   flex-grow: 0;
 }
 
+.essence20 .pr-header-level-buttons {
+  flex-grow: 0;
+}
+
 /* Generic Item Sheet Styling */
 .essence20 .items-list {
   list-style: none;
@@ -1151,8 +1155,8 @@ body.game .window-app {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-flex: 0;
-  -ms-flex: 0 0 100px;
-  flex: 0 0 100px;
+  -ms-flex: 0 0 50px;
+  flex: 0 0 50px;
   -webkit-box-pack: end;
   -ms-flex-pack: end;
   justify-content: flex-end;
@@ -1387,6 +1391,16 @@ input[type=number], input[type=text] {
 
 .dice-total.crumble {
   color: yellow;
+}
+
+.sheet-options {
+  min-width: 400px;
+  min-height: auto;
+}
+
+.sheet-options-morph {
+  min-width: 500px;
+  min-height: auto;
 }
 
 /*# sourceMappingURL=essence20.css.map */

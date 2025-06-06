@@ -12,6 +12,12 @@
       "page": 291
     },
     "items": {
+      "8865": {
+        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.8SvWaWzK32zpUivS",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Psycho Ranger",
+        "type": "faction"
+      },
       "c0c4": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.HB7e3uW1ggYNJVql",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -60,14 +66,6 @@
         "subtype": "role",
         "level": 5
       },
-      "ccb2": {
-        "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.uVCPqt7exjXZ7kqn",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Enhance Monster",
-        "type": "perk",
-        "subtype": "role",
-        "level": 6
-      },
       "9e16": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.WQYSawSpefEKLaG0",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -100,7 +98,15 @@
         "subtype": "role",
         "level": 10
       },
-      "8f57": {
+      "e62e": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "348d": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.1aVrzJLiNkghFT4p",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Unmovable",
@@ -108,7 +114,7 @@
         "subtype": "role",
         "level": 15
       },
-      "f4cf": {
+      "7dee": {
         "uuid": "Compendium.essence20.finster_s_monster_matic_cookbook.Item.QlFNI9fQZXqO5N2J",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Stone Warlord",
@@ -217,13 +223,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713738232433,
-    "modifiedTime": 1713827829049,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748267957003,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!TEjkVjIEFEbRI736"
 }

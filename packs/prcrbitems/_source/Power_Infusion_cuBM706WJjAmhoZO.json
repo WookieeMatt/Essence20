@@ -12,8 +12,13 @@
       "page": 41
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "role"
+    "selectionLimit": 2,
+    "type": "role",
+    "hasChoice": false,
+    "advances": {
+      "canAdvance": true,
+      "type": "rerolls"
+    }
   },
   "effects": [],
   "sort": 300000,
@@ -24,13 +29,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1705014389150,
-    "modifiedTime": 1714865093376,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748204963089,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!cuBM706WJjAmhoZO"
 }

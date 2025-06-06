@@ -1,11 +1,12 @@
+import SheetOptions from "../apps/sheet-options.mjs";
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
-import { showCrossoverOptions } from "../sheet-handlers/crossover-handler.mjs";
 import { prepareSystemActors, onSystemActorsDelete, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/vehicle-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
+  onEditMorphToughnessBonus,
   onRest,
   onRoll,
   onToggleAccordion,
@@ -22,11 +23,29 @@ import {
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 
-export class Essence20ActorSheet extends ActorSheet {
+export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   constructor(...args) {
     super(...args);
     this.accordionStates = { skills: '' };
   }
+
+  /** @override */
+  async activateEditor(name, options={}, initialContent="") {
+    options.relativeLinks = true;
+    options.plugins = {
+      menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
+        compact: true,
+        destroyOnSave: true,
+        onSave: () => {
+          this.saveEditor(name, { remove: true });
+          this.editingDescriptionTarget = null;
+        },
+      }),
+    };
+    return super.activateEditor(name, options, initialContent);
+  }
+
+  static _warnedAppV1 = true;
 
   /** @override */
   static get defaultOptions() {
@@ -73,7 +92,7 @@ export class Essence20ActorSheet extends ActorSheet {
     this._prepareWeaponEffectSkills(actorData, context);
 
     // Prepare number of actions
-    if (['giJoe', 'npc', 'pony', 'powerRanger', 'transformer'].includes(actorData.type)) {
+    if (actorData.type == "playerCharacter") {
       context.numActions = getNumActions(this.actor);
     }
 
@@ -90,7 +109,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
 
     // Prepare PC skill rank allocation
-    if (["giJoe", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+    if (this.actor.type == "playerCharacter") {
       this._prepareSkillRankAllocation(context);
     }
 
@@ -102,14 +121,14 @@ export class Essence20ActorSheet extends ActorSheet {
     let buttons = super._getHeaderButtons();
 
     if (this.actor.isOwner) {
-      // Crossover Button for Character Sheets
-      if (["giJoe", "npc", "pony", "powerRanger", "transformer"].includes(this.actor.type)) {
+      // Sheet Options Button for Character Sheets
+      if (["npc", 'playerCharacter'].includes(this.actor.type)) {
         buttons = [
           {
-            label: game.i18n.localize('E20.Crossover'),
+            label: game.i18n.localize('E20.SheetOptions'),
             class: 'configure-actor',
             icon: 'fas fa-cog',
-            onclick: (ev) => showCrossoverOptions(this, ev),
+            onclick: (ev) => new SheetOptions(this.actor, ev).render(true),
           },
           ...buttons,
         ];
@@ -241,7 +260,6 @@ export class Essence20ActorSheet extends ActorSheet {
     const altModes = [];
     const armors = [];
     const bonds = [];
-    const contacts = [];
     const features = []; // Used by Zords
     const focuses = [];
     const gears = [];
@@ -261,6 +279,7 @@ export class Essence20ActorSheet extends ActorSheet {
     const weapons = [];
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
+    let faction = null;
     let role = null;
     let rolePoints = null;
 
@@ -287,8 +306,8 @@ export class Essence20ActorSheet extends ActorSheet {
       case 'bond':
         bonds.push(i);
         break;
-      case 'contact':
-        contacts.push(i);
+      case 'faction':
+        faction = i;
         break;
       case 'feature':
         features.push(i);
@@ -327,7 +346,10 @@ export class Essence20ActorSheet extends ActorSheet {
           perks[i.system.type] = [i];
         }
 
-        perks.all.push(i);
+        //removes contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
+        if (this.actor.type == "npc" && i.system.type != "contact") {
+          perks.all.push(i);
+        }
 
         break;
       case 'power':
@@ -407,7 +429,7 @@ export class Essence20ActorSheet extends ActorSheet {
     context.altModes = altModes;
     context.armors = armors;
     context.bonds = bonds;
-    context.contacts = contacts;
+    context.faction = faction;
     context.features = features;
     context.gears = gears;
     context.focuses = focuses;
@@ -487,6 +509,8 @@ export class Essence20ActorSheet extends ActorSheet {
 
     html.find('.num-crew').change(ev=> onCrewNumberUpdate(ev, this));
 
+    html.find('.morph-toughness-edit').click(ev=> onEditMorphToughnessBonus(ev, this));
+
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = ev => this._onDragStart(ev);
@@ -499,6 +523,10 @@ export class Essence20ActorSheet extends ActorSheet {
 
     // Rest button
     html.find('.rest').click(() => onRest(this));
+
+    // Leveling buttons
+    html.find('.level-up').click(() => this._onLevelChangeHelper(1));
+    html.find('.level-down').click(() => this._onLevelChangeHelper(-1));
 
     const isLocked = this.actor.system.isLocked;
 
@@ -561,11 +589,30 @@ export class Essence20ActorSheet extends ActorSheet {
    * Handle changes to an input element, submitting the form if options.submitOnChange is true.
    * Do not preventDefault in this handler as other interactions on the form may also be occurring.
    * @param {Event} event The initial change event
+   *
+   * @override
    */
   async _onChangeInput(event) {
     await super._onChangeInput(event);
 
-    if (event.currentTarget.name == "system.level") {
+    // Use this if we can get the manual level input working again
+    // if (event.currentTarget.name == "system.level") {
+    //   return await onLevelChange(this.actor, this.actor.system.level);
+    // }
+  }
+
+  /**
+   * Handle clicking on the leveling buttons, where the up arrow increases the
+   * level by 1 and the down arrow decreases it by 1
+   * @param {Integer} levelChange The change in the level
+   */
+  async _onLevelChangeHelper(levelChange) {
+    const newLevel = this.actor.system.level + levelChange;
+    if (newLevel > 0 && newLevel <= 20) {
+      await this.actor.update({
+        "system.level": this.actor.system.level + levelChange,
+      }).then(this.render(false));
+
       return await onLevelChange(this.actor, this.actor.system.level);
     }
   }

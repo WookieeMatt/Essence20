@@ -1,0 +1,110 @@
+{
+  "folder": "r5pGAVe6pCYJ39RG",
+  "name": "Cybertronian Perk (Decepticon)",
+  "type": "perk",
+  "_id": "yhsjCbMKwPKOLmRp",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 39
+    },
+    "items": {
+      "f1d1": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.pmftcupPEAwZKLW6",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Taking Advantage",
+        "type": "perk",
+        "role": "Analyst"
+      },
+      "897b": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.RaBFCLogTlDLzux9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Show Them Who's In Charge",
+        "type": "perk",
+        "role": "Field Commander"
+      },
+      "d2a3": {
+        "uuid": "Compendium.essence20.tf_crb.Item.5ALxFuFqhT5WgDyb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Imprompturret",
+        "type": "perk",
+        "role": "Gunner"
+      },
+      "f1a3": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.TqHEkFOMsnX6xzw2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cog Flexibility",
+        "type": "perk",
+        "role": "Modemaster"
+      },
+      "dfc5": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.RVm0zqWyWIFEHsmL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Materials at Hand",
+        "type": "perk",
+        "role": "Scientist"
+      },
+      "cb73": {
+        "uuid": "Compendium.essence20.tf_crb.Item.aD6N6hTvFhsQFZnB",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Disappear",
+        "type": "perk",
+        "role": "Scout"
+      },
+      "e084": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.m7aAEpuhRCiittl0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Give Me That!",
+        "type": "perk",
+        "role": "Warrior"
+      },
+      "d71f": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.ZtRBGtnV5HCA7zhl",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Energon Efficiency",
+        "type": "perk",
+        "role": "Raider"
+      }
+    },
+    "advances": {
+      "baseValue": 1,
+      "canAdvance": false,
+      "currentValue": 0,
+      "increaseValue": 1
+    },
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": true,
+    "hasChoice": false,
+    "hasMorphedToughnessBonus": false,
+    "numChoices": 1,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "faction",
+    "value": 0,
+    "version": "transformers"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748733379037,
+    "modifiedTime": 1748734798771,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!yhsjCbMKwPKOLmRp"
+}

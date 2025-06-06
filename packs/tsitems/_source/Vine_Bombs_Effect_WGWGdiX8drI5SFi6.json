@@ -1,0 +1,51 @@
+{
+  "folder": "VA3Mj2hAFyA59F9F",
+  "name": "Vine Bombs Effect",
+  "type": "weaponEffect",
+  "_id": "WGWGdiX8drI5SFi6",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 48
+    },
+    "classification": {
+      "skill": "athletics",
+      "style": "explosive"
+    },
+    "damageType": "stun",
+    "damageValue": 1,
+    "isSpecialized": false,
+    "numHands": 1,
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 30,
+      "value": 15
+    },
+    "shiftDown": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746247180103,
+    "modifiedTime": 1746247225872,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!WGWGdiX8drI5SFi6"
+}

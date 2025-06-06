@@ -1,0 +1,54 @@
+{
+  "folder": "Yo11Yuvil9pJpryo",
+  "name": "Tiger Force",
+  "type": "faction",
+  "_id": "ut7561HXFJd1jPdn",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 12
+    },
+    "items": {
+      "b569": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.8tz9aZSqmUntS20H",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Change Its Stripes",
+        "type": "perk"
+      },
+      "e028": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.cItUyVJ1ky3fdjKe",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Creature of Habit",
+        "type": "perk"
+      },
+      "c139": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.AaI58jYka8MfhIbc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Roar!",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748792206618,
+    "modifiedTime": 1748792711833,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!ut7561HXFJd1jPdn"
+}
