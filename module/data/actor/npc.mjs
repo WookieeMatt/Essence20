@@ -1,4 +1,4 @@
-import { makeInt } from "../generic-makers.mjs";
+import { makeBool, makeInt, makeStr } from "../generic-makers.mjs";
 
 import { character, migrateCharacterData } from './templates/character.mjs';
 import { common } from './templates/common.mjs';
@@ -18,12 +18,16 @@ export class NpcActorData extends foundry.abstract.TypeDataModel {
       ...character(),
       ...common(),
       ...creature(),
+      allegiancePoints: makeInt(0),
       defenses: new fields.SchemaField({
         toughness: makeDefensesFields(10),
         evasion: makeDefensesFields(10),
         willpower: makeDefensesFields(null),
         cleverness: makeDefensesFields(null),
       }),
+      gainingTheContact: makeStr(''),
+      isContact: makeBool(false),
+      isNPC: makeBool(true),
       threatLevel: makeInt(0),
     };
   }

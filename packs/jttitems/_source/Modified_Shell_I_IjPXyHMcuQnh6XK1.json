@@ -13,7 +13,40 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 2,
+    "items": {
+      "1e7f": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.Ux2eueBLxKgzD2Kd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Comic Flair",
+        "type": "perk",
+        "role": null
+      },
+      "e5de": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.FLV4BgCGfPPDxoAY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhanced Impact Points",
+        "type": "perk",
+        "role": null
+      },
+      "678e": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.BC2wNy6460YosiQS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Frightening",
+        "type": "perk",
+        "role": null
+      },
+      "db8a": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.45WHjwO125zTvuGR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Powered Plating",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 200000,
@@ -24,13 +57,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713573041715,
-    "modifiedTime": 1714864539152,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748268527820,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!IjPXyHMcuQnh6XK1"
 }

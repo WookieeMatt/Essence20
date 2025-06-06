@@ -1,8 +1,12 @@
-import ChoicesPrompt from "../apps/choices-prompt.mjs";
-import { rememberOptions, rememberSelect } from "../helpers/dialog.mjs";
+import ChoicesSelector from "../apps/choices-selector.mjs";
+import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
+import { onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
+import { onFactionDrop } from "./faction-handler.mjs";
 
+const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 /**
  * Handles setting the values and Items for an Actor's Role
  * @param {Role} role The Actor's Role
@@ -167,9 +171,7 @@ export async function onFocusDrop(actor, focus, dropFunc) {
     return false;
   }
 
-  const sourceId = foundry.utils.isNewerVersion('12', game.version)
-    ? role[0].flags.core.sourceId
-    : role[0]._stats.compendiumSource;
+  const sourceId = role[0]._stats.compendiumSource;
 
   if (sourceId != attachedRole[0].uuid) {
     ui.notifications.error(game.i18n.localize('E20.FocusRoleMismatchError'));
@@ -206,7 +208,8 @@ async function _showEssenceDialog(actor, focus, dropFunc) {
 
   const prompt = "E20.SelectFocus";
   const title = "E20.SelectFocusSkills";
-  new ChoicesPrompt(choices, focus, actor, prompt, title, dropFunc).render(true);
+
+  new ChoicesSelector(choices, actor, prompt, title, focus, null, dropFunc, null, null, null).render(true);
 }
 
 /**
@@ -289,6 +292,26 @@ export async function onRoleDrop(actor, role, dropFunc) {
     return false;
   }
 
+  // Faction updates
+  const factionList = getItemsOfType("faction", actor.items);
+  if (factionList.length) {
+    addFactionPerks(actor, role);
+  } else {
+    let defaultFaction = null;
+    for (const item of Object.values(role.system.items)) {
+      if (item.type == 'faction') {
+        defaultFaction = item;
+        break;
+      }
+    }
+
+    if (defaultFaction) {
+      const factionToCreate = await fromUuid(defaultFaction.uuid);
+      const newFaction = await Item.create(factionToCreate, { parent: actor });
+      onFactionDrop(actor, null, newFaction);
+    }
+  }
+
   if (role.system.skillDie.isUsed && !role.system.skillDie.name) {
     ui.notifications.error(game.i18n.localize('E20.RoleSkillDieError'));
     return false;
@@ -297,10 +320,10 @@ export async function onRoleDrop(actor, role, dropFunc) {
   actor.setFlag('essence20', 'previousLevel', actor.system.level);
   actor.setFlag('essence20', 'roleDrop', true);
 
+  // Skill updates
   if (role.system.skillDie.isUsed) {
     const skillName = "roleSkillDie";
     const skillStringShift = `system.skills.${skillName}.shift`;
-    const skillStringDisplayName = `system.skills.${skillName}.displayName`;
     const skillStringEdge = `system.skills.${skillName}.edge`;
     const skillStringEssencesSmarts = `system.skills.${skillName}.essences.smarts`;
     const skillStringEssencesSocial = `system.skills.${skillName}.essences.social`;
@@ -324,7 +347,21 @@ export async function onRoleDrop(actor, role, dropFunc) {
       [skillStringShiftDown] : 0,
       [skillStringIsSpecialized] : false,
       [skillStringModifier] : 0,
-      [skillStringDisplayName] : role.system.skillDie.name,
+    });
+  }
+
+  // Role version updates
+  if (role.system.version =='powerRangers') {
+    await actor.update({
+      "system.canMorph": true,
+    });
+  } else if (role.system.version =='myLittlePony') {
+    await actor.update({
+      "system.canSpellcast": true,
+    });
+  } else  if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": true,
     });
   }
 
@@ -338,18 +375,19 @@ export async function onRoleDrop(actor, role, dropFunc) {
     await setRoleValues(newRole, actor);
   }
 
-  if (role.system.version == 'giJoe') {
-    await actor.update({
-      "system.canQualify": true,
-    });
-  }
-
+  // Training updates
   await _trainingUpdate(actor, 'armors', 'qualified', true, role);
   await _trainingUpdate(actor, 'armors', 'trained', true, role);
   await _trainingUpdate(actor, 'weapons', 'qualified', true, role);
   await _trainingUpdate(actor, 'weapons', 'trained', true, role);
   await _trainingUpdate(actor, 'armors', 'trained', true, role, true);
 
+  // Morphed toughness bonus updates
+  for (const item of actor.items) {
+    if (item._stats.compendiumSource == MORPHIN_TIME_PERK_ID) {
+      setMorphedToughnessBonus(actor);
+    }
+  }
 }
 
 /**
@@ -386,7 +424,18 @@ export async function onLevelChange(actor, newLevel) {
 export async function onRoleDelete(actor, role) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
   const focus = getItemsOfType("focus", actor.items);
+  const factionList = getItemsOfType("faction", actor.items);
 
+  // Faction updates
+  if (factionList.length) {
+    for (const item of actor.items) {
+      if (item.type == "perk" && item.system.isRoleVariant) {
+        deleteAttachmentsForItem(item, actor);
+      }
+    }
+  }
+
+  // Essence updates
   for (const essence in role.system.essenceLevels) {
     const totalDecrease = roleValueChange(0, role.system.essenceLevels[essence], previousLevel);
     const essenceMaxValue = Math.max(0, actor.system.essences[essence].max + totalDecrease);
@@ -400,35 +449,19 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
-  if (role.system.powers.personal.starting) {
-    const totalDecrease = roleValueChange(0, role.system.powers.personal.levels, previousLevel);
-    const newPersonalPowerMax = Math.max(0, parseInt(actor.system.powers.personal.max) - role.system.powers.personal.starting + (role.system.powers.personal.increase * totalDecrease));
-
+  // Role version updates
+  if (role.system.version =='powerRangers') {
     await actor.update({
-      "system.powers.personal.max": newPersonalPowerMax,
-      "system.powers.personal.regeneration": 0,
+      "system.canMorph": false,
     });
-  }
-
-  if (role.system.skillDie.isUsed) {
-    const skillName = "roleSkillDie";
-    const skillString = `system.skills.-=${skillName}`;
-
-    await actor.update({[skillString] : null});
-  }
-
-  if (role.system.adjustments.health.length) {
-    const totalDecrease = roleValueChange(0, role.system.adjustments.health, previousLevel);
-    const newHealthBonus = Math.max(0, actor.system.health.bonus + totalDecrease);
-
+  } else if (role.system.version =='myLittlePony') {
     await actor.update({
-      "system.health.bonus": newHealthBonus,
+      "system.canSpellcast": false,
     });
-  }
-
-  if (focus[0]) {
-    await onFocusDelete(actor, focus[0]);
-    await focus[0].delete();
+  } else if (role.system.version == 'giJoe') {
+    await actor.update({
+      "system.canQualify": false,
+    });
   }
 
   if (role.system.version == 'myLittlePony' || role.system.hasSpecialAdvancement) {
@@ -440,17 +473,75 @@ export async function onRoleDelete(actor, role) {
     });
   }
 
-  if (role.system.version == 'giJoe') {
+  // Personal Power updates
+  if (role.system.powers.personal.starting) {
+    const totalDecrease = roleValueChange(0, role.system.powers.personal.levels, previousLevel);
+    const newPersonalPowerMax = Math.max(0, parseInt(actor.system.powers.personal.max) - role.system.powers.personal.starting + (role.system.powers.personal.increase * totalDecrease));
+
     await actor.update({
-      "system.canQualify": false,
+      "system.powers.personal.max": newPersonalPowerMax,
+      "system.powers.personal.regeneration": 0,
     });
   }
 
+  // Skill updates
+  if (role.system.skillDie.isUsed) {
+    const skillName = "roleSkillDie";
+    const skillStringShift = `system.skills.${skillName}.shift`;
+    const skillStringEdge = `system.skills.${skillName}.edge`;
+    const skillStringEssencesSmarts = `system.skills.${skillName}.essences.smarts`;
+    const skillStringEssencesSocial = `system.skills.${skillName}.essences.social`;
+    const skillStringEssencesSpeed = `system.skills.${skillName}.essences.speed`;
+    const skillStringEssencesSrength = `system.skills.${skillName}.essences.strength`;
+    const skillStringIsSpecialized = `system.skills.${skillName}.isSpecialized`;
+    const skillStringModifier = `system.skills.${skillName}.modifier`;
+    const skillStringSnag = `system.skills.${skillName}.snag`;
+    const skillStringShiftUp = `system.skills.${skillName}.shiftUp`;
+    const skillStringShiftDown = `system.skills.${skillName}.shiftDown`;
+
+    await actor.update({
+      [skillStringShift]: "d20",
+      [skillStringEssencesSmarts] : false,
+      [skillStringEssencesSocial] : false,
+      [skillStringEssencesSpeed] : false,
+      [skillStringEssencesSrength] : false,
+      [skillStringEdge] : false,
+      [skillStringSnag] : false,
+      [skillStringShiftUp] : 0,
+      [skillStringShiftDown] : 0,
+      [skillStringIsSpecialized] : false,
+      [skillStringModifier] : 0,
+    });
+  }
+
+  // Health updates
+  if (role.system.adjustments.health.length) {
+    const totalDecrease = roleValueChange(0, role.system.adjustments.health, previousLevel);
+    const newHealthBonus = Math.max(0, actor.system.health.bonus + totalDecrease);
+
+    await actor.update({
+      "system.health.bonus": newHealthBonus,
+    });
+  }
+
+  // Focus updates
+  if (focus[0]) {
+    await onFocusDelete(actor, focus[0]);
+    await focus[0].delete();
+  }
+
+  // Training updates
   await _trainingUpdate(actor, 'armors', 'qualified', false, role);
   await _trainingUpdate(actor, 'armors', 'trained', false, role);
   await _trainingUpdate(actor, 'weapons', 'qualified', false, role);
   await _trainingUpdate(actor, 'weapons', 'trained', false, role);
   await _trainingUpdate(actor, 'armors', 'trained', false, role, true);
+
+  // Misc updates
+  await actor.update ({
+    "system.defenses.toughness.morphed": 0,
+    "system.level": 1,
+  });
 
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
@@ -471,43 +562,9 @@ async function _selectFirstEssences(actor, role, dropFunc) {
     };
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.EssenceIncrease'),
-      content: await renderTemplate("systems/essence20/templates/dialog/multi-select-essence.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: html => {
-            _verifySelection(rememberOptions(html)),
-            _selectEssenceProgression(actor, role, dropFunc, rememberOptions(html));
-          },
-        },
-      },
-    },
-  ).render(true);
+  const title = "E20.EssenceIncrease";
+  new MultiEssenceSelector(choices, actor, role, dropFunc, title).render(true);
 
-}
-
-/**
- * Displays an error to the user if invalid Essence dialog selections were made.
- * @param {Object} options The options selected in the previous dialog
- */
-function _verifySelection(options) {
-  let selectionAmount = 0;
-  for (const [, selection] of Object.entries(options)) {
-    if (selection == true) {
-      selectionAmount += 1;
-    }
-  }
-
-  if (selectionAmount != 2) {
-    throw new Error(game.i18n.localize("E20.EssencesRequiredError"));
-  }
-
-  return;
 }
 
 /**
@@ -516,7 +573,7 @@ function _verifySelection(options) {
  * @param {Object} role The Role that was dropped on the Actor
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Role
  */
-async function _selectEssenceProgression(actor, role, dropFunc, level1Essences) {
+export async function _selectEssenceProgression(actor, role, dropFunc, level1Essences) {
   const choices = {};
   let rankNames = "";
   if (role.system.version == "transformers") {
@@ -533,42 +590,8 @@ async function _selectEssenceProgression(actor, role, dropFunc, level1Essences) 
     };
   }
 
-  new Dialog(
-    {
-      title: game.i18n.localize('E20.EssenceProgressionSelect'),
-      content: await renderTemplate("systems/essence20/templates/dialog/essence-select.hbs", {
-        choices,
-      }),
-      buttons: {
-        save: {
-          label: game.i18n.localize('E20.AcceptButton'),
-          callback: (html) => {
-            _verifyEssenceProgression(rememberSelect(html));
-            _setEssenceProgression(actor, rememberSelect(html), role, dropFunc, level1Essences);
-          },
-        },
-      },
-    },
-  ).render(true);
-}
-
-/**
- * Handles verifying that all of the Essences have a different Rank.
- * @param {Object} options The selections made in the dialog window
- * @returns {Boolean} True if all of the Essences have a different rank and false otherwise
- */
-function _verifyEssenceProgression(options) {
-  const rankArray = [];
-  for (const [, rank] of Object.entries(options)) {
-    rankArray.push(rank);
-  }
-
-  const isUnique = rankArray.length === new Set(rankArray).size;
-  if (!isUnique) {
-    throw new Error('Selections must be unique');
-  }
-
-  return isUnique;
+  const title = "E20.EssenceProgressionSelect";
+  new EssenceProgressionSelector(choices, actor, role, dropFunc, level1Essences, title).render(true);
 }
 
 /**
@@ -577,7 +600,7 @@ function _verifyEssenceProgression(options) {
  * @param {Role} role The Role that was dropped on the Actor
  * @param {Function} dropFunc The drop function that will be used to complete the drop of the Role
  */
-async function _setEssenceProgression(actor, options, role, dropFunc, level1Essences) {
+export async function _setEssenceProgression(actor, options, role, dropFunc, level1Essences) {
   const newRoleList = await dropFunc();
   const newRole = newRoleList[0];
 
@@ -606,11 +629,11 @@ async function _setEssenceProgression(actor, options, role, dropFunc, level1Esse
 }
 
 /**
- *
+ * Adds or removes Item type training for the given Actor.
  * @param {Actor} actor The Actor whose training is being updated
  * @param {String} itemType The type of item that we are training
  * @param {String} trainingType The type of training we are applying
- * @param {Boolean} updateType Whether we are adding or removing training
+ * @param {Boolean} updateType Whether we are adding (true) or removing (false) training
  * @param {Object} role The role that actor has
  * @param {Boolean} useUpgradesAccessor Whether this is targeting Upgrades or not
  */
@@ -621,5 +644,24 @@ async function _trainingUpdate(actor, itemType, trainingType, updateType, role, 
     await actor.update({
       [profString] : updateType,
     });
+  }
+}
+
+/**
+ * Handles adding subperks for existing factions for the role being added.
+ * @param {Faction} faction The Existing Faction.
+ * @param {Actor} actor The actor the role is being added to.
+ * @param {Role} role The role that is being added.
+ */
+async function addFactionPerks(actor, role) {
+  for (const item of actor.items) {
+    if (item.type == "perk" && item.system.isRoleVariant) {
+      for (const [, attachment] of Object.entries(item.system.items)) {
+        if (attachment.role == role.name) {
+          const itemToCreate = await fromUuid(attachment.uuid);
+          await onPerkDrop(actor, itemToCreate, null, null, null, item);
+        }
+      }
+    }
   }
 }

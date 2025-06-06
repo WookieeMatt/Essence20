@@ -19,6 +19,14 @@ export const migrateWorld = async function() {
       });
       reloadNeeded = true;
     }
+
+    if (["giJoe", "pony", "powerRanger", "transformer"].includes(invalidActor.type)) {
+      await invalidActor.update({
+        "type": "playerCharacter",
+        "system": invalidActor.system,
+      }, {recursive: false});
+      reloadNeeded = true;
+    }
   }
 
   if (reloadNeeded) {
@@ -58,6 +66,11 @@ export const migrateWorld = async function() {
       if (["giJoe", "pony", "powerRanger", "transformer"].includes(item.type)) {
         item.delete();
         continue;
+      }
+
+      if (item.type == "contact") {
+        item.delete();
+        break;
       }
 
       const updateData = await migrateItemData(source);
@@ -299,6 +312,10 @@ export const migrateActorData = async function(actor, compendiumActor) {
     }
   }
 
+  if (["giJoe", "pony", "powerRanger", "transformer"].includes(actor.type)) {
+    updateData['type'] = 'playerCharacter';
+  }
+
   // Migrate Owned Items
   if (!actor.items) {
     return updateData;
@@ -323,6 +340,10 @@ export const migrateActorData = async function(actor, compendiumActor) {
       } else {
         await itemToDelete.delete();
       }
+    }
+
+    if (itemToDelete.type == "contact") {
+      await itemToDelete.delete();
     }
 
     let itemUpdate = await migrateItemData(itemToDelete, fullActor);

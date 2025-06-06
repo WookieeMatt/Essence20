@@ -96,7 +96,9 @@ export class Dice {
       shiftDown: calculatedShiftDown,
     };
     const actorSkillData = actor.getRollData().skills[rolledSkill];
-    const initialShift = dataset.shift || actorSkillData.shift;
+    const initialShift = essenceShifts[rolledEssence]?.untrainedBonus && dataset.shift == "d20"
+      ? "d2"
+      : dataset.shift || actorSkillData.shift;
     const skillDataset = {
       shift: initialShift,
       edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge,
@@ -183,7 +185,9 @@ export class Dice {
     let roll = new Roll(formula, actor.getRollData());
     roll.toMessage({
       flags: {
-        canCritD2: canCritD2,
+        essence20: {
+          canCritD2: canCritD2,
+        },
       },
       speaker: this._chatMessage.getSpeaker({ actor }),
       flavor,

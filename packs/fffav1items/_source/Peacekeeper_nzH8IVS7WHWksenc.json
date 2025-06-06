@@ -1,19 +1,23 @@
 {
   "name": "Peacekeeper",
   "sorting": "a",
-  "folder": "EVHpO0v49JTN4AdX",
+  "folder": "ve4rCnKw8s0VO1XB",
   "type": "Item",
   "_id": "nzH8IVS7WHWksenc",
-  "sort": 0,
+  "sort": 200000,
   "color": null,
   "flags": {},
   "_stats": {
     "systemId": null,
     "systemVersion": null,
-    "coreVersion": null,
+    "coreVersion": "13.344",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null
+    "modifiedTime": 1748792763816,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
   },
+  "description": "",
   "_key": "!folders!nzH8IVS7WHWksenc"
 }

@@ -113,7 +113,15 @@
         "subtype": "role",
         "level": 9
       },
-      "d97c": {
+      "cfd8": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "ba26": {
         "uuid": "Compendium.essence20.beneath_the_helmet.Item.hSzY2uhu3L9nGP6o",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Unlucky (For You)",
@@ -121,7 +129,15 @@
         "subtype": "role",
         "level": 13
       },
-      "c379": {
+      "f25a": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "c114": {
         "uuid": "Compendium.essence20.beneath_the_helmet.Item.YsoS30FKigTm19CH",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Absolute Menace",
@@ -129,13 +145,19 @@
         "subtype": "role",
         "level": 18
       },
-      "05d5": {
+      "8a73": {
         "uuid": "Compendium.essence20.beneath_the_helmet.Item.GJCOxtuot74Jnfs4",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Apex Dark Ranger",
         "type": "perk",
         "subtype": "role",
         "level": 20
+      },
+      "0fbb": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
       }
     },
     "adjustments": {
@@ -234,13 +256,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713835223051,
-    "modifiedTime": 1714616546302,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748227291308,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!wDXEvv0rJ33R0a3R"
 }

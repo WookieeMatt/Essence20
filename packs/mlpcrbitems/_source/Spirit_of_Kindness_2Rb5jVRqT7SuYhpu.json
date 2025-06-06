@@ -12,6 +12,12 @@
       "page": 80
     },
     "items": {
+      "4398": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.46R1ivWI77hUhyC4",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "My Little Pony",
+        "type": "faction"
+      },
       "c054": {
         "uuid": "Compendium.essence20.mlp_crb.Item.SKviFM3gryyTrJV5",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -24,14 +30,6 @@
         "uuid": "Compendium.essence20.mlp_crb.Item.89GCYHXO3chKVOAj",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Kindness is Magic",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "df29": {
-        "uuid": "Compendium.essence20.mlp_crb.Item.2qyftQYtr5noeJ6e",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Friendship Circle",
         "type": "perk",
         "subtype": "role",
         "level": 1
@@ -219,13 +217,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
     "createdTime": 1713838010848,
-    "modifiedTime": 1713838870562,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1749082453003,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!2Rb5jVRqT7SuYhpu"
 }

@@ -1,0 +1,67 @@
+{
+  "folder": "Wp5ti6xvfOvQ2g8f",
+  "name": "Flyer",
+  "type": "origin",
+  "_id": "X7PGPxYaYqN8o7vF",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 39
+    },
+    "items": {
+      "c7f1": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.tXFkcJfvuZ1LEUAX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bird's Eye View",
+        "type": "perk"
+      },
+      "b312": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.8M5milnnYu2fyJnr",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Flyer (Small)",
+        "type": "altMode"
+      },
+      "b8da": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.z0DXIKiccQbcT7cQ",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Flyer (Common)",
+        "type": "altMode"
+      }
+    },
+    "baseAerialMovement": 25,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "speed",
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "driving",
+      "alertness"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "sort": 800000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746239245535,
+    "modifiedTime": 1746243258024,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!X7PGPxYaYqN8o7vF"
+}

@@ -12,7 +12,13 @@
       "page": 59
     },
     "items": {
-      "e78b": {
+      "3cca": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
+      },
+      "8d99": {
         "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Zord",
@@ -20,7 +26,7 @@
         "subtype": "role",
         "level": 1
       },
-      "b206": {
+      "db2c": {
         "uuid": "Compendium.essence20.pr_crb.Item.82Ld65NsKwfMZaSC",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Grid Relic Weapon",
@@ -28,7 +34,7 @@
         "subtype": "role",
         "level": 1
       },
-      "ca9e": {
+      "95c8": {
         "uuid": "Compendium.essence20.pr_crb.Item.ALq37Ch25nKvZ454",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Follow Me!",
@@ -36,7 +42,7 @@
         "subtype": "role",
         "level": 2
       },
-      "f830": {
+      "f274": {
         "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Extra Attack",
@@ -44,7 +50,7 @@
         "subtype": "role",
         "level": 5
       },
-      "4eac": {
+      "09b9": {
         "uuid": "Compendium.essence20.pr_crb.Item.FJSNzVRulj20M0B1",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Inspiration",
@@ -52,7 +58,15 @@
         "subtype": "role",
         "level": 5
       },
-      "f9d1": {
+      "4dd0": {
+        "uuid": "Compendium.essence20.pr_crb.Item.U8hcTqLqPyMGyz22",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "be79": {
         "uuid": "Compendium.essence20.pr_crb.Item.woCTg4Lpk3KpsgtF",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Shining Leader",
@@ -60,7 +74,7 @@
         "subtype": "role",
         "level": 8
       },
-      "8a63": {
+      "a9f9": {
         "uuid": "Compendium.essence20.pr_crb.Item.YhdTm7qhaPCoiDab",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Sidestep",
@@ -68,7 +82,47 @@
         "subtype": "role",
         "level": 9
       },
-      "658a": {
+      "d43f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FJSNzVRulj20M0B1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inspiration",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "f0e9": {
+        "uuid": "Compendium.essence20.pr_crb.Item.U8hcTqLqPyMGyz22",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "9ed6": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "d854": {
+        "uuid": "Compendium.essence20.pr_crb.Item.FJSNzVRulj20M0B1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Inspiration",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "c285": {
+        "uuid": "Compendium.essence20.pr_crb.Item.U8hcTqLqPyMGyz22",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Relic Weapon Trait",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
+      "9a85": {
         "uuid": "Compendium.essence20.pr_crb.Item.UFwnD2CsWCWXlUyf",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "At All Costs",
@@ -76,7 +130,7 @@
         "subtype": "role",
         "level": 18
       },
-      "c6d2": {
+      "8bc4": {
         "uuid": "Compendium.essence20.pr_crb.Item.RDdg5LWyjHOyqsCp",
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "White Ranger Prime",
@@ -210,13 +264,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713500174803,
-    "modifiedTime": 1713827670362,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748219140331,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!QHednxEwgUdFsNwa"
 }

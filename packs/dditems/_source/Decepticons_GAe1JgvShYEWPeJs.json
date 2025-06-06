@@ -1,0 +1,48 @@
+{
+  "folder": "xUVqN2yxGfEcZSZ3",
+  "name": "Decepticons",
+  "type": "faction",
+  "_id": "GAe1JgvShYEWPeJs",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 38
+    },
+    "items": {
+      "9973": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.yhsjCbMKwPKOLmRp",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Cybertronian Perk (Decepticon)",
+        "type": "perk"
+      },
+      "debb": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.3IHBbGOucL4eAFAA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hail Megatron!",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748730387274,
+    "modifiedTime": 1748733440513,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!GAe1JgvShYEWPeJs"
+}

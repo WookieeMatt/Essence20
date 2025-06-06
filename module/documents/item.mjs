@@ -201,7 +201,7 @@ export class Essence20Item extends Item {
         speaker: speaker,
         rollMode: rollMode,
         flavor: label,
-        content: await renderTemplate(template, templateData),
+        content: await foundry.applications.handlebars.renderTemplate(template, templateData),
       });
     } else if (this.type == 'perk') {
       // Initialize chat data.

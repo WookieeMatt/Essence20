@@ -1,7 +1,7 @@
 {
   "title": "Essence20",
   "description": "The Essence20 system for FoundryVTT!",
-  "version": "4.6.9",
+  "version": "This is auto replaced",
   "esmodules": [
     "module/essence20.mjs",
     "module/story-points-tracker.js",
@@ -22,6 +22,108 @@
   "grid": {
     "distance": 5,
     "units": "ft"
+  },
+  "documentTypes": {
+    "Actor": {
+      "playerCharacter": {
+        "htmlFields": ["notes"]
+      },
+      "megaform": {
+        "htmlFields": ["notes"]
+      },
+      "npc": {
+        "htmlFields": ["notes"]
+      },
+      "vehicle": {
+        "htmlFields": ["notes"]
+      },
+      "zord": {
+        "htmlFields": ["notes"]
+      },
+      "companion": {
+        "htmlFields": ["notes"]
+      }
+    },
+    "Item": {
+      "alteration": {
+        "htmlFields": ["description"]
+      },
+      "altMode": {
+        "htmlFields": ["description"]
+      },
+      "armor": {
+        "htmlFields": ["description"]
+      },
+      "bond": {
+        "htmlFields": ["description"]
+      },
+      "classFeature": {
+        "htmlFields": ["description"]
+      },
+      "equipmentPackage": {
+        "htmlFields": ["description"]
+      },
+      "faction": {
+        "htmlFields": ["description"]
+      },
+      "feature": {
+        "htmlFields": ["description"]
+      },
+      "focus": {
+        "htmlFields": ["description"]
+      },
+      "gear": {
+        "htmlFields": ["description"]
+      },
+      "hangUp": {
+        "htmlFields": ["description"]
+      },
+      "influence": {
+        "htmlFields": ["description"]
+      },
+      "magicBauble": {
+        "htmlFields": ["description"]
+      },
+      "megaformTrait": {
+        "htmlFields": ["description"]
+      },
+      "origin": {
+        "htmlFields": ["description"]
+      },
+      "perk": {
+        "htmlFields": ["description"]
+      },
+      "power": {
+        "htmlFields": ["description"]
+      },
+      "role": {
+        "htmlFields": ["description"]
+      },
+      "rolePoints": {
+        "htmlFields": ["description"]
+      },
+      "shield": {
+        "htmlFields": ["description"]
+      },
+      "specialization": {
+        "htmlFields": ["description"]
+      },
+      "spell": {
+        "htmlFields": ["description"]
+      },
+      "trait": {
+        "htmlFields": ["description"]
+      },
+      "upgrade": {
+        "htmlFields": ["description"]
+      },
+      "weapon": {
+        "htmlFields": ["description"]
+      },
+      "weaponEffect": {
+        "htmlFields": ["description"]
+      }
+    }
   },
   "packs": [
     {
@@ -178,6 +280,24 @@
       "flags": {}
     },
     {
+      "name": "story_of_the_seasons",
+      "label": "Story of the Seasons",
+      "system": "essence20",
+      "path": "packs/sotsitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "technorganic_secrets",
+      "label": "Technorganic Secrets",
+      "system": "essence20",
+      "path": "packs/tsitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "through_the_shattered_grid",
       "label": "Through The Shattered Grid",
       "system": "essence20",
@@ -191,6 +311,15 @@
       "label": "Transformers Core Rulebook",
       "system": "essence20",
       "path": "packs/tfcrbitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "transformers_one_sourcebook",
+      "label": "Transformers One Sourcebook",
+      "system": "essence20",
+      "path": "packs/tf1sitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -215,7 +344,8 @@
       "packs": [
         "mlp_crb",
         "dark_skies_over_equestria",
-        "knights_of_canterlot"
+        "knights_of_canterlot",
+        "story_of_the_seasons"
       ]
     },
     {
@@ -236,16 +366,18 @@
       "packs": [
         "tf_crb",
         "decepticon_directive",
-        "enigma_of_combination"
+        "enigma_of_combination",
+        "technorganic_secrets",
+        "transformers_one_sourcebook"
       ]
     }
   ],
   "primaryTokenAttribute": "health",
   "secondaryTokenAttribute": "stun",
   "socket": true,
-  "url": "https://github.com/WookieeMatt/Essence20",
-  "manifest": "https://github.com/WookieeMatt/Essence20/releases/latest/download/system.json",
-  "download": "https://github.com/WookieeMatt/Essence20/releases/download/v4.6.9/Essence20.zip",
+  "url": "This is auto replaced",
+  "manifest": "This is auto replaced",
+  "download": "This is auto replaced",
   "license": "LICENSE.txt",
   "id": "essence20",
   "authors": [
@@ -255,10 +387,10 @@
     }
   ],
   "compatibility": {
-    "minimum": "12",
-    "verified": "12"
+    "minimum": "13",
+    "verified": "13"
   },
   "flags": {
-    "needsMigrationVersion": "4.5.0"
+    "needsMigrationVersion": "5.0.0"
   }
 }

@@ -1,0 +1,104 @@
+{
+  "folder": "AUUJvPPWOpWKtwA1",
+  "name": "Vine Bombs",
+  "type": "weapon",
+  "_id": "3juccdwhcpKtmZEh",
+  "img": "systems/essence20/assets/icons/weapons/vine-bomb.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 48
+    },
+    "items": {
+      "4ad1": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.WGWGdiX8drI5SFi6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Vine Bombs Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "explosive"
+        },
+        "damageValue": 1,
+        "damageType": "stun",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 30,
+          "value": 15
+        },
+        "shiftDown": 0
+      },
+      "edf5": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.s0MqxaX8DiLIlwnZ",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Vine Bombs Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "athletics",
+          "style": "explosive"
+        },
+        "damageValue": 2,
+        "damageType": "stun",
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 30,
+          "value": 15
+        },
+        "shiftDown": 2
+      }
+    },
+    "availability": "limited",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "isPoison": false,
+    "poisonApplication": {
+      "contact": false,
+      "ingested": false,
+      "inhaled": false
+    },
+    "requirements": {
+      "custom": "",
+      "skill": "finesse",
+      "shift": "d4"
+    },
+    "traits": [
+      "computerized",
+      "consumable",
+      "stun"
+    ],
+    "transformerMode": "modeBotMode",
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746247428580,
+    "modifiedTime": 1746248692720,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!3juccdwhcpKtmZEh"
+}

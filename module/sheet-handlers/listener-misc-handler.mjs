@@ -1,6 +1,7 @@
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
-import { rememberSelect } from "../helpers/dialog.mjs";
+import RollerSelector from "../apps/roller-selector.mjs";
+import DefenseModificationSelector from "../apps/defense-modification.mjs";
 
 const PARENT_ROLLER_KEY = "parentActor";
 
@@ -243,20 +244,8 @@ export async function onRoll(event, actor) {
       };
     }
 
-    new Dialog(
-      {
-        title: game.i18n.localize('E20.ActorSelect'),
-        content: await renderTemplate("systems/essence20/templates/dialog/select-dialog.hbs", {
-          choices,
-        }),
-        buttons: {
-          save: {
-            label: game.i18n.localize('E20.AcceptButton'),
-            callback: html => handleActorSelector(actor, rememberSelect(html), event),
-          },
-        },
-      },
-    ).render(true);
+    const title = "E20.ActorSelect";
+    new RollerSelector(actor, choices, event, title).render(true);
   } else {
     performRoll(event, actor, null);
   }
@@ -264,17 +253,48 @@ export async function onRoll(event, actor) {
 
 /**
  * @param {Actor} actor The Actor making the roll
- * @param {Object} options The options selected in the dialog
+ * @param {String} key the Actor key
  * @param {Event} event The originating click event
  */
-async function handleActorSelector(actor, options, event) {
+export async function handleActorSelector(actor, key, event) {
   let childRoller;
-  if (options['actor'] == PARENT_ROLLER_KEY) {
+  if (key == PARENT_ROLLER_KEY) {
     childRoller = actor;
   } else {
-    const fullActor = actor.system.actors[options['actor']];
+    const fullActor = actor.system.actors[key];
     childRoller = await fromUuid(fullActor.uuid);
   }
 
   performRoll(event, actor, childRoller);
+}
+
+export async function onEditMorphToughnessBonus(event, actorSheet){
+  const actor = actorSheet.actor;
+  const choices = {};
+  let selected = null;
+
+  for (const [armor, value] of Object.entries(CONFIG.E20.morphedToughness)) {
+    if (actor.system.trained.armors[armor]) {
+      choices[armor] = {
+        key: armor,
+        label: CONFIG.E20.armorClassifications[armor],
+        value,
+      };
+    }
+
+    if (actor.system.defenses.toughness.morphed == value) {
+      selected = armor;
+    }
+  }
+
+  const prompt = "E20.DefenseModificationPrompt";
+  const title = "E20.DefenseModificationTitle";
+
+  if (Object.keys(choices).length == 0) {
+    ui.notifications.warn(game.i18n.localize('E20.NoArmorChoices'));
+  } else {
+    new DefenseModificationSelector(choices, actor, prompt, title, selected).render(true);
+  }
+
+  return;
 }

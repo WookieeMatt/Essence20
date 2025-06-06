@@ -1,0 +1,62 @@
+{
+  "folder": "ezKhIOPRsFXbnGl4",
+  "name": "Biogenetic",
+  "type": "influence",
+  "_id": "43JigdrjcT8iuThC",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 30
+    },
+    "items": {
+      "fdd1": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.OA6xYj6axivOD38i",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Biogenetic",
+        "type": "perk"
+      },
+      "25ad": {
+        "uuid": "Compendium.essence20.decepticon_directive.Item.hJaTZrQ7tao4hDPJ",
+        "img": "icons/svg/hazard.svg",
+        "name": "Always Hungry",
+        "type": "hangUp"
+      },
+      "8ad5": {
+        "uuid": "Compendium.essence20.tf_crb.Item.V5GfafYii5GSMtzr",
+        "img": "icons/svg/hazard.svg",
+        "name": "Impulsive",
+        "type": "hangUp"
+      },
+      "9c96": {
+        "uuid": "Compendium.essence20.tf_crb.Item.SgofEgBVvg4josSR",
+        "img": "icons/svg/hazard.svg",
+        "name": "Mode Attachment",
+        "type": "hangUp"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746226436797,
+    "modifiedTime": 1746226859359,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!43JigdrjcT8iuThC"
+}

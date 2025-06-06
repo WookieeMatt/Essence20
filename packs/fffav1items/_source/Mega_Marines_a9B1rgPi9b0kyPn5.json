@@ -1,0 +1,48 @@
+{
+  "folder": "Yo11Yuvil9pJpryo",
+  "name": "Mega Marines",
+  "type": "faction",
+  "_id": "a9B1rgPi9b0kyPn5",
+  "img": "systems/essence20/assets/icons/items/faction.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Factions in Action Vol 1: Ferocious Fighters",
+      "page": 74
+    },
+    "items": {
+      "9b02": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.KwLmQNCrkZ1cWM4x",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Bio-Tech Armor",
+        "type": "perk"
+      },
+      "b2c8": {
+        "uuid": "Compendium.essence20.ferocious_fighters.Item.nLT8HSCCGWEBiRlq",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Mega Training Regimen",
+        "type": "perk"
+      }
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1748796191834,
+    "modifiedTime": 1748796290982,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!a9B1rgPi9b0kyPn5"
+}

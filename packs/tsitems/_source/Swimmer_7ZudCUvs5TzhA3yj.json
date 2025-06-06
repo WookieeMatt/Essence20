@@ -1,0 +1,67 @@
+{
+  "folder": "Wp5ti6xvfOvQ2g8f",
+  "name": "Swimmer",
+  "type": "origin",
+  "_id": "7ZudCUvs5TzhA3yj",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 44
+    },
+    "items": {
+      "aacc": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.vzlbeJSgYYvSah2r",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Visionless Sight",
+        "type": "perk"
+      },
+      "ee37": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.LwiC3DmOCm1jNbmY",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Swimmer (Common)",
+        "type": "altMode"
+      },
+      "bc29": {
+        "uuid": "Compendium.essence20.technorganic_secrets.Item.696g72VgjR2kzwXO",
+        "img": "systems/essence20/assets/icons/items/altmode.svg",
+        "name": "Swimmer (Large)",
+        "type": "altMode"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 25,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "smarts"
+    ],
+    "languages": "",
+    "skills": [
+      "athletics",
+      "survival"
+    ],
+    "startingHealth": 3
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746243757853,
+    "modifiedTime": 1746243844868,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!7ZudCUvs5TzhA3yj"
+}

@@ -13,7 +13,68 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 2,
+    "items": {
+      "bd59": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.Ux2eueBLxKgzD2Kd",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Comic Flair",
+        "type": "perk",
+        "role": null
+      },
+      "86a5": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.FLV4BgCGfPPDxoAY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Enhanced Impact Points",
+        "type": "perk",
+        "role": null
+      },
+      "684a": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.jw8ggFiT6xdr0uMc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Environmental Aegis",
+        "type": "perk",
+        "role": null
+      },
+      "f073": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.Tft06zzgFsVCx2B7",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Evacuation Vents",
+        "type": "perk",
+        "role": null
+      },
+      "f00b": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.BC2wNy6460YosiQS",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Frightening",
+        "type": "perk",
+        "role": null
+      },
+      "933b": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.wFG8hTxRQ54SnpGb",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Patagia",
+        "type": "perk",
+        "role": null
+      },
+      "0163": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.45WHjwO125zTvuGR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Powered Plating",
+        "type": "perk",
+        "role": null
+      },
+      "21a2": {
+        "uuid": "Compendium.essence20.jump_through_time.Item.k0kwGFIp3izYAy8M",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Storage Pack",
+        "type": "perk",
+        "role": null
+      }
+    }
   },
   "effects": [],
   "sort": 165625,
@@ -24,13 +85,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.2.0",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713573090653,
-    "modifiedTime": 1714864557957,
-    "lastModifiedBy": "VEn5sPQRoWgUw9qd",
+    "modifiedTime": 1748268785729,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!htsya0fTmmQ1ZZj1"
 }

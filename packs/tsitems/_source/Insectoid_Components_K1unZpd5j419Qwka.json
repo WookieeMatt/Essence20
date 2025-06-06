@@ -1,0 +1,89 @@
+{
+  "folder": "YZLETJckN3jHJstL",
+  "name": "Insectoid Components",
+  "type": "perk",
+  "_id": "K1unZpd5j419Qwka",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Technorganic Secrets",
+      "page": 40
+    },
+    "items": {},
+    "canActivate": false,
+    "choice": null,
+    "choiceType": "none",
+    "isRoleVariant": false,
+    "hasMorphedToughnessBonus": false,
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "origin",
+    "version": "powerRangers"
+  },
+  "effects": [
+    {
+      "name": "Insecoid Components",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.technorganic_secrets.Item.K1unZpd5j419Qwka",
+      "duration": {
+        "startTime": null,
+        "combat": null,
+        "seconds": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "DTK56N2V8MgwhM9S",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.defenses.toughness.bonus",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.342",
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "createdTime": 1746239522594,
+        "modifiedTime": 1746239563086,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb"
+      },
+      "_key": "!items.effects!K1unZpd5j419Qwka.DTK56N2V8MgwhM9S"
+    }
+  ],
+  "sort": 500000,
+  "ownership": {
+    "default": 0,
+    "j6WWLUdptyfr6qBb": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.342",
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "createdTime": 1746239434111,
+    "modifiedTime": 1746242979240,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb"
+  },
+  "_key": "!items!K1unZpd5j419Qwka"
+}

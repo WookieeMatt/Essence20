@@ -12,78 +12,6 @@
       "page": 50
     },
     "items": {
-      "f9e0": {
-        "uuid": "Compendium.essence20.pr_crb.Item.qdW81hVtTew50wdY",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Power Strike",
-        "type": "perk",
-        "subtype": "role",
-        "level": 1
-      },
-      "afe0": {
-        "uuid": "Compendium.essence20.pr_crb.Item.ALq37Ch25nKvZ454",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Follow Me!",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "04dc": {
-        "uuid": "Compendium.essence20.pr_crb.Item.W222yDXUDZl0HQFT",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Weapon Mastery",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2
-      },
-      "024c": {
-        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Zord",
-        "type": "perk",
-        "subtype": "role",
-        "level": 3
-      },
-      "0251": {
-        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Extra Attack",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "57e0": {
-        "uuid": "Compendium.essence20.pr_crb.Item.6Jf4hI8PmVctLex1",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Let's Bring 'Em Together!",
-        "type": "perk",
-        "subtype": "role",
-        "level": 5
-      },
-      "a4b5": {
-        "uuid": "Compendium.essence20.pr_crb.Item.TomU7e31oHoRsIrT",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Resilience",
-        "type": "perk",
-        "subtype": "general",
-        "level": 7
-      },
-      "be22": {
-        "uuid": "Compendium.essence20.pr_crb.Item.tKonXkoNsZhajHp9",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Team Focus",
-        "type": "perk",
-        "subtype": "role",
-        "level": 9
-      },
-      "0575": {
-        "uuid": "Compendium.essence20.pr_crb.Item.npFtRjCiJwrkmjyG",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Red Ranger Prime",
-        "type": "perk",
-        "subtype": "role",
-        "level": 20
-      },
       "c71b": {
         "uuid": "Compendium.essence20.pr_crb.Item.v3tBCzRQx5pqNSHo",
         "img": "systems/essence20/assets/icons/items/rolePoints.svg",
@@ -119,6 +47,108 @@
           "startingMax": null,
           "value": null
         }
+      },
+      "f27b": {
+        "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT",
+        "img": "systems/essence20/assets/icons/items/faction.svg",
+        "name": "Power Ranger",
+        "type": "faction"
+      },
+      "384d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.qdW81hVtTew50wdY",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Power Strike",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "f963": {
+        "uuid": "Compendium.essence20.pr_crb.Item.ALq37Ch25nKvZ454",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Follow Me!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "e5af": {
+        "uuid": "Compendium.essence20.pr_crb.Item.W222yDXUDZl0HQFT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Weapon Mastery",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "927f": {
+        "uuid": "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Zord",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "c6e2": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "b8fa": {
+        "uuid": "Compendium.essence20.pr_crb.Item.6Jf4hI8PmVctLex1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Let's Bring 'Em Together!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "c942": {
+        "uuid": "Compendium.essence20.pr_crb.Item.TomU7e31oHoRsIrT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Resilience",
+        "type": "perk",
+        "subtype": "general",
+        "level": 7
+      },
+      "c3ea": {
+        "uuid": "Compendium.essence20.pr_crb.Item.tKonXkoNsZhajHp9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Team Focus",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "8d01": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "199d": {
+        "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Extra Attack",
+        "type": "perk",
+        "subtype": "role",
+        "level": 15
+      },
+      "a466": {
+        "uuid": "Compendium.essence20.pr_crb.Item.tKonXkoNsZhajHp9",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Team Focus",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
+      },
+      "cc37": {
+        "uuid": "Compendium.essence20.pr_crb.Item.npFtRjCiJwrkmjyG",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Red Ranger Prime",
+        "type": "perk",
+        "subtype": "role",
+        "level": 20
       }
     },
     "adjustments": {
@@ -215,13 +245,14 @@
   "flags": {},
   "_stats": {
     "systemId": "essence20",
-    "systemVersion": "4.1.2",
-    "coreVersion": "12.331",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
     "createdTime": 1713499659437,
-    "modifiedTime": 1714616769132,
-    "lastModifiedBy": "TfzSCNLMDHUjSABQ",
+    "modifiedTime": 1748217660494,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "_key": "!items!f9xhmkzadalepNA8"
 }
