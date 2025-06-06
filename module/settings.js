@@ -29,8 +29,8 @@ export const registerSettings = function () {
   }
 
   const THEME_OPTIONS = {
-    default: game.i18n.localize("E20.SptThemeDefault"),
-    pony: game.i18n.localize("E20.SptThemePony"),
+    default: game.i18n.localize("E20.ThemeDefault"),
+    pony: game.i18n.localize("E20.ThemePony"),
   };
 
   /* -------------------------------------------- */
@@ -66,7 +66,7 @@ export const registerSettings = function () {
   });
 
   game.settings.register(systemName, "sptDefaultTheme", {
-    name: game.i18n.localize("E20.SptOptionDefaultTheme"), //TODO: rename from spt to theme
+    name: game.i18n.localize("E20.ThemeOptionLabel"),
     scope: "client",
     config: true,
     default: "default",
