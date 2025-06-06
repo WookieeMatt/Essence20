@@ -25,6 +25,15 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       "window-app", // can we remove?
     ],
     title: "",
+    actions: {
+      decrementGmPoints: StoryPoints.decrementGmPoints,
+      incrementGmPoints: StoryPoints.incrementGmPoints,
+      directSetGmPoints: StoryPoints.directSetGmPoints,
+      decrementStoryPoints: StoryPoints.decrementStoryPoints,
+      incrementStoryPoints: StoryPoints.incrementStoryPoints,
+      directSetStoryPoints: StoryPoints.directSetStoryPoints,
+      rollMajorSceneGmPoints: StoryPoints.rollMajorSceneGmPoints,
+    },
   };
 
   static PARTS = {
