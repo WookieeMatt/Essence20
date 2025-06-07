@@ -44,10 +44,10 @@ The [Drag Ruler](https://foundryvtt.com/packages/drag-ruler/) module is supporte
 
 # Installation
 - In the `Game Systems` menu within Foundry, click `Install System` and paste in the Manifest URL for the version of Foundry you're using.
-  - Manifest URL v12: `https://github.com/WookieeMatt/Essence20/releases/latest/download/system.json`
-  - Manifest URL v11: `https://github.com/WookieeMatt/Essence20/releases/download/v4.5.0/system.json`
+  - Manifest URL v13: `https://github.com/WookieeMatt/Essence20/releases/latest/download/system.json`
+  - Manifest URL v12: `https://github.com/WookieeMatt/Essence20/releases/download/v4.6.9/system.json`
 ![image](https://github.com/WookieeMatt/Essence20/assets/41161497/f5accb7c-b51e-4b6b-816b-192001873132)
-- Note: Our v11 support stops at v4.5.0. We've included the link for v11 for anyone still on that version, however, no further updates will be provided.
+- Note: Our v12 support stops at v4.6.9. We've included the link for v12 for anyone still on that version, however, no further updates will be provided.
 - If you require more detailed instructions or run into issues, please visit our [Discord](https://discord.gg/74QYVA355W) and ask in our `#general` or `#support` channel.
 
 # Support
