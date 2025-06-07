@@ -23,10 +23,15 @@ export const registerSettings = function () {
     gm: game.i18n.localize("E20.SptUserGm"),
   };
 
-  let POINTS_NAME_OPTIONS = {};
+  const POINTS_NAME_OPTIONS = {};
   for (let [name, str] of Object.entries(CONFIG.E20.pointsNameOptions)) {
     POINTS_NAME_OPTIONS[name] = str;
   }
+
+  const THEME_OPTIONS = {
+    default: game.i18n.localize("E20.ThemeDefault"),
+    pony: game.i18n.localize("E20.ThemePony"),
+  };
 
   /* -------------------------------------------- */
   /*  Config settings                             */
@@ -57,6 +62,16 @@ export const registerSettings = function () {
     default: "toggle",
     type: String,
     choices: SHOW_OPTIONS,
+    onChange: debouncedReload,
+  });
+
+  game.settings.register(systemName, "sptDefaultTheme", {
+    name: game.i18n.localize("E20.ThemeOptionLabel"),
+    scope: "client",
+    config: true,
+    default: "default",
+    type: String,
+    choices: THEME_OPTIONS,
     onChange: debouncedReload,
   });
 
@@ -102,4 +117,9 @@ export const registerSettings = function () {
     type: Number,
     config: false,
   });
+};
+
+export const getDefaultTheme = () => {
+  const theme = game.settings.get("essence20", "sptDefaultTheme");
+  return `theme-${theme}`;
 };
