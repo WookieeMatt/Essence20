@@ -1,7 +1,9 @@
 /* importing the partials */
-@use 'assets' as v;
+@use './variables' as v;
+@use 'assets';
 @use 'actors';
 @use 'items';
+@use 'components';
 
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
 
