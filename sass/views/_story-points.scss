@@ -1,0 +1,55 @@
+.story-points {
+  height: auto;
+  width: 300px;
+  border-radius: 5px;
+  background: url(../../../ui/denim075.png) repeat; // TODO: make this a global var -GL
+  color: #ffffffde;
+  box-shadow: 0 0 20px #000000;
+  border: 1px solid #000000;
+  position: fixed;
+  z-index: 29;
+  overflow: hidden;
+  flex-direction: column;
+  display: flex;
+
+  .loading {
+    display: none !important;
+  }
+
+  .story-points__input{
+    width: 75px;
+    text-align: center;
+    background: url(../../../ui/parchment.jpg) repeat;
+    font-size: 18px;
+    font-weight: bold;
+  }
+
+  .story-points__btn {
+    height: 30px;
+    width: 30px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.--decrement {
+      border: 1px solid red;
+      border-bottom: 1px solid #ff6400;
+      box-shadow: 0 0 10px #ff6400;
+
+      i {
+        color: red;
+      }
+    }
+
+    &.--increment {
+      border: 1px solid #4dd0e1;
+      box-shadow: 0 0 10px #4dd0e1;
+      box-shadow: 0 0 10px #4dd0e1;
+
+      i {
+        color: #4dd0e1;
+      }
+    }
+  }
+}

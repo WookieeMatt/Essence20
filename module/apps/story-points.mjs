@@ -21,6 +21,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       "essence20",
       "theme-wrapper",
       getDefaultTheme(),
+      "story-points",
       "sliced-border --thick",
       "window-app", // can we remove?
     ],
