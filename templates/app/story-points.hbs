@@ -1,0 +1,82 @@
+<div class="story-points__top" style="">
+  {{#if gmPointsArePublic}}
+    <div class="sliced-border">
+      <label class="sliced-border__label">{{localize "E20.SptPointsGm"}}</label>
+      <input
+        id="gm-points-input"
+        class="story-points__input"
+        type="number"
+        value="{{gmPoints}}"
+        {{#unless isGm}}disabled{{/unless}}
+      />
+    {{#if isGm}}
+      <div class="story-points__btn-wrapper">
+        <button data-action="incrementGmPoints" class="story-points__btn --increment">
+          <i class="fas fa-angle-double-up"></i>
+        </button>
+        <button data-action="decrementGmPoints" class="story-points__btn --decrement">
+          <i class="fas fa-angle-double-down"></i>
+        </button>
+      </div>
+    {{/if}}
+    </div>
+  {{/if}}
+
+  <div class="sliced-border">
+    <label class="sliced-border__label">{{pointsName}}</label>
+    <input
+      id="story-points-input"
+      class="story-points__input"
+      type="number"
+      value="{{storyPoints}}"
+      {{#unless isGm}}disabled{{/unless}}
+    />
+    {{#if isGm}}
+      <div class="story-points__btn-wrapper">
+        <button data-action="incrementStoryPoints" class="story-points__btn --increment">
+          <i class="fas fa-angle-double-up"></i>
+        </button>
+        <button data-action="decrementStoryPoints" class="story-points__btn --decrement">
+          <i class="fas fa-angle-double-down"></i>
+        </button>
+      </div>
+    {{/if}}
+  </div>
+</div>
+<button data-action="rollMajorSceneGmPoints" class="story-points__btn --fw">
+  <span>{{localize "E20.SptRollButton"}}</span>
+</button>
+
+{{!-- {{#if gmPointsArePublic}}
+
+<div class="story-points-content">
+  <span class="sliced-border__label">{{pointsName}}</span>
+  {{#if isGm}}
+    <button id="story-points-btn-dec" class="story-points__btn --decrement">
+      <i class="fas fa-angle-double-down"></i>
+    </button>
+    <input
+      id="story-points-input"
+      class="story-points__input"
+      type="number"
+      value="{{storyPoints}}"
+    />
+    <button id="story-points-btn-inc" class="story-points__btn --increment">
+      <i class="fas fa-angle-double-up"></i>
+    </button>
+  {{else}}
+    <input
+      id="story-points-input"
+      type="number"
+      class="story-points__input"
+      value="{{storyPoints}}"
+      disabled
+    />
+  {{/if}}
+</div>
+
+{{#if isGm}}
+  <button id="major-scene-points-button" class="story-points__btn --increment">
+    <span>{{localize "E20.SptRollButton"}}</span>
+  </button>
+{{/if}} --}}

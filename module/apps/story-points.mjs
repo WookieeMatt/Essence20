@@ -54,11 +54,20 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     return {
       gmPoints: this._gmPoints,
       storyPoints: this._storyPoints,
-      defaultTheme: getDefaultTheme(),
       isGm: game.user.isGM,
       gmPointsArePublic: game.user.isGM || setting("sptGmPointsArePublic"),
       pointsName: getPointsName(true),
     };
+  }
+
+  // eslint-disable-next-line no-unused-vars
+  _onRender(context, options) {
+    this.element
+      .getElementById("gm-points-input")
+      .addEventListener("focusout", (e) => changeGmPoints(e.target.value));
+    this.element
+      .getElementById("story-points-input")
+      .addEventListener("focusout", (e) => changeStoryPoints(e.target.value));
   }
 
   /**

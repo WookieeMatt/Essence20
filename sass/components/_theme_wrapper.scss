@@ -1,11 +1,11 @@
-@use "../variables" as v;
+@use "../variables";
 
 // default vars, overridden when needed
 body {
-  --theme-border-color: var(--root-border-color);
-  --theme-bg-color: v.$bg-color-light;
-  --theme-text-color: v.$text-color-dark;
-  --theme-input-color: v.$input-color-light;
+  --theme-border-color: $border-bg-light;
+  --theme-bg-color: $bg-color-light;
+  --theme-text-color: $text-color-dark;
+  --theme-input-color: $input-color-light;
 
   --theme-border-image: url(../assets/borders/default-border.svg);
   --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
@@ -16,15 +16,15 @@ body {
 
 .theme-wrapper {
   &.theme-light {
-    --theme-bg-color: v.$bg-color-light;
-    --theme-text-color: v.$text-color-dark;
-    --theme-input-color: v.$input-color-light;
+    --theme-bg-color: $bg-color-light;
+    --theme-text-color: $text-color-dark;
+    --theme-input-color: $input-color-light;
   }
 
   &.theme-dark {
-    --theme-bg-color: v.$bg-color-dark;
-    --theme-text-color: v.$text-color-light;
-    --theme-input-color: v.$input-color-dark;
+    --theme-bg-color: $bg-color-dark;
+    --theme-text-color: $text-color-light;
+    --theme-input-color: $input-color-dark;
   }
 
   &.theme-default {
