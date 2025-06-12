@@ -662,6 +662,7 @@
     "SptOptionPointsName": "Name for points",
     "SptOptionShow": "Dialog display behavior",
     "SptPoint": "Point",
+    "SptWindowTitle": "Story Points",
     "SptPointPlural": "Points",
     "SptPointsGm": "GM Points",
     "SptRollButton": "Roll major scene GM Points",

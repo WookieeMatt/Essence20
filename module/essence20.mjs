@@ -1,5 +1,5 @@
 // Import data models
-import * as data from './data/index.mjs';
+import * as data from "./data/index.mjs";
 // Import document classes.
 import { Essence20Actor } from "./documents/actor.mjs";
 import { Essence20Combat } from "./documents/combat.mjs";
@@ -8,8 +8,8 @@ import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
 import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
-// Import Story Point Tracker
-import {StoryPoints} from "./apps/story-points.mjs";
+// Import StoryPoints
+import { StoryPoints } from "./apps/story-points.mjs";
 // Import helper/utility classes and constants.
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
@@ -17,8 +17,11 @@ import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { getNumActions } from "./helpers/actor.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
+import { registerSettings, setting } from "./settings.js";
 
+console.warn("essence20.mjs");
 function registerSystemSettings() {
+  console.warn("registerSystemSettings()");
   game.settings.register("essence20", "systemMigrationVersion", {
     config: false,
     scope: "world",
@@ -39,25 +42,41 @@ function runMigrations() {
   const NEEDS_MIGRATION_VERSION = game.system.flags.needsMigrationVersion;
 
   // Get the current version, or set it if not present
-  const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
+  const currentVersion = game.settings.get(
+    "essence20",
+    "systemMigrationVersion",
+  );
   const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
   if (!currentVersion && totalDocuments === 0) {
-    console.log("No documents to migrate");
-    return game.settings.set("essence20", "systemMigrationVersion", game.system.version);
-  } else if (!currentVersion || foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)) {
+    console.info("No documents to migrate");
+    return game.settings.set(
+      "essence20",
+      "systemMigrationVersion",
+      game.system.version,
+    );
+  } else if (
+    !currentVersion ||
+    foundry.utils.isNewerVersion(NEEDS_MIGRATION_VERSION, currentVersion)
+  ) {
     // Perform the migration, if needed
-    console.log(`Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`);
+    console.warn(
+      `Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`,
+    );
     migrateWorld();
   } else {
-    console.log(`Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION} and doesn't require migration`);
+    console.log(
+      `Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION} and doesn't require migration`,
+    );
   }
 }
 
 /* -------------------------------------------- */
-/*  Init Hook                                   */
+/*  Init Hooks                                  */
 /* -------------------------------------------- */
 
-Hooks.once('init', async function () {
+console.warn("set once init");
+Hooks.once("init", async function () {
+  console.warn("once init");
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.essence20 = {
@@ -95,10 +114,31 @@ Hooks.once('init', async function () {
   registerSystemSettings();
 
   // Register sheet application classes
-  foundry.documents.collections.Actors.unregisterSheet("core", foundry.appv1.sheets.ActorSheet);
-  foundry.documents.collections.Actors.registerSheet("essence20", Essence20ActorSheet, { makeDefault: true });
-  foundry.documents.collections.Items.unregisterSheet("core", foundry.appv1.sheets.ItemSheet);
-  foundry.documents.collections.Items.registerSheet("essence20", Essence20ItemSheet, { makeDefault: true });
+  foundry.documents.collections.Actors.unregisterSheet(
+    "core",
+    foundry.appv1.sheets.ActorSheet,
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    "essence20",
+    Essence20ActorSheet,
+    { makeDefault: true },
+  );
+  foundry.documents.collections.Items.unregisterSheet(
+    "core",
+    foundry.appv1.sheets.ItemSheet,
+  );
+  foundry.documents.collections.Items.registerSheet(
+    "essence20",
+    Essence20ItemSheet,
+    { makeDefault: true },
+  );
+
+  registerSettings();
+
+  // Clients (players) listen on the socket to update the UI whenever the GM changes values
+  game.socket.on("system.essence20", (data) => {
+    game.StoryPointsTracker.handleUpdate(data);
+  });
 
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
@@ -109,10 +149,10 @@ Hooks.once('init', async function () {
 /* -------------------------------------------- */
 
 // If you need to add Handlebars helpers, here are a few useful examples:
-Handlebars.registerHelper('concat', function () {
-  var outStr = '';
+Handlebars.registerHelper("concat", function () {
+  var outStr = "";
   for (var arg in arguments) {
-    if (typeof arguments[arg] != 'object') {
+    if (typeof arguments[arg] != "object") {
       outStr += arguments[arg];
     }
   }
@@ -120,17 +160,17 @@ Handlebars.registerHelper('concat', function () {
   return outStr;
 });
 
-Handlebars.registerHelper('toLowerCase', function (str) {
+Handlebars.registerHelper("toLowerCase", function (str) {
   return str.toLowerCase();
 });
 
-Handlebars.registerHelper('sum', function () {
+Handlebars.registerHelper("sum", function () {
   var total = 0;
   for (var arg in arguments) {
     let newValue = arguments[arg];
-    if (typeof newValue == 'number') {
+    if (typeof newValue == "number") {
       total += newValue;
-    } else if (typeof newValue == 'string') {
+    } else if (typeof newValue == "string") {
       total += parseInt(newValue);
     }
   }
@@ -138,15 +178,15 @@ Handlebars.registerHelper('sum', function () {
   return total;
 });
 
-Handlebars.registerHelper('isdefined', function (value) {
+Handlebars.registerHelper("isdefined", function (value) {
   return value !== undefined;
 });
 
-Handlebars.registerHelper('inArray', function (array, value, options) {
-  return (array.includes(value)) ? options.fn(this) : options.inverse(this);
+Handlebars.registerHelper("inArray", function (array, value, options) {
+  return array.includes(value) ? options.fn(this) : options.inverse(this);
 });
 
-Handlebars.registerHelper('itemsContainType', function (items, type, options) {
+Handlebars.registerHelper("itemsContainType", function (items, type, options) {
   for (const key in items) {
     if (items[key].type == type) {
       return options.fn(this);
@@ -156,7 +196,7 @@ Handlebars.registerHelper('itemsContainType', function (items, type, options) {
   return options.inverse(this);
 });
 
-Handlebars.registerHelper('assign', function (varName, varValue, options) {
+Handlebars.registerHelper("assign", function (varName, varValue, options) {
   if (!options.data.root) {
     options.data.root = {};
   }
@@ -164,16 +204,21 @@ Handlebars.registerHelper('assign', function (varName, varValue, options) {
   options.data.root[varName] = varValue;
 });
 
-Handlebars.registerHelper('formatBooleanList', function (objectToList, friendlyLookup, listType) {
-  const unformattedList = [];
-  for (const [key, isTrue] of Object.entries(objectToList)) {
-    if (isTrue) {
-      unformattedList.push(friendlyLookup[key]);
+Handlebars.registerHelper(
+  "formatBooleanList",
+  function (objectToList, friendlyLookup, listType) {
+    const unformattedList = [];
+    for (const [key, isTrue] of Object.entries(objectToList)) {
+      if (isTrue) {
+        unformattedList.push(friendlyLookup[key]);
+      }
     }
-  }
 
-  return game.i18n.getListFormatter({ style: "long", type: listType }).format(unformattedList);
-});
+    return game.i18n
+      .getListFormatter({ style: "long", type: listType })
+      .format(unformattedList);
+  },
+);
 
 /* -------------------------------------------- */
 /*  Misc Hooks                                  */
@@ -183,6 +228,7 @@ Handlebars.registerHelper('formatBooleanList', function (objectToList, friendlyL
 Hooks.once("i18nInit", () => performPreLocalization(CONFIG.E20));
 
 Hooks.once("ready", async function () {
+  console.warn("once ready");
   runMigrations();
 
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
@@ -193,36 +239,88 @@ Hooks.once("ready", async function () {
     }
   });
 
+  // Init the button in the controls for toggling the dialog
+  Hooks.on("getSceneControlButtons", (controls) => {
+    console.warn("on getSceneControlButtons");
+    if (
+      setting("sptShow") == "toggle" &&
+      (setting("sptAccess") == "everyone" ||
+        (setting("sptAccess") == "gm" && game.user.isGM))
+    ) {
+      const tokenControls = controls.tokens;
+      const activeState = game.settings.get("essence20", "sptToggleState");
+      tokenControls.tools.sptTracker = {
+        active: activeState,
+        icon: "fas fa-circle-s",
+        name: "sptTracker",
+        title: game.i18n.format("E20.SptToggleDialog", {
+          name: getPointsName(false),
+        }),
+        toggle: true,
+        visible: true,
+        onChange: (event, toggle) => {
+          if (toggle) {
+            if (!game.StoryPointsTracker) {
+              game.settings.set("essence20", "sptToggleState", true);
+              game.StoryPointsTracker = new StoryPoints().render(true);
+              tokenControls.tools.sptTracker.active = true;
+            }
+          } else {
+            game.settings.set("essence20", "sptToggleState", false);
+            game.StoryPointsTracker.closeSpt();
+            tokenControls.tools.sptTracker.active = false;
+          }
+        },
+      };
+    }
+  });
+
   // Display the dialog if settings permit
   if (
     (setting("sptShow") == "on" ||
       (setting("sptShow") == "toggle" && setting("sptToggleState"))) &&
     (setting("sptAccess") == "everyone" ||
-      (setting("sptAccess") == "gm") == game.user.isGM)
+      (setting("sptAccess") == "gm" && game.user.isGM))
   ) {
     game.StoryPointsTracker = new StoryPoints().render(true);
   }
+
+  // Create hook that helps with persisting dialog position
+  const oldDragMouseUp =
+    foundry.applications.ux.Draggable.prototype._onDragMouseUp;
+
+  foundry.applications.ux.Draggable.prototype._onDragMouseUp = (event) => {
+    Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
+    return oldDragMouseUp.call(this, event);
+  };
 });
 
-/* eslint-disable no-unused-vars */
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
 });
 
 /* Hook to organize the item options by type */
 Hooks.on("renderDialogV2", (dialog, html) => {
-  if (html.innerText.includes('Create Item')) {
+  if (html.innerText.includes("Create Item")) {
     const select = html.querySelector("select[name='type']");
     if (select) {
-      const classFeatureOption = select.querySelector("option[value='classFeature']");
+      const classFeatureOption = select.querySelector(
+        "option[value='classFeature']",
+      );
       if (classFeatureOption) {
-        classFeatureOption.style.display = 'none';
+        classFeatureOption.style.display = "none";
       }
 
       if (select) {
-        select.append(setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes));
-        select.append(setOptGroup(select, "Background", CONFIG.E20.backgroundTypes));
-        select.append(setOptGroup(select, "Character Options", CONFIG.E20.characterTypes));
+        select.append(
+          setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes),
+        );
+        select.append(
+          setOptGroup(select, "Background", CONFIG.E20.backgroundTypes),
+        );
+        select.append(
+          setOptGroup(select, "Character Options", CONFIG.E20.characterTypes),
+        );
         select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
       }
     }
@@ -234,8 +332,8 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
   class Essence20SystemSpeedProvider extends SpeedProvider {
     get colors() {
       return [
-        { id: "ground", default: 0x00FF00, name: "essence20.speeds.ground" },
-        { id: "sprint", default: 0xFFFF00, name: "essence20.speeds.sprint" },
+        { id: "ground", default: 0x00ff00, name: "essence20.speeds.ground" },
+        { id: "sprint", default: 0xffff00, name: "essence20.speeds.sprint" },
       ];
     }
 
@@ -260,6 +358,15 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
   dragRuler.registerSystem("essence20", Essence20SystemSpeedProvider);
 });
 
+// Persists dialog position when moved by the user
+Hooks.on("dragEndStoryPointsTracker", (app) => {
+  console.warn("on dragEndStoryPointsTracker");
+  game.user.setFlag("essence20", "storyPointsTrackerPos", {
+    left: app.position.left,
+    top: app.position.top,
+  });
+});
+
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */
@@ -273,12 +380,17 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
  */
 async function createItemMacro(data, slot) {
   if (data.type !== "Item") return;
-  if (!("uuid" in data)) return ui.notifications.warn("You can only create macro buttons for owned Items");
+  if (!("uuid" in data))
+    return ui.notifications.warn(
+      "You can only create macro buttons for owned Items",
+    );
   const item = await fromUuid(data.uuid);
 
   // Create the macro command
   const command = `game.essence20.rollItemMacro("${item._id}", "${item.name}");`;
-  let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
+  let macro = game.macros.find(
+    (m) => m.name === item.name && m.command === command,
+  );
   if (!macro) {
     macro = await Macro.create({
       name: item.name,
@@ -305,7 +417,10 @@ async function rollItemMacro(itemId, itemName) {
   if (speaker.token) actor = game.actors.tokens[speaker.token];
   if (!actor) actor = game.actors.get(speaker.actor);
   const item = actor ? actor.items.get(itemId) : null;
-  if (!item) return ui.notifications.warn(`Your controlled Actor does not have an item named ${itemName}`);
+  if (!item)
+    return ui.notifications.warn(
+      `Your controlled Actor does not have an item named ${itemName}`,
+    );
 
   // Trigger the item roll
   return item.roll();

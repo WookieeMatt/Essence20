@@ -1,30 +1,38 @@
-@use '../variables' as v;
+@use "../variables" as v;
 
 .story-points {
   height: auto;
   width: min-content !important;
   box-shadow: 0 0 20px #000000;
   position: fixed;
-  z-index: 29;
   flex-direction: column;
   display: flex;
 
   .loading {
     display: none !important;
   }
-  
-  .story-points__top{
-    padding: 8px;
-    display: flex; 
-    gap: 16px;
-  
+
+  .window-content {
+    padding: v.$gap-sliced-border;
+
+    > div {
+      flex-direction: column;
+      display: flex;
+      gap: v.$gap-sliced-border;
+    }
+  }
+
+  .story-points__top {
+    display: flex;
+    gap: v.$gap-sliced-border;
+
     & > .sliced-border {
       padding: 12px;
       padding-top: 16px;
     }
   }
 
-  .story-points__input{
+  .story-points__input {
     width: 42px;
     height: 42px;
     text-align: center;
@@ -33,27 +41,30 @@
     background-color: var(--theme-input-color);
     color: var(--theme-text-color);
     border: 1px solid var(--theme-border-color);
+    margin-right: v.$gap-sliced-border;
 
     // remove arrows
     appearance: textfield;
     -moz-appearance: textfield;
-    &::-webkit-inner-spin-button, &::-webkit-outer-spin-button{
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
   }
 
-  .story-points__btn-wrapper{
-    display:flex;
+  .story-points__btn-wrapper {
+    display: flex;
     flex-direction: column;
     gap: 6px;
     width: 30px;
   }
-  
+
   .story-points__btn {
     width: min-content;
     min-width: 30px;
-    min-height: 18px;
+    min-height: 18px !important;
+    height: 18px !important;
     border-radius: 3px;
     display: flex;
     align-items: center;
@@ -62,13 +73,14 @@
     background: var(--theme-input-color);
     color: var(--theme-text-color);
     border: 1px solid var(--theme-border-color);
-    
+
     &:hover {
       background: lighten(#242424, 5%); // TODO: needs to use variable
     }
-    
-    &.--fw{
-      width: calc(100% - 16px);
+
+    &.--bottom {
+      width: 100%;
+      padding: 11px;
     }
 
     &.--decrement {

@@ -1,6 +1,7 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-import { registerSettings, getDefaultTheme } from "./settings.js";
+import { getDefaultTheme, setting } from "../settings.js";
 
+console.warn("story-points.mjs");
 function getPointsName(plural) {
   return `${
     CONFIG.E20.pointsNameOptions[setting("sptPointsName")]
@@ -17,15 +18,19 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   static DEFAULT_OPTIONS = {
     allowCustom: false,
     id: "story-points",
+    tag: "div",
     classes: [
       "essence20",
       "theme-wrapper",
-      getDefaultTheme(),
       "story-points",
       "sliced-border --thick",
-      "window-app", // can we remove?
+      "theme-dark",
+      getDefaultTheme(),
     ],
-    title: "",
+    window: {
+      // icon: "fas fa-gear",
+      title: "E20.SptWindowTitle",
+    },
     actions: {
       decrementGmPoints: StoryPoints.decrementGmPoints,
       incrementGmPoints: StoryPoints.incrementGmPoints,
@@ -57,24 +62,26 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       isGm: game.user.isGM,
       gmPointsArePublic: game.user.isGM || setting("sptGmPointsArePublic"),
       pointsName: getPointsName(true),
+      defaultTheme: getDefaultTheme(),
     };
   }
 
   // eslint-disable-next-line no-unused-vars
   _onRender(context, options) {
     this.element
-      .getElementById("gm-points-input")
-      .addEventListener("focusout", (e) => changeGmPoints(e.target.value));
+      .querySelector("#gm-points-input")
+      .addEventListener("focusout", (e) => StoryPoints.directSetGmPoints(e.target.value));
+
     this.element
-      .getElementById("story-points-input")
-      .addEventListener("focusout", (e) => changeStoryPoints(e.target.value));
+      .querySelector("#story-points-input")
+      .addEventListener("focusout", (e) => StoryPoints.directSetStoryPoints(e.target.value));
   }
 
   /**
    * Functions
    */
 
-  changeGmPoints(value) {
+  static changeGmPoints(value) {
     if (game.user.isGM) {
       this._gmPoints = Math.max(0, value);
       this.element.getElementById("gm-points-input").value = this._gmPoints;
@@ -85,7 +92,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 
-  changeStoryPoints(value) {
+  static changeStoryPoints(value) {
     if (game.user.isGM) {
       this._storyPoints = Math.max(0, value);
       this.element.getElementById("story-points-input").value =
@@ -150,17 +157,17 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
    * Actions
    */
 
-  decrementGmPoints() {
+  static decrementGmPoints() {
     this.changeGmPoints(this._gmPoints - 1);
     this.sendMessage(game.i18n.localize("E20.SptSpendGmPoint"));
   }
 
-  incrementGmPoints() {
+  static incrementGmPoints() {
     this.changeGmPoints(this._gmPoints + 1);
     this.sendMessage(game.i18n.localize("E20.SptAddGmPoint"));
   }
 
-  directSetGmPoints() {
+  static directSetGmPoints() {
     const value = this.element.getElementById("gm-points-input").value;
     if (value != this._gmPoints) {
       this.changeGmPoints(value);
@@ -168,17 +175,17 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 
-  decrementStoryPoints() {
+  static decrementStoryPoints() {
     this.changeStoryPoints(this._storyPoints - 1);
     this.sendMessage(game.i18n.localize("E20.SptSpendStoryPoint"));
   }
 
-  incrementStoryPoints() {
+  static incrementStoryPoints() {
     this.changeStoryPoints(this._storyPoints + 1);
     this.sendMessage(game.i18n.localize("E20.SptAddStoryPoint"));
   }
 
-  directSetStoryPoints() {
+  static directSetStoryPoints() {
     const value = this.element.getElementById("story-points-input").value;
     if (value != this._storyPoints) {
       this.changeStoryPoints(value);
@@ -188,7 +195,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 
-  async rollMajorSceneGmPoints() {
+  static async rollMajorSceneGmPoints() {
     try {
       const user = game.user;
       if (user.isGM) {
@@ -198,77 +205,10 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
           flavor: game.i18n.localize("E20.SptRollFlavor"),
           rollMode: game.settings.get("core", "rollMode"),
         }); // does this need to be an await?
-        this.changeGmPoints(this._gmPoints + roll.total);
+        StoryPoints.changeGmPoints(this._gmPoints + roll.total);
       }
     } catch (err) {
       console.error(err);
     }
   }
 }
-
-/**
- * Hooks
- */
-
-Hooks.on("init", () => {
-  registerSettings();
-
-  // Clients (players) listen on the socket to update the UI whenever the GM changes values
-  game.socket.on("system.essence20", (data) => {
-    game.StoryPointsTracker.handleUpdate(data);
-  });
-});
-
-Hooks.on("ready", () => {
-  // Create hook that helps with persisting dialog position
-  const oldDragMouseUp =
-    foundry.applications.ux.Draggable.prototype._onDragMouseUp;
-    
-  foundry.applications.ux.Draggable.prototype._onDragMouseUp = (event) => {
-    Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
-    return oldDragMouseUp.call(this, event);
-  };
-});
-
-// Persists dialog position when moved by the user
-Hooks.on("dragEndStoryPointsTracker", (app) => {
-  game.user.setFlag("essence20", "storyPointsTrackerPos", {
-    left: app.position.left,
-    top: app.position.top,
-  });
-});
-
-// Init the button in the controls for toggling the dialog
-Hooks.on("getSceneControlButtons", (controls) => {
-  if (
-    setting("sptShow") == "toggle" &&
-    (setting("sptAccess") == "everyone" ||
-      (setting("sptAccess") == "gm" && game.user.isGM))
-  ) {
-    const tokenControls = controls.tokens;
-    const activeState = game.settings.get("essence20", "sptToggleState");
-    tokenControls.tools.sptTracker = {
-      active: activeState,
-      icon: "fas fa-circle-s",
-      name: "sptTracker",
-      title: game.i18n.format("E20.SptToggleDialog", {
-        name: getPointsName(false),
-      }),
-      toggle: true,
-      visible: true,
-      onChange: (event, toggle) => {
-        if (toggle) {
-          if (!game.StoryPointsTracker) {
-            game.settings.set("essence20", "sptToggleState", true);
-            game.StoryPointsTracker = new StoryPoints().render(true);
-            tokenControls.tools.sptTracker.active = true;
-          }
-        } else {
-          game.settings.set("essence20", "sptToggleState", false);
-          game.StoryPointsTracker.closeSpt();
-          tokenControls.tools.sptTracker.active = false;
-        }
-      },
-    };
-  }
-});

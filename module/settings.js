@@ -1,12 +1,19 @@
+console.warn("settings.js");
+export const setting = (key) => {
+  return game.settings?.get("essence20", key) ?? "default";
+};
+
+export const getDefaultTheme = () => {
+  const theme = setting("sptDefaultTheme");
+  return `theme-${theme}`;
+};
+
 export const registerSettings = function () {
   const systemName = "essence20";
 
-  const debouncedReload = foundry.utils.debounce(
-    function () {
-      window.location.reload();
-    },
-    100,
-  );
+  const debouncedReload = foundry.utils.debounce(function () {
+    window.location.reload();
+  }, 100);
 
   /* -------------------------------------------- */
   /*  Story Points Tracker settings               */
@@ -117,9 +124,4 @@ export const registerSettings = function () {
     type: Number,
     config: false,
   });
-};
-
-export const getDefaultTheme = () => {
-  const theme = game.settings.get("essence20", "sptDefaultTheme");
-  return `theme-${theme}`;
 };
