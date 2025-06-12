@@ -1,4 +1,4 @@
-@use '../variables';
+@use '../variables' as v;
 
 .story-points {
   height: auto;
@@ -64,7 +64,7 @@
     border: 1px solid var(--theme-border-color);
     
     &:hover {
-      background: lighten(#242424, 5%);
+      background: lighten(#242424, 5%); // TODO: needs to use variable
     }
     
     &.--fw{
@@ -72,22 +72,22 @@
     }
 
     &.--decrement {
-      border: 1px solid $text-color-orange;
-      border-bottom: 1px solid $text-color-orange;
-      box-shadow: 0 0 10px $text-color-orange;
+      border: 1px solid v.$text-color-orange;
+      border-bottom: 1px solid v.$text-color-orange;
+      box-shadow: 0 0 10px v.$text-color-orange;
 
       i {
-        color: $text-color-orange;
+        color: v.$text-color-orange;
       }
     }
 
     &.--increment {
-      border: 1px solid $text-color-cyan;
-      box-shadow: 0 0 10px $text-color-cyan;
-      box-shadow: 0 0 10px $text-color-cyan;
+      border: 1px solid v.$text-color-cyan;
+      box-shadow: 0 0 10px v.$text-color-cyan;
+      box-shadow: 0 0 10px v.$text-color-cyan;
 
       i {
-        color: $text-color-cyan;
+        color: v.$text-color-cyan;
       }
     }
   }

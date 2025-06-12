@@ -8,6 +8,8 @@ import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
 import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
+// Import Story Point Tracker
+import {StoryPoints} from "./apps/story-points.mjs";
 // Import helper/utility classes and constants.
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
@@ -190,6 +192,16 @@ Hooks.once("ready", async function () {
       return false;
     }
   });
+
+  // Display the dialog if settings permit
+  if (
+    (setting("sptShow") == "on" ||
+      (setting("sptShow") == "toggle" && setting("sptToggleState"))) &&
+    (setting("sptAccess") == "everyone" ||
+      (setting("sptAccess") == "gm") == game.user.isGM)
+  ) {
+    game.StoryPointsTracker = new StoryPoints().render(true);
+  }
 });
 
 /* eslint-disable no-unused-vars */

@@ -39,7 +39,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/app/story-points.hbs",
+      template: "systems/essence20/templates/dialog/story-points.hbs",
     },
   };
 
@@ -102,7 +102,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     game.socket.emit("system.essence20", {
       gmPoints: this._gmPoints,
       storyPoints: this._storyPoints,
-      defaultTheme: getDefaultTheme(),
     });
   }
 
@@ -184,7 +183,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     if (value != this._storyPoints) {
       this.changeStoryPoints(value);
       this.sendMessage(
-        `${game.i18n.localize("E20.SptSetStoryPoints")} ${value}!`,
+        `${game.i18n.localize("E20.SptSetStoryPoints")} ${value}!`
       );
     }
   }
@@ -221,19 +220,10 @@ Hooks.on("init", () => {
 });
 
 Hooks.on("ready", () => {
-  // Display the dialog if settings permit
-  if (
-    (setting("sptShow") == "on" ||
-      (setting("sptShow") == "toggle" && setting("sptToggleState"))) &&
-    (setting("sptAccess") == "everyone" ||
-      (setting("sptAccess") == "gm") == game.user.isGM)
-  ) {
-    game.StoryPointsTracker = new StoryPointsTracker().render(true);
-  }
-
   // Create hook that helps with persisting dialog position
   const oldDragMouseUp =
     foundry.applications.ux.Draggable.prototype._onDragMouseUp;
+    
   foundry.applications.ux.Draggable.prototype._onDragMouseUp = (event) => {
     Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
     return oldDragMouseUp.call(this, event);
@@ -270,7 +260,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
         if (toggle) {
           if (!game.StoryPointsTracker) {
             game.settings.set("essence20", "sptToggleState", true);
-            game.StoryPointsTracker = new StoryPointsTracker().render(true);
+            game.StoryPointsTracker = new StoryPoints().render(true);
             tokenControls.tools.sptTracker.active = true;
           }
         } else {

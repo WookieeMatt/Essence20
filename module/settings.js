@@ -1,5 +1,5 @@
 export const registerSettings = function () {
-  let systemName = "essence20";
+  const systemName = "essence20";
 
   const debouncedReload = foundry.utils.debounce(
     function () {

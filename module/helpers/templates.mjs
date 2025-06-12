@@ -97,6 +97,7 @@ export const preloadHandlebarsTemplates = async function () {
 
     //App Partials
     "systems/essence20/templates/app/parts/field.hbs",
+    "systems/essence20/templates/dialog/story-points.hbs",
 
     // Item partials.
     "systems/essence20/templates/item/parts/active-effects.hbs",
