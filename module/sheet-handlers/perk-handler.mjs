@@ -2,9 +2,11 @@ import ChoicesSelector from "../apps/choices-selector.mjs";
 import MultiChoiceSelector from "../apps/multi-choice-selector.mjs";
 import { E20 } from "../helpers/config.mjs";
 import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import { selectSpectrum } from "./role-handler.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+const SPECTRUM_SHIFT_PERK_ID = "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvxt";
 
 /**
  * Handle the dropping of a Perk onto an Actor
@@ -147,6 +149,10 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
     });
   } else if (perk.system.hasMorphedToughnessBonus) {
     setMorphedToughnessBonus(actor);
+  }
+
+  if (perk.uuid == SPECTRUM_SHIFT_PERK_ID) {
+    const selectionSuccess = await selectSpectrum(actor, "powerRangers");
   }
 
   if (perk.system.hasChoice) {

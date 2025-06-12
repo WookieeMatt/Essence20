@@ -5,6 +5,7 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
+import { _getVersionRoles } from "../sheets/item-sheet.mjs";
 
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 /**
@@ -664,4 +665,24 @@ async function addFactionPerks(actor, role) {
       }
     }
   }
+}
+
+export async function selectSpectrum(actor, version) {
+  const versionRoles = await _getVersionRoles(version);
+  const currentRole = await getItemsOfType("role", actor.items)
+  if (!currentRole) {
+    ui.notifications.error(game.i18n.format(game.i18n.localize('E20.SpectrumShiftNoRole')));
+    return false;
+  }
+  let choices = {};
+  const prompt = game.i18n.localize("E20.SelectSpectrum");
+  const title = game.i18n.localize("E20.SpectruShiftSelect");
+  console.log(versionRoles)
+  for (const role of Object.keys(versionRoles)) {
+    console.log(role)
+    if (currentRole.name != role) {
+
+    }
+  }
+
 }
