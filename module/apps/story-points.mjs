@@ -11,8 +11,9 @@ function getPointsName(plural) {
 export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor(gmPoints, storyPoints) {
     super();
-    this._gmPoints = gmPoints;
-    this._storyPoints = storyPoints;
+    this._gmPoints = gmPoints ?? 0;
+    this._storyPoints = storyPoints ?? 0;
+    this._defaultTheme = getDefaultTheme();
   }
 
   static DEFAULT_OPTIONS = {
@@ -24,8 +25,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       "theme-wrapper",
       "story-points",
       "sliced-border --thick",
-      "theme-dark",
-      getDefaultTheme(),
     ],
     window: {
       // icon: "fas fa-gear",
@@ -70,38 +69,58 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     this.element
       .querySelector("#gm-points-input")
-      .addEventListener("focusout", (e) => StoryPoints.directSetGmPoints(e.target.value));
+      .addEventListener("focusout", (e) =>
+        this.gmPointsInputHandler(e.target.value),
+      );
 
     this.element
       .querySelector("#story-points-input")
-      .addEventListener("focusout", (e) => StoryPoints.directSetStoryPoints(e.target.value));
+      .addEventListener("focusout", (e) =>
+        this.storyPointsInputHandler(e.target.value),
+      );
   }
 
   /**
    * Functions
    */
 
-  static changeGmPoints(value) {
+  setGmPoints(value) {
     if (game.user.isGM) {
       this._gmPoints = Math.max(0, value);
-      this.element.getElementById("gm-points-input").value = this._gmPoints;
+      this.element.querySelector("#gm-points-input").value = this._gmPoints;
       game.settings.set("essence20", "sptGmPoints", this._gmPoints);
       this.updateClients();
     } else {
-      this.element.getElementById("gm-points-input").value = this._gmPoints;
+      this.element.querySelector("#gm-points-input").value = this._gmPoints;
     }
   }
 
-  static changeStoryPoints(value) {
+  setStoryPoints(value) {
     if (game.user.isGM) {
       this._storyPoints = Math.max(0, value);
-      this.element.getElementById("story-points-input").value =
+      this.element.querySelector("#story-points-input").value =
         this._storyPoints;
       game.settings.set("essence20", "sptStoryPoints", this._storyPoints);
       this.updateClients();
     } else {
-      this.element.getElementById("story-points-input").value =
+      this.element.querySelector("#story-points-input").value =
         this._storyPoints;
+    }
+  }
+
+  gmPointsInputHandler(value) {
+    if (value != this._gmPoints) {
+      this.setGmPoints(value);
+      this.sendMessage(`${game.i18n.localize("E20.SptSetGmPoints")} ${value}!`);
+    }
+  }
+
+  storyPointsInputHandler(value) {
+    if (value != this._storyPoints) {
+      this.setStoryPoints(value);
+      this.sendMessage(
+        `${game.i18n.localize("E20.SptSetStoryPoints")} ${value}!`,
+      );
     }
   }
 
@@ -115,9 +134,9 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   // Called when a client/player receives an update from the GM
   handleUpdate(data) {
     this._gmPoints = data.gmPoints;
-    this.element.getElementById("gm-points-input").value = this._gmPoints;
+    this.element.querySelector("#gm-points-input").value = this._gmPoints;
     this._storyPoints = data.storyPoints;
-    this.element.getElementById("story-points-input").value = this._storyPoints;
+    this.element.querySelector("#story-points-input").value = this._storyPoints;
   }
 
   // Outputs given message to chat
@@ -128,7 +147,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       const messageData = {
         user: game.user.id,
         speaker: speaker,
-        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         content,
       };
 
@@ -154,48 +173,32 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   /**
-   * Actions
+   * Actions, these should be static. If they need to access this
    */
 
   static decrementGmPoints() {
-    this.changeGmPoints(this._gmPoints - 1);
+    this.setGmPoints(this._gmPoints - 1);
     this.sendMessage(game.i18n.localize("E20.SptSpendGmPoint"));
   }
 
   static incrementGmPoints() {
-    this.changeGmPoints(this._gmPoints + 1);
+    this.setGmPoints(this._gmPoints + 1);
     this.sendMessage(game.i18n.localize("E20.SptAddGmPoint"));
   }
 
-  static directSetGmPoints() {
-    const value = this.element.getElementById("gm-points-input").value;
-    if (value != this._gmPoints) {
-      this.changeGmPoints(value);
-      this.sendMessage(`${game.i18n.localize("E20.SptSetGmPoints")} ${value}!`);
-    }
-  }
-
   static decrementStoryPoints() {
-    this.changeStoryPoints(this._storyPoints - 1);
+    this.setStoryPoints(this._storyPoints - 1);
     this.sendMessage(game.i18n.localize("E20.SptSpendStoryPoint"));
   }
 
   static incrementStoryPoints() {
-    this.changeStoryPoints(this._storyPoints + 1);
+    this.setStoryPoints(this._storyPoints + 1);
     this.sendMessage(game.i18n.localize("E20.SptAddStoryPoint"));
   }
 
-  static directSetStoryPoints() {
-    const value = this.element.getElementById("story-points-input").value;
-    if (value != this._storyPoints) {
-      this.changeStoryPoints(value);
-      this.sendMessage(
-        `${game.i18n.localize("E20.SptSetStoryPoints")} ${value}!`,
-      );
-    }
-  }
-
   static async rollMajorSceneGmPoints() {
+    console.log("this", this);
+    console.log("StoryPoints", StoryPoints);
     try {
       const user = game.user;
       if (user.isGM) {
@@ -205,7 +208,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
           flavor: game.i18n.localize("E20.SptRollFlavor"),
           rollMode: game.settings.get("core", "rollMode"),
         }); // does this need to be an await?
-        StoryPoints.changeGmPoints(this._gmPoints + roll.total);
+        this.setGmPoints(this._gmPoints + roll.total);
       }
     } catch (err) {
       console.error(err);
