@@ -1,20 +1,23 @@
 // text Colors
-$textcolor1: rgb(199, 196, 196);
-$textcolor2: rgb(0,0,0);
-$textcolor3: rgb(158, 155, 155);
+// TODO: rename to be more clear
+$textcolor1: #c7c4c4;
+$textcolor2: #000000;
+$textcolor3: #9e9b9b;
 
 //background colors
+// TODO: rename to be more clear
 $background-b: #5f5f5f;
-$background-lb: rgb(0, 119, 255);
-$background-r: red;
-$background-g: green;
-$background-w: rgb(216, 212, 212);
-$background-p: rgb(240, 157, 171);
-$background-y: rgb(197, 197, 0);
+$background-lb: #0077ff;
+$background-r: #ff0000;
+$background-g: #008000;
+$background-w: #d8d4d4;
+$background-p: #f09dab;
+$background-y: #c5c500;
 $background-purple: #212c5f;
 $background-n: none;
 
 //Backround-image
+// TODO: rename to be more clear
 //$background-image-1: radial-gradient(farthest-corner at 90% 10%, #1C3B50, #03263C, #040519);
 $background-image-2: radial-gradient(farthest-corner at 90% 10%, #501c1c, #3c0303, #190404);
 $background-image-3: radial-gradient(farthest-corner at 90% 10%, #e605da, #a1187f, #630f4f);
@@ -24,6 +27,7 @@ $background-image-1: radial-gradient(farthest-corner at 90% 10%, #535353, #30353
 
 
 //Border Color
+// TODO: rename to be more clear
 $border: 4px solid #b5b1b1;
 $border2: 4px dashed #b5b1b1;
 $border-radius: 15px;
@@ -33,3 +37,22 @@ $boxshadow: 4px 4px 0 black;
 
 // Spacing
 $padding: 6px;
+
+// New vars for new styles
+// TEXT
+$text-color-light: #fafafa;
+$text-color-dark: #222;
+
+// BACKGROUNDS
+$bg-color-light: #fafafa;
+$bg-color-dark: #111;
+
+// INPUTS
+$input-color-light: #e6e6e6;
+$input-color-dark: #222;
+
+// SPACING
+$gap-sm: 0.25rem;
+$gap-md: 0.5rem;
+$gap-lg: 1rem;
+$gap-xl: 1.5rem;
