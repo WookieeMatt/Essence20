@@ -332,36 +332,38 @@ export class Essence20Actor extends Actor {
   _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
     super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
     if (collection != "effects") {
-      for (const change of changes) {
-        const fullItem = parent.items.get(change._id);
-        if (!fullItem) {
-          return;
+      return;
+    }
+
+    for (const change of changes) {
+      const fullItem = parent.items.get(change._id);
+      if (!fullItem) {
+        return;
+      }
+
+      const parentId = fullItem.getFlag('essence20', 'parentId');
+      const parentItem = parent.items.get(parentId);
+
+      if (!parentItem) {
+        return;
+      }
+
+      const key = fullItem.getFlag('essence20', 'collectionId');
+      if (change.system) { // Handle system fields
+        for (const [name, value] of Object.entries(change.system)){
+          const updateString = `system.items.${key}.${name}`;
+          parentItem.update({
+            [updateString]: value,
+          });
         }
+      }
 
-        const parentId = fullItem.getFlag('essence20', 'parentId');
-        const parentItem = parent.items.get(parentId);
-
-        if (!parentItem) {
-          return;
-        }
-
-        const key = fullItem.getFlag('essence20', 'collectionId');
-        if (change.system) { // Handle system fields
-          for (const [name, value] of Object.entries(change.system)){
-            const updateString = `system.items.${key}.${name}`;
-            parentItem.update({
-              [updateString]: value,
-            });
-          }
-        }
-
-        for (const [name, value] of Object.entries(change)) {
-          if (name == "name" || name == "img") {
-            const updateString = `system.items.${key}.${name}`;
-            parentItem.update({
-              [updateString]: value,
-            });
-          }
+      for (const [name, value] of Object.entries(change)) {
+        if (name == "name" || name == "img") {
+          const updateString = `system.items.${key}.${name}`;
+          parentItem.update({
+            [updateString]: value,
+          });
         }
       }
     }
