@@ -286,6 +286,12 @@ export async function onFocusDelete(actor, focus) {
  * @param {Function} dropFunc The drop Function that will be used to complete the drop of the Role
  */
 export async function onRoleDrop(actor, role, dropFunc) {
+  //Advanced Roles are added from a perk not a drop
+  if (role.system.isAdvanced) {
+    ui.notifications.error(game.i18n.localize('E20.RoleAdvancedError'));
+    return false;
+  }
+
   // Actors can only have one Role
   const hasRole = getItemsOfType("role", actor.items).length > 0;
   if (hasRole) {
@@ -544,6 +550,11 @@ export async function onRoleDelete(actor, role) {
     "system.level": 1,
   });
 
+  //Remove Previous Roles
+  if (actor.system.previousRole.length > 0) {
+    actor.system.previousRole.length = 0;
+  }
+
   deleteAttachmentsForItem(role, actor);
   actor.setFlag('essence20', 'previousLevel', 0);
 }
@@ -668,21 +679,69 @@ async function addFactionPerks(actor, role) {
 }
 
 export async function selectSpectrum(actor, version) {
-  const versionRoles = await _getVersionRoles(version);
-  const currentRole = await getItemsOfType("role", actor.items)
-  if (!currentRole) {
+  const currentRole = await getItemsOfType("role", actor.items);
+  if (currentRole.length < 1) {
     ui.notifications.error(game.i18n.format(game.i18n.localize('E20.SpectrumShiftNoRole')));
     return false;
   }
-  let choices = {};
-  const prompt = game.i18n.localize("E20.SelectSpectrum");
-  const title = game.i18n.localize("E20.SpectruShiftSelect");
-  console.log(versionRoles)
-  for (const role of Object.keys(versionRoles)) {
-    console.log(role)
-    if (currentRole.name != role) {
-
+   const choices = {};
+  for (const pack of game.packs) {
+    const selection = await pack.getDocuments({ type: "role" });
+    for (const role of selection) {
+      if (role.system.version == version && currentRole[0]._stats.compendiumSource != role.uuid){
+        choices[role.name] = {
+          chosen: false,
+          value: role.uuid,
+          label: role.name,
+          type: role.type,
+          uuid: role.uuid,
+        };
+      }
     }
   }
+
+  const worldItems = game.items;
+  for (const worldItem of worldItems) {
+    if (worldItem.type == "role") {
+      if (worldItem.system.version == version && currentRole[0]._stats.compendiumSource != role.uuid) {
+        choices[role.name] = {
+          chosen: false,
+          value: role.uuid,
+          label: role.name,
+          type: role.type,
+          uuid: role.uuid,
+        };
+      }
+    }
+  }
+
+  const prompt = game.i18n.localize("E20.SelectSpectrum");
+  const title = game.i18n.localize("E20.SpectruShiftSelect");
+
+  await new ChoicesSelector(choices, actor, prompt, title, null, null, null, "spectrum", null, null).render(true);
+  return true;
+}
+
+export function setSpectrumShiftRole(actor, roleUuid){
+  const currentRole = getItemsOfType("role", actor.items);
+  let lastChange = 0;
+  let firstRole = null;
+  if (actor.system.previousRole.length > 0) {
+    for (const role of actor.system.previousRole) {
+      if (role.endingLevel > lastChange) {
+        lastChange = role.endingLevel;
+      }
+      if (role.startingLevel == 1) {
+        firstRole = role.uuid;
+      }
+    }
+  }
+
+  const oldRole = {};
+  oldRole.uuid = currentRole[0]._stats.compendiumSource;
+  oldRole.endingLevel = actor.system.level - 1;
+  oldRole.StartingLevel = lastChange + 1;
+
+  actor.system.previousRole.push(oldRole)
 
 }

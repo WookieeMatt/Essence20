@@ -1,6 +1,6 @@
 import { _checkForAltModes, _hangUpSelect, _showOriginSkillPrompt, setOriginValues } from "../sheet-handlers/background-handler.mjs";
 import { _attachSelectedItemOptionHandler } from "../sheet-handlers/attachment-handler.mjs";
-import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
+import { _focusStatUpdate, setSpectrumShiftRole } from "../sheet-handlers/role-handler.mjs";
 import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
 import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
 import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
@@ -30,6 +30,7 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
       perk: ChoicesSelector.perk,
       passenger: ChoicesSelector.passenger,
       shield: ChoicesSelector.shield,
+      spectrum: ChoicesSelector.spectrum,
       upgrade: ChoicesSelector.attach,
       weaponEffect: ChoicesSelector.attach,
       view: ChoicesSelector.view,
@@ -67,6 +68,8 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
       context.type = this._item.type;
     } else if (this._key) {
       context.type = "passenger";
+    } else if (this._staticValue == 'spectrum') {
+      context.type = "spectrum";
     }
 
     return context;
@@ -112,6 +115,11 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
 
   static async shield(event, selection) {
     setShieldOptions(this._actor, this._item, this._staticValue, selection.value, selection.name);
+    this.close();
+  }
+
+  static async spectrum(event, selection) {
+    setSpectrumShiftRole(this._actor, selection.value)
     this.close();
   }
 

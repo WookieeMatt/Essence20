@@ -153,7 +153,12 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
 
   if (perk.uuid == SPECTRUM_SHIFT_PERK_ID) {
     const selectionSuccess = await selectSpectrum(actor, "powerRangers");
+    if (!selectionSuccess) {
+      return;
+    }
   }
+
+
 
   if (perk.system.hasChoice) {
     let choices = {};
