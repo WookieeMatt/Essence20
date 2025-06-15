@@ -27,7 +27,7 @@
 
   &::before {
     pointer-events: none;
-    filter: var(--root-border-filter);
+    filter: var(--theme-border-filter);
     position: absolute;
     z-index: 0;
     content: "";

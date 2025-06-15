@@ -19,9 +19,7 @@ import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 import { registerSettings, setting } from "./settings.js";
 
-console.warn("essence20.mjs");
 function registerSystemSettings() {
-  console.warn("registerSystemSettings()");
   game.settings.register("essence20", "systemMigrationVersion", {
     config: false,
     scope: "world",
@@ -44,7 +42,7 @@ function runMigrations() {
   // Get the current version, or set it if not present
   const currentVersion = game.settings.get(
     "essence20",
-    "systemMigrationVersion",
+    "systemMigrationVersion"
   );
   const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
   if (!currentVersion && totalDocuments === 0) {
@@ -52,7 +50,7 @@ function runMigrations() {
     return game.settings.set(
       "essence20",
       "systemMigrationVersion",
-      game.system.version,
+      game.system.version
     );
   } else if (
     !currentVersion ||
@@ -60,12 +58,12 @@ function runMigrations() {
   ) {
     // Perform the migration, if needed
     console.warn(
-      `Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`,
+      `Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`
     );
     migrateWorld();
   } else {
     console.log(
-      `Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION} and doesn't require migration`,
+      `Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION} and doesn't require migration`
     );
   }
 }
@@ -74,9 +72,7 @@ function runMigrations() {
 /*  Init Hooks                                  */
 /* -------------------------------------------- */
 
-console.warn("set once init");
 Hooks.once("init", async function () {
-  console.warn("once init");
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.essence20 = {
@@ -116,21 +112,21 @@ Hooks.once("init", async function () {
   // Register sheet application classes
   foundry.documents.collections.Actors.unregisterSheet(
     "core",
-    foundry.appv1.sheets.ActorSheet,
+    foundry.appv1.sheets.ActorSheet
   );
   foundry.documents.collections.Actors.registerSheet(
     "essence20",
     Essence20ActorSheet,
-    { makeDefault: true },
+    { makeDefault: true }
   );
   foundry.documents.collections.Items.unregisterSheet(
     "core",
-    foundry.appv1.sheets.ItemSheet,
+    foundry.appv1.sheets.ItemSheet
   );
   foundry.documents.collections.Items.registerSheet(
     "essence20",
     Essence20ItemSheet,
-    { makeDefault: true },
+    { makeDefault: true }
   );
 
   registerSettings();
@@ -147,7 +143,7 @@ Hooks.once("init", async function () {
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
-
+//#region Handlebars
 // If you need to add Handlebars helpers, here are a few useful examples:
 Handlebars.registerHelper("concat", function () {
   var outStr = "";
@@ -217,8 +213,9 @@ Handlebars.registerHelper(
     return game.i18n
       .getListFormatter({ style: "long", type: listType })
       .format(unformattedList);
-  },
+  }
 );
+//#endregion
 
 /* -------------------------------------------- */
 /*  Misc Hooks                                  */
@@ -228,7 +225,6 @@ Handlebars.registerHelper(
 Hooks.once("i18nInit", () => performPreLocalization(CONFIG.E20));
 
 Hooks.once("ready", async function () {
-  console.warn("once ready");
   runMigrations();
 
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
@@ -238,52 +234,6 @@ Hooks.once("ready", async function () {
       return false;
     }
   });
-
-  // Init the button in the controls for toggling the dialog
-  Hooks.on("getSceneControlButtons", (controls) => {
-    console.warn("on getSceneControlButtons");
-    if (
-      setting("sptShow") == "toggle" &&
-      (setting("sptAccess") == "everyone" ||
-        (setting("sptAccess") == "gm" && game.user.isGM))
-    ) {
-      const tokenControls = controls.tokens;
-      const activeState = game.settings.get("essence20", "sptToggleState");
-      tokenControls.tools.sptTracker = {
-        active: activeState,
-        icon: "fas fa-circle-s",
-        name: "sptTracker",
-        title: game.i18n.format("E20.SptToggleDialog", {
-          name: getPointsName(false),
-        }),
-        toggle: true,
-        visible: true,
-        onChange: (event, toggle) => {
-          if (toggle) {
-            if (!game.StoryPointsTracker) {
-              game.settings.set("essence20", "sptToggleState", true);
-              game.StoryPointsTracker = new StoryPoints().render(true);
-              tokenControls.tools.sptTracker.active = true;
-            }
-          } else {
-            game.settings.set("essence20", "sptToggleState", false);
-            game.StoryPointsTracker.closeSpt();
-            tokenControls.tools.sptTracker.active = false;
-          }
-        },
-      };
-    }
-  });
-
-  // Display the dialog if settings permit
-  if (
-    (setting("sptShow") == "on" ||
-      (setting("sptShow") == "toggle" && setting("sptToggleState"))) &&
-    (setting("sptAccess") == "everyone" ||
-      (setting("sptAccess") == "gm" && game.user.isGM))
-  ) {
-    game.StoryPointsTracker = new StoryPoints().render(true);
-  }
 
   // Create hook that helps with persisting dialog position
   const oldDragMouseUp =
@@ -305,7 +255,7 @@ Hooks.on("renderDialogV2", (dialog, html) => {
     const select = html.querySelector("select[name='type']");
     if (select) {
       const classFeatureOption = select.querySelector(
-        "option[value='classFeature']",
+        "option[value='classFeature']"
       );
       if (classFeatureOption) {
         classFeatureOption.style.display = "none";
@@ -313,13 +263,13 @@ Hooks.on("renderDialogV2", (dialog, html) => {
 
       if (select) {
         select.append(
-          setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes),
+          setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes)
         );
         select.append(
-          setOptGroup(select, "Background", CONFIG.E20.backgroundTypes),
+          setOptGroup(select, "Background", CONFIG.E20.backgroundTypes)
         );
         select.append(
-          setOptGroup(select, "Character Options", CONFIG.E20.characterTypes),
+          setOptGroup(select, "Character Options", CONFIG.E20.characterTypes)
         );
         select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
       }
@@ -360,7 +310,6 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
 
 // Persists dialog position when moved by the user
 Hooks.on("dragEndStoryPointsTracker", (app) => {
-  console.warn("on dragEndStoryPointsTracker");
   game.user.setFlag("essence20", "storyPointsTrackerPos", {
     left: app.position.left,
     top: app.position.top,
@@ -382,14 +331,14 @@ async function createItemMacro(data, slot) {
   if (data.type !== "Item") return;
   if (!("uuid" in data))
     return ui.notifications.warn(
-      "You can only create macro buttons for owned Items",
+      "You can only create macro buttons for owned Items"
     );
   const item = await fromUuid(data.uuid);
 
   // Create the macro command
   const command = `game.essence20.rollItemMacro("${item._id}", "${item.name}");`;
   let macro = game.macros.find(
-    (m) => m.name === item.name && m.command === command,
+    (m) => m.name === item.name && m.command === command
   );
   if (!macro) {
     macro = await Macro.create({
@@ -419,7 +368,7 @@ async function rollItemMacro(itemId, itemName) {
   const item = actor ? actor.items.get(itemId) : null;
   if (!item)
     return ui.notifications.warn(
-      `Your controlled Actor does not have an item named ${itemName}`,
+      `Your controlled Actor does not have an item named ${itemName}`
     );
 
   // Trigger the item roll

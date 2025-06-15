@@ -2,7 +2,8 @@
 
 // default vars, overridden when needed
 body {
-  --theme-border-color: #{v.$border-bg-light};
+  --theme-border-filter: saturate(0);
+  --theme-border-color: #{v.$border-color-dark};
   --theme-bg-color: #{v.$bg-color-light};
   --theme-text-color: #{v.$text-color-dark};
   --theme-input-color: #{v.$input-color-light};
@@ -38,12 +39,16 @@ body {
   }
 
   &.theme-light {
+    --theme-border-filter: saturate(0);
+    --theme-border-color: #{v.$border-color-dark};
     --theme-bg-color: #{v.$bg-color-light};
     --theme-text-color: #{v.$text-color-dark};
     --theme-input-color: #{v.$input-color-light};
   }
 
   &.theme-dark {
+    --theme-border-filter: saturate(0) brightness(175%);
+    --theme-border-color: #{v.$border-color-light};
     --theme-bg-color: #{v.$bg-color-dark};
     --theme-text-color: #{v.$text-color-light};
     --theme-input-color: #{v.$input-color-dark};
@@ -69,5 +74,9 @@ body {
     &.essence20 {
       border-radius: 15px;
     }
+  }
+  
+  header * {
+    color: var(--theme-text-color) !important;
   }
 }
