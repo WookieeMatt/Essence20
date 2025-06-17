@@ -107,8 +107,8 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
 
     // Update the object
     if (this._owner.documentName == 'Actor') {
-      const variableName = this._data.name.split(".");
-      for (const key of Object.keys(this._owner.system[variableName[1]])){
+      const variableName = this._data.name.split(".")[1];
+      for (const key of Object.keys(this._owner.system[variableName])){
         const updateString = `${this._data.name}.${key}`;
         let newValue = false;
         for (const update of updateData[`${this._data.name}`]) {
