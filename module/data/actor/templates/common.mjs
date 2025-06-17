@@ -12,6 +12,7 @@ function makeDamageSchema(damageTypes) {
 
   return new fields.SchemaField(itemSchema);
 }
+
 function makeEssenceShift() {
   return new fields.SchemaField({
     edge: makeBool(false),

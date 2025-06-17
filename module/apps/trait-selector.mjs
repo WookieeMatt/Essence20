@@ -52,7 +52,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     if (this._owner.documentName == 'Actor') {
       for (const [key, value] of Object.entries(this._owner.system[variableName[1]])) {
         if (value) {
-          attr.push(key)
+          attr.push(key);
         }
       }
 
@@ -107,7 +107,6 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     // Update the object
     if (this._owner.documentName == 'Actor') {
       const variableName = this._data.name.split(".");
-      console.log(updateData)
       for (const key of Object.keys(this._owner.system[variableName[1]])){
         const updateString = `${this._data.name}.${key}`;
         let newValue = false;
@@ -117,6 +116,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
             break;
           }
         }
+
         this._owner.update ({
           [updateString]: newValue,
         });
