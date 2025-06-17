@@ -6,7 +6,7 @@ const fields = foundry.data.fields;
 
 function makeDamageSchema(damageTypes) {
   const itemSchema = {};
-  for (const damageType of Object.keys(damageTypes)){
+  for (const damageType of Object.keys(damageTypes)) {
     itemSchema[damageType] = makeBool(false);
   }
 
