@@ -33,6 +33,10 @@ export function onManageSelectTrait(event, owner) {
     options.choices = CONFIG.E20.availabilities;
     options.valueKey = null;
     break;
+  case "damageType":
+    options.choices = CONFIG.E20.damageTypes;
+    options.valueKey = null;
+    break;
   case "focusEssences":
     options.choices = CONFIG.E20.originEssences;
     options.valueKey = null;

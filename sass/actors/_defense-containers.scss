@@ -6,16 +6,19 @@
 }
 
 .essence20 .defense-container table thead {
-  background-color: inherit;
   border-bottom: v.$border;
+  border-color: inherit;
+  background-color: inherit;
   color: inherit;
 }
 
 .essence20 .defense-container tr:nth-child(even) {
+  border-color: inherit;
   background-color: inherit;
 }
 
 .essence20 .defense-container .tg {
+  border-color: inherit;
   border-collapse: collapse;
   border-spacing: 0;
   border-style: hidden;
@@ -23,7 +26,7 @@
 }
 
 .essence20 .defense-container .tg td {
-  border-color: v.$border;
+  border-color: inherit;
   border-style: solid;
   border-width: 1px;
   font-size: 15px;
@@ -34,7 +37,7 @@
 }
 
 .essence20 .defense-container .tg th {
-  border-color: v.$border;
+  border-color: inherit;
   border-style: solid;
   border-width: 1px;
   font-size: 16px;
