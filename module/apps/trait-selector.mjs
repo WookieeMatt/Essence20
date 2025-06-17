@@ -125,7 +125,5 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     } else {
       this._owner.update(updateData);
     }
-
   }
-
 }
