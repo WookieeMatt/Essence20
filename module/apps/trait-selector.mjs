@@ -59,6 +59,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     } else {
       attr = foundry.utils.getProperty(this._owner, data.name);
     }
+
     const value = (data.valueKey) ? foundry.utils.getProperty(attr, data.valueKey) ?? [] : attr;
     const custom = (data.customKey) ? foundry.utils.getProperty(attr, data.customKey) ?? "" : "";
 
