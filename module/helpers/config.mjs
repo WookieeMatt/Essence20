@@ -588,6 +588,7 @@ E20.damageTypes = {
   stun: "E20.DamageStun",
   unconscious: "E20.DamageUnconscious",
 };
+preLocalize("damageTypes");
 
 // Perk types
 E20.perkTypes = {

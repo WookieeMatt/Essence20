@@ -1,0 +1,31 @@
+<div class="stats-container flexrow defense-container" style="border-color: {{system.color}};">
+  <table class="tg">
+    <thead>
+      <tr>
+        <th class="tg-td">
+          {{ localize "E20.ActorImmunities" }}
+          <a class="trait-selector" data-options="damageType" data-target="system.immunities" data-tooltip="{{localize 'E20.TraitSelector'}}">
+            <i class="fas fa-edit"></i>
+          </a>
+
+        </th>
+        <th class="tg-td">
+          {{ localize "E20.ActorResistances" }}
+          <a class="trait-selector" data-options="damageType" data-target="system.resistances" data-tooltip="{{localize 'E20.TraitSelector'}}">
+            <i class="fas fa-edit"></i>
+          </a>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          {{formatBooleanList @root.system.immunities @root.config.damageTypes 'unit'}}
+        </td>
+        <td>
+          {{formatBooleanList @root.system.resistances @root.config.damageTypes 'unit'}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

@@ -45,10 +45,20 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-
     options.value = this._data.valueKey;
-    const attr = foundry.utils.getProperty(this._owner, this._data.name);
     const data = this._data;
+    const variableName = data.name.split(".");
+    let attr = [];
+    if (this._owner.documentName == 'Actor') {
+      for (const [key, value] of Object.entries(this._owner.system[variableName[1]])) {
+        if (value) {
+          attr.push(key)
+        }
+      }
+
+    } else {
+      attr = foundry.utils.getProperty(this._owner, data.name);
+    }
     const value = (data.valueKey) ? foundry.utils.getProperty(attr, data.valueKey) ?? [] : attr;
     const custom = (data.customKey) ? foundry.utils.getProperty(attr, data.customKey) ?? "" : "";
 
@@ -95,7 +105,26 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     // Update the object
-    this._owner.update(updateData);
+    if (this._owner.documentName == 'Actor') {
+      const variableName = this._data.name.split(".");
+      console.log(updateData)
+      for (const key of Object.keys(this._owner.system[variableName[1]])){
+        const updateString = `${this._data.name}.${key}`;
+        let newValue = false;
+        for (const update of updateData[`${this._data.name}`]) {
+          if (update == key) {
+            newValue = true;
+            break;
+          }
+        }
+        this._owner.update ({
+          [updateString]: newValue,
+        });
+      }
+    } else {
+      this._owner.update(updateData);
+    }
+
   }
 
 }

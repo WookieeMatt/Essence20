@@ -22,6 +22,7 @@ import {
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
+import { onManageSelectTrait } from "../helpers/traits.mjs";
 
 export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   constructor(...args) {
@@ -510,6 +511,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     html.find('.num-crew').change(ev=> onCrewNumberUpdate(ev, this));
 
     html.find('.morph-toughness-edit').click(ev=> onEditMorphToughnessBonus(ev, this));
+
+    html.find(".trait-selector").click(ev => onManageSelectTrait(ev, this.actor));
 
     // Drag events for macros.
     if (this.actor.isOwner) {

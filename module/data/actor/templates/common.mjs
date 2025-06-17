@@ -4,6 +4,14 @@ import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-ma
 
 const fields = foundry.data.fields;
 
+function makeDamageSchema(damageTypes) {
+  const itemSchema = {};
+  for (const damageType of Object.keys(damageTypes)){
+    itemSchema[damageType] = makeBool(false);
+  }
+
+  return new fields.SchemaField(itemSchema);
+}
 function makeEssenceShift() {
   return new fields.SchemaField({
     edge: makeBool(false),
@@ -78,6 +86,7 @@ export const common = () => ({
     origin: makeInt(0),
     value: makeInt(0),
   }),
+  immunities: makeDamageSchema(E20.damageTypes),
   initiative: new fields.SchemaField({
     edge: makeBool(false),
     formula: makeStr('2d20kl + 0'),
@@ -98,6 +107,7 @@ export const common = () => ({
   movementIsReadOnly: makeBool(false),
   movementNotSet: makeBool(false),
   notes: new fields.HTMLField(),
+  resistances: makeDamageSchema(E20.damageTypes),
   size: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   skills: new fields.SchemaField({
     roleSkillDie: makeSkillFields(),
