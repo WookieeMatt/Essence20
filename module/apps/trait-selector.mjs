@@ -47,15 +47,15 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     const context = await super._prepareContext(options);
     options.value = this._data.valueKey;
     const data = this._data;
-    const variableName = data.name.split(".");
+    const variableName = data.name.split(".")[1];
     let attr = [];
+
     if (this._owner.documentName == 'Actor') {
-      for (const [key, value] of Object.entries(this._owner.system[variableName[1]])) {
+      for (const [key, value] of Object.entries(this._owner.system[variableName])) {
         if (value) {
           attr.push(key);
         }
       }
-
     } else {
       attr = foundry.utils.getProperty(this._owner, data.name);
     }
