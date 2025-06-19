@@ -23,6 +23,7 @@ const mockActor = {
   system: {
     initiative: {
       formula: "",
+      skill: "initiative",
     },
     essenceShifts: {
       any: {
