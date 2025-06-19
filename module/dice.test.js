@@ -23,10 +23,6 @@ const mockActor = {
   system: {
     initiative: {
       formula: "",
-      modifier: 0,
-      shift: "d20",
-      shiftDown: 0,
-      shiftUp: 0,
     },
     essenceShifts: {
       any: {
@@ -50,6 +46,14 @@ const mockActor = {
         shiftUp: 0,
       },
     },
+    skills: {
+      initiative: {
+        modifier: 0,
+        shift: "d20",
+        shiftDown: 0,
+        shiftUp: 0,
+      }
+    }
   },
 };
 
