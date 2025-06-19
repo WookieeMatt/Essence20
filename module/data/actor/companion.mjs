@@ -30,4 +30,8 @@ export class CompanionActorData extends foundry.abstract.TypeDataModel {
       type: makeStrWithChoices(Object.keys(E20.companionTypes), 'pet'),
     };
   }
+
+  prepareBaseData() {
+    this.skills.initiative.canBeInitiative = true;
+  }
 }

@@ -68,11 +68,7 @@ export function getShiftedSkill(skill, shift, actor) {
   let currentShift = "";
   let newShift = "";
 
-  if (skill == "initiative") {
-    skillString = `system.${skill}.shift`;
-    currentShift = actor.system[skill].shift;
-    newShift = CONFIG.E20.skillShiftList[Math.max(0, (CONFIG.E20.skillShiftList.indexOf(currentShift) - shift))];
-  } else if (skill == "conditioning") {
+  if (skill == "conditioning") {
     skillString = `system.${skill}`;
     currentShift = actor.system[skill];
     newShift = currentShift + shift;

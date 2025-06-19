@@ -15,4 +15,8 @@ export class ZordActorData extends foundry.abstract.TypeDataModel {
       ranger: makeStr(''),
     };
   }
+
+  prepareBaseData() {
+    this.skills.initiative.canBeInitiative = true;
+  }
 }

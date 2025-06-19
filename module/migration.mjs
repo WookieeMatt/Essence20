@@ -190,12 +190,8 @@ export const migrateActorData = async function(actor, compendiumActor) {
   }
 
   // Migrate initiative
-  if (typeof actor.system.initiative == "string") {
-    updateData[`system.initiative`] = {
-      "formula": "", // This will populate after the actor's first initiative roll
-      "modifier": 0,
-      "shift": actor.system.initiative,
-    };
+  if (actor.system.initiative.shift) {
+    updateData[`system.skills.initiative`] = actor.system.initiative;
   }
 
   // Migrate Skills

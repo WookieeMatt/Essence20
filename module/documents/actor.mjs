@@ -314,8 +314,8 @@ export class Essence20Actor extends Actor {
    * Prepare character roll data.
    */
   _getCharacterRollData(data) {
-    const initiativeFormula = data.initiative.shift == 'd20' ? 'd20' : `d20 + ${data.initiative.shift}`;
-    data.initiativeFormula = `${initiativeFormula} + ${data.initiative.modifier}`;
+    const initiativeFormula = data.skills[data.initiative.skill].shift == 'd20' ? 'd20' : `d20 + ${data.skills[data.initiative.skill].shift}`;
+    data.initiativeFormula = `${initiativeFormula} + ${data.skills[data.initiative.skill].modifier}`;
   }
 
   /**

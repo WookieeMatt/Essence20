@@ -26,6 +26,7 @@ function makeMovementFields() {
 
 function makeSkillFields(essence) {
   return new fields.SchemaField({
+    canBeInitiative: makeBool(false),
     canCritD2: makeBool(false),
     essences: new fields.SchemaField({
       smarts: makeBool(['smarts', 'any'].includes(essence)),
@@ -79,14 +80,8 @@ export const common = () => ({
     value: makeInt(0),
   }),
   initiative: new fields.SchemaField({
-    edge: makeBool(false),
     formula: makeStr('2d20kl + 0'),
-    isSpecialized: makeBool(false),
-    modifier: makeInt(0),
-    snag: makeBool(false),
-    shift: makeStrWithChoices(E20.initiativeShiftList, 'd20'),
-    shiftDown: makeInt(0),
-    shiftUp: makeInt(0),
+    skill: makeStrWithChoices(Object.keys(E20.skills), 'initiative')
   }),
   isLocked: makeBool(false),
   movement: new fields.SchemaField({
@@ -111,6 +106,7 @@ export const common = () => ({
     driving: makeSkillFields('speed'),
     finesse: makeSkillFields('speed'),
     infiltration: makeSkillFields('speed'),
+    initiative: makeSkillFields('speed'),
     intimidation: makeSkillFields('strength'),
     might: makeSkillFields('strength'),
     performance: makeSkillFields('social'),

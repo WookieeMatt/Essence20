@@ -29,5 +29,6 @@ export class PlayerCharacterActorData extends foundry.abstract.TypeDataModel {
 
   prepareBaseData() {
     this.movementIsReadOnly = true;
+    this.skills.initiative.canBeInitiative = true;
   }
 }

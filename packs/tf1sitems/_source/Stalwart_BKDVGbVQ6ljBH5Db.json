@@ -51,7 +51,7 @@
       "system": {},
       "changes": [
         {
-          "key": "system.initiative.shiftUp",
+          "key": "system.skills.initiative.shiftUp",
           "mode": 2,
           "value": "2",
           "priority": null
