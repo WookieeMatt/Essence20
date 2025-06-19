@@ -81,7 +81,7 @@ export const common = () => ({
   }),
   initiative: new fields.SchemaField({
     formula: makeStr('2d20kl + 0'),
-    // TODO: Only keeping these around for migration. Remove in v6.
+    // TODO: Only keeping modifier and shift around for migration. Remove in v6.
     modifier: makeInt(0),
     shift: makeStrWithChoices(Object.keys(E20.skillShifts), 'd20'),
     skill: makeStrWithChoices(Object.keys(E20.skills), 'initiative'),
