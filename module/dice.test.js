@@ -53,8 +53,8 @@ const mockActor = {
         shift: "d20",
         shiftDown: 0,
         shiftUp: 0,
-      }
-    }
+      },
+    },
   },
 };
 
