@@ -84,7 +84,6 @@ export const common = () => ({
     modifier: makeInt(0),
     shift: makeStrWithChoices(Object.keys(E20.skillShifts), 'd20'),
     skill: makeStrWithChoices(Object.keys(E20.skills), 'initiative'),
-
   }),
   isLocked: makeBool(false),
   movement: new fields.SchemaField({
