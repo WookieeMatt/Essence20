@@ -81,7 +81,7 @@ export const common = () => ({
   }),
   initiative: new fields.SchemaField({
     formula: makeStr('2d20kl + 0'),
-    skill: makeStrWithChoices(Object.keys(E20.skills), 'initiative')
+    skill: makeStrWithChoices(Object.keys(E20.skills), 'initiative'),
   }),
   isLocked: makeBool(false),
   movement: new fields.SchemaField({

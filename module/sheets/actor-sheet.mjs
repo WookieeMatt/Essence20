@@ -92,7 +92,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     this._prepareWeaponEffectSkills(actorData, context);
 
     //Prepare Initiative Skills
-    context.initiativeSkills = this._prepareInitiativeSkills(actorData, context);
+    context.initiativeSkills = this._prepareInitiativeSkills(actorData);
 
     // Prepare number of actions
     if (actorData.type == "playerCharacter") {
@@ -251,8 +251,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     context.weaponEffectSkills = weaponEffectSkills;
   }
 
-  _prepareInitiativeSkills(actorData, context) {
-    const initiativeSkills = {}
+  _prepareInitiativeSkills(actorData) {
+    const initiativeSkills = {};
     for (const skill of Object.keys(actorData.system.skills)) {
       if (actorData.system.skills[skill].canBeInitiative) {
         initiativeSkills[skill] = {

@@ -14,7 +14,7 @@ export class Essence20Combat extends Combat {
     const combatants = ids.flatMap(
       (id) => this.combatants.get(id) ?? [],
     );
-    console.log(combatants)
+
     for (let combatant of combatants) {
       if (await this._dice.prepareInitiativeRoll(combatant.actor)) {
         await super.rollInitiative([combatant.id], options);
