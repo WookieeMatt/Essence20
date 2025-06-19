@@ -38,7 +38,7 @@ export class Dice {
     const dataset = {
       shift: actor.system.skills[initSkill].shift,
       shiftUp: actor.system.skills[initSkill].shiftUp + actor.system.essenceShifts.speed.shiftUp,
-      shiftDown: actor.system.skills[initSkilll].shiftDown + actor.system.essenceShifts.speed.shiftDown,
+      shiftDown: actor.system.skills[initSkill].shiftDown + actor.system.essenceShifts.speed.shiftDown,
       skill: initSkill,
     };
     const skillDataset = {
