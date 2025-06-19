@@ -34,16 +34,17 @@ export class Dice {
    * @param {Actor} actor   The actor performing the roll.
    */
   async prepareInitiativeRoll(actor) {
+    const initSkill = actor.system.initiative.skill;
     const dataset = {
-      shift: actor.system.skills[actor.system.initiative.skill].shift,
-      shiftUp: actor.system.skills[actor.system.initiative.skill].shiftUp + actor.system.essenceShifts.speed.shiftUp,
-      shiftDown: actor.system.skills[actor.system.initiative.skill].shiftDown + actor.system.essenceShifts.speed.shiftDown,
-      skill: actor.system.initiative.skill,
+      shift: actor.system.skills[initSkill].shift,
+      shiftUp: actor.system.skills[initSkill].shiftUp + actor.system.essenceShifts.speed.shiftUp,
+      shiftDown: actor.system.skills[initSkilll].shiftDown + actor.system.essenceShifts.speed.shiftDown,
+      skill: initSkill,
     };
     const skillDataset = {
-      edge: actor.system.skills[actor.system.initiative.skill].edge,
-      shift: actor.system.skills[actor.system.initiative.skill].shift,
-      snag: actor.system.skills[actor.system.initiative.skill].snag,
+      edge: actor.system.skills[initSkill].edge,
+      shift: actor.system.skills[initSkill].shift,
+      snag: actor.system.skills[initSkill].snag,
     };
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(dataset, skillDataset, actor);
 
@@ -53,10 +54,10 @@ export class Dice {
 
 
     const finalShift = this._getFinalShift(
-      skillRollOptions, actor.system.skills[actor.system.initiative.skill].shift, E20.initiativeShiftList);
+      skillRollOptions, actor.system.skills[initSkill].shift, E20.initiativeShiftList);
     await actor.update({
       "system.initiative.formula": this._getFormula(
-        skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.skills[actor.system.initiative.skill].modifier),
+        skillRollOptions.isSpecialized, skillRollOptions, finalShift, actor.system.skills[initSkill].modifier),
     });
 
     return true;
