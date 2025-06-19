@@ -191,7 +191,8 @@ export const migrateActorData = async function(actor, compendiumActor) {
 
   // Migrate initiative
   if (actor.system.initiative.shift) {
-    updateData[`system.skills.initiative`] = actor.system.initiative;
+    updateData[`system.skills.initiative.modifier`] = actor.system.initiative.modifier;
+    updateData[`system.skills.initiative.shift`] = actor.system.initiative.shift;
   }
 
   // Migrate Skills
