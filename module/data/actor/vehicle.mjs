@@ -17,8 +17,4 @@ export class VehicleActorData extends foundry.abstract.TypeDataModel {
       threatLevel: makeInt(0),
     };
   }
-
-  prepareBaseData() {
-    this.skills.initiative.canBeInitiative = true;
-  }
 }

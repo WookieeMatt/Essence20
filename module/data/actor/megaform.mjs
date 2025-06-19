@@ -17,9 +17,5 @@ export class MegaformActorData extends foundry.abstract.TypeDataModel {
       zordIds: makeStrArray(),
     };
   }
-
-  prepareBaseData() {
-    this.skills.initiative.canBeInitiative = true;
-  }
 }
 

@@ -36,8 +36,4 @@ export class NpcActorData extends foundry.abstract.TypeDataModel {
     migrateCharacterData(source);
     return super.migrateData(source);
   }
-
-  prepareBaseData() {
-    this.skills.initiative.canBeInitiative = true;
-  }
 }
