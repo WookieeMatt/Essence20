@@ -1,4 +1,3 @@
-console.warn("settings.js");
 export const setting = (key) => {
   return game.settings?.get("essence20", key) ?? "default";
 };
