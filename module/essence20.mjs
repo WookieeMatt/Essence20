@@ -9,7 +9,7 @@ import { Essence20Item } from "./documents/item.mjs";
 import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
-import { StoryPoints } from "./apps/story-points.mjs";
+import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 // Import helper/utility classes and constants.
 import { highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
@@ -244,6 +244,56 @@ Hooks.once("ready", async function () {
     return oldDragMouseUp.call(this, event);
   };
 });
+
+Hooks.on("ready", async function () {
+  // Display the dialog if settings permit
+  if (
+    (setting("sptShow") == "on" ||
+      (setting("sptShow") == "toggle" && setting("sptToggleState"))) &&
+    (setting("sptAccess") == "everyone" ||
+      (setting("sptAccess") == "gm" && game.user.isGM))
+  ) {
+    game.StoryPointsTracker = await new StoryPoints().render(true);
+  }
+});
+
+// Init the button in the controls for toggling the dialog
+Hooks.on("getSceneControlButtons", (controls) => {
+  if (
+    setting("sptShow") == "toggle" &&
+    (setting("sptAccess") == "everyone" ||
+      (setting("sptAccess") == "gm" && game.user.isGM))
+  ) {
+    const tokenControls = controls.tokens;
+    const activeState = game.settings.get("essence20", "sptToggleState");
+    tokenControls.tools.sptTracker = {
+      active: activeState,
+      icon: "fas fa-circle-s",
+      name: "sptTracker",
+      title: game.i18n.format("E20.SptToggleDialog", {
+        name: getPointsName(false),
+      }),
+      toggle: true,
+      visible: true,
+      onChange: async (event, toggle) => {
+        try {
+          if (toggle) {
+            if (!game.StoryPointsTracker) {
+              StoryPoints.open();
+            }
+          } else {
+            if (game.StoryPointsTracker) {
+              game.StoryPointsTracker.close();
+            }
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      },
+    };
+  }
+});
+
 
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);

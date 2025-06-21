@@ -1,7 +1,7 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 import { getDefaultTheme, setting } from "../settings.js";
 
-function getPointsName(plural) {
+export function getPointsName(plural) {
   return `${
     CONFIG.E20.pointsNameOptions[setting("sptPointsName")]
   } ${game.i18n.localize(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
@@ -65,6 +65,9 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     );
   }
 
+  /**
+   * ApplicationV2 hook functions
+   */
   _prepareContext() {
     return {
       gmPoints: this._gmPoints,
@@ -101,7 +104,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   /**
    * Functions
    */
-
   setGmPoints(value) {
     if (game.user.isGM) {
       this._gmPoints = Math.max(0, value);
@@ -175,6 +177,20 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 
+  // Handles clicking Close button or toggling in toolbar
+  close() {
+    // Deactivate in toolbar
+    const toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
+    toggleDialogControl.active = false;
+    game.settings.set("essence20", "sptToggleState", false);
+    ui.controls.render();
+    game.StoryPointsTracker = null;
+    super.close();
+  }
+  
+  /**
+   * Actions, these should be static. If they need to access this
+   */
   static async open() {
     try {
       const toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
@@ -185,22 +201,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       console.error(err);
     }
   }
-
-  // Handles clicking Close button or toggling in toolbar
-  close() {
-    // Deactivate in toolbar
-    const toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
-    toggleDialogControl.active = false;
-    storePosition(this.position);
-    game.settings.set("essence20", "sptToggleState", false);
-    ui.controls.render();
-    game.StoryPointsTracker = null;
-    super.close();
-  }
-  
-  /**
-   * Actions, these should be static. If they need to access this
-   */
 
   static decrementGmPoints() {
     if (this._gmPoints > 0) {
@@ -247,50 +247,3 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 }
-
-Hooks.on("ready", async function () {
-  // Display the dialog if settings permit
-  if (
-    (setting("sptShow") == "on" ||
-      (setting("sptShow") == "toggle" && setting("sptToggleState"))) &&
-    (setting("sptAccess") == "everyone" ||
-      (setting("sptAccess") == "gm" && game.user.isGM))
-  ) {
-    game.StoryPointsTracker = await new StoryPoints().render(true);
-  }
-});
-
-// Init the button in the controls for toggling the dialog
-Hooks.on("getSceneControlButtons", (controls) => {
-  if (
-    setting("sptShow") == "toggle" &&
-    (setting("sptAccess") == "everyone" ||
-      (setting("sptAccess") == "gm" && game.user.isGM))
-  ) {
-    const tokenControls = controls.tokens;
-    const activeState = game.settings.get("essence20", "sptToggleState");
-    tokenControls.tools.sptTracker = {
-      active: activeState,
-      icon: "fas fa-circle-s",
-      name: "sptTracker",
-      title: game.i18n.format("E20.SptToggleDialog", {
-        name: getPointsName(false),
-      }),
-      toggle: true,
-      visible: true,
-      onChange: async (event, toggle) => {
-        try {
-          if (toggle) {
-            if (!game.StoryPointsTracker) {
-              StoryPoints.open();
-            }
-          } else {
-            game.StoryPointsTracker?.close();
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      },
-    };
-  }
-});
