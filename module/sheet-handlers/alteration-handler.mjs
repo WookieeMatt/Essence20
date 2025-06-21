@@ -146,14 +146,6 @@ export async function _showAlterationBonusSkillDialog(actor, alteration, alterat
     }
   }
 
-  if (alteration.system.essenceBonus == 'speed') {
-    const skill = "initiative";
-    choices[skill] = {
-      chosen: false,
-      label: CONFIG.E20.originSkills[skill],
-    };
-  }
-
   if (alteration.system.essenceBonus == 'strength') {
     const skill = "conditioning";
     choices[skill] = {
@@ -235,15 +227,7 @@ export async function _showAlterationCostSkillDialog(actor, alteration, bonusSki
     }
   }
 
-  if (costEssence == 'speed') {
-    const skill = "initiative";
-    if (CONFIG.E20.skillShiftList.indexOf(actor.system.initiative.shift) < 10) {
-      choices[skill] = {
-        chosen: false,
-        label: CONFIG.E20.originSkills[skill],
-      };
-    }
-  } else if (costEssence == 'strength') {
+  if (costEssence == 'strength') {
     const skill = "conditioning";
     if (actor.system.conditioning > 0) {
       choices[skill] = {

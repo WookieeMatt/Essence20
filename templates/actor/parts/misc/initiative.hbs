@@ -4,11 +4,8 @@
     <div class="item-image">
       <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
     </div>
-    <select name="system.initiative.shift">
-      {{selectOptions @root.config.initiativeShifts selected=system.initiative.shift}}
+    <select name="system.initiative.skill">
+      {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
     </select>
-    <span for="system.initiative.modifier">+</span>
-    <input class="one-digit-input" type="number" name="system.initiative.modifier"
-      value="{{system.initiative.modifier}}" min="0" step="1" />
   </div>
 </div>

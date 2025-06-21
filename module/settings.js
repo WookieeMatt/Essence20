@@ -124,3 +124,8 @@ export const registerSettings = function () {
     config: false,
   });
 };
+
+export const getDefaultTheme = () => {
+  const theme = game.settings.get("essence20", "sptDefaultTheme");
+  return `theme-${theme}`;
+};

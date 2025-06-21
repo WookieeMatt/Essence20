@@ -22,6 +22,7 @@ import {
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
+import { onManageSelectTrait } from "../helpers/traits.mjs";
 
 export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   constructor(...args) {
@@ -90,6 +91,9 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     // Prepare WeaponEffect Skill List
     this._prepareWeaponEffectSkills(actorData, context);
+
+    //Prepare Initiative Skills
+    context.initiativeSkills = this._prepareInitiativeSkills(actorData);
 
     // Prepare number of actions
     if (actorData.type == "playerCharacter") {
@@ -210,7 +214,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     ].filter(Boolean).join(' + ');
     context.system.skillRankAllocation['strength'].value += context.system.conditioning;
 
-    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.initiative.shift));
+    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.skills[context.system.initiative.skill].shift));
     const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
     context.system.skillRankAllocation['speed'].string = [
       context.system.skillRankAllocation['speed'].string,
@@ -246,6 +250,20 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     context.weaponEffectSkills = weaponEffectSkills;
+  }
+
+  _prepareInitiativeSkills(actorData) {
+    const initiativeSkills = {};
+    for (const skill of Object.keys(actorData.system.skills)) {
+      if (actorData.system.skills[skill].canBeInitiative) {
+        initiativeSkills[skill] = {
+          key: skill,
+          label: game.i18n.localize(CONFIG.E20.skills[skill]),
+        };
+      }
+    }
+
+    return initiativeSkills;
   }
 
   /**
@@ -510,6 +528,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     html.find('.num-crew').change(ev=> onCrewNumberUpdate(ev, this));
 
     html.find('.morph-toughness-edit').click(ev=> onEditMorphToughnessBonus(ev, this));
+
+    html.find(".trait-selector").click(ev => onManageSelectTrait(ev, this.actor));
 
     // Drag events for macros.
     if (this.actor.isOwner) {

@@ -4,6 +4,15 @@ import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-ma
 
 const fields = foundry.data.fields;
 
+function makeDamageSchema(damageTypes) {
+  const itemSchema = {};
+  for (const damageType of Object.keys(damageTypes)) {
+    itemSchema[damageType] = makeBool(false);
+  }
+
+  return new fields.SchemaField(itemSchema);
+}
+
 function makeEssenceShift() {
   return new fields.SchemaField({
     edge: makeBool(false),
@@ -24,8 +33,9 @@ function makeMovementFields() {
   });
 }
 
-function makeSkillFields(essence) {
+function makeSkillFields(essence, canBeInitiative=false) {
   return new fields.SchemaField({
+    canBeInitiative: makeBool(canBeInitiative),
     canCritD2: makeBool(false),
     essences: new fields.SchemaField({
       smarts: makeBool(['smarts', 'any'].includes(essence)),
@@ -78,15 +88,13 @@ export const common = () => ({
     origin: makeInt(0),
     value: makeInt(0),
   }),
+  immunities: makeDamageSchema(E20.damageTypes),
   initiative: new fields.SchemaField({
-    edge: makeBool(false),
     formula: makeStr('2d20kl + 0'),
-    isSpecialized: makeBool(false),
+    // TODO: Only keeping modifier and shift around for migration. Remove in v6.
     modifier: makeInt(0),
-    snag: makeBool(false),
-    shift: makeStrWithChoices(E20.initiativeShiftList, 'd20'),
-    shiftDown: makeInt(0),
-    shiftUp: makeInt(0),
+    shift: makeStrWithChoices(Object.keys(E20.skillShifts), 'd20'),
+    skill: makeStrWithChoices(Object.keys(E20.skills), 'initiative'),
   }),
   isLocked: makeBool(false),
   movement: new fields.SchemaField({
@@ -98,29 +106,31 @@ export const common = () => ({
   movementIsReadOnly: makeBool(false),
   movementNotSet: makeBool(false),
   notes: new fields.HTMLField(),
+  resistances: makeDamageSchema(E20.damageTypes),
   size: makeStrWithChoices(Object.keys(E20.actorSizes), 'common'),
   skills: new fields.SchemaField({
     roleSkillDie: makeSkillFields(),
-    acrobatics: makeSkillFields('speed'),
-    alertness: makeSkillFields('smarts'),
-    animalHandling: makeSkillFields('social'),
-    athletics: makeSkillFields('strength'),
-    brawn: makeSkillFields('strength'),
-    culture: makeSkillFields('smarts'),
-    deception: makeSkillFields('social'),
-    driving: makeSkillFields('speed'),
-    finesse: makeSkillFields('speed'),
-    infiltration: makeSkillFields('speed'),
-    intimidation: makeSkillFields('strength'),
-    might: makeSkillFields('strength'),
-    performance: makeSkillFields('social'),
-    persuasion: makeSkillFields('social'),
-    science: makeSkillFields('smarts'),
-    spellcasting: makeSkillFields('any'),
-    streetwise: makeSkillFields('social'),
-    survival: makeSkillFields('smarts'),
-    targeting: makeSkillFields('speed'),
-    technology: makeSkillFields('smarts'),
+    acrobatics: makeSkillFields('speed', false),
+    alertness: makeSkillFields('smarts', false),
+    animalHandling: makeSkillFields('social', false),
+    athletics: makeSkillFields('strength', false),
+    brawn: makeSkillFields('strength', false),
+    culture: makeSkillFields('smarts', false),
+    deception: makeSkillFields('social', false),
+    driving: makeSkillFields('speed', false),
+    finesse: makeSkillFields('speed', false),
+    infiltration: makeSkillFields('speed', false),
+    initiative: makeSkillFields('speed', true),
+    intimidation: makeSkillFields('strength', false),
+    might: makeSkillFields('strength', false),
+    performance: makeSkillFields('social', false),
+    persuasion: makeSkillFields('social', false),
+    science: makeSkillFields('smarts', false),
+    spellcasting: makeSkillFields('any', false),
+    streetwise: makeSkillFields('social', false),
+    survival: makeSkillFields('smarts', false),
+    targeting: makeSkillFields('speed', false),
+    technology: makeSkillFields('smarts', false),
     wealth: makeSkillFields(),
   }),
   stun: new fields.SchemaField({

@@ -81,6 +81,8 @@
     "ActorPronouns": "Pronouns",
     "ActorColor": "Color",
     "ActorFaction": "Faction",
+    "ActorImmunities": "Immunities",
+    "ActorResistances": "Resistances",
     "ActorRole": "Role",
     "ActorSelect": "Who is performing this roll?",
     "ActorSize": "Size",

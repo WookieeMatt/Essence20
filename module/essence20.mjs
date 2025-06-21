@@ -83,7 +83,6 @@ Hooks.once("init", async function () {
     rollItemMacro,
   };
 
-  CONFIG.ActiveEffect.legacyTransferral = true;
   // Add custom constants for configuration.
   CONFIG.E20 = E20;
 
