@@ -1,7 +1,7 @@
 @use "../variables" as v;
 
 // default vars, overridden when needed
-body {
+:root {
   --theme-border-filter: saturate(0);
   --theme-border-color: #{v.$border-color-dark};
   --theme-bg-color: #{v.$bg-color-light};
