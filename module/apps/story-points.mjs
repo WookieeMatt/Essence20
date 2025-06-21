@@ -100,6 +100,65 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
 
     storePosition(position);
   }
+  
+  /**
+   * Actions, these should be static. If they need to access this
+   */
+  static async open() {
+    try {
+      const toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
+      game.settings.set("essence20", "sptToggleState", true);
+      game.StoryPointsTracker = await new StoryPoints().render(true);
+      toggleDialogControl.active = true;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  static decrementGmPoints() {
+    if (this._gmPoints > 0) {
+      this.setGmPoints(this._gmPoints - 1);
+      this.sendMessage(game.i18n.localize("E20.SptSpendGmPoint"));
+    } else {
+      this.sendMessage(game.i18n.localize("E20.SptSpendGmPointDenied"));
+    }
+  }
+
+  static incrementGmPoints() {
+    this.setGmPoints(this._gmPoints + 1);
+    this.sendMessage(game.i18n.localize("E20.SptAddGmPoint"));
+  }
+
+  static decrementStoryPoints() {
+    if (this._storyPoints > 0) {
+      this.setStoryPoints(this._storyPoints - 1);
+      this.sendMessage(game.i18n.localize("E20.SptSpendStoryPoint"));
+    } else {
+      this.sendMessage(game.i18n.localize("E20.SptSpendStoryPointDenied"));
+    }
+  }
+
+  static incrementStoryPoints() {
+    this.setStoryPoints(this._storyPoints + 1);
+    this.sendMessage(game.i18n.localize("E20.SptAddStoryPoint"));
+  }
+
+  static async rollMajorSceneGmPoints() {
+    try {
+      const user = game.user;
+      if (user.isGM) {
+        const roll = new Roll("d2 + 1");
+        await roll.toMessage({
+          speaker: game.user.name,
+          flavor: game.i18n.localize("E20.SptRollFlavor"),
+          rollMode: game.settings.get("core", "rollMode"),
+        }); // does this need to be an await?
+        this.setGmPoints(this._gmPoints + roll.total);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   /**
    * Functions
@@ -186,64 +245,5 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     ui.controls.render();
     game.StoryPointsTracker = null;
     super.close();
-  }
-  
-  /**
-   * Actions, these should be static. If they need to access this
-   */
-  static async open() {
-    try {
-      const toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
-      game.settings.set("essence20", "sptToggleState", true);
-      game.StoryPointsTracker = await new StoryPoints().render(true);
-      toggleDialogControl.active = true;
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-  static decrementGmPoints() {
-    if (this._gmPoints > 0) {
-      this.setGmPoints(this._gmPoints - 1);
-      this.sendMessage(game.i18n.localize("E20.SptSpendGmPoint"));
-    } else {
-      this.sendMessage(game.i18n.localize("E20.SptSpendGmPointDenied"));
-    }
-  }
-
-  static incrementGmPoints() {
-    this.setGmPoints(this._gmPoints + 1);
-    this.sendMessage(game.i18n.localize("E20.SptAddGmPoint"));
-  }
-
-  static decrementStoryPoints() {
-    if (this._storyPoints > 0) {
-      this.setStoryPoints(this._storyPoints - 1);
-      this.sendMessage(game.i18n.localize("E20.SptSpendStoryPoint"));
-    } else {
-      this.sendMessage(game.i18n.localize("E20.SptSpendStoryPointDenied"));
-    }
-  }
-
-  static incrementStoryPoints() {
-    this.setStoryPoints(this._storyPoints + 1);
-    this.sendMessage(game.i18n.localize("E20.SptAddStoryPoint"));
-  }
-
-  static async rollMajorSceneGmPoints() {
-    try {
-      const user = game.user;
-      if (user.isGM) {
-        const roll = new Roll("d2 + 1");
-        await roll.toMessage({
-          speaker: game.user.name,
-          flavor: game.i18n.localize("E20.SptRollFlavor"),
-          rollMode: game.settings.get("core", "rollMode"),
-        }); // does this need to be an await?
-        this.setGmPoints(this._gmPoints + roll.total);
-      }
-    } catch (err) {
-      console.error(err);
-    }
   }
 }
