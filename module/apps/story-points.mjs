@@ -139,7 +139,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     if (value != this._storyPoints) {
       this.setStoryPoints(value);
       this.sendMessage(
-        `${game.i18n.localize("E20.SptSetStoryPoints")} ${value}!`
+        `${game.i18n.localize("E20.SptSetStoryPoints")} ${value}!`,
       );
     }
   }
