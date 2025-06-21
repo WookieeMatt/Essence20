@@ -308,14 +308,6 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
   dragRuler.registerSystem("essence20", Essence20SystemSpeedProvider);
 });
 
-// Persists dialog position when moved by the user
-Hooks.on("dragEndStoryPointsTracker", (app) => {
-  game.user.setFlag("essence20", "storyPointsTrackerPos", {
-    left: app.position.left,
-    top: app.position.top,
-  });
-});
-
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
 /* -------------------------------------------- */

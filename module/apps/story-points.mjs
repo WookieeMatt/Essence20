@@ -7,11 +7,23 @@ function getPointsName(plural) {
   } ${game.i18n.localize(plural ? "E20.SptPointPlural" : "E20.SptPoint")}`;
 }
 
+function getPosition() {
+  const pos = game.user?.getFlag("essence20", "storyPointsTrackerPos") ?? {top: 120, left: 120};
+  return pos;
+}
+  
+function storePosition(position) {
+  game.user.setFlag("essence20", "storyPointsTrackerPos", {
+    left: parseFloat(position.left),
+    top: parseFloat(position.top),
+  });
+}
+
 export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(gmPoints, storyPoints) {
-    super();
-    this._gmPoints = gmPoints ?? 0;
-    this._storyPoints = storyPoints ?? 0;
+  constructor() {
+    super({position: getPosition()});
+    this._gmPoints = game.settings.get("essence20", "sptGmPoints") ?? 0;
+    this._storyPoints = game.settings.get("essence20", "sptStoryPoints") ?? 0;
   }
 
   static DEFAULT_OPTIONS = {
@@ -26,7 +38,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       getDefaultTheme(),
     ],
     window: {
-      // icon: "fas fa-gear",
+      icon: "fas fa-circle-s",
       title: "E20.SptWindowTitle",
     },
     actions: {
@@ -65,17 +77,25 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
 
   // eslint-disable-next-line no-unused-vars
   _onRender(context, options) {
+    super._onRender(context, options);
+
     this.element
       .querySelector("#gm-points-input")
       .addEventListener("focusout", (e) =>
-        this.gmPointsInputHandler(e.target.value)
+        this.gmPointsInputHandler(e.target.value),
       );
 
     this.element
       .querySelector("#story-points-input")
       .addEventListener("focusout", (e) =>
-        this.storyPointsInputHandler(e.target.value)
+        this.storyPointsInputHandler(e.target.value),
       );
+  }
+
+  _onPosition(position) {
+    super._onPosition(position);
+
+    storePosition(position);
   }
 
   /**
@@ -132,8 +152,10 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   // Called when a client/player receives an update from the GM
   handleUpdate(data) {
     this._gmPoints = data.gmPoints;
-    this.element.querySelector("#gm-points-input").value = this._gmPoints;
     this._storyPoints = data.storyPoints;
+
+    // update display
+    this.element.querySelector("#gm-points-input").value = this._gmPoints;
     this.element.querySelector("#story-points-input").value = this._storyPoints;
   }
 
@@ -153,25 +175,29 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     }
   }
 
+  static async open() {
+    try {
+      const toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
+      game.settings.set("essence20", "sptToggleState", true);
+      game.StoryPointsTracker = await new StoryPoints().render(true);
+      toggleDialogControl.active = true;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   // Handles clicking Close button or toggling in toolbar
-  async close() {
+  close() {
     // Deactivate in toolbar
-    console.log(ui.controls.controls.tokens.tools.sptTracker);
     const toggleDialogControl = ui.controls.controls.tokens.tools.sptTracker;
     toggleDialogControl.active = false;
-    toggleDialogControl.onChange(false);
+    storePosition(this.position);
+    game.settings.set("essence20", "sptToggleState", false);
     ui.controls.render();
-
-    console.log(this);
-    this.closeSpt();
-  }
-
-  // Helper close method that's called after toggling off in the toolbar
-  closeSpt() {
-    super.close();
     game.StoryPointsTracker = null;
+    super.close();
   }
-
+  
   /**
    * Actions, these should be static. If they need to access this
    */
@@ -222,10 +248,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 }
 
-console.warn("set on ready");
 Hooks.on("ready", async function () {
-  console.warn("on ready");
-
   // Display the dialog if settings permit
   if (
     (setting("sptShow") == "on" ||
@@ -233,15 +256,12 @@ Hooks.on("ready", async function () {
     (setting("sptAccess") == "everyone" ||
       (setting("sptAccess") == "gm" && game.user.isGM))
   ) {
-    game.StoryPointsTracker = new StoryPoints().render(true);
-    console.log(game.StoryPointsTracker);
+    game.StoryPointsTracker = await new StoryPoints().render(true);
   }
 });
 
 // Init the button in the controls for toggling the dialog
-console.warn("set on getSceneControlButtons");
 Hooks.on("getSceneControlButtons", (controls) => {
-  console.warn("on getSceneControlButtons");
   if (
     setting("sptShow") == "toggle" &&
     (setting("sptAccess") == "everyone" ||
@@ -262,14 +282,10 @@ Hooks.on("getSceneControlButtons", (controls) => {
         try {
           if (toggle) {
             if (!game.StoryPointsTracker) {
-              game.settings.set("essence20", "sptToggleState", true);
-              game.StoryPointsTracker = await new StoryPoints().render(true);
-              tokenControls.tools.sptTracker.active = true;
+              StoryPoints.open();
             }
           } else {
-            game.settings.set("essence20", "sptToggleState", false);
-            game.StoryPointsTracker.closeSpt();
-            tokenControls.tools.sptTracker.active = false;
+            game.StoryPointsTracker?.close();
           }
         } catch (err) {
           console.error(err);
