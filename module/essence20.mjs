@@ -234,18 +234,6 @@ Hooks.once("ready", async function () {
     }
   });
 
-  // Create hook that helps with persisting dialog position
-  const oldDragMouseUp =
-    foundry.applications.ux.Draggable.prototype._onDragMouseUp;
-
-  foundry.applications.ux.Draggable.prototype._onDragMouseUp = (event) => {
-    Hooks.call(`dragEnd${this.app.constructor.name}`, this.app);
-    return oldDragMouseUp.call(this, event);
-  };
-});
-
-Hooks.on("ready", async function () {
-  // Display the dialog if settings permit
   if (
     (setting("sptShow") == "on" ||
       (setting("sptShow") == "toggle" && setting("sptToggleState"))) &&

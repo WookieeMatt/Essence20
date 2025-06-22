@@ -54,7 +54,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static PARTS = {
     form: {
-      template: "systems/essence20/templates/dialog/story-points.hbs",
+      template: "systems/essence20/templates/app/story-points.hbs",
     },
   };
 
