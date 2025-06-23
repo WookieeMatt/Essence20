@@ -395,10 +395,11 @@ async function rollItemMacro(itemId, itemName) {
   if (speaker.token) actor = game.actors.tokens[speaker.token];
   if (!actor) actor = game.actors.get(speaker.actor);
   const item = actor ? actor.items.get(itemId) : null;
-  if (!item)
+  if (!item) {
     return ui.notifications.warn(
       `Your controlled Actor does not have an item named ${itemName}`,
     );
+  }
 
   // Trigger the item roll
   return item.roll();
