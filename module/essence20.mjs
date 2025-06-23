@@ -358,10 +358,11 @@ Hooks.once("dragRuler.ready", (SpeedProvider) => {
  */
 async function createItemMacro(data, slot) {
   if (data.type !== "Item") return;
-  if (!("uuid" in data))
+  if (!("uuid" in data)) {
     return ui.notifications.warn(
       "You can only create macro buttons for owned Items",
     );
+  }
   const item = await fromUuid(data.uuid);
 
   // Create the macro command
