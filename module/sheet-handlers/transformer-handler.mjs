@@ -48,6 +48,20 @@ export async function onTransform(actor) {
 }
 
 /**
+ * Handles transforming into the given alt-mode, or bot-mode if none is provided
+ * @param {Actor} actor The Actor being transformed
+ * @param {String} altModeUuid The UUID of the alt-mode being transformed into
+ */
+export async function onTransformUuid(actor, altModeUuid=null) {
+  if (altModeUuid) {
+    const altMode = await fromUuid(altModeUuid);
+    _transformAltMode(actor, altMode);
+  } else {
+    _transformBotMode(actor);
+  }
+}
+
+/**
  * Handle Transforming back into the Bot Mode
  * @param {Actor} actor The Actor being transformed
  * @private
