@@ -23,7 +23,6 @@ export async function onAltModeDelete(actorSheet, altMode) {
  * @param {Actor} actor The Actor being transformed
  */
 export async function onTransform(actor) {
-  const actor = actorSheet.actor;
   const altModes = getItemsOfType("altMode", actor.items);
   const isTransformed = actor.system.isTransformed;
 
@@ -68,7 +67,6 @@ export async function onTransformUuid(actor, altModeUuid=null) {
  * @private
  */
 async function _transformBotMode(actor) {
-  const actor = actorSheet.actor;
   const width = CONFIG.E20.tokenSizes[actor.system.size].width;
   const height = CONFIG.E20.tokenSizes[actor.system.size].height;
   resizeTokens(actor, width, height);
@@ -93,7 +91,6 @@ async function _transformBotMode(actor) {
  * @private
  */
 async function _transformAltMode(actor, altMode) {
-  const actor = actorSheet.actor;
   const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
   const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
   resizeTokens(actor, width, height);
@@ -119,7 +116,6 @@ async function _transformAltMode(actor, altMode) {
  * @private
  */
 async function _showAltModeChoiceDialog(actor, altModes, isTransformed) {
-  const actor = actorSheet.actor;
   const choices = {};
   if (isTransformed) {
     choices["BotMode"] = {
