@@ -2,10 +2,9 @@ import { changeTokenImage } from "../helpers/actor.mjs";
 
 /**
  * Handle morphing an Actor
- * @param {ActorSheet} actorSheet The ActorSheet for the Actor being Morphed
+ * @param {Actor} actor The Actor being Morphed
  */
-export async function onMorph(actorSheet) {
-  const actor = actorSheet.actor;
+export async function onMorph(actor) {
   let newImage = null;
   if (actor.system.isMorphed) {
     newImage = actor.system.image.unmorphed;
@@ -20,5 +19,5 @@ export async function onMorph(actorSheet) {
 
   await actor.update({
     "system.isMorphed": !actor.system.isMorphed,
-  }).then(actorSheet.render(false));
+  });
 }

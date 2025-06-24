@@ -483,7 +483,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Morph Button
-    html.find('.morph').click(() => onMorph(this));
+    html.find('.morph').click(() => onMorph(this.actor));
 
     // Transform Button
     html.find('.transform').click(() => onTransform(this));

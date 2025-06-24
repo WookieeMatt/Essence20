@@ -3,6 +3,7 @@ import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { resizeTokens } from "../helpers/actor.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
+import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -363,5 +364,12 @@ export class Essence20Actor extends Actor {
         }
       }
     }
+  }
+
+  /**
+   * Helper for calling onMorph() for TAH
+   */
+  morph() {
+    onMorph(this);
   }
 }
