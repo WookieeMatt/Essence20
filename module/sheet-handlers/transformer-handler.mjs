@@ -20,10 +20,9 @@ export async function onAltModeDelete(actorSheet, altMode) {
 
 /**
  * Handles clicking the transform button
- * @param {ActorSheet} actorSheet The ActorSheet being transformed
+ * @param {Actor} actor The Actor being transformed
  */
-export async function onTransform(actorSheet) {
-  const actor = actorSheet.actor;
+export async function onTransform(actor) {
   const altModes = getItemsOfType("altMode", actor.items);
   const isTransformed = actor.system.isTransformed;
 
@@ -37,24 +36,23 @@ export async function onTransform(actorSheet) {
     ui.notifications.warn(game.i18n.localize('E20.AltModeNone'));
   } else if (altModes.length > 1) {              // Select from multiple alt-modes
     if (!isTransformed) {
-      _showAltModeChoiceDialog(actorSheet, altModes, false); // More than 1 altMode and not transformed
+      _showAltModeChoiceDialog(actor, altModes, false); // More than 1 altMode and not transformed
     } else {
-      _showAltModeChoiceDialog(actorSheet, altModes, true);  // More than 1 altMode and transformed
+      _showAltModeChoiceDialog(actor, altModes, true);  // More than 1 altMode and transformed
     }
   } else {                                       // Alt-mode/bot-mode toggle
     isTransformed
-      ? _transformBotMode(actorSheet)
-      : _transformAltMode(actorSheet, altModes[0]);
+      ? _transformBotMode(actor)
+      : _transformAltMode(actor, altModes[0]);
   }
 }
 
 /**
  * Handle Transforming back into the Bot Mode
- * @param {ActorSheet} actorSheet The ActorSheet being transformed
+ * @param {Actor} actor The Actor being transformed
  * @private
  */
-async function _transformBotMode(actorSheet) {
-  const actor = actorSheet.actor;
+async function _transformBotMode(actor) {
   const width = CONFIG.E20.tokenSizes[actor.system.size].width;
   const height = CONFIG.E20.tokenSizes[actor.system.size].height;
   resizeTokens(actor, width, height);
@@ -69,17 +67,16 @@ async function _transformBotMode(actorSheet) {
     "system.isTransformed": false,
     "system.altModeId": "",
     "system.altModesize": "",
-  }).then(actorSheet.render(false));
+  });
 }
 
 /**
  * Handles Transforming into an Alt Mode
- * @param {ActorSheet} actorSheet The ActorSheet being transformed
+ * @param {Actorheet} actor The Actor being transformed
  * @param {AltMode} altMode The alt-mode that was selected to transform into
  * @private
  */
-async function _transformAltMode(actorSheet, altMode) {
-  const actor = actorSheet.actor;
+async function _transformAltMode(actor, altMode) {
   const width = CONFIG.E20.tokenSizes[altMode.system.altModesize].width;
   const height = CONFIG.E20.tokenSizes[altMode.system.altModesize].height;
   resizeTokens(actor, width, height);
@@ -94,18 +91,17 @@ async function _transformAltMode(actorSheet, altMode) {
     "system.altModesize": altMode.system.altModesize,
     "system.altModeId": altMode._id,
     "system.isTransformed": true,
-  }).then(actorSheet.render(false));
+  });
 }
 
 /**
  * Creates the Alt Mode choice list dialog
- * @param {ActorSheet} actorSheet The ActorSheet being transformed
+ * @param {Actor} actor The Actor being transformed
  * @param {AltMode[]} altModes A list of the available Alt Modes
  * @param {Boolean} isTransformed Whether the Transformer is transformed or not
  * @private
  */
-async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
-  const actor = actorSheet.actor;
+async function _showAltModeChoiceDialog(actor, altModes, isTransformed) {
   const choices = {};
   if (isTransformed) {
     choices["BotMode"] = {
@@ -124,17 +120,17 @@ async function _showAltModeChoiceDialog(actorSheet, altModes, isTransformed) {
   }
 
   const title = "E20.AltModeChoice";
-  new TransformOptionSelector(choices, actorSheet, altModes, title).render(true);
+  new TransformOptionSelector(choices, actor, altModes, title).render(true);
 }
 
 /**
  * Handles selecting an Alt Mode from the Alt Mode dialog
- * @param {ActorSheet} actorSheet The ActorSheet being transformed
+ * @param {Actor} actor The Actor being transformed
  * @param {AltMode[]} altModes A list of the available Alt Modes
  * @param {Object} options The options resulting from _showAltModeDialog()
  * @private
  */
-export async function _altModeSelect(actorSheet, altModes, selectedForm) {
+export async function _altModeSelect(actor, altModes, selectedForm) {
   let transformation = null;
 
   if (!selectedForm) {
@@ -142,7 +138,7 @@ export async function _altModeSelect(actorSheet, altModes, selectedForm) {
   }
 
   if (selectedForm == "BotMode") {
-    _transformBotMode(actorSheet);
+    _transformBotMode(actor);
   } else {
     for (const mode of altModes) {
       if (selectedForm == mode._id) {
@@ -152,7 +148,7 @@ export async function _altModeSelect(actorSheet, altModes, selectedForm) {
     }
 
     if (transformation) {
-      _transformAltMode(actorSheet, transformation);
+      _transformAltMode(actor, transformation);
     }
   }
 }

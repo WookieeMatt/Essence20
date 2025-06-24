@@ -4,6 +4,7 @@ import { resizeTokens } from "../helpers/actor.mjs";
 import { getItemsOfType } from "../helpers/utils.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -371,5 +372,12 @@ export class Essence20Actor extends Actor {
    */
   morph() {
     onMorph(this);
+  }
+
+  /**
+   * Helper for calling onTransform() for TAH
+   */
+  transform() {
+    onTransform(this);
   }
 }
