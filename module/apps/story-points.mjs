@@ -132,7 +132,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   static decrementStoryPoints() {
     if (this._storyPoints > 0) {
       this.setStoryPoints(this._storyPoints - 1);
-      this.sendMessage(game.i18n.localize("E20.SptSpendStoryPoint"));
+      this.sendMessage(game.i18n.format("E20.SptSpendStoryPoint", getPointsName(false)));
     } else {
       this.sendMessage(game.i18n.localize("E20.SptSpendStoryPointDenied"));
     }
