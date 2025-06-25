@@ -281,7 +281,6 @@ Hooks.on("getSceneControlButtons", (controls) => {
   }
 });
 
-
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
 });
