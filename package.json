@@ -9,8 +9,8 @@
     "build:json": "gulp extract",
     "lint": "npx eslint module/ --ext .js,.mjs",
     "lint-fix": "npx eslint module/ --ext .js,.mjs --fix",
-    "sass": "npx sass -s compressed ./sass/*.scss ./css/*.css",
-    "sass:watch": "npx sass -s compressed --watch ./sass/*.scss ./css/*.css",
+    "sass": "npx sass -s compressed ./sass/essence20.scss ./css/essence20.css",
+    "sass:watch": "npx sass -s compressed --watch ./sass/essence20.scss ./css/essence20.css",
     "test": "node --experimental-vm-modules ./node_modules/.bin/jest"
   },
   "browserslist": [

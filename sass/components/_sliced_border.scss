@@ -8,25 +8,26 @@
   Reference:
   https://codepen.io/glorenz90/pen/wBBVqxG
 */
-$sb-padding: 9px;
 
 .sliced-border {
   width: fit-content;
   height: fit-content;
   display: flex;
+  position: relative;
   padding: 4px 2px;
+  background: var(--theme-bg-color);
 
   &:has(> .sliced-border__label) {
-    padding-top: $sb-padding + 3px;
+    padding-top: v.$gap-sliced-border + 3px;
   }
 
   &:has(> .sliced-border__label.sliced-border) {
-    padding-top: $sb-padding + 16px;
+    padding-top: v.$gap-sliced-border + 16px;
   }
 
   &::before {
     pointer-events: none;
-    filter: var(--root-border-filter);
+    filter: var(--theme-border-filter);
     position: absolute;
     z-index: 0;
     content: "";
@@ -35,6 +36,7 @@ $sb-padding: 9px;
     top: 0;
     left: 0;
     border-style: solid;
+    border-image: var(--theme-border-image);
     border-image-slice: 16;
     border-width: 16px;
   }
@@ -82,7 +84,7 @@ $sb-padding: 9px;
     justify-content: center;
     align-items: center;
     color: var(--theme-border-color);
-    width: fit-content;
+    width: max-content;
     position: absolute;
     top: 0;
     left: 50%;
