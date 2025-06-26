@@ -39,7 +39,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     ],
     window: {
       icon: "fas fa-circle-s",
-      title: "E20.SptWindowTitle",
+      title: "E20.SptWindowTitle", // TODO: figure out how to use i18n here
     },
     actions: {
       decrementGmPoints: StoryPoints.decrementGmPoints,
@@ -57,13 +57,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       template: "systems/essence20/templates/app/story-points.hbs",
     },
   };
-
-  get title() {
-    return (
-      game.i18n.localize(this._title, { name: getPointsName(false) }) ||
-      game.i18n.localize(super.title, { name: getPointsName(false) })
-    );
-  }
 
   /**
    * ApplicationV2 hook functions
@@ -132,15 +125,15 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   static decrementStoryPoints() {
     if (this._storyPoints > 0) {
       this.setStoryPoints(this._storyPoints - 1);
-      this.sendMessage(game.i18n.format("E20.SptSpendStoryPoint", getPointsName(false)));
+      this.sendMessage(game.i18n.format("E20.SptSpendStoryPoint", {name: getPointsName(false)}));
     } else {
-      this.sendMessage(game.i18n.localize("E20.SptSpendStoryPointDenied"));
+      this.sendMessage(game.i18n.format("E20.SptSpendStoryPointDenied", {name: getPointsName(true)}));
     }
   }
 
   static incrementStoryPoints() {
     this.setStoryPoints(this._storyPoints + 1);
-    this.sendMessage(game.i18n.localize("E20.SptAddStoryPoint"));
+    this.sendMessage(game.i18n.format("E20.SptAddStoryPoint", {name: getPointsName(false)}));
   }
 
   static async rollMajorSceneGmPoints() {
@@ -198,7 +191,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     if (value != this._storyPoints) {
       this.setStoryPoints(value);
       this.sendMessage(
-        `${game.i18n.localize("E20.SptSetStoryPoints")} ${value}!`,
+        `${game.i18n.format("E20.SptSetStoryPoints", {name: getPointsName(true)})} ${value}!`,
       );
     }
   }

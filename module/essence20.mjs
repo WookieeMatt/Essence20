@@ -362,6 +362,7 @@ async function createItemMacro(data, slot) {
       "You can only create macro buttons for owned Items",
     );
   }
+
   const item = await fromUuid(data.uuid);
 
   // Create the macro command

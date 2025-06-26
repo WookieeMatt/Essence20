@@ -2,14 +2,14 @@
 
 .story-points {
   height: auto;
-  width: min-content !important;
+  width: min-content;
   box-shadow: 0 0 20px #000000;
   position: fixed;
   flex-direction: column;
   display: flex;
 
   .loading {
-    display: none !important;
+    display: none;
   }
 
   .window-content {
@@ -63,8 +63,8 @@
   .story-points__btn {
     width: min-content;
     min-width: 30px;
-    min-height: 18px !important;
-    height: 18px !important;
+    min-height: 18px;
+    height: 18px;
     border-radius: 3px;
     display: flex;
     align-items: center;

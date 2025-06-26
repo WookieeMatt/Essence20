@@ -679,7 +679,7 @@
     "SptAddStoryPoint": "A {name} has been added!",
     "SptSetStoryPoints": "{name} have been set to ",
     "SptSpendStoryPoint": "A {name} has been spent!",
-    "SptSpendStoryPointDenied": "No {name} Points to spend!",
+    "SptSpendStoryPointDenied": "No {name} to spend!",
     "SptTitle": "{name} Tracker",
     "SptToggleDialog": "Toggle {name} Tracker Dialog",
     "SptUserEveryone": "Everyone",
