@@ -15,7 +15,7 @@
           <button data-action="incrementGmPoints" class="story-points__btn --increment">
             <i class="fas fa-angle-double-up"></i>
           </button>
-          <button data-action="decrementGmPoints" class="story-points__btn --decrement">
+          <button data-action="decrementGmPoints" disabled="{{gmPoints <= 0}}" class="story-points__btn --decrement">
             <i class="fas fa-angle-double-down"></i>
           </button>
         </div>
@@ -37,14 +37,16 @@
           <button data-action="incrementStoryPoints" class="story-points__btn --increment">
             <i class="fas fa-angle-double-up"></i>
           </button>
-          <button data-action="decrementStoryPoints" class="story-points__btn --decrement">
+          <button data-action="decrementStoryPoints" disabled="{{storyPoints <= 0}}" class="story-points__btn --decrement">
             <i class="fas fa-angle-double-down"></i>
           </button>
         </div>
       {{/if}}
     </div>
   </div>
-  <button data-action="rollMajorSceneGmPoints" class="story-points__btn --bottom">
-    <span>{{localize "E20.SptRollButton"}}</span>
-  </button>
+  {{#if isGm}}
+    <button data-action="rollMajorSceneGmPoints" class="story-points__btn --bottom">
+      <span>{{localize "E20.SptRollButton"}}</span>
+    </button>
+  {{/if}}
 </div>
