@@ -117,8 +117,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     if (this._gmPoints > 0) {
       this.setGmPoints(this._gmPoints - 1);
       this.sendMessage(game.i18n.localize("E20.SptSpendGmPoint"));
-    } else {
-      this.sendMessage(game.i18n.localize("E20.SptSpendGmPointDenied"));
     }
   }
 
@@ -131,8 +129,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     if (this._storyPoints > 0) {
       this.setStoryPoints(this._storyPoints - 1);
       this.sendMessage(game.i18n.format("E20.SptSpendStoryPoint", {name: getPointsName(false)}));
-    } else {
-      this.sendMessage(game.i18n.format("E20.SptSpendStoryPointDenied", {name: getPointsName(true)}));
     }
   }
 
