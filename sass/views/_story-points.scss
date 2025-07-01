@@ -29,6 +29,9 @@
     & > .sliced-border {
       padding: 12px;
       padding-top: 16px;
+      justify-content: center;
+      flex-grow: 1;
+      gap: v.$gap-sliced-border;
     }
   }
 
@@ -41,7 +44,6 @@
     background-color: var(--theme-input-color);
     color: var(--theme-text-color);
     border: 1px solid var(--theme-border-color);
-    margin-right: v.$gap-sliced-border;
 
     // remove arrows
     appearance: textfield;
@@ -75,7 +77,7 @@
     border: 1px solid var(--theme-border-color);
 
     &:hover {
-      background: lighten(#242424, 5%); // TODO: needs to use variable
+      background: lighten(#242424, 10%); // TODO: needs to use variable
     }
 
     &.--bottom {

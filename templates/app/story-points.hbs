@@ -15,7 +15,7 @@
           <button data-action="incrementGmPoints" class="story-points__btn --increment">
             <i class="fas fa-angle-double-up"></i>
           </button>
-          <button data-action="decrementGmPoints" disabled="{{gmPoints <= 0}}" class="story-points__btn --decrement">
+          <button id="btn-gm-dec" data-action="decrementGmPoints" class="story-points__btn --decrement">
             <i class="fas fa-angle-double-down"></i>
           </button>
         </div>
@@ -37,7 +37,7 @@
           <button data-action="incrementStoryPoints" class="story-points__btn --increment">
             <i class="fas fa-angle-double-up"></i>
           </button>
-          <button data-action="decrementStoryPoints" disabled="{{storyPoints <= 0}}" class="story-points__btn --decrement">
+          <button id="btn-story-dec" data-action="decrementStoryPoints" class="story-points__btn --decrement">
             <i class="fas fa-angle-double-down"></i>
           </button>
         </div>

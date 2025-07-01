@@ -24,6 +24,9 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     super({position: getPosition()});
     this._gmPoints = game.settings.get("essence20", "sptGmPoints") ?? 0;
     this._storyPoints = game.settings.get("essence20", "sptStoryPoints") ?? 0;
+    // Only used on first render
+    this._gmPointsDisabled = this._gmPoints <= 0;
+    this._storyPointsDisabled = this._storyPoints <= 0;
   }
 
   static DEFAULT_OPTIONS = {
@@ -65,6 +68,8 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     return {
       gmPoints: this._gmPoints,
       storyPoints: this._storyPoints,
+      gmPointsDisabled: this._gmPointsDisabled,
+      PointsDisabled: this._storyPointsDisabled,
       isGm: game.user.isGM,
       gmPointsArePublic: game.user.isGM || setting("sptGmPointsArePublic"),
       pointsName: getPointsName(true),
@@ -156,6 +161,20 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   /**
    * Functions
    */
+  disableButtonsCheck() {
+    if(this._gmPoints <= 0){
+      this.element.querySelector("#btn-gm-dec").disabled = true;
+    } else {
+      this.element.querySelector("#btn-gm-dec").disabled = false;
+    }
+
+    if(this._storyPoints <= 0){
+      this.element.querySelector("#btn-story-dec").disabled = true;
+    } else {
+      this.element.querySelector("#btn-story-dec").disabled = false;
+    }
+  }
+
   setGmPoints(value) {
     if (game.user.isGM) {
       this._gmPoints = Math.max(0, value);
@@ -165,6 +184,8 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     } else {
       this.element.querySelector("#gm-points-input").value = this._gmPoints;
     }
+    
+    this.disableButtonsCheck();
   }
 
   setStoryPoints(value) {
@@ -178,6 +199,8 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       this.element.querySelector("#story-points-input").value =
         this._storyPoints;
     }
+    
+    this.disableButtonsCheck();
   }
 
   gmPointsInputHandler(value) {
@@ -207,6 +230,8 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   handleUpdate(data) {
     this._gmPoints = data.gmPoints;
     this._storyPoints = data.storyPoints;
+    
+    this.disableButtonsCheck();
 
     // update display
     this.element.querySelector("#gm-points-input").value = this._gmPoints;
