@@ -7,6 +7,7 @@ import { onPowerDrop } from "./power-handler.mjs";
 import { setPerkValues } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
+import { setMegaformValues } from "./megafrom-handler.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 
 /**
@@ -162,28 +163,30 @@ export async function onDropActor(data, actorSheet) {
   switch (targetActor.type) {
   case 'playerCharacter':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'npc') {
-      setEntryAndAddActor(droppedActor, targetActor);
+      await setEntryAndAddActor(droppedActor, targetActor);
       dropIsValid = true;
     }
 
     break;
   case 'megaform':
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
-      setEntryAndAddActor (droppedActor, targetActor);
+      await setEntryAndAddActor (droppedActor, targetActor);
+      setMegaformValues(droppedActor, targetActor);
       dropIsValid = true;
     }
 
     break;
   case 'vehicle':
     if (droppedActor.type == "playerCharacter") {
-      _selectVehicleLocation(droppedActor, targetActor);
+      await _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     }
 
     break;
   case 'zord':
     if (droppedActor.type == "playerCharacter") {
-      _selectVehicleLocation(droppedActor, targetActor);
+      await _selectVehicleLocation(droppedActor, targetActor);
+      setMegaformValues();
       dropIsValid = true;
     }
 
