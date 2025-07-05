@@ -144,7 +144,7 @@ async function _showAltModeChoiceDialog(actor, altModes, isTransformed) {
  * @param {Object} options The options resulting from _showAltModeDialog()
  * @private
  */
-export async function _altModeSelect(actorSheet, altModes, selectedForm) {
+export async function _altModeSelect(actor, altModes, selectedForm) {
   let transformation = null;
 
   if (!selectedForm) {
