@@ -4,10 +4,10 @@ import { getFormData } from "../helpers/application.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class TransformOptionSelector extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(choices, actorSheet, altModes, title){
+  constructor(choices, actor, altModes, title){
     super();
     this._choices = choices;
-    this._actorSheet = actorSheet;
+    this._actor = actor;
     this._altModes = altModes;
     this._title = title;
   }
@@ -54,6 +54,6 @@ export default class TransformOptionSelector extends HandlebarsApplicationMixin(
   static async myFormHandler(event, form, formData) {
     const selectedForm = getFormData(formData.object);
 
-    _altModeSelect(this._actorSheet, this._altModes, selectedForm);
+    _altModeSelect(this._actor, this._altModes, selectedForm);
   }
 }
