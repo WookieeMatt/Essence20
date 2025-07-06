@@ -171,7 +171,7 @@ export async function onDropActor(data, actorSheet) {
   case 'megaform':
     if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
       await setEntryAndAddActor (droppedActor, targetActor);
-      setMegaformValues(droppedActor, targetActor);
+      setMegaformValues(targetActor);
       dropIsValid = true;
     }
 
@@ -186,7 +186,7 @@ export async function onDropActor(data, actorSheet) {
   case 'zord':
     if (droppedActor.type == "playerCharacter") {
       await _selectVehicleLocation(droppedActor, targetActor);
-      setMegaformValues();
+      // setMegaformValues(targetActor);
       dropIsValid = true;
     }
 
