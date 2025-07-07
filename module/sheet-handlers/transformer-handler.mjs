@@ -54,6 +54,10 @@ export async function onTransform(actor) {
  */
 export async function onTransformUuid(actor, altModeUuid=null) {
   if (altModeUuid) {
+    await actor.update ({
+      "system.image.botmode": actor.prototypeToken.texture.src,
+    });
+    
     const altMode = await fromUuid(altModeUuid);
     _transformAltMode(actor, altMode);
   } else {
