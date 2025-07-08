@@ -8,7 +8,7 @@
           class="story-points__input"
           type="number"
           value="{{gmPoints}}"
-          {{#unless isGm}}disabled{{/unless}}
+          {{#unless gmPoints}}disabled{{/unless}}
         />
       {{#if isGm}}
         <div class="story-points__btn-wrapper">
@@ -30,7 +30,7 @@
         class="story-points__input"
         type="number"
         value="{{storyPoints}}"
-        {{#unless isGm}}disabled{{/unless}}
+        {{#unless storyPoints}}disabled{{/unless}}
       />
       {{#if isGm}}
         <div class="story-points__btn-wrapper">

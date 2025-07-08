@@ -174,29 +174,19 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   setGmPoints(value) {
     if (game.user.isGM) {
       this._gmPoints = Math.max(0, value);
-      this.element.querySelector("#gm-points-input").value = this._gmPoints;
       game.settings.set("essence20", "sptGmPoints", this._gmPoints);
       this.updateClients();
-    } else {
-      this.element.querySelector("#gm-points-input").value = this._gmPoints;
+      this.render(false);
     }
-    
-    this.disableButtonsCheck();
   }
 
   setStoryPoints(value) {
     if (game.user.isGM) {
       this._storyPoints = Math.max(0, value);
-      this.element.querySelector("#story-points-input").value =
-        this._storyPoints;
       game.settings.set("essence20", "sptStoryPoints", this._storyPoints);
       this.updateClients();
-    } else {
-      this.element.querySelector("#story-points-input").value =
-        this._storyPoints;
+      this.render(false);
     }
-    
-    this.disableButtonsCheck();
   }
 
   gmPointsInputHandler(value) {
@@ -223,15 +213,11 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   // Called when a client/player receives an update from the GM
-  handleUpdate(data) {
+  handleStoryPointSignal(data) {
     this._gmPoints = data.gmPoints;
     this._storyPoints = data.storyPoints;
-    
-    this.disableButtonsCheck();
 
-    // update display
-    this.element.querySelector("#gm-points-input").value = this._gmPoints;
-    this.element.querySelector("#story-points-input").value = this._storyPoints;
+    this.render(false);
   }
 
   // Outputs given message to chat

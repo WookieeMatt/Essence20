@@ -132,7 +132,7 @@ Hooks.once("init", async function () {
 
   // Clients (players) listen on the socket to update the UI whenever the GM changes values
   game.socket.on("system.essence20", (data) => {
-    game.StoryPointsTracker.handleUpdate(data);
+    game.StoryPointsTracker.handleStoryPointSignal(data);
   });
 
   // Preload Handlebars templates.
