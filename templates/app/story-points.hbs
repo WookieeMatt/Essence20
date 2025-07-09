@@ -8,14 +8,14 @@
           class="story-points__input"
           type="number"
           value="{{gmPoints}}"
-          {{#unless gmPoints}}disabled{{/unless}}
+          {{#unless isGm}}disabled{{/unless}}
         />
       {{#if isGm}}
         <div class="story-points__btn-wrapper">
           <button data-action="incrementGmPoints" class="story-points__btn --increment">
             <i class="fas fa-angle-double-up"></i>
           </button>
-          <button id="btn-gm-dec" data-action="decrementGmPoints" class="story-points__btn --decrement">
+          <button id="btn-gm-dec" data-action="decrementGmPoints" {{#unless gmPoints}}disabled{{/unless}} class="story-points__btn --decrement">
             <i class="fas fa-angle-double-down"></i>
           </button>
         </div>
@@ -30,14 +30,14 @@
         class="story-points__input"
         type="number"
         value="{{storyPoints}}"
-        {{#unless storyPoints}}disabled{{/unless}}
+        {{#unless isGm}}disabled{{/unless}}
       />
       {{#if isGm}}
         <div class="story-points__btn-wrapper">
           <button data-action="incrementStoryPoints" class="story-points__btn --increment">
             <i class="fas fa-angle-double-up"></i>
           </button>
-          <button id="btn-story-dec" data-action="decrementStoryPoints" class="story-points__btn --decrement">
+          <button id="btn-story-dec" data-action="decrementStoryPoints" {{#unless storyPoints}}disabled{{/unless}} class="story-points__btn --decrement">
             <i class="fas fa-angle-double-down"></i>
           </button>
         </div>
