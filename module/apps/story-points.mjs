@@ -24,9 +24,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     super({position: getPosition()});
     this._gmPoints = game.settings.get("essence20", "sptGmPoints") ?? 0;
     this._storyPoints = game.settings.get("essence20", "sptStoryPoints") ?? 0;
-    // Only used on first render
-    this._gmPointsDisabled = this._gmPoints <= 0;
-    this._storyPointsDisabled = this._storyPoints <= 0;
   }
 
   static DEFAULT_OPTIONS = {
