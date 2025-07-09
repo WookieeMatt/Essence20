@@ -65,8 +65,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     return {
       gmPoints: this._gmPoints,
       storyPoints: this._storyPoints,
-      gmPointsDisabled: this._gmPointsDisabled,
-      PointsDisabled: this._storyPointsDisabled,
       isGm: game.user.isGM,
       gmPointsArePublic: game.user.isGM || setting("sptGmPointsArePublic"),
       pointsName: getPointsName(true),
