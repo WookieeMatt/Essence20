@@ -152,19 +152,6 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   /**
    * Functions
    */
-  disableButtonsCheck() {
-    if(this._gmPoints <= 0){
-      this.element.querySelector("#btn-gm-dec").disabled = true;
-    } else {
-      this.element.querySelector("#btn-gm-dec").disabled = false;
-    }
-
-    if(this._storyPoints <= 0){
-      this.element.querySelector("#btn-story-dec").disabled = true;
-    } else {
-      this.element.querySelector("#btn-story-dec").disabled = false;
-    }
-  }
 
   setGmPoints(value) {
     if (game.user.isGM) {
