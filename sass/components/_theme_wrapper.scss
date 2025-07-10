@@ -1,11 +1,12 @@
 @use "../variables" as v;
 
 // default vars, overridden when needed
-body {
-  --theme-border-color: var(--root-border-color);
-  --theme-bg-color: v.$bg-color-light;
-  --theme-text-color: v.$text-color-dark;
-  --theme-input-color: v.$input-color-light;
+:root {
+  --theme-border-filter: saturate(0);
+  --theme-border-color: #{v.$border-color-dark};
+  --theme-bg-color: #{v.$bg-color-light};
+  --theme-text-color: #{v.$text-color-dark};
+  --theme-input-color: #{v.$input-color-light};
 
   --theme-border-image: url(../assets/borders/default-border.svg);
   --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
@@ -15,16 +16,42 @@ body {
 }
 
 .theme-wrapper {
+  overflow: visible;
+  border: none; // TODO: Remove after refactor of styles, this is just to remove the old border;
+  
+  &.window-app {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .window-content,
+  .window-header {
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+  }
+
+  .window-app,
+  .window-content,
+  .window-header {
+    background: none;
+    border: none;
+    border-radius: 0;
+  }
+
   &.theme-light {
-    --theme-bg-color: v.$bg-color-light;
-    --theme-text-color: v.$text-color-dark;
-    --theme-input-color: v.$input-color-light;
+    --theme-border-filter: saturate(0);
+    --theme-border-color: #{v.$border-color-dark};
+    --theme-bg-color: #{v.$bg-color-light};
+    --theme-text-color: #{v.$text-color-dark};
+    --theme-input-color: #{v.$input-color-light};
   }
 
   &.theme-dark {
-    --theme-bg-color: v.$bg-color-dark;
-    --theme-text-color: v.$text-color-light;
-    --theme-input-color: v.$input-color-dark;
+    --theme-border-filter: saturate(0) brightness(175%);
+    --theme-border-color: #{v.$border-color-light};
+    --theme-bg-color: #{v.$bg-color-dark};
+    --theme-text-color: #{v.$text-color-light};
+    --theme-input-color: #{v.$input-color-dark};
   }
 
   &.theme-default {
@@ -33,8 +60,8 @@ body {
     --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
     --theme-tab-image: url(../assets/borders/default-tab.svg);
     --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
-    &.window-app {
-      border-radius: 22px 0 22px 0;
+    &.essence20 {
+      border-radius: 25px 0;
     }
   }
 
@@ -44,8 +71,12 @@ body {
     --theme-filled-border-image: url(../assets/borders/pony-tab-filled.svg);
     --theme-tab-image: url(../assets/borders/pony-tab.svg);
     --theme-filled-tab-image: url(../assets/borders/pony-tab-filled.svg);
-    &.window-app {
+    &.essence20 {
       border-radius: 15px;
     }
+  }
+  
+  header * {
+    color: var(--theme-text-color) !important;
   }
 }
