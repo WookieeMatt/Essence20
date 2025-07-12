@@ -516,6 +516,7 @@ body.game .window-app {
   margin-right: 10px;
   border: 4px solid #b5b1b1;
   border-radius: 15px;
+  object-fit: contain;
 }
 
 .essence20 .sheet-header h1.charname {
