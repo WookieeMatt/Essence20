@@ -243,11 +243,13 @@ export class Dice {
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
     const damageType = this._localize(E20.damageTypes[weaponEffect.system.damageType]);
+    const descStr = this._localize('E20.ItemDescription');
     const noneStr = "";
 
     let label = `<b>${attackRollStr}</b> - ${weaponEffect.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${effectStr}</b> - ${weaponEffect.system.damageValue || noneStr} ${damageType}<br>`;
+    label += `<b>${descStr}</b>:${weaponEffect.system.description || noneStr}<br>`;
 
     return label;
   }
