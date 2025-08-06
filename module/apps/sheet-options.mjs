@@ -12,8 +12,10 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
     allowCustom: false,
     id: "sheet-options",
     classes: [
-      "window-app",
-      "sheet-options",
+      "essence20",
+      "e20-window theme-dark", // TODO: get light/dark from settings/browser
+      "theme-default", // TODO: get border theme from settings
+      "sliced-border --thick",
     ],
     tag: "form",
     title: "E20.SheetOptions",

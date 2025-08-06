@@ -18,7 +18,9 @@ export default class PowerCostSelector extends HandlebarsApplicationMixin(Applic
       "essence20",
       "trait-selector",
       "subconfig",
-      "window-app",
+      "e20-window theme-dark", // TODO: get light/dark from settings/browser
+      "theme-default", // TODO: get border theme from settings
+      "sliced-border --thick",
     ],
     tag: "form",
     title: "E20.SelectDefaultTitle",

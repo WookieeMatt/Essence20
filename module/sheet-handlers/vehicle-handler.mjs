@@ -99,7 +99,10 @@ export async function onVehicleRoleUpdate(event, actorSheet) {
     const dialogResult = await foundry.applications.api.DialogV2.wait({
       window: { title: game.i18n.localize("E20.VehicleDialogSwapTitle")},
       classes: [
-        "window-app",
+        "essence20",
+        "e20-window theme-dark", // TODO: get light/dark from settings/browser
+        "theme-default", // TODO: get border theme from settings
+        "sliced-border --thick",
       ],
       content: game.i18n.localize('E20.VehicleDialogSwap'),
       modal: true,

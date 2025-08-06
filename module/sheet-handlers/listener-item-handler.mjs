@@ -183,7 +183,10 @@ export async function _getItemDeleteConfirmDialog(item) {
   const confirmation = await foundry.applications.api.DialogV2.wait({
     window: { title: game.i18n.localize("E20.ItemDeleteConfirmTitle")},
     classes: [
-      "window-app",
+      "essence20",
+      "e20-window theme-dark", // TODO: get light/dark from settings/browser
+      "theme-default", // TODO: get border theme from settings
+      "sliced-border --thick",
     ],
     content: `<p>${game.i18n.format("E20.ItemDeleteConfirmContent", {name: item.name})}</p>`,
     modal: true,
