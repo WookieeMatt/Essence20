@@ -201,6 +201,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     img: droppedItem.img,
     name: droppedItem.name,
     type: droppedItem.type,
+    description: droppedItem.description,
   };
 
   switch (targetItem.type) {
