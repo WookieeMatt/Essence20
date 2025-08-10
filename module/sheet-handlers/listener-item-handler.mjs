@@ -108,7 +108,7 @@ export async function onItemEdit(event, actor) {
   } else {
     console.error(
       game.i18n.localize("E20.ItemEditErrorNotFound"),
-    )
+    );
   }
 }
 
