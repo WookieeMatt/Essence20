@@ -196,7 +196,7 @@ async function _attachItem(targetItem, dropFunc) {
 * @return {Promise<String>} The key generated for the dropped item
 */
 export async function setEntryAndAddItem(droppedItem, targetItem) {
-  const entry = createEntry(droppedItem, targetItem)
+  const entry = createEntry(droppedItem, targetItem);
   if (entry) {
     return _addItemIfUnique(droppedItem, targetItem, entry);
   }

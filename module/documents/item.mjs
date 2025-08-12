@@ -28,16 +28,16 @@ export class Essence20Item extends Item {
 
   /** @override */
   _onUpdate(change, options, userId) {
-    super._onUpdate(change, options, userId)
+    super._onUpdate(change, options, userId);
 
     // Update the entry on the parent if this is a child Item
     if (['weaponEffect', 'upgrade'].includes(this.type)) {
       const parentId = this.flags.essence20.parentId;
-      const key = this.flags.essence20.collectionId
+      const key = this.flags.essence20.collectionId;
 
       if (parentId && key) {
         const parentItem = this.actor.items.get(parentId);
-        const entry = createEntry(this, parentItem)
+        const entry = createEntry(this, parentItem);
         const pathPrefix = "system.items";
 
         parentItem.update({
