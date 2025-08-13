@@ -192,10 +192,23 @@ async function _attachItem(targetItem, dropFunc) {
 /**
 * Handles setting the value of the entry variable and calling the creating function
 * @param {Item} droppedItem The Item that is being attached to the other Item
-* @param {Item} atttachedItem The Item receiving the dropped Item
+* @param {Item} targetItem The Item receiving the dropped Item
 * @return {Promise<String>} The key generated for the dropped item
 */
 export async function setEntryAndAddItem(droppedItem, targetItem) {
+  const entry = createEntry(droppedItem, targetItem);
+  if (entry) {
+    return _addItemIfUnique(droppedItem, targetItem, entry);
+  }
+}
+
+/**
+* Handles setting the value of the entry variable
+* @param {Item} droppedItem The Item that is being attached to the other Item
+* @param {Item} targetItem The Item receiving the dropped Item
+* @return {Object} The entry generated for the dropped item
+*/
+export function createEntry(droppedItem, targetItem) {
   const entry = {
     uuid: droppedItem.uuid,
     img: droppedItem.img,
@@ -215,20 +228,20 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
   case "equipmentPackage":
     if (["armor", "gear", "shield", "weapon"].includes(droppedItem.type)) {
       entry['items'] = droppedItem.system.items;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
   case "faction":
     if (droppedItem.type == "perk") {
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
@@ -236,30 +249,30 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     } else if (droppedItem.type == "role") {
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
   case "influence":
     if (droppedItem.type == "perk") {
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     } else if (droppedItem.type == "hangUp") {
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
   case "origin":
     if (["altMode", "perk"].includes(droppedItem.type)) {
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
   case "perk":
     if (droppedItem.type == "perk") {
       entry['role'] = null;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
@@ -267,16 +280,16 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
     if (droppedItem.type == "perk") {
       entry ['subtype'] = droppedItem.system.type;
       entry ['level'] = 1;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     } else if (droppedItem.type == "rolePoints") {
       entry['bonus'] = droppedItem.system.bonus;
       entry['isActivatable'] = droppedItem.system.isActivatable;
       entry['isActive'] = droppedItem.system.isActive;
       entry['powerCost'] = droppedItem.system.powerCost;
       entry['resource'] = droppedItem.system.resource;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     } else if (droppedItem.type == 'faction') {
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
@@ -291,7 +304,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
@@ -304,7 +317,7 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['source'] = droppedItem.system.source;
       entry['subtype'] = droppedItem.system.type;
       entry['traits'] = droppedItem.system.traits;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     } else if (droppedItem.type == "weaponEffect") {
       entry['classification'] = droppedItem.system.classification;
       entry['damageValue'] = droppedItem.system.damageValue;
@@ -315,13 +328,15 @@ export async function setEntryAndAddItem(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
-      return _addItemIfUnique(droppedItem, targetItem, entry);
+      return entry;
     }
 
     break;
   default:
     break;
   }
+
+  return null;
 }
 
 /**
