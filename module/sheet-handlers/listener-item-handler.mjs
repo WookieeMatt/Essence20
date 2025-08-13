@@ -77,19 +77,38 @@ export async function onItemCreate(event, actor) {
  */
 export async function onItemEdit(event, actor) {
   event.preventDefault();
-  const li = $(event.currentTarget).closest(".item");
-  let item = null;
 
+  let item = null;
+  const li = $(event.currentTarget).closest(".item");
   const itemId = li.data("itemId");
+  const itemUuid = li.data("itemUuid");
+
   if (itemId) {
     item = actor.items.get(itemId) || game.items.get(itemId);
-  } else {
-    const itemUuid = li.data("itemUuid");
+    if (!item) {
+      ui.notifications.error(
+        game.i18n.format("E20.ItemEditErrorBadId", {itemId}),
+      );
+    }
+  } else if (itemUuid) {
     item = await fromUuid(itemUuid);
+    if (!item) {
+      ui.notifications.error(
+        game.i18n.format("E20.ItemEditErrorBadUuid", {itemUuid}),
+      );
+    }
+  } else {
+    ui.notifications.error(
+      game.i18n.localize("E20.ItemEditErrorMissingId"),
+    );
   }
 
   if (item) {
     item.sheet.render(true);
+  } else {
+    console.error(
+      game.i18n.localize("E20.ItemEditErrorNotFound"),
+    );
   }
 }
 
