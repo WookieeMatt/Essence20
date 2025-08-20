@@ -1,10 +1,11 @@
 @use "../variables" as v;
 
 .essence20 .sheet-tabs {
-  -webkit-box-flex: 0;
-  -ms-flex: 0;
-  flex: 0;
-  gap: 5px;
+    display: flex;
+    margin: 0 16px;
+    gap: v.$gap-sm;
+    border: none;
+    margin-bottom: -1px;
 }
 
 .essence20 .sheet-body .tab,
@@ -35,9 +36,4 @@
 
 .essence20 a:hover {
   text-shadow: 0 0 10px #ffffff;
-}
-
-.sheet nav.sheet-tabs {
-  border-top: none;
-  border-bottom: none;
 }

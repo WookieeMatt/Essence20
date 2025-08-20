@@ -1,5 +1,4 @@
 import { E20 } from "../../../helpers/config.mjs";
-
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
@@ -54,6 +53,7 @@ function makeSkillFields(essence, canBeInitiative=false) {
 }
 
 export const common = () => ({
+  windowId: makeStr("e20-" + crypto.randomUUID()),
   actors: new fields.ObjectField({}),
   color: new fields.ColorField({initial: '#b5b1b1'}),
   conditioning: makeInt(0),

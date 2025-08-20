@@ -12,25 +12,25 @@
   }
 
   .window-content {
-    padding: v.$gap-sliced-border;
+    padding: v.$gap-md;
 
     > div {
       flex-direction: column;
       display: flex;
-      gap: v.$gap-sliced-border;
+      gap: v.$gap-md;
     }
   }
 
   .story-points__top {
     display: flex;
-    gap: v.$gap-sliced-border;
+    gap: v.$gap-md;
 
     & > .sliced-border {
       padding: 12px;
       padding-top: 16px;
       justify-content: center;
       flex-grow: 1;
-      gap: v.$gap-sliced-border;
+      gap: v.$gap-md;
     }
   }
 

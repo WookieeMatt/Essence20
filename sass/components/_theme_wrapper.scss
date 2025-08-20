@@ -18,7 +18,7 @@
 .e20-window {
   overflow: visible;
   border: none; // TODO: Remove after refactor of styles, this is just to remove the old border;
-  position: fixed;
+  position: fixed !important;
   
   &.window-app,
   .window-content,

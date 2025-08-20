@@ -1,23 +1,28 @@
-<form class="{{cssClass}} {{actor.type}}" autocomplete="off">
+<style>
+  .e20-window:has(.{{system.windowId}}) {
+    --theme-border-color: {{system.color}};
+  }
+</style>
+<form class="{{cssClass}} {{actor.type}} {{system.windowId}}" autocomplete="off">
   {{!-- Actor Sheet Header --}}
   {{> "systems/essence20/templates/actor/parts/headers/npc.hbs"}}
 
   {{!-- Tabs --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
+  <nav class="sheet-tabs" data-group="primary">
     {{#if system.isNPC}}
-      <a class="item" style="border-color: {{system.color}};" data-tab="npc"> {{ localize "E20.TabNPC" }}</a>
+      <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="npc"><span>{{ localize "E20.TabNPC" }}</span></a>
     {{/if}}
     {{#if system.isContact}}
-      <a class="item" style="border-color: {{system.color}};" data-tab="contact"> {{ localize "E20.TabContact" }}</a>
+      <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="contact"><span>{{ localize "E20.TabContact" }}</span></a>
     {{/if}}
     {{#if system.canTransform}}
-      <a class="item" style="border-color: {{system.color}};" data-tab="altmode">{{ localize "E20.TabAltMode" }}</a>
+      <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="altmode"><span>{{ localize "E20.TabAltMode" }}</span></a>
     {{/if}}
-    <a class="item" style="border-color: {{system.color}};" data-tab="notes">{{ localize "E20.TabNotes" }}</a>
+    <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="notes"><span></span>{{ localize "E20.TabNotes" }}</span></a>
   </nav>
 
   {{!-- Actor Sheet Body --}}
-  <section class="sheet-body flexcol">
+  <section class="sheet-body flexcol sliced-border --thick" style="border-color: {{system.color}};">
     {{!-- NPC Tab --}}
     <div class="tab main flexcol" data-group="primary" data-tab="npc">
       <div class="npc-row">
