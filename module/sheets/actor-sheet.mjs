@@ -364,8 +364,9 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
           perks[i.system.type] = [i];
         }
 
-        //removes contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
-        if (this.actor.type == "npc" && i.system.type != "contact") {
+        // Makes a single list of all perks for NPCs and companions, instead of grouping by type
+        // Don't add contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
+        if (['npc', 'companion'].includes(this.actor.type) && i.system.type != 'contact') {
           perks.all.push(i);
         }
 
