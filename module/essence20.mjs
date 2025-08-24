@@ -190,7 +190,23 @@ Hooks.once("ready", async function () {
       return false;
     }
   });
+
+  // Caches all roles from compendium packs to prevent repeated
+  // pack.getDocuments() calls in Item.getData()
+  _getAllPackRoles().then(allRoles => CONFIG.E20.allPackRoles = allRoles);
 });
+
+/* Helper to fetch all Roles from compendium packs */
+async function _getAllPackRoles() {
+  let allRoles = [];
+
+  for (const pack of game.packs) {
+    const packRoles = await pack.getDocuments({ type: "role" });
+    allRoles = allRoles.concat(packRoles);
+  }
+
+  return allRoles;
+}
 
 /* eslint-disable no-unused-vars */
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
