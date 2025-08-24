@@ -201,14 +201,12 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
  */
 async function _getVersionRoles(itemData) {
   const versionRoles = {};
-  for (const pack of game.packs) {
-    const selection = await pack.getDocuments({ type: "role" });
-    for (const role of selection) {
-      if (role.system.version == itemData.system.version){
-        versionRoles[role.name] = {
-          type: role.type,
-        };
-      }
+
+  for (const role of CONFIG.E20.allPackRoles) {
+    if (role.system.version == itemData.system.version){
+      versionRoles[role.name] = {
+        type: role.type,
+      };
     }
   }
 
