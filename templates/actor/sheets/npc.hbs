@@ -1,4 +1,5 @@
-<style>
+  {{!-- // TODO: this solution is hackey and bad. Better would be to target the existing window by id but this'll just have to do for now -GL --}}
+  <style>
   .e20-window:has(.{{system.windowId}}) {
     --theme-border-color: {{system.color}};
   }
@@ -60,11 +61,9 @@
 
         {{!-- Items --}}
         <div class="npc-items">
-          {{#if actor.system.canMorph}}
+          {{#ifCond actor.system.canMorph 'or' actor.system.powers.sorcerous.levelTaken }}
             {{> "systems/essence20/templates/actor/parts/misc/power-points.hbs"}}
-          {{else if actor.system.powers.sorcerous.levelTaken}}
-            {{> "systems/essence20/templates/actor/parts/misc/power-points.hbs"}}
-          {{/if}}
+          {{/ifCond}}
           {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
           {{> "systems/essence20/templates/actor/parts/misc/immunities-resistances.hbs"}}
           {{> "systems/essence20/templates/actor/parts/items/hangUp/container.hbs"}}

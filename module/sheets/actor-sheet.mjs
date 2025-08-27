@@ -65,7 +65,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
         "actor",
         "e20-window theme-dark", // TODO: get light/dark from settings/browser
         "theme-default", // TODO: get border theme from settings
-        "sliced-border --thick",
+        "sliced-border",
       ],
       width: 620,
       height: 574,

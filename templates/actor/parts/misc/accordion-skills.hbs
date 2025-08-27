@@ -1,8 +1,8 @@
-<div class="skills-container accordion-wrapper {{accordionStates.skills}}" style="border-color: {{system.color}};">
-  <div class="flex-group-center accordion-label">
+<div class="sliced-border --col --fw accordion-wrapper {{accordionStates.skills}}" style="border-color: {{system.color}};">
+  <label class="sliced-border__label accordion-label">
     <span>{{localize 'E20.AccordionSkillsTitle'}}</span>
-    <a class="item-control"><i class="accordion-icon fas fa-chevron-down"></i></a>
-  </div>
+    <a class="item-control"><i class="accordion-icon fas fa-chevron-up"></i></a>
+  </label>
 
   {{#each @root.config.skillsByEssence as |skills essence|}}
     <div class="skill-separator">{{lookup @root.config.essences essence}}</div>

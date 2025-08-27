@@ -42,7 +42,7 @@ function runMigrations() {
   // Get the current version, or set it if not present
   const currentVersion = game.settings.get(
     "essence20",
-    "systemMigrationVersion",
+    "systemMigrationVersion"
   );
   const totalDocuments = game.actors.size + game.scenes.size + game.items.size;
   if (!currentVersion && totalDocuments === 0) {
@@ -50,7 +50,7 @@ function runMigrations() {
     return game.settings.set(
       "essence20",
       "systemMigrationVersion",
-      game.system.version,
+      game.system.version
     );
   } else if (
     !currentVersion ||
@@ -58,12 +58,12 @@ function runMigrations() {
   ) {
     // Perform the migration, if needed
     console.warn(
-      `Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`,
+      `Current version ${currentVersion} < ${NEEDS_MIGRATION_VERSION} and requires migration`
     );
     migrateWorld();
   } else {
     console.log(
-      `Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION} and doesn't require migration`,
+      `Current version ${currentVersion} >= ${NEEDS_MIGRATION_VERSION} and doesn't require migration`
     );
   }
 }
@@ -111,21 +111,21 @@ Hooks.once("init", async function () {
   // Register sheet application classes
   foundry.documents.collections.Actors.unregisterSheet(
     "core",
-    foundry.appv1.sheets.ActorSheet,
+    foundry.appv1.sheets.ActorSheet
   );
   foundry.documents.collections.Actors.registerSheet(
     "essence20",
     Essence20ActorSheet,
-    { makeDefault: true },
+    { makeDefault: true }
   );
   foundry.documents.collections.Items.unregisterSheet(
     "core",
-    foundry.appv1.sheets.ItemSheet,
+    foundry.appv1.sheets.ItemSheet
   );
   foundry.documents.collections.Items.registerSheet(
     "essence20",
     Essence20ItemSheet,
-    { makeDefault: true },
+    { makeDefault: true }
   );
 
   registerSettings();
@@ -173,7 +173,7 @@ Handlebars.registerHelper("sum", function () {
   return total;
 });
 
-Handlebars.registerHelper("isdefined", function (value) {
+Handlebars.registerHelper("isDefined", function (value) {
   return value !== undefined;
 });
 
@@ -214,6 +214,44 @@ Handlebars.registerHelper(
       .format(unformattedList);
   },
 );
+
+//**
+// * Usage example {{#ifCond something '||' somethingElse }}
+// * Usage example {{#ifCond something 'or' somethingElse }}
+// * Usage example {{#ifCond something '!==' somethingElse }}
+// * Usage example {{#ifCond something '!eq' somethingElse }}
+// */
+Handlebars.registerHelper("ifCond", function (v1, operator, v2, options) {
+  switch (operator) {
+  case "==":
+    return v1 == v2 ? options.fn(this) : options.inverse(this);
+  case "===":
+  case "eq":
+    return v1 === v2 ? options.fn(this) : options.inverse(this);
+  case "!=":
+    return v1 != v2 ? options.fn(this) : options.inverse(this);
+  case "!==":
+  case "not":
+  case "!eq":
+    return v1 !== v2 ? options.fn(this) : options.inverse(this);
+  case "<":
+    return v1 < v2 ? options.fn(this) : options.inverse(this);
+  case "<=":
+    return v1 <= v2 ? options.fn(this) : options.inverse(this);
+  case ">":
+    return v1 > v2 ? options.fn(this) : options.inverse(this);
+  case ">=":
+    return v1 >= v2 ? options.fn(this) : options.inverse(this);
+  case "&&":
+  case "and":
+    return v1 && v2 ? options.fn(this) : options.inverse(this);
+  case "||":
+  case "or":
+    return v1 || v2 ? options.fn(this) : options.inverse(this);
+  default:
+    return options.inverse(this);
+  }
+});
 //#endregion
 
 /* -------------------------------------------- */
@@ -291,7 +329,7 @@ Hooks.on("renderDialogV2", (dialog, html) => {
     const select = html.querySelector("select[name='type']");
     if (select) {
       const classFeatureOption = select.querySelector(
-        "option[value='classFeature']",
+        "option[value='classFeature']"
       );
       if (classFeatureOption) {
         classFeatureOption.style.display = "none";
@@ -299,13 +337,13 @@ Hooks.on("renderDialogV2", (dialog, html) => {
 
       if (select) {
         select.append(
-          setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes),
+          setOptGroup(select, "Equipment", CONFIG.E20.equipmentTypes)
         );
         select.append(
-          setOptGroup(select, "Background", CONFIG.E20.backgroundTypes),
+          setOptGroup(select, "Background", CONFIG.E20.backgroundTypes)
         );
         select.append(
-          setOptGroup(select, "Character Options", CONFIG.E20.characterTypes),
+          setOptGroup(select, "Character Options", CONFIG.E20.characterTypes)
         );
         select.append(setOptGroup(select, "Other", CONFIG.E20.otherTypes));
       }
@@ -359,7 +397,7 @@ async function createItemMacro(data, slot) {
   if (data.type !== "Item") return;
   if (!("uuid" in data)) {
     return ui.notifications.warn(
-      "You can only create macro buttons for owned Items",
+      "You can only create macro buttons for owned Items"
     );
   }
 
@@ -368,7 +406,7 @@ async function createItemMacro(data, slot) {
   // Create the macro command
   const command = `game.essence20.rollItemMacro("${item._id}", "${item.name}");`;
   let macro = game.macros.find(
-    (m) => m.name === item.name && m.command === command,
+    (m) => m.name === item.name && m.command === command
   );
   if (!macro) {
     macro = await Macro.create({
@@ -398,7 +436,7 @@ async function rollItemMacro(itemId, itemName) {
   const item = actor ? actor.items.get(itemId) : null;
   if (!item) {
     return ui.notifications.warn(
-      `Your controlled Actor does not have an item named ${itemName}`,
+      `Your controlled Actor does not have an item named ${itemName}`
     );
   }
 

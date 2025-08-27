@@ -2,7 +2,7 @@
   <div class="flexrow" style="gap: 6px;">
     {{#if @root.actors}}
       {{#each @root.actors as |attachedActor key|}}
-      <div class="systemActors zord item stats-container" style="border-color: {{attachedActor.system.color}};" data-system-Actors-uuid="{{attachedActor.uuid}}">
+      <div class="systemActors zord item sliced-border --fw --col" style="border-color: {{attachedActor.system.color}};" data-system-Actors-uuid="{{attachedActor.uuid}}">
         <div style="display: flex; justify-content: center;">
           <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" data-tooltip="{{attachedActor.name}}" />
         </div>
