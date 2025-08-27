@@ -13,8 +13,21 @@ export class Essence20Item extends Item {
     this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
   }
 
+
+  /** @override */
+  async delete(operation) {
+    super.delete(operation);
+
+    if (this.type == 'role' && this.pack) {
+      updateRoleCache();
+    }
+  }
+
+  /** @override */
   async _onCreate(data, options, userId) {
-    if (this.type == 'role') {
+    super._onCreate(data, options, userId);
+
+    if (this.type == 'role'&& this.pack) {
       updateRoleCache();
     }
   }
