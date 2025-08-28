@@ -15,6 +15,7 @@ import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { getNumActions } from "./helpers/actor.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
+import { updateRoleCache } from "./helpers/utils.mjs";
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -190,6 +191,8 @@ Hooks.once("ready", async function () {
       return false;
     }
   });
+
+  updateRoleCache();
 });
 
 /* eslint-disable no-unused-vars */
