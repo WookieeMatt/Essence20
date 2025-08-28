@@ -192,7 +192,7 @@ Hooks.once("ready", async function () {
     }
   });
 
-  updateRoleCache();
+  await updateRoleCache();
 });
 
 /* eslint-disable no-unused-vars */

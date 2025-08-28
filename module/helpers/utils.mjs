@@ -89,8 +89,9 @@ export function getShiftedSkill(skill, shift, actor) {
  * Caches all roles from compendium packs to prevent repeated
  * pack.getDocuments() calls in Item.getData()
  */
-export function updateRoleCache() {
-  _getAllPackRoles().then(allRoles => CONFIG.E20.allPackRoles = allRoles);
+export async function updateRoleCache() {
+  const allRoles = await _getAllPackRoles();
+  CONFIG.E20.allPackRoles = allRoles;
 }
 
 /* Helper to fetch all Roles from compendium packs */
