@@ -1,6 +1,7 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
+import { updateRoleCache } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -10,6 +11,25 @@ export class Essence20Item extends Item {
   constructor(item, options) {
     super(item, options);
     this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
+  }
+
+
+  /** @override */
+  async delete(operation) {
+    super.delete(operation);
+
+    if (this.type == 'role' && this.pack) {
+      updateRoleCache();
+    }
+  }
+
+  /** @override */
+  async _onCreate(data, options, userId) {
+    super._onCreate(data, options, userId);
+
+    if (this.type == 'role'&& this.pack) {
+      updateRoleCache();
+    }
   }
 
   /**
@@ -29,6 +49,10 @@ export class Essence20Item extends Item {
   /** @override */
   _onUpdate(change, options, userId) {
     super._onUpdate(change, options, userId);
+
+    if (this.type == 'role') {
+      updateRoleCache();
+    }
 
     // Update the entry on the parent if this is a child Item
     if (['weaponEffect', 'upgrade'].includes(this.type)) {
