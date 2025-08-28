@@ -1108,3 +1108,5 @@ E20.CombinedEssenceRankNames = [
   ...E20.EssenceRankNames,
   ...E20.TFEssenceRankNames,
 ];
+
+E20.allPackRoles = null;
