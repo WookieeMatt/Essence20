@@ -19,7 +19,7 @@ export class Essence20Item extends Item {
     super.delete(operation);
 
     if (this.type == 'role' && this.pack) {
-      updateRoleCache();
+      await updateRoleCache();
     }
   }
 
@@ -28,7 +28,7 @@ export class Essence20Item extends Item {
     super._onCreate(data, options, userId);
 
     if (this.type == 'role'&& this.pack) {
-      updateRoleCache();
+      await updateRoleCache();
     }
   }
 
@@ -47,11 +47,11 @@ export class Essence20Item extends Item {
   }
 
   /** @override */
-  _onUpdate(change, options, userId) {
+  async _onUpdate(change, options, userId) {
     super._onUpdate(change, options, userId);
 
     if (this.type == 'role') {
-      updateRoleCache();
+      await updateRoleCache();
     }
 
     // Update the entry on the parent if this is a child Item
@@ -64,7 +64,7 @@ export class Essence20Item extends Item {
         const entry = createEntry(this, parentItem);
         const pathPrefix = "system.items";
 
-        parentItem.update({
+        await parentItem.update({
           [`${pathPrefix}.${key}`]: entry,
         });
       }

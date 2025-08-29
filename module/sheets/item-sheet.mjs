@@ -1,5 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
+import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 
 /**
@@ -203,6 +204,11 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
  */
 async function _getVersionRoles(itemData) {
   const versionRoles = {};
+
+  // Should be generated on world load, but just in case
+  if (CONFIG.E20.allPackRoles == null) {
+    await updateRoleCache();
+  }
 
   for (const role of CONFIG.E20.allPackRoles) {
     if (role.system.version == itemData.system.version){
