@@ -244,7 +244,7 @@ Hooks.once("ready", async function () {
     game.StoryPointsTracker = await new StoryPoints().render(true);
   }
 
-  updateRoleCache();
+  await updateRoleCache();
 });
 
 // Init the button in the controls for toggling the dialog
