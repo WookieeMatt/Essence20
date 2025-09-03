@@ -83,7 +83,8 @@ input[type="number"], input[type="text"] {
 
 .essence20 .sheet-body {
   min-height: fit-content;
-  gap: 10px;
+  gap: v.$gap-md;
+  padding-top: v.$gap-lg !important;
 }
 
 .essence20 table {

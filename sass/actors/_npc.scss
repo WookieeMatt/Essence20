@@ -4,30 +4,43 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  gap: v.$padding;
+  gap: v.$gap-md;
 }
 
 .essence20 .npc-items {
   width: 50%;
   display: flex;
   flex-direction: column;
-  gap: v.$padding;
+  gap: v.$gap-lg;
 }
 
-.essence20 .npc-defenses {
-  width: 60%;
+.essence20 .npc-defenses, .essence20 .npc-essence-scores {
+  display: flex;
+  gap: v.$gap-md;
+  flex-grow: 1;
+
+  & > .sliced-border {
+    min-width: 100% !important;
+    min-height: 100% !important;
+  }
 }
 
-.essence20 .npc-essence-scores {
-  width: 60%;
+.essence20 .npc-powers {
+  display: flex;
+  gap: v.$gap-md;
+
+  & > .sliced-border {
+    min-width: 100% !important;
+  }
 }
 
-.essence20 .npc-health {
-  width: 40%;
-}
+.essence20 .npc-health, .essence20 .npc-movement {
+  width: fit-content;
+  min-width: 80px;
 
-.essence20 .npc-movement {
-  width: 40%;
+  .sliced-border {
+    height: 100% !important;
+  }
 }
 
 .essence20 .npc-firepoints {

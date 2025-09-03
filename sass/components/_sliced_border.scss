@@ -13,6 +13,7 @@
   .e20-window.sliced-border, .e20-window .sliced-border {
     width: fit-content;
     height: fit-content;
+    min-height: 31px;
     display: flex;
     gap: v.$gap-sm;
     position: relative;
@@ -22,7 +23,7 @@
 
     &:has(> .sliced-border__label) {
       padding-top: v.$gap-md + 3px;
-      margin-top: 3px;
+      // margin-top: 7px; // Would align the top
     }
 
     &:has(> .sliced-border__label.sliced-border) {

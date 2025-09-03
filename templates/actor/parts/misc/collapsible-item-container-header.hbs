@@ -1,25 +1,17 @@
-<div class="flexrow">
-  {{#unless parentId}}
-  <div></div>
-  {{/unless}}
+<label class="sliced-border__label">
+  <span>{{localize title}}</span>
+  {{#if (ne hidePlusButton 'true')}}
+    {{#> plus-button dataType=dataType parentId=parentId}}
+      {{!-- Custom plus button here, or use default below --}}
+      <a class="item-create" data-type="{{dataType}}" data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
+        <i class="fas fa-plus"></i>
+      </a>
+    {{/plus-button}}
+  {{/if}}
 
-  <div style="flex-grow: 0; white-space: nowrap;">
-    {{localize title}}
-    {{#if (ne hidePlusButton 'true')}}
-      {{#> plus-button dataType=dataType parentId=parentId}}
-        {{!-- Custom plus button here, or use default below --}}
-        <a class="item-create" data-type="{{dataType}}" data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
-          <i class="fas fa-plus"></i>
-        </a>
-      {{/plus-button}}
-    {{/if}}
-  </div>
-
-  <span class="header-accordion-wrapper">
-    {{#if items.length}}
-    <a class="header-accordion-label" data-tooltip="{{ localize 'E20.ItemControlExpandAll' }}">
-      <i class="accordion-icon fas fa-chevron-down"></i>
-    </a>
-    {{/if}}
-  </span>
-</div>
+  {{#if items.length}}
+  <a class="header-accordion-label" data-tooltip="{{ localize 'E20.ItemControlExpandAll' }}">
+    <i class="accordion-icon fas fa-chevron-down"></i>
+  </a>
+  {{/if}}
+</label>
