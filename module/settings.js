@@ -81,6 +81,16 @@ export const registerSettings = function () {
     onChange: debouncedReload,
   });
 
+  // TODO: Depricate this once everything is ready -GL
+  game.settings.register(systemName, "sptUseExperimentalTheme", {
+    name: game.i18n.localize("E20.ThemeExperimental"),
+    scope: "client",
+    config: true,
+    default: false,
+    type: Boolean,
+    onChange: debouncedReload,
+  });
+
   game.settings.register(systemName, "sptMessage", {
     name: game.i18n.localize("E20.SptOptionMessage"),
     scope: "world",

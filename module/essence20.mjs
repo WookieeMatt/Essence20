@@ -174,8 +174,46 @@ Handlebars.registerHelper("sum", function () {
   return total;
 });
 
-Handlebars.registerHelper("isdefined", function (value) {
+Handlebars.registerHelper("isDefined", function (value) {
   return value !== undefined;
+});
+
+//**
+// * Usage example {{#ifCond something '||' somethingElse }}
+// * Usage example {{#ifCond something 'or' somethingElse }}
+// * Usage example {{#ifCond something '!==' somethingElse }}
+// * Usage example {{#ifCond something '!eq' somethingElse }}
+// */
+Handlebars.registerHelper("ifCond", function (v1, operator, v2, options) {
+  switch (operator) {
+  case "==":
+    return v1 == v2 ? options.fn(this) : options.inverse(this);
+  case "===":
+  case "eq":
+    return v1 === v2 ? options.fn(this) : options.inverse(this);
+  case "!=":
+    return v1 != v2 ? options.fn(this) : options.inverse(this);
+  case "!==":
+  case "not":
+  case "!eq":
+    return v1 !== v2 ? options.fn(this) : options.inverse(this);
+  case "<":
+    return v1 < v2 ? options.fn(this) : options.inverse(this);
+  case "<=":
+    return v1 <= v2 ? options.fn(this) : options.inverse(this);
+  case ">":
+    return v1 > v2 ? options.fn(this) : options.inverse(this);
+  case ">=":
+    return v1 >= v2 ? options.fn(this) : options.inverse(this);
+  case "&&":
+  case "and":
+    return v1 && v2 ? options.fn(this) : options.inverse(this);
+  case "||":
+  case "or":
+    return v1 || v2 ? options.fn(this) : options.inverse(this);
+  default:
+    return options.inverse(this);
+  }
 });
 
 Handlebars.registerHelper("inArray", function (array, value, options) {

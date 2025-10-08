@@ -24,7 +24,7 @@
       </div>
     </div>
   {{/if}}
-  {{#if (isdefined item.system.equipped)}}
+  {{#if (isDefined item.system.equipped)}}
   <div style="flex-grow: 0;">
     <input class="inline-edit item-label-checkbox {{#if (eq item.type "shield")}} shield-equip{{/if}}"
       data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped"
