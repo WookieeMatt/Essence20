@@ -60,7 +60,15 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
 
   /** @override */
   get template() {
-    return `systems/essence20/templates/actor/sheets/${this.actor.type}.hbs`;
+    // TODO: Depricate this once everything is ready -GL
+    /* NOTE: Each time a sheet is restyled, it's name must be added to this list.
+        I don't like this solution, it's hard to find, and obscure. If a better place exists,
+        please move this to that place -GL
+    */
+    const experimentalSheets = ['npc'];
+    const experimentalSetting = game.settings.get("essence20", "sptUseExperimentalTheme");
+    const useExperimental = experimentalSetting && experimentalSheets.includes(this.actor.type);
+    return `systems/essence20/templates/actor/sheets/${useExperimental ? 'experimental/' : ''}${this.actor.type}.hbs`;
   }
 
   /** @override */

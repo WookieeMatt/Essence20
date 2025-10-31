@@ -14,6 +14,9 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/headers/npc.hbs",
     "systems/essence20/templates/actor/parts/headers/vehicle.hbs",
     "systems/essence20/templates/actor/parts/headers/zord.hbs",
+    "systems/essence20/templates/actor/parts/headers/experimental/npc.hbs",
+    "systems/essence20/templates/actor/parts/headers/experimental/common.hbs",
+    
 
     // Actor partials - Misc
     "systems/essence20/templates/actor/parts/misc/accordion-skills.hbs",

@@ -1,0 +1,41 @@
+<header class="sheet-header sliced-border --thick" style="border-color: {{system.color}};">
+  {{!-- Profile image --}}
+  <div class="flexcol">
+    <div class="sliced-border" style="border-color: {{system.color}};">
+      <img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+    </div>
+  </div>
+
+  {{!-- Name --}}
+  <div class="flexcol" style="flex-grow: 1;">
+    <div class="flexrow">
+      <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
+      <a class="lock-status" data-tooltip="{{localize 'E20.ActorLockTitle'}}">
+        {{#if system.isLocked}} {{localize 'E20.ActorLockOn'}} {{else}} {{localize 'E20.ActorLockOff'}} {{/if}}
+        <i class="fas" style="margin-left: 2px;"></i>
+      </a>
+    </div>
+    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+  </div>
+
+    <div class="flexrow" style="gap: 2px;">
+      {{!-- Size --}}
+      <div class="actor-header-size">
+        {{#if system.isTransformed}}
+          <label for="system.altModesize" class="resource-label">{{localize 'E20.ActorSize'}}</label>
+          <select name="system.altModesize">
+            {{selectOptions config.actorSizes selected=system.altModesize}}
+          </select>
+        {{else}}
+          <label for="system.size" class="resource-label">{{localize 'E20.ActorSize'}}</label>
+          <select name="system.size">
+            {{selectOptions config.actorSizes selected=system.size}}
+          </select>
+        {{/if}}
+      </div>
+
+      {{#> secondary-fields}}
+      {{!-- Custom secondary fields here --}}
+      {{/secondary-fields}}
+    </div>
+</header>
