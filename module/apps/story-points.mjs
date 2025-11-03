@@ -31,10 +31,10 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     id: "story-points",
     tag: "div",
     classes: [
-      "essence20",
+      "e20-window",
       "theme-wrapper theme-dark", // TODO: get light/dark from settings/browser
-      "story-points",
       "sliced-border --thick",
+      "story-points",
       getDefaultTheme(),
     ],
     window: {
