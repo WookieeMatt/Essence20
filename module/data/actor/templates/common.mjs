@@ -54,6 +54,7 @@ function makeSkillFields(essence, canBeInitiative=false) {
 }
 
 export const common = () => ({
+  windowId: makeStr("e20-" + crypto.randomUUID()),
   actors: new fields.ObjectField({}),
   color: new fields.ColorField({initial: '#b5b1b1'}),
   conditioning: makeInt(0),
