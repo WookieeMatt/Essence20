@@ -2,11 +2,11 @@
 
 // default vars, overridden when needed
 :root {
-  --theme-border-filter: saturate(0);
-  --theme-border-color: #{v.$border-color-dark};
-  --theme-bg-color: #{v.$bg-color-light};
-  --theme-text-color: #{v.$text-color-dark};
-  --theme-input-color: #{v.$input-color-light};
+  --theme-border-filter: saturate(0) brightness(175%);
+  --theme-border-color: #{v.$border-color-light};
+  --theme-bg-color: #{v.$bg-color-dark};
+  --theme-text-color: #{v.$text-color-light};
+  --theme-input-color: #{v.$input-color-dark};
 
   --theme-border-image: url(../assets/borders/default-border.svg);
   --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
@@ -34,13 +34,13 @@
     border-radius: 0;
   }
 
-  &.theme-light {
-    --theme-border-filter: saturate(0);
-    --theme-border-color: #{v.$border-color-dark};
-    --theme-bg-color: #{v.$bg-color-light};
-    --theme-text-color: #{v.$text-color-dark};
-    --theme-input-color: #{v.$input-color-light};
-  }
+  // &.theme-light {
+  //   --theme-border-filter: saturate(0);
+  //   --theme-border-color: #{v.$border-color-dark};
+  //   --theme-bg-color: #{v.$bg-color-light};
+  //   --theme-text-color: #{v.$text-color-dark};
+  //   --theme-input-color: #{v.$input-color-light};
+  // }
 
   &.theme-dark {
     --theme-border-filter: saturate(0) brightness(175%);
@@ -56,7 +56,8 @@
     --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
     --theme-tab-image: url(../assets/borders/default-tab.svg);
     --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
-    &.essence20 {
+    // e20-window is the new replacement for window-app and should replace both window-app and essence20 as things are converted -GL
+    &.essence20, &.e20-window {
       border-radius: 25px 0;
     }
   }
@@ -67,7 +68,7 @@
     --theme-filled-border-image: url(../assets/borders/pony-tab-filled.svg);
     --theme-tab-image: url(../assets/borders/pony-tab.svg);
     --theme-filled-tab-image: url(../assets/borders/pony-tab-filled.svg);
-    &.essence20 {
+    &.essence20, &.e20-window {
       border-radius: 15px;
     }
   }

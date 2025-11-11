@@ -1,0 +1,40 @@
+@use "../../variables" as v;
+.e20-window {
+  .sheet-tabs {
+    display: flex;
+    margin: 0 16px;
+    gap: v.$gap-sm;
+    border: none;
+    margin-bottom: -1px;
+  }
+
+  .sheet-body .tab,
+  .sheet-body .tab .editor {
+    height: 100%;
+    gap: v.$gap-lg;
+  }
+
+  .sheet-body.item-sheet .tab {
+    gap: 0px;
+  }
+
+  .tabs .item {
+    background: v.$background-b;
+    border: 1px solid;
+    border-radius: 4px 4px 0px 0px;
+    flex: 1;
+  }
+
+  .tabs .active {
+    background: v.$background-n;
+    border-bottom: none;
+  }
+
+  .tabs .item.active {
+    text-shadow: 0 0 10px #ffffff;
+  }
+
+  a:hover {
+    text-shadow: 0 0 10px #ffffff;
+  }
+}

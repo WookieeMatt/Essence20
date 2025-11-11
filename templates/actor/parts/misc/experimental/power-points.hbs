@@ -1,0 +1,23 @@
+<div class="npc-powers">
+  {{#if actor.system.canMorph}}
+    <div class="sliced-border" style="border-color: {{system.color}};">
+      <label class="sliced-border__label">Personal Power</label>
+      <input class="centered-input no-lock" data-field="system.powers.personal.value" type="number"
+        name="system.powers.personal.value" value="{{system.powers.personal.value}}" min="0" step="1" />
+      /
+      <input class="centered-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
+        value="{{system.powers.personal.max}}" min="0" step="1" />
+    </div>
+  {{/if}}
+
+  {{#if system.powers.sorcerous.levelTaken}}
+    <div class="sliced-border" style="border-color: {{system.color}};">
+      <label class="sliced-border__label">Sorcerous Power</label>
+      <input class="centered-input no-lock" data-field="system.powers.sorcerous.value" type="number"
+        name="system.powers.sorcerous.value" value="{{system.powers.sorcerous.value}}" min="0" step="1" />
+      /
+      <input class="centered-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
+        value="{{system.powers.sorcerous.max}}" min="0" step="1" />
+    </div>
+  {{/if}}
+</div>

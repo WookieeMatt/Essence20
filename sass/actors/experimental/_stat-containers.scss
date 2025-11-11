@@ -1,0 +1,20 @@
+@use "../../variables" as v;
+
+.e20-window {
+  .stats-container {
+    list-style: none;
+    padding: v.$padding;
+    overflow-y: auto;
+    color: v.$textcolor1;
+    flex-basis: auto;
+    justify-content: center;
+    background: v.$background-n;
+    min-height: 72px;
+  }
+
+  .stats-row {
+    gap: 6px;
+    flex-grow: 0;
+    flex-wrap: nowrap;
+  }
+}

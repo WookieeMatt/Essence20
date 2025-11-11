@@ -91,7 +91,10 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   get template() {
     const useExperimental = this.useExperimentalStyles;
     if (useExperimental){
-      this.options.classes.push("e20-window theme-wrapper theme-default sliced-border");
+      // e20-window is the new replacement for window-app and should replace both window-app and essence20 as things are converted -GL
+      // We only remove essence20 because window-app is not our class, essence20 is - GL
+      this.options.classes = this.options.classes.filter(x => x != "essence20");
+      this.options.classes.push("e20-window theme-wrapper --thick theme-default sliced-border");
     }
 
     return `systems/essence20/templates/actor/sheets/${

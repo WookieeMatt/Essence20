@@ -1,0 +1,85 @@
+@use "../../variables" as v;
+
+.e20-window .sheet-header {
+  display: flex;
+  flex-direction: row;
+  // flex: 0 auto;
+  flex-wrap: wrap;
+  gap: v.$gap-md;
+  justify-content: flex-start;
+  margin-bottom: v.$gap-md;
+}
+
+/* PR Sheet Headers */
+.e20-window .sheet-header .profile-img {
+  flex: inherit;
+  height: 100px;
+  aspect-ratio: 1/1;
+  object-fit: contain;
+  margin: 0;
+  border: none;
+}
+
+.e20-window .sheet-header h1.charname {
+  height: 50px;
+  padding: 0px;
+  margin: 5px 0;
+  border-bottom: 0;
+}
+
+.e20-window .sheet-header h1.charname input {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+/* ITEMS */
+.e20-window .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  align-items: center;
+  background: v.$background-n;
+  border: v.$border;
+  font-weight: bold;
+  border-radius: v.$border-radius;
+  box-shadow: v.$boxshadow;
+}
+
+.e20-window .items-header>* {
+  font-size: 14px;
+  text-align: center;
+}
+
+.e20-window .items-header .item-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.e20-window .lock-status {
+  flex-grow: 0;
+  white-space: nowrap;
+  margin-right: 2px;
+}
+
+.e20-window .actor-header-size {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+}
+
+.e20-window .pr-header-level {
+  flex-grow: 0;
+}
+
+.e20-window .pr-header-color {
+  flex-grow: 0;
+}
+
+.e20-window .pr-header-level-buttons {
+  flex-grow: 0;
+}

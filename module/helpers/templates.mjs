@@ -55,6 +55,20 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/wealth-die.hbs",
     "systems/essence20/templates/actor/parts/misc/zord-common.hbs",
 
+    "systems/essence20/templates/actor/parts/misc/experimental/accordion-skills.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/contact.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/energon.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/health.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/immunities-resistances.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/initiative.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/morph-transform.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/movement.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/notes.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/npc-defenses.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/npc-essence-scores.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/power-points.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/stun.hbs",
+
     // Actor partials - Items
     "systems/essence20/templates/actor/parts/items/alteration/container.hbs",
     "systems/essence20/templates/actor/parts/items/alteration/details.hbs",
@@ -99,6 +113,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/weapon/container.hbs",
     "systems/essence20/templates/actor/parts/items/weapon/details.hbs",
     "systems/essence20/templates/actor/parts/items/weapon/weapon-effects.hbs",
+
+    "systems/essence20/templates/actor/parts/items/rolePoints/experimental/container.hbs",
 
     //App Partials
     "systems/essence20/templates/app/parts/field.hbs",

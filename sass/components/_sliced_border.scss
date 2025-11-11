@@ -10,6 +10,7 @@
 */
 
 .system-essence20 { // Mostly just here for increasing speficity because default foundry styles mess with stuff
+  // e20-window is the new replacement for window-app and should replace both window-app and essence20 as things are converted -GL
   .e20-window.sliced-border, .e20-window .sliced-border {
     width: fit-content;
     height: fit-content;

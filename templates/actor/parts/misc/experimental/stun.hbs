@@ -1,0 +1,24 @@
+<div
+  class="sliced-border flex-group-center"
+  style="border-color: {{system.color}}; width: min-content; min-width: 100px;"
+>
+  <label class="sliced-border__label">{{localize "E20.ActorStun"}}</label>
+  <div class="sliced-border__input-row">
+    <input
+      class="two-digit-input no-lock"
+      type="number"
+      name="system.stun.value"
+      value="{{system.stun.value}}"
+      min="0"
+      step="1"
+    />
+    <span>/</span>
+    <input
+      class="two-digit-input no-unlock"
+      type="number"
+      name="system.stun.max"
+      value="{{system.health.value}}"
+      readonly
+    />
+  </div>
+</div>

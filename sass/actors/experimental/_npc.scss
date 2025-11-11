@@ -1,5 +1,5 @@
 @use "../../variables" as v;
-.essence20.restyle {
+.e20-window {
   .npc-row {
     display: flex;
     flex-direction: row;
@@ -14,16 +14,20 @@
     gap: v.$gap-lg;
   }
 
-  .npc-defenses,
-  .npc-essence-scores {
-    display: flex;
+  .npc-row-1, .npc-row-2 {
+    display: grid;
     gap: v.$gap-md;
-    flex-grow: 1;
-
-    & > .sliced-border {
-      min-width: 100% !important;
-      min-height: 100% !important;
+    .sliced-border {
+      height: 100% !important;
     }
+  }
+
+  .npc-row-1 {
+    grid-template-columns: auto auto 1fr 1fr;
+  }
+
+  .npc-row-2 {
+    grid-template-columns: auto 3fr 2fr;
   }
 
   .npc-powers {
@@ -35,7 +39,6 @@
     }
   }
 
-  .npc-health,
   .npc-movement {
     width: fit-content;
     min-width: 80px;

@@ -1,0 +1,9 @@
+<div class="sliced-border flex-group-center" style="border-color: {{system.color}};">
+  <label class="sliced-border__label">
+    <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
+    <span>{{localize 'E20.ActorInitiative'}}</span>
+  </label>
+  <select name="system.initiative.skill">
+    {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
+  </select>
+</div>
