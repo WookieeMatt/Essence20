@@ -10,6 +10,16 @@
     <div style="text-align: center;" data-tooltip="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
       {{item.numTargets}} <i class="fas fa-bullseye"></i>
     </div>
+    {{#if (eq item.classification.style 'melee')}}
+      <div style="text-align: center;" data-tooltip="{{localize "E20.WeaponRangeReach"}} {{item.totalReach}}ft">
+        {{log item}}
+        {{item.totalReach}}
+      </div>
+    {{else}}
+      <div style="text-align: center;" data-tooltip="{{localize "E20.WeaponRange"}} {{item.range.value}}ft/{{item.range.long}}ft">
+        {{item.range.value}}/{{item.range.long}}
+      </div>
+    {{/if}}
     <div style="text-align: center;" data-tooltip="{{item.shiftDown}} {{localize "E20.ShiftDown"}}">
       {{item.shiftDown}} <i class="fas fa-arrow-down"></i>
     </div>
