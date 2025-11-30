@@ -12,12 +12,11 @@
     </div>
     {{#if (eq item.classification.style 'melee')}}
       <div style="text-align: center;" data-tooltip="{{localize "E20.WeaponRangeReach"}} {{item.totalReach}}ft">
-        {{log item}}
-        {{item.totalReach}}
+        {{item.totalReach}}ft
       </div>
     {{else}}
-      <div style="text-align: center;" data-tooltip="{{localize "E20.WeaponRange"}} {{item.range.value}}ft/{{item.range.long}}ft">
-        {{item.range.value}}/{{item.range.long}}
+      <div style="text-align: center;" data-tooltip="{{localize "E20.WeaponRange"}} {{item.range.value}}ft{{#if item.range.long}}/{{item.range.long}}ft{{/if}}{{#if item.range.min}}/minimum {{item.range.min}}ft{{/if}}">
+        {{item.range.value}}ft
       </div>
     {{/if}}
     <div style="text-align: center;" data-tooltip="{{item.shiftDown}} {{localize "E20.ShiftDown"}}">

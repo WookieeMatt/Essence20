@@ -304,6 +304,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
+      entry['totalReach'] = droppedItem.system.totalReach;
       return entry;
     }
 
