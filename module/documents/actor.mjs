@@ -51,6 +51,7 @@ export class Essence20Actor extends Actor {
             if (item.system.range.reachMultiplier > 1) {
               reachMultiplier = item.system.range.reachMultiplier;
             }
+
             const totalReach = actorReach * reachMultiplier;
 
             item.system.totalReach = totalReach;
@@ -61,7 +62,7 @@ export class Essence20Actor extends Actor {
 
             if (parentItem && key) {
               const entry = await createEntry(item, parentItem);
-               const pathPrefix = "system.items";
+              const pathPrefix = "system.items";
 
               await parentItem.update({
                 [`${pathPrefix}.${key}`]: entry,

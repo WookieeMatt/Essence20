@@ -40,9 +40,11 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       if (this.range.reachMultiplier > 1) {
         reachMultiplier = this.range.reachMultiplier;
       }
+
       const totalReach = actorReach * reachMultiplier;
       this.totalReach = totalReach;
     }
+
     return super.prepareDerivedData;
   }
 }
