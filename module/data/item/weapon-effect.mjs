@@ -35,9 +35,9 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
 
   prepareDerivedData() {
     if (["megaform", "npc", "playerCharacter", "vehicle", "zord"].includes(this.parent.parent.type)) {
-      let reachMultiplier = 0;
+      let reachMultiplier = 1;
       const actorReach = CONFIG.E20.actorReach[this.parent.parent.system.size];
-      if (this.range.reachMultiplier > 0) {
+      if (this.range.reachMultiplier > 1) {
         reachMultiplier = this.range.reachMultiplier;
       }
 
