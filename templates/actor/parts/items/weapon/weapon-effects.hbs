@@ -10,7 +10,7 @@
     <div style="text-align: center;" data-tooltip="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
       {{item.numTargets}} <i class="fas fa-bullseye"></i>
     </div>
-    {{#if (eq item.classification.style 'melee')}}
+    {{#if item.range.reachMultiplier}}
       <div style="text-align: center;" data-tooltip="{{localize "E20.WeaponRangeReach"}} {{item.totalReach}}ft">
         {{item.totalReach}}ft
       </div>

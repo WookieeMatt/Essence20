@@ -24,7 +24,7 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       radius: makeInt(0),
       range: new fields.SchemaField({
         min: makeInt(null),
-        reachMultiplier: makeInt(0),
+        reachMultiplier: makeInt(null),
         long: makeInt(null),
         value: makeInt(null),
       }),
