@@ -127,7 +127,7 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 
   if (droppedItem.system.type) {
     upgradableItems = upgradableItems.concat(
-      actor.items.documentsByType[droppedItem.system.type]
+      actor.items.documentsByType[droppedItem.system.type],
     );
   } else if (droppedItem.type == 'weaponEffect') {
     upgradableItems = upgradableItems
