@@ -1,0 +1,51 @@
+{{#>"systems/essence20/templates/actor/parts/misc/experimental/collapsible-item-container.hbs" items=@root.weapons title='E20.ItemTypeWeaponPlural' dataType='weapon'}}
+  {{#*inline "expand-details" item}}
+    {{> "systems/essence20/templates/actor/parts/items/weapon/details.hbs"}}
+  {{/inline}}
+
+  {{#*inline "item-label" item}}
+    {{#if @root.actor.system.canTransform}}
+      {{>"systems/essence20/templates/actor/parts/misc/mode-selector.hbs"}}
+    {{/if}}
+
+    {{item.name}}
+  {{/inline}}
+
+  {{#*inline "extra-controls" item}}
+    <a class="item-create" data-type="weaponEffect" data-parent-id="{{item._id}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }} {{localize 'E20.WeaponEffect'}}">
+      <i class="fas fa-burst"></i>
+    </a>
+    <a class="item-create" data-type="upgrade" data-parent-id="{{item._id}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }} {{localize 'E20.Upgrade'}}">
+      <i class="fas fa-up"></i>
+    </a>
+  {{/inline}}
+
+  {{#*inline "subcontainers" parentItem}}
+    {{!-- Weapon Effects --}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentItem=parentItem}}
+
+      {{#*inline "roll-button"}}
+        <a class="rollable" data-roll-type="weaponEffect" data-tooltip="{{localize 'E20.WeaponEffectRollTitle'}}"><i class="fas fa-dice-d20"></i></a>
+      {{/inline}}
+
+      {{#*inline "item-label" item}}
+        {{> "systems/essence20/templates/actor/parts/items/weapon/weapon-effects.hbs"}}
+      {{/inline}}
+
+      {{#*inline "expand-details" item parentItem}}
+        {{> "systems/essence20/templates/actor/parts/items/weaponEffect/details.hbs"}}
+      {{/inline}}
+    {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
+
+    {{!-- Upgrades --}}
+    {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeUpgradePlural" dataType="upgrade" parentItem=parentItem}}
+      {{#*inline "item-label" item}}
+        {{item.name}}
+      {{/inline}}
+
+      {{#*inline "expand-details" item parentItem}}
+        {{> "systems/essence20/templates/actor/parts/items/upgrade/details.hbs"}}
+      {{/inline}}
+    {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs"}}
+  {{/inline}}
+{{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

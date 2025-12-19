@@ -1,7 +1,8 @@
-<div class="sliced-border --col --fw accordion-wrapper {{accordionStates.skills}}" style="border-color: {{system.color}};">
+{{!-- TODO: Refactor Accordion to be a bit less dependent on classes, and use data params --}}
+<div class="sliced-border --col --fw skills-container accordion-wrapper {{accordionStates.skills}}" style="border-color: {{system.color}};">
   <label class="sliced-border__label accordion-label">
     <span>{{localize 'E20.AccordionSkillsTitle'}}</span>
-    <a class="item-control"><i class="accordion-icon fas fa-chevron-up"></i></a>
+    <a class="item-control"><i class="accordion-icon fas fa-chevron-down"></i></a>
   </label>
 
   {{#each @root.config.skillsByEssence as |skills essence|}}
@@ -9,9 +10,9 @@
 
     {{#each skills as |skill|}}
       {{#if (lookup @root.displayedNpcSkills skill)}}
-      <div>
+        <div>
       {{else}}
-      <div class="accordion-content">
+        <div class="accordion-content">
       {{/if}}
 
       {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence=essence skill=skill fields=(lookup @root.system.skills skill)}}

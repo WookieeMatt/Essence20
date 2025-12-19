@@ -177,6 +177,7 @@ export async function onRest(actorSheet) {
  * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
  */
 export async function onToggleAccordion(event, actorSheet) {
+  console.log("onToggleAccordion");
   const el = event.currentTarget;
   const parent = $(el).closest('.accordion-wrapper');
 
@@ -192,7 +193,7 @@ export async function onToggleAccordion(event, actorSheet) {
     let oneClosed = false;
 
     // Look for a closed Item
-    const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+    const accordionLabels = el.closest('.collapsible-item-container')?.querySelectorAll('.accordion-wrapper');
     for (const accordionLabel of accordionLabels) {
       oneClosed = !$(accordionLabel).hasClass('open');
       if (oneClosed) break;
@@ -214,6 +215,7 @@ export async function onToggleAccordion(event, actorSheet) {
  * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
  */
 export async function onToggleHeaderAccordion(event) {
+  console.log("onToggleHeaderAccordion");
   const el = event.currentTarget;
   const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
   $(el.closest('.header-accordion-wrapper')).toggleClass('open');

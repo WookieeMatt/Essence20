@@ -56,6 +56,8 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/zord-common.hbs",
 
     "systems/essence20/templates/actor/parts/misc/experimental/accordion-skills.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/collapsible-item-container-header.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/collapsible-item-container.hbs",
     "systems/essence20/templates/actor/parts/misc/experimental/contact.hbs",
     "systems/essence20/templates/actor/parts/misc/experimental/energon.hbs",
     "systems/essence20/templates/actor/parts/misc/experimental/health.hbs",
@@ -115,6 +117,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/items/weapon/weapon-effects.hbs",
 
     "systems/essence20/templates/actor/parts/items/rolePoints/experimental/container.hbs",
+    "systems/essence20/templates/actor/parts/items/weapon/experimental/container.hbs",
 
     //App Partials
     "systems/essence20/templates/app/parts/field.hbs",
