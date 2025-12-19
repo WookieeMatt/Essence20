@@ -1,5 +1,4 @@
 import { E20 } from "./helpers/config.mjs";
-import { getItemsOfType } from "./helpers/utils.mjs";
 
 export class Dice {
   /**
@@ -106,7 +105,7 @@ export class Dice {
     };
 
     updatedShiftDataset.rolePoints = null;
-    const rolePointsList = getItemsOfType('rolePoints', actor.items);
+    const rolePointsList = actor.items.documentsByType.rolePoints;
 
     let rolePoints = null;
     if (item?.type == 'weaponEffect' && rolePointsList.length) {
@@ -128,7 +127,7 @@ export class Dice {
     switch(item?.type) {
     case 'weaponEffect':
       {
-        const roleList = getItemsOfType('role', actor.items);
+        const roleList = actor.items.documentsByType.role;
         roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
       }
 
