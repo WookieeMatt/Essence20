@@ -21,7 +21,6 @@ import {
   onShieldActivationToggle,
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
-import { getItemsOfType } from "../helpers/utils.mjs";
 
 export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   constructor(...args) {
@@ -89,7 +88,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     // Prepare WeaponEffect Skill List
-    this._prepareWeaponEffectSkills(actorData, context);
+    this._prepareWeaponEffectSkills(this.actor, context);
 
     // Prepare number of actions
     if (actorData.type == "playerCharacter") {
@@ -224,17 +223,17 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
    * @param {Object} actorData The acor data converted to an object
    * @param {Object} context The actor data to prepare.
    */
-  _prepareWeaponEffectSkills(actorData, context) {
+  _prepareWeaponEffectSkills(actor, context) {
     let hasSkillDie = false;
     let skillDieName = null;
-    const items = getItemsOfType ("role", actorData.items);
+    const items = actor.items.documentsByType.role;
     if (items.length && items[0].system.skillDie.isUsed) {
       hasSkillDie = true;
       skillDieName = items[0].system.skillDie.name;
     }
 
     let weaponEffectSkills = {};
-    for (const skill of Object.keys(actorData.system.skills)) {
+    for (const skill of Object.keys(actor.system.skills)) {
       if (skill != 'wealth' && (skill != 'roleSkillDie' || hasSkillDie)) {
         weaponEffectSkills[skill] = {
           key: skill,

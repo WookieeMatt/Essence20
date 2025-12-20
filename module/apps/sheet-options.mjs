@@ -1,4 +1,3 @@
-import { getItemsOfType } from "../helpers/utils.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -39,8 +38,8 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.role = await getItemsOfType("role", this._actor.items);
-    const origin = await getItemsOfType("altMode", this._actor.items);
+    context.role = await this._actor.items.documentsByType.role;
+    const origin = await this._actor.items.documentsByType.origin;
     if (origin.length > 1) {
       context.altMode = true;
     }

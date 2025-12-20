@@ -1,6 +1,5 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
-import { getItemsOfType } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
@@ -150,8 +149,8 @@ export async function onFocusDrop(actor, focus, dropFunc) {
     return false;
   }
 
-  const hasFocus = getItemsOfType("focus", actor.items).length > 0;
-  const role = getItemsOfType("role", actor.items);
+  const hasFocus = actor.items.documentsByType.focus.length > 0;
+  const role = actor.items.documentsByType.role;
   const attachedRole = [];
 
   for (const [, item] of Object.entries(focus.system.items)) {
@@ -286,14 +285,14 @@ export async function onFocusDelete(actor, focus) {
  */
 export async function onRoleDrop(actor, role, dropFunc) {
   // Actors can only have one Role
-  const hasRole = getItemsOfType("role", actor.items).length > 0;
+  const hasRole = actor.items.documentsByType.role.length > 0;
   if (hasRole) {
     ui.notifications.error(game.i18n.localize('E20.RoleMultipleError'));
     return false;
   }
 
   // Faction updates
-  const factionList = getItemsOfType("faction", actor.items);
+  const factionList = actor.items.documentsByType.faction;
   if (factionList.length) {
     addFactionPerks(actor, role);
   } else {
@@ -401,14 +400,14 @@ export async function onLevelChange(actor, newLevel) {
     return;
   }
 
-  const roles = getItemsOfType("role", actor.items);
+  const roles = actor.items.documentsByType.role;
   if (roles.length == 1) {
     await setRoleValues(roles[0], actor, newLevel, previousLevel);
   } else {
     return;
   }
 
-  const focus = getItemsOfType("focus", actor.items);
+  const focus = actor.items.documentsByType.focus;
   if (focus.length == 1) {
     await _setFocusValues(focus[0], actor, newLevel, previousLevel);
   }
@@ -423,8 +422,8 @@ export async function onLevelChange(actor, newLevel) {
  */
 export async function onRoleDelete(actor, role) {
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
-  const focus = getItemsOfType("focus", actor.items);
-  const factionList = getItemsOfType("faction", actor.items);
+  const focus = actor.items.documentsByType.focus;
+  const factionList = actor.items.documentsByType.faction;
 
   // Faction updates
   if (factionList.length) {
