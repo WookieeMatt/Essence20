@@ -128,7 +128,7 @@ export class Dice {
     case 'weaponEffect':
       {
         const roleList = actor.items?.documentsByType?.role;
-        roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
+        roleSkillDieName = roleList?.length ? roleList[0].system.skillDie.name : null;
       }
 
       label = this._getWeaponRollLabel(dataset, skillRollOptions, item, roleSkillDieName);
