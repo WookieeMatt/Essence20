@@ -105,7 +105,7 @@ export class Dice {
     };
 
     updatedShiftDataset.rolePoints = null;
-    const rolePointsList = actor.items.documentsByType.rolePoints;
+    const rolePointsList = actor.items?.documentsByType?.rolePoints;
 
     let rolePoints = null;
     if (item?.type == 'weaponEffect' && rolePointsList.length) {
@@ -127,7 +127,7 @@ export class Dice {
     switch(item?.type) {
     case 'weaponEffect':
       {
-        const roleList = actor.items.documentsByType.role;
+        const roleList = actor.items?.documentsByType?.role;
         roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
       }
 
