@@ -108,7 +108,7 @@ export class Dice {
     const rolePointsList = actor.items?.documentsByType?.rolePoints;
 
     let rolePoints = null;
-    if (item?.type == 'weaponEffect' && rolePointsList.length) {
+    if (item?.type == 'weaponEffect' && rolePointsList?.length) {
       rolePoints = rolePointsList[0]; // There should only be one RolePoints
       if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
         updatedShiftDataset.rolePoints = rolePoints;
