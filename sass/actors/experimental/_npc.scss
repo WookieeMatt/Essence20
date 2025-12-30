@@ -1,95 +1,194 @@
 @use "../../variables" as v;
 .e20-window {
-  .npc-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: v.$gap-md;
-  }
-
-  .npc-items {
-    width: 50%;
+  .npc-sheet {
     display: flex;
     flex-direction: column;
-    gap: v.$gap-lg;
-  }
-
-  .npc-row-1, .npc-row-2 {
-    display: grid;
     gap: v.$gap-md;
-    .sliced-border {
-      height: 100% !important;
+    
+    .npc-header {
+      grid-template-columns: auto 1fr auto;
+
+      &.sliced-border {
+        width: 100% !important;
+        display: grid !important;
+        gap: v.$gap-lg !important;
+      }
+
+      .npc-header__left {
+        max-width: 140px;
+      }
+
+      .npc-header__center {
+        display: flex;
+        flex-direction: column;
+        gap: v.$gap-md;
+
+        > .sliced-border {
+          width: 100% !important;
+          input {
+            font-size: 1.5rem;
+          }
+        }
+
+        .npc-header__inputs {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+          gap: v.$gap-sm;
+          row-gap: v.$gap-md;
+          column-gap: v.$gap-sm;
+
+          .sliced-border,
+          input, select {
+            width: 100% !important;
+          }
+        }
+      }
+
+      .npc-header__right {
+        align-items: center;
+        justify-content: center;
+
+        .sliced-border,
+        input {
+          width: 100% !important;
+        }
+
+        &.sliced-border {
+          display: flex !important;
+          flex-direction: column !important;
+          gap: v.$gap-lg !important;
+          height: 100% !important;
+        }
+      }
     }
-  }
 
-  .npc-row-1 {
-    grid-template-columns: auto auto 1fr 1fr;
-  }
+    .npc-body {
+      display: flex;
+      flex-direction: column;
 
-  .npc-row-2 {
-    grid-template-columns: auto 3fr 2fr;
-  }
+      .npc-details {
+        display: grid;
+        grid-template-columns: auto 1fr 1fr;
 
-  .npc-powers {
-    display: flex;
-    gap: v.$gap-md;
+        .npc-stats{
+          display: flex;
+          flex-direction: column;
+          height: min-content;
+          gap: v.$gap-md;
+          max-width: 300px;
 
-    & > .sliced-border {
-      min-width: 100% !important;
+          .npc-stats__grid{
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            column-gap: v.$gap-md;
+            row-gap: v.$gap-lg;
+
+            & div:nth-child(n+3){
+              grid-column: -1/1;
+            }
+
+            .sliced-border,
+            input {
+              width: 100% !important;
+            }
+          }
+        }
+
+        .npc-skills {
+          width: 100%;
+        }
+
+        .npc-items {
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          gap: v.$gap-lg;
+        }
+      }
     }
-  }
 
-  .npc-movement {
-    width: fit-content;
-    min-width: 80px;
-
-    .sliced-border {
-      height: 100% !important;
+    // TODO: Remove/prune
+    .npc-row {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      gap: v.$gap-md;
     }
-  }
 
-  .npc-firepoints {
-    width: 60%;
-  }
+    .npc-row-1,
+    .npc-row-2 {
+      display: grid;
+      gap: v.$gap-md;
+      .sliced-border {
+        height: 100% !important;
+      }
+    }
 
-  .firepoints-input {
-    border: none;
-    outline: none;
+    .npc-row-1 {
+      grid-template-columns: auto auto 1fr 1fr;
+    }
 
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
+    .npc-row-2 {
+      grid-template-columns: auto 3fr 2fr;
+    }
 
-    resize: none;
-  }
+    .npc-powers {
+      display: flex;
+      gap: v.$gap-md;
 
-  .stats-container.firepoints {
-    max-height: 60px;
-    overflow: hidden;
-  }
+      & > .sliced-border {
+        min-width: 100% !important;
+      }
+    }
 
-  .npc-skills {
-    width: 50%;
-  }
+    .npc-movement {
+      width: fit-content;
+      min-width: 80px;
 
-  .skill-separator {
-    display: flex;
-    align-items: center;
-    text-align: center;
-  }
+      .sliced-border {
+        height: 100% !important;
+      }
+    }
 
-  .skill-separator::before,
-  .skill-separator::after {
-    content: "";
-    flex: 1;
-    border-bottom: 1px solid #b5b1b1;
-  }
+    .npc-firepoints {
+      width: 60%;
+    }
 
-  .skill-separator:not(:empty)::before {
-    margin-right: 0.25em;
-  }
+    .firepoints-input {
+      border: none;
+      outline: none;
 
-  .skill-separator:not(:empty)::after {
-    margin-left: 0.25em;
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+
+      resize: none;
+    }
+
+    .stats-container.firepoints {
+      max-height: 60px;
+      overflow: hidden;
+    }
+
+    .skill-separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+    }
+
+    .skill-separator::before,
+    .skill-separator::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #b5b1b1;
+    }
+
+    .skill-separator:not(:empty)::before {
+      margin-right: 0.25em;
+    }
+
+    .skill-separator:not(:empty)::after {
+      margin-left: 0.25em;
+    }
   }
 }

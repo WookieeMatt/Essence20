@@ -34,7 +34,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
       "e20-window",
       "essence20", 
       "theme-wrapper theme-dark", // TODO: get light/dark from settings/browser
-      "sliced-border --thick",
+      "sliced-border --thick --opaque",
       "story-points",
       getDefaultTheme(),
     ],

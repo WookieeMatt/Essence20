@@ -1,8 +1,4 @@
 {{#if canMorphOrTransform}}
-<div class="sliced-border flexcol" style="height: 100%; min-width: fit-content; border-color: {{system.color}};">
-  <label class="sliced-border__label accordion-label">
-    <span>{{localize 'E20.ActionsTitle'}}</span>
-  </label>
   {{#if system.canTransform}}
   <div class="flexrow" style="gap: 5px; align-items: center; flex-wrap: nowrap; width: 100%">
     <a class="transform" style="flex-grow: 0;"><i class="fas fa-steering-wheel"></i></a>
@@ -24,5 +20,4 @@
     </span>
   </div>
   {{/if}}
-</div>
 {{/if}}

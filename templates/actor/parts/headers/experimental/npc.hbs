@@ -1,25 +1,63 @@
-{{#>"systems/essence20/templates/actor/parts/headers/experimental/common.hbs"}}
-  {{#*inline "secondary-fields"}}
-    <div>
-      <label for="threatLevel" class="resource-label">{{localize 'E20.NpcThreatLevel'}}</label>
-      {{numberInput system.threatLevel name="system.threatLevel" min=0 step=1}}
+<header class="npc-header sliced-border --thick --opaque">
+  <div class="npc-header__left">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+  </div>
+
+  <div class="npc-header__center">
+    {{!-- Sheet Lock --}}
+    <div style="display: flex; gap: 8px;">
+      <a class="lock-status" data-tooltip="{{localize 'E20.ActorLockTitle'}}">
+        <i class="fas" style="margin-left: 2px;"></i>
+      </a>
+      {{#if system.isLocked}} {{localize 'E20.ActorLockOn'}} {{else}} {{localize 'E20.ActorLockOff'}} {{/if}}
     </div>
 
-    <div>
-      <label for="conditioning" class="resource-label">{{ localize 'E20.ActorConditioning' }}</label>
-      {{numberInput system.conditioning name="system.conditioning" min=0 step=1}}
+    {{!-- Name --}}
+    <div class="sliced-border">
+      <label for="name" class="sliced-border__label">{{localize 'E20.ActorName'}}</label>
+      <input name="name" type="text" value="{{actor.name}}" placeholder="Name" />
     </div>
+    
+    <div class="npc-header__inputs">
+      {{!-- Size --}}
+      <div class="sliced-border">
+        {{#if system.isTransformed}}
+          <label for="system.altModesize" class="sliced-border__label">{{localize 'E20.ActorSize'}}</label>
+          <select name="system.altModesize">
+            {{selectOptions config.actorSizes selected=system.altModesize}}
+          </select>
+        {{else}}
+          <label for="system.size" class="sliced-border__label">{{localize 'E20.ActorSize'}}</label>
+          <select name="system.size">
+            {{selectOptions config.actorSizes selected=system.size}}
+          </select>
+        {{/if}}
+      </div> 
 
-    <div>
-      <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
-      <input type="text" name="system.languages" value="{{system.languages}}" />
+      <div class="sliced-border">
+        <label for="threatLevel" class="sliced-border__label">{{localize 'E20.NpcThreatLevel'}}</label>
+        {{numberInput system.threatLevel name="system.threatLevel" min=0 step=1}}
+      </div>
+
+      <div class="sliced-border">
+        <label for="conditioning" class="sliced-border__label">{{ localize 'E20.ActorConditioning' }}</label>
+        {{numberInput system.conditioning name="system.conditioning" min=0 step=1}}
+      </div>
+
+      <div class="sliced-border">
+        <label for="system.languages" class="sliced-border__label">{{localize 'E20.ActorLanguages'}}</label>
+        <input type="text" name="system.languages" value="{{system.languages}}" />
+      </div>
+
+      <div class="sliced-border">
+        <label for="system.color" class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
+        <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+      </div>
+
+      {{!-- TODO: Do we need this? --}}
+      {{#> secondary-fields}}
+      {{!-- Custom secondary fields here --}}
+      {{/secondary-fields}}
     </div>
-
-    <div class="pr-header-color flex-group-center">
-      <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
-      <input type="color" class="picker" name="system.color" value="{{system.color}}" />
-    </div>
-
-    {{> "systems/essence20/templates/actor/parts/misc/experimental/initiative.hbs"}}
-  {{/inline}}
-{{/"systems/essence20/templates/actor/parts/headers/experimental/common.hbs"}}
+  </div>
+</header>

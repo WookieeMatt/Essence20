@@ -17,5 +17,6 @@
 
 // Restyle
 // TODO: once the restyle is done, these should replace the old styles entirely. -GL
-@forward '../assets/experimental/headers';
-@forward '../assets/experimental/itemsheet';
+@forward './experimental/headers';
+@forward './experimental/itemsheet';
+@forward './experimental/essence-skill';

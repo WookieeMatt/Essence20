@@ -19,7 +19,7 @@
   overflow: visible;
   border: none; // TODO: Remove after refactor of styles, this is just to remove the old border;
   position: fixed !important;
-  
+
   &.window-app,
   .window-content,
   .window-header {
@@ -57,7 +57,8 @@
     --theme-tab-image: url(../assets/borders/default-tab.svg);
     --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
     // e20-window is the new replacement for window-app and should replace both window-app and essence20 as things are converted -GL
-    &.essence20, &.e20-window {
+    &.essence20,
+    &.e20-window {
       border-radius: 25px 0;
     }
   }
@@ -68,12 +69,20 @@
     --theme-filled-border-image: url(../assets/borders/pony-tab-filled.svg);
     --theme-tab-image: url(../assets/borders/pony-tab.svg);
     --theme-filled-tab-image: url(../assets/borders/pony-tab-filled.svg);
-    &.essence20, &.e20-window {
+    &.essence20,
+    &.e20-window {
       border-radius: 15px;
     }
   }
-  
-  header * {
-    color: var(--theme-text-color) !important;
+
+  header {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--theme-text-color) !important;
+    }
   }
 }

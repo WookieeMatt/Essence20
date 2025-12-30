@@ -60,6 +60,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/experimental/collapsible-item-container.hbs",
     "systems/essence20/templates/actor/parts/misc/experimental/contact.hbs",
     "systems/essence20/templates/actor/parts/misc/experimental/energon.hbs",
+    "systems/essence20/templates/actor/parts/misc/experimental/essence-skill.hbs",
     "systems/essence20/templates/actor/parts/misc/experimental/health.hbs",
     "systems/essence20/templates/actor/parts/misc/experimental/immunities-resistances.hbs",
     "systems/essence20/templates/actor/parts/misc/experimental/initiative.hbs",

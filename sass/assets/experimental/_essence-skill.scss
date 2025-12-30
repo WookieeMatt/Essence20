@@ -1,0 +1,30 @@
+@use "../../variables" as v;
+
+.e20-window {
+  .essence-skill {
+    border-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: var(--theme-border-color);
+    padding-top: v.$gap-sm;
+    padding-bottom: v.$gap-sm;
+
+    &:last-child {
+      border: none;
+    }
+
+    .skill__header {
+      display: grid;
+      // This would be better to put above, then use subgrid for these. That'd make everything fit in a grid but also the html would be clean. 
+      // But that's kinda advanced and tough to understand at a glance so I'm opting for this for now -GL
+      grid-template-columns: auto 1fr repeat(7, auto);
+      align-items: center;
+      gap: v.$gap-sm;
+    }
+
+    .skill__body {
+      display: flex;
+      flex-direction: column;
+      gap: v.$gap-sm;
+    }
+  }
+}

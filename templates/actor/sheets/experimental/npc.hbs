@@ -4,42 +4,48 @@
     --theme-border-color: {{system.color}};
   }
 </style>
-<form class="{{cssClass}} {{actor.type}} {{system.windowId}}" autocomplete="off">
+<form class="npc-sheet {{cssClass}} {{actor.type}} {{system.windowId}}" autocomplete="off">
   {{> "systems/essence20/templates/actor/parts/headers/experimental/npc.hbs"}}
 
-  <nav class="sheet-tabs" data-group="primary">
-    {{#if system.isNPC}}
-      <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="npc"><span>{{ localize "E20.TabNPC" }}</span></a>
-    {{/if}}
-    {{#if system.isContact}}
-      <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="contact"><span>{{ localize "E20.TabContact" }}</span></a>
-    {{/if}}
-    {{#if system.canTransform}}
-      <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="altmode"><span>{{ localize "E20.TabAltMode" }}</span></a>
-    {{/if}}
-    <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="notes"><span></span>{{ localize "E20.TabNotes" }}</span></a>
-  </nav>
+  <div class="npc-body">
+    <nav class="sheet-tabs" data-group="primary">
+      {{#if system.isNPC}}
+        <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="npc"><span>{{ localize "E20.TabNPC" }}</span></a>
+      {{/if}}
+      {{#if system.isContact}}
+        <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="contact"><span>{{ localize "E20.TabContact" }}</span></a>
+      {{/if}}
+      {{#if system.canTransform}}
+        <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="altmode"><span>{{ localize "E20.TabAltMode" }}</span></a>
+      {{/if}}
+      <a class="sliced-border --tab" style="border-color: {{system.color}};" data-tab="notes"><span></span>{{ localize "E20.TabNotes" }}</span></a>
+    </nav>
 
-  <section class="sheet-body flexcol sliced-border --thick" style="padding-top: 14px; border-color: {{system.color}};">
-    {{!-- NPC Tab --}}
-    <div class="tab main flexcol" data-group="primary" data-tab="npc">
-      <div class="npc-row-1">
-        {{> "systems/essence20/templates/actor/parts/misc/experimental/health.hbs"}}
-        {{> "systems/essence20/templates/actor/parts/misc/experimental/stun.hbs"}}
-        {{> "systems/essence20/templates/actor/parts/misc/experimental/npc-defenses.hbs"}}
-        {{> "systems/essence20/templates/actor/parts/misc/experimental/immunities-resistances.hbs"}}
-      </div>
+    <section class="sheet-body flexcol sliced-border --thick --opaque --fw" style="padding-top: 14px; border-color: {{system.color}};">
+      {{!-- NPC Tab --}}
+      <div class="tab main npc-details" data-group="primary" data-tab="npc">
+        <div class="npc-stats">
+          <div class="npc-stats__grid">
+            {{> "systems/essence20/templates/actor/parts/misc/experimental/health.hbs"}}
+            {{> "systems/essence20/templates/actor/parts/misc/experimental/stun.hbs"}}
 
-      <div class="npc-row-2">
-        {{> "systems/essence20/templates/actor/parts/misc/experimental/morph-transform.hbs"}}
-        {{> "systems/essence20/templates/actor/parts/misc/experimental/npc-essence-scores.hbs"}}
-        {{> "systems/essence20/templates/actor/parts/misc/experimental/movement.hbs"}}
-      </div>
+            {{> "systems/essence20/templates/actor/parts/misc/experimental/npc-essence-scores.hbs"}}
+            {{> "systems/essence20/templates/actor/parts/misc/experimental/npc-defenses.hbs"}}
+            {{> "systems/essence20/templates/actor/parts/misc/experimental/movement.hbs"}}
+            
+            <div style="display: flex; gap: 8px;">
+              {{> "systems/essence20/templates/actor/parts/misc/experimental/initiative.hbs"}}
+              {{> "systems/essence20/templates/actor/parts/misc/experimental/morph-transform.hbs"}}
+            </div>
+            
+            {{> "systems/essence20/templates/actor/parts/misc/experimental/immunities-resistances.hbs"}}
+          </div>
+        </div>
 
-      <div class="npc-row">
         <div class="npc-skills">
           {{> "systems/essence20/templates/actor/parts/misc/experimental/accordion-skills.hbs"}}
         </div>
+
         <div class="npc-items">
           {{#ifCond actor.system.canMorph 'or' actor.system.powers.sorcerous.levelTaken }}
             {{> "systems/essence20/templates/actor/parts/misc/experimental/power-points.hbs"}}
@@ -52,22 +58,22 @@
           {{> "systems/essence20/templates/actor/parts/items/spell/container.hbs"}}
         </div>
       </div>
-    </div>
 
-    {{!-- Contact Tab --}}
-    <div class="tab contact flexcol" data-group="primary" data-tab="contact">
-      {{> "systems/essence20/templates/actor/parts/misc/experimental/contact.hbs"}}
-    </div>
+      {{!-- Contact Tab --}}
+      <div class="tab contact flexcol" data-group="primary" data-tab="contact">
+        {{> "systems/essence20/templates/actor/parts/misc/experimental/contact.hbs"}}
+      </div>
 
-    {{!-- Alt Mode Tab --}}
-    <div class="tab altmode" data-group="primary" data-tab="altmode">
-      {{> "systems/essence20/templates/actor/parts/misc/experimental/energon.hbs"}}
-      {{> "systems/essence20/templates/actor/parts/items/altMode/container.hbs"}}
-    </div>
+      {{!-- Alt Mode Tab --}}
+      <div class="tab altmode" data-group="primary" data-tab="altmode">
+        {{> "systems/essence20/templates/actor/parts/misc/experimental/energon.hbs"}}
+        {{> "systems/essence20/templates/actor/parts/items/altMode/container.hbs"}}
+      </div>
 
-    {{!-- Notes Tab --}}
-    <div class="tab notes" data-group="primary" data-tab="notes">
-      {{> "systems/essence20/templates/actor/parts/misc/experimental/notes.hbs"}}
-    </div>
-  </section>
+      {{!-- Notes Tab --}}
+      <div class="tab notes" data-group="primary" data-tab="notes">
+        {{> "systems/essence20/templates/actor/parts/misc/experimental/notes.hbs"}}
+      </div>
+    </section>
+  </div>
 </form>
