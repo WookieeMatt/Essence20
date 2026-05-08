@@ -76,7 +76,7 @@ export const zordBase = () => ({
     swim: makeMovementFields(0),
   }),
   size: makeStrWithChoices(Object.keys(E20.actorSizes), 'huge'),
-    skills: new fields.SchemaField({
+  skills: new fields.SchemaField({
     acrobatics: makeSkillFields('speed', false),
     alertness: makeSkillFields('smarts', false),
     animalHandling: makeSkillFields('social', false),
