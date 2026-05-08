@@ -48,7 +48,6 @@ export class Essence20Actor extends Actor {
       });
       this.updateSource({ items: newItems });
     }
-
   }
 
   /** @override */
