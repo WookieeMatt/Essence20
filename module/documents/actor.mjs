@@ -31,7 +31,7 @@ export class Essence20Actor extends Actor {
     const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
 
     if (this.type == 'zord') {
-      let newItems = [];
+      const newItems = [];
       const callToActionPerkData = await fromUuid(CALL_TO_ACTION_ID);
       const recallForRepairsPerkData = await fromUuid(RECALL_FOR_REPAIRS_ID);
       newItems.push({
