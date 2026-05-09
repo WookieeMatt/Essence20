@@ -2,54 +2,14 @@ import { E20 } from "../../../helpers/config.mjs";
 
 import { makeBool, makeInt, makeStrWithChoices } from "../../generic-makers.mjs";
 
+import { makeDefensesFields, makeEssencesFields } from "./machine.mjs";
+
+import { makeMovementFields, makeSkillFields } from "./common.mjs";
+
 const fields = foundry.data.fields;
 
-function makeDefensesFields(usesDrivers, init) {
-  return new fields.SchemaField({
-    usesDrivers: makeBool(usesDrivers),
-    value: makeInt(init),
-  });
-}
-
-function makeEssencesFields(usesDrivers, init) {
-  return new fields.SchemaField({
-    usesDrivers: makeBool(usesDrivers),
-    value: makeInt(init),
-  });
-}
-
-function makeMovementFields(base=0) {
-  return new fields.SchemaField({
-    altMode: makeInt(0),
-    base: makeInt(base),
-    bonus: makeInt(0),
-    morphed: makeInt(0),
-    total: makeInt(base),
-  });
-}
-
-function makeSkillFields(essence, canBeInitiative=false, base='d20') {
-  return new fields.SchemaField({
-    canBeInitiative: makeBool(canBeInitiative),
-    canCritD2: makeBool(false),
-    essences: new fields.SchemaField({
-      smarts: makeBool(['smarts', 'any'].includes(essence)),
-      social: makeBool(['social', 'any'].includes(essence)),
-      speed: makeBool(['speed', 'any'].includes(essence)),
-      strength: makeBool(['strength', 'any'].includes(essence)),
-    }),
-    edge: makeBool(false),
-    isSpecialized: makeBool(false),
-    modifier: makeInt(0),
-    shift: makeStrWithChoices(Object.keys(E20.skillShifts), base),
-    shiftDown: makeInt(0),
-    shiftUp: makeInt(0),
-    snag: makeBool(false),
-  });
-}
-
 export const zordBase = () => ({
-  armor: makeInt(10),
+  armor: makeInt(1),
   conditioning: makeInt(3),
   defenses: new fields.SchemaField({
     toughness: makeDefensesFields(false, 17),
