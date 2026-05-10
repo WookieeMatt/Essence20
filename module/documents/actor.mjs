@@ -25,6 +25,32 @@ export class Essence20Actor extends Actor {
   }
 
   /** @override */
+  async _preCreate(data, options, user) {
+    await super._preCreate(data, options, user);
+    const CALL_TO_ACTION_ID = "Compendium.essence20.pr_crb.Item.yjhd6FRLJOsOQqN4";
+    const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
+
+    if (this.type == 'zord') {
+      const newItems = [];
+      const callToActionPerkData = await fromUuid(CALL_TO_ACTION_ID);
+      const recallForRepairsPerkData = await fromUuid(RECALL_FOR_REPAIRS_ID);
+      newItems.push({
+        name: callToActionPerkData.name,
+        type: callToActionPerkData.type,
+        img: callToActionPerkData.img,
+        system: callToActionPerkData.system,
+      });
+      newItems.push({
+        name: recallForRepairsPerkData.name,
+        type: recallForRepairsPerkData.type,
+        img: recallForRepairsPerkData.img,
+        system: recallForRepairsPerkData.system,
+      });
+      this.updateSource({ items: newItems });
+    }
+  }
+
+  /** @override */
   async _preUpdate(changed, options, user) {
     await super._preUpdate(changed, options, user);
 
