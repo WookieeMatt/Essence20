@@ -1,5 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
+import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 
 /**
@@ -70,7 +71,10 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     context.system = itemData.system;
     context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
-    context.roles = await _getVersionRoles(itemData);
+
+    if (this.item.type == 'perk') {
+      context.roles = await _getVersionRoles(itemData);
+    }
 
     return context;
   }
@@ -200,14 +204,17 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
  */
 async function _getVersionRoles(itemData) {
   const versionRoles = {};
-  for (const pack of game.packs) {
-    const selection = await pack.getDocuments({ type: "role" });
-    for (const role of selection) {
-      if (role.system.version == itemData.system.version){
-        versionRoles[role.name] = {
-          type: role.type,
-        };
-      }
+
+  // Should be generated on world load, but just in case
+  if (CONFIG.E20.allPackRoles == null) {
+    await updateRoleCache();
+  }
+
+  for (const role of CONFIG.E20.allPackRoles) {
+    if (role.system.version == itemData.system.version){
+      versionRoles[role.name] = {
+        type: role.type,
+      };
     }
   }
 

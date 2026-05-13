@@ -1,5 +1,7 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
+import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
+import { updateRoleCache } from "../helpers/utils.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -9,6 +11,25 @@ export class Essence20Item extends Item {
   constructor(item, options) {
     super(item, options);
     this._dice = new Dice(ChatMessage, new RollDialog(), game.i18n);
+  }
+
+
+  /** @override */
+  async delete(operation) {
+    super.delete(operation);
+
+    if (this.type == 'role' && this.pack) {
+      await updateRoleCache();
+    }
+  }
+
+  /** @override */
+  async _onCreate(data, options, userId) {
+    super._onCreate(data, options, userId);
+
+    if (this.type == 'role'&& this.pack) {
+      await updateRoleCache();
+    }
   }
 
   /**
@@ -22,6 +43,31 @@ export class Essence20Item extends Item {
     if (data.img === undefined) {
       const image = CONFIG.E20.defaultIcon[this.type];
       if (image) this.updateSource({ img: image });
+    }
+  }
+
+  /** @override */
+  async _onUpdate(change, options, userId) {
+    super._onUpdate(change, options, userId);
+
+    if (this.type == 'role') {
+      await updateRoleCache();
+    }
+
+    // Update the entry on the parent if this is a child Item
+    if (['weaponEffect', 'upgrade'].includes(this.type)) {
+      const parentId = this.flags.essence20?.parentId;
+      const parentItem = this.actor.items.get(parentId);
+      const key = this.flags.essence20.collectionId;
+
+      if (parentItem && key) {
+        const entry = createEntry(this, parentItem);
+        const pathPrefix = "system.items";
+
+        await parentItem.update({
+          [`${pathPrefix}.${key}`]: entry,
+        });
+      }
     }
   }
 

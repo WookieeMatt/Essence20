@@ -5,6 +5,7 @@ import { getItemsOfType } from "../helpers/utils.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransformUuid } from "../sheet-handlers/transformer-handler.mjs";
+import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -21,6 +22,32 @@ export class Essence20Actor extends Actor {
     const actor = await super.create(data, options);
 
     return actor;
+  }
+
+  /** @override */
+  async _preCreate(data, options, user) {
+    await super._preCreate(data, options, user);
+    const CALL_TO_ACTION_ID = "Compendium.essence20.pr_crb.Item.yjhd6FRLJOsOQqN4";
+    const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
+
+    if (this.type == 'zord') {
+      const newItems = [];
+      const callToActionPerkData = await fromUuid(CALL_TO_ACTION_ID);
+      const recallForRepairsPerkData = await fromUuid(RECALL_FOR_REPAIRS_ID);
+      newItems.push({
+        name: callToActionPerkData.name,
+        type: callToActionPerkData.type,
+        img: callToActionPerkData.img,
+        system: callToActionPerkData.system,
+      });
+      newItems.push({
+        name: recallForRepairsPerkData.name,
+        type: recallForRepairsPerkData.type,
+        img: recallForRepairsPerkData.img,
+        system: recallForRepairsPerkData.system,
+      });
+      this.updateSource({ items: newItems });
+    }
   }
 
   /** @override */
@@ -41,6 +68,33 @@ export class Essence20Actor extends Actor {
           changed.prototypeToken ||= {};
           changed.prototypeToken.height = height;
           changed.prototypeToken.width = width;
+        }
+
+        for (let item of this.items) {
+          if (item.type == 'weaponEffect' && item.system.classification.style == 'melee') {
+            let reachMultiplier = 1;
+            const actorReach = CONFIG.E20.actorReach[newSize];
+            if (item.system.range.reachMultiplier > 1) {
+              reachMultiplier = item.system.range.reachMultiplier;
+            }
+
+            const totalReach = actorReach * reachMultiplier;
+
+            item.system.totalReach = totalReach;
+
+            const parentId = item.flags.essence20.parentId;
+            const parentItem = await this.items.get(parentId);
+            const key = item.flags.essence20.collectionId;
+
+            if (parentItem && key) {
+              const entry = await createEntry(item, parentItem);
+              const pathPrefix = "system.items";
+
+              await parentItem.update({
+                [`${pathPrefix}.${key}`]: entry,
+              });
+            }
+          }
         }
       }
     }

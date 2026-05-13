@@ -392,7 +392,7 @@ describe("rollSkill", () => {
     expect(dice._rollSkillHelper).toHaveBeenCalledWith(
       'd20 + 0',
       mockActor,
-      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>",
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br><b>E20.ItemDescription</b>:<br>",
       false,
     );
   });
@@ -562,7 +562,7 @@ describe("_getWeaponRollLabel", () => {
 
     const expected =
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br>" +
-      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
+      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br><b>E20.ItemDescription</b>:<br>";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect)).toEqual(expected);
   });
@@ -578,7 +578,7 @@ describe("_getWeaponRollLabel", () => {
 
     const expected =
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics) E20.RollWithAnEdge<br>" +
-      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
+      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br><b>E20.ItemDescription</b>:<br>";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect)).toEqual(expected);
   });
@@ -594,7 +594,7 @@ describe("_getWeaponRollLabel", () => {
 
     const expected =
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics) E20.RollWithASnag<br>" +
-      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
+      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br><b>E20.ItemDescription</b>:<br>";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect)).toEqual(expected);
   });
@@ -610,7 +610,7 @@ describe("_getWeaponRollLabel", () => {
 
     const expected =
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (Foo Role Skill)<br>" +
-      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br>";
+      "<b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br><b>E20.ItemDescription</b>:<br>";
 
     expect(dice._getWeaponRollLabel(dataset, skillRollOptions, weaponEffect, 'Foo Role Skill')).toEqual(expected);
   });

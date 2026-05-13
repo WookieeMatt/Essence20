@@ -38,21 +38,28 @@ $boxshadow: 4px 4px 0 black;
 // Spacing
 $padding: 6px;
 
-// New vars for new styles
+// New vars for new styles =====================================================
 // TEXT
-$text-color-light: #fafafa;
-$text-color-dark: #222;
+$text-color-light: #aaaaaa;
+$text-color-dark: #222222;
+$text-color-cyan: #4dd0e1;
+$text-color-orange: #ff6400;
 
 // BACKGROUNDS
-$bg-color-light: #fafafa;
-$bg-color-dark: #111;
+$bg-color-light: #cccccc;
+$bg-color-dark: #222222;
+
+// BORDERS
+$border-color-light: #5f5f5f;
+$border-color-dark: #363636;
 
 // INPUTS
-$input-color-light: #e6e6e6;
-$input-color-dark: #222;
+$input-color-light: #fafafa;
+$input-color-dark: #333333;
 
 // SPACING
 $gap-sm: 0.25rem;
 $gap-md: 0.5rem;
 $gap-lg: 1rem;
 $gap-xl: 1.5rem;
+$gap-sliced-border: 9px;
