@@ -1,6 +1,5 @@
-{{!-- Skill header --}}
-<div class="essence-skill">
-  <div class="skill__header">
+<details class="essence-skill" {{#if isDisplayed}}open{{/if}}>
+  <summary class="skill__header">
     <a
       class="rollable skill__roll" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}"
       data-shift-up ="{{fields.shiftUp}}" data-shift-down ="{{fields.shiftDown}}"
@@ -16,7 +15,7 @@
     </select>
     <span for="system.skills.{{skill}}.modifier">+</span>
     <input style="width: 30px; text-align: center;" type="number" name="system.skills.{{skill}}.modifier" value="{{fields.modifier}}" min="0" step="1" />
-    
+
     {{#inArray '["companion", "npc", "vehicle", "zord"]' @root.actor.type}}
       <span>{{localize 'E20.RollIsSpecialized'}}:</span>
       <input type="checkbox" name="system.skills.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
@@ -25,7 +24,7 @@
     <a class="skill__add-spec" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.AddSpecialization' }}">
       <i class="fas fa-plus"></i>
     </a>
-  </div>
+  </summary>
 
   <div class="skill__body">
     {{!-- Specializations list --}}
@@ -68,4 +67,4 @@
       {{/each}}
     </ol>
   </div>
-</div>
+</details>

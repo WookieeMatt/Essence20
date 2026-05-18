@@ -1,11 +1,23 @@
-<div style="display: flex; flex-direction: column; gap: 16px;">
-  {{#each @root.config.skillsByEssence as |skills essence|}}
-    <div class="sliced-border --col --fw">
-      <span class="sliced-border__label --heading">{{lookup @root.config.essences essence}}</span>
+<details class="sliced-border --col --fw skills-accordion" open>
+  <summary class="skills-accordion__summary">
+    <span>{{localize 'E20.AccordionSkillsTitle'}}</span>
+    <i class="skills-accordion__chevron fas fa-chevron-down"></i>
+  </summary>
 
-      {{#each skills as |skill|}}
-        {{> "systems/essence20/templates/actor/parts/misc/experimental/essence-skill.hbs" essence=essence skill=skill fields=(lookup @root.system.skills skill)}}
-      {{/each}}
-    </div>
-  {{/each}}
-</div>
+  <div class="skills-accordion__body">
+    {{#each @root.config.skillsByEssence as |skills essence|}}
+      <div class="sliced-border --col --fw">
+        <span class="sliced-border__label --heading">{{lookup @root.config.essences essence}}</span>
+
+        {{#each skills as |skill|}}
+          {{> "systems/essence20/templates/actor/parts/misc/experimental/essence-skill.hbs"
+              essence=essence
+              skill=skill
+              fields=(lookup @root.system.skills skill)
+              isDisplayed=(lookup @root.displayedNpcSkills skill)
+          }}
+        {{/each}}
+      </div>
+    {{/each}}
+  </div>
+</details>

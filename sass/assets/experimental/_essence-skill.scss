@@ -1,6 +1,52 @@
 @use "../../variables" as v;
 
 .e20-window {
+  // ── Skills accordion (details/summary) ──────────────────────────────────
+  .skills-accordion {
+    // <details> inherits sliced-border base; just fix the padding-top so the
+    // floating label has room (same rule as sliced-border :has(.--heading))
+    padding-top: v.$gap-lg + 16px;
+
+    &[open] .skills-accordion__chevron {
+      transform: rotate(180deg);
+    }
+
+    .skills-accordion__summary {
+      // Reset browser default marker
+      list-style: none;
+      &::-webkit-details-marker { display: none; }
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      color: var(--theme-border-color);
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 0 v.$gap-sm;
+
+      // Prevent the summary itself from creating a focus outline that clashes
+      &:focus-visible {
+        outline: 1px solid var(--theme-border-color);
+        border-radius: 4px;
+      }
+    }
+
+    .skills-accordion__chevron {
+      transition: transform 0.2s ease-in-out;
+      font-size: 1rem;
+    }
+
+    .skills-accordion__body {
+      display: flex;
+      flex-direction: column;
+      gap: v.$gap-lg;
+      width: 100%;
+    }
+  }
+
+  // ── Individual skill row ─────────────────────────────────────────────────
   .essence-skill {
     border-width: 1px;
     border-bottom-style: solid;
@@ -12,19 +58,28 @@
       border: none;
     }
 
+    // skill__header doubles as the <summary> — reset browser marker
     .skill__header {
+      list-style: none;
+      &::-webkit-details-marker { display: none; }
+
+      cursor: pointer;
       display: grid;
-      // This would be better to put above, then use subgrid for these. That'd make everything fit in a grid but also the html would be clean. 
-      // But that's kinda advanced and tough to understand at a glance so I'm opting for this for now -GL
       grid-template-columns: auto 1fr repeat(7, auto);
       align-items: center;
       gap: v.$gap-sm;
+
+      // Don't let the summary pointer-cursor bleed into interactive children
+      a, input, select {
+        cursor: auto;
+      }
     }
 
     .skill__body {
       display: flex;
       flex-direction: column;
       gap: v.$gap-sm;
+      padding-top: v.$gap-sm;
     }
   }
 }

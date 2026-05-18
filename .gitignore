@@ -11,5 +11,12 @@ npm-debug.log
 jsconfig.json
 foundry
 
+# Built packs, might be needed for deployment but sucks for dev.
+packs/*/*.log
+packs/*/CURRENT
+packs/*/LOCK
+packs/*/LOG
+packs/*/MANIFEST*
+
 # SASS
 css/essence20.css.map
