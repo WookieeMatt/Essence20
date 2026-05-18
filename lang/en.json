@@ -846,6 +846,7 @@
     "WeaponRange": "Range",
     "WeaponRangeLong": "Long",
     "WeaponRangeMin": "Min",
+    "WeaponRangeReach": "Reach",
     "WeaponRangeReachMultiplier": "Reach Multiplier",
     "WeaponRangeValue": "Value",
     "WeaponRequirements": "Requirements",

@@ -705,6 +705,21 @@ E20.actorSizes = {
 };
 preLocalize("actorSizes");
 
+//Reach by size
+E20.actorReach = {
+  small: 2,
+  common: 5,
+  large: 5,
+  long: 5,
+  huge: 10,
+  extended: 10,
+  gigantic: 15,
+  extended2: 15,
+  towering: 20,
+  extended3: 15,
+  titanic: 25,
+};
+
 // Subtypes of megaforms
 E20.megaformSubtypes = {
   megaformCombiner: "E20.MegaformSubtypeCombiner",
