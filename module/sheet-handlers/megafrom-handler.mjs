@@ -93,9 +93,10 @@ export async function setMegaformValues(targetActor) {
 
       for (const [key, entries] of Object.entries(fullActor.system.essences)) {
         if (key == "strength" || key == "speed") {
+          console.log(entries)
           if (!essences[key]) {
             essences[key] = entries.value;
-          } else if (entries.max > essences[key]) {
+          } else if (entries.value > essences[key]) {
             essences[key] = entries.value;
           }
         }
@@ -107,7 +108,6 @@ export async function setMegaformValues(targetActor) {
 
           for (const [key, entries] of Object.entries(fullChildActor.system.essences)) {
             if (key == "strength" || key == "speed") {
-              console.log("Got Here")
               if (entries.max > essences[key]) {
                 essences[key] = entries.max;
               }
@@ -116,26 +116,33 @@ export async function setMegaformValues(targetActor) {
 
         }
       }
-
+      console.log(essences)
       health.push(fullActor.system.health.value);
-      if (fullActor.movement.ground.base > 0 && movement.ground.base == 0) {
-        movement.ground.base = fullActor.movement.ground.base;
-      }
-
-      if (fullActor.movement.ground.base > 0 && fullActor.movement.ground.base < movement.ground.base) {
-        movement.ground.base = fullActor.movement.ground.base;
+      for (const [type, movementValues] of Object.entries(fullActor.system.movement)) {
+        if (movement[type].base == 0 && movementValues.base > 0) {
+          movement[type].base = movementValues.base;
+        }
+        if (movementValues.base > 0 && movementValues.base < movement[type].base) {
+          movement[type].base = movementValues.base;
+        }
       }
     }
+
     if (targetActor.system.size == "towering" || targetActor.system.size == "titanic") {
       newSize = targetActor.system.size;
     } else {
       newSize = "towering";
     }
+
     targetActor.update({
       "system.health": health,
       "system.essences.speed.value": essences.speed,
       "system.essences.strength.value": essences.strength,
       "system.size": newSize,
+      "system.movement.aerial.base": movement.aerial.base,
+      "system.movement.climb.base": movement.climb.base,
+      "system.movement.ground.base": movement.ground.base,
+      "system.movement.swim.base": movement.swim.base,
     });
   }
 }

@@ -107,6 +107,11 @@ export class Essence20Actor extends Actor {
     // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
     // prepareDerivedData().
     super.prepareData();
+    const width = CONFIG.E20.tokenSizes[this.system.size].width;
+    const height = CONFIG.E20.tokenSizes[this.system.size].height;
+    this._source.prototypeToken.height = height;
+    this._source.prototypeToken.width = width;
+
   }
 
   /** @override */
