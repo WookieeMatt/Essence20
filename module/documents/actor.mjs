@@ -1,7 +1,6 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { resizeTokens } from "../helpers/actor.mjs";
-import { getItemsOfType } from "../helpers/utils.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransformUuid } from "../sheet-handlers/transformer-handler.mjs";
@@ -167,7 +166,7 @@ export class Essence20Actor extends Actor {
     const bonusName = game.i18n.localize('E20.Bonus');
 
     // Health from Origin
-    const origins = getItemsOfType('origin', this.items);
+    const origins = this.items.documentsByType.origin;
     if (origins.length > 0) {
       const origin = origins[0];
       originStartingHealth = origin.system.startingHealth;
@@ -175,7 +174,7 @@ export class Essence20Actor extends Actor {
     }
 
     // Health from Role Points
-    const rolePointsList = getItemsOfType('rolePoints', this.items);
+    const rolePointsList = this.items.documentsByType.rolePoints;
     if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'healthBonus'
       && (!rolePointsList[0].system.isActivatable || rolePointsList[0].system.isActive)) {
       const rolePoints = rolePointsList[0];
@@ -216,7 +215,7 @@ export class Essence20Actor extends Actor {
       let rolePointsName = game.i18n.localize('E20.RolePoints');
 
       // Armor from Role Points
-      const rolePointsList = getItemsOfType('rolePoints', this.items);
+      const rolePointsList = this.items.documentsByType.rolePoints;
       if (rolePointsList.length) {
         const rolePoints = rolePointsList[0]; // There should only be one RolePoints
 
@@ -305,7 +304,7 @@ export class Essence20Actor extends Actor {
    * Prepare Resource (from Role Points) type specific data.
    */
   _prepareResource() {
-    const rolePointsList = getItemsOfType('rolePoints', this.items);
+    const rolePointsList = this.items.documentsByType.rolePoints;
     if (rolePointsList.length) {
       const rolePoints = rolePointsList[0]; // There should only be one RolePoints
       this.system.useUnlimitedResource = rolePoints.system.resource.level20ValueIsUnlimited && this.system.level == 20;
