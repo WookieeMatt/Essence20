@@ -169,7 +169,12 @@ export async function onDropActor(data, actorSheet) {
 
     break;
   case 'megaform':
-    if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
+    if ((droppedActor.type == 'zord' || droppedActor.system.megaform.zord) && targetActor.system.subtype == 'zord'){ 
+      await setEntryAndAddActor (droppedActor, targetActor);
+      setMegaformValues(targetActor);
+      dropIsValid = true;
+    }
+    else if((droppedActor.system.canTransform || droppedActor.system.megaform.combiner) && targetActor.system.subtype == 'combiner') {
       await setEntryAndAddActor (droppedActor, targetActor);
       setMegaformValues(targetActor);
       dropIsValid = true;

@@ -97,6 +97,10 @@ export const common = () => ({
     skill: makeStrWithChoices(Object.keys(E20.skills), 'initiative'),
   }),
   isLocked: makeBool(false),
+  megaform: new fields.SchemaField({
+    combiner: makeBool(false),
+    zord: makeBool(false),
+  }),
   movement: new fields.SchemaField({
     aerial: makeMovementFields(),
     climb: makeMovementFields(),
