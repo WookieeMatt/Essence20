@@ -230,7 +230,6 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   _prepareWeaponEffectSkills(actorData, context) {
     let hasSkillDie = false;
     let skillDieName = null;
-    console.log (actorData)
     const items = actorData.items.documentsByType?.role;
     if (items?.length && items[0].system.skillDie.isUsed) {
       hasSkillDie = true;
