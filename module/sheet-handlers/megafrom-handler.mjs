@@ -65,10 +65,10 @@ export async function setMegaformValues(targetActor) {
       health.push(fullActor.system.health.value);
 
       for (const [type, movementValues] of Object.entries(fullActor.system.movement)) {
-        console.log(movementValues)
         if (movement[type].base == 0 && movementValues.base > 0) {
           movement[type].base = movementValues.base;
         }
+
         if (movementValues.base > 0 && movementValues.base < movement[type].base) {
           movement[type].base = movementValues.base;
         }
@@ -95,7 +95,6 @@ export async function setMegaformValues(targetActor) {
 
       for (const [key, entries] of Object.entries(fullActor.system.essences)) {
         if (key == "strength" || key == "speed") {
-          console.log(entries)
           if (!essences[key]) {
             essences[key] = entries.value;
           } else if (entries.value > essences[key]) {
@@ -118,12 +117,13 @@ export async function setMegaformValues(targetActor) {
 
         }
       }
-      console.log(essences)
+
       health.push(fullActor.system.health.value);
       for (const [type, movementValues] of Object.entries(fullActor.system.movement)) {
         if (movement[type].base == 0 && movementValues.base > 0) {
           movement[type].base = movementValues.base;
         }
+
         if (movementValues.base > 0 && movementValues.base < movement[type].base) {
           movement[type].base = movementValues.base;
         }
