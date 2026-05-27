@@ -9,16 +9,16 @@ export async function setMegaformValues(targetActor) {
   let numberOfMembers = 0;
   const movement = {
     aerial: {
-      base: 0
+      base: 0,
     },
     climb: {
-      base: 0
+      base: 0,
     },
     ground: {
-      base: 0
+      base: 0,
     },
     swim: {
-      base: 0
+      base: 0,
     },
   };
 

@@ -1,6 +1,6 @@
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeInt, makeNumberArray, makeStrArray, makeStrArrayWithChoices } from "../generic-makers.mjs";
+import { makeNumberArray, makeStrArray, makeStrArrayWithChoices } from "../generic-makers.mjs";
 
 import { common } from './templates/common.mjs';
 import { machine } from './templates/machine.mjs';

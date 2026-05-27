@@ -55,11 +55,3 @@ export function getNumActions(actor) {
     standard: speed > 1 ? 1 : 0,
   };
 }
-
-export function mergeMegaform(actor) {
-
-}
-
-export function separateMegaform(actor) {
-
-}

@@ -5,7 +5,7 @@ import { machine } from './templates/machine.mjs';
 
 import { E20 } from "../../helpers/config.mjs";
 
-import { makeDefensesFields, makeEssencesFields } from "./templates/machine.mjs"
+import { makeDefensesFields, makeEssencesFields } from "./templates/machine.mjs";
 
 import { makeMovementFields, makeSkillFields } from "./templates/common.mjs";
 
