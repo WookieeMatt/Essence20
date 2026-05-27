@@ -169,7 +169,12 @@ export async function onDropActor(data, actorSheet) {
 
     break;
   case 'megaform':
-    if ((droppedActor.type == 'zord' || droppedActor.system.megaform.zord) && targetActor.system.subtype == 'zord'){ 
+    const zordCanDrop = ((droppedActor.type == 'zord' || droppedActor.system.megaform.zord) && targetActor.system.subtype == 'zord');
+    const combinerCanDrop = ((droppedActor.system.canTransform || droppedActor.system.megaform.combiner) && targetActor.system.subtype == 'combiner');
+    console.log(zordCanDrop)
+    console.log(combinerCanDrop)
+
+    if ((droppedActor.type == 'zord' || droppedActor.system.megaform.zord) && targetActor.system.subtype == 'zord'){
       await setEntryAndAddActor (droppedActor, targetActor);
       setMegaformValues(targetActor);
       dropIsValid = true;
