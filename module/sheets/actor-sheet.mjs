@@ -91,6 +91,9 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     // Prepare WeaponEffect Skill List
     this._prepareWeaponEffectSkills(actorData, context);
 
+    //Prepare Initiative Skills
+    context.initiativeSkills = this._prepareInitiativeSkills(actorData);
+
     // Prepare number of actions
     if (actorData.type == "playerCharacter") {
       context.numActions = getNumActions(this.actor);
@@ -224,17 +227,17 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
    * @param {Object} actorData The acor data converted to an object
    * @param {Object} context The actor data to prepare.
    */
-  _prepareWeaponEffectSkills(actor, context) {
+  _prepareWeaponEffectSkills(actorData, context) {
     let hasSkillDie = false;
     let skillDieName = null;
-    const items = actor.items.documentsByType.role;
-    if (items.length && items[0].system.skillDie.isUsed) {
+    const items = actorData.items.documentsByType?.role;
+    if (items?.length && items[0].system.skillDie.isUsed) {
       hasSkillDie = true;
       skillDieName = items[0].system.skillDie.name;
     }
 
     let weaponEffectSkills = {};
-    for (const skill of Object.keys(actor.system.skills)) {
+    for (const skill of Object.keys(actorData.system.skills)) {
       if (skill != 'wealth' && (skill != 'roleSkillDie' || hasSkillDie)) {
         weaponEffectSkills[skill] = {
           key: skill,

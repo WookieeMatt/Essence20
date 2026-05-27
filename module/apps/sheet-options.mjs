@@ -38,9 +38,9 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
-    context.role = await this._actor.items.documentsByType.role;
-    const origin = await this._actor.items.documentsByType.origin;
-    if (origin.length > 1) {
+    context.role = await this._actor.items.documentByType?.role;
+    const origin = await this._actor.items.documentByType?.origin;
+    if (origin?.length > 1) {
       context.altMode = true;
     }
 
