@@ -46,20 +46,22 @@ export async function setMegaformValues(targetActor) {
       }
 
       if (fullActor.system.size == "gigantic") {
-          isTitanic = true;
-        }
-        const currentSize = Math.max(0, (actorSizes.indexOf(fullActor.system.size)));
-        if (currentSize > size)  {
-          size = currentSize;
-        }
+        isTitanic = true;
+      }
 
-        if (numberOfMembers >= 4 && isTitanic) {
-          newSize = "titanic";
-        } else if (numberOfMembers >= 4) {
-          newSize = "towering";
-        } else {
-          newSize = actorSizes[size + 1];
-        }
+      const currentSize = Math.max(0, (actorSizes.indexOf(fullActor.system.size)));
+      if (currentSize > size)  {
+        size = currentSize;
+      }
+
+      if (numberOfMembers >= 4 && isTitanic) {
+        newSize = "titanic";
+      } else if (numberOfMembers >= 4) {
+        newSize = "towering";
+      } else {
+        newSize = actorSizes[size + 1];
+      }
+
       health.push(fullActor.system.health.value);
 
       for (const [type, movementValues] of Object.entries(fullActor.system.movement)) {
