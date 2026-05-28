@@ -158,8 +158,7 @@ export async function onDropActor(data, actorSheet) {
   // Get the target actor
   const droppedActor = await fromUuid(data.uuid);
   if (!droppedActor) return false;
-  console.log(droppedActor)
-  console.log(targetActor)
+
   const zordCanDrop = ((droppedActor.type == 'zord' || droppedActor.system.megaform.zord) && targetActor.system.subtype == 'megaformZord');
   const combinerCanDrop = ((droppedActor.system.canTransform || droppedActor.system.megaform.combiner) && targetActor.system.subtype == 'megaformCombiner');
 
