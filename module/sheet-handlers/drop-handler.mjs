@@ -172,8 +172,8 @@ export async function onDropActor(data, actorSheet) {
 
     break;
   case 'megaform':
-    if (zordCanDrop || combinerCanDrop){
-      await setEntryAndAddActor (droppedActor, targetActor);
+    if (zordCanDrop || combinerCanDrop) {
+      await setEntryAndAddActor(droppedActor, targetActor);
       setMegaformValues(targetActor);
       dropIsValid = true;
     }
