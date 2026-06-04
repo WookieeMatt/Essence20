@@ -1,13 +1,13 @@
 export async function setMegaformValues(targetActor) {
   const actorSizes = Object.keys(CONFIG.E20.actorSizes);
-  const essences = {};
+  const newEssences = {};
   let size = 0;
-  const skills = {};
-  const health = [];
+  const newSkills = {};
+  const newHealth = [];
   let newSize = null;
   let isTitanic = false;
   let numberOfMembers = 0;
-  const movement = {
+  const newMovement = {
     aerial: {
       base: 0,
     },
@@ -22,101 +22,86 @@ export async function setMegaformValues(targetActor) {
     },
   };
 
-  if (targetActor.system.subtype.includes("megaformCombiner")) {
-    for (const actors of Object.values(targetActor.system.actors)) {
+  if (targetActor.system.subtype == "megaformCombiner") {
+    for (const actor of Object.values(targetActor.system.actors)) {
       numberOfMembers += 1;
-      const fullActor = await fromUuid(actors.uuid);
+      const fullActor = await fromUuid(actor.uuid);
 
-      for (const [key, entries] of Object.entries(fullActor.system.essences)) {
-        if (!essences[key] || entries.max > essences[key]) {
-          essences[key] = entries.max;
+      for (const [key, essence] of Object.entries(fullActor.system.essences)) {
+        if (!newEssences[key] || essence.max > newEssences[key]){
+          newEssences[key] = essence.max;
           for (const [skill, skillData] of Object.entries(fullActor.system.skills)){
-            if (skillData.essences[key]) {
-              skills[skill] = skillData;
+            if (skillData.essences[key]){
+              newSkills[skill] = skillData;
             }
           }
         }
       }
 
-      if (fullActor.system.size == "gigantic") {
-        isTitanic = true;
-      }
+      isTitanic = fullActor.system.size == "gigantic";
 
       const currentSize = Math.max(0, (actorSizes.indexOf(fullActor.system.size)));
       if (currentSize > size)  {
         size = currentSize;
       }
 
-      if (numberOfMembers >= 4 && isTitanic) {
-        newSize = "titanic";
-      } else if (numberOfMembers >= 4) {
-        newSize = "towering";
+      if (numberOfMembers >= 4) {
+        newSize = isTitanic ? "titanic" : "towering";
       } else {
         newSize = actorSizes[size + 1];
       }
 
-      health.push(fullActor.system.health.value);
+      newHealth.push(fullActor.system.health.value);
 
       for (const [type, movementValues] of Object.entries(fullActor.system.movement)) {
-        if (movement[type].base == 0 && movementValues.base > 0) {
-          movement[type].base = movementValues.base;
-        }
-
-        if (movementValues.base > 0 && movementValues.base < movement[type].base) {
-          movement[type].base = movementValues.base;
+        if ((newMovement[type].base == 0 && movementValues.base > 0) || (movementValues.base > 0 && movementValues.base < newMovement[type].base)) {
+          newMovement[type].base = movementValues.base;
         }
       }
     }
 
     targetActor.update({
-      "system.health": health,
+      "system.health": newHealth,
       "system.size": newSize,
-      "system.skills": skills,
-      "system.essences.smarts.value": essences.smarts,
-      "system.essences.social.value": essences.social,
-      "system.essences.speed.value": essences.speed,
-      "system.essences.strength.value": essences.strength,
-      "system.movement.aerial.base": movement.aerial.base,
-      "system.movement.climb.base": movement.climb.base,
-      "system.movement.ground.base": movement.ground.base,
-      "system.movement.swim.base": movement.swim.base,
+      "system.skills": newSkills,
+      "system.essences.smarts.value": newEssences.smarts,
+      "system.essences.social.value": newEssences.social,
+      "system.essences.speed.value": newEssences.speed,
+      "system.essences.strength.value": newEssences.strength,
+      "system.movement.aerial.base": newMovement.aerial.base,
+      "system.movement.climb.base": newMovement.climb.base,
+      "system.movement.ground.base": newMovement.ground.base,
+      "system.movement.swim.base": newMovement.swim.base,
     });
+  } else if (targetActor.system.subtype == "megaformZord") {
+    for (const actor of Object.values(targetActor.system.actors)) {
+      const fullActor = await fromUuid(actor.uuid);
 
-  } else if (targetActor.system.subtype.includes("megaformZord")) {
-    for (const actors of Object.values(targetActor.system.actors)) {
-      const fullActor = await fromUuid(actors.uuid);
-
-      for (const [key, entries] of Object.entries(fullActor.system.essences)) {
+      for (const [key, essence] of Object.entries(fullActor.system.essences)) {
         if (key == "strength" || key == "speed") {
-          if (!essences[key] || entries.value > essences[key]) {
-            essences[key] = entries.value;
+          if (!newEssences[key] || essence.value > newEssences[key]) {
+            newEssences[key] = essence.value;
           }
         }
       }
 
-      if (Object.keys(fullActor.system.actors).length) {
-        for (const childActor of Object.values(fullActor.system.actors)) {
-          const fullChildActor = await fromUuid(childActor.uuid);
+      for (const childActor of Object.values(fullActor.system.actors)) {
+        const fullChildActor = await fromUuid(childActor.uuid);
 
-          for (const [key, entries] of Object.entries(fullChildActor.system.essences)) {
-            if (key == "strength" || key == "speed") {
-              if (entries.max > essences[key]) {
-                essences[key] = entries.max;
-              }
+        for (const [key, essence] of Object.entries(fullChildActor.system.essences)) {
+          if (key == "strength" || key == "speed") {
+            if (essence.max > newEssences[key]) {
+              newEssences[key] = essence.max;
             }
           }
-
         }
       }
 
-      health.push(fullActor.system.health.value);
-      for (const [type, movementValues] of Object.entries(fullActor.system.movement)) {
-        if (movement[type].base == 0 && movementValues.base > 0) {
-          movement[type].base = movementValues.base;
-        }
+      newHealth.push(fullActor.system.health.value);
 
-        if (movementValues.base > 0 && movementValues.base < movement[type].base) {
-          movement[type].base = movementValues.base;
+      for (const [type, movementValues] of Object.entries(fullActor.system.movement)) {
+        if ((newMovement[type].base == 0 && movementValues.base > 0) || (movementValues.base > 0 && movementValues.base < newMovement[type].base)) {
+          newMovement[type].base = movementValues.base;
         }
       }
     }
@@ -128,14 +113,14 @@ export async function setMegaformValues(targetActor) {
     }
 
     targetActor.update({
-      "system.health": health,
-      "system.essences.speed.value": essences.speed,
-      "system.essences.strength.value": essences.strength,
+      "system.health": newHealth,
+      "system.essences.speed.value": newEssences.speed,
+      "system.essences.strength.value": newEssences.strength,
       "system.size": newSize,
-      "system.movement.aerial.base": movement.aerial.base,
-      "system.movement.climb.base": movement.climb.base,
-      "system.movement.ground.base": movement.ground.base,
-      "system.movement.swim.base": movement.swim.base,
+      "system.movement.aerial.base": newMovement.aerial.base,
+      "system.movement.climb.base": newMovement.climb.base,
+      "system.movement.ground.base": newMovement.ground.base,
+      "system.movement.swim.base": newMovement.swim.base,
     });
   }
 }
