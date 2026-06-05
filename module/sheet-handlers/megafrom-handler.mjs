@@ -28,7 +28,7 @@ export async function setMegaformValues(targetActor) {
       const fullActor = await fromUuid(actor.uuid);
 
       for (const [key, essence] of Object.entries(fullActor.system.essences)) {
-        if (!newEssences[key] || essence.max > newEssences[key]){
+        if (!newEssences[key] || essence.max > newEssences[key]) {
           newEssences[key] = essence.max;
           for (const [skill, skillData] of Object.entries(fullActor.system.skills)){
             if (skillData.essences[key]){
