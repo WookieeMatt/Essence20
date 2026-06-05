@@ -90,9 +90,7 @@ export async function setMegaformValues(targetActor) {
 
         for (const [key, essence] of Object.entries(fullChildActor.system.essences)) {
           if (key == "strength" || key == "speed") {
-            if (essence.max > newEssences[key]) {
-              newEssences[key] = essence.max;
-            }
+            newEssences[key] = Math.max(newEssences[key], essence.max);
           }
         }
       }
