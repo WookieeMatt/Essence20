@@ -1,7 +1,7 @@
 export async function setMegaformValues(targetActor) {
   const actorSizes = Object.keys(CONFIG.E20.actorSizes);
   const newEssences = {};
-  let size = 0;
+  let sizeIndex = 0;
   const newSkills = {};
   const newHealth = [];
   let newSize = null;
@@ -39,16 +39,15 @@ export async function setMegaformValues(targetActor) {
       }
 
       isTitanic = fullActor.system.size == "gigantic";
-
       const currentSize = Math.max(0, (actorSizes.indexOf(fullActor.system.size)));
-      if (currentSize > size)  {
-        size = currentSize;
+      if (currentSize > sizeIndex)  {
+        sizeIndex = currentSize;
       }
 
       if (numberOfMembers >= 4) {
         newSize = isTitanic ? "titanic" : "towering";
       } else {
-        newSize = actorSizes[size + 1];
+        newSize = actorSizes[sizeIndex + 1];
       }
 
       newHealth.push(fullActor.system.health.value);
