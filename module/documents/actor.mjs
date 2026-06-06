@@ -110,6 +110,12 @@ export class Essence20Actor extends Actor {
     const height = CONFIG.E20.tokenSizes[this.system.size].height;
     this._source.prototypeToken.height = height;
     this._source.prototypeToken.width = width;
+
+    if (Object.keys(this.system.actors).length && this.type == "megaform"){
+      this.system.hasMembers = true;
+    } else if (this.type == "megaform"){
+      this.system.hasMembers = false;
+    }
   }
 
   /** @override */

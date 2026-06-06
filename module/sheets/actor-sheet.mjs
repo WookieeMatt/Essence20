@@ -564,6 +564,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     // Disable selects if sheet is locked
     html.find('select').attr('disabled', isLocked);
 
+    html.find('.no-unlock').attr('disabled', true);
+
     // Lock icon
     html.find('.lock-status').find('i').addClass(isLocked ? 'fa-lock' : 'fa-lock-open');
 
