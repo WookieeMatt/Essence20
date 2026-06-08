@@ -12,8 +12,6 @@ import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
  */
 export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheetV2) {
 
-  static templateLocation = `${path}/${this.document.type}.hbs`;
-
   /** @override */
   async activateEditor(name, options={}, initialContent="") {
     options.relativeLinks = true;
@@ -32,7 +30,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
   /** @override */
   static DEFAULT_OPTIONS = {
-    classes: ["essence20", "sheet", "item"],
+    classes: ["essence20", "sheet", "item", "window-app"],
     tag: 'form',
     position: {
       width: 520,
@@ -44,10 +42,36 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     }
   }
 
+  static TABS = {
+    primary: {
+      tabs: [
+        { id: "description"},
+        { id: "details"},
+        { id: "effects"},
+      ],
+      initial: "description",
+    }
+  }
+
   /** @override */
   static PARTS = {
-    form: {
-      template: templateLocation
+    header: {
+      template: "systems/essence20/templates/item/parts/header.hbs",
+    },
+    tabs: {
+      template: "templates/generic/tab-navigation.hbs",
+    },
+    description: {
+      template: "systems/essence20/templates/item/parts/description.hbs",
+      scrollable: [""],
+    },
+    details: {
+      template: "systems/essence20/templates/item/parts/item-base.hbs",
+      scrollable: [""],
+    },
+    effects: {
+      template: "systems/essence20/templates/item/parts/active-effects.hbs",
+      scrollable: [""],
     }
   }
 
