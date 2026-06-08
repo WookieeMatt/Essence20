@@ -1,3 +1,6 @@
+const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api;
+const path = "systems/essence20/templates/item/sheets";
+
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
@@ -7,7 +10,9 @@ import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
+export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheetV2) {
+
+  static templateLocation = `${path}/${this.document.type}.hbs`;
 
   /** @override */
   async activateEditor(name, options={}, initialContent="") {
@@ -25,37 +30,39 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     return super.activateEditor(name, options, initialContent);
   }
 
-  static _warnedAppV1 = true;
-
   /** @override */
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["essence20", "sheet", "item"],
+  static DEFAULT_OPTIONS = {
+    classes: ["essence20", "sheet", "item"],
+    tag: 'form',
+    position: {
       width: 520,
-      height: 480,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "description" }],
-    });
+      height: 480
+    },
+    window: {
+      resizeable: true,
+      title: "Test"
+    }
   }
 
   /** @override */
-  get template() {
-    const path = "systems/essence20/templates/item/sheets";
-    // Return a unique item sheet by type, like `weapon-sheet.hbs`.
-    return `${path}/${this.item.type}.hbs`;
+  static PARTS = {
+    form: {
+      template: templateLocation
+    }
   }
 
   /* -------------------------------------------- */
 
   /** @override */
-  async getData() {
+  async _prepareContext(options) {
     // Retrieve base data structure.
-    const context = await super.getData();
-
+    const context = await super._prepareContext(options)
+    console.log(this)
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
 
     // Use a safe clone of the item data for further operations.
-    const itemData = context.item;
+    const itemData = context.document;
 
     // Retrieve the roll data for TinyMCE editors.
     context.rollData = {};
@@ -63,19 +70,19 @@ export class Essence20ItemSheet extends foundry.appv1.sheets.ItemSheet {
     if (actor) {
       context.rollData = actor.getRollData();
     }
-
+    console.log(itemData)
     // Prepare active effects
-    context.effects = prepareActiveEffectCategories(this.object.effects);
+    // context.effects = prepareActiveEffectCategories(this.object.effects);
 
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = itemData.system;
     context.system.description = await foundry.applications.ux.TextEditor.implementation.enrichHTML(itemData.system.description);
     context.flags = itemData.flags;
 
-    if (this.item.type == 'perk') {
+    if (this.document.type == 'perk') {
       context.roles = await _getVersionRoles(itemData);
     }
-
+    console.log(context)
     return context;
   }
 
