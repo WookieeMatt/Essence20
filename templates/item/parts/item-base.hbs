@@ -1,5 +1,81 @@
 <section class="tab details" data-tab="primary" data-group="details">
-  <div>
-
+  <div class="item-details">
+    {{#switch document.type}}
+      {{#case 'alteration'}}
+        {{> "systems/essence20/templates/item/sheets/alteration.hbs"}}
+      {{/case}}
+      {{#case 'altMode'}}
+        {{> "systems/essence20/templates/item/sheets/altMode.hbs"}}
+      {{/case}}
+      {{#case 'armor'}}
+        {{> "systems/essence20/templates/item/sheets/armor.hbs"}}
+      {{/case}}
+      {{#case 'bond'}}
+        {{> "systems/essence20/templates/item/sheets/bond.hbs"}}
+      {{#case 'classFeature'}}
+      {{/case}}
+        {{> "systems/essence20/templates/item/sheets/classFeature.hbs"}}
+      {{/case}}
+      {{#case 'equipmentPackage'}}
+        {{> "systems/essence20/templates/item/sheets/equipmentPackage.hbs"}}
+      {{/case}}
+      {{#case 'faction'}}
+        {{> "systems/essence20/templates/item/sheets/faction.hbs"}}
+      {{/case}}
+      {{#case 'focus'}}
+        {{> "systems/essence20/templates/item/sheets/focus.hbs"}}
+      {{/case}}
+      {{#case 'gear'}}
+        {{> "systems/essence20/templates/item/sheets/gear.hbs"}}
+      {{/case}}
+      {{#case 'hangUp'}}
+        {{> "systems/essence20/templates/item/sheets/hangUp.hbs"}}
+      {{/case}}
+      {{#case 'influence'}}
+        {{> "systems/essence20/templates/item/sheets/influence.hbs"}}
+      {{/case}}
+      {{#case 'magicBauble'}}
+        {{> "systems/essence20/templates/item/sheets/magicBauble.hbs"}}
+      {{/case}}
+      {{#case 'megaformTrait'}}
+        {{> "systems/essence20/templates/item/sheets/megaformTrait.hbs"}}
+      {{/case}}
+      {{#case 'origin'}}
+        {{> "systems/essence20/templates/item/sheets/origin.hbs"}}
+      {{/case}}
+      {{#case 'perk'}}
+        {{> "systems/essence20/templates/item/sheets/perk.hbs"}}
+      {{/case}}
+      {{#case 'power'}}
+        {{> "systems/essence20/templates/item/sheets/power.hbs"}}
+      {{/case}}
+      {{#case 'role'}}
+        {{> "systems/essence20/templates/item/sheets/role.hbs"}}
+      {{/case}}
+      {{#case 'rolePoints'}}
+        {{> "systems/essence20/templates/item/sheets/rolePoints.hbs"}}
+      {{/case}}
+      {{#case 'shield'}}
+        {{> "systems/essence20/templates/item/sheets/shield.hbs"}}
+      {{/case}}
+      {{#case 'specialization'}}
+        {{> "systems/essence20/templates/item/sheets/specialization.hbs"}}
+      {{/case}}
+      {{#case 'spell'}}
+        {{> "systems/essence20/templates/item/sheets/spell.hbs"}}
+      {{/case}}
+      {{#case 'trait'}}
+        {{> "systems/essence20/templates/item/sheets/trait.hbs"}}
+      {{/case}}
+      {{#case 'upgrade'}}
+        {{> "systems/essence20/templates/item/sheets/upgrade.hbs"}}
+      {{/case}}
+      {{#case 'weapon'}}
+        {{> "systems/essence20/templates/item/sheets/weapon.hbs"}}
+      {{/case}}
+      {{#case 'weaponEffect'}}
+        {{> "systems/essence20/templates/item/sheets/weaponEffect.hbs"}}
+      {{/case}}
+    {{/switch}}
   </div>
 </section>
