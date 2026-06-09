@@ -1,6 +1,5 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { checkIsLocked } from "../helpers/actor.mjs";
-import { getItemsOfType } from "../helpers/utils.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
 import { deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
 import { onOriginDelete } from "./background-handler.mjs";
@@ -262,7 +261,7 @@ export async function onInlineEdit(event, actor) {
  */
 export async function onShieldActivationToggle(event, actorSheet) {
   const actor = actorSheet.actor;
-  const shields = await getItemsOfType('shield', actor.items);
+  const shields = await actor.items.documentsByType.shield;
   let currentShield = null;
   for (const shield of shields) {
     if (shield._id == event.currentTarget.dataset.id) {
@@ -294,7 +293,7 @@ export async function onShieldActivationToggle(event, actorSheet) {
  */
 export async function onShieldEquipToggle(event, actorSheet) {
   const actor = actorSheet.actor;
-  const shields = await getItemsOfType('shield', actor.items);
+  const shields = await actor.items.documentsByType.shield;
   let currentShield = null;
   for (const shield of shields) {
     if (shield._id == event.currentTarget.dataset.id) {

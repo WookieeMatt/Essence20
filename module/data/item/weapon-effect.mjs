@@ -24,11 +24,27 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       radius: makeInt(0),
       range: new fields.SchemaField({
         min: makeInt(null),
-        reachMultiplier: makeInt(0),
+        reachMultiplier: makeInt(null),
         long: makeInt(null),
         value: makeInt(null),
       }),
       shiftDown: makeInt(0),
+      totalReach: makeInt(0),
     };
+  }
+
+  prepareDerivedData() {
+    if (["megaform", "npc", "playerCharacter", "vehicle", "zord"].includes(this.parent.parent.type)) {
+      let reachMultiplier = 1;
+      const actorReach = CONFIG.E20.actorReach[this.parent.parent.system.size];
+      if (this.range.reachMultiplier > 1) {
+        reachMultiplier = this.range.reachMultiplier;
+      }
+
+      const totalReach = actorReach * reachMultiplier;
+      this.totalReach = totalReach;
+    }
+
+    return super.prepareDerivedData;
   }
 }

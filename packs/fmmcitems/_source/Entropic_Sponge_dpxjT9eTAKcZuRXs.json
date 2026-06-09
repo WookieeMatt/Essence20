@@ -32,7 +32,7 @@
       "_id": "3UzpM54T9uhvIZP9",
       "changes": [
         {
-          "key": "system.initiative.edge",
+          "key": "system.skills.initiative.edge",
           "mode": 5,
           "value": "true",
           "priority": null

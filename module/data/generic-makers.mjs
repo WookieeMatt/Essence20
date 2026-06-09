@@ -1,5 +1,9 @@
 const fields = foundry.data.fields;
 
+export function makeNumberArray() {
+  return new fields.ArrayField(new fields.NumberField());
+}
+
 export function makeBool(initial) {
   return new fields.BooleanField({initial});
 }

@@ -7,6 +7,7 @@ import { onPowerDrop } from "./power-handler.mjs";
 import { setPerkValues } from "./perk-handler.mjs";
 import { onFocusDrop, onRoleDrop } from "./role-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
+import { setMegaformValues } from "./megafrom-handler.mjs";
 import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
 
 /**
@@ -158,31 +159,35 @@ export async function onDropActor(data, actorSheet) {
   const droppedActor = await fromUuid(data.uuid);
   if (!droppedActor) return false;
 
+  const zordCanDrop = ((droppedActor.type == 'zord' || droppedActor.system.megaform.zord) && targetActor.system.subtype == 'megaformZord');
+  const combinerCanDrop = ((droppedActor.system.canTransform || droppedActor.system.megaform.combiner) && targetActor.system.subtype == 'megaformCombiner');
+
   let dropIsValid = false;
   switch (targetActor.type) {
   case 'playerCharacter':
     if (droppedActor.type =='zord' && targetActor.system.canHaveZord || droppedActor.type == 'npc') {
-      setEntryAndAddActor(droppedActor, targetActor);
+      await setEntryAndAddActor(droppedActor, targetActor);
       dropIsValid = true;
     }
 
     break;
   case 'megaform':
-    if (droppedActor.type == 'zord' || droppedActor.system.canTransform) {
-      setEntryAndAddActor (droppedActor, targetActor);
+    if (zordCanDrop || combinerCanDrop) {
+      await setEntryAndAddActor(droppedActor, targetActor);
+      setMegaformValues(targetActor);
       dropIsValid = true;
     }
 
     break;
   case 'vehicle':
-    if (droppedActor.type == "playerCharacter") {
+    if (["playerCharacter", "npc"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     }
 
     break;
   case 'zord':
-    if (droppedActor.type == "playerCharacter") {
+    if (["playerCharacter", "npc"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     }

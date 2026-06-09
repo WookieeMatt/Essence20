@@ -1,5 +1,5 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { createId, getItemsOfType } from "../helpers/utils.mjs";
+import { createId } from "../helpers/utils.mjs";
 import { onPerkDelete, setPerkValues, setPerkAdvancesName } from "./perk-handler.mjs";
 
 /**
@@ -127,12 +127,12 @@ export async function onAttachmentDrop(actor, droppedItem, dropFunc) {
 
   if (droppedItem.system.type) {
     upgradableItems = upgradableItems.concat(
-      getItemsOfType(droppedItem.system.type, actor.items),
+      actor.items.documentsByType[droppedItem.system.type],
     );
   } else if (droppedItem.type == 'weaponEffect') {
     upgradableItems = upgradableItems
-      .concat(getItemsOfType("weapon", actor.items))
-      .concat(getItemsOfType("shield", actor.items));
+      .concat(actor.items.documentsByType.weapon)
+      .concat(actor.items.documentsByType.shield);
   } else {
     return false;
   }
@@ -304,6 +304,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
+      entry['totalReach'] = droppedItem.system.totalReach;
       return entry;
     }
 
@@ -328,6 +329,7 @@ export function createEntry(droppedItem, targetItem) {
       entry['range'] = droppedItem.system.range;
       entry['shiftDown'] = droppedItem.system.shiftDown;
       entry['traits'] = droppedItem.system.traits;
+      entry['totalReach'] = droppedItem.system.totalReach;
       return entry;
     }
 

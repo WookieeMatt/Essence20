@@ -1,6 +1,6 @@
 import TransformOptionSelector from "../apps/transform-option-selector.mjs";
 import { changeTokenImage, resizeTokens } from "../helpers/actor.mjs";
-import { getItemsOfType } from "../helpers/utils.mjs";
+
 
 /**
  * Handles AltModes being deleted
@@ -8,13 +8,13 @@ import { getItemsOfType } from "../helpers/utils.mjs";
  * @param {AltMode} altMode The deleted Alt Mode.
  */
 export async function onAltModeDelete(actorSheet, altMode) {
-  const altModes = getItemsOfType("altMode", actorSheet.actor.items);
+  const altModes = actorSheet.actor.items.documentsByType.altMode;
   if (altModes.length > 1) {
     if (altMode._id == actorSheet.actor.system.altModeId) {
-      _transformBotMode(actorSheet);
+      _transformBotMode(actorSheet.actor);
     }
   } else {
-    _transformBotMode(actorSheet);
+    _transformBotMode(actorSheet.actor);
   }
 }
 
@@ -23,7 +23,7 @@ export async function onAltModeDelete(actorSheet, altMode) {
  * @param {Actor} actor The Actor being transformed
  */
 export async function onTransform(actor) {
-  const altModes = getItemsOfType("altMode", actor.items);
+  const altModes = actor.items.documentsByType.altMode;
   const isTransformed = actor.system.isTransformed;
 
   if (!actor.system.isTransformed ) {
@@ -57,7 +57,7 @@ export async function onTransformUuid(actor, altModeUuid=null) {
     await actor.update ({
       "system.image.botmode": actor.prototypeToken.texture.src,
     });
-    
+
     const altMode = await fromUuid(altModeUuid);
     _transformAltMode(actor, altMode);
   } else {

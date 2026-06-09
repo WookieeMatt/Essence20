@@ -29,7 +29,7 @@
       "_id": "yFtYtMyMc4rYGe5R",
       "changes": [
         {
-          "key": "system.initiative.edge",
+          "key": "system.skills.initiative.edge",
           "mode": 5,
           "value": "true",
           "priority": null
