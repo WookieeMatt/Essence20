@@ -2,14 +2,14 @@ import { makeBool, makeInt, makeStr } from "../../generic-makers.mjs";
 
 const fields = foundry.data.fields;
 
-function makeDefensesFields(usesDrivers, init) {
+export function makeDefensesFields(usesDrivers, init) {
   return new fields.SchemaField({
     usesDrivers: makeBool(usesDrivers),
     value: makeInt(init),
   });
 }
 
-function makeEssencesFields(usesDrivers, init) {
+export function makeEssencesFields(usesDrivers, init) {
   return new fields.SchemaField({
     usesDrivers: makeBool(usesDrivers),
     value: makeInt(init),

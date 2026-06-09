@@ -30,6 +30,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/parts/misc/energon.hbs",
     "systems/essence20/templates/actor/parts/misc/essence-skills.hbs",
     "systems/essence20/templates/actor/parts/misc/health.hbs",
+    "systems/essence20/templates/actor/parts/misc/immunities-resistances.hbs",
     "systems/essence20/templates/actor/parts/misc/initiative.hbs",
     "systems/essence20/templates/actor/parts/misc/mode-selector.hbs",
     "systems/essence20/templates/actor/parts/misc/morph-transform.hbs",

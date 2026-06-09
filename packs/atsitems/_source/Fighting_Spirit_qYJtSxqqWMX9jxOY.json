@@ -33,7 +33,7 @@
       "system": {},
       "changes": [
         {
-          "key": "system.initiative.isSpecialized",
+          "key": "system.skills.initiative.isSpecialized",
           "mode": 5,
           "value": "true",
           "priority": null

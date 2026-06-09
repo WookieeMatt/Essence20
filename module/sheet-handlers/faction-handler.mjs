@@ -1,6 +1,6 @@
-import { getItemsOfType } from "../helpers/utils.mjs";
 import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import { onPerkDrop } from "./perk-handler.mjs";
+import { getItemsOfTypeFromSystemItems } from "../helpers/utils.mjs";
 
 /**
  * Function for dropping a faction on to an actor.
@@ -12,7 +12,7 @@ import { onPerkDrop } from "./perk-handler.mjs";
 export async function onFactionDrop(actor, dropFunc=null, defaultRoleFaction=null) {
   let newFaction = null;
   if (!defaultRoleFaction) {
-    const hasFaction = getItemsOfType("faction", actor.items).length > 0;
+    const hasFaction = actor.items.documentsByType.faction.length > 0;
     if (hasFaction) {
       ui.notifications.error(game.i18n.localize('E20.FactionMultipleError'));
       return false;
@@ -26,7 +26,7 @@ export async function onFactionDrop(actor, dropFunc=null, defaultRoleFaction=nul
     newFaction = factionDrop[0];
   }
 
-  const perks = getItemsOfType('perk', Object.values(newFaction.system.items));
+  const perks = getItemsOfTypeFromSystemItems('perk', Object.values(newFaction.system.items));
 
   for (const perk of perks) {
     const itemToCreate = await fromUuid(perk.uuid);

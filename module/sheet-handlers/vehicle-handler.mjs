@@ -1,6 +1,7 @@
 import { checkIsLocked } from "../helpers/actor.mjs";
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
+import { setMegaformValues } from "./megafrom-handler.mjs";
 
 /**
  * Prepare Actors that are attached to other actors
@@ -60,6 +61,9 @@ export async function onSystemActorsDelete(event, actorSheet) {
 
   await actor.update({[updateString]: null});
   li.slideUp(200, () => actorSheet.render(false));
+  if (actor.type == "megaform") {
+    setMegaformValues(actor);
+  }
 }
 
 export async function onVehicleRoleUpdate(event, actorSheet) {
