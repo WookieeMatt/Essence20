@@ -21,6 +21,7 @@ import {
   onShieldActivationToggle,
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
+import { onManageSelectTrait } from "../helpers/traits.mjs";
 
 export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   constructor(...args) {
@@ -88,7 +89,10 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     // Prepare WeaponEffect Skill List
-    this._prepareWeaponEffectSkills(this.actor, context);
+    this._prepareWeaponEffectSkills(actorData, context);
+
+    //Prepare Initiative Skills
+    context.initiativeSkills = this._prepareInitiativeSkills(actorData);
 
     // Prepare number of actions
     if (actorData.type == "playerCharacter") {
@@ -209,7 +213,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     ].filter(Boolean).join(' + ');
     context.system.skillRankAllocation['strength'].value += context.system.conditioning;
 
-    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.initiative.shift));
+    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.skills[context.system.initiative.skill].shift));
     const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
     context.system.skillRankAllocation['speed'].string = [
       context.system.skillRankAllocation['speed'].string,
@@ -223,17 +227,17 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
    * @param {Object} actorData The acor data converted to an object
    * @param {Object} context The actor data to prepare.
    */
-  _prepareWeaponEffectSkills(actor, context) {
+  _prepareWeaponEffectSkills(actorData, context) {
     let hasSkillDie = false;
     let skillDieName = null;
-    const items = actor.items.documentsByType.role;
-    if (items.length && items[0].system.skillDie.isUsed) {
+    const items = actorData.items.documentsByType?.role;
+    if (items?.length && items[0].system.skillDie.isUsed) {
       hasSkillDie = true;
       skillDieName = items[0].system.skillDie.name;
     }
 
     let weaponEffectSkills = {};
-    for (const skill of Object.keys(actor.system.skills)) {
+    for (const skill of Object.keys(actorData.system.skills)) {
       if (skill != 'wealth' && (skill != 'roleSkillDie' || hasSkillDie)) {
         weaponEffectSkills[skill] = {
           key: skill,
@@ -245,6 +249,20 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     }
 
     context.weaponEffectSkills = weaponEffectSkills;
+  }
+
+  _prepareInitiativeSkills(actorData) {
+    const initiativeSkills = {};
+    for (const skill of Object.keys(actorData.system.skills)) {
+      if (actorData.system.skills[skill].canBeInitiative) {
+        initiativeSkills[skill] = {
+          key: skill,
+          label: game.i18n.localize(CONFIG.E20.skills[skill]),
+        };
+      }
+    }
+
+    return initiativeSkills;
   }
 
   /**
@@ -511,6 +529,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     html.find('.morph-toughness-edit').click(ev=> onEditMorphToughnessBonus(ev, this));
 
+    html.find(".trait-selector").click(ev => onManageSelectTrait(ev, this.actor));
+
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = ev => this._onDragStart(ev);
@@ -543,6 +563,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
 
     // Disable selects if sheet is locked
     html.find('select').attr('disabled', isLocked);
+
+    html.find('.no-unlock').attr('disabled', true);
 
     // Lock icon
     html.find('.lock-status').find('i').addClass(isLocked ? 'fa-lock' : 'fa-lock-open');

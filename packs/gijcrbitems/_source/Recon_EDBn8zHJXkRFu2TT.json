@@ -44,7 +44,7 @@
           "priority": null
         },
         {
-          "key": "system.initiative.edge",
+          "key": "system.skills.initiative.edge",
           "mode": 5,
           "value": "true",
           "priority": null

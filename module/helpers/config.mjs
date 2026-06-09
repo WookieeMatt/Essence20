@@ -276,6 +276,7 @@ E20.skills = {
   driving: "E20.SkillDriving",
   finesse: "E20.SkillFinesse",
   infiltration: "E20.SkillInfiltration",
+  initiative: "E20.SkillInitiative",
   targeting: "E20.SkillTargeting",
   alertness: "E20.SkillAlertness",
   culture: "E20.SkillCulture",
@@ -294,7 +295,6 @@ preLocalize("skills");
 // Origin Essence Skills
 E20.originSkills = {
   conditioning: "E20.SkillConditioning",
-  initiative: "E20.SkillInitiative",
   ...E20.skills,
 };
 preLocalize("originSkills");
@@ -328,7 +328,7 @@ E20.skillToEssence = {
 E20.skillsByEssence = {
   any: ["spellcasting"],
   strength: ["athletics", "brawn", "intimidation", "might"],
-  speed:  ["acrobatics", "driving", "finesse", "infiltration", "targeting"],
+  speed:  ["acrobatics", "driving", "finesse", "infiltration", "initiative", "targeting"],
   smarts: ["alertness", "culture", "science", "survival", "technology"],
   social: ["animalHandling", "deception", "performance", "persuasion", "streetwise"],
 };
@@ -588,6 +588,7 @@ E20.damageTypes = {
   stun: "E20.DamageStun",
   unconscious: "E20.DamageUnconscious",
 };
+preLocalize("damageTypes");
 
 // Perk types
 E20.perkTypes = {
@@ -703,6 +704,21 @@ E20.actorSizes = {
   titanic: "E20.ActorSizeTitanic",
 };
 preLocalize("actorSizes");
+
+//Reach by size
+E20.actorReach = {
+  small: 2,
+  common: 5,
+  large: 5,
+  long: 5,
+  huge: 10,
+  extended: 10,
+  gigantic: 15,
+  extended2: 15,
+  towering: 20,
+  extended3: 15,
+  titanic: 25,
+};
 
 // Subtypes of megaforms
 E20.megaformSubtypes = {

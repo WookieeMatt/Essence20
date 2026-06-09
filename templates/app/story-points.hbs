@@ -1,0 +1,52 @@
+<div>
+  <div class="story-points__top">
+    {{#if gmPointsArePublic}}
+      <div class="sliced-border">
+        <label class="sliced-border__label">{{localize "E20.SptPointsGm"}}</label>
+        <input
+          id="gm-points-input"
+          class="story-points__input"
+          type="number"
+          value="{{gmPoints}}"
+          {{#unless isGm}}disabled{{/unless}}
+        />
+      {{#if isGm}}
+        <div class="story-points__btn-wrapper">
+          <button data-action="incrementGmPoints" class="story-points__btn --increment">
+            <i class="fas fa-angle-double-up"></i>
+          </button>
+          <button id="btn-gm-dec" data-action="decrementGmPoints" {{#unless gmPoints}}disabled{{/unless}} class="story-points__btn --decrement">
+            <i class="fas fa-angle-double-down"></i>
+          </button>
+        </div>
+      {{/if}}
+      </div>
+    {{/if}}
+
+    <div class="sliced-border">
+      <label class="sliced-border__label">{{pointsName}}</label>
+      <input
+        id="story-points-input"
+        class="story-points__input"
+        type="number"
+        value="{{storyPoints}}"
+        {{#unless isGm}}disabled{{/unless}}
+      />
+      {{#if isGm}}
+        <div class="story-points__btn-wrapper">
+          <button data-action="incrementStoryPoints" class="story-points__btn --increment">
+            <i class="fas fa-angle-double-up"></i>
+          </button>
+          <button id="btn-story-dec" data-action="decrementStoryPoints" {{#unless storyPoints}}disabled{{/unless}} class="story-points__btn --decrement">
+            <i class="fas fa-angle-double-down"></i>
+          </button>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+  {{#if isGm}}
+    <button data-action="rollMajorSceneGmPoints" class="story-points__btn --bottom">
+      <span>{{localize "E20.SptRollButton"}}</span>
+    </button>
+  {{/if}}
+</div>

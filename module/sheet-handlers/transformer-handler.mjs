@@ -11,10 +11,10 @@ export async function onAltModeDelete(actorSheet, altMode) {
   const altModes = actorSheet.actor.items.documentsByType.altMode;
   if (altModes.length > 1) {
     if (altMode._id == actorSheet.actor.system.altModeId) {
-      _transformBotMode(actorSheet);
+      _transformBotMode(actorSheet.actor);
     }
   } else {
-    _transformBotMode(actorSheet);
+    _transformBotMode(actorSheet.actor);
   }
 }
 
