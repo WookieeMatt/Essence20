@@ -212,14 +212,6 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
       `${context.system.conditioning} ${game.i18n.localize('E20.ActorConditioning')}`,
     ].filter(Boolean).join(' + ');
     context.system.skillRankAllocation['strength'].value += context.system.conditioning;
-
-    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.skills[context.system.initiative.skill].shift));
-    const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
-    context.system.skillRankAllocation['speed'].string = [
-      context.system.skillRankAllocation['speed'].string,
-      `${initiativeUpshifts} ${game.i18n.localize('E20.ActorInitiative')}`,
-    ].filter(Boolean).join(' + ');
-    context.system.skillRankAllocation['speed'].value += initiativeUpshifts;
   }
 
   /**
