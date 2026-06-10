@@ -30,7 +30,8 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
   /** @override */
   static DEFAULT_OPTIONS = {
-    classes: ["essence20", "sheet", "item", "window-app"],
+    id: "item-sheet",
+    classes: ["essence20", "window-app"],
     tag: 'form',
     position: {
       width: 520,
@@ -38,8 +39,11 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     },
     window: {
       resizeable: true,
-      title: "Test"
-    }
+    },
+    form: {
+      submitOnChange: false,
+      closeOnSubmit: true,
+    },
   }
 
   static TABS = {
