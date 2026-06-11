@@ -28,30 +28,32 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     return super.activateEditor(name, options, initialContent);
   }
 
+
   /** @override */
   static DEFAULT_OPTIONS = {
     id: "item-sheet",
-    classes: ["essence20", "window-app"],
+    classes: ["essence20", "sheet", "item", "window-app"],
     tag: 'form',
     position: {
       width: 520,
-      height: 480
+      height: "auto"
     },
     window: {
       resizeable: true,
+      scrollable: true,
     },
     form: {
-      submitOnChange: false,
-      closeOnSubmit: true,
+      submitOnChange: true,
+      closeOnSubmit: false,
     },
   }
 
   static TABS = {
     primary: {
       tabs: [
-        { id: "description"},
-        { id: "details"},
-        { id: "effects"},
+        { id: "description", group: 'primary', label: "Description"},
+        { id: "details", group: 'primary', label: "Details"},
+        { id: "effects", group: 'primary', label: "Effects"},
       ],
       initial: "description",
     }
@@ -85,7 +87,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   async _prepareContext(options) {
     // Retrieve base data structure.
     const context = await super._prepareContext(options)
-    console.log(this)
+
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
 
@@ -98,7 +100,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     if (actor) {
       context.rollData = actor.getRollData();
     }
-    console.log(itemData)
+
     // Prepare active effects
     // context.effects = prepareActiveEffectCategories(this.object.effects);
 
@@ -110,7 +112,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     if (this.document.type == 'perk') {
       context.roles = await _getVersionRoles(itemData);
     }
-    console.log(context)
+
     return context;
   }
 
