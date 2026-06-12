@@ -135,6 +135,6 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/sheets/trait.hbs",
     "systems/essence20/templates/item/sheets/upgrade.hbs",
     "systems/essence20/templates/item/sheets/weapon.hbs",
-    "systems/essence20/templates/item/sheets/weaponEffect.hbs"
+    "systems/essence20/templates/item/sheets/weaponEffect.hbs",
   ]);
 };

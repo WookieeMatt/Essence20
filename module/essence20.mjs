@@ -229,7 +229,7 @@ Handlebars.registerHelper('case', function(value, options) {
   }
 });
 
-Handlebars.registerHelper('default', function(value, options) {
+Handlebars.registerHelper('default', function(value) {
   if (!this.switch_break) {
     return value;
   }

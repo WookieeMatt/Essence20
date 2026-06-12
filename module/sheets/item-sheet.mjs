@@ -1,7 +1,6 @@
 const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api;
-const path = "systems/essence20/templates/item/sheets";
 
-import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import { onManageActiveEffect } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
@@ -47,7 +46,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     tag: 'form',
     position: {
       width: 520,
-      height: "auto"
+      height: "auto",
     },
     window: {
       resizeable: true,
@@ -57,7 +56,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       submitOnChange: true,
       closeOnSubmit: false,
     },
-  }
+  };
 
   static TABS = {
     primary: {
@@ -67,8 +66,8 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
         { id: "effects", group: 'primary', label: "Effects"},
       ],
       initial: "description",
-    }
-  }
+    },
+  };
 
   /** @override */
   static PARTS = {
@@ -89,8 +88,8 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     effects: {
       template: "systems/essence20/templates/item/parts/active-effects.hbs",
       scrollable: [""],
-    }
-  }
+    },
+  };
 
   /* -------------------------------------------- */
   /** @override */
