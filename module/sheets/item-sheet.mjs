@@ -5,29 +5,28 @@ import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 
-  /**
-   * Handles opening the item sheet of an attached item from the info button
-   * @param {Event} data The data from the click event
-   */
-  async function _onObjectInfo(target) {
-    console.log(target.dataset)
-    const item = await fromUuid(target.dataset.uuid);
-    if (item) {
-      item.sheet.render(true);
-    }
+/**
+* Handles opening the item sheet of an attached item from the info button
+* @param {Event} data The data from the click event
+*/
+async function _onObjectInfo(target) {
+  const item = await fromUuid(target.dataset.uuid);
+  if (item) {
+    item.sheet.render(true);
   }
+}
 
-   /**
-  * Handle deleting of a Ids from an item Sheet
-  * @param {String} cssClass           Where the deleted item is on the sheet
-  * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
-  * @private
-  */
-  async function _onObjectDelete(data, item) {
-    const id = data.itemKey;
-    const updateString = `system.items.-=${id}`;
-    await item.document.update({[updateString]: null});
-  }
+ /**
+* Handle deleting of a Ids from an item Sheet
+* @param {String} cssClass           Where the deleted item is on the sheet
+* @param {DeleteEvent} event         The concluding DragEvent which contains drop data
+* @private
+*/
+async function _onObjectDelete(data, item) {
+  const id = data.itemKey;
+  const updateString = `system.items.-=${id}`;
+  await item.document.update({[updateString]: null});
+}
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
