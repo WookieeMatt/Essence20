@@ -21,14 +21,14 @@
   {{!-- Traits --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorTraits'}}
   {{#*inline "item-field-edit"}}
-    <a class="trait-selector" data-options="armor" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
+    <a class="trait-selector" data-action="traitSelector" data-options="armor" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
       <i class="fas fa-edit"></i>
     </a>
   {{/inline}}
 
   {{#*inline "item-field-inputs"}}
     <div class="chip-section">
-      {{#each item.system.itemAndUpgradeTraits as |trait|}}
+      {{#each system.itemAndUpgradeTraits as |trait|}}
       <span class="chip" name="chip.armor.traits.{{type}}">{{lookup @root.config.armorTraits trait}}</span>
       {{/each}}
     </div>
