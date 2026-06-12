@@ -16,7 +16,7 @@ async function _onObjectInfo(target) {
   }
 }
 
- /**
+/**
 * Handle deleting of a Ids from an item Sheet
 * @param {String} cssClass           Where the deleted item is on the sheet
 * @param {DeleteEvent} event         The concluding DragEvent which contains drop data
@@ -94,7 +94,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   /** @override */
   async _prepareContext(options) {
     // Retrieve base data structure.
-    const context = await super._prepareContext(options)
+    const context = await super._prepareContext(options);
 
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
@@ -126,7 +126,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
   /* -------------------------------------------- */
   static async #deleteItem(event,target) {
-    _onObjectDelete(target.dataset,this)
+    _onObjectDelete(target.dataset,this);
   }
 
   static async #traitSelector(event, target) {
@@ -147,12 +147,12 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       onManageActiveEffect(ev, this.item);
     });
 
-     this.form.ondrop = (event) => this._onDrop(event);
+    this.form.ondrop = (event) => this._onDrop(event);
     // Delete Effects from Weapons
 
   }
 
-   async activateEditor(name, options={}, initialContent="") {
+  async activateEditor(name, options={}, initialContent="") {
     options.relativeLinks = true;
     options.plugins = {
       menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
