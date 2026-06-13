@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div class="{{cssClass}}" autocomplete="off">
 
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
@@ -91,7 +91,7 @@
         {{!-- Increase Levels --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
         {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="actorLevels" data-target="system.bonus.increaseLevels"
+        <a class="trait-selector" data-action="traitSelector" data-options="actorLevels" data-target="system.bonus.increaseLevels"
           data-tooltip="{{localize 'E20.RolePointsIncreaseLevels'}}">
           <i class="fas fa-edit"></i>
         </a>
@@ -133,7 +133,7 @@
       {{!-- Increase Levels --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="actorLevels" data-target="system.resource.increaseLevels"
+      <a class="trait-selector" data-action="traitSelector" data-options="actorLevels" data-target="system.resource.increaseLevels"
         data-tooltip="{{localize 'E20.RolePointsIncreaseLevels'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -163,5 +163,5 @@
     </div>
 
   </section>
-</form>
+</div>
 

@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div class="{{cssClass}}" autocomplete="off">
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
@@ -28,7 +28,7 @@
       {{!-- Origin Essences --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginEssenceScoreIncrease'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="originEssences" data-target="system.essences"
+      <a class="trait-selector" data-action="traitSelector" data-options="originEssences" data-target="system.essences"
         data-tooltip="{{localize 'E20.EssenceSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -46,7 +46,7 @@
     {{!-- Origin Skills --}}
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.OriginSkill'}}
     {{#*inline "item-field-edit"}}
-    <a class="trait-selector" data-options="originSkills" data-target="system.skills"
+    <a class="trait-selector" data-action="traitSelector" data-options="originSkills" data-target="system.skills"
       data-tooltip="{{localize 'E20.SkillSelector'}}">
       <i class="fas fa-edit"></i>
     </a>
@@ -101,4 +101,4 @@
       {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
     </div>
   </section>
-</form>
+</div>

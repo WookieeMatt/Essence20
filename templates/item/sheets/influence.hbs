@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div class="{{cssClass}}" autocomplete="off">
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
 
@@ -20,7 +20,7 @@
       {{!-- Influence Skills --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.InfluenceSkill'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="influenceSkill" data-target="system.skills"
+      <a class="trait-selector" data-action="traitSelector" data-options="influenceSkill" data-target="system.skills"
         data-tooltip="{{localize 'E20.SkillSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -54,4 +54,4 @@
       {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
     </div>
   </section>
-</form>
+</div>

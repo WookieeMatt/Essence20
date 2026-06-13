@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div class="{{cssClass}}" autocomplete="off">
 
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
@@ -65,7 +65,7 @@
       {{!-- Traits --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeTraits'}}
       {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="{{system.type}}" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
+        <a class="trait-selector" data-action="traitSelector" data-options="{{system.type}}" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
           <i class="fas fa-edit"></i>
         </a>
       {{/inline}}
@@ -93,4 +93,4 @@
 
   </section>
 
-</form>
+</div>

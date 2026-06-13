@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div class="{{cssClass}}" autocomplete="off">
 
   {{!-- Item Sheet Header --}}
   {{> "systems/essence20/templates/item/parts/header.hbs"}}
@@ -23,7 +23,7 @@
       {{!-- Focus Essences --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusEssenceScoreIncrease'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="focusEssences" data-target="system.essences"
+      <a class="trait-selector" data-action="traitSelector" data-options="focusEssences" data-target="system.essences"
         data-tooltip="{{localize 'E20.EssenceSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -41,7 +41,7 @@
       {{!-- Essence Boost Levels --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.EssenceBoosts'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="actorLevels" data-target="system.essenceLevels"
+      <a class="trait-selector" data-action="traitSelector" data-options="actorLevels" data-target="system.essenceLevels"
         data-tooltip="{{localize 'E20.EssenceSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -59,7 +59,7 @@
       {{!-- Starting Role Skills --}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.FocusStartingSkills'}}
       {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="focusSkills" data-target="system.skills"
+      <a class="trait-selector" data-action="traitSelector" data-options="focusSkills" data-target="system.skills"
         data-tooltip="{{localize 'E20.SkillSelector'}}">
         <i class="fas fa-edit"></i>
       </a>
@@ -78,4 +78,4 @@
       {{> "systems/essence20/templates/item/parts/role-perk-drop.hbs" className="rolePerk" label='E20.RolePerks' items=system.items type='perk'}}
     </div>
   </section>
-</form>
+</div>
