@@ -8,12 +8,7 @@ import { TraitSelector } from "../apps/trait-selector.mjs";
  */
 export function onManageSelectTrait(event, owner, target=null) {
   event.preventDefault();
-  let a=null;
-  if (target) {
-    a = target;
-  }else {
-    a = event.currentTarget;
-  }
+const a = target || event.currentTarget;
 
   const options = {
     name: a.dataset.target,
