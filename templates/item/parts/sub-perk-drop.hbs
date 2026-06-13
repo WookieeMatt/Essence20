@@ -13,7 +13,7 @@
                 {{selectOptions @root.roles selected=item.role}}
               </select>
               <div class="item-controls">
-                <a class="item-control {{../className}}-delete flex-right" data-tooltip="{{localize 'E20.DeleteItem'}}">
+                <a class="item-control" data-action="deleteItem" data-item-key="{{@key}}" data-type="{{../className}}" data-tooltip="{{localize 'E20.DeleteItem'}}">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>

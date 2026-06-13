@@ -14,5 +14,12 @@
     <div class="description flexrow active">
       {{editor system.description target="system.description" button=true owner=owner editable=editable engine="prosemirror" collaborate=false}}
     </div>
+    {{#if (eq document.type 'equipmentPackage')}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlternateAccess'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.alternateAccess" value="{{system.alternateAccess}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
   </div>
 <section>
