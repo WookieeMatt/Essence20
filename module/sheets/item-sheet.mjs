@@ -6,6 +6,22 @@ import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 
 /**
+* Handles the dropping of items on to other items
+* @param {DragEvent} event The concluding DragEvent which contains drop data
+* @private
+*/
+async function _onDrop(event) {
+  const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
+  const droppedItem = await fromUuid(data.uuid);
+  const targetItem = this.item;
+  await setEntryAndAddItem(droppedItem, targetItem);
+  const newData = await fromUuid(targetItem.uuid);
+
+  this.object.system = newData.system;
+  this.render(true);
+}
+
+/**
 * Handles opening the item sheet of an attached item from the info button
 * @param {Event} data The data from the click event
 */
@@ -129,7 +145,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
     async _preparePartContext(partId, context, options) {
     context = await super._preparePartContext(partId, context, options);
-    console.log(partId)
     switch ( partId ) {
       case "description": context = await this._prepareDescriptionContext(context, options); break;
       case "details": context = await this._prepareDetailsContext(context, options); break;
@@ -198,23 +213,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     // Delete Effects from Weapons
 
   }
-
-  /**
-  * Handles the dropping of items on to other items
-  * @param {DragEvent} event The concluding DragEvent which contains drop data
-  * @private
-  */
-  async _onDrop(event) {
-    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
-    const droppedItem = await fromUuid(data.uuid);
-    const targetItem = this.item;
-    await setEntryAndAddItem(droppedItem, targetItem);
-    const newData = await fromUuid(targetItem.uuid);
-
-    this.object.system = newData.system;
-    this.render(true);
-  }
-
 }
 
 /**

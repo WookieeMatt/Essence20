@@ -2,7 +2,6 @@
 <section class="tab description" data-tab="description" data-group="primary">
   <div>
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ItemSource'}}
-    {{log system}}
     {{#*inline "item-field-inputs"}}
     <input type="text" name="system.source.book" value="{{system.source.book}}" placeholder="{{localize 'E20.ItemSourceBook'}}"/>
     <input class="two-digit-input" type="number" name="system.source.page" value="{{system.source.page}}" placeholder="{{localize 'E20.ItemSourcePage'}}" min="0" step="1"/>
@@ -11,12 +10,11 @@
 
     {{!-- Description --}}
     <h3>{{localize 'E20.ItemDescription'}}</h3>
-    <div class="description flexrow active">
+    <div class="description flexcol active">
       {{#if editingDescription}}
         <prose-mirror name="system.description" value="{{ system.description }}" document-uuid="{{ document.uuid }}" class="sized" compact></prose-mirror>
       {{else}}
-        {{log system}}
-        {{system.description}}
+        {{{system.description}}}
         <button type="button" class="unbutton control-button always-interactive" data-action="editDescription" label="edit" data-target="system.description">
             <i class="fas fa-edit" inert></i>
         </button>
