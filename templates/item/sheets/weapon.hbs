@@ -1,116 +1,94 @@
-<div class="{{cssClass}}" autocomplete="off">
+<section class="tab details flexcol" data-group="primary" data-tab="details">
+  {{!-- Availability --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponAvailability'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.availability">
+    {{selectOptions config.availabilities selected=system.availability}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+  {{!-- Is Poison? --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponIsPoison'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.isPoison" {{checked system.isPoison}} />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Tabs --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
-    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
-  </nav>
+  {{#if system.isPoison}}
+    {{!-- Poison Type --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponPoisonType'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.poisonType">
+      {{selectOptions config.poisonTypes selected=system.poisonType}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Item Sheet Body --}}
-  <section class="sheet-body item-sheet">
-    <div class="tab description flexcol" data-group="primary" data-tab="description">
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
-    </div>
+    {{!-- Poison Subtype --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponPoisonApplication'}}
+    {{#*inline "item-field-inputs"}}
+      <input type="checkbox" id="system.poisonApplication.contact" name="system.poisonApplication.contact" {{checked system.poisonApplication.contact}} />
+      <label for="system.poisonApplication.contact">{{localize 'E20.PoisonApplicationContact'}}</label>
+      <input type="checkbox" id="system.poisonApplication.ingested" name="system.poisonApplication.ingested" {{checked system.poisonApplication.ingested}} />
+      <label for="system.poisonApplication.ingested">{{localize 'E20.PoisonApplicationIngested'}}</label>
+      <input type="checkbox" id="system.poisonApplication.inhaled" name="system.poisonApplication.inhaled" {{checked system.poisonApplication.inhaled}} />
+      <label for="system.poisonApplication.inhaled">{{localize 'E20.PoisonApplicationInhaled'}}</label>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    <div class="tab details flexcol" data-group="primary" data-tab="details">
-      {{!-- Availability --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponAvailability'}}
-      {{#*inline "item-field-inputs"}}
-      <select class="item-field-inputs" name="system.availability">
-        {{selectOptions config.availabilities selected=system.availability}}
-      </select>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{else}}
+    {{!-- Size --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSize'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.classification.size">
+      {{selectOptions config.weaponSizes selected=system.classification.size}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
 
-      {{!-- Is Poison? --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponIsPoison'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="checkbox" name="system.isPoison" {{checked system.isPoison}} />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{!-- Traits --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTraits'}}
+  {{#*inline "item-field-edit"}}
+    <a class="trait-selector" data-action="traitSelector" data-options="weapon" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
+      <i class="fas fa-edit"></i>
+    </a>
+  {{/inline}}
 
-      {{#if system.isPoison}}
-        {{!-- Poison Type --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponPoisonType'}}
-        {{#*inline "item-field-inputs"}}
-        <select class="item-field-inputs" name="system.poisonType">
-          {{selectOptions config.poisonTypes selected=system.poisonType}}
-        </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{#*inline "item-field-inputs"}}
+  <div class="chip-section">
+    {{#each item.system.itemAndUpgradeTraits as |trait|}}
+    <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
+    {{/each}}
+  </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-        {{!-- Poison Subtype --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponPoisonApplication'}}
-        {{#*inline "item-field-inputs"}}
-          <input type="checkbox" id="system.poisonApplication.contact" name="system.poisonApplication.contact" {{checked system.poisonApplication.contact}} />
-          <label for="system.poisonApplication.contact">{{localize 'E20.PoisonApplicationContact'}}</label>
-          <input type="checkbox" id="system.poisonApplication.ingested" name="system.poisonApplication.ingested" {{checked system.poisonApplication.ingested}} />
-          <label for="system.poisonApplication.ingested">{{localize 'E20.PoisonApplicationIngested'}}</label>
-          <input type="checkbox" id="system.poisonApplication.inhaled" name="system.poisonApplication.inhaled" {{checked system.poisonApplication.inhaled}} />
-          <label for="system.poisonApplication.inhaled">{{localize 'E20.PoisonApplicationInhaled'}}</label>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{!-- Charges --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponUsesPerScene'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.usesPerScene name="system.usesPerScene" min=0 step=1}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{else}}
-        {{!-- Size --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponSize'}}
-        {{#*inline "item-field-inputs"}}
-        <select class="item-field-inputs" name="system.classification.size">
-          {{selectOptions config.weaponSizes selected=system.classification.size}}
-        </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/if}}
+  {{!-- Requirements --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRequirements'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
+    placeholder="{{ localize 'E20.WeaponRequirementsCustom' }}" />
+  <select name="system.requirements.skill">
+    {{selectOptions config.skills selected=system.requirements.skill}}
+  </select>
+  <select name="system.requirements.shift">
+    {{selectOptions config.weaponRequirementShifts selected=system.requirements.shift}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Traits --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTraits'}}
-      {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-action="traitSelector" data-options="weapon" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
-          <i class="fas fa-edit"></i>
-        </a>
-      {{/inline}}
+  {{!-- Weapon Effects --}}
+  {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.ItemTypeWeaponEffectPlural' items=@root.system.items type='weaponEffect'}}
 
-      {{#*inline "item-field-inputs"}}
-        <div class="chip-section">
-          {{#each item.system.itemAndUpgradeTraits as |trait|}}
-          <span class="chip" name="chip.weapon.traits.{{type}}">{{lookup @root.config.weaponTraits trait}}</span>
-          {{/each}}
-        </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Charges --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponUsesPerScene'}}
-      {{#*inline "item-field-inputs"}}
-      {{numberInput system.usesPerScene name="system.usesPerScene" min=0 step=1}}
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Requirements --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponRequirements'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="text" name="system.requirements.custom" value="{{system.requirements.custom}}"
-        placeholder="{{ localize 'E20.WeaponRequirementsCustom' }}" />
-      <select name="system.requirements.skill">
-        {{selectOptions config.skills selected=system.requirements.skill}}
-      </select>
-      <select name="system.requirements.shift">
-        {{selectOptions config.weaponRequirementShifts selected=system.requirements.shift}}
-      </select>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Weapon Effects --}}
-      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="weaponEffect" label='E20.ItemTypeWeaponEffectPlural' items=@root.system.items type='weaponEffect'}}
-
-      {{!-- Weapon Upgrades --}}
-      {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.system.items type='upgrade'}}
-    </div>
-
-  </section>
-
-</div>
+  {{!-- Weapon Upgrades --}}
+  {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="upgrade" label='E20.UpgradePlural' items=@root.system.items type='upgrade'}}
+</section>

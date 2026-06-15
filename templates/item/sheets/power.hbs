@@ -1,98 +1,69 @@
-<div class="{{cssClass}}" autocomplete="off">
+<section class="tab details flexcol" data-group="primary" data-tab="details">
+  {{!--Power Type --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerTypes'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.type">
+    {{selectOptions config.powerTypes selected=system.type}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+  {{!-- Times Selected --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.selectionLimit name="system.selectionLimit" min=0 step=1}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Tabs --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
-    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
-    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
-  </nav>
+  {{!-- Power has an Activation --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerActive'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.canActivate" {{checked system.canActivate}} />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Item Sheet Body --}}
-  <section class="sheet-body item-sheet">
-    <div class="tab description flexcol" data-group="primary" data-tab="description">
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
-    </div>
+  {{#if system.canActivate}}
+    {{!-- Power Cost --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerCost'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.powerCost name="system.powerCost" min=0 step=1}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    <div class="tab main flexcol" data-group="primary" data-tab="details">
+    {{!-- Power Incease --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerIncrease'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="checkbox" name="system.hasVariableCost" {{checked system.hasVariableCost}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!--Power Type --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerTypes'}}
+    {{#if system.hasVariableCost}}
+      {{!-- Max Power Cost --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerMaxCost'}}
       {{#*inline "item-field-inputs"}}
-      <select name="system.type">
-        {{selectOptions config.powerTypes selected=system.type}}
-      </select>
+      {{numberInput system.maxPowerCost name="system.maxPowerCost" min=0 step=1}}
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
 
-      {{!-- Times Selected --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.SelectionLimit'}}
-      {{#*inline "item-field-inputs"}}
-      {{numberInput system.selectionLimit name="system.selectionLimit" min=0 step=1}}
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{!--Action Type --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionTypes'}}
+    {{#*inline "item-field-inputs"}}
+    <select name="system.actionType">
+      {{selectOptions config.actionTypes selected=system.actionType}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Power has an Activation --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerActive'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="checkbox" name="system.canActivate" {{checked system.canActivate}} />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{!-- Uses Per Scene --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerUsesPer'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.usesPer name="system.usesPer" min=0 step=1}}
+    <select name="system.usesInterval">
+      {{selectOptions config.usesInterval selected=system.usesInterval}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{#if system.canActivate}}
-        {{!-- Power Cost --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerCost'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.powerCost name="system.powerCost" min=0 step=1}}
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-        {{!-- Power Incease --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerIncrease'}}
-        {{#*inline "item-field-inputs"}}
-        <input type="checkbox" name="system.hasVariableCost" {{checked system.hasVariableCost}} />
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-        {{#if system.hasVariableCost}}
-          {{!-- Max Power Cost --}}
-          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerMaxCost'}}
-          {{#*inline "item-field-inputs"}}
-          {{numberInput system.maxPowerCost name="system.maxPowerCost" min=0 step=1}}
-          {{/inline}}
-          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/if}}
-
-        {{!--Action Type --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ActionTypes'}}
-        {{#*inline "item-field-inputs"}}
-        <select name="system.actionType">
-          {{selectOptions config.actionTypes selected=system.actionType}}
-        </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-        {{!-- Uses Per Scene --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PowerUsesPer'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.usesPer name="system.usesPer" min=0 step=1}}
-        <select name="system.usesInterval">
-          {{selectOptions config.usesInterval selected=system.usesInterval}}
-        </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{/if}}
-
-    </div>
-
-    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-      {{!-- Effects Section --}}
-      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
-    </div>
-  </section>
-
-</div>
+  {{/if}}
+</section>
