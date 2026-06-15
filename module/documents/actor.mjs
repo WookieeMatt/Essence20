@@ -281,7 +281,7 @@ export class Essence20Actor extends Actor {
         }
       }
     }
-
+    console.log(movementTotal)
     if (!movementTotal) {
       system.movementNotSet = true;
     }

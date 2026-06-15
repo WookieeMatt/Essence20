@@ -12,7 +12,15 @@
     {{!-- Description --}}
     <h3>{{localize 'E20.ItemDescription'}}</h3>
     <div class="description flexrow active">
-      {{editor system.description target="system.description" button=true owner=owner editable=editable engine="prosemirror" collaborate=false}}
+      {{#if editingDescription}}
+        <prose-mirror name="system.description" value="{{ system.description }}" document-uuid="{{ document.uuid }}" class="sized" compact></prose-mirror>
+      {{else}}
+        {{log system}}
+        {{system.description}}
+        <button type="button" class="unbutton control-button always-interactive" data-action="editDescription" label="edit" data-target="system.description">
+            <i class="fas fa-edit" inert></i>
+        </button>
+      {{/if}}
     </div>
     {{#if (eq document.type 'equipmentPackage')}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlternateAccess'}}

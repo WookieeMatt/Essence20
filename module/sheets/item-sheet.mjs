@@ -40,6 +40,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       deleteItem: this.#deleteItem,
       traitSelector: this.#traitSelector,
       viewItem: this.#viewItem,
+      editDescription: this.#editDescription,
     },
     classes: ["essence20", "sheet", "item", "window-app"],
     tag: 'form',
@@ -90,6 +91,8 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     },
   };
 
+
+  editingDescriptionTarget = null;
   /* -------------------------------------------- */
   /** @override */
   async _prepareContext(options) {
@@ -124,6 +127,45 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     return context;
   }
 
+    async _preparePartContext(partId, context, options) {
+    context = await super._preparePartContext(partId, context, options);
+    console.log(partId)
+    switch ( partId ) {
+      case "description": context = await this._prepareDescriptionContext(context, options); break;
+      case "details": context = await this._prepareDetailsContext(context, options); break;
+      case "effects": context = await this._prepareEffectsContext(context, options); break;
+    }
+
+    return context;
+  }
+
+    async _prepareDescriptionContext(context, options) {
+    if ( this.editingDescriptionTarget ) context.editingDescription = {
+      target: this.editingDescriptionTarget,
+      value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget)
+    };
+
+    return context;
+  }
+
+  async _prepareDetailsContext(context, options) {
+    return context;
+  }
+
+  async _prepareEffectsContext(context, options) {
+    return context;
+  }
+
+  async _onRender(context, options) {
+    await super._onRender(context, options);
+    if ( this.editingDescriptionTarget ) {
+      this.element.querySelectorAll("prose-mirror").forEach(editor => editor.addEventListener("save", () => {
+        this.editingDescriptionTarget = null;
+        this.render();
+      }));
+    }
+  }
+
   /* -------------------------------------------- */
   static async #deleteItem(event,target) {
     _onObjectDelete(target.dataset,this);
@@ -135,6 +177,11 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
   static async #viewItem(event,target){
     _onObjectInfo(target);
+  }
+
+  static #editDescription(event, target) {
+    this.editingDescriptionTarget = target.dataset.target;
+    this.render();
   }
 
   /** @override */
@@ -150,21 +197,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     this.form.ondrop = (event) => this._onDrop(event);
     // Delete Effects from Weapons
 
-  }
-
-  async activateEditor(name, options={}, initialContent="") {
-    options.relativeLinks = true;
-    options.plugins = {
-      menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
-        compact: true,
-        destroyOnSave: true,
-        onSave: () => {
-          this.saveEditor(name, { remove: true });
-          this.editingDescriptionTarget = null;
-        },
-      }),
-    };
-    return super.activateEditor(name, options, initialContent);
   }
 
   /**

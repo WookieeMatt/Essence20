@@ -13,7 +13,7 @@
 
   {{#*inline "item-field-inputs"}}
   <div class="flex-group-right chip-section">
-    {{#each item.system.essences as |name|}}
+    {{#each system.essences as |name|}}
     <span class="chip" name="chip.essences.{{type}}">{{lookup @root.config.essences name}}</span>
     {{/each}}
   </div>
@@ -30,7 +30,7 @@
 
   {{#*inline "item-field-inputs"}}
   <div class="flex-group-right chip-section">
-    {{#each item.system.essenceLevels as |name|}}
+    {{#each system.essenceLevels as |name|}}
       <span class="chip" name="chip.essenceLevels{{type}}">{{lookup @root.config.actorLevels name}}</span>
     {{/each}}
   </div>
@@ -47,7 +47,7 @@
 
   {{#*inline "item-field-inputs"}}
   <div class="flex-group-right chip-section">
-  {{#each item.system.skills as |name|}}
+  {{#each system.skills as |name|}}
     <span class="chip" name="chip.skills.{{type}}">{{lookup @root.config.originSkills name}}</span>
   {{/each}}
   </div>
