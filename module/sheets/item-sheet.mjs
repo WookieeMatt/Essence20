@@ -6,19 +6,38 @@ import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
 
 /**
-* Handles the dropping of items on to other items
-* @param {DragEvent} event The concluding DragEvent which contains drop data
-* @private
-*/
-async function _onDrop(event) {
-  const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
-  const droppedItem = await fromUuid(data.uuid);
-  const targetItem = this.item;
-  await setEntryAndAddItem(droppedItem, targetItem);
-  const newData = await fromUuid(targetItem.uuid);
+ * Handles retrieving all existing roles of the system version selected.
+ * @param {ItemData} itemData The data of the item that is being opened.
+ * @returns versionRoles the roles of the system version that is selected.
+ */
+async function _getVersionRoles(itemData) {
+  const versionRoles = {};
 
-  this.object.system = newData.system;
-  this.render(true);
+  // Should be generated on world load, but just in case
+  if (CONFIG.E20.allPackRoles == null) {
+    await updateRoleCache();
+  }
+
+  for (const role of CONFIG.E20.allPackRoles) {
+    if (role.system.version == itemData.system.version){
+      versionRoles[role.name] = {
+        type: role.type,
+      };
+    }
+  }
+
+  const worldItems = game.items;
+  for (const worldItem of worldItems) {
+    if (worldItem.type == "role") {
+      if (worldItem.system.version == itemData.system.version) {
+        versionRoles[worldItem.name] = {
+          type: worldItem.type,
+        };
+      }
+    }
+  }
+
+  return versionRoles;
 }
 
 /**
@@ -40,8 +59,10 @@ async function _onObjectInfo(target) {
 */
 async function _onObjectDelete(data, item) {
   const id = data.itemKey;
-  const updateString = `system.items.-=${id}`;
-  await item.document.update({[updateString]: null});
+  const updateString = `system.items.${id}`;
+  await item.document.update({
+    [updateString]: new foundry.data.operators.ForcedDeletion()
+  });
 }
 
 /**
@@ -49,7 +70,6 @@ async function _onObjectDelete(data, item) {
  * @extends {ItemSheet}
  */
 export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheetV2) {
-
   /** @override */
   static DEFAULT_OPTIONS = {
     actions: {
@@ -81,7 +101,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
         { id: "details", group: 'primary', label: "Details"},
         { id: "effects", group: 'primary', label: "Effects"},
       ],
-      initial: "description",
     },
   };
 
@@ -155,6 +174,8 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
     async _prepareDescriptionContext(context, options) {
+    context.cssClass = "active";
+    console.log(context)
     if ( this.editingDescriptionTarget ) context.editingDescription = {
       target: this.editingDescriptionTarget,
       value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget)
@@ -164,15 +185,40 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _prepareDetailsContext(context, options) {
+    context.cssClass = "active";
     return context;
   }
 
   async _prepareEffectsContext(context, options) {
+    context.cssClass = "active";
     return context;
   }
 
+  _onDragStart(event) {
+    console.log("This never fires")
+  }
+
+
+  async _onDrop(event) {
+    const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
+    const droppedItem = await fromUuid(data.uuid);
+    const targetItem = this.document;
+    await setEntryAndAddItem(droppedItem, targetItem);
+    const newData = await fromUuid(targetItem.uuid);
+  }
+
   async _onRender(context, options) {
+
     await super._onRender(context, options);
+    new CONFIG.ux.DragDrop({
+      dragSelector: ":is([data-activity-id], [data-effect-id], [data-item-id])",
+      dropSelector: null,
+      callbacks: {
+        dragstart: this._onDragStart.bind(this),
+        drop: this._onDrop.bind(this)
+      }
+    }).bind(this.element);
+
     if ( this.editingDescriptionTarget ) {
       this.element.querySelectorAll("prose-mirror").forEach(editor => editor.addEventListener("save", () => {
         this.editingDescriptionTarget = null;
@@ -198,54 +244,4 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     this.editingDescriptionTarget = target.dataset.target;
     this.render();
   }
-
-  /** @override */
-  activateListeners(html) {
-    super.activateListeners(html);
-
-    // Everything below here is only needed if the sheet is editable
-    if (!this.isEditable) return;
-    html.find(".effect-control").click(ev => {
-      onManageActiveEffect(ev, this.item);
-    });
-
-    this.form.ondrop = (event) => this._onDrop(event);
-    // Delete Effects from Weapons
-
-  }
-}
-
-/**
- * Handles retrieving all existing roles of the system version selected.
- * @param {ItemData} itemData The data of the item that is being opened.
- * @returns versionRoles the roles of the system version that is selected.
- */
-async function _getVersionRoles(itemData) {
-  const versionRoles = {};
-
-  // Should be generated on world load, but just in case
-  if (CONFIG.E20.allPackRoles == null) {
-    await updateRoleCache();
-  }
-
-  for (const role of CONFIG.E20.allPackRoles) {
-    if (role.system.version == itemData.system.version){
-      versionRoles[role.name] = {
-        type: role.type,
-      };
-    }
-  }
-
-  const worldItems = game.items;
-  for (const worldItem of worldItems) {
-    if (worldItem.type == "role") {
-      if (worldItem.system.version == itemData.system.version) {
-        versionRoles[worldItem.name] = {
-          type: worldItem.type,
-        };
-      }
-    }
-  }
-
-  return versionRoles;
 }
