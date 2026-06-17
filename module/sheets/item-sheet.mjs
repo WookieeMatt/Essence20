@@ -176,7 +176,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     context.cssClass = "active";
     if ( this.editingDescriptionTarget ) context.editingDescription = {
       target: this.editingDescriptionTarget,
-      value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget)
+      value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget),
     };
 
     return context;
@@ -192,17 +192,11 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     return context;
   }
 
-  _onDragStart(event) {
-    console.log("This never fires")
-  }
-
-
   async _onDrop(event) {
     const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.document;
     await setEntryAndAddItem(droppedItem, targetItem);
-    const newData = await fromUuid(targetItem.uuid);
   }
 
   async _onRender(context, options) {
@@ -212,9 +206,8 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       dragSelector: ":is([data-activity-id], [data-effect-id], [data-item-id])",
       dropSelector: null,
       callbacks: {
-        dragstart: this._onDragStart.bind(this),
-        drop: this._onDrop.bind(this)
-      }
+        drop: this._onDrop.bind(this),
+      },
     }).bind(this.element);
 
     if ( this.editingDescriptionTarget ) {
