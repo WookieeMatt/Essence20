@@ -1,6 +1,5 @@
 const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-import { onManageActiveEffect } from "../helpers/effects.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
@@ -61,7 +60,7 @@ async function _onObjectDelete(data, item) {
   const id = data.itemKey;
   const updateString = `system.items.${id}`;
   await item.document.update({
-    [updateString]: new foundry.data.operators.ForcedDeletion()
+    [updateString]: new foundry.data.operators.ForcedDeletion(),
   });
 }
 
@@ -162,20 +161,19 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     return context;
   }
 
-    async _preparePartContext(partId, context, options) {
+  async _preparePartContext(partId, context, options) {
     context = await super._preparePartContext(partId, context, options);
     switch ( partId ) {
-      case "description": context = await this._prepareDescriptionContext(context, options); break;
-      case "details": context = await this._prepareDetailsContext(context, options); break;
-      case "effects": context = await this._prepareEffectsContext(context, options); break;
+    case "description": context = await this._prepareDescriptionContext(context); break;
+    case "details": context = await this._prepareDetailsContext(context); break;
+    case "effects": context = await this._prepareEffectsContext(context); break;
     }
 
     return context;
   }
 
-    async _prepareDescriptionContext(context, options) {
+  async _prepareDescriptionContext(context) {
     context.cssClass = "active";
-    console.log(context)
     if ( this.editingDescriptionTarget ) context.editingDescription = {
       target: this.editingDescriptionTarget,
       value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget)
@@ -184,12 +182,12 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     return context;
   }
 
-  async _prepareDetailsContext(context, options) {
+  async _prepareDetailsContext(context) {
     context.cssClass = "active";
     return context;
   }
 
-  async _prepareEffectsContext(context, options) {
+  async _prepareEffectsContext(context) {
     context.cssClass = "active";
     return context;
   }
