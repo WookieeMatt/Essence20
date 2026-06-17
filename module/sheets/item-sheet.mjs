@@ -174,10 +174,12 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
   async _prepareDescriptionContext(context) {
     context.cssClass = "active";
-    if ( this.editingDescriptionTarget ) context.editingDescription = {
-      target: this.editingDescriptionTarget,
-      value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget),
-    };
+    if (this.editingDescriptionTarget) {
+      context.editingDescription = {
+        target: this.editingDescriptionTarget,
+        value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget),
+      };
+    }
 
     return context;
   }
