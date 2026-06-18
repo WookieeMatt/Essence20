@@ -1,7 +1,7 @@
 {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" className=className label=label items=items type=type}}
 {{#*inline "item-field-inputs"}}
 {{#itemsContainType items type}}
-  <div class="flexcol">
+  <div class="flexcol data-drop">
     {{#each items as |item|}}
       {{#if (eq item.type ../type)}}
       <div class="flexrow {{item.type}}" data-item-key="{{@key}}" data-item-uuid="{{item.uuid}}">
@@ -10,7 +10,7 @@
           <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
             <label class="flexcol">{{item.name}}</label>
             <div class="item-controls">
-              <a class="view-info" data-uuid="{{item.uuid}}" data-tooltip="{{localize 'E20.OpenItem'}}">
+              <a class="view-info" data-action="viewItem" data-uuid="{{item.uuid}}" data-tooltip="{{localize 'E20.OpenItem'}}">
                 <i class="fa-solid fa-fw fa-info-circle"></i>
               </a>
               <a class="item-control flex-right" data-action="deleteItem" data-item-key="{{@key}}" data-type="{{../className}}" data-tooltip="{{localize 'E20.DeleteItem'}}">

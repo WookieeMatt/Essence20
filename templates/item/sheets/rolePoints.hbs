@@ -78,7 +78,7 @@
     {{/inline}}
     {{#*inline "item-field-inputs"}}
     <div class="flex-group-right chip-section">
-      {{#each item.system.bonus.increaseLevels as |name|}}
+      {{#each system.bonus.increaseLevels as |name|}}
         <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
       {{/each}}
     </div>
@@ -119,7 +119,7 @@
   {{/inline}}
   {{#*inline "item-field-inputs"}}
   <div class="flex-group-right chip-section">
-    {{#each item.system.resource.increaseLevels as |name|}}
+    {{#each system.resource.increaseLevels as |name|}}
       <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
     {{/each}}
   </div>
