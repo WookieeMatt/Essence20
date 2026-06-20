@@ -78,19 +78,18 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       editDescription: this.#editDescription,
     },
     classes: ["essence20", "sheet", "item", "window-app"],
-    tag: 'form',
-    position: {
-      width: 520,
-      height: "auto",
-    },
-    window: {
-      resizeable: true,
-      scrollable: true,
-    },
     form: {
       submitOnChange: true,
       closeOnSubmit: false,
     },
+    position: {
+      width: "auto",
+      height: "auto",
+    },
+    tag: 'form',
+    window: {
+      resizable: true,
+    }
   };
 
   static TABS = {
@@ -202,7 +201,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _onRender(context, options) {
-
     await super._onRender(context, options);
     new CONFIG.ux.DragDrop({
       dragSelector: ":is([data-activity-id], [data-effect-id], [data-item-id])",
