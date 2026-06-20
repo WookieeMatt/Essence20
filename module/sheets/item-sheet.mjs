@@ -78,19 +78,18 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       editDescription: this.#editDescription,
     },
     classes: ["essence20", "sheet", "item", "window-app"],
-    tag: 'form',
-    position: {
-      width: 520,
-      height: "auto",
-    },
-    window: {
-      resizeable: true,
-      scrollable: true,
-    },
     form: {
       submitOnChange: true,
       closeOnSubmit: false,
     },
+    position: {
+      width: "auto",
+      height: "auto",
+    },
+    tag: 'form',
+    window: {
+      resizable: true,
+    }
   };
 
   static TABS = {
