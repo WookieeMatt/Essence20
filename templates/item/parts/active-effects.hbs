@@ -1,4 +1,4 @@
-<section class="tab effects flexrow {{cssClass}}" data-tab="effects" data-group="primary">
+<section class="tab effects flexrow{{#if (eq activeTab 'effects')}} active{{/if}}" data-tab="effects" data-group="primary">
   <div>
     <ol class="items-list effects-list" style="border-color: {{system.color}};">
     {{#each effects as |section sid|}}

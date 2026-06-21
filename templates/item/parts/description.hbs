@@ -1,6 +1,6 @@
 {{!-- Source --}}
-<section class="tab description {{cssClass}}" data-tab="description" data-group="primary">
-
+<section class="tab description{{#if (eq activeTab 'description')}} active{{/if}}" data-tab="description" data-group="primary">
+{{log activeTab}}
   <div>
     {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ItemSource'}}
     {{#*inline "item-field-inputs"}}
