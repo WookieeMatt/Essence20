@@ -89,7 +89,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     tag: 'form',
     window: {
       resizable: true,
-    }
+    },
   };
 
   static TABS = {
@@ -104,7 +104,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   };
 
   tabGroups = {
-    primary: "description"
+    primary: "description",
   };
 
   /** @override */
