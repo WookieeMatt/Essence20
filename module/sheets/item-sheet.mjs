@@ -117,11 +117,11 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     },
     description: {
       template: "systems/essence20/templates/item/parts/description.hbs",
-      scrollable: [""],
+      scrollable: [''],
     },
     details: {
       template: "systems/essence20/templates/item/parts/item-base.hbs",
-      scrollable: [""],
+      scrollable: [''],
     },
     effects: {
       template: "systems/essence20/templates/item/parts/active-effects.hbs",
@@ -153,12 +153,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     if (options.isFirstRender) {
       context.activeTab = "description";
       context.tabs.description.active = true;
-    }
-
-    for (const [key, tab] of Object.entries(context.tabs)){
-      if (tab.active){
-        context.activeTab = key;
-      }
     }
 
     // Prepare active effects

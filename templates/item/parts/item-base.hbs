@@ -1,5 +1,5 @@
-<section class="tab details{{#if (eq activeTab 'details')}} active{{/if}}" data-tab="details" data-group="primary">
-  <div class="item-details">
+<section class="tab details {{tabs.details.cssClass}}" style="overflow-y: scroll" data-tab="details" data-group="primary">
+  <div>
     {{#switch document.type}}
       {{#case 'alteration'}}
         {{> "systems/essence20/templates/item/sheets/alteration.hbs"}}
