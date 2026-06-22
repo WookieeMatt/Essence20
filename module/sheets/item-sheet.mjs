@@ -152,6 +152,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
     if (options.isFirstRender) {
       context.activeTab = "description";
+      context.tabs.description.active = true;
     }
 
     for (const [key, tab] of Object.entries(context.tabs)){

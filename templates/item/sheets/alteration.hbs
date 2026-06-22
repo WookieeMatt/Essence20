@@ -28,7 +28,7 @@
 
     {{#*inline "item-field-inputs"}}
       <div class="chip-section">
-        {{#each item.system.essenceBonus as |essence|}}
+        {{#each system.essenceBonus as |essence|}}
           <span class="chip" name="chip.alteration.essenceBonus.{{type}}">{{lookup @root.config.originEssences essence}}</span>
         {{/each}}
       </div>
@@ -45,7 +45,7 @@
 
     {{#*inline "item-field-inputs"}}
       <div class="chip-section">
-        {{#each item.system.essenceCost as |essence|}}
+        {{#each system.essenceCost as |essence|}}
         <span class="chip" name="chip.alteration.essenceCost.{{type}}">{{lookup @root.config.originEssences essence}}</span>
         {{/each}}
       </div>
