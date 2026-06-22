@@ -77,7 +77,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       viewItem: this.#viewItem,
       editDescription: this.#editDescription,
     },
-    classes: ["essence20", "sheet", "item", "window-app"],
+    classes: ["essence20", "sheet", "item", "window-app", "sheet-header"],
     form: {
       submitOnChange: true,
       closeOnSubmit: false,
@@ -134,6 +134,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   /* -------------------------------------------- */
   /** @override */
   async _prepareContext(options) {
+    console.log(options)
     // Retrieve base data structure.
     const context = await super._prepareContext(options);
 
@@ -152,6 +153,12 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
     if (options.isFirstRender) {
       context.activeTab = "description";
+    }
+
+    for (const [key, tab] of Object.entries(context.tabs)){
+      if (tab.active){
+        context.activeTab = key;
+      }
     }
 
     // Prepare active effects
@@ -208,6 +215,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _onRender(context, options) {
+    console.log(context)
     await super._onRender(context, options);
     new CONFIG.ux.DragDrop({
       dragSelector: ":is([data-activity-id], [data-effect-id], [data-item-id])",
