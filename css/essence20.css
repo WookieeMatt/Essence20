@@ -505,6 +505,7 @@ body.game .window-app {
   -ms-flex-pack: start;
   justify-content: flex-start;
   margin-bottom: 10px;
+  min-height: 125px;
 }
 
 /* PR Sheet Headers */
@@ -742,7 +743,7 @@ body.game .window-app {
 }
 
 .essence20 .tox .tox-editor-container {
-  background: white;
+  background: rgb(255, 255, 255);
 }
 
 .essence20 .tox .tox-edit-area {
@@ -1292,7 +1293,7 @@ body.game .window-app {
 /* -- Jornal page styling -- */
 .window-content .journal-sheet-container .journal-entry-content {
   background: none;
-  color: #a3a3a3;
+  color: rgb(163, 163, 163);
   border: 10px #c9c7b8;
   /*background-color: blue;*/
 }
@@ -1532,7 +1533,7 @@ body.game .window-app {
   border: 1px solid var(--theme-border-color);
 }
 .story-points .story-points__btn:hover {
-  background: #3e3e3e;
+  background: rgb(61.5, 61.5, 61.5);
 }
 .story-points .story-points__btn.--bottom {
   width: 100%;

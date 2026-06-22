@@ -134,7 +134,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   /* -------------------------------------------- */
   /** @override */
   async _prepareContext(options) {
-    console.log(options)
     // Retrieve base data structure.
     const context = await super._prepareContext(options);
 
@@ -215,7 +214,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _onRender(context, options) {
-    console.log(context)
     await super._onRender(context, options);
     new CONFIG.ux.DragDrop({
       dragSelector: ":is([data-activity-id], [data-effect-id], [data-item-id])",
