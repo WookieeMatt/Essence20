@@ -77,7 +77,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       viewItem: this.#viewItem,
       editDescription: this.#editDescription,
     },
-    classes: ["essence20", "sheet", "item", "window-app", "sheet-header"],
+    classes: ["essence20", "sheet", "item", "window-app"],
     form: {
       submitOnChange: true,
       closeOnSubmit: false,
