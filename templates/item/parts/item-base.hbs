@@ -1,5 +1,5 @@
-<section class="tab details" data-tab="details" data-group="primary">
-  <div class="item-details">
+<section class="tab details {{tabs.details.cssClass}}" style="overflow-y: scroll" data-tab="details" data-group="primary">
+  <div>
     {{#switch document.type}}
       {{#case 'alteration'}}
         {{> "systems/essence20/templates/item/sheets/alteration.hbs"}}
@@ -12,8 +12,8 @@
       {{/case}}
       {{#case 'bond'}}
         {{> "systems/essence20/templates/item/sheets/bond.hbs"}}
-      {{#case 'classFeature'}}
       {{/case}}
+      {{#case 'classFeature'}}
         {{> "systems/essence20/templates/item/sheets/classFeature.hbs"}}
       {{/case}}
       {{#case 'equipmentPackage'}}

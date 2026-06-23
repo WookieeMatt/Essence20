@@ -78,18 +78,17 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       editDescription: this.#editDescription,
     },
     classes: ["essence20", "sheet", "item", "window-app"],
-    tag: 'form',
-    position: {
-      width: 520,
-      height: "auto",
-    },
-    window: {
-      resizeable: true,
-      scrollable: true,
-    },
     form: {
       submitOnChange: true,
       closeOnSubmit: false,
+    },
+    position: {
+      width: "auto",
+      height: "auto",
+    },
+    tag: 'form',
+    window: {
+      resizable: true,
     },
   };
 
@@ -100,7 +99,12 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
         { id: "details", group: 'primary', label: "Details"},
         { id: "effects", group: 'primary', label: "Effects"},
       ],
+      initial: "description",
     },
+  };
+
+  tabGroups = {
+    primary: "description",
   };
 
   /** @override */
@@ -113,11 +117,11 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     },
     description: {
       template: "systems/essence20/templates/item/parts/description.hbs",
-      scrollable: [""],
+      scrollable: [''],
     },
     details: {
       template: "systems/essence20/templates/item/parts/item-base.hbs",
-      scrollable: [""],
+      scrollable: [''],
     },
     effects: {
       template: "systems/essence20/templates/item/parts/active-effects.hbs",
@@ -146,6 +150,11 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       context.rollData = actor.getRollData();
     }
 
+    if (options.isFirstRender) {
+      context.activeTab = "description";
+      context.tabs.description.active = true;
+    }
+
     // Prepare active effects
     // context.effects = prepareActiveEffectCategories(this.object.effects);
 
@@ -163,6 +172,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
   async _preparePartContext(partId, context, options) {
     context = await super._preparePartContext(partId, context, options);
+
     switch ( partId ) {
     case "description": context = await this._prepareDescriptionContext(context); break;
     case "details": context = await this._prepareDetailsContext(context); break;
@@ -173,7 +183,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _prepareDescriptionContext(context) {
-    context.cssClass = "active";
     if (this.editingDescriptionTarget) {
       context.editingDescription = {
         target: this.editingDescriptionTarget,
@@ -185,12 +194,10 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _prepareDetailsContext(context) {
-    context.cssClass = "active";
     return context;
   }
 
   async _prepareEffectsContext(context) {
-    context.cssClass = "active";
     return context;
   }
 
@@ -202,7 +209,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _onRender(context, options) {
-
     await super._onRender(context, options);
     new CONFIG.ux.DragDrop({
       dragSelector: ":is([data-activity-id], [data-effect-id], [data-item-id])",

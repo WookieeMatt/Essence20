@@ -57,8 +57,8 @@ export class Essence20Item extends Item {
     // Update the entry on the parent if this is a child Item
     if (['weaponEffect', 'upgrade'].includes(this.type)) {
       const parentId = this.flags.essence20?.parentId;
-      const parentItem = this.actor.items.get(parentId);
-      const key = this.flags.essence20.collectionId;
+      const parentItem = this.actor?.items?.get(parentId);
+      const key = this.flags.essence20?.collectionId;
 
       if (parentItem && key) {
         const entry = createEntry(this, parentItem);
