@@ -3,6 +3,7 @@ const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
+import { prepareActiveEffectCategories, onCreateActiveEffect, onDeleteActiveEffect, onEditActiveEffect, onToggleActiveEffect } from "../helpers/effects.mjs";
 
 /**
  * Handles retrieving all existing roles of the system version selected.
@@ -76,6 +77,10 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       traitSelector: this.#traitSelector,
       viewItem: this.#viewItem,
       editDescription: this.#editDescription,
+      createEffect: this.#createActiveEffect,
+      deleteEffect: this.#deleteActiveEffect,
+      editEffect: this.#editActiveEffect,
+      toggleEffect: this.toggleActiveEffect,
     },
     classes: ["essence20", "sheet", "item", "window-app"],
     form: {
@@ -134,6 +139,8 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   /* -------------------------------------------- */
   /** @override */
   async _prepareContext(options) {
+    console.log(event)
+
     // Retrieve base data structure.
     const context = await super._prepareContext(options);
 
@@ -198,6 +205,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _prepareEffectsContext(context) {
+    context.effects = await prepareActiveEffectCategories(this.document.effects);
     return context;
   }
 
@@ -242,5 +250,22 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   static #editDescription(event, target) {
     this.editingDescriptionTarget = target.dataset.target;
     this.render();
+  }
+
+  static #createActiveEffect(event) {
+    onCreateActiveEffect(event, this.document)
+  }
+
+  static #deleteActiveEffect(event){
+    onDeleteActiveEffect(event, this.document)
+  }
+
+  static #editActiveEffect(event) {
+    console.log(event)
+    onEditActiveEffect(event, this.document)
+  }
+
+  static #toggleActiveEffect(event){
+    onToggleActiveEffect(event, this.document)
   }
 }

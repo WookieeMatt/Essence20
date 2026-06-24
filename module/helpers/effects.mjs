@@ -33,6 +33,60 @@ export function onManageActiveEffect(event, owner) {
   }
 }
 
+export function onCreateActiveEffect(event,owner) {
+  event.preventDefault();
+  const data = event.target.dataset
+
+  if (checkIsLocked(owner)) {
+    return;
+  }
+
+  return owner.createEmbeddedDocuments("ActiveEffect", [{
+    name: "New Effect",
+    img: "icons/svg/aura.svg",
+    origin: owner.uuid,
+    "duration.rounds": data.effectType === "temporary" ? 1 : undefined,
+    disabled: data.effectType === "inactive",
+  }]);
+
+}
+
+export async function onDeleteActiveEffect(event, owner) {
+  event.preventDefault();
+  const data = event.target.dataset
+
+  if (checkIsLocked(owner)) {
+    return;
+  }
+
+  const result = await owner.effects.get(data.key)
+
+  console.log(result)
+  if (result) {
+
+  }
+}
+
+export async function onEditActiveEffect(event, owner) {
+  event.preventDefault();
+  const data = event.target.dataset
+
+  if (checkIsLocked(owner)) {
+    return;
+  }
+
+  const item = await fromUuid(data.uuid);
+
+  if (item) {
+    item.sheet.render(true);
+  }
+
+}
+
+export function onToggleActiveEffect(event, owner) {
+
+}
+
 /**
  * Prepare the data structure for Active Effects which are currently applied to an Actor or Item.
  * @param {ActiveEffect[]} effects    The array of Active Effect instances to prepare sheet data for
@@ -60,10 +114,10 @@ export function prepareActiveEffectCategories(effects) {
   };
 
   // Iterate over active effects, classifying them into categories
-  for ( let e of effects ) {
-    if ( e.disabled ) categories.inactive.effects.push(e);
-    else if ( e.isTemporary ) categories.temporary.effects.push(e);
-    else categories.passive.effects.push(e);
+  for ( const effect of effects ) {
+    if ( effect.disabled ) categories.inactive.effects.push(effect);
+    else if ( effect.isTemporary ) categories.temporary.effects.push(effect);
+    else categories.passive.effects.push(effect);
   }
 
   return categories;
