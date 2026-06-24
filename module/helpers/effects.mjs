@@ -33,6 +33,12 @@ export function onManageActiveEffect(event, owner) {
   }
 }
 
+/**
+ *Create a new Active Effect on an actor or item.
+ * @param {MouseEvent} event The click event to create the AE
+ * @param {Document} owner The item or actor that the AE is created on.
+ * @returns
+ */
 export function onCreateActiveEffect(event,owner) {
   event.preventDefault();
   const data = event.target.dataset
@@ -51,40 +57,71 @@ export function onCreateActiveEffect(event,owner) {
 
 }
 
+/**
+ *Delete an Active Effect on an actor or item.
+ * @param {MouseEvent} event The click event to delete the AE
+ * @param {Document} owner The item or actor that the AE is deleted on.
+ * @returns
+ */
 export async function onDeleteActiveEffect(event, owner) {
   event.preventDefault();
   const data = event.target.dataset
-
   if (checkIsLocked(owner)) {
     return;
   }
 
   const result = await owner.effects.get(data.key)
-
-  console.log(result)
   if (result) {
-
+    result.delete();
   }
 }
 
+/**
+ * Allows dropping of Active Effects on Items
+ * @param {ActiveEffect} droppedItem The Active Effect being dropped
+ * @param {Item} targetItem The item the Active Effect is being dropped on
+ */
+export async function onDropActiveEffect(droppedItem, targetItem) {
+  await targetItem.createEmbeddedDocuments("ActiveEffect", [{
+    description: droppedItem.description,
+    name: droppedItem.name,
+    img: droppedItem.img,
+    system: droppedItem.system,
+  }]);
+}
+
+/**
+ *Edit an Active Effect on an actor or item.
+ * @param {MouseEvent} event The click event to edit the AE
+ * @param {Document} owner The item or actor that the AE is on.
+ * @returns
+ */
 export async function onEditActiveEffect(event, owner) {
   event.preventDefault();
   const data = event.target.dataset
-
   if (checkIsLocked(owner)) {
     return;
   }
 
-  const item = await fromUuid(data.uuid);
-
-  if (item) {
-    item.sheet.render(true);
+  const effect = await fromUuid(data.uuid);
+  if (effect) {
+    effect.sheet.render(true);
   }
 
 }
 
-export function onToggleActiveEffect(event, owner) {
+/**
+ *Toggles an Active Effect on an actor or item from Inactive to Active.
+ * @param {MouseEvent} event The click event to toggle the AE
+ * @param {Document} owner The item or actor that the AE is on.
+ * @returns
+ */
+export async function onToggleActiveEffect(event, owner) {
+  event.preventDefault();
+  const data = event.target.dataset
 
+  const effect = await fromUuid(data.uuid);
+  return effect.update({disabled: !effect.disabled});
 }
 
 /**

@@ -3,7 +3,7 @@ const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
-import { prepareActiveEffectCategories, onCreateActiveEffect, onDeleteActiveEffect, onEditActiveEffect, onToggleActiveEffect } from "../helpers/effects.mjs";
+import { prepareActiveEffectCategories, onCreateActiveEffect, onDeleteActiveEffect, onDropActiveEffect, onEditActiveEffect, onToggleActiveEffect } from "../helpers/effects.mjs";
 
 /**
  * Handles retrieving all existing roles of the system version selected.
@@ -80,7 +80,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
       editEffect: this.#editActiveEffect,
-      toggleEffect: this.toggleActiveEffect,
+      toggleEffect: this.#toggleActiveEffect,
     },
     classes: ["essence20", "sheet", "item", "window-app"],
     form: {
@@ -213,7 +213,11 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     const data = foundry.applications.ux.TextEditor.implementation.getDragEventData(event);
     const droppedItem = await fromUuid(data.uuid);
     const targetItem = this.document;
-    await setEntryAndAddItem(droppedItem, targetItem);
+    if (droppedItem.type == "base") {
+      onDropActiveEffect(droppedItem, targetItem);
+    } else {
+      await setEntryAndAddItem(droppedItem, targetItem);
+    }
   }
 
   async _onRender(context, options) {
