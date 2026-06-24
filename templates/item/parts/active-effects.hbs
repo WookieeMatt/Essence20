@@ -25,7 +25,6 @@
 
       <ol class="item-list">
       {{#each section.effects as |effect|}}
-        {{log effect._uuid}}
         <li class="item effect flexrow" data-effect-id="{{effect.id}}">
           <div class="item-name effect-name flexrow">
             <img class="item-image" src="{{effect.img}}"/>
@@ -37,7 +36,7 @@
             {{#if @root.editable}}
               <a class="effect-control" data-action="toggleEffect"
                 data-tooltip="{{#if effect.disabled}}E20.ActiveEffectEnable{{else}}E20.ActiveEffectDisable{{/if}}">
-                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}" data-uuid="{{effect._uuid}}"></i>
               </a>
               <a class="effect-control" data-action="editEffect" data-tooltip="E20.ActiveEffectEdit">
                 <i class="fas fa-edit" data-uuid="{{effect._uuid}}"></i>
