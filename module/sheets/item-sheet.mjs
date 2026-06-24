@@ -139,8 +139,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   /* -------------------------------------------- */
   /** @override */
   async _prepareContext(options) {
-    console.log(event)
-
     // Retrieve base data structure.
     const context = await super._prepareContext(options);
 
@@ -257,19 +255,19 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   static #createActiveEffect(event) {
-    onCreateActiveEffect(event, this.document)
+    onCreateActiveEffect(event, this.document);
   }
 
   static #deleteActiveEffect(event){
-    onDeleteActiveEffect(event, this.document)
+    onDeleteActiveEffect(event, this.document);
   }
 
   static #editActiveEffect(event) {
     console.log(event)
-    onEditActiveEffect(event, this.document)
+    onEditActiveEffect(event, this.document);
   }
 
   static #toggleActiveEffect(event){
-    onToggleActiveEffect(event, this.document)
+    onToggleActiveEffect(event);
   }
 }

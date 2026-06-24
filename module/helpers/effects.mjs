@@ -41,7 +41,7 @@ export function onManageActiveEffect(event, owner) {
  */
 export function onCreateActiveEffect(event,owner) {
   event.preventDefault();
-  const data = event.target.dataset
+  const data = event.target.dataset;
 
   if (checkIsLocked(owner)) {
     return;
@@ -65,13 +65,13 @@ export function onCreateActiveEffect(event,owner) {
  */
 export async function onDeleteActiveEffect(event, owner) {
   event.preventDefault();
-  const data = event.target.dataset
+  const data = event.target.dataset;
   if (checkIsLocked(owner)) {
     return;
   }
 
-  const result = await owner.effects.get(data.key)
-  if (result) {
+  const result = await owner.effects.get(data.key);
+  if(result) {
     result.delete();
   }
 }
@@ -98,7 +98,7 @@ export async function onDropActiveEffect(droppedItem, targetItem) {
  */
 export async function onEditActiveEffect(event, owner) {
   event.preventDefault();
-  const data = event.target.dataset
+  const data = event.target.dataset;
   if (checkIsLocked(owner)) {
     return;
   }
@@ -116,7 +116,7 @@ export async function onEditActiveEffect(event, owner) {
  * @param {Document} owner The item or actor that the AE is on.
  * @returns
  */
-export async function onToggleActiveEffect(event, owner) {
+export async function onToggleActiveEffect(event) {
   event.preventDefault();
   const data = event.target.dataset
 
