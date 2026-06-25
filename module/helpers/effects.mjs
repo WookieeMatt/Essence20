@@ -106,7 +106,6 @@ export async function onEditActiveEffect(event, owner) {
   if (effect) {
     effect.sheet.render(true);
   }
-
 }
 
 /**
