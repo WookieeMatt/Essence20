@@ -263,7 +263,6 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   static #editActiveEffect(event) {
-    console.log(event)
     onEditActiveEffect(event, this.document);
   }
 

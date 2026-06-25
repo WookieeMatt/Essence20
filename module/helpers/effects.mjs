@@ -118,7 +118,7 @@ export async function onEditActiveEffect(event, owner) {
  */
 export async function onToggleActiveEffect(event) {
   event.preventDefault();
-  const data = event.target.dataset
+  const data = event.target.dataset;
 
   const effect = await fromUuid(data.uuid);
   return effect.update({disabled: !effect.disabled});
