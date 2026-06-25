@@ -39,7 +39,7 @@ export function onManageActiveEffect(event, owner) {
  * @param {Document} owner The item or actor that the AE is created on.
  * @returns
  */
-export function onCreateActiveEffect(event,owner) {
+export function onCreateActiveEffect(event, owner) {
   event.preventDefault();
   const data = event.target.dataset;
 
