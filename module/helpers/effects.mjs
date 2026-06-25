@@ -90,7 +90,7 @@ export async function onDropActiveEffect(droppedItem, targetItem) {
 }
 
 /**
- *Edit an Active Effect on an actor or item.
+ * Edit an Active Effect on an actor or item.
  * @param {MouseEvent} event The click event to edit the AE
  * @param {Document} owner The item or actor that the AE is on.
  * @returns
