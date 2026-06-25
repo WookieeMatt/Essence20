@@ -70,7 +70,7 @@ export async function onDeleteActiveEffect(event, owner) {
   }
 
   const result = await owner.effects.get(data.key);
-  if(result) {
+  if (result) {
     result.delete();
   }
 }
