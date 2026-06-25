@@ -54,7 +54,6 @@ export function onCreateActiveEffect(event, owner) {
     "duration.rounds": data.effectType === "temporary" ? 1 : undefined,
     disabled: data.effectType === "inactive",
   }]);
-
 }
 
 /**
