@@ -23,7 +23,11 @@ import {
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 
-export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
+
+
+const { ActorSheetV2 } = foundry.applications.sheets
+
+export class Essence20ActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   constructor(...args) {
     super(...args);
     this.accordionStates = { skills: '' };
@@ -45,10 +49,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     return super.activateEditor(name, options, initialContent);
   }
 
-  static _warnedAppV1 = true;
-
   /** @override */
-  static get defaultOptions() {
+  static DEFAULT_OPTIONS = {
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["essence20", "sheet", "actor"],
       width: 620,
