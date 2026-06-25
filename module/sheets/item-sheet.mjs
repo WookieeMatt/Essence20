@@ -3,12 +3,12 @@ const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
-import { 
-  prepareActiveEffectCategories, 
-  onCreateActiveEffect, 
-  onDeleteActiveEffect, 
-  onDropActiveEffect, 
-  onEditActiveEffect, 
+import {
+  prepareActiveEffectCategories,
+  onCreateActiveEffect,
+  onDeleteActiveEffect,
+  onDropActiveEffect,
+  onEditActiveEffect,
   onToggleActiveEffect,
 } from "../helpers/effects.mjs";
 
@@ -206,6 +206,8 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _prepareDetailsContext(context) {
+    const path = "systems/essence20/templates/item/sheets";
+    context.detailPath = `${path}/${this.document.type}.hbs`;
     return context;
   }
 

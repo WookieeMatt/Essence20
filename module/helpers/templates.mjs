@@ -117,6 +117,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/sheets/classFeature.hbs",
     "systems/essence20/templates/item/sheets/equipmentPackage.hbs",
     "systems/essence20/templates/item/sheets/faction.hbs",
+    "systems/essence20/templates/item/sheets/feature.hbs",
     "systems/essence20/templates/item/sheets/focus.hbs",
     "systems/essence20/templates/item/sheets/gear.hbs",
     "systems/essence20/templates/item/sheets/hangUp.hbs",
