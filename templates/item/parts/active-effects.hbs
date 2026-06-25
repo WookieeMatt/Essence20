@@ -1,5 +1,5 @@
 <section class="tab effects {{tabs.effects.cssClass}}" data-tab="effects" data-group="primary">
-  <div>
+  <div class="effect-list-container">
     <ol class="items-list effects-list" style="border-color: {{system.color}};">
     {{#each effects as |section sid|}}
     {{#unless section.hidden}}
@@ -9,7 +9,7 @@
         <div class="effect-duration">{{localize "E20.ActiveEffectDuration"}}</div>
         <div class="item-controls effect-controls flexrow">
           {{#if @root.editable}}
-            <a class="effect-control" data-action="create" data-tooltip="E20.ActiveEffectCreate">
+            <a class="effect-control" data-action="createEffect" data-effect-type="{{section.type}}" data-tooltip="E20.ActiveEffectCreate">
               <i class="fas fa-plus"></i> {{localize "E20.ActiveEffectAdd"}}
             </a>
           {{/if}}
@@ -34,15 +34,15 @@
           <div class="effect-duration">{{effect.duration.name}}</div>
           <div class="item-controls effect-controls flexrow">
             {{#if @root.editable}}
-              <a class="effect-control" data-action="toggle"
+              <a class="effect-control" data-action="toggleEffect"
                 data-tooltip="{{#if effect.disabled}}E20.ActiveEffectEnable{{else}}E20.ActiveEffectDisable{{/if}}">
-                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
+                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}" data-uuid="{{effect._uuid}}"></i>
               </a>
-              <a class="effect-control" data-action="edit" data-tooltip="E20.ActiveEffectEdit">
-                <i class="fas fa-edit"></i>
+              <a class="effect-control" data-action="editEffect" data-tooltip="E20.ActiveEffectEdit">
+                <i class="fas fa-edit" data-uuid="{{effect._uuid}}"></i>
               </a>
-              <a class="effect-control" data-action="delete" data-tooltip="E20.ActiveEffectDelete">
-                <i class="fas fa-trash"></i>
+              <a class="effect-control" data-action="deleteEffect" data-tooltip="E20.ActiveEffectDelete">
+                <i class="fas fa-trash" data-key="{{effect._id}}"></i>
               </a>
             {{/if}}
           </div>
