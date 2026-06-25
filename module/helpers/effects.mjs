@@ -153,7 +153,7 @@ export function prepareActiveEffectCategories(effects) {
     if (effect.disabled) categories.inactive.effects.push(effect);
     else if (effect.isTemporary) categories.temporary.effects.push(effect);
     else categories.passive.effects.push(effect);
-}
+  }
 
   return categories;
 }
