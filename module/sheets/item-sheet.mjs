@@ -3,7 +3,14 @@ const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
-import { prepareActiveEffectCategories, onCreateActiveEffect, onDeleteActiveEffect, onDropActiveEffect, onEditActiveEffect, onToggleActiveEffect } from "../helpers/effects.mjs";
+import { 
+  prepareActiveEffectCategories, 
+  onCreateActiveEffect, 
+  onDeleteActiveEffect, 
+  onDropActiveEffect, 
+  onEditActiveEffect, 
+  onToggleActiveEffect,
+} from "../helpers/effects.mjs";
 
 /**
  * Handles retrieving all existing roles of the system version selected.
