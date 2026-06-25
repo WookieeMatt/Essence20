@@ -34,7 +34,7 @@ export function onManageActiveEffect(event, owner) {
 }
 
 /**
- *Create a new Active Effect on an actor or item.
+ * Create a new Active Effect on an actor or item.
  * @param {MouseEvent} event The click event to create the AE
  * @param {Document} owner The item or actor that the AE is created on.
  * @returns
