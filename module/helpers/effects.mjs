@@ -109,7 +109,7 @@ export async function onEditActiveEffect(event, owner) {
 }
 
 /**
- *Toggles an Active Effect on an actor or item from Inactive to Active.
+ * Toggles an Active Effect on an actor or item from Inactive to Active.
  * @param {MouseEvent} event The click event to toggle the AE
  * @param {Document} owner The item or actor that the AE is on.
  * @returns
