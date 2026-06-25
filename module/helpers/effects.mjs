@@ -57,7 +57,7 @@ export function onCreateActiveEffect(event, owner) {
 }
 
 /**
- *Delete an Active Effect on an actor or item.
+ * Delete an Active Effect on an actor or item.
  * @param {MouseEvent} event The click event to delete the AE
  * @param {Document} owner The item or actor that the AE is deleted on.
  * @returns
