@@ -1,6 +1,7 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
+// eslint-disable-no-unused-vars
 import SheetOptions from "../apps/sheet-options.mjs";
 import {
   prepareActiveEffectCategories,
