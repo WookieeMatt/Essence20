@@ -19,6 +19,7 @@ export async function onItemCreate(event, actor) {
   if (checkIsLocked(actor)) {
     return;
   }
+
   const header = event.target;
   // Get the type of item to create.
   const type = header.dataset.type;
@@ -73,7 +74,7 @@ export async function onItemCreate(event, actor) {
  * @param {Event} event The originating click event
  * @param {Actor} actor The Actor editing the Item
  */
-export async function onItemEdit(event, actor) {
+export async function onItemEdit(event) {
   event.preventDefault();
   let item = {};
   const itemUuid = event.target.dataset.uuid;
@@ -88,7 +89,7 @@ export async function onItemEdit(event, actor) {
       item.sheet.render(true);
     }
   }
- }
+}
 
 /**
  * Handle deleting Items

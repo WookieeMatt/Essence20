@@ -441,7 +441,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   static #onItemEdit(event) {
-    onItemEdit(event, this.document);
+    onItemEdit(event);
   }
 
   static #onRoll(event) {

@@ -7,7 +7,7 @@ import { Essence20Combatant } from "./documents/combatant.mjs";
 import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
 import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
-import { Essence20CompanionActorSheet } from "./sheets/companion-sheet.mjs"
+import { Essence20CompanionActorSheet } from "./sheets/companion-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
@@ -126,8 +126,8 @@ Hooks.once("init", async function () {
     {
       types: ["companion"],
       makeDefault: true,
-      label: "Companion"
-    }
+      label: "Companion",
+    },
   );
   foundry.documents.collections.Items.unregisterSheet(
     "core",
