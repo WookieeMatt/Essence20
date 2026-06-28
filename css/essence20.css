@@ -505,7 +505,7 @@ body.game .window-app {
   -ms-flex-pack: start;
   justify-content: flex-start;
   margin-bottom: 10px;
-  min-height: 125px;
+  min-height: 175px;
 }
 
 /* PR Sheet Headers */

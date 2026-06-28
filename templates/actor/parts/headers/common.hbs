@@ -1,7 +1,8 @@
 <header class="sheet-header" style="border-color: {{system.color}};">
+
   {{!-- Profile image --}}
   <div class="flexcol" style="flex-grow: .175; gap: 5px;">
-    <img class="profile-img" style="border-color: {{system.color}};" src="{{actor.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+    <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
   </div>
 
   {{!-- Name --}}
@@ -13,7 +14,7 @@
         <i class="fas" style="margin-left: 2px;"></i>
       </a>
     </div>
-    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+    <h1 class="charname"><input name="name" type="text" value="{{document.name}}" placeholder="Name" /></h1>
   </div>
 
     <div class="flexrow" style="gap: 2px;">

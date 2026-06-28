@@ -12,7 +12,7 @@ const PARENT_ROLLER_KEY = "parentActor";
  */
 export async function performRoll(event, actor, childRoller=None) {
   event.preventDefault();
-  const element = event.currentTarget;
+  const element = event.target;
   const dataset = element.dataset;
   const rollType = dataset.rollType;
 
@@ -176,7 +176,7 @@ export async function onRest(actorSheet) {
  * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
  */
 export async function onToggleAccordion(event, actorSheet) {
-  const el = event.currentTarget;
+  const el = event.target;
   const parent = $(el).closest('.accordion-wrapper');
 
   // Avoid collapsing NPC skills container on rerender
@@ -213,7 +213,7 @@ export async function onToggleAccordion(event, actorSheet) {
  * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
  */
 export async function onToggleHeaderAccordion(event) {
-  const el = event.currentTarget;
+  const el = event.target;
   const isOpening = !$(el.closest('.header-accordion-wrapper')).hasClass('open');
   $(el.closest('.header-accordion-wrapper')).toggleClass('open');
 
