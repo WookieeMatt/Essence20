@@ -125,7 +125,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     // Prepare npc data and items.
     if (
       ["npc", "zord", "megaform", "vehicle", "companion"].includes(
-        actorData.type
+        actorData.type,
       )
     ) {
       this._prepareDisplayedNpcSkills(context);
@@ -235,7 +235,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
         const skillData = context.system.skills[skill];
         const skillIndex = Math.max(
           0,
-          CONFIG.E20.skillShiftList.indexOf(skillData.shift)
+          CONFIG.E20.skillShiftList.indexOf(skillData.shift),
         );
 
         const skillUpshifts = Math.max(0, unrankedIndex - skillIndex);
@@ -259,7 +259,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     context.system.skillRankAllocation["strength"].string = [
       context.system.skillRankAllocation["strength"].string,
       `${context.system.conditioning} ${game.i18n.localize(
-        "E20.ActorConditioning"
+        "E20.ActorConditioning",
       )}`,
     ]
       .filter(Boolean)
@@ -270,8 +270,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     const initiativeIndex = Math.max(
       0,
       CONFIG.E20.skillShiftList.indexOf(
-        context.system.skills[context.system.initiative.skill].shift
-      )
+        context.system.skills[context.system.initiative.skill].shift,
+      ),
     );
     const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
     context.system.skillRankAllocation["speed"].string = [
