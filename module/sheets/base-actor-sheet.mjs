@@ -1,6 +1,5 @@
 const { HandlebarsApplicationMixin }= foundry.applications.api
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
-console.log(ActorSheetV2)
 
 import SheetOptions from "../apps/sheet-options.mjs";
 import {
@@ -73,8 +72,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   async _prepareContext(options) {
-    console.log("Prepare Context")
-    const context = await super._prepareContext(options);
+     const context = await super._prepareContext(options);
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
 
@@ -127,7 +125,6 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   _prepareWeaponEffectSkills(actorData, context) {
-    console.log("Prepare WeaponEffectSkills")
     let hasSkillDie = false;
     let skillDieName = null;
     const items = actorData.items.documentsByType?.role;
@@ -152,7 +149,6 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   _prepareInitiativeSkills(actorData) {
-    console.log("Prepare Initiative")
     const initiativeSkills = {};
     for (const skill of Object.keys(actorData.system.skills)) {
       if (actorData.system.skills[skill].canBeInitiative) {
@@ -173,7 +169,6 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
    * @private
    */
   _prepareItems(context) {
-    console.log("Prepare Items")
     // Initialize containers.
     const alterations = [];
     const altModes = [];
@@ -204,7 +199,6 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
     // Iterate through items, allocating to containers
     for (let i of context.document.items) {
-      console.log(i)
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
 
@@ -373,9 +367,6 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
 
     if (context.system.defenses.evasion.armor != equippedArmorEvasion || context.system.defenses.toughness.armor != equippedArmorToughness) {
-      console.log(context)
-      console.log(equippedArmorEvasion)
-      console.log(equippedArmorToughness)
 
     //   this.actor.update({
     //     "system.defenses.evasion.armor": equippedArmorEvasion,
@@ -393,7 +384,6 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
    * @override
    */
   async _onDropItem(event, data) {
-    console.log("gotHere")
     return onDropItem(data, this.actor, super._onDropItem.bind(this, event, data));
   }
 
@@ -447,7 +437,6 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   static #onItemDelete(event) {
-    console.log(this)
     onItemDelete(event, this)
   }
 
@@ -462,12 +451,10 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   static #toggleAccordion(event) {
-    console.log(event)
     onToggleAccordion(event, this);
   }
 
   static #toggleAccordionHeader(event) {
-    console.log(event)
     onToggleHeaderAccordion(event, this.document);
   }
 

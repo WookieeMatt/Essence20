@@ -53,7 +53,6 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
   }
 
   async _preparePartContext(partId, context, options) {
-    console.log(partId)
     switch ( partId ) {
       case "main": context = await this._prepareMainContext(context); break;
       case "effects": context = await this._prepareEffectsContext(context); break;

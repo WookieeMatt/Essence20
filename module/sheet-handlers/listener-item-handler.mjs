@@ -100,7 +100,6 @@ export async function onItemDelete(event, actorSheet) {
   if (checkIsLocked(actor)) {
     return;
   }
-  console.log(event.target.dataset)
 
   let item = null;
   const li = $(event.target).closest(".item");
