@@ -8,19 +8,19 @@ import {
   onDeleteActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
-} from "../helpers/effects.mjs"; // eslint-disable-line no-unused-vars
+} from "../helpers/effects.mjs";
 import { getNumActions } from "../helpers/actor.mjs"; // eslint-disable-line no-unused-vars
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
-import { prepareSystemActors,
-  onSystemActorsDelete,
-  onVehicleRoleUpdate,
-  onCrewNumberUpdate,
-} from "../sheet-handlers/vehicle-handler.mjs"; // eslint-disable-line no-unused-vars
+import { prepareSystemActors, // eslint-disable-line no-unused-vars
+  onSystemActorsDelete, // eslint-disable-line no-unused-vars
+  onVehicleRoleUpdate, // eslint-disable-line no-unused-vars
+  onCrewNumberUpdate, // eslint-disable-line no-unused-vars
+} from "../sheet-handlers/vehicle-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs"; // eslint-disable-line no-unused-vars
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs"; // eslint-disable-line no-unused-vars
 import {
-  onEditMorphToughnessBonus,
-  onRest,
+  onEditMorphToughnessBonus, // eslint-disable-line no-unused-vars
+  onRest, // eslint-disable-line no-unused-vars
   onRoll,
   onToggleAccordion,
   onToggleHeaderAccordion,
@@ -30,10 +30,10 @@ import {
   onItemCreate,
   onItemEdit,
   onItemDelete,
-  onInlineEdit,
-  onShieldActivationToggle,
-  onShieldEquipToggle,
-} from "../sheet-handlers/listener-item-handler.mjs"; // eslint-disable-line no-unused-vars
+  onInlineEdit, // eslint-disable-line no-unused-vars
+  onShieldActivationToggle, // eslint-disable-line no-unused-vars
+  onShieldEquipToggle, // eslint-disable-line no-unused-vars
+} from "../sheet-handlers/listener-item-handler.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs"; // eslint-disable-line no-unused-vars
 
 export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
