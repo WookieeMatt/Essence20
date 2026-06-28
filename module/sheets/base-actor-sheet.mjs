@@ -3,7 +3,7 @@ const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
 import SheetOptions from "../apps/sheet-options.mjs"; // eslint-disable-line no-unused-vars
 import {
-  prepareActiveEffectCategories,
+  prepareActiveEffectCategories, // eslint-disable-line no-unused-vars
   onCreateActiveEffect,
   onDeleteActiveEffect,
   onEditActiveEffect,
