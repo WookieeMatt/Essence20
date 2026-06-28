@@ -17,7 +17,7 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
     window: {
       resizable: true,
     },
-  }
+  };
 
   static TABS = {
     primary: {
@@ -50,13 +50,14 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
       scrollable: [""],
     },
 
-  }
+  };
 
   async _preparePartContext(partId, context, options) {
+    console.log(options)
     switch ( partId ) {
-      case "main": context = await this._prepareMainContext(context); break;
-      case "effects": context = await this._prepareEffectsContext(context); break;
-      case "notes": context = await this._prepareNotesContext(context); break;
+    case "main": context = await this._prepareMainContext(context); break;
+    case "effects": context = await this._prepareEffectsContext(context); break;
+    case "notes": context = await this._prepareNotesContext(context); break;
     }
 
     return context;

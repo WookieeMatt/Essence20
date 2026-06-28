@@ -1,33 +1,31 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
-// eslint-disable-no-unused-vars
-import SheetOptions from "../apps/sheet-options.mjs";
+import SheetOptions from "../apps/sheet-options.mjs"; // eslint-disable-line no-unused-vars
 import {
   prepareActiveEffectCategories,
   onCreateActiveEffect,
   onDeleteActiveEffect,
-  onDropActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
-} from "../helpers/effects.mjs";
-import { getNumActions } from "../helpers/actor.mjs";
+} from "../helpers/effects.mjs"; // eslint-disable-line no-unused-vars
+import { getNumActions } from "../helpers/actor.mjs"; // eslint-disable-line no-unused-vars
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
   onSystemActorsDelete,
   onVehicleRoleUpdate,
   onCrewNumberUpdate,
-} from "../sheet-handlers/vehicle-handler.mjs";
-import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
-import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
+} from "../sheet-handlers/vehicle-handler.mjs"; // eslint-disable-line no-unused-vars
+import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs"; // eslint-disable-line no-unused-vars
+import { onTransform } from "../sheet-handlers/transformer-handler.mjs"; // eslint-disable-line no-unused-vars
 import {
   onEditMorphToughnessBonus,
   onRest,
   onRoll,
   onToggleAccordion,
   onToggleHeaderAccordion,
-} from "../sheet-handlers/listener-misc-handler.mjs";
-import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs";
+} from "../sheet-handlers/listener-misc-handler.mjs"; // eslint-disable-line no-unused-vars
+import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs"; // eslint-disable-line no-unused-vars
 import {
   onItemCreate,
   onItemEdit,
@@ -35,8 +33,8 @@ import {
   onInlineEdit,
   onShieldActivationToggle,
   onShieldEquipToggle,
-} from "../sheet-handlers/listener-item-handler.mjs";
-import { onManageSelectTrait } from "../helpers/traits.mjs";
+} from "../sheet-handlers/listener-item-handler.mjs"; // eslint-disable-line no-unused-vars
+import { onManageSelectTrait } from "../helpers/traits.mjs"; // eslint-disable-line no-unused-vars
 
 export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   constructor(options) {
@@ -102,11 +100,11 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     return context;
   }
 
-   /**
-   * Prepare skills that are always displayed for NPCs.
-   * @param {Object} context The actor data to prepare.
-   * @return {undefined}
-   */
+  /**
+  * Prepare skills that are always displayed for NPCs.
+  * @param {Object} context The actor data to prepare.
+  * @return {undefined}
+  */
   _prepareDisplayedNpcSkills(context) {
     let displayedNpcSkills = {};
 
@@ -438,7 +436,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   static #onItemDelete(event) {
-    onItemDelete(event, this)
+    onItemDelete(event, this);
   }
 
   static #onItemEdit(event) {
