@@ -1,4 +1,3 @@
-import { getItemsOfType } from "../helpers/utils.mjs";
 import { powerCost } from "./power-handler.mjs";
 import RollerSelector from "../apps/roller-selector.mjs";
 import DefenseModificationSelector from "../apps/defense-modification.mjs";
@@ -149,7 +148,7 @@ export async function onRest(actorSheet) {
   }
 
   // Resetting Role Points
-  const rolePointsList = getItemsOfType('rolePoints', actor.items);
+  const rolePointsList = actor.items.documentsByType.rolePoints;
   if (rolePointsList.length) {
     const rolePoints = rolePointsList[0];
     rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });

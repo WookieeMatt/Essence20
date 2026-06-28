@@ -1,26 +1,31 @@
 {{!-- Source --}}
-{{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ItemSource'}}
-{{#*inline "item-field-inputs"}}
-<input type="text" name="system.source.book" value="{{system.source.book}}" placeholder="{{localize 'E20.ItemSourceBook'}}"/>
-<input class="two-digit-input" type="number" name="system.source.page" value="{{system.source.page}}" placeholder="{{localize 'E20.ItemSourcePage'}}" min="0" step="1"/>
-{{/inline}}
-{{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+<section class="tab description {{tabs.description.cssClass}}" data-tab="description" data-group="primary">
+  <div>
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ItemSource'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="text" name="system.source.book" value="{{system.source.book}}" placeholder="{{localize 'E20.ItemSourceBook'}}"/>
+    <input class="two-digit-input" type="number" name="system.source.page" value="{{system.source.page}}" placeholder="{{localize 'E20.ItemSourcePage'}}" min="0" step="1"/>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-<div>
-  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ItemUuid'}}
-  {{#*inline "item-field-inputs"}}
-    <input type="text" name="item.uuid" value="{{item.uuid}}" disabled/>
-    <div class="item-controls">
-      <a class="clipboard-copy" data-clipboard="{{item.uuid}}" data-tooltip="{{localize 'E20.CopyClipboard'}}">
-        <i class="fa-solid fa-fw fa-clipboard"></i>
-      </a>
+    {{!-- Description --}}
+    <h3>{{localize 'E20.ItemDescription'}}</h3>
+    <div class="description flexcol active">
+      {{#if editingDescription}}
+        <prose-mirror name="system.description" value="{{ system.description }}" document-uuid="{{ document.uuid }}" class="sized" compact></prose-mirror>
+      {{else}}
+        <button type="button" class="unbutton control-button always-interactive" data-action="editDescription" label="edit" data-target="system.description">
+          <i class="fas fa-edit" inert></i>
+        </button>
+        {{{system.description}}}
+      {{/if}}
     </div>
-  {{/inline}}
-  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-</div>
-
-{{!-- Description --}}
-<h3>{{localize 'E20.ItemDescription'}}</h3>
-<div class="description-tab flexrow active" data-group="primary" data-tab="description">
-  {{editor system.description target="system.description" button=true owner=owner editable=editable engine="prosemirror" collaborate=false}}
-</div>
+    {{#if (eq document.type 'equipmentPackage')}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AlternateAccess'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="text" name="system.alternateAccess" value="{{system.alternateAccess}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
+  </div>
+<section>

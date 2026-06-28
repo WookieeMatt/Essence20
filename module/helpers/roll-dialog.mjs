@@ -72,7 +72,8 @@ export class RollDialog {
         default: "normal",
         close: () => resolve({ cancelled: true }),
       };
-      new Dialog(data, null).render(true);
+      const options = {};
+      new Dialog(data, options).render(true);
     });
   }
 

@@ -1,4 +1,4 @@
-import { createId, getItemsOfType } from "./helpers/utils.mjs";
+import { createId } from "./helpers/utils.mjs";
 
 /**
  * Perform a system migration for the entire World, applying migrations for Actors, Items, and Compendium packs
@@ -160,7 +160,7 @@ export const migrateActorData = async function(actor, compendiumActor) {
   //Migration for Weapon and Armor Training and Qualificaitons moving to Actors from Roles
   const currentVersion = game.settings.get("essence20", "systemMigrationVersion");
   if (!currentVersion || foundry.utils.isNewerVersion('4.5.1', currentVersion)) {
-    const role = getItemsOfType('role', actor.items)[0];
+    const role = actor.items.documentsByType.role[0];
 
     if (role) {
       for (const armorType of role.system.armors.qualified) {

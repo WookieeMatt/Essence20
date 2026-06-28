@@ -16,7 +16,7 @@ export function parseId(uuid) {
 * @param {Item[]} items The Items to search through
 * @returns {Item[]}     All Items of the type requested
 */
-export function getItemsOfType(type, items) {
+export function getItemsOfTypeFromSystemItems(type, items) {
   const itemsOfType = [];
   for (const item of items) {
     if (item.type == type) {

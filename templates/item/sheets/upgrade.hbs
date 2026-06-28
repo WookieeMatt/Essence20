@@ -1,96 +1,68 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div>
+  {{!-- Type --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeType'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.type">
+    {{selectOptions config.upgradeTypes selected=system.type}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+  {{!-- Availability --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeAvailability'}}
+  {{#*inline "item-field-inputs"}}
+  <select name="system.availability">
+    {{selectOptions config.availabilities selected=system.availability}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Tabs --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
-    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
-    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
-  </nav>
+  {{!-- Prerequisite --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradePrerequisite'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Item Sheet Body --}}
-  <section class="sheet-body item-sheet">
-    <div class="tab description flexcol" data-group="primary" data-tab="description">
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+  {{!-- Benefit --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeBenefit'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="text" name="system.benefit" value="{{system.benefit}}" />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{!-- Armor Bonus --}}
+  {{#if (eq system.type 'armor')}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonus'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.armorBonus.value name="system.armorBonus.value" min=0 step=1}}
+    <select name="system.armorBonus.defense">
+      {{selectOptions config.defenses selected=system.armorBonus.defense}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{!-- Traits --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeTraits'}}
+  {{#*inline "item-field-edit"}}
+  <a class="trait-selector" data-action="traitSelector" data-options="{{system.type}}" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
+    <i class="fas fa-edit"></i>
+  </a>
+  {{/inline}}
+
+  {{#*inline "item-field-inputs"}}
+    <div class="chip-section">
+    {{#if (eq system.type 'armor')}}
+      {{#each system.traits as |trait|}}
+      <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
+      {{/each}}
+    {{else if (eq system.type 'weapon')}}
+      {{#each item.system.traits as |trait|}}
+      <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
+      {{/each}}
+    {{/if}}
     </div>
-
-    <div class="tab details flexcol" data-group="primary" data-tab="details">
-      {{!-- Type --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeType'}}
-      {{#*inline "item-field-inputs"}}
-      <select class="item-field-inputs" name="system.type">
-        {{selectOptions config.upgradeTypes selected=system.type}}
-      </select>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Availability --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeAvailability'}}
-      {{#*inline "item-field-inputs"}}
-      <select name="system.availability">
-        {{selectOptions config.availabilities selected=system.availability}}
-      </select>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Prerequisite --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradePrerequisite'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="text" name="system.prerequisite" value="{{system.prerequisite}}" />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Benefit --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeBenefit'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="text" name="system.benefit" value="{{system.benefit}}" />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Armor Bonus --}}
-      {{#if (eq item.system.type 'armor')}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ArmorBonus'}}
-        {{#*inline "item-field-inputs"}}
-          {{numberInput system.armorBonus.value name="system.armorBonus.value" min=0 step=1}}
-          <select name="system.armorBonus.defense">
-            {{selectOptions config.defenses selected=system.armorBonus.defense}}
-          </select>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/if}}
-
-      {{!-- Traits --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.UpgradeTraits'}}
-      {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="{{system.type}}" data-target="system.traits" data-tooltip="{{localize 'E20.TraitSelector'}}">
-          <i class="fas fa-edit"></i>
-        </a>
-      {{/inline}}
-
-      {{#*inline "item-field-inputs"}}
-        <div class="chip-section">
-        {{#if (eq item.system.type 'armor')}}
-          {{#each item.system.traits as |trait|}}
-            <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
-          {{/each}}
-        {{else if (eq item.system.type 'weapon')}}
-          {{#each item.system.traits as |trait|}}
-            <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
-          {{/each}}
-        {{/if}}
-        </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    </div>
-
-    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-      {{!-- Effects Section --}}
-      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
-    </div>
-
-  </section>
-
-</form>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+<div>

@@ -6,9 +6,10 @@ import { TraitSelector } from "../apps/trait-selector.mjs";
  * @param {Actor|Item} owner      The owning document which manages this effect
  * @private
  */
-export function onManageSelectTrait(event, owner) {
+export function onManageSelectTrait(event, owner, target=null) {
   event.preventDefault();
-  const a = event.currentTarget;
+  const a = target || event.currentTarget;
+
   const options = {
     name: a.dataset.target,
     title: a.parentElement.innerText,
