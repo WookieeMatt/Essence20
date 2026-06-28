@@ -688,7 +688,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     return onDropItem(
       data,
       this.actor,
-      super._onDropItem.bind(this, event, data)
+      super._onDropItem.bind(this, event, data),
     );
   }
 
