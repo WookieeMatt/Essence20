@@ -1,4 +1,4 @@
-const { HandlebarsApplicationMixin }= foundry.applications.api
+const { HandlebarsApplicationMixin } = foundry.applications.api;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
 import SheetOptions from "../apps/sheet-options.mjs";
@@ -15,7 +15,7 @@ import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
   onSystemActorsDelete,
   onVehicleRoleUpdate,
-  onCrewNumberUpdate
+  onCrewNumberUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
@@ -69,10 +69,10 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     window: {
       resizable: true,
     },
-  }
+  };
 
   async _prepareContext(options) {
-     const context = await super._prepareContext(options);
+    const context = await super._prepareContext(options);
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
 
@@ -89,7 +89,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
     this._prepareItems(context);
 
-        // Prepare WeaponEffect Skill List
+    // Prepare WeaponEffect Skill List
     this._prepareWeaponEffectSkills(actorData, context);
 
     //Prepare Initiative Skills
@@ -101,7 +101,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     return context;
   }
 
-    /**
+   /**
    * Prepare skills that are always displayed for NPCs.
    * @param {Object} context The actor data to prepare.
    * @return {undefined}
