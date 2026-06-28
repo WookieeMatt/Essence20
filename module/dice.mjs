@@ -1,5 +1,4 @@
 import { E20 } from "./helpers/config.mjs";
-import { getItemsOfType } from "./helpers/utils.mjs";
 
 export class Dice {
   /**
@@ -108,10 +107,10 @@ export class Dice {
     };
 
     updatedShiftDataset.rolePoints = null;
-    const rolePointsList = getItemsOfType('rolePoints', actor.items);
+    const rolePointsList = actor.items?.documentsByType?.rolePoints;
 
     let rolePoints = null;
-    if (item?.type == 'weaponEffect' && rolePointsList.length) {
+    if (item?.type == 'weaponEffect' && rolePointsList?.length) {
       rolePoints = rolePointsList[0]; // There should only be one RolePoints
       if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
         updatedShiftDataset.rolePoints = rolePoints;
@@ -130,8 +129,8 @@ export class Dice {
     switch(item?.type) {
     case 'weaponEffect':
       {
-        const roleList = getItemsOfType('role', actor.items);
-        roleSkillDieName = roleList.length ? roleList[0].system.skillDie.name : null;
+        const roleList = actor.items?.documentsByType?.role;
+        roleSkillDieName = roleList?.length ? roleList[0].system.skillDie.name : null;
       }
 
       label = this._getWeaponRollLabel(dataset, skillRollOptions, item, roleSkillDieName);
@@ -245,11 +244,13 @@ export class Dice {
     const attackRollStr = this._localize('E20.RollTypeAttack');
     const effectStr = this._localize('E20.WeaponEffect');
     const damageType = this._localize(E20.damageTypes[weaponEffect.system.damageType]);
+    const descStr = this._localize('E20.ItemDescription');
     const noneStr = "";
 
     let label = `<b>${attackRollStr}</b> - ${weaponEffect.name} (${rolledSkillStr})`;
     label += `${this._getEdgeSnagText(skillRollOptions.edge, skillRollOptions.snag)}<br>`;
     label += `<b>${effectStr}</b> - ${weaponEffect.system.damageValue || noneStr} ${damageType}<br>`;
+    label += `<b>${descStr}</b>:${weaponEffect.system.description || noneStr}<br>`;
 
     return label;
   }

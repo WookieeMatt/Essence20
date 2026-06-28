@@ -1,5 +1,5 @@
 {{#if item.system }}
-  <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
+  <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
   <div class="chip-section">
     <span class="chip" name="chip.weapon.classification">
       {{#if parentItem.system.isPoison}}
@@ -20,11 +20,10 @@
     {{#if item.system.shiftDown}}
     <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.system.shiftDown}}</span>
     {{/if}}
-    {{#if item.system.range.value}}
-    <span class="chip" name="chip.weapon.range.value">{{localize 'E20.WeaponRange'}}: {{item.system.range.value}}{{#if item.system.range.long}}/{{item.system.range.long}}{{/if}}</span>
-    {{/if}}
-    {{#if item.system.range.min}}
-    <span class="chip" name="chip.weapon.range.min">{{localize 'E20.WeaponRange'}} {{localize 'E20.WeaponRangeMin'}}: {{item.system.range.min}}</span>
+    {{#if (eq item.classification.style 'melee')}}
+    <span class="chip" name="chip.weapon.totalReach">{{localize 'E20.WeaponRangeReach'}}: {{item.system.totalReach}}</span>
+    {{else}}
+    <span class="chip" name="chip.weapon.range.value">{{localize 'E20.WeaponRange'}}: {{item.system.range.value}}{{#if item.system.range.long}}/{{item.system.range.long}}{{/if}}{{#if item.system.range.min}}/minimum {{item.system.range.min}}{{/if}}</span>
     {{/if}}
   </div>
 {{else}}
@@ -49,11 +48,10 @@
     {{#if item.shiftDown}}
     <span class="chip" name="chip.weapon.shiftDown">{{localize 'E20.ShiftDown'}}: {{item.shiftDown}}</span>
     {{/if}}
-    {{#if item.range.value}}
-    <span class="chip" name="chip.weapon.range.value">{{localize 'E20.WeaponRange'}}: {{item.range.value}}{{#if item.range.long}}/{{item.range.long}}{{/if}}</span>
-    {{/if}}
-    {{#if item.range.min}}
-    <span class="chip" name="chip.weapon.range.min">{{localize 'E20.WeaponRange'}} {{localize 'E20.WeaponRangeMin'}}: {{item.range.min}}</span>
+    {{#if (eq item.classification.style 'melee')}}
+    <span class="chip" name="chip.weapon.totalReach">{{localize 'E20.WeaponRangeReach'}}: {{item.totalReach}}</span>
+    {{else}}
+    <span class="chip" name="chip.weapon.range.value">{{localize 'E20.WeaponRange'}}: {{item.range.value}}{{#if item.range.long}}/{{item.range.long}}{{/if}}{{#if item.range.min}}/minimum {{item.range.min}}{{/if}}</span>
     {{/if}}
   </div>
 {{/if}}

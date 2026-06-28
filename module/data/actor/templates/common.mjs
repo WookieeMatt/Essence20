@@ -22,17 +22,17 @@ function makeEssenceShift() {
   });
 }
 
-function makeMovementFields() {
+export function makeMovementFields(init=0) {
   return new fields.SchemaField({
     altMode: makeInt(0),
-    base: makeInt(0),
+    base: makeInt(init),
     bonus: makeInt(0),
     morphed: makeInt(0),
-    total: makeInt(0),
+    total: makeInt(init),
   });
 }
 
-function makeSkillFields(essence, canBeInitiative=false) {
+export function makeSkillFields(essence, canBeInitiative=false, init='d20') {
   return new fields.SchemaField({
     canBeInitiative: makeBool(canBeInitiative),
     canCritD2: makeBool(false),
@@ -45,7 +45,7 @@ function makeSkillFields(essence, canBeInitiative=false) {
     edge: makeBool(false),
     isSpecialized: makeBool(false),
     modifier: makeInt(0),
-    shift: makeStrWithChoices(Object.keys(E20.skillShifts), 'd20'),
+    shift: makeStrWithChoices(Object.keys(E20.skillShifts), init),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
     snag: makeBool(false),

@@ -1,5 +1,5 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
-import { getItemsOfType, getShiftedSkill } from "../helpers/utils.mjs";
+import { getItemsOfTypeFromSystemItems, getShiftedSkill } from "../helpers/utils.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 
 /**
@@ -76,7 +76,7 @@ async function _showOriginEssencePrompt(actor, origin, dropFunc) {
     };
   }
 
-  const influences = getItemsOfType("influence", actor.items);
+  const influences = actor.items.documentsByType.influence;
   for (const influence of influences) {
     if (influence.system.skills.length) {
       for (const skill of influence.system.skills) {
@@ -122,7 +122,7 @@ export async function _showOriginSkillPrompt(actor, origin, selectedEssence, dro
     }
   }
 
-  const influences = getItemsOfType("influence", actor.items);
+  const influences = actor.items.documentsByType.influence;
   for (const influence of influences) {
     if (influence.system.skills) {
       for (const skill of influence.system.skills) {
@@ -159,7 +159,7 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
   }
 
   const choices = {};
-  const altModes = getItemsOfType('altMode', Object.values(origin.system.items));
+  const altModes = getItemsOfTypeFromSystemItems('altMode', Object.values(origin.system.items));
 
   if (altModes.length > 1) {
     for (const altMode of altModes) {
@@ -190,7 +190,7 @@ export async function _checkForAltModes(actor, origin, essence, selectedSkill, d
  * @param {String} selectedAltMode The selected altMode resulting from _checkForAltModes()
  */
 export async function setOriginValues(actor, origin, essence, skill, dropFunc, selectedAltMode) {
-  const altModes = getItemsOfType('altMode', Object.values(origin.system.items));
+  const altModes = getItemsOfTypeFromSystemItems('altMode', Object.values(origin.system.items));
   let altModeToCreate = null;
 
   if (altModes.length > 0) {
@@ -299,7 +299,7 @@ export async function onOriginDelete(actor, origin) {
   const [newShift, skillString] = getShiftedSkill(selectedSkill, -1, actor);
   await deleteAttachmentsForItem(origin, actor);
 
-  const hasAltMode = !!getItemsOfType("altMode", actor.items).length;
+  const hasAltMode = !!actor.items.documentsByType.length;
 
   const essenceString = `system.essences.${essence}.max`;
 

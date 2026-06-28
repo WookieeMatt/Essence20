@@ -1,167 +1,137 @@
-<form class="{{cssClass}}" autocomplete="off">
+<div>
+  <div class="flexrow" style="justify-content: center;">{{localize "E20.RolePointsGeneral"}}</div>
 
-  {{!-- Item Sheet Header --}}
-  {{> "systems/essence20/templates/item/parts/header.hbs"}}
+  {{!-- Is Activatable? --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsCanBeActivated'}}
+  {{#*inline "item-field-inputs"}}
+  <input type="checkbox" name="system.isActivatable" {{checked system.isActivatable}} />
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Tabs --}}
-  <nav class="sheet-tabs tabs" data-group="primary">
-    <a class="item" data-tab="description">{{ localize "E20.TabDescription" }}</a>
-    <a class="item" data-tab="details">{{ localize "E20.TabDetails" }}</a>
-    <a class="item" data-tab="effects">{{ localize "E20.TabEffects" }}</a>
-  </nav>
+  {{!-- Power Cost --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsPersonalPowerCost'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.powerCost name="system.powerCost"}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-  {{!-- Item Sheet Body --}}
-  <section class="sheet-body item-sheet">
-    <div class="tab description flexcol" data-group="primary" data-tab="description">
-      {{!-- Description Section --}}
-      {{> "systems/essence20/templates/item/parts/description.hbs"}}
+  {{!-- Bonus Section --}}
+  <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsBonus"}}</div>
+
+  {{!-- Type --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsBonusType'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.bonus.type">
+    {{selectOptions config.bonusTypes selected=system.bonus.type}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+  {{#if (ne system.bonus.type 'none')}}
+    {{!-- Defense Type Bonuses --}}
+    {{#if (eq system.bonus.type "defenseBonus")}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseCleverness'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.bonus.defenseBonus.cleverness" {{checked system.bonus.defenseBonus.cleverness}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseEvasion'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.bonus.defenseBonus.evasion" {{checked system.bonus.defenseBonus.evasion}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseToughness'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.bonus.defenseBonus.toughness" {{checked system.bonus.defenseBonus.toughness}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseWillpower'}}
+      {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.bonus.defenseBonus.willpower" {{checked system.bonus.defenseBonus.willpower}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
+
+    {{!-- Starting Value --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingValue'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.bonus.startingValue name="system.bonus.startingValue"}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Increase --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrease'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.bonus.increase name="system.bonus.increase"}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{!-- Increase Levels --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
+    {{#*inline "item-field-edit"}}
+    <a class="trait-selector" data-action="traitSelector" data-options="actorLevels" data-target="system.bonus.increaseLevels" data-tooltip="{{localize 'E20.RolePointsIncreaseLevels'}}">
+      <i class="fas fa-edit"></i>
+    </a>
+    {{/inline}}
+    {{#*inline "item-field-inputs"}}
+    <div class="flex-group-right chip-section">
+      {{#each system.bonus.increaseLevels as |name|}}
+        <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
+      {{/each}}
     </div>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-    <div class="tab details flexcol" data-group="primary" data-tab="details">
-      <div class="flexrow" style="justify-content: center;">{{localize "E20.RolePointsGeneral"}}</div>
+    {{!-- Level 20 Value --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsLevel20Value'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.bonus.level20Value name="system.bonus.level20Value"}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
 
-      {{!-- Is Activatable? --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsCanBeActivated'}}
-      {{#*inline "item-field-inputs"}}
-      <input type="checkbox" name="system.isActivatable" {{checked system.isActivatable}} />
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{!-- Resource Section --}}
+  <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsResource"}}</div>
 
-      {{!-- Power Cost --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsPersonalPowerCost'}}
-      {{#*inline "item-field-inputs"}}
-      {{numberInput system.powerCost name="system.powerCost"}}
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{!-- Starting Value --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingMax'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.resource.startingMax name="system.resource.startingMax"}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Bonus Section --}}
-      <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsBonus"}}</div>
+  {{!-- Increase --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrease'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.resource.increase name="system.resource.increase"}}
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{!-- Type --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsBonusType'}}
-      {{#*inline "item-field-inputs"}}
-      <select class="item-field-inputs" name="system.bonus.type">
-        {{selectOptions config.bonusTypes selected=system.bonus.type}}
-       </select>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{!-- Increase Levels --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
+  {{#*inline "item-field-edit"}}
+  <a class="trait-selector" data-action="traitSelector" data-options="actorLevels" data-target="system.resource.increaseLevels" data-tooltip="{{localize 'E20.RolePointsIncreaseLevels'}}">
+    <i class="fas fa-edit"></i>
+  </a>
+  {{/inline}}
+  {{#*inline "item-field-inputs"}}
+  <div class="flex-group-right chip-section">
+    {{#each system.resource.increaseLevels as |name|}}
+      <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
+    {{/each}}
+  </div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
-      {{#if (ne system.bonus.type 'none')}}
-        {{!-- Defense Type Bonuses --}}
-        {{#if (eq system.bonus.type "defenseBonus")}}
-          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseCleverness'}}
-          {{#*inline "item-field-inputs"}}
-          <input type="checkbox" name="system.bonus.defenseBonus.cleverness" {{checked system.bonus.defenseBonus.cleverness}} />
-          {{/inline}}
-          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseEvasion'}}
-          {{#*inline "item-field-inputs"}}
-          <input type="checkbox" name="system.bonus.defenseBonus.evasion" {{checked system.bonus.defenseBonus.evasion}} />
-          {{/inline}}
-          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseToughness'}}
-          {{#*inline "item-field-inputs"}}
-          <input type="checkbox" name="system.bonus.defenseBonus.toughness" {{checked system.bonus.defenseBonus.toughness}} />
-          {{/inline}}
-          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-          {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.DefenseWillpower'}}
-          {{#*inline "item-field-inputs"}}
-          <input type="checkbox" name="system.bonus.defenseBonus.willpower" {{checked system.bonus.defenseBonus.willpower}} />
-          {{/inline}}
-          {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-        {{/if}}
-
-        {{!-- Starting Value --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingValue'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.bonus.startingValue name="system.bonus.startingValue"}}
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-        {{!-- Increase --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrease'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.bonus.increase name="system.bonus.increase"}}
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-        {{!-- Increase Levels --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
-        {{#*inline "item-field-edit"}}
-        <a class="trait-selector" data-options="actorLevels" data-target="system.bonus.increaseLevels"
-          data-tooltip="{{localize 'E20.RolePointsIncreaseLevels'}}">
-          <i class="fas fa-edit"></i>
-        </a>
-        {{/inline}}
-        {{#*inline "item-field-inputs"}}
-        <div class="flex-group-right chip-section">
-          {{#each item.system.bonus.increaseLevels as |name|}}
-            <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
-          {{/each}}
-        </div>
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-        {{!-- Level 20 Value --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsLevel20Value'}}
-        {{#*inline "item-field-inputs"}}
-        {{numberInput system.bonus.level20Value name="system.bonus.level20Value"}}
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/if}}
-
-      {{!-- Resource Section --}}
-      <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsResource"}}</div>
-
-      {{!-- Starting Value --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingMax'}}
-      {{#*inline "item-field-inputs"}}
-      {{numberInput system.resource.startingMax name="system.resource.startingMax"}}
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Increase --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncrease'}}
-      {{#*inline "item-field-inputs"}}
-      {{numberInput system.resource.increase name="system.resource.increase"}}
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Increase Levels --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsIncreaseLevels'}}
-      {{#*inline "item-field-edit"}}
-      <a class="trait-selector" data-options="actorLevels" data-target="system.resource.increaseLevels"
-        data-tooltip="{{localize 'E20.RolePointsIncreaseLevels'}}">
-        <i class="fas fa-edit"></i>
-      </a>
-      {{/inline}}
-      {{#*inline "item-field-inputs"}}
-      <div class="flex-group-right chip-section">
-        {{#each item.system.resource.increaseLevels as |name|}}
-          <span class="chip" name="chip.power.personal{{type}}">{{lookup @root.config.actorLevels name}}</span>
-        {{/each}}
-      </div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-
-      {{!-- Level 20 Value --}}
-      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsLevel20ValueUnlimited'}}
-      {{#*inline "item-field-inputs"}}
-      {{numberInput system.resource.level20Value name="system.resource.level20Value" disabled=system.resource.level20ValueIsUnlimited }}
-      <input type="checkbox" name="system.resource.level20ValueIsUnlimited" {{checked system.resource.level20ValueIsUnlimited}}/>
-      <div style="flex-grow: 0;">{{localize "E20.RolePointsResourceUnlimited"}}</div>
-      {{/inline}}
-      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-    </div>
-
-    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-      {{!-- Effects Section --}}
-      {{> "systems/essence20/templates/item/parts/active-effects.hbs"}}
-    </div>
-
-  </section>
-</form>
-
+  {{!-- Level 20 Value --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsLevel20ValueUnlimited'}}
+  {{#*inline "item-field-inputs"}}
+  {{numberInput system.resource.level20Value name="system.resource.level20Value" disabled=system.resource.level20ValueIsUnlimited }}
+  <input type="checkbox" name="system.resource.level20ValueIsUnlimited" {{checked system.resource.level20ValueIsUnlimited}}/>
+  <div style="flex-grow: 0;">{{localize "E20.RolePointsResourceUnlimited"}}</div>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+<div>

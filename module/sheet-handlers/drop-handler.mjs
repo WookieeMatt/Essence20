@@ -175,14 +175,14 @@ export async function onDropActor(data, actorSheet) {
 
     break;
   case 'vehicle':
-    if (droppedActor.type == "playerCharacter") {
+    if (["playerCharacter", "npc"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     }
 
     break;
   case 'zord':
-    if (droppedActor.type == "playerCharacter") {
+    if (["playerCharacter", "npc"].includes(droppedActor.type)) {
       _selectVehicleLocation(droppedActor, targetActor);
       dropIsValid = true;
     }

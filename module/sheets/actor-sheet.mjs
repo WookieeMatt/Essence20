@@ -29,7 +29,6 @@ import {
   onShieldActivationToggle,
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
-import { getItemsOfType } from "../helpers/utils.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 
 export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
@@ -274,8 +273,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   _prepareWeaponEffectSkills(actorData, context) {
     let hasSkillDie = false;
     let skillDieName = null;
-    const items = getItemsOfType("role", actorData.items);
-    if (items.length && items[0].system.skillDie.isUsed) {
+    const items = actorData.items.documentsByType?.role;
+    if (items?.length && items[0].system.skillDie.isUsed) {
       hasSkillDie = true;
       skillDieName = items[0].system.skillDie.name;
     }
@@ -412,10 +411,10 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
             perks[i.system.type] = [i];
           }
 
-          //removes contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
-          if (this.actor.type == "npc" && i.system.type != "contact") {
-            perks.all.push(i);
-          }
+        //removes contact perks from the NPC as those are to be transferred to the actor that the contact is dropped on
+        if (this.actor.type == "npc" && i.system.type != "contact") {
+          perks.all.push(i);
+        }
 
           break;
         case "power":

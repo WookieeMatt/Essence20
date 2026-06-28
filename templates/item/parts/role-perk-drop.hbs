@@ -1,7 +1,7 @@
 {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" className=className label=label items=items type=type}}
 {{#*inline "item-field-inputs"}}
 {{#itemsContainType items type}}
-  <div class="flexcol" id="rolePerkList">
+  <div class="flexcol data-drop" id="rolePerkList">
     {{#each items as |item|}}
       {{#if (eq item.type ../type)}}
         <div class="flexrow {{item.type}}" data-item-key="{{@key}}" data-item-uuid="{{item.uuid}}" data-item-level="{{item.level}}">
@@ -11,7 +11,10 @@
               <label class="flexcol">{{item.name}}</label>
               <input type="number" class="level" placeholder="Level" value="{{item.level}}" name="system.items.{{@key}}.level" min="0" step="1" />
               <div class="item-controls">
-                <a class="item-control {{../className}}-delete flex-right" data-tooltip="{{localize 'E20.DeleteItem'}}">
+                <a class="view-info" data-action="viewItem" data-uuid="{{item.uuid}}" data-tooltip="{{localize 'E20.OpenItem'}}">
+                  <i class="fa-solid fa-fw fa-info-circle"></i>
+                </a>
+                <a class="item-control flex-right" data-action="deleteItem" data-item-key="{{@key}}" data-type="{{../className}}" data-tooltip="{{localize 'E20.DeleteItem'}}">
                   <i class="fas fa-trash"></i>
                 </a>
               </div>

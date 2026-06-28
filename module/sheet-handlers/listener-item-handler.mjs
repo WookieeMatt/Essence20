@@ -1,6 +1,5 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { checkIsLocked } from "../helpers/actor.mjs";
-import { getItemsOfType } from "../helpers/utils.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
 import { deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
 import { onOriginDelete } from "./background-handler.mjs";
@@ -77,19 +76,38 @@ export async function onItemCreate(event, actor) {
  */
 export async function onItemEdit(event, actor) {
   event.preventDefault();
-  const li = $(event.currentTarget).closest(".item");
-  let item = null;
 
+  let item = null;
+  const li = $(event.currentTarget).closest(".item");
   const itemId = li.data("itemId");
+  const itemUuid = li.data("itemUuid");
+
   if (itemId) {
     item = actor.items.get(itemId) || game.items.get(itemId);
-  } else {
-    const itemUuid = li.data("itemUuid");
+    if (!item) {
+      ui.notifications.error(
+        game.i18n.format("E20.ItemEditErrorBadId", {itemId}),
+      );
+    }
+  } else if (itemUuid) {
     item = await fromUuid(itemUuid);
+    if (!item) {
+      ui.notifications.error(
+        game.i18n.format("E20.ItemEditErrorBadUuid", {itemUuid}),
+      );
+    }
+  } else {
+    ui.notifications.error(
+      game.i18n.localize("E20.ItemEditErrorMissingId"),
+    );
   }
 
   if (item) {
     item.sheet.render(true);
+  } else {
+    console.error(
+      game.i18n.localize("E20.ItemEditErrorNotFound"),
+    );
   }
 }
 
@@ -246,7 +264,7 @@ export async function onInlineEdit(event, actor) {
  */
 export async function onShieldActivationToggle(event, actorSheet) {
   const actor = actorSheet.actor;
-  const shields = await getItemsOfType('shield', actor.items);
+  const shields = await actor.items.documentsByType.shield;
   let currentShield = null;
   for (const shield of shields) {
     if (shield._id == event.currentTarget.dataset.id) {
@@ -278,7 +296,7 @@ export async function onShieldActivationToggle(event, actorSheet) {
  */
 export async function onShieldEquipToggle(event, actorSheet) {
   const actor = actorSheet.actor;
-  const shields = await getItemsOfType('shield', actor.items);
+  const shields = await actor.items.documentsByType.shield;
   let currentShield = null;
   for (const shield of shields) {
     if (shield._id == event.currentTarget.dataset.id) {

@@ -18,6 +18,7 @@ import { getNumActions } from "./helpers/actor.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 import { registerSettings, setting } from "./settings.js";
+import { updateRoleCache } from "./helpers/utils.mjs";
 
 function registerSystemSettings() {
   game.settings.register("essence20", "systemMigrationVersion", {
@@ -215,6 +216,25 @@ Handlebars.registerHelper(
   },
 );
 
+Handlebars.registerHelper('switch', function(value, options) {
+  this.switch_value = value;
+  this.switch_break = false;
+  return options.fn(this);
+});
+
+Handlebars.registerHelper('case', function(value, options) {
+  if (value == this.switch_value) {
+    this.switch_break = true;
+    return options.fn(this);
+  }
+});
+
+Handlebars.registerHelper('default', function(value) {
+  if (!this.switch_break) {
+    return value;
+  }
+});
+
 //**
 // * Usage example {{#ifCond something '||' somethingElse }}
 // * Usage example {{#ifCond something 'or' somethingElse }}
@@ -280,6 +300,8 @@ Hooks.once("ready", async function () {
   ) {
     game.StoryPointsTracker = await new StoryPoints().render(true);
   }
+
+  await updateRoleCache();
 });
 
 // Init the button in the controls for toggling the dialog
