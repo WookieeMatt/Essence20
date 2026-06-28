@@ -3,10 +3,12 @@
     <label>{{localize 'E20.ActorWealth'}}</label>
     <div class="initiative-dropdown flex-group-center">
       <div class="item-image">
-        <a class="rollable" data-roll-type="skill" data-skill="wealth"
+        <a class="rollable" data-action="rollable" data-roll-type="skill" data-skill="wealth"
           data-shift-up ="{{system.skills.wealth.shiftUp}}" data-shift-down ="{{system.skills.wealth.shiftDown}}"
           data-shift="{{system.skills.wealth.shift}}" data-is-specialized="{{system.skills.wealth.isSpecialized}}">
-          <i class="fas fa-dice-d20"></i>
+          <i class="fas fa-dice-d20" data-roll-type="skill" data-skill="wealth"
+          data-shift-up ="{{system.skills.wealth.shiftUp}}" data-shift-down ="{{system.skills.wealth.shiftDown}}"
+          data-shift="{{system.skills.wealth.shift}}" data-is-specialized="{{system.skills.wealth.isSpecialized}}"></i>
         </a>
       </div>
       <select name="system.skills.wealth.shift">

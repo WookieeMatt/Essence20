@@ -19,8 +19,7 @@ export async function onItemCreate(event, actor) {
   if (checkIsLocked(actor)) {
     return;
   }
-
-  const header = event.currentTarget;
+  const header = event.target;
   // Get the type of item to create.
   const type = header.dataset.type;
   // Grab any data associated with this control.
@@ -76,40 +75,20 @@ export async function onItemCreate(event, actor) {
  */
 export async function onItemEdit(event, actor) {
   event.preventDefault();
+  let item = {};
+  const itemUuid = event.target.dataset.uuid;
 
-  let item = null;
-  const li = $(event.currentTarget).closest(".item");
-  const itemId = li.data("itemId");
-  const itemUuid = li.data("itemUuid");
-
-  if (itemId) {
-    item = actor.items.get(itemId) || game.items.get(itemId);
-    if (!item) {
-      ui.notifications.error(
-        game.i18n.format("E20.ItemEditErrorBadId", {itemId}),
-      );
-    }
-  } else if (itemUuid) {
+  if (itemUuid) {
     item = await fromUuid(itemUuid);
     if (!item) {
       ui.notifications.error(
         game.i18n.format("E20.ItemEditErrorBadUuid", {itemUuid}),
       );
+    } else {
+      item.sheet.render(true);
     }
-  } else {
-    ui.notifications.error(
-      game.i18n.localize("E20.ItemEditErrorMissingId"),
-    );
   }
-
-  if (item) {
-    item.sheet.render(true);
-  } else {
-    console.error(
-      game.i18n.localize("E20.ItemEditErrorNotFound"),
-    );
-  }
-}
+ }
 
 /**
  * Handle deleting Items
@@ -117,13 +96,14 @@ export async function onItemEdit(event, actor) {
  * @param {ActorSheet} actorSheet The ActorSheet the Item is being deleted on
  */
 export async function onItemDelete(event, actorSheet) {
-  const actor = actorSheet.actor;
+  const actor = actorSheet.document;
   if (checkIsLocked(actor)) {
     return;
   }
+  console.log(event.target.dataset)
 
   let item = null;
-  const li = $(event.currentTarget).closest(".item");
+  const li = $(event.target).closest(".item");
   const itemId = li.data("itemId");
   const parentId = li.data("parentId");
   const parentItem = actor.items.get(parentId);

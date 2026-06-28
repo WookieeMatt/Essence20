@@ -1,55 +1,56 @@
-<div class="stats-container defense-container" style="border-color: {{system.color}};">
-  <ol class="items-list effects-list" style="border-color: {{@root.system.color}};">
-  {{#each effects as |section sid|}}
-  {{#unless section.hidden}}
-    <li class="items-header flexrow" style="border-color: {{@root.system.color}};" data-effect-type="{{section.type}}">
-      <div class="item-name effect-name flexrow">{{localize section.name}}</div>
-      <div class="effect-source">{{localize "E20.ItemSource"}}</div>
-      <div class="effect-source">{{localize "E20.ActiveEffectDuration"}}</div>
-      <div class="item-controls effect-controls flexrow">
-        {{#if @root.editable}}
-          <a class="effect-control" data-action="create" data-tooltip="E20.ActiveEffectCreate">
-            <i class="fas fa-plus"></i> {{localize "E20.ActiveEffectAdd"}}
-          </a>
-        {{/if}}
-      </div>
-    </li>
-
-    {{#if section.info}}
-      <ol class="info">
-      {{#each section.info}}
-          <li class="notification info">{{this}}</li>
-      {{/each}}
-      </ol>
-    {{/if}}
-
-    <ol class="item-list">
-    {{#each section.effects as |effect|}}
-      <li class="item effect flexrow" data-effect-id="{{effect.id}}">
-        <div class="item-name effect-name flexrow">
-          <img class="item-image" src="{{effect.img}}"/>
-          <h4>{{effect.name}}</h4>
-        </div>
-        <div class="effect-source">{{effect.sourceName}}</div>
-        <div class="effect-duration">{{effect.duration.name}}</div>
+<section class="tab effects {{tabs.effects.cssClass}}" data-tab="effects" data-group="primary">
+  <div class="effect-list-container">
+    <ol class="items-list effects-list" style="border-color: {{system.color}};">
+    {{#each effects as |section sid|}}
+    {{#unless section.hidden}}
+      <li class="items-header flexrow" data-effect-type="{{section.type}}">
+        <div class="item-name effect-name flexrow">{{localize section.name}}</div>
+        <div class="effect-source">{{localize "E20.ItemSource"}}</div>
+        <div class="effect-duration">{{localize "E20.ActiveEffectDuration"}}</div>
         <div class="item-controls effect-controls flexrow">
           {{#if @root.editable}}
-            <a class="effect-control" data-action="toggle"
-              data-tooltip="{{#if effect.disabled}}E20.ActiveEffectEnable{{else}}E20.ActiveEffectDisable{{/if}}">
-              <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}"></i>
-            </a>
-            <a class="effect-control" data-action="edit" data-tooltip="E20.ActiveEffectEdit">
-              <i class="fas fa-edit"></i>
-            </a>
-            <a class="effect-control" data-action="delete" data-tooltip="E20.ActiveEffectDelete">
-              <i class="fas fa-trash"></i>
+            <a class="effect-control" data-action="createEffect" data-effect-type="{{section.type}}" data-tooltip="E20.ActiveEffectCreate">
+              <i class="fas fa-plus"></i> {{localize "E20.ActiveEffectAdd"}}
             </a>
           {{/if}}
         </div>
-        </li>
+      </li>
+      {{#if section.info}}
+        <ol class="info">
+        {{#each section.info}}
+            <li class="notification info">{{this}}</li>
+        {{/each}}
+       </ol>
+     {{/if}}
+
+      <ol class="item-list">
+      {{#each section.effects as |effect|}}
+        <li class="item effect flexrow" data-effect-id="{{effect.id}}">
+          <div class="item-name effect-name flexrow">
+            <img class="item-image" src="{{effect.img}}"/>
+            <h4>{{effect.name}}</h4>
+          </div>
+          <div class="effect-source">{{effect.sourceName}}</div>
+          <div class="effect-duration">{{effect.duration.name}}</div>
+          <div class="item-controls effect-controls flexrow">
+            {{#if @root.editable}}
+              <a class="effect-control" data-action="toggleEffect"
+                data-tooltip="{{#if effect.disabled}}E20.ActiveEffectEnable{{else}}E20.ActiveEffectDisable{{/if}}">
+                <i class="fas {{#if effect.disabled}}fa-check{{else}}fa-times{{/if}}" data-uuid="{{effect._uuid}}"></i>
+              </a>
+              <a class="effect-control" data-action="editEffect" data-tooltip="E20.ActiveEffectEdit">
+                <i class="fas fa-edit" data-uuid="{{effect._uuid}}"></i>
+              </a>
+              <a class="effect-control" data-action="deleteEffect" data-tooltip="E20.ActiveEffectDelete">
+                <i class="fas fa-trash" data-key="{{effect._id}}"></i>
+              </a>
+            {{/if}}
+          </div>
+          </li>
+      {{/each}}
+      </ol>
+    {{/unless}}
     {{/each}}
     </ol>
-  {{/unless}}
-  {{/each}}
-  </ol>
-</div>
+  </div>
+</section>

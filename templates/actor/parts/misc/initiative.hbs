@@ -2,7 +2,7 @@
   <span>{{localize 'E20.ActorInitiative'}}</span>
   <div class="initiative-dropdown flex-group-center">
     <div class="item-image">
-      <a class="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20"></i></a>
+      <a class="rollable" data-action="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20" data-roll-type="initiative"></i></a>
     </div>
     <select name="system.initiative.skill">
       {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}

@@ -28,6 +28,7 @@ export class PlayerCharacterActorData extends foundry.abstract.TypeDataModel {
   }
 
   prepareBaseData() {
+    super.prepareBaseData();
     this.movementIsReadOnly = true;
   }
 }

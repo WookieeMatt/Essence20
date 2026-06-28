@@ -117,7 +117,7 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
   if (newPerk?.system.isRoleVariant) {
     setRoleVatiantPerks(newPerk, currentRole, actor);
   }
-
+  console.log(newPerk)
   if (newPerk.system.advances.canAdvance) {
     await newPerk.update({
       "system.advances.currentValue": newPerk.system.advances.baseValue,

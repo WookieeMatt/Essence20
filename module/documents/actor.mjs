@@ -110,6 +110,8 @@ export class Essence20Actor extends Actor {
 
   /** @override */
   prepareBaseData() {
+    super.prepareBaseData();
+
     // Data modifications in this step occur before processing embedded
     // documents or derived data.
   }

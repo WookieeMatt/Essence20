@@ -1,8 +1,23 @@
+const { HandlebarsApplicationMixin }= foundry.applications.api
+const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
+console.log(ActorSheetV2)
+
 import SheetOptions from "../apps/sheet-options.mjs";
-import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import {
+  prepareActiveEffectCategories,
+  onCreateActiveEffect,
+  onDeleteActiveEffect,
+  onDropActiveEffect,
+  onEditActiveEffect,
+  onToggleActiveEffect,
+} from "../helpers/effects.mjs";
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
-import { prepareSystemActors, onSystemActorsDelete, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/vehicle-handler.mjs";
+import { prepareSystemActors,
+  onSystemActorsDelete,
+  onVehicleRoleUpdate,
+  onCrewNumberUpdate
+} from "../sheet-handlers/vehicle-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
@@ -23,53 +38,43 @@ import {
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 
-export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
-  constructor(...args) {
-    super(...args);
+export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+  constructor(options) {
+    super(options);
     this.accordionStates = { skills: '' };
   }
 
-  /** @override */
-  async activateEditor(name, options={}, initialContent="") {
-    options.relativeLinks = true;
-    options.plugins = {
-      menu: ProseMirror.ProseMirrorMenu.build(ProseMirror.defaultSchema, {
-        compact: true,
-        destroyOnSave: true,
-        onSave: () => {
-          this.saveEditor(name, { remove: true });
-          this.editingDescriptionTarget = null;
-        },
-      }),
-    };
-    return super.activateEditor(name, options, initialContent);
-  }
-
-  static _warnedAppV1 = true;
-
-  /** @override */
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["essence20", "sheet", "actor"],
+  static DEFAULT_OPTIONS = {
+    actions: {
+      itemCreate: this.#onItemCreate,
+      itemDelete: this.#onItemDelete,
+      itemEdit: this.#onItemEdit,
+      rollable: this.#onRoll,
+      toggleAccordion: this.#toggleAccordion,
+      toggleAccordionHeader: this.#toggleAccordionHeader,
+      createEffect: this.#createActiveEffect,
+      deleteEffect: this.#deleteActiveEffect,
+      editEffect: this.#editActiveEffect,
+      toggleEffect: this.#toggleActiveEffect,
+    },
+    classes: ["essence20", "sheet", "actor"],
+    tag: 'form',
+    position: {
       width: 620,
       height: 574,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }],
-    });
+    },
+    form: {
+      submitOnChange: true,
+      closeOnSubmit: false,
+    },
+    window: {
+      resizable: true,
+    },
   }
 
-  /** @override */
-  get template() {
-    return `systems/essence20/templates/actor/sheets/${this.actor.type}.hbs`;
-  }
-
-  /** @override */
-  getData() {
-    // Retrieve the data structure from the base sheet. You can inspect or log
-    // the context variable to see the structure, but some key properties for
-    // sheets are the actor object, the data object, whether or not it's
-    // editable, the items array, and the effects array.
-    const context = super.getData();
-
+  async _prepareContext(options) {
+    console.log("Prepare Context")
+    const context = await super._prepareContext(options);
     // Make all the Essence20 consts accessible
     context.config = CONFIG.E20;
 
@@ -80,75 +85,25 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
 
-    // Might need to filter like above eventually
-    this._prepareItems(context);
-
-    // Prepare npc data and items.
     if (['npc', 'zord', 'megaform', 'vehicle', 'companion'].includes(actorData.type)) {
       this._prepareDisplayedNpcSkills(context);
     }
 
-    // Prepare WeaponEffect Skill List
+    this._prepareItems(context);
+
+        // Prepare WeaponEffect Skill List
     this._prepareWeaponEffectSkills(actorData, context);
 
     //Prepare Initiative Skills
     context.initiativeSkills = this._prepareInitiativeSkills(actorData);
 
-    // Prepare number of actions
-    if (actorData.type == "playerCharacter") {
-      context.numActions = getNumActions(this.actor);
-    }
-
-    // Add roll data for TinyMCE editors.
-    context.rollData = context.actor.getRollData();
-
-    // Prepare active effects
-    context.effects = prepareActiveEffectCategories(this.actor.effects);
-
-    // Prepare actors that are attached to other actors
-    prepareSystemActors(this.actor, context);
-
     context.accordionStates = this.accordionStates;
-    context.canMorphOrTransform = context.actor.system.canMorph || context.actor.system.canTransform;
-
-    // Prepare PC skill rank allocation
-    if (this.actor.type == "playerCharacter") {
-      this._prepareSkillRankAllocation(context);
-    }
+    context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
 
     return context;
   }
 
-  /** @override */
-  _getHeaderButtons() {
-    let buttons = super._getHeaderButtons();
-
-    if (this.actor.isOwner) {
-      // Sheet Options Button for Character Sheets
-      if (["npc", 'playerCharacter'].includes(this.actor.type)) {
-        buttons = [
-          {
-            label: game.i18n.localize('E20.SheetOptions'),
-            class: 'configure-actor',
-            icon: 'fas fa-cog',
-            onclick: (ev) => new SheetOptions(this.actor, ev).render(true),
-          },
-          ...buttons,
-        ];
-      }
-    }
-
-    return buttons;
-  }
-
-  /**
-   * Handles clicking the lock/unlock button
-   * @param {Event} event The originating click event
-   * @return {undefined}
-   */
-
-
-  /**
+    /**
    * Prepare skills that are always displayed for NPCs.
    * @param {Object} context The actor data to prepare.
    * @return {undefined}
@@ -171,60 +126,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     context.displayedNpcSkills = displayedNpcSkills;
   }
 
-  /**
-   * Prepare skill rank allocation calculations for PCs by adding the number of shifts
-   * and Specializations present for each Essence.
-   * @param {Object} context The actor data to prepare.
-   */
-  _prepareSkillRankAllocation(context) {
-    const unrankedIndex = CONFIG.E20.skillShiftList.indexOf('d20');
-
-    for (const essence in CONFIG.E20.originEssences) {
-      let essenceUpshifts = 0;
-      let numSpecializations = 0;
-      let essenceStrings = [];
-
-      for (const skill of CONFIG.E20.skillsByEssence[essence]) {
-        const skillData = context.system.skills[skill];
-        const skillIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(skillData.shift));
-
-        const skillUpshifts = Math.max(0, unrankedIndex - skillIndex);
-        if (skillUpshifts) {
-          essenceStrings.push(`${skillUpshifts} ${CONFIG.E20.skills[skill]}`);
-          essenceUpshifts += skillUpshifts;
-        }
-
-        for (const specialization of context.specializations[skill] || []) {
-          numSpecializations += 1;
-          essenceStrings.push(`1 ${specialization.name}`);
-        }
-      }
-
-      context.system.skillRankAllocation[essence].string = essenceStrings.join(' + ');
-      context.system.skillRankAllocation[essence].value = essenceUpshifts + numSpecializations;
-    }
-
-    context.system.skillRankAllocation['strength'].string = [
-      context.system.skillRankAllocation['strength'].string,
-      `${context.system.conditioning} ${game.i18n.localize('E20.ActorConditioning')}`,
-    ].filter(Boolean).join(' + ');
-    context.system.skillRankAllocation['strength'].value += context.system.conditioning;
-
-    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.skills[context.system.initiative.skill].shift));
-    const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
-    context.system.skillRankAllocation['speed'].string = [
-      context.system.skillRankAllocation['speed'].string,
-      `${initiativeUpshifts} ${game.i18n.localize('E20.ActorInitiative')}`,
-    ].filter(Boolean).join(' + ');
-    context.system.skillRankAllocation['speed'].value += initiativeUpshifts;
-  }
-
-  /**
-   * Prepare skill list to be used or weaponEffects on an actor
-   * @param {Object} actorData The acor data converted to an object
-   * @param {Object} context The actor data to prepare.
-   */
   _prepareWeaponEffectSkills(actorData, context) {
+    console.log("Prepare WeaponEffectSkills")
     let hasSkillDie = false;
     let skillDieName = null;
     const items = actorData.items.documentsByType?.role;
@@ -249,6 +152,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   }
 
   _prepareInitiativeSkills(actorData) {
+    console.log("Prepare Initiative")
     const initiativeSkills = {};
     for (const skill of Object.keys(actorData.system.skills)) {
       if (actorData.system.skills[skill].canBeInitiative) {
@@ -269,6 +173,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
    * @private
    */
   _prepareItems(context) {
+    console.log("Prepare Items")
     // Initialize containers.
     const alterations = [];
     const altModes = [];
@@ -298,7 +203,8 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     let rolePoints = null;
 
     // Iterate through items, allocating to containers
-    for (let i of context.items) {
+    for (let i of context.document.items) {
+      console.log(i)
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
 
@@ -465,117 +371,17 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     context.upgrades = upgrades;
     context.weapons = weapons;
 
-    this.actor.update({
-      "system.defenses.evasion.armor": equippedArmorEvasion,
-      "system.defenses.toughness.armor": equippedArmorToughness,
-    }).then(this.render(false));
-  }
 
-  /** @override */
-  activateListeners(html) {
-    super.activateListeners(html);
+    if (context.system.defenses.evasion.armor != equippedArmorEvasion || context.system.defenses.toughness.armor != equippedArmorToughness) {
+      console.log(context)
+      console.log(equippedArmorEvasion)
+      console.log(equippedArmorToughness)
 
-    // Render the item sheet for viewing/editing prior to the editable check.
-    html.find('.item-edit').click(ev => onItemEdit(ev, this.actor));
-
-    // -------------------------------------------------------------
-    // Everything below here is only needed if the sheet is editable
-    if (!this.isEditable) return;
-
-    // Add Inventory Item
-    html.find('.item-create').click(ev => onItemCreate(ev, this.actor));
-
-    // Delete Inventory Item
-    html.find('.item-delete').click(ev => onItemDelete(ev, this));
-
-    // Delete Zord from MFZ
-    html.find('.system-actors-delete').click(ev => onSystemActorsDelete(ev, this));
-
-    // Edit specialization name inline
-    html.find(".inline-edit").change(ev => onInlineEdit(ev, this.actor));
-
-    // Active Effect management
-    html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
-
-    // Morph Button
-    html.find('.morph').click(() => onMorph(this.actor));
-
-    // Transform Button
-    html.find('.transform').click(() => onTransform(this.actor));
-
-    //Equip Shield
-    html.find('.shield-equip').change(ev => onShieldEquipToggle(ev, this));
-
-    //Activate Shield
-    html.find('.shield-activate').click(ev => onShieldActivationToggle(ev, this));
-
-    // Roll buttons
-    if (this.actor.isOwner) {
-      html.find('.rollable').click(ev => onRoll(ev, this.actor));
+    //   this.actor.update({
+    //     "system.defenses.evasion.armor": equippedArmorEvasion,
+    //     "system.defenses.toughness.armor": equippedArmorToughness,
+    //   }).then(this.render(false));
     }
-
-    // Open and collapse Item content
-    html.find('.accordion-label').click(ev => onToggleAccordion(ev, this));
-
-    // Open and collapse all Item contents in container
-    html.find('.header-accordion-label').click(ev => onToggleHeaderAccordion(ev, this));
-
-    html.find('.vehicle-role').change(ev => onVehicleRoleUpdate(ev, this));
-
-    html.find('.num-crew').change(ev=> onCrewNumberUpdate(ev, this));
-
-    html.find('.morph-toughness-edit').click(ev=> onEditMorphToughnessBonus(ev, this));
-
-    html.find(".trait-selector").click(ev => onManageSelectTrait(ev, this.actor));
-
-    // Drag events for macros.
-    if (this.actor.isOwner) {
-      let handler = ev => this._onDragStart(ev);
-      html.find('li.item').each((i, li) => {
-        if (li.classList.contains("inventory-header")) return;
-        li.setAttribute("draggable", true);
-        li.addEventListener("dragstart", handler, false);
-      });
-    }
-
-    // Rest button
-    html.find('.rest').click(() => onRest(this));
-
-    // Leveling buttons
-    html.find('.level-up').click(() => this._onLevelChangeHelper(1));
-    html.find('.level-down').click(() => this._onLevelChangeHelper(-1));
-
-    const isLocked = this.actor.system.isLocked;
-
-    // Inputs
-    const inputs = html.find('input');
-    // Selects all text when focused
-    inputs.focus(ev => ev.currentTarget.select());
-    // Set readonly if sheet is locked
-    inputs.attr('readonly', isLocked);
-    // Don't readonly health and stun values
-    html.find('.no-lock').attr('readonly', false);
-    // Stun max is always locked
-    html.find('.no-unlock').attr('readonly', true);
-
-    // Disable selects if sheet is locked
-    html.find('select').attr('disabled', isLocked);
-
-    // Lock icon
-    html.find('.lock-status').find('i').addClass(isLocked ? 'fa-lock' : 'fa-lock-open');
-
-    // Toggling the lock button
-    html.find('.lock-status').click(ev => {
-      this.actor.update({
-        "system.isLocked": !isLocked,
-      });
-      $(ev.currentTarget).find('i').toggleClass('fa-lock-open fa-lock');
-      const inputs = html.find('input');
-      inputs.attr('readonly', isLocked);
-      html.find('.no-lock').attr('readonly', false);
-      html.find('.no-unlock').attr('readonly', true);
-      html.find('select').attr('disabled', isLocked);
-    });
   }
 
   /**
@@ -587,6 +393,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
    * @override
    */
   async _onDropItem(event, data) {
+    console.log("gotHere")
     return onDropItem(data, this.actor, super._onDropItem.bind(this, event, data));
   }
 
@@ -632,5 +439,51 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
 
       return await onLevelChange(this.actor, this.actor.system.level);
     }
+  }
+
+  // Add Inventory Item
+  static #onItemCreate(event) {
+    onItemCreate(event, this.document);
+  }
+
+  static #onItemDelete(event) {
+    console.log(this)
+    onItemDelete(event, this)
+  }
+
+  static #onItemEdit(event) {
+    onItemEdit(event, this.document);
+  }
+
+  static #onRoll(event) {
+    if (this.document.isOwner) {
+      onRoll(event, this.document);
+    }
+  }
+
+  static #toggleAccordion(event) {
+    console.log(event)
+    onToggleAccordion(event, this);
+  }
+
+  static #toggleAccordionHeader(event) {
+    console.log(event)
+    onToggleHeaderAccordion(event, this.document);
+  }
+
+  static #createActiveEffect(event) {
+    onCreateActiveEffect(event, this.document);
+  }
+
+  static #deleteActiveEffect(event){
+    onDeleteActiveEffect(event, this.document);
+  }
+
+  static #editActiveEffect(event) {
+    onEditActiveEffect(event, this.document);
+  }
+
+  static #toggleActiveEffect(event){
+    onToggleActiveEffect(event);
   }
 }

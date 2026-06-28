@@ -18,10 +18,6 @@ import VehicleRoleSelector from "../apps/vehicle-role-selector.mjs";
  *                                    not permitted.
  */
 export async function onDropItem(data, actor, dropFunc) {
-  if (data.type != 'Item') {
-    return false;
-  }
-
   if (checkIsLocked(actor)) {
     return false;
   }
