@@ -2,7 +2,7 @@ const { HandlebarsApplicationMixin } = foundry.applications.api;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
 import {
-   onCreateActiveEffect,
+  onCreateActiveEffect,
   onDeleteActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
@@ -490,11 +490,11 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     onSystemActorsDelete(event, this);
   }
 
-  static #onMorph(event) {
+  static #onMorph() {
     onMorph(this.document);
   }
 
-  static #onTransform(event) {
+  static #onTransform() {
     onTransform(this.document);
   }
 
@@ -506,12 +506,12 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     onEditMorphToughnessBonus(event, this);
   }
 
-  static #onRest(event) {
+  static #onRest() {
     onRest(this);
   }
 
   static #onManageSelectTrait(event) {
-    onManageSelectTrait(ev, this.document);
+    onManageSelectTrait(event, this.document);
   }
 
   static #onShieldActivationToggle(event) {
@@ -522,12 +522,12 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     onShieldEquipToggle(event, this);
   }
 
-  static #onLevelUp(event) {
+  static #onLevelUp() {
     _onLevelChangeHelper(1);
 
   }
 
-  static #onlevelDown(event) {
+  static #onlevelDown() {
     _onLevelChangeHelper(-1);
 
   }
