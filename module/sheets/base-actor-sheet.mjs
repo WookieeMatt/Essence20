@@ -524,12 +524,10 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static #onLevelUp() {
     _onLevelChangeHelper(1);
-
   }
 
   static #onlevelDown() {
     _onLevelChangeHelper(-1);
-
   }
 
 }
