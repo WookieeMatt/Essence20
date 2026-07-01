@@ -2,7 +2,7 @@
 <div class="stats-container flexcol" style="min-width: fit-content; border-color: {{system.color}};">
   {{#if system.canTransform}}
   <div class="flexrow" style="gap: 5px; align-items: center; flex-wrap: nowrap; width: 100%">
-    <a class="transform" style="flex-grow: 0;"><i class="fas fa-steering-wheel"></i></a>
+    <a data-action="transform" style="flex-grow: 0;"><i class="fas fa-steering-wheel"></i></a>
     <span style="text-align: left;">
       {{localize 'E20.Transform'}}
     </span>
@@ -11,7 +11,7 @@
 
   {{#if system.canMorph}}
   <div class="flexrow" style="gap: 5px; align-items: center; flex-wrap: nowrap; width: 100%">
-    <a class="morph" style="flex-grow: 0;"><i class="fas fa-sword"></i></a>
+    <a data-action="morph" style="flex-grow: 0;"><i class="fas fa-sword"></i></a>
     <span style="text-align: left;">
       {{#if system.isMorphed}}
       {{localize 'E20.ButtonUnmorph'}}

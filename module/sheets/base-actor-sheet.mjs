@@ -1,40 +1,36 @@
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
-import SheetOptions from "../apps/sheet-options.mjs"; // eslint-disable-line no-unused-vars
 import {
-  prepareActiveEffectCategories, // eslint-disable-line no-unused-vars
-  onCreateActiveEffect,
+   onCreateActiveEffect,
   onDeleteActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
 } from "../helpers/effects.mjs";
-import { getNumActions } from "../helpers/actor.mjs"; // eslint-disable-line no-unused-vars
+import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
-import { prepareSystemActors, // eslint-disable-line no-unused-vars
-  onSystemActorsDelete, // eslint-disable-line no-unused-vars
-  onVehicleRoleUpdate, // eslint-disable-line no-unused-vars
-  onCrewNumberUpdate, // eslint-disable-line no-unused-vars
+import { prepareSystemActors,
+  onSystemActorsDelete,
 } from "../sheet-handlers/vehicle-handler.mjs";
-import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs"; // eslint-disable-line no-unused-vars
-import { onTransform } from "../sheet-handlers/transformer-handler.mjs"; // eslint-disable-line no-unused-vars
+import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
-  onEditMorphToughnessBonus, // eslint-disable-line no-unused-vars
-  onRest, // eslint-disable-line no-unused-vars
+  onEditMorphToughnessBonus,
+  onRest,
   onRoll,
   onToggleAccordion,
   onToggleHeaderAccordion,
-} from "../sheet-handlers/listener-misc-handler.mjs"; // eslint-disable-line no-unused-vars
-import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs"; // eslint-disable-line no-unused-vars
+} from "../sheet-handlers/listener-misc-handler.mjs";
+import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs";
 import {
   onItemCreate,
   onItemEdit,
   onItemDelete,
-  onInlineEdit, // eslint-disable-line no-unused-vars
-  onShieldActivationToggle, // eslint-disable-line no-unused-vars
-  onShieldEquipToggle, // eslint-disable-line no-unused-vars
+  onInlineEdit,
+  onShieldActivationToggle,
+  onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
-import { onManageSelectTrait } from "../helpers/traits.mjs"; // eslint-disable-line no-unused-vars
+import { onManageSelectTrait } from "../helpers/traits.mjs";
 
 export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   constructor(options) {
@@ -44,16 +40,25 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static DEFAULT_OPTIONS = {
     actions: {
-      itemCreate: this.#onItemCreate,
-      itemDelete: this.#onItemDelete,
-      itemEdit: this.#onItemEdit,
-      rollable: this.#onRoll,
-      toggleAccordion: this.#toggleAccordion,
-      toggleAccordionHeader: this.#toggleAccordionHeader,
+      bonusEdit: this.#onEditMorphToughnessBonus,
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
       editEffect: this.#editActiveEffect,
+      inlineEdit: this.#onInlineEdit,
+      itemCreate: this.#onItemCreate,
+      itemDelete: this.#onItemDelete,
+      itemEdit: this.#onItemEdit,
+      levelDown: this.#onlevelDown,
+      levelUp: this.#onLevelUp,
+      morph: this.#onMorph,
+      rest: this.#onRest,
+      rollable: this.#onRoll,
+      systemActorsDelete: this.#onSystemActorsDelete,
+      toggleAccordion: this.#toggleAccordion,
+      toggleAccordionHeader: this.#toggleAccordionHeader,
       toggleEffect: this.#toggleActiveEffect,
+      traitSelector: this.#onManageSelectTrait,
+      transform: this.#onTransform,
     },
     classes: ["essence20", "sheet", "actor"],
     tag: 'form',
@@ -93,6 +98,14 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
     //Prepare Initiative Skills
     context.initiativeSkills = this._prepareInitiativeSkills(actorData);
+
+    // Prepare number of actions
+    if (actorData.type == "playerCharacter") {
+      context.numActions = getNumActions(this.actor);
+    }
+
+    // Prepare actors that are attached to other actors
+    prepareSystemActors(this.document, context);
 
     context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
@@ -472,4 +485,51 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   static #toggleActiveEffect(event){
     onToggleActiveEffect(event);
   }
+
+  static #onSystemActorsDelete(event) {
+    onSystemActorsDelete(event, this);
+  }
+
+  static #onMorph(event) {
+    onMorph(this.document);
+  }
+
+  static #onTransform(event) {
+    onTransform(this.document);
+  }
+
+  static #onInlineEdit(event) {
+    onInlineEdit(event, this.document);
+  }
+
+  static #onEditMorphToughnessBonus(event) {
+    onEditMorphToughnessBonus(event, this);
+  }
+
+  static #onRest(event) {
+    onRest(this);
+  }
+
+  static #onManageSelectTrait(event) {
+    onManageSelectTrait(ev, this.document);
+  }
+
+  static #onShieldActivationToggle(event) {
+    onShieldActivationToggle(event, this);
+  }
+
+  static #onShieldEquipToggle(event) {
+    onShieldEquipToggle(event, this);
+  }
+
+  static #onLevelUp(event) {
+    _onLevelChangeHelper(1);
+
+  }
+
+  static #onlevelDown(event) {
+    _onLevelChangeHelper(-1);
+
+  }
+
 }

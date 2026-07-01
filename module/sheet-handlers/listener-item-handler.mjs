@@ -212,7 +212,7 @@ export async function onInlineEdit(event, actor) {
   event.preventDefault();
 
   let item;
-  let element = event.currentTarget;
+  let element = event.target;
   const dataset = element.closest(".item").dataset;
   const itemId = dataset.itemId;
   const itemUuid = dataset.itemUuid;

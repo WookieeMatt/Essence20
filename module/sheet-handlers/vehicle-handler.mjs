@@ -27,13 +27,12 @@ export function prepareSystemActors(actor, context) {
  * @param {ActorSheet} actorSheet The ActorSheet whose actor is being deleted
  */
 export async function onSystemActorsDelete(event, actorSheet) {
-  const actor = actorSheet.actor;
+  const actor = actorSheet.document;
   if (checkIsLocked(actor)) {
     return;
   }
 
-  const li = $(event.currentTarget).closest(".systemActors");
-  const systemActorsId = li.data("systemActorsUuid");
+  const systemActorsId = event.target.dataset.systemActorsUuid;
 
   // return if no item is found.
   if (!systemActorsId) {

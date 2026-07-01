@@ -8,7 +8,7 @@
     {{#if (ne hidePlusButton 'true')}}
       {{#> plus-button dataType=dataType parentId=parentId}}
         {{!-- Custom plus button here, or use default below --}}
-        <a class="item-create" data-action="itemCreate" data-type="{{dataType}}" data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
+        <a data-action="itemCreate" data-type="{{dataType}}" data-parent-id="{{parentId}}" data-tooltip="{{ localize 'E20.ItemControlAdd' }}">
           <i class="fas fa-plus" data-type="{{dataType}}" data-parent-id="{{parentId}}"></i>
         </a>
       {{/plus-button}}
