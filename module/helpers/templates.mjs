@@ -7,13 +7,13 @@ export const preloadHandlebarsTemplates = async function () {
   return foundry.applications.handlebars.loadTemplates([
 
     // Actor partials - Headers
-    "systems/essence20/templates/actor/parts/headers/character.hbs",
-    "systems/essence20/templates/actor/parts/headers/companion.hbs",
-    "systems/essence20/templates/actor/parts/headers/common.hbs",
-    "systems/essence20/templates/actor/parts/headers/megaform.hbs",
-    "systems/essence20/templates/actor/parts/headers/npc.hbs",
-    "systems/essence20/templates/actor/parts/headers/vehicle.hbs",
-    "systems/essence20/templates/actor/parts/headers/zord.hbs",
+    "systems/essence20/templates/actor/headers/character.hbs",
+    "systems/essence20/templates/actor/headers/companion.hbs",
+    "systems/essence20/templates/actor/headers/common.hbs",
+    "systems/essence20/templates/actor/headers/megaform.hbs",
+    "systems/essence20/templates/actor/headers/npc.hbs",
+    "systems/essence20/templates/actor/headers/vehicle.hbs",
+    "systems/essence20/templates/actor/headers/zord.hbs",
 
     "systems/essence20/templates/actor/parts/main/companion.hbs",
 

@@ -32,7 +32,7 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
 
   static PARTS = {
     header: {
-      template: "systems/essence20/templates/actor/parts/headers/companion.hbs",
+      template: "systems/essence20/templates/actor/headers/companion.hbs",
     },
     tabs: {
       template: "templates/generic/tab-navigation.hbs",
