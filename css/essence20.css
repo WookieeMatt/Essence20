@@ -546,11 +546,24 @@ body.game .window-app {
   font-weight: bold;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
+  min-height: 125px;
 }
 
 .essence20 .items-header > * {
   font-size: 14px;
   text-align: center;
+}
+
+/* PR Sheet Headers */
+.essence20 .item-header .profile-img {
+  -webkit-box-flex: 0;
+  /* -ms-flex: 0 0 100px; */
+  flex: inherit;
+  height: 100px;
+  margin-right: 10px;
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+  object-fit: contain;
 }
 
 .essence20 .items-header .item-name {
@@ -619,6 +632,11 @@ body.game .window-app {
   display: flex;
   gap: 0.5em;
   width: 100%;
+}
+
+.essence20 .essence20-sidebar {
+  float: left top;
+  min-height: 100%;
 }
 
 .essence20 .skill-header {
@@ -1410,7 +1428,6 @@ body.game .window-app {
 
 .theme-wrapper {
   overflow: visible;
-  border: none;
 }
 .theme-wrapper.window-app {
   backdrop-filter: blur(4px);

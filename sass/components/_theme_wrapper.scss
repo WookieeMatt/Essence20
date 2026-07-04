@@ -17,8 +17,7 @@
 
 .theme-wrapper {
   overflow: visible;
-  border: none; // TODO: Remove after refactor of styles, this is just to remove the old border;
-  
+
   &.window-app {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
@@ -75,7 +74,7 @@
       border-radius: 15px;
     }
   }
-  
+
   header * {
     color: var(--theme-text-color) !important;
   }

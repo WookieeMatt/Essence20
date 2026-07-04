@@ -6,8 +6,12 @@ import { Essence20Combat } from "./documents/combat.mjs";
 import { Essence20Combatant } from "./documents/combatant.mjs";
 import { Essence20Item } from "./documents/item.mjs";
 // Import sheet classes.
-import { Essence20ActorSheet } from "./sheets/actor-sheet.mjs";
+import { Essence20CharacterActorSheet } from "./sheets/character-sheet.mjs";
 import { Essence20CompanionActorSheet } from "./sheets/companion-sheet.mjs";
+import { Essence20NPCActorSheet } from "./sheets/npc-sheet.mjs";
+import { Essence20MegaformActorSheet } from "./sheets/megaform.mjs";
+import { Essence20VehicleActorSheet } from "./sheets/vehicle.mjs";
+import { Essence20ZordActorSheet } from "./sheets/zord.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
@@ -117,8 +121,12 @@ Hooks.once("init", async function () {
   );
   foundry.documents.collections.Actors.registerSheet(
     "essence20",
-    Essence20ActorSheet,
-    { makeDefault: true },
+    Essence20CharacterActorSheet,
+    {
+      types: ["playerCharacter"],
+      makeDefault: true,
+      label: "Player Character",
+    },
   );
   foundry.documents.collections.Actors.registerSheet(
     "essence20",
@@ -127,6 +135,42 @@ Hooks.once("init", async function () {
       types: ["companion"],
       makeDefault: true,
       label: "Companion",
+    },
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    "essence20",
+    Essence20MegaformActorSheet,
+    {
+      types: ["megaform"],
+      makeDefault: true,
+      label: "Megaform",
+    },
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    "essence20",
+    Essence20NPCActorSheet,
+    {
+      types: ["npc"],
+      makeDefault: true,
+      label: "NPC/Contact",
+    },
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    "essence20",
+    Essence20VehicleActorSheet,
+    {
+      types: ["vehicle"],
+      makeDefault: true,
+      label: "Vehicle",
+    },
+  );
+  foundry.documents.collections.Actors.registerSheet(
+    "essence20",
+    Essence20ZordActorSheet,
+    {
+      types: ["zord"],
+      makeDefault: true,
+      label: "Zord",
     },
   );
   foundry.documents.collections.Items.unregisterSheet(

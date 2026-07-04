@@ -64,11 +64,24 @@
   font-weight: bold;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
+  min-height: 125px;
 }
 
 .essence20 .items-header>* {
   font-size: 14px;
   text-align: center;
+}
+
+/* PR Sheet Headers */
+.essence20 .item-header .profile-img {
+  -webkit-box-flex: 0;
+  /* -ms-flex: 0 0 100px; */
+  flex: inherit;
+  height: 100px;
+  margin-right: 10px;
+  border: v.$border;
+  border-radius: 15px;
+  object-fit: contain;
 }
 
 .essence20 .items-header .item-name {

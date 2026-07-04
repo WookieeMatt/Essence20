@@ -1,7 +1,7 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { prepareActiveEffectCategories } from "../helpers/effects.mjs";
 
-export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
+export class Essence20MegaformActorSheet extends Essence20BaseActorSheet {
   /**@inheritDoc */
   static DEFAULT_OPTIONS = {
     classes: ["essence20", "sheet", "actor"],
@@ -22,24 +22,22 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
   static TABS = {
     primary: {
       tabs: [
-        { id: "main", group: 'primary', label: "Main"},
         { id: "effects", group: 'primary', label: "Effects"},
         { id: "notes", group: 'primary', label: "Notes"},
       ],
-      initial: "main",
+      initial: "effects",
     },
   };
 
   static PARTS = {
     header: {
-      template: "systems/essence20/templates/actor/headers/companion.hbs",
+      template: "systems/essence20/templates/actor/headers/megaform.hbs",
+    },
+    sidebar: {
+      template: "systems/essence20/templates/actor/sidebars/megaform.hbs"
     },
     tabs: {
       template: "templates/generic/tab-navigation.hbs",
-    },
-    main: {
-      template: "systems/essence20/templates/actor/parts/main/companion.hbs",
-      scrollable: [''],
     },
     effects: {
       template: "systems/essence20/templates/actor/tabs/effects.hbs",
@@ -54,8 +52,8 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
 
   async _preparePartContext(partId, context, options) {
     super._preparePartContext(partId, context, options);
+
     switch ( partId ) {
-    case "main": context = await this._prepareMainContext(context); break;
     case "effects": context = await this._prepareEffectsContext(context); break;
     case "notes": context = await this._prepareNotesContext(context); break;
     }
@@ -71,10 +69,6 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
     //   };
     // }
 
-    return context;
-  }
-
-  async _prepareMainContext(context) {
     return context;
   }
 

@@ -1,7 +1,7 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 import { prepareActiveEffectCategories } from "../helpers/effects.mjs";
 
-export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
+export class Essence20VehicleActorSheet extends Essence20BaseActorSheet {
   /**@inheritDoc */
   static DEFAULT_OPTIONS = {
     classes: ["essence20", "sheet", "actor"],
@@ -32,7 +32,10 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
 
   static PARTS = {
     header: {
-      template: "systems/essence20/templates/actor/headers/companion.hbs",
+      template: "systems/essence20/templates/actor/headers/vehicle.hbs",
+    },
+    sidebar: {
+      template: "systems/essence20/templates/actor/sidebars/vehicle.hbs"
     },
     tabs: {
       template: "templates/generic/tab-navigation.hbs",
@@ -54,6 +57,7 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
 
   async _preparePartContext(partId, context, options) {
     super._preparePartContext(partId, context, options);
+
     switch ( partId ) {
     case "main": context = await this._prepareMainContext(context); break;
     case "effects": context = await this._prepareEffectsContext(context); break;
