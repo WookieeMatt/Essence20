@@ -1,10 +1,6 @@
 {{#>"systems/essence20/templates/actor/headers/common.hbs"}}
 {{#*inline "secondary-fields"}}
 <div>
-  <label for="system.background.pronouns" class="resource-label">{{localize 'E20.ActorPronouns'}}</label>
-  <input type="text" name="system.background.pronouns" value="{{system.background.pronouns}}" />
-</div>
-<div>
   {{> "systems/essence20/templates/actor/parts/items/role.hbs"}}
 </div>
 {{#inArray '["giJoe", "transformers"]' @root.role.system.version}}
@@ -12,10 +8,6 @@
     {{> "systems/essence20/templates/actor/parts/items/focus.hbs"}}
   </div>
 {{/inArray}}
-<div>
-  <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
-  <input type="text" name="system.languages" value="{{system.languages}}" />
-</div>
 <div>
   {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
 </div>

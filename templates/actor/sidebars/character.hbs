@@ -1,6 +1,105 @@
 <section class="essence20-sidebar sheet-header">
   {{!-- Profile image --}}
-  <div class="flexcol" style="flex-grow: .175; gap: 5px;">
-    <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+  <div class="flexcol">
+    <div>
+      <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+    </div>
+
+    <fieldset class="essence20-sidebar-resources">
+      <legend>Resources</legend>
+      <div>
+        <label>{{localize 'E20.ActorHealth'}}</label>
+        <input class="two-digit-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
+        <span>/</span>
+        <input class="two-digit-input no-lock" type="number" name="system.health.max" value="{{system.health.max}}" min="0" step="1"/>
+      </div>
+      <div>
+        <label>{{localize 'E20.ActorStun'}}</label>
+        <input class="two-digit-input no-lock" type="number" name="system.stun.value" value="{{system.stun.value}}" min="0" step="1" />
+        <span>/</span>
+        <input class="two-digit-input no-unlock" type="number" name="system.stun.max" value="{{system.health.value}}" readonly/>
+      </div>
+      {{#if actor.system.canTransform}}
+      <div>
+        <label>{{localize "E20.Energon"}}</label>
+        <input class="centered-input no-lock" data-field="system.energon.normal.value" type="number"
+          name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
+        /
+        <input class="centered-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
+          value="{{system.energon.normal.max}}" />
+      </div>
+      {{/if}}
+      {{#if actor.system.canMorph}}
+      <div>
+        <label>Personal Power</label>
+        <input class="centered-input no-lock" data-field="system.powers.personal.value" type="number"
+          name="system.powers.personal.value" value="{{system.powers.personal.value}}" min="0" step="1" />
+        /
+        <input class="centered-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
+          value="{{system.powers.personal.max}}" min="0" step="1" />
+      </div>
+      {{/if}}
+
+      {{#if system.powers.sorcerous.levelTaken}}
+      <div>
+        <label>Sorcerous Power</label>
+        <input class="centered-input no-lock" data-field="system.powers.sorcerous.value" type="number"
+          name="system.powers.sorcerous.value" value="{{system.powers.sorcerous.value}}" min="0" step="1" />
+        /
+        <input class="centered-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
+          value="{{system.powers.sorcerous.max}}" min="0" step="1" />
+      </div>
+      {{/if}}
+    </fieldset>
+    <fieldset class="essence20-sidebar-special">
+      <legend>Special</legend>
+      <div>
+        <div class="item-image">
+          <a class="rollable" data-action="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20" data-roll-type="initiative"></i></a>
+        </div>
+        <select name="system.initiative.skill">
+          {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
+        </select>
+      </div>
+      <div>
+        <a data-action="rest" style="flex-grow: 0;" data-tooltip="{{localize "E20.RestButtonTitle"}}"><i class="fas fa-face-sleeping"></i></a>
+        {{localize "E20.RestButtonTitle"}}
+      </div>
+
+      {{#if system.canTransform}}
+        <div>
+          <a data-action="transform" style="flex-grow: 0;"><i class="fas fa-steering-wheel"></i></a>
+          <span style="text-align: left;">
+            {{localize 'E20.Transform'}}
+          </span>
+        </div>
+      {{/if}}
+      {{#if system.canMorph}}
+        <div>
+          <a data-action="morph" style="flex-grow: 0;"><i class="fas fa-sword"></i></a>
+          <span style="text-align: left;">
+          {{#if system.isMorphed}}
+            {{localize 'E20.ButtonUnmorph'}}
+          {{else}}
+            {{localize 'E20.ButtonMorph'}}
+          {{/if}}
+          </span>
+        </div>
+      {{/if}}
+      <div>
+        {{#each @root.config.skillsByEssence.any as |skill|}}
+          {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
+        {{/each}}
+      </div>
+    </fieldset>
+    <fieldset class="essence20-sidebar-defenses">
+      <legend>Defenses</legend>
+      {{#each system.defenses as |defense|}}
+        <div>
+          <label>{{lookup @root.config.defenses defense.name}}</label>
+          <input class="two-digit-input no-lock" data-tooltip="{{defense.string}}" type="number" name="system.defenses.{{defense.name}}.total" value="{{defense.total}}" min="0" step="1" />
+        </div>
+      {{/each}}
+    </fieldset>
   </div>
 </section>

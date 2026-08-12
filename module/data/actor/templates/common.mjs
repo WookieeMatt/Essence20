@@ -132,6 +132,7 @@ export const common = () => ({
     targeting: makeSkillFields('speed', false),
     technology: makeSkillFields('smarts', false),
     wealth: makeSkillFields(),
+    weird: makeSkillFields('any', false),
   }),
   stun: new fields.SchemaField({
     max: makeInt(0),

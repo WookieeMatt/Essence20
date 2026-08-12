@@ -31,7 +31,7 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
 
   static PARTS = {
     header: {
-      template: "systems/essence20/templates/actor/headers/npc.hbs",
+      template: "systems/essence20/templates/actor/headers/character.hbs",
     },
     sidebar: {
       template: "systems/essence20/templates/actor/sidebars/character.hbs"

@@ -289,6 +289,7 @@ E20.skills = {
   persuasion: "E20.SkillPersuasion",
   spellcasting: "E20.SkillSpellcasting",
   streetwise: "E20.SkillStreetwise",
+  weird: "E20.SkillWeird",
 };
 preLocalize("skills");
 
@@ -323,10 +324,11 @@ E20.skillToEssence = {
   persuasion: "social",
   spellcasting: "any",
   streetwise: "social",
+  weird: "any",
 },
 
 E20.skillsByEssence = {
-  any: ["spellcasting"],
+  any: ["spellcasting", "weird"],
   strength: ["athletics", "brawn", "intimidation", "might"],
   speed:  ["acrobatics", "driving", "finesse", "infiltration", "initiative", "targeting"],
   smarts: ["alertness", "culture", "science", "survival", "technology"],

@@ -20,7 +20,7 @@
           <span>
             {{#if (eq ../bonusDisplayType 'input')}}
             {{#with (lookup @root.system.defenses defense.name) as |defenseBonus|}}
-            +<input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense.name '.bonus'}}
+            <input class="one-digit-input" type="number" name={{concat 'system.defenses.' defense.name '.bonus'}}
               value="{{defenseBonus.bonus}}" min="0" step="1" />
             {{/with}}
             {{/if}}
