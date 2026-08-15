@@ -139,7 +139,6 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
       })()
       : 'rgba(0, 0, 0, 0.5)';
 
-    root.style.setProperty('--e20-system-color-50', alphaColor);
     root.style.setProperty('--e20-system.color-50', alphaColor);
   }
 
