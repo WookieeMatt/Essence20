@@ -49,3 +49,72 @@
   flex-direction: row;
   justify-content: flex-start;
 }
+
+
+.flex-grow-0 {
+  -webkit-box-flex: 0; -ms-flex: 0; flex: 0;
+}
+
+.flex-grow-1 {
+   -webkit-box-flex: 1; -ms-flex: 1; flex: 1;
+}
+
+.flex-grow-15 {
+  -webkit-box-flex: 1.5; -ms-flex: 1.5; flex: 1.5;
+}
+
+.flex-grow-025 {
+  -webkit-box-flex: 0.25; -ms-flex: 0.25; flex: 0.25;
+}
+
+.flex-grow-0175 {
+  -webkit-box-flex: 0.175; -ms-flex: 0.175; flex: 0.175;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+// Gap utilities
+.gap-2 {
+  gap: 2px;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-6 {
+  gap: 6px;
+}
+
+// Margin utilities
+.ml-2 {
+  margin-left: 2px;
+}
+
+.mb-5 { margin-bottom: 5px;
+}
+
+// Min-width helpers
+.min-width-fit {
+  min-width: fit-content;
+}
+
+// Width utilities
+.w-100 {
+  width: 100%;
+}
+
+// Small utilities
+.no-list-style {
+  list-style-type: none;
+}
+
+.my-10 {
+  margin: 10px 0;
+}
+
+.bg-transparent {
+  background: transparent;
+}

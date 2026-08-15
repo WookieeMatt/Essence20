@@ -26,6 +26,10 @@
   min-height: 175px;
 }
 
+.essence20 .sheet-header .e20-border-accent {
+  border-color: var(--e20-system-color, #5f5f5f);
+}
+
 /* PR Sheet Headers */
 .essence20 .sheet-header .profile-img {
   -webkit-box-flex: 0;
@@ -103,3 +107,4 @@
 .essence20 .pr-header-level-buttons {
   flex-grow: 0;
 }
+

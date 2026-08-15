@@ -41,3 +41,23 @@
   border-top: none;
   border-bottom: none;
 }
+
+.essence20 .tabs .item.e20-border-accent {
+  border-color: var(--e20-system-color, #{v.$border-color-light});
+}
+
+.essence20 .e20-border-accent {
+  border-color: var(--e20-system-color, #{v.$border-color-light});
+}
+
+.essence20 .profile-img.e20-border-accent {
+  border-color: var(--e20-system-color, #{v.$border-color-light});
+}
+
+.essence20 hr.e20-accent-hr {
+  border-color: var(--e20-system-color, #{v.$border-color-light});
+}
+
+.essence20 .skill-header.e20-skill-header {
+  background-color: var(--e20-system-color-50, #{v.$bg-color-light});
+}

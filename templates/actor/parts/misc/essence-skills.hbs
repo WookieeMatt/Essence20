@@ -1,5 +1,5 @@
 {{!-- Skill header --}}
-<div class="flexrow skill-header" style="background-color: {{@root.system.color}}50">
+<div class="flexrow skill-header e20-skill-header" data-e20-color="{{@root.system.color}}">
   <span class="skill-roll">
     <a
       class="rollable" data-action="rollable" data-roll-type="skill" data-skill="{{skill}}" data-essence="{{essence}}"
@@ -63,10 +63,10 @@
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         {{#inArray '["companion", "npc", "vehicle", "zord"]' @root.actor.type}}
-        <select class="inline-edit" style="flex-grow: 0;" data-field="system.shift" name="system.shift">
+        <select class="inline-edit flex-grow-0" data-field="system.shift" name="system.shift">
           {{selectOptions @root.config.skillShifts selected=specialization.system.shift}}
         </select>
-        <span class="specialized-label" style="flex-grow: 0;">{{localize 'E20.RollIsSpecialized'}}:</span>
+        <span class="specialized-label flex-grow-0">{{localize 'E20.RollIsSpecialized'}}:</span>
         <input class="inline-edit specialized-checkbox" type="checkbox" data-field="system.isSpecialized" name="specialization.system.isSpecialized" {{checked specialization.system.isSpecialized}} data-dtype="Boolean"/>
         {{/inArray}}
         <span class="item-button-container">

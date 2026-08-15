@@ -25,7 +25,7 @@
 </div>
 {{#unless system.isLocked}}
   {{#if @root.role}}
-    <div class="flexcol pr-header-level-buttons" style="align-items: flex-end">
+    <div class="flexcol pr-header-level-buttons align-right">
       <div></div>
       <a data-action="levelUp" data-tooltip="E20.LevelButtonUp" {{#if (eq system.level 20)}}disabled{{/if}}>
         <i class="fa{{#if (eq system.level 20)}}-regular{{/if}} fa-up"></i>

@@ -1,8 +1,8 @@
-<div class="collapsible-item-container" style="border-color: {{system.color}};">
+<div class="collapsible-item-container e20-border-accent">
   {{!-- Header with + and v buttons --}}
   {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType hidePlusButton=hidePlusButton}}
 
-  <ol class="items-list" style="border-color: {{system.color}};">
+  <ol class="items-list e20-border-accent">
     {{#if items.length}}
       {{#each items as |item|}}
       <li class="item accordion-wrapper flexcol" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
@@ -22,7 +22,7 @@
       {{/each}}
     {{else}}
       {{#if defaultText}}
-      <li style="text-align: center">{{localize defaultText}}</li>
+      <li class="align-center">{{localize defaultText}}</li>
       {{/if}}
     {{/if}}
   </ol>

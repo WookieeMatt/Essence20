@@ -7,7 +7,7 @@
         <div class="flexrow {{item.type}}" data-item-key="{{@key}}" data-item-uuid="{{item.uuid}}" data-item-level="{{item.level}}">
           <ul class="items-list">
             <li class="item">
-            <div class="flexrow" style="align-items: center; flex-wrap: nowrap">
+            <div class="flexrow align-center flex-nowrap">
               <label class="flexcol">{{item.name}}</label>
               <select name="system.items.{{@key}}.role" class="flexcol">
                 {{selectOptions @root.roles selected=item.role}}

@@ -1,10 +1,10 @@
-<div class="stats-container flexrow flex-group-center" style="min-width:fit-content; border-color: {{system.color}};">
+<div class="stats-container flexrow flex-group-center e20-border-accent min-width-fit">
   <div class="flexcol flex-group-center">
-    <div class="flexrow" style="gap: 5px; flex-wrap: nowrap;">
-      <a data-action="rest" style="flex-grow: 0;" data-tooltip="{{localize "E20.RestButtonTitle"}}"><i class="fas fa-face-sleeping"></i></a>
+    <div class="flexrow gap-5 nowrap">
+      <a class="rest flex-grow-0" data-tooltip="{{localize "E20.RestButtonTitle"}}"><i class="fas fa-face-sleeping"></i></a>
       <label>{{localize 'E20.ActorHealth'}}</label>
     </div>
-    <div class="flexrow" style="gap: 5px; align-items: center;">
+    <div class="flexrow gap-5 align-center">
       <input class="two-digit-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
       <span>/</span>
       {{#if @root.system.movementIsReadOnly}}
