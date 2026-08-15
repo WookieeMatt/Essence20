@@ -117,7 +117,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     return context;
   }
 
-   _setSystemColorCssVariables() {
+  _setSystemColorCssVariables() {
     const root = this.element?.[0] || document.body;
     const color = this.actor?.system?.color;
 
@@ -129,14 +129,14 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     const hexColor = normalizedColor.startsWith('#') ? normalizedColor : null;
     const alphaColor = hexColor && /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hexColor)
       ? (() => {
-          const hex = hexColor.length === 4
-            ? hexColor.split('').map((char, index) => index === 0 ? char : char + char).join('').slice(1)
-            : hexColor.slice(1);
-          const r = parseInt(hex.slice(0, 2), 16);
-          const g = parseInt(hex.slice(2, 4), 16);
-          const b = parseInt(hex.slice(4, 6), 16);
-          return `rgba(${r}, ${g}, ${b}, 0.5)`;
-        })()
+        const hex = hexColor.length === 4
+          ? hexColor.split('').map((char, index) => index === 0 ? char : char + char).join('').slice(1)
+          : hexColor.slice(1);
+        const r = parseInt(hex.slice(0, 2), 16);
+        const g = parseInt(hex.slice(2, 4), 16);
+        const b = parseInt(hex.slice(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, 0.5)`;
+      })()
       : 'rgba(0, 0, 0, 0.5)';
 
     root.style.setProperty('--e20-system-color-50', alphaColor);
