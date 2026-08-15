@@ -557,11 +557,11 @@ body.game .window-app {
 }
 
 .essence20 .sheet-header {
-  background-color: none;
-  border: 4px solid #b5b1b1;
-  box-shadow: 4px 4px 0 black;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--theme-border-color);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   padding: 6px;
-  border-radius: 25px;
+  border-radius: 18px;
   -webkit-box-flex: 0;
   -ms-flex: 0 auto;
   flex: 0 auto;
@@ -579,7 +579,7 @@ body.game .window-app {
   -ms-flex-pack: start;
   justify-content: flex-start;
   margin-bottom: 10px;
-  min-height: 175px;
+  color: var(--theme-text-color);
 }
 
 .essence20 .sheet-header .e20-border-accent {
@@ -703,6 +703,8 @@ body.game .window-app {
   font-size: 1.125em;
   align-items: center;
   flex-wrap: nowrap;
+  gap: 6px;
+  min-height: 28px;
 }
 
 .essence20 .skill-header .skill-roll {
@@ -715,7 +717,7 @@ body.game .window-app {
 .essence20 .skill-header .skill-name {
   white-space: nowrap;
   overflow: hidden;
-  color: white;
+  color: var(--theme-text-color);
   margin-top: 2px;
 }
 
@@ -780,23 +782,23 @@ body.game .window-app {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-panel-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: 50px;
-  box-shadow: 4px 4px 0 black;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   width: 100%;
 }
 
 .essence20 .skills-container {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   transform: rotate(0deg);
   scrollbar-width: thin;
-  background-color: none;
-  border: 4px solid #b5b1b1;
-  border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   width: 100%;
   justify-content: left;
   flex-grow: 0;
@@ -806,11 +808,12 @@ body.game .window-app {
 .essence20 .skillscontainer {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
   padding: 0;
+  align-items: start;
 }
 
 .essence20 h1,
@@ -931,6 +934,11 @@ body.game .window-app {
   text-align: center;
   margin-top: 5px;
   margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 2px 0;
 }
 
 .essence20 .essence-header.strength {
@@ -938,16 +946,16 @@ body.game .window-app {
 }
 
 .essence20 .essence-header .essence-label {
-  font-size: 1.5em;
+  font-size: 1.2em;
   vertical-align: middle;
-}
-
-.essence20 .essences {
-  display: grid;
-  align-content: center;
-  justify-content: space-around;
-  justify-items: center;
-  margin-bottom: auto;
+  font-weight: 700;
+  color: var(--theme-text-color);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 2px 8px;
+  min-width: 64px;
+  text-align: center;
 }
 
 .essence20 .health-container {
@@ -1053,13 +1061,13 @@ body.game .window-app {
   list-style: none;
   padding: 6px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   flex-basis: auto;
   justify-content: center;
-  background: none;
-  border: 4px solid #b5b1b1;
-  border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   min-height: 72px;
 }
 
@@ -1073,7 +1081,8 @@ body.game .window-app {
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
-  gap: 5px;
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
 .essence20 .sheet-body .tab,
@@ -1087,23 +1096,36 @@ body.game .window-app {
 }
 
 .essence20 .tabs .item {
-  background: #5f5f5f;
-  border: 1px solid;
-  border-radius: 4px 4px 0px 0px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 8px 8px 0 0;
+  padding: 5px 10px 7px;
   flex: 1;
+  color: var(--theme-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+  opacity: 0.9;
+}
+
+.essence20 .tabs .item .nav-item-label {
+  text-transform: none;
+  font-weight: 600;
 }
 
 .essence20 .tabs .active {
-  background: none;
-  border-bottom: none;
+  background: var(--theme-panel-bg);
+  border-bottom: 1px solid var(--theme-panel-bg);
 }
 
 .essence20 .tabs .item.active {
-  text-shadow: 0 0 10px #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .essence20 a:hover {
-  text-shadow: 0 0 10px #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 .sheet nav.sheet-tabs {
@@ -1416,7 +1438,7 @@ body.game .window-app {
   display: flex;
   position: relative;
   padding: 4px 2px;
-  background: var(--theme-bg-color);
+  background: var(--theme-panel-bg);
 }
 .sliced-border:has(> .sliced-border__label) {
   padding-top: 12px;
@@ -1472,7 +1494,7 @@ body.game .window-app {
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-  color: var(--theme-border-color);
+  color: var(--theme-text-color);
   width: max-content;
   position: absolute;
   top: 0;
@@ -1482,7 +1504,11 @@ body.game .window-app {
 .sliced-border label.sliced-border__label {
   padding: 0 8px;
   line-height: 0.75rem;
-  background: var(--theme-bg-color);
+  background: var(--theme-panel-bg);
+  color: var(--theme-text-color);
+  border-radius: 6px;
+  padding: 4px 10px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4) inset;
 }
 .sliced-border .sliced-border__input-row {
   display: flex;
@@ -1499,6 +1525,10 @@ body.game .window-app {
   --theme-bg-color: #cccccc;
   --theme-text-color: #222222;
   --theme-input-color: #fafafa;
+  --theme-panel-bg: var(--theme-bg-color);
+  --theme-card-bg: rgba(255,255,255,0.04);
+  --theme-accent: #4dd0e1;
+  --theme-muted-text: #9e9b9b;
   --theme-border-image: url(../assets/borders/default-border.svg);
   --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
   --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
@@ -1522,9 +1552,19 @@ body.game .window-app {
 .theme-wrapper .window-app,
 .theme-wrapper .window-content,
 .theme-wrapper .window-header {
-  background: none;
+  background: transparent;
   border: none;
   border-radius: 0;
+}
+.theme-wrapper .window-content {
+  background: linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));
+  color: var(--theme-text-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.theme-wrapper.theme-light .window-content {
+  background: linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));
+  border-color: rgba(0, 0, 0, 0.18);
 }
 .theme-wrapper.theme-light {
   --theme-border-filter: saturate(0);
@@ -1532,6 +1572,10 @@ body.game .window-app {
   --theme-bg-color: #cccccc;
   --theme-text-color: #222222;
   --theme-input-color: #fafafa;
+  --theme-panel-bg: #cccccc;
+  --theme-card-bg: rgba(255,255,255,0.7);
+  --theme-accent: #ff6400;
+  --theme-muted-text: #222222;
 }
 .theme-wrapper.theme-dark {
   --theme-border-filter: saturate(0) brightness(175%);
@@ -1539,6 +1583,10 @@ body.game .window-app {
   --theme-bg-color: #222222;
   --theme-text-color: #aaaaaa;
   --theme-input-color: #333333;
+  --theme-panel-bg: #1f2328;
+  --theme-card-bg: rgba(255,255,255,0.04);
+  --theme-accent: #4dd0e1;
+  --theme-muted-text: #c7c4c4;
 }
 .theme-wrapper.theme-default {
   --theme-border-image: url(../assets/borders/default-border.svg);
@@ -1690,9 +1738,25 @@ form .notes, form .hint {
   background: initial;
 }
 
-input[type=number], input[type=text] {
-  color: white;
+input[type=number], input[type=text], select, textarea {
+  color: var(--theme-text-color);
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 4px 6px;
   vertical-align: middle;
+  min-height: 22px;
+}
+
+/* small numeric inputs */
+.essence20 .one-digit-input, .essence20 .two-digit-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--theme-border-color);
+  color: var(--theme-text-color);
+  border-radius: 6px;
+  min-height: 22px;
+  text-align: center;
+  padding: 2px 4px;
 }
 
 .essence20 .centered-input {

@@ -44,9 +44,25 @@ form .notes, form .hint {
   background: initial;
 }
 
-input[type="number"], input[type="text"] {
-  color: white;
+input[type="number"], input[type="text"], select, textarea {
+  color: var(--theme-text-color);
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 4px 6px;
   vertical-align: middle;
+  min-height: 22px;
+}
+
+/* small numeric inputs */
+.essence20 .one-digit-input, .essence20 .two-digit-input {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--theme-border-color);
+  color: var(--theme-text-color);
+  border-radius: 6px;
+  min-height: 22px;
+  text-align: center;
+  padding: 2px 4px;
 }
 
 .essence20 .centered-input {

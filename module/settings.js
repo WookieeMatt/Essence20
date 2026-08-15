@@ -2,6 +2,18 @@ export const setting = (key) => {
   return game.settings?.get("essence20", key) ?? "default";
 };
 
+
+export const getCurrentUiTheme = () => {
+  const coreUIConfig = game?.settings?.get?.("core", "uiConfig");
+  const coreTheme = coreUIConfig?.colorScheme.applications;
+  console.log(coreTheme)
+  if (coreTheme === "light" || coreTheme === "dark") {
+    return coreTheme;
+  }
+};
+
+export const getCurrentThemeClass = () => `theme-${getCurrentUiTheme()}`;
+
 export const getDefaultTheme = () => {
   const theme = setting("sptDefaultTheme");
   return `theme-${theme}`;

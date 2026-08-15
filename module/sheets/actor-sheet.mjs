@@ -1,4 +1,5 @@
 import SheetOptions from "../apps/sheet-options.mjs";
+import { getCurrentThemeClass, getDefaultTheme } from "../settings.js";
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
@@ -48,7 +49,13 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["essence20", "sheet", "actor"],
+      classes: [
+        "essence20",
+        "sheet",
+        "actor",
+        "theme-wrapper",
+        getCurrentThemeClass(),
+      ],
       width: 620,
       height: 574,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }],

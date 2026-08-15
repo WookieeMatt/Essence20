@@ -120,7 +120,6 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/item/details/altMode.hbs",
     "systems/essence20/templates/item/details/armor.hbs",
     "systems/essence20/templates/item/details/bond.hbs",
-    "systems/essence20/templates/item/details/classFeature.hbs",
     "systems/essence20/templates/item/details/equipmentPackage.hbs",
     "systems/essence20/templates/item/details/faction.hbs",
     "systems/essence20/templates/item/details/feature.hbs",
