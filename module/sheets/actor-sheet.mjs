@@ -124,7 +124,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
     if (!root || !color) return;
 
     const normalizedColor = String(color).trim();
-    console.log(normalizedColor)
+
     root.style.setProperty('--e20-system-color', normalizedColor);
 
     const hexColor = normalizedColor.startsWith('#') ? normalizedColor : null;
@@ -139,7 +139,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
         return `rgba(${r}, ${g}, ${b}, 0.5)`;
       })()
       : 'rgba(0, 0, 0, 0.5)';
-    console.log(alphaColor)
+
     root.style.setProperty('--e20-system-color-50', alphaColor);
     root.style.setProperty('--e20-system.color-50', alphaColor);
 
