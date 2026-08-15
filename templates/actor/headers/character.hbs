@@ -1,5 +1,4 @@
-{{#>"systems/essence20/templates/actor/parts/headers/common.hbs"}}
-{{log "Got Here"}}
+{{#>"systems/essence20/templates/actor/headers/common.hbs"}}
 {{#*inline "secondary-fields"}}
 <div>
   <label for="system.background.pronouns" class="resource-label">{{localize 'E20.ActorPronouns'}}</label>
@@ -39,7 +38,7 @@
 {{/unless}}
 <div class="pr-header-color flex-group-center">
   <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
-  <input type="color" class="picker" name="system.color" value="{{system.color}}" />
+  <input type="color" data-action="colorPicker" class="picker" name="system.color" value="{{system.color}}" />
 </div>
 {{/inline}}
-{{/"systems/essence20/templates/actor/parts/headers/common.hbs"}}
+{{/"systems/essence20/templates/actor/headers/common.hbs"}}
