@@ -1,8 +1,8 @@
 {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs" items=@root.spells title="E20.ItemTypeSpellPlural" dataType="spell"}}
   {{#*inline "roll-button" item}}
-    <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
+    <div class="flexrow nowrap gap-5">
       <a
-        class="rollable" data-action="rollable" data-roll-type="spell" data-shiftDown={{item.system.cost}}
+        class="rollable" data-roll-type="spell" data-shiftDown={{item.system.cost}}
         data-is-specialized="{{item.system.isSpecialized}}" data-tooltip="{{localize "E20.SpellRollTitle"}}"
       >
         <i class="fas fa-dice-d20" data-roll-type="spell"></i>

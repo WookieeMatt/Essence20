@@ -184,6 +184,80 @@
   justify-content: flex-start;
 }
 
+.flex-grow-0 {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+}
+
+.flex-grow-1 {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.flex-grow-15 {
+  -webkit-box-flex: 1.5;
+  -ms-flex: 1.5;
+  flex: 1.5;
+}
+
+.flex-grow-025 {
+  -webkit-box-flex: 0.25;
+  -ms-flex: 0.25;
+  flex: 0.25;
+}
+
+.flex-grow-0175 {
+  -webkit-box-flex: 0.175;
+  -ms-flex: 0.175;
+  flex: 0.175;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.gap-2 {
+  gap: 2px;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-6 {
+  gap: 6px;
+}
+
+.ml-2 {
+  margin-left: 2px;
+}
+
+.mb-5 {
+  margin-bottom: 5px;
+}
+
+.min-width-fit {
+  min-width: fit-content;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.no-list-style {
+  list-style-type: none;
+}
+
+.my-10 {
+  margin: 10px 0;
+}
+
+.bg-transparent {
+  background: transparent;
+}
+
 /* Global styles */
 .window-app {
   font-family: "Rajdhani", sans-serif;
@@ -506,6 +580,10 @@ body.game .window-app {
   justify-content: flex-start;
   margin-bottom: 10px;
   min-height: 175px;
+}
+
+.essence20 .sheet-header .e20-border-accent {
+  border-color: var(--e20-system-color, #5f5f5f);
 }
 
 /* PR Sheet Headers */
@@ -1031,6 +1109,26 @@ body.game .window-app {
 .sheet nav.sheet-tabs {
   border-top: none;
   border-bottom: none;
+}
+
+.essence20 .tabs .item.e20-border-accent {
+  border-color: var(--e20-system-color, #5f5f5f);
+}
+
+.essence20 .e20-border-accent {
+  border-color: var(--e20-system-color, #5f5f5f);
+}
+
+.essence20 .profile-img.e20-border-accent {
+  border-color: var(--e20-system-color, #5f5f5f);
+}
+
+.essence20 hr.e20-accent-hr {
+  border-color: var(--e20-system-color, #5f5f5f);
+}
+
+.essence20 .skill-header.e20-skill-header {
+  background-color: var(--e20-system-color-50, #cccccc);
 }
 
 .essence20 .zord-combiners {

@@ -1,6 +1,6 @@
 <div class="flexrow item-label">
-  <div class="item-image" style="flex-grow: 0;">
-    <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
+  <div class="item-image flex-grow-0">
+    <div class="flexrow nowrap gap-5">
       <a class="rollable" data-action="rollable" data-roll-type="info" data-tooltip="{{localize 'E20.ItemRollTitle'}}">
         <i class="fas fa-message-lines" data-roll-type="info" ></i>
       </a>
@@ -10,9 +10,9 @@
     </div>
   </div>
   {{#if (eq item.type "shield")}}
-    <div class="item-image" style="flex-grow: 0;">
-      <div class="flexrow" style="flex-wrap: nowrap; gap: 5px;">
-        <a class="shield-activate" data-id="{{item._id}}" style="flex-grow: 0;"
+    <div class="item-image flex-grow-0">
+      <div class="flexrow nowrap gap-5">
+        <a class="shield-activate flex-grow-0" data-id="{{item._id}}"
           {{#if system.active}} data-tooltip="{{localize 'E20.ShieldCurrentStateActive'}}" {{else}} data-tooltip="{{localize 'E20.ShieldCurrentStatePassive'}}" {{/if}}
         >
           {{#if system.active}}
@@ -25,7 +25,7 @@
     </div>
   {{/if}}
   {{#if (isdefined item.system.equipped)}}
-  <div style="flex-grow: 0;">
+  <div class="flex-grow-0">
     <input class="inline-edit item-label-checkbox {{#if (eq item.type "shield")}} shield-equip{{/if}}"
       data-field="system.equipped" data-id="{{item._id}}" type="checkbox" name="shield.{{@index}}.equipped"
       {{checked item.system.equipped}} data-tooltip="{{localize 'E20.ItemToggleEquipped'}}"

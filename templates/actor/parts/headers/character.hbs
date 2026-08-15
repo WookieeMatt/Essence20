@@ -1,4 +1,5 @@
 {{#>"systems/essence20/templates/actor/parts/headers/common.hbs"}}
+{{log "Got Here"}}
 {{#*inline "secondary-fields"}}
 <div>
   <label for="system.background.pronouns" class="resource-label">{{localize 'E20.ActorPronouns'}}</label>
@@ -25,7 +26,7 @@
 </div>
 {{#unless system.isLocked}}
   {{#if @root.role}}
-    <div class="flexcol pr-header-level-buttons" style="align-items: flex-end">
+    <div class="flexcol pr-header-level-buttons align-right">
       <div></div>
       <a data-action="levelUp" data-tooltip="E20.LevelButtonUp" {{#if (eq system.level 20)}}disabled{{/if}}>
         <i class="fa{{#if (eq system.level 20)}}-regular{{/if}} fa-up"></i>

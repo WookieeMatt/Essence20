@@ -1,14 +1,14 @@
 <div class="zord-combiners">
-  <div class="flexrow" style="gap: 6px;">
+  <div class="flexrow gap-6">
     {{#if @root.actors}}
       {{#each @root.actors as |attachedActor key|}}
-      <div class="systemActors zord item stats-container" style="border-color: {{attachedActor.system.color}};" data-system-Actors-uuid="{{attachedActor.uuid}}">
-        <div style="display: flex; justify-content: center;">
+      <div class="systemActors zord item stats-container e20-border-accent" data-e20-color="{{attachedActor.system.color}}" data-system-Actors-uuid="{{attachedActor.uuid}}">
+        <div class="flexrow flex-group-center">
           <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" data-tooltip="{{attachedActor.name}}" />
         </div>
 
-        <div class="flexrow" style="align-items:center; gap: 6px;">
-          <div style="white-space: nowrap;">{{ localize 'E20.ActorName' }}: {{attachedActor.name}}</div>
+        <div class="flexrow align-center gap-6">
+          <div class="nowrap">{{ localize 'E20.ActorName' }}: {{attachedActor.name}}</div>
 
           <div class="item-controls">
             <a class="item-control" data-action="systemActorsDelete" data-system-Actors-uuid="{{attachedActor.uuid}}" data-tooltip="{{localize 'E20.DeleteActor'}}">
@@ -50,7 +50,7 @@
       </div>
       {{/each}}
     {{else}}
-      <div style="text-align: center;">
+      <div class="align-center">
         {{localize 'E20.ActorDrop'}}
       </div>
     {{/if}}

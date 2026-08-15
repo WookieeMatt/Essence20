@@ -1,5 +1,5 @@
 <div>
-  <div class="flexrow" style="justify-content: center;">{{localize "E20.RolePointsGeneral"}}</div>
+  <div class="flexrow flex-group-center">{{localize "E20.RolePointsGeneral"}}</div>
 
   {{!-- Is Activatable? --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsCanBeActivated'}}
@@ -16,7 +16,7 @@
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
   {{!-- Bonus Section --}}
-  <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsBonus"}}</div>
+  <div class="flexrow flex-group-center my-10">{{localize "E20.RolePointsBonus"}}</div>
 
   {{!-- Type --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsBonusType'}}
@@ -94,7 +94,7 @@
   {{/if}}
 
   {{!-- Resource Section --}}
-  <div class="flexrow" style="justify-content: center; margin: 10px 0px;">{{localize "E20.RolePointsResource"}}</div>
+  <div class="flexrow flex-group-center my-10">{{localize "E20.RolePointsResource"}}</div>
 
   {{!-- Starting Value --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RolePointsStartingMax'}}
@@ -131,7 +131,7 @@
   {{#*inline "item-field-inputs"}}
   {{numberInput system.resource.level20Value name="system.resource.level20Value" disabled=system.resource.level20ValueIsUnlimited }}
   <input type="checkbox" name="system.resource.level20ValueIsUnlimited" {{checked system.resource.level20ValueIsUnlimited}}/>
-  <div style="flex-grow: 0;">{{localize "E20.RolePointsResourceUnlimited"}}</div>
+  <div class="flex-grow-0">{{localize "E20.RolePointsResourceUnlimited"}}</div>
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 <div>
