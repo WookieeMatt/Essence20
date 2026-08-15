@@ -118,7 +118,6 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   }
 
    _setSystemColorCssVariables() {
-    console.log(this.element)
     const root = this.element?.[0] || document.body;
     const color = this.actor?.system?.color;
 
