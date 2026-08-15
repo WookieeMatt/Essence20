@@ -128,15 +128,15 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       template: "templates/generic/tab-navigation.hbs",
     },
     description: {
-      template: "systems/essence20/templates/item/parts/description.hbs",
+      template: "systems/essence20/templates/item/tabs/description.hbs",
       scrollable: [''],
     },
     details: {
-      template: "systems/essence20/templates/item/parts/item-base.hbs",
+      template: "systems/essence20/templates/item/tabs/detail-base.hbs",
       scrollable: [''],
     },
     effects: {
-      template: "systems/essence20/templates/item/parts/active-effects.hbs",
+      template: "systems/essence20/templates/item/tabs/effects.hbs",
       scrollable: [""],
     },
   };
@@ -206,7 +206,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   async _prepareDetailsContext(context) {
-    const path = "systems/essence20/templates/item/sheets";
+    const path = "systems/essence20/templates/item/details";
     context.detailPath = `${path}/${this.document.type}.hbs`;
     return context;
   }

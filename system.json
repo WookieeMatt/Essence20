@@ -55,9 +55,6 @@
       "bond": {
         "htmlFields": ["description"]
       },
-      "classFeature": {
-        "htmlFields": ["description"]
-      },
       "equipmentPackage": {
         "htmlFields": ["description"]
       },

@@ -32,7 +32,7 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
 
   static PARTS = {
     header: {
-      template: "systems/essence20/templates/actor/parts/headers/companion.hbs",
+      template: "systems/essence20/templates/actor/headers/companion.hbs",
     },
     tabs: {
       template: "templates/generic/tab-navigation.hbs",
@@ -42,11 +42,11 @@ export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
       scrollable: [''],
     },
     effects: {
-      template: "systems/essence20/templates/actor/parts/misc/active-effects.hbs",
+      template: "systems/essence20/templates/actor/tabs/effects.hbs",
       scrollable: [''],
     },
     notes: {
-      template: "systems/essence20/templates/actor/parts/misc/notes.hbs",
+      template: "systems/essence20/templates/actor/tabs/notes.hbs",
       scrollable: [""],
     },
 
