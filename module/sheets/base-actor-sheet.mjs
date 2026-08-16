@@ -1,13 +1,14 @@
-const { HandlebarsApplicationMixin } = foundry.applications.api;
+﻿const { HandlebarsApplicationMixin } = foundry.applications.api;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
+import { applyThemeClass } from "../settings.js";
 import {
   onCreateActiveEffect,
   onDeleteActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
 } from "../helpers/effects.mjs";
-import { getNumActions } from "../helpers/actor.mjs";
+import { applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
   onSystemActorsDelete,
@@ -60,7 +61,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
       traitSelector: this.#onManageSelectTrait,
       transform: this.#onTransform,
     },
-    classes: ["essence20", "sheet", "actor"],
+    classes: ["essence20", "sheet", "actor", "theme-wrapper"],
     tag: 'form',
     position: {
       width: 620,
@@ -74,6 +75,13 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
       resizable: true,
     },
   };
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
+    applySystemColorCssVariables(this.element, this.actor);
+  }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);

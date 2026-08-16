@@ -1,5 +1,5 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-import { getCurrentThemeClass, getDefaultTheme, setting } from "../settings.js";
+import { applyThemeClass, getDefaultTheme, setting } from "../settings.js";
 
 export function getPointsName(plural) {
   return `${
@@ -74,8 +74,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     super._onRender(context, options);
 
-    const themeClass = getCurrentThemeClass();
-    if (themeClass) this.element.classList.add(themeClass);
+    applyThemeClass(this.element);
 
     this.element
       .querySelector("#gm-points-input")

@@ -1,3 +1,4 @@
+﻿import { applyThemeClass } from "../settings.js";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -11,6 +12,7 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
     allowCustom: false,
     id: "sheet-options",
     classes: [
+      "theme-wrapper",
       "window-app",
       "sheet-options",
     ],
@@ -50,6 +52,12 @@ export default class SheetOptions extends HandlebarsApplicationMixin(Application
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {

@@ -7,8 +7,58 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* Item sheet header */
+.essence20.item .item-sheet-header {
+  align-items: center;
+  gap: v.$gap-lg;
+}
+
+.essence20.item .item-profile-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--theme-accent);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.35);
+}
+
+.essence20.item .item-type-badge {
+  align-self: flex-start;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--theme-accent) !important; // Override the blanket `header *` text-color rule in _theme_wrapper.scss
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 20px;
+  padding: 2px 10px;
+  margin-bottom: 4px;
+}
+
+/* Tab content panels */
+.essence20.item .tab.description > div,
+.essence20.item .tab.details > div,
+.essence20.item .tab.effects .effect-list-container {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 10px;
+  padding: v.$gap-lg;
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-md;
+}
+
+.essence20.item .tab.description h3 {
+  color: var(--theme-accent);
+  border-bottom: 1px solid var(--theme-border-color);
+  padding-bottom: 4px;
+  margin: v.$gap-sm 0;
 }

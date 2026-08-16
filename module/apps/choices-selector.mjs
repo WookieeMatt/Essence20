@@ -1,9 +1,10 @@
-import { _checkForAltModes, _hangUpSelect, _showOriginSkillPrompt, setOriginValues } from "../sheet-handlers/background-handler.mjs";
+﻿import { _checkForAltModes, _hangUpSelect, _showOriginSkillPrompt, setOriginValues } from "../sheet-handlers/background-handler.mjs";
 import { _attachSelectedItemOptionHandler } from "../sheet-handlers/attachment-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
 import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
 import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
+import { applyThemeClass } from "../settings.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -37,6 +38,7 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
     id: "choices",
     classes: [
       "essence20",
+      "theme-wrapper",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -70,6 +72,12 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
     }
 
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static attach(event, selection) {

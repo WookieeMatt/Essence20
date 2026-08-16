@@ -4,25 +4,23 @@
 .window-app {
   font-family: 'Rajdhani', sans-serif;
   font-weight: bold;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   border: v.$border;
   border-radius: v.$border-radius;
 }
 
 .window-app .window-content {
-  /* background: rgb(78, 78, 78); */
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   border-radius: v.$border-radius;
   background: v.$background-image-1;
   background-size: cover;
 }
 
 .window-app .window-content button {
-  color: v.$textcolor1;
-  background: v.$background-n;
-  border-color: v.$border;
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
+  border-color: var(--theme-border-color);
   border-radius: 20px;
-  box-shadow: v.$boxshadow;
 }
 
 body.game .window-app {
@@ -44,17 +42,17 @@ body.game .window-app {
 }
 
 .dialog .dialog-buttons button.default {
-  color: v.$textcolor1;
-  background: v.$background-n;
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
 }
 
 .dialog .dialog-buttons button {
-  color: v.$textcolor1;
-  background: v.$background-n;
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
 }
 
 .dialog .dialog-buttons {
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   padding-top: v.$padding;
 }
 
@@ -62,18 +60,18 @@ body.game .window-app {
   list-style: none;
   padding: v.$padding;
   overflow-y: none;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   flex-basis: auto;
   justify-content: center;
   height: 100%;
-  background: v.$background-n;
+  background: var(--theme-card-bg);
   border: v.$border;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
 }
 
 .dialog input{
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
 }
 
 .app .window-app dialog {
@@ -84,18 +82,18 @@ body.game .window-app {
   list-style: none;
   padding: v.$padding;
   overflow-y: none;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   flex-basis: auto;
   justify-content: center;
   height: 100%;
-  background: v.$background-n;
+  background: var(--theme-card-bg);
   border: v.$border;
   border-radius: v.$border-radius;
   box-shadow: v.$boxshadow;
 }
 
 #module-management .package-list .package-title {
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
 }
 
 .item-button-container {
@@ -108,11 +106,11 @@ body.game .window-app {
 
 .rollable:hover,
 .rollable:focus {
-  color: v.$textcolor2;
+  color: var(--theme-accent);
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
 
 .window-app textarea {
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
 }
