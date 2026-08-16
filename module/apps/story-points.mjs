@@ -1,5 +1,5 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-import { applyThemeClass, getDefaultTheme, setting } from "../settings.js";
+import { applyThemeClass, setting } from "../settings.js";
 
 export function getPointsName(plural) {
   return `${

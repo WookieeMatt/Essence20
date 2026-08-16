@@ -1,5 +1,5 @@
 import SheetOptions from "../apps/sheet-options.mjs";
-import { getCurrentThemeClass, getDefaultTheme } from "../settings.js";
+import { getCurrentThemeClass } from "../settings.js";
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import { applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
