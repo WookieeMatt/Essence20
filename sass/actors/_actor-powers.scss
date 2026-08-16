@@ -4,15 +4,14 @@
   list-style: none;
   padding: 4px;
   overflow-y: auto;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: v.$border-radius;
-  box-shadow: v.$boxshadow;
   width: 100%;
 }

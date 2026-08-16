@@ -1,4 +1,4 @@
-<div class="stats-container flexrow flex-group-center" style="border-color: {{system.color}};">
+<div class="stats-container flexrow flex-group-center e20-border-accent">
   {{#if system.movementNotSet}}
     <div>Set PC movement by adding an Origin</div>
   {{else}}
@@ -8,7 +8,7 @@
 
       {{#with (lookup @root.system.movement type) as |moveData|}}
         {{#if @root.system.movementIsReadOnly}}
-          <input class="two-digit-input" style="background: transparent;" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+          <input class="two-digit-input bg-transparent" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
         {{else if @root.system.isTransformed}}
           {{#if (eq @root.actor.type "npc")}}
             <input class="two-digit-input" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />

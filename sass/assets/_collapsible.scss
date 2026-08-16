@@ -17,22 +17,21 @@
   list-style: none;
   padding: 8px;
   overflow-y: auto;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: v.$border-radius;
-  box-shadow: v.$boxshadow;
   width: 100%;
   height: fit-content;
 }
 
 .essence20 .collapsible-item-subcontainer {
-  border-color: #4a4848;
+  border-color: var(--theme-border-color);
   box-shadow: none;
   margin: auto;
   width: 90%;

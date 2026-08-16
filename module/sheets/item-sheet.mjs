@@ -1,5 +1,6 @@
-const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api;
+﻿const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
+import { applyThemeClass } from "../settings.js";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
@@ -89,7 +90,7 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       editEffect: this.#editActiveEffect,
       toggleEffect: this.#toggleActiveEffect,
     },
-    classes: ["essence20", "sheet", "item", "window-app"],
+    classes: ["essence20", "sheet", "item", "window-app", "theme-wrapper"],
     form: {
       submitOnChange: true,
       closeOnSubmit: false,
@@ -229,6 +230,9 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
 
   async _onRender(context, options) {
     await super._onRender(context, options);
+
+    applyThemeClass(this.element);
+
     new CONFIG.ux.DragDrop({
       dragSelector: ":is([data-activity-id], [data-effect-id], [data-item-id])",
       dropSelector: null,

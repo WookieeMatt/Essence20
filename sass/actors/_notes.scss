@@ -1,7 +1,7 @@
 @use "../variables" as v;
 
 .essence20 .notes-title {
-  color: white;
+  color: var(--theme-accent);
   font-size: 16px;
 }
 
@@ -10,14 +10,13 @@
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: v.$border-radius;
-  box-shadow: v.$boxshadow;
   width: 100%;
   height: 100%;
 }

@@ -22,7 +22,7 @@ import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { getNumActions } from "./helpers/actor.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
-import { registerSettings, setting } from "./settings.js";
+import { registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./helpers/utils.mjs";
 
 function registerSystemSettings() {
@@ -296,6 +296,12 @@ Handlebars.registerHelper('default', function(value) {
 
 // Perform one-time pre-localization and sorting of some configuration objects
 Hooks.once("i18nInit", () => performPreLocalization(CONFIG.E20));
+
+// Foundry only re-themes its own core UI (sidebar, HUD, compendium, etc.) when the
+// color scheme setting changes; re-theme any open Essence20 sheets/apps in place too.
+Hooks.on("clientSettingChanged", (key) => {
+  if (key === "core.uiConfig") refreshOpenThemeWrappers();
+});
 
 Hooks.once("ready", async function () {
   runMigrations();

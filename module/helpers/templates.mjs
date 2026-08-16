@@ -15,19 +15,10 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/headers/vehicle.hbs",
     "systems/essence20/templates/actor/headers/zord.hbs",
 
-    //Actor partials - Sidebars
-    "systems/essence20/templates/actor/sidebars/character.hbs",
-    "systems/essence20/templates/actor/sidebars/companion.hbs",
-    "systems/essence20/templates/actor/sidebars/megaform.hbs",
-    "systems/essence20/templates/actor/sidebars/npc.hbs",
-    "systems/essence20/templates/actor/sidebars/vehicle.hbs",
-    "systems/essence20/templates/actor/sidebars/zord.hbs",
-
     "systems/essence20/templates/actor/parts/main/companion.hbs",
 
     "systems/essence20/templates/actor/tabs/effects.hbs",
     "systems/essence20/templates/actor/tabs/notes.hbs",
-
 
     // Actor partials - Misc
     "systems/essence20/templates/actor/parts/misc/accordion-skills.hbs",

@@ -1,11 +1,10 @@
 @use "../variables" as v;
 
 .essence20 .zord-combiners {
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: v.$border-radius;
   padding: 8px;
-  box-shadow: v.$boxshadow;
   display: flex;
   flex-direction: column;
   justify-content: center;

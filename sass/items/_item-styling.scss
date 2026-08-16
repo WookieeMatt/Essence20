@@ -1,7 +1,7 @@
 @use "../variables" as v;
 
 .essence20 .item {
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   gap: 5px;
 }
 
@@ -12,7 +12,7 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -77,13 +77,19 @@
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 0 2px;
-  color: v.$textcolor1;
+  padding: 4px 6px;
+  border-radius: 6px;
+  color: var(--theme-text-color);
+}
+
+.essence20 .items-list .item:nth-child(odd) {
+  background: var(--theme-card-bg);
 }
 
 .essence20 .items-list hr {
   margin: 4;
   width: 100%;
+  border-color: var(--theme-border-color);
 }
 
 .essence20 .items-list hr:last-child {
@@ -91,11 +97,11 @@
 }
 
 .essence20 .collapsible-item-container .items-list hr {
-  border: 1px solid #4a4848;
+  border: 1px solid var(--theme-border-color);
 }
 
 .essence20 .items-list .item .item-name {
-  color: white;
+  color: var(--theme-text-color);
 }
 
 .essence20 .items-list .item .item-name .item-image {
@@ -106,26 +112,29 @@
   background-size: 30px;
   border: none;
   margin-right: 5px;
+  border-radius: 4px;
 }
 
 .essence20 .items-list .item-prop {
   text-align: center;
-  border-left: v.$border;
-  border-right: v.$border;
+  border-left: 1px solid var(--theme-border-color);
+  border-right: 1px solid var(--theme-border-color);
   font-size: 12px;
 }
 
 .essence20 .items-list .items-header {
   height: 28px;
   margin: 2px 0;
-  padding: 0;
+  padding: 0 4px;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
   font-weight: bold;
   flex-wrap: nowrap;
+  color: var(--theme-accent);
 }
 
 .essence20 .items-list .items-header>* {
@@ -161,8 +170,8 @@
 
 .essence20 .effects .item .effect-controls {
   text-align: center;
-  border-left: v.$border;
-  border-right: v.$border;
+  border-left: 1px solid var(--theme-border-color);
+  border-right: 1px solid var(--theme-border-color);
   font-size: 12px;
 }
 
@@ -171,16 +180,26 @@
 }
 
 .essence20 .item-sheet {
-  background: v.$background-n;
-  border: v.$border;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: v.$border-radius;
-  color: v.$textcolor1;
+  color: var(--theme-text-color);
   padding: v.$padding;
   min-height: none;
   }
 
+.essence20 .item-field {
+  padding: 5px 2px;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+
+.essence20 .item-field:last-child {
+  border-bottom: none;
+}
+
 .essence20 .item-field label {
   flex: 2;
+  color: var(--theme-text-color);
 }
 
 .essence20 .item-field .item-field-inputs {

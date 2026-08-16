@@ -23,13 +23,13 @@
 
 .chip {
   border-radius: 10px;
-  border: 3px solid;
-  border-style: outset;
+  border: 1px solid var(--theme-border-color);
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 2px;
   margin-right: 3px;
-  background-color: #4a4848;
+  color: var(--theme-text-color);
+  background-color: var(--theme-card-bg);
   width: fit-content;
   height: fit-content;
   text-size-adjust: 8;
@@ -63,22 +63,21 @@
   list-style: none;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
   width: 100%;
   height: fit-content;
 }
 
 .essence20 .collapsible-item-subcontainer {
-  border-color: #4a4848;
+  border-color: var(--theme-border-color);
   box-shadow: none;
   margin: auto;
   width: 90%;
@@ -121,7 +120,7 @@
 }
 
 .essence20 .editor-content {
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   min-height: fit-content;
   font-size: 16px;
   padding: 0;
@@ -184,29 +183,101 @@
   justify-content: flex-start;
 }
 
+.flex-grow-0 {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+}
+
+.flex-grow-1 {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.flex-grow-15 {
+  -webkit-box-flex: 1.5;
+  -ms-flex: 1.5;
+  flex: 1.5;
+}
+
+.flex-grow-025 {
+  -webkit-box-flex: 0.25;
+  -ms-flex: 0.25;
+  flex: 0.25;
+}
+
+.flex-grow-0175 {
+  -webkit-box-flex: 0.175;
+  -ms-flex: 0.175;
+  flex: 0.175;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.gap-2 {
+  gap: 2px;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-6 {
+  gap: 6px;
+}
+
+.ml-2 {
+  margin-left: 2px;
+}
+
+.mb-5 {
+  margin-bottom: 5px;
+}
+
+.min-width-fit {
+  min-width: fit-content;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.no-list-style {
+  list-style-type: none;
+}
+
+.my-10 {
+  margin: 10px 0;
+}
+
+.bg-transparent {
+  background: transparent;
+}
+
 /* Global styles */
 .window-app {
   font-family: "Rajdhani", sans-serif;
   font-weight: bold;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
 }
 
 .window-app .window-content {
-  /* background: rgb(78, 78, 78); */
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   border-radius: 15px;
   background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
   background-size: cover;
 }
 
 .window-app .window-content button {
-  color: #c7c4c4;
-  background: none;
-  border-color: 4px solid #b5b1b1;
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
+  border-color: var(--theme-border-color);
   border-radius: 20px;
-  box-shadow: 4px 4px 0 black;
 }
 
 body.game .window-app {
@@ -228,17 +299,17 @@ body.game .window-app {
 }
 
 .dialog .dialog-buttons button.default {
-  color: #c7c4c4;
-  background: none;
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
 }
 
 .dialog .dialog-buttons button {
-  color: #c7c4c4;
-  background: none;
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
 }
 
 .dialog .dialog-buttons {
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   padding-top: 6px;
 }
 
@@ -246,18 +317,18 @@ body.game .window-app {
   list-style: none;
   padding: 6px;
   overflow-y: none;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   flex-basis: auto;
   justify-content: center;
   height: 100%;
-  background: none;
+  background: var(--theme-card-bg);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
 }
 
 .dialog input {
-  color: #c7c4c4;
+  color: var(--theme-text-color);
 }
 
 .app .window-app dialog {
@@ -268,18 +339,18 @@ body.game .window-app {
   list-style: none;
   padding: 6px;
   overflow-y: none;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   flex-basis: auto;
   justify-content: center;
   height: 100%;
-  background: none;
+  background: var(--theme-card-bg);
   border: 4px solid #b5b1b1;
   border-radius: 15px;
   box-shadow: 4px 4px 0 black;
 }
 
 #module-management .package-list .package-title {
-  color: #c7c4c4;
+  color: var(--theme-text-color);
 }
 
 .item-button-container {
@@ -292,13 +363,13 @@ body.game .window-app {
 
 .rollable:hover,
 .rollable:focus {
-  color: #000000;
+  color: var(--theme-accent);
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
 
 .window-app textarea {
-  color: #c7c4c4;
+  color: var(--theme-text-color);
 }
 
 .chat-message {
@@ -483,14 +554,14 @@ body.game .window-app {
 }
 
 .essence20 .sheet-header {
-  background-color: none;
-  border: 4px solid #b5b1b1;
-  box-shadow: 4px 4px 0 black;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--theme-border-color);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
   padding: 6px;
-  border-radius: 25px;
+  border-radius: 18px;
   -webkit-box-flex: 0;
   -ms-flex: 0 auto;
-  flex: 0 auto;
+  flex: 0 0 auto;
   overflow: hidden;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -504,15 +575,31 @@ body.game .window-app {
   -webkit-box-pack: start;
   -ms-flex-pack: start;
   justify-content: flex-start;
+  align-items: flex-start;
   margin-bottom: 10px;
-  min-height: 175px;
+  color: var(--theme-text-color);
+}
+
+.essence20 .sheet-header .e20-border-accent {
+  border-color: var(--e20-system-color, #5f5f5f);
+}
+
+/* Image + name always share the header's first line; everything else (the
+   size/subtype/etc. field row) is forced onto its own line below by giving it
+   a 100%-width flex-basis, since three siblings competing for flex-wrap space
+   otherwise wrap unpredictably depending on how wide that field row is. */
+.essence20 .sheet-header > .flexrow.gap-2 {
+  flex: 1 1 100%;
 }
 
 /* PR Sheet Headers */
+.essence20 .sheet-header > div:has(> .profile-img) {
+  flex: 0 0 auto;
+}
+
 .essence20 .sheet-header .profile-img {
-  -webkit-box-flex: 0;
-  /* -ms-flex: 0 0 100px; */
-  flex: inherit;
+  flex: 0 0 auto;
+  width: 100px;
   height: 100px;
   margin-right: 10px;
   border: 4px solid #b5b1b1;
@@ -541,29 +628,16 @@ body.game .window-app {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  color: var(--theme-accent);
   font-weight: bold;
   border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
-  min-height: 125px;
 }
 
 .essence20 .items-header > * {
   font-size: 14px;
   text-align: center;
-}
-
-/* PR Sheet Headers */
-.essence20 .item-header .profile-img {
-  -webkit-box-flex: 0;
-  /* -ms-flex: 0 0 100px; */
-  flex: inherit;
-  height: 100px;
-  margin-right: 10px;
-  border: 4px solid #b5b1b1;
-  border-radius: 15px;
-  object-fit: contain;
 }
 
 .essence20 .items-header .item-name {
@@ -606,10 +680,60 @@ body.game .window-app {
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* Item sheet header */
+.essence20.item .item-sheet-header {
+  align-items: center;
+  gap: 1rem;
+}
+
+.essence20.item .item-profile-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--theme-accent);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.essence20.item .item-type-badge {
+  align-self: flex-start;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--theme-accent) !important;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 20px;
+  padding: 2px 10px;
+  margin-bottom: 4px;
+}
+
+/* Tab content panels */
+.essence20.item .tab.description > div,
+.essence20.item .tab.details > div,
+.essence20.item .tab.effects .effect-list-container {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.essence20.item .tab.description h3 {
+  color: var(--theme-accent);
+  border-bottom: 1px solid var(--theme-border-color);
+  padding-bottom: 4px;
+  margin: 0.25rem 0;
 }
 
 .roll-dialog div {
@@ -634,15 +758,12 @@ body.game .window-app {
   width: 100%;
 }
 
-.essence20 .essence20-sidebar {
-  float: left top;
-  min-height: 100%;
-}
-
 .essence20 .skill-header {
   font-size: 1.125em;
   align-items: center;
   flex-wrap: nowrap;
+  gap: 6px;
+  min-height: 28px;
 }
 
 .essence20 .skill-header .skill-roll {
@@ -655,7 +776,7 @@ body.game .window-app {
 .essence20 .skill-header .skill-name {
   white-space: nowrap;
   overflow: hidden;
-  color: white;
+  color: var(--theme-text-color);
   margin-top: 2px;
 }
 
@@ -720,23 +841,23 @@ body.game .window-app {
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: center;
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-panel-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: 50px;
-  box-shadow: 4px 4px 0 black;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
   width: 100%;
 }
 
 .essence20 .skills-container {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   transform: rotate(0deg);
   scrollbar-width: thin;
-  background-color: none;
-  border: 4px solid #b5b1b1;
-  border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
   width: 100%;
   justify-content: left;
   flex-grow: 0;
@@ -746,18 +867,19 @@ body.game .window-app {
 .essence20 .skillscontainer {
   list-style: none;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 6px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
   padding: 0;
+  align-items: start;
 }
 
 .essence20 h1,
 .essence20 h2,
 .essence20 h3,
 .essence20 h4 {
-  color: #c7c4c4;
+  color: var(--theme-text-color);
 }
 
 .essence20 .tox .tox-editor-container {
@@ -792,16 +914,15 @@ body.game .window-app {
   list-style: none;
   padding: 4px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: row;
   flex-grow: 0;
   flex-basis: auto;
   justify-content: center;
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
   width: 100%;
 }
 
@@ -811,7 +932,7 @@ body.game .window-app {
 }
 
 .essence20 .defense-container table thead {
-  border-bottom: 4px solid #b5b1b1;
+  border-bottom: 1px solid var(--theme-border-color);
   border-color: inherit;
   background-color: inherit;
   color: inherit;
@@ -871,6 +992,11 @@ body.game .window-app {
   text-align: center;
   margin-top: 5px;
   margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 2px 0;
 }
 
 .essence20 .essence-header.strength {
@@ -878,16 +1004,16 @@ body.game .window-app {
 }
 
 .essence20 .essence-header .essence-label {
-  font-size: 1.5em;
+  font-size: 1.2em;
   vertical-align: middle;
-}
-
-.essence20 .essences {
-  display: grid;
-  align-content: center;
-  justify-content: space-around;
-  justify-items: center;
-  margin-bottom: auto;
+  font-weight: 700;
+  color: var(--theme-text-color);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 2px 8px;
+  min-width: 64px;
+  text-align: center;
 }
 
 .essence20 .health-container {
@@ -895,7 +1021,7 @@ body.game .window-app {
 }
 
 .essence20 .notes-title {
-  color: white;
+  color: var(--theme-accent);
   font-size: 16px;
 }
 
@@ -904,14 +1030,13 @@ body.game .window-app {
   margin-right: 3px;
   padding: 8px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
   width: 100%;
   height: 100%;
 }
@@ -978,7 +1103,7 @@ body.game .window-app {
 .essence20 .skill-separator::after {
   content: "";
   flex: 1;
-  border-bottom: 1px solid #b5b1b1;
+  border-bottom: 1px solid var(--theme-border-color);
 }
 
 .essence20 .skill-separator:not(:empty)::before {
@@ -993,13 +1118,13 @@ body.game .window-app {
   list-style: none;
   padding: 6px;
   overflow-y: auto;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   flex-basis: auto;
   justify-content: center;
-  background: none;
-  border: 4px solid #b5b1b1;
-  border-radius: 15px;
-  box-shadow: 4px 4px 0 black;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   min-height: 72px;
 }
 
@@ -1013,7 +1138,8 @@ body.game .window-app {
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
-  gap: 5px;
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
 .essence20 .sheet-body .tab,
@@ -1026,24 +1152,53 @@ body.game .window-app {
   gap: 0px;
 }
 
-.essence20 .tabs .item {
-  background: #5f5f5f;
-  border: 1px solid;
-  border-radius: 4px 4px 0px 0px;
+/* ApplicationV2 sheets (e.g. the Companion sheet) render each tab's PART template as a
+   direct child of .window-content instead of nesting it inside a .sheet-body wrapper the
+   way the older AppV1 sheets do, and .window-content itself doesn't auto-scroll for them
+   the way it does for AppV1 windows. Without this, an ApplicationV2 tab that overflows its
+   window just gets silently clipped (or squeezes its siblings, like the header, to fit)
+   instead of scrolling. */
+.essence20.actor .window-content > [data-tab] {
+  overflow-y: auto;
+}
+
+/* Match both hand-written tab nav links (`<a class="item e20-border-accent">`, used by
+   the AppV1 sheets) and Foundry's generic tab-navigation.hbs (`<a data-action="tab">`,
+   used by ApplicationV2 sheets like Companion) via the [data-tab] attribute they both
+   carry, rather than relying on the "item" class the generic template doesn't add. */
+.essence20 .tabs .item,
+.essence20 .tabs a[data-tab] {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--e20-system-color, var(--theme-border-color));
+  border-radius: 8px 8px 0 0;
+  padding: 5px 10px 7px;
   flex: 1;
+  color: var(--theme-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+  opacity: 0.9;
+}
+
+.essence20 .tabs .item .nav-item-label {
+  text-transform: none;
+  font-weight: 600;
 }
 
 .essence20 .tabs .active {
-  background: none;
-  border-bottom: none;
+  background: var(--theme-panel-bg);
+  border-bottom: 1px solid var(--theme-panel-bg);
 }
 
-.essence20 .tabs .item.active {
-  text-shadow: 0 0 10px #ffffff;
+.essence20 .tabs .item.active,
+.essence20 .tabs a[data-tab].active {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .essence20 a:hover {
-  text-shadow: 0 0 10px #ffffff;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
 }
 
 .sheet nav.sheet-tabs {
@@ -1051,12 +1206,29 @@ body.game .window-app {
   border-bottom: none;
 }
 
+.essence20 .e20-border-accent {
+  border-color: var(--e20-system-color, var(--theme-border-color));
+}
+
+/* Needs to match the specificity of the `.sheet-header .profile-img` border shorthand
+   in _headers.scss (which sets a hardcoded fallback color) to actually win the cascade. */
+.essence20 .profile-img.e20-border-accent {
+  border-color: var(--e20-system-color, var(--theme-border-color));
+}
+
+.essence20 hr.e20-accent-hr {
+  border-color: var(--e20-system-color, var(--theme-border-color));
+}
+
+.essence20 .skill-header.e20-skill-header {
+  background-color: var(--e20-system-color-50, var(--theme-panel-bg));
+}
+
 .essence20 .zord-combiners {
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: 15px;
   padding: 8px;
-  box-shadow: 4px 4px 0 black;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1121,7 +1293,7 @@ body.game .window-app {
 }
 
 .essence20 .item {
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   gap: 5px;
 }
 
@@ -1132,7 +1304,7 @@ body.game .window-app {
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1197,13 +1369,19 @@ body.game .window-app {
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  padding: 0 2px;
-  color: #c7c4c4;
+  padding: 4px 6px;
+  border-radius: 6px;
+  color: var(--theme-text-color);
+}
+
+.essence20 .items-list .item:nth-child(odd) {
+  background: var(--theme-card-bg);
 }
 
 .essence20 .items-list hr {
   margin: 4;
   width: 100%;
+  border-color: var(--theme-border-color);
 }
 
 .essence20 .items-list hr:last-child {
@@ -1211,11 +1389,11 @@ body.game .window-app {
 }
 
 .essence20 .collapsible-item-container .items-list hr {
-  border: 1px solid #4a4848;
+  border: 1px solid var(--theme-border-color);
 }
 
 .essence20 .items-list .item .item-name {
-  color: white;
+  color: var(--theme-text-color);
 }
 
 .essence20 .items-list .item .item-name .item-image {
@@ -1226,26 +1404,29 @@ body.game .window-app {
   background-size: 30px;
   border: none;
   margin-right: 5px;
+  border-radius: 4px;
 }
 
 .essence20 .items-list .item-prop {
   text-align: center;
-  border-left: 4px solid #b5b1b1;
-  border-right: 4px solid #b5b1b1;
+  border-left: 1px solid var(--theme-border-color);
+  border-right: 1px solid var(--theme-border-color);
   font-size: 12px;
 }
 
 .essence20 .items-list .items-header {
   height: 28px;
   margin: 2px 0;
-  padding: 0;
+  padding: 0 4px;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
   font-weight: bold;
   flex-wrap: nowrap;
+  color: var(--theme-accent);
 }
 
 .essence20 .items-list .items-header > * {
@@ -1281,8 +1462,8 @@ body.game .window-app {
 
 .essence20 .effects .item .effect-controls {
   text-align: center;
-  border-left: 4px solid #b5b1b1;
-  border-right: 4px solid #b5b1b1;
+  border-left: 1px solid var(--theme-border-color);
+  border-right: 1px solid var(--theme-border-color);
   font-size: 12px;
 }
 
@@ -1291,16 +1472,26 @@ body.game .window-app {
 }
 
 .essence20 .item-sheet {
-  background: none;
-  border: 4px solid #b5b1b1;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
   border-radius: 15px;
-  color: #c7c4c4;
+  color: var(--theme-text-color);
   padding: 6px;
   min-height: none;
 }
 
+.essence20 .item-field {
+  padding: 5px 2px;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+
+.essence20 .item-field:last-child {
+  border-bottom: none;
+}
+
 .essence20 .item-field label {
   flex: 2;
+  color: var(--theme-text-color);
 }
 
 .essence20 .item-field .item-field-inputs {
@@ -1336,7 +1527,7 @@ body.game .window-app {
   display: flex;
   position: relative;
   padding: 4px 2px;
-  background: var(--theme-bg-color);
+  background: var(--theme-panel-bg);
 }
 .sliced-border:has(> .sliced-border__label) {
   padding-top: 12px;
@@ -1392,7 +1583,7 @@ body.game .window-app {
   gap: 0.5rem;
   justify-content: center;
   align-items: center;
-  color: var(--theme-border-color);
+  color: var(--theme-text-color);
   width: max-content;
   position: absolute;
   top: 0;
@@ -1402,7 +1593,11 @@ body.game .window-app {
 .sliced-border label.sliced-border__label {
   padding: 0 8px;
   line-height: 0.75rem;
-  background: var(--theme-bg-color);
+  background: var(--theme-panel-bg);
+  color: var(--theme-text-color);
+  border-radius: 6px;
+  padding: 4px 10px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4) inset;
 }
 .sliced-border .sliced-border__input-row {
   display: flex;
@@ -1419,6 +1614,10 @@ body.game .window-app {
   --theme-bg-color: #cccccc;
   --theme-text-color: #222222;
   --theme-input-color: #fafafa;
+  --theme-panel-bg: var(--theme-bg-color);
+  --theme-card-bg: rgba(255,255,255,0.04);
+  --theme-accent: #4dd0e1;
+  --theme-muted-text: #9e9b9b;
   --theme-border-image: url(../assets/borders/default-border.svg);
   --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
   --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
@@ -1428,6 +1627,7 @@ body.game .window-app {
 
 .theme-wrapper {
   overflow: visible;
+  border: none;
 }
 .theme-wrapper.window-app {
   backdrop-filter: blur(4px);
@@ -1441,9 +1641,19 @@ body.game .window-app {
 .theme-wrapper .window-app,
 .theme-wrapper .window-content,
 .theme-wrapper .window-header {
-  background: none;
+  background: transparent;
   border: none;
   border-radius: 0;
+}
+.theme-wrapper .window-content {
+  background: linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));
+  color: var(--theme-text-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.theme-wrapper.theme-light .window-content {
+  background: linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));
+  border-color: rgba(0, 0, 0, 0.18);
 }
 .theme-wrapper.theme-light {
   --theme-border-filter: saturate(0);
@@ -1451,6 +1661,10 @@ body.game .window-app {
   --theme-bg-color: #cccccc;
   --theme-text-color: #222222;
   --theme-input-color: #fafafa;
+  --theme-panel-bg: #cccccc;
+  --theme-card-bg: rgba(255,255,255,0.7);
+  --theme-accent: #ff6400;
+  --theme-muted-text: #222222;
 }
 .theme-wrapper.theme-dark {
   --theme-border-filter: saturate(0) brightness(175%);
@@ -1458,6 +1672,10 @@ body.game .window-app {
   --theme-bg-color: #222222;
   --theme-text-color: #aaaaaa;
   --theme-input-color: #333333;
+  --theme-panel-bg: #1f2328;
+  --theme-card-bg: rgba(255,255,255,0.04);
+  --theme-accent: #4dd0e1;
+  --theme-muted-text: #c7c4c4;
 }
 .theme-wrapper.theme-default {
   --theme-border-image: url(../assets/borders/default-border.svg);
@@ -1574,27 +1792,28 @@ body.game .window-app {
 }
 
 select {
-  color: white;
+  color: var(--theme-text-color);
 }
 
 option {
-  background-color: #4a4848;
+  color: var(--theme-text-color);
+  background-color: var(--theme-input-color);
 }
 
 form .form-group span.units {
-  color: #9e9b9b;
+  color: var(--theme-muted-text);
 }
 
 form .form-group.slim .form-fields > label {
-  color: #9e9b9b;
+  color: var(--theme-muted-text);
 }
 
 form .notes, form .hint {
-  color: #9e9b9b;
+  color: var(--theme-muted-text);
 }
 
 .standard-form .form-group > label {
-  color: #9e9b9b;
+  color: var(--theme-muted-text);
 }
 
 .filepicker .display-modes a {
@@ -1609,9 +1828,25 @@ form .notes, form .hint {
   background: initial;
 }
 
-input[type=number], input[type=text] {
-  color: white;
+input[type=number], input[type=text], select, textarea {
+  color: var(--theme-text-color);
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 4px 6px;
   vertical-align: middle;
+  min-height: 22px;
+}
+
+/* small numeric inputs */
+.essence20 .one-digit-input, .essence20 .two-digit-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--theme-border-color);
+  color: var(--theme-text-color);
+  border-radius: 6px;
+  min-height: 22px;
+  text-align: center;
+  padding: 2px 4px;
 }
 
 .essence20 .centered-input {
@@ -1619,7 +1854,7 @@ input[type=number], input[type=text] {
 }
 
 .essence20 textarea {
-  color: white;
+  color: var(--theme-text-color);
   border: 1px solid var(--color-border-light-tertiary);
 }
 
@@ -1643,7 +1878,7 @@ input[type=number], input[type=text] {
 }
 
 .essence20 .span {
-  color: #c7c4c4;
+  color: var(--theme-text-color);
 }
 
 .essence20 .sheet-body {

@@ -64,7 +64,7 @@
 .essence20 .skill-separator::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid #b5b1b1;
+  border-bottom: 1px solid var(--theme-border-color);
 }
 
 .essence20 .skill-separator:not(:empty)::before {

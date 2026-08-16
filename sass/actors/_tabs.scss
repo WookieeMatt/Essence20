@@ -4,7 +4,8 @@
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
-  gap: 5px;
+  gap: 6px;
+  margin-bottom: 8px;
 }
 
 .essence20 .sheet-body .tab,
@@ -17,27 +18,74 @@
   gap: 0px;
 }
 
-.essence20 .tabs .item {
-  background: v.$background-b;
-  border: 1px solid;
-  border-radius: 4px 4px 0px 0px;
+/* ApplicationV2 sheets (e.g. the Companion sheet) render each tab's PART template as a
+   direct child of .window-content instead of nesting it inside a .sheet-body wrapper the
+   way the older AppV1 sheets do, and .window-content itself doesn't auto-scroll for them
+   the way it does for AppV1 windows. Without this, an ApplicationV2 tab that overflows its
+   window just gets silently clipped (or squeezes its siblings, like the header, to fit)
+   instead of scrolling. */
+.essence20.actor .window-content > [data-tab] {
+  overflow-y: auto;
+}
+
+/* Match both hand-written tab nav links (`<a class="item e20-border-accent">`, used by
+   the AppV1 sheets) and Foundry's generic tab-navigation.hbs (`<a data-action="tab">`,
+   used by ApplicationV2 sheets like Companion) via the [data-tab] attribute they both
+   carry, rather than relying on the "item" class the generic template doesn't add. */
+.essence20 .tabs .item,
+.essence20 .tabs a[data-tab] {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--e20-system-color, var(--theme-border-color));
+  border-radius: 8px 8px 0 0;
+  padding: 5px 10px 7px;
   flex: 1;
+  color: var(--theme-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18);
+  opacity: 0.9;
+}
+
+.essence20 .tabs .item .nav-item-label {
+  text-transform: none;
+  font-weight: 600;
 }
 
 .essence20 .tabs .active {
-  background: v.$background-n;
-  border-bottom: none;
+  background: var(--theme-panel-bg);
+  border-bottom: 1px solid var(--theme-panel-bg);
 }
 
-.essence20 .tabs .item.active {
-  text-shadow: 0 0 10px #ffffff;
+.essence20 .tabs .item.active,
+.essence20 .tabs a[data-tab].active {
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 
 .essence20 a:hover {
-  text-shadow: 0 0 10px #ffffff;
+  text-shadow: 0 0 10px rgba(255,255,255,0.4);
 }
 
 .sheet nav.sheet-tabs {
   border-top: none;
   border-bottom: none;
+}
+
+.essence20 .e20-border-accent {
+  border-color: var(--e20-system-color, var(--theme-border-color));
+}
+
+/* Needs to match the specificity of the `.sheet-header .profile-img` border shorthand
+   in _headers.scss (which sets a hardcoded fallback color) to actually win the cascade. */
+.essence20 .profile-img.e20-border-accent {
+  border-color: var(--e20-system-color, var(--theme-border-color));
+}
+
+.essence20 hr.e20-accent-hr {
+  border-color: var(--e20-system-color, var(--theme-border-color));
+}
+
+.essence20 .skill-header.e20-skill-header {
+  background-color: var(--e20-system-color-50, var(--theme-panel-bg));
 }

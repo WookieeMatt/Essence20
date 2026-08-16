@@ -1,12 +1,12 @@
 .chip {
   border-radius: 10px;
-  border: 3px solid;
-  border-style: outset;
+  border: 1px solid var(--theme-border-color);
   padding-left: 8px;
   padding-right: 8px;
   padding-top: 2px;
   margin-right: 3px;
-  background-color: #4a4848;
+  color: var(--theme-text-color);
+  background-color: var(--theme-card-bg);
   width: fit-content;
   height: fit-content;
   text-size-adjust: 8;

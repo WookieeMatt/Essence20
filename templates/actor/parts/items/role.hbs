@@ -1,12 +1,12 @@
 <label for="system.role" class="resource-label">{{localize 'E20.ActorRole'}}</label>
 
 {{#if @root.role}}
-  <li class="item" style="list-style-type: none;" data-item-id="{{role._id}}" data-parent-id="{{../parentId}}">
-    <div class="flexrow" style="align-items: center; gap: 2px;">
+  <li class="item no-list-style" data-item-id="{{role._id}}" data-parent-id="{{../parentId}}">
+    <div class="flexrow align-center gap-2">
       <input type="text" name="system.role" value="{{role.name}}" />
-      <div class="item-controls" style="flex-grow: 0;">
-        <a class="item-control" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
-          <i class="fas fa-trash" data-item-id="{{role._id}}" data-parent-id="{{../parentId}}"></i>
+      <div class="item-controls flex-grow-0">
+        <a class="item-control item-delete" data-tooltip="{{localize 'E20.DeleteItem'}}">
+          <i class="fas fa-trash"></i>
         </a>
       </div>
     </div>

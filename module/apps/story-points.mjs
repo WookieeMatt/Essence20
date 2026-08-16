@@ -1,5 +1,5 @@
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
-import { getDefaultTheme, setting } from "../settings.js";
+import { applyThemeClass, setting } from "../settings.js";
 
 export function getPointsName(plural) {
   return `${
@@ -11,7 +11,7 @@ function getPosition() {
   const pos = game.user?.getFlag("essence20", "storyPointsTrackerPos") ?? {top: 120, left: 120};
   return pos;
 }
-  
+
 function storePosition(position) {
   game.user.setFlag("essence20", "storyPointsTrackerPos", {
     left: parseFloat(position.left),
@@ -32,10 +32,9 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
     tag: "div",
     classes: [
       "essence20",
-      "theme-wrapper theme-dark", // TODO: get light/dark from settings/browser
+      "theme-wrapper",
       "story-points",
       "sliced-border --thick",
-      getDefaultTheme(),
     ],
     window: {
       icon: "fas fa-circle-s",
@@ -75,6 +74,8 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
   _onRender(context, options) {
     super._onRender(context, options);
 
+    applyThemeClass(this.element);
+
     this.element
       .querySelector("#gm-points-input")
       .addEventListener("focusout", (e) =>
@@ -93,7 +94,7 @@ export class StoryPoints extends HandlebarsApplicationMixin(ApplicationV2) {
 
     storePosition(position);
   }
-  
+
   /**
    * Actions, these should be static. If they need to access this
    */
