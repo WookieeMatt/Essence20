@@ -27,6 +27,15 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{!-- Defense Type --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponDefenseType'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.defenseType">
+    {{selectOptions config.defenses selected=system.defenseType localize=true}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
   {{!-- Targets --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTargets'}}
   {{#*inline "item-field-inputs"}}

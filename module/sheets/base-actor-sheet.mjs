@@ -102,6 +102,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     this._applyLockedState();
     this._activateMacroDragDrop();
     this._activateCrewListeners();
+    this._activateInlineEditListeners();
   }
 
   /**
@@ -184,6 +185,23 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
     for (const input of this.element.querySelectorAll('.num-crew')) {
       input.addEventListener('change', (event) => onCrewNumberUpdate(event, this));
+    }
+  }
+
+  /**
+   * Elements marked class="inline-edit" (e.g. weapon-effects.hbs's per-effect Skill select) are
+   * meant to write directly to a specific document field via data-field/data-parent-field
+   * (handled by onInlineEdit), rather than through the sheet's normal actor-wide submitOnChange.
+   * Like _activateCrewListeners above, this needs manual binding since these are change events
+   * and AppV2's click-only [data-action] delegation doesn't cover those. Without this, the
+   * select's change event was instead falling through to the sheet's ambient
+   * submitOnChange form submission, which silently drops it since its name ("item.
+   * classification.skill") isn't a real Actor schema path - the dropdown appeared to work but
+   * never actually persisted, so rolls kept using the item's original skill.
+   */
+  _activateInlineEditListeners() {
+    for (const element of this.element.querySelectorAll('.inline-edit')) {
+      element.addEventListener('change', (event) => onInlineEdit(event, this.actor));
     }
   }
 

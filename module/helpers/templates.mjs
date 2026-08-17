@@ -6,6 +6,9 @@
 export const preloadHandlebarsTemplates = async function () {
   return foundry.applications.handlebars.loadTemplates([
 
+    // Chat partials
+    "systems/essence20/templates/chat/check-card.hbs",
+
     // Actor partials - Headers
     "systems/essence20/templates/actor/headers/character.hbs",
     "systems/essence20/templates/actor/headers/companion.hbs",

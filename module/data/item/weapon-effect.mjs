@@ -18,6 +18,9 @@ export class WeaponEffectItemData extends foundry.abstract.TypeDataModel {
       }),
       damageType: makeStrWithChoices(Object.keys(E20.damageTypes), 'blunt'),
       damageValue: makeInt(1),
+      // Which of the target's four Defenses (p.168-169) this attack's Skill Test is rolled
+      // against.
+      defenseType: makeStrWithChoices(Object.keys(E20.defenses), 'toughness'),
       isSpecialized: makeBool(false),
       numHands: makeInt(1),
       numTargets: makeInt(1),

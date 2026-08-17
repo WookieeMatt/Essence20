@@ -16,8 +16,9 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 // Import helper/utility classes and constants.
-import { highlightCriticalSuccessFailure } from "./chat.mjs";
+import { attachCheckCardListeners, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
+import { enrichCheck, onCheckLinkClick } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { getNumActions } from "./helpers/actor.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
@@ -106,6 +107,15 @@ Hooks.once("init", async function () {
   CONFIG.Combatant.documentClass = Essence20Combatant;
   CONFIG.Item.documentClass = Essence20Item;
   CONFIG.statusEffects = foundry.utils.deepClone(E20.statusEffects);
+
+  // @Check[skill=... dif=15] / @Check[skill=... defense=toughness] text-enricher links (p.88-89
+  // "DIF 15 Sleight of Hand or Technology" style Skill Test references), usable in item/actor
+  // descriptions and journal entries. See module/helpers/enrichers.mjs for the GM-only DIF
+  // visibility rationale.
+  CONFIG.TextEditor.enrichers.push({
+    pattern: /@Check\[([^\]]+)\](?:\{([^}]+)\})?/g,
+    enricher: enrichCheck,
+  });
 
   // Register System Data Model
   CONFIG.Actor.dataModels = data.actor.config;
@@ -365,6 +375,17 @@ Hooks.on("getSceneControlButtons", (controls) => {
 
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
+  attachCheckCardListeners(app, html);
+});
+
+// @Check[...] links (module/helpers/enrichers.mjs) can appear in item/actor descriptions and
+// journal entries alike, not just chat, so this is a plain document-level delegated listener
+// rather than something scoped to the renderChatMessageHTML hook above.
+document.addEventListener("click", (event) => {
+  const link = event.target.closest('.e20-check-link');
+  if (link) {
+    onCheckLinkClick(event, link);
+  }
 });
 
 /* A Megaform's combined stats are computed from its linked component actors (system.actors -

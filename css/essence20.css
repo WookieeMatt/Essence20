@@ -2173,6 +2173,24 @@ input[type=number], input[type=text], select, textarea {
   color: yellow;
 }
 
+.e20-check-card .e20-check-results {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.e20-check-result.e20-check-success {
+  color: green;
+}
+
+.e20-check-result.e20-check-failure {
+  color: red;
+}
+
+.e20-check-card button[data-action=apply-damage] {
+  margin-left: 6px;
+}
+
 .sheet-options {
   min-width: 400px;
   min-height: auto;

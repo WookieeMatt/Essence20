@@ -1,4 +1,5 @@
 import { E20 } from "./helpers/config.mjs";
+import { buildCheckChatData, computeMultiplier, getDefenseValue } from "./helpers/combat.mjs";
 
 export class Dice {
   /**
@@ -109,6 +110,15 @@ export class Dice {
       snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag,
     };
 
+    // Pre-select the Roll Options Dialog's Defense dropdown from the weaponEffect's configured
+    // Defense (p.168-169). A plain skill roll defaults to 'none' unless the caller already set
+    // dataset.defenseType (e.g. a @Check[defense=...] enricher link, see helpers/enrichers.mjs),
+    // and the player can always still choose a Defense manually to roll a Skill Test against a
+    // targeted actor.
+    updatedShiftDataset.defenseType = item?.type == 'weaponEffect'
+      ? item.system.defenseType
+      : (dataset.defenseType || 'none');
+
     updatedShiftDataset.rolePoints = null;
     const rolePointsList = actor.items?.documentsByType?.rolePoints;
 
@@ -164,6 +174,33 @@ export class Dice {
     const modifier = actorSkillData.modifier || 0;
     const formula = this._getFormula(isSpecialized, skillRollOptions, finalShift, modifier);
 
+    // If a Defense was chosen (either from the weaponEffect's own configured Defense, or picked
+    // manually in the dialog) and there's at least one targeted token, the roll is compared
+    // against each target's Defense (p.168-169). Alternatively, a @Check[dif=...] enricher link
+    // (helpers/enrichers.mjs) sets a flat Difficulty with no target at all - dataset.dif is only
+    // ever present on the roller's own dataset when that roller is the GM, per that enricher's
+    // GM-only-visibility design. Either way this produces one or more "entries" to compare the
+    // roll total against; with neither, this falls back to a plain roll message below.
+    const targets = Array.from(game.user.targets);
+    let checkEntries = null;
+    if (skillRollOptions.defenseType && skillRollOptions.defenseType != 'none' && targets.length) {
+      checkEntries = targets.map(token => ({
+        name: token.actor.name,
+        targetUuid: token.actor.uuid,
+        difficulty: getDefenseValue(token.actor, skillRollOptions.defenseType),
+      }));
+    } else if (dataset.dif) {
+      checkEntries = [{ name: actor.name, targetUuid: null, difficulty: parseInt(dataset.dif) }];
+    }
+
+    const checkContext = checkEntries
+      ? {
+        entries: checkEntries,
+        damageValue: item?.type == 'weaponEffect' ? item.system.damageValue : null,
+        damageType: item?.type == 'weaponEffect' ? item.system.damageType : null,
+      }
+      : null;
+
     // Repeat the roll as many times as specified in the skill roll options dialog
     for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
       let repeatText = '';
@@ -174,7 +211,7 @@ export class Dice {
         }) + '<br>';
       }
 
-      this._rollSkillHelper(formula, actor, repeatText + label, canCritD2);
+      this._rollSkillHelper(formula, actor, repeatText + label, canCritD2, checkContext);
     }
   }
 
@@ -238,6 +275,12 @@ export class Dice {
       if (targetStatuses.has('invisible') || (!isMelee && targetStatuses.has('prone'))) {
         snag = true;
       }
+
+      // Resistance to this attack's damage type always imposes a Snag on the roll to apply it
+      // (p.170) - unlike Immunity, it does not reduce the damage itself once the attack lands.
+      if (target.system.resistances?.[item.system.damageType]) {
+        snag = true;
+      }
     }
 
     return { shiftUp, shiftDown, edge, snag };
@@ -270,20 +313,53 @@ export class Dice {
    * @param {String} formula   The formula to be rolled.
    * @param {Actor} actor   The actor performing the roll.
    * @param {String} flavor   The html to use for the roll message.
+   * @param {Boolean} canCritD2   Whether a shift-2 result counts as a Critical Success.
+   * @param {Object} checkContext   Optional { defenseType, targets, damageValue, damageType }
+   *   built in rollSkill() - when present, the roll is compared against each target's Defense
+   *   (p.168-169) instead of posting a plain dice-roll message.
    * @private
    */
-  _rollSkillHelper(formula, actor, flavor, canCritD2) {
-    let roll = new Roll(formula, actor.getRollData());
-    roll.toMessage({
-      flags: {
-        essence20: {
-          canCritD2: canCritD2,
+  async _rollSkillHelper(formula, actor, flavor, canCritD2, checkContext=null) {
+    const roll = new Roll(formula, actor.getRollData());
+    const speaker = this._chatMessage.getSpeaker({ actor });
+
+    if (!checkContext) {
+      roll.toMessage({
+        flags: {
+          essence20: {
+            canCritD2: canCritD2,
+          },
         },
-      },
-      speaker: this._chatMessage.getSpeaker({ actor }),
-      flavor,
-      rollMode: game.settings.get('core', 'rollMode'),
+        speaker,
+        flavor,
+        rollMode: game.settings.get('core', 'rollMode'),
+      });
+      return;
+    }
+
+    await roll.evaluate();
+
+    const results = checkContext.entries.map(entry => {
+      const multiplier = computeMultiplier(roll.total, entry.difficulty);
+      const success = multiplier > 0;
+      // Only a resolved target actor (not a flat @Check[dif=...] entry) can take Health damage.
+      const canApplyDamage = success && entry.targetUuid && checkContext.damageValue;
+
+      return {
+        name: entry.name,
+        targetUuid: entry.targetUuid,
+        difficulty: entry.difficulty,
+        showDifficulty: true,
+        success,
+        multiplier,
+        damageValue: canApplyDamage ? checkContext.damageValue * multiplier : null,
+        damageType: checkContext.damageType,
+        damageTypeLabel: checkContext.damageType ? this._localize(E20.damageTypes[checkContext.damageType]) : null,
+      };
     });
+
+    const chatData = await buildCheckChatData(roll, { flavor, results, speaker, canCritD2 });
+    this._chatMessage.create(chatData);
   }
 
   /**

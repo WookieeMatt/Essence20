@@ -89,6 +89,7 @@ export default class RollOptionsDialog extends HandlebarsApplicationMixin(Applic
       isSpecialized: form.isSpecialized.checked,
       timesToRoll: parseInt(form.timesToRoll.value),
       applyRolePointsUpshift: form?.applyRolePointsUpshift?.checked,
+      defenseType: form.defenseType.value,
     });
   }
 }

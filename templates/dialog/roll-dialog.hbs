@@ -34,6 +34,13 @@
     <input type="number" name="timesToRoll" value=1 min="1" step="1" />
   </div>
 
+  <div>
+    {{localize 'E20.RollDialogDefenseType'}}
+    <select name="defenseType">
+      {{selectOptions defenseTypes selected=defenseType localize=true}}
+    </select>
+  </div>
+
   {{#if rolePoints}}
   <div class="flexrow align-center">
     <input type="checkbox" name="applyRolePointsUpshift" {{checked applyRolePointsUpshift}} />

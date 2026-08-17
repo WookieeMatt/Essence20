@@ -1,3 +1,45 @@
+import { applyDamage } from "./helpers/combat.mjs";
+
+// Wires up the check-card.hbs "Apply Damage" button. Called on the renderChatMessageHTML hook.
+export const attachCheckCardListeners = function (message, html) {
+  const buttons = html.querySelectorAll('[data-action="apply-damage"]');
+  if (!buttons.length) {
+    return;
+  }
+
+  const alreadyApplied = message.getFlag('essence20', 'damageApplied');
+  for (const button of buttons) {
+    if (alreadyApplied) {
+      button.disabled = true;
+      continue;
+    }
+
+    button.addEventListener('click', () => onApplyDamage(message, button));
+  }
+};
+
+// Cross-actor Health changes stay GM-gated, since there's no existing precedent anywhere in this
+// codebase for a player mutating another actor's document.
+async function onApplyDamage(message, button) {
+  if (!game.user.isGM) {
+    ui.notifications.warn(game.i18n.localize('E20.CheckApplyDamageGmOnly'));
+    return;
+  }
+
+  const target = await fromUuid(button.dataset.targetUuid);
+  if (!target) {
+    return;
+  }
+
+  const amount = await applyDamage(target, parseInt(button.dataset.damage), button.dataset.damageType);
+  button.disabled = true;
+  await message.setFlag('essence20', 'damageApplied', true);
+  ChatMessage.create({
+    content: `${target.name}: ${amount} ${game.i18n.localize('E20.CheckDamageApplied')}`,
+    speaker: ChatMessage.getSpeaker({ actor: target }),
+  });
+}
+
 // Changes the color of the roll total for crits and fumbles
 // Called on the renderChatMessageHTML hook
 export const highlightCriticalSuccessFailure = function (message, html) {
