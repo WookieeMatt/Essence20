@@ -68,7 +68,8 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
 
         if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
           for (const ownerItem of owner.items) {
-            if (ownerItem._stats.compendiumSource == itemToCreate.uuid) {
+            const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource;
+            if (ownerItemSourceId == itemToCreate.uuid) {
               const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
               await ownerItem.update({
                 "system.advances.currentValue": newValue,
@@ -87,7 +88,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (item.type == 'perk') {
-          await setPerkValues(owner, newItem, null);
+          await setPerkValues(owner, newItem, null, null, item.uuid);
         }
 
         if (newItem.type == "altMode") {
@@ -404,7 +405,13 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
 */
 export async function deleteAttachmentsForItem(item, actor, previousLevel=null) {
   for (const actorItem of actor.items) {
-    const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
+    // _stats.compendiumSource is only populated by specific "import from compendium" flows,
+    // not by the plain Item.create(doc, {parent}) that createItemCopies() uses to grant Role/
+    // level-up Perks - so it's normally unset on those and this check would silently match
+    // nothing. flags.core.sourceId is set explicitly by createItemCopies() (and by Foundry's
+    // own drag-drop-from-compendium handling), so prefer that and fall back to
+    // compendiumSource for items that only have it set some other way.
+    const itemSourceId = actorItem.flags.core?.sourceId ?? actorItem._stats?.compendiumSource;
     const parentId = await actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
     const collectionId = await actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
 

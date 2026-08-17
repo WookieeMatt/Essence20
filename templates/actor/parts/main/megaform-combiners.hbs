@@ -1,3 +1,24 @@
 <section class="tab combiners {{tabs.combiners.cssClass}}" data-tab="combiners" data-group="primary">
+  {{#if system.participantHealth.length}}
+  <div class="stats-container flexrow flex-group-center e20-border-accent megaform-summary">
+    <div class="flexcol flex-group-center">
+      <label>{{localize 'E20.MegaformCombinedHealth'}}</label>
+      <span>{{system.combinedHealthValue}} / {{system.combinedHealthMax}}</span>
+    </div>
+    {{#if system.isDefeated}}
+    <div class="flexcol flex-group-center">
+      <label>{{localize 'E20.MegaformDefeated'}}</label>
+      <span><i class="fas fa-skull"></i> {{localize 'E20.MegaformDefeatedDesc'}}</span>
+    </div>
+    {{/if}}
+    {{#if system.hasEnhancedAttack}}
+    <div class="flexcol flex-group-center">
+      <label>{{localize 'E20.MegaformHasEnhancedAttack'}}</label>
+      <span>{{localize 'E20.MegaformHasEnhancedAttackDesc'}}</span>
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+
   {{> "systems/essence20/templates/actor/parts/misc/system-actors.hbs"}}
 </section>

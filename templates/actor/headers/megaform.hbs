@@ -12,7 +12,13 @@
 </div>
 <div class="sliced-border">
   <label class="sliced-border__label">{{ localize 'E20.ActorArmor' }}</label>
-  {{numberInput system.armor name="system.armor" min=0 step=1}}
+  {{numberInput system.armor name="system.armor" min=0 step=1 class="no-unlock"}}
 </div>
+{{#inArray system.subtype 'megaformCombiner'}}
+<div class="sliced-border">
+  <label class="sliced-border__label">{{ localize 'E20.MegaformEnergonSpentToMerge' }}</label>
+  {{numberInput system.energonSpentToMerge name="system.energonSpentToMerge" min=0 step=1}}
+</div>
+{{/inArray}}
 {{/inline}}
 {{/"systems/essence20/templates/actor/headers/common.hbs"}}

@@ -4,6 +4,10 @@
   <span class="chip" name="chip.weapon.classification.size">{{lookup @root.config.weaponSizes item.system.classification.size}} </span>
   <span class="chip" name="chip.weapon.availability">{{lookup @root.config.availabilities item.system.availability}}</span>
 
+  {{#if (ne item.system.totalAvailability item.system.availability)}}
+    <span class="chip" name="chip.weapon.totalAvailability">{{localize 'E20.WeaponTotalAvailability'}}: {{lookup @root.config.availabilities item.system.totalAvailability}}</span>
+  {{/if}}
+
   {{#if item.system.usesPerScene}}
     <span class="chip" name="chip.weapon.usesPerScene">{{localize "E20.WeaponUsesPerScene"}}: {{item.system.usesPerScene}}</span>
   {{/if}}

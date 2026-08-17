@@ -538,7 +538,17 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
    * @override
    */
   async _onDropItem(event, data) {
-    return onDropItem(data, this.actor, super._onDropItem.bind(this, event, data));
+    // Foundry's own ActorSheetV2#_onDropItem() resolves to a single created Item document (or
+    // null), but every sheet-handler that calls dropFunc() treats the result as a list (e.g.
+    // `(await dropFunc())[0]`) - matching the plural createEmbeddedDocuments() shape used
+    // elsewhere for the same purpose. Normalize here, at the one place the real dropFunc is
+    // built, rather than at each of that function's many call sites.
+    const dropFunc = async () => {
+      const result = await super._onDropItem(event, data);
+      return result ? [result] : [];
+    };
+
+    return onDropItem(data, this.actor, dropFunc);
   }
 
   /**

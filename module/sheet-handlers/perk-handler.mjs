@@ -2,9 +2,11 @@ import ChoicesSelector from "../apps/choices-selector.mjs";
 import MultiChoiceSelector from "../apps/multi-choice-selector.mjs";
 import { E20 } from "../helpers/config.mjs";
 import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
+import { performSpectrumShift } from "./role-handler.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
+const SPECTRUM_SHIFT_PERK_ID = "Compendium.essence20.pr_crb.Item.HxbEBJ3gXkTQqvxt";
 
 /**
  * Handle the dropping of a Perk onto an Actor
@@ -16,6 +18,16 @@ const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
  * @param {Perk} parentPerk The Perk that the current Perk was attached to
  */
 export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, selectionType=null, parentPerk=null) {
+  if (selectionType == 'role') {
+    // Spectrum Shift: create the Perk itself as normal, then perform the actual respec.
+    const perkDrop = await dropFunc();
+    const newSpectrumShiftPerk = perkDrop[0];
+    const newRole = await fromUuid(selection);
+    await performSpectrumShift(actor, newRole);
+
+    return newSpectrumShiftPerk;
+  }
+
   let updateString = null;
   let updateValue = null;
   let newPerk = null;
@@ -135,16 +147,25 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
  * @param {Perk} perk The Perk being dropped
  * @param {Perk} parentPerk The Perk this perk is attached to
  * @param {Function} dropFunc The function to call to complete the Perk drop
+ * @param {String} sourceUuid (Optional) The Perk's original compendium UUID. Needed when
+ *   `perk` is already an Actor-embedded copy (e.g. granted via createItemCopies() during a
+ *   Role/level-up grant) rather than the compendium document itself, since an embedded Item's
+ *   own `.uuid` is an Actor-relative path and will never match the hardcoded compendium IDs
+ *   below (SORCERY_PERK_ID etc.) on its own.
  */
-export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null) {
-  if (perk.uuid == SORCERY_PERK_ID) {
+export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null, sourceUuid=null) {
+  const perkUuid = sourceUuid ?? perk.uuid;
+
+  if (perkUuid == SORCERY_PERK_ID) {
     await actor.update ({
       "system.powers.sorcerous.levelTaken": actor.system.level,
     });
-  } else if (perk.uuid == ZORD_PERK_ID) {
+  } else if (perkUuid == ZORD_PERK_ID) {
     await actor.update ({
       "system.canHaveZord": true,
     });
+  } else if (perkUuid == SPECTRUM_SHIFT_PERK_ID) {
+    return await _showSpectrumShiftDialog(actor, perk, dropFunc);
   } else if (perk.system.hasMorphedToughnessBonus) {
     setMorphedToughnessBonus(actor);
   }
@@ -252,6 +273,60 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null)
   } else {
     return await onPerkDrop(actor, perk, dropFunc, null, null);
   }
+}
+
+/**
+ * Shows the Role choice dialog for the Spectrum Shift Perk, offering every other Power
+ * Rangers Role across every loaded compendium (so future sourcebooks' Roles are included).
+ * Per the core rulebook (p.58), Spectrum Shift/the Advanced Ranger Spectrum is specifically a
+ * Power Rangers mechanic - "this core rulebook details the rules for the Advanced Spectrum
+ * Role of the White Ranger" for the Power Rangers line; other game versions (Transformers/My
+ * Little Pony/G.I. Joe) don't have an equivalent, so this only applies when the Actor's
+ * current Role is itself a Power Rangers one.
+ * @param {Actor} actor The Actor taking the Spectrum Shift Perk
+ * @param {Perk} perk The Spectrum Shift Perk being dropped
+ * @param {Function} dropFunc The function to call to complete the Perk drop
+ */
+async function _showSpectrumShiftDialog(actor, perk, dropFunc) {
+  const currentRole = actor.items.documentsByType.role[0];
+  if (!currentRole) {
+    ui.notifications.error(game.i18n.localize('E20.SpectrumShiftNoRoleError'));
+    return false;
+  }
+
+  if (currentRole.system.version != 'powerRangers') {
+    ui.notifications.error(game.i18n.localize('E20.SpectrumShiftNotPowerRangersError'));
+    return false;
+  }
+
+  const choices = {};
+  for (const pack of game.packs.filter(p => p.documentName == 'Item')) {
+    const index = await pack.getIndex({ fields: ['type', 'system.version'] });
+    for (const entry of index) {
+      const isOtherPowerRangersRole = entry.type == 'role'
+        && entry.system?.version == 'powerRangers'
+        && entry.uuid != currentRole._stats.compendiumSource;
+
+      if (isOtherPowerRangersRole) {
+        choices[entry.uuid] = {
+          chosen: false,
+          value: entry.uuid,
+          label: entry.name,
+          type: 'role',
+        };
+      }
+    }
+  }
+
+  if (!Object.entries(choices).length) {
+    ui.notifications.error(game.i18n.localize('E20.NoChoicesError'));
+    return false;
+  }
+
+  const prompt = game.i18n.localize("E20.SelectSpectrumShiftRole");
+  const title = game.i18n.localize("E20.PerkSelect");
+
+  await new ChoicesSelector(choices, actor, prompt, title, perk, null, dropFunc, null, null, null).render(true);
 }
 
 /**

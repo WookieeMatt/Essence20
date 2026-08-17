@@ -81,6 +81,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const essenceShifts = actor.system.essenceShifts;
+    const combatModifiers = this._getAutomaticCombatModifiers(actor, item);
     let calculatedShiftUp = 0;
     let calculatedShiftDown = 0;
     if (rolledEssence) {
@@ -90,6 +91,8 @@ export class Dice {
       calculatedShiftUp = dataset.shiftUp + essenceShifts.any.shiftUp;
       calculatedShiftDown = dataset.shiftDown + essenceShifts.any.shiftDown;
     }
+    calculatedShiftUp += combatModifiers.shiftUp;
+    calculatedShiftDown += combatModifiers.shiftDown;
 
     const updatedShiftDataset = {
       ...dataset,
@@ -102,8 +105,8 @@ export class Dice {
       : dataset.shift || actorSkillData.shift;
     const skillDataset = {
       shift: initialShift,
-      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge,
-      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag,
+      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge || combatModifiers.edge,
+      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag,
     };
 
     updatedShiftDataset.rolePoints = null;
@@ -173,6 +176,93 @@ export class Dice {
 
       this._rollSkillHelper(formula, actor, repeatText + label, canCritD2);
     }
+  }
+
+  /**
+   * Computes the automatic dice-shift/Edge/Snag modifiers that come from Size Class
+   * differences (Table 10-2: Size Class Combat Adjustment Matrix) and active Conditions,
+   * rather than anything the actor chose. Size and target-Condition effects only apply to
+   * weapon attack rolls; Impaired and a Prone attacker's own melee penalty are Condition
+   * effects that come from the roller's own statuses.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} item   The item being used, if any.
+   * @returns {Object}   { shiftUp, shiftDown, edge, snag }
+   * @private
+   */
+  _getAutomaticCombatModifiers(actor, item) {
+    let shiftUp = 0;
+    let shiftDown = 0;
+    let edge = false;
+    let snag = false;
+
+    const selfStatuses = actor.statuses;
+    if (selfStatuses.has('impaired')) {
+      shiftDown += 1;
+    }
+
+    const isAttack = item?.type == 'weaponEffect';
+    if (!isAttack) {
+      return { shiftUp, shiftDown, edge, snag };
+    }
+
+    const isMelee = item.system.classification.style == 'melee';
+
+    if (selfStatuses.has('blinded')) {
+      snag = true;
+    }
+
+    if (isMelee && selfStatuses.has('prone')) {
+      shiftDown += 1;
+    }
+
+    const target = game.user.targets.first()?.actor;
+    if (target) {
+      shiftUp += this._getSizeShift(actor.system.size, target.system.size);
+
+      const targetStatuses = target.statuses;
+      const targetGrantsEdge = targetStatuses.has('blinded')
+        || targetStatuses.has('grappled')
+        || targetStatuses.has('restrained')
+        || targetStatuses.has('stunned')
+        || targetStatuses.has('unconscious')
+        || (isMelee && targetStatuses.has('prone'));
+
+      if (targetGrantsEdge) {
+        edge = true;
+      }
+
+      if (targetStatuses.has('immobilized')) {
+        shiftUp += 1;
+      }
+
+      if (targetStatuses.has('invisible') || (!isMelee && targetStatuses.has('prone'))) {
+        snag = true;
+      }
+    }
+
+    return { shiftUp, shiftDown, edge, snag };
+  }
+
+  /**
+   * Computes the dice shift bonus from Table 10-2: Size Class Combat Adjustment Matrix.
+   * The table's values reduce to a simple rule: the shift equals half the distance
+   * (rounded down) between the two Size Classes on the actorSizes ladder, applied as a
+   * shift up regardless of which side is larger.
+   * @param {String} attackerSize   The attacking actor's system.size.
+   * @param {String} targetSize   The targeted actor's system.size.
+   * @returns {Number}   The dice shift bonus, 0 if either size is unrecognized.
+   * @private
+   */
+  _getSizeShift(attackerSize, targetSize) {
+    const sizeOrder = Object.keys(E20.actorSizes);
+    const attackerIndex = sizeOrder.indexOf(attackerSize);
+    const targetIndex = sizeOrder.indexOf(targetSize);
+
+    if (attackerIndex == -1 || targetIndex == -1) {
+      return 0;
+    }
+
+    return Math.floor(Math.abs(attackerIndex - targetIndex) / 2);
   }
 
   /**

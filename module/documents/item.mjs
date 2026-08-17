@@ -87,6 +87,10 @@ export class Essence20Item extends Item {
     super.prepareDerivedData();
     this._prepareTraits();
 
+    if (this.type == 'weapon' || this.type == 'armor') {
+      this._prepareTotalAvailability();
+    }
+
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
     } else if (this.type == 'rolePoints') {
@@ -145,6 +149,54 @@ export class Essence20Item extends Item {
     this.system.totalBonusToughness = armorBonusToughness;
   }
 
+  /**
+  * Prepares the combined Availability tier that must be Requisitioned to acquire this
+  * weapon or armor as currently upgraded, per Table 8-2: Upgrading Equipment. Starts from
+  * the item's own Availability and folds in each attached Upgrade's Availability in turn.
+  */
+  _prepareTotalAvailability() {
+    let totalAvailability = this.system.availability;
+
+    for (const [, item] of Object.entries(this.system.items)) {
+      if (item.type == 'upgrade') {
+        totalAvailability = this._getCombinedAvailability(totalAvailability, item.availability);
+      }
+    }
+
+    this.system.totalAvailability = totalAvailability;
+  }
+
+  /**
+  * Combines two equipment Availability tiers per Table 8-2: Upgrading Equipment.
+  * @param {String} tierA   An Availability tier key from CONFIG.E20.availabilities.
+  * @param {String} tierB   Another Availability tier key from CONFIG.E20.availabilities.
+  * @returns {String}   The resultant combined Availability tier.
+  */
+  _getCombinedAvailability(tierA, tierB) {
+    const CEILING = 'theoretical';
+    if (tierA == CEILING || tierB == CEILING) {
+      return CEILING;
+    }
+
+    // Table 8-2 doesn't have a row/column for Automatic; treat it as equivalent to
+    // Standard, the table's lowest defined tier.
+    const normalize = tier => tier == 'automatic' ? 'standard' : tier;
+    const normA = normalize(tierA);
+    const normB = normalize(tierB);
+    const combined = CONFIG.E20.upgradeAvailabilityMatrix[normA]?.[normB];
+
+    if (combined) {
+      return combined;
+    }
+
+    // "Other" or any tier Table 8-2 doesn't define a combination for: fall back to
+    // keeping the higher of the two tiers, with no further escalation.
+    const tierOrder = Object.keys(CONFIG.E20.availabilities);
+    const rankA = tierOrder.indexOf(tierA);
+    const rankB = tierOrder.indexOf(tierB);
+
+    return rankA >= rankB ? tierA : tierB;
+  }
 
   /**
    * Finds the number of Role Points the actor currently has.

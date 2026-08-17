@@ -2,10 +2,111 @@ import ChoicesSelector from "../apps/choices-selector.mjs";
 import EssenceProgressionSelector from "../apps/essence-progression-selector.mjs";
 import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
-import { onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
+import { onPerkDelete, onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
 
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
+
+/**
+ * Performs a Spectrum Shift: retroactively swaps the Actor's current Role for a new one, per
+ * the Spectrum Shift Perk rules (core rulebook p.58). Health, Essence scores, weapon/armor
+ * training, and general Skill ranks are left untouched - only Power Regeneration/Capacity,
+ * the Role's own skill die (e.g. a Grid Relic Weapon), and Role Perks (including Zord access)
+ * retroactively become the new Role's values, computed fresh as if the Actor had always been
+ * this Role up to their current level. Zord Features already chosen on a linked Zord actor
+ * aren't touched here - reflavoring or replacing the Zord itself is left to the GM/player.
+ * @param {Actor} actor The Actor performing the Spectrum Shift
+ * @param {Role} newRole The new Role to shift into
+ */
+export async function performSpectrumShift(actor, newRole) {
+  const oldRole = actor.items.documentsByType.role[0];
+  if (!oldRole) {
+    return;
+  }
+
+  // Remove every Perk the old Role granted, regardless of level. Not using
+  // deleteAttachmentsForItem() here: it keys off Item#_stats.compendiumSource, which isn't
+  // reliably populated on Items created via createItemCopies() (i.e. every Role Perk granted
+  // through leveling), so it would silently remove nothing. The parentId flag set on every
+  // granted Perk is reliable, so match on that directly instead. onPerkDelete() still runs
+  // per Perk first, so canHaveZord, Sorcerous Power, and any environment/senses/movement
+  // choice-perks still get cleaned up correctly.
+  for (const item of [...actor.items]) {
+    if (item.getFlag('essence20', 'parentId') == oldRole.id) {
+      if (item.type == 'perk') {
+        await onPerkDelete(actor, item);
+      }
+
+      await item.delete();
+    }
+  }
+
+  // Power Regeneration Rate & Personal Power Capacity: recomputed fresh for the new Role, as
+  // if the Actor had always been this Role up to their current level.
+  const powerLevelsReached = roleValueChange(actor.system.level, newRole.system.powers.personal.levels, null);
+  const newPersonalPowerMax = newRole.system.powers.personal.starting
+    ? newRole.system.powers.personal.starting + newRole.system.powers.personal.increase * powerLevelsReached
+    : 0;
+
+  await actor.update({
+    "system.powers.personal.max": newPersonalPowerMax,
+    "system.powers.personal.regeneration": newRole.system.powers.personal.regeneration,
+  });
+
+  // The Role's own skill die (e.g. White Ranger's Grid Relic Weapon): reset to a neutral
+  // baseline, then, if the new Role uses one, recompute fresh for the Actor's current level.
+  await actor.update({
+    "system.skills.roleSkillDie.shift": "d20",
+    "system.skills.roleSkillDie.essences.smarts": false,
+    "system.skills.roleSkillDie.essences.social": false,
+    "system.skills.roleSkillDie.essences.speed": false,
+    "system.skills.roleSkillDie.essences.strength": false,
+    "system.skills.roleSkillDie.edge": false,
+    "system.skills.roleSkillDie.snag": false,
+    "system.skills.roleSkillDie.shiftUp": 0,
+    "system.skills.roleSkillDie.shiftDown": 0,
+    "system.skills.roleSkillDie.isSpecialized": false,
+    "system.skills.roleSkillDie.modifier": 0,
+  });
+
+  if (newRole.system.skillDie.isUsed) {
+    const shiftList = CONFIG.E20.skillShiftList;
+    const dieLevelsReached = roleValueChange(actor.system.level, newRole.system.skillDie.levels, null);
+    const initialShiftIndex = shiftList.findIndex(s => s == "d2");
+    const finalShiftIndex = Math.max(0, Math.min(shiftList.length - 1, initialShiftIndex - dieLevelsReached));
+
+    const isSpecialized = newRole.system.skillDie.specializedLevels.some(arrayLevel => {
+      const level = arrayLevel.replace(/[^0-9]/g, '');
+      return level <= actor.system.level;
+    });
+
+    await actor.update({
+      "system.skills.roleSkillDie.shift": shiftList[finalShiftIndex],
+      "system.skills.roleSkillDie.isSpecialized": isSpecialized,
+    });
+  }
+
+  // Swap the Role item itself so future level-ups follow the new Role's tables. This has to
+  // happen before granting Role Perks below: createItemCopies() stamps each granted Perk with
+  // a parentId flag pointing at whatever "parentItem" it's given, and that needs to be the
+  // Actor's own embedded Role item (with its own embedded-document id), not the compendium
+  // source document - otherwise a later Spectrum Shift can't find these Perks to remove them.
+  const newRoleItem = await Item.create(newRole, { parent: actor });
+  await oldRole.delete();
+
+  // Role Perks (including Zord access): grant every Perk the new Role provides at or below
+  // the Actor's current level.
+  await createItemCopies(newRole.system.items, actor, "perk", newRoleItem);
+
+  // Role version updates (canMorph/canSpellcast/canQualify) - in practice a Spectrum Shift
+  // always stays within the same game line, so this is usually a no-op.
+  await actor.update({
+    "system.canMorph": newRole.system.version == 'powerRangers',
+    "system.canSpellcast": newRole.system.version == 'myLittlePony',
+    "system.canQualify": newRole.system.version == 'giJoe',
+  });
+}
+
 /**
  * Handles setting the values and Items for an Actor's Role
  * @param {Role} role The Actor's Role
@@ -316,8 +417,8 @@ export async function onRoleDrop(actor, role, dropFunc) {
     return false;
   }
 
-  actor.setFlag('essence20', 'previousLevel', actor.system.level);
-  actor.setFlag('essence20', 'roleDrop', true);
+  await actor.setFlag('essence20', 'previousLevel', actor.system.level);
+  await actor.setFlag('essence20', 'roleDrop', true);
 
   // Skill updates
   if (role.system.skillDie.isUsed) {
@@ -412,7 +513,7 @@ export async function onLevelChange(actor, newLevel) {
     await _setFocusValues(focus[0], actor, newLevel, previousLevel);
   }
 
-  actor.setFlag('essence20', 'previousLevel', newLevel);
+  await actor.setFlag('essence20', 'previousLevel', newLevel);
 }
 
 /**
@@ -542,8 +643,8 @@ export async function onRoleDelete(actor, role) {
     "system.level": 1,
   });
 
-  deleteAttachmentsForItem(role, actor);
-  actor.setFlag('essence20', 'previousLevel', 0);
+  await deleteAttachmentsForItem(role, actor);
+  await actor.setFlag('essence20', 'previousLevel', 0);
 }
 
 /**

@@ -367,6 +367,40 @@ Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
 });
 
+/* A Megaform's combined stats are computed from its linked component actors (system.actors -
+   Zords for a Zord-subtype Megazord, or PC/NPC actors for a Combiner-subtype Gestalt/Matched
+   Combiner) in Essence20Actor#_prepareMegaformData(), but that only reruns when the
+   Megaform's own document changes - Foundry doesn't automatically invalidate it when a linked
+   component (or one of its Megaform Trait/Combiner Feature items) changes elsewhere.
+   Explicitly refresh any Megaform that has the changed actor linked so its sheet doesn't show
+   stale combined stats. Deliberately not filtered by actor type, since a Combiner's
+   components can be any actor type (unlike a Megazord, which is Zord-only). */
+function refreshMegaformsLinkedToActor(actorUuid) {
+  if (!actorUuid) {
+    return;
+  }
+
+  for (const megaform of game.actors.filter(actor => actor.type == 'megaform')) {
+    const isLinked = Object.values(megaform.system.actors).some(entry => entry.uuid == actorUuid);
+    if (isLinked) {
+      megaform.prepareData();
+      megaform.sheet.render(false);
+    }
+  }
+}
+
+Hooks.on("updateActor", (actor) => {
+  refreshMegaformsLinkedToActor(actor.uuid);
+});
+
+for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
+  Hooks.on(hookName, (item) => {
+    if (item.type == 'megaformTrait') {
+      refreshMegaformsLinkedToActor(item.parent?.uuid);
+    }
+  });
+}
+
 /* Every DialogV2 (ours or Foundry core's own, e.g. the item-creation dialog) gets the same
    theme-wrapper light/dark theming as the system's actor/item sheets and apps. */
 Hooks.on("renderDialogV2", (dialog, html) => {

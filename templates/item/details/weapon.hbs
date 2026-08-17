@@ -8,6 +8,15 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{#if (ne system.totalAvailability system.availability)}}
+    {{!-- Availability including Upgrades --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponTotalAvailability'}}
+    {{#*inline "item-field-inputs"}}
+    <span class="item-field-inputs">{{lookup config.availabilities system.totalAvailability}}</span>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
   {{!-- Is Poison? --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponIsPoison'}}
   {{#*inline "item-field-inputs"}}

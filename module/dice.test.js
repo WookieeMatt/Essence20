@@ -18,9 +18,19 @@ class Mocki18n {
   }
 }
 
+global.game = {
+  user: {
+    targets: {
+      first: jest.fn(() => undefined),
+    },
+  },
+};
+
 const mockActor = {
   items: [],
+  statuses: new Set(),
   system: {
+    size: 'common',
     initiative: {
       formula: "",
       skill: "initiative",
@@ -944,5 +954,134 @@ describe("_getFormula", () => {
     const expected = '2d20kl + 0';
 
     expect(dice._getFormula(isSpecialized, skillRollOptions, finalShift, modifier)).toEqual(expected);
+  });
+});
+
+/* _getSizeShift */
+describe("_getSizeShift", () => {
+  test("same size", () => {
+    expect(dice._getSizeShift('common', 'common')).toBe(0);
+  });
+
+  test("adjacent size", () => {
+    expect(dice._getSizeShift('common', 'large')).toBe(0);
+  });
+
+  test("two steps apart", () => {
+    expect(dice._getSizeShift('common', 'long')).toBe(1);
+  });
+
+  test("far apart, larger target", () => {
+    expect(dice._getSizeShift('small', 'titanic')).toBe(5);
+  });
+
+  test("far apart, larger attacker", () => {
+    expect(dice._getSizeShift('titanic', 'small')).toBe(5);
+  });
+
+  test("unrecognized size returns 0", () => {
+    expect(dice._getSizeShift('common', 'unknown')).toBe(0);
+  });
+});
+
+/* _getAutomaticCombatModifiers */
+describe("_getAutomaticCombatModifiers", () => {
+  function makeActor(size, statuses = []) {
+    return {
+      system: { size },
+      statuses: new Set(statuses),
+    };
+  }
+
+  const meleeWeaponEffect = {
+    type: 'weaponEffect',
+    system: { classification: { style: 'melee' } },
+  };
+  const rangedWeaponEffect = {
+    type: 'weaponEffect',
+    system: { classification: { style: 'projectile' } },
+  };
+
+  beforeEach(() => {
+    game.user.targets.first.mockReturnValue(undefined);
+  });
+
+  test("non-attack roll ignores target and size", () => {
+    game.user.targets.first.mockReturnValue({ actor: makeActor('titanic') });
+    const actor = makeActor('small');
+
+    expect(dice._getAutomaticCombatModifiers(actor, null))
+      .toEqual({ shiftUp: 0, shiftDown: 0, edge: false, snag: false });
+  });
+
+  test("Impaired applies to any roll, including non-attacks", () => {
+    const actor = makeActor('common', ['impaired']);
+
+    expect(dice._getAutomaticCombatModifiers(actor, null))
+      .toEqual({ shiftUp: 0, shiftDown: 1, edge: false, snag: false });
+  });
+
+  test("attack with no target only applies self Conditions", () => {
+    const actor = makeActor('common', ['blinded']);
+
+    expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+      .toEqual({ shiftUp: 0, shiftDown: 0, edge: false, snag: true });
+  });
+
+  test("attack applies Size Class shift from the targeted actor", () => {
+    game.user.targets.first.mockReturnValue({ actor: makeActor('titanic') });
+    const actor = makeActor('small');
+
+    expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+      .toEqual({ shiftUp: 5, shiftDown: 0, edge: false, snag: false });
+  });
+
+  test("Prone target grants Edge to a melee attacker", () => {
+    game.user.targets.first.mockReturnValue({ actor: makeActor('common', ['prone']) });
+    const actor = makeActor('common');
+
+    expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+      .toEqual({ shiftUp: 0, shiftDown: 0, edge: true, snag: false });
+  });
+
+  test("Prone target grants Snag to a ranged attacker", () => {
+    game.user.targets.first.mockReturnValue({ actor: makeActor('common', ['prone']) });
+    const actor = makeActor('common');
+
+    expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
+      .toEqual({ shiftUp: 0, shiftDown: 0, edge: false, snag: true });
+  });
+
+  test("Immobilized target grants a shift up", () => {
+    game.user.targets.first.mockReturnValue({ actor: makeActor('common', ['immobilized']) });
+    const actor = makeActor('common');
+
+    expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+      .toEqual({ shiftUp: 1, shiftDown: 0, edge: false, snag: false });
+  });
+
+  test("Invisible target grants a Snag", () => {
+    game.user.targets.first.mockReturnValue({ actor: makeActor('common', ['invisible']) });
+    const actor = makeActor('common');
+
+    expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+      .toEqual({ shiftUp: 0, shiftDown: 0, edge: false, snag: true });
+  });
+
+  test("attacker's own Prone Condition penalizes only melee attacks", () => {
+    const actor = makeActor('common', ['prone']);
+
+    expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+      .toEqual({ shiftUp: 0, shiftDown: 1, edge: false, snag: false });
+    expect(dice._getAutomaticCombatModifiers(actor, rangedWeaponEffect))
+      .toEqual({ shiftUp: 0, shiftDown: 0, edge: false, snag: false });
+  });
+
+  test("Edge and Snag from separate sources both surface, left to cancel out downstream", () => {
+    game.user.targets.first.mockReturnValue({ actor: makeActor('common', ['invisible', 'stunned']) });
+    const actor = makeActor('common');
+
+    expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+      .toEqual({ shiftUp: 0, shiftDown: 0, edge: true, snag: true });
   });
 });
