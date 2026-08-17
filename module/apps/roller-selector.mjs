@@ -1,5 +1,6 @@
-import { handleActorSelector } from "../sheet-handlers/listener-misc-handler.mjs";
+﻿import { handleActorSelector } from "../sheet-handlers/listener-misc-handler.mjs";
 import { getFormData } from "../helpers/application.mjs";
+import { applyThemeClass } from "../settings.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -16,6 +17,7 @@ export default class RollerSelector extends HandlebarsApplicationMixin(Applicati
     id: "roller",
     classes: [
       "essence20",
+      "theme-wrapper",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -49,6 +51,12 @@ export default class RollerSelector extends HandlebarsApplicationMixin(Applicati
       { type: "submit", label: "E20.AcceptButton" },
     ];
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData){

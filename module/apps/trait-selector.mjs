@@ -1,3 +1,4 @@
+﻿import { applyThemeClass } from "../settings.js";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -12,6 +13,7 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     id: "trait-selector",
     classes: [
       "essence20",
+      "theme-wrapper",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -79,6 +81,12 @@ export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
     ];
 
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {

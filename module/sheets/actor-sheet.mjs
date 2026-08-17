@@ -1,6 +1,7 @@
 import SheetOptions from "../apps/sheet-options.mjs";
+import { getCurrentThemeClass } from "../settings.js";
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
-import { getNumActions } from "../helpers/actor.mjs";
+import { applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors, onSystemActorsDelete, onVehicleRoleUpdate, onCrewNumberUpdate } from "../sheet-handlers/vehicle-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
@@ -48,7 +49,13 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
   /** @override */
   static get defaultOptions() {
     return foundry.utils.mergeObject(super.defaultOptions, {
-      classes: ["essence20", "sheet", "actor"],
+      classes: [
+        "essence20",
+        "sheet",
+        "actor",
+        "theme-wrapper",
+        getCurrentThemeClass(),
+      ],
       width: 620,
       height: 574,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "skills" }],
@@ -119,30 +126,7 @@ export class Essence20ActorSheet extends foundry.appv1.sheets.ActorSheet {
 
   _setSystemColorCssVariables() {
     const root = this.element?.[0] || document.body;
-    const color = this.actor?.system?.color;
-
-    if (!root || !color) return;
-
-    const normalizedColor = String(color).trim();
-
-    root.style.setProperty('--e20-system-color', normalizedColor);
-
-    const hexColor = normalizedColor.startsWith('#') ? normalizedColor : null;
-    const alphaColor = hexColor && /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hexColor)
-      ? (() => {
-        const hex = hexColor.length === 4
-          ? hexColor.split('').map((char, index) => index === 0 ? char : char + char).join('').slice(1)
-          : hexColor.slice(1);
-        const r = parseInt(hex.slice(0, 2), 16);
-        const g = parseInt(hex.slice(2, 4), 16);
-        const b = parseInt(hex.slice(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, 0.5)`;
-      })()
-      : 'rgba(0, 0, 0, 0.5)';
-
-    root.style.setProperty('--e20-system-color-50', alphaColor);
-    root.style.setProperty('--e20-system.color-50', alphaColor);
-
+    applySystemColorCssVariables(root, this.actor);
   }
 
   /** @override */

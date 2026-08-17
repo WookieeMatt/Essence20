@@ -15,7 +15,7 @@
   display: flex;
   position: relative;
   padding: 4px 2px;
-  background: var(--theme-bg-color);
+  background: var(--theme-panel-bg);
 
   &:has(> .sliced-border__label) {
     padding-top: v.$gap-sliced-border + 3px;
@@ -70,7 +70,7 @@
       border-image: var(--theme-tab-image);
       border-image-slice: 16;
     }
-    
+
     &.--filled::before {
       border-image: var(--theme-filled-tab-image);
       border-image-slice: 16 fill;
@@ -83,7 +83,7 @@
     gap: v.$gap-md;
     justify-content: center;
     align-items: center;
-    color: var(--theme-border-color);
+    color: var(--theme-text-color);
     width: max-content;
     position: absolute;
     top: 0;
@@ -94,7 +94,11 @@
   label.sliced-border__label {
     padding: 0 8px;
     line-height: 0.75rem;
-    background: var(--theme-bg-color);
+    background: var(--theme-panel-bg);
+    color: var(--theme-text-color);
+    border-radius: 6px;
+    padding: 4px 10px;
+    box-shadow: 0 1px 0 rgba(0,0,0,0.4) inset;
   }
 
   .sliced-border__input-row {

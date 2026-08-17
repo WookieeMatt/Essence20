@@ -1,5 +1,6 @@
-import { _alterationStatUpdate, _processAlterationSkillIncrease, _showAlterationCostSkillDialog } from "../sheet-handlers/alteration-handler.mjs";
+﻿import { _alterationStatUpdate, _processAlterationSkillIncrease, _showAlterationCostSkillDialog } from "../sheet-handlers/alteration-handler.mjs";
 import { getFormData} from "../helpers/application.mjs";
+import { applyThemeClass } from "../settings.js";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class AlterationEssenceSelector extends HandlebarsApplicationMixin(ApplicationV2) {
@@ -19,6 +20,7 @@ export default class AlterationEssenceSelector extends HandlebarsApplicationMixi
     id: "alteration-essence",
     classes: [
       "essence20",
+      "theme-wrapper",
       "trait-selector",
       "subconfig",
       "window-app",
@@ -52,6 +54,12 @@ export default class AlterationEssenceSelector extends HandlebarsApplicationMixi
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {

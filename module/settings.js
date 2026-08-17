@@ -2,9 +2,48 @@ export const setting = (key) => {
   return game.settings?.get("essence20", key) ?? "default";
 };
 
+
+export const getCurrentUiTheme = () => {
+  const coreUIConfig = game?.settings?.get?.("core", "uiConfig");
+  const coreTheme = coreUIConfig?.colorScheme.applications;
+  if (coreTheme === "light" || coreTheme === "dark") {
+    return coreTheme;
+  } else {
+    return "dark";
+  }
+};
+
+export const getCurrentThemeClass = () => `theme-${getCurrentUiTheme()}`;
+
 export const getDefaultTheme = () => {
   const theme = setting("sptDefaultTheme");
   return `theme-${theme}`;
+};
+
+/**
+ * Swap an element's theme-light/theme-dark class for the currently active one.
+ * Always removes both first so a stale class can't linger and win the cascade
+ * over the newly-added one.
+ * @param {HTMLElement} element
+ */
+export const applyThemeClass = (element) => {
+  if (!element) return;
+  element.classList.remove("theme-light", "theme-dark");
+  const themeClass = getCurrentThemeClass();
+  if (themeClass) element.classList.add(themeClass);
+};
+
+/**
+ * Re-theme every currently-open Essence20 sheet/app in place, without re-rendering
+ * them. Foundry's own UI-config handler only re-themes core singletons (sidebar,
+ * compendium, HUD, etc.) when the color scheme setting changes, so document sheets
+ * and our apps are left stuck on whatever theme was active when they were opened
+ * unless we do this ourselves.
+ */
+export const refreshOpenThemeWrappers = () => {
+  for (const element of document.querySelectorAll(".theme-wrapper")) {
+    applyThemeClass(element);
+  }
 };
 
 export const registerSettings = function () {

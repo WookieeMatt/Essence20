@@ -1,4 +1,5 @@
-import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
+﻿import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
+import { applyThemeClass } from "../settings.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -21,6 +22,7 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
     id: "mutli-choice",
     classes: [
       "essence20",
+      "theme-wrapper",
       "window-app",
     ],
     tag: "form",
@@ -53,6 +55,12 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
       { type: "submit", icon: "fa-solid fa-save", label: "SETTINGS.Save" },
     ];
     return context;
+  }
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    applyThemeClass(this.element);
   }
 
   static async myFormHandler(event, form, formData) {
