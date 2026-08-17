@@ -1,31 +1,16 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
-import { prepareActiveEffectCategories } from "../helpers/effects.mjs";
 
 export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
-  /**@inheritDoc */
-  static DEFAULT_OPTIONS = {
-    classes: ["essence20", "sheet", "actor"],
-    tag: 'form',
-    position: {
-      width: 620,
-      height: 574,
-    },
-    form: {
-      submitOnChange: true,
-      closeOnSubmit: false,
-    },
-    window: {
-      resizable: true,
-    },
-  };
-
   static TABS = {
     primary: {
       tabs: [
-        { id: "effects", group: 'primary', label: "Effects"},
-        { id: "notes", group: 'primary', label: "Notes"},
+        { id: "npc", group: 'primary', label: "E20.TabNPC" },
+        { id: "contact", group: 'primary', label: "E20.TabContact" },
+        { id: "altmode", group: 'primary', label: "E20.TabAltMode" },
+        { id: "effects", group: 'primary', label: "E20.TabEffects" },
+        { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
-      initial: "effect",
+      initial: "npc",
     },
   };
 
@@ -34,10 +19,22 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
       template: "systems/essence20/templates/actor/headers/npc.hbs",
     },
     sidebar: {
-      template: "systems/essence20/templates/actor/sidebars/npc.hbs"
+      template: "systems/essence20/templates/actor/sidebars/npc.hbs",
     },
     tabs: {
       template: "templates/generic/tab-navigation.hbs",
+    },
+    npc: {
+      template: "systems/essence20/templates/actor/parts/main/npc.hbs",
+      scrollable: [''],
+    },
+    contact: {
+      template: "systems/essence20/templates/actor/parts/main/npc-contact.hbs",
+      scrollable: [''],
+    },
+    altmode: {
+      template: "systems/essence20/templates/actor/parts/main/npc-altmode.hbs",
+      scrollable: [''],
     },
     effects: {
       template: "systems/essence20/templates/actor/tabs/effects.hbs",
@@ -47,38 +44,30 @@ export class Essence20NPCActorSheet extends Essence20BaseActorSheet {
       template: "systems/essence20/templates/actor/tabs/notes.hbs",
       scrollable: [""],
     },
-
   };
 
-  async _preparePartContext(partId, context, options) {
-    super._preparePartContext(partId, context, options);
+  _onRender(context, options) {
+    super._onRender(context, options);
+    this._applyConditionalTabs();
+  }
 
-    switch ( partId ) {
-    case "main": context = await this._prepareMainContext(context); break;
-    case "effects": context = await this._prepareEffectsContext(context); break;
-    case "notes": context = await this._prepareNotesContext(context); break;
+  _applyConditionalTabs() {
+    const visibility = {
+      npc: this.actor.system.isNPC,
+      contact: this.actor.system.isContact,
+      altmode: this.actor.system.canTransform,
+      notes: true,
+    };
+
+    for (const [tabId, visible] of Object.entries(visibility)) {
+      const navLink = this.element.querySelector(`nav.tabs a[data-tab="${tabId}"]`);
+      if (navLink) navLink.style.display = visible ? '' : 'none';
     }
 
-    return context;
-  }
-
-  async _prepareNotesContext(context) {
-    // if (this.editingDescriptionTarget) {
-    //   context.editingDescription = {
-    //     target: this.editingDescriptionTarget,
-    //     value: foundry.utils.getProperty(this.document._source, this.editingDescriptionTarget),
-    //   };
-    // }
-
-    return context;
-  }
-
-  async _prepareMainContext(context) {
-    return context;
-  }
-
-  async _prepareEffectsContext(context) {
-    context.effects = await prepareActiveEffectCategories(this.document.effects);
-    return context;
+    const activeTab = this.tabGroups?.primary;
+    if (activeTab && !visibility[activeTab]) {
+      const firstVisible = Object.keys(visibility).find((tabId) => visibility[tabId]);
+      if (firstVisible) this.changeTab(firstVisible, 'primary');
+    }
   }
 }

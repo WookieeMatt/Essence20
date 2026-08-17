@@ -584,40 +584,53 @@ body.game .window-app {
   border-color: var(--e20-system-color, #5f5f5f);
 }
 
-/* Image + name always share the header's first line; everything else (the
-   size/subtype/etc. field row) is forced onto its own line below by giving it
-   a 100%-width flex-basis, since three siblings competing for flex-wrap space
-   otherwise wrap unpredictably depending on how wide that field row is. */
 .essence20 .sheet-header > .flexrow.gap-2 {
   flex: 1 1 100%;
+  align-items: flex-start;
+  row-gap: 0.5rem;
 }
 
-/* PR Sheet Headers */
-.essence20 .sheet-header > div:has(> .profile-img) {
-  flex: 0 0 auto;
+.essence20 .sheet-header > .flexrow.gap-2.header-row-bottom {
+  margin-top: 1rem;
 }
 
-.essence20 .sheet-header .profile-img {
-  flex: 0 0 auto;
-  width: 100px;
-  height: 100px;
-  margin-right: 10px;
-  border: 4px solid #b5b1b1;
-  border-radius: 15px;
-  object-fit: contain;
+.essence20 .sheet-header .sliced-border {
+  flex: 1 1 auto;
+  min-width: 6.5em;
+}
+
+.essence20 .sheet-header .sliced-border input:not(.skill-shift-select),
+.essence20 .sheet-header .sliced-border select:not(.skill-shift-select) {
+  flex: 1 1 0;
+  min-width: 0;
+  border: none;
+  background: var(--theme-panel-bg);
+}
+
+.essence20 .sheet-header .sliced-border.--col {
+  min-width: 8em;
+}
+
+.essence20 .header-name-field {
+  flex: 1 1 auto;
+  gap: 0.25rem;
+}
+
+.essence20 .header-name-field .sliced-border {
+  width: 100%;
 }
 
 .essence20 .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
-  margin: 5px 0;
-  border-bottom: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
 }
 
 .essence20 .sheet-header h1.charname input {
   width: 100%;
-  height: 100%;
-  margin: 0;
+  font-size: 1em;
+  font-weight: 700;
 }
 
 /* ITEMS */
@@ -649,28 +662,20 @@ body.game .window-app {
   display: flex;
 }
 
-.essence20 .lock-status {
-  flex-grow: 0;
-  white-space: nowrap;
-  margin-right: 2px;
-}
-
-.essence20 .actor-header-size {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 0;
-}
-
 .essence20 .pr-header-level {
-  flex-grow: 0;
+  flex: 0 0 auto;
+  justify-content: center;
 }
 
 .essence20 .pr-header-color {
-  flex-grow: 0;
+  flex: 0 0 auto;
 }
 
 .essence20 .pr-header-level-buttons {
-  flex-grow: 0;
+  flex: 0 0 auto;
+  gap: 2px;
+  font-size: 0.7em;
+  line-height: 1;
 }
 
 /* Generic Item Sheet Styling */
@@ -736,6 +741,10 @@ body.game .window-app {
   margin: 0.25rem 0;
 }
 
+.essence20 .resource-label {
+  font-weight: bold;
+}
+
 .roll-dialog div {
   margin-bottom: 10px;
   height: fit-content;
@@ -743,6 +752,19 @@ body.game .window-app {
 
 .roll-dialog div label > * {
   vertical-align: middle;
+}
+
+.roll-dialog-app .form-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.roll-dialog-app .form-footer button {
+  flex: 1 1 0;
+  border-radius: 0;
 }
 
 .essence20 .choice-buttons {
@@ -758,32 +780,210 @@ body.game .window-app {
   width: 100%;
 }
 
+.essence20.actor .window-content:has(> .essence20-sidebar) {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) 1fr;
+  grid-template-rows: auto auto 1fr;
+  column-gap: 1rem;
+  align-items: stretch;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > header.sheet-header {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.essence20 .essence20-sidebar {
+  grid-column: 1;
+  grid-row: 1/-1;
+  min-height: 0;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > nav.tabs {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > section.tab {
+  grid-column: 2;
+  grid-row: 3;
+  min-height: 0;
+}
+
+.essence20-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
+.essence20-sidebar.sheet-header {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  border: none;
+}
+
+.essence20-sidebar.sheet-header .profile-img {
+  align-self: center;
+  display: block;
+  width: 100%;
+  max-width: 110px;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--e20-system-color, var(--theme-accent));
+  margin: 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-panel {
+  align-self: stretch;
+  width: 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  gap: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.25rem;
+}
+
+.essence20-sidebar .essence20-sidebar-panel:has(> .sliced-border__label) {
+  padding-top: calc(0.25rem + 6px);
+}
+
+.essence20-sidebar .essence20-sidebar-panel > .sliced-border__label {
+  color: var(--theme-accent);
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container) > label {
+  color: var(--theme-text-color);
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container) > span {
+  color: var(--theme-muted-text);
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .stats-container {
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.essence20-sidebar-skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  color: var(--theme-text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--e20-system-color, var(--theme-accent));
+}
+
+.essence20-sidebar .essence20-sidebar-action-button i {
+  color: var(--theme-accent);
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button select {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+}
+
+.essence20-sidebar .add-specialization.invisible {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.essence20-sidebar.sheet-header .skill-header {
+  min-height: 20px;
+  font-size: 0.85em;
+}
+
+.essence20-sidebar.sheet-header .two-digit-input,
+.essence20-sidebar.sheet-header .one-digit-input {
+  height: 20px;
+  min-height: 20px;
+  padding: 1px 3px;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button) {
+  font-size: 0.9em;
+}
+
 .essence20 .skill-header {
-  font-size: 1.125em;
+  font-size: 0.85em;
   align-items: center;
   flex-wrap: nowrap;
   gap: 6px;
-  min-height: 28px;
-}
-
-.essence20 .skill-header .skill-roll {
-  flex-grow: 0;
-  margin-right: 5px;
-  margin-left: 5px;
-  padding-top: 4px;
+  min-height: 24px;
 }
 
 .essence20 .skill-header .skill-name {
+  display: flex;
+  align-items: center;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--theme-text-color);
-  margin-top: 2px;
+  text-decoration: none;
+  font-size: 1em;
+  margin-left: 5px;
+  flex: 1 1 auto;
+}
+
+.essence20 .skill-header .skill-shift-select {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.85em;
+  padding: 1px 3px;
+  text-overflow: ellipsis;
 }
 
 .essence20 .skill-header .add-specialization {
   flex-grow: 0;
   margin-right: 8px;
-  margin-top: 3px;
+  font-size: 0.75em;
 }
 
 .essence20 .skill-body {
@@ -791,22 +991,11 @@ body.game .window-app {
   flex-direction: column;
 }
 
-.essence20 .skill-body .shift-select {
-  display: flex;
-  flex-direction: row;
+.essence20 .skill-body .skill-specialized-row {
   gap: 5px;
-  justify-content: center;
+  justify-content: flex-end;
   margin-top: 5px;
   margin-bottom: 5px;
-  align-items: center;
-}
-
-.essence20 .skill-body .shift-select > * {
-  vertical-align: middle;
-}
-
-.essence20 .skill-body .shift-select .modifier-plus {
-  display: flex;
   align-items: center;
 }
 
@@ -862,6 +1051,8 @@ body.game .window-app {
   justify-content: left;
   flex-grow: 0;
   flex-basis: auto;
+  padding: 20px 8px 8px;
+  box-sizing: border-box;
 }
 
 .essence20 .skillscontainer {
@@ -1016,6 +1207,74 @@ body.game .window-app {
   text-align: center;
 }
 
+.essence20 .essence-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  isolation: isolate;
+}
+
+.essence20 .essence-column .skills-container {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.essence20 .essence-header:has(.essence-label) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto -18px;
+  position: relative;
+  z-index: 5;
+  padding: 5px 12px 5px 16px;
+  background-color: var(--theme-bg-color);
+  background-image: linear-gradient(var(--e20-system-color-50, transparent), var(--e20-system-color-50, transparent));
+  box-sizing: border-box;
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+}
+
+.essence20 .essence-header:has(.essence-label)::before {
+  pointer-events: none;
+  filter: var(--theme-border-filter);
+  position: absolute;
+  z-index: 0;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-style: solid;
+  border-image: var(--theme-border-image);
+  border-image-slice: 16;
+  border-width: 16px;
+}
+
+.essence20 .essence-header:has(.essence-label) .essence-label {
+  background: none;
+  border: none;
+  padding: 0;
+  min-width: 0;
+  color: var(--theme-muted-text, var(--theme-text-color));
+  font-weight: 600;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+.essence20 .essence-header:has(.essence-label) .two-digit-input {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-weight: 700;
+  font-size: 0.85em;
+  max-width: 28px;
+  padding: 2px;
+}
+
+.essence20.theme-light .essence-header:has(.essence-label) .two-digit-input {
+  background: transparent;
+}
+
 .essence20 .health-container {
   min-width: fit-content;
 }
@@ -1152,20 +1411,10 @@ body.game .window-app {
   gap: 0px;
 }
 
-/* ApplicationV2 sheets (e.g. the Companion sheet) render each tab's PART template as a
-   direct child of .window-content instead of nesting it inside a .sheet-body wrapper the
-   way the older AppV1 sheets do, and .window-content itself doesn't auto-scroll for them
-   the way it does for AppV1 windows. Without this, an ApplicationV2 tab that overflows its
-   window just gets silently clipped (or squeezes its siblings, like the header, to fit)
-   instead of scrolling. */
 .essence20.actor .window-content > [data-tab] {
   overflow-y: auto;
 }
 
-/* Match both hand-written tab nav links (`<a class="item e20-border-accent">`, used by
-   the AppV1 sheets) and Foundry's generic tab-navigation.hbs (`<a data-action="tab">`,
-   used by ApplicationV2 sheets like Companion) via the [data-tab] attribute they both
-   carry, rather than relying on the "item" class the generic template doesn't add. */
 .essence20 .tabs .item,
 .essence20 .tabs a[data-tab] {
   background: rgba(255, 255, 255, 0.05);
@@ -1206,8 +1455,27 @@ body.game .window-app {
   border-bottom: none;
 }
 
-.essence20 .e20-border-accent {
-  border-color: var(--e20-system-color, var(--theme-border-color));
+.essence20 .e20-border-accent:not(.profile-img):not(hr) {
+  position: relative;
+  border-color: transparent;
+  border-radius: 0;
+}
+
+.essence20 .e20-border-accent:not(.profile-img):not(hr)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--e20-system-color, var(--theme-accent));
+  -webkit-mask-box-image-source: var(--theme-border-image);
+  -webkit-mask-box-image-slice: 16;
+  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-repeat: stretch;
+  mask-border-source: var(--theme-border-image);
+  mask-border-slice: 16;
+  mask-border-width: 16px;
+  mask-border-repeat: stretch;
 }
 
 /* Needs to match the specificity of the `.sheet-header .profile-img` border shorthand
@@ -1261,13 +1529,8 @@ body.game .window-app {
   color: black;
 }
 
-.essence20 .spellcasting {
-  width: 35%;
-  height: fit-content;
-}
-
 .essence20 .spelllist {
-  width: 65%;
+  width: 100%;
 }
 
 .essence20 .diamond {
@@ -1527,13 +1790,21 @@ body.game .window-app {
   display: flex;
   position: relative;
   padding: 4px 2px;
-  background: var(--theme-panel-bg);
 }
 .sliced-border:has(> .sliced-border__label) {
   padding-top: 12px;
 }
 .sliced-border:has(> .sliced-border__label.sliced-border) {
   padding-top: 25px;
+}
+.sliced-border::after {
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  content: "";
+  inset: 0;
+  background: var(--theme-panel-bg);
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
 }
 .sliced-border::before {
   pointer-events: none;

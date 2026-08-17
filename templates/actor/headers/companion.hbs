@@ -1,23 +1,23 @@
 {{#>"systems/essence20/templates/actor/headers/common.hbs"}}
 {{#*inline "secondary-fields"}}
-<div class="actor-header-size">
-  <label for="system.type" class="resource-label">{{localize 'E20.CompanionType'}}</label>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.CompanionType'}}</label>
   <select name="system.type">
     {{selectOptions config.companionTypes selected=system.type}}
   </select>
 </div>
-<div class="actor-header-size">
-  <label for="system.availability" class="resource-label">{{localize 'E20.CompanionAvailability'}}</label>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.CompanionAvailability'}}</label>
   <select name="system.availability">
     {{selectOptions config.availabilities selected=system.availability}}
   </select>
 </div>
-<div>
-  <label for="conditioning" class="resource-label">{{ localize 'E20.ActorConditioning' }}</label>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{ localize 'E20.ActorConditioning' }}</label>
   {{numberInput system.conditioning name="system.conditioning" min=0 step=1}}
 </div>
-<div class="pr-header-color flex-group-center">
-  <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
+<div class="sliced-border pr-header-color flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
   <input type="color" class="picker" data-action="colorPicker" name="system.color" value="{{system.color}}" />
 </div>
 {{> "systems/essence20/templates/actor/parts/misc/initiative.hbs"}}

@@ -1,4 +1,172 @@
+@use "../variables" as v;
+
+.essence20.actor .window-content:has(> .essence20-sidebar) {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) 1fr;
+  grid-template-rows: auto auto 1fr;
+  column-gap: v.$gap-lg;
+  align-items: stretch;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > header.sheet-header {
+  grid-column: 2;
+  grid-row: 1;
+}
+
 .essence20 .essence20-sidebar {
-  float: left top;
-  min-height: 100%;
+  grid-column: 1;
+  grid-row: 1 / -1;
+  min-height: 0;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > nav.tabs {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > section.tab {
+  grid-column: 2;
+  grid-row: 3;
+  min-height: 0;
+}
+
+.essence20-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: v.$gap-sm;
+  padding: v.$gap-sm v.$gap-md;
+}
+
+.essence20-sidebar.sheet-header {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  border: none;
+}
+
+.essence20-sidebar.sheet-header .profile-img {
+  align-self: center;
+  display: block;
+  width: 100%;
+  max-width: 110px;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--e20-system-color, var(--theme-accent));
+  margin: 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-panel {
+  align-self: stretch;
+  width: 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  gap: v.$gap-sm;
+  padding-left: v.$gap-md;
+  padding-right: v.$gap-md;
+  padding-bottom: v.$gap-sm;
+}
+
+.essence20-sidebar .essence20-sidebar-panel:has(> .sliced-border__label) {
+  padding-top: calc(#{v.$gap-sm} + 6px);
+}
+
+.essence20-sidebar .essence20-sidebar-panel > .sliced-border__label {
+  color: var(--theme-accent);
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: v.$gap-sm;
+  min-width: 0;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container) > label {
+  color: var(--theme-text-color);
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container) > span {
+  color: var(--theme-muted-text);
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .stats-container {
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.essence20-sidebar-skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: v.$gap-sm;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  color: var(--theme-text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--e20-system-color, var(--theme-accent));
+}
+
+.essence20-sidebar .essence20-sidebar-action-button i {
+  color: var(--theme-accent);
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button select {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+}
+
+.essence20-sidebar .add-specialization.invisible {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.essence20-sidebar.sheet-header .skill-header {
+  min-height: 20px;
+  font-size: 0.85em;
+}
+
+.essence20-sidebar.sheet-header .two-digit-input,
+.essence20-sidebar.sheet-header .one-digit-input {
+  height: 20px;
+  min-height: 20px;
+  padding: 1px 3px;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button) {
+  font-size: 0.9em;
 }

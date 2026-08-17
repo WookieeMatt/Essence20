@@ -8,3 +8,16 @@
 .roll-dialog div label>* {
   vertical-align: middle;
 }
+
+.roll-dialog-app .form-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.roll-dialog-app .form-footer button {
+  flex: 1 1 0;
+  border-radius: 0;
+}

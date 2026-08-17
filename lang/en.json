@@ -425,6 +425,7 @@
     "NpcThreatLevel": "Threat Level",
     "OpenItem": "Open Item",
     "Origin": "Origin",
+    "OriginDrop": "Drop an Origin here",
     "OriginBenefitDescription": "Benefit Description",
     "OriginBenefit": "Origin Benefit",
     "OriginBonusSkill": "Select Origin Bonus Skill",

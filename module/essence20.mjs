@@ -9,9 +9,9 @@ import { Essence20Item } from "./documents/item.mjs";
 import { Essence20CharacterActorSheet } from "./sheets/character-sheet.mjs";
 import { Essence20CompanionActorSheet } from "./sheets/companion-sheet.mjs";
 import { Essence20NPCActorSheet } from "./sheets/npc-sheet.mjs";
-import { Essence20MegaformActorSheet } from "./sheets/megaform.mjs";
-import { Essence20VehicleActorSheet } from "./sheets/vehicle.mjs";
-import { Essence20ZordActorSheet } from "./sheets/zord.mjs";
+import { Essence20MegaformActorSheet } from "./sheets/megaform-sheet.mjs";
+import { Essence20VehicleActorSheet } from "./sheets/vehicle-sheet.mjs";
+import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
@@ -22,7 +22,7 @@ import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { getNumActions } from "./helpers/actor.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
-import { registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
+import { applyThemeClass, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./helpers/utils.mjs";
 
 function registerSystemSettings() {
@@ -365,6 +365,13 @@ Hooks.on("getSceneControlButtons", (controls) => {
 
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
+});
+
+/* Every DialogV2 (ours or Foundry core's own, e.g. the item-creation dialog) gets the same
+   theme-wrapper light/dark theming as the system's actor/item sheets and apps. */
+Hooks.on("renderDialogV2", (dialog, html) => {
+  html.classList.add("essence20", "theme-wrapper", "window-app");
+  applyThemeClass(html);
 });
 
 /* Hook to organize the item options by type */

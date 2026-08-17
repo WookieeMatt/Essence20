@@ -1,17 +1,21 @@
 ﻿const { HandlebarsApplicationMixin } = foundry.applications.api;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
+import SheetOptions from "../apps/sheet-options.mjs";
 import { applyThemeClass } from "../settings.js";
 import {
   onCreateActiveEffect,
   onDeleteActiveEffect,
   onEditActiveEffect,
   onToggleActiveEffect,
+  prepareActiveEffectCategories,
 } from "../helpers/effects.mjs";
 import { applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
+  onCrewNumberUpdate,
   onSystemActorsDelete,
+  onVehicleRoleUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
@@ -54,18 +58,22 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
       morph: this.#onMorph,
       rest: this.#onRest,
       rollable: this.#onRoll,
+      sheetOptions: this.#onSheetOptions,
+      shieldActivationToggle: this.#onShieldActivationToggle,
+      shieldEquipToggle: this.#onShieldEquipToggle,
       systemActorsDelete: this.#onSystemActorsDelete,
       toggleAccordion: this.#toggleAccordion,
       toggleAccordionHeader: this.#toggleAccordionHeader,
       toggleEffect: this.#toggleActiveEffect,
+      toggleLock: this.#onToggleLock,
       traitSelector: this.#onManageSelectTrait,
       transform: this.#onTransform,
     },
     classes: ["essence20", "sheet", "actor", "theme-wrapper"],
     tag: 'form',
     position: {
-      width: 620,
-      height: 574,
+      width: 1050,
+      height: 720,
     },
     form: {
       submitOnChange: true,
@@ -73,6 +81,16 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     },
     window: {
       resizable: true,
+      controls: [
+        {
+          icon: "fas fa-cog",
+          label: "E20.SheetOptions",
+          action: "sheetOptions",
+          visible: function () {
+            return this.actor.isOwner && ["npc", "playerCharacter"].includes(this.actor.type);
+          },
+        },
+      ],
     },
   };
 
@@ -81,7 +99,94 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
     applyThemeClass(this.element);
     applySystemColorCssVariables(this.element, this.actor);
+    this._applyLockedState();
+    this._activateMacroDragDrop();
+    this._activateCrewListeners();
   }
+
+  /**
+   * Reflect the actor's locked state in the DOM: readonly inputs, disabled selects, and the
+   * lock/unlock icon. Re-run on every render since the actor's system.isLocked can change
+   * (via the toggleLock action) and Foundry auto-re-renders the sheet after that update.
+   */
+  _applyLockedState() {
+    const isLocked = this.actor.system.isLocked;
+
+    for (const input of this.element.querySelectorAll('input')) {
+      input.readOnly = isLocked;
+    }
+
+    // Health/stun current values stay editable even while locked; stun max stays locked always.
+    for (const input of this.element.querySelectorAll('.no-lock')) {
+      input.readOnly = false;
+    }
+
+    for (const input of this.element.querySelectorAll('.no-unlock')) {
+      input.readOnly = true;
+    }
+
+    for (const select of this.element.querySelectorAll('select')) {
+      select.disabled = isLocked;
+    }
+
+    this._applyTitlebarLockToggle(isLocked);
+  }
+
+  /**
+   * Add a lock/unlock icon button to the far left of the window titlebar (matching the
+   * position of similar toggles in other systems, e.g. dnd5e's prepared-spells toggle),
+   * so the sheet can be locked/unlocked without needing to open the sheet body first. The
+   * window frame is only built once (unlike the PARTS content, which re-renders), so this
+   * inserts the button on first render and just updates its icon/tooltip afterward.
+   */
+  _applyTitlebarLockToggle(isLocked) {
+    const header = this.element.querySelector('.window-header');
+    if (!header) return;
+
+    let button = header.querySelector('.header-lock-toggle');
+    if (!button) {
+      button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'header-lock-toggle header-control icon';
+      button.dataset.action = 'toggleLock';
+      header.insertBefore(button, header.firstChild);
+    }
+
+    button.classList.toggle('fa-solid', true);
+    button.classList.toggle('fa-lock', isLocked);
+    button.classList.toggle('fa-lock-open', !isLocked);
+    button.dataset.tooltip = game.i18n.localize(isLocked ? 'E20.ActorLockOn' : 'E20.ActorLockOff');
+    button.setAttribute('aria-label', button.dataset.tooltip);
+  }
+
+  /**
+   * Make item rows draggable onto the hotbar to create macros, matching the AppV1 sheets.
+   */
+  _activateMacroDragDrop() {
+    if (!this.actor.isOwner) return;
+
+    for (const li of this.element.querySelectorAll('li.item')) {
+      if (li.classList.contains('inventory-header')) continue;
+      li.setAttribute('draggable', true);
+      li.addEventListener('dragstart', (event) => this._onDragStart(event), false);
+    }
+  }
+
+  /**
+   * Vehicle/zord crew role assignment (system-actors.hbs's .vehicle-role select and the
+   * .num-crew driver/passenger count inputs) are change events, which AppV2's click-only
+   * [data-action] delegation doesn't cover, so they need manual binding.
+   */
+  _activateCrewListeners() {
+    for (const select of this.element.querySelectorAll('.vehicle-role')) {
+      select.addEventListener('change', (event) => onVehicleRoleUpdate(event, this));
+    }
+
+    for (const input of this.element.querySelectorAll('.num-crew')) {
+      input.addEventListener('change', (event) => onCrewNumberUpdate(event, this));
+    }
+  }
+
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
@@ -94,6 +199,9 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     // Add the actor's system data to context for easier access, as well as flags.
     context.system = actorData.system;
     context.flags = actorData.flags;
+
+    // Roll data for TinyMCE/ProseMirror editors so inline rolls in text can resolve.
+    context.rollData = this.actor.getRollData();
 
     if (['npc', 'zord', 'megaform', 'vehicle', 'companion'].includes(actorData.type)) {
       this._prepareDisplayedNpcSkills(context);
@@ -118,6 +226,32 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
 
+    return context;
+  }
+
+  /**
+   * Shared per-PART context prep for the "effects" and "notes" tabs, which are identical
+   * across every actor type that has them. Subclasses with additional PARTS should call
+   * `super._preparePartContext(partId, context, options)` first and extend the switch for
+   * their own type-specific parts.
+   */
+  async _preparePartContext(partId, context, options) {
+    context = await super._preparePartContext(partId, context, options);
+
+    switch (partId) {
+    case "effects": context = await this._prepareEffectsContext(context); break;
+    case "notes": context = await this._prepareNotesContext(context); break;
+    }
+
+    return context;
+  }
+
+  async _prepareEffectsContext(context) {
+    context.effects = prepareActiveEffectCategories(this.document.effects);
+    return context;
+  }
+
+  async _prepareNotesContext(context) {
     return context;
   }
 
@@ -531,11 +665,21 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   static #onLevelUp() {
-    _onLevelChangeHelper(1);
+    this._onLevelChangeHelper(1);
   }
 
   static #onlevelDown() {
-    _onLevelChangeHelper(-1);
+    this._onLevelChangeHelper(-1);
+  }
+
+  static #onToggleLock() {
+    this.actor.update({
+      "system.isLocked": !this.actor.system.isLocked,
+    });
+  }
+
+  static #onSheetOptions(event) {
+    new SheetOptions(this.actor, event).render(true);
   }
 
 }

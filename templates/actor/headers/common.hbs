@@ -5,36 +5,37 @@
     <img class="profile-img e20-border-accent" src="{{actor.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
   </div>
 
-  {{!-- Name --}}
-  <div class="flexcol flex-grow-1">
-    <div class="flexrow">
-      <label for="name" class="resource-label">{{localize 'E20.ActorName'}}</label>
-      <a class="lock-status" data-tooltip="{{localize 'E20.ActorLockTitle'}}">
-        {{#if system.isLocked}} {{localize 'E20.ActorLockOn'}} {{else}} {{localize 'E20.ActorLockOff'}} {{/if}}
-        <i class="fas ml-2"></i>
-      </a>
+  <div class="flexrow gap-2 header-row-top">
+    {{!-- Name --}}
+    <div class="header-name-field">
+      <div class="sliced-border">
+        <label class="sliced-border__label">{{localize 'E20.ActorName'}}</label>
+        <h1 class="charname"><input name="name" type="text" value="{{document.name}}" placeholder="Name" /></h1>
+      </div>
     </div>
-    <h1 class="charname"><input name="name" type="text" value="{{document.name}}" placeholder="Name" /></h1>
+
+    {{!-- Size --}}
+    <div class="sliced-border">
+      <label class="sliced-border__label">{{localize 'E20.ActorSize'}}</label>
+      {{#if system.isTransformed}}
+        <select name="system.altModesize">
+          {{selectOptions config.actorSizes selected=system.altModesize}}
+        </select>
+      {{else}}
+        <select name="system.size">
+          {{selectOptions config.actorSizes selected=system.size}}
+        </select>
+      {{/if}}
+    </div>
+
+    {{#> topRowFields}}
+    {{!-- Custom top-row fields here --}}
+    {{/topRowFields}}
   </div>
 
-    <div class="flexrow gap-2">
-      {{!-- Size --}}
-      <div class="actor-header-size">
-        {{#if system.isTransformed}}
-          <label for="system.altModesize" class="resource-label">{{localize 'E20.ActorSize'}}</label>
-          <select name="system.altModesize">
-            {{selectOptions config.actorSizes selected=system.altModesize}}
-          </select>
-        {{else}}
-          <label for="system.size" class="resource-label">{{localize 'E20.ActorSize'}}</label>
-          <select name="system.size">
-            {{selectOptions config.actorSizes selected=system.size}}
-          </select>
-        {{/if}}
-      </div>
-
-      {{#> secondary-fields}}
-      {{!-- Custom secondary fields here --}}
-      {{/secondary-fields}}
-    </div>
+  <div class="flexrow gap-2 header-row-bottom">
+    {{#> secondary-fields}}
+    {{!-- Custom secondary fields here --}}
+    {{/secondary-fields}}
+  </div>
 </header>

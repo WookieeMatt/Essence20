@@ -1,4 +1,5 @@
 import { E20 } from "./config.mjs";
+import RollOptionsDialog from "../apps/roll-options-dialog.mjs";
 
 export class RollDialog {
   /**
@@ -8,8 +9,6 @@ export class RollDialog {
   constructor(i18n=null) {
     this._i18n = i18n;
   }
-
-  static _warnedAppV1 = true;
 
   /**
    * Localizes the given text.
@@ -30,68 +29,29 @@ export class RollDialog {
    * Displays the dialog used for skill and specialization rolls.
    * @param {Event.currentTarget.element.dataset} dataset   The dataset of the click event.
    * @param {Actor} actor   The actor performing the roll.
-   * @returns {Promise<Dialog>}   The dialog to be displayed.
+   * @returns {Promise<Object>}   The processed roll options, or { cancelled: true }.
    */
   async getSkillRollOptions(dataset, skillDataset, actor) {
-    const template = "systems/essence20/templates/dialog/roll-dialog.hbs";
     const snag =
       skillDataset.snag ||
       E20.skillShiftList.indexOf('d20') == E20.skillShiftList.indexOf(skillDataset.shift);
     const edge = skillDataset.edge;
-    const html = await foundry.applications.handlebars.renderTemplate(
-      template,
-      {
-        canCritD2: dataset.canCritD2,
-        shiftUp: dataset.shiftUp || 0,
-        shiftDown: dataset.shiftDown || 0,
-        isSpecialized: dataset.isSpecialized,
-        snag: snag && !edge,
-        edge: edge && !snag,
-        normal: edge == snag,
-        rolePoints: dataset.rolePoints,
-      },
-    );
+    const context = {
+      canCritD2: dataset.canCritD2,
+      shiftUp: dataset.shiftUp || 0,
+      shiftDown: dataset.shiftDown || 0,
+      isSpecialized: dataset.isSpecialized,
+      snag: snag && !edge,
+      edge: edge && !snag,
+      normal: edge == snag,
+      rolePoints: dataset.rolePoints,
+    };
+    const title = this._localize('E20.RollDialogTitle', {
+      actor: actor.name, skill: E20.originSkills[dataset.skill], shift: E20.skillShifts[skillDataset.shift],
+    });
 
     return new Promise(resolve => {
-      const data = {
-        title: this._localize('E20.RollDialogTitle', {
-          actor: actor.name, skill: E20.originSkills[dataset.skill], shift: E20.skillShifts[skillDataset.shift],
-        }),
-        content: html,
-        buttons: {
-          normal: {
-            label: this._localize('E20.RollDialogRollButton'),
-            callback: html => resolve(this._processSkillRollOptions(html[0].querySelector("form"))),
-          },
-          cancel: {
-            label: this._localize('E20.DialogCancelButton'),
-            /* eslint-disable no-unused-vars */
-            callback: html => resolve({ cancelled: true }),
-          },
-        },
-        default: "normal",
-        close: () => resolve({ cancelled: true }),
-      };
-      const options = {};
-      new Dialog(data, options).render(true);
+      new RollOptionsDialog(context, title, resolve).render(true);
     });
-  }
-
-  /**
-   * Processes options for the skill and specialization roll dialog.
-   * @returns {Object}   The processed roll options.
-   * @private
-   */
-  _processSkillRollOptions(form) {
-    return {
-      canCritD2: form.canCritD2.checked,
-      edge: form.snagEdge.value == 'edge',
-      shiftDown: parseInt(form.shiftDown.value),
-      shiftUp: parseInt(form.shiftUp.value),
-      snag: form.snagEdge.value == 'snag',
-      isSpecialized: form.isSpecialized.checked,
-      timesToRoll: parseInt(form.timesToRoll.value),
-      applyRolePointsUpshift: form?.applyRolePointsUpshift?.checked,
-    };
   }
 }

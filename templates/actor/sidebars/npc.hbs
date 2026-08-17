@@ -1,6 +1,24 @@
-<section class="essence20-sidebar">
+<section class="essence20-sidebar sheet-header">
   {{!-- Profile image --}}
-  <div class="flexcol" style="flex-grow: .175; gap: 5px;">
-    <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+  <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+
+  <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-resources">
+    <label class="sliced-border__label"><i class="fas fa-heart"></i> Resources</label>
+    <div>
+      <label>{{localize 'E20.ActorHealth'}}</label>
+      <input class="two-digit-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
+      <span>/</span>
+      <input class="two-digit-input no-lock" type="number" name="system.health.max" value="{{system.health.max}}" min="0" step="1"/>
+    </div>
+    <div>
+      <label>{{localize 'E20.ActorStun'}}</label>
+      <input class="two-digit-input no-lock" type="number" name="system.stun.value" value="{{system.stun.value}}" min="0" step="1" />
+      <span>/</span>
+      <input class="two-digit-input no-unlock" type="number" value="{{system.health.value}}" disabled/>
+    </div>
+  </div>
+  <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-defenses">
+    <label class="sliced-border__label"><i class="fas fa-shield-halved"></i> {{localize 'E20.DefenseTitle'}}</label>
+    {{> "systems/essence20/templates/actor/parts/misc/npc-defenses.hbs"}}
   </div>
 </section>

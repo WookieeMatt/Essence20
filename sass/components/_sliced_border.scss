@@ -15,7 +15,6 @@
   display: flex;
   position: relative;
   padding: 4px 2px;
-  background: var(--theme-panel-bg);
 
   &:has(> .sliced-border__label) {
     padding-top: v.$gap-sliced-border + 3px;
@@ -23,6 +22,16 @@
 
   &:has(> .sliced-border__label.sliced-border) {
     padding-top: v.$gap-sliced-border + 16px;
+  }
+
+  &::after {
+    pointer-events: none;
+    position: absolute;
+    z-index: -1;
+    content: "";
+    inset: 0;
+    background: var(--theme-panel-bg);
+    clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
   }
 
   &::before {
