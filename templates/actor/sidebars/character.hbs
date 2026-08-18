@@ -1,0 +1,135 @@
+<section class="essence20-sidebar sheet-header">
+  {{!-- Profile image --}}
+  <img class="profile-img" style="border-color: {{system.color}};" src="{{document.img}}" data-edit="img" data-tooltip="{{localize 'E20.ChangeImage'}}" />
+
+  <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-resources">
+      <label class="sliced-border__label"><i class="fas fa-heart"></i> Resources</label>
+      <div>
+        <label>{{localize 'E20.ActorHealth'}}</label>
+        <input class="two-digit-input no-lock" type="number" name="system.health.value" value="{{system.health.value}}" min="0" step="1" />
+        <span>/</span>
+        <input class="two-digit-input no-lock" type="number" name="system.health.max" value="{{system.health.max}}" min="0" step="1"/>
+      </div>
+      <div>
+        <label>{{localize 'E20.ActorStun'}}</label>
+        <input class="two-digit-input no-lock" type="number" name="system.stun.value" value="{{system.stun.value}}" min="0" step="1" />
+        <span>/</span>
+        <input class="two-digit-input no-unlock" type="number" value="{{system.health.value}}" disabled/>
+      </div>
+      {{#if actor.system.canTransform}}
+      <div>
+        <label>{{localize "E20.Energon"}}</label>
+        <input class="centered-input no-lock" data-field="system.energon.normal.value" type="number"
+          name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
+        /
+        <input class="centered-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
+          value="{{system.energon.normal.max}}" />
+      </div>
+      {{/if}}
+      {{#if actor.system.canMorph}}
+      <div>
+        <label>Personal Power</label>
+        <input class="centered-input no-lock" data-field="system.powers.personal.value" type="number"
+          name="system.powers.personal.value" value="{{system.powers.personal.value}}" min="0" step="1" />
+        /
+        <input class="centered-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
+          value="{{system.powers.personal.max}}" min="0" step="1" />
+      </div>
+      {{/if}}
+
+      {{#if system.powers.sorcerous.levelTaken}}
+      <div>
+        <label>Sorcerous Power</label>
+        <input class="centered-input no-lock" data-field="system.powers.sorcerous.value" type="number"
+          name="system.powers.sorcerous.value" value="{{system.powers.sorcerous.value}}" min="0" step="1" />
+        /
+        <input class="centered-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
+          value="{{system.powers.sorcerous.max}}" min="0" step="1" />
+      </div>
+      {{/if}}
+    </div>
+    <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
+      <label class="sliced-border__label"><i class="fas fa-bolt"></i> Special</label>
+      <div class="essence20-sidebar-action-button essence20-sidebar-initiative">
+        <div class="item-image">
+          <a class="rollable" data-action="rollable" data-roll-type="initiative"><i class="fas fa-dice-d20" data-roll-type="initiative"></i></a>
+        </div>
+        <select name="system.initiative.skill">
+          {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
+        </select>
+      </div>
+      <a class="essence20-sidebar-action-button" data-action="rest" data-tooltip="{{localize "E20.RestButtonTitle"}}">
+        <i class="fas fa-face-sleeping"></i>
+        {{localize "E20.RestButtonTitle"}}
+      </a>
+
+      {{#if system.canTransform}}
+        <a class="essence20-sidebar-action-button" data-action="transform">
+          <i class="fas fa-steering-wheel"></i>
+          {{localize 'E20.Transform'}}
+        </a>
+      {{/if}}
+      {{#if system.canMorph}}
+        <a class="essence20-sidebar-action-button" data-action="morph">
+          <i class="fas fa-sword"></i>
+          {{#if system.isMorphed}}
+            {{localize 'E20.ButtonUnmorph'}}
+          {{else}}
+            {{localize 'E20.ButtonMorph'}}
+          {{/if}}
+        </a>
+      {{/if}}
+      <div class="essence20-sidebar-skill-list">
+        {{#each @root.config.skillsByEssence.any as |skill|}}
+          {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
+        {{/each}}
+        {{!-- Wealth Die, styled as a plain skill row rather than the boxed widget used elsewhere --}}
+        <div class="flexrow skill-header e20-skill-header" data-e20-color="{{system.color}}">
+          <a class="rollable skill-name" data-action="rollable" data-roll-type="skill" data-skill="wealth"
+            data-shift-up="{{system.skills.wealth.shiftUp}}" data-shift-down="{{system.skills.wealth.shiftDown}}"
+            data-shift="{{system.skills.wealth.shift}}" data-is-specialized="{{system.skills.wealth.isSpecialized}}"
+            data-tooltip="{{localize 'E20.SkillRollTitle'}}">
+            {{localize 'E20.ActorWealth'}}
+          </a>
+          <select class="skill-shift-select" name="system.skills.wealth.shift">
+            {{selectOptions @root.config.wealthShifts selected=system.skills.wealth.shift}}
+          </select>
+          <a class="add-specialization invisible">
+            <i class="fas fa-plus"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-speeds">
+      <label class="sliced-border__label"><i class="fas fa-person-running"></i> Speeds</label>
+      {{#if system.movementNotSet}}
+        <div>Set PC movement by adding an Origin</div>
+      {{else}}
+        {{#each @root.config.movementTypes as |name type|}}
+          {{#with (lookup @root.system.movement type) as |moveData|}}
+            <div>
+              <label>{{name}}</label>
+              {{#if @root.system.movementIsReadOnly}}
+                <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+              {{else if @root.system.isTransformed}}
+                {{#if (eq @root.actor.type "npc")}}
+                  <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />
+                {{/if}}
+              {{else}}
+                <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" min="0" step="5" />
+              {{/if}}
+            </div>
+          {{/with}}
+        {{/each}}
+      {{/if}}
+    </div>
+    <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-defenses">
+      <label class="sliced-border__label"><i class="fas fa-shield-halved"></i> {{localize 'E20.DefenseTitle'}}</label>
+      {{#each system.defenses as |defense|}}
+        <div>
+          <label>{{lookup @root.config.defenses defense.name}}</label>
+          <input class="two-digit-input no-lock" data-tooltip="{{defense.string}}" type="number" name="system.defenses.{{defense.name}}.total" value="{{defense.total}}" min="0" step="1" />
+        </div>
+      {{/each}}
+    </div>
+</section>

@@ -1,31 +1,38 @@
 @use "../variables" as v;
 
 .essence20 .skill-header {
-  font-size: 1.125em;
+  font-size: 0.85em;
   align-items: center;
   flex-wrap: nowrap;
   gap: 6px;
-  min-height: 28px;
-}
-
-.essence20 .skill-header .skill-roll {
-  flex-grow: 0;
-  margin-right: 5px;
-  margin-left: 5px;
-  padding-top: 4px;
+  min-height: 24px;
 }
 
 .essence20 .skill-header .skill-name {
+  display: flex;
+  align-items: center;
   white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
   color: var(--theme-text-color);
-  margin-top: 2px;
+  text-decoration: none;
+  font-size: 1em;
+  margin-left: 5px;
+  flex: 1 1 auto;
+}
+
+.essence20 .skill-header .skill-shift-select {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.85em;
+  padding: 1px 3px;
+  text-overflow: ellipsis;
 }
 
 .essence20 .skill-header .add-specialization {
   flex-grow: 0;
   margin-right: 8px;
-  margin-top: 3px;
+  font-size: 0.75em;
 }
 
 .essence20 .skill-body {
@@ -33,22 +40,11 @@
   flex-direction: column;
 }
 
-.essence20 .skill-body .shift-select {
-  display: flex;
-  flex-direction: row;
+.essence20 .skill-body .skill-specialized-row {
   gap: 5px;
-  justify-content: center;
+  justify-content: flex-end;
   margin-top: 5px;
   margin-bottom: 5px;
-  align-items: center;
-}
-
-.essence20 .skill-body .shift-select > * {
-  vertical-align: middle;
-}
-
-.essence20 .skill-body .shift-select .modifier-plus {
-  display: flex;
   align-items: center;
 }
 
@@ -104,6 +100,8 @@
   justify-content: left;
   flex-grow: 0;
   flex-basis: auto;
+  padding: 20px 8px 8px;
+  box-sizing: border-box;
 }
 
 .essence20 .skillscontainer {

@@ -1,4 +1,4 @@
-<label for="system.focus" class="resource-label">{{localize 'E20.ActorFocus'}}</label>
+<label for="system.focus" class="sliced-border__label">{{localize 'E20.ActorFocus'}}</label>
 
 {{#if @root.focuses}}
   {{#each @root.focuses as |item|}}
@@ -6,7 +6,7 @@
       <div class="flexrow align-center gap-2">
         <input type="text" name="system.role" value="{{item.name}}" />
         <div class="item-controls flex-grow-0">
-          <a class="item-control item-delete" data-tooltip="{{localize 'E20.DeleteItem'}}">
+          <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
             <i class="fas fa-trash"></i>
           </a>
         </div>

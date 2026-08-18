@@ -1,43 +1,41 @@
 {{#>"systems/essence20/templates/actor/headers/common.hbs"}}
-{{#*inline "secondary-fields"}}
-<div>
-  <label for="system.background.pronouns" class="resource-label">{{localize 'E20.ActorPronouns'}}</label>
-  <input type="text" name="system.background.pronouns" value="{{system.background.pronouns}}" />
+{{#*inline "topRowFields"}}
+<div class="sliced-border --col">
+  {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
 </div>
-<div>
+<div class="sliced-border pr-header-level">
+  <label class="sliced-border__label">{{localize 'E20.ActorLevel'}}</label>
+  <div class="flexrow align-center gap-2">
+    {{numberInput system.level name="system.level" min=0 step=1 disabled=true class="two-digit-input"}}
+    {{#unless system.isLocked}}
+      {{#if @root.role}}
+        <div class="flexcol pr-header-level-buttons">
+          <a data-action="levelUp" data-tooltip="E20.LevelButtonUp" {{#if (eq system.level 20)}}disabled{{/if}}>
+            <i class="fa{{#if (eq system.level 20)}}-regular{{/if}} fa-up"></i>
+          </a>
+          <a data-action="levelDown" data-tooltip="E20.LevelButtonDown" {{#if (eq system.level 1)}}disabled{{/if}}>
+            <i class="fa{{#if (eq system.level 1)}}-regular{{/if}} fa-down"></i>
+          </a>
+        </div>
+      {{/if}}
+    {{/unless}}
+  </div>
+</div>
+{{/inline}}
+{{#*inline "secondary-fields"}}
+<div class="sliced-border --col">
   {{> "systems/essence20/templates/actor/parts/items/role.hbs"}}
 </div>
 {{#inArray '["giJoe", "transformers"]' @root.role.system.version}}
-  <div>
+  <div class="sliced-border --col">
     {{> "systems/essence20/templates/actor/parts/items/focus.hbs"}}
   </div>
 {{/inArray}}
-<div>
-  <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
-  <input type="text" name="system.languages" value="{{system.languages}}" />
+<div class="sliced-border --col">
+  {{> "systems/essence20/templates/actor/parts/items/origin-field.hbs"}}
 </div>
-<div>
-  {{> "systems/essence20/templates/actor/parts/items/faction.hbs"}}
-</div>
-<div class="pr-header-level">
-  <label for="system.level" class="resource-label">{{localize 'E20.ActorLevel'}}</label>
-  {{numberInput system.level name="system.level" min=0 step=1 disabled=true class="two-digit-input"}}
-</div>
-{{#unless system.isLocked}}
-  {{#if @root.role}}
-    <div class="flexcol pr-header-level-buttons align-right">
-      <div></div>
-      <a data-action="levelUp" data-tooltip="E20.LevelButtonUp" {{#if (eq system.level 20)}}disabled{{/if}}>
-        <i class="fa{{#if (eq system.level 20)}}-regular{{/if}} fa-up"></i>
-      </a>
-      <a data-action="levelDown" data-tooltip="E20.LevelButtonDown" {{#if (eq system.level 1)}}disabled{{/if}}>
-        <i class="fa{{#if (eq system.level 1)}}-regular{{/if}} fa-down"></i>
-      </a>
-    </div>
-  {{/if}}
-{{/unless}}
-<div class="pr-header-color flex-group-center">
-  <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
+<div class="sliced-border pr-header-color flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
   <input type="color" data-action="colorPicker" class="picker" name="system.color" value="{{system.color}}" />
 </div>
 {{/inline}}

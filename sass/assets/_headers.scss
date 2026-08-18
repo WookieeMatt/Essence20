@@ -31,40 +31,53 @@
   border-color: var(--e20-system-color, #5f5f5f);
 }
 
-/* Image + name always share the header's first line; everything else (the
-   size/subtype/etc. field row) is forced onto its own line below by giving it
-   a 100%-width flex-basis, since three siblings competing for flex-wrap space
-   otherwise wrap unpredictably depending on how wide that field row is. */
 .essence20 .sheet-header > .flexrow.gap-2 {
   flex: 1 1 100%;
+  align-items: flex-start;
+  row-gap: v.$gap-md;
 }
 
-/* PR Sheet Headers */
-.essence20 .sheet-header > div:has(> .profile-img) {
-  flex: 0 0 auto;
+.essence20 .sheet-header > .flexrow.gap-2.header-row-bottom {
+  margin-top: v.$gap-lg;
 }
 
-.essence20 .sheet-header .profile-img {
-  flex: 0 0 auto;
-  width: 100px;
-  height: 100px;
-  margin-right: 10px;
-  border: v.$border;
-  border-radius: 15px;
-  object-fit: contain;
+.essence20 .sheet-header .sliced-border {
+  flex: 1 1 auto;
+  min-width: 6.5em;
+}
+
+.essence20 .sheet-header .sliced-border input:not(.skill-shift-select),
+.essence20 .sheet-header .sliced-border select:not(.skill-shift-select) {
+  flex: 1 1 0;
+  min-width: 0;
+  border: none;
+  background: var(--theme-panel-bg);
+}
+
+.essence20 .sheet-header .sliced-border.--col {
+  min-width: 8em;
+}
+
+.essence20 .header-name-field {
+  flex: 1 1 auto;
+  gap: v.$gap-sm;
+}
+
+.essence20 .header-name-field .sliced-border {
+  width: 100%;
 }
 
 .essence20 .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
-  margin: 5px 0;
-  border-bottom: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
 }
 
 .essence20 .sheet-header h1.charname input {
   width: 100%;
-  height: 100%;
-  margin: 0;
+  font-size: 1em;
+  font-weight: 700;
 }
 
 /* ITEMS */
@@ -96,27 +109,19 @@
   display: flex;
 }
 
-.essence20 .lock-status {
-  flex-grow: 0;
-  white-space: nowrap;
-  margin-right: 2px;
-}
-
-.essence20 .actor-header-size {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 0;
-}
-
 .essence20 .pr-header-level {
-  flex-grow: 0;
+  flex: 0 0 auto;
+  justify-content: center;
 }
 
 .essence20 .pr-header-color {
-  flex-grow: 0;
+  flex: 0 0 auto;
 }
 
 .essence20 .pr-header-level-buttons {
-  flex-grow: 0;
+  flex: 0 0 auto;
+  gap: 2px;
+  font-size: 0.7em;
+  line-height: 1;
 }
 

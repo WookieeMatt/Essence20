@@ -1,22 +1,22 @@
 {{#>"systems/essence20/templates/actor/headers/common.hbs"}}
 {{#*inline "secondary-fields"}}
-<div>
-  <label for="threatLevel" class="resource-label">{{localize 'E20.NpcThreatLevel'}}</label>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.NpcThreatLevel'}}</label>
   {{numberInput system.threatLevel name="system.threatLevel" min=0 step=1}}
 </div>
 
-<div>
-  <label for="conditioning" class="resource-label">{{ localize 'E20.ActorConditioning' }}</label>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{ localize 'E20.ActorConditioning' }}</label>
   {{numberInput system.conditioning name="system.conditioning" min=0 step=1}}
 </div>
 
-<div>
-  <label for="system.languages" class="resource-label">{{localize 'E20.ActorLanguages'}}</label>
+<div class="sliced-border">
+  <label class="sliced-border__label">{{localize 'E20.ActorLanguages'}}</label>
   <input type="text" name="system.languages" value="{{system.languages}}" />
 </div>
 
-<div class="pr-header-color flex-group-center">
-  <label for="system.color" class="resource-label">{{localize 'E20.ActorColor'}}</label>
+<div class="sliced-border pr-header-color flex-group-center">
+  <label class="sliced-border__label">{{localize 'E20.ActorColor'}}</label>
   <input type="color" class="picker" name="system.color" value="{{system.color}}" />
 </div>
 

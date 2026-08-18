@@ -18,20 +18,10 @@
   gap: 0px;
 }
 
-/* ApplicationV2 sheets (e.g. the Companion sheet) render each tab's PART template as a
-   direct child of .window-content instead of nesting it inside a .sheet-body wrapper the
-   way the older AppV1 sheets do, and .window-content itself doesn't auto-scroll for them
-   the way it does for AppV1 windows. Without this, an ApplicationV2 tab that overflows its
-   window just gets silently clipped (or squeezes its siblings, like the header, to fit)
-   instead of scrolling. */
 .essence20.actor .window-content > [data-tab] {
   overflow-y: auto;
 }
 
-/* Match both hand-written tab nav links (`<a class="item e20-border-accent">`, used by
-   the AppV1 sheets) and Foundry's generic tab-navigation.hbs (`<a data-action="tab">`,
-   used by ApplicationV2 sheets like Companion) via the [data-tab] attribute they both
-   carry, rather than relying on the "item" class the generic template doesn't add. */
 .essence20 .tabs .item,
 .essence20 .tabs a[data-tab] {
   background: rgba(255,255,255,0.05);
@@ -72,8 +62,27 @@
   border-bottom: none;
 }
 
-.essence20 .e20-border-accent {
-  border-color: var(--e20-system-color, var(--theme-border-color));
+.essence20 .e20-border-accent:not(.profile-img):not(hr) {
+  position: relative;
+  border-color: transparent;
+  border-radius: 0;
+}
+
+.essence20 .e20-border-accent:not(.profile-img):not(hr)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--e20-system-color, var(--theme-accent));
+  -webkit-mask-box-image-source: var(--theme-border-image);
+  -webkit-mask-box-image-slice: 16;
+  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-repeat: stretch;
+  mask-border-source: var(--theme-border-image);
+  mask-border-slice: 16;
+  mask-border-width: 16px;
+  mask-border-repeat: stretch;
 }
 
 /* Needs to match the specificity of the `.sheet-header .profile-img` border shorthand
