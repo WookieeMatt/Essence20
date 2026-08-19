@@ -1,0 +1,59 @@
+{
+  "folder": null,
+  "name": "Moxie",
+  "type": "rolePoints",
+  "_id": "LGdwtqgyy1EXkKva",
+  "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 0
+    },
+    "bonus": {
+      "defenseBonus": {
+        "cleverness": false,
+        "evasion": false,
+        "toughness": false,
+        "willpower": false
+      },
+      "increase": 0,
+      "level20Value": null,
+      "increaseLevels": [],
+      "startingValue": null,
+      "type": "none",
+      "value": 0
+    },
+    "isActivatable": false,
+    "isActive": false,
+    "powerCost": null,
+    "resource": {
+      "increase": 1,
+      "level20Value": null,
+      "level20ValueIsUnlimited": false,
+      "increaseLevels": ["level5", "level8", "level11", "level14", "level16"],
+      "max": null,
+      "startingMax": 3,
+      "value": 0
+    }
+  },
+  "effects": [],
+  "sort": 50000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787050000000,
+    "modifiedTime": 1787050000000,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!LGdwtqgyy1EXkKva"
+}

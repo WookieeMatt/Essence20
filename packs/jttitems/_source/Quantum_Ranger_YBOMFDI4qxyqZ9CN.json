@@ -1,0 +1,71 @@
+{
+  "folder": "HtRo5BFMvtC9Hq6u",
+  "name": "Quantum Ranger",
+  "type": "role",
+  "_id": "YBOMFDI4qxyqZ9CN",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "A Jump Through Time",
+      "page": 0
+    },
+    "items": {
+      "e69c": { "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT", "img": "systems/essence20/assets/icons/items/faction.svg", "name": "Power Ranger", "type": "faction" },
+      "4ffc": { "uuid": "Compendium.essence20.jump_through_time.Item.wVMjX0rO6AnVVL6u", "img": "systems/essence20/assets/icons/items/rolePoints.svg", "name": "Quantum Dice", "type": "rolePoints" },
+      "b85f": { "uuid": "Compendium.essence20.jump_through_time.Item.sgRiSOX0hDIKkcMh", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Spectrum Shifted", "type": "perk", "subtype": "role", "level": 1 },
+      "17e7": { "uuid": "Compendium.essence20.jump_through_time.Item.E0XzDTQLQZ9Pcplj", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantum Morph", "type": "perk", "subtype": "role", "level": 4 },
+      "aa2c": { "uuid": "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantasaurus Rex", "type": "perk", "subtype": "role", "level": 4 },
+      "39d0": { "uuid": "Compendium.essence20.jump_through_time.Item.GhnRjiNBFpNd9TFY", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantum Power I", "type": "perk", "subtype": "role", "level": 5 },
+      "d009": { "uuid": "Compendium.essence20.jump_through_time.Item.tOugALzdjmKHD8Ck", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Rex Feature", "type": "perk", "subtype": "role", "level": 6 },
+      "6053": { "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Extra Attack", "type": "perk", "subtype": "role", "level": 7 },
+      "efc8": { "uuid": "Compendium.essence20.jump_through_time.Item.je2kKcc6EIz6xRSN", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantum Power II", "type": "perk", "subtype": "role", "level": 7 },
+      "3b6d": { "uuid": "Compendium.essence20.jump_through_time.Item.GAWOYpBZm6dLsaSq", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Focused Strike", "type": "perk", "subtype": "role", "level": 9 },
+      "d7b6": { "uuid": "Compendium.essence20.jump_through_time.Item.G0px31rp3pPsSLfj", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantum Power III", "type": "perk", "subtype": "role", "level": 10 },
+      "fb30": { "uuid": "Compendium.essence20.jump_through_time.Item.tOugALzdjmKHD8Ck", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Rex Feature", "type": "perk", "subtype": "role", "level": 10 },
+      "4623": { "uuid": "Compendium.essence20.jump_through_time.Item.5kUbeIW2DrjbcScE", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Chronomantics", "type": "perk", "subtype": "role", "level": 12 },
+      "d30a": { "uuid": "Compendium.essence20.jump_through_time.Item.AdthAoALMotTixoG", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantum Power IV", "type": "perk", "subtype": "role", "level": 13 },
+      "1f8e": { "uuid": "Compendium.essence20.pr_crb.Item.mtwdgpBBU7zNXnTh", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Extra Attack", "type": "perk", "subtype": "role", "level": 14 },
+      "1a0a": { "uuid": "Compendium.essence20.jump_through_time.Item.tOugALzdjmKHD8Ck", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Rex Feature", "type": "perk", "subtype": "role", "level": 14 },
+      "980a": { "uuid": "Compendium.essence20.jump_through_time.Item.e70Jm3uH5A3mKmSM", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Timeslide", "type": "perk", "subtype": "role", "level": 15 },
+      "e35c": { "uuid": "Compendium.essence20.jump_through_time.Item.tOugALzdjmKHD8Ck", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Rex Feature", "type": "perk", "subtype": "role", "level": 17 },
+      "da38": { "uuid": "Compendium.essence20.jump_through_time.Item.SPag4omlp4dQUX5B", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantum Power V", "type": "perk", "subtype": "role", "level": 18 },
+      "8000": { "uuid": "Compendium.essence20.jump_through_time.Item.YlHp7yzbOsytNUjD", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantum Master", "type": "perk", "subtype": "role", "level": 20 }
+    },
+    "adjustments": { "health": [] },
+    "armors": { "qualified": [], "trained": ["light", "medium"] },
+    "essenceLevels": {
+      "smarts": ["level6", "level10", "level14", "level20"],
+      "social": ["level7", "level11", "level16"],
+      "speed": ["level5", "level9", "level13", "level17", "level19"],
+      "strength": ["level1", "level4", "level8", "level12", "level15", "level18"]
+    },
+    "gridPowerLevels": ["level6", "level11", "level16"],
+    "hasSpecialAdvancement": false,
+    "hasSpectrumShifted": true,
+    "isAdvanced": true,
+    "perkLevels": { "general": ["level8", "level12", "level16", "level19"] },
+    "powers": { "personal": { "increase": 2, "levels": ["level7", "level10", "level13", "level16", "level19"], "regeneration": 4, "starting": 4 } },
+    "skillDie": { "isUsed": false, "name": "", "levels": [], "specializedLevels": [] },
+    "skills": [],
+    "version": "powerRangers",
+    "weapons": { "qualified": [], "trained": [] }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": { "default": 0 },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787028795941,
+    "modifiedTime": 1787028795941,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!YBOMFDI4qxyqZ9CN"
+}

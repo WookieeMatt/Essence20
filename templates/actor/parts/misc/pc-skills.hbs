@@ -9,11 +9,17 @@
     </div>
     <div class="skills-container e20-border-accent">
       <div class="essence-header">
-        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.strength.value skillRankString=system.skillRankAllocation.strength.string}}
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          skillRankAllocation=system.skillRankAllocation.strength.value skillRankString=system.skillRankAllocation.strength.string
+          defenseLabel=(lookup @root.config.defenses 'toughness') defenseValue=system.defenses.toughness.total}}
       </div>
       <div class="flexrow skill-header e20-skill-header conditioning-row" data-e20-color="{{system.color}}">
         <span class="skill-name">{{localize 'E20.ActorConditioning'}}</span>
-        <input class="one-digit-input" type="number" name="system.conditioning" value="{{system.conditioning}}" min="0" step="1" />
+        <input class="conditioning-input" type="number" name="system.conditioning" value="{{system.conditioning}}" min="0" step="1" />
+        {{!-- Invisible spacer matching add-specialization's exact footprint, so the input above lines up over the skill-shift-select dropdowns in the rows below rather than sitting further left. --}}
+        <a class="add-specialization" aria-hidden="true" tabindex="-1" style="visibility: hidden;">
+          <i class="fas fa-plus"></i>
+        </a>
       </div>
       {{#each @root.config.skillsByEssence.strength as |skill|}}
         {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill)}}
@@ -31,10 +37,9 @@
     </div>
     <div class="skills-container e20-border-accent">
       <div class="essence-header">
-        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string}}
-        <span data-tooltip="{{localize 'E20.SpeedActionsTitle'}}">
-          {{localize "E20.SpeedActionsLabel"}}: {{numActions.movement}}{{localize "E20.SpeedActionsLabelMovement"}}, {{numActions.standard}}{{localize "E20.SpeedActionsLabelStandard"}}, {{numActions.free}}{{localize "E20.SpeedActionsLabelFree"}}
-        </span>
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string
+          defenseLabel=(lookup @root.config.defenses 'evasion') defenseValue=system.defenses.evasion.total}}
       </div>
       {{#each @root.config.skillsByEssence.speed as |skill|}}
         {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='speed' skill=skill fields=(lookup @root.system.skills skill)}}
@@ -52,7 +57,9 @@
     </div>
     <div class="skills-container e20-border-accent">
       <div class="essence-header">
-        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.smarts.value skillRankString=system.skillRankAllocation.smarts.string}}
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          skillRankAllocation=system.skillRankAllocation.smarts.value skillRankString=system.skillRankAllocation.smarts.string
+          defenseLabel=(lookup @root.config.defenses 'willpower') defenseValue=system.defenses.willpower.total}}
       </div>
      {{#each @root.config.skillsByEssence.smarts as |skill|}}
         {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='smarts' skill=skill fields=(lookup @root.system.skills skill)}}
@@ -70,7 +77,9 @@
     </div>
     <div class="skills-container e20-border-accent">
       <div class="essence-header">
-        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs" skillRankAllocation=system.skillRankAllocation.social.value skillRankString=system.skillRankAllocation.social.string}}
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          skillRankAllocation=system.skillRankAllocation.social.value skillRankString=system.skillRankAllocation.social.string
+          defenseLabel=(lookup @root.config.defenses 'cleverness') defenseValue=system.defenses.cleverness.total}}
       </div>
       {{#each @root.config.skillsByEssence.social as |skill|}}
         {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}

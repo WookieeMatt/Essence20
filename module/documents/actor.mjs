@@ -158,6 +158,20 @@ export class Essence20Actor extends Actor {
   /**
   * Prepare Health specific data.
   */
+  /**
+   * The RolePoints Item belonging to the Actor's base Role specifically, ignoring any
+   * RolePoints granted by an additive Role (e.g. Old Hand's own Moxie Points) - defense/health
+   * bonuses and the Level 20 unlimited-resource flag are about the base Role's own resource.
+   * @returns {Item|undefined}
+   */
+  _getBaseRolePoints() {
+    const rolePointsList = this.items.documentsByType.rolePoints;
+    return rolePointsList.find(rolePoints => {
+      const parentRole = this.items.get(rolePoints.getFlag('essence20', 'parentId'));
+      return !parentRole || !parentRole.system.isAdditive;
+    });
+  }
+
   _prepareHealth () {
     const system = this.system;
     system.healthIsReadOnly = true;
@@ -180,10 +194,9 @@ export class Essence20Actor extends Actor {
     }
 
     // Health from Role Points
-    const rolePointsList = this.items.documentsByType.rolePoints;
-    if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'healthBonus'
-      && (!rolePointsList[0].system.isActivatable || rolePointsList[0].system.isActive)) {
-      const rolePoints = rolePointsList[0];
+    const rolePoints = this._getBaseRolePoints();
+    if (rolePoints && rolePoints.system.bonus.type == 'healthBonus'
+      && (!rolePoints.system.isActivatable || rolePoints.system.isActive)) {
       rolePointsName = rolePoints.name;
 
       if (this.system.level == 20) {
@@ -221,10 +234,8 @@ export class Essence20Actor extends Actor {
       let rolePointsName = game.i18n.localize('E20.RolePoints');
 
       // Armor from Role Points
-      const rolePointsList = this.items.documentsByType.rolePoints;
-      if (rolePointsList.length) {
-        const rolePoints = rolePointsList[0]; // There should only be one RolePoints
-
+      const rolePoints = this._getBaseRolePoints();
+      if (rolePoints) {
         if (rolePoints.system.bonus.type == 'defenseBonus' && rolePoints.system.bonus.defenseBonus[defenseType]
           && (!rolePoints.system.isActivatable || rolePoints.system.isActive)) {
           rolePointsName = rolePoints.name;
@@ -310,9 +321,8 @@ export class Essence20Actor extends Actor {
    * Prepare Resource (from Role Points) type specific data.
    */
   _prepareResource() {
-    const rolePointsList = this.items.documentsByType.rolePoints;
-    if (rolePointsList.length) {
-      const rolePoints = rolePointsList[0]; // There should only be one RolePoints
+    const rolePoints = this._getBaseRolePoints();
+    if (rolePoints) {
       this.system.useUnlimitedResource = rolePoints.system.resource.level20ValueIsUnlimited && this.system.level == 20;
     }
   }

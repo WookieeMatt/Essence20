@@ -52,8 +52,10 @@ export const character = () => ({
   canHaveZord: makeBool(false),
   canMorph: makeBool(false),
   canQualify: makeBool(false),
+  canShowWealthDie: makeBool(false),
   canSpellcast: makeBool(false),
   canTransform: makeBool(false),
+  canUseWeird: makeBool(false),
   defenses: new fields.SchemaField({
     toughness: makeDefensesFields('toughness', 'strength'),
     evasion: makeDefensesFields('evasion', 'speed'),
@@ -83,6 +85,7 @@ export const character = () => ({
   isMorphed: makeBool(false),
   isTransformed: makeBool(false),
   level: makeInt(1),
+  oldHandTransitionLevel: makeInt(null),
   originEssencesIncrease: makeStr(),
   originSkillsIncrease: makeStr(),
   powers: new fields.SchemaField({

@@ -7,6 +7,9 @@
   position: fixed;
   flex-direction: column;
   display: flex;
+  background: var(--theme-panel-bg);
+  border-radius: 0;
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
 
   .loading {
     display: none;

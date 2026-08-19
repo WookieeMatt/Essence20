@@ -13,6 +13,19 @@
   margin-bottom: 0;
 }
 
+.essence20 .essence-header .skill-rank-allocation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  font-size: 0.75em;
+  color: var(--theme-muted-text, var(--theme-text-color));
+}
+
+.essence20 .essence-header .skill-rank-defense {
+  font-weight: 600;
+}
+
 .essence20 .essence-header .essence-label {
   font-size: 1.2em;
   vertical-align: middle;

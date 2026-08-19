@@ -149,9 +149,8 @@ export async function onRest(actorSheet) {
 
   // Resetting Role Points
   const rolePointsList = actor.items.documentsByType.rolePoints;
-  if (rolePointsList.length) {
-    const rolePoints = rolePointsList[0];
-    rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
+  for (const rolePoints of rolePointsList) {
+    await rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
     ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
   }
 

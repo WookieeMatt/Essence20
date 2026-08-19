@@ -4,7 +4,11 @@
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
-  gap: 6px;
+  /* Chamfered tabs (see .essence20 .tabs a[data-tab] below) already cut their own top corners,
+     so any gap here widens into an angular wedge at the top between each pair of tabs - most
+     visible in light mode where the page background shows through it. Butting them together
+     (no gap) lets adjacent chamfers meet as a single small notch instead. */
+  gap: 0;
   margin-bottom: 8px;
 }
 
@@ -22,20 +26,64 @@
   overflow-y: auto;
 }
 
+/* Chamfered top corners (cut at 8px, matching the depth used before) instead of a plain
+   rounded-rectangle tab, matching the reference tab strip.
+   clip-path clips a box's border along with everything else, but can't draw a stroke ALONG the
+   new diagonal edge it creates - the straight sides keep their border, but the cut corner itself
+   is just a bare edge with the raw background showing through, which is what looked like a gap
+   even with .sheet-tabs' gap set to 0 above. Faked here with two stacked layers instead: this
+   element paints as a solid border-color block in the full chamfered shape, and the ::before
+   below sits 1px in from every edge with its own (very slightly shallower) chamfer and the
+   actual fill color, so a 1px rim of the border color shows all the way around - diagonal edge
+   included - rather than only on the straight edges.
+   Sized down (smaller font, tighter padding) since up to 12 of these can be visible at once
+   (see character-sheet.mjs TABS) - at the previous size, two-word labels like "Alt Mode" had
+   nowhere near enough room and either wrapped or got clipped. */
 .essence20 .tabs .item,
 .essence20 .tabs a[data-tab] {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--e20-system-color, var(--theme-border-color));
-  border-radius: 8px 8px 0 0;
-  padding: 5px 10px 7px;
+  position: relative;
+  background: var(--theme-border-color);
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px);
+  border: none;
+  padding: 3px 4px 5px;
   flex: 1;
+  min-width: 0;
   color: var(--theme-text-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
+  min-height: 22px;
+  font-size: 0.75em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.85;
+}
+
+.essence20 .tabs .item::before,
+.essence20 .tabs a[data-tab]::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: 0;
+  pointer-events: none;
+  /* Must be an opaque, theme-correct color rather than the translucent rgba(255,255,255,0.05)
+     tint this used before the outer element became a solid border-color block (see the .item
+     rule above) - that tint was calibrated to composite against the page background showing
+     through, which worked when the tab itself had no background of its own. Now that there's a
+     dark border-color layer directly behind it, a 5%-opacity white tint over that just reads as
+     "still basically dark" in light mode too, making the text unreadable. */
+  background: var(--theme-panel-bg);
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%, 0 6px);
   box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18);
-  opacity: 0.9;
+}
+
+.essence20 .tabs .item span,
+.essence20 .tabs a[data-tab] span {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .essence20 .tabs .item .nav-item-label {
@@ -43,9 +91,23 @@
   font-weight: 600;
 }
 
-.essence20 .tabs .active {
-  background: var(--theme-panel-bg);
-  border-bottom: 1px solid var(--theme-panel-bg);
+/* Only the active tab picks up the actor's system color, matching how the Essence Badge
+   (.essence-header:has(.essence-label) in _essence.scss) tints itself with the same
+   --e20-system-color-50 gradient over --theme-bg-color, so it stands out from its otherwise-
+   neutral siblings instead of every tab carrying it regardless of state.
+   The [data-tab] attribute selector on the base rule above outweighs a plain .active class
+   selector, so it's repeated here to win the cascade rather than relying on source order. */
+.essence20 .tabs .item.active,
+.essence20 .tabs a[data-tab].active {
+  background: var(--e20-system-color, var(--theme-accent));
+  opacity: 1;
+}
+
+.essence20 .tabs .item.active::before,
+.essence20 .tabs a[data-tab].active::before {
+  background-color: var(--theme-bg-color);
+  background-image: linear-gradient(var(--e20-system-color-50, transparent), var(--e20-system-color-50, transparent));
+  box-shadow: none;
 }
 
 .essence20 .tabs .item.active,
@@ -62,10 +124,27 @@
   border-bottom: none;
 }
 
+/* default-border.svg (the --theme-border-image asset drawn by the ::before rule below) cuts
+   its top-left and bottom-right corners diagonally - but that trim is only a mask/overlay, it
+   doesn't affect the box's OWN background (set per-component: .collapsible-item-container,
+   .stats-container, table cells, etc, each with their own plain rectangular background). Without
+   a matching clip-path here, that background shows through past the trim's cut corners instead
+   of stopping at them. min(22px, 50%) matches both the trim's rendered corner width (22px) AND
+   the point at which the mask-border-width corner scaling below actually kicks in: per the CSS
+   border-image corner-overlap rule, opposing 22px corners on an axis get scaled down together
+   once their sum (44px) exceeds that axis's size, i.e. exactly at 50% of that axis, not 25% -
+   25% clipped the background's own corner far short of where the trim's diagonal really lands on
+   any short element (collapsed single-line rows, narrow table cells), leaving a background
+   triangle poking out past the visible trim. */
 .essence20 .e20-border-accent:not(.profile-img):not(hr) {
   position: relative;
   border-color: transparent;
   border-radius: 0;
+  clip-path: polygon(
+    min(22px, 50%) 0, 100% 0,
+    100% calc(100% - min(22px, 50%)), calc(100% - min(22px, 50%)) 100%,
+    0 100%, 0 min(22px, 50%)
+  );
 }
 
 .essence20 .e20-border-accent:not(.profile-img):not(hr)::before {
@@ -77,11 +156,11 @@
   background-color: var(--e20-system-color, var(--theme-accent));
   -webkit-mask-box-image-source: var(--theme-border-image);
   -webkit-mask-box-image-slice: 16;
-  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-width: 22px;
   -webkit-mask-box-image-repeat: stretch;
   mask-border-source: var(--theme-border-image);
   mask-border-slice: 16;
-  mask-border-width: 16px;
+  mask-border-width: 22px;
   mask-border-repeat: stretch;
 }
 

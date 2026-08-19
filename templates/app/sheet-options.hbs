@@ -37,6 +37,18 @@
     {{/"systems/essence20/templates/app/parts/field.hbs"}}
   {{/unless}}
 
+  {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanUseWeird'}}
+  {{#*inline "field-inputs"}}
+    <input type="checkbox" id="canUseWeird" name="system.canUseWeird" {{checked system.canUseWeird}}/>
+  {{/inline}}
+  {{/"systems/essence20/templates/app/parts/field.hbs"}}
+
+  {{#> "systems/essence20/templates/app/parts/field.hbs" label='E20.CanShowWealthDie'}}
+  {{#*inline "field-inputs"}}
+    <input type="checkbox" id="canShowWealthDie" name="system.canShowWealthDie" {{checked system.canShowWealthDie}}/>
+  {{/inline}}
+  {{/"systems/essence20/templates/app/parts/field.hbs"}}
+
   {{#if system.canMorph}}
     <div class="flexrow">
       <label for="system.image.morphed">{{localize 'E20.MorphedImage'}}</label>

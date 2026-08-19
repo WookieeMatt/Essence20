@@ -1,0 +1,57 @@
+@use "../variables" as v;
+
+$leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear';
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) {
+  margin-bottom: v.$gap-md;
+}
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .flexrow {
+  color: var(--e20-system-color, var(--theme-accent)) !important;
+  font-weight: bold;
+  border-bottom: 1px solid var(--theme-border-color);
+  padding-bottom: v.$gap-sm;
+  margin-bottom: v.$gap-sm;
+}
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > li.item {
+  padding: 2px v.$gap-sm;
+  border-radius: calc(v.$border-radius / 3);
+}
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > li.item:nth-of-type(even) {
+  background: var(--theme-panel-bg);
+}
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > hr {
+  display: none;
+}
+
+.essence20 :is(#{$leveled-tabs}) .leveled-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 :is(#{$leveled-tabs}) .leveled-item-badge {
+  flex: 0 0 1.5em;
+  color: var(--e20-system-color, var(--theme-accent)) !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+.essence20 :is(#{$leveled-tabs}) .leveled-item-icon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border: none;
+  border-radius: 4px;
+}
+
+.essence20 :is(#{$leveled-tabs}) .leveled-item-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -52,16 +52,21 @@ export async function onEquipmentPackageDrop(actor, droppedItem) {
  * @param {String} type The type of Items to drop
  * @param {Item} parentItem The Items' parent Item
  * @param {Number} lastProcessedLevel The flag for the last time the Actor changed level
+ * @param {Number} currentLevel (Optional) The level to compare item.level against, in place of
+ *                               owner.system.level - used by an "additive" Role (e.g. Old Hand)
+ *                               whose own table runs on a level independent of the Actor's
+ *                               real character level. Defaults to owner.system.level.
  */
-export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
+export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null, currentLevel=null) {
   let copyWasCreated = false;
   let skipToNext = false;
+  const effectiveLevel = currentLevel ?? owner.system.level;
   for (const [key, item] of Object.entries(items)) {
 
     if (item.type == type) {
       const createNewItem =
         !["role", "focus"].includes(parentItem.type)
-        || !item.level || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+        || !item.level || (item.level <= effectiveLevel && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
@@ -402,8 +407,12 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
 * @param {Item} item The Item that was deleted
 * @param {Actor} actor The Actor that owns the parent Item
 * @param {Number} previousLevel (optional) The value of the last time the Actor leveled up
+* @param {Number} currentLevel (Optional) The level to compare attachment.level against, in
+*                               place of actor.system.level - see createItemCopies() above for
+*                               why (an "additive" Role's own independent level track).
 */
-export async function deleteAttachmentsForItem(item, actor, previousLevel=null) {
+export async function deleteAttachmentsForItem(item, actor, previousLevel=null, currentLevel=null) {
+  const effectiveLevel = currentLevel ?? actor.system.level;
   for (const actorItem of actor.items) {
     // _stats.compendiumSource is only populated by specific "import from compendium" flows,
     // not by the plain Item.create(doc, {parent}) that createItemCopies() uses to grant Role/
@@ -418,7 +427,7 @@ export async function deleteAttachmentsForItem(item, actor, previousLevel=null) 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
         if (itemSourceId == attachment.uuid && item._id == parentId) {
-          if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+          if (!previousLevel || (attachment.level > effectiveLevel && attachment.level <= previousLevel)) {
             if (attachment.type == "perk") {
               if (actorItem.system.advances.canAdvance) {
                 if (actorItem.system.advances.currentValue > actorItem.system.advances.baseValue) {
