@@ -91,6 +91,7 @@ export class Dice {
       calculatedShiftUp = dataset.shiftUp + essenceShifts.any.shiftUp;
       calculatedShiftDown = dataset.shiftDown + essenceShifts.any.shiftDown;
     }
+
     calculatedShiftUp += combatModifiers.shiftUp;
     calculatedShiftDown += combatModifiers.shiftDown;
 

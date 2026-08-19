@@ -121,9 +121,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     ].filter(Boolean).join(' + ');
     context.system.skillRankAllocation['strength'].value += context.system.conditioning;
 
-    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.skills[context.system.initiative.skill].shift));
-    const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
-
   }
 
   _onRender(context, options) {
