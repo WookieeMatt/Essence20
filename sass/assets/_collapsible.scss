@@ -1,6 +1,5 @@
 @use "../variables" as v;
 
-/* Style the button that is used to open and close the collapsible content */
 .collapsible {
   background-color: #eee;
   color: #444;
@@ -63,4 +62,65 @@
 
 .essence20 .item-label-checkbox {
   margin: 0;
+}
+
+.essence20 .role-points-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list .item {
+  font-size: 0.8em;
+}
+
+.essence20 section.tab.gear > .collapsible-item-container > .items-list > li.item {
+  font-size: 0.85em;
+}
+
+.essence20 section.tab.gear .collapsible-item-subcontainer .items-list .item {
+  font-size: calc(0.8em / 0.85);
+}
+
+.essence20 .item-image {
+  flex: none;
+}
+
+.essence20 .weapon-effect-row {
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.essence20 .item-image .flexrow {
+  flex-wrap: nowrap;
+}
+
+.essence20 .weapon-effect-name {
+  flex: none;
+  max-width: 130px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.essence20 .weapon-effect-skill {
+  flex: none;
+  width: 90px;
+  padding: 1px 3px;
+}
+
+.essence20 .weapon-effect-chips {
+  flex: none;
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin-left: auto;
+}
+
+/* .chip (from _chip.scss, the same pill styling used for the weapon's own summary chips). */
+.essence20 .weapon-effect-row .weapon-effect-chip {
+  flex: none;
 }

@@ -92,6 +92,7 @@ export class Dice {
       calculatedShiftUp = dataset.shiftUp + essenceShifts.any.shiftUp;
       calculatedShiftDown = dataset.shiftDown + essenceShifts.any.shiftDown;
     }
+
     calculatedShiftUp += combatModifiers.shiftUp;
     calculatedShiftDown += combatModifiers.shiftDown;
 
@@ -120,13 +121,14 @@ export class Dice {
       : (dataset.defenseType || 'none');
 
     updatedShiftDataset.rolePoints = null;
-    const rolePointsList = actor.items?.documentsByType?.rolePoints;
 
     let rolePoints = null;
-    if (item?.type == 'weaponEffect' && rolePointsList?.length) {
-      rolePoints = rolePointsList[0]; // There should only be one RolePoints
-      if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
+    if (item?.type == 'weaponEffect') {
+      rolePoints = actor._getBaseRolePoints?.();
+      if (rolePoints?.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
         updatedShiftDataset.rolePoints = rolePoints;
+      } else {
+        rolePoints = null;
       }
     }
 
@@ -143,7 +145,8 @@ export class Dice {
     case 'weaponEffect':
       {
         const roleList = actor.items?.documentsByType?.role;
-        roleSkillDieName = roleList?.length ? roleList[0].system.skillDie.name : null;
+        const baseRole = roleList?.find(role => !role.system.isAdditive);
+        roleSkillDieName = baseRole ? baseRole.system.skillDie.name : null;
       }
 
       label = this._getWeaponRollLabel(dataset, skillRollOptions, item, roleSkillDieName);

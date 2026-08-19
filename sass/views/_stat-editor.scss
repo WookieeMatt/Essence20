@@ -1,0 +1,29 @@
+@use "../variables" as v;
+
+.stat-editor {
+  .window-content {
+    padding: v.$gap-lg;
+  }
+}
+
+.stat-editor-rows {
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-md;
+}
+
+.stat-editor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: v.$gap-lg;
+
+  label {
+    color: var(--theme-text-color);
+  }
+
+  input {
+    width: 70px;
+    text-align: center;
+  }
+}

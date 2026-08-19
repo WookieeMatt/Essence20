@@ -1,0 +1,27 @@
+<div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-speeds">
+  <a class="sliced-border__label sliced-border__label--clickable" data-action="editSpeeds" data-tooltip="{{localize 'E20.StatEditorSpeedsTooltip'}}"><i class="fas fa-person-running"></i> Speeds <i class="fas fa-gear sliced-border__label-edit-icon"></i></a>
+  <div data-tooltip="{{localize 'E20.SpeedActionsTitle'}}">
+    <label>{{localize "E20.SpeedActionsLabel"}}</label>
+    <span>{{numActions.movement}}{{localize "E20.SpeedActionsLabelMovement"}}, {{numActions.standard}}{{localize "E20.SpeedActionsLabelStandard"}}, {{numActions.free}}{{localize "E20.SpeedActionsLabelFree"}}</span>
+  </div>
+  {{#if system.movementNotSet}}
+    <div>Set PC movement by adding an Origin</div>
+  {{else}}
+    {{#each @root.config.movementTypes as |name type|}}
+      {{#with (lookup @root.system.movement type) as |moveData|}}
+        <div>
+          <label>{{name}}</label>
+          {{#if @root.system.movementIsReadOnly}}
+            <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
+          {{else if @root.system.isTransformed}}
+            {{#if (eq @root.actor.type "npc")}}
+              <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />
+            {{/if}}
+          {{else}}
+            <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" min="0" step="5" />
+          {{/if}}
+        </div>
+      {{/with}}
+    {{/each}}
+  {{/if}}
+</div>

@@ -2,6 +2,7 @@
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
 import SheetOptions from "../apps/sheet-options.mjs";
+import StatEditor from "../apps/stat-editor.mjs";
 import { applyThemeClass } from "../settings.js";
 import {
   onCreateActiveEffect,
@@ -10,7 +11,7 @@ import {
   onToggleActiveEffect,
   prepareActiveEffectCategories,
 } from "../helpers/effects.mjs";
-import { applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
+import { applySystemActorsColorCssVariables, applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
   onCrewNumberUpdate,
@@ -48,7 +49,9 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
       bonusEdit: this.#onEditMorphToughnessBonus,
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
+      editDefenses: this.#onEditDefenses,
       editEffect: this.#editActiveEffect,
+      editSpeeds: this.#onEditSpeeds,
       inlineEdit: this.#onInlineEdit,
       itemCreate: this.#onItemCreate,
       itemDelete: this.#onItemDelete,
@@ -99,6 +102,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
     applyThemeClass(this.element);
     applySystemColorCssVariables(this.element, this.actor);
+    applySystemActorsColorCssVariables(this.element);
     this._applyLockedState();
     this._activateMacroDragDrop();
     this._activateCrewListeners();
@@ -233,10 +237,9 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     //Prepare Initiative Skills
     context.initiativeSkills = this._prepareInitiativeSkills(actorData);
 
-    // Prepare number of actions
-    if (actorData.type == "playerCharacter") {
-      context.numActions = getNumActions(this.actor);
-    }
+    // Prepare number of actions - shown on every actor type's sidebar Speeds panel now,
+    // not just Character's.
+    context.numActions = getNumActions(this.actor);
 
     // Prepare actors that are attached to other actors
     prepareSystemActors(this.document, context);
@@ -366,13 +369,27 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     let equippedArmorEvasion = 0;
     let equippedArmorToughness = 0;
     let faction = null;
-    let role = null;
-    let rolePoints = null;
+    const roles = [];
+    const rolePointsList = [];
 
     // Iterate through items, allocating to containers
     for (let i of context.document.items) {
       i.img = i.img || DEFAULT_TOKEN;
       const itemType = i.type;
+
+      // Items granted by a Role/Focus/Origin/Influence/etc. record the level they were
+      // granted at on the granting item's own system.items map, not on the granted item
+      // itself - look it up via the parentId/collectionId flags createItemCopies() sets, so
+      // leveled item lists (Perks, Spells, Background, Powers, Gear) can show a level number
+      // without duplicating that data onto every item. Items that were never granted this way
+      // (dropped directly, or types createItemCopies never grants) simply have no parentId and
+      // resolve to null here, which the templates treat as "no badge".
+      {
+        const parentId = i.getFlag('essence20', 'parentId');
+        const collectionId = i.getFlag('essence20', 'collectionId');
+        const parent = parentId ? this.actor.items.get(parentId) : null;
+        i.system.grantedLevel = parent?.system.items?.[collectionId]?.level ?? null;
+      }
 
       switch (itemType) {
       case 'alteration':
@@ -453,34 +470,34 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
         spells.push(i);
         break;
       case 'rolePoints':
-        rolePoints = i;
+        rolePointsList.push(i);
 
         {
           const defenseLetters = [];
 
-          if (rolePoints.system.bonus.defenseBonus.cleverness) {
+          if (i.system.bonus.defenseBonus.cleverness) {
             defenseLetters.push('C');
           }
 
-          if (rolePoints.system.bonus.defenseBonus.evasion) {
+          if (i.system.bonus.defenseBonus.evasion) {
             defenseLetters.push('E');
           }
 
-          if (rolePoints.system.bonus.defenseBonus.toughness) {
+          if (i.system.bonus.defenseBonus.toughness) {
             defenseLetters.push('T');
           }
 
-          if (rolePoints.system.bonus.defenseBonus.willpower) {
+          if (i.system.bonus.defenseBonus.willpower) {
             defenseLetters.push('W');
           }
 
-          rolePoints.system.bonus.defenseBonus.string = defenseLetters.join(', ');
-          rolePoints.system.isSpendable = !!(rolePoints.system.resource.max || rolePoints.system.powerCost);
+          i.system.bonus.defenseBonus.string = defenseLetters.join(', ');
+          i.system.isSpendable = !!(i.system.resource.max || i.system.powerCost);
         }
 
         break;
       case 'role':
-        role = i;
+        roles.push(i);
         break;
       case 'specialization':
         {
@@ -511,6 +528,20 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
       }
     }
 
+    // Items granted at a specific level (grantedLevel, set above) list in ascending level
+    // order, so the Perks/Spells/Background/Powers/Gear tabs read top-to-bottom like a level
+    // progression instead of actor.items' arbitrary insertion order. Items without a level
+    // (player-picked perks, directly-dropped gear, etc.) sort as equal and keep their existing
+    // order (Array#sort is stable).
+    const byGrantedLevel = (a, b) => (a.system.grantedLevel ?? Infinity) - (b.system.grantedLevel ?? Infinity);
+    for (const perkList of Object.values(perks)) {
+      perkList.sort(byGrantedLevel);
+    }
+
+    for (const itemList of [origins, influences, bonds, hangUps, spells, powers, weapons, armors, shields, gears, alterations, magicBaubles]) {
+      itemList.sort(byGrantedLevel);
+    }
+
     // Assign and return
     context.alterations = alterations;
     context.altModes = altModes;
@@ -527,8 +558,11 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     context.origins = origins;
     context.perks = perks;
     context.powers = powers;
-    context.rolePoints = rolePoints;
-    context.role = role;
+    context.rolePointsList = rolePointsList;
+    context.roles = roles;
+    // Backward-compatible alias for the templates that only ever expect one Role (the base
+    // Role - an additive Role like Old Hand never replaces it)
+    context.role = roles.find(r => !r.system.isAdditive);
     context.shields = shields;
     context.shieldEquipped = shieldEquipped;
     context.spells = spells;
@@ -537,6 +571,25 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     context.upgrades = upgrades;
     context.weapons = weapons;
 
+    // Compute display levels for Role items - the base Role shows the Actor's real level,
+    // unless an additive Role like Old Hand is present, in which case it shows the Effective
+    // Base Role Level instead (Old Hand's own row shows its own Old Hand Level)
+    const baseRole = context.role;
+    const additiveRole = roles.find(r => r.system.isAdditive);
+    if (baseRole) {
+      baseRole.system.displayLevel = context.system.level;
+      baseRole.system.isEffectiveLevel = false;
+    }
+
+    if (additiveRole && context.system.oldHandTransitionLevel) {
+      const additiveLevel = context.system.level - context.system.oldHandTransitionLevel + 1;
+      additiveRole.system.displayLevel = additiveLevel;
+
+      if (baseRole) {
+        baseRole.system.displayLevel = (context.system.oldHandTransitionLevel - 1) + Math.floor(additiveLevel / baseRole.system.effectiveLevelDivisor);
+        baseRole.system.isEffectiveLevel = true;
+      }
+    }
 
     if (context.system.defenses.evasion.armor != equippedArmorEvasion || context.system.defenses.toughness.armor != equippedArmorToughness) {
 
@@ -674,6 +727,14 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static #onEditMorphToughnessBonus(event) {
     onEditMorphToughnessBonus(event, this);
+  }
+
+  static #onEditDefenses() {
+    new StatEditor(this.actor, "defense").render(true);
+  }
+
+  static #onEditSpeeds() {
+    new StatEditor(this.actor, "speed").render(true);
   }
 
   static #onRest() {

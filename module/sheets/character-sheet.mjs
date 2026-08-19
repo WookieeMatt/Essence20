@@ -5,7 +5,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     primary: {
       tabs: [
         { id: "skills", group: 'primary', label: "E20.TabSkills" },
-        { id: "combat", group: 'primary', label: "E20.TabCombat" },
         { id: "gear", group: 'primary', label: "E20.TabGear" },
         { id: "spells", group: 'primary', label: "E20.TabSpells" },
         { id: "powers", group: 'primary', label: "E20.TabPowers" },
@@ -33,10 +32,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     },
     skills: {
       template: "systems/essence20/templates/actor/parts/main/character-skills.hbs",
-      scrollable: [''],
-    },
-    combat: {
-      template: "systems/essence20/templates/actor/parts/main/character-combat.hbs",
       scrollable: [''],
     },
     gear: {
@@ -126,13 +121,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     ].filter(Boolean).join(' + ');
     context.system.skillRankAllocation['strength'].value += context.system.conditioning;
 
-    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.skills[context.system.initiative.skill].shift));
-    const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
-    context.system.skillRankAllocation['speed'].string = [
-      context.system.skillRankAllocation['speed'].string,
-      `${initiativeUpshifts} ${game.i18n.localize('E20.ActorInitiative')}`,
-    ].filter(Boolean).join(' + ');
-    context.system.skillRankAllocation['speed'].value += initiativeUpshifts;
   }
 
   _onRender(context, options) {
@@ -143,7 +131,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
   _applyConditionalTabs() {
     const visibility = {
       skills: true,
-      combat: true,
       gear: true,
       spells: this.actor.system.canSpellcast,
       powers: this.actor.system.canMorph,

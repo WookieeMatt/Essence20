@@ -46,7 +46,6 @@
   row-gap: 3px;
 }
 
-/* Style the button that is used to open and close the collapsible content */
 .collapsible {
   background-color: #eee;
   color: #444;
@@ -109,6 +108,67 @@
 
 .essence20 .item-label-checkbox {
   margin: 0;
+}
+
+.essence20 .role-points-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list .item {
+  font-size: 0.8em;
+}
+
+.essence20 section.tab.gear > .collapsible-item-container > .items-list > li.item {
+  font-size: 0.85em;
+}
+
+.essence20 section.tab.gear .collapsible-item-subcontainer .items-list .item {
+  font-size: 0.9411764706em;
+}
+
+.essence20 .item-image {
+  flex: none;
+}
+
+.essence20 .weapon-effect-row {
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.essence20 .item-image .flexrow {
+  flex-wrap: nowrap;
+}
+
+.essence20 .weapon-effect-name {
+  flex: none;
+  max-width: 130px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.essence20 .weapon-effect-skill {
+  flex: none;
+  width: 90px;
+  padding: 1px 3px;
+}
+
+.essence20 .weapon-effect-chips {
+  flex: none;
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin-left: auto;
+}
+
+/* .chip (from _chip.scss, the same pill styling used for the weapon's own summary chips). */
+.essence20 .weapon-effect-row .weapon-effect-chip {
+  flex: none;
 }
 
 .essence20 .editor {
@@ -834,7 +894,7 @@ body.game .window-app {
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid var(--e20-system-color, var(--theme-accent));
+  border: 5px solid var(--e20-system-color, var(--theme-accent));
   margin: 0 auto;
 }
 
@@ -861,7 +921,7 @@ body.game .window-app {
   letter-spacing: 0.05em;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button) {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -869,7 +929,7 @@ body.game .window-app {
   min-width: 0;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container) > label {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > label {
   color: var(--theme-text-color);
   flex: 1 1 auto;
   white-space: nowrap;
@@ -877,9 +937,32 @@ body.game .window-app {
   text-overflow: ellipsis;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container) > span {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > span {
   color: var(--theme-muted-text);
   flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  margin-bottom: 0.25rem;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row:last-child {
+  margin-bottom: 0;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row > label {
+  color: var(--theme-text-color);
+  font-weight: 600;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row > span {
+  color: var(--theme-muted-text);
+  white-space: normal;
+  word-break: break-word;
 }
 
 .essence20-sidebar .stats-container {
@@ -980,6 +1063,18 @@ body.game .window-app {
   text-overflow: ellipsis;
 }
 
+.essence20 .skill-header .conditioning-input {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.85em;
+  padding: 1px 3px;
+  text-align: center;
+  color: var(--theme-text-color);
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+}
+
 .essence20 .skill-header .add-specialization {
   flex-grow: 0;
   margin-right: 8px;
@@ -1063,7 +1158,8 @@ body.game .window-app {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   padding: 0;
-  align-items: start;
+  align-items: stretch;
+  height: calc(100% - 10px);
 }
 
 .essence20 h1,
@@ -1192,6 +1288,19 @@ body.game .window-app {
 
 .essence20 .essence-header.strength {
   margin-bottom: 0;
+}
+
+.essence20 .essence-header .skill-rank-allocation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  font-size: 0.75em;
+  color: var(--theme-muted-text, var(--theme-text-color));
+}
+
+.essence20 .essence-header .skill-rank-defense {
+  font-weight: 600;
 }
 
 .essence20 .essence-header .essence-label {
@@ -1397,7 +1506,11 @@ body.game .window-app {
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
-  gap: 6px;
+  /* Chamfered tabs (see .essence20 .tabs a[data-tab] below) already cut their own top corners,
+     so any gap here widens into an angular wedge at the top between each pair of tabs - most
+     visible in light mode where the page background shows through it. Butting them together
+     (no gap) lets adjacent chamfers meet as a single small notch instead. */
+  gap: 0;
   margin-bottom: 8px;
 }
 
@@ -1415,20 +1528,64 @@ body.game .window-app {
   overflow-y: auto;
 }
 
+/* Chamfered top corners (cut at 8px, matching the depth used before) instead of a plain
+   rounded-rectangle tab, matching the reference tab strip.
+   clip-path clips a box's border along with everything else, but can't draw a stroke ALONG the
+   new diagonal edge it creates - the straight sides keep their border, but the cut corner itself
+   is just a bare edge with the raw background showing through, which is what looked like a gap
+   even with .sheet-tabs' gap set to 0 above. Faked here with two stacked layers instead: this
+   element paints as a solid border-color block in the full chamfered shape, and the ::before
+   below sits 1px in from every edge with its own (very slightly shallower) chamfer and the
+   actual fill color, so a 1px rim of the border color shows all the way around - diagonal edge
+   included - rather than only on the straight edges.
+   Sized down (smaller font, tighter padding) since up to 12 of these can be visible at once
+   (see character-sheet.mjs TABS) - at the previous size, two-word labels like "Alt Mode" had
+   nowhere near enough room and either wrapped or got clipped. */
 .essence20 .tabs .item,
 .essence20 .tabs a[data-tab] {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--e20-system-color, var(--theme-border-color));
-  border-radius: 8px 8px 0 0;
-  padding: 5px 10px 7px;
+  position: relative;
+  background: var(--theme-border-color);
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px);
+  border: none;
+  padding: 3px 4px 5px;
   flex: 1;
+  min-width: 0;
   color: var(--theme-text-color);
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
+  min-height: 22px;
+  font-size: 0.75em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.85;
+}
+
+.essence20 .tabs .item::before,
+.essence20 .tabs a[data-tab]::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: 0;
+  pointer-events: none;
+  /* Must be an opaque, theme-correct color rather than the translucent rgba(255,255,255,0.05)
+     tint this used before the outer element became a solid border-color block (see the .item
+     rule above) - that tint was calibrated to composite against the page background showing
+     through, which worked when the tab itself had no background of its own. Now that there's a
+     dark border-color layer directly behind it, a 5%-opacity white tint over that just reads as
+     "still basically dark" in light mode too, making the text unreadable. */
+  background: var(--theme-panel-bg);
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%, 0 6px);
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18);
-  opacity: 0.9;
+}
+
+.essence20 .tabs .item span,
+.essence20 .tabs a[data-tab] span {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .essence20 .tabs .item .nav-item-label {
@@ -1436,9 +1593,23 @@ body.game .window-app {
   font-weight: 600;
 }
 
-.essence20 .tabs .active {
-  background: var(--theme-panel-bg);
-  border-bottom: 1px solid var(--theme-panel-bg);
+/* Only the active tab picks up the actor's system color, matching how the Essence Badge
+   (.essence-header:has(.essence-label) in _essence.scss) tints itself with the same
+   --e20-system-color-50 gradient over --theme-bg-color, so it stands out from its otherwise-
+   neutral siblings instead of every tab carrying it regardless of state.
+   The [data-tab] attribute selector on the base rule above outweighs a plain .active class
+   selector, so it's repeated here to win the cascade rather than relying on source order. */
+.essence20 .tabs .item.active,
+.essence20 .tabs a[data-tab].active {
+  background: var(--e20-system-color, var(--theme-accent));
+  opacity: 1;
+}
+
+.essence20 .tabs .item.active::before,
+.essence20 .tabs a[data-tab].active::before {
+  background-color: var(--theme-bg-color);
+  background-image: linear-gradient(var(--e20-system-color-50, transparent), var(--e20-system-color-50, transparent));
+  box-shadow: none;
 }
 
 .essence20 .tabs .item.active,
@@ -1455,10 +1626,23 @@ body.game .window-app {
   border-bottom: none;
 }
 
+/* default-border.svg (the --theme-border-image asset drawn by the ::before rule below) cuts
+   its top-left and bottom-right corners diagonally - but that trim is only a mask/overlay, it
+   doesn't affect the box's OWN background (set per-component: .collapsible-item-container,
+   .stats-container, table cells, etc, each with their own plain rectangular background). Without
+   a matching clip-path here, that background shows through past the trim's cut corners instead
+   of stopping at them. min(22px, 50%) matches both the trim's rendered corner width (22px) AND
+   the point at which the mask-border-width corner scaling below actually kicks in: per the CSS
+   border-image corner-overlap rule, opposing 22px corners on an axis get scaled down together
+   once their sum (44px) exceeds that axis's size, i.e. exactly at 50% of that axis, not 25% -
+   25% clipped the background's own corner far short of where the trim's diagonal really lands on
+   any short element (collapsed single-line rows, narrow table cells), leaving a background
+   triangle poking out past the visible trim. */
 .essence20 .e20-border-accent:not(.profile-img):not(hr) {
   position: relative;
   border-color: transparent;
   border-radius: 0;
+  clip-path: polygon(min(22px, 50%) 0, 100% 0, 100% calc(100% - min(22px, 50%)), calc(100% - min(22px, 50%)) 100%, 0 100%, 0 min(22px, 50%));
 }
 
 .essence20 .e20-border-accent:not(.profile-img):not(hr)::before {
@@ -1470,11 +1654,11 @@ body.game .window-app {
   background-color: var(--e20-system-color, var(--theme-accent));
   -webkit-mask-box-image-source: var(--theme-border-image);
   -webkit-mask-box-image-slice: 16;
-  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-width: 22px;
   -webkit-mask-box-image-repeat: stretch;
   mask-border-source: var(--theme-border-image);
   mask-border-slice: 16;
-  mask-border-width: 16px;
+  mask-border-width: 22px;
   mask-border-repeat: stretch;
 }
 
@@ -1547,6 +1731,60 @@ body.game .window-app {
 
 .essence20 .bronze {
   color: #CD7F32;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .collapsible-item-container:not(.collapsible-item-subcontainer) {
+  margin-bottom: 0.5rem;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .collapsible-item-container:not(.collapsible-item-subcontainer) > .flexrow {
+  color: var(--e20-system-color, var(--theme-accent)) !important;
+  font-weight: bold;
+  border-bottom: 1px solid var(--theme-border-color);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > li.item {
+  padding: 2px 0.25rem;
+  border-radius: 5px;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > li.item:nth-of-type(even) {
+  background: var(--theme-panel-bg);
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > hr {
+  display: none;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .leveled-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .leveled-item-badge {
+  flex: 0 0 1.5em;
+  color: var(--e20-system-color, var(--theme-accent)) !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .leveled-item-icon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border: none;
+  border-radius: 4px;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear) .leveled-item-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .essence20 .armor-trait-checkbox-label {
@@ -1642,9 +1880,17 @@ body.game .window-app {
 }
 
 .essence20 .items-list hr {
-  margin: 4;
+  margin: 0.25rem 0;
   width: 100%;
   border-color: var(--theme-border-color);
+}
+
+.essence20 .collapsible-item-subcontainer .items-list {
+  gap: 0.5rem;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list hr {
+  margin: 0.25rem 0;
 }
 
 .essence20 .items-list hr:last-child {
@@ -1732,6 +1978,50 @@ body.game .window-app {
 
 .essence20 .effects .item .effect-controls {
   border: none;
+}
+
+.essence20 .tab.effects.active {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.essence20 .tab.effects .effect-list-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.essence20 .tab.effects .items-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-top: 0.5rem;
+}
+
+.essence20 .tab.effects .items-header {
+  height: auto;
+  min-height: 28px;
+}
+
+.essence20 .tab.effects .effect-controls {
+  flex: 0 0 130px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.essence20 .tab.effects .items-list .items-header > * {
+  font-size: 0.85em;
+}
+
+.essence20 .tab.effects .item.effect > * {
+  font-size: 0.85em;
+}
+
+.essence20 .tab.effects .effect-name h4 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0;
 }
 
 .essence20 .item-sheet {
@@ -1861,7 +2151,8 @@ body.game .window-app {
   left: 50%;
   transform: translate(-50%, -50%);
 }
-.sliced-border label.sliced-border__label {
+.sliced-border label.sliced-border__label,
+.sliced-border a.sliced-border__label {
   padding: 0 8px;
   line-height: 0.75rem;
   background: var(--theme-panel-bg);
@@ -1869,6 +2160,22 @@ body.game .window-app {
   border-radius: 6px;
   padding: 4px 10px;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4) inset;
+}
+.sliced-border a.sliced-border__label {
+  text-decoration: none;
+  cursor: pointer;
+}
+.sliced-border a.sliced-border__label:hover {
+  color: var(--theme-accent);
+  text-shadow: 0 0 6px var(--theme-accent);
+}
+.sliced-border a.sliced-border__label:hover .sliced-border__label-edit-icon {
+  opacity: 1;
+}
+.sliced-border .sliced-border__label-edit-icon {
+  font-size: 0.75em;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
 }
 .sliced-border .sliced-border__input-row {
   display: flex;
@@ -1979,6 +2286,9 @@ body.game .window-app {
   position: fixed;
   flex-direction: column;
   display: flex;
+  background: var(--theme-panel-bg);
+  border-radius: 0;
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
 }
 .story-points .loading {
   display: none;
@@ -2060,6 +2370,30 @@ body.game .window-app {
 }
 .story-points .story-points__btn.--increment i {
   color: #4dd0e1;
+}
+
+.stat-editor .window-content {
+  padding: 1rem;
+}
+
+.stat-editor-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-editor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.stat-editor-row label {
+  color: var(--theme-text-color);
+}
+.stat-editor-row input {
+  width: 70px;
+  text-align: center;
 }
 
 select {

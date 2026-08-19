@@ -2,10 +2,13 @@
   {{#if (ne @root.role.system.version 'myLittlePony')}}
     {{> "systems/essence20/templates/actor/parts/misc/training.hbs"}}
   {{/if}}
-  {{> "systems/essence20/templates/actor/parts/items/gear/container.hbs"}}
   {{> "systems/essence20/templates/actor/parts/items/weapon/container.hbs"}}
   {{> "systems/essence20/templates/actor/parts/items/armor/container.hbs"}}
+  {{#if rolePointsList.length}}
+    {{> "systems/essence20/templates/actor/parts/items/rolePoints/container.hbs"}}
+  {{/if}}
   {{> "systems/essence20/templates/actor/parts/items/shield/container.hbs"}}
+  {{> "systems/essence20/templates/actor/parts/items/gear/container.hbs"}}
   {{> "systems/essence20/templates/actor/parts/items/alteration/container.hbs"}}
   {{#if system.canSpellcast}}
     {{> "systems/essence20/templates/actor/parts/items/magicBauble/container.hbs"}}

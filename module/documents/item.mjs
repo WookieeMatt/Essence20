@@ -204,7 +204,18 @@ export class Essence20Item extends Item {
   _prepareRolePoints() {
     if (!this.actor) return null;
 
-    const actorLevel = this.actor.system.level;
+    // A RolePoints Item granted by an "additive" Role (system.isAdditive, e.g. G.I. Joe's Old
+    // Hand - see role-handler.mjs) runs on that Role's own independent level track instead of
+    // the Actor's real character level. This method is called implicitly by Foundry's
+    // prepareDerivedData() pipeline, not by any level-change handler, so there's no parameter
+    // to receive that override through - it has to look it up itself via the same parentId
+    // flag deleteAttachmentsForItem() already uses to identify which Role granted an Item.
+    let actorLevel = this.actor.system.level;
+    const owningRole = this.actor.items.get(this.getFlag('essence20', 'parentId'));
+    if (owningRole?.type == 'role' && owningRole.system.isAdditive && this.actor.system.oldHandTransitionLevel) {
+      actorLevel = this.actor.system.level - this.actor.system.oldHandTransitionLevel + 1;
+    }
+
     const resourceLevelIncreases = this._getLevelIncreases(this.system.resource.increaseLevels, actorLevel);
 
     if (this.system.resource.startingMax != null) {

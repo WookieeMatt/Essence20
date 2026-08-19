@@ -57,6 +57,10 @@
         <select name="system.initiative.skill">
           {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
         </select>
+        {{!-- Read-only: the shift die is set on the skill itself, not editable from here --}}
+        <input class="two-digit-input no-unlock" type="text"
+          value="{{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}"
+          disabled data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}" />
       </div>
       <a class="essence20-sidebar-action-button" data-action="rest" data-tooltip="{{localize "E20.RestButtonTitle"}}">
         <i class="fas fa-face-sleeping"></i>
@@ -81,9 +85,22 @@
       {{/if}}
       <div class="essence20-sidebar-skill-list">
         {{#each @root.config.skillsByEssence.any as |skill|}}
-          {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
+          {{#if (eq skill 'spellcasting')}}
+            {{#if @root.system.canSpellcast}}
+              {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
+            {{/if}}
+          {{else if (eq skill 'weird')}}
+            {{#if @root.system.canUseWeird}}
+              {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
+            {{/if}}
+          {{else}}
+            {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
+          {{/if}}
         {{/each}}
-        {{!-- Wealth Die, styled as a plain skill row rather than the boxed widget used elsewhere --}}
+        {{!-- Wealth Die, styled as a plain skill row rather than the boxed widget used elsewhere.
+             Off by default (system.canShowWealthDie) - enable it from the sheet options gear
+             icon in the header. --}}
+        {{#if system.canShowWealthDie}}
         <div class="flexrow skill-header e20-skill-header" data-e20-color="{{system.color}}">
           <a class="rollable skill-name" data-action="rollable" data-roll-type="skill" data-skill="wealth"
             data-shift-up="{{system.skills.wealth.shiftUp}}" data-shift-down="{{system.skills.wealth.shiftDown}}"
@@ -98,38 +115,10 @@
             <i class="fas fa-plus"></i>
           </a>
         </div>
+        {{/if}}
       </div>
     </div>
-    <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-speeds">
-      <label class="sliced-border__label"><i class="fas fa-person-running"></i> Speeds</label>
-      {{#if system.movementNotSet}}
-        <div>Set PC movement by adding an Origin</div>
-      {{else}}
-        {{#each @root.config.movementTypes as |name type|}}
-          {{#with (lookup @root.system.movement type) as |moveData|}}
-            <div>
-              <label>{{name}}</label>
-              {{#if @root.system.movementIsReadOnly}}
-                <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
-              {{else if @root.system.isTransformed}}
-                {{#if (eq @root.actor.type "npc")}}
-                  <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />
-                {{/if}}
-              {{else}}
-                <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" min="0" step="5" />
-              {{/if}}
-            </div>
-          {{/with}}
-        {{/each}}
-      {{/if}}
-    </div>
-    <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-defenses">
-      <label class="sliced-border__label"><i class="fas fa-shield-halved"></i> {{localize 'E20.DefenseTitle'}}</label>
-      {{#each system.defenses as |defense|}}
-        <div>
-          <label>{{lookup @root.config.defenses defense.name}}</label>
-          <input class="two-digit-input no-lock" data-tooltip="{{defense.string}}" type="number" name="system.defenses.{{defense.name}}.total" value="{{defense.total}}" min="0" step="1" />
-        </div>
-      {{/each}}
-    </div>
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-speeds.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-defenses.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/misc/sidebar-immunities-resistances.hbs"}}
 </section>

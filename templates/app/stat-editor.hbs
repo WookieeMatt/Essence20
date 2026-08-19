@@ -1,0 +1,8 @@
+<div class="stat-editor-rows">
+  {{#each entries as |entry|}}
+    <div class="form-group stat-editor-row">
+      <label>{{entry.label}}</label>
+      <input type="number" name="{{entry.name}}" value="{{entry.value}}" step="1" />
+    </div>
+  {{/each}}
+</div>

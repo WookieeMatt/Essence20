@@ -1,0 +1,37 @@
+{
+  "folder": null,
+  "name": "Legendary Dependability",
+  "type": "perk",
+  "_id": "Ouw89rVHYKgMnYMi",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 0
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role",
+    "canActivate": false
+  },
+  "effects": [],
+  "sort": 1100000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787050000000,
+    "modifiedTime": 1787050000000,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!Ouw89rVHYKgMnYMi"
+}

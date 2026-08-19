@@ -203,6 +203,15 @@
       "flags": {}
     },
     {
+      "name": "general_hawk_s_personel_files",
+      "label": "General Hawk's Personnel Files",
+      "system": "essence20",
+      "path": "packs/ghpfitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "gi_joe_crb",
       "label": "GI Joe Core Rulebook",
       "system": "essence20",
@@ -328,6 +337,7 @@
         "gi_joe_crb",
         "cobra_codex",
         "ferocious_fighters",
+        "general_hawk_s_personel_files",
         "intercontinental_adventures",
         "quartermasters_guide_to_gear",
         "sgt_slaughter_sourcebook"

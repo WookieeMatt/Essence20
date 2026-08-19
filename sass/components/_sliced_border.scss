@@ -100,7 +100,8 @@
     transform: translate(-50%, -50%);
   }
 
-  label.sliced-border__label {
+  label.sliced-border__label,
+  a.sliced-border__label {
     padding: 0 8px;
     line-height: 0.75rem;
     background: var(--theme-panel-bg);
@@ -108,6 +109,26 @@
     border-radius: 6px;
     padding: 4px 10px;
     box-shadow: 0 1px 0 rgba(0,0,0,0.4) inset;
+  }
+
+  a.sliced-border__label {
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--theme-accent);
+      text-shadow: 0 0 6px var(--theme-accent);
+
+      .sliced-border__label-edit-icon {
+        opacity: 1;
+      }
+    }
+  }
+
+  .sliced-border__label-edit-icon {
+    font-size: 0.75em;
+    opacity: 0.6;
+    transition: opacity 0.15s ease;
   }
 
   .sliced-border__input-row {

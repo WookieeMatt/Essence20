@@ -29,6 +29,18 @@
   text-overflow: ellipsis;
 }
 
+.essence20 .skill-header .conditioning-input {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.85em;
+  padding: 1px 3px;
+  text-align: center;
+  color: var(--theme-text-color);
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+}
+
 .essence20 .skill-header .add-specialization {
   flex-grow: 0;
   margin-right: 8px;
@@ -112,5 +124,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   padding: 0;
-  align-items: start;
+  align-items: stretch;
+  height: calc(100% - 10px);
 }
+

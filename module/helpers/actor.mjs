@@ -47,7 +47,11 @@ export function checkIsLocked(actor) {
  * @return {Object} Action types mapped to an action count
  */
 export function getNumActions(actor) {
-  const speed = actor.system.essences.speed.max;
+  // Character/NPC/Companion essences use .max (character.mjs); Vehicle/Zord/Megaform's
+  // machine-based essences (machine.mjs, zord-base.mjs) use .value instead - there's no .max
+  // on those to read.
+  const speedEssence = actor.system.essences.speed;
+  const speed = speedEssence.max ?? speedEssence.value ?? 0;
 
   return {
     free: Math.max(0, speed - 2),
@@ -57,18 +61,13 @@ export function getNumActions(actor) {
 }
 
 /**
- * Set the --e20-system-color CSS variables used to drive the e20-border-accent
- * coloring (header/profile-img border, sheet tabs, skill headers, etc.) from the
- * actor's chosen system.color.
- * @param {HTMLElement} element The sheet's root element
- * @param {Actor} actor The actor being rendered
+ * Given a system.color string, work out the values for --e20-system-color and its
+ * 50%-alpha counterpart --e20-system-color-50.
+ * @param {String} color The raw system.color value (expected to be a hex color)
+ * @returns {{normalizedColor: String, alphaColor: String}}
  */
-export function applySystemColorCssVariables(element, actor) {
-  const color = actor?.system?.color;
-  if (!element || !color) return;
-
+function computeSystemColorVars(color) {
   const normalizedColor = String(color).trim();
-  element.style.setProperty('--e20-system-color', normalizedColor);
 
   const hexColor = normalizedColor.startsWith('#') ? normalizedColor : null;
   const alphaColor = hexColor && /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hexColor)
@@ -83,5 +82,43 @@ export function applySystemColorCssVariables(element, actor) {
     })()
     : 'rgba(0, 0, 0, 0.5)';
 
+  return { normalizedColor, alphaColor };
+}
+
+/**
+ * Set the --e20-system-color CSS variables used to drive the e20-border-accent
+ * coloring (header/profile-img border, sheet tabs, skill headers, etc.) from the
+ * actor's chosen system.color.
+ * @param {HTMLElement} element The sheet's root element
+ * @param {Actor} actor The actor being rendered
+ */
+export function applySystemColorCssVariables(element, actor) {
+  const color = actor?.system?.color;
+  if (!element || !color) return;
+
+  const { normalizedColor, alphaColor } = computeSystemColorVars(color);
+  element.style.setProperty('--e20-system-color', normalizedColor);
   element.style.setProperty('--e20-system-color-50', alphaColor);
+}
+
+/**
+ * The Contacts/Combiners/Crew list (system-actors.hbs) shows other actors attached to this
+ * one - each row's e20-border-accent trim should read as THAT attached actor's own
+ * system.color, not the sheet owner's color it would otherwise inherit from the root element
+ * above. Each row carries its attached actor's color in a data-e20-color attribute already;
+ * this sets the same --e20-system-color/-50 pair locally on each row so it overrides (rather
+ * than inherits) the root value for just that row's subtree.
+ * @param {HTMLElement} element The sheet's root element
+ */
+export function applySystemActorsColorCssVariables(element) {
+  if (!element) return;
+
+  for (const row of element.querySelectorAll('.systemActors[data-e20-color]')) {
+    const color = row.dataset.e20Color;
+    if (!color) continue;
+
+    const { normalizedColor, alphaColor } = computeSystemColorVars(color);
+    row.style.setProperty('--e20-system-color', normalizedColor);
+    row.style.setProperty('--e20-system-color-50', alphaColor);
+  }
 }

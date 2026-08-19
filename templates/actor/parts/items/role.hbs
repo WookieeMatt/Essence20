@@ -1,16 +1,19 @@
 <label for="system.role" class="sliced-border__label">{{localize 'E20.ActorRole'}}</label>
 
-{{#if @root.role}}
-  <li class="item no-list-style" data-item-id="{{role._id}}" data-parent-id="{{../parentId}}">
-    <div class="flexrow align-center gap-2">
-      <input type="text" name="system.role" value="{{role.name}}" />
-      <div class="item-controls flex-grow-0">
-        <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
-          <i class="fas fa-trash"></i>
-        </a>
+{{#if @root.roles}}
+  {{#each @root.roles as |item|}}
+    <li class="item no-list-style" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
+      <div class="flexrow align-center gap-2">
+        <input type="text" name="system.role" value="{{item.name}}" />
+        <span class="chip"{{#if item.system.isEffectiveLevel}} data-tooltip="{{localize 'E20.RoleEffectiveLevel'}}"{{/if}}>{{localize 'E20.ActorLevel'}} {{item.system.displayLevel}}</span>
+        <div class="item-controls flex-grow-0">
+          <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
+            <i class="fas fa-trash"></i>
+          </a>
+        </div>
       </div>
-    </div>
-  </li>
+    </li>
+  {{/each}}
 {{else}}
   <div class="flexrow">
     <input class="no-unlock" type="text" value="{{localize 'E20.RoleDrop'}}" readonly />

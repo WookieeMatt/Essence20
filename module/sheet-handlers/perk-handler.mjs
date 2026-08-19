@@ -288,7 +288,9 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
  * @param {Function} dropFunc The function to call to complete the Perk drop
  */
 async function _showSpectrumShiftDialog(actor, perk, dropFunc) {
-  const currentRole = actor.items.documentsByType.role[0];
+  // .find() rather than [0]: an Actor may also have a separate additive Role (e.g. Old Hand)
+  // alongside their base Role - Spectrum Shift only ever operates on the base one.
+  const currentRole = actor.items.documentsByType.role.find(r => !r.system.isAdditive);
   if (!currentRole) {
     ui.notifications.error(game.i18n.localize('E20.SpectrumShiftNoRoleError'));
     return false;
@@ -301,10 +303,11 @@ async function _showSpectrumShiftDialog(actor, perk, dropFunc) {
 
   const choices = {};
   for (const pack of game.packs.filter(p => p.documentName == 'Item')) {
-    const index = await pack.getIndex({ fields: ['type', 'system.version'] });
+    const index = await pack.getIndex({ fields: ['type', 'system.version', 'system.isAdditive'] });
     for (const entry of index) {
       const isOtherPowerRangersRole = entry.type == 'role'
         && entry.system?.version == 'powerRangers'
+        && !entry.system?.isAdditive
         && entry.uuid != currentRole._stats.compendiumSource;
 
       if (isOtherPowerRangersRole) {
