@@ -13,7 +13,12 @@
     },
     "quantity": 1,
     "type": "",
-    "gearType": "exploration"
+    "gearType": "exploration",
+    "visionGrant": {
+      "enabled": true,
+      "mode": "monochromatic",
+      "range": 60
+    }
   },
   "effects": [],
   "flags": {},

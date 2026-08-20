@@ -47,6 +47,10 @@
           value="{{system.powers.sorcerous.max}}" min="0" step="1" />
       </div>
       {{/if}}
+
+      {{#if (or rolePointsList.length role.system.skillDie.isUsed)}}
+        {{> "systems/essence20/templates/actor/parts/items/rolePoints/container.hbs"}}
+      {{/if}}
     </div>
     <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
       <label class="sliced-border__label"><i class="fas fa-bolt"></i> Special</label>
@@ -57,15 +61,22 @@
         <select name="system.initiative.skill">
           {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
         </select>
-        {{!-- Read-only: the shift die is set on the skill itself, not editable from here --}}
-        <input class="two-digit-input no-unlock" type="text"
-          value="{{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}"
-          disabled data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}" />
+        {{!-- Display only: the shift die is set on the skill itself, not editable from here --}}
+        <span class="two-digit-input" data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}">
+          {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
+        </span>
       </div>
-      <a class="essence20-sidebar-action-button" data-action="rest" data-tooltip="{{localize "E20.RestButtonTitle"}}">
-        <i class="fas fa-face-sleeping"></i>
-        {{localize "E20.RestButtonTitle"}}
-      </a>
+      {{#if system.canTransform}}
+        <a class="essence20-sidebar-action-button" data-action="recharge" data-tooltip="{{localize "E20.RechargeButtonTitle"}}">
+          <i class="fas fa-charging-station"></i>
+          {{localize "E20.RechargeButtonTitle"}}
+        </a>
+      {{else}}
+        <a class="essence20-sidebar-action-button" data-action="rest" data-tooltip="{{localize "E20.RestButtonTitle"}}">
+          <i class="fas fa-face-sleeping"></i>
+          {{localize "E20.RestButtonTitle"}}
+        </a>
+      {{/if}}
 
       {{#if system.canTransform}}
         <a class="essence20-sidebar-action-button" data-action="transform">

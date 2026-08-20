@@ -45,6 +45,8 @@ export class RollDialog {
       edge: edge && !snag,
       normal: edge == snag,
       rolePoints: dataset.rolePoints,
+      aimBonus: dataset.aimBonus,
+      energonAvailable: dataset.energonAvailable,
       defenseType: dataset.defenseType || 'none',
       defenseTypes: { none: 'E20.None', ...E20.defenses },
     };

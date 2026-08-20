@@ -22,6 +22,7 @@ import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
+  onRecharge,
   onRest,
   onRoll,
   onToggleAccordion,
@@ -59,6 +60,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
       levelDown: this.#onlevelDown,
       levelUp: this.#onLevelUp,
       morph: this.#onMorph,
+      recharge: this.#onRecharge,
       rest: this.#onRest,
       rollable: this.#onRoll,
       sheetOptions: this.#onSheetOptions,
@@ -739,6 +741,10 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static #onRest() {
     onRest(this);
+  }
+
+  static #onRecharge() {
+    onRecharge(this);
   }
 
   static #onManageSelectTrait(event) {

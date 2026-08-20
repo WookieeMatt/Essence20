@@ -15,19 +15,41 @@
     <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}
   </div>
 
-  <div>
-    <label>
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollIsSpecialized'}}</span>
+    <label class="switch">
       <input type="checkbox" name="isSpecialized" {{checked isSpecialized}} />
-      <span>{{localize 'E20.RollIsSpecialized'}}</span>
+      <span class="switch-slider"></span>
     </label>
   </div>
 
-  <div>
-    <label>
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollCanCritD2'}}</span>
+    <label class="switch">
       <input type="checkbox" name="canCritD2" {{checked canCritD2}} />
-      <span>{{localize 'E20.RollCanCritD2'}}</span>
+      <span class="switch-slider"></span>
     </label>
   </div>
+
+  {{#if aimBonus}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogAiming'}} (+{{aimBonus}})</span>
+    <label class="switch">
+      <input type="checkbox" name="isAiming" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if energonAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogEnergon'}} (+1)</span>
+    <label class="switch">
+      <input type="checkbox" name="spendEnergon" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
 
   <div>
     {{localize 'E20.RollDialogTimesToRoll'}}

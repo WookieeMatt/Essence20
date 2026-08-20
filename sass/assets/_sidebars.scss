@@ -38,6 +38,29 @@
   padding: v.$gap-sm v.$gap-md;
 }
 
+/* Sidebar panels (Resources/Special/Defenses/etc.) are .sliced-border boxes - tint their
+   border graphic with the actor's own system color (falling back to the theme accent),
+   reusing the same mask-border + solid background-color technique .e20-border-accent already
+   uses elsewhere (_tabs.scss) to recolor this same --theme-border-image asset. Replaces the
+   base .sliced-border::before's plain, un-tinted border-image rendering for sidebar panels only
+   - the label used to carry this accent color instead (see .sliced-border__label above), which
+   now stays neutral. */
+.essence20-sidebar .sliced-border::before {
+  filter: none;
+  border-style: none;
+  border-image: none;
+  border-width: 0;
+  background-color: var(--e20-system-color, var(--theme-accent));
+  -webkit-mask-box-image-source: var(--theme-border-image);
+  -webkit-mask-box-image-slice: 15;
+  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-repeat: stretch;
+  mask-border-source: var(--theme-border-image);
+  mask-border-slice: 15;
+  mask-border-width: 16px;
+  mask-border-repeat: stretch;
+}
+
 .essence20-sidebar.sheet-header {
   flex-direction: column;
   flex-wrap: nowrap;
@@ -74,7 +97,6 @@
 }
 
 .essence20-sidebar .essence20-sidebar-panel > .sliced-border__label {
-  color: var(--theme-accent);
   font-weight: 700;
   font-size: 0.8em;
   text-transform: uppercase;
@@ -136,7 +158,7 @@
 .essence20-sidebar-skill-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: v.$gap-md;
 }
 
 .essence20-sidebar .essence20-sidebar-action-button {
@@ -162,7 +184,6 @@
 }
 
 .essence20-sidebar .essence20-sidebar-action-button i {
-  color: var(--theme-accent);
   flex: 0 0 auto;
 }
 

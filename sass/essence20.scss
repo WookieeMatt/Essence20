@@ -12,6 +12,23 @@ select {
   color: var(--theme-text-color);
 }
 
+/* Foundry core's checkbox/radio duotone checkmark glyph (a Font Awesome icon on ::before/::after,
+   appearance:none having removed the native control entirely) is colored by reading the CSS
+   custom properties --checkbox-checked-color (the filled swatch behind the mark) and
+   --checkbox-checkmark-color (the tick cut out of it) - not by any border-color/outline-color,
+   which are 0-width/style:none here and were never actually rendering (an earlier attempt to
+   override those directly had no visible effect on the real amber). Foundry defines those custom
+   properties, per color scheme, in its own "variables" @layer (foundry2.css); our own stylesheet
+   is imported into a "system" @layer declared after it (see the system.json styles entry), and
+   for normal (non-!important) declarations a later-declared layer always wins regardless of
+   selector specificity - so redefining the same custom properties here reliably overrides
+   Foundry's amber without needing !important or a fight over the actual color-consuming rule. */
+.essence20 input[type="checkbox"],
+.essence20 input[type="radio"] {
+  --checkbox-checked-color: var(--theme-text-color);
+  --checkbox-checkmark-color: var(--theme-panel-bg);
+}
+
 option {
   color: var(--theme-text-color);
   background-color: var(--theme-input-color);
@@ -133,8 +150,60 @@ input[type="number"], input[type="text"], select, textarea {
   color: red;
 }
 
+// Foundry core's default button styling (a near-transparent rgba(0,0,0,0.1) background with
+// near-black #111 text) is designed for light UI chrome and is unreadable against this system's
+// own dark chat-card background (see .chat-message in _chat.scss) - give these explicit,
+// theme-aware colors instead of relying on the core default. .theme-light below overrides back
+// to a light-appropriate button once applyThemeClass() (essence20.mjs) tags the card.
 .e20-check-card button[data-action="apply-damage"] {
   margin-left: 6px;
+  background: v.$input-color-dark;
+  color: v.$text-color-light;
+  border: 1px solid v.$border-color-light;
+}
+
+// opacity was tried here for the disabled/already-applied look, but it dims background AND
+// text together, blending both toward the card's own backdrop and collapsing the contrast
+// this rule exists to guarantee - a disabled button that's readable stays more useful in a
+// chat log (a permanent record of what was applied) than one that's merely dimmer.
+.e20-check-card button[data-action="apply-damage"]:disabled {
+  cursor: default;
+}
+
+.chat-message.theme-light .e20-check-card button[data-action="apply-damage"] {
+  background: v.$input-color-light;
+  color: v.$text-color-dark;
+  border: 1px solid v.$border-color-dark;
+}
+
+.e20-check-critical-options {
+  display: block;
+  margin-top: 4px;
+}
+
+.e20-check-critical-label {
+  color: v.$text-color-orange;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.e20-check-critical-options button[data-action="apply-damage"] {
+  margin: 2px 6px 0 0;
+}
+
+.e20-check-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.e20-check-send-to-chat {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.e20-check-send-to-chat:hover {
+  opacity: 1;
 }
 
 .sheet-options {

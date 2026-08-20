@@ -1,11 +1,11 @@
 <div class="stats-container flexrow flex-group-center e20-border-accent">
-  {{#if actor.system.canTransform}}
+  {{#if system.canTransform}}
   <label>{{localize "E20.Energon"}}</label>
     <input class="centered-input no-lock" data-field="system.energon.normal.value" type="number"
       name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
     /
     <input class="centered-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
-      value="{{system.energon.normal.max}}" />
+      value="{{system.energon.normal.max}}" disabled data-tooltip="{{localize 'E20.EnergonMaxTooltip'}}" />
 
   <label>{{localize "E20.EnergonDark"}}</label>
     <input class="centered-input no-lock" data-field="system.energon.dark.value" type="number"

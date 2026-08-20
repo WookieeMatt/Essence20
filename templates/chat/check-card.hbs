@@ -18,10 +18,22 @@
         {{localize 'E20.CheckFailure'}}
       {{/if}}
       {{#if damageValue}}
-      <button type="button" data-action="apply-damage" data-target-uuid="{{targetUuid}}"
+      <button type="button" data-action="apply-damage" data-key="{{targetUuid}}:base" data-target-uuid="{{targetUuid}}"
         data-damage="{{damageValue}}" data-damage-type="{{damageType}}">
         {{localize 'E20.CheckApplyDamage'}} {{damageValue}} {{damageTypeLabel}}
       </button>
+      {{/if}}
+
+      {{#if criticalOptions.length}}
+      <div class="e20-check-critical-options">
+        <span class="e20-check-critical-label">{{localize 'E20.CheckCriticalHit'}}</span>
+        {{#each criticalOptions}}
+        <button type="button" data-action="apply-damage" data-key="{{../targetUuid}}:crit:{{key}}"
+          data-target-uuid="{{../targetUuid}}" data-damage="{{damageValue}}" data-damage-type="{{damageType}}">
+          {{label}} &mdash; {{damageValue}} {{damageTypeLabel}}
+        </button>
+        {{/each}}
+      </div>
       {{/if}}
     </li>
     {{/each}}

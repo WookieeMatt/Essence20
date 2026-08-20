@@ -6,8 +6,8 @@
     "originalId": "",
     "description": "",
     "source": {
-      "book": "",
-      "page": null
+      "book": "GI Joe Core Rulebook",
+      "page": 58
     },
     "items": {
       "8aff": {
@@ -19,7 +19,7 @@
     },
     "baseAerialMovement": "0",
     "baseAquaticMovement": "0",
-    "baseGroundMovement": "30",
+    "baseGroundMovement": "35",
     "essences": [
       "strength",
       "speed"

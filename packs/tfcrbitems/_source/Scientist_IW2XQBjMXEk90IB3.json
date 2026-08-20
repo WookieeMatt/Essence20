@@ -49,7 +49,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Thesis",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "role",
         "level": 5
       },
       "ca48": {

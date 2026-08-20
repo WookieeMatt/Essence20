@@ -1,0 +1,1765 @@
+{
+  "name": "Moray",
+  "type": "vehicle",
+  "_id": "MLAdRFY6D18ZUz28",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "actors": {},
+    "color": "#b5b1b1",
+    "conditioning": 0,
+    "energon": {
+      "dark": {
+        "value": 0
+      },
+      "normal": {
+        "max": 0,
+        "value": 0
+      },
+      "primal": {
+        "value": 0
+      },
+      "red": {
+        "value": 0
+      },
+      "synthEn": {
+        "value": 0
+      }
+    },
+    "essenceShifts": {
+      "any": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "smarts": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "social": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "speed": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "strength": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      }
+    },
+    "health": {
+      "bonus": 0,
+      "max": 9,
+      "origin": 0,
+      "value": 9
+    },
+    "immunities": {
+      "blindingBlast": false,
+      "blunt": false,
+      "cover": false,
+      "element": false,
+      "frightened": false,
+      "grapple": false,
+      "impaired": false,
+      "intimidate": false,
+      "knocProne": false,
+      "laser": false,
+      "maneuver": false,
+      "mesmerized": false,
+      "modelock": false,
+      "poison": false,
+      "restrained": false,
+      "sharp": false,
+      "sonic": false,
+      "special": false,
+      "spot": false,
+      "stun": false,
+      "unconscious": false
+    },
+    "initiative": {
+      "formula": "2d20kl + 0",
+      "modifier": 0,
+      "shift": "d20",
+      "skill": "initiative"
+    },
+    "isLocked": false,
+    "movement": {
+      "aerial": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      },
+      "climb": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      },
+      "ground": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      },
+      "swim": {
+        "altMode": 0,
+        "base": 90,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 90
+      }
+    },
+    "movementIsReadOnly": false,
+    "movementNotSet": false,
+    "notes": "Defenses: Medium Plating (+2 Plating to Toughness).",
+    "resistances": {
+      "blindingBlast": false,
+      "blunt": false,
+      "cover": false,
+      "element": false,
+      "frightened": false,
+      "grapple": false,
+      "impaired": false,
+      "intimidate": false,
+      "knocProne": false,
+      "laser": false,
+      "maneuver": false,
+      "mesmerized": false,
+      "modelock": false,
+      "poison": false,
+      "restrained": false,
+      "sharp": false,
+      "sonic": false,
+      "special": false,
+      "spot": false,
+      "stun": false,
+      "unconscious": false
+    },
+    "size": "extended",
+    "skills": {
+      "roleSkillDie": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "acrobatics": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "alertness": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "animalHandling": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "athletics": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "brawn": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d6",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "culture": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "deception": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "driving": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d6",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "finesse": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "infiltration": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "initiative": {
+        "canBeInitiative": true,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d6",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "intimidation": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d6",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "might": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d6",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "performance": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "persuasion": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "science": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "spellcasting": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": true,
+          "speed": true,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "streetwise": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "survival": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "targeting": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d6",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "technology": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "wealth": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "weird": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": true,
+          "speed": true,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      }
+    },
+    "stun": {
+      "max": 0,
+      "min": 0,
+      "value": 0
+    },
+    "canHover": false,
+    "crew": {
+      "description": "2 drivers, 5 passengers (1 gunner: 23MM twin-barrel cannon, 4 gunners: 30 cal rear mounted machine guns)",
+      "numDrivers": 2,
+      "numPassengers": 5
+    },
+    "defenses": {
+      "toughness": {
+        "usesDrivers": false,
+        "value": 21
+      },
+      "evasion": {
+        "usesDrivers": false,
+        "value": 18
+      },
+      "willpower": {
+        "usesDrivers": true,
+        "value": null
+      },
+      "cleverness": {
+        "usesDrivers": true,
+        "value": null
+      }
+    },
+    "essences": {
+      "strength": {
+        "usesDrivers": false,
+        "value": 9
+      },
+      "speed": {
+        "usesDrivers": false,
+        "value": 8
+      },
+      "smarts": {
+        "usesDrivers": true,
+        "value": null
+      },
+      "social": {
+        "usesDrivers": true,
+        "value": null
+      }
+    },
+    "firepoints": {
+      "description": "The drivers and gunners can attack with any handheld weapon.",
+      "value": 7
+    },
+    "threatLevel": 9
+  },
+  "items": [
+    {
+      "_id": "Je2leung3c5eOvsz",
+      "name": "Sea",
+      "type": "trait",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.Je2leung3c5eOvsz"
+    },
+    {
+      "_id": "tkJK501CBpZTxlTD",
+      "name": "Sensors",
+      "type": "trait",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.tkJK501CBpZTxlTD"
+    },
+    {
+      "_id": "Vj5SStljGUJ0Gato",
+      "name": "Vehicle",
+      "type": "trait",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.Vj5SStljGUJ0Gato"
+    },
+    {
+      "_id": "WDfa8Gk91mZ7ohDm",
+      "name": "19MM Remote Machine Gun",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.n15s5bHbEzZCkg11",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "19MM Remote Machine Gun Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "ballistic",
+          "computerized",
+          "reload"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.WDfa8Gk91mZ7ohDm"
+    },
+    {
+      "_id": "n15s5bHbEzZCkg11",
+      "name": "19MM Remote Machine Gun Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": null,
+          "long": 160,
+          "value": 80
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.n15s5bHbEzZCkg11"
+    },
+    {
+      "_id": "V0zlhsk5MalFZgyE",
+      "name": "55MM Port and Starboard Shore-Assault Cannon",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.RGxSzebh8Y6CgbrN",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "55MM Port and Starboard Shore-Assault Cannon Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "antiTank",
+          "reload"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.V0zlhsk5MalFZgyE"
+    },
+    {
+      "_id": "RGxSzebh8Y6CgbrN",
+      "name": "55MM Port and Starboard Shore-Assault Cannon Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 20,
+        "range": {
+          "min": 30,
+          "reachMultiplier": null,
+          "long": null,
+          "value": 200
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.RGxSzebh8Y6CgbrN"
+    },
+    {
+      "_id": "A9VBi1UmONnTOZGA",
+      "name": "23MM Twin-Barrel Cannon",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.GZ5cqHAIRLOVJilj",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "23MM Twin-Barrel Cannon Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "antiTank",
+          "ballistic",
+          "mounted",
+          "reload"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.A9VBi1UmONnTOZGA"
+    },
+    {
+      "_id": "GZ5cqHAIRLOVJilj",
+      "name": "23MM Twin-Barrel Cannon Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 2,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": null,
+          "long": 400,
+          "value": 100
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.GZ5cqHAIRLOVJilj"
+    },
+    {
+      "_id": "AJDPYzB19s2YhcNq",
+      "name": "30 Cal Rear Mounted Machine Guns",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.4VOYW0OjuCy8iEsd",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "30 Cal Rear Mounted Machine Guns Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "ballistic",
+          "reload"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.AJDPYzB19s2YhcNq"
+    },
+    {
+      "_id": "4VOYW0OjuCy8iEsd",
+      "name": "30 Cal Rear Mounted Machine Guns Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 10,
+          "reachMultiplier": null,
+          "long": 160,
+          "value": 40
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.4VOYW0OjuCy8iEsd"
+    },
+    {
+      "_id": "cZatmRNvP2zZac4A",
+      "name": "75 Pound Depth Charge",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.BCbdC6qWtrKXnPOJ",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "75 Pound Depth Charge Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "antiTank",
+          "computerized",
+          "consumable",
+          "mounted"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.cZatmRNvP2zZac4A"
+    },
+    {
+      "_id": "BCbdC6qWtrKXnPOJ",
+      "name": "75 Pound Depth Charge Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "driving",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 50,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": null,
+          "value": 1000
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.BCbdC6qWtrKXnPOJ"
+    },
+    {
+      "_id": "vQ9aDj2tjABTRVGR",
+      "name": "HE-07A Air-to-Ground Missiles",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.uV6PTFVwEXYXnH3m",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "HE-07A Air-to-Ground Missiles Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "antiTank",
+          "computerized",
+          "consumable",
+          "mounted"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.vQ9aDj2tjABTRVGR"
+    },
+    {
+      "_id": "uV6PTFVwEXYXnH3m",
+      "name": "HE-07A Air-to-Ground Missiles Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "driving",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 50,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": null,
+          "value": 1000
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.uV6PTFVwEXYXnH3m"
+    },
+    {
+      "_id": "b1UD2e9gWWJPPEMv",
+      "name": "\"Jumpstart\" Air-to-Water Missile",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.G3kdC7Q6aDyiXEyK",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "\"Jumpstart\" Air-to-Water Missile Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "amphibious",
+          "antiTank",
+          "computerized",
+          "consumable",
+          "mounted"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.b1UD2e9gWWJPPEMv"
+    },
+    {
+      "_id": "G3kdC7Q6aDyiXEyK",
+      "name": "\"Jumpstart\" Air-to-Water Missile Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "driving",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 50,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": null,
+          "value": 1500
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.G3kdC7Q6aDyiXEyK"
+    },
+    {
+      "_id": "Zt0O7wNOEdQclxye",
+      "name": "Ram",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.KWO4P1WAKVKDJpkD",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Ram Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.Zt0O7wNOEdQclxye"
+    },
+    {
+      "_id": "KWO4P1WAKVKDJpkD",
+      "name": "Ram Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "driving",
+          "style": "melee"
+        },
+        "damageType": "blunt",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.KWO4P1WAKVKDJpkD"
+    },
+    {
+      "_id": "88QcxQUnUDIk2jWH",
+      "name": "Surface Swimming \"Black-Ray\" Torpedo",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.MLAdRFY6D18ZUz28.Item.RuSitn99Su1q7wfN",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Surface Swimming \"Black-Ray\" Torpedo Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "amphibious",
+          "antiTank",
+          "computerized",
+          "consumable",
+          "mounted"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.88QcxQUnUDIk2jWH"
+    },
+    {
+      "_id": "RuSitn99Su1q7wfN",
+      "name": "Surface Swimming \"Black-Ray\" Torpedo Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "driving",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 50,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": null,
+          "value": 1000
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146725443,
+        "modifiedTime": 1787146725443,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!MLAdRFY6D18ZUz28.RuSitn99Su1q7wfN"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787146725443,
+    "modifiedTime": 1787146725443,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!actors!MLAdRFY6D18ZUz28"
+}

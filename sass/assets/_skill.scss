@@ -8,6 +8,10 @@
   min-height: 24px;
 }
 
+.essence20 .skill-header.conditioning-row {
+  margin-bottom: v.$gap-md;
+}
+
 .essence20 .skill-header .skill-name {
   display: flex;
   align-items: center;
@@ -50,6 +54,7 @@
 .essence20 .skill-body {
   display: flex;
   flex-direction: column;
+  margin-bottom: v.$gap-md;
 }
 
 .essence20 .skill-body .skill-specialized-row {
@@ -104,10 +109,7 @@
   color: var(--theme-text-color);
   transform: rotate(0deg);
   scrollbar-width: thin;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 8px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
   width: 100%;
   justify-content: left;
   flex-grow: 0;

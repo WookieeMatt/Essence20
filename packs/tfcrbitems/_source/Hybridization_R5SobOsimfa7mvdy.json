@@ -12,8 +12,12 @@
       "page": 73
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "role"
+    "selectionLimit": 5,
+    "type": "role",
+    "advances": {
+      "canAdvance": true,
+      "type": "number"
+    }
   },
   "effects": [],
   "sort": -50000,

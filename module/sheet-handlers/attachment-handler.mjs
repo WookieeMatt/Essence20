@@ -317,6 +317,7 @@ export function createEntry(droppedItem, targetItem) {
     break;
   case "weapon":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {
+      entry['aimShiftBonus'] = droppedItem.system.aimShiftBonus;
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;

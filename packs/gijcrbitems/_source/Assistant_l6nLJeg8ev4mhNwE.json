@@ -1,0 +1,38 @@
+{
+  "name": "Assistant",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 165
+    },
+    "prerequisite": "Favorite Command",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787145794377,
+    "modifiedTime": 1787145794377,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "l6nLJeg8ev4mhNwE",
+  "folder": "M27HYmdBcwp4ApTr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!l6nLJeg8ev4mhNwE"
+}

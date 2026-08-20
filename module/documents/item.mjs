@@ -93,6 +93,8 @@ export class Essence20Item extends Item {
 
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
+    } else if (this.type == 'weapon') {
+      this._prepareAimShiftBonus();
     } else if (this.type == 'rolePoints') {
       this._prepareRolePoints();
     }
@@ -147,6 +149,22 @@ export class Essence20Item extends Item {
 
     this.system.totalBonusEvasion = armorBonusEvasion;
     this.system.totalBonusToughness = armorBonusToughness;
+  }
+
+  /**
+  * Prepares the total Aiming shift bonus (p.192) granted by any attached Upgrades (e.g. a
+  * Laser Sight, p.148/125) on this weapon
+  */
+  _prepareAimShiftBonus() {
+    let totalAimShiftBonus = 0;
+
+    for (const [, item] of Object.entries(this.system.items)) {
+      if (item.type == 'upgrade' && item.subtype == 'weapon') {
+        totalAimShiftBonus += item.aimShiftBonus || 0;
+      }
+    }
+
+    this.system.totalAimShiftBonus = totalAimShiftBonus;
   }
 
   /**

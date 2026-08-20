@@ -129,6 +129,8 @@ export class Essence20Actor extends Actor {
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
     this._prepareNpcData();
+    this._prepareVision();
+    this._prepareEnergon();
 
     if (this.type == 'playerCharacter') {
       this._prepareDefenses();
@@ -153,6 +155,68 @@ export class Essence20Actor extends Actor {
     // // Make modifications to data here. For example:
     // const data = actorData.data;
     // data.xp = (data.cr * data.cr) * 100;
+  }
+
+  /**
+   * Finds the best active vision grant (from any gear or perk with system.visionGrant.enabled)
+   * and stores it on this.system.visionGrant for applyVisionToTokens() to read. If more than
+   * one grant is present, the one with the largest range wins - a simple, predictable rule
+   * rather than trying to stack or reconcile different vision modes. Gear can be worn/unworn
+   * (system.equipped, toggled from the sheet's Gear tab) and only contributes its grant while
+   * equipped; Perks have no such toggle and are always active once granted.
+   *
+   * Also sets this.system.visionSuppressed for the Asleep/Unconscious statuses, so a sleeping
+   * actor doesn't get a bonus grant from equipped Night Vision Goggles etc. while unconscious.
+   * This does NOT block a token's vision outright - actually blacking out perception for
+   * Asleep/Unconscious is handled by syncAutoBlindStatus() (helpers/actor.mjs) applying the
+   * real "blinded" status, which reuses Foundry's own CONFIG.specialStatusEffects.BLIND
+   * handling (see essence20.mjs) rather than trying to force TokenDocument.sight.enabled off
+   * directly, which does not actually block perception.
+   */
+  _prepareVision() {
+    this.system.visionSuppressed = this.statuses?.has('asleep') || this.statuses?.has('unconscious') || false;
+
+    let bestGrant = null;
+
+    if (!this.system.visionSuppressed) {
+      for (const item of this.items) {
+        const grant = item.system.visionGrant;
+        if (!grant?.enabled) {
+          continue;
+        }
+
+        if (item.type == 'gear' && !item.system.equipped) {
+          continue;
+        }
+
+        if (!bestGrant || grant.range > bestGrant.range) {
+          bestGrant = { mode: grant.mode, range: grant.range };
+        }
+      }
+    }
+
+    this.system.visionGrant = bestGrant;
+  }
+
+  /**
+   * Sets system.energon.normal.max to this actor's lowest current Essence Score (p.104-105 -
+   * "capable of storing a number of personal Energon Points equal to their lowest Essence
+   * Score"), for actors that can transform. Non-transforming actors (vehicles, etc.) keep
+   * whatever value was set manually, since they may use system.energon.normal as literal fuel
+   * capacity rather than the Cybertronian Energon Points resource.
+   */
+  _prepareEnergon() {
+    if (!this.system.canTransform) {
+      return;
+    }
+
+    const essences = this.system.essences;
+    this.system.energon.normal.max = Math.min(
+      essences.strength.value,
+      essences.speed.value,
+      essences.smarts.value,
+      essences.social.value,
+    );
   }
 
   /**

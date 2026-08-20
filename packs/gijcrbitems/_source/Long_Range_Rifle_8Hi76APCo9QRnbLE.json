@@ -11,7 +11,74 @@
       "book": "GI Joe Core Rulebook",
       "page": 142
     },
-    "items": {},
+    "items": {
+      "9f21": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.hEKtRYXcwIP7hkBW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Range Rifle Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 1,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 600,
+          "value": 150
+        },
+        "shiftDown": 0
+      },
+      "9f22": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.VkQf2RoxDh20fltE",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Range Rifle Alternate Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 600,
+          "value": 150
+        },
+        "shiftDown": 1
+      },
+      "9f23": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ii4G67VTIw8FVUKW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Long Range Rifle Alternate Effect 2",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageValue": 3,
+        "damageType": "sharp",
+        "numHands": "2",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": 30,
+          "reachMultiplier": 0,
+          "long": 600,
+          "value": 150
+        },
+        "shiftDown": 3
+      }
+    },
     "classFeatureId": null,
     "alternateEffects": "",
     "availability": "limited",

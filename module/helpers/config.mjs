@@ -566,6 +566,15 @@ E20.availabilities = {
 };
 preLocalize("availabilities");
 
+// Options for vision grants (Night Vision Goggles, Thermal Goggles, etc.), mapped directly onto
+// Foundry's own built-in CONFIG.Canvas.visionModes keys so no custom VisionMode/shader is needed.
+E20.visionModes = {
+  darkvision: "E20.VisionModeDarkvision",
+  monochromatic: "E20.VisionModeMonochromatic",
+  lightAmplification: "E20.VisionModeLightAmplification",
+};
+preLocalize("visionModes");
+
 // Table 8-2: Upgrading Equipment. Combining an item's current Availability tier with a new
 // Upgrade's Availability tier gives the tier that must be Requisitioned to acquire the
 // upgraded item. Only covers the 5 tiers the table actually defines; anything outside those
@@ -952,6 +961,11 @@ preLocalize("pointsNameOptions");
  ***********************************************/
 
 E20.statusEffects = [
+  {
+    img: 'systems/essence20/assets/icons/status_effects/status_acting_smaller.svg',
+    id: 'actingSmaller',
+    name: 'E20.StatusActingSmaller',
+  },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_asleep.svg',
     id: 'asleep',

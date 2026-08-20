@@ -3,21 +3,36 @@ import ChoicesSelector from "../apps/choices-selector.mjs";
 import { _getItemDeleteConfirmDialog } from "./listener-item-handler.mjs";
 
 /**
- * Prepare Actors that are attached to other actors
+ * Prepare Actors that are attached to other actors. system.actors is a single, type-agnostic
+ * attachment collection reused for several different purposes (Vehicle crew, Zord/Megaform
+ * combiners, a Player Character's own Zords and Contacts) - context.actors carries every
+ * attached actor for the sheets that only ever have one "attached actors" tab (Vehicle
+ * Passengers, Zord Passengers, Megaform Combiners), while context.zordActors/contactActors
+ * split that same collection by the attached actor's own type, for the Player Character sheet's
+ * separate Zords and Contacts tabs, which previously both showed this same unfiltered list.
  * @param {Actor} actor The actor that has attached actors
  * @param {Object} context The actor data to prepare
 */
 export function prepareSystemActors(actor, context) {
   if (Object.keys(actor.system.actors).length > 0) {
     const actors = {};
-
+    const zordActors = {};
+    const contactActors = {};
 
     for (const [ key, embeddedActor] of Object.entries(actor.system.actors)) {
       const fullActor = fromUuidSync(embeddedActor.uuid);
       actors[key] = fullActor;
+
+      if (fullActor?.type == 'zord') {
+        zordActors[key] = fullActor;
+      } else {
+        contactActors[key] = fullActor;
+      }
     }
 
     context.actors = actors;
+    context.zordActors = zordActors;
+    context.contactActors = contactActors;
   }
 }
 

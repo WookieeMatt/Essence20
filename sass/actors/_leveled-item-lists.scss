@@ -1,13 +1,26 @@
 @use "../variables" as v;
 
-$leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear';
+/* Leveled item-list restyle - compact rows (level number, icon, name) under a bold
+   accent-colored section header, closer to a feat-list layout, reusing the existing
+   collapsible-item-container/chip system rather than introducing new components.
+   :not(.collapsible-item-subcontainer) excludes nested weapon-effect/upgrade subcontainers,
+   which already have their own distinct, more compact subcontainer styling.
+
+   Character sheet: scoped by tab (Perks/Spells/Background/Powers/Gear/Alt Mode - the last of
+   which reuses the same weapon/container.hbs the Gear tab does, so it needs this same scoping
+   or its .leveled-item-icon renders at the <img>'s unconstrained natural size instead of a
+   compact 24px icon). NPC/Vehicle/Zord/Megaform all share one generic "main" tab
+   (section.tab.main, also used by Companion), so each of those 4 templates additionally
+   carries its own type class (npc/vehicle/zord/megaform) precisely for this selector -
+   Companion deliberately doesn't, since it wasn't part of this restyle and section.tab.main
+   alone would otherwise catch it too. */
+$leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform';
 
 .essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) {
   margin-bottom: v.$gap-md;
 }
 
 .essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .flexrow {
-  color: var(--e20-system-color, var(--theme-accent)) !important;
   font-weight: bold;
   border-bottom: 1px solid var(--theme-border-color);
   padding-bottom: v.$gap-sm;
@@ -34,9 +47,22 @@ $leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, s
 
 .essence20 :is(#{$leveled-tabs}) .leveled-item-badge {
   flex: 0 0 1.5em;
-  color: var(--e20-system-color, var(--theme-accent)) !important;
   font-weight: bold;
   text-align: center;
+}
+
+.essence20.theme-light section.tab.perks i {
+  color: #000000 !important;
+}
+
+/* The default perk item icon (perk.svg) is a hardcoded solid-white fill, meant for this
+   system's dark backgrounds - on a light one it's essentially invisible. color doesn't affect
+   an <img>'s rendering, so filter is used instead: brightness(0) maps every non-transparent
+   pixel to black while leaving transparency alone, turning the white glyph solid black.
+   Scoped to img[src$="perk.svg"] specifically (not .leveled-item-icon generally) so any custom
+   artwork a player uploads for their own perks isn't flattened to a black silhouette too. */
+.essence20.theme-light section.tab.perks img[src$="perk.svg"] {
+  filter: brightness(0);
 }
 
 .essence20 :is(#{$leveled-tabs}) .leveled-item-icon {

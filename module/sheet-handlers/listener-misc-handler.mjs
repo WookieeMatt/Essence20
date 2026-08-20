@@ -89,11 +89,14 @@ export async function performRoll(event, actor, childRoller=None) {
 }
 
 /**
- * Handle clicking the rest button.
- * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ * Applies the shared Rest/Recharge restorative benefits (Health, Stun, Essence, Role Points,
+ * Personal Power, Energon) to the actor, finishing with the given completion notification.
+ * Shared by onRest() (all actors) and onRecharge() (Transformers CRB p.172 - the
+ * Cybertronian-flavored version of this same action, restoring half of Energon Points).
+ * @param {Actor} actor The Actor being rested/recharged
+ * @param {String} completeMessageKey The i18n key for the final "done" notification
  */
-export async function onRest(actorSheet) {
-  const actor = actorSheet.actor;
+async function _applyRestBenefits(actor, completeMessageKey) {
   const normalEnergon = actor.system.energon.normal;
   const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
   const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
@@ -155,7 +158,7 @@ export async function onRest(actorSheet) {
   }
 
   ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
-  ui.notifications.info(game.i18n.localize("E20.RestComplete"));
+  ui.notifications.info(game.i18n.localize(completeMessageKey));
 
   await actor.update({
     "system.health.value": actor.system.health.max,
@@ -166,7 +169,26 @@ export async function onRest(actorSheet) {
     "system.energon.primal.value": 0,
     "system.energon.red.value": 0,
     "system.energon.synthEn.value": 0,
-  }).then(actorSheet.render(false));
+  });
+}
+
+/**
+ * Handle clicking the rest button.
+ * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ */
+export async function onRest(actorSheet) {
+  await _applyRestBenefits(actorSheet.actor, "E20.RestComplete");
+  actorSheet.render(false);
+}
+
+/**
+ * Handle clicking the recharge button (Transformers CRB p.172) - shown instead of the rest
+ * button for actors that can transform.
+ * @param {ActorSheet} actorSheet The ActorSheet whose recharge button was clicked
+ */
+export async function onRecharge(actorSheet) {
+  await _applyRestBenefits(actorSheet.actor, "E20.RechargeComplete");
+  actorSheet.render(false);
 }
 
 /**

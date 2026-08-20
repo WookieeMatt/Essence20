@@ -1,0 +1,71 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Machine Gun",
+  "type": "weapon",
+  "_id": "4BKCx0qxpBnIJ9tn",
+  "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 123
+    },
+    "items": {
+      "1a01": {
+        "uuid": "Compendium.essence20.tf_crb.Item.q30DFpwwY10X2sGe",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Machine Gun Effect",
+        "type": "weaponEffect"
+      },
+      "1a02": {
+        "uuid": "Compendium.essence20.tf_crb.Item.m6r9ZKmBa9D5ZtFp",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Machine Gun Alternate Effect",
+        "type": "weaponEffect"
+      },
+      "1a03": {
+        "uuid": "Compendium.essence20.tf_crb.Item.mBZ3S25j43UzehMi",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Machine Gun Alternate Effect 2",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "limited",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d2"
+    },
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787106693967,
+    "modifiedTime": 1787106693967,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!4BKCx0qxpBnIJ9tn"
+}

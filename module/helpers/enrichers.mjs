@@ -52,7 +52,37 @@ export async function enrichCheck(match) {
   }
   anchor.innerHTML = `<i class="fas fa-dice-d20"></i> ${label}`;
 
-  return anchor;
+  if (!isGM) {
+    return anchor;
+  }
+
+  // GM-only "post to chat" trigger, so a check that only exists in a journal/item/actor
+  // description a player can't see (or wouldn't think to open) can still be handed to them as
+  // a clickable prompt. It's a sibling of the anchor, not nested inside it (nested interactive
+  // elements are invalid HTML and click-through would be unreliable), and carries the full
+  // params - including the flat `dif`, which the anchor above deliberately omits for a non-GM
+  // viewer - so onCheckSendToChat can reconstruct the original @Check[...] source text. That
+  // raw text (not pre-rendered HTML) is what actually gets posted, so every chat viewer's own
+  // client re-enriches it through this same function and gets the same GM-only DIF handling.
+  const wrapper = document.createElement('span');
+  wrapper.classList.add('e20-check-wrapper');
+  wrapper.append(anchor);
+
+  const sendToChat = document.createElement('a');
+  sendToChat.classList.add('e20-check-send-to-chat');
+  sendToChat.dataset.action = 'send-to-chat';
+  sendToChat.dataset.skill = params.skill ?? '';
+  if (params.defense) {
+    sendToChat.dataset.defense = params.defense;
+  }
+  if (params.dif) {
+    sendToChat.dataset.dif = params.dif;
+  }
+  sendToChat.dataset.tooltip = game.i18n.localize('E20.CheckSendToChat');
+  sendToChat.innerHTML = '<i class="fas fa-comment-dots"></i>';
+  wrapper.append(sendToChat);
+
+  return wrapper;
 }
 
 /**
@@ -85,4 +115,32 @@ export async function onCheckLinkClick(event, link) {
   };
 
   actor._dice.rollSkill(dataset, actor);
+}
+
+/**
+ * Handles clicking the GM-only "post to chat" trigger next to a rendered @Check link (see
+ * enrichCheck above), delegated the same way as onCheckLinkClick. Posts the check's raw
+ * @Check[...] source (not pre-rendered HTML) as a chat message, so every player's own client
+ * re-enriches it independently through enrichCheck when the message renders in their chat log -
+ * this is what keeps a flat `dif` value GM-only in the chat card too, exactly as it already is
+ * wherever the check link originally appeared.
+ * @param {PointerEvent} event
+ * @param {HTMLElement} button
+ */
+export async function onCheckSendToChat(event, button) {
+  event.preventDefault();
+
+  const params = [`skill=${button.dataset.skill}`];
+  if (button.dataset.defense) {
+    params.push(`defense=${button.dataset.defense}`);
+  }
+
+  if (button.dataset.dif) {
+    params.push(`dif=${button.dataset.dif}`);
+  }
+
+  await ChatMessage.create({
+    content: `@Check[${params.join(' ')}]`,
+    speaker: ChatMessage.getSpeaker(),
+  });
 }

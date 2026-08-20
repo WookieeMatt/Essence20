@@ -1,0 +1,1265 @@
+{
+  "name": "Dreadnok Trainee",
+  "type": "npc",
+  "_id": "IhOh7xqNt3qQaael",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "altModeId": "",
+    "altModeName": "",
+    "altModesize": "common",
+    "background": {
+      "pronouns": "",
+      "role": ""
+    },
+    "canHaveZord": false,
+    "canMorph": false,
+    "canQualify": false,
+    "canShowWealthDie": false,
+    "canSpellcast": false,
+    "canTransform": false,
+    "canUseWeird": false,
+    "defenses": {
+      "toughness": {
+        "value": 12
+      },
+      "evasion": {
+        "value": 12
+      },
+      "willpower": {
+        "value": 11
+      },
+      "cleverness": {
+        "value": 11
+      }
+    },
+    "environments": [],
+    "essences": {
+      "strength": {
+        "max": 2,
+        "value": 2
+      },
+      "speed": {
+        "max": 2,
+        "value": 2
+      },
+      "smarts": {
+        "max": 1,
+        "value": 1
+      },
+      "social": {
+        "max": 1,
+        "value": 1
+      }
+    },
+    "essenceRanks": {
+      "smarts": null,
+      "social": null,
+      "speed": null,
+      "strength": null
+    },
+    "faction": "",
+    "focusEssence": "",
+    "image": {
+      "botmode": null,
+      "morphed": null,
+      "unmorphed": null
+    },
+    "isMorphed": false,
+    "isTransformed": false,
+    "level": 1,
+    "oldHandTransitionLevel": null,
+    "originEssencesIncrease": "",
+    "originSkillsIncrease": "",
+    "powers": {
+      "personal": {
+        "regeneration": 0,
+        "max": 0,
+        "value": 0
+      },
+      "sorcerous": {
+        "levelTaken": 0,
+        "max": 0,
+        "value": 0
+      }
+    },
+    "notes": "",
+    "poisonTraining": 0,
+    "qualified": {
+      "armors": {
+        "computerized": false,
+        "heavy": false,
+        "impulse": false,
+        "light": false,
+        "medium": false,
+        "psycho": false,
+        "tactical": false,
+        "ultraHeavy": false
+      },
+      "poisons": {
+        "all": false,
+        "standard": false,
+        "limited": false
+      },
+      "weapons": {
+        "assaultRifle": false,
+        "ballistic": false,
+        "blunt": false,
+        "closeCombatHeavyBlade": false,
+        "element": false,
+        "explosives": false,
+        "finesse": false,
+        "grenades": false,
+        "mightMelee": false,
+        "oneHanded": false,
+        "shotguns": false,
+        "silent": false,
+        "stun": false,
+        "submachineGun": false,
+        "thrown": false
+      }
+    },
+    "senses": {
+      "hearing": {},
+      "sight": {},
+      "smell": {},
+      "taste": {},
+      "touch": {}
+    },
+    "skillRankAllocation": {
+      "strength": {
+        "value": 0,
+        "string": ""
+      },
+      "speed": {
+        "value": 0,
+        "string": ""
+      },
+      "smarts": {
+        "value": 0,
+        "string": ""
+      },
+      "social": {
+        "value": 0,
+        "string": ""
+      }
+    },
+    "trained": {
+      "armors": {
+        "computerized": false,
+        "heavy": false,
+        "impulse": false,
+        "light": false,
+        "medium": false,
+        "psycho": false,
+        "tactical": false,
+        "ultraHeavy": false
+      },
+      "poisons": {
+        "all": false,
+        "standard": false,
+        "limited": false
+      },
+      "toxins": {
+        "all": false,
+        "standard": false,
+        "limited": false
+      },
+      "upgrades": {
+        "armors": {
+          "automatic": false,
+          "standard": false,
+          "limited": false,
+          "restricted": false,
+          "prototype": false,
+          "unique": false,
+          "theoretical": false,
+          "other": false
+        }
+      },
+      "weapons": {
+        "assaultRifle": false,
+        "ballistic": false,
+        "blunt": false,
+        "closeCombatHeavyBlade": false,
+        "element": false,
+        "explosives": false,
+        "finesse": false,
+        "grenades": false,
+        "mightMelee": false,
+        "oneHanded": false,
+        "shotguns": false,
+        "silent": false,
+        "stun": false,
+        "submachineGun": false,
+        "thrown": false
+      }
+    },
+    "actors": {},
+    "color": "#b5b1b1",
+    "conditioning": 0,
+    "energon": {
+      "dark": {
+        "value": 0
+      },
+      "normal": {
+        "max": 0,
+        "value": 0
+      },
+      "primal": {
+        "value": 0
+      },
+      "red": {
+        "value": 0
+      },
+      "synthEn": {
+        "value": 0
+      }
+    },
+    "essenceShifts": {
+      "any": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "smarts": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "social": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "speed": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "strength": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      }
+    },
+    "health": {
+      "bonus": 0,
+      "max": 2,
+      "origin": 0,
+      "value": 2
+    },
+    "immunities": {
+      "blindingBlast": false,
+      "blunt": false,
+      "cover": false,
+      "element": false,
+      "frightened": false,
+      "grapple": false,
+      "impaired": false,
+      "intimidate": false,
+      "knocProne": false,
+      "laser": false,
+      "maneuver": false,
+      "mesmerized": false,
+      "modelock": false,
+      "poison": false,
+      "restrained": false,
+      "sharp": false,
+      "sonic": false,
+      "special": false,
+      "spot": false,
+      "stun": false,
+      "unconscious": false
+    },
+    "initiative": {
+      "formula": "2d20kl + 0",
+      "modifier": 0,
+      "shift": "d20",
+      "skill": "initiative"
+    },
+    "isLocked": false,
+    "movement": {
+      "aerial": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      },
+      "climb": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      },
+      "ground": {
+        "altMode": 0,
+        "base": 25,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 25
+      },
+      "swim": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      }
+    },
+    "movementIsReadOnly": false,
+    "movementNotSet": false,
+    "resistances": {
+      "blindingBlast": false,
+      "blunt": false,
+      "cover": false,
+      "element": false,
+      "frightened": false,
+      "grapple": false,
+      "impaired": false,
+      "intimidate": false,
+      "knocProne": false,
+      "laser": false,
+      "maneuver": false,
+      "mesmerized": false,
+      "modelock": false,
+      "poison": false,
+      "restrained": false,
+      "sharp": false,
+      "sonic": false,
+      "special": false,
+      "spot": false,
+      "stun": false,
+      "unconscious": false
+    },
+    "size": "common",
+    "skills": {
+      "roleSkillDie": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "acrobatics": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "alertness": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "animalHandling": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "athletics": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "brawn": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "culture": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "deception": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "driving": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d2",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "finesse": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "infiltration": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "initiative": {
+        "canBeInitiative": true,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "intimidation": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "might": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "performance": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "persuasion": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "science": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "spellcasting": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": true,
+          "speed": true,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "streetwise": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d2",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "survival": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "targeting": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d2",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "technology": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d2",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "wealth": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "weird": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": true,
+          "speed": true,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      }
+    },
+    "stun": {
+      "max": 0,
+      "min": 0,
+      "value": 0
+    },
+    "languages": [
+      "English"
+    ],
+    "allegiancePoints": 0,
+    "gainingTheContact": "",
+    "isContact": false,
+    "isNPC": true,
+    "threatLevel": 1
+  },
+  "items": [
+    {
+      "_id": "lhesxk5uBu6IoJM6",
+      "name": "Dreadnok",
+      "type": "perk",
+      "img": "systems/essence20/assets/icons/items/perk.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "advances": {
+          "baseValue": 1,
+          "canAdvance": false,
+          "currentValue": 0,
+          "increaseValue": 1,
+          "type": "number"
+        },
+        "canActivate": false,
+        "choice": null,
+        "choiceType": "none",
+        "isRoleVariant": false,
+        "hasChoice": false,
+        "hasMorphedToughnessBonus": false,
+        "numChoices": 1,
+        "prerequisite": "",
+        "selectionLimit": 1,
+        "type": "general",
+        "value": 0,
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        }
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.lhesxk5uBu6IoJM6"
+    },
+    {
+      "_id": "OmY5e6hvt3YO61M4",
+      "name": "Bat",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.IhOh7xqNt3qQaael.Item.0c2HUbJP9bUsQaPl",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Bat Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "blunt",
+          "silent"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.OmY5e6hvt3YO61M4"
+    },
+    {
+      "_id": "0c2HUbJP9bUsQaPl",
+      "name": "Bat Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageType": "stun",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.0c2HUbJP9bUsQaPl"
+    },
+    {
+      "_id": "4NUdLZl3qLqXodos",
+      "name": "Shotgun",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.IhOh7xqNt3qQaael.Item.sbLpWXuGTDQdHQmN",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Shotgun Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "ballistic",
+          "reload"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.4NUdLZl3qLqXodos"
+    },
+    {
+      "_id": "sbLpWXuGTDQdHQmN",
+      "name": "Shotgun Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 2,
+        "numTargets": 1,
+        "radius": 15,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": 60,
+          "value": 20
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.sbLpWXuGTDQdHQmN"
+    },
+    {
+      "_id": "8WHGd2tXXihljKuh",
+      "name": "Grenade",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.IhOh7xqNt3qQaael.Item.cUP3j18uPcaFaoPn",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Grenade Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "consumable",
+          "wrecker"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.8WHGd2tXXihljKuh"
+    },
+    {
+      "_id": "cUP3j18uPcaFaoPn",
+      "name": "Grenade Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "athletics",
+          "style": "explosive"
+        },
+        "damageType": "sharp",
+        "damageValue": 1,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 10,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": 50,
+          "value": 20
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.cUP3j18uPcaFaoPn"
+    },
+    {
+      "_id": "vkOzwpEh0g3msHO4",
+      "name": "Trainee Wheels",
+      "type": "power",
+      "img": "systems/essence20/assets/icons/items/powers.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "actionType": "free",
+        "canActivate": false,
+        "hasVariableCost": false,
+        "maxPowerCost": null,
+        "powerCost": null,
+        "selectionLimit": 1,
+        "type": "threat",
+        "usesInterval": "perScene",
+        "usesPer": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.vkOzwpEh0g3msHO4"
+    },
+    {
+      "_id": "S4sN0n4oTSPZr1oA",
+      "name": "Clothes with Spiked and Reinforced Plates",
+      "type": "armor",
+      "img": "systems/essence20/assets/icons/items/armor.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "GI Joe Core Rulebook",
+          "page": null
+        },
+        "availability": "standard",
+        "equipped": true,
+        "classification": "non",
+        "totalBonusToughness": 0,
+        "totalBonusEvasion": 0,
+        "bonusToughness": 0,
+        "bonusEvasion": 0,
+        "traits": [],
+        "upgradeTraits": []
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787146614789,
+        "modifiedTime": 1787146614789,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!IhOh7xqNt3qQaael.S4sN0n4oTSPZr1oA"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787146614789,
+    "modifiedTime": 1787146614789,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!actors!IhOh7xqNt3qQaael"
+}

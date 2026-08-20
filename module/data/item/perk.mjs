@@ -33,6 +33,11 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
       value: makeInt(0),
       version: makeStrWithChoices(Object.keys(E20.gameVersions), 'powerRangers'),
+      visionGrant: new fields.SchemaField({
+        enabled: makeBool(false),
+        mode: makeStrWithChoices(Object.keys(E20.visionModes), 'darkvision'),
+        range: makeInt(0),
+      }),
     };
   }
 }

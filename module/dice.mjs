@@ -1,5 +1,5 @@
 import { E20 } from "./helpers/config.mjs";
-import { buildCheckChatData, computeMultiplier, getDefenseValue } from "./helpers/combat.mjs";
+import { _isCritIsFumble, buildCheckChatData, computeMultiplier, getDefenseValue } from "./helpers/combat.mjs";
 
 export class Dice {
   /**
@@ -82,7 +82,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const essenceShifts = actor.system.essenceShifts;
-    const combatModifiers = this._getAutomaticCombatModifiers(actor, item);
+    const combatModifiers = this._getAutomaticCombatModifiers(actor, item, rolledEssence);
     let calculatedShiftUp = 0;
     let calculatedShiftDown = 0;
     if (rolledEssence) {
@@ -132,10 +132,33 @@ export class Dice {
       }
     }
 
+    // Aiming (p.192) is a Ranged weapon-specific Free action granting a 1 shift on a single
+    // ranged attack test, plus an additional 1 shift with an attached Laser Sight (p.148/125).
+    // Presented as a toggle in the Roll Options Dialog rather than tracked as standing state -
+    // the dialog is a fresh form on every roll, so there's nothing to "consume" or clear on
+    // Movement; the player simply only checks it when they actually aimed and haven't moved.
+    const isRangedAttack = item?.type == 'weaponEffect' && item.system.classification.style != 'melee';
+    updatedShiftDataset.aimBonus = isRangedAttack ? 1 + this._getLaserSightBonus(actor, item) : null;
+
+    // Energon Points (p.104-105): a Cybertronian may spend one to gain a 1 shift on any Skill
+    // Test. Like Aiming, presented as a Roll Options Dialog toggle rather than standing state;
+    // unlike Aiming, spending one actually consumes a real, persisted resource, so the point is
+    // only deducted once the roll is confirmed (not if the dialog is cancelled).
+    updatedShiftDataset.energonAvailable = actor.system.canTransform && actor.system.energon.normal.value > 0;
+
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
       return;
+    }
+
+    if (skillRollOptions.isAiming) {
+      skillRollOptions.shiftUp += updatedShiftDataset.aimBonus;
+    }
+
+    if (skillRollOptions.spendEnergon) {
+      skillRollOptions.shiftUp += 1;
+      await actor.update({ 'system.energon.normal.value': actor.system.energon.normal.value - 1 });
     }
 
     let label = '';
@@ -201,6 +224,14 @@ export class Dice {
         entries: checkEntries,
         damageValue: item?.type == 'weaponEffect' ? item.system.damageValue : null,
         damageType: item?.type == 'weaponEffect' ? item.system.damageType : null,
+        // Critical Success (p.205): "the attacker chooses to stack on an additional attack
+        // effect... it may instead have the option of applying an alternate effect from the
+        // attack's listed options" (Table 8-3.1's "Alternate Effects" column). A weapon's
+        // Alternate Effects are separate weaponEffect Items sharing this one's parentId flag
+        // (see attachment-handler.mjs#createItemCopies, which tags every weaponEffect copied
+        // from the same weapon with that weapon's _id).
+        effectName: item?.type == 'weaponEffect' ? item.name : null,
+        alternateEffects: item?.type == 'weaponEffect' ? this._getAlternateEffects(actor, item) : [],
       }
       : null;
 
@@ -222,14 +253,17 @@ export class Dice {
    * Computes the automatic dice-shift/Edge/Snag modifiers that come from Size Class
    * differences (Table 10-2: Size Class Combat Adjustment Matrix) and active Conditions,
    * rather than anything the actor chose. Size and target-Condition effects only apply to
-   * weapon attack rolls; Impaired and a Prone attacker's own melee penalty are Condition
-   * effects that come from the roller's own statuses.
+   * weapon attack rolls; Impaired and Momentarily Acting Smaller (p.157 - a Snag on all
+   * physical, i.e. Strength/Speed, actions while squeezed into a smaller space) apply to any
+   * Skill Test, and a Prone attacker's own melee penalty are Condition effects that come from
+   * the roller's own statuses.
    * @param {Actor} actor   The actor performing the roll.
    * @param {Item} item   The item being used, if any.
+   * @param {String} rolledEssence   The Essence tied to the skill being rolled, if any.
    * @returns {Object}   { shiftUp, shiftDown, edge, snag }
    * @private
    */
-  _getAutomaticCombatModifiers(actor, item) {
+  _getAutomaticCombatModifiers(actor, item, rolledEssence) {
     let shiftUp = 0;
     let shiftDown = 0;
     let edge = false;
@@ -238,6 +272,10 @@ export class Dice {
     const selfStatuses = actor.statuses;
     if (selfStatuses.has('impaired')) {
       shiftDown += 1;
+    }
+
+    if (selfStatuses.has('actingSmaller') && ['strength', 'speed'].includes(rolledEssence)) {
+      snag = true;
     }
 
     const isAttack = item?.type == 'weaponEffect';
@@ -265,6 +303,7 @@ export class Dice {
         || targetStatuses.has('restrained')
         || targetStatuses.has('stunned')
         || targetStatuses.has('unconscious')
+        || targetStatuses.has('actingSmaller')
         || (isMelee && targetStatuses.has('prone'));
 
       if (targetGrantsEdge) {
@@ -312,6 +351,45 @@ export class Dice {
   }
 
   /**
+   * Computes the additional Aiming shift granted by a Laser Sight (or similar) attachment on
+   * the weapon a ranged weaponEffect belongs to.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} item   The weaponEffect being rolled.
+   * @returns {Number}   The extra shift, 0 if the weaponEffect has no parent weapon or upgrades.
+   * @private
+   */
+  _getLaserSightBonus(actor, item) {
+    const parentId = item?.flags.essence20?.parentId;
+    const weapon = parentId ? actor.items.get(parentId) : null;
+
+    return weapon?.system.totalAimShiftBonus || 0;
+  }
+
+  /**
+   * Finds the other damage-dealing weaponEffect Items attached to the same weapon as the given
+   * weaponEffect (Table 8-3.1's "Alternate Effects") - available to stack onto a Critical
+   * Success (p.205). Effects with no damageValue (e.g. Trip, Maneuver) are excluded since they
+   * have nothing numeric to apply automatically.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} item   The weaponEffect being rolled.
+   * @returns {Array<Item>}   The sibling weaponEffect Items, empty if item has no parent weapon.
+   * @private
+   */
+  _getAlternateEffects(actor, item) {
+    const parentId = item?.flags.essence20?.parentId;
+    if (!parentId) {
+      return [];
+    }
+
+    return actor.items.filter(sibling =>
+      sibling.type == 'weaponEffect'
+      && sibling.id != item.id
+      && sibling.flags.essence20?.parentId == parentId
+      && sibling.system.damageValue,
+    );
+  }
+
+  /**
    * Executes the skill roll.
    * @param {String} formula   The formula to be rolled.
    * @param {Actor} actor   The actor performing the roll.
@@ -342,6 +420,33 @@ export class Dice {
 
     await roll.evaluate();
 
+    const [isCrit] = _isCritIsFumble(roll.dice, canCritD2);
+
+    // Critical Success (p.205): the attacker may stack one additional attack effect onto the
+    // hit - either the same effect again, or (Table 8-3.1) one of the weapon's Alternate
+    // Effects, applied at its own listed value (no further Degrees of Success multiplier - see
+    // the Snow Storm example, p.187-188, which adds the alternate's flat value once).
+    const criticalOptions = [];
+    if (isCrit && checkContext.damageValue) {
+      criticalOptions.push({
+        key: 'double',
+        label: this._localize('E20.CheckCriticalRepeatEffect', { name: checkContext.effectName }),
+        damageValue: checkContext.damageValue,
+        damageType: checkContext.damageType,
+        damageTypeLabel: this._localize(E20.damageTypes[checkContext.damageType]),
+      });
+
+      for (const altEffect of checkContext.alternateEffects) {
+        criticalOptions.push({
+          key: altEffect.id,
+          label: altEffect.name,
+          damageValue: altEffect.system.damageValue,
+          damageType: altEffect.system.damageType,
+          damageTypeLabel: this._localize(E20.damageTypes[altEffect.system.damageType]),
+        });
+      }
+    }
+
     const results = checkContext.entries.map(entry => {
       const multiplier = computeMultiplier(roll.total, entry.difficulty);
       const success = multiplier > 0;
@@ -358,6 +463,7 @@ export class Dice {
         damageValue: canApplyDamage ? checkContext.damageValue * multiplier : null,
         damageType: checkContext.damageType,
         damageTypeLabel: checkContext.damageType ? this._localize(E20.damageTypes[checkContext.damageType]) : null,
+        criticalOptions: canApplyDamage ? criticalOptions : [],
       };
     });
 

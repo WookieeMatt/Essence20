@@ -97,7 +97,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Stand Together",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "role",
         "level": 18
       },
       "b47f": {

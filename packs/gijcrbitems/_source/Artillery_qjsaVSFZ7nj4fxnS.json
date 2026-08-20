@@ -39,7 +39,7 @@
       "a6f9": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.xFMzM5pycDmmw4u3",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Shaped Charge",
+        "name": "Shaped Charges",
         "type": "perk",
         "subtype": "role",
         "level": 7
@@ -74,7 +74,7 @@
         "name": "Horseshoes and Handgrenades",
         "type": "perk",
         "subtype": "role",
-        "level": 12
+        "level": 18
       },
       "b9c0": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.SvByuJ6hUITwR5Q7",

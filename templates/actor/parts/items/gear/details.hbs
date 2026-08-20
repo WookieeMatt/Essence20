@@ -14,4 +14,7 @@
   {{#if item.system.lightRange.dim}}
   <span class="chip" name="chip.gear.lightRange.dim">{{localize 'E20.LightRangeDim'}}: {{item.system.lightRange.dim}}</span>
   {{/if}}
+  {{#if item.system.visionGrant.enabled}}
+  <span class="chip" name="chip.gear.visionGrant">{{localize (lookup @root.config.visionModes item.system.visionGrant.mode)}}: {{item.system.visionGrant.range}}ft</span>
+  {{/if}}
 </div>

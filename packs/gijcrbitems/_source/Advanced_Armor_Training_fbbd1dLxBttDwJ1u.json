@@ -1,0 +1,83 @@
+{
+  "name": "Advanced Armor Training",
+  "type": "perk",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "GI Joe Core Rulebook",
+      "page": 165
+    },
+    "prerequisite": "Basic Armor Training",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [
+    {
+      "origin": "Item.fbbd1dLxBttDwJ1u",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "mhfB5srGCabHj14k",
+      "changes": [
+        {
+          "key": "system.trained.armors.medium",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "tint": "#ffffff",
+      "transfer": true,
+      "flags": {},
+      "name": "Unnamed Effect",
+      "description": "",
+      "statuses": [],
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!fbbd1dLxBttDwJ1u.mhfB5srGCabHj14k"
+    }
+  ],
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787145794377,
+    "modifiedTime": 1787145794377,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_id": "fbbd1dLxBttDwJ1u",
+  "folder": "M27HYmdBcwp4ApTr",
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!fbbd1dLxBttDwJ1u"
+}

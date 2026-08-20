@@ -31,7 +31,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Bah-Weep-Graaaagnah Wheep Ni Ni Bong",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "focus",
         "level": 3
       },
       "d8e1": {

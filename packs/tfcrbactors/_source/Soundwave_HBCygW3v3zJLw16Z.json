@@ -1,0 +1,1541 @@
+{
+  "name": "Soundwave",
+  "type": "npc",
+  "_id": "HBCygW3v3zJLw16Z",
+  "img": "icons/svg/mystery-man.svg",
+  "system": {
+    "altModeId": "",
+    "altModeName": "",
+    "altModesize": "common",
+    "background": {
+      "pronouns": "",
+      "role": ""
+    },
+    "canHaveZord": false,
+    "canMorph": false,
+    "canQualify": false,
+    "canShowWealthDie": false,
+    "canSpellcast": false,
+    "canTransform": false,
+    "canUseWeird": false,
+    "defenses": {
+      "toughness": {
+        "value": 21
+      },
+      "evasion": {
+        "value": 21
+      },
+      "willpower": {
+        "value": 21
+      },
+      "cleverness": {
+        "value": 21
+      }
+    },
+    "environments": [],
+    "essences": {
+      "strength": {
+        "max": 9,
+        "value": 9
+      },
+      "speed": {
+        "max": 11,
+        "value": 11
+      },
+      "smarts": {
+        "max": 11,
+        "value": 11
+      },
+      "social": {
+        "max": 11,
+        "value": 11
+      }
+    },
+    "essenceRanks": {
+      "smarts": null,
+      "social": null,
+      "speed": null,
+      "strength": null
+    },
+    "faction": "",
+    "focusEssence": "",
+    "image": {
+      "botmode": null,
+      "morphed": null,
+      "unmorphed": null
+    },
+    "isMorphed": false,
+    "isTransformed": false,
+    "level": 1,
+    "oldHandTransitionLevel": null,
+    "originEssencesIncrease": "",
+    "originSkillsIncrease": "",
+    "powers": {
+      "personal": {
+        "regeneration": 0,
+        "max": 0,
+        "value": 0
+      },
+      "sorcerous": {
+        "levelTaken": 0,
+        "max": 0,
+        "value": 0
+      }
+    },
+    "notes": "",
+    "poisonTraining": 0,
+    "qualified": {
+      "armors": {
+        "computerized": false,
+        "heavy": false,
+        "impulse": false,
+        "light": false,
+        "medium": false,
+        "psycho": false,
+        "tactical": false,
+        "ultraHeavy": false
+      },
+      "poisons": {
+        "all": false,
+        "standard": false,
+        "limited": false
+      },
+      "weapons": {
+        "assaultRifle": false,
+        "ballistic": false,
+        "blunt": false,
+        "closeCombatHeavyBlade": false,
+        "element": false,
+        "explosives": false,
+        "finesse": false,
+        "grenades": false,
+        "mightMelee": false,
+        "oneHanded": false,
+        "shotguns": false,
+        "silent": false,
+        "stun": false,
+        "submachineGun": false,
+        "thrown": false
+      }
+    },
+    "senses": {
+      "hearing": {},
+      "sight": {},
+      "smell": {},
+      "taste": {},
+      "touch": {}
+    },
+    "skillRankAllocation": {
+      "strength": {
+        "value": 0,
+        "string": ""
+      },
+      "speed": {
+        "value": 0,
+        "string": ""
+      },
+      "smarts": {
+        "value": 0,
+        "string": ""
+      },
+      "social": {
+        "value": 0,
+        "string": ""
+      }
+    },
+    "trained": {
+      "armors": {
+        "computerized": false,
+        "heavy": false,
+        "impulse": false,
+        "light": false,
+        "medium": false,
+        "psycho": false,
+        "tactical": false,
+        "ultraHeavy": false
+      },
+      "poisons": {
+        "all": false,
+        "standard": false,
+        "limited": false
+      },
+      "toxins": {
+        "all": false,
+        "standard": false,
+        "limited": false
+      },
+      "upgrades": {
+        "armors": {
+          "automatic": false,
+          "standard": false,
+          "limited": false,
+          "restricted": false,
+          "prototype": false,
+          "unique": false,
+          "theoretical": false,
+          "other": false
+        }
+      },
+      "weapons": {
+        "assaultRifle": false,
+        "ballistic": false,
+        "blunt": false,
+        "closeCombatHeavyBlade": false,
+        "element": false,
+        "explosives": false,
+        "finesse": false,
+        "grenades": false,
+        "mightMelee": false,
+        "oneHanded": false,
+        "shotguns": false,
+        "silent": false,
+        "stun": false,
+        "submachineGun": false,
+        "thrown": false
+      }
+    },
+    "actors": {},
+    "color": "#b5b1b1",
+    "conditioning": 0,
+    "energon": {
+      "dark": {
+        "value": 0
+      },
+      "normal": {
+        "max": 0,
+        "value": 0
+      },
+      "primal": {
+        "value": 0
+      },
+      "red": {
+        "value": 0
+      },
+      "synthEn": {
+        "value": 0
+      }
+    },
+    "essenceShifts": {
+      "any": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "smarts": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "social": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "speed": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      },
+      "strength": {
+        "edge": false,
+        "shiftUp": 0,
+        "shiftDown": 0,
+        "snag": false,
+        "untrainedBonus": false
+      }
+    },
+    "health": {
+      "bonus": 0,
+      "max": 18,
+      "origin": 0,
+      "value": 18
+    },
+    "immunities": {
+      "blindingBlast": false,
+      "blunt": false,
+      "cover": false,
+      "element": false,
+      "frightened": false,
+      "grapple": false,
+      "impaired": false,
+      "intimidate": false,
+      "knocProne": false,
+      "laser": false,
+      "maneuver": false,
+      "mesmerized": false,
+      "modelock": false,
+      "poison": false,
+      "restrained": false,
+      "sharp": false,
+      "sonic": false,
+      "special": false,
+      "spot": false,
+      "stun": false,
+      "unconscious": false
+    },
+    "initiative": {
+      "formula": "2d20kl + 0",
+      "modifier": 0,
+      "shift": "d20",
+      "skill": "initiative"
+    },
+    "isLocked": false,
+    "movement": {
+      "aerial": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      },
+      "climb": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      },
+      "ground": {
+        "altMode": 0,
+        "base": 30,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 30
+      },
+      "swim": {
+        "altMode": 0,
+        "base": 0,
+        "bonus": 0,
+        "morphed": 0,
+        "total": 0
+      }
+    },
+    "movementIsReadOnly": false,
+    "movementNotSet": false,
+    "resistances": {
+      "blindingBlast": false,
+      "blunt": false,
+      "cover": false,
+      "element": false,
+      "frightened": false,
+      "grapple": false,
+      "impaired": false,
+      "intimidate": false,
+      "knocProne": false,
+      "laser": false,
+      "maneuver": false,
+      "mesmerized": false,
+      "modelock": false,
+      "poison": false,
+      "restrained": false,
+      "sharp": false,
+      "sonic": false,
+      "special": false,
+      "spot": false,
+      "stun": false,
+      "unconscious": false
+    },
+    "size": "long",
+    "skills": {
+      "roleSkillDie": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "acrobatics": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "alertness": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d12",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "animalHandling": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d8",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "athletics": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "brawn": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "culture": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "deception": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "driving": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "finesse": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "infiltration": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d8",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "initiative": {
+        "canBeInitiative": true,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "intimidation": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "might": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d6",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "performance": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "persuasion": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "science": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d2",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "spellcasting": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": true,
+          "speed": true,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "streetwise": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": true,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d4",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "survival": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "targeting": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": true,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d10",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "technology": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d2",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "wealth": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": false,
+          "social": false,
+          "speed": false,
+          "strength": false
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      },
+      "weird": {
+        "canBeInitiative": false,
+        "canCritD2": false,
+        "essences": {
+          "smarts": true,
+          "social": true,
+          "speed": true,
+          "strength": true
+        },
+        "edge": false,
+        "isSpecialized": false,
+        "modifier": 0,
+        "shift": "d20",
+        "shiftDown": 0,
+        "shiftUp": 0,
+        "snag": false
+      }
+    },
+    "stun": {
+      "max": 0,
+      "min": 0,
+      "value": 0
+    },
+    "languages": [
+      "Cybertronian",
+      "self-translates any known language"
+    ],
+    "allegiancePoints": 0,
+    "gainingTheContact": "",
+    "isContact": false,
+    "isNPC": true,
+    "threatLevel": 18
+  },
+  "items": [
+    {
+      "_id": "HR6D3dSrpcl7n7ey",
+      "name": "Cassette Minion Master",
+      "type": "perk",
+      "img": "systems/essence20/assets/icons/items/perk.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "advances": {
+          "baseValue": 1,
+          "canAdvance": false,
+          "currentValue": 0,
+          "increaseValue": 1,
+          "type": "number"
+        },
+        "canActivate": false,
+        "choice": null,
+        "choiceType": "none",
+        "isRoleVariant": false,
+        "hasChoice": false,
+        "hasMorphedToughnessBonus": false,
+        "numChoices": 1,
+        "prerequisite": "",
+        "selectionLimit": 1,
+        "type": "general",
+        "value": 0,
+        "version": "transformers"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.HR6D3dSrpcl7n7ey"
+    },
+    {
+      "_id": "eFOfaWC1qvSgUmCb",
+      "name": "Know Weakness",
+      "type": "perk",
+      "img": "systems/essence20/assets/icons/items/perk.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "advances": {
+          "baseValue": 1,
+          "canAdvance": false,
+          "currentValue": 0,
+          "increaseValue": 1,
+          "type": "number"
+        },
+        "canActivate": false,
+        "choice": null,
+        "choiceType": "none",
+        "isRoleVariant": false,
+        "hasChoice": false,
+        "hasMorphedToughnessBonus": false,
+        "numChoices": 1,
+        "prerequisite": "",
+        "selectionLimit": 1,
+        "type": "general",
+        "value": 0,
+        "version": "transformers"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.eFOfaWC1qvSgUmCb"
+    },
+    {
+      "_id": "EXjk66cZXPBlUVDp",
+      "name": "Mode Conversion",
+      "type": "perk",
+      "img": "systems/essence20/assets/icons/items/perk.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "advances": {
+          "baseValue": 1,
+          "canAdvance": false,
+          "currentValue": 0,
+          "increaseValue": 1,
+          "type": "number"
+        },
+        "canActivate": false,
+        "choice": null,
+        "choiceType": "none",
+        "isRoleVariant": false,
+        "hasChoice": false,
+        "hasMorphedToughnessBonus": false,
+        "numChoices": 1,
+        "prerequisite": "",
+        "selectionLimit": 1,
+        "type": "general",
+        "value": 0,
+        "version": "transformers"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.EXjk66cZXPBlUVDp"
+    },
+    {
+      "_id": "8eG5rfcsIp8Mnp9Z",
+      "name": "Object Alt-Modes",
+      "type": "perk",
+      "img": "systems/essence20/assets/icons/items/perk.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "advances": {
+          "baseValue": 1,
+          "canAdvance": false,
+          "currentValue": 0,
+          "increaseValue": 1,
+          "type": "number"
+        },
+        "canActivate": false,
+        "choice": null,
+        "choiceType": "none",
+        "isRoleVariant": false,
+        "hasChoice": false,
+        "hasMorphedToughnessBonus": false,
+        "numChoices": 1,
+        "prerequisite": "",
+        "selectionLimit": 1,
+        "type": "general",
+        "value": 0,
+        "version": "transformers"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.8eG5rfcsIp8Mnp9Z"
+    },
+    {
+      "_id": "Om5nOjmlnOog9Avp",
+      "name": "Reinforced Bond",
+      "type": "perk",
+      "img": "systems/essence20/assets/icons/items/perk.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "advances": {
+          "baseValue": 1,
+          "canAdvance": false,
+          "currentValue": 0,
+          "increaseValue": 1,
+          "type": "number"
+        },
+        "canActivate": false,
+        "choice": null,
+        "choiceType": "none",
+        "isRoleVariant": false,
+        "hasChoice": false,
+        "hasMorphedToughnessBonus": false,
+        "numChoices": 1,
+        "prerequisite": "",
+        "selectionLimit": 1,
+        "type": "general",
+        "value": 0,
+        "version": "transformers"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.Om5nOjmlnOog9Avp"
+    },
+    {
+      "_id": "2Hd3WOQx45kEo87b",
+      "name": "Reinforced Fists",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "Transformers Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.HBCygW3v3zJLw16Z.Item.uFhE5guT1AONUuso",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Reinforced Fists Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.2Hd3WOQx45kEo87b"
+    },
+    {
+      "_id": "uFhE5guT1AONUuso",
+      "name": "Reinforced Fists Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageType": "blunt",
+        "damageValue": 2,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 0,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.uFhE5guT1AONUuso"
+    },
+    {
+      "_id": "X4C0o7NySLnddsGs",
+      "name": "Sonic Projector",
+      "type": "weapon",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "Transformers Core Rulebook",
+          "page": null
+        },
+        "items": {
+          "e0": {
+            "uuid": "Actor.HBCygW3v3zJLw16Z.Item.bTrzG9VGoIns5RPu",
+            "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+            "name": "Sonic Projector Effect",
+            "type": "weaponEffect"
+          }
+        },
+        "classFeatureId": null,
+        "alternateEffects": "",
+        "availability": "standard",
+        "classification": {
+          "size": "integrated"
+        },
+        "equipped": true,
+        "isPoison": false,
+        "poisonApplication": {
+          "contact": false,
+          "ingested": false,
+          "inhaled": false
+        },
+        "requirements": {
+          "custom": null,
+          "skill": null,
+          "shift": null
+        },
+        "traits": [
+          "antiTank",
+          "mounted",
+          "sonic"
+        ],
+        "transformerMode": "modeBotMode",
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.X4C0o7NySLnddsGs"
+    },
+    {
+      "_id": "bTrzG9VGoIns5RPu",
+      "name": "Sonic Projector Effect",
+      "type": "weaponEffect",
+      "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "classification": {
+          "skill": "targeting",
+          "style": "projectile"
+        },
+        "damageType": "sonic",
+        "damageValue": 2,
+        "defenseType": "toughness",
+        "isSpecialized": false,
+        "numHands": 1,
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": null,
+          "long": 100,
+          "value": 60
+        },
+        "shiftDown": 0,
+        "totalReach": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.bTrzG9VGoIns5RPu"
+    },
+    {
+      "_id": "hpYm5sPEXi67kkdm",
+      "name": "Recordicon Ambush!",
+      "type": "power",
+      "img": "systems/essence20/assets/icons/items/powers.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "actionType": "free",
+        "canActivate": false,
+        "hasVariableCost": false,
+        "maxPowerCost": null,
+        "powerCost": null,
+        "selectionLimit": 1,
+        "type": "threat",
+        "usesInterval": "perScene",
+        "usesPer": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.hpYm5sPEXi67kkdm"
+    },
+    {
+      "_id": "8dHX6oYnbPpkI3kW",
+      "name": "Soundwave Superior",
+      "type": "hangUp",
+      "img": "icons/svg/hazard.svg",
+      "system": {
+        "originalId": "",
+        "description": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.8dHX6oYnbPpkI3kW"
+    },
+    {
+      "_id": "2cS2oRtSw1pcXN3q",
+      "name": "Medium Armor Matrix",
+      "type": "gear",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "Transformers Core Rulebook",
+          "page": null
+        },
+        "availability": "standard",
+        "equipped": true,
+        "requirements": {
+          "custom": "",
+          "skill": "",
+          "shift": "none"
+        },
+        "traits": [],
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.2cS2oRtSw1pcXN3q"
+    },
+    {
+      "_id": "pZDM0cSqNyl7mL79",
+      "name": "Sonic Projector",
+      "type": "gear",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "Transformers Core Rulebook",
+          "page": null
+        },
+        "availability": "standard",
+        "equipped": true,
+        "requirements": {
+          "custom": "",
+          "skill": "",
+          "shift": "none"
+        },
+        "traits": [],
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.pZDM0cSqNyl7mL79"
+    },
+    {
+      "_id": "VRvtKKhZBuYQXteY",
+      "name": "Mini-Cassette Recordicons x2d2",
+      "type": "gear",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "Transformers Core Rulebook",
+          "page": null
+        },
+        "availability": "standard",
+        "equipped": true,
+        "requirements": {
+          "custom": "",
+          "skill": "",
+          "shift": "none"
+        },
+        "traits": [],
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.VRvtKKhZBuYQXteY"
+    },
+    {
+      "_id": "soC5yZWYdWQeSxEY",
+      "name": "Data Recording/Storage Kit",
+      "type": "gear",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "Transformers Core Rulebook",
+          "page": null
+        },
+        "availability": "standard",
+        "equipped": true,
+        "requirements": {
+          "custom": "",
+          "skill": "",
+          "shift": "none"
+        },
+        "traits": [],
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.soC5yZWYdWQeSxEY"
+    },
+    {
+      "_id": "ksQuDHT5CtxQn1G0",
+      "name": "Universal Translation Node",
+      "type": "gear",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "originalId": "",
+        "description": "",
+        "source": {
+          "book": "Transformers Core Rulebook",
+          "page": null
+        },
+        "availability": "standard",
+        "equipped": true,
+        "requirements": {
+          "custom": "",
+          "skill": "",
+          "shift": "none"
+        },
+        "traits": [],
+        "upgradeTraits": [],
+        "usesPerScene": null
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_stats": {
+        "systemId": "essence20",
+        "systemVersion": "4.6.5",
+        "coreVersion": "13.344",
+        "createdTime": 1787111050493,
+        "modifiedTime": 1787111050493,
+        "lastModifiedBy": "j6WWLUdptyfr6qBb",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!actors.items!HBCygW3v3zJLw16Z.ksQuDHT5CtxQn1G0"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787111050493,
+    "modifiedTime": 1787111050493,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!actors!HBCygW3v3zJLw16Z"
+}

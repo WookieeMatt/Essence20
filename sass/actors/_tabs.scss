@@ -4,11 +4,7 @@
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
-  /* Chamfered tabs (see .essence20 .tabs a[data-tab] below) already cut their own top corners,
-     so any gap here widens into an angular wedge at the top between each pair of tabs - most
-     visible in light mode where the page background shows through it. Butting them together
-     (no gap) lets adjacent chamfers meet as a single small notch instead. */
-  gap: 0;
+  gap: 2px;
   margin-bottom: 8px;
 }
 
@@ -42,13 +38,20 @@
 .essence20 .tabs .item,
 .essence20 .tabs a[data-tab] {
   position: relative;
-  background: var(--theme-border-color);
+  /* Black rim (matching the active tab's own border below) around every tab, revealed by
+     ::before's 2px inset - the same "2-layer rim" trick used to fake a border along the
+     clip-path chamfer, since a plain CSS border can't follow that diagonal edge. */
+  background: #000000;
   clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px);
   border: none;
   padding: 3px 4px 5px;
   flex: 1;
   min-width: 0;
-  color: var(--theme-text-color);
+  /* Plain --theme-text-color reads as low-contrast to unreadable against a solid, arbitrary
+     system.color fill (same issue the Essence Badge label solves in _essence.scss) - white with
+     a dark halo keeps the label legible against any color a player picks, in both themes. */
+  color: #ffffff;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 3px rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -57,7 +60,9 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  opacity: 0.85;
+  /* Full strength (not the old 0.85) so the fill reads as the actor's actual system.color
+     instead of a version blended toward whatever's behind the tab strip. */
+  opacity: 1;
 }
 
 .essence20 .tabs .item::before,
@@ -67,13 +72,7 @@
   inset: 2px;
   z-index: 0;
   pointer-events: none;
-  /* Must be an opaque, theme-correct color rather than the translucent rgba(255,255,255,0.05)
-     tint this used before the outer element became a solid border-color block (see the .item
-     rule above) - that tint was calibrated to composite against the page background showing
-     through, which worked when the tab itself had no background of its own. Now that there's a
-     dark border-color layer directly behind it, a 5%-opacity white tint over that just reads as
-     "still basically dark" in light mode too, making the text unreadable. */
-  background: var(--theme-panel-bg);
+  background: var(--e20-system-color, var(--theme-accent));
   clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%, 0 6px);
   box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18);
 }
@@ -91,28 +90,28 @@
   font-weight: 600;
 }
 
-/* Only the active tab picks up the actor's system color, matching how the Essence Badge
-   (.essence-header:has(.essence-label) in _essence.scss) tints itself with the same
-   --e20-system-color-50 gradient over --theme-bg-color, so it stands out from its otherwise-
-   neutral siblings instead of every tab carrying it regardless of state.
+/* The active tab keeps the same black rim as its non-active siblings (background: #000000 is
+   already set by the base .item rule above), but its own fill (::before below) matches the
+   sheet background instead of system.color, so it reads as blending into the sheet rather than
+   as another colored pill.
    The [data-tab] attribute selector on the base rule above outweighs a plain .active class
    selector, so it's repeated here to win the cascade rather than relying on source order. */
 .essence20 .tabs .item.active,
 .essence20 .tabs a[data-tab].active {
-  background: var(--e20-system-color, var(--theme-accent));
   opacity: 1;
+  /* No colored fill to contrast against anymore - back to the theme's own text color/weight
+     instead of the white-plus-halo treatment the (now solid-colored) non-active tabs use. */
+  color: var(--theme-text-color);
+  text-shadow: none;
 }
 
 .essence20 .tabs .item.active::before,
 .essence20 .tabs a[data-tab].active::before {
-  background-color: var(--theme-bg-color);
-  background-image: linear-gradient(var(--e20-system-color-50, transparent), var(--e20-system-color-50, transparent));
+  background: var(--theme-bg-color);
+  /* Flush against the bottom (0, instead of the base rule's uniform 2px inset) so the black rim
+     doesn't show there - only the active tab opens directly into its content panel below. */
+  inset: 2px 2px 0 2px;
   box-shadow: none;
-}
-
-.essence20 .tabs .item.active,
-.essence20 .tabs a[data-tab].active {
-  text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 
 .essence20 a:hover {
@@ -124,18 +123,21 @@
   border-bottom: none;
 }
 
-/* default-border.svg (the --theme-border-image asset drawn by the ::before rule below) cuts
-   its top-left and bottom-right corners diagonally - but that trim is only a mask/overlay, it
-   doesn't affect the box's OWN background (set per-component: .collapsible-item-container,
-   .stats-container, table cells, etc, each with their own plain rectangular background). Without
-   a matching clip-path here, that background shows through past the trim's cut corners instead
-   of stopping at them. min(22px, 50%) matches both the trim's rendered corner width (22px) AND
-   the point at which the mask-border-width corner scaling below actually kicks in: per the CSS
-   border-image corner-overlap rule, opposing 22px corners on an axis get scaled down together
-   once their sum (44px) exceeds that axis's size, i.e. exactly at 50% of that axis, not 25% -
-   25% clipped the background's own corner far short of where the trim's diagonal really lands on
-   any short element (collapsed single-line rows, narrow table cells), leaving a background
-   triangle poking out past the visible trim. */
+/* A plain CSS border cannot draw along a clip-path-cut edge - border only ever follows the
+   box's real (rectangular) edges, and the diagonal chamfer below exists purely as a clip-path
+   cut, not an actual box edge. So the accent line has to be painted separately, as a masked
+   border-image (--theme-border-image, sliced and stretched through mask-border-* below), and
+   this clip-path exists to clip the box's OWN background (per-component: .collapsible-item-
+   container, .stats-container, table cells, etc., each with their own plain rectangular
+   background) to that same trimmed shape, so it doesn't poke out past the mask's visible trim.
+
+   min(22px, 50%) matches both the trim's rendered corner width (22px) AND the point at which
+   the mask-border-width corner scaling below actually kicks in: per the CSS border-image
+   corner-overlap rule, opposing 22px corners on an axis get scaled down together once their sum
+   (44px) exceeds that axis's size, i.e. exactly at 50% of that axis, not 25% - 25% clipped the
+   background's own corner far short of where the trim's diagonal really lands on any short
+   element (collapsed single-line rows, narrow table cells), leaving a background triangle
+   poking out past the visible trim. */
 .essence20 .e20-border-accent:not(.profile-img):not(hr) {
   position: relative;
   border-color: transparent;
@@ -147,6 +149,14 @@
   );
 }
 
+/* default-border.svg's/default-border-thick.svg's chamfer is 15 units deep in their 120-unit
+   viewBox, not 16 - slicing at 16 (matching the SVG's own historical "16" grid unit elsewhere)
+   left a real gap: scaled up by the width/slice ratio (22px / 16 = 1.375x), the mask's own
+   diagonal line only reached ~20.6px from the corner, a good 1.4px short of the clip-path's
+   22px cut. That gap - between where the accent color stopped and where the visible shape kept
+   going - is exactly what showed up as an unpainted top-left/bottom-right corner. Slicing at 15
+   instead makes that same scaling land the mask's diagonal exactly on the clip-path's 22px cut
+   (22 / 15 * 15 = 22), closing the gap. */
 .essence20 .e20-border-accent:not(.profile-img):not(hr)::before {
   content: "";
   position: absolute;
@@ -155,11 +165,11 @@
   pointer-events: none;
   background-color: var(--e20-system-color, var(--theme-accent));
   -webkit-mask-box-image-source: var(--theme-border-image);
-  -webkit-mask-box-image-slice: 16;
+  -webkit-mask-box-image-slice: 15;
   -webkit-mask-box-image-width: 22px;
   -webkit-mask-box-image-repeat: stretch;
   mask-border-source: var(--theme-border-image);
-  mask-border-slice: 16;
+  mask-border-slice: 15;
   mask-border-width: 22px;
   mask-border-repeat: stretch;
 }
@@ -174,6 +184,3 @@
   border-color: var(--e20-system-color, var(--theme-border-color));
 }
 
-.essence20 .skill-header.e20-skill-header {
-  background-color: var(--e20-system-color-50, var(--theme-panel-bg));
-}

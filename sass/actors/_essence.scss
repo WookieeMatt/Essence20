@@ -61,8 +61,7 @@
   position: relative;
   z-index: 5;
   padding: 5px 12px 5px 16px;
-  background-color: var(--theme-bg-color);
-  background-image: linear-gradient(var(--e20-system-color-50, transparent), var(--e20-system-color-50, transparent));
+  background-color: var(--e20-system-color, var(--theme-accent));
   box-sizing: border-box;
   clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
 }
@@ -94,6 +93,15 @@
   white-space: nowrap;
 }
 
+/* Light theme's --theme-text-color is dark (for its own light panels), which reads as
+   low-contrast to unreadable against a solid, arbitrary system.color fill. Force white with a
+   dark halo so the label stays legible against any color a player picks; dark theme's own text
+   color already contrasts fine and is left alone. */
+.essence20.theme-light .essence-header:has(.essence-label) .essence-label {
+  color: #ffffff;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
 .essence20 .essence-header:has(.essence-label) .two-digit-input {
   background: rgba(0,0,0,0.35);
   border: 1px solid rgba(255,255,255,0.12);
@@ -103,6 +111,11 @@
   padding: 2px;
 }
 
+/* Matches the essence-label's own light-mode treatment above (white + dark halo) rather than
+   the light-gray reused from dark mode - the gray read too close to the chip's own dark
+   background (rgba(0,0,0,0.35)) to be legible, and didn't match the now-white label text
+   right next to it. */
 .essence20.theme-light .essence-header:has(.essence-label) .two-digit-input {
-  background: transparent;
+  color: #ffffff;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 3px rgba(0, 0, 0, 0.8);
 }

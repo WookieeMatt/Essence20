@@ -1,0 +1,22 @@
+{
+  "name": "Pets",
+  "sorting": "a",
+  "folder": "7aYxlpmaWPQxBpd5",
+  "type": "Item",
+  "_id": "M27HYmdBcwp4ApTr",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787145794377,
+    "modifiedTime": 1787145794377,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!M27HYmdBcwp4ApTr"
+}

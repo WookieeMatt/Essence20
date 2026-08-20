@@ -64,6 +64,40 @@ export async function applyDamage(actor, damageValue, damageType) {
 }
 
 /**
+ * Determines whether a roll was a Critical Success and/or a Fumble (p.205): a natural '1' on
+ * the d20 portion is always a Fumble; showing the highest face value on any non-d20, non-d2
+ * bonus die (d2 only counts if canCritD2, e.g. from an Edge Perk) is a Critical Success.
+ * @param {Array<Object>} dice   Roll#dice - one entry per die pool (e.g. d20, 3d6).
+ * @param {Boolean} canCritD2   Whether a shift-2 (d2) result counts as a Critical Success.
+ * @returns {[Boolean, Boolean]}   [isCrit, isFumble]
+ */
+export const _isCritIsFumble = function (dice, canCritD2) {
+  let isCrit = false;
+  let isFumble = false;
+
+  for (let diePool of dice) {
+    // A diePool here is a group of similarly-sided dice, such as d20 or 3d6
+    let faces = diePool.faces;
+
+    for (let dieValue of diePool.values) {
+      // dieValue is an individual result from the diePool
+      if (faces === 20 && dieValue === 1) {
+        isFumble = true;
+      } else if ((faces > 2 || canCritD2) && faces != 20 && dieValue === faces) {
+        isCrit = true;
+        break; // Only one die needs to crit
+      }
+    }
+
+    if (isCrit) {
+      break; // Perpetuating inner-for break
+    }
+  }
+
+  return [isCrit, isFumble];
+};
+
+/**
  * Builds the ChatMessage.create() data for a resolved attack or vs-Difficulty Skill Test,
  * rendering templates/chat/check-card.hbs with one row per result.
  * @param {Roll} roll   The already-evaluated Roll.

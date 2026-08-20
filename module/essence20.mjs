@@ -16,14 +16,14 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 // Import helper/utility classes and constants.
-import { attachCheckCardListeners, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { applyChatMessageSystemColor, attachCheckCardListeners, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
-import { enrichCheck, onCheckLinkClick } from "./helpers/enrichers.mjs";
+import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { getNumActions } from "./helpers/actor.mjs";
+import { applyVisionToTokens, getNumActions, syncAutoBlindStatus } from "./helpers/actor.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
-import { applyThemeClass, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
+import { applyThemeClass, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
 import { updateRoleCache } from "./helpers/utils.mjs";
 
 function registerSystemSettings() {
@@ -107,6 +107,15 @@ Hooks.once("init", async function () {
   CONFIG.Combatant.documentClass = Essence20Combatant;
   CONFIG.Item.documentClass = Essence20Item;
   CONFIG.statusEffects = foundry.utils.deepClone(E20.statusEffects);
+
+  /* Point Foundry's own special-status slots at our matching status IDs, so core's built-in
+     automation applies for free instead of needing bespoke code: BLIND disables a token's vision
+     entirely (it may still use non-sight detection modes, like tremorsense), and DEFEATED drives
+     the Combat Tracker's skull/defeated overlay. Our own "invisible" id already matches Foundry's
+     default (no change needed there - confirmed it already gets the token-transparency handling
+     other systems rely on this same config for). */
+  CONFIG.specialStatusEffects.BLIND = "blinded";
+  CONFIG.specialStatusEffects.DEFEATED = "defeated";
 
   // @Check[skill=... dif=15] / @Check[skill=... defense=toughness] text-enricher links (p.88-89
   // "DIF 15 Sleight of Hand or Technology" style Skill Test references), usable in item/actor
@@ -310,7 +319,10 @@ Hooks.once("i18nInit", () => performPreLocalization(CONFIG.E20));
 // Foundry only re-themes its own core UI (sidebar, HUD, compendium, etc.) when the
 // color scheme setting changes; re-theme any open Essence20 sheets/apps in place too.
 Hooks.on("clientSettingChanged", (key) => {
-  if (key === "core.uiConfig") refreshOpenThemeWrappers();
+  if (key === "core.uiConfig") {
+    refreshOpenThemeWrappers();
+    refreshChatMessageThemes();
+  }
 });
 
 Hooks.once("ready", async function () {
@@ -376,12 +388,20 @@ Hooks.on("getSceneControlButtons", (controls) => {
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
   attachCheckCardListeners(app, html);
+  applyChatMessageSystemColor(app, html);
+  applyThemeClass(html);
 });
 
 // @Check[...] links (module/helpers/enrichers.mjs) can appear in item/actor descriptions and
 // journal entries alike, not just chat, so this is a plain document-level delegated listener
 // rather than something scoped to the renderChatMessageHTML hook above.
 document.addEventListener("click", (event) => {
+  const sendToChat = event.target.closest('.e20-check-send-to-chat');
+  if (sendToChat) {
+    onCheckSendToChat(event, sendToChat);
+    return;
+  }
+
   const link = event.target.closest('.e20-check-link');
   if (link) {
     onCheckLinkClick(event, link);
@@ -418,6 +438,31 @@ for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
   Hooks.on(hookName, (item) => {
     if (item.type == 'megaformTrait') {
       refreshMegaformsLinkedToActor(item.parent?.uuid);
+    }
+
+    /* Gear/Perk items can carry a visionGrant (Night Vision Goggles, etc.) - whenever one is
+       added, changed, or removed, push the actor's freshly recomputed system.visionGrant
+       (see Essence20Actor#_prepareVision()) onto its tokens so the token's actual Foundry
+       vision updates to match. */
+    if (item.parent instanceof Actor && (item.type == 'gear' || item.type == 'perk')) {
+      applyVisionToTokens(item.parent);
+    }
+  });
+}
+
+for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiveEffect"]) {
+  Hooks.on(hookName, (effect) => {
+    /* Status toggles (Asleep, Unconscious, etc.) apply as ActiveEffects on the actor rather than
+       Item changes, so they need their own hook to trigger the vision-grant push. syncAutoBlindStatus
+       additionally keeps the real "blinded" status in sync with Asleep/Unconscious, reusing
+       Foundry's own working Blind vision-block instead of reinventing it (see helpers/actor.mjs
+       for why sight.enabled=false alone doesn't actually block a token's perception). This create/
+       delete's its own ActiveEffect, which re-fires this same hook - safe since both functions are
+       idempotent no-ops once the actor's state already matches. */
+    const parent = effect.parent;
+    if (parent instanceof Actor) {
+      applyVisionToTokens(parent);
+      syncAutoBlindStatus(parent);
     }
   });
 }
