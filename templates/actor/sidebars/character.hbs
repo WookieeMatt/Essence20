@@ -97,9 +97,9 @@
       <div class="essence20-sidebar-skill-list">
         {{#each @root.config.skillsByEssence.any as |skill|}}
           {{#if (eq skill 'spellcasting')}}
-            {{#if @root.system.canSpellcast}}
-              {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
-            {{/if}}
+            {{!-- Moved to the top of the Spells tab (spells.hbs) instead - keeps the sidebar
+                 skill list from competing for space with an MLP-specific skill that most
+                 non-spellcasting characters never see anyway. --}}
           {{else if (eq skill 'weird')}}
             {{#if @root.system.canUseWeird}}
               {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}

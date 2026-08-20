@@ -51,6 +51,19 @@
   font-size: 0.75em;
 }
 
+.essence20 .skill-header .spellcasting-downshift-chip {
+  flex: 0 0 auto;
+  font-size: 0.85em;
+  margin-right: 3px;
+}
+
+.essence20 .skill-header .spellcasting-downshift-action {
+  flex-grow: 0;
+  margin-right: 6px;
+  font-size: 0.75em;
+  color: var(--theme-text-color);
+}
+
 .essence20 .skill-body {
   display: flex;
   flex-direction: column;

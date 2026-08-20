@@ -1,20 +1,13 @@
-<div class="collapsible-item-container e20-border-accent">
-  <div class="flexrow flex-group-center mb-5">
-    <div class="flex-grow-0 nowrap">
-      {{localize "E20.RoleFeatures"}}
-    </div>
-  </div>
-
   {{#if @root.rolePointsList.length}}
     {{#each @root.rolePointsList as |rolePoints|}}
       <div class="item flexrow align-center role-points-item" data-item-id="{{rolePoints._id}}">
         {{!-- Label --}}
-        <a class="rollable flex-grow-0" data-roll-type="info" data-tooltip="{{localize 'E20.ItemRollTitle'}}">
+        <a class="rollable flex-grow-0" data-action="rollable" data-roll-type="info" data-tooltip="{{localize 'E20.ItemRollTitle'}}">
           <i class="fas fa-message-lines"></i>
         </a>
 
         {{#if (ne rolePoints.system.resource.max null)}}
-        <a class="rollable flex-grow-0" data-roll-type="rolePoints" data-tooltip="{{localize 'E20.RolePointsRoll'}}"><i
+        <a class="rollable flex-grow-0" data-action="rollable" data-roll-type="rolePoints" data-tooltip="{{localize 'E20.RolePointsRoll'}}"><i
           class="fas fa-hand-fist"></i></a>
         {{/if}}
 
@@ -62,7 +55,7 @@
     {{#with @root.system.skills.roleSkillDie as |roleSkillDie|}}
       <div class="item flexrow align-center" data-item-id="{{@root.role._id}}">
         <div class="item-image flex-grow-0">
-          <a class="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{@root.role.system.skillDie.name}}"
+          <a class="rollable" data-action="rollable" data-roll-type="skill" data-skill="roleSkillDie" data-role-skill-name="{{@root.role.system.skillDie.name}}"
             data-is-specialized="{{roleSkillDie.isSpecialized}}"><i class="fas fa-dice-d20"></i></a>
         </div>
         <div>{{@root.role.system.skillDie.name}}: {{roleSkillDie.shift}}{{#if roleSkillDie.isSpecialized}}*{{/if}}</div>
@@ -73,4 +66,3 @@
   {{#if (not (or @root.rolePointsList.length @root.role.system.skillDie.isUsed))}}
     <div class="flexrow flex-group-center">{{localize 'E20.RolePointsNone'}}</div>
   {{/if}}
-</div>

@@ -23,8 +23,10 @@ import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
   onRecharge,
+  onRecoverSpellcastingDownshift,
   onRest,
   onRoll,
+  onSufferForSpellcastingDownshift,
   onToggleAccordion,
   onToggleHeaderAccordion,
 } from "../sheet-handlers/listener-misc-handler.mjs";
@@ -61,11 +63,13 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
       levelUp: this.#onLevelUp,
       morph: this.#onMorph,
       recharge: this.#onRecharge,
+      recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
       rest: this.#onRest,
       rollable: this.#onRoll,
       sheetOptions: this.#onSheetOptions,
       shieldActivationToggle: this.#onShieldActivationToggle,
       shieldEquipToggle: this.#onShieldEquipToggle,
+      sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
       systemActorsDelete: this.#onSystemActorsDelete,
       toggleAccordion: this.#toggleAccordion,
       toggleAccordionHeader: this.#toggleAccordionHeader,
@@ -745,6 +749,14 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static #onRecharge() {
     onRecharge(this);
+  }
+
+  static #onRecoverSpellcastingDownshift() {
+    onRecoverSpellcastingDownshift(this);
+  }
+
+  static #onSufferForSpellcastingDownshift() {
+    onSufferForSpellcastingDownshift(this);
   }
 
   static #onManageSelectTrait(event) {

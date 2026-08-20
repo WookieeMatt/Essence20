@@ -2,7 +2,7 @@
   {{#*inline "roll-button" item}}
     <div class="flexrow nowrap gap-5">
       <a
-        class="rollable" data-roll-type="spell" data-shiftDown={{item.system.cost}}
+        class="rollable" data-action="rollable" data-roll-type="spell" data-shiftDown={{item.system.cost}}
         data-is-specialized="{{item.system.isSpecialized}}" data-tooltip="{{localize "E20.SpellRollTitle"}}"
       >
         <i class="fas fa-dice-d20" data-roll-type="spell"></i>

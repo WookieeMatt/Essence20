@@ -1,4 +1,7 @@
-{{!-- Spellcasting Skill is edited from the sidebar now, not duplicated here --}}
+{{#if system.canSpellcast}}
+  {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill='spellcasting' fields=(lookup system.skills 'spellcasting')}}
+{{/if}}
+
 <div class="flexrow stats-row">
   <div class="spelllist">
     {{!-- Spells --}}

@@ -65,6 +65,14 @@ $leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, s
   filter: brightness(0);
 }
 
+/* Same fix as perk.svg above - Spells default to the shared powers.svg icon (also a hardcoded
+   solid-white fill), invisible on a light background. Scoped to the Spells tab specifically
+   (not img[src$="powers.svg"] generally) so the Powers tab's own use of the same icon is
+   untouched, since that wasn't reported as an issue. */
+.essence20.theme-light section.tab.spells img[src$="powers.svg"] {
+  filter: brightness(0);
+}
+
 .essence20 :is(#{$leveled-tabs}) .leveled-item-icon {
   flex: 0 0 24px;
   width: 24px;

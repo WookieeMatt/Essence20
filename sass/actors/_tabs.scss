@@ -107,11 +107,20 @@
 
 .essence20 .tabs .item.active::before,
 .essence20 .tabs a[data-tab].active::before {
-  background: var(--theme-bg-color);
+  /* --theme-bg-color isn't actually what's visible behind the sheet - the real background is
+     this gradient, hardcoded on .theme-wrapper .window-content (_theme_wrapper.scss). Matching
+     it exactly (not just a same-ish flat color) is what makes the active tab genuinely blend
+     into the sheet instead of merely being a similar but visibly different shade. */
+  background: linear-gradient(180deg, rgba(14,17,20,0.96), rgba(17,19,21,0.96));
   /* Flush against the bottom (0, instead of the base rule's uniform 2px inset) so the black rim
      doesn't show there - only the active tab opens directly into its content panel below. */
   inset: 2px 2px 0 2px;
   box-shadow: none;
+}
+
+.essence20.theme-light .tabs .item.active::before,
+.essence20.theme-light .tabs a[data-tab].active::before {
+  background: linear-gradient(180deg, rgba(223,223,223,0.98), rgba(214,214,214,0.98));
 }
 
 .essence20 a:hover {

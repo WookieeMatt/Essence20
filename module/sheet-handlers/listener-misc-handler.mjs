@@ -12,7 +12,14 @@ const PARENT_ROLLER_KEY = "parentActor";
  */
 export async function performRoll(event, actor, childRoller=None) {
   event.preventDefault();
-  const element = event.target;
+  // event.target is whatever was actually clicked - usually the <i> icon inside the rollable
+  // <a>, not the <a> itself. Most roll buttons work around this by duplicating data-roll-type
+  // (and friends) onto the icon too, but that's easy to miss (see rolePoints/container.hbs,
+  // which didn't - its icons silently did nothing since dataset.rollType was undefined on the
+  // <i>). Resolving the nearest [data-roll-type] ancestor makes this work regardless of which
+  // element inside the button was actually clicked, without relying on every template
+  // remembering to duplicate the attributes.
+  const element = event.target.closest('[data-roll-type]') || event.target;
   const dataset = element.dataset;
   const rollType = dataset.rollType;
 
@@ -188,6 +195,44 @@ export async function onRest(actorSheet) {
  */
 export async function onRecharge(actorSheet) {
   await _applyRestBenefits(actorSheet.actor, "E20.RechargeComplete");
+  actorSheet.render(false);
+}
+
+/**
+ * Recover 1 point of a caster's lingering Spellcasting downshift (Casting Cost, MLP CRB p.132).
+ * The rulebook regains this automatically each round at the start of the caster's turn, but
+ * this codebase has no per-round/combat-turn automation for any mechanic yet (Rest/Recharge
+ * above are likewise both manually-triggered "restore" actions), so this is exposed as a
+ * manual action instead.
+ * @param {ActorSheet} actorSheet The ActorSheet whose recover button was clicked
+ */
+export async function onRecoverSpellcastingDownshift(actorSheet) {
+  const actor = actorSheet.actor;
+  const currentDownshift = actor.system.skills.spellcasting.shiftDown;
+  if (currentDownshift <= 0) {
+    return;
+  }
+
+  await actor.update({ 'system.skills.spellcasting.shiftDown': currentDownshift - 1 });
+  actorSheet.render(false);
+}
+
+/**
+ * Suffer 1 Health Damage to recover 1 additional point of Spellcasting downshift beyond the
+ * normal per-round recovery (Casting Cost, MLP CRB p.132).
+ * @param {ActorSheet} actorSheet The ActorSheet whose button was clicked
+ */
+export async function onSufferForSpellcastingDownshift(actorSheet) {
+  const actor = actorSheet.actor;
+  const currentDownshift = actor.system.skills.spellcasting.shiftDown;
+  if (currentDownshift <= 0) {
+    return;
+  }
+
+  await actor.update({
+    'system.skills.spellcasting.shiftDown': currentDownshift - 1,
+    'system.health.value': Math.max(0, actor.system.health.value - 1),
+  });
   actorSheet.render(false);
 }
 

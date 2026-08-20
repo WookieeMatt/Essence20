@@ -389,7 +389,10 @@ export class Essence20Item extends Item {
       const essence = 'any';
       const skill = 'spellcasting';
       const shift = this.actor.system.skills.spellcasting.shift;
-      const shiftDown = this.system.cost;
+      // Casting Cost (MLP CRB p.132): a spell downshifts the caster's Spellcasting Skill by its
+      // cost, on top of any downshift already lingering from an earlier cast this scene.
+      const priorDownshift = this.actor.system.skills.spellcasting.shiftDown;
+      const shiftDown = priorDownshift + this.system.cost;
       const spellDataset = {
         ...dataset,
         essence,
@@ -399,15 +402,24 @@ export class Essence20Item extends Item {
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
+
+      // Unlike a single-roll shift, this cost lingers on the actor's Spellcasting Skill after
+      // the roll - only cleared via onRecoverSpellcastingDownshift/onSufferForSpellcastingDownshift
+      // (listener-misc-handler.mjs).
+      await this.actor.update({ 'system.skills.spellcasting.shiftDown': shiftDown });
     } else if (this.type == 'magicBauble') {
       const essence = 'any';
       const skill = 'spellcasting';
       const shift = this.system.spellcastingShift;
+      // Magic Baubles override the caster's base Spellcasting shift entirely (their own fixed
+      // shift), but any lingering Casting Cost downshift (MLP CRB p.132) still applies on top.
+      const shiftDown = this.actor.system.skills.spellcasting.shiftDown;
       const spellDataset = {
         ...dataset,
         essence,
         shift,
         skill,
+        shiftDown,
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);

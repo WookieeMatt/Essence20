@@ -13,7 +13,6 @@
     },
     "items": {
       "e69c": { "uuid": "Compendium.essence20.pr_crb.Item.Snv7NDHfKo8slUWT", "img": "systems/essence20/assets/icons/items/faction.svg", "name": "Power Ranger", "type": "faction" },
-      "4ffc": { "uuid": "Compendium.essence20.jump_through_time.Item.wVMjX0rO6AnVVL6u", "img": "systems/essence20/assets/icons/items/rolePoints.svg", "name": "Quantum Dice", "type": "rolePoints" },
       "b85f": { "uuid": "Compendium.essence20.jump_through_time.Item.sgRiSOX0hDIKkcMh", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Spectrum Shifted", "type": "perk", "subtype": "role", "level": 1 },
       "17e7": { "uuid": "Compendium.essence20.jump_through_time.Item.E0XzDTQLQZ9Pcplj", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantum Morph", "type": "perk", "subtype": "role", "level": 4 },
       "aa2c": { "uuid": "Compendium.essence20.jump_through_time.Item.sn5jhTf8sJqRFhKS", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Quantasaurus Rex", "type": "perk", "subtype": "role", "level": 4 },
