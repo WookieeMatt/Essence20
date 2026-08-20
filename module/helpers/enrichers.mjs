@@ -77,9 +77,11 @@ export async function enrichCheck(match) {
   if (params.defense) {
     sendToChat.dataset.defense = params.defense;
   }
+
   if (params.dif) {
     sendToChat.dataset.dif = params.dif;
   }
+
   sendToChat.dataset.tooltip = game.i18n.localize('E20.CheckSendToChat');
   sendToChat.innerHTML = '<i class="fas fa-comment-dots"></i>';
   wrapper.append(sendToChat);
