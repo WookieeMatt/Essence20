@@ -47,9 +47,11 @@ export async function enrichCheck(match) {
   if (params.defense) {
     anchor.dataset.defense = params.defense;
   }
+
   if (isGM && params.dif) {
     anchor.dataset.dif = params.dif;
   }
+
   anchor.innerHTML = `<i class="fas fa-dice-d20"></i> ${label}`;
 
   if (!isGM) {
