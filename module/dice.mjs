@@ -144,7 +144,10 @@ export class Dice {
     // Test. Like Aiming, presented as a Roll Options Dialog toggle rather than standing state;
     // unlike Aiming, spending one actually consumes a real, persisted resource, so the point is
     // only deducted once the roll is confirmed (not if the dialog is cancelled).
-    updatedShiftDataset.energonAvailable = actor.system.canTransform && actor.system.energon.normal.value > 0;
+    // Boolean(...) rather than plain && - actor.system.canTransform is undefined for actor
+    // types that don't define it at all (e.g. some test/mock actors), and `undefined && x`
+    // evaluates to undefined rather than false, leaking a non-boolean into the dataset.
+    updatedShiftDataset.energonAvailable = Boolean(actor.system.canTransform && actor.system.energon.normal.value > 0);
 
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
@@ -359,7 +362,7 @@ export class Dice {
    * @private
    */
   _getLaserSightBonus(actor, item) {
-    const parentId = item?.flags.essence20?.parentId;
+    const parentId = item?.flags?.essence20?.parentId;
     const weapon = parentId ? actor.items.get(parentId) : null;
 
     return weapon?.system.totalAimShiftBonus || 0;

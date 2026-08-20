@@ -114,7 +114,7 @@ describe("prepareInitiativeRoll", () => {
 /* rollSkill */
 describe("rollSkill", () => {
   const dataset = {
-    aimbonus: null,
+    aimBonus: null,
     canCritD2: false,
     defenseType: "none",
     energonAvailable: false,
@@ -148,7 +148,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null);
   });
 
   test("normal skill roll works with isSpecialized as false string", async () => {
@@ -176,7 +176,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null);
   });
 
   test("repeated normal skill roll", async () => {
@@ -200,7 +200,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.SkillAthletics", false);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.SkillAthletics", false, null);
     expect(dice._rollSkillHelper.mock.calls.length).toBe(2);
   });
 
@@ -229,7 +229,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null);
   });
 
   test("specialized skill roll", async () => {
@@ -258,7 +258,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false, null);
   });
 
   test("specialized standard skill roll", async () => {
@@ -286,7 +286,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null);
   });
 
   test("specialized skill roll via weapon effect", async () => {
@@ -317,9 +317,11 @@ describe("rollSkill", () => {
       system: {
         classification: {
           skill: "athletics",
+          style: "melee",
         },
         damageType: "blunt",
         damageValue: 1,
+        defenseType: "none",
         isSpecialized: true,
       },
     };
@@ -367,7 +369,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false, null);
   });
 
   test("normal weapon effect skill roll", async () => {
@@ -407,6 +409,7 @@ describe("rollSkill", () => {
       mockActor,
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br><b>E20.ItemDescription</b>:<br>",
       false,
+      null,
     );
   });
 
@@ -445,7 +448,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, spell);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>", false);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>", false, null);
   });
 
   test("essence-shifted skill roll with edge", async () => {
