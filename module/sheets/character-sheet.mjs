@@ -14,7 +14,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
         { id: "contacts", group: 'primary', label: "E20.TabContacts" },
         { id: "background", group: 'primary', label: "E20.TabBackground" },
         { id: "effects", group: 'primary', label: "E20.TabEffects" },
-        { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
       initial: "skills",
     },
@@ -68,10 +67,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     },
     effects: {
       template: "systems/essence20/templates/actor/tabs/effects.hbs",
-      scrollable: [''],
-    },
-    notes: {
-      template: "systems/essence20/templates/actor/tabs/notes.hbs",
       scrollable: [''],
     },
   };
@@ -140,7 +135,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
       contacts: true,
       background: true,
       effects: true,
-      notes: true,
     };
 
     for (const [tabId, visible] of Object.entries(visibility)) {

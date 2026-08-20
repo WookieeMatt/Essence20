@@ -20,3 +20,50 @@
   width: 100%;
   height: 100%;
 }
+
+.essence20 .biography-row {
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.essence20 .biography-row .sliced-border.--col {
+  flex: 1 1 0;
+  min-width: 6.5em;
+}
+
+.essence20 .biography-row .sliced-border.--col input {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  background: transparent;
+  color: var(--theme-text-color);
+}
+
+.essence20 .biography-editor-field {
+  margin-bottom: 10px;
+}
+
+.essence20 .biography-editor-field > label {
+  display: block;
+  font-weight: bold;
+  /* Was var(--theme-accent) - reads as orange in light theme / cyan in dark theme, which read
+     as an unwanted stray accent color on these field labels rather than plain text. */
+  color: var(--theme-text-color);
+  margin-bottom: 4px;
+}
+
+.essence20 .biography-editor-field .editor {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: v.$border-radius;
+  min-height: 120px;
+  padding: 4px;
+}
+
+/* Foundry's own editor-edit pencil icon (and anything else inside the editor toolbar) defaults
+   to a near-black but not-quite-black tone in light theme - forcing true black keeps it
+   consistently legible rather than relying on that default. */
+.essence20.theme-light .biography-editor-field i {
+  color: #000000;
+}

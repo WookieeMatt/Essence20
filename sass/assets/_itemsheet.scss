@@ -1,5 +1,16 @@
 @use "../variables" as v;
 
+/* --e20-system-color is set from an Actor's own system.color (helpers/actor.mjs) - Items have
+   no such concept, so every var(--e20-system-color, var(--theme-accent)) rule shared with actor
+   sheets (active tab fill in _tabs.scss, etc.) was falling through to the raw --theme-accent on
+   Item sheets: orange in light theme, cyan in dark theme, showing up as an unintended accent
+   color with no way for the item itself to control it. Redefining the variable here with a
+   neutral fallback fixes every such rule at once, without needing to touch each one
+   individually or add .essence20.item-scoped overrides throughout _tabs.scss. */
+.essence20.item {
+  --e20-system-color: var(--theme-border-color);
+}
+
 /* Generic Item Sheet Styling */
 .essence20 .items-list {
   list-style: none;
@@ -24,7 +35,9 @@
   height: 64px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid var(--theme-accent);
+  /* Was var(--theme-accent) - orange in light theme / cyan in dark theme, an unwanted stray
+     accent color on every item sheet regardless of the item's own content. */
+  border: 3px solid var(--theme-border-color);
   box-shadow: 0 2px 6px rgba(0,0,0,0.35);
 }
 
@@ -35,7 +48,7 @@
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--theme-accent) !important; // Override the blanket `header *` text-color rule in _theme_wrapper.scss
+  color: var(--theme-text-color) !important; // Override the blanket `header *` text-color rule in _theme_wrapper.scss
   background: var(--theme-card-bg);
   border: 1px solid var(--theme-border-color);
   border-radius: 20px;
@@ -57,7 +70,7 @@
 }
 
 .essence20.item .tab.description h3 {
-  color: var(--theme-accent);
+  color: var(--theme-text-color);
   border-bottom: 1px solid var(--theme-border-color);
   padding-bottom: 4px;
   margin: v.$gap-sm 0;

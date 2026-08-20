@@ -9,3 +9,67 @@
 
 {{!-- Hang Ups --}}
 {{> "systems/essence20/templates/actor/parts/items/hangUp/container.hbs"}}
+
+{{!-- Biography - below the item containers above (not the very top of the tab), so the
+     sliced-border__label captions (which float above the box's own top edge) have room to
+     clear the tab content area's top edge instead of getting clipped. --}}
+<div class="flexrow biography-row">
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyPronoun'}}</label>
+    <input type="text" name="system.biography.pronoun" value="{{system.biography.pronoun}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyGender'}}</label>
+    <input type="text" name="system.biography.gender" value="{{system.biography.gender}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyAge'}}</label>
+    {{numberInput system.biography.age name="system.biography.age" min=0 step=1}}
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyHeight'}}</label>
+    <input type="text" name="system.biography.height" value="{{system.biography.height}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyWeight'}}</label>
+    <input type="text" name="system.biography.weight" value="{{system.biography.weight}}" />
+  </div>
+</div>
+
+<div class="flexrow biography-row">
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyEyeColor'}}</label>
+    <input type="text" name="system.biography.eyeColor" value="{{system.biography.eyeColor}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographyHairColor'}}</label>
+    <input type="text" name="system.biography.hairColor" value="{{system.biography.hairColor}}" />
+  </div>
+  <div class="sliced-border --col">
+    <label class="sliced-border__label">{{localize 'E20.BiographySkinColor'}}</label>
+    <input type="text" name="system.biography.skinColor" value="{{system.biography.skinColor}}" />
+  </div>
+</div>
+
+<div class="biography-editor-field">
+  <label>{{localize 'E20.BiographyDescription'}}</label>
+  {{!-- Raw (not TextEditor-enriched) field value - @UUID/content-link enrichment isn't wired up
+       for this field yet, but the editor still binds/saves correctly without it. --}}
+  {{editor system.biography.description target="system.biography.description" button=true editable=true engine="prosemirror"}}
+</div>
+
+<div class="biography-editor-field">
+  <label>{{localize 'E20.BiographyBio'}}</label>
+  {{editor system.biography.bio target="system.biography.bio" button=true editable=true engine="prosemirror"}}
+</div>
+
+<div class="biography-editor-field">
+  <label>{{localize 'E20.BiographyLanguages'}}</label>
+  {{editor system.biography.languages target="system.biography.languages" button=true editable=true engine="prosemirror"}}
+</div>
+
+{{!-- Notes --}}
+<div class="biography-editor-field">
+  <label>{{localize 'E20.ActorNotes'}}</label>
+  {{editor system.notes target="system.notes" button=true editable=true engine="prosemirror"}}
+</div>
