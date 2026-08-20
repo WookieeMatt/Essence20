@@ -118,7 +118,6 @@ describe("rollSkill", () => {
     canCritD2: false,
     defenseType: "none",
     energonAvailable: false,
-    canCritD2: false,
     essence: 'strength',
     isSpecialized: false,
     rolePoints: null,
