@@ -114,6 +114,10 @@ describe("prepareInitiativeRoll", () => {
 /* rollSkill */
 describe("rollSkill", () => {
   const dataset = {
+    aimbonus: null,
+    canCritD2: false,
+    defenseType: "none",
+    energonAvailable: false,
     canCritD2: false,
     essence: 'strength',
     isSpecialized: false,
