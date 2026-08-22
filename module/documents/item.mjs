@@ -164,7 +164,7 @@ export class Essence20Item extends Item {
     }
 
     if (this.system.bonus.startingValue != null) {
-      if (this.system.bonus.type != CONFIG.E20.bonusTypes.none) {
+      if (this.system.bonus.type != 'none') {
         const bonusLevelIncreases = this._getLevelIncreases(this.system.bonus.increaseLevels, actorLevel);
 
         if (actorLevel == 20 && this.system.bonus.level20Value) {

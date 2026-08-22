@@ -17,5 +17,12 @@ jobs:
           node-version: 17.9.x
           cache: npm
       - run: npm ci
-      - run: npm test
+      - name: Lint
+        run: npm run lint
+      - name: Unit tests
+        run: npm test -- --coverage
+      - name: Build
+        run: npm run build
+      - name: Compile compendium packs
+        run: npm run build:db
       - run: echo "🍏 This job's status is ${{ job.status }}."
