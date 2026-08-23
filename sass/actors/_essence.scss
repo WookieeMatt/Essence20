@@ -66,22 +66,6 @@
   clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
 }
 
-.essence20 .essence-header:has(.essence-label)::before {
-  pointer-events: none;
-  filter: var(--theme-border-filter);
-  position: absolute;
-  z-index: 0;
-  content: "";
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  border-style: solid;
-  border-image: var(--theme-border-image);
-  border-image-slice: 16;
-  border-width: 16px;
-}
-
 .essence20 .essence-header:has(.essence-label) .essence-label {
   background: none;
   border: none;

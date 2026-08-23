@@ -39,6 +39,14 @@
   border-color: var(--e20-system-color, #5f5f5f);
 }
 
+/* Name, Size, Level, Role, Focus, Origin, Color, etc. - every field label in the header (all
+   .sliced-border__label, common.hbs and the per-actor-type topRowFields/secondary-fields
+   partials that feed into it), not just a specific field, since the ask was the header's labels
+   as a set. */
+.essence20 .sheet-header .sliced-border__label {
+  text-transform: uppercase;
+}
+
 .essence20 .sheet-header > .flexrow.gap-2 {
   flex: 1 1 100%;
   align-items: flex-start;
@@ -63,13 +71,17 @@
      hanging off the trimmed edge. Padding wide enough to clear the cut fixes that for any field
      box in the header, not just Size. */
   padding-right: 16px;
-  padding-bottom: 16px;
+  /* Shorter than padding-right/padding-left below - unlike those, top/bottom padding has no
+     16px-cut corner-clearance floor to respect (that constraint is padding-right + padding-bottom
+     >= 16, and padding-bottom + padding-top >= 16 - both already satisfied on their own since
+     padding-right and padding-left stay at 16px regardless of what top/bottom shrink to), so
+     they're free to shrink for a shorter header row. */
+  padding-bottom: 8px;
   /* .sliced-border is height: fit-content, so it has no free space for justify-content to
      redistribute - the field sits exactly padding-top below the label with nothing pushing it
-     down. Matching padding-top to padding-bottom (rather than the base component's own 12px,
-     .sliced-border:has(> label), _sliced_border.scss) centers the field in the box instead of
-     it hugging the label with all the extra room left underneath. */
-  padding-top: 16px;
+     down. Matching padding-top to padding-bottom centers the field in the box instead of it
+     hugging the label with all the extra room left underneath. */
+  padding-top: 8px;
   /* Only padding-right grew for the corner-clearance fix above, leaving the base component's
      own 2px padding-left in place - that 2px-vs-16px imbalance visibly shifted every field
      toward the left edge of its box. Matching padding-left to padding-right centers it
@@ -184,10 +196,10 @@
      auto. The color swatch's own content height (24px) is shorter than a sibling field's text
      input (32px, e.g. Origin), which otherwise left this box visibly shorter than its row
      neighbors despite identical padding. min-height (border-box, so this is a total-height
-     floor) pins it to match: 16px padding-top + 32px input-height sibling content + 16px
+     floor) pins it to match: 8px padding-top + 32px input-height sibling content + 8px
      padding-bottom, same as Origin/Role/etc in this row (padding-top raised to match
      padding-bottom above, to center the row's fields in the box). */
-  min-height: 64px;
+  min-height: 48px;
 }
 
 .essence20 .pr-header-level-buttons {

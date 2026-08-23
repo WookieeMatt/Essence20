@@ -27,9 +27,23 @@
   flex-wrap: wrap;
 }
 
+/* Extra clearance above the Pronoun/Gender/Age/etc. row specifically, on top of whatever gap the
+   Origin/Influences/Bonds/Hang Ups item-containers above it already carry (.tab's own gap: 10px,
+   actors/_tabs.scss; each container's own margin-bottom, actors/_leveled-item-lists.scss) - that
+   stacked spacing still read as too tight coming out of Hang Ups, the last of those containers. */
+.essence20 .biography-row:first-of-type {
+  margin-top: v.$gap-lg;
+}
+
 .essence20 .biography-row .sliced-border.--col {
   flex: 1 1 0;
   min-width: 6.5em;
+}
+
+/* Pronoun/Gender/Age/Height/Weight/Eye Color/Hair Color/Skin Color - same treatment as the
+   sheet header's field labels (assets/_headers.scss). */
+.essence20 .biography-row .sliced-border__label {
+  text-transform: uppercase;
 }
 
 .essence20 .biography-row .sliced-border.--col input {

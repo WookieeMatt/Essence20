@@ -10,7 +10,7 @@
     {{#each results}}
     <li class="e20-check-result {{#if success}}e20-check-success{{else}}e20-check-failure{{/if}}">
       <strong>{{name}}</strong>
-      {{#if showDifficulty}} ({{localize 'E20.CheckDifficultyAbbr'}} {{difficulty}}){{/if}}
+      {{#if showDifficulty}} <span class="e20-check-difficulty">({{localize 'E20.CheckDifficultyAbbr'}} {{difficulty}})</span>{{/if}}
       &mdash;
       {{#if success}}
         {{localize 'E20.CheckSuccess'}}{{#if (gt multiplier 1)}} &times;{{multiplier}}{{/if}}

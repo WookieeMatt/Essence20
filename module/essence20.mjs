@@ -16,7 +16,7 @@ import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 // Import helper/utility classes and constants.
-import { applyChatMessageSystemColor, attachCheckCardListeners, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
@@ -388,6 +388,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
   attachCheckCardListeners(app, html);
+  hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);
   applyThemeClass(html);
 });

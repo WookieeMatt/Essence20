@@ -90,14 +90,20 @@
   font-weight: 600;
 }
 
-/* The active tab keeps the same black rim as its non-active siblings (background: #000000 is
-   already set by the base .item rule above), but its own fill (::before below) matches the
-   sheet background instead of system.color, so it reads as blending into the sheet rather than
-   as another colored pill.
+/* The active tab's fill (::before below) matches the look of a .stats-container "section" card
+   (actors/_stat-containers.scss) - the same panel gradient plus its faint white wash - rather
+   than system.color, so it reads as one of those cards rather than another colored pill. This
+   element's own background is then free to carry a system.color outline (below) instead of
+   reusing that fill value - the panel gradient is listed twice in ::before's stack (compounding
+   its 0.96 alpha to ~0.9984) specifically so this outline can't bleed through into the fill at
+   a visible strength the way the base rule's opaque #000000 rim used to.
    The [data-tab] attribute selector on the base rule above outweighs a plain .active class
    selector, so it's repeated here to win the cascade rather than relying on source order. */
 .essence20 .tabs .item.active,
 .essence20 .tabs a[data-tab].active {
+  /* Left/top/right outline only - ::before's flush-bottom fill (below) covers the bottom edge
+     entirely, same as it already hides the base rule's black rim there. */
+  background: var(--e20-system-color, var(--theme-accent));
   opacity: 1;
   /* No colored fill to contrast against anymore - back to the theme's own text color/weight
      instead of the white-plus-halo treatment the (now solid-colored) non-active tabs use. */
@@ -107,12 +113,11 @@
 
 .essence20 .tabs .item.active::before,
 .essence20 .tabs a[data-tab].active::before {
-  /* --theme-bg-color isn't actually what's visible behind the sheet - the real background is
-     this gradient, hardcoded on .theme-wrapper .window-content (_theme_wrapper.scss). Matching
-     it exactly (not just a same-ish flat color) is what makes the active tab genuinely blend
-     into the sheet instead of merely being a similar but visibly different shade. */
-  background: linear-gradient(180deg, rgba(14,17,20,0.96), rgba(17,19,21,0.96));
-  /* Flush against the bottom (0, instead of the base rule's uniform 2px inset) so the black rim
+  background:
+    linear-gradient(v.$section-panel-overlay, v.$section-panel-overlay),
+    v.$panel-gradient-dark,
+    v.$panel-gradient-dark;
+  /* Flush against the bottom (0, instead of the base rule's uniform 2px inset) so the outline
      doesn't show there - only the active tab opens directly into its content panel below. */
   inset: 2px 2px 0 2px;
   box-shadow: none;
@@ -120,7 +125,10 @@
 
 .essence20.theme-light .tabs .item.active::before,
 .essence20.theme-light .tabs a[data-tab].active::before {
-  background: linear-gradient(180deg, rgba(223,223,223,0.98), rgba(214,214,214,0.98));
+  background:
+    linear-gradient(v.$section-panel-overlay, v.$section-panel-overlay),
+    v.$panel-gradient-light,
+    v.$panel-gradient-light;
 }
 
 .essence20 a:hover {

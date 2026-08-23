@@ -72,6 +72,24 @@ export const highlightCriticalSuccessFailure = function (message, html) {
   }
 };
 
+// Hides the Targeting Difficulty ("DIF n") shown next to each target on a resolved-check chat
+// card (check-card.hbs) from non-GM viewers, the same GM-only treatment the @Check[dif=...]
+// enricher already gives a flat Difficulty value (helpers/enrichers.mjs). Unlike that enricher,
+// this card's HTML is baked once into the ChatMessage's content and shared verbatim to every
+// client, so there's no re-enrichment point to hook into - concealment has to happen by pruning
+// the DOM on render instead. This is display-only: a player could still recover the value from
+// the message's stored content via the console, same caveat as the enricher.
+// Called on the renderChatMessageHTML hook.
+export const hideDifficultyForNonGm = function (message, html) {
+  if (game.user.isGM) {
+    return;
+  }
+
+  for (const el of html.querySelectorAll('.e20-check-difficulty')) {
+    el.remove();
+  }
+};
+
 // Outlines a chat card in the speaking Actor's own system.color, the same
 // --e20-system-color mechanism the actor sheet's e20-border-accent trim already uses
 // (helpers/actor.mjs) - unset when the actor has no color chosen (or there's no actor at all,
