@@ -111,9 +111,16 @@ sheet again" into a five-minute pass instead of tribal knowledge.
   `@foundryvtt/foundryvtt-cli` (only exposes `compilePack`/`extractPack`) nor a plain Node script
   can provide without hand-rolling a large chunk of Foundry's own DataModel system - not
   attempted here as too large an undertaking for the value versus this lighter check.
-- **Cross-reference check**: script to confirm every `system.grantedItems`/UUID reference embedded
-  in pack items (e.g. a Role granting a Perk) still resolves to an existing item — these silently
-  rot when items get renamed or IDs regenerated. (Not yet done.)
+- **Cross-reference check**:
+  [`scripts/check-pack-cross-references.mjs`](../scripts/check-pack-cross-references.mjs), wired
+  into CI. Scans every string value in every source file for an embedded
+  `Compendium.essence20.<pack>.<Item|Actor>.<id>` reference - both the whole-string form (e.g.
+  `system.items.<key>.uuid` on an Influence/Origin/Role that grants other items) and the inline
+  `@UUID[...]` form used in HTML description text - and confirms each one still resolves to a
+  real document. Not scoped to a specific field name (there's no single `grantedItems` field;
+  these references show up in several different places), so it can't miss a reference in a field
+  it doesn't already know about the way a hardcoded field list could. Validated clean against all
+  3,394 current references.
 
 ## 6. Build/packaging verification
 
@@ -164,7 +171,10 @@ schema-validation script (§1/§5) checking `_source/*.json` against the real da
    validation (checking each item's `system` block against its real field definitions, not just
    structural shape) remains out of reach without a working `foundry.data.fields`
    implementation - see §5 for why that's not attempted here.
-9. **Not yet done**: cross-reference check for `grantedItems`/UUID references (§5), revisiting
-   Quench if/when it (or a successor) is verified for this system's target Foundry version, and
-   authoring real content (or removing the manifest entries) for the two empty packs §6's check
-   flagged.
+9. ✅ **Done**: pack cross-reference check (§5) - `scripts/check-pack-cross-references.mjs`,
+   wired into CI, validated clean against all 3,394 current Compendium UUID references.
+10. ✅ **Done**: the two empty packs §6's manifest-sync check flagged (`gi_joe_crb_threats`/
+    `tf_crb_threats`) were removed from `system.json` - they hadn't been added to the final
+    content yet.
+11. **Not yet done**: revisiting Quench if/when it (or a successor) is verified for this system's
+    target Foundry version.

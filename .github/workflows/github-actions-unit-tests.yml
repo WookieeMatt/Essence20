@@ -29,4 +29,6 @@ jobs:
         run: node scripts/check-manifest-sync.mjs
       - name: Check pack content structure
         run: node scripts/check-pack-content.mjs
+      - name: Check pack cross-references
+        run: node scripts/check-pack-cross-references.mjs
       - run: echo "🍏 This job's status is ${{ job.status }}."
