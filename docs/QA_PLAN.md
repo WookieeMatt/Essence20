@@ -100,9 +100,20 @@ sheet again" into a five-minute pass instead of tribal knowledge.
 - **Pack compile round-trip**: `npm run build:db` (gulp compile) converts `_source/*.json` into
   the LevelDB packs Foundry actually loads. Add a CI check that runs the compile and fails on
   error — this catches malformed source JSON before it reaches a release.
+- **Pack content structure**: [`scripts/check-pack-content.mjs`](../scripts/check-pack-content.mjs),
+  wired into CI. Checks every `_source/*.json` file (5,180 of them) is well-formed JSON with the
+  required top-level fields, that its `type` is one of this system's actually-registered
+  Actor/Item types, and that `_key` is internally consistent with `_id` - catches hand-edit
+  mistakes (a renamed type, a corrupted id) before they reach a release. This is a *structural*
+  check, not full DataModel schema validation against each type's real field definitions in
+  `module/data/item/*.mjs` - that would need a working `foundry.data.fields` implementation
+  (SchemaField/StringField/etc. with real `clean()`/`validate()`), which neither
+  `@foundryvtt/foundryvtt-cli` (only exposes `compilePack`/`extractPack`) nor a plain Node script
+  can provide without hand-rolling a large chunk of Foundry's own DataModel system - not
+  attempted here as too large an undertaking for the value versus this lighter check.
 - **Cross-reference check**: script to confirm every `system.grantedItems`/UUID reference embedded
   in pack items (e.g. a Role granting a Perk) still resolves to an existing item — these silently
-  rot when items get renamed or IDs regenerated.
+  rot when items get renamed or IDs regenerated. (Not yet done.)
 
 ## 6. Build/packaging verification
 
@@ -148,6 +159,12 @@ schema-validation script (§1/§5) checking `_source/*.json` against the real da
    unit tests filling the gap that opened up between this QA branch and the game-logic work that
    landed on it in parallel (`listener-misc-handler.test.js` for Rest/Recharge,
    `helpers/enrichers.test.js`, `helpers/combat.test.js`).
-8. **Not yet done**: pack schema-validation script (§1/§5), revisiting Quench if/when it (or a
-   successor) is verified for this system's target Foundry version, and authoring real content
-   (or removing the manifest entries) for the two empty packs §6's new check flagged.
+8. ✅ **Done**: pack content structure check (§1/§5) - `scripts/check-pack-content.mjs`, wired
+   into CI, validated clean against all 5,180 current source files. Full DataModel schema
+   validation (checking each item's `system` block against its real field definitions, not just
+   structural shape) remains out of reach without a working `foundry.data.fields`
+   implementation - see §5 for why that's not attempted here.
+9. **Not yet done**: cross-reference check for `grantedItems`/UUID references (§5), revisiting
+   Quench if/when it (or a successor) is verified for this system's target Foundry version, and
+   authoring real content (or removing the manifest entries) for the two empty packs §6's check
+   flagged.
