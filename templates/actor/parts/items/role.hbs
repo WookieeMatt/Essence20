@@ -4,7 +4,7 @@
   {{#each @root.roles as |item|}}
     <li class="item no-list-style" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
       <div class="flexrow align-center gap-2">
-        <input type="text" name="system.role" value="{{item.name}}" />
+        <span class="header-item-name">{{item.name}}</span>
         <span class="chip"{{#if item.system.isEffectiveLevel}} data-tooltip="{{localize 'E20.RoleEffectiveLevel'}}"{{/if}}>{{localize 'E20.ActorLevel'}} {{item.system.displayLevel}}</span>
         <div class="item-controls flex-grow-0">
           <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
@@ -16,6 +16,6 @@
   {{/each}}
 {{else}}
   <div class="flexrow">
-    <input class="no-unlock" type="text" value="{{localize 'E20.RoleDrop'}}" readonly />
+    <span class="header-item-name header-item-placeholder">{{localize 'E20.RoleDrop'}}</span>
   </div>
 {{/if}}

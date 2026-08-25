@@ -30,8 +30,14 @@
 /* Extra clearance above the Pronoun/Gender/Age/etc. row specifically, on top of whatever gap the
    Origin/Influences/Bonds/Hang Ups item-containers above it already carry (.tab's own gap: 10px,
    actors/_tabs.scss; each container's own margin-bottom, actors/_leveled-item-lists.scss) - that
-   stacked spacing still read as too tight coming out of Hang Ups, the last of those containers. */
-.essence20 .biography-row:first-of-type {
+   stacked spacing still read as too tight coming out of Hang Ups, the last of those containers.
+   Targeted via the adjacent-sibling combinator, not :first-of-type - each item-container above
+   (Origin/Influences/Bonds/Hang Ups) is ALSO a <div>, same as .biography-row itself, so
+   :first-of-type (which matches by tag name, not class) never actually matched this row: it's
+   the 5th div sibling, not the 1st. The combinator instead matches whichever .biography-row
+   directly follows a .collapsible-item-container - always the Hang Ups boundary, never the
+   second biography-row (Eye/Hair/Skin), which follows another .biography-row instead. */
+.essence20 .collapsible-item-container + .biography-row {
   margin-top: v.$gap-lg;
 }
 

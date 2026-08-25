@@ -187,11 +187,33 @@
   flex: 0 0 auto;
 }
 
+.essence20-sidebar .essence20-sidebar-initiative i {
+  font-size: 0.85em;
+}
+
 .essence20-sidebar .essence20-sidebar-action-button select {
   flex: 1 1 auto;
   min-width: 0;
   border: none;
   background: transparent;
+}
+
+.essence20-sidebar .essence20-sidebar-initiative select {
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+  padding: 0 2px;
+  /* Shrinks the box itself (width/height), not the text inside it - flex:1 1 auto (above) was
+     letting it balloon out to fill the whole row, dwarfing the shift-die result next to it. */
+  flex: 0 1 auto;
+  max-width: 110px;
+  height: 24px;
+  margin: 0 v.$gap-sm;
+}
+
+/* The shift die result (e.g. "d8") - the actual payoff of this row, next to the skill picker
+   that just feeds it - reads as an afterthought at the shared 0.8em action-button size. */
+.essence20-sidebar .essence20-sidebar-initiative span {
+  font-size: 1.15em;
 }
 
 .essence20-sidebar .add-specialization.invisible {
