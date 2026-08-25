@@ -77,8 +77,11 @@
    than any other pair of adjacent skill rows (most visible right before the sidebar's Wealth Die
    row, which isn't part of this loop and has no such empty body of its own). Dropping it out of
    the flex layout entirely when it has neither a specialized-row (companion/npc/vehicle/zord)
-   nor any actual specializations restores a normal gap. */
-.essence20 .skill-body:not(:has(.skill-specialized-row, .specializations-list)) {
+   nor any actual specializations restores a normal gap.
+   Scoped to .essence20-sidebar-skill-list specifically - essence-skills.hbs is also used by the
+   main Skills tab (pc-skills.hbs/accordion-skills.hbs), where the empty body's spacing is wanted
+   as-is; a bare .essence20 .skill-body rule would collapse it there too. */
+.essence20-sidebar-skill-list .skill-body:not(:has(.skill-specialized-row, .specializations-list)) {
   display: none;
 }
 
