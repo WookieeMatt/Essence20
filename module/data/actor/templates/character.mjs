@@ -150,8 +150,9 @@ export function migrateCharacterData(source) {
       if (typeof value == 'number') { // Standard Essence damage migration
         source.essences[essence] = { max: value, value: value };
       } else if (value?.max?.max) { // Possible edge case
-        source.essences[essence].max = value.max.max;
-        source.essences[essence].value = value.max.max;
+        const migratedMax = value.max.max;
+        source.essences[essence].max = migratedMax;
+        source.essences[essence].value = migratedMax;
       } else if (value?.required) { // Previous migration may have set it to a SchemaField()
         source.essences[essence].max = value.max || 0;
         source.essences[essence].value = value.max || 0;
