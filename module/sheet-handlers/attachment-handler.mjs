@@ -46,6 +46,97 @@ export async function onEquipmentPackageDrop(actor, droppedItem) {
 }
 
 /**
+ * Grants a single copy of an Item collection entry to its owner - the actual Item.create plus
+ * all of the type-specific bookkeeping (advances-stacking dedup, altMode's canTransform flag,
+ * upgrade/weaponEffect attachment folding, and the sourceId/parentId flags that
+ * deleteAttachmentsForItem() later needs to find and remove this same copy again). Shared by
+ * createItemCopies()'s own per-entry loop and by a role-level Perk choice's resolution (see
+ * ChoicesSelector's "rolePerk" action, choices-selector.mjs) - both are "grant exactly one
+ * collection entry," just triggered from different places (an unconditional loop vs. a player's
+ * dialog pick).
+ * @param {String} key The entry's own key within the collection (items[key] === item)
+ * @param {Object} item The collection entry itself (uuid/type/level/etc.)
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item
+ * @return {Promise<Boolean>} Whether a copy was actually created (false if this was an
+ *                              advances-type Perk the owner already has, stacked instead)
+ */
+export async function grantItemEntry(key, item, owner, parentItem) {
+  const itemToCreate = await fromUuid(item.uuid);
+
+  if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
+    for (const ownerItem of owner.items) {
+      const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource;
+      if (ownerItemSourceId == itemToCreate.uuid) {
+        const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
+        await ownerItem.update({
+          "system.advances.currentValue": newValue,
+        });
+        setPerkAdvancesName(ownerItem, itemToCreate.name);
+        return false;
+      }
+    }
+  }
+
+  const newItem = await Item.create(itemToCreate, { parent: owner });
+
+  if (item.type == 'perk') {
+    await setPerkValues(owner, newItem, null, null, item.uuid);
+  }
+
+  if (newItem.type == "altMode") {
+    await owner.update({
+      "system.canTransform": true,
+    });
+  }
+
+  if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
+    const newKey = await setEntryAndAddItem(newItem, parentItem);
+    newItem.setFlag('essence20', 'collectionId', newKey);
+
+    const deleteString = `system.items.-=${key}`;
+    await parentItem.update({[deleteString]: null});
+  } else {
+    newItem.setFlag('essence20', 'collectionId', key);
+  }
+
+  newItem.setFlag('core', 'sourceId', item.uuid);
+  newItem.setFlag('essence20', 'parentId', parentItem._id);
+  return true;
+}
+
+/**
+ * Opens a dialog letting the player choose exactly one Item from a group of mutually-exclusive
+ * alternatives that just came into range during a level-up/Role-grant pass (see
+ * createItemCopies()'s choiceGroup handling below) - e.g. Power Rangers' Spectrum Modification
+ * Perks (A Jump Through Time p.44-47), where Black Ranger's level 2 can grant either "Whatever
+ * We Need" or "Iron Bravado", never both. Non-blocking, like every other choice dialog in this
+ * codebase (ChoicesSelector, EssenceProgressionSelector, etc.) - render(true) only waits for the
+ * dialog to paint, not for the player's pick; the actual grant happens later, inside
+ * ChoicesSelector's own "rolePerk" action handler.
+ * @param {Array<[String, Object]>} group The [key, entry] pairs sharing this choiceGroup
+ * @param {Actor} owner The Items' owner
+ * @param {Item} parentItem The Items' parent Item (e.g. the Role)
+ */
+async function promptRolePerkChoice(group, owner, parentItem) {
+  const choices = {};
+  for (const [key, entry] of group) {
+    choices[key] = {
+      chosen: false,
+      value: key,
+      label: entry.name,
+      uuid: entry.uuid,
+      entry,
+    };
+  }
+
+  new ChoicesSelector(
+    choices, owner, 'E20.SelectRolePerk', 'E20.SelectRolePerkTitle', parentItem,
+    null, null, null, null, null, 'rolePerk',
+  ).render(true);
+}
+
+/**
  * Creates copies of Items for given IDs
  * @param {Object[]} items The Item entries to copy
  * @param {Actor} owner The Items' owner
@@ -59,61 +150,55 @@ export async function onEquipmentPackageDrop(actor, droppedItem) {
  */
 export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null, currentLevel=null) {
   let copyWasCreated = false;
-  let skipToNext = false;
   const effectiveLevel = currentLevel ?? owner.system.level;
+
+  // Entries can share both a "level" and a "choiceGroup" key to mark themselves as mutually-
+  // exclusive alternatives. Entries without a choiceGroup - the overwhelming majority, including
+  // entries that legitimately share a level WITHOUT being alternatives (e.g. Black Ranger's own
+  // level 2 also always grants "You Got This!" unconditionally, alongside whichever of the
+  // Spectrum Modification pair is chosen) - are entirely unaffected by this and keep being
+  // granted unconditionally below, exactly as before choiceGroup existed.
+  const choiceGroups = new Map();
+  const ungroupedEntries = [];
+
   for (const [key, item] of Object.entries(items)) {
+    if (item.type != type) {
+      continue;
+    }
 
-    if (item.type == type) {
-      const createNewItem =
-        !["role", "focus"].includes(parentItem.type)
-        || !item.level || (item.level <= effectiveLevel && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+    const inWindow =
+      !["role", "focus"].includes(parentItem.type)
+      || !item.level || (item.level <= effectiveLevel && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+    if (!inWindow) {
+      continue;
+    }
 
-      if (createNewItem) {
-        const itemToCreate = await fromUuid(item.uuid);
+    if (item.choiceGroup) {
+      if (!choiceGroups.has(item.choiceGroup)) {
+        choiceGroups.set(item.choiceGroup, []);
+      }
 
-        if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
-          for (const ownerItem of owner.items) {
-            const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource;
-            if (ownerItemSourceId == itemToCreate.uuid) {
-              const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
-              await ownerItem.update({
-                "system.advances.currentValue": newValue,
-              });
-              setPerkAdvancesName(ownerItem, itemToCreate.name);
-              skipToNext = true;
-              break;
-            }
-          }
+      choiceGroups.get(item.choiceGroup).push([key, item]);
+    } else {
+      ungroupedEntries.push([key, item]);
+    }
+  }
 
-          if (skipToNext) {
-            continue;
-          }
-        }
+  for (const [key, item] of ungroupedEntries) {
+    if (await grantItemEntry(key, item, owner, parentItem)) {
+      copyWasCreated = true;
+    }
+  }
 
-        const newItem = await Item.create(itemToCreate, { parent: owner });
-
-        if (item.type == 'perk') {
-          await setPerkValues(owner, newItem, null, null, item.uuid);
-        }
-
-        if (newItem.type == "altMode") {
-          await owner.update({
-            "system.canTransform": true,
-          });
-        }
-
-        if (["upgrade", "weaponEffect"].includes(newItem.type) && ["weapon", "armor"].includes(parentItem.type)) {
-          const newKey = await setEntryAndAddItem(newItem, parentItem);
-          newItem.setFlag('essence20', 'collectionId', newKey);
-
-          const deleteString = `system.items.-=${key}`;
-          await parentItem.update({[deleteString]: null});
-        } else {
-          newItem.setFlag('essence20', 'collectionId', key);
-        }
-
-        newItem.setFlag('core', 'sourceId', item.uuid);
-        newItem.setFlag('essence20', 'parentId', parentItem._id);
+  for (const group of choiceGroups.values()) {
+    if (group.length > 1) {
+      // A real choice - divert to a dialog instead of granting every alternative.
+      await promptRolePerkChoice(group, owner, parentItem);
+    } else {
+      // Only one alternative is actually available right now (the others were never defined,
+      // or were already granted some other way) - nothing to choose, so just grant it.
+      const [key, item] = group[0];
+      if (await grantItemEntry(key, item, owner, parentItem)) {
         copyWasCreated = true;
       }
     }
