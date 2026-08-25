@@ -9,13 +9,20 @@ function makeActor(type, system, documentsByType = {}) {
   const actor = new Essence20Actor();
   actor.type = type;
   actor.system = system;
-  actor.items = {
-    documentsByType: {
-      origin: [],
-      rolePoints: [],
-      ...documentsByType,
-    },
+
+  const byType = {
+    origin: [],
+    rolePoints: [],
+    ...documentsByType,
   };
+  // Real Foundry EmbeddedCollections are both iterable over every item (used by
+  // _prepareVision's `for...of`) AND grouped by type via .documentsByType, with a
+  // Map-like .get(id) (used by _getBaseRolePoints to look up an owning Role) - an array
+  // covers the first two for free, with .get() attached as an extra property.
+  const allItems = Object.values(byType).flat();
+  allItems.documentsByType = byType;
+  allItems.get = (id) => allItems.find(item => item._id === id);
+  actor.items = allItems;
 
   return actor;
 }
@@ -39,6 +46,12 @@ function rolePointsItem(overrides = {}) {
       isActive: false,
       ...overrides,
     },
+    // _getBaseRolePoints looks up this RolePoints item's owning Role via its "parentId" flag,
+    // to check whether that Role is an "additive" one (e.g. Old Hand) whose RolePoints run on
+    // a separate level track. None of the fixtures here set a parentId, so this always
+    // resolves to "no owning Role found" -> treated as the base Role's own RolePoints, same as
+    // this mock behaved before that lookup existed.
+    getFlag: () => undefined,
   };
 }
 

@@ -21,7 +21,21 @@ Pony, Power Rangers, Transformers) — several checks below are version-specific
   Vehicle sheets are actually clickable (the macro only confirms initial render, not that every
   tab's content is reachable).
 
-## 2. Role assignment (Player Character)
+## 2. Automated layout regression test
+
+The smoke test above only confirms a sheet renders without throwing - it says nothing about
+whether the layout actually looks right. Several CSS bugs have shipped where the sheet rendered
+cleanly but visually broke (a header field wrapping to its own row, a sidebar row squeezed
+unreadably small, one panel's padding silently doubled relative to its neighbors) because an
+unrelated rule elsewhere reused the same class name. [`macros/layout-regression-test.js`](../macros/layout-regression-test.js)
+encodes the specific bugs that have actually happened as repeatable assertions.
+
+- ☐ Run [`macros/layout-regression-test.js`](../macros/layout-regression-test.js) (see its header
+  comment for how) in a scratch world. Confirm it reports 0 failures - a SKIP (e.g. the sidebar
+  skill-list check, which needs at least one "any"-essence skill configured) is expected in a
+  world that doesn't have every game version enabled and isn't itself a failure.
+
+## 3. Role assignment (Player Character)
 
 The Role system drives essence/health/skill-die math (`module/sheet-handlers/role-handler.mjs`) —
 high regression risk any time that file or `documents/actor.mjs`'s derived-data prep changes.
@@ -42,7 +56,7 @@ high regression risk any time that file or `documents/actor.mjs`'s derived-data 
   appears and `canSpellcast` turns on.
 - ☐ GI Joe version: assign a GI Joe Role, confirm `canQualify` turns on.
 
-## 3. Focus (Player Character)
+## 4. Focus (Player Character)
 
 - ☐ Drag a Focus with a single Essence onto an actor that has a matching Role — should apply
   immediately without a dialog.
@@ -53,13 +67,13 @@ high regression risk any time that file or `documents/actor.mjs`'s derived-data 
   blocked with a role-mismatch error.
 - ☐ Delete the Focus. Confirm the essence bonus it granted is removed (floored at 0, not negative).
 
-## 4. Origin & background (Player Character)
+## 5. Origin & background (Player Character)
 
 - ☐ Drag an Origin onto a fresh actor. Confirm starting health updates, and (if the Origin offers
   a choice) the essence/skill selection prompt appears.
 - ☐ Delete the Origin. Confirm health drops back to the pre-Origin baseline.
 
-## 5. Alterations (Player Character)
+## 6. Alterations (Player Character)
 
 - ☐ Drag an Alteration that costs movement. Confirm the movement-cost flow completes and the
   actor's stats update.
@@ -67,7 +81,7 @@ high regression risk any time that file or `documents/actor.mjs`'s derived-data 
   dialogs). Confirm both dialogs appear and resolve correctly.
 - ☐ Delete an Alteration. Confirm its bonuses are removed.
 
-## 6. Perks & Role Points
+## 7. Perks & Role Points
 
 - ☐ Drag a stand-alone Perk onto an actor (not via a Role). Confirm it attaches with no `role`
   value set (regression check for the `perk + perk` branch of `createEntry`).
@@ -80,7 +94,7 @@ high regression risk any time that file or `documents/actor.mjs`'s derived-data 
   ([item.mjs](../module/documents/item.mjs)); a Role Points item with bonus type `none` should
   show *no* computed bonus value.
 
-## 7. Combat & rolls
+## 8. Combat & rolls
 
 - ☐ Roll a skill from the sheet (with and without Edge/Snag, with a shift up/down). Confirm the
   roll dialog options apply and a chat message posts with the right formula.
@@ -89,7 +103,7 @@ high regression risk any time that file or `documents/actor.mjs`'s derived-data 
 - ☐ Roll initiative. Confirm the formula matches the actor's initiative skill/shift.
 - ☐ Roll a Spell / Magic Bauble (essence-costing rolls). Confirm the essence cost is applied.
 
-## 8. Transform / Morph (version-specific)
+## 9. Transform / Morph (version-specific)
 
 - ☐ Transformers actor with one Alt Mode: click Transform, confirm bot-mode ⇄ alt-mode toggles,
   the image/token swaps, and movement stats switch to the alt-mode values.
@@ -99,7 +113,7 @@ high regression risk any time that file or `documents/actor.mjs`'s derived-data 
 - ☐ Power Rangers actor: click Morph, confirm the token image swaps and defenses switch to
   morphed values (armor bonus replaced by morphed bonus, per `_prepareDefenses`).
 
-## 9. Vehicles
+## 10. Vehicles
 
 - ☐ Drag a Player Character onto a Vehicle and assign as driver. Confirm a second driver can't
   also be assigned while the driver seat is full (`verifyDropSelection`), but a passenger still
@@ -108,7 +122,7 @@ high regression risk any time that file or `documents/actor.mjs`'s derived-data 
   correctly, not just one.
 - ☐ Remove a crew member. Confirm their seat opens back up.
 
-## 10. Attachment / upgrade system
+## 11. Attachment / upgrade system
 
 `createEntry` (`module/sheet-handlers/attachment-handler.mjs`) has a large branch per
 target-type/dropped-type combo — spot-check a few of the less common ones, since a broken branch
@@ -122,7 +136,7 @@ fails silently (item just doesn't attach) rather than throwing:
 - ☐ Build/drag an Equipment Package containing armor + gear + weapon items onto an actor, confirm
   all contained items come along.
 
-## 11. Data migration spot check
+## 12. Data migration spot check
 
 If this release includes an actor-data migration (anything touching
 `module/data/actor/templates/character.mjs` or similar `migrateData()` paths):

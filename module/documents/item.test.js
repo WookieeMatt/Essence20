@@ -12,6 +12,14 @@ function makeItem(type, system, actor = null) {
   item.actor = actor;
   item.name = "Test Item";
   item.flags = { essence20: {} };
+  // _prepareRolePoints looks up this item's own "parentId" flag (its owning Role, for the Old
+  // Hand/additive-Role level-track override) via item.getFlag() and actor.items.get() - none
+  // of the fixtures below set a parentId, so these always resolve to "no owning Role found",
+  // matching this mock's pre-existing behavior (treated as the base Role's own RolePoints).
+  item.getFlag = () => undefined;
+  if (actor && !actor.items) {
+    actor.items = { get: () => undefined };
+  }
 
   return item;
 }

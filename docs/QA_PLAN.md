@@ -66,6 +66,15 @@ Run it as a GM in a scratch world (see `macros/smoke-test.js`'s header comment f
 it can't run headlessly in GitHub Actions, so treat it as a **pre-release manual/CI-optional
 gate**, not part of every PR.
 
+**Layout regressions** are a separate category neither Jest nor `smoke-test.js` can catch -
+Jest never renders real CSS, and `smoke-test.js` only checks "did it render without throwing,"
+not "does it look right." Several sheet bugs have shipped that rendered cleanly but visually
+broke (a header field wrapping to its own row, a sidebar row squeezed unreadably small by an
+unrelated rule leaking in from elsewhere).
+[`macros/layout-regression-test.js`](../macros/layout-regression-test.js) encodes those specific
+bugs as repeatable `getBoundingClientRect()`/computed-style assertions, run the same way as
+`smoke-test.js` (GM, scratch world, Script Macro or console).
+
 ## 4. Regression checklist (manual, pre-release)
 
 `macros/smoke-test.js` catches "does the sheet render at all," but not "does the Role/Focus/
@@ -102,17 +111,20 @@ sheet again" into a five-minute pass instead of tribal knowledge.
   out to a nonexistent `scripts/esbuild.mjs` - that was dead/broken since a 2022 refactor and has
   been removed; this system ships raw `.mjs` ES modules per `system.json`'s `esmodules` list, with
   no bundling step, so `build` is just `sass` now.)
-- Verify `system.json` manifest fields (`compatibility.minimum/verified`, `esmodules`, `styles`,
-  `packs` list) stay in sync with what's actually on disk — a short Node script comparing the
-  manifest's file list against `find` output. (Not yet done.)
+- Verify `system.json` manifest fields (`esmodules`, `styles`, `languages`, `packs` list) stay in
+  sync with what's actually on disk —
+  [`scripts/check-manifest-sync.mjs`](../scripts/check-manifest-sync.mjs), wired into CI. It
+  already caught a real gap: `gi_joe_crb_threats` (`packs/gijcrbactors`) and `tf_crb_threats`
+  (`packs/tfcrbactors`) are both listed in `system.json` but have no committed `_source/*.json`
+  content at all - needs either real content authored or the manifest entries removed.
 
 ## 7. CI pipeline (`github-actions-unit-tests.yml`)
 
 Current steps: `npm ci` → `npm run lint` → `npm test -- --coverage` → `npm run build` →
-`npm run build:db`. This turns what used to be "did the existing 2 test files pass" into an
-actual regression net: lint, full unit suite with a coverage floor, build integrity, and content
-integrity, all on every push/PR. Not yet added: a pack schema-validation script (§1/§5) checking
-`_source/*.json` against the real data models, and the `system.json` manifest-sync check (§6).
+`npm run build:db` → manifest sync check. This turns what used to be "did the existing 2 test
+files pass" into an actual regression net: lint, full unit suite with a coverage floor, build
+integrity, content integrity, and manifest sync, all on every push/PR. Not yet added: a pack
+schema-validation script (§1/§5) checking `_source/*.json` against the real data models.
 
 ## Status / suggested phasing
 
@@ -130,6 +142,12 @@ integrity, all on every push/PR. Not yet added: a pack schema-validation script 
    territory instead of forcing them into Jest.
 5. ✅ **Done**: manual regression checklist (`docs/RELEASE_CHECKLIST.md`) and the
    `macros/smoke-test.js` in-client smoke test (§3, in place of Quench - see §3 for why).
-6. **Not yet done**: pack schema-validation script, `system.json` manifest-sync check (§5/§6),
-   and revisiting Quench if/when it (or a successor) is verified for this system's target Foundry
-   version.
+6. ✅ **Done**: `system.json` manifest-sync check (§6), wired into CI - see §6 for the real content
+   gap it already found and still needs addressing.
+7. ✅ **Done**: layout/CSS regression coverage (§3) - `macros/layout-regression-test.js`, plus
+   unit tests filling the gap that opened up between this QA branch and the game-logic work that
+   landed on it in parallel (`listener-misc-handler.test.js` for Rest/Recharge,
+   `helpers/enrichers.test.js`, `helpers/combat.test.js`).
+8. **Not yet done**: pack schema-validation script (§1/§5), revisiting Quench if/when it (or a
+   successor) is verified for this system's target Foundry version, and authoring real content
+   (or removing the manifest entries) for the two empty packs §6's new check flagged.

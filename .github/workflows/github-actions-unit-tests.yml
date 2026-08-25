@@ -25,4 +25,6 @@ jobs:
         run: npm run build
       - name: Compile compendium packs
         run: npm run build:db
+      - name: Check system.json manifest sync
+        run: node scripts/check-manifest-sync.mjs
       - run: echo "🍏 This job's status is ${{ job.status }}."
