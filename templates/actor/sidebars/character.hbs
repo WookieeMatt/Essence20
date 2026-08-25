@@ -62,7 +62,7 @@
           {{selectOptions @root.initiativeSkills selected=system.initiative.skill valueAttr="key" labelAttr="label"}}
         </select>
         {{!-- Display only: the shift die is set on the skill itself, not editable from here --}}
-        <span class="two-digit-input" data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}">
+        <span data-tooltip="{{localize 'E20.InitiativeShiftTooltip'}}">
           {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
         </span>
       </div>

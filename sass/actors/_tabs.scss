@@ -49,9 +49,16 @@
   min-width: 0;
   /* Plain --theme-text-color reads as low-contrast to unreadable against a solid, arbitrary
      system.color fill (same issue the Essence Badge label solves in _essence.scss) - white with
-     a dark halo keeps the label legible against any color a player picks, in both themes. */
+     a dark halo keeps the label legible against any color a player picks, in both themes.
+     A blurred text-shadow was tried first, but its blur extends past the glyph's own edges, and
+     this label needs overflow: hidden (below) for its ellipsis truncation - the two together
+     hard-clipped that blur flat right at the tab's edge on any label reaching close to it (this
+     tab strip is tight on room, see this rule's own comment above), reading as an abrupt cut
+     instead of a glow. A tight text-stroke hugs the glyph outline itself instead of blurring
+     outward, so it stays inside the box (and inside the ellipsis's clip) at any label length. */
   color: #ffffff;
-  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 3px rgba(0, 0, 0, 0.8);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8);
+  paint-order: stroke fill;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,7 +115,7 @@
   /* No colored fill to contrast against anymore - back to the theme's own text color/weight
      instead of the white-plus-halo treatment the (now solid-colored) non-active tabs use. */
   color: var(--theme-text-color);
-  text-shadow: none;
+  -webkit-text-stroke: 0;
 }
 
 .essence20 .tabs .item.active::before,

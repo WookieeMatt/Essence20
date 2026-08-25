@@ -6,7 +6,10 @@
 @use 'components';
 @use 'views';
 
-@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500&display=swap');
+/* 700 added alongside 500 - _global-windows.scss's .window-app rule (see below) sets
+   font-weight: bold (700), but only weight 500 was ever loaded, so the browser had to
+   synthetically embolden it. Loading the real 700 weight avoids that fake-bold blur. */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap');
 
 select {
   color: var(--theme-text-color);

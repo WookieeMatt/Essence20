@@ -60,7 +60,14 @@
 
 .essence20 .biography-editor-field > label {
   display: block;
-  font-weight: bold;
+  /* Matches the sidebar panel titles' treatment (.sliced-border__label,
+     components/_sliced_border.scss) - these aren't sliced-border labels themselves (a plain
+     block label reads better above a full-width text editor than a floating badge would), but
+     should still look like the same family of section heading. */
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   /* Was var(--theme-accent) - reads as orange in light theme / cyan in dark theme, which read
      as an unwanted stray accent color on these field labels rather than plain text. */
   color: var(--theme-text-color);

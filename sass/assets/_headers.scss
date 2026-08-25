@@ -53,11 +53,33 @@
   row-gap: v.$gap-md;
 }
 
+/* Foundry core's own .flexrow utility class (foundry2.css, not anything of ours) ships with
+   flex-wrap: wrap built in, and CSS flex-wrap decides which items share a line using each item's
+   un-shrunk "hypothetical" width, before flex-shrink ever gets a chance to bring them down toward
+   their shared min-width: 6.5em floor (.sheet-header .sliced-border above) - so Name/Size/Faction
+   alone were already wide enough to fill the row and Level, needing even just its min-width, kept
+   getting pushed to a wrapped second line of its own. Forcing nowrap here makes all four boxes
+   share the row and shrink together instead, matching the header-row-top partial's caller intent
+   from templates/actor/headers/common.hbs (Name/Size/Faction/Level all belong on one row) - same
+   fix applies to header-row-bottom below (Role/Focus/Origin/Color), which has the identical
+   wrap-before-shrink problem (Color was getting pushed to its own third line). */
+.essence20 .sheet-header > .flexrow.gap-2.header-row-top,
+.essence20 .sheet-header > .flexrow.gap-2.header-row-bottom {
+  flex-wrap: nowrap;
+}
+
 .essence20 .sheet-header > .flexrow.gap-2.header-row-bottom {
   margin-top: v.$gap-lg;
 }
 
-.essence20 .sheet-header .sliced-border {
+/* Scoped through .flexrow.gap-2 (the header-row-top/header-row-bottom wrapper, common.hbs) -
+   same cross-contamination bug as the input rule below: the sidebar's own root section also
+   carries the "sheet-header" class and its panels also carry "sliced-border", so this rule's
+   padding (8px 16px, well above the sidebar panel's own intended 4px bottom / 8px left-right)
+   was silently winning on every sidebar panel too, at a specificity the sidebar's own same-file
+   rule (.essence20-sidebar .essence20-sidebar-panel, 2 classes vs this rule's 3) couldn't beat -
+   that's what was inflating the sidebar's bottom spacing beyond its own padding-bottom: gap-sm. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border {
   flex: 1 1 auto;
   min-width: 6.5em;
   /* .sliced-border's own background (::after) is clipped to its chamfered shape (16px cut at
@@ -89,8 +111,15 @@
   padding-left: 16px;
 }
 
-.essence20 .sheet-header .sliced-border input:not(.skill-shift-select),
-.essence20 .sheet-header .sliced-border select:not(.skill-shift-select) {
+/* Scoped through .flexrow.gap-2 (the header-row-top/header-row-bottom wrapper, common.hbs)
+   rather than directly off .sheet-header, because the sidebar's own root section also carries
+   the "sheet-header" class (essence20-sidebar sheet-header, _sidebars.scss) and its resource
+   panels also carry "sliced-border" (essence20-sidebar-resources) - without this extra scope
+   step this rule's flex: 1 1 0 was also matching the sidebar's Role Points resource inputs
+   (nested in .sliced-border.essence20-sidebar-resources > .role-points-item), squeezing them
+   down to ~10px, with a specificity too high for a same-file override elsewhere to beat. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select),
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select) {
   flex: 1 1 0;
   min-width: 0;
   width: 100%;
@@ -184,12 +213,20 @@
   display: flex;
 }
 
-.essence20 .pr-header-level {
+/* .sheet-header .sliced-border-scoped flex:1 1 auto (above) has 3 chained classes
+   (.essence20 .sheet-header .sliced-border) to this rule's 2 (.essence20 .pr-header-level), so
+   despite reading as "more specific to Level," it was actually LOSING the specificity contest
+   and being silently overridden back to flex:1 1 auto - Level (the sole flex:0 0 auto box)
+   then had nothing constraining its width, so once it didn't fit alongside Name/Size/Faction
+   and wrapped to its own row, it grew to fill that entire row alone. Repeating .sheet-header
+   here matches (in fact exceeds, being alphabetically/source-order later) that specificity so
+   this actually wins. */
+.essence20 .sheet-header .pr-header-level {
   flex: 0 0 auto;
   justify-content: center;
 }
 
-.essence20 .pr-header-color {
+.essence20 .sheet-header .pr-header-color {
   flex: 0 0 auto;
   /* .sliced-border is height: fit-content (a specified, non-auto value), so align-items:stretch
      on the parent row wouldn't stretch this box - stretch only kicks in when the cross-size is

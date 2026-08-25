@@ -9,6 +9,17 @@
   border-radius: v.$border-radius;
 }
 
+/* This system's own sheets (actor/item/apps) all migrated to ApplicationV2 at some point,
+   whose root element carries .application, not the older Application/FormApplication API's
+   .window-app - so the whole rule above (font, border, border-radius) was silently a no-op on
+   every essence20 sheet, including the sidebar, ever since. Scoped to .essence20 specifically
+   (not a blanket .application rule) so this doesn't reach unrelated core Foundry windows
+   (Settings, Compendium browser, Journal, ...) that also use the ApplicationV2 base class. */
+.essence20.application {
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: bold;
+}
+
 .window-app .window-content {
   color: var(--theme-text-color);
   border-radius: v.$border-radius;

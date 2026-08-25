@@ -98,6 +98,14 @@
     top: 0;
     left: 50%;
     transform: translate(-50%, -50%);
+    /* Matches the sidebar panel titles' own treatment of this same class
+       (.essence20-sidebar-panel > .sliced-border__label, _sidebars.scss) - promoted here so
+       every sliced-border label (header fields, Bio tab fields, ...) looks the same by
+       default instead of only the sidebar opting in. */
+    font-weight: 700;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 
   label.sliced-border__label,

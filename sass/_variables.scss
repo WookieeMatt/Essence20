@@ -74,3 +74,9 @@ $gap-md: 0.5rem;
 $gap-lg: 1rem;
 $gap-xl: 1.5rem;
 $gap-sliced-border: 9px;
+
+// SCROLLBARS
+// Opposite of the theme's own background lightness, so the thumb stays visible against it -
+// dark gray on light mode's light background, light gray on dark mode's dark background.
+$scrollbar-thumb-light-mode: #4a4a4a;
+$scrollbar-thumb-dark-mode: #b5b5b5;

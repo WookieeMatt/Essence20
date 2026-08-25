@@ -62,6 +62,26 @@
 
 .essence20 .item-label-checkbox {
   margin: 0;
+  /* Foundry core's own checkbox styling sets flex: 1 1 0 (meant for a checkbox that stretches to
+     fill a dedicated form-group row) from a stylesheet that doesn't show up in
+     document.styleSheets (likely shadow-DOM/adopted-stylesheet scoped to core's custom form
+     element) - normal specificity here can't be confirmed to win against it, and testing showed
+     a plain (non-!important) override left it unaffected. Inside this cramped, multi-item
+     sidebar row that flex-shrink: 1 with no width floor squeezed the checkbox down to ~4-7px,
+     rendering it effectively invisible - !important guarantees this actually overrides it. */
+  flex: 0 0 auto !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.essence20 .role-points-item {
+  /* Foundry core's own .flexrow utility class defaults to flex-wrap: wrap (same root cause as
+     the sheet header's row-wrapping bug, assets/_headers.scss) - flex-wrap decides which items
+     share a line using each item's un-shrunk width, so once the value/max inputs below stopped
+     shrinking (min-width: 20px) this row's items no longer all fit at their natural widths and
+     the whole row wrapped to two lines instead of just letting .role-points-name's own
+     overflow/ellipsis (below) absorb the space pressure like it's meant to. */
+  flex-wrap: nowrap;
 }
 
 .essence20 .role-points-name {
@@ -70,6 +90,21 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+/* This row packs 7 inline items (2 icon links, a checkbox, the name, a bonus indicator, and 2
+   number inputs) into the same narrow sidebar column as the 4-item Health/Stun rows - by default
+   flex-shrink distributed unevenly and squeezed the resource value/max inputs down to ~10px
+   (unreadable), while .role-points-name's own overflow:hidden/text-overflow:ellipsis above
+   already lets IT absorb space pressure gracefully. Stopping the inputs from shrinking at all
+   pushes that pressure onto the label instead, where it belongs. */
+.essence20 .role-points-item .two-digit-input {
+  flex-shrink: 0;
+  /* .two-digit-input's own flex-basis: 0% (from the shared .flex-grow-0 utility class,
+     _flex-containers.scss) has no floor of its own - flex-shrink: 0 above stops it shrinking
+     BELOW that basis, but 0% was already unreadably small before shrink ever applied. A
+     min-width gives it an actual legible floor to grow from instead. */
+  min-width: 20px;
 }
 
 .essence20 .collapsible-item-subcontainer .items-list .item {

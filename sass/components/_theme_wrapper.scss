@@ -17,9 +17,31 @@
   --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
   --theme-tab-image: url(../assets/borders/default-tab.svg);
   --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
+  --theme-scrollbar-thumb: #{v.$scrollbar-thumb-light-mode};
 }
 
 .theme-wrapper {
+  /* scrollbar-color is an inherited property, so setting it once here reaches every scrollable
+     region in the sheet (items-list, tab content, biography editor, ...) without needing a rule
+     per scrollable element - the ::-webkit-scrollbar-* pseudo-elements below don't inherit that
+     way and are repeated per-element instead, as a fallback for engines that don't support the
+     standard property yet. */
+  scrollbar-color: var(--theme-scrollbar-thumb) transparent;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--theme-scrollbar-thumb);
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
   overflow: visible;
   border: none; // TODO: Remove after refactor of styles, this is just to remove the old border;
 
@@ -64,6 +86,7 @@
     --theme-card-bg: rgba(255,255,255,0.7);
     --theme-accent: #{v.$text-color-orange};
     --theme-muted-text: #{v.$text-color-dark};
+    --theme-scrollbar-thumb: #{v.$scrollbar-thumb-light-mode};
   }
 
   &.theme-dark {
@@ -76,6 +99,7 @@
     --theme-card-bg: rgba(255,255,255,0.04);
     --theme-accent: #{v.$text-color-cyan};
     --theme-muted-text: #{v.$textcolor1};
+    --theme-scrollbar-thumb: #{v.$scrollbar-thumb-dark-mode};
   }
 
   &.theme-default {

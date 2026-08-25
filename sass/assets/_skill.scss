@@ -70,6 +70,18 @@
   margin-bottom: v.$gap-md;
 }
 
+/* essence-skills.hbs always renders a .skill-body sibling after every skill-header, even when
+   the skill has no specializations (a bare, empty <ol class="items-list"> with nothing else) -
+   that empty div still took its own slot in .essence20-sidebar-skill-list's flex column, so its
+   own margin-bottom above PLUS the list's gap on both sides of it stacked into a much bigger gap
+   than any other pair of adjacent skill rows (most visible right before the sidebar's Wealth Die
+   row, which isn't part of this loop and has no such empty body of its own). Dropping it out of
+   the flex layout entirely when it has neither a specialized-row (companion/npc/vehicle/zord)
+   nor any actual specializations restores a normal gap. */
+.essence20 .skill-body:not(:has(.skill-specialized-row, .specializations-list)) {
+  display: none;
+}
+
 .essence20 .skill-body .skill-specialized-row {
   gap: 5px;
   justify-content: flex-end;
