@@ -1,5 +1,5 @@
 ﻿import { _checkForAltModes, _hangUpSelect, _showOriginSkillPrompt, setOriginValues } from "../sheet-handlers/background-handler.mjs";
-import { _attachSelectedItemOptionHandler } from "../sheet-handlers/attachment-handler.mjs";
+import { _attachSelectedItemOptionHandler, grantItemEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { _focusStatUpdate } from "../sheet-handlers/role-handler.mjs";
 import { setShieldOptions } from "../sheet-handlers/listener-item-handler.mjs";
 import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
@@ -9,7 +9,7 @@ import { applyThemeClass } from "../settings.js";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 export default class ChoicesSelector extends HandlebarsApplicationMixin(ApplicationV2) {
-  constructor(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2) {
+  constructor(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2, actionType) {
     super();
     this._choices = choices;
     this._actor = actor;
@@ -21,6 +21,10 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
     this._staticValue = staticValue;
     this._previousSelection1 = previousSelection1;
     this._previousSelection2 = previousSelection2;
+    // Overrides the default type-derived-from-item/key action dispatch below - needed when the
+    // dialog's choices aren't about the passed-in item itself (e.g. a role-level Perk choice,
+    // where `item` is the Role but the action to dispatch is "rolePerk", not "role").
+    this._actionType = actionType;
   }
 
   static DEFAULT_OPTIONS = {
@@ -30,6 +34,7 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
       origin: ChoicesSelector.origin,
       perk: ChoicesSelector.perk,
       passenger: ChoicesSelector.passenger,
+      rolePerk: ChoicesSelector.rolePerk,
       shield: ChoicesSelector.shield,
       upgrade: ChoicesSelector.attach,
       weaponEffect: ChoicesSelector.attach,
@@ -65,7 +70,9 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
     const context = await super._prepareContext(options);
     context.choices = this._choices;
     context.prompt = this._prompt;
-    if (this._item) {
+    if (this._actionType) {
+      context.type = this._actionType;
+    } else if (this._item) {
       context.type = this._item.type;
     } else if (this._key) {
       context.type = "passenger";
@@ -115,6 +122,12 @@ export default class ChoicesSelector extends HandlebarsApplicationMixin(Applicat
 
   static async perk (event, selection) {
     onPerkDrop(this._actor, this._item, this._dropFunc, selection.value, this._choices[selection.value].type, this._previousSelection1);
+    this.close();
+  }
+
+  static async rolePerk(event, selection) {
+    const choice = this._choices[selection.value];
+    await grantItemEntry(selection.value, choice.entry, this._actor, this._item);
     this.close();
   }
 

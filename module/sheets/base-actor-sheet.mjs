@@ -1,4 +1,5 @@
 ﻿const { HandlebarsApplicationMixin } = foundry.applications.api;
+const { ContextMenu } = foundry.applications.ux;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
 import SheetOptions from "../apps/sheet-options.mjs";
@@ -29,6 +30,7 @@ import {
   onSufferForSpellcastingDownshift,
   onToggleAccordion,
   onToggleHeaderAccordion,
+  spendRolePoint,
 } from "../sheet-handlers/listener-misc-handler.mjs";
 import { onDropActor, onDropItem } from "../sheet-handlers/drop-handler.mjs";
 import {
@@ -113,6 +115,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     this._activateMacroDragDrop();
     this._activateCrewListeners();
     this._activateInlineEditListeners();
+    this._activateRolePointsListeners();
   }
 
   /**
@@ -213,6 +216,70 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     for (const element of this.element.querySelectorAll('.inline-edit')) {
       element.addEventListener('change', (event) => onInlineEdit(event, this.actor));
     }
+  }
+
+  /**
+   * The sidebar's Role Points row used to have a separate icon per action (an info/"post to
+   * chat" icon, a fist icon to spend a use, and - only for activatable ones - a checkbox to
+   * toggle Activation). All three are now driven from the row's own name instead: a left-click
+   * toggles Activation directly (for Role Points items that support it), and a right-click opens
+   * a menu with the other two actions (rolePoints/container.hbs).
+   *
+   * The left-click listener follows _activateInlineEditListeners' pattern above - bound directly
+   * to each matched element via querySelectorAll, so it's naturally replaced along with the DOM
+   * on every re-render, no manual cleanup needed. The right-click menu can't use that pattern:
+   * ContextMenu binds one delegated listener to a persistent container (this.element, which
+   * Foundry doesn't discard across re-renders, unlike the per-row elements below) rather than to
+   * the individual rows, so constructing a new one on every render would stack duplicate
+   * listeners - it's built once and cached instead.
+   */
+  _activateRolePointsListeners() {
+    for (const nameEl of this.element.querySelectorAll('.role-points-name[data-is-activatable]')) {
+      nameEl.addEventListener('click', async (event) => {
+        event.preventDefault();
+        const itemId = event.currentTarget.closest('.item').dataset.itemId;
+        const item = this.actor.items.get(itemId);
+        await item.update({ 'system.isActive': !item.system.isActive });
+      });
+    }
+
+    if (this._rolePointsContextMenu) {
+      return;
+    }
+
+    this._rolePointsContextMenu = new ContextMenu(this.element, '.role-points-name', [
+      {
+        label: 'E20.CheckSendToChat',
+        icon: '<i class="fas fa-message-lines"></i>',
+        callback: (target) => {
+          const itemId = target.closest('.item').dataset.itemId;
+          const item = this.actor.items.get(itemId);
+          item.roll({ rollType: 'info' });
+        },
+      },
+      {
+        label: 'E20.RolePointsRoll',
+        icon: '<i class="fas fa-hand-fist"></i>',
+        visible: (target) => target.dataset.canSpend === 'true',
+        callback: (target) => {
+          const itemId = target.closest('.item').dataset.itemId;
+          const item = this.actor.items.get(itemId);
+          spendRolePoint(this.actor, item);
+        },
+      },
+    ], {
+      jQuery: false,
+      /* Without this, ContextMenu injects the menu as a plain positioned child of the target
+         (_injectMenu) - which stays inside the normal document stacking order. A <select>
+         elsewhere on the sheet (system.initiative.skill, right below Role Points in the sidebar)
+         was consistently winning the paint order over that injected menu even with an explicit
+         higher z-index, confirmed live via elementFromPoint - so the menu was rendering, fully
+         populated, at a valid on-screen position, but invisible/unclickable underneath the
+         select. fixed:true instead uses the Popover API (_setFixedPosition/showPopover), which
+         renders in the browser's top layer - above every other element in the document
+         regardless of z-index or stacking context, including native form controls. */
+      fixed: true,
+    });
   }
 
 
