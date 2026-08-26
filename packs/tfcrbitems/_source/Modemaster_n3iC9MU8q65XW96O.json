@@ -17,7 +17,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Custom Frame",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "role",
         "level": 1
       },
       "714f": {
@@ -118,6 +118,38 @@
         "img": "systems/essence20/assets/icons/items/faction.svg",
         "name": "Autobots",
         "type": "faction"
+      },
+      "2a3c": {
+        "uuid": "Compendium.essence20.tf_crb.Item.R5SobOsimfa7mvdy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hybridization",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "3de9": {
+        "uuid": "Compendium.essence20.tf_crb.Item.R5SobOsimfa7mvdy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hybridization",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "b997": {
+        "uuid": "Compendium.essence20.tf_crb.Item.R5SobOsimfa7mvdy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hybridization",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "2fbc": {
+        "uuid": "Compendium.essence20.tf_crb.Item.R5SobOsimfa7mvdy",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Hybridization",
+        "type": "perk",
+        "subtype": "role",
+        "level": 18
       }
     },
     "adjustments": {

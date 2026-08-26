@@ -13,6 +13,24 @@
   <a class="add-specialization" data-action="itemCreate" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.AddSpecialization' }}">
     <i class="fas fa-plus" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" ></i>
   </a>
+  {{!-- Casting Cost (MLP CRB p.132): casting a Spell downshifts the caster's Spellcasting
+       Skill, and that downshift lingers until recovered - shown only once there's actually a
+       downshift to track/clear. Spellcasting now only ever renders here via the Spells tab
+       (spells.hbs), not the narrow sidebar it used to share space in, so there's room for this
+       inline instead of needing its own row. --}}
+  {{#if (eq skill 'spellcasting')}}
+    {{#if fields.shiftDown}}
+    <span class="chip spellcasting-downshift-chip" data-tooltip="{{localize 'E20.SpellcastingDownshiftTooltip'}}">
+      {{localize 'E20.SpellcastingDownshift'}}: -{{fields.shiftDown}}
+    </span>
+    <a class="spellcasting-downshift-action" data-action="recoverSpellcastingDownshift" data-tooltip="{{localize 'E20.SpellcastingDownshiftRecoverTooltip'}}">
+      <i class="fas fa-arrow-up"></i>
+    </a>
+    <a class="spellcasting-downshift-action" data-action="sufferForSpellcastingDownshift" data-tooltip="{{localize 'E20.SpellcastingDownshiftRecoverHealthTooltip'}}">
+      <i class="fas fa-heart-crack"></i>
+    </a>
+    {{/if}}
+  {{/if}}
 </div>
 
 <div class="skill-body">

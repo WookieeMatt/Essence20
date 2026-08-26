@@ -129,6 +129,8 @@ export class Essence20Actor extends Actor {
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
     this._prepareNpcData();
+    this._prepareVision();
+    this._prepareEnergon();
 
     if (this.type == 'playerCharacter') {
       this._prepareDefenses();
@@ -137,6 +139,10 @@ export class Essence20Actor extends Actor {
       this._prepareSorcerousPower();
       this._prepareResource();
       this._preparePoisonTraining();
+    }
+
+    if (this.type == 'megaform') {
+      this._prepareMegaformData();
     }
   }
 
@@ -152,8 +158,84 @@ export class Essence20Actor extends Actor {
   }
 
   /**
+   * Finds the best active vision grant (from any gear or perk with system.visionGrant.enabled)
+   * and stores it on this.system.visionGrant for applyVisionToTokens() to read. If more than
+   * one grant is present, the one with the largest range wins - a simple, predictable rule
+   * rather than trying to stack or reconcile different vision modes. Gear can be worn/unworn
+   * (system.equipped, toggled from the sheet's Gear tab) and only contributes its grant while
+   * equipped; Perks have no such toggle and are always active once granted.
+   *
+   * Also sets this.system.visionSuppressed for the Asleep/Unconscious statuses, so a sleeping
+   * actor doesn't get a bonus grant from equipped Night Vision Goggles etc. while unconscious.
+   * This does NOT block a token's vision outright - actually blacking out perception for
+   * Asleep/Unconscious is handled by syncAutoBlindStatus() (helpers/actor.mjs) applying the
+   * real "blinded" status, which reuses Foundry's own CONFIG.specialStatusEffects.BLIND
+   * handling (see essence20.mjs) rather than trying to force TokenDocument.sight.enabled off
+   * directly, which does not actually block perception.
+   */
+  _prepareVision() {
+    this.system.visionSuppressed = this.statuses?.has('asleep') || this.statuses?.has('unconscious') || false;
+
+    let bestGrant = null;
+
+    if (!this.system.visionSuppressed) {
+      for (const item of this.items) {
+        const grant = item.system.visionGrant;
+        if (!grant?.enabled) {
+          continue;
+        }
+
+        if (item.type == 'gear' && !item.system.equipped) {
+          continue;
+        }
+
+        if (!bestGrant || grant.range > bestGrant.range) {
+          bestGrant = { mode: grant.mode, range: grant.range };
+        }
+      }
+    }
+
+    this.system.visionGrant = bestGrant;
+  }
+
+  /**
+   * Sets system.energon.normal.max to this actor's lowest current Essence Score (p.104-105 -
+   * "capable of storing a number of personal Energon Points equal to their lowest Essence
+   * Score"), for actors that can transform. Non-transforming actors (vehicles, etc.) keep
+   * whatever value was set manually, since they may use system.energon.normal as literal fuel
+   * capacity rather than the Cybertronian Energon Points resource.
+   */
+  _prepareEnergon() {
+    if (!this.system.canTransform) {
+      return;
+    }
+
+    const essences = this.system.essences;
+    this.system.energon.normal.max = Math.min(
+      essences.strength.value,
+      essences.speed.value,
+      essences.smarts.value,
+      essences.social.value,
+    );
+  }
+
+  /**
   * Prepare Health specific data.
   */
+  /**
+   * The RolePoints Item belonging to the Actor's base Role specifically, ignoring any
+   * RolePoints granted by an additive Role (e.g. Old Hand's own Moxie Points) - defense/health
+   * bonuses and the Level 20 unlimited-resource flag are about the base Role's own resource.
+   * @returns {Item|undefined}
+   */
+  _getBaseRolePoints() {
+    const rolePointsList = this.items.documentsByType.rolePoints;
+    return rolePointsList.find(rolePoints => {
+      const parentRole = this.items.get(rolePoints.getFlag('essence20', 'parentId'));
+      return !parentRole || !parentRole.system.isAdditive;
+    });
+  }
+
   _prepareHealth () {
     const system = this.system;
     system.healthIsReadOnly = true;
@@ -176,10 +258,9 @@ export class Essence20Actor extends Actor {
     }
 
     // Health from Role Points
-    const rolePointsList = this.items.documentsByType.rolePoints;
-    if (rolePointsList.length > 0 && rolePointsList[0].system.bonus.type == 'healthBonus'
-      && (!rolePointsList[0].system.isActivatable || rolePointsList[0].system.isActive)) {
-      const rolePoints = rolePointsList[0];
+    const rolePoints = this._getBaseRolePoints();
+    if (rolePoints && rolePoints.system.bonus.type == 'healthBonus'
+      && (!rolePoints.system.isActivatable || rolePoints.system.isActive)) {
       rolePointsName = rolePoints.name;
 
       if (this.system.level == 20) {
@@ -217,10 +298,8 @@ export class Essence20Actor extends Actor {
       let rolePointsName = game.i18n.localize('E20.RolePoints');
 
       // Armor from Role Points
-      const rolePointsList = this.items.documentsByType.rolePoints;
-      if (rolePointsList.length) {
-        const rolePoints = rolePointsList[0]; // There should only be one RolePoints
-
+      const rolePoints = this._getBaseRolePoints();
+      if (rolePoints) {
         if (rolePoints.system.bonus.type == 'defenseBonus' && rolePoints.system.bonus.defenseBonus[defenseType]
           && (!rolePoints.system.isActivatable || rolePoints.system.isActive)) {
           rolePointsName = rolePoints.name;
@@ -306,9 +385,8 @@ export class Essence20Actor extends Actor {
    * Prepare Resource (from Role Points) type specific data.
    */
   _prepareResource() {
-    const rolePointsList = this.items.documentsByType.rolePoints;
-    if (rolePointsList.length) {
-      const rolePoints = rolePointsList[0]; // There should only be one RolePoints
+    const rolePoints = this._getBaseRolePoints();
+    if (rolePoints) {
       this.system.useUnlimitedResource = rolePoints.system.resource.level20ValueIsUnlimited && this.system.level == 20;
     }
   }
@@ -353,6 +431,303 @@ export class Essence20Actor extends Actor {
       system.trained.poisons.standard = true;
       system.trained.poisons.limited = true;
     }
+  }
+
+  /**
+   * A Megaform's combined-stat rules differ by subtype: Power Rangers-style Megazords
+   * (subtype "megaformZord") follow the Combiner Feature rules, while Transformers-style
+   * Gestalt/Matched Combiners (subtype "megaformCombiner") follow a different set of rules
+   * entirely. system.subtype is an ArrayField bound to a single <select>, so treat it as
+   * holding at most one value; default to the Zord rules if nothing's been chosen yet, since
+   * that's this field's own schema default and existing Megaform actors predate this subtype
+   * distinction.
+   */
+  _prepareMegaformData() {
+    if (this.system.subtype.includes('megaformCombiner')) {
+      this._prepareMegaformCombinerData();
+    } else {
+      this._prepareMegaformZordData();
+    }
+  }
+
+  /**
+   * Computes a Power Rangers Megazord's combined stats from its linked Zords (system.actors)
+   * and each linked Zord's chosen Megaform Trait items, per the Combiner Feature rules:
+   * - Strength/Speed = highest among participants, capped at 15, plus any Core Ability bonuses.
+   * - Toughness/Evasion = 10 + the aggregated Essence + a base +3 Armor bonus, plus any
+   *   Core Defenses bonuses (which apply to both).
+   * - Ground Movement = the slowest participant's, plus whatever a Move trait adds.
+   * - Health is NOT combined into one pool; each participant keeps its own, so this instead
+   *   prepares a per-participant breakdown (system.participantHealth) and a combined display
+   *   total (system.combinedHealthMax/Value, doubling a participant's contribution if it has
+   *   Core Body), plus a Defeat flag once more than half the participants are at 0 Health.
+   * Only Enhanced Melee/Ranged Attack traits are surfaced as a flag (system.hasEnhancedAttack)
+   * rather than fully automated, since synthesizing the resulting attack isn't well-defined
+   * without the participants' own weapon data being structured for that.
+   */
+  _prepareMegaformZordData() {
+    const system = this.system;
+    const BASE_ARMOR_BONUS = 3;
+    const MAX_ESSENCE = 15;
+
+    const participants = Object.values(system.actors)
+      .map(entry => fromUuidSync(entry.uuid))
+      .filter(actor => actor?.type == 'zord');
+
+    system.participantHealth = participants.map(zord => ({
+      name: zord.name,
+      value: zord.system.health.value,
+      max: zord.system.health.max,
+    }));
+
+    if (!participants.length) {
+      system.isDefeated = false;
+      system.combinedHealthMax = 0;
+      system.combinedHealthValue = 0;
+      system.hasEnhancedAttack = false;
+
+      return;
+    }
+
+    // The Strength/Speed/Defenses/Movement/Armor fields below are all computed from the
+    // linked Zords, so the sheet should show them read-only rather than letting a GM edit
+    // values that will just be recalculated away on the next render.
+    system.movementIsReadOnly = true;
+
+    let strength = Math.max(...participants.map(zord => zord.system.essences.strength.value));
+    let speed = Math.max(...participants.map(zord => zord.system.essences.speed.value));
+
+    // The Megaform only has a basic Ground Movement type unless a Move trait grants
+    // another; set that baseline now so the Move trait loop below can add to it.
+    for (const movementType of Object.keys(system.movement)) {
+      system.movement[movementType].base = 0;
+    }
+
+    system.movement.ground.base = Math.min(...participants.map(
+      zord => zord.system.movement.ground.total || zord.system.movement.ground.base,
+    ));
+
+    let toughnessTraitBonus = 0;
+    let evasionTraitBonus = 0;
+    let hasEnhancedAttack = false;
+    let combinedHealthMax = 0;
+    let combinedHealthValue = 0;
+
+    for (const zord of participants) {
+      const hasCoreBody = zord.items.some(
+        item => item.type == 'megaformTrait' && item.system.type == 'coreBody',
+      );
+      const healthMultiplier = hasCoreBody ? 2 : 1;
+      combinedHealthMax += zord.system.health.max * healthMultiplier;
+      combinedHealthValue += Math.max(0, zord.system.health.value) * healthMultiplier;
+
+      for (const item of zord.items) {
+        if (item.type != 'megaformTrait') {
+          continue;
+        }
+
+        switch (item.system.type) {
+        case 'coreAbility':
+          if (item.system.essence == 'strength') {
+            strength += item.system.value;
+          } else if (item.system.essence == 'speed') {
+            speed += item.system.value;
+          }
+
+          break;
+        case 'coreDefenses':
+          toughnessTraitBonus += item.system.value;
+          evasionTraitBonus += item.system.value;
+          break;
+        case 'move':
+          system.movement[item.system.movementType].base += item.system.value;
+          break;
+        case 'enhancedMeleeAttack':
+        case 'enhancedRangedAttack':
+          hasEnhancedAttack = true;
+          break;
+        }
+      }
+    }
+
+    system.essences.strength.value = Math.min(MAX_ESSENCE, strength);
+    system.essences.speed.value = Math.min(MAX_ESSENCE, speed);
+    system.armor = BASE_ARMOR_BONUS;
+    system.defenses.toughness.value = 10 + system.essences.strength.value + BASE_ARMOR_BONUS + toughnessTraitBonus;
+    system.defenses.evasion.value = 10 + system.essences.speed.value + evasionTraitBonus;
+
+    for (const movementType of Object.keys(system.movement)) {
+      system.movement[movementType].total = system.movement[movementType].base;
+    }
+
+    system.hasEnhancedAttack = hasEnhancedAttack;
+    system.combinedHealthMax = combinedHealthMax;
+    system.combinedHealthValue = combinedHealthValue;
+
+    const defeatedCount = participants.filter(zord => zord.system.health.value <= 0).length;
+    system.isDefeated = defeatedCount > participants.length / 2;
+  }
+
+  /**
+   * Computes a Transformers Gestalt/Matched Combiner's combined stats from its linked
+   * component actors (system.actors - full characters, not Zords), per the Combiner rules:
+   * - Size Class: a duo/trio (2-3 components) is one Size Class larger than its largest
+   *   component; a Gestalt (4+ components) is Towering, or Titanic if any component is
+   *   Gigantic or larger.
+   * - Health is NOT combined into one pool (system.participantHealth breakdown, same as a
+   *   Megazord, but with no Core Body-style doubling - Combiners don't have that feature).
+   * - Strength/Speed/Smarts/Social = highest among components, setting base Defenses; for
+   *   each Essence, the component that contributed the highest score for it also contributes
+   *   its ranks in that Essence's Skills to the combined form.
+   * - Toughness/Evasion get the LOWEST armor bonus among components (not highest) - NPC
+   *   components without a granular armor bonus field are treated as contributing +0.
+   * - Movement uses the slowest rate per type among components' current (Bot Mode) movement.
+   * - Combiner Features (reusing the same megaformTrait items/types as a Megazord's Megaform
+   *   Traits, since the book doesn't define a distinct set of Combiner Feature types) always
+   *   apply. Ordinary Role/General Perks are NOT auto-applied - the book says only "specifically
+   *   noted" ones carry over, which isn't a flag this system tracks generically.
+   * - The base Energon Point pool is half of system.energonSpentToMerge (rounded up) - a
+   *   GM-entered value, since how much was actually spent depends on in-combat choices
+   *   (Matched vs. Gestalt cost, Story Point substitutions, NPCs joining) this system doesn't
+   *   otherwise track.
+   * - Attacks (unarmed strike, ranged Hardpoint attacks) aren't synthesized, for the same
+   *   reason a Megazord's Enhanced Attacks aren't: it isn't well-defined without the
+   *   components' own weapon data being structured for it.
+   */
+  _prepareMegaformCombinerData() {
+    const system = this.system;
+    const MAX_ESSENCE = 15;
+    const sizeOrder = Object.keys(CONFIG.E20.actorSizes);
+    const giganticIndex = sizeOrder.indexOf('gigantic');
+
+    const participants = Object.values(system.actors)
+      .map(entry => fromUuidSync(entry.uuid))
+      .filter(actor => actor?.type && actor.type != 'zord' && actor.type != 'vehicle' && actor.type != 'megaform');
+
+    system.participantHealth = participants.map(component => ({
+      name: component.name,
+      value: component.system.health.value,
+      max: component.system.health.max,
+    }));
+
+    if (!participants.length) {
+      system.isDefeated = false;
+      system.combinedHealthMax = 0;
+      system.combinedHealthValue = 0;
+      system.hasEnhancedAttack = false;
+
+      return;
+    }
+
+    system.movementIsReadOnly = true;
+
+    // Size Class: one larger than the largest component for a duo/trio, or Towering/Titanic
+    // for a Gestalt (4+ components).
+    const largestComponentIndex = Math.max(
+      ...participants.map(component => Math.max(0, sizeOrder.indexOf(component.system.size))),
+    );
+    if (participants.length <= 3) {
+      system.size = sizeOrder[Math.min(sizeOrder.length - 1, largestComponentIndex + 1)];
+    } else {
+      const hasGiganticOrLarger = participants.some(
+        component => sizeOrder.indexOf(component.system.size) >= giganticIndex,
+      );
+      system.size = hasGiganticOrLarger ? 'titanic' : 'towering';
+    }
+
+    // Essences + the Skills tied to whichever component contributed each Essence's high score.
+    for (const essence of ['strength', 'speed', 'smarts', 'social']) {
+      let winner = participants[0];
+      for (const component of participants) {
+        if (component.system.essences[essence].value > winner.system.essences[essence].value) {
+          winner = component;
+        }
+      }
+
+      system.essences[essence].value = Math.min(MAX_ESSENCE, winner.system.essences[essence].value);
+
+      for (const skill of CONFIG.E20.skillsByEssence[essence] ?? []) {
+        if (winner.system.skills[skill] && system.skills[skill]) {
+          system.skills[skill] = foundry.utils.deepClone(winner.system.skills[skill]);
+        }
+      }
+    }
+
+    // Defenses get the LOWEST armor bonus among components, not the highest - NPCs and other
+    // actor types without a granular defense.armor field contribute +0.
+    for (const defenseType of ['toughness', 'evasion']) {
+      const armorBonus = Math.min(
+        ...participants.map(component => component.system.defenses?.[defenseType]?.armor ?? 0),
+      );
+      system.defenses[defenseType].value = 10 + system.essences[
+        defenseType == 'toughness' ? 'strength' : 'speed'
+      ].value + armorBonus;
+
+      if (defenseType == 'toughness') {
+        system.armor = armorBonus;
+      }
+    }
+
+    // Movement: slowest rate per type among components' current (Bot Mode) movement.
+    // .total is only actively (re)computed for playerCharacter actors (_prepareMovement() is
+    // gated to that type), so an NPC component's .total can be stale; fall back to .base for
+    // those, same as a Megazord falls back to a Zord's .base.
+    for (const movementType of Object.keys(system.movement)) {
+      const rates = participants
+        .map(component => {
+          const move = component.system.movement?.[movementType];
+          return move?.total || move?.base;
+        })
+        .filter(rate => rate);
+      system.movement[movementType].base = rates.length ? Math.min(...rates) : 0;
+      system.movement[movementType].total = system.movement[movementType].base;
+    }
+
+    // Combiner Features always apply - reusing the same megaformTrait items as a Megazord's
+    // Megaform Traits (see the class comment above for why).
+    let toughnessTraitBonus = 0;
+    let evasionTraitBonus = 0;
+    for (const component of participants) {
+      for (const item of component.items) {
+        if (item.type != 'megaformTrait') {
+          continue;
+        }
+
+        switch (item.system.type) {
+        case 'coreAbility':
+          if (['strength', 'speed', 'smarts', 'social'].includes(item.system.essence)) {
+            system.essences[item.system.essence].value = Math.min(
+              MAX_ESSENCE, system.essences[item.system.essence].value + item.system.value,
+            );
+          }
+
+          break;
+        case 'coreDefenses':
+          toughnessTraitBonus += item.system.value;
+          evasionTraitBonus += item.system.value;
+          break;
+        case 'move':
+          system.movement[item.system.movementType].base += item.system.value;
+          system.movement[item.system.movementType].total = system.movement[item.system.movementType].base;
+          break;
+        }
+      }
+    }
+
+    system.defenses.toughness.value += toughnessTraitBonus;
+    system.defenses.evasion.value += evasionTraitBonus;
+
+    // Base Energon Point pool = half the Energon spent to merge, rounded up.
+    system.energon.normal.max = Math.ceil(system.energonSpentToMerge / 2);
+
+    system.hasEnhancedAttack = false;
+    system.combinedHealthMax = participants.reduce((sum, component) => sum + component.system.health.max, 0);
+    system.combinedHealthValue = participants.reduce(
+      (sum, component) => sum + Math.max(0, component.system.health.value), 0,
+    );
+
+    const defeatedCount = participants.filter(component => component.system.health.value <= 0).length;
+    system.isDefeated = defeatedCount > participants.length / 2;
   }
 
   /**

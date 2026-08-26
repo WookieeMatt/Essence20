@@ -13,7 +13,7 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "general"
+    "type": "role"
   },
   "effects": [],
   "sort": 100000,

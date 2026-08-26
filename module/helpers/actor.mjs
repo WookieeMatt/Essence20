@@ -29,6 +29,65 @@ export function changeTokenImage(actor, newImage){
 }
 
 /**
+ * Pushes the actor's currently-computed vision grant (system.visionGrant, set by
+ * Essence20Actor#_prepareVision()) onto every placed token and the actor's prototype token, so
+ * items like Night Vision Goggles actually change what the token can see on a scene. Falls back
+ * to the token's normal "basic" vision rather than force-disabling sight when no vision-granting
+ * item is present, so a GM's own sight configuration isn't clobbered.
+ *
+ * Note this does NOT handle blocking vision outright for Blinded/Asleep/Unconscious - setting
+ * TokenDocument.sight.enabled to false does not actually blank a token's perception the way
+ * Foundry's own CONFIG.specialStatusEffects.BLIND handling does (confirmed by direct testing:
+ * the "blinded" status, wired to BLIND in essence20.mjs, works; sight.enabled=false alone does
+ * not). See syncAutoBlindStatus() below, which reuses Foundry's real Blind status for that.
+ * @param {Actor} actor The actor whose vision grant should be applied to its tokens
+ */
+export async function applyVisionToTokens(actor) {
+  const grant = actor?.system?.visionGrant;
+  const sight = grant
+    ? { enabled: true, visionMode: grant.mode, range: grant.range }
+    : { visionMode: "basic", range: 0 };
+
+  const tokens = actor?.getActiveTokens() ?? [];
+  for (const token of tokens) {
+    await token.document.update({ sight });
+  }
+
+  if (actor?.prototypeToken) {
+    await actor.update({ "prototypeToken.sight": sight });
+  }
+}
+
+/**
+ * Asleep/Unconscious have no Foundry-native equivalent to Blinded's CONFIG.specialStatusEffects.BLIND
+ * wiring (see essence20.mjs), but closed eyes should black out vision exactly the same way. Rather
+ * than reinventing that (sight.enabled=false alone doesn't work - see applyVisionToTokens() above),
+ * this keeps the actor's real "blinded" status effect in sync with whether it's Asleep or
+ * Unconscious, so Foundry's own already-working Blind handling takes care of vision for us.
+ *
+ * A flags.essence20.autoBlindFromSleep marker distinguishes an auto-applied Blinded from one the
+ * GM/player toggled on manually for some other reason, so waking up never strips a manually-applied
+ * Blinded, and a manually-applied Blinded is left alone (not removed) if the actor separately falls
+ * asleep and wakes while it's active.
+ * @param {Actor} actor The actor whose auto-blind status should be synced
+ */
+export async function syncAutoBlindStatus(actor) {
+  if (!actor) return;
+
+  const shouldBeBlind = actor.statuses?.has('asleep') || actor.statuses?.has('unconscious') || false;
+  const blindEffect = actor.effects.find(effect => effect.statuses?.has('blinded'));
+  const isAutoBlind = !!blindEffect?.getFlag('essence20', 'autoBlindFromSleep');
+
+  if (shouldBeBlind && !blindEffect) {
+    const effectData = await ActiveEffect.implementation.fromStatusEffect('blinded');
+    effectData.updateSource({ "flags.essence20.autoBlindFromSleep": true });
+    await actor.createEmbeddedDocuments('ActiveEffect', [effectData]);
+  } else if (!shouldBeBlind && isAutoBlind) {
+    await blindEffect.delete();
+  }
+}
+
+/**
  * Displays an error message if the sheet is locked
  * @returns {boolean} True if the sheet is locked, and false otherwise
  */
@@ -47,7 +106,11 @@ export function checkIsLocked(actor) {
  * @return {Object} Action types mapped to an action count
  */
 export function getNumActions(actor) {
-  const speed = actor.system.essences.speed.max;
+  // Character/NPC/Companion essences use .max (character.mjs); Vehicle/Zord/Megaform's
+  // machine-based essences (machine.mjs, zord-base.mjs) use .value instead - there's no .max
+  // on those to read.
+  const speedEssence = actor.system.essences.speed;
+  const speed = speedEssence.max ?? speedEssence.value ?? 0;
 
   return {
     free: Math.max(0, speed - 2),
@@ -57,18 +120,13 @@ export function getNumActions(actor) {
 }
 
 /**
- * Set the --e20-system-color CSS variables used to drive the e20-border-accent
- * coloring (header/profile-img border, sheet tabs, skill headers, etc.) from the
- * actor's chosen system.color.
- * @param {HTMLElement} element The sheet's root element
- * @param {Actor} actor The actor being rendered
+ * Given a system.color string, work out the values for --e20-system-color and its
+ * 50%-alpha counterpart --e20-system-color-50.
+ * @param {String} color The raw system.color value (expected to be a hex color)
+ * @returns {{normalizedColor: String, alphaColor: String}}
  */
-export function applySystemColorCssVariables(element, actor) {
-  const color = actor?.system?.color;
-  if (!element || !color) return;
-
+export function computeSystemColorVars(color) {
   const normalizedColor = String(color).trim();
-  element.style.setProperty('--e20-system-color', normalizedColor);
 
   const hexColor = normalizedColor.startsWith('#') ? normalizedColor : null;
   const alphaColor = hexColor && /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hexColor)
@@ -83,5 +141,43 @@ export function applySystemColorCssVariables(element, actor) {
     })()
     : 'rgba(0, 0, 0, 0.5)';
 
+  return { normalizedColor, alphaColor };
+}
+
+/**
+ * Set the --e20-system-color CSS variables used to drive the e20-border-accent
+ * coloring (header/profile-img border, sheet tabs, skill headers, etc.) from the
+ * actor's chosen system.color.
+ * @param {HTMLElement} element The sheet's root element
+ * @param {Actor} actor The actor being rendered
+ */
+export function applySystemColorCssVariables(element, actor) {
+  const color = actor?.system?.color;
+  if (!element || !color) return;
+
+  const { normalizedColor, alphaColor } = computeSystemColorVars(color);
+  element.style.setProperty('--e20-system-color', normalizedColor);
   element.style.setProperty('--e20-system-color-50', alphaColor);
+}
+
+/**
+ * The Contacts/Combiners/Crew list (system-actors.hbs) shows other actors attached to this
+ * one - each row's e20-border-accent trim should read as THAT attached actor's own
+ * system.color, not the sheet owner's color it would otherwise inherit from the root element
+ * above. Each row carries its attached actor's color in a data-e20-color attribute already;
+ * this sets the same --e20-system-color/-50 pair locally on each row so it overrides (rather
+ * than inherits) the root value for just that row's subtree.
+ * @param {HTMLElement} element The sheet's root element
+ */
+export function applySystemActorsColorCssVariables(element) {
+  if (!element) return;
+
+  for (const row of element.querySelectorAll('.systemActors[data-e20-color]')) {
+    const color = row.dataset.e20Color;
+    if (!color) continue;
+
+    const { normalizedColor, alphaColor } = computeSystemColorVars(color);
+    row.style.setProperty('--e20-system-color', normalizedColor);
+    row.style.setProperty('--e20-system-color-50', alphaColor);
+  }
 }

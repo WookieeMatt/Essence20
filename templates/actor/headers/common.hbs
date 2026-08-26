@@ -22,9 +22,21 @@
           {{selectOptions config.actorSizes selected=system.altModesize}}
         </select>
       {{else}}
-        <select name="system.size">
-          {{selectOptions config.actorSizes selected=system.size}}
-        </select>
+        {{#if (eq @root.document.type 'megaform')}}
+          {{#inArray system.subtype 'megaformCombiner'}}
+            <select name="system.size" disabled>
+              {{selectOptions config.actorSizes selected=system.size}}
+            </select>
+          {{else}}
+            <select name="system.size">
+              {{selectOptions config.actorSizes selected=system.size}}
+            </select>
+          {{/inArray}}
+        {{else}}
+          <select name="system.size">
+            {{selectOptions config.actorSizes selected=system.size}}
+          </select>
+        {{/if}}
       {{/if}}
     </div>
 

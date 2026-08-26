@@ -52,23 +52,29 @@ export async function onEquipmentPackageDrop(actor, droppedItem) {
  * @param {String} type The type of Items to drop
  * @param {Item} parentItem The Items' parent Item
  * @param {Number} lastProcessedLevel The flag for the last time the Actor changed level
+ * @param {Number} currentLevel (Optional) The level to compare item.level against, in place of
+ *                               owner.system.level - used by an "additive" Role (e.g. Old Hand)
+ *                               whose own table runs on a level independent of the Actor's
+ *                               real character level. Defaults to owner.system.level.
  */
-export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null) {
+export async function createItemCopies(items, owner, type, parentItem, lastProcessedLevel=null, currentLevel=null) {
   let copyWasCreated = false;
   let skipToNext = false;
+  const effectiveLevel = currentLevel ?? owner.system.level;
   for (const [key, item] of Object.entries(items)) {
 
     if (item.type == type) {
       const createNewItem =
         !["role", "focus"].includes(parentItem.type)
-        || !item.level || (item.level <= owner.system.level && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
+        || !item.level || (item.level <= effectiveLevel && (!lastProcessedLevel || (item.level > lastProcessedLevel)));
 
       if (createNewItem) {
         const itemToCreate = await fromUuid(item.uuid);
 
         if (itemToCreate.type == 'perk' && itemToCreate.system.advances.canAdvance) {
           for (const ownerItem of owner.items) {
-            if (ownerItem._stats.compendiumSource == itemToCreate.uuid) {
+            const ownerItemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats?.compendiumSource;
+            if (ownerItemSourceId == itemToCreate.uuid) {
               const newValue = ownerItem.system.advances.currentValue + ownerItem.system.advances.increaseValue;
               await ownerItem.update({
                 "system.advances.currentValue": newValue,
@@ -87,7 +93,7 @@ export async function createItemCopies(items, owner, type, parentItem, lastProce
         const newItem = await Item.create(itemToCreate, { parent: owner });
 
         if (item.type == 'perk') {
-          await setPerkValues(owner, newItem, null);
+          await setPerkValues(owner, newItem, null, null, item.uuid);
         }
 
         if (newItem.type == "altMode") {
@@ -311,6 +317,7 @@ export function createEntry(droppedItem, targetItem) {
     break;
   case "weapon":
     if (droppedItem.type == "upgrade" && droppedItem.system.type == "weapon") {
+      entry['aimShiftBonus'] = droppedItem.system.aimShiftBonus;
       entry['availability'] = droppedItem.system.availability;
       entry['benefit'] = droppedItem.system.benefit;
       entry['description'] = droppedItem.system.description;
@@ -401,17 +408,27 @@ export async function _addItemIfUnique(droppedItem, targetItem, entry) {
 * @param {Item} item The Item that was deleted
 * @param {Actor} actor The Actor that owns the parent Item
 * @param {Number} previousLevel (optional) The value of the last time the Actor leveled up
+* @param {Number} currentLevel (Optional) The level to compare attachment.level against, in
+*                               place of actor.system.level - see createItemCopies() above for
+*                               why (an "additive" Role's own independent level track).
 */
-export async function deleteAttachmentsForItem(item, actor, previousLevel=null) {
+export async function deleteAttachmentsForItem(item, actor, previousLevel=null, currentLevel=null) {
+  const effectiveLevel = currentLevel ?? actor.system.level;
   for (const actorItem of actor.items) {
-    const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
+    // _stats.compendiumSource is only populated by specific "import from compendium" flows,
+    // not by the plain Item.create(doc, {parent}) that createItemCopies() uses to grant Role/
+    // level-up Perks - so it's normally unset on those and this check would silently match
+    // nothing. flags.core.sourceId is set explicitly by createItemCopies() (and by Foundry's
+    // own drag-drop-from-compendium handling), so prefer that and fall back to
+    // compendiumSource for items that only have it set some other way.
+    const itemSourceId = actorItem.flags.core?.sourceId ?? actorItem._stats?.compendiumSource;
     const parentId = await actor.items.get(actorItem._id).getFlag('essence20', 'parentId');
     const collectionId = await actor.items.get(actorItem._id).getFlag('essence20', 'collectionId');
 
     for (const [key, attachment] of Object.entries(item.system.items)) {
       if (itemSourceId) {
         if (itemSourceId == attachment.uuid && item._id == parentId) {
-          if (!previousLevel || (attachment.level > actor.system.level && attachment.level <= previousLevel)) {
+          if (!previousLevel || (attachment.level > effectiveLevel && attachment.level <= previousLevel)) {
             if (attachment.type == "perk") {
               if (actorItem.system.advances.canAdvance) {
                 if (actorItem.system.advances.currentValue > actorItem.system.advances.baseValue) {

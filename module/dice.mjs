@@ -1,4 +1,5 @@
 import { E20 } from "./helpers/config.mjs";
+import { _isCritIsFumble, buildCheckChatData, computeMultiplier, getDefenseValue } from "./helpers/combat.mjs";
 
 export class Dice {
   /**
@@ -81,6 +82,7 @@ export class Dice {
     const rolledSkill = dataset.skill;
     const rolledEssence = dataset.essence || E20.skillToEssence[rolledSkill];
     const essenceShifts = actor.system.essenceShifts;
+    const combatModifiers = this._getAutomaticCombatModifiers(actor, item, rolledEssence);
     let calculatedShiftUp = 0;
     let calculatedShiftDown = 0;
     if (rolledEssence) {
@@ -90,6 +92,9 @@ export class Dice {
       calculatedShiftUp = dataset.shiftUp + essenceShifts.any.shiftUp;
       calculatedShiftDown = dataset.shiftDown + essenceShifts.any.shiftDown;
     }
+
+    calculatedShiftUp += combatModifiers.shiftUp;
+    calculatedShiftDown += combatModifiers.shiftDown;
 
     const updatedShiftDataset = {
       ...dataset,
@@ -102,25 +107,61 @@ export class Dice {
       : dataset.shift || actorSkillData.shift;
     const skillDataset = {
       shift: initialShift,
-      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge,
-      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag,
+      edge: actorSkillData.edge || !!essenceShifts[rolledEssence]?.edge || combatModifiers.edge,
+      snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag,
     };
 
+    // Pre-select the Roll Options Dialog's Defense dropdown from the weaponEffect's configured
+    // Defense (p.168-169). A plain skill roll defaults to 'none' unless the caller already set
+    // dataset.defenseType (e.g. a @Check[defense=...] enricher link, see helpers/enrichers.mjs),
+    // and the player can always still choose a Defense manually to roll a Skill Test against a
+    // targeted actor.
+    updatedShiftDataset.defenseType = item?.type == 'weaponEffect'
+      ? item.system.defenseType
+      : (dataset.defenseType || 'none');
+
     updatedShiftDataset.rolePoints = null;
-    const rolePointsList = actor.items?.documentsByType?.rolePoints;
 
     let rolePoints = null;
-    if (item?.type == 'weaponEffect' && rolePointsList?.length) {
-      rolePoints = rolePointsList[0]; // There should only be one RolePoints
-      if (rolePoints.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
+    if (item?.type == 'weaponEffect') {
+      rolePoints = actor._getBaseRolePoints?.();
+      if (rolePoints?.system.bonus.type == 'attackUpshift' && (rolePoints.system.isActive || !rolePoints.system.isActivatable)) {
         updatedShiftDataset.rolePoints = rolePoints;
+      } else {
+        rolePoints = null;
       }
     }
+
+    // Aiming (p.192) is a Ranged weapon-specific Free action granting a 1 shift on a single
+    // ranged attack test, plus an additional 1 shift with an attached Laser Sight (p.148/125).
+    // Presented as a toggle in the Roll Options Dialog rather than tracked as standing state -
+    // the dialog is a fresh form on every roll, so there's nothing to "consume" or clear on
+    // Movement; the player simply only checks it when they actually aimed and haven't moved.
+    const isRangedAttack = item?.type == 'weaponEffect' && item.system.classification.style != 'melee';
+    updatedShiftDataset.aimBonus = isRangedAttack ? 1 + this._getLaserSightBonus(actor, item) : null;
+
+    // Energon Points (p.104-105): a Cybertronian may spend one to gain a 1 shift on any Skill
+    // Test. Like Aiming, presented as a Roll Options Dialog toggle rather than standing state;
+    // unlike Aiming, spending one actually consumes a real, persisted resource, so the point is
+    // only deducted once the roll is confirmed (not if the dialog is cancelled).
+    // Boolean(...) rather than plain && - actor.system.canTransform is undefined for actor
+    // types that don't define it at all (e.g. some test/mock actors), and `undefined && x`
+    // evaluates to undefined rather than false, leaking a non-boolean into the dataset.
+    updatedShiftDataset.energonAvailable = Boolean(actor.system.canTransform && actor.system.energon.normal.value > 0);
 
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
       return;
+    }
+
+    if (skillRollOptions.isAiming) {
+      skillRollOptions.shiftUp += updatedShiftDataset.aimBonus;
+    }
+
+    if (skillRollOptions.spendEnergon) {
+      skillRollOptions.shiftUp += 1;
+      await actor.update({ 'system.energon.normal.value': actor.system.energon.normal.value - 1 });
     }
 
     let label = '';
@@ -130,7 +171,8 @@ export class Dice {
     case 'weaponEffect':
       {
         const roleList = actor.items?.documentsByType?.role;
-        roleSkillDieName = roleList?.length ? roleList[0].system.skillDie.name : null;
+        const baseRole = roleList?.find(role => !role.system.isAdditive);
+        roleSkillDieName = baseRole ? baseRole.system.skillDie.name : null;
       }
 
       label = this._getWeaponRollLabel(dataset, skillRollOptions, item, roleSkillDieName);
@@ -161,6 +203,41 @@ export class Dice {
     const modifier = actorSkillData.modifier || 0;
     const formula = this._getFormula(isSpecialized, skillRollOptions, finalShift, modifier);
 
+    // If a Defense was chosen (either from the weaponEffect's own configured Defense, or picked
+    // manually in the dialog) and there's at least one targeted token, the roll is compared
+    // against each target's Defense (p.168-169). Alternatively, a @Check[dif=...] enricher link
+    // (helpers/enrichers.mjs) sets a flat Difficulty with no target at all - dataset.dif is only
+    // ever present on the roller's own dataset when that roller is the GM, per that enricher's
+    // GM-only-visibility design. Either way this produces one or more "entries" to compare the
+    // roll total against; with neither, this falls back to a plain roll message below.
+    const targets = Array.from(game.user.targets);
+    let checkEntries = null;
+    if (skillRollOptions.defenseType && skillRollOptions.defenseType != 'none' && targets.length) {
+      checkEntries = targets.map(token => ({
+        name: token.actor.name,
+        targetUuid: token.actor.uuid,
+        difficulty: getDefenseValue(token.actor, skillRollOptions.defenseType),
+      }));
+    } else if (dataset.dif) {
+      checkEntries = [{ name: actor.name, targetUuid: null, difficulty: parseInt(dataset.dif) }];
+    }
+
+    const checkContext = checkEntries
+      ? {
+        entries: checkEntries,
+        damageValue: item?.type == 'weaponEffect' ? item.system.damageValue : null,
+        damageType: item?.type == 'weaponEffect' ? item.system.damageType : null,
+        // Critical Success (p.205): "the attacker chooses to stack on an additional attack
+        // effect... it may instead have the option of applying an alternate effect from the
+        // attack's listed options" (Table 8-3.1's "Alternate Effects" column). A weapon's
+        // Alternate Effects are separate weaponEffect Items sharing this one's parentId flag
+        // (see attachment-handler.mjs#createItemCopies, which tags every weaponEffect copied
+        // from the same weapon with that weapon's _id).
+        effectName: item?.type == 'weaponEffect' ? item.name : null,
+        alternateEffects: item?.type == 'weaponEffect' ? this._getAlternateEffects(actor, item) : [],
+      }
+      : null;
+
     // Repeat the roll as many times as specified in the skill roll options dialog
     for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
       let repeatText = '';
@@ -171,8 +248,148 @@ export class Dice {
         }) + '<br>';
       }
 
-      this._rollSkillHelper(formula, actor, repeatText + label, canCritD2);
+      this._rollSkillHelper(formula, actor, repeatText + label, canCritD2, checkContext);
     }
+  }
+
+  /**
+   * Computes the automatic dice-shift/Edge/Snag modifiers that come from Size Class
+   * differences (Table 10-2: Size Class Combat Adjustment Matrix) and active Conditions,
+   * rather than anything the actor chose. Size and target-Condition effects only apply to
+   * weapon attack rolls; Impaired and Momentarily Acting Smaller (p.157 - a Snag on all
+   * physical, i.e. Strength/Speed, actions while squeezed into a smaller space) apply to any
+   * Skill Test, and a Prone attacker's own melee penalty are Condition effects that come from
+   * the roller's own statuses.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} item   The item being used, if any.
+   * @param {String} rolledEssence   The Essence tied to the skill being rolled, if any.
+   * @returns {Object}   { shiftUp, shiftDown, edge, snag }
+   * @private
+   */
+  _getAutomaticCombatModifiers(actor, item, rolledEssence) {
+    let shiftUp = 0;
+    let shiftDown = 0;
+    let edge = false;
+    let snag = false;
+
+    const selfStatuses = actor.statuses;
+    if (selfStatuses.has('impaired')) {
+      shiftDown += 1;
+    }
+
+    if (selfStatuses.has('actingSmaller') && ['strength', 'speed'].includes(rolledEssence)) {
+      snag = true;
+    }
+
+    const isAttack = item?.type == 'weaponEffect';
+    if (!isAttack) {
+      return { shiftUp, shiftDown, edge, snag };
+    }
+
+    const isMelee = item.system.classification.style == 'melee';
+
+    if (selfStatuses.has('blinded')) {
+      snag = true;
+    }
+
+    if (isMelee && selfStatuses.has('prone')) {
+      shiftDown += 1;
+    }
+
+    const target = game.user.targets.first()?.actor;
+    if (target) {
+      shiftUp += this._getSizeShift(actor.system.size, target.system.size);
+
+      const targetStatuses = target.statuses;
+      const targetGrantsEdge = targetStatuses.has('blinded')
+        || targetStatuses.has('grappled')
+        || targetStatuses.has('restrained')
+        || targetStatuses.has('stunned')
+        || targetStatuses.has('unconscious')
+        || targetStatuses.has('actingSmaller')
+        || (isMelee && targetStatuses.has('prone'));
+
+      if (targetGrantsEdge) {
+        edge = true;
+      }
+
+      if (targetStatuses.has('immobilized')) {
+        shiftUp += 1;
+      }
+
+      if (targetStatuses.has('invisible') || (!isMelee && targetStatuses.has('prone'))) {
+        snag = true;
+      }
+
+      // Resistance to this attack's damage type always imposes a Snag on the roll to apply it
+      // (p.170) - unlike Immunity, it does not reduce the damage itself once the attack lands.
+      if (target.system.resistances?.[item.system.damageType]) {
+        snag = true;
+      }
+    }
+
+    return { shiftUp, shiftDown, edge, snag };
+  }
+
+  /**
+   * Computes the dice shift bonus from Table 10-2: Size Class Combat Adjustment Matrix.
+   * The table's values reduce to a simple rule: the shift equals half the distance
+   * (rounded down) between the two Size Classes on the actorSizes ladder, applied as a
+   * shift up regardless of which side is larger.
+   * @param {String} attackerSize   The attacking actor's system.size.
+   * @param {String} targetSize   The targeted actor's system.size.
+   * @returns {Number}   The dice shift bonus, 0 if either size is unrecognized.
+   * @private
+   */
+  _getSizeShift(attackerSize, targetSize) {
+    const sizeOrder = Object.keys(E20.actorSizes);
+    const attackerIndex = sizeOrder.indexOf(attackerSize);
+    const targetIndex = sizeOrder.indexOf(targetSize);
+
+    if (attackerIndex == -1 || targetIndex == -1) {
+      return 0;
+    }
+
+    return Math.floor(Math.abs(attackerIndex - targetIndex) / 2);
+  }
+
+  /**
+   * Computes the additional Aiming shift granted by a Laser Sight (or similar) attachment on
+   * the weapon a ranged weaponEffect belongs to.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} item   The weaponEffect being rolled.
+   * @returns {Number}   The extra shift, 0 if the weaponEffect has no parent weapon or upgrades.
+   * @private
+   */
+  _getLaserSightBonus(actor, item) {
+    const parentId = item?.flags?.essence20?.parentId;
+    const weapon = parentId ? actor.items.get(parentId) : null;
+
+    return weapon?.system.totalAimShiftBonus || 0;
+  }
+
+  /**
+   * Finds the other damage-dealing weaponEffect Items attached to the same weapon as the given
+   * weaponEffect (Table 8-3.1's "Alternate Effects") - available to stack onto a Critical
+   * Success (p.205). Effects with no damageValue (e.g. Trip, Maneuver) are excluded since they
+   * have nothing numeric to apply automatically.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {Item} item   The weaponEffect being rolled.
+   * @returns {Array<Item>}   The sibling weaponEffect Items, empty if item has no parent weapon.
+   * @private
+   */
+  _getAlternateEffects(actor, item) {
+    const parentId = item?.flags.essence20?.parentId;
+    if (!parentId) {
+      return [];
+    }
+
+    return actor.items.filter(sibling =>
+      sibling.type == 'weaponEffect'
+      && sibling.id != item.id
+      && sibling.flags.essence20?.parentId == parentId
+      && sibling.system.damageValue,
+    );
   }
 
   /**
@@ -180,20 +397,81 @@ export class Dice {
    * @param {String} formula   The formula to be rolled.
    * @param {Actor} actor   The actor performing the roll.
    * @param {String} flavor   The html to use for the roll message.
+   * @param {Boolean} canCritD2   Whether a shift-2 result counts as a Critical Success.
+   * @param {Object} checkContext   Optional { defenseType, targets, damageValue, damageType }
+   *   built in rollSkill() - when present, the roll is compared against each target's Defense
+   *   (p.168-169) instead of posting a plain dice-roll message.
    * @private
    */
-  _rollSkillHelper(formula, actor, flavor, canCritD2) {
-    let roll = new Roll(formula, actor.getRollData());
-    roll.toMessage({
-      flags: {
-        essence20: {
-          canCritD2: canCritD2,
+  async _rollSkillHelper(formula, actor, flavor, canCritD2, checkContext=null) {
+    const roll = new Roll(formula, actor.getRollData());
+    const speaker = this._chatMessage.getSpeaker({ actor });
+
+    if (!checkContext) {
+      roll.toMessage({
+        flags: {
+          essence20: {
+            canCritD2: canCritD2,
+          },
         },
-      },
-      speaker: this._chatMessage.getSpeaker({ actor }),
-      flavor,
-      rollMode: game.settings.get('core', 'rollMode'),
+        speaker,
+        flavor,
+        rollMode: game.settings.get('core', 'rollMode'),
+      });
+      return;
+    }
+
+    await roll.evaluate();
+
+    const [isCrit] = _isCritIsFumble(roll.dice, canCritD2);
+
+    // Critical Success (p.205): the attacker may stack one additional attack effect onto the
+    // hit - either the same effect again, or (Table 8-3.1) one of the weapon's Alternate
+    // Effects, applied at its own listed value (no further Degrees of Success multiplier - see
+    // the Snow Storm example, p.187-188, which adds the alternate's flat value once).
+    const criticalOptions = [];
+    if (isCrit && checkContext.damageValue) {
+      criticalOptions.push({
+        key: 'double',
+        label: this._localize('E20.CheckCriticalRepeatEffect', { name: checkContext.effectName }),
+        damageValue: checkContext.damageValue,
+        damageType: checkContext.damageType,
+        damageTypeLabel: this._localize(E20.damageTypes[checkContext.damageType]),
+      });
+
+      for (const altEffect of checkContext.alternateEffects) {
+        criticalOptions.push({
+          key: altEffect.id,
+          label: altEffect.name,
+          damageValue: altEffect.system.damageValue,
+          damageType: altEffect.system.damageType,
+          damageTypeLabel: this._localize(E20.damageTypes[altEffect.system.damageType]),
+        });
+      }
+    }
+
+    const results = checkContext.entries.map(entry => {
+      const multiplier = computeMultiplier(roll.total, entry.difficulty);
+      const success = multiplier > 0;
+      // Only a resolved target actor (not a flat @Check[dif=...] entry) can take Health damage.
+      const canApplyDamage = success && entry.targetUuid && checkContext.damageValue;
+
+      return {
+        name: entry.name,
+        targetUuid: entry.targetUuid,
+        difficulty: entry.difficulty,
+        showDifficulty: true,
+        success,
+        multiplier,
+        damageValue: canApplyDamage ? checkContext.damageValue * multiplier : null,
+        damageType: checkContext.damageType,
+        damageTypeLabel: checkContext.damageType ? this._localize(E20.damageTypes[checkContext.damageType]) : null,
+        criticalOptions: canApplyDamage ? criticalOptions : [],
+      };
     });
+
+    const chatData = await buildCheckChatData(roll, { flavor, results, speaker, canCritD2 });
+    this._chatMessage.create(chatData);
   }
 
   /**

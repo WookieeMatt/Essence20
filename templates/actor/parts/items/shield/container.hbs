@@ -3,6 +3,16 @@
     {{> "systems/essence20/templates/actor/parts/items/shield/details.hbs"}}
   {{/inline}}
 
+  {{#*inline "item-label" item}}
+    <div class="flexrow align-center gap-5 leveled-item-label">
+      {{#if item.system.grantedLevel}}
+        <span class="leveled-item-badge">{{item.system.grantedLevel}}</span>
+      {{/if}}
+      <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
+      <span class="leveled-item-name">{{item.name}}</span>
+    </div>
+  {{/inline}}
+
   {{#*inline "subcontainers" parentItem}}
     {{!-- Weapon Effects --}}
     {{#>"systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs" items=parentItem.system.items title="E20.ItemTypeWeaponEffectPlural" dataType="weaponEffect" parentItem=parentItem}}

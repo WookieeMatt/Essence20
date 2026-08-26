@@ -38,6 +38,29 @@
   padding: v.$gap-sm v.$gap-md;
 }
 
+/* Sidebar panels (Resources/Special/Defenses/etc.) are .sliced-border boxes - tint their
+   border graphic with the actor's own system color (falling back to the theme accent),
+   reusing the same mask-border + solid background-color technique .e20-border-accent already
+   uses elsewhere (_tabs.scss) to recolor this same --theme-border-image asset. Replaces the
+   base .sliced-border::before's plain, un-tinted border-image rendering for sidebar panels only
+   - the label used to carry this accent color instead (see .sliced-border__label above), which
+   now stays neutral. */
+.essence20-sidebar .sliced-border::before {
+  filter: none;
+  border-style: none;
+  border-image: none;
+  border-width: 0;
+  background-color: var(--e20-system-color, var(--theme-accent));
+  -webkit-mask-box-image-source: var(--theme-border-image);
+  -webkit-mask-box-image-slice: 15;
+  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-repeat: stretch;
+  mask-border-source: var(--theme-border-image);
+  mask-border-slice: 15;
+  mask-border-width: 16px;
+  mask-border-repeat: stretch;
+}
+
 .essence20-sidebar.sheet-header {
   flex-direction: column;
   flex-wrap: nowrap;
@@ -54,7 +77,7 @@
   aspect-ratio: 1;
   object-fit: cover;
   border-radius: 50%;
-  border: 3px solid var(--e20-system-color, var(--theme-accent));
+  border: 5px solid var(--e20-system-color, var(--theme-accent));
   margin: 0 auto;
 }
 
@@ -66,7 +89,7 @@
   gap: v.$gap-sm;
   padding-left: v.$gap-md;
   padding-right: v.$gap-md;
-  padding-bottom: v.$gap-sm;
+  padding-bottom: v.$gap-md;
 }
 
 .essence20-sidebar .essence20-sidebar-panel:has(> .sliced-border__label) {
@@ -74,14 +97,13 @@
 }
 
 .essence20-sidebar .essence20-sidebar-panel > .sliced-border__label {
-  color: var(--theme-accent);
   font-weight: 700;
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button) {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row) {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -89,7 +111,7 @@
   min-width: 0;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container) > label {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > label {
   color: var(--theme-text-color);
   flex: 1 1 auto;
   white-space: nowrap;
@@ -97,9 +119,32 @@
   text-overflow: ellipsis;
 }
 
-.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container) > span {
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > span {
   color: var(--theme-muted-text);
   flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  margin-bottom: v.$gap-sm;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row:last-child {
+  margin-bottom: 0;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row > label {
+  color: var(--theme-text-color);
+  font-weight: 600;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row > span {
+  color: var(--theme-muted-text);
+  white-space: normal;
+  word-break: break-word;
 }
 
 .essence20-sidebar .stats-container {
@@ -113,7 +158,7 @@
 .essence20-sidebar-skill-list {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: v.$gap-md;
 }
 
 .essence20-sidebar .essence20-sidebar-action-button {
@@ -139,8 +184,11 @@
 }
 
 .essence20-sidebar .essence20-sidebar-action-button i {
-  color: var(--theme-accent);
   flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-initiative i {
+  font-size: 0.85em;
 }
 
 .essence20-sidebar .essence20-sidebar-action-button select {
@@ -148,6 +196,24 @@
   min-width: 0;
   border: none;
   background: transparent;
+}
+
+.essence20-sidebar .essence20-sidebar-initiative select {
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+  padding: 0 2px;
+  /* Shrinks the box itself (width/height), not the text inside it - flex:1 1 auto (above) was
+     letting it balloon out to fill the whole row, dwarfing the shift-die result next to it. */
+  flex: 0 1 auto;
+  max-width: 110px;
+  height: 24px;
+  margin: 0 v.$gap-sm;
+}
+
+/* The shift die result (e.g. "d8") - the actual payoff of this row, next to the skill picker
+   that just feeds it - reads as an afterthought at the shared 0.8em action-button size. */
+.essence20-sidebar .essence20-sidebar-initiative span {
+  font-size: 1.15em;
 }
 
 .essence20-sidebar .add-specialization.invisible {

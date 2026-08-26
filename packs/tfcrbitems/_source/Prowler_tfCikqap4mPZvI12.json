@@ -25,7 +25,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Pop Out",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "focus",
         "level": 3
       },
       "9f25": {

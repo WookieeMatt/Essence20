@@ -87,8 +87,14 @@ export class Essence20Item extends Item {
     super.prepareDerivedData();
     this._prepareTraits();
 
+    if (this.type == 'weapon' || this.type == 'armor') {
+      this._prepareTotalAvailability();
+    }
+
     if (this.type == 'armor') {
       this._prepareArmorBonuses();
+    } else if (this.type == 'weapon') {
+      this._prepareAimShiftBonus();
     } else if (this.type == 'rolePoints') {
       this._prepareRolePoints();
     }
@@ -145,6 +151,70 @@ export class Essence20Item extends Item {
     this.system.totalBonusToughness = armorBonusToughness;
   }
 
+  /**
+  * Prepares the total Aiming shift bonus (p.192) granted by any attached Upgrades (e.g. a
+  * Laser Sight, p.148/125) on this weapon
+  */
+  _prepareAimShiftBonus() {
+    let totalAimShiftBonus = 0;
+
+    for (const [, item] of Object.entries(this.system.items)) {
+      if (item.type == 'upgrade' && item.subtype == 'weapon') {
+        totalAimShiftBonus += item.aimShiftBonus || 0;
+      }
+    }
+
+    this.system.totalAimShiftBonus = totalAimShiftBonus;
+  }
+
+  /**
+  * Prepares the combined Availability tier that must be Requisitioned to acquire this
+  * weapon or armor as currently upgraded, per Table 8-2: Upgrading Equipment. Starts from
+  * the item's own Availability and folds in each attached Upgrade's Availability in turn.
+  */
+  _prepareTotalAvailability() {
+    let totalAvailability = this.system.availability;
+
+    for (const [, item] of Object.entries(this.system.items)) {
+      if (item.type == 'upgrade') {
+        totalAvailability = this._getCombinedAvailability(totalAvailability, item.availability);
+      }
+    }
+
+    this.system.totalAvailability = totalAvailability;
+  }
+
+  /**
+  * Combines two equipment Availability tiers per Table 8-2: Upgrading Equipment.
+  * @param {String} tierA   An Availability tier key from CONFIG.E20.availabilities.
+  * @param {String} tierB   Another Availability tier key from CONFIG.E20.availabilities.
+  * @returns {String}   The resultant combined Availability tier.
+  */
+  _getCombinedAvailability(tierA, tierB) {
+    const CEILING = 'theoretical';
+    if (tierA == CEILING || tierB == CEILING) {
+      return CEILING;
+    }
+
+    // Table 8-2 doesn't have a row/column for Automatic; treat it as equivalent to
+    // Standard, the table's lowest defined tier.
+    const normalize = tier => tier == 'automatic' ? 'standard' : tier;
+    const normA = normalize(tierA);
+    const normB = normalize(tierB);
+    const combined = CONFIG.E20.upgradeAvailabilityMatrix[normA]?.[normB];
+
+    if (combined) {
+      return combined;
+    }
+
+    // "Other" or any tier Table 8-2 doesn't define a combination for: fall back to
+    // keeping the higher of the two tiers, with no further escalation.
+    const tierOrder = Object.keys(CONFIG.E20.availabilities);
+    const rankA = tierOrder.indexOf(tierA);
+    const rankB = tierOrder.indexOf(tierB);
+
+    return rankA >= rankB ? tierA : tierB;
+  }
 
   /**
    * Finds the number of Role Points the actor currently has.
@@ -152,7 +222,18 @@ export class Essence20Item extends Item {
   _prepareRolePoints() {
     if (!this.actor) return null;
 
-    const actorLevel = this.actor.system.level;
+    // A RolePoints Item granted by an "additive" Role (system.isAdditive, e.g. G.I. Joe's Old
+    // Hand - see role-handler.mjs) runs on that Role's own independent level track instead of
+    // the Actor's real character level. This method is called implicitly by Foundry's
+    // prepareDerivedData() pipeline, not by any level-change handler, so there's no parameter
+    // to receive that override through - it has to look it up itself via the same parentId
+    // flag deleteAttachmentsForItem() already uses to identify which Role granted an Item.
+    let actorLevel = this.actor.system.level;
+    const owningRole = this.actor.items.get(this.getFlag('essence20', 'parentId'));
+    if (owningRole?.type == 'role' && owningRole.system.isAdditive && this.actor.system.oldHandTransitionLevel) {
+      actorLevel = this.actor.system.level - this.actor.system.oldHandTransitionLevel + 1;
+    }
+
     const resourceLevelIncreases = this._getLevelIncreases(this.system.resource.increaseLevels, actorLevel);
 
     if (this.system.resource.startingMax != null) {
@@ -308,7 +389,10 @@ export class Essence20Item extends Item {
       const essence = 'any';
       const skill = 'spellcasting';
       const shift = this.actor.system.skills.spellcasting.shift;
-      const shiftDown = this.system.cost;
+      // Casting Cost (MLP CRB p.132): a spell downshifts the caster's Spellcasting Skill by its
+      // cost, on top of any downshift already lingering from an earlier cast this scene.
+      const priorDownshift = this.actor.system.skills.spellcasting.shiftDown;
+      const shiftDown = priorDownshift + this.system.cost;
       const spellDataset = {
         ...dataset,
         essence,
@@ -318,15 +402,24 @@ export class Essence20Item extends Item {
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);
+
+      // Unlike a single-roll shift, this cost lingers on the actor's Spellcasting Skill after
+      // the roll - only cleared via onRecoverSpellcastingDownshift/onSufferForSpellcastingDownshift
+      // (listener-misc-handler.mjs).
+      await this.actor.update({ 'system.skills.spellcasting.shiftDown': shiftDown });
     } else if (this.type == 'magicBauble') {
       const essence = 'any';
       const skill = 'spellcasting';
       const shift = this.system.spellcastingShift;
+      // Magic Baubles override the caster's base Spellcasting shift entirely (their own fixed
+      // shift), but any lingering Casting Cost downshift (MLP CRB p.132) still applies on top.
+      const shiftDown = this.actor.system.skills.spellcasting.shiftDown;
       const spellDataset = {
         ...dataset,
         essence,
         shift,
         skill,
+        shiftDown,
       };
 
       this._dice.handleSkillItemRoll(spellDataset, this.actor, this);

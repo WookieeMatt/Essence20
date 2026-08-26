@@ -1,7 +1,7 @@
 <div class="zord-combiners">
   <div class="flexrow gap-6">
-    {{#if @root.actors}}
-      {{#each @root.actors as |attachedActor key|}}
+    {{#if actors}}
+      {{#each actors as |attachedActor key|}}
       <div class="systemActors zord item stats-container e20-border-accent" data-e20-color="{{attachedActor.system.color}}" data-system-Actors-uuid="{{attachedActor.uuid}}">
         <div class="flexrow flex-group-center">
           <img class="zord-img" src="{{attachedActor.img}}" data-edit="img" data-tooltip="{{attachedActor.name}}" />
@@ -21,7 +21,7 @@
             {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
           </div>
         {{/if}}
-        {{#if (eq @root.actor.type "megaform")}}
+        {{#if (eq @root.document.type "megaform")}}
           <div>
             <span>{{ localize 'E20.ZordRanger' }}: {{attachedActor.system.ranger}}</span>
           </div>
@@ -37,7 +37,7 @@
             </ul>
           </div>
         {{/if}}
-        {{#inArray '["vehicle", "zord"]' @root.actor.type}}
+        {{#inArray '["vehicle", "zord"]' @root.document.type}}
           {{#each @root.system.actors as |current key2|}}
             {{#if (eq key key2)}}
               <label for="current.vehicleRole" class="resource-label">{{localize 'E20.VehicleRole'}}</label>

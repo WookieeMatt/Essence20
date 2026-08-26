@@ -1,0 +1,71 @@
+{
+  "folder": "p4ye6pAYbYyizfgq",
+  "name": "Heavy Machine Gun",
+  "type": "weapon",
+  "_id": "fBI4dSnGibsQLIho",
+  "img": "systems/essence20/assets/icons/weapons/rifle.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Transformers Core Rulebook",
+      "page": 124
+    },
+    "items": {
+      "1b01": {
+        "uuid": "Compendium.essence20.tf_crb.Item.5J9RcO08rpWC0ocR",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Heavy Machine Gun Effect",
+        "type": "weaponEffect"
+      },
+      "1b02": {
+        "uuid": "Compendium.essence20.tf_crb.Item.TF0C5zILMjwxzIwI",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Heavy Machine Gun Alternate Effect",
+        "type": "weaponEffect"
+      },
+      "1b03": {
+        "uuid": "Compendium.essence20.tf_crb.Item.HItHOGpWIFUMIpkW",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Heavy Machine Gun Alternate Effect 2",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "restricted",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d4"
+    },
+    "traits": [
+      "ballistic",
+      "reload"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787106693967,
+    "modifiedTime": 1787106693967,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!fBI4dSnGibsQLIho"
+}

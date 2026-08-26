@@ -1,3 +1,45 @@
 <div>
-<div>
+  {{!-- Type --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MegaformTraitType'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.type">
+    {{selectOptions config.megaformTraitTypes selected=system.type}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{#if (eq system.type 'coreAbility')}}
+    {{!-- Essence --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MegaformTraitEssence'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.essence">
+      <option value="strength" {{#if (eq system.essence 'strength')}}selected{{/if}}>{{localize 'E20.EssenceStrength'}}</option>
+      <option value="speed" {{#if (eq system.essence 'speed')}}selected{{/if}}>{{localize 'E20.EssenceSpeed'}}</option>
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{#if (eq system.type 'move')}}
+    {{!-- Movement Type --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MegaformTraitMovementType'}}
+    {{#*inline "item-field-inputs"}}
+    <select class="item-field-inputs" name="system.movementType">
+      {{selectOptions config.movementTypes selected=system.movementType}}
+    </select>
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/if}}
+
+  {{#inArray '["coreAbility", "coreDefenses", "move"]' system.type}}
+    {{!-- Value --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.MegaformTraitValue'}}
+    {{#*inline "item-field-inputs"}}
+    {{numberInput system.value name="system.value" min=0 step=1}}
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+  {{/inArray}}
+
+  {{!-- Description --}}
+  <div>{{localize 'E20.ItemDescription'}}: {{{system.description}}}</div>
+<div>

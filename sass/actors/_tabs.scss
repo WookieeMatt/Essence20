@@ -4,7 +4,7 @@
   -webkit-box-flex: 0;
   -ms-flex: 0;
   flex: 0;
-  gap: 6px;
+  gap: 2px;
   margin-bottom: 8px;
 }
 
@@ -22,20 +22,70 @@
   overflow-y: auto;
 }
 
+/* Chamfered top corners (cut at 8px, matching the depth used before) instead of a plain
+   rounded-rectangle tab, matching the reference tab strip.
+   clip-path clips a box's border along with everything else, but can't draw a stroke ALONG the
+   new diagonal edge it creates - the straight sides keep their border, but the cut corner itself
+   is just a bare edge with the raw background showing through, which is what looked like a gap
+   even with .sheet-tabs' gap set to 0 above. Faked here with two stacked layers instead: this
+   element paints as a solid border-color block in the full chamfered shape, and the ::before
+   below sits 1px in from every edge with its own (very slightly shallower) chamfer and the
+   actual fill color, so a 1px rim of the border color shows all the way around - diagonal edge
+   included - rather than only on the straight edges.
+   Sized down (smaller font, tighter padding) since up to 12 of these can be visible at once
+   (see character-sheet.mjs TABS) - at the previous size, two-word labels like "Alt Mode" had
+   nowhere near enough room and either wrapped or got clipped. */
 .essence20 .tabs .item,
 .essence20 .tabs a[data-tab] {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid var(--e20-system-color, var(--theme-border-color));
-  border-radius: 8px 8px 0 0;
-  padding: 5px 10px 7px;
+  position: relative;
+  /* Black rim (matching the active tab's own border below) around every tab, revealed by
+     ::before's 2px inset - the same "2-layer rim" trick used to fake a border along the
+     clip-path chamfer, since a plain CSS border can't follow that diagonal edge. */
+  background: #000000;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px);
+  border: none;
+  padding: 3px 4px 5px;
   flex: 1;
-  color: var(--theme-text-color);
+  min-width: 0;
+  /* Plain --theme-text-color reads as low-contrast to unreadable against a solid, arbitrary
+     system.color fill (same issue the Essence Badge label solves in _essence.scss) - a light gray
+     with a dark halo keeps the label legible against any color a player picks, in both themes
+     (light gray rather than pure white so it doesn't compete with the active tab's own, brighter
+     $textcolor1 treatment below). A tight text-stroke hugs the glyph outline itself rather than
+     blurring outward like a text-shadow would, keeping the halo crisp at any label length. */
+  color: v.$textcolor3;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8);
+  paint-order: stroke fill;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 28px;
+  min-height: 22px;
+  /* Nudged up from 0.75em - kept small since up to 12 tabs can share this strip at once (see this
+     rule's own comment above) and two-word labels like "Alt Mode" already have little room to
+     spare before wrapping to a second line or overflowing; verified live at this size. */
+  font-size: 1.1em;
+  white-space: nowrap;
+  /* Full strength (not the old 0.85) so the fill reads as the actor's actual system.color
+     instead of a version blended toward whatever's behind the tab strip. */
+  opacity: 1;
+}
+
+.essence20 .tabs .item::before,
+.essence20 .tabs a[data-tab]::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--e20-system-color, var(--theme-accent));
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%, 0 6px);
   box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18);
-  opacity: 0.9;
+}
+
+.essence20 .tabs .item span,
+.essence20 .tabs a[data-tab] span {
+  position: relative;
+  z-index: 1;
 }
 
 .essence20 .tabs .item .nav-item-label {
@@ -43,14 +93,54 @@
   font-weight: 600;
 }
 
-.essence20 .tabs .active {
-  background: var(--theme-panel-bg);
-  border-bottom: 1px solid var(--theme-panel-bg);
-}
-
+/* The active tab's fill (::before below) matches the look of a .stats-container "section" card
+   (actors/_stat-containers.scss) - the same panel gradient plus its faint white wash - rather
+   than system.color, so it reads as one of those cards rather than another colored pill. This
+   element's own background is then free to carry a system.color outline (below) instead of
+   reusing that fill value - the panel gradient is listed twice in ::before's stack (compounding
+   its 0.96 alpha to ~0.9984) specifically so this outline can't bleed through into the fill at
+   a visible strength the way the base rule's opaque #000000 rim used to.
+   The [data-tab] attribute selector on the base rule above outweighs a plain .active class
+   selector, so it's repeated here to win the cascade rather than relying on source order. */
 .essence20 .tabs .item.active,
 .essence20 .tabs a[data-tab].active {
-  text-shadow: 0 0 10px rgba(255,255,255,0.5);
+  /* Left/top/right outline only - ::before's flush-bottom fill (below) covers the bottom edge
+     entirely, same as it already hides the base rule's black rim there. */
+  background: var(--e20-system-color, var(--theme-accent));
+  opacity: 1;
+  /* No colored fill to contrast against anymore - back to the theme's own text color/weight
+     instead of the white-plus-halo treatment the (now solid-colored) non-active tabs use. */
+  color: var(--theme-text-color);
+  -webkit-text-stroke: 0;
+}
+
+/* --theme-text-color in dark mode is $text-color-light (#aaaaaa, _theme_wrapper.scss) - readable
+   against the active tab's solid system.color fill, but muddier than intended. $textcolor1
+   (#c7c4c4, already this palette's "light gray" - it's dark mode's own --theme-muted-text) reads
+   as a cleaner light gray without going all the way to white. */
+.essence20.theme-dark .tabs .item.active,
+.essence20.theme-dark .tabs a[data-tab].active {
+  color: v.$textcolor1;
+}
+
+.essence20 .tabs .item.active::before,
+.essence20 .tabs a[data-tab].active::before {
+  background:
+    linear-gradient(v.$section-panel-overlay, v.$section-panel-overlay),
+    v.$panel-gradient-dark,
+    v.$panel-gradient-dark;
+  /* Flush against the bottom (0, instead of the base rule's uniform 2px inset) so the outline
+     doesn't show there - only the active tab opens directly into its content panel below. */
+  inset: 2px 2px 0 2px;
+  box-shadow: none;
+}
+
+.essence20.theme-light .tabs .item.active::before,
+.essence20.theme-light .tabs a[data-tab].active::before {
+  background:
+    linear-gradient(v.$section-panel-overlay, v.$section-panel-overlay),
+    v.$panel-gradient-light,
+    v.$panel-gradient-light;
 }
 
 .essence20 a:hover {
@@ -62,12 +152,40 @@
   border-bottom: none;
 }
 
+/* A plain CSS border cannot draw along a clip-path-cut edge - border only ever follows the
+   box's real (rectangular) edges, and the diagonal chamfer below exists purely as a clip-path
+   cut, not an actual box edge. So the accent line has to be painted separately, as a masked
+   border-image (--theme-border-image, sliced and stretched through mask-border-* below), and
+   this clip-path exists to clip the box's OWN background (per-component: .collapsible-item-
+   container, .stats-container, table cells, etc., each with their own plain rectangular
+   background) to that same trimmed shape, so it doesn't poke out past the mask's visible trim.
+
+   min(22px, 50%) matches both the trim's rendered corner width (22px) AND the point at which
+   the mask-border-width corner scaling below actually kicks in: per the CSS border-image
+   corner-overlap rule, opposing 22px corners on an axis get scaled down together once their sum
+   (44px) exceeds that axis's size, i.e. exactly at 50% of that axis, not 25% - 25% clipped the
+   background's own corner far short of where the trim's diagonal really lands on any short
+   element (collapsed single-line rows, narrow table cells), leaving a background triangle
+   poking out past the visible trim. */
 .essence20 .e20-border-accent:not(.profile-img):not(hr) {
   position: relative;
   border-color: transparent;
   border-radius: 0;
+  clip-path: polygon(
+    min(22px, 50%) 0, 100% 0,
+    100% calc(100% - min(22px, 50%)), calc(100% - min(22px, 50%)) 100%,
+    0 100%, 0 min(22px, 50%)
+  );
 }
 
+/* default-border.svg's/default-border-thick.svg's chamfer is 15 units deep in their 120-unit
+   viewBox, not 16 - slicing at 16 (matching the SVG's own historical "16" grid unit elsewhere)
+   left a real gap: scaled up by the width/slice ratio (22px / 16 = 1.375x), the mask's own
+   diagonal line only reached ~20.6px from the corner, a good 1.4px short of the clip-path's
+   22px cut. That gap - between where the accent color stopped and where the visible shape kept
+   going - is exactly what showed up as an unpainted top-left/bottom-right corner. Slicing at 15
+   instead makes that same scaling land the mask's diagonal exactly on the clip-path's 22px cut
+   (22 / 15 * 15 = 22), closing the gap. */
 .essence20 .e20-border-accent:not(.profile-img):not(hr)::before {
   content: "";
   position: absolute;
@@ -76,12 +194,12 @@
   pointer-events: none;
   background-color: var(--e20-system-color, var(--theme-accent));
   -webkit-mask-box-image-source: var(--theme-border-image);
-  -webkit-mask-box-image-slice: 16;
-  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-slice: 15;
+  -webkit-mask-box-image-width: 22px;
   -webkit-mask-box-image-repeat: stretch;
   mask-border-source: var(--theme-border-image);
-  mask-border-slice: 16;
-  mask-border-width: 16px;
+  mask-border-slice: 15;
+  mask-border-width: 22px;
   mask-border-repeat: stretch;
 }
 
@@ -95,6 +213,3 @@
   border-color: var(--e20-system-color, var(--theme-border-color));
 }
 
-.essence20 .skill-header.e20-skill-header {
-  background-color: var(--e20-system-color-50, var(--theme-panel-bg));
-}

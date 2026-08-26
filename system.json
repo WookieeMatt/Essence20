@@ -203,11 +203,29 @@
       "flags": {}
     },
     {
+      "name": "general_hawk_s_personel_files",
+      "label": "General Hawk's Personnel Files",
+      "system": "essence20",
+      "path": "packs/ghpfitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "gi_joe_crb",
       "label": "GI Joe Core Rulebook",
       "system": "essence20",
       "path": "packs/gijcrbitems",
       "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "gi_joe_crb_threats",
+      "label": "GI Joe Core Rulebook - Threats & Vehicles",
+      "system": "essence20",
+      "path": "packs/gijcrbactors",
+      "type": "Actor",
       "private": false,
       "flags": {}
     },
@@ -311,6 +329,15 @@
       "flags": {}
     },
     {
+      "name": "tf_crb_threats",
+      "label": "Transformers Core Rulebook - Threats & Vehicles",
+      "system": "essence20",
+      "path": "packs/tfcrbactors",
+      "type": "Actor",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "transformers_one_sourcebook",
       "label": "Transformers One Sourcebook",
       "system": "essence20",
@@ -326,8 +353,10 @@
       "sorting": "m",
       "packs": [
         "gi_joe_crb",
+        "gi_joe_crb_threats",
         "cobra_codex",
         "ferocious_fighters",
+        "general_hawk_s_personel_files",
         "intercontinental_adventures",
         "quartermasters_guide_to_gear",
         "sgt_slaughter_sourcebook"
@@ -360,6 +389,7 @@
       "sorting": "m",
       "packs": [
         "tf_crb",
+        "tf_crb_threats",
         "decepticon_directive",
         "enigma_of_combination",
         "technorganic_secrets",

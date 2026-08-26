@@ -1,21 +1,13 @@
 <div class="flexrow stats-row">
-  <div class="stats-container e20-border-accent flex-grow-025">
-    {{!-- Initiative --}}
-    {{> "systems/essence20/templates/actor/parts/misc/initiative.hbs"}}
-  </div>
-
-  {{!-- Movement --}}
-  {{> "systems/essence20/templates/actor/parts/misc/movement.hbs"}}
-
   {{!-- Strength/Speed --}}
   <div class="stats-container e20-border-accent min-width-fit align-center">
     <div class="flexrow flex-group-center">
       <span class="essence-label">{{config.essences.strength}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.strength.value" value="{{system.essences.strength.value}}" min="0" step="1" />
+      <input class="two-digit-input{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.essences.strength.value" value="{{system.essences.strength.value}}" min="0" step="1" />
     </div>
     <div class="flexrow flex-group-center">
       <span class="essence-label">{{config.essences.speed}}</span>
-      <input class="two-digit-input" type="number" name="system.essences.speed.value" value="{{system.essences.speed.value}}" min="0" step="1" />
+      <input class="two-digit-input{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.essences.speed.value" value="{{system.essences.speed.value}}" min="0" step="1" />
     </div>
   </div>
 </div>
@@ -32,7 +24,7 @@
     {{!-- Features --}}
     {{> "systems/essence20/templates/actor/parts/items/feature/container.hbs"}}
     {{!-- Megaform Traits --}}
-    {{#if (eq @root.actor.type 'zord')}}
+    {{#if (eq @root.document.type 'zord')}}
     {{> "systems/essence20/templates/actor/parts/items/megaformTrait/container.hbs"}}
     {{/if}}
   </div>

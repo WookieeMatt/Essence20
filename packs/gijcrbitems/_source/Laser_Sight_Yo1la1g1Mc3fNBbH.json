@@ -11,12 +11,13 @@
       "book": "GI Joe Core Rulebook",
       "page": 148
     },
+    "aimShiftBonus": 1,
     "armorBonus": {
       "defense": "toughness",
       "value": 0
     },
     "availability": "standard",
-    "benefit": "",
+    "benefit": "Aiming with this weapon provides an additional 1 shift.",
     "traits": [],
     "type": "weapon",
     "prerequisite": "Ballistic"

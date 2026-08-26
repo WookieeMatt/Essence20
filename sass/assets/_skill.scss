@@ -8,6 +8,10 @@
   min-height: 24px;
 }
 
+.essence20 .skill-header.conditioning-row {
+  margin-bottom: v.$gap-md;
+}
+
 .essence20 .skill-header .skill-name {
   display: flex;
   align-items: center;
@@ -24,9 +28,21 @@
 .essence20 .skill-header .skill-shift-select {
   flex: 0 0 auto;
   width: 58px;
-  font-size: 0.85em;
+  font-size: 0.95em;
   padding: 1px 3px;
   text-overflow: ellipsis;
+}
+
+.essence20 .skill-header .conditioning-input {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.95em;
+  padding: 1px 3px;
+  text-align: center;
+  color: var(--theme-text-color);
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
 }
 
 .essence20 .skill-header .add-specialization {
@@ -35,9 +51,38 @@
   font-size: 0.75em;
 }
 
+.essence20 .skill-header .spellcasting-downshift-chip {
+  flex: 0 0 auto;
+  font-size: 0.85em;
+  margin-right: 3px;
+}
+
+.essence20 .skill-header .spellcasting-downshift-action {
+  flex-grow: 0;
+  margin-right: 6px;
+  font-size: 0.75em;
+  color: var(--theme-text-color);
+}
+
 .essence20 .skill-body {
   display: flex;
   flex-direction: column;
+  margin-bottom: v.$gap-md;
+}
+
+/* essence-skills.hbs always renders a .skill-body sibling after every skill-header, even when
+   the skill has no specializations (a bare, empty <ol class="items-list"> with nothing else) -
+   that empty div still took its own slot in .essence20-sidebar-skill-list's flex column, so its
+   own margin-bottom above PLUS the list's gap on both sides of it stacked into a much bigger gap
+   than any other pair of adjacent skill rows (most visible right before the sidebar's Wealth Die
+   row, which isn't part of this loop and has no such empty body of its own). Dropping it out of
+   the flex layout entirely when it has neither a specialized-row (companion/npc/vehicle/zord)
+   nor any actual specializations restores a normal gap.
+   Scoped to .essence20-sidebar-skill-list specifically - essence-skills.hbs is also used by the
+   main Skills tab (pc-skills.hbs/accordion-skills.hbs), where the empty body's spacing is wanted
+   as-is; a bare .essence20 .skill-body rule would collapse it there too. */
+.essence20-sidebar-skill-list .skill-body:not(:has(.skill-specialized-row, .specializations-list)) {
+  display: none;
 }
 
 .essence20 .skill-body .skill-specialized-row {
@@ -92,10 +137,7 @@
   color: var(--theme-text-color);
   transform: rotate(0deg);
   scrollbar-width: thin;
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.12);
   border-radius: 8px;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
   width: 100%;
   justify-content: left;
   flex-grow: 0;
@@ -112,5 +154,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   padding: 0;
-  align-items: start;
+  align-items: stretch;
+  height: calc(100% - 10px);
 }
+

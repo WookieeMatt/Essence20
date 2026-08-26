@@ -9,6 +9,9 @@
       {{#if item.system.armorBonus.value}}
       <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.system.armorBonus.defense}}: {{item.system.armorBonus.value}}</span>
       {{/if}}
+      {{#if item.system.aimShiftBonus}}
+      <span class="chip" name="chip.upgrade.aimShiftBonus">{{localize 'E20.UpgradeAimShiftBonus'}}: {{item.system.aimShiftBonus}}</span>
+      {{/if}}
       {{#each item.system.traits as |trait|}}
       <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.upgradeTraits trait}}</span>
       {{/each}}
@@ -24,6 +27,9 @@
         {{#if item.system.armorBonus.value}}
         <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.system.armorBonus.defense}}: {{item.system.armorBonus.value}}</span>
         {{/if}}
+        {{#if item.system.aimShiftBonus}}
+        <span class="chip" name="chip.upgrade.aimShiftBonus">{{localize 'E20.UpgradeAimShiftBonus'}}: {{item.system.aimShiftBonus}}</span>
+        {{/if}}
         {{#each item.system.traits as |trait|}}
         <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.upgradeTraits trait}}</span>
         {{/each}}
@@ -37,6 +43,9 @@
         <span class="chip" name="chip.upgrade.availability">{{localize 'E20.UpgradeAvailability'}}: {{lookup @root.config.availabilities item.system.availability}}</span>
         {{#if item.system.armorBonus.value}}
         <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.system.armorBonus.defense}}: {{item.system.armorBonus.value}}</span>
+        {{/if}}
+        {{#if item.system.aimShiftBonus}}
+        <span class="chip" name="chip.upgrade.aimShiftBonus">{{localize 'E20.UpgradeAimShiftBonus'}}: {{item.system.aimShiftBonus}}</span>
         {{/if}}
         {{#each item.system.traits as |trait|}}
         <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.upgradeTraits trait}}</span>
@@ -55,6 +64,9 @@
       {{#if item.armorBonus.value}}
       <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.armorBonus.defense}}: {{item.armorBonus.value}}</span>
       {{/if}}
+      {{#if item.aimShiftBonus}}
+      <span class="chip" name="chip.upgrade.aimShiftBonus">{{localize 'E20.UpgradeAimShiftBonus'}}: {{item.aimShiftBonus}}</span>
+      {{/if}}
       {{#each item.traits as |trait|}}
       <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.upgradeTraits trait}}</span>
       {{/each}}
@@ -70,6 +82,9 @@
         {{#if item.armorBonus.value}}
         <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.armorBonus.defense}}: {{item.armorBonus.value}}</span>
         {{/if}}
+        {{#if item.aimShiftBonus}}
+        <span class="chip" name="chip.upgrade.aimShiftBonus">{{localize 'E20.UpgradeAimShiftBonus'}}: {{item.aimShiftBonus}}</span>
+        {{/if}}
         {{#each item.traits as |trait|}}
         <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.upgradeTraits trait}}</span>
         {{/each}}
@@ -83,6 +98,9 @@
         <span class="chip" name="chip.upgrade.availability">{{localize 'E20.UpgradeAvailability'}}: {{lookup @root.config.availabilities item.availability}}</span>
         {{#if item.armorBonus.value}}
         <span class="chip" name="chip.upgrade.armorBonus">{{lookup @root.config.defenses item.armorBonus.defense}}: {{item.armorBonus.value}}</span>
+        {{/if}}
+        {{#if item.aimShiftBonus}}
+        <span class="chip" name="chip.upgrade.aimShiftBonus">{{localize 'E20.UpgradeAimShiftBonus'}}: {{item.aimShiftBonus}}</span>
         {{/if}}
         {{#each item.traits as |trait|}}
         <span class="chip" name="chip.upgrade.trait.{{trait}}">{{lookup @root.config.upgradeTraits trait}}</span>

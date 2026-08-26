@@ -566,6 +566,57 @@ E20.availabilities = {
 };
 preLocalize("availabilities");
 
+// Options for vision grants (Night Vision Goggles, Thermal Goggles, etc.), mapped directly onto
+// Foundry's own built-in CONFIG.Canvas.visionModes keys so no custom VisionMode/shader is needed.
+E20.visionModes = {
+  darkvision: "E20.VisionModeDarkvision",
+  monochromatic: "E20.VisionModeMonochromatic",
+  lightAmplification: "E20.VisionModeLightAmplification",
+};
+preLocalize("visionModes");
+
+// Table 8-2: Upgrading Equipment. Combining an item's current Availability tier with a new
+// Upgrade's Availability tier gives the tier that must be Requisitioned to acquire the
+// upgraded item. Only covers the 5 tiers the table actually defines; anything outside those
+// (automatic, other, theoretical) is handled by getCombinedAvailability() below.
+E20.upgradeAvailabilityMatrix = {
+  standard: {
+    standard: 'standard',
+    limited: 'limited',
+    restricted: 'restricted',
+    prototype: 'prototype',
+    unique: 'theoretical',
+  },
+  limited: {
+    standard: 'limited',
+    limited: 'restricted',
+    restricted: 'prototype',
+    prototype: 'theoretical',
+    unique: 'theoretical',
+  },
+  restricted: {
+    standard: 'restricted',
+    limited: 'prototype',
+    restricted: 'theoretical',
+    prototype: 'theoretical',
+    unique: 'theoretical',
+  },
+  prototype: {
+    standard: 'prototype',
+    limited: 'theoretical',
+    restricted: 'theoretical',
+    prototype: 'theoretical',
+    unique: 'theoretical',
+  },
+  unique: {
+    standard: 'theoretical',
+    limited: 'theoretical',
+    restricted: 'theoretical',
+    prototype: 'theoretical',
+    unique: 'theoretical',
+  },
+};
+
 // Damage Types
 E20.damageTypes = {
   blindingBlast: "E20.DamageBlindingBlast",
@@ -728,6 +779,18 @@ E20.megaformSubtypes = {
   megaformZord: "E20.MegaformSubtypeZord",
 };
 preLocalize("megaformSubtypes");
+
+// Megaform Trait options a Zord with the Combiner Zord Feature can contribute when it
+// joins a Megaform.
+E20.megaformTraitTypes = {
+  coreAbility: "E20.MegaformTraitCoreAbility",
+  coreBody: "E20.MegaformTraitCoreBody",
+  coreDefenses: "E20.MegaformTraitCoreDefenses",
+  enhancedMeleeAttack: "E20.MegaformTraitEnhancedMeleeAttack",
+  enhancedRangedAttack: "E20.MegaformTraitEnhancedRangedAttack",
+  move: "E20.MegaformTraitMove",
+};
+preLocalize("megaformTraitTypes");
 
 // Types of movement used by Actors
 E20.movementTypes = {
@@ -899,79 +962,84 @@ preLocalize("pointsNameOptions");
 
 E20.statusEffects = [
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_asleep.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_acting_smaller.svg',
+    id: 'actingSmaller',
+    name: 'E20.StatusActingSmaller',
+  },
+  {
+    img: 'systems/essence20/assets/icons/status_effects/status_asleep.svg',
     id: 'asleep',
-    label: 'E20.StatusAsleep',
+    name: 'E20.StatusAsleep',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_blinded.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_blinded.svg',
     id: 'blinded',
-    label: 'E20.StatusBlinded',
+    name: 'E20.StatusBlinded',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_deafened.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_deafened.svg',
     id: 'deafened',
-    label: 'E20.StatusDeafened',
+    name: 'E20.StatusDeafened',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_defeated.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_defeated.svg',
     id: 'defeated',
-    label: 'E20.StatusDefeated',
+    name: 'E20.StatusDefeated',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_frightened.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_frightened.svg',
     id: 'frightened',
-    label: 'E20.StatusFrightened',
+    name: 'E20.StatusFrightened',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_grappled.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_grappled.svg',
     id: 'grappled',
-    label: 'E20.StatusGrappled',
+    name: 'E20.StatusGrappled',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
     id: 'immobilized',
-    label: 'E20.StatusImmobilized',
+    name: 'E20.StatusImmobilized',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
-    id: 'Impaired',
-    label: 'E20.StatusImpaired',
+    img: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
+    id: 'impaired',
+    name: 'E20.StatusImpaired',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_invisible.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_invisible.svg',
     id: 'invisible',
-    label: 'E20.StatusInvisible',
+    name: 'E20.StatusInvisible',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_mesmerized.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_mesmerized.svg',
     id: 'mesmerized',
-    label: 'E20.StatusMesmerized',
+    name: 'E20.StatusMesmerized',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_mode_lock.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_mode_lock.svg',
     id: 'modeLock',
-    label: 'E20.StatusModeLock',
+    name: 'E20.StatusModeLock',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_prone.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_prone.svg',
     id: 'prone',
-    label: 'E20.StatusProne',
+    name: 'E20.StatusProne',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_restrained.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_restrained.svg',
     id: 'restrained',
-    label: 'E20.StatusRestrained',
+    name: 'E20.StatusRestrained',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_stunned.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_stunned.svg',
     id: 'stunned',
-    label: 'E20.StatusStunned',
+    name: 'E20.StatusStunned',
   },
   {
-    icon: 'systems/essence20/assets/icons/status_effects/status_unconscious.svg',
+    img: 'systems/essence20/assets/icons/status_effects/status_unconscious.svg',
     id: 'unconscious',
-    label: 'E20.StatusUnconscious',
+    name: 'E20.StatusUnconscious',
   },
 ];
 

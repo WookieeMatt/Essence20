@@ -1,0 +1,18 @@
+<div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-defenses">
+  <a class="sliced-border__label sliced-border__label--clickable" data-action="editDefenses" data-tooltip="{{localize 'E20.StatEditorDefensesTooltip'}}"><i class="fas fa-shield-halved"></i> {{localize 'E20.DefenseTitle'}} <i class="fas fa-gear sliced-border__label-edit-icon"></i></a>
+  {{#if (eq @root.document.type 'playerCharacter')}}
+    {{#each system.defenses as |defense|}}
+      <div>
+        <label>{{lookup @root.config.defenses defense.name}}</label>
+        <input class="two-digit-input no-lock" data-tooltip="{{defense.string}}" type="number" name="system.defenses.{{defense.name}}.total" value="{{defense.total}}" min="0" step="1" />
+      </div>
+    {{/each}}
+  {{else}}
+    {{#each system.defenses as |fields defense|}}
+      <div>
+        <label>{{lookup @root.config.defenses defense}}</label>
+        <input class="two-digit-input no-lock{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.defenses.{{defense}}.value" value="{{fields.value}}" min="0" step="1" />
+      </div>
+    {{/each}}
+  {{/if}}
+</div>

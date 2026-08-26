@@ -20,3 +20,105 @@
   width: 100%;
   height: 100%;
 }
+
+.essence20 .biography-row {
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+/* Extra clearance above the Pronoun/Gender/Age/etc. row specifically, on top of whatever gap the
+   Origin/Influences/Bonds/Hang Ups item-containers above it already carry (.tab's own gap: 10px,
+   actors/_tabs.scss; each container's own margin-bottom, actors/_leveled-item-lists.scss) - that
+   stacked spacing still read as too tight coming out of Hang Ups, the last of those containers.
+   Targeted via the adjacent-sibling combinator, not :first-of-type - each item-container above
+   (Origin/Influences/Bonds/Hang Ups) is ALSO a <div>, same as .biography-row itself, so
+   :first-of-type (which matches by tag name, not class) never actually matched this row: it's
+   the 5th div sibling, not the 1st. The combinator instead matches whichever .biography-row
+   directly follows a .collapsible-item-container - always the Hang Ups boundary, never the
+   second biography-row (Eye/Hair/Skin), which follows another .biography-row instead. */
+.essence20 .collapsible-item-container + .biography-row {
+  margin-top: v.$gap-lg;
+}
+
+.essence20 .biography-row .sliced-border.--col {
+  flex: 1 1 0;
+  min-width: 6.5em;
+}
+
+/* Pronoun/Gender/Age/Height/Weight/Eye Color/Hair Color/Skin Color - same treatment as the
+   sheet header's field labels (assets/_headers.scss). */
+.essence20 .biography-row .sliced-border__label {
+  text-transform: uppercase;
+}
+
+/* Same "invisible input" treatment as the sheet header (assets/_headers.scss) - a plain
+   border:none/background:transparent (no !important) still left native chrome visible, because
+   Foundry core's own input rule sets background/border/outline from a CSS layer declared after
+   essence20's, which beats a normal-weight declaration here regardless of specificity. */
+.essence20 .biography-row .sliced-border.--col input {
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--theme-text-color);
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  appearance: none !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.essence20 .biography-row .sliced-border.--col input:focus,
+.essence20 .biography-row .sliced-border.--col input:focus-visible {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Age (type="number") - the native spinner buttons aren't covered by appearance:none on the
+   input itself in every browser, since they're a separate pseudo-element the property doesn't
+   always reach. */
+.essence20 .biography-row .sliced-border.--col input[type="number"]::-webkit-inner-spin-button,
+.essence20 .biography-row .sliced-border.--col input[type="number"]::-webkit-outer-spin-button {
+  appearance: none !important;
+  margin: 0;
+}
+
+.essence20 .biography-editor-field {
+  margin-bottom: 10px;
+}
+
+.essence20 .biography-editor-field > label {
+  display: block;
+  /* Matches the sidebar panel titles' treatment (.sliced-border__label,
+     components/_sliced_border.scss) - these aren't sliced-border labels themselves (a plain
+     block label reads better above a full-width text editor than a floating badge would), but
+     should still look like the same family of section heading. */
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  /* Was var(--theme-accent) - reads as orange in light theme / cyan in dark theme, which read
+     as an unwanted stray accent color on these field labels rather than plain text. */
+  color: var(--theme-text-color);
+  margin-bottom: 4px;
+}
+
+.essence20 .biography-editor-field .editor {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: v.$border-radius;
+  min-height: 120px;
+  padding: 4px;
+}
+
+/* Foundry's own editor-edit pencil icon (and anything else inside the editor toolbar) defaults
+   to a near-black but not-quite-black tone in light theme - forcing true black keeps it
+   consistently legible rather than relying on that default. */
+.essence20.theme-light .biography-editor-field i {
+  color: #000000;
+}

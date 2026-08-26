@@ -55,7 +55,7 @@
         "img": "systems/essence20/assets/icons/items/perk.svg",
         "name": "Opportunist",
         "type": "perk",
-        "subtype": "general",
+        "subtype": "focus",
         "level": 17
       },
       "bf98": {

@@ -98,6 +98,14 @@
         "subtype": "role",
         "level": 5
       },
+      "5cf3": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.ep0OFsU1QIuRpHeR",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Shield Upgrade",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
       "600e": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.zbrr3W30rFTDTayX",
         "img": "systems/essence20/assets/icons/items/perk.svg",

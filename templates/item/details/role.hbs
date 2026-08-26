@@ -11,11 +11,23 @@
 
     {{> "systems/essence20/templates/item/parts/id-drop.hbs" className="faction" label='E20.RoleDefaultFaction' items=system.items type='faction'}}
 
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.IsAdditiveRole'}}
+    {{#*inline "item-field-inputs"}}
+    <input type="checkbox" name="system.isAdditive" {{checked system.isAdditive}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
     {{#if (ne system.version 'myLittlePony')}}
       {{#if (eq system.version 'powerRangers')}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.AdvancedRole'}}
         {{#*inline "item-field-inputs"}}
         <input type="checkbox" name="system.isAdvanced" {{checked system.isAdvanced}} />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.HasSpectrumShifted'}}
+        {{#*inline "item-field-inputs"}}
+        <input type="checkbox" name="system.hasSpectrumShifted" {{checked system.hasSpectrumShifted}} />
         {{/inline}}
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       {{/if}}

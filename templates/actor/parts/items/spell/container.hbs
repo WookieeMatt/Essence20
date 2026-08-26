@@ -2,7 +2,7 @@
   {{#*inline "roll-button" item}}
     <div class="flexrow nowrap gap-5">
       <a
-        class="rollable" data-roll-type="spell" data-shiftDown={{item.system.cost}}
+        class="rollable" data-action="rollable" data-roll-type="spell" data-shiftDown={{item.system.cost}}
         data-is-specialized="{{item.system.isSpecialized}}" data-tooltip="{{localize "E20.SpellRollTitle"}}"
       >
         <i class="fas fa-dice-d20" data-roll-type="spell"></i>
@@ -16,6 +16,12 @@
   {{/inline}}
 
   {{#*inline "item-label" item}}
-    {{item.name}}
+    <div class="flexrow align-center gap-5 leveled-item-label">
+      {{#if item.system.grantedLevel}}
+        <span class="leveled-item-badge">{{item.system.grantedLevel}}</span>
+      {{/if}}
+      <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
+      <span class="leveled-item-name">{{item.name}}</span>
+    </div>
   {{/inline}}
 {{/"systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs"}}

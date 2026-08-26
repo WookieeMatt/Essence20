@@ -1,6 +1,5 @@
 @use "../variables" as v;
 
-/* Style the button that is used to open and close the collapsible content */
 .collapsible {
   background-color: #eee;
   color: #444;
@@ -52,6 +51,16 @@
   margin-right: 8px;
 }
 
+/* Origin/Influences/Bonds/Hang Ups (background.hbs, the only collapsible-item-containers on the
+   Bio tab) - their icons already inherit color: var(--theme-text-color) from
+   .collapsible-item-container above, which resolves near-black in light mode/light gray in dark
+   mode on its own, but pinning it explicitly here for light mode guarantees true black regardless
+   of --theme-text-color's exact shade, without touching dark mode (left to its existing inherited
+   behavior) or any other tab's own collapsible-item-container icons (Gear, Perks, ...). */
+.essence20.theme-light section.tab.background .collapsible-item-container i {
+  color: #000000;
+}
+
 /* Chevron icon. */
 .essence20 .accordion-icon {
   transition: all ease-in-out 0.25s;
@@ -63,4 +72,100 @@
 
 .essence20 .item-label-checkbox {
   margin: 0;
+  /* Foundry core's own checkbox styling sets flex: 1 1 0 (meant for a checkbox that stretches to
+     fill a dedicated form-group row) from a stylesheet that doesn't show up in
+     document.styleSheets (likely shadow-DOM/adopted-stylesheet scoped to core's custom form
+     element) - normal specificity here can't be confirmed to win against it, and testing showed
+     a plain (non-!important) override left it unaffected. Inside this cramped, multi-item
+     sidebar row that flex-shrink: 1 with no width floor squeezed the checkbox down to ~4-7px,
+     rendering it effectively invisible - !important guarantees this actually overrides it. */
+  flex: 0 0 auto !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.essence20 .role-points-item {
+  /* Foundry core's own .flexrow utility class defaults to flex-wrap: wrap (same root cause as
+     the sheet header's row-wrapping bug, assets/_headers.scss) - flex-wrap decides which items
+     share a line using each item's un-shrunk width, so once the value/max inputs below stopped
+     shrinking (min-width: 20px) this row's items no longer all fit at their natural widths and
+     the whole row wrapped to two lines instead of just letting .role-points-name's own
+     overflow/ellipsis (below) absorb the space pressure like it's meant to. */
+  flex-wrap: nowrap;
+}
+
+.essence20 .role-points-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* This row packs 7 inline items (2 icon links, a checkbox, the name, a bonus indicator, and 2
+   number inputs) into the same narrow sidebar column as the 4-item Health/Stun rows - by default
+   flex-shrink distributed unevenly and squeezed the resource value/max inputs down to ~10px
+   (unreadable), while .role-points-name's own overflow:hidden/text-overflow:ellipsis above
+   already lets IT absorb space pressure gracefully. Stopping the inputs from shrinking at all
+   pushes that pressure onto the label instead, where it belongs. */
+.essence20 .role-points-item .two-digit-input {
+  flex-shrink: 0;
+  /* .two-digit-input's own flex-basis: 0% (from the shared .flex-grow-0 utility class,
+     _flex-containers.scss) has no floor of its own - flex-shrink: 0 above stops it shrinking
+     BELOW that basis, but 0% was already unreadably small before shrink ever applied. A
+     min-width gives it an actual legible floor to grow from instead. */
+  min-width: 20px;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list .item {
+  font-size: 0.8em;
+}
+
+.essence20 section.tab.gear > .collapsible-item-container > .items-list > li.item {
+  font-size: 0.85em;
+}
+
+.essence20 section.tab.gear .collapsible-item-subcontainer .items-list .item {
+  font-size: calc(0.8em / 0.85);
+}
+
+.essence20 .item-image {
+  flex: none;
+}
+
+.essence20 .weapon-effect-row {
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.essence20 .item-image .flexrow {
+  flex-wrap: nowrap;
+}
+
+.essence20 .weapon-effect-name {
+  flex: none;
+  max-width: 130px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.essence20 .weapon-effect-skill {
+  flex: none;
+  width: 90px;
+  padding: 1px 3px;
+}
+
+.essence20 .weapon-effect-chips {
+  flex: none;
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin-left: auto;
+}
+
+/* .chip (from _chip.scss, the same pill styling used for the weapon's own summary chips). */
+.essence20 .weapon-effect-row .weapon-effect-chip {
+  flex: none;
 }

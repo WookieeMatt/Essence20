@@ -87,9 +87,17 @@
 }
 
 .essence20 .items-list hr {
-  margin: 4;
+  margin: v.$gap-sm 0;
   width: 100%;
   border-color: var(--theme-border-color);
+}
+
+.essence20 .collapsible-item-subcontainer .items-list {
+  gap: v.$gap-md;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list hr {
+  margin: v.$gap-sm 0;
 }
 
 .essence20 .items-list hr:last-child {
@@ -177,6 +185,51 @@
 
 .essence20 .effects .item .effect-controls {
   border: none;
+}
+
+.essence20 .tab.effects.active {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.essence20 .tab.effects .effect-list-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.essence20 .tab.effects .items-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-top: v.$gap-md;
+}
+
+.essence20 .tab.effects .items-header {
+  height: auto;
+  min-height: 28px;
+  color: var(--theme-text-color);
+}
+
+.essence20 .tab.effects .effect-controls {
+  flex: 0 0 130px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.essence20 .tab.effects .items-list .items-header > * {
+  font-size: 0.85em;
+}
+
+.essence20 .tab.effects .item.effect > * {
+  font-size: 0.85em;
+}
+
+.essence20 .tab.effects .effect-name h4 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0;
 }
 
 .essence20 .item-sheet {

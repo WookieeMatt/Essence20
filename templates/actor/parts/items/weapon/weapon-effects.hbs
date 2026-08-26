@@ -1,31 +1,32 @@
-<div class="flexrow align-center gap-2">
-  <div class="flex-grow-15">
+<div class="flexrow gap-2 weapon-effect-row">
+  <div class="weapon-effect-name">
     {{item.name}}
   </div>
-  <select class="inline-edit" data-field="system.classification.skill" data-parent-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
+  <select class="inline-edit weapon-effect-skill" data-field="system.classification.skill" data-parent-field="system.items.{{@key}}.classification.skill" name="item.classification.skill">
     {{selectOptions @root.weaponEffectSkills selected=item.classification.skill valueAttr="key" labelAttr="label" localize=true}}
   </select>
 
-  <div class="flexrow nowrap gap-2">
-    <div class="align-center" data-tooltip="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
+  <div class="flexrow gap-2 weapon-effect-chips">
+    <div class="align-center chip weapon-effect-chip" data-tooltip="{{item.numTargets}} {{localize "E20.WeaponTargets"}}">
       {{item.numTargets}} <i class="fas fa-bullseye"></i>
     </div>
     {{#if item.range.reachMultiplier}}
-      <div class="align-center" data-tooltip="{{localize "E20.WeaponRangeReach"}} {{item.totalReach}}ft">
+      <div class="align-center chip weapon-effect-chip" data-tooltip="{{localize "E20.WeaponRangeReach"}} {{item.totalReach}}ft">
         {{item.totalReach}}ft
       </div>
     {{else}}
-      <div class="align-center" data-tooltip="{{localize "E20.WeaponRange"}} {{#if item.range.value}}{{item.range.value}}{{else}}0{{/if}}ft{{#if item.range.long}}/{{item.range.long}}ft{{/if}}{{#if item.range.min}}/minimum {{item.range.min}}ft{{/if}}">
+      <div class="align-center chip weapon-effect-chip" data-tooltip="{{localize "E20.WeaponRange"}} {{#if item.range.value}}{{item.range.value}}{{else}}0{{/if}}ft{{#if item.range.long}}/{{item.range.long}}ft{{/if}}{{#if item.range.min}}/minimum {{item.range.min}}ft{{/if}}">
         {{#if item.range.value}}{{item.range.value}}{{else}}0{{/if}}ft
       </div>
     {{/if}}
-    <div class="align-center" data-tooltip="{{item.shiftDown}} {{localize "E20.ShiftDown"}}">
+    <div class="align-center chip weapon-effect-chip" data-tooltip="{{item.shiftDown}} {{localize "E20.ShiftDown"}}">
       {{item.shiftDown}} <i class="fas fa-arrow-down"></i>
     </div>
-    <div class="align-center" data-tooltip="{{item.numHands}} {{localize "E20.WeaponHands"}}">
+    <div class="align-center chip weapon-effect-chip" data-tooltip="{{item.numHands}} {{localize "E20.WeaponHands"}}">
       {{item.numHands}} <i class="fas fa-hand"></i>
     </div>
-    <div class="align-center" data-tooltip="{{item.damageValue}} {{localize (lookup @root.config.damageTypes item.damageType)}} {{localize "E20.Damage"}}">
+    {{#if item.damageValue}}
+    <div class="align-center chip weapon-effect-chip" data-tooltip="{{item.damageValue}} {{localize (lookup @root.config.damageTypes item.damageType)}} {{localize "E20.Damage"}}">
       {{item.damageValue}}
       {{#if (eq item.damageType 'sharp')}}
         <i class="fas fa-sword"></i>
@@ -41,5 +42,6 @@
         <i class="fas fa-person-harassing"></i>
       {{/if}}
     </div>
+    {{/if}}
   </div>
 </div>

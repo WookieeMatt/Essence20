@@ -46,6 +46,17 @@ export const refreshOpenThemeWrappers = () => {
   }
 };
 
+/**
+ * Re-theme every chat message currently rendered in the log, the same way
+ * refreshOpenThemeWrappers() does for sheets/apps - chat messages aren't .theme-wrapper
+ * elements (see _chat.scss), so they're excluded from that query and need their own pass.
+ */
+export const refreshChatMessageThemes = () => {
+  for (const element of document.querySelectorAll(".chat-message")) {
+    applyThemeClass(element);
+  }
+};
+
 export const registerSettings = function () {
   const systemName = "essence20";
 

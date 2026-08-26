@@ -12,7 +12,14 @@ const PARENT_ROLLER_KEY = "parentActor";
  */
 export async function performRoll(event, actor, childRoller=None) {
   event.preventDefault();
-  const element = event.target;
+  // event.target is whatever was actually clicked - usually the <i> icon inside the rollable
+  // <a>, not the <a> itself. Most roll buttons work around this by duplicating data-roll-type
+  // (and friends) onto the icon too, but that's easy to miss (see rolePoints/container.hbs,
+  // which didn't - its icons silently did nothing since dataset.rollType was undefined on the
+  // <i>). Resolving the nearest [data-roll-type] ancestor makes this work regardless of which
+  // element inside the button was actually clicked, without relying on every template
+  // remembering to duplicate the attributes.
+  const element = event.target.closest('[data-roll-type]') || event.target;
   const dataset = element.dataset;
   const rollType = dataset.rollType;
 
@@ -89,11 +96,14 @@ export async function performRoll(event, actor, childRoller=None) {
 }
 
 /**
- * Handle clicking the rest button.
- * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ * Applies the shared Rest/Recharge restorative benefits (Health, Stun, Essence, Role Points,
+ * Personal Power, Energon) to the actor, finishing with the given completion notification.
+ * Shared by onRest() (all actors) and onRecharge() (Transformers CRB p.172 - the
+ * Cybertronian-flavored version of this same action, restoring half of Energon Points).
+ * @param {Actor} actor The Actor being rested/recharged
+ * @param {String} completeMessageKey The i18n key for the final "done" notification
  */
-export async function onRest(actorSheet) {
-  const actor = actorSheet.actor;
+async function _applyRestBenefits(actor, completeMessageKey) {
   const normalEnergon = actor.system.energon.normal;
   const maxEnergonRestore = Math.ceil(normalEnergon.max / 2);
   const energonRestore = Math.min(normalEnergon.max, normalEnergon.value + maxEnergonRestore);
@@ -149,14 +159,13 @@ export async function onRest(actorSheet) {
 
   // Resetting Role Points
   const rolePointsList = actor.items.documentsByType.rolePoints;
-  if (rolePointsList.length) {
-    const rolePoints = rolePointsList[0];
-    rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
+  for (const rolePoints of rolePointsList) {
+    await rolePoints.update({ 'system.resource.value': rolePoints.system.resource.max });
     ui.notifications.info(game.i18n.format('E20.RestRolePointsRestored', { name: rolePoints.name }));
   }
 
   ui.notifications.info(game.i18n.localize("E20.RestHealthStunReset"));
-  ui.notifications.info(game.i18n.localize("E20.RestComplete"));
+  ui.notifications.info(game.i18n.localize(completeMessageKey));
 
   await actor.update({
     "system.health.value": actor.system.health.max,
@@ -167,7 +176,64 @@ export async function onRest(actorSheet) {
     "system.energon.primal.value": 0,
     "system.energon.red.value": 0,
     "system.energon.synthEn.value": 0,
-  }).then(actorSheet.render(false));
+  });
+}
+
+/**
+ * Handle clicking the rest button.
+ * @param {ActorSheet} actorSheet The ActorSheet whose rest button was clicked
+ */
+export async function onRest(actorSheet) {
+  await _applyRestBenefits(actorSheet.actor, "E20.RestComplete");
+  actorSheet.render(false);
+}
+
+/**
+ * Handle clicking the recharge button (Transformers CRB p.172) - shown instead of the rest
+ * button for actors that can transform.
+ * @param {ActorSheet} actorSheet The ActorSheet whose recharge button was clicked
+ */
+export async function onRecharge(actorSheet) {
+  await _applyRestBenefits(actorSheet.actor, "E20.RechargeComplete");
+  actorSheet.render(false);
+}
+
+/**
+ * Recover 1 point of a caster's lingering Spellcasting downshift (Casting Cost, MLP CRB p.132).
+ * The rulebook regains this automatically each round at the start of the caster's turn, but
+ * this codebase has no per-round/combat-turn automation for any mechanic yet (Rest/Recharge
+ * above are likewise both manually-triggered "restore" actions), so this is exposed as a
+ * manual action instead.
+ * @param {ActorSheet} actorSheet The ActorSheet whose recover button was clicked
+ */
+export async function onRecoverSpellcastingDownshift(actorSheet) {
+  const actor = actorSheet.actor;
+  const currentDownshift = actor.system.skills.spellcasting.shiftDown;
+  if (currentDownshift <= 0) {
+    return;
+  }
+
+  await actor.update({ 'system.skills.spellcasting.shiftDown': currentDownshift - 1 });
+  actorSheet.render(false);
+}
+
+/**
+ * Suffer 1 Health Damage to recover 1 additional point of Spellcasting downshift beyond the
+ * normal per-round recovery (Casting Cost, MLP CRB p.132).
+ * @param {ActorSheet} actorSheet The ActorSheet whose button was clicked
+ */
+export async function onSufferForSpellcastingDownshift(actorSheet) {
+  const actor = actorSheet.actor;
+  const currentDownshift = actor.system.skills.spellcasting.shiftDown;
+  if (currentDownshift <= 0) {
+    return;
+  }
+
+  await actor.update({
+    'system.skills.spellcasting.shiftDown': currentDownshift - 1,
+    'system.health.value': Math.max(0, actor.system.health.value - 1),
+  });
+  actorSheet.render(false);
 }
 
 /**

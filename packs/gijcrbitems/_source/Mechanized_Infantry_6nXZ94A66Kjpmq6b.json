@@ -34,7 +34,7 @@
         "name": "Roll Cage",
         "type": "perk",
         "subtype": "role",
-        "level": 5
+        "level": 7
       },
       "14c2": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.B0yM8ewEoYJb1GBg",
@@ -42,7 +42,7 @@
         "name": "Thunderous Advance",
         "type": "perk",
         "subtype": "role",
-        "level": 5
+        "level": 7
       },
       "db28": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.vanN7kRYUhgHew7q",
@@ -55,7 +55,7 @@
       "b6df": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.b2viBBrNk08Kc9ts",
         "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Heavy Ordanance",
+        "name": "Heavy Ordnance",
         "type": "perk",
         "subtype": "role",
         "level": 15

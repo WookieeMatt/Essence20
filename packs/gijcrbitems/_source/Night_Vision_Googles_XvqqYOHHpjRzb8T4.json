@@ -1,6 +1,6 @@
 {
   "folder": "8pILPlRg2uDTxFNq",
-  "name": "Night Vision Googles",
+  "name": "Night Vision Goggles",
   "type": "gear",
   "_id": "XvqqYOHHpjRzb8T4",
   "img": "systems/essence20/assets/icons/gear/night_vision_googles.svg",
@@ -13,7 +13,12 @@
     },
     "quantity": 1,
     "type": "",
-    "gearType": "exploration"
+    "gearType": "exploration",
+    "visionGrant": {
+      "enabled": true,
+      "mode": "darkvision",
+      "range": 60
+    }
   },
   "effects": [],
   "flags": {},

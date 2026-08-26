@@ -5,7 +5,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     primary: {
       tabs: [
         { id: "skills", group: 'primary', label: "E20.TabSkills" },
-        { id: "combat", group: 'primary', label: "E20.TabCombat" },
         { id: "gear", group: 'primary', label: "E20.TabGear" },
         { id: "spells", group: 'primary', label: "E20.TabSpells" },
         { id: "powers", group: 'primary', label: "E20.TabPowers" },
@@ -15,7 +14,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
         { id: "contacts", group: 'primary', label: "E20.TabContacts" },
         { id: "background", group: 'primary', label: "E20.TabBackground" },
         { id: "effects", group: 'primary', label: "E20.TabEffects" },
-        { id: "notes", group: 'primary', label: "E20.TabNotes" },
       ],
       initial: "skills",
     },
@@ -33,10 +31,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     },
     skills: {
       template: "systems/essence20/templates/actor/parts/main/character-skills.hbs",
-      scrollable: [''],
-    },
-    combat: {
-      template: "systems/essence20/templates/actor/parts/main/character-combat.hbs",
       scrollable: [''],
     },
     gear: {
@@ -73,10 +67,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     },
     effects: {
       template: "systems/essence20/templates/actor/tabs/effects.hbs",
-      scrollable: [''],
-    },
-    notes: {
-      template: "systems/essence20/templates/actor/tabs/notes.hbs",
       scrollable: [''],
     },
   };
@@ -126,13 +116,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
     ].filter(Boolean).join(' + ');
     context.system.skillRankAllocation['strength'].value += context.system.conditioning;
 
-    const initiativeIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(context.system.skills[context.system.initiative.skill].shift));
-    const initiativeUpshifts = Math.max(0, unrankedIndex - initiativeIndex);
-    context.system.skillRankAllocation['speed'].string = [
-      context.system.skillRankAllocation['speed'].string,
-      `${initiativeUpshifts} ${game.i18n.localize('E20.ActorInitiative')}`,
-    ].filter(Boolean).join(' + ');
-    context.system.skillRankAllocation['speed'].value += initiativeUpshifts;
   }
 
   _onRender(context, options) {
@@ -143,7 +126,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
   _applyConditionalTabs() {
     const visibility = {
       skills: true,
-      combat: true,
       gear: true,
       spells: this.actor.system.canSpellcast,
       powers: this.actor.system.canMorph,
@@ -153,7 +135,6 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
       contacts: true,
       background: true,
       effects: true,
-      notes: true,
     };
 
     for (const [tabId, visible] of Object.entries(visibility)) {

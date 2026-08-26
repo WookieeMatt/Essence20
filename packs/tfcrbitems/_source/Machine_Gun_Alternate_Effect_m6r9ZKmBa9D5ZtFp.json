@@ -1,0 +1,44 @@
+{
+  "folder": "bsdJ7Coa2z9hdtR0",
+  "name": "Machine Gun Alternate Effect",
+  "type": "weaponEffect",
+  "_id": "m6r9ZKmBa9D5ZtFp",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 2,
+    "shiftDown": 1,
+    "numHands": "2",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": 10,
+      "reachMultiplier": 0,
+      "long": 160,
+      "value": 40
+    }
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.5",
+    "coreVersion": "13.344",
+    "createdTime": 1787106693967,
+    "modifiedTime": 1787106693967,
+    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "sort": 2900000,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!m6r9ZKmBa9D5ZtFp"
+}

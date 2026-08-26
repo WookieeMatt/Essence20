@@ -1,0 +1,116 @@
+@use "../variables" as v;
+
+/* Leveled item-list restyle - compact rows (level number, icon, name) under a bold
+   accent-colored section header, closer to a feat-list layout, reusing the existing
+   collapsible-item-container/chip system rather than introducing new components.
+   :not(.collapsible-item-subcontainer) excludes nested weapon-effect/upgrade subcontainers,
+   which already have their own distinct, more compact subcontainer styling.
+
+   Character sheet: scoped by tab (Perks/Spells/Background/Powers/Gear/Alt Mode - the last of
+   which reuses the same weapon/container.hbs the Gear tab does, so it needs this same scoping
+   or its .leveled-item-icon renders at the <img>'s unconstrained natural size instead of a
+   compact 24px icon). NPC/Vehicle/Zord/Megaform all share one generic "main" tab
+   (section.tab.main, also used by Companion), so each of those 4 templates additionally
+   carries its own type class (npc/vehicle/zord/megaform) precisely for this selector -
+   Companion deliberately doesn't, since it wasn't part of this restyle and section.tab.main
+   alone would otherwise catch it too. */
+$leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform';
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) {
+  margin-bottom: v.$gap-md;
+}
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .flexrow {
+  font-weight: bold;
+  border-bottom: 1px solid var(--theme-border-color);
+  padding-bottom: v.$gap-sm;
+  margin-bottom: v.$gap-sm;
+}
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > li.item {
+  padding: 2px v.$gap-sm;
+  border-radius: calc(v.$border-radius / 3);
+}
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > li.item:nth-of-type(even) {
+  background: var(--theme-panel-bg);
+}
+
+.essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > hr {
+  display: none;
+}
+
+.essence20 :is(#{$leveled-tabs}) .leveled-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 :is(#{$leveled-tabs}) .leveled-item-badge {
+  flex: 0 0 1.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.essence20.theme-light section.tab.perks i {
+  color: #000000 !important;
+}
+
+/* The default perk item icon (perk.svg) is a hardcoded solid-white fill, meant for this
+   system's dark backgrounds - on a light one it's essentially invisible. color doesn't affect
+   an <img>'s rendering, so filter is used instead: brightness(0) maps every non-transparent
+   pixel to black while leaving transparency alone, turning the white glyph solid black.
+   Scoped to img[src$="perk.svg"] specifically (not .leveled-item-icon generally) so any custom
+   artwork a player uploads for their own perks isn't flattened to a black silhouette too. */
+.essence20.theme-light section.tab.perks img[src$="perk.svg"] {
+  filter: brightness(0);
+}
+
+/* Same fix as perk.svg above - Spells default to the shared powers.svg icon (also a hardcoded
+   solid-white fill), invisible on a light background. Scoped to the Spells tab specifically
+   (not img[src$="powers.svg"] generally) so the Powers tab's own use of the same icon is
+   untouched, since that wasn't reported as an issue. */
+.essence20.theme-light section.tab.spells img[src$="powers.svg"] {
+  filter: brightness(0);
+}
+
+/* Same fix as perk.svg/powers.svg above. Origin and Influence (Bio tab) each have their own
+   default icon asset (origin.svg, influence.svg, also hardcoded solid-white); Bond and Hang Up
+   don't - there's no bond.svg/hangUp.svg in assets/icons/items/, so an un-customized Bond/Hang Up
+   item just gets whatever generic icon Foundry core assigns, the same fallback countless
+   unrelated documents across the whole world use. There's no way to scope a fix to only the
+   default there without also flattening any real custom artwork a player uploads (the exact
+   thing scoping to a specific src, rather than .leveled-item-icon generally, is meant to avoid),
+   so Bond/Hang Up are left alone. */
+.essence20.theme-light section.tab.background img[src$="origin.svg"],
+.essence20.theme-light section.tab.background img[src$="influence.svg"] {
+  filter: brightness(0);
+}
+
+/* Same fix, Gear tab. Gear/Armor/Shield/Alteration (the item types with their own dedicated
+   default icon - armor.svg, shield.svg, gear.svg, alteration.svg, all hardcoded solid-white)
+   are covered; Weapon and Magic Bauble aren't, same reasoning as Bond/Hang Up above - neither
+   has a dedicated default asset in assets/icons/items/, so an un-customized item of either type
+   just gets whatever generic icon Foundry core happens to assign. */
+.essence20.theme-light section.tab.gear img[src$="armor.svg"],
+.essence20.theme-light section.tab.gear img[src$="shield.svg"],
+.essence20.theme-light section.tab.gear img[src$="gear.svg"],
+.essence20.theme-light section.tab.gear img[src$="alteration.svg"] {
+  filter: brightness(0);
+}
+
+.essence20 :is(#{$leveled-tabs}) .leveled-item-icon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border: none;
+  border-radius: 4px;
+}
+
+.essence20 :is(#{$leveled-tabs}) .leveled-item-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

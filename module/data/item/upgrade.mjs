@@ -17,6 +17,7 @@ export class UpgradeItemData extends foundry.abstract.TypeDataModel {
     return {
       ...item(),
       ...itemDescription(),
+      aimShiftBonus: makeInt(0),
       armorBonus: new fields.SchemaField({
         defense: makeStrWithChoices(Object.keys(E20.defenses), 'toughness'),
         value: makeInt(0),

@@ -1,0 +1,42 @@
+<div class="e20-check-card">
+  {{#if flavor}}
+  <div class="e20-check-flavor">{{{flavor}}}</div>
+  {{/if}}
+
+  {{{rollHTML}}}
+
+  {{#if results.length}}
+  <ul class="e20-check-results">
+    {{#each results}}
+    <li class="e20-check-result {{#if success}}e20-check-success{{else}}e20-check-failure{{/if}}">
+      <strong>{{name}}</strong>
+      {{#if showDifficulty}} <span class="e20-check-difficulty">({{localize 'E20.CheckDifficultyAbbr'}} {{difficulty}})</span>{{/if}}
+      &mdash;
+      {{#if success}}
+        {{localize 'E20.CheckSuccess'}}{{#if (gt multiplier 1)}} &times;{{multiplier}}{{/if}}
+      {{else}}
+        {{localize 'E20.CheckFailure'}}
+      {{/if}}
+      {{#if damageValue}}
+      <button type="button" data-action="apply-damage" data-key="{{targetUuid}}:base" data-target-uuid="{{targetUuid}}"
+        data-damage="{{damageValue}}" data-damage-type="{{damageType}}">
+        {{localize 'E20.CheckApplyDamage'}} {{damageValue}} {{damageTypeLabel}}
+      </button>
+      {{/if}}
+
+      {{#if criticalOptions.length}}
+      <div class="e20-check-critical-options">
+        <span class="e20-check-critical-label">{{localize 'E20.CheckCriticalHit'}}</span>
+        {{#each criticalOptions}}
+        <button type="button" data-action="apply-damage" data-key="{{../targetUuid}}:crit:{{key}}"
+          data-target-uuid="{{../targetUuid}}" data-damage="{{damageValue}}" data-damage-type="{{damageType}}">
+          {{label}} &mdash; {{damageValue}} {{damageTypeLabel}}
+        </button>
+        {{/each}}
+      </div>
+      {{/if}}
+    </li>
+    {{/each}}
+  </ul>
+  {{/if}}
+</div>
