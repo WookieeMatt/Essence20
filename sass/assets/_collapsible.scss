@@ -51,6 +51,16 @@
   margin-right: 8px;
 }
 
+/* Origin/Influences/Bonds/Hang Ups (background.hbs, the only collapsible-item-containers on the
+   Bio tab) - their icons already inherit color: var(--theme-text-color) from
+   .collapsible-item-container above, which resolves near-black in light mode/light gray in dark
+   mode on its own, but pinning it explicitly here for light mode guarantees true black regardless
+   of --theme-text-color's exact shade, without touching dark mode (left to its existing inherited
+   behavior) or any other tab's own collapsible-item-container icons (Gear, Perks, ...). */
+.essence20.theme-light section.tab.background .collapsible-item-container i {
+  color: #000000;
+}
+
 /* Chevron icon. */
 .essence20 .accordion-icon {
   transition: all ease-in-out 0.25s;
