@@ -221,15 +221,6 @@
       "flags": {}
     },
     {
-      "name": "gi_joe_crb_threats",
-      "label": "GI Joe Core Rulebook - Threats & Vehicles",
-      "system": "essence20",
-      "path": "packs/gijcrbactors",
-      "type": "Actor",
-      "private": false,
-      "flags": {}
-    },
-    {
       "name": "intercontinental_adventures",
       "label": "Intercontinental Adventures: Factions in Action Vol 2",
       "system": "essence20",
@@ -329,15 +320,6 @@
       "flags": {}
     },
     {
-      "name": "tf_crb_threats",
-      "label": "Transformers Core Rulebook - Threats & Vehicles",
-      "system": "essence20",
-      "path": "packs/tfcrbactors",
-      "type": "Actor",
-      "private": false,
-      "flags": {}
-    },
-    {
       "name": "transformers_one_sourcebook",
       "label": "Transformers One Sourcebook",
       "system": "essence20",
@@ -353,7 +335,6 @@
       "sorting": "m",
       "packs": [
         "gi_joe_crb",
-        "gi_joe_crb_threats",
         "cobra_codex",
         "ferocious_fighters",
         "general_hawk_s_personel_files",
@@ -389,7 +370,6 @@
       "sorting": "m",
       "packs": [
         "tf_crb",
-        "tf_crb_threats",
         "decepticon_directive",
         "enigma_of_combination",
         "technorganic_secrets",
