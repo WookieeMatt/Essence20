@@ -17,5 +17,18 @@ jobs:
           node-version: 17.9.x
           cache: npm
       - run: npm ci
-      - run: npm test
+      - name: Lint
+        run: npm run lint
+      - name: Unit tests
+        run: npm test -- --coverage
+      - name: Build
+        run: npm run build
+      - name: Compile compendium packs
+        run: npm run build:db
+      - name: Check system.json manifest sync
+        run: node scripts/check-manifest-sync.mjs
+      - name: Check pack content structure
+        run: node scripts/check-pack-content.mjs
+      - name: Check pack cross-references
+        run: node scripts/check-pack-cross-references.mjs
       - run: echo "🍏 This job's status is ${{ job.status }}."

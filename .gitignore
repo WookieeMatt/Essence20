@@ -6,6 +6,11 @@
 node_modules/
 npm-debug.log
 
+# Self-contained portable Node.js (see scripts/test.ps1 / scripts/test.sh) - a workaround for
+# the Foundry-bundled npm's broken internal minipass-sized/minipass dependency, which crashes
+# on `npm install`/`npm ci` with "Class extends value undefined is not a constructor or null".
+.dev-node/
+
 # Foundry
 *.lock
 jsconfig.json
@@ -13,3 +18,6 @@ foundry
 
 # SASS
 css/essence20.css.map
+
+# Jest coverage report (npm test -- --coverage)
+coverage/
