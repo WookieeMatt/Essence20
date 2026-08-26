@@ -73,6 +73,31 @@ $leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, s
   filter: brightness(0);
 }
 
+/* Same fix as perk.svg/powers.svg above. Origin and Influence (Bio tab) each have their own
+   default icon asset (origin.svg, influence.svg, also hardcoded solid-white); Bond and Hang Up
+   don't - there's no bond.svg/hangUp.svg in assets/icons/items/, so an un-customized Bond/Hang Up
+   item just gets whatever generic icon Foundry core assigns, the same fallback countless
+   unrelated documents across the whole world use. There's no way to scope a fix to only the
+   default there without also flattening any real custom artwork a player uploads (the exact
+   thing scoping to a specific src, rather than .leveled-item-icon generally, is meant to avoid),
+   so Bond/Hang Up are left alone. */
+.essence20.theme-light section.tab.background img[src$="origin.svg"],
+.essence20.theme-light section.tab.background img[src$="influence.svg"] {
+  filter: brightness(0);
+}
+
+/* Same fix, Gear tab. Gear/Armor/Shield/Alteration (the item types with their own dedicated
+   default icon - armor.svg, shield.svg, gear.svg, alteration.svg, all hardcoded solid-white)
+   are covered; Weapon and Magic Bauble aren't, same reasoning as Bond/Hang Up above - neither
+   has a dedicated default asset in assets/icons/items/, so an un-customized item of either type
+   just gets whatever generic icon Foundry core happens to assign. */
+.essence20.theme-light section.tab.gear img[src$="armor.svg"],
+.essence20.theme-light section.tab.gear img[src$="shield.svg"],
+.essence20.theme-light section.tab.gear img[src$="gear.svg"],
+.essence20.theme-light section.tab.gear img[src$="alteration.svg"] {
+  filter: brightness(0);
+}
+
 .essence20 :is(#{$leveled-tabs}) .leveled-item-icon {
   flex: 0 0 24px;
   width: 24px;

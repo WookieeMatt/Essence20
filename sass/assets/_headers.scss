@@ -140,6 +140,48 @@
   border: none;
 }
 
+/* Faction/Role/Focus/Origin's content (.header-item-name + delete button) and Level's (the
+   number input + up/down arrow buttons) each sit inside an extra wrapper div one level deeper
+   than .sliced-border itself (<li class="item no-list-style"> for Faction/Role/Focus/Origin,
+   faction.hbs/role.hbs/focus.hbs/origin-field.hbs; .flexrow.align-center.gap-2 for Level,
+   common.hbs) - unlike Size/Name/Color, whose actual content is a direct child of .sliced-border.
+   That wrapper was landing at whatever height its own content produced and sitting flush against
+   the top padding (confirmed via the browser's own DevTools box model overlay - Size's select
+   sits flush at the BOTTOM of .sliced-border instead, with the leftover space entirely above it).
+   Giving the wrapper the same 32px height the padding was built around (see the .sliced-border
+   rule above: 8px top + 8px bottom = 48px total, with the middle 32px meant for exactly Foundry's
+   own --input-height), then pushing it to the end of .sliced-border's own axis, matches that.
+   Level's .sliced-border has no flex-direction override (row, the default), where the cross axis
+   is vertical, so align-self:flex-end on the wrapper item itself is correct there. Faction's
+   (and Role/Focus/Origin's) .sliced-border is .--col (flex-direction: column) instead, where the
+   cross axis is horizontal - align-self:flex-end there would shove content sideways, not down
+   (confirmed live: it did, clipping "Renegade" to "Renegad"). What moves content along a column
+   container's vertical (main) axis is justify-content, and that's a property of the CONTAINER,
+   not the item, so that part targets .sliced-border.--col itself rather than the li/flexrow
+   inside it - its only in-flow child is that li/flexrow (the label is position:absolute, out of
+   flow), so this only ever pushes the content that needs it. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border > .flexrow.align-center.gap-2,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border > li.item.no-list-style,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border > div.flexrow {
+  height: var(--input-height, 32px);
+  box-sizing: border-box;
+  /* The wrapper's own box now lands in the right place (confirmed via a red reference line
+     screenshot at the actual rendered text baseline), but its text still sits a few px above
+     Size's own baseline within that box - Select's native line-height-based centering and this
+     wrapper's flex-based one aren't pixel-identical. padding-top eats into the (already
+     bottom-aligned, box-sizing:border-box) box from the inside, nudging its own content down
+     without moving the box itself. Adjust directly based on the actual baseline, not measurement. */
+  padding-top: 3px;
+}
+
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border:not(.--col) > .flexrow.align-center.gap-2 {
+  align-self: flex-end;
+}
+
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border.--col {
+  justify-content: flex-end;
+}
+
 .essence20 .sheet-header .flexrow.gap-2 .sliced-border .header-item-name {
   background: var(--theme-panel-bg);
 }
