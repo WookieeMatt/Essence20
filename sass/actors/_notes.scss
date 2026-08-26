@@ -52,12 +52,40 @@
   text-transform: uppercase;
 }
 
+/* Same "invisible input" treatment as the sheet header (assets/_headers.scss) - a plain
+   border:none/background:transparent (no !important) still left native chrome visible, because
+   Foundry core's own input rule sets background/border/outline from a CSS layer declared after
+   essence20's, which beats a normal-weight declaration here regardless of specificity. */
 .essence20 .biography-row .sliced-border.--col input {
   width: 100%;
   box-sizing: border-box;
-  border: none;
-  background: transparent;
   color: var(--theme-text-color);
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  appearance: none !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.essence20 .biography-row .sliced-border.--col input:focus,
+.essence20 .biography-row .sliced-border.--col input:focus-visible {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Age (type="number") - the native spinner buttons aren't covered by appearance:none on the
+   input itself in every browser, since they're a separate pseudo-element the property doesn't
+   always reach. */
+.essence20 .biography-row .sliced-border.--col input[type="number"]::-webkit-inner-spin-button,
+.essence20 .biography-row .sliced-border.--col input[type="number"]::-webkit-outer-spin-button {
+  appearance: none !important;
+  margin: 0;
 }
 
 .essence20 .biography-editor-field {

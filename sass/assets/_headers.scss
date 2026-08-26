@@ -138,7 +138,56 @@
   width: 100%;
   box-sizing: border-box;
   border: none;
+}
+
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border .header-item-name {
   background: var(--theme-panel-bg);
+}
+
+/* "Invisible" inputs - no separate input-shaped box within the sliced-border field, just the
+   value sitting directly on the field's own background, matching the read-only .header-item-name
+   fields next to them (Faction/Role/Focus/Origin, above). Foundry core's own input/select rule
+   sets `background` (a shorthand) from a CSS layer declared after essence20's, which beats a
+   normal-weight declaration here regardless of specificity (same conflict as
+   .item-label-checkbox, _collapsible.scss) - !important is the only way to win that. Doesn't
+   affect the color picker's own swatch (input.picker[type="color"] below) since the native
+   swatch always paints over any background here regardless. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select),
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  /* background/border alone still left native chrome behind - appearance:auto (Foundry core's
+     own default) draws the browser's own dropdown arrow on <select> and stepper buttons on a
+     number <input>, either of which visually flags "this is a form field" regardless of
+     background/border. */
+  appearance: none !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Foundry core's own input/select rule also sets a visible outline specifically on :focus (its
+   --input-focus-outline-color custom property) - the border/outline reset above only covers the
+   resting state, since a browser's own focus-state rule otherwise still wins independently. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):focus,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):focus-visible,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select):focus,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select):focus-visible {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Chrome/Safari's number spinner buttons aren't covered by appearance:none on the input itself -
+   they're a separate pseudo-element the property doesn't reach. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input[type="number"]::-webkit-inner-spin-button,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input[type="number"]::-webkit-outer-spin-button {
+  appearance: none !important;
+  margin: 0;
 }
 
 /* Faction/Role/Focus/Origin (faction.hbs, role.hbs, focus.hbs, origin-field.hbs) display the
