@@ -1,0 +1,75 @@
+{
+  "folder": "fT1wrp647z4EqXSp",
+  "name": "Shoulder Cannons",
+  "type": "weapon",
+  "_id": "YpAUZi2V9cOOqCn9",
+  "img": "systems/essence20/assets/icons/weapons/dual_cannon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 70
+    },
+    "items": {
+      "scwd": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.u1sgQ5v1zQ02fpMr",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Shoulder Cannons Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "targeting",
+          "style": "energy"
+        },
+        "damageValue": 2,
+        "damageType": "element",
+        "isSpecialized": false,
+        "numHands": "1",
+        "numTargets": 1,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 0,
+          "long": 100,
+          "value": 40
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "prototype",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "energy"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!YpAUZi2V9cOOqCn9"
+}

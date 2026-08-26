@@ -1,0 +1,76 @@
+{
+  "folder": "fT1wrp647z4EqXSp",
+  "name": "Cheetah Claws",
+  "type": "weapon",
+  "_id": "uLo1wYbh3ToDWf9g",
+  "img": "systems/essence20/assets/icons/weapons/assault_claw.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 69
+    },
+    "items": {
+      "ccwd": {
+        "uuid": "Compendium.essence20.beneath_the_helmet.Item.faT4V5OWxZHnP7BP",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Cheetah Claws Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "finesse",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "isSpecialized": false,
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "prototype",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "multipleTargets",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!uLo1wYbh3ToDWf9g"
+}

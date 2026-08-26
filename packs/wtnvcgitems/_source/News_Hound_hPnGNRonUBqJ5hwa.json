@@ -1,0 +1,56 @@
+{
+  "folder": "0rfAHIP9daI0d4DH",
+  "name": "News Hound",
+  "type": "origin",
+  "_id": "hPnGNRonUBqJ5hwa",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 30
+    },
+    "items": {
+      "MOQ4": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.UUGzzHGM4Kik0JUz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "News Hound Origin Perk",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "smarts",
+      "speed"
+    ],
+    "languages": "",
+    "skills": [
+      "alertness",
+      "culture",
+      "driving",
+      "infiltration"
+    ],
+    "startingHealth": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!hPnGNRonUBqJ5hwa"
+}

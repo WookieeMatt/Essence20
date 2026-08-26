@@ -1,0 +1,42 @@
+{
+  "folder": "VsAuPR8Q2fPjvHMN",
+  "name": "Medium Armor",
+  "type": "armor",
+  "_id": "hHq2pspd97FtiIz2",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 69
+    },
+    "availability": "limited",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 2,
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!hHq2pspd97FtiIz2"
+}

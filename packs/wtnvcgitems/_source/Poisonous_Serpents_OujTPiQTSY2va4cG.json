@@ -1,0 +1,62 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Poisonous Serpents",
+  "type": "weapon",
+  "_id": "OujTPiQTSY2va4cG",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 68
+    },
+    "items": {
+      "4dQB": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.mcL7vN77486lZogM",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Poisonous Serpents Effect",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "animalHandling",
+      "shift": "d6"
+    },
+    "traits": [
+      "intimidating",
+      "multipleTargets",
+      "poison",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!OujTPiQTSY2va4cG"
+}

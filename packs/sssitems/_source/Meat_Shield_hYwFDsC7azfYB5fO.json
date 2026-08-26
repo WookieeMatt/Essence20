@@ -1,0 +1,36 @@
+{
+  "folder": "cWQjMtXYmmfe2OlL",
+  "name": "Meat Shield",
+  "type": "perk",
+  "_id": "hYwFDsC7azfYB5fO",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Sgt Slaughter Sourcebook",
+      "page": 14
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 700000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787790000000,
+    "modifiedTime": 1787790000000,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!hYwFDsC7azfYB5fO"
+}

@@ -1,0 +1,35 @@
+{
+  "folder": "rqUrFq3VV6GKscOw",
+  "name": "Costumes",
+  "type": "gear",
+  "_id": "ZoCVEwLH1mhrfBqT",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 71
+    },
+    "quantity": 1,
+    "gearType": "clothes"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!ZoCVEwLH1mhrfBqT"
+}

@@ -1,0 +1,35 @@
+{
+  "folder": "bC8b7I6seS4DLyg1",
+  "name": "Synth-En",
+  "type": "gear",
+  "_id": "SgYkXSFLiLT8hjMP",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 82
+    },
+    "quantity": 1,
+    "gearType": "military"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774532548,
+    "modifiedTime": 1787774532548,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!SgYkXSFLiLT8hjMP"
+}

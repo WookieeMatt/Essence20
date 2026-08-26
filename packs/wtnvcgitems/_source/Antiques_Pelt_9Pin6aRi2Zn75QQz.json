@@ -1,0 +1,219 @@
+{
+  "folder": "VsAuPR8Q2fPjvHMN",
+  "name": "Antiques Pelt",
+  "type": "armor",
+  "_id": "9Pin6aRi2Zn75QQz",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 69
+    },
+    "availability": "unique",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 2,
+    "upgradeTraits": []
+  },
+  "effects": [
+    {
+      "name": "Antiques Pelt",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.9Pin6aRi2Zn75QQz",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ln6fI8ZXZuEVuBmc",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.intimidation.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9Pin6aRi2Zn75QQz.ln6fI8ZXZuEVuBmc"
+    },
+    {
+      "name": "Antiques Pelt",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.9Pin6aRi2Zn75QQz",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "IbvSf66gZVomrDsr",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.might.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9Pin6aRi2Zn75QQz.IbvSf66gZVomrDsr"
+    },
+    {
+      "name": "Antiques Pelt",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.9Pin6aRi2Zn75QQz",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "kG0e7hA0Kw1ItoKz",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.animalHandling.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9Pin6aRi2Zn75QQz.kG0e7hA0Kw1ItoKz"
+    },
+    {
+      "name": "Antiques Pelt",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.9Pin6aRi2Zn75QQz",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "5Jau4cQlEepCWboE",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.persuasion.shiftDown",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!9Pin6aRi2Zn75QQz.5Jau4cQlEepCWboE"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!9Pin6aRi2Zn75QQz"
+}

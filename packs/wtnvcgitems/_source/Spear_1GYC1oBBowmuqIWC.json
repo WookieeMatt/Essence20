@@ -1,0 +1,67 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Spear",
+  "type": "weapon",
+  "_id": "1GYC1oBBowmuqIWC",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 62
+    },
+    "items": {
+      "bpo8": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.cEGS0IPDAfy8R5r3",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spear Effect",
+        "type": "weaponEffect"
+      },
+      "mwWh": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.7jhJNVgQhFc0gat8",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Spear Effect (Thrown)",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "multipleTargets",
+      "sharp",
+      "silent",
+      "versatile"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!1GYC1oBBowmuqIWC"
+}

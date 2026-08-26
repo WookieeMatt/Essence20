@@ -12,6 +12,7 @@ E20.gameVersions = {
   myLittlePony: "E20.VersionMyLittlePony",
   powerRangers: "E20.VersionPowerRangers",
   transformers: "E20.VersionTransformers",
+  welcomeToNightVale: "E20.VersionWelcomeToNightVale",
 };
 preLocalize("gameVersions");
 

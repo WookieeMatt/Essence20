@@ -1,0 +1,43 @@
+{
+  "folder": null,
+  "name": "Heavy Water Coolant",
+  "type": "upgrade",
+  "_id": "e8WNnjzWGNWBd2UJ",
+  "img": "systems/essence20/assets/icons/items/upgrade_weapon.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Operation Cold Iron",
+      "page": 26
+    },
+    "aimShiftBonus": 0,
+    "armorBonus": {
+      "defense": "toughness",
+      "value": 0
+    },
+    "availability": "restricted",
+    "benefit": "",
+    "traits": [],
+    "type": "armor",
+    "prerequisite": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787764799614,
+    "modifiedTime": 1787764799614,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!e8WNnjzWGNWBd2UJ"
+}

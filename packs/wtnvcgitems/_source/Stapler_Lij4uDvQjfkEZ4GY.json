@@ -1,0 +1,60 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Stapler",
+  "type": "weapon",
+  "_id": "Lij4uDvQjfkEZ4GY",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 68
+    },
+    "items": {
+      "bGxW": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.VmOUrUrFtMHkAEBr",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Stapler Effect",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "sidearm"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "martialArts",
+      "blunt",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!Lij4uDvQjfkEZ4GY"
+}

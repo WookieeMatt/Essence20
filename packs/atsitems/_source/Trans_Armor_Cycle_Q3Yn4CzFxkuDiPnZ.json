@@ -1,0 +1,43 @@
+{
+  "folder": "wz3jDXHF9H1jTjUn",
+  "name": "Trans-Armor Cycle",
+  "type": "armor",
+  "_id": "Q3Yn4CzFxkuDiPnZ",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 88
+    },
+    "items": {},
+    "availability": "prototype",
+    "bonusEvasion": 0,
+    "bonusToughness": 2,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "exoFrame"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!Q3Yn4CzFxkuDiPnZ"
+}
