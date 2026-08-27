@@ -1,0 +1,23 @@
+{
+  "name": "Roles",
+  "sorting": "a",
+  "folder": null,
+  "type": "Item",
+  "_id": "3Xd7wb3siXcOKp2u",
+  "description": "",
+  "sort": 0,
+  "color": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787762210188,
+    "modifiedTime": 1787762210188,
+    "lastModifiedBy": null
+  },
+  "_key": "!folders!3Xd7wb3siXcOKp2u"
+}

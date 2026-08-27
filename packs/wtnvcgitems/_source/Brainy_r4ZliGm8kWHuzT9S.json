@@ -1,0 +1,43 @@
+{
+  "folder": "D6p99UQk9yhNGe78",
+  "name": "Brainy",
+  "type": "influence",
+  "_id": "r4ZliGm8kWHuzT9S",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 27
+    },
+    "items": {
+      "382A": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.L7P4oDSzBYyQFZCF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Brainy Influence Perk",
+        "type": "perk"
+      }
+    },
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!r4ZliGm8kWHuzT9S"
+}

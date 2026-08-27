@@ -1,0 +1,178 @@
+{
+  "folder": "3Xd7wb3siXcOKp2u",
+  "name": "Scientist",
+  "type": "role",
+  "_id": "qRbRG9GHI9vSuPHi",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 44
+    },
+    "items": {
+      "AMOA": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.suledVW2e8W5oqhZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Doctoral Thesis",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "PlBv": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.zsuQoBsso5SddTAs",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "How Strange!",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "tI5U": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.73liKWcAmV8UH6qA",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Time is Weird",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "nbR3": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.vnYDLY5Fe2pasHyF",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Scientific Method",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "nDEE": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.MTo42tKWWtZ15Ist",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "\"Pseudo\"-Science",
+        "type": "perk",
+        "subtype": "role",
+        "level": 4
+      },
+      "y9No": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.CiDQxCxgnnosvBDo",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "A Logical Explanation",
+        "type": "perk",
+        "subtype": "role",
+        "level": 4
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level18"
+      ],
+      "social": [
+        "level5",
+        "level9",
+        "level13",
+        "level17"
+      ],
+      "speed": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ],
+      "strength": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level20"
+      ]
+    },
+    "effectiveLevelDivisor": 2,
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "hasSpectrumShifted": false,
+    "isAdditive": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level2",
+        "level3",
+        "level5",
+        "level6",
+        "level7",
+        "level8",
+        "level9",
+        "level10",
+        "level11",
+        "level12",
+        "level13",
+        "level14",
+        "level15",
+        "level16",
+        "level17",
+        "level18",
+        "level19",
+        "level20"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "upgrades": {
+      "armors": {
+        "trained": []
+      }
+    },
+    "version": "welcomeToNightVale",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787762210188,
+    "modifiedTime": 1787762210188,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!qRbRG9GHI9vSuPHi"
+}

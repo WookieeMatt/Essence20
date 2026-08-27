@@ -221,6 +221,15 @@
       "flags": {}
     },
     {
+      "name": "in_a_jam",
+      "label": "In a Jam",
+      "system": "essence20",
+      "path": "packs/iajitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "intercontinental_adventures",
       "label": "Intercontinental Adventures: Factions in Action Vol 2",
       "system": "essence20",
@@ -252,6 +261,33 @@
       "label": "My Little Pony Core Rulebook",
       "system": "essence20",
       "path": "packs/mlpcrbitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "operation_cold_iron",
+      "label": "Operation Cold Iron",
+      "system": "essence20",
+      "path": "packs/ocitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "operation_snakebit",
+      "label": "Operation Snakebit",
+      "system": "essence20",
+      "path": "packs/osbitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "power_rangers_adventures",
+      "label": "Power Rangers Adventures",
+      "system": "essence20",
+      "path": "packs/pradvitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -320,10 +356,37 @@
       "flags": {}
     },
     {
+      "name": "transformers_adventures",
+      "label": "Transformers Adventures",
+      "system": "essence20",
+      "path": "packs/tfadvitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "transformers_extras",
+      "label": "Transformers Extras",
+      "system": "essence20",
+      "path": "packs/tfextitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
       "name": "transformers_one_sourcebook",
       "label": "Transformers One Sourcebook",
       "system": "essence20",
       "path": "packs/tf1sitems",
+      "type": "Item",
+      "private": false,
+      "flags": {}
+    },
+    {
+      "name": "wtnv_citizens_guide",
+      "label": "Citizens' Guide",
+      "system": "essence20",
+      "path": "packs/wtnvcgitems",
       "type": "Item",
       "private": false,
       "flags": {}
@@ -339,6 +402,8 @@
         "ferocious_fighters",
         "general_hawk_s_personel_files",
         "intercontinental_adventures",
+        "operation_cold_iron",
+        "operation_snakebit",
         "quartermasters_guide_to_gear",
         "sgt_slaughter_sourcebook"
       ]
@@ -349,8 +414,16 @@
       "packs": [
         "mlp_crb",
         "dark_skies_over_equestria",
+        "in_a_jam",
         "knights_of_canterlot",
         "story_of_the_seasons"
+      ]
+    },
+    {
+      "name": "Welcome to Night Vale",
+      "sorting": "m",
+      "packs": [
+        "wtnv_citizens_guide"
       ]
     },
     {
@@ -362,7 +435,8 @@
         "beneath_the_helmet",
         "jump_through_time",
         "finster_s_monster_matic_cookbook",
-        "through_the_shattered_grid"
+        "through_the_shattered_grid",
+        "power_rangers_adventures"
       ]
     },
     {
@@ -373,7 +447,9 @@
         "decepticon_directive",
         "enigma_of_combination",
         "technorganic_secrets",
-        "transformers_one_sourcebook"
+        "transformers_one_sourcebook",
+        "transformers_adventures",
+        "transformers_extras"
       ]
     }
   ],

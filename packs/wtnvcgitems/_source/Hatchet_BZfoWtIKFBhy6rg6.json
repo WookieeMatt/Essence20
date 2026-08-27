@@ -1,0 +1,66 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Hatchet",
+  "type": "weapon",
+  "_id": "BZfoWtIKFBhy6rg6",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 65
+    },
+    "items": {
+      "nNaZ": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.bm5aOqvQvoD1OW2t",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hatchet Effect",
+        "type": "weaponEffect"
+      },
+      "GuOd": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.xOoAgp79Y4XEeDTI",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Hatchet Effect (Thrown)",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "light"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "multipleTargets",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!BZfoWtIKFBhy6rg6"
+}

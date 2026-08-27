@@ -1,0 +1,178 @@
+{
+  "folder": "3Xd7wb3siXcOKp2u",
+  "name": "Soldier",
+  "type": "role",
+  "_id": "9jIUSvOv8g2YJPUN",
+  "img": "systems/essence20/assets/icons/items/role.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 46
+    },
+    "items": {
+      "p5XH": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.morpUx0UgeCaB5Xm",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rugged Frame",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "FbzZ": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.D3ir83t3DazylEqD",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Equipment Duty",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "BukN": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.F5mrzupd6TG2kj3x",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Gravity Optional",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "NN48": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.8HCbpZLg41UwRObr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Guerilla Tactics",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "mIfx": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.9w9TjZdznrBsYWHf",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Moon's Haunted",
+        "type": "perk",
+        "subtype": "role",
+        "level": 4
+      },
+      "bnrH": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.SYFScAH8lDshgLNM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Immortal Rebel Soul",
+        "type": "perk",
+        "subtype": "role",
+        "level": 4
+      }
+    },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
+    "essenceLevels": {
+      "smarts": [
+        "level4",
+        "level8",
+        "level12",
+        "level16",
+        "level20"
+      ],
+      "social": [
+        "level5",
+        "level9",
+        "level13",
+        "level17"
+      ],
+      "speed": [
+        "level1",
+        "level2",
+        "level6",
+        "level10",
+        "level14",
+        "level18"
+      ],
+      "strength": [
+        "level1",
+        "level3",
+        "level7",
+        "level11",
+        "level15",
+        "level19"
+      ]
+    },
+    "effectiveLevelDivisor": 2,
+    "gridPowerLevels": [
+      "level6",
+      "level11",
+      "level16"
+    ],
+    "hasSpecialAdvancement": false,
+    "hasSpectrumShifted": false,
+    "isAdditive": false,
+    "isAdvanced": false,
+    "perkLevels": {
+      "general": [
+        "level2",
+        "level3",
+        "level5",
+        "level6",
+        "level7",
+        "level8",
+        "level9",
+        "level10",
+        "level11",
+        "level12",
+        "level13",
+        "level14",
+        "level15",
+        "level16",
+        "level17",
+        "level18",
+        "level19",
+        "level20"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
+    "skills": [],
+    "upgrades": {
+      "armors": {
+        "trained": []
+      }
+    },
+    "version": "welcomeToNightVale",
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787762210188,
+    "modifiedTime": 1787762210188,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!9jIUSvOv8g2YJPUN"
+}

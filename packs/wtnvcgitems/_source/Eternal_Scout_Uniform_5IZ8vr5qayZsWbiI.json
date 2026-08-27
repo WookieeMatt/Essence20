@@ -1,0 +1,131 @@
+{
+  "folder": "VsAuPR8Q2fPjvHMN",
+  "name": "Eternal Scout Uniform",
+  "type": "armor",
+  "_id": "5IZ8vr5qayZsWbiI",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 69
+    },
+    "availability": "unique",
+    "bonusEvasion": 1,
+    "bonusToughness": 1,
+    "classification": "light",
+    "equipped": false,
+    "traits": [],
+    "totalBonusEvasion": 1,
+    "totalBonusToughness": 1,
+    "upgradeTraits": []
+  },
+  "effects": [
+    {
+      "name": "Eternal Scout Uniform",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.5IZ8vr5qayZsWbiI",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "fZLeWsTG4pl2yBFR",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.alertness.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!5IZ8vr5qayZsWbiI.fZLeWsTG4pl2yBFR"
+    },
+    {
+      "name": "Eternal Scout Uniform",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.5IZ8vr5qayZsWbiI",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "OOBQ8iw0Rnm2jG0c",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.survival.shiftUp",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!5IZ8vr5qayZsWbiI.OOBQ8iw0Rnm2jG0c"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!5IZ8vr5qayZsWbiI"
+}

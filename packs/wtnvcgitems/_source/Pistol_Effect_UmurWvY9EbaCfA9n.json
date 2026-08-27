@@ -1,0 +1,52 @@
+{
+  "folder": "OJqRtmPaVn7cPyhL",
+  "name": "Pistol Effect",
+  "type": "weaponEffect",
+  "_id": "UmurWvY9EbaCfA9n",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 65
+    },
+    "classification": {
+      "skill": "targeting",
+      "style": "projectile"
+    },
+    "damageType": "sharp",
+    "damageValue": 1,
+    "isSpecialized": false,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 80,
+      "value": 25
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!UmurWvY9EbaCfA9n"
+}
