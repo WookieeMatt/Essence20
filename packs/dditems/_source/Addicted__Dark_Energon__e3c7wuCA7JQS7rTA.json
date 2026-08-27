@@ -1,0 +1,33 @@
+{
+  "folder": "TloTmcyDSbmlZYl4",
+  "name": "Addicted (Dark Energon)",
+  "type": "hangUp",
+  "_id": "e3c7wuCA7JQS7rTA",
+  "img": "icons/svg/hazard.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Decepticon Directive",
+      "page": 80
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774532548,
+    "modifiedTime": 1787774532548,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!e3c7wuCA7JQS7rTA"
+}

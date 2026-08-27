@@ -1,0 +1,52 @@
+{
+  "folder": "tR73Y7ttVyQl75Jj",
+  "name": "Stretch Kick Effect",
+  "type": "weaponEffect",
+  "_id": "XXx1QPWtDOQree4I",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Beneath the Helmet",
+      "page": 70
+    },
+    "classification": {
+      "skill": "might",
+      "style": "melee"
+    },
+    "damageType": "blunt",
+    "damageValue": 2,
+    "isSpecialized": false,
+    "shiftDown": 0,
+    "numHands": "1",
+    "numTargets": 1,
+    "radius": 0,
+    "range": {
+      "min": null,
+      "reachMultiplier": 1,
+      "long": null,
+      "value": null
+    }
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!XXx1QPWtDOQree4I"
+}

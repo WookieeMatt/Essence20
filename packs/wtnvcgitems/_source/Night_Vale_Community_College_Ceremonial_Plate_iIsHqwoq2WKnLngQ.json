@@ -1,0 +1,221 @@
+{
+  "folder": "VsAuPR8Q2fPjvHMN",
+  "name": "Night Vale Community College Ceremonial Plate",
+  "type": "armor",
+  "_id": "iIsHqwoq2WKnLngQ",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 70
+    },
+    "availability": "unique",
+    "bonusEvasion": 0,
+    "bonusToughness": 3,
+    "classification": "heavy",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "totalBonusEvasion": 0,
+    "totalBonusToughness": 3,
+    "upgradeTraits": []
+  },
+  "effects": [
+    {
+      "name": "Night Vale Community College Ceremonial Plate",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.iIsHqwoq2WKnLngQ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "AxKuEKUI4OdMasCQ",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.athletics.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!iIsHqwoq2WKnLngQ.AxKuEKUI4OdMasCQ"
+    },
+    {
+      "name": "Night Vale Community College Ceremonial Plate",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.iIsHqwoq2WKnLngQ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "5f8JAZGIRQdSaY0w",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.acrobatics.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!iIsHqwoq2WKnLngQ.5f8JAZGIRQdSaY0w"
+    },
+    {
+      "name": "Night Vale Community College Ceremonial Plate",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.iIsHqwoq2WKnLngQ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "zXQ6plrAVXTFtAIG",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.infiltration.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!iIsHqwoq2WKnLngQ.zXQ6plrAVXTFtAIG"
+    },
+    {
+      "name": "Night Vale Community College Ceremonial Plate",
+      "img": "icons/svg/aura.svg",
+      "origin": "Compendium.essence20.wtnv_citizens_guide.Item.iIsHqwoq2WKnLngQ",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "k2EbhehXqjxY3m4o",
+      "type": "base",
+      "system": {},
+      "changes": [
+        {
+          "key": "system.skills.initiative.shiftDown",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "tint": "#ffffff",
+      "transfer": true,
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null,
+        "coreVersion": "13.344",
+        "systemId": "essence20",
+        "systemVersion": "4.6.9",
+        "createdTime": 1787761045018,
+        "modifiedTime": 1787761045018,
+        "lastModifiedBy": null
+      },
+      "_key": "!items.effects!iIsHqwoq2WKnLngQ.k2EbhehXqjxY3m4o"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!iIsHqwoq2WKnLngQ"
+}

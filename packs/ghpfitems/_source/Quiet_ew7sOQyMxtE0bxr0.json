@@ -1,0 +1,50 @@
+{
+  "folder": "yEDxx8uhnRR0a9oj",
+  "name": "Quiet",
+  "type": "influence",
+  "_id": "ew7sOQyMxtE0bxr0",
+  "img": "systems/essence20/assets/icons/items/influence.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "General Hawk's Personnel Files",
+      "page": 166
+    },
+    "items": {
+      "ZtIx": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.oyybOYHfDdGS6dKr",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Quiet",
+        "type": "perk"
+      },
+      "I98f": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.6RR2OYWSWrhZv02r",
+        "img": "icons/svg/hazard.svg",
+        "name": "Quiet",
+        "type": "hangUp"
+      }
+    },
+    "bond": "",
+    "mandatoryHangUp": false,
+    "skills": []
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787763529613,
+    "modifiedTime": 1787763529613,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!ew7sOQyMxtE0bxr0"
+}

@@ -1,0 +1,36 @@
+{
+  "folder": "j1nUzIlIZazcj1s5",
+  "name": "Choke Point Veterans",
+  "type": "perk",
+  "_id": "OGr26370hhjO7nwN",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Cobra Codex",
+      "page": 231
+    },
+    "prerequisite": "Defeated the Joes at the Red Quarry choke point",
+    "selectionLimit": 1,
+    "type": "general"
+  },
+  "effects": [],
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787770000000,
+    "modifiedTime": 1787770000000,
+    "lastModifiedBy": null
+  },
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "_key": "!items!OGr26370hhjO7nwN"
+}
