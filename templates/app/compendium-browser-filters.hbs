@@ -10,29 +10,37 @@
     </button>
   {{/if}}
 
-  <fieldset class="compendium-browser-filter-group">
-    <legend>{{localize "E20.CompendiumBrowserFilterTypes"}}</legend>
-    <div class="compendium-browser-filter-actions">
-      <a data-action="selectAllTypes">{{localize "E20.CompendiumBrowserSelectAll"}}</a>
-      <a data-action="selectNoTypes">{{localize "E20.CompendiumBrowserSelectNone"}}</a>
-    </div>
-    {{#each types as |type|}}
-      <label class="compendium-browser-filter-option">
-        <input type="checkbox" data-item-type="{{type.key}}" {{checked type.checked}} />
-        <span>{{type.label}}</span>
-      </label>
-    {{/each}}
-  </fieldset>
+  {{#if subtypeFilter}}
+    <fieldset class="compendium-browser-filter-group">
+      <legend>{{subtypeFilter.label}}</legend>
+      <div class="compendium-browser-filter-actions">
+        <a data-action="selectAllSubtypes">{{localize "E20.CompendiumBrowserSelectAll"}}</a>
+        <a data-action="selectNoSubtypes">{{localize "E20.CompendiumBrowserSelectNone"}}</a>
+      </div>
+      {{#each subtypeFilter.options as |opt|}}
+        <label class="compendium-browser-filter-option">
+          <input type="checkbox" data-subtype="{{opt.key}}" {{checked opt.checked}} />
+          <span>{{opt.label}}</span>
+        </label>
+      {{/each}}
+    </fieldset>
+  {{/if}}
 
-  <fieldset class="compendium-browser-filter-group">
-    <legend>{{localize "E20.CompendiumBrowserFilterBooks"}}</legend>
+  <details class="compendium-browser-filter-group compendium-browser-books-group" {{#if booksExpanded}}open{{/if}}>
+    <summary>{{localize "E20.CompendiumBrowserFilterBooks"}}</summary>
     <div class="compendium-browser-filter-actions">
       <a data-action="selectAllBooks">{{localize "E20.CompendiumBrowserSelectAll"}}</a>
       <a data-action="selectNoBooks">{{localize "E20.CompendiumBrowserSelectNone"}}</a>
     </div>
     {{#each groups as |group|}}
       <div class="compendium-browser-filter-subgroup">
-        <span class="compendium-browser-filter-subgroup-label">{{group.name}}</span>
+        <div class="compendium-browser-filter-subgroup-header">
+          <span class="compendium-browser-filter-subgroup-label">{{group.name}}</span>
+          <span class="compendium-browser-filter-actions">
+            <a data-action="selectAllBooksInGroup" data-group="{{group.name}}">{{localize "E20.CompendiumBrowserSelectAll"}}</a>
+            <a data-action="selectNoBooksInGroup" data-group="{{group.name}}">{{localize "E20.CompendiumBrowserSelectNone"}}</a>
+          </span>
+        </div>
         {{#each group.packs as |pack|}}
           <label class="compendium-browser-filter-option">
             <input type="checkbox" data-pack-id="{{pack.id}}" {{checked pack.checked}} />
@@ -41,5 +49,5 @@
         {{/each}}
       </div>
     {{/each}}
-  </fieldset>
+  </details>
 </div>

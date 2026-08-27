@@ -1,21 +1,75 @@
 @use "../variables" as v;
 
 .compendium-browser {
-  display: flex;
-  flex-direction: row;
   height: 100%;
   overflow: hidden;
 
   .window-content {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "tabs tabs"
+      "filters results";
     padding: 0;
     overflow: hidden;
   }
+
+  [data-application-part="tabs"] {
+    grid-area: tabs;
+  }
+
+  [data-application-part="filters"] {
+    grid-area: filters;
+    min-height: 0;
+  }
+
+  [data-application-part="results"] {
+    grid-area: results;
+    min-height: 0;
+  }
+}
+
+.compendium-browser-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--theme-border-color);
+  background: var(--theme-panel-bg);
+}
+
+.compendium-browser-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  padding: 8px 14px;
+  color: var(--theme-muted-text);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--theme-text-color);
+  }
+
+  &.active {
+    color: var(--theme-text-color);
+    border-bottom-color: var(--theme-accent);
+  }
+}
+
+.compendium-browser-tab-count {
+  font-size: var(--font-size-11, 11px);
+  color: var(--theme-muted-text);
+  background: var(--theme-input-color);
+  border-radius: 8px;
+  padding: 0 6px;
+  line-height: 16px;
 }
 
 .compendium-browser-filters {
-  flex: 0 0 260px;
+  height: 100%;
   padding: 10px;
   gap: 10px;
   overflow-y: auto;
@@ -48,6 +102,23 @@
     font-weight: bold;
     padding: 0 4px;
   }
+
+  // Collapsible groups (the Books filter) use <details>/<summary> instead of
+  // <fieldset>/<legend> - matched to the same look, plus a pointer cursor to
+  // signal it's clickable.
+  summary {
+    color: var(--theme-text-color);
+    font-weight: bold;
+    cursor: pointer;
+
+    &::marker {
+      color: var(--theme-muted-text);
+    }
+  }
+
+  &[open] summary {
+    margin-bottom: 6px;
+  }
 }
 
 .compendium-browser-filter-actions {
@@ -69,11 +140,22 @@
 .compendium-browser-filter-subgroup {
   margin-bottom: 6px;
 
+  &-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 6px;
+
+    .compendium-browser-filter-actions {
+      margin-bottom: 0;
+      font-size: var(--font-size-11, 11px);
+    }
+  }
+
   &-label {
-    display: block;
     font-weight: bold;
     color: var(--theme-muted-text);
-    margin-top: 6px;
   }
 }
 
@@ -86,8 +168,7 @@
 }
 
 .compendium-browser-results {
-  flex: 1 1 auto;
-  min-width: 0;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -101,6 +182,7 @@
 
 .compendium-browser-result {
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 10px;
   padding: 4px 6px;
@@ -117,16 +199,33 @@
     object-fit: contain;
     border: none;
     flex: 0 0 auto;
+
+    // Most item icons (system defaults and generic type icons alike) are plain white
+    // silhouettes on a transparent or black tile, made for Foundry's own dark chrome -
+    // they wash out to invisible against this app's light theme, so invert them there.
+    // theme-dark leaves them alone since white-on-transparent is already correct there.
+    .theme-light & {
+      filter: invert(1);
+    }
+  }
+
+  &-name,
+  &-type,
+  &-book {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   &-name {
     flex: 1 1 auto;
+    min-width: 0;
     color: var(--theme-text-color);
   }
 
   &-type {
     flex: 0 0 140px;
-    color: v.$text-color-cyan;
+    color: var(--theme-text-color);
   }
 
   &-book {
@@ -183,4 +282,12 @@
   gap: 6px;
   padding: 2px 0;
   color: var(--theme-text-color);
+}
+
+.essence20-open-compendium-browser {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }

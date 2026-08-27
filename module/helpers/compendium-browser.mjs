@@ -45,15 +45,22 @@ export function isSourcebookEnabled(packId) {
   return disabled[packId] !== false;
 }
 
-/**
- * The Item packs a given user should see. GMs always see every pack so they can still
- * reference material they've turned off for the table; everyone else only sees packs
- * the GM has left enabled.
- */
+/** The Item packs enabled for browsing - same list for the GM and everyone else. */
 export function getVisibleItemPacks() {
-  if (game.user.isGM) {
-    return getItemPacks();
-  }
-
   return getItemPacks().filter(pack => isSourcebookEnabled(pack.metadata.id));
+}
+
+/**
+ * Applies the enabled/disabled sourcebook setting to each pack's actual ownership, so
+ * a disabled book is hidden from players in Foundry's own Compendium sidebar tab too,
+ * not just filtered out of the Compendium Browser. Only a GM can call this, since
+ * pack.configure() writes a world-scope setting.
+ */
+export async function syncSourcebookOwnership() {
+  for (const pack of getItemPacks()) {
+    const desiredPlayerLevel = isSourcebookEnabled(pack.metadata.id) ? "OBSERVER" : "NONE";
+    if (pack.ownership.PLAYER === desiredPlayerLevel) continue;
+
+    await pack.configure({ ownership: { ...pack.ownership, PLAYER: desiredPlayerLevel } });
+  }
 }

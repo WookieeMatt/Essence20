@@ -1,5 +1,5 @@
 import { applyThemeClass } from "../settings.js";
-import { getGroupedItemPacks } from "../helpers/compendium-browser.mjs";
+import { getGroupedItemPacks, syncSourcebookOwnership } from "../helpers/compendium-browser.mjs";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -72,6 +72,7 @@ export default class CompendiumBrowserSourceConfig extends HandlebarsApplication
     }
 
     await game.settings.set("essence20", "enabledSourcebooks", disabled);
+    await syncSourcebookOwnership();
 
     const browser = foundry.applications.instances.get("essence20-compendium-browser");
     browser?.refresh();
