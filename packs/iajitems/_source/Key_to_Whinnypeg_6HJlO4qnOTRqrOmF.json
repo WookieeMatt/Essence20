@@ -1,0 +1,35 @@
+{
+  "folder": "09kjZ9rbTZ3oGsAa",
+  "name": "Key to Whinnypeg",
+  "type": "gear",
+  "_id": "6HJlO4qnOTRqrOmF",
+  "img": "systems/essence20/assets/icons/items/gear.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "In a Jam",
+      "page": 33
+    },
+    "quantity": 1,
+    "gearType": "other"
+  },
+  "effects": [],
+  "sort": 100000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787715892962,
+    "modifiedTime": 1787715892962,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!6HJlO4qnOTRqrOmF"
+}

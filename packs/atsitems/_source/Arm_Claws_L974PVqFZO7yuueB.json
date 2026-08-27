@@ -1,0 +1,76 @@
+{
+  "folder": "OWK94Huqy3t51WjH",
+  "name": "Arm Claws",
+  "type": "weapon",
+  "_id": "L974PVqFZO7yuueB",
+  "img": "systems/essence20/assets/icons/weapons/assault_claw.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 85
+    },
+    "items": {
+      "acwd": {
+        "uuid": "Compendium.essence20.across_the_stars.Item.uUpfL7uqFY3iSak6",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Arm Claws Effect",
+        "type": "weaponEffect",
+        "classification": {
+          "skill": "might",
+          "style": "melee"
+        },
+        "damageValue": 2,
+        "damageType": "sharp",
+        "isSpecialized": false,
+        "numHands": "1",
+        "numTargets": 2,
+        "radius": 0,
+        "range": {
+          "min": null,
+          "reachMultiplier": 1,
+          "long": null,
+          "value": null
+        },
+        "shiftDown": 0
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "prototype",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "multipleTargets",
+      "sharp"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!L974PVqFZO7yuueB"
+}

@@ -1,0 +1,54 @@
+{
+  "folder": "4yluWdo2y9WRZfTq",
+  "name": "Magnetic Surge",
+  "type": "weaponEffect",
+  "_id": "eksOfjxOtMKYyyt9",
+  "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Polarity Gauntlets",
+      "page": 1
+    },
+    "classification": {
+      "skill": "technology",
+      "style": "energy"
+    },
+    "damageType": "blunt",
+    "damageValue": 2,
+    "defenseType": "toughness",
+    "isSpecialized": false,
+    "numHands": "0",
+    "numTargets": 1,
+    "radius": 10,
+    "range": {
+      "min": null,
+      "reachMultiplier": 0,
+      "long": 40,
+      "value": 20
+    },
+    "shiftDown": 0,
+    "totalReach": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "essence20": {}
+  },
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774532548,
+    "modifiedTime": 1787774532548,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!eksOfjxOtMKYyyt9"
+}

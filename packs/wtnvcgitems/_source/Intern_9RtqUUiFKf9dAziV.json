@@ -1,0 +1,56 @@
+{
+  "folder": "0rfAHIP9daI0d4DH",
+  "name": "Intern",
+  "type": "origin",
+  "_id": "9RtqUUiFKf9dAziV",
+  "img": "systems/essence20/assets/icons/items/origin.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 30
+    },
+    "items": {
+      "xC01": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.O8o96wtAeeMeCmUc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Intern Origin Perk",
+        "type": "perk"
+      }
+    },
+    "baseAerialMovement": 0,
+    "baseAquaticMovement": 0,
+    "baseGroundMovement": 30,
+    "essences": [
+      "strength",
+      "social"
+    ],
+    "languages": "",
+    "skills": [
+      "might",
+      "conditioning",
+      "persuasion",
+      "deception"
+    ],
+    "startingHealth": 0
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787759972181,
+    "modifiedTime": 1787759972181,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!9RtqUUiFKf9dAziV"
+}

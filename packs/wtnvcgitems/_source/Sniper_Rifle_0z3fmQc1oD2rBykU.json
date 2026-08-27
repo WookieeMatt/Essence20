@@ -1,0 +1,62 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Sniper Rifle",
+  "type": "weapon",
+  "_id": "0z3fmQc1oD2rBykU",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 65
+    },
+    "items": {
+      "yuqv": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.XxwN1gz5gnjSpljc",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Sniper Rifle Effect",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "long"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "alertness",
+      "shift": "d6"
+    },
+    "traits": [
+      "ballistic",
+      "mounted",
+      "reload",
+      "sharp",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!0z3fmQc1oD2rBykU"
+}

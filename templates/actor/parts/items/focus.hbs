@@ -4,7 +4,7 @@
   {{#each @root.focuses as |item|}}
     <li class="item no-list-style" data-item-id="{{item._id}}" data-parent-id="{{../parentId}}">
       <div class="flexrow align-center gap-2">
-        <input type="text" name="system.role" value="{{item.name}}" />
+        <span class="header-item-name">{{item.name}}</span>
         <div class="item-controls flex-grow-0">
           <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
             <i class="fas fa-trash"></i>
@@ -15,6 +15,6 @@
   {{/each}}
 {{else}}
   <div class="flexrow">
-    <input class="no-unlock" type="text" value="{{localize 'E20.FocusDrop'}}" readonly />
+    <span class="header-item-name header-item-placeholder">{{localize 'E20.FocusDrop'}}</span>
   </div>
 {{/if}}

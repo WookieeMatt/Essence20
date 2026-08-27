@@ -1,0 +1,60 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Armored Pinata",
+  "type": "weapon",
+  "_id": "EZheFZbpfNvIFM5P",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 68
+    },
+    "items": {
+      "pwgc": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.6UMuV23x9LuZzAze",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Armored Pinata Effect",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "standard",
+    "classification": {
+      "size": "medium"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": "brawn",
+      "shift": "d6"
+    },
+    "traits": [
+      "consumable",
+      "sharp",
+      "wrecker"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!EZheFZbpfNvIFM5P"
+}

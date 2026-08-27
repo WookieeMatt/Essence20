@@ -48,25 +48,23 @@
   flex: 1;
   min-width: 0;
   /* Plain --theme-text-color reads as low-contrast to unreadable against a solid, arbitrary
-     system.color fill (same issue the Essence Badge label solves in _essence.scss) - white with
-     a dark halo keeps the label legible against any color a player picks, in both themes.
-     A blurred text-shadow was tried first, but its blur extends past the glyph's own edges, and
-     this label needs overflow: hidden (below) for its ellipsis truncation - the two together
-     hard-clipped that blur flat right at the tab's edge on any label reaching close to it (this
-     tab strip is tight on room, see this rule's own comment above), reading as an abrupt cut
-     instead of a glow. A tight text-stroke hugs the glyph outline itself instead of blurring
-     outward, so it stays inside the box (and inside the ellipsis's clip) at any label length. */
-  color: #ffffff;
+     system.color fill (same issue the Essence Badge label solves in _essence.scss) - a light gray
+     with a dark halo keeps the label legible against any color a player picks, in both themes
+     (light gray rather than pure white so it doesn't compete with the active tab's own, brighter
+     $textcolor1 treatment below). A tight text-stroke hugs the glyph outline itself rather than
+     blurring outward like a text-shadow would, keeping the halo crisp at any label length. */
+  color: v.$textcolor3;
   -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8);
   paint-order: stroke fill;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 22px;
-  font-size: 0.75em;
+  /* Nudged up from 0.75em - kept small since up to 12 tabs can share this strip at once (see this
+     rule's own comment above) and two-word labels like "Alt Mode" already have little room to
+     spare before wrapping to a second line or overflowing; verified live at this size. */
+  font-size: 1.1em;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   /* Full strength (not the old 0.85) so the fill reads as the actor's actual system.color
      instead of a version blended toward whatever's behind the tab strip. */
   opacity: 1;
@@ -88,8 +86,6 @@
 .essence20 .tabs a[data-tab] span {
   position: relative;
   z-index: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .essence20 .tabs .item .nav-item-label {
@@ -116,6 +112,15 @@
      instead of the white-plus-halo treatment the (now solid-colored) non-active tabs use. */
   color: var(--theme-text-color);
   -webkit-text-stroke: 0;
+}
+
+/* --theme-text-color in dark mode is $text-color-light (#aaaaaa, _theme_wrapper.scss) - readable
+   against the active tab's solid system.color fill, but muddier than intended. $textcolor1
+   (#c7c4c4, already this palette's "light gray" - it's dark mode's own --theme-muted-text) reads
+   as a cleaner light gray without going all the way to white. */
+.essence20.theme-dark .tabs .item.active,
+.essence20.theme-dark .tabs a[data-tab].active {
+  color: v.$textcolor1;
 }
 
 .essence20 .tabs .item.active::before,

@@ -51,6 +51,16 @@
   margin-right: 8px;
 }
 
+/* Origin/Influences/Bonds/Hang Ups (background.hbs, the only collapsible-item-containers on the
+   Bio tab) - their icons already inherit color: var(--theme-text-color) from
+   .collapsible-item-container above, which resolves near-black in light mode/light gray in dark
+   mode on its own, but pinning it explicitly here for light mode guarantees true black regardless
+   of --theme-text-color's exact shade, without touching dark mode (left to its existing inherited
+   behavior) or any other tab's own collapsible-item-container icons (Gear, Perks, ...). */
+.essence20.theme-light section.tab.background .collapsible-item-container i {
+  color: #000000;
+}
+
 /* Chevron icon. */
 .essence20 .accordion-icon {
   transition: all ease-in-out 0.25s;
@@ -90,38 +100,6 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  /* .role-points-item also carries the shared .align-center utility class, used there for its
-     justify-content:center (flex cross-axis centering) purpose - but that same class also sets
-     text-align: center as a side effect, which inherits down into this label. Restoring left
-     alignment here without touching .align-center itself, since that utility is shared broadly
-     elsewhere for its intended purpose. */
-  text-align: left;
-  /* Left-click toggles Activation (if supported) and right-click opens a menu (Post to Chat /
-     Spend a Point) - see base-actor-sheet.mjs#_activateRolePointsListeners. Every Role Points
-     name is right-clickable, but only ones with data-is-activatable (system.isActivatable) are
-     left-clickable, hence the separate default/activatable cursor rules below. */
-  cursor: default;
-}
-
-.essence20 .role-points-name[data-is-activatable] {
-  cursor: pointer;
-}
-
-.essence20 .role-points-name[data-is-activatable]:hover {
-  text-decoration: underline;
-}
-
-/* Reflects system.isActive back onto the name itself, now that the old checkbox (which showed
-   this state natively via its own checked/unchecked look) is gone. */
-.essence20 .role-points-name.active {
-  color: var(--e20-system-color, var(--theme-accent));
-  font-weight: 700;
-  /* A blurred text-shadow glow would get hard-clipped by this label's own overflow: hidden
-     (needed above for ellipsis truncation) - same bug already diagnosed for the sheet tabs'
-     halo (_tabs.scss). A tight text-stroke hugs the glyph outline instead of blurring outward,
-     so it stays inside the box (and inside the ellipsis's clip) at any label length. */
-  -webkit-text-stroke: 1px var(--e20-system-color, var(--theme-accent));
-  paint-order: stroke fill;
 }
 
 /* This row packs 7 inline items (2 icon links, a checkbox, the name, a bonus indicator, and 2

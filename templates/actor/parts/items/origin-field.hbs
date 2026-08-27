@@ -3,7 +3,7 @@
 {{#with (lookup @root.origins 0) as |origin|}}
   <li class="item no-list-style" data-item-id="{{origin._id}}" data-parent-id="{{../parentId}}">
     <div class="flexrow align-center gap-2">
-      <input type="text" name="system.origin" value="{{origin.name}}" />
+      <span class="header-item-name">{{origin.name}}</span>
       <div class="item-controls flex-grow-0">
         <a class="item-control item-delete" data-action="itemDelete" data-tooltip="{{localize 'E20.DeleteItem'}}">
           <i class="fas fa-trash"></i>
@@ -13,6 +13,6 @@
   </li>
 {{else}}
   <div class="flexrow">
-    <input class="no-unlock" type="text" value="{{localize 'E20.OriginDrop'}}" readonly />
+    <span class="header-item-name header-item-placeholder">{{localize 'E20.OriginDrop'}}</span>
   </div>
 {{/with}}

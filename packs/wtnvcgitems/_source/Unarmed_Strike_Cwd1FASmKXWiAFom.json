@@ -1,0 +1,60 @@
+{
+  "folder": "PINL2lBR7PwaxdJj",
+  "name": "Unarmed Strike",
+  "type": "weapon",
+  "_id": "Cwd1FASmKXWiAFom",
+  "img": "systems/essence20/assets/icons/weapons/dagger.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Welcome to Night Vale: Citizens' Guide",
+      "page": 62
+    },
+    "items": {
+      "xx3a": {
+        "uuid": "Compendium.essence20.wtnv_citizens_guide.Item.YNf3WpouTPTQ3HO2",
+        "img": "systems/essence20/assets/icons/items/weapon_effect.svg",
+        "name": "Unarmed Strike Effect",
+        "type": "weaponEffect"
+      }
+    },
+    "classFeatureId": null,
+    "alternateEffects": "",
+    "availability": "automatic",
+    "classification": {
+      "size": "integrated"
+    },
+    "equipped": true,
+    "requirements": {
+      "custom": "",
+      "skill": null,
+      "shift": "none"
+    },
+    "traits": [
+      "blunt",
+      "martialArts",
+      "silent"
+    ],
+    "upgradeTraits": [],
+    "usesPerScene": null
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787761045018,
+    "modifiedTime": 1787761045018,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!Cwd1FASmKXWiAFom"
+}

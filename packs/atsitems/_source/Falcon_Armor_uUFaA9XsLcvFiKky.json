@@ -1,0 +1,88 @@
+{
+  "folder": "wz3jDXHF9H1jTjUn",
+  "name": "Falcon Armor",
+  "type": "armor",
+  "_id": "uUFaA9XsLcvFiKky",
+  "img": "systems/essence20/assets/icons/items/armor.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "Across the Stars",
+      "page": 86
+    },
+    "items": {},
+    "availability": "prototype",
+    "bonusEvasion": 0,
+    "bonusToughness": 3,
+    "classification": "medium",
+    "equipped": false,
+    "traits": [
+      "deflective"
+    ],
+    "upgradeTraits": []
+  },
+  "effects": [
+    {
+      "name": "Falcon Armor",
+      "origin": "Item.uUFaA9XsLcvFiKky",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "uUFaA9XAeffct001",
+      "changes": [
+        {
+          "key": "system.movement.aerial.base",
+          "mode": 5,
+          "value": "60",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!uUFaA9XsLcvFiKky.uUFaA9XAeffct001"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null,
+    "coreVersion": "13.344",
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "createdTime": 1787774551377,
+    "modifiedTime": 1787774551377,
+    "lastModifiedBy": null
+  },
+  "_key": "!items!uUFaA9XsLcvFiKky"
+}
