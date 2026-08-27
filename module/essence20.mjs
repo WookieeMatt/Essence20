@@ -15,8 +15,11 @@ import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
+// Import Compendium Browser
+import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 // Import helper/utility classes and constants.
 import { applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
@@ -87,6 +90,7 @@ Hooks.once("init", async function () {
     Essence20Combat,
     Essence20Combatant,
     Essence20Item,
+    CompendiumBrowser: Essence20CompendiumBrowser,
     rollItemMacro,
   };
 
@@ -361,6 +365,13 @@ Hooks.once("ready", async function () {
   }
 
   await updateRoleCache();
+
+  // Keep real pack ownership in sync with the enabled/disabled sourcebook setting, in
+  // case it was changed some other way (e.g. a macro) since the last Source Config
+  // save. Only a GM can write pack ownership.
+  if (game.user.isGM) {
+    await syncSourcebookOwnership();
+  }
 });
 
 // Init the button in the controls for toggling the dialog
@@ -399,6 +410,30 @@ Hooks.on("getSceneControlButtons", (controls) => {
     };
   }
 });
+
+// Add a button to the bottom of the Compendium and Items sidebar tabs to open the
+// Compendium Browser. The footer part is a flexcol "action-buttons" container (same
+// one core uses for things like the Actor directory's Import button), so a plain
+// button dropped in there already stretches to the tab's full width for free.
+function addCompendiumBrowserFooterButton(app, html) {
+  const footer = html.querySelector('[data-application-part="footer"]');
+  if (!footer || footer.querySelector(".essence20-open-compendium-browser")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("essence20-open-compendium-browser");
+  button.innerHTML = `<i class="fa-solid fa-book-atlas" inert></i><span>${game.i18n.localize("E20.CompendiumBrowserOpenTooltip")}</span>`;
+  button.addEventListener("click", () => {
+    new Essence20CompendiumBrowser().render(true);
+  });
+
+  footer.appendChild(button);
+}
+
+Hooks.on("renderCompendiumDirectory", addCompendiumBrowserFooterButton);
+Hooks.on("renderItemDirectory", addCompendiumBrowserFooterButton);
 
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
