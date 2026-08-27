@@ -4,7 +4,6 @@ import {
   onRecharge,
   onRecoverSpellcastingDownshift,
   onSufferForSpellcastingDownshift,
-  spendRolePoint,
 } from './listener-misc-handler.mjs';
 
 /**
@@ -192,89 +191,5 @@ describe("onSufferForSpellcastingDownshift", () => {
     const sheet = makeActorSheet({ system: { skills: { spellcasting: { shiftDown: 0 } } } });
     await onSufferForSpellcastingDownshift(sheet);
     expect(sheet.actor.update).not.toHaveBeenCalled();
-  });
-});
-
-describe("spendRolePoint", () => {
-  // jest.config.js doesn't auto-clear mocks between tests, and global.ui.notifications is a
-  // single shared jest.fn() across this whole file (every describe block above also calls it) -
-  // without this, an assertion here would see leftover call history from earlier tests.
-  beforeEach(() => {
-    global.ui.notifications.error.mockClear();
-    global.ui.notifications.info.mockClear();
-  });
-
-  function makeActor(overrides = {}) {
-    return {
-      system: {
-        useUnlimitedResource: false,
-        powers: { personal: { value: 5 } },
-        ...overrides,
-      },
-      update: jest.fn(),
-    };
-  }
-
-  function makeItem(overrides = {}) {
-    return {
-      name: "Test Role Points",
-      system: {
-        resource: { max: 3, value: 2 },
-        powerCost: null,
-        ...overrides,
-      },
-      update: jest.fn(),
-    };
-  }
-
-  test("decrements the resource pool by 1", async () => {
-    const actor = makeActor();
-    const item = makeItem();
-    await spendRolePoint(actor, item);
-    expect(item.update).toHaveBeenCalledWith({ "system.resource.value": 1 });
-  });
-
-  test("errors and does nothing when the pool is already empty", async () => {
-    const actor = makeActor();
-    const item = makeItem({ resource: { max: 3, value: 0 } });
-    await spendRolePoint(actor, item);
-    expect(item.update).not.toHaveBeenCalled();
-    expect(global.ui.notifications.error).toHaveBeenCalledWith("E20.RolePointsOverSpent");
-  });
-
-  test("an unlimited-resource actor can spend even at 0 without decrementing", async () => {
-    const actor = makeActor({ useUnlimitedResource: true });
-    const item = makeItem({ resource: { max: 3, value: 0 } });
-    await spendRolePoint(actor, item);
-    expect(item.update).not.toHaveBeenCalled();
-    expect(global.ui.notifications.error).not.toHaveBeenCalled();
-  });
-
-  test("also spends Personal Power when the item has a powerCost", async () => {
-    const actor = makeActor();
-    const item = makeItem({ powerCost: 2 });
-    await spendRolePoint(actor, item);
-    expect(actor.update).toHaveBeenCalledWith({ "system.powers.personal.value": 3 });
-    expect(item.update).toHaveBeenCalledWith({ "system.resource.value": 1 });
-  });
-
-  test("errors and spends nothing when there's not enough Personal Power", async () => {
-    const actor = makeActor({ powers: { personal: { value: 1 } } });
-    const item = makeItem({ powerCost: 2 });
-    await spendRolePoint(actor, item);
-    expect(actor.update).not.toHaveBeenCalled();
-    expect(item.update).not.toHaveBeenCalled();
-    expect(global.ui.notifications.error).toHaveBeenCalledWith("E20.PowerOverSpent");
-  });
-
-  test("posts a spent-notification naming what was spent", async () => {
-    const actor = makeActor();
-    const item = makeItem({ powerCost: 2 });
-    await spendRolePoint(actor, item);
-    // jest.setup.js's game.i18n.format stub just echoes the key, ignoring the data object, so
-    // this only confirms the notification key/call itself, not the interpolated wording -
-    // the actual "2 Power, 1 point" spentString construction is exercised for real by the two
-    // tests above (resource-only vs resource+power spends).
-    expect(global.ui.notifications.info).toHaveBeenCalledWith("E20.RolePointsSpent");
   });
 });

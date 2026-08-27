@@ -74,17 +74,7 @@
         "name": "Whatever We Need",
         "type": "perk",
         "subtype": "role",
-        "level": 2,
-        "choiceGroup": "black-2"
-      },
-      "1a9c": {
-        "uuid": "Compendium.essence20.pr_crb.Item.8bmqJ7hyOAcVNB1Y",
-        "img": "systems/essence20/assets/icons/items/perk.svg",
-        "name": "Iron Bravado",
-        "type": "perk",
-        "subtype": "role",
-        "level": 2,
-        "choiceGroup": "black-2"
+        "level": 2
       },
       "d75f": {
         "uuid": "Compendium.essence20.pr_crb.Item.FDQFMkT2fUjxVxZY",
