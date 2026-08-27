@@ -1,3 +1,5 @@
+import CompendiumBrowserSourceConfig from "./apps/compendium-browser-sources.mjs";
+
 export const setting = (key) => {
   return game.settings?.get("essence20", key) ?? "default";
 };
@@ -172,5 +174,24 @@ export const registerSettings = function () {
     default: 0,
     type: Number,
     config: false,
+  });
+
+  /* -------------------------------------------- */
+  /*  Compendium Browser settings                  */
+  /* -------------------------------------------- */
+  game.settings.register(systemName, "enabledSourcebooks", {
+    scope: "world",
+    default: {},
+    type: Object,
+    config: false,
+  });
+
+  game.settings.registerMenu(systemName, "enabledSourcebooksMenu", {
+    name: "E20.CompendiumBrowserSourceConfigMenuLabel",
+    label: "E20.CompendiumBrowserConfigureSources",
+    hint: "E20.CompendiumBrowserSourceConfigMenuHint",
+    icon: "fa-solid fa-book-atlas",
+    type: CompendiumBrowserSourceConfig,
+    restricted: true,
   });
 };
