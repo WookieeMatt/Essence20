@@ -57,20 +57,6 @@
   width: 100%;
 }
 
-/* Zord/Megaform show their Strength/Speed Essence scores via zord-common.hbs's own markup
-   (a .stats-row > .stats-container, not the npc-essence-scores.hbs partial the other NPC-like
-   types share) - a dedicated class here so this one row can stretch full-width without touching
-   the shared .stats-row/.stats-container classes, which are also used elsewhere (spells.hbs,
-   common-no-vitals.hbs) where that stretch isn't wanted. */
-.essence20 .zord-essence-scores {
-  width: 100%;
-  flex-grow: 1;
-
-  .stats-container {
-    width: 100%;
-  }
-}
-
 .essence20 .skill-separator {
   display: flex;
   align-items: center;

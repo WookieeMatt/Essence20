@@ -1,14 +1,4 @@
 <section class="tab main vehicle {{tabs.main.cssClass}}" data-tab="main" data-group="primary">
-  <div class="npc-row">
-    <div class="npc-firepoints">
-      {{!-- Firepoint Descriptions --}}
-      <div class="stats-container firepoints">
-        <textarea class="firepoints-input" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
-         name="system.firepoints.description" placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
-      </div>
-    </div>
-  </div>
-
   {{!-- Common Details (health/stun live in the sidebar instead) --}}
   {{> "systems/essence20/templates/actor/parts/misc/common-no-vitals.hbs"}}
 

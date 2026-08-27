@@ -21,12 +21,28 @@
 }
 
 .theme-wrapper {
-  /* scrollbar-color is an inherited property, so setting it once here reaches every scrollable
-     region in the sheet (items-list, tab content, biography editor, ...) without needing a rule
-     per scrollable element - the ::-webkit-scrollbar-* pseudo-elements below don't inherit that
-     way and are repeated per-element instead, as a fallback for engines that don't support the
-     standard property yet. */
-  scrollbar-color: var(--theme-scrollbar-thumb) transparent;
+  /* scrollbar-color/scrollbar-width are inherited properties in principle, so setting them just
+     once on .theme-wrapper looks like it should reach every scrollable descendant for free - but
+     Foundry core has its own `* { scrollbar-color: var(--color-scrollbar) ...; }` rule
+     (foundry2.css, @layer layouts.full) that matches every element DIRECTLY via the universal
+     selector. A direct declaration on an element always wins over an inherited one regardless of
+     CSS layer order (layers only decide between rules that both directly match the same element,
+     inheritance is the last resort) - so every scrollable element other than the .theme-wrapper
+     root itself (sidebars, item lists, tab content, ...) was showing Foundry's own
+     --color-scrollbar (its per-theme accent, e.g. a dark red on Foundry's own default dark
+     theme) instead of this system's gray. `&, *` below matches every descendant directly too,
+     the same way Foundry's own rule does, so essence20's later "system" @layer (see
+     essence20.scss's own comment on layer order) actually gets to win.
+     The ::-webkit-scrollbar-* pseudo-elements below already had this same broad reach (via a
+     plain descendant combinator, not relying on inheritance) - kept as a fallback for engines
+     that don't honor the standard properties. */
+  overflow: visible;
+  border: none; // TODO: Remove after refactor of styles, this is just to remove the old border;
+
+  &, * {
+    scrollbar-color: var(--theme-scrollbar-thumb) transparent;
+    scrollbar-width: thin;
+  }
 
   ::-webkit-scrollbar {
     width: 8px;
@@ -41,9 +57,6 @@
   ::-webkit-scrollbar-track {
     background: transparent;
   }
-
-  overflow: visible;
-  border: none; // TODO: Remove after refactor of styles, this is just to remove the old border;
 
   &.window-app {
     backdrop-filter: blur(4px);

@@ -1,14 +1,9 @@
-<div class="flexrow stats-row zord-essence-scores">
-  {{!-- Strength/Speed --}}
-  <div class="stats-container e20-border-accent align-center">
-    <div class="flexrow flex-group-center">
-      <span class="essence-label">{{config.essences.strength}}</span>
-      <input class="two-digit-input{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.essences.strength.value" value="{{system.essences.strength.value}}" min="0" step="1" />
-    </div>
-    <div class="flexrow flex-group-center">
-      <span class="essence-label">{{config.essences.speed}}</span>
-      <input class="two-digit-input{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.essences.speed.value" value="{{system.essences.speed.value}}" min="0" step="1" />
-    </div>
+<div class="npc-row">
+  <div class="npc-essence-scores">
+    {{!-- Zord/Megaform Essence Scores - same shared partial/box style as NPC and Companion,
+         stretched full-width by .npc-essence-scores (sass/actors/_npc.scss). Previously only
+         Strength/Speed were shown inline here; now covers all 4 like the other actor types. --}}
+    {{> "systems/essence20/templates/actor/parts/misc/npc-essence-scores.hbs"}}
   </div>
 </div>
 

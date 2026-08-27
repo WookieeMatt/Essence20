@@ -1,4 +1,15 @@
 <section class="tab notes {{tabs.notes.cssClass}}" data-tab="notes" data-group="primary">
+  {{!-- Vehicle-only for now - moved off the Main tab, which was getting crowded. --}}
+  {{#if (eq @root.document.type 'vehicle')}}
+  <div class="npc-firepoints">
+    {{!-- Firepoint Descriptions --}}
+    <div class="stats-container firepoints">
+      <textarea class="firepoints-input" oninput='this.style.height = "";this.style.height = this.scrollHeight + "px"'
+       name="system.firepoints.description" placeholder="{{localize 'E20.VehicleFirepointsDescription'}}">{{system.firepoints.description}}</textarea>
+    </div>
+  </div>
+  {{/if}}
+
   <div class="notes-container e20-border-accent">
 
   </div>

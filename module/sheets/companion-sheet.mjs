@@ -3,7 +3,12 @@ import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
 export class Essence20CompanionActorSheet extends Essence20BaseActorSheet {
   /**@inheritDoc */
   static DEFAULT_OPTIONS = {
-    classes: ["essence20", "sheet", "actor"],
+    // Foundry's DEFAULT_OPTIONS merge across the inheritance chain replaces arrays wholesale
+    // rather than merging them element-wise (see foundry.utils.mergeObject's array handling) -
+    // this class array was overwriting Essence20BaseActorSheet's own (which includes
+    // "theme-wrapper"), so Companion sheets never got the ::-webkit-scrollbar/scrollbar-color
+    // styling _theme_wrapper.scss provides everywhere else - just plain browser scrollbars.
+    classes: ["essence20", "sheet", "actor", "theme-wrapper"],
     tag: 'form',
     position: {
       width: 620,
