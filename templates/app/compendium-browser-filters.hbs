@@ -1,0 +1,45 @@
+<div class="compendium-browser-filters flexcol">
+  <search>
+    <input type="search" name="search" value="{{search}}" placeholder="{{localize 'E20.CompendiumBrowserSearchPlaceholder'}}" />
+  </search>
+
+  {{#if isGM}}
+    <button type="button" class="compendium-browser-configure-sources" data-action="configureSources">
+      <i class="fa-solid fa-book-atlas"></i>
+      <span>{{localize "E20.CompendiumBrowserConfigureSources"}}</span>
+    </button>
+  {{/if}}
+
+  <fieldset class="compendium-browser-filter-group">
+    <legend>{{localize "E20.CompendiumBrowserFilterTypes"}}</legend>
+    <div class="compendium-browser-filter-actions">
+      <a data-action="selectAllTypes">{{localize "E20.CompendiumBrowserSelectAll"}}</a>
+      <a data-action="selectNoTypes">{{localize "E20.CompendiumBrowserSelectNone"}}</a>
+    </div>
+    {{#each types as |type|}}
+      <label class="compendium-browser-filter-option">
+        <input type="checkbox" data-item-type="{{type.key}}" {{checked type.checked}} />
+        <span>{{type.label}}</span>
+      </label>
+    {{/each}}
+  </fieldset>
+
+  <fieldset class="compendium-browser-filter-group">
+    <legend>{{localize "E20.CompendiumBrowserFilterBooks"}}</legend>
+    <div class="compendium-browser-filter-actions">
+      <a data-action="selectAllBooks">{{localize "E20.CompendiumBrowserSelectAll"}}</a>
+      <a data-action="selectNoBooks">{{localize "E20.CompendiumBrowserSelectNone"}}</a>
+    </div>
+    {{#each groups as |group|}}
+      <div class="compendium-browser-filter-subgroup">
+        <span class="compendium-browser-filter-subgroup-label">{{group.name}}</span>
+        {{#each group.packs as |pack|}}
+          <label class="compendium-browser-filter-option">
+            <input type="checkbox" data-pack-id="{{pack.id}}" {{checked pack.checked}} />
+            <span>{{pack.label}}</span>
+          </label>
+        {{/each}}
+      </div>
+    {{/each}}
+  </fieldset>
+</div>

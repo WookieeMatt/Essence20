@@ -15,6 +15,8 @@ import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
+// Import Compendium Browser
+import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 // Import helper/utility classes and constants.
 import { applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { E20 } from "./helpers/config.mjs";
@@ -87,6 +89,7 @@ Hooks.once("init", async function () {
     Essence20Combat,
     Essence20Combatant,
     Essence20Item,
+    CompendiumBrowser: Essence20CompendiumBrowser,
     rollItemMacro,
   };
 
@@ -383,6 +386,28 @@ Hooks.on("getSceneControlButtons", (controls) => {
       },
     };
   }
+});
+
+// Add a button to the Compendium sidebar tab to open the Compendium Browser. Matches
+// the existing icon-only controls in that tab's search bar (filter/sort/collapse),
+// rather than the full-text "Create Compendium" buttons, since the sidebar panel isn't
+// wide enough to fit a fourth full-text button without overflowing.
+Hooks.on("renderCompendiumDirectory", (app, html) => {
+  const search = html.querySelector("search");
+  if (!search || search.querySelector(".essence20-open-compendium-browser")) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.classList.add("inline-control", "icon", "fa-solid", "fa-book-atlas", "essence20-open-compendium-browser");
+  button.dataset.tooltip = "";
+  button.setAttribute("aria-label", game.i18n.localize("E20.CompendiumBrowserOpenTooltip"));
+  button.addEventListener("click", () => {
+    new Essence20CompendiumBrowser().render(true);
+  });
+
+  search.prepend(button);
 });
 
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
