@@ -1,0 +1,30 @@
+{{!-- Shows exactly and only the skills chosen via the Skill Picker app
+     (module/apps/skill-picker.mjs, base-actor-sheet.mjs#_prepareChosenNpcSkills) as a flat run of
+     compact rollable buttons ("Athletics +d20") - editing (which skills are chosen, their shift,
+     any-Essence attribution) happens in the Skill Picker itself; this is a pure roll surface, so
+     it intentionally skips the "Roll is Specialized" checkbox/specializations sub-list that
+     essence-skills.hbs shows elsewhere. --}}
+<div class="skills-container npc-skill-list e20-border-accent">
+  <div class="flex-group-center npc-skill-list-header">
+    <span>{{localize 'E20.AccordionSkillsTitle'}}</span>
+    <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
+  </div>
+
+  {{#if @root.chosenSkills.length}}
+  <div class="npc-skill-buttons">
+    {{#each @root.chosenSkills as |entry|}}
+    <a
+      class="npc-skill-button rollable" data-action="rollable" data-roll-type="skill"
+      data-skill="{{entry.skill}}" data-essence="{{entry.essence}}"
+      data-shift-up="{{entry.fields.shiftUp}}" data-shift-down="{{entry.fields.shiftDown}}"
+      data-shift="{{entry.fields.shift}}" data-is-specialized="{{entry.fields.isSpecialized}}"
+      data-can-crit-d2="{{entry.fields.canCritD2}}" data-tooltip="{{localize 'E20.SkillRollTitle'}}"
+    >
+      {{lookup @root.config.skills entry.skill}} +{{entry.fields.shift}}
+    </a>
+    {{/each}}
+  </div>
+  {{else}}
+  <p class="npc-skill-list-empty">{{localize 'E20.NpcSkillListEmpty'}}</p>
+  {{/if}}
+</div>

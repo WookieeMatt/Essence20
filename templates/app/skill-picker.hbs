@@ -1,0 +1,89 @@
+<div class="skill-picker-body">
+  <div class="skill-picker-tally">
+    {{#each essenceGroups as |group|}}
+      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+        essenceLabel=group.label
+        skillRankAllocation=(lookup (lookup @root.essenceSpend group.essence) 'value')
+        skillRankString=(lookup (lookup @root.essenceSpend group.essence) 'string')
+      }}
+    {{/each}}
+  </div>
+
+  {{!-- Strength/Speed on top, Social/Smarts below - explicit 2x2 order from
+       module/apps/skill-picker.mjs's essenceGroups, not CONFIG.E20.originEssences' own order
+       (strength, speed, smarts, social). --}}
+  <div class="skill-picker-essence-grid">
+    {{#each essenceGroups as |group|}}
+    <fieldset class="skill-picker-essence-group">
+      <legend>{{localize group.label}}</legend>
+      {{#each group.skills as |entry|}}
+      <div class="skill-picker-row">
+        {{!-- PCs always show every skill already - no picking, just a label. --}}
+        {{#if @root.isPc}}
+        <label>{{localize entry.label}}</label>
+        {{else}}
+        <label class="checkbox">
+          <input type="checkbox" name="system.skills.{{entry.key}}.isChosen" {{checked entry.fields.isChosen}} data-dtype="Boolean" />
+          {{localize entry.label}}
+        </label>
+        {{/if}}
+        <select class="skill-shift-select" name="system.skills.{{entry.key}}.shift">
+          {{selectOptions @root.config.skillShifts selected=entry.fields.shift}}
+        </select>
+      </div>
+      {{/each}}
+
+      {{!-- Conditioning (system.conditioning) isn't a system.skills entry and has no shift/die -
+           it's a flat Strength-Essence value added straight into Health (actor.mjs). Shown here,
+           grouped with the other Strength skills, purely as a convenience for tallying Strength
+           spend for NPC-like actors, which have no other editor for it - PCs already have their
+           own Conditioning input at the top of the Strength column on pc-skills.hbs, so it's
+           skipped here to avoid a confusing second editable copy of the same field. --}}
+      {{#if (and (eq group.essence 'strength') (not @root.isPc))}}
+      <div class="skill-picker-row skill-picker-conditioning">
+        <label>{{localize 'E20.ActorConditioning'}}</label>
+        <input type="number" name="system.conditioning" value="{{@root.conditioning}}" min="0" step="1" />
+      </div>
+      {{/if}}
+    </fieldset>
+    {{/each}}
+  </div>
+
+  <fieldset class="skill-picker-essence-group skill-picker-any-group">
+    <legend>{{localize @root.config.essences.any}}</legend>
+    {{#each anySkills as |entry|}}
+    <div class="skill-picker-row skill-picker-any-row">
+      {{!-- PCs always show every skill already - no picking, just a label. --}}
+      {{#if @root.isPc}}
+      <label>{{localize entry.label}}</label>
+      {{else}}
+      <label class="checkbox">
+        <input type="checkbox" name="system.skills.{{entry.key}}.isChosen" {{checked entry.fields.isChosen}} data-dtype="Boolean" />
+        {{localize entry.label}}
+      </label>
+      {{/if}}
+      <select class="skill-shift-select" name="system.skills.{{entry.key}}.shift">
+        {{selectOptions @root.config.skillShifts selected=entry.fields.shift}}
+      </select>
+
+      {{!-- An "any"-Essence skill can spend from more than one real Essence at once (e.g. a
+           Weird check built from a Strength point and a Speed point) - these four inputs record
+           how this skill's spend is actually split, feeding each real Essence's own tally
+           above (see computeNpcEssenceSpend, module/helpers/skill-picker.mjs). --}}
+      <div class="skill-picker-attribution" data-tooltip="{{localize 'E20.SkillPickerAttributionTooltip'}}">
+        {{#each @root.config.originEssences as |essenceLabel essenceKey|}}
+        <label class="skill-picker-attribution-input">
+          <span>{{localize essenceLabel}}</span>
+          <input class="two-digit-input" type="number" min="0" step="1"
+            name="system.skills.{{entry.key}}.essenceAttribution.{{essenceKey}}"
+            value="{{lookup entry.fields.essenceAttribution essenceKey}}" />
+        </label>
+        {{/each}}
+        <span class="skill-picker-attribution-status {{#unless entry.attribution.isBalanced}}unbalanced{{/unless}}">
+          {{localize 'E20.SkillPickerAttributed'}}: {{entry.attribution.attributed}} / {{entry.attribution.upshifts}}
+        </span>
+      </div>
+    </div>
+    {{/each}}
+  </fieldset>
+</div>

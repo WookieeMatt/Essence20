@@ -12,6 +12,7 @@
         {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
           skillRankAllocation=system.skillRankAllocation.strength.value skillRankString=system.skillRankAllocation.strength.string
           defenseLabel=(lookup @root.config.defenses 'toughness') defenseValue=system.defenses.toughness.total}}
+        <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
       </div>
       <div class="flexrow skill-header e20-skill-header conditioning-row" data-e20-color="{{system.color}}">
         <span class="skill-name">{{localize 'E20.ActorConditioning'}}</span>
@@ -22,7 +23,7 @@
         </a>
       </div>
       {{#each @root.config.skillsByEssence.strength as |skill|}}
-        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill)}}
+        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='strength' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
       {{/each}}
     </div>
   </div>
@@ -40,9 +41,10 @@
         {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
           skillRankAllocation=system.skillRankAllocation.speed.value skillRankString=system.skillRankAllocation.speed.string
           defenseLabel=(lookup @root.config.defenses 'evasion') defenseValue=system.defenses.evasion.total}}
+        <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
       </div>
       {{#each @root.config.skillsByEssence.speed as |skill|}}
-        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='speed' skill=skill fields=(lookup @root.system.skills skill)}}
+        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='speed' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
       {{/each}}
     </div>
   </div>
@@ -60,9 +62,10 @@
         {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
           skillRankAllocation=system.skillRankAllocation.smarts.value skillRankString=system.skillRankAllocation.smarts.string
           defenseLabel=(lookup @root.config.defenses 'willpower') defenseValue=system.defenses.willpower.total}}
+        <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
       </div>
      {{#each @root.config.skillsByEssence.smarts as |skill|}}
-        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='smarts' skill=skill fields=(lookup @root.system.skills skill)}}
+        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='smarts' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
       {{/each}}
     </div>
   </div>
@@ -80,9 +83,10 @@
         {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
           skillRankAllocation=system.skillRankAllocation.social.value skillRankString=system.skillRankAllocation.social.string
           defenseLabel=(lookup @root.config.defenses 'cleverness') defenseValue=system.defenses.cleverness.total}}
+        <a class="item-control" data-action="skillPicker" data-tooltip="{{localize 'E20.SkillPickerOpenTooltip'}}"><i class="fas fa-gear"></i></a>
       </div>
       {{#each @root.config.skillsByEssence.social as |skill|}}
-        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill)}}
+        {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='social' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
       {{/each}}
     </div>
   </div>

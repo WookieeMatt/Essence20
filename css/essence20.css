@@ -1,1 +1,3564 @@
-@import"https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap";.align-left{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:left}.align-right{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:right}.align-center{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;text-align:center}.chip{border-radius:10px;border:1px solid var(--theme-border-color);padding-left:8px;padding-right:8px;padding-top:2px;margin-right:3px;color:var(--theme-text-color);background-color:var(--theme-card-bg);width:fit-content;height:fit-content;text-size-adjust:8;white-space:nowrap}.chip-section{display:flex;flex-direction:row;justify-content:flex-start;margin-top:10px;margin-bottom:10px;flex-wrap:wrap;row-gap:3px}.collapsible{background-color:#eee;color:#444;cursor:pointer;padding:18px;width:100%;border:none;text-align:left;outline:none;font-size:15px}.essence20 .collapsible-item-container{list-style:none;padding:8px;overflow-y:auto;color:var(--theme-text-color);display:flex;flex-direction:column;flex-grow:0;flex-basis:auto;justify-content:center;background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:15px;width:100%;height:fit-content}.essence20 .collapsible-item-subcontainer{border-color:var(--theme-border-color);box-shadow:none;margin:auto;width:90%}.essence20 .accordion-content{display:none}.essence20 .open .accordion-content{display:block;width:100%}.essence20 .header-accordion-label{float:right;margin-right:8px}.essence20.theme-light section.tab.background .collapsible-item-container i{color:#000}.essence20 .accordion-icon{transition:all ease-in-out .25s}.essence20 .open .accordion-icon{transform:rotate(180deg)}.essence20 .item-label-checkbox{margin:0;flex:0 0 auto !important;width:14px !important;height:14px !important}.essence20 .role-points-item{flex-wrap:nowrap}.essence20 .role-points-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;cursor:default}.essence20 .role-points-name[data-is-activatable]{cursor:pointer}.essence20 .role-points-name[data-is-activatable]:hover{text-decoration:underline}.essence20 .role-points-name.active{color:var(--e20-system-color, var(--theme-accent));font-weight:700;-webkit-text-stroke:1px var(--e20-system-color, var(--theme-accent));paint-order:stroke fill}.essence20 .role-points-item .two-digit-input{flex-shrink:0;min-width:20px}.essence20 .collapsible-item-subcontainer .items-list .item{font-size:.8em}.essence20 section.tab.gear>.collapsible-item-container>.items-list>li.item{font-size:.85em}.essence20 section.tab.gear .collapsible-item-subcontainer .items-list .item{font-size:.9411764706em}.essence20 .item-image{flex:none}.essence20 .weapon-effect-row{align-items:center;justify-content:flex-start;width:100%}.essence20 .item-image .flexrow{flex-wrap:nowrap}.essence20 .weapon-effect-name{flex:none;max-width:130px;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.essence20 .weapon-effect-skill{flex:none;width:90px;padding:1px 3px}.essence20 .weapon-effect-chips{flex:none;flex-wrap:nowrap;gap:4px;margin-left:auto}.essence20 .weapon-effect-row .weapon-effect-chip{flex:none}.essence20 .editor{position:relative;min-height:250px;max-height:100%;max-width:100%;overflow:inherit}.essence20 .editor-content{color:var(--theme-text-color);min-height:fit-content;font-size:16px;padding:0}.tox-tinymce{min-height:250px;max-height:100%;max-width:100%}.flex-group-center,.flex-group-left,.flex-group-right{-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;text-align:center}.flex-group-left{-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;text-align:left}.flex-group-right{-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end;text-align:right}.flexshrink{-webkit-box-flex:0;-ms-flex:0;flex:0}.flex-between{-webkit-box-pack:justify;-ms-flex-pack:justify;justify-content:space-between}.flexlarge{-webkit-box-flex:2;-ms-flex:2;flex:2}.essence20 .flexrow-nowrap{display:flex;flex-direction:row;justify-content:flex-start}.flex-grow-0{-webkit-box-flex:0;-ms-flex:0;flex:0}.flex-grow-1{-webkit-box-flex:1;-ms-flex:1;flex:1}.flex-grow-15{-webkit-box-flex:1.5;-ms-flex:1.5;flex:1.5}.flex-grow-025{-webkit-box-flex:.25;-ms-flex:.25;flex:.25}.flex-grow-0175{-webkit-box-flex:.175;-ms-flex:.175;flex:.175}.nowrap{white-space:nowrap}.gap-2{gap:2px}.gap-5{gap:5px}.gap-6{gap:6px}.ml-2{margin-left:2px}.mb-5{margin-bottom:5px}.min-width-fit{min-width:fit-content}.w-100{width:100%}.no-list-style{list-style-type:none}.my-10{margin:10px 0}.bg-transparent{background:rgba(0,0,0,0)}.window-app{font-family:"Rajdhani",sans-serif;font-weight:bold;color:var(--theme-text-color);border:4px solid #b5b1b1;border-radius:15px}.essence20.application{font-family:"Rajdhani",sans-serif;font-weight:bold}.window-app .window-content{color:var(--theme-text-color);border-radius:15px;background:radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);background-size:cover}.window-app .window-content button{color:var(--theme-text-color);background:var(--theme-card-bg);border-color:var(--theme-border-color);border-radius:20px}body.game .window-app{--color-select-option-bg: #5f5f5f}.essence20 .sheet{min-width:fit-content;max-width:55%}.actor{min-width:860px;min-height:auto}.directory-list .actor{min-width:fit-content}.dialog .dialog-buttons button.default{color:var(--theme-text-color);background:var(--theme-card-bg)}.dialog .dialog-buttons button{color:var(--theme-text-color);background:var(--theme-card-bg)}.dialog .dialog-buttons{color:var(--theme-text-color);padding-top:6px}.dialog-content{list-style:none;padding:6px;overflow-y:none;color:var(--theme-text-color);flex-basis:auto;justify-content:center;height:100%;background:var(--theme-card-bg);border:4px solid #b5b1b1;border-radius:15px;box-shadow:4px 4px 0 #000}.dialog input{color:var(--theme-text-color)}.app .window-app dialog{background:none}.minimizing{list-style:none;padding:6px;overflow-y:none;color:var(--theme-text-color);flex-basis:auto;justify-content:center;height:100%;background:var(--theme-card-bg);border:4px solid #b5b1b1;border-radius:15px;box-shadow:4px 4px 0 #000}#module-management .package-list .package-title{color:var(--theme-text-color)}.item-button-container{flex-grow:0}.essence20 .rollable{font-size:1.25em}.rollable:hover,.rollable:focus{color:var(--theme-accent);text-shadow:0 0 10px red;cursor:pointer}.window-app textarea{color:var(--theme-text-color)}.chat-message{background:radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);opacity:80;color:#c7c4c4;border:4px solid var(--e20-system-color, var(--theme-accent));box-shadow:4px 4px 0 #000}.chat-message .flavor-text{color:#c7c4c4}.chat-message .message-sender{color:#c7c4c4}.chat-message .message-metadata{color:#c7c4c4}.chat-message.whisper{background:radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);opacity:80;color:#c7c4c4;border:4px dashed var(--e20-system-color, var(--theme-accent));box-shadow:4px 4px 0 #000}.chat-message.emote{background:radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);border:4px solid var(--e20-system-color, var(--theme-accent))}.chat-message.theme-light{background:linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));color:#222}.chat-message.theme-light .flavor-text,.chat-message.theme-light .message-sender,.chat-message.theme-light .message-metadata{color:#222}.chat-message.theme-light.whisper{background:linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));color:#222}.chat-message.theme-light.emote{background:linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98))}.grid,.grid-2col{display:grid;grid-column:span 2/span 2;grid-template-columns:repeat(2, minmax(0, 1fr));gap:10px;margin:10px 0;padding:0}.grid-3col{grid-column:span 3/span 3;grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-4col{grid-column:span 4/span 4;grid-template-columns:repeat(4, minmax(0, 1fr))}.grid-5col{grid-column:span 5/span 5;grid-template-columns:repeat(5, minmax(0, 1fr))}.grid-6col{grid-column:span 6/span 6;grid-template-columns:repeat(6, minmax(0, 1fr))}.grid-7col{grid-column:span 7/span 7;grid-template-columns:repeat(7, minmax(0, 1fr))}.grid-8col{grid-column:span 8/span 8;grid-template-columns:repeat(8, minmax(0, 1fr))}.grid-9col{grid-column:span 9/span 9;grid-template-columns:repeat(9, minmax(0, 1fr))}.grid-10col{grid-column:span 10/span 10;grid-template-columns:repeat(10, minmax(0, 1fr))}.grid-11col{grid-column:span 11/span 11;grid-template-columns:repeat(11, minmax(0, 1fr))}.grid-12col{grid-column:span 12/span 12;grid-template-columns:repeat(12, minmax(0, 1fr))}.grid-start-2{grid-column-start:2}.grid-start-3{grid-column-start:3}.grid-start-4{grid-column-start:4}.grid-start-5{grid-column-start:5}.grid-start-6{grid-column-start:6}.grid-start-7{grid-column-start:7}.grid-start-8{grid-column-start:8}.grid-start-9{grid-column-start:9}.grid-start-10{grid-column-start:10}.grid-start-11{grid-column-start:11}.grid-start-12{grid-column-start:12}.grid-span-2{grid-column-end:span 2}.grid-span-3{grid-column-end:span 3}.grid-span-4{grid-column-end:span 4}.grid-span-5{grid-column-end:span 5}.grid-span-6{grid-column-end:span 6}.grid-span-7{grid-column-end:span 7}.grid-span-8{grid-column-end:span 8}.grid-span-9{grid-column-end:span 9}.grid-span-10{grid-column-end:span 10}.grid-span-11{grid-column-end:span 11}.grid-span-12{grid-column-end:span 12}.essence20 .sheet-header{background:hsla(0,0%,100%,.04);border:1px solid var(--theme-border-color);box-shadow:inset 0 1px 0 hsla(0,0%,100%,.05);padding:6px;border-radius:18px;-webkit-box-flex:0;-ms-flex:0 auto;flex:0 0 auto;overflow:hidden;min-height:fit-content;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row;-ms-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-pack:start;-ms-flex-pack:start;justify-content:flex-start;align-items:flex-start;margin-bottom:10px;color:var(--theme-text-color)}.essence20 .sheet-header .e20-border-accent{border-color:var(--e20-system-color, #5f5f5f)}.essence20 .sheet-header .sliced-border__label{text-transform:uppercase}.essence20 .sheet-header>.flexrow.gap-2{flex:1 1 100%;align-items:flex-start;row-gap:.5rem}.essence20 .sheet-header>.flexrow.gap-2.header-row-top,.essence20 .sheet-header>.flexrow.gap-2.header-row-bottom{flex-wrap:nowrap}.essence20 .sheet-header>.flexrow.gap-2.header-row-bottom{margin-top:1rem}.essence20 .sheet-header>.flexrow.gap-2.header-row-top .sliced-border__label{transform:translate(-50%, calc(-50% + 4px))}.essence20 .sheet-header .flexrow.gap-2 .sliced-border{flex:1 1 auto;min-width:6.5em;padding-right:16px;padding-bottom:8px;padding-top:8px;padding-left:16px}.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select),.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select),.essence20 .sheet-header .flexrow.gap-2 .sliced-border .header-item-name{flex:1 1 0;min-width:0;width:100%;box-sizing:border-box;border:none}.essence20 .sheet-header .flexrow.gap-2 .sliced-border>.flexrow.align-center.gap-2,.essence20 .sheet-header .flexrow.gap-2 .sliced-border>li.item.no-list-style,.essence20 .sheet-header .flexrow.gap-2 .sliced-border>div.flexrow{height:var(--input-height, 32px);box-sizing:border-box;padding-top:3px}.essence20 .sheet-header .flexrow.gap-2 .sliced-border:not(.--col)>.flexrow.align-center.gap-2{align-self:flex-end}.essence20 .sheet-header .flexrow.gap-2 .sliced-border.--col{justify-content:flex-end}.essence20 .sheet-header .flexrow.gap-2 .sliced-border .header-item-name{background:var(--theme-panel-bg)}.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select),.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select){background:rgba(0,0,0,0) !important;background-color:rgba(0,0,0,0) !important;background-image:none !important;appearance:none !important;border:none !important;border-width:0 !important;border-color:rgba(0,0,0,0) !important;border-radius:0 !important;outline:none !important;box-shadow:none !important}.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):focus,.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):focus-visible,.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select):focus,.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select):focus-visible{border:none !important;outline:none !important;box-shadow:none !important}.essence20 .sheet-header .flexrow.gap-2 .sliced-border input[type=number]::-webkit-inner-spin-button,.essence20 .sheet-header .flexrow.gap-2 .sliced-border input[type=number]::-webkit-outer-spin-button{appearance:none !important;margin:0}.essence20 .sheet-header .header-item-name{display:flex;align-items:center;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--theme-text-color);min-height:var(--input-height, 32px)}.essence20 .sheet-header .header-item-placeholder{color:var(--theme-muted-text)}.essence20 .sheet-header .sliced-border input.picker[type=color]{flex:0 0 auto;width:32px;height:24px;min-width:0;padding:0;border:none;box-sizing:border-box}.essence20 .sheet-header .sliced-border input.picker[type=color]::-webkit-color-swatch-wrapper{padding:0}.essence20 .sheet-header .sliced-border input.picker[type=color]::-webkit-color-swatch{border:none;border-radius:4px}.essence20 .sheet-header .sliced-border.--col{min-width:8em}.essence20 .header-name-field{flex:1 1 auto;gap:.25rem}.essence20 .header-name-field .sliced-border{width:100%}.essence20 .sheet-header h1.charname{margin:0;padding:0;font-size:1.4rem;line-height:1.2;font-family:inherit;flex:1 1 auto;width:100%}.essence20 .sheet-header h1.charname input{width:100%;font-size:1em;font-weight:700}.essence20 .items-header{height:28px;margin:2px 0;padding:0;-webkit-box-align:center;-ms-flex-align:center;align-items:center;background:var(--theme-card-bg);border:1px solid var(--theme-border-color);color:var(--theme-accent);font-weight:bold;border-radius:15px}.essence20 .items-header>*{font-size:14px;text-align:center}.essence20 .items-header .item-name{font-weight:bold;padding-left:5px;text-align:left;display:-webkit-box;display:-ms-flexbox;display:flex}.essence20 .sheet-header .pr-header-level{flex:0 0 auto;justify-content:center}.essence20 .sheet-header .pr-header-color{flex:0 0 auto;min-height:48px}.essence20 .pr-header-level-buttons{flex:0 0 auto;gap:2px;font-size:.7em;line-height:1}.essence20.item{--e20-system-color: var(--theme-border-color)}.essence20 .items-list{list-style:none;margin:0;padding:0;overflow-y:auto;scrollbar-width:thin;color:var(--theme-text-color);display:flex;flex-direction:column;justify-content:space-between}.essence20.item .item-sheet-header{align-items:center;gap:1rem}.essence20.item .item-profile-img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:3px solid var(--theme-border-color);box-shadow:0 2px 6px rgba(0,0,0,.35)}.essence20.item .item-type-badge{align-self:flex-start;width:fit-content;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--theme-text-color) !important;background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:20px;padding:2px 10px;margin-bottom:4px}.essence20.item .tab.description>div,.essence20.item .tab.details>div,.essence20.item .tab.effects .effect-list-container{background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:10px;padding:1rem;display:flex;flex-direction:column;gap:.5rem}.essence20.item .tab.description h3{color:var(--theme-text-color);border-bottom:1px solid var(--theme-border-color);padding-bottom:4px;margin:.25rem 0}.essence20 .resource-label{font-weight:bold}.roll-dialog div{margin-bottom:10px;height:fit-content}.roll-dialog div label>*{vertical-align:middle}.roll-dialog-app .form-footer{display:flex;flex-direction:row;gap:8px;width:100%;box-sizing:border-box}.roll-dialog-app .form-footer button{flex:1 1 0;border-radius:0}.roll-dialog .roll-dialog-toggle{display:flex !important;justify-content:space-between}.roll-dialog .switch{position:relative;display:inline-block !important;flex:0 0 28px !important;width:28px;height:16px;vertical-align:middle}.roll-dialog .switch input{opacity:0;width:0;height:0}.roll-dialog .switch-slider{position:absolute;inset:0;cursor:pointer;background-color:#5f5f5f;border-radius:16px;transition:background-color .2s}.roll-dialog .switch-slider::before{content:"";position:absolute;height:12px;width:12px;left:2px;bottom:2px;background-color:#ccc;border-radius:50%;transition:transform .2s}.roll-dialog .switch input:checked+.switch-slider{background-color:#07f}.roll-dialog .switch input:checked+.switch-slider::before{transform:translateX(12px)}.essence20 .choice-buttons{align-items:center;display:flex;flex-direction:column;gap:.5em}.essence20 .choice-buttons .choice{align-items:center;display:flex;gap:.5em;width:100%}.essence20.actor .window-content:has(>.essence20-sidebar){display:grid;grid-template-columns:minmax(220px, 260px) 1fr;grid-template-rows:auto auto 1fr;column-gap:1rem;align-items:stretch}.essence20.actor .window-content:has(>.essence20-sidebar)>header.sheet-header{grid-column:2;grid-row:1}.essence20 .essence20-sidebar{grid-column:1;grid-row:1/-1;min-height:0}.essence20.actor .window-content:has(>.essence20-sidebar)>nav.tabs{grid-column:2;grid-row:2}.essence20.actor .window-content:has(>.essence20-sidebar)>section.tab{grid-column:2;grid-row:3;min-height:0}.essence20-sidebar{display:flex;flex-direction:column;align-items:stretch;gap:.25rem;padding:.25rem .5rem}.essence20-sidebar .sliced-border::before{filter:none;border-style:none;border-image:none;border-width:0;background-color:var(--e20-system-color, var(--theme-accent));-webkit-mask-box-image-source:var(--theme-border-image);-webkit-mask-box-image-slice:15;-webkit-mask-box-image-width:16px;-webkit-mask-box-image-repeat:stretch;mask-border-source:var(--theme-border-image);mask-border-slice:15;mask-border-width:16px;mask-border-repeat:stretch}.essence20-sidebar.sheet-header{flex-direction:column;flex-wrap:nowrap;overflow-y:auto;border:none}.essence20-sidebar.sheet-header .profile-img{align-self:center;display:block;width:100%;max-width:110px;height:auto;aspect-ratio:1;object-fit:cover;border-radius:50%;border:5px solid var(--e20-system-color, var(--theme-accent));margin:0 auto}.essence20-sidebar .essence20-sidebar-panel{align-self:stretch;width:100%;min-width:100%;box-sizing:border-box;gap:.25rem;padding-left:.5rem;padding-right:.5rem;padding-bottom:.5rem}.essence20-sidebar .essence20-sidebar-panel:has(>.sliced-border__label){padding-top:calc(0.25rem + 6px)}.essence20-sidebar .essence20-sidebar-panel>.sliced-border__label{font-weight:700;font-size:.8em;text-transform:uppercase;letter-spacing:.05em}.essence20-sidebar .essence20-sidebar-panel>div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row){display:flex;align-items:center;justify-content:space-between;gap:.25rem;min-width:0}.essence20-sidebar .essence20-sidebar-panel>div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row)>label{color:var(--theme-text-color);flex:1 1 auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.essence20-sidebar .essence20-sidebar-panel>div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row)>span{color:var(--theme-muted-text);flex:0 0 auto}.essence20-sidebar .essence20-sidebar-trait-row{display:flex;flex-direction:column;align-items:stretch;gap:2px;margin-bottom:.25rem}.essence20-sidebar .essence20-sidebar-trait-row:last-child{margin-bottom:0}.essence20-sidebar .essence20-sidebar-trait-row>label{color:var(--theme-text-color);font-weight:600}.essence20-sidebar .essence20-sidebar-trait-row>span{color:var(--theme-muted-text);white-space:normal;word-break:break-word}.essence20-sidebar .stats-container{flex-direction:column;align-items:stretch;box-sizing:border-box;width:100%;min-width:0}.essence20-sidebar-skill-list{display:flex;flex-direction:column;gap:.5rem}.essence20-sidebar .essence20-sidebar-action-button{display:flex;align-items:center;justify-content:center;gap:.25rem;width:100%;box-sizing:border-box;background:hsla(0,0%,100%,.05);border:1px solid var(--theme-border-color);border-radius:6px;padding:2px 8px;font-size:.8em;color:var(--theme-text-color);text-decoration:none;cursor:pointer}.essence20-sidebar .essence20-sidebar-action-button:hover{background:hsla(0,0%,100%,.1);border-color:var(--e20-system-color, var(--theme-accent))}.essence20-sidebar .essence20-sidebar-action-button i{flex:0 0 auto}.essence20-sidebar .essence20-sidebar-initiative i{font-size:.85em}.essence20-sidebar .essence20-sidebar-action-button select{flex:1 1 auto;min-width:0;border:none;background:rgba(0,0,0,0)}.essence20-sidebar .essence20-sidebar-initiative select{border:1px solid var(--theme-border-color);border-radius:4px;padding:0 2px;flex:0 1 auto;max-width:110px;height:24px;margin:0 .25rem}.essence20-sidebar .essence20-sidebar-initiative span{font-size:1.15em}.essence20-sidebar .add-specialization.invisible{visibility:hidden;pointer-events:none}.essence20-sidebar.sheet-header .skill-header{min-height:20px;font-size:.85em}.essence20-sidebar.sheet-header .two-digit-input,.essence20-sidebar.sheet-header .one-digit-input{height:20px;min-height:20px;padding:1px 3px}.essence20-sidebar .essence20-sidebar-panel>div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button){font-size:.9em}.essence20 .skill-header{font-size:.85em;align-items:center;flex-wrap:nowrap;gap:6px;min-height:24px}.essence20 .skill-header.conditioning-row{margin-bottom:.5rem}.essence20 .skill-header .skill-name{display:flex;align-items:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--theme-text-color);text-decoration:none;font-size:1em;margin-left:5px;flex:1 1 auto}.essence20 .skill-header .skill-shift-select{flex:0 0 auto;width:58px;font-size:.95em;padding:1px 3px;text-overflow:ellipsis}.essence20 .skill-header .conditioning-input{flex:0 0 auto;width:58px;font-size:.95em;padding:1px 3px;text-align:center;color:var(--theme-text-color);background:var(--theme-input-color);border:1px solid var(--theme-border-color);border-radius:6px}.essence20 .skill-header .add-specialization{flex-grow:0;margin-right:8px;font-size:.75em}.essence20 .skill-header .spellcasting-downshift-chip{flex:0 0 auto;font-size:.85em;margin-right:3px}.essence20 .skill-header .spellcasting-downshift-action{flex-grow:0;margin-right:6px;font-size:.75em;color:var(--theme-text-color)}.essence20 .skill-body{display:flex;flex-direction:column;margin-bottom:.5rem}.essence20-sidebar-skill-list .skill-body:not(:has(.skill-specialized-row,.specializations-list)){display:none}.essence20 .skill-body .skill-specialized-row{gap:5px;justify-content:flex-end;margin-top:5px;margin-bottom:5px;align-items:center}.essence20 .skill-body .specialized-checkbox{margin:0}.essence20 .skill-body .specializations-list{margin-bottom:5px}.essence20 .skill-body .specializations-list .specializations-item{align-items:center;gap:5px;margin-left:5px;margin-right:5px}.essence20 .skill-body .specializations-list .specializations-item .item-button-container{padding-top:3px}.essence20 .skill-body .specializations-header{align-items:center;margin-top:5px}.essence20 .skills-label{font-size:2em;margin-bottom:0px;display:flex;flex-direction:row;flex-wrap:nowrap;justify-content:center;background:var(--theme-panel-bg);border:1px solid var(--theme-border-color);border-radius:50px;box-shadow:inset 0 0 0 1px hsla(0,0%,100%,.08);width:100%}.essence20 .skills-container{list-style:none;overflow-y:auto;color:var(--theme-text-color);transform:rotate(0deg);scrollbar-width:thin;border-radius:8px;width:100%;justify-content:left;flex-grow:0;flex-basis:auto;padding:20px 8px 8px;box-sizing:border-box}.essence20 .skillscontainer{list-style:none;overflow-y:auto;color:var(--theme-text-color);display:grid;grid-template-columns:repeat(4, minmax(0, 1fr));gap:10px;padding:0;align-items:stretch;height:calc(100% - 10px)}.essence20 h1,.essence20 h2,.essence20 h3,.essence20 h4{color:var(--theme-text-color)}.essence20 .tox .tox-editor-container{background:#fff}.essence20 .tox .tox-edit-area{padding:0 8px}.dialog-options{list-style:none;margin:0;padding:0}.dialog-options li ol.dialog-options{margin-left:1.5em}.dialog-options input[type=text]{height:24px;margin:2px}.trait-selector{flex-grow:auto;overflow:auto}.essence20 .powers-section{list-style:none;padding:4px;overflow-y:auto;color:var(--theme-text-color);display:flex;flex-direction:row;flex-grow:0;flex-basis:auto;justify-content:center;background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:15px;width:100%}.essence20 .defense-container{flex-grow:0;flex-basis:auto}.essence20 .defense-container table thead{border-bottom:1px solid var(--theme-border-color);border-color:inherit;background-color:inherit;color:inherit}.essence20 .defense-container tr:nth-child(even){border-color:inherit;background-color:inherit}.essence20 .defense-container .tg{border-color:inherit;border-collapse:collapse;border-spacing:0;border-style:hidden;margin:0}.essence20 .defense-container .tg td{border-color:inherit;border-style:solid;border-width:1px;font-size:15px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal}.essence20 .defense-container .tg th{border-color:inherit;border-style:solid;border-width:1px;font-size:16px;overflow:hidden;padding:10px 5px;word-break:normal}.essence20 .defense-container .tg .tg-td{border-color:inherit;text-align:center;vertical-align:middle}.essence20 .initiative{text-align:center}.essence20 .initiative-dropdown{display:flex;flex-direction:row;gap:5px}.essence20 .essence-header{text-align:center;margin-top:5px;margin-bottom:5px;display:flex;align-items:center;justify-content:center;gap:6px;padding:2px 0}.essence20 .essence-header.strength{margin-bottom:0}.essence20 .essence-header .skill-rank-allocation{display:flex;flex-direction:column;align-items:center;width:100%;font-size:.75em;color:var(--theme-muted-text, var(--theme-text-color))}.essence20 .essence-header .skill-rank-defense{font-weight:600}.essence20 .essence-header .essence-label{font-size:1.2em;vertical-align:middle;font-weight:700;color:var(--theme-text-color);background:hsla(0,0%,100%,.07);border:1px solid var(--theme-border-color);border-radius:6px;padding:2px 8px;min-width:64px;text-align:center}.essence20 .essence-column{display:flex;flex-direction:column;min-height:0;isolation:isolate}.essence20 .essence-column .skills-container{flex:1 1 auto;min-height:0}.essence20 .essence-header:has(.essence-label){display:inline-flex;align-items:center;gap:6px;width:fit-content;max-width:100%;margin:0 auto -18px;position:relative;z-index:5;padding:5px 12px 5px 16px;background-color:var(--e20-system-color, var(--theme-accent));box-sizing:border-box;clip-path:polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px)}.essence20 .essence-header:has(.essence-label) .essence-label{background:none;border:none;padding:0;min-width:0;color:var(--theme-muted-text, var(--theme-text-color));font-weight:600;font-size:.85em;white-space:nowrap}.essence20.theme-light .essence-header:has(.essence-label) .essence-label{color:#fff;text-shadow:0 0 3px rgba(0,0,0,.8),0 0 3px rgba(0,0,0,.8)}.essence20 .essence-header:has(.essence-label) .two-digit-input{background:rgba(0,0,0,.35);border:1px solid hsla(0,0%,100%,.12);font-weight:700;font-size:.85em;max-width:28px;padding:2px}.essence20.theme-light .essence-header:has(.essence-label) .two-digit-input{color:#fff;text-shadow:0 0 3px rgba(0,0,0,.8),0 0 3px rgba(0,0,0,.8)}.essence20 .health-container{min-width:fit-content}.essence20 .notes-title{color:var(--theme-accent);font-size:16px}.essence20 .notes-container{list-style:none;margin-right:3px;padding:8px;overflow-y:auto;color:var(--theme-text-color);display:flex;flex-direction:column;justify-content:center;background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:15px;width:100%;height:100%}.essence20 .biography-row{gap:8px;margin-bottom:8px;flex-wrap:wrap}.essence20 .collapsible-item-container+.biography-row{margin-top:1rem}.essence20 .biography-row .sliced-border.--col{flex:1 1 0;min-width:6.5em}.essence20 .biography-row .sliced-border__label{text-transform:uppercase}.essence20 .biography-row .sliced-border.--col input{width:100%;box-sizing:border-box;color:var(--theme-text-color);background:rgba(0,0,0,0) !important;background-color:rgba(0,0,0,0) !important;background-image:none !important;appearance:none !important;border:none !important;border-width:0 !important;border-color:rgba(0,0,0,0) !important;border-radius:0 !important;outline:none !important;box-shadow:none !important}.essence20 .biography-row .sliced-border.--col input:focus,.essence20 .biography-row .sliced-border.--col input:focus-visible{border:none !important;outline:none !important;box-shadow:none !important}.essence20 .biography-row .sliced-border.--col input[type=number]::-webkit-inner-spin-button,.essence20 .biography-row .sliced-border.--col input[type=number]::-webkit-outer-spin-button{appearance:none !important;margin:0}.essence20 .biography-editor-field{margin-bottom:10px}.essence20 .biography-editor-field>label{display:block;font-weight:700;font-size:.8em;text-transform:uppercase;letter-spacing:.05em;color:var(--theme-text-color);margin-bottom:4px}.essence20 .biography-editor-field .editor{background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:15px;min-height:120px;padding:4px}.essence20.theme-light .biography-editor-field i{color:#000}.essence20 .npc-row{display:flex;flex-direction:row;justify-content:flex-start;gap:6px}.essence20 .npc-items{width:50%;display:flex;flex-direction:column;gap:6px}.essence20 .npc-defenses{width:60%}.essence20 .npc-essence-scores{width:60%}.essence20 .npc-health{width:40%}.essence20 .npc-movement{width:40%}.essence20 .npc-firepoints{width:60%}.essence20 .firepoints-input{border:none;outline:none;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;resize:none}.essence20 .stats-container.firepoints{max-height:60px;overflow:hidden}.essence20 .npc-skills{width:50%}.essence20 .skill-separator{display:flex;align-items:center;text-align:center}.essence20 .skill-separator::before,.essence20 .skill-separator::after{content:"";flex:1;border-bottom:1px solid var(--theme-border-color)}.essence20 .skill-separator:not(:empty)::before{margin-right:.25em}.essence20 .skill-separator:not(:empty)::after{margin-left:.25em}.essence20 .stats-container{list-style:none;padding:6px;overflow-y:auto;color:var(--theme-text-color);flex-basis:auto;justify-content:center;background:hsla(0,0%,100%,.035);border:1px solid hsla(0,0%,100%,.1);border-radius:8px;box-shadow:inset 0 1px 0 hsla(0,0%,100%,.03);min-height:72px}.essence20 .stats-row{gap:6px;flex-grow:0;flex-wrap:nowrap}.essence20 .sheet-tabs{-webkit-box-flex:0;-ms-flex:0;flex:0;gap:2px;margin-bottom:8px}.essence20 .sheet-body .tab,.essence20 .sheet-body .tab .editor{height:100%;gap:10px}.essence20 .sheet-body.item-sheet .tab{gap:0px}.essence20.actor .window-content>[data-tab]{overflow-y:auto}.essence20 .tabs .item,.essence20 .tabs a[data-tab]{position:relative;background:#000;clip-path:polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px);border:none;padding:3px 4px 5px;flex:1;min-width:0;color:#9e9b9b;-webkit-text-stroke:1px rgba(0,0,0,.8);paint-order:stroke fill;display:flex;align-items:center;justify-content:center;min-height:22px;font-size:1.1em;white-space:nowrap;opacity:1}.essence20 .tabs .item::before,.essence20 .tabs a[data-tab]::before{content:"";position:absolute;inset:2px;z-index:0;pointer-events:none;background:var(--e20-system-color, var(--theme-accent));clip-path:polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%, 0 6px);box-shadow:inset 0 -1px 0 rgba(0,0,0,.18)}.essence20 .tabs .item span,.essence20 .tabs a[data-tab] span{position:relative;z-index:1}.essence20 .tabs .item .nav-item-label{text-transform:none;font-weight:600}.essence20 .tabs .item.active,.essence20 .tabs a[data-tab].active{background:var(--e20-system-color, var(--theme-accent));opacity:1;color:var(--theme-text-color);-webkit-text-stroke:0}.essence20.theme-dark .tabs .item.active,.essence20.theme-dark .tabs a[data-tab].active{color:#c7c4c4}.essence20 .tabs .item.active::before,.essence20 .tabs a[data-tab].active::before{background:linear-gradient(rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.035)),linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96)),linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));inset:2px 2px 0 2px;box-shadow:none}.essence20.theme-light .tabs .item.active::before,.essence20.theme-light .tabs a[data-tab].active::before{background:linear-gradient(rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.035)),linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98)),linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98))}.essence20 a:hover{text-shadow:0 0 10px hsla(0,0%,100%,.4)}.sheet nav.sheet-tabs{border-top:none;border-bottom:none}.essence20 .e20-border-accent:not(.profile-img):not(hr){position:relative;border-color:rgba(0,0,0,0);border-radius:0;clip-path:polygon(min(22px, 50%) 0, 100% 0, 100% calc(100% - min(22px, 50%)), calc(100% - min(22px, 50%)) 100%, 0 100%, 0 min(22px, 50%))}.essence20 .e20-border-accent:not(.profile-img):not(hr)::before{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background-color:var(--e20-system-color, var(--theme-accent));-webkit-mask-box-image-source:var(--theme-border-image);-webkit-mask-box-image-slice:15;-webkit-mask-box-image-width:22px;-webkit-mask-box-image-repeat:stretch;mask-border-source:var(--theme-border-image);mask-border-slice:15;mask-border-width:22px;mask-border-repeat:stretch}.essence20 .profile-img.e20-border-accent{border-color:var(--e20-system-color, var(--theme-border-color))}.essence20 hr.e20-accent-hr{border-color:var(--e20-system-color, var(--theme-border-color))}.essence20 .zord-combiners{background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:15px;padding:8px;display:flex;flex-direction:column;justify-content:center;height:fit-content;width:100%;flex-grow:0}.essence20 .zord-img{-webkit-box-flex:0;flex:inherit;height:50px;margin-right:10px}.essence20 .zord.stats-container{max-width:fit-content;flex-grow:0}.essence20 .pony{color:#c7c4c4;border-radius:15px;background:#212c5f;background-size:cover}.essence20 .pony-text{color:#000}.essence20 .spelllist{width:100%}.essence20 .diamond{color:#b9f2ff}.essence20 .gold{color:#daa520}.essence20 .silver{color:silver}.essence20 .bronze{color:#cd7f32}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer){margin-bottom:.5rem}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer)>.flexrow{font-weight:bold;border-bottom:1px solid var(--theme-border-color);padding-bottom:.25rem;margin-bottom:.25rem}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer)>.items-list>li.item{padding:2px .25rem;border-radius:5px}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer)>.items-list>li.item:nth-of-type(even){background:var(--theme-panel-bg)}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer)>.items-list>hr{display:none}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .leveled-item-label{flex:1 1 auto;min-width:0}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .leveled-item-badge{flex:0 0 1.5em;font-weight:bold;text-align:center}.essence20.theme-light section.tab.perks i{color:#000 !important}.essence20.theme-light section.tab.perks img[src$="perk.svg"]{filter:brightness(0)}.essence20.theme-light section.tab.spells img[src$="powers.svg"]{filter:brightness(0)}.essence20.theme-light section.tab.background img[src$="origin.svg"],.essence20.theme-light section.tab.background img[src$="influence.svg"]{filter:brightness(0)}.essence20.theme-light section.tab.gear img[src$="armor.svg"],.essence20.theme-light section.tab.gear img[src$="shield.svg"],.essence20.theme-light section.tab.gear img[src$="gear.svg"],.essence20.theme-light section.tab.gear img[src$="alteration.svg"]{filter:brightness(0)}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .leveled-item-icon{flex:0 0 24px;width:24px;height:24px;object-fit:cover;border:none;border-radius:4px}.essence20 :is(section.tab.perks,section.tab.spells,section.tab.background,section.tab.powers,section.tab.gear,section.tab.altmodes,section.tab.main.npc,section.tab.main.vehicle,section.tab.main.zord,section.tab.main.megaform) .leveled-item-name{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.essence20 .armor-trait-checkbox-label{flex-grow:0;margin-left:5px;white-space:nowrap}.essence20 .item{color:var(--theme-text-color);gap:5px}.essence20 .items-list{list-style:none;margin:0;padding:0;overflow-y:auto;scrollbar-width:thin;color:var(--theme-text-color);display:flex;flex-direction:column;justify-content:space-between;gap:5px}.essence20 .items-list .item-list{list-style:none;margin:0;padding:0}.essence20 .items-list .item-name{-webkit-box-flex:2;-ms-flex:2;flex:initial;margin:0;overflow:hidden;font-size:13px;text-align:left;-webkit-box-align:center;-ms-flex-align:center;align-items:center;display:-webkit-box;display:-ms-flexbox;display:flex;width:35%}.essence20 .items-list .item-name h3,.essence20 .items-list .item-name h4{margin:0;white-space:nowrap;overflow-x:hidden}.essence20 .item-info{display:flex}.essence20 .items-list .item-controls{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-flex:0;-ms-flex:0 0 50px;flex:0 0 50px;-webkit-box-pack:end;-ms-flex-pack:end;justify-content:flex-end}.essence20 .items-list .item-controls a{font-size:12px;text-align:center;margin:0 6px;padding-top:10px;padding-bottom:10px}.essence20 .items-list .item{-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding:4px 6px;border-radius:6px;color:var(--theme-text-color)}.essence20 .items-list .item:nth-child(odd){background:var(--theme-card-bg)}.essence20 .items-list hr{margin:.25rem 0;width:100%;border-color:var(--theme-border-color)}.essence20 .collapsible-item-subcontainer .items-list{gap:.5rem}.essence20 .collapsible-item-subcontainer .items-list hr{margin:.25rem 0}.essence20 .items-list hr:last-child{display:none}.essence20 .collapsible-item-container .items-list hr{border:1px solid var(--theme-border-color)}.essence20 .items-list .item .item-name{color:var(--theme-text-color)}.essence20 .items-list .item .item-name .item-image{-webkit-box-flex:0;-ms-flex:0 0 30px;flex:0 0 30px;height:30px;background-size:30px;border:none;margin-right:5px;border-radius:4px}.essence20 .items-list .item-prop{text-align:center;border-left:1px solid var(--theme-border-color);border-right:1px solid var(--theme-border-color);font-size:12px}.essence20 .items-list .items-header{height:28px;margin:2px 0;padding:0 4px;-webkit-box-align:center;-ms-flex-align:center;align-items:center;background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:6px;font-weight:bold;flex-wrap:nowrap;color:var(--theme-accent)}.essence20 .items-list .items-header>*{font-size:12px;text-align:center}.essence20 .items-list .items-header .item-name{padding-left:5px;text-align:left}.essence20 .item-label{align-items:center;gap:5px;width:100%}.essence20 .item-formula{-webkit-box-flex:0;-ms-flex:0 0 200px;flex:0 0 200px;padding:0 8px}.essence20 .effects .item .effect-source{text-align:center}.essence20 .effects .item .effect-duration{text-align:center}.essence20 .effects .item .effect-controls{text-align:center;border-left:1px solid var(--theme-border-color);border-right:1px solid var(--theme-border-color);font-size:12px}.essence20 .effects .item .effect-controls{border:none}.essence20 .tab.effects.active{display:flex;flex-direction:column;min-height:0}.essence20 .tab.effects .effect-list-container{display:flex;flex-direction:column;flex:1 1 auto;min-height:0}.essence20 .tab.effects .items-list{flex:1 1 auto;min-height:0;padding-top:.5rem}.essence20 .tab.effects .items-header{height:auto;min-height:28px;color:var(--theme-text-color)}.essence20 .tab.effects .effect-controls{flex:0 0 130px;flex-wrap:nowrap;justify-content:flex-end}.essence20 .tab.effects .items-list .items-header>*{font-size:.85em}.essence20 .tab.effects .item.effect>*{font-size:.85em}.essence20 .tab.effects .effect-name h4{font-size:1em;font-weight:600;margin:0}.essence20 .item-sheet{background:var(--theme-card-bg);border:1px solid var(--theme-border-color);border-radius:15px;color:var(--theme-text-color);padding:6px;min-height:none}.essence20 .item-field{padding:5px 2px;border-bottom:1px solid var(--theme-border-color)}.essence20 .item-field:last-child{border-bottom:none}.essence20 .item-field label{flex:2;color:var(--theme-text-color)}.essence20 .item-field .item-field-inputs{flex:1.5;justify-content:flex-end}.window-content .journal-sheet-container .journal-entry-content{background:none;color:#a3a3a3;border:10px #c9c7b8}.window-content .journal-sheet-container{background:radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);background-size:cover;border-radius:10px #fff}.sliced-border{width:fit-content;height:fit-content;display:flex;position:relative;padding:4px 2px}.sliced-border:has(>.sliced-border__label){padding-top:12px}.sliced-border:has(>.sliced-border__label.sliced-border){padding-top:25px}.sliced-border::after{pointer-events:none;position:absolute;z-index:-1;content:"";inset:0;background:var(--theme-panel-bg);clip-path:polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px)}.sliced-border::before{pointer-events:none;filter:var(--theme-border-filter);position:absolute;z-index:0;content:"";width:100%;height:100%;top:0;left:0;border-style:solid;border-image:var(--theme-border-image);border-image-slice:16;border-width:16px}.sliced-border.--col{flex-direction:column}.sliced-border.--thin::before{border-image:var(--theme-border-image);border-image-slice:16}.sliced-border.--filled{color:var(--theme-bg-color) !important;font-weight:bold}.sliced-border.--filled::before{border-image:var(--theme-filled-border-image);border-image-slice:16 fill}.sliced-border.--thick::before{border-image:var(--theme-thick-border-image);border-image-slice:16 fill}.sliced-border.--tab::before{border-image:var(--theme-tab-image);border-image-slice:16}.sliced-border.--tab.--filled::before{border-image:var(--theme-filled-tab-image);border-image-slice:16 fill}.sliced-border .sliced-border__label{z-index:2;display:flex;gap:.5rem;justify-content:center;align-items:center;color:var(--theme-text-color);width:max-content;position:absolute;top:0;left:50%;transform:translate(-50%, -50%);font-weight:700;font-size:.8em;text-transform:uppercase;letter-spacing:.05em}.sliced-border label.sliced-border__label,.sliced-border a.sliced-border__label{padding:0 8px;line-height:.75rem;background:var(--theme-panel-bg);color:var(--theme-text-color);border-radius:6px;padding:4px 10px;box-shadow:0 1px 0 rgba(0,0,0,.4) inset}.sliced-border a.sliced-border__label{text-decoration:none;cursor:pointer}.sliced-border a.sliced-border__label:hover{color:var(--theme-accent);text-shadow:0 0 6px var(--theme-accent)}.sliced-border a.sliced-border__label:hover .sliced-border__label-edit-icon{opacity:1}.sliced-border .sliced-border__label-edit-icon{font-size:.75em;opacity:.6;transition:opacity .15s ease}.sliced-border .sliced-border__input-row{display:flex;width:100%;gap:.5rem}.sliced-border .sliced-border__input-row *:nth-child(1){flex-grow:1}:root{--theme-border-filter: saturate(0);--theme-border-color: #363636;--theme-bg-color: #cccccc;--theme-text-color: #222222;--theme-input-color: #fafafa;--theme-panel-bg: var(--theme-bg-color);--theme-card-bg: rgba(255,255,255,0.04);--theme-accent: #4dd0e1;--theme-muted-text: #9e9b9b;--theme-border-image: url(../assets/borders/default-border.svg);--theme-thick-border-image: url(../assets/borders/default-border-thick.svg);--theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);--theme-tab-image: url(../assets/borders/default-tab.svg);--theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);--theme-scrollbar-thumb: #4a4a4a}.theme-wrapper{scrollbar-color:var(--theme-scrollbar-thumb) rgba(0,0,0,0);overflow:visible;border:none}.theme-wrapper ::-webkit-scrollbar{width:8px;height:8px}.theme-wrapper ::-webkit-scrollbar-thumb{background:var(--theme-scrollbar-thumb);border-radius:4px}.theme-wrapper ::-webkit-scrollbar-track{background:rgba(0,0,0,0)}.theme-wrapper.window-app{backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}.theme-wrapper .window-content,.theme-wrapper .window-header{backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0)}.theme-wrapper .window-app,.theme-wrapper .window-content,.theme-wrapper .window-header{background:rgba(0,0,0,0);border:none;border-radius:0}.theme-wrapper .window-content{background:linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));color:var(--theme-text-color);border:1px solid hsla(0,0%,100%,.08);box-shadow:inset 0 1px 0 hsla(0,0%,100%,.04)}.theme-wrapper.theme-light .window-content{background:linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));border-color:rgba(0,0,0,.18)}.theme-wrapper.theme-light{--theme-border-filter: saturate(0);--theme-border-color: #363636;--theme-bg-color: #cccccc;--theme-text-color: #222222;--theme-input-color: #fafafa;--theme-panel-bg: #cccccc;--theme-card-bg: rgba(255,255,255,0.7);--theme-accent: #ff6400;--theme-muted-text: #222222;--theme-scrollbar-thumb: #4a4a4a}.theme-wrapper.theme-dark{--theme-border-filter: saturate(0) brightness(175%);--theme-border-color: #5f5f5f;--theme-bg-color: #222222;--theme-text-color: #aaaaaa;--theme-input-color: #333333;--theme-panel-bg: #1f2328;--theme-card-bg: rgba(255,255,255,0.04);--theme-accent: #4dd0e1;--theme-muted-text: #c7c4c4;--theme-scrollbar-thumb: #b5b5b5}.theme-wrapper.theme-default{--theme-border-image: url(../assets/borders/default-border.svg);--theme-thick-border-image: url(../assets/borders/default-border-thick.svg);--theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);--theme-tab-image: url(../assets/borders/default-tab.svg);--theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg)}.theme-wrapper.theme-default.essence20{border-radius:25px 0}.theme-wrapper.theme-pony{--theme-border-image: url(../assets/borders/pony-border.svg);--theme-thick-border-image: url(../assets/borders/pony-border-thick.svg);--theme-filled-border-image: url(../assets/borders/pony-tab-filled.svg);--theme-tab-image: url(../assets/borders/pony-tab.svg);--theme-filled-tab-image: url(../assets/borders/pony-tab-filled.svg)}.theme-wrapper.theme-pony.essence20{border-radius:15px}.theme-wrapper header *{color:var(--theme-text-color) !important}.story-points{height:auto;width:min-content;box-shadow:0 0 20px #000;position:fixed;flex-direction:column;display:flex;background:var(--theme-panel-bg);border-radius:0;clip-path:polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px)}.story-points .loading{display:none}.story-points .window-content{padding:9px}.story-points .window-content>div{flex-direction:column;display:flex;gap:9px}.story-points .story-points__top{display:flex;gap:9px}.story-points .story-points__top>.sliced-border{padding:12px;padding-top:16px;justify-content:center;flex-grow:1;gap:9px}.story-points .story-points__input{width:42px;height:42px;text-align:center;font-size:18px;font-weight:bold;background-color:var(--theme-input-color);color:var(--theme-text-color);border:1px solid var(--theme-border-color);appearance:textfield;-moz-appearance:textfield}.story-points .story-points__input::-webkit-inner-spin-button,.story-points .story-points__input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}.story-points .story-points__btn-wrapper{display:flex;flex-direction:column;gap:6px;width:30px}.story-points .story-points__btn{width:min-content;min-width:30px;min-height:18px;height:18px;border-radius:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--theme-input-color);color:var(--theme-text-color);border:1px solid var(--theme-border-color)}.story-points .story-points__btn:hover{background:rgb(61.5,61.5,61.5)}.story-points .story-points__btn.--bottom{width:100%;padding:11px}.story-points .story-points__btn.--decrement{border:1px solid #ff6400;border-bottom:1px solid #ff6400;box-shadow:0 0 10px #ff6400}.story-points .story-points__btn.--decrement i{color:#ff6400}.story-points .story-points__btn.--increment{border:1px solid #4dd0e1;box-shadow:0 0 10px #4dd0e1;box-shadow:0 0 10px #4dd0e1}.story-points .story-points__btn.--increment i{color:#4dd0e1}.stat-editor .window-content{padding:1rem}.stat-editor-rows{display:flex;flex-direction:column;gap:.5rem}.stat-editor-row{display:flex;align-items:center;justify-content:space-between;gap:1rem}.stat-editor-row label{color:var(--theme-text-color)}.stat-editor-row input{width:70px;text-align:center}select{color:var(--theme-text-color)}.essence20 input[type=checkbox],.essence20 input[type=radio]{--checkbox-checked-color: var(--theme-text-color);--checkbox-checkmark-color: var(--theme-panel-bg)}option{color:var(--theme-text-color);background-color:var(--theme-input-color)}form .form-group span.units{color:var(--theme-muted-text)}form .form-group.slim .form-fields>label{color:var(--theme-muted-text)}form .notes,form .hint{color:var(--theme-muted-text)}.standard-form .form-group>label{color:var(--theme-muted-text)}.filepicker .display-modes a{background:initial}.filepicker .display-modes a.active{background:initial}.filepicker .favorites .path{background:initial}input[type=number],input[type=text],select,textarea{color:var(--theme-text-color);background:var(--theme-input-color);border:1px solid var(--theme-border-color);border-radius:6px;padding:4px 6px;vertical-align:middle;min-height:22px}.essence20 .one-digit-input,.essence20 .two-digit-input{background:hsla(0,0%,100%,.08);border:1px solid var(--theme-border-color);color:var(--theme-text-color);border-radius:6px;min-height:22px;text-align:center;padding:2px 4px}.essence20 .centered-input{text-align:center}.essence20 textarea{color:var(--theme-text-color);border:1px solid var(--color-border-light-tertiary)}.essence20 .one-digit-input{max-width:20px;text-align:center}.essence20 .two-digit-input{max-width:40px;text-align:center}.essence20 .min-max-divider{display:flex;flex-grow:0;flex-basis:auto;width:20px;justify-content:center;align-items:center}.essence20 .span{color:var(--theme-text-color)}.essence20 .sheet-body{min-height:fit-content;gap:10px}.essence20 table{background-color:rgba(0,0,0,0)}.dice-total.critical{color:green}.dice-total.fumble{color:red}.dice-total.crumble{color:#ff0}.e20-check-card .e20-check-results{list-style:none;margin:4px 0 0;padding:0}.e20-check-result.e20-check-success{color:green}.e20-check-result.e20-check-failure{color:red}.e20-check-card button[data-action=apply-damage]{margin-left:6px;background:#333;color:#aaa;border:1px solid #5f5f5f}.e20-check-card button[data-action=apply-damage]:disabled{cursor:default}.chat-message.theme-light .e20-check-card button[data-action=apply-damage]{background:#fafafa;color:#222;border:1px solid #363636}.e20-check-critical-options{display:block;margin-top:4px}.e20-check-critical-label{color:#ff6400;font-weight:bold;margin-right:4px}.e20-check-critical-options button[data-action=apply-damage]{margin:2px 6px 0 0}.e20-check-wrapper{display:inline-flex;align-items:center;gap:4px}.e20-check-send-to-chat{cursor:pointer;opacity:.7}.e20-check-send-to-chat:hover{opacity:1}.sheet-options{min-width:400px;min-height:auto}.sheet-options-morph{min-width:500px;min-height:auto}/*# sourceMappingURL=essence20.css.map */
+/* importing the partials */
+/* 700 added alongside 500 - _global-windows.scss's .window-app rule (see below) sets
+   font-weight: bold (700), but only weight 500 was ever loaded, so the browser had to
+   synthetically embolden it. Loading the real 700 weight avoids that fake-bold blur. */
+@import url("https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap");
+.align-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.align-right {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.align-center {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.chip {
+  border-radius: 10px;
+  border: 1px solid var(--theme-border-color);
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 2px;
+  margin-right: 3px;
+  color: var(--theme-text-color);
+  background-color: var(--theme-card-bg);
+  width: fit-content;
+  height: fit-content;
+  text-size-adjust: 8;
+  white-space: nowrap;
+}
+
+.chip-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  row-gap: 3px;
+}
+
+.collapsible {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+}
+
+.essence20 .collapsible-item-container {
+  list-style: none;
+  padding: 8px;
+  overflow-y: auto;
+  color: var(--theme-text-color);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 0;
+  flex-basis: auto;
+  justify-content: center;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 15px;
+  width: 100%;
+  height: fit-content;
+}
+
+.essence20 .collapsible-item-subcontainer {
+  border-color: var(--theme-border-color);
+  box-shadow: none;
+  margin: auto;
+  width: 90%;
+}
+
+/* Content toggle open/close. */
+.essence20 .accordion-content {
+  display: none;
+}
+
+.essence20 .open .accordion-content {
+  display: block;
+  width: 100%;
+}
+
+.essence20 .header-accordion-label {
+  float: right;
+  margin-right: 8px;
+}
+
+/* Origin/Influences/Bonds/Hang Ups (background.hbs, the only collapsible-item-containers on the
+   Bio tab) - their icons already inherit color: var(--theme-text-color) from
+   .collapsible-item-container above, which resolves near-black in light mode/light gray in dark
+   mode on its own, but pinning it explicitly here for light mode guarantees true black regardless
+   of --theme-text-color's exact shade, without touching dark mode (left to its existing inherited
+   behavior) or any other tab's own collapsible-item-container icons (Gear, Perks, ...). */
+.essence20.theme-light section.tab.background .collapsible-item-container i {
+  color: #000000;
+}
+
+/* Chevron icon. */
+.essence20 .accordion-icon {
+  transition: all ease-in-out 0.25s;
+}
+
+.essence20 .open .accordion-icon {
+  transform: rotate(180deg);
+}
+
+.essence20 .item-label-checkbox {
+  margin: 0;
+  /* Foundry core's own checkbox styling sets flex: 1 1 0 (meant for a checkbox that stretches to
+     fill a dedicated form-group row) from a stylesheet that doesn't show up in
+     document.styleSheets (likely shadow-DOM/adopted-stylesheet scoped to core's custom form
+     element) - normal specificity here can't be confirmed to win against it, and testing showed
+     a plain (non-!important) override left it unaffected. Inside this cramped, multi-item
+     sidebar row that flex-shrink: 1 with no width floor squeezed the checkbox down to ~4-7px,
+     rendering it effectively invisible - !important guarantees this actually overrides it. */
+  flex: 0 0 auto !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.essence20 .role-points-item {
+  /* Foundry core's own .flexrow utility class defaults to flex-wrap: wrap (same root cause as
+     the sheet header's row-wrapping bug, assets/_headers.scss) - flex-wrap decides which items
+     share a line using each item's un-shrunk width, so once the value/max inputs below stopped
+     shrinking (min-width: 20px) this row's items no longer all fit at their natural widths and
+     the whole row wrapped to two lines instead of just letting .role-points-name's own
+     overflow/ellipsis (below) absorb the space pressure like it's meant to. */
+  flex-wrap: nowrap;
+}
+
+.essence20 .role-points-name {
+  /* Was flex: 1 1 auto (grow to fill the row) - that pushed the bonus indicator (+2, the heart/
+     sword/shield icon, .flex-grow-0.nowrap in container.hbs) far from the name's own text,
+     out at the edge of the name's now-wide box instead of sitting right next to it. 0 1 auto
+     hugs the name to its own text (still shrinking/ellipsizing under space pressure via
+     min-width/overflow below) so the bonus lands immediately after it; the resource value/max
+     inputs get pushed to the row's far end instead via their own margin-left: auto below. */
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* .role-points-item also carries the shared .align-center utility class, used there for its
+     justify-content:center (flex cross-axis centering) purpose - but that same class also sets
+     text-align: center as a side effect, which inherits down into this label. Restoring left
+     alignment here without touching .align-center itself, since that utility is shared broadly
+     elsewhere for its intended purpose. */
+  text-align: left;
+  /* Left-click toggles Activation (if supported) and right-click opens a menu (Post to Chat /
+     Spend a Point) - see base-actor-sheet.mjs#_activateRolePointsListeners. Every Role Points
+     name is right-clickable, but only ones with data-is-activatable (system.isActivatable) are
+     left-clickable, hence the separate default/activatable cursor rules below. */
+  cursor: default;
+}
+
+.essence20 .role-points-name[data-is-activatable] {
+  cursor: pointer;
+}
+
+.essence20 .role-points-name[data-is-activatable]:hover {
+  text-decoration: underline;
+}
+
+/* Reflects system.isActive back onto the name itself, now that the old checkbox (which showed
+   this state natively via its own checked/unchecked look) is gone. */
+.essence20 .role-points-name.active {
+  color: var(--e20-system-color, var(--theme-accent));
+  font-weight: 700;
+  /* A blurred text-shadow glow would get hard-clipped by this label's own overflow: hidden
+     (needed above for ellipsis truncation) - same bug already diagnosed for the sheet tabs'
+     halo (_tabs.scss). A tight text-stroke hugs the glyph outline instead of blurring outward,
+     so it stays inside the box (and inside the ellipsis's clip) at any label length. */
+  -webkit-text-stroke: 1px var(--e20-system-color, var(--theme-accent));
+  paint-order: stroke fill;
+}
+
+/* This row packs 7 inline items (2 icon links, a checkbox, the name, a bonus indicator, and 2
+   number inputs) into the same narrow sidebar column as the 4-item Health/Stun rows - by default
+   flex-shrink distributed unevenly and squeezed the resource value/max inputs down to ~10px
+   (unreadable), while .role-points-name's own overflow:hidden/text-overflow:ellipsis above
+   already lets IT absorb space pressure gracefully. Stopping the inputs from shrinking at all
+   pushes that pressure onto the label instead, where it belongs. */
+.essence20 .role-points-item .two-digit-input {
+  flex-shrink: 0;
+  /* .two-digit-input's own flex-basis: 0% (from the shared .flex-grow-0 utility class,
+     _flex-containers.scss) has no floor of its own - flex-shrink: 0 above stops it shrinking
+     BELOW that basis, but 0% was already unreadably small before shrink ever applied. A
+     min-width gives it an actual legible floor to grow from instead.
+     32px (not the old 20px) - freeing .role-points-name from growing to fill the row (above)
+     leaves enough spare width in this same cramped row to bring these boxes much closer to
+     Health/Stun's own 40px sibling inputs (sidebars/character.hbs) instead of reading as a much
+     smaller, different control next to them. */
+  min-width: 32px;
+}
+
+/* Pushes the resource value/max pair (and only that pair - the bonus indicator right after the
+   name is meant to stay close to it, per .role-points-name's own comment above) to the row's far
+   end, mirroring Health/Stun's own label-left/value-right layout instead of everything just
+   trailing directly behind the bonus indicator. */
+.essence20 .role-points-item input[data-field="system.resource.value"] {
+  margin-left: auto;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list .item {
+  font-size: 0.8em;
+}
+
+.essence20 section.tab.gear > .collapsible-item-container > .items-list > li.item {
+  font-size: 0.85em;
+}
+
+.essence20 section.tab.gear .collapsible-item-subcontainer .items-list .item {
+  font-size: 0.9411764706em;
+}
+
+.essence20 .item-image {
+  flex: none;
+}
+
+.essence20 .weapon-effect-row {
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+
+.essence20 .item-image .flexrow {
+  flex-wrap: nowrap;
+}
+
+.essence20 .weapon-effect-name {
+  flex: none;
+  max-width: 130px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.essence20 .weapon-effect-skill {
+  flex: none;
+  width: 90px;
+  padding: 1px 3px;
+}
+
+.essence20 .weapon-effect-chips {
+  flex: none;
+  flex-wrap: nowrap;
+  gap: 4px;
+  margin-left: auto;
+}
+
+/* .chip (from _chip.scss, the same pill styling used for the weapon's own summary chips). */
+.essence20 .weapon-effect-row .weapon-effect-chip {
+  flex: none;
+}
+
+.essence20 .editor {
+  position: relative;
+  min-height: 250px;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: inherit;
+}
+
+.essence20 .editor-content {
+  color: var(--theme-text-color);
+  min-height: fit-content;
+  font-size: 16px;
+  padding: 0;
+}
+
+.tox-tinymce {
+  min-height: 250px;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.flex-group-center,
+.flex-group-left,
+.flex-group-right {
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+}
+
+.flex-group-left {
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.flex-group-right {
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.flexshrink {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+}
+
+.flex-between {
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.flexlarge {
+  -webkit-box-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
+/* Flex for PR Sheet */
+.essence20 .flexrow-nowrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.flex-grow-0 {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+}
+
+.flex-grow-1 {
+  -webkit-box-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+.flex-grow-15 {
+  -webkit-box-flex: 1.5;
+  -ms-flex: 1.5;
+  flex: 1.5;
+}
+
+.flex-grow-025 {
+  -webkit-box-flex: 0.25;
+  -ms-flex: 0.25;
+  flex: 0.25;
+}
+
+.flex-grow-0175 {
+  -webkit-box-flex: 0.175;
+  -ms-flex: 0.175;
+  flex: 0.175;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+.gap-2 {
+  gap: 2px;
+}
+
+.gap-5 {
+  gap: 5px;
+}
+
+.gap-6 {
+  gap: 6px;
+}
+
+.ml-2 {
+  margin-left: 2px;
+}
+
+.mb-5 {
+  margin-bottom: 5px;
+}
+
+.min-width-fit {
+  min-width: fit-content;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.no-list-style {
+  list-style-type: none;
+}
+
+.my-10 {
+  margin: 10px 0;
+}
+
+.bg-transparent {
+  background: transparent;
+}
+
+/* Global styles */
+.window-app {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: bold;
+  color: var(--theme-text-color);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+}
+
+/* This system's own sheets (actor/item/apps) all migrated to ApplicationV2 at some point,
+   whose root element carries .application, not the older Application/FormApplication API's
+   .window-app - so the whole rule above (font, border, border-radius) was silently a no-op on
+   every essence20 sheet, including the sidebar, ever since. Scoped to .essence20 specifically
+   (not a blanket .application rule) so this doesn't reach unrelated core Foundry windows
+   (Settings, Compendium browser, Journal, ...) that also use the ApplicationV2 base class. */
+.essence20.application {
+  font-family: "Rajdhani", sans-serif;
+  font-weight: bold;
+}
+
+.window-app .window-content {
+  color: var(--theme-text-color);
+  border-radius: 15px;
+  background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
+  background-size: cover;
+}
+
+.window-app .window-content button {
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
+  border-color: var(--theme-border-color);
+  border-radius: 20px;
+}
+
+body.game .window-app {
+  --color-select-option-bg: #5f5f5f;
+}
+
+.essence20 .sheet {
+  min-width: fit-content;
+  max-width: 55%;
+}
+
+.actor {
+  min-width: 860px;
+  min-height: auto;
+}
+
+.directory-list .actor {
+  min-width: fit-content;
+}
+
+.dialog .dialog-buttons button.default {
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
+}
+
+.dialog .dialog-buttons button {
+  color: var(--theme-text-color);
+  background: var(--theme-card-bg);
+}
+
+.dialog .dialog-buttons {
+  color: var(--theme-text-color);
+  padding-top: 6px;
+}
+
+.dialog-content {
+  list-style: none;
+  padding: 6px;
+  overflow-y: none;
+  color: var(--theme-text-color);
+  flex-basis: auto;
+  justify-content: center;
+  height: 100%;
+  background: var(--theme-card-bg);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 black;
+}
+
+.dialog input {
+  color: var(--theme-text-color);
+}
+
+.app .window-app dialog {
+  background: none;
+}
+
+.minimizing {
+  list-style: none;
+  padding: 6px;
+  overflow-y: none;
+  color: var(--theme-text-color);
+  flex-basis: auto;
+  justify-content: center;
+  height: 100%;
+  background: var(--theme-card-bg);
+  border: 4px solid #b5b1b1;
+  border-radius: 15px;
+  box-shadow: 4px 4px 0 black;
+}
+
+#module-management .package-list .package-title {
+  color: var(--theme-text-color);
+}
+
+.item-button-container {
+  flex-grow: 0;
+}
+
+.essence20 .rollable {
+  font-size: 1.25em;
+}
+
+.rollable:hover,
+.rollable:focus {
+  color: var(--theme-accent);
+  text-shadow: 0 0 10px red;
+  cursor: pointer;
+}
+
+.window-app textarea {
+  color: var(--theme-text-color);
+}
+
+.chat-message {
+  background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
+  opacity: 80;
+  color: #c7c4c4;
+  border: 4px solid var(--e20-system-color, var(--theme-accent));
+  box-shadow: 4px 4px 0 black;
+}
+
+.chat-message .flavor-text {
+  color: #c7c4c4;
+}
+
+.chat-message .message-sender {
+  color: #c7c4c4;
+}
+
+.chat-message .message-metadata {
+  color: #c7c4c4;
+}
+
+.chat-message.whisper {
+  background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
+  opacity: 80;
+  color: #c7c4c4;
+  border: 4px dashed var(--e20-system-color, var(--theme-accent));
+  box-shadow: 4px 4px 0 black;
+}
+
+.chat-message.emote {
+  background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
+  border: 4px solid var(--e20-system-color, var(--theme-accent));
+}
+
+.chat-message.theme-light {
+  background: linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));
+  color: #222222;
+}
+
+.chat-message.theme-light .flavor-text,
+.chat-message.theme-light .message-sender,
+.chat-message.theme-light .message-metadata {
+  color: #222222;
+}
+
+.chat-message.theme-light.whisper {
+  background: linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));
+  color: #222222;
+}
+
+.chat-message.theme-light.emote {
+  background: linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));
+}
+
+.grid,
+.grid-2col {
+  display: grid;
+  grid-column: span 2/span 2;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.grid-3col {
+  grid-column: span 3/span 3;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-4col {
+  grid-column: span 4/span 4;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-5col {
+  grid-column: span 5/span 5;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.grid-6col {
+  grid-column: span 6/span 6;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.grid-7col {
+  grid-column: span 7/span 7;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.grid-8col {
+  grid-column: span 8/span 8;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.grid-9col {
+  grid-column: span 9/span 9;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
+
+.grid-10col {
+  grid-column: span 10/span 10;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+}
+
+.grid-11col {
+  grid-column: span 11/span 11;
+  grid-template-columns: repeat(11, minmax(0, 1fr));
+}
+
+.grid-12col {
+  grid-column: span 12/span 12;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+}
+
+.grid-start-2 {
+  grid-column-start: 2;
+}
+
+.grid-start-3 {
+  grid-column-start: 3;
+}
+
+.grid-start-4 {
+  grid-column-start: 4;
+}
+
+.grid-start-5 {
+  grid-column-start: 5;
+}
+
+.grid-start-6 {
+  grid-column-start: 6;
+}
+
+.grid-start-7 {
+  grid-column-start: 7;
+}
+
+.grid-start-8 {
+  grid-column-start: 8;
+}
+
+.grid-start-9 {
+  grid-column-start: 9;
+}
+
+.grid-start-10 {
+  grid-column-start: 10;
+}
+
+.grid-start-11 {
+  grid-column-start: 11;
+}
+
+.grid-start-12 {
+  grid-column-start: 12;
+}
+
+.grid-span-2 {
+  grid-column-end: span 2;
+}
+
+.grid-span-3 {
+  grid-column-end: span 3;
+}
+
+.grid-span-4 {
+  grid-column-end: span 4;
+}
+
+.grid-span-5 {
+  grid-column-end: span 5;
+}
+
+.grid-span-6 {
+  grid-column-end: span 6;
+}
+
+.grid-span-7 {
+  grid-column-end: span 7;
+}
+
+.grid-span-8 {
+  grid-column-end: span 8;
+}
+
+.grid-span-9 {
+  grid-column-end: span 9;
+}
+
+.grid-span-10 {
+  grid-column-end: span 10;
+}
+
+.grid-span-11 {
+  grid-column-end: span 11;
+}
+
+.grid-span-12 {
+  grid-column-end: span 12;
+}
+
+.essence20 .sheet-header {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--theme-border-color);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  padding: 6px;
+  border-radius: 18px;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 auto;
+  flex: 0 0 auto;
+  overflow: hidden;
+  /* overflow:hidden disables a flex/grid item's automatic content-based minimum size (the
+     "min-size:auto" special case only applies when overflow is visible), so the header's own
+     grid row (grid-template-rows: auto ..., _sidebars.scss) was sizing itself far shorter than
+     its actual content (profile image, Size/Color boxes, etc.) needs - tall content then got
+     clipped by this same overflow:hidden instead of the row growing to fit it, which looked
+     like the Size box's bottom-right corner hanging off the edge. min-height restores the
+     content-driven sizing overflow:hidden otherwise opts the header out of. */
+  min-height: fit-content;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  color: var(--theme-text-color);
+}
+
+.essence20 .sheet-header .e20-border-accent {
+  border-color: var(--e20-system-color, #5f5f5f);
+}
+
+/* Name, Size, Level, Role, Focus, Origin, Color, etc. - every field label in the header (all
+   .sliced-border__label, common.hbs and the per-actor-type topRowFields/secondary-fields
+   partials that feed into it), not just a specific field, since the ask was the header's labels
+   as a set. */
+.essence20 .sheet-header .sliced-border__label {
+  text-transform: uppercase;
+}
+
+.essence20 .sheet-header > .flexrow.gap-2 {
+  flex: 1 1 100%;
+  align-items: flex-start;
+  row-gap: 0.5rem;
+}
+
+/* Foundry core's own .flexrow utility class (foundry2.css, not anything of ours) ships with
+   flex-wrap: wrap built in, and CSS flex-wrap decides which items share a line using each item's
+   un-shrunk "hypothetical" width, before flex-shrink ever gets a chance to bring them down toward
+   their shared min-width: 6.5em floor (.sheet-header .sliced-border above) - so Name/Size/Faction
+   alone were already wide enough to fill the row and Level, needing even just its min-width, kept
+   getting pushed to a wrapped second line of its own. Forcing nowrap here makes all four boxes
+   share the row and shrink together instead, matching the header-row-top partial's caller intent
+   from templates/actor/headers/common.hbs (Name/Size/Faction/Level all belong on one row) - same
+   fix applies to header-row-bottom below (Role/Focus/Origin/Color), which has the identical
+   wrap-before-shrink problem (Color was getting pushed to its own third line). */
+.essence20 .sheet-header > .flexrow.gap-2.header-row-top,
+.essence20 .sheet-header > .flexrow.gap-2.header-row-bottom {
+  flex-wrap: nowrap;
+}
+
+.essence20 .sheet-header > .flexrow.gap-2.header-row-bottom {
+  margin-top: 1rem;
+}
+
+/* .sliced-border__label floats above its own box's top edge by design (position:absolute, top:0,
+   transform: translate(-50%, -50%) - _sliced_border.scss), which every other row has enough
+   clearance for since an earlier row (or this row's own margin-top above) sits above it. The top
+   row (Name/Size/Faction/Level) has no such row above it - its labels float up into .sheet-header's
+   own padding (6px, $padding) and beyond, and .sheet-header's overflow:hidden (needed for its
+   min-height:fit-content fix, above) clips the sliver that pokes past that padding. A small fixed
+   nudge on top of the existing centering (rather than changing the shared, everywhere-else-correct
+   -50% itself) keeps every other row untouched. */
+.essence20 .sheet-header > .flexrow.gap-2.header-row-top .sliced-border__label {
+  transform: translate(-50%, calc(-50% + 4px));
+}
+
+/* Scoped through .flexrow.gap-2 (the header-row-top/header-row-bottom wrapper, common.hbs) -
+   same cross-contamination bug as the input rule below: the sidebar's own root section also
+   carries the "sheet-header" class and its panels also carry "sliced-border", so this rule's
+   padding (8px 16px, well above the sidebar panel's own intended 4px bottom / 8px left-right)
+   was silently winning on every sidebar panel too, at a specificity the sidebar's own same-file
+   rule (.essence20-sidebar .essence20-sidebar-panel, 2 classes vs this rule's 3) couldn't beat -
+   that's what was inflating the sidebar's bottom spacing beyond its own padding-bottom: gap-sm. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border {
+  flex: 1 1 auto;
+  min-width: 6.5em;
+  /* .sliced-border's own background (::after) is clipped to its chamfered shape (16px cut at
+     the top-left/bottom-right corners, _sliced_border.scss), but that clip-path only applies
+     to the background layer, not to the box's actual content sitting above it - the base
+     component's own padding (4px 2px, or 12px 2px 4px once a label adds top clearance) leaves
+     the right/bottom edges only 2-4px of clearance, well inside that 16px cut. A select/input
+     that reaches close to its box's own edge (confirmed on the Size field: its bottom-right
+     corner sat only ~6px total from the corner, against a 16px cut) ends up rendering in the
+     corner where the background was clipped away, with no backdrop under it - looking like it's
+     hanging off the trimmed edge. Padding wide enough to clear the cut fixes that for any field
+     box in the header, not just Size. */
+  padding-right: 16px;
+  /* Shorter than padding-right/padding-left below - unlike those, top/bottom padding has no
+     16px-cut corner-clearance floor to respect (that constraint is padding-right + padding-bottom
+     >= 16, and padding-bottom + padding-top >= 16 - both already satisfied on their own since
+     padding-right and padding-left stay at 16px regardless of what top/bottom shrink to), so
+     they're free to shrink for a shorter header row. */
+  padding-bottom: 8px;
+  /* .sliced-border is height: fit-content, so it has no free space for justify-content to
+     redistribute - the field sits exactly padding-top below the label with nothing pushing it
+     down. Matching padding-top to padding-bottom centers the field in the box instead of it
+     hugging the label with all the extra room left underneath. */
+  padding-top: 8px;
+  /* Only padding-right grew for the corner-clearance fix above, leaving the base component's
+     own 2px padding-left in place - that 2px-vs-16px imbalance visibly shifted every field
+     toward the left edge of its box. Matching padding-left to padding-right centers it
+     horizontally too. */
+  padding-left: 16px;
+}
+
+/* Scoped through .flexrow.gap-2 (the header-row-top/header-row-bottom wrapper, common.hbs)
+   rather than directly off .sheet-header, because the sidebar's own root section also carries
+   the "sheet-header" class (essence20-sidebar sheet-header, _sidebars.scss) and its resource
+   panels also carry "sliced-border" (essence20-sidebar-resources) - without this extra scope
+   step this rule's flex: 1 1 0 was also matching the sidebar's Role Points resource inputs
+   (nested in .sliced-border.essence20-sidebar-resources > .role-points-item), squeezing them
+   down to ~10px, with a specificity too high for a same-file override elsewhere to beat. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select),
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select),
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border .header-item-name {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+}
+
+/* Faction/Role/Focus/Origin's content (.header-item-name + delete button) and Level's (the
+   number input + up/down arrow buttons) each sit inside an extra wrapper div one level deeper
+   than .sliced-border itself (<li class="item no-list-style"> for Faction/Role/Focus/Origin,
+   faction.hbs/role.hbs/focus.hbs/origin-field.hbs; .flexrow.align-center.gap-2 for Level,
+   common.hbs) - unlike Size/Name/Color, whose actual content is a direct child of .sliced-border.
+   That wrapper was landing at whatever height its own content produced and sitting flush against
+   the top padding (confirmed via the browser's own DevTools box model overlay - Size's select
+   sits flush at the BOTTOM of .sliced-border instead, with the leftover space entirely above it).
+   Giving the wrapper the same 32px height the padding was built around (see the .sliced-border
+   rule above: 8px top + 8px bottom = 48px total, with the middle 32px meant for exactly Foundry's
+   own --input-height), then pushing it to the end of .sliced-border's own axis, matches that.
+   Level's .sliced-border has no flex-direction override (row, the default), where the cross axis
+   is vertical, so align-self:flex-end on the wrapper item itself is correct there. Faction's
+   (and Role/Focus/Origin's) .sliced-border is .--col (flex-direction: column) instead, where the
+   cross axis is horizontal - align-self:flex-end there would shove content sideways, not down
+   (confirmed live: it did, clipping "Renegade" to "Renegad"). What moves content along a column
+   container's vertical (main) axis is justify-content, and that's a property of the CONTAINER,
+   not the item, so that part targets .sliced-border.--col itself rather than the li/flexrow
+   inside it - its only in-flow child is that li/flexrow (the label is position:absolute, out of
+   flow), so this only ever pushes the content that needs it. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border > .flexrow.align-center.gap-2,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border > li.item.no-list-style,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border > div.flexrow {
+  height: var(--input-height, 32px);
+  box-sizing: border-box;
+  /* The wrapper's own box now lands in the right place (confirmed via a red reference line
+     screenshot at the actual rendered text baseline), but its text still sits a few px above
+     Size's own baseline within that box - Select's native line-height-based centering and this
+     wrapper's flex-based one aren't pixel-identical. padding-top eats into the (already
+     bottom-aligned, box-sizing:border-box) box from the inside, nudging its own content down
+     without moving the box itself. Adjust directly based on the actual baseline, not measurement. */
+  padding-top: 3px;
+}
+
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border:not(.--col) > .flexrow.align-center.gap-2 {
+  align-self: flex-end;
+}
+
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border.--col {
+  justify-content: flex-end;
+}
+
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border .header-item-name {
+  background: var(--theme-panel-bg);
+}
+
+/* "Invisible" inputs - no separate input-shaped box within the sliced-border field, just the
+   value sitting directly on the field's own background, matching the read-only .header-item-name
+   fields next to them (Faction/Role/Focus/Origin, above). Foundry core's own input/select rule
+   sets `background` (a shorthand) from a CSS layer declared after essence20's, which beats a
+   normal-weight declaration here regardless of specificity (same conflict as
+   .item-label-checkbox, _collapsible.scss) - !important is the only way to win that. Doesn't
+   affect the color picker's own swatch (input.picker[type="color"] below) since the native
+   swatch always paints over any background here regardless. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select),
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select) {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  /* background/border alone still left native chrome behind - appearance:auto (Foundry core's
+     own default) draws the browser's own dropdown arrow on <select> and stepper buttons on a
+     number <input>, either of which visually flags "this is a form field" regardless of
+     background/border. */
+  appearance: none !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Foundry core's own input/select rule also sets a visible outline specifically on :focus (its
+   --input-focus-outline-color custom property) - the border/outline reset above only covers the
+   resting state, since a browser's own focus-state rule otherwise still wins independently. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):focus,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input:not(.skill-shift-select):focus-visible,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select):focus,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select:not(.skill-shift-select):focus-visible {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Chrome/Safari's number spinner buttons aren't covered by appearance:none on the input itself -
+   they're a separate pseudo-element the property doesn't reach. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input[type=number]::-webkit-inner-spin-button,
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border input[type=number]::-webkit-outer-spin-button {
+  appearance: none !important;
+  margin: 0;
+}
+
+/* Faction/Role/Focus/Origin (faction.hbs, role.hbs, focus.hbs, origin-field.hbs) display the
+   name of a dropped Item, not an editable value of their own - there's no actual
+   system.faction/role/focus/origin string field backing them, so the <input> they used to be
+   was never wired to anything real (typing into it did nothing on save). Plain text instead,
+   sized/positioned the same as the input it replaced via the shared rule above. */
+.essence20 .sheet-header .header-item-name {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--theme-text-color);
+  /* An <input>/<select> has its own intrinsic height (Foundry core's --input-height, 2rem/32px)
+     that a plain <span> doesn't - these rows use align-items: flex-start, not stretch (see the
+     .sliced-border rule above), so each box sizes to its own content independently rather than
+     matching its siblings. Without this, the Faction/Role/Origin boxes rendered visibly shorter
+     than Size/Level/Color right next to them. */
+  min-height: var(--input-height, 32px);
+}
+
+.essence20 .sheet-header .header-item-placeholder {
+  color: var(--theme-muted-text);
+}
+
+/* input[type=color]'s native swatch has its own intrinsic size/padding that isn't fully
+   governed by flex alone, and was overflowing past the .pr-header-color sliced-border box it
+   sits in. Pinning an explicit size (and, on Chromium, stripping the swatch's own internal
+   padding via the -webkit-color-swatch-wrapper pseudo-element) keeps it inside its box. */
+.essence20 .sheet-header .sliced-border input.picker[type=color] {
+  flex: 0 0 auto;
+  width: 32px;
+  height: 24px;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  box-sizing: border-box;
+}
+
+.essence20 .sheet-header .sliced-border input.picker[type=color]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.essence20 .sheet-header .sliced-border input.picker[type=color]::-webkit-color-swatch {
+  border: none;
+  border-radius: 4px;
+}
+
+.essence20 .sheet-header .sliced-border.--col {
+  min-width: 8em;
+}
+
+.essence20 .header-name-field {
+  flex: 1 1 auto;
+  gap: 0.25rem;
+}
+
+.essence20 .header-name-field .sliced-border {
+  width: 100%;
+}
+
+.essence20 .sheet-header h1.charname {
+  margin: 0;
+  padding: 0;
+  font-size: 1.4rem;
+  line-height: 1.2;
+  font-family: inherit;
+  /* The input inside is width:100% of THIS element, but h1 itself is a flex item with the
+     default flex:0 1 auto - it was sizing to its own content (the input's intrinsic width)
+     instead of filling the .sliced-border box around it, leaving the Name field visibly
+     shifted left with empty space on the right. */
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.essence20 .sheet-header h1.charname input {
+  width: 100%;
+  font-size: 1em;
+  font-weight: 700;
+}
+
+/* ITEMS */
+.essence20 .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  color: var(--theme-accent);
+  font-weight: bold;
+  border-radius: 15px;
+}
+
+.essence20 .items-header > * {
+  font-size: 14px;
+  text-align: center;
+}
+
+.essence20 .items-header .item-name {
+  font-weight: bold;
+  padding-left: 5px;
+  text-align: left;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+/* .sheet-header .sliced-border-scoped flex:1 1 auto (above) has 3 chained classes
+   (.essence20 .sheet-header .sliced-border) to this rule's 2 (.essence20 .pr-header-level), so
+   despite reading as "more specific to Level," it was actually LOSING the specificity contest
+   and being silently overridden back to flex:1 1 auto - Level (the sole flex:0 0 auto box)
+   then had nothing constraining its width, so once it didn't fit alongside Name/Size/Faction
+   and wrapped to its own row, it grew to fill that entire row alone. Repeating .sheet-header
+   here matches (in fact exceeds, being alphabetically/source-order later) that specificity so
+   this actually wins. */
+.essence20 .sheet-header .pr-header-level {
+  flex: 0 0 auto;
+  justify-content: center;
+}
+
+.essence20 .sheet-header .pr-header-color {
+  flex: 0 0 auto;
+  /* .sliced-border is height: fit-content (a specified, non-auto value), so align-items:stretch
+     on the parent row wouldn't stretch this box - stretch only kicks in when the cross-size is
+     auto. The color swatch's own content height (24px) is shorter than a sibling field's text
+     input (32px, e.g. Origin), which otherwise left this box visibly shorter than its row
+     neighbors despite identical padding. min-height (border-box, so this is a total-height
+     floor) pins it to match: 8px padding-top + 32px input-height sibling content + 8px
+     padding-bottom, same as Origin/Role/etc in this row (padding-top raised to match
+     padding-bottom above, to center the row's fields in the box). */
+  min-height: 48px;
+}
+
+.essence20 .pr-header-level-buttons {
+  flex: 0 0 auto;
+  gap: 2px;
+  font-size: 0.7em;
+  line-height: 1;
+}
+
+/* --e20-system-color is set from an Actor's own system.color (helpers/actor.mjs) - Items have
+   no such concept, so every var(--e20-system-color, var(--theme-accent)) rule shared with actor
+   sheets (active tab fill in _tabs.scss, etc.) was falling through to the raw --theme-accent on
+   Item sheets: orange in light theme, cyan in dark theme, showing up as an unintended accent
+   color with no way for the item itself to control it. Redefining the variable here with a
+   neutral fallback fixes every such rule at once, without needing to touch each one
+   individually or add .essence20.item-scoped overrides throughout _tabs.scss. */
+.essence20.item {
+  --e20-system-color: var(--theme-border-color);
+}
+
+/* Generic Item Sheet Styling */
+.essence20 .items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: var(--theme-text-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Item sheet header */
+.essence20.item .item-sheet-header {
+  align-items: center;
+  gap: 1rem;
+}
+
+.essence20.item .item-profile-img {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  /* Was var(--theme-accent) - orange in light theme / cyan in dark theme, an unwanted stray
+     accent color on every item sheet regardless of the item's own content. */
+  border: 3px solid var(--theme-border-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.essence20.item .item-type-badge {
+  align-self: flex-start;
+  width: fit-content;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--theme-text-color) !important;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 20px;
+  padding: 2px 10px;
+  margin-bottom: 4px;
+}
+
+/* Tab content panels */
+.essence20.item .tab.description > div,
+.essence20.item .tab.details > div,
+.essence20.item .tab.effects .effect-list-container {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* The sheet's own width is now fixed for every type except Role (item-sheet.mjs), but that alone
+   doesn't force long text to actually wrap - a single very long word (or the browser measuring
+   this content before the fixed width is in effect) can still overflow. overflow-wrap/word-break
+   let text break mid-word as a last resort once it's the widest thing in the box, rather than
+   pushing past the sheet's own edge. */
+.essence20.item .tab.description .description {
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.essence20.item .tab.description h3 {
+  color: var(--theme-text-color);
+  border-bottom: 1px solid var(--theme-border-color);
+  padding-bottom: 4px;
+  margin: 0.25rem 0;
+}
+
+.essence20 .resource-label {
+  font-weight: bold;
+}
+
+.roll-dialog div {
+  margin-bottom: 10px;
+  height: fit-content;
+}
+
+.roll-dialog div label > * {
+  vertical-align: middle;
+}
+
+.roll-dialog-app .form-footer {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.roll-dialog-app .form-footer button {
+  flex: 1 1 0;
+  border-radius: 0;
+}
+
+.roll-dialog .roll-dialog-toggle {
+  display: flex !important;
+  justify-content: space-between;
+}
+
+.roll-dialog .switch {
+  position: relative;
+  display: inline-block !important;
+  flex: 0 0 28px !important;
+  width: 28px;
+  height: 16px;
+  vertical-align: middle;
+}
+
+.roll-dialog .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.roll-dialog .switch-slider {
+  position: absolute;
+  inset: 0;
+  cursor: pointer;
+  background-color: #5f5f5f;
+  border-radius: 16px;
+  transition: background-color 0.2s;
+}
+
+.roll-dialog .switch-slider::before {
+  content: "";
+  position: absolute;
+  height: 12px;
+  width: 12px;
+  left: 2px;
+  bottom: 2px;
+  background-color: #cccccc;
+  border-radius: 50%;
+  transition: transform 0.2s;
+}
+
+.roll-dialog .switch input:checked + .switch-slider {
+  background-color: #0077ff;
+}
+
+.roll-dialog .switch input:checked + .switch-slider::before {
+  transform: translateX(12px);
+}
+
+.essence20 .choice-buttons {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+.essence20 .choice-buttons .choice {
+  align-items: center;
+  display: flex;
+  gap: 0.5em;
+  width: 100%;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) 1fr;
+  grid-template-rows: auto auto 1fr;
+  column-gap: 1rem;
+  align-items: stretch;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > header.sheet-header {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.essence20 .essence20-sidebar {
+  grid-column: 1;
+  grid-row: 1/-1;
+  min-height: 0;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > nav.tabs {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.essence20.actor .window-content:has(> .essence20-sidebar) > section.tab {
+  grid-column: 2;
+  grid-row: 3;
+  min-height: 0;
+}
+
+.essence20-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Sidebar panels (Resources/Special/Defenses/etc.) are .sliced-border boxes - tint their
+   border graphic with the actor's own system color (falling back to the theme accent),
+   reusing the same mask-border + solid background-color technique .e20-border-accent already
+   uses elsewhere (_tabs.scss) to recolor this same --theme-border-image asset. Replaces the
+   base .sliced-border::before's plain, un-tinted border-image rendering for sidebar panels only
+   - the label used to carry this accent color instead (see .sliced-border__label above), which
+   now stays neutral. */
+.essence20-sidebar .sliced-border::before {
+  filter: none;
+  border-style: none;
+  border-image: none;
+  border-width: 0;
+  background-color: var(--e20-system-color, var(--theme-accent));
+  -webkit-mask-box-image-source: var(--theme-border-image);
+  -webkit-mask-box-image-slice: 15;
+  -webkit-mask-box-image-width: 16px;
+  -webkit-mask-box-image-repeat: stretch;
+  mask-border-source: var(--theme-border-image);
+  mask-border-slice: 15;
+  mask-border-width: 16px;
+  mask-border-repeat: stretch;
+}
+
+.essence20-sidebar.sheet-header {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+  border: none;
+}
+
+.essence20-sidebar.sheet-header .profile-img {
+  align-self: center;
+  display: block;
+  width: 100%;
+  max-width: 110px;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 5px solid var(--e20-system-color, var(--theme-accent));
+  margin: 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-panel {
+  align-self: stretch;
+  width: 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  gap: 0.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.essence20-sidebar .essence20-sidebar-panel:has(> .sliced-border__label) {
+  padding-top: calc(0.25rem + 6px);
+}
+
+.essence20-sidebar .essence20-sidebar-panel > .sliced-border__label {
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button):not(.essence20-sidebar-trait-row) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > label {
+  color: var(--theme-text-color);
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-trait-row) > span {
+  color: var(--theme-muted-text);
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  margin-bottom: 0.25rem;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row:last-child {
+  margin-bottom: 0;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row > label {
+  color: var(--theme-text-color);
+  font-weight: 600;
+}
+
+.essence20-sidebar .essence20-sidebar-trait-row > span {
+  color: var(--theme-muted-text);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.essence20-sidebar .stats-container {
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+}
+
+.essence20-sidebar-skill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 2px 8px;
+  font-size: 0.8em;
+  color: var(--theme-text-color);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: var(--e20-system-color, var(--theme-accent));
+}
+
+.essence20-sidebar .essence20-sidebar-action-button i {
+  flex: 0 0 auto;
+}
+
+.essence20-sidebar .essence20-sidebar-initiative i {
+  font-size: 0.85em;
+}
+
+.essence20-sidebar .essence20-sidebar-action-button select {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  background: transparent;
+}
+
+.essence20-sidebar .essence20-sidebar-initiative select {
+  border: 1px solid var(--theme-border-color);
+  border-radius: 4px;
+  padding: 0 2px;
+  /* Shrinks the box itself (width/height), not the text inside it - flex:1 1 auto (above) was
+     letting it balloon out to fill the whole row, dwarfing the shift-die result next to it. */
+  flex: 0 1 auto;
+  max-width: 110px;
+  height: 24px;
+  margin: 0 0.25rem;
+}
+
+/* The shift die result (e.g. "d8") - the actual payoff of this row, next to the skill picker
+   that just feeds it - reads as an afterthought at the shared 0.8em action-button size. */
+.essence20-sidebar .essence20-sidebar-initiative span {
+  font-size: 1.15em;
+}
+
+.essence20-sidebar .add-specialization.invisible {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.essence20-sidebar.sheet-header .skill-header {
+  min-height: 20px;
+  font-size: 0.85em;
+}
+
+.essence20-sidebar.sheet-header .two-digit-input,
+.essence20-sidebar.sheet-header .one-digit-input {
+  height: 20px;
+  min-height: 20px;
+  padding: 1px 3px;
+}
+
+.essence20-sidebar .essence20-sidebar-panel > div:not(.essence20-sidebar-skill-list):not(.stats-container):not(.essence20-sidebar-action-button) {
+  font-size: 0.9em;
+}
+
+.essence20 .skill-header {
+  font-size: 0.85em;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 6px;
+  min-height: 24px;
+}
+
+.essence20 .skill-header.conditioning-row {
+  margin-bottom: 0.5rem;
+}
+
+.essence20 .skill-header .skill-name {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--theme-text-color);
+  text-decoration: none;
+  font-size: 1em;
+  margin-left: 5px;
+  flex: 1 1 auto;
+}
+
+.essence20 .skill-header .skill-shift-select {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.95em;
+  padding: 1px 3px;
+  text-overflow: ellipsis;
+}
+
+/* Read-only stand-in for .skill-shift-select once shift-editing moves into the Skill Picker app
+   (essence-skills.hbs's readOnly param) - same box/width as the select it replaces, just
+   centered plain text instead of a dropdown. */
+.essence20 .skill-header .skill-shift-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-text-color);
+  opacity: 0.85;
+}
+
+.essence20 .skill-header .conditioning-input {
+  flex: 0 0 auto;
+  width: 58px;
+  font-size: 0.95em;
+  padding: 1px 3px;
+  text-align: center;
+  color: var(--theme-text-color);
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+}
+
+.essence20 .skill-header .add-specialization {
+  flex-grow: 0;
+  margin-right: 8px;
+  font-size: 0.75em;
+}
+
+.essence20 .skill-header .spellcasting-downshift-chip {
+  flex: 0 0 auto;
+  font-size: 0.85em;
+  margin-right: 3px;
+}
+
+.essence20 .skill-header .spellcasting-downshift-action {
+  flex-grow: 0;
+  margin-right: 6px;
+  font-size: 0.75em;
+  color: var(--theme-text-color);
+}
+
+.essence20 .skill-body {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0.5rem;
+}
+
+/* essence-skills.hbs always renders a .skill-body sibling after every skill-header, even when
+   the skill has no specializations (a bare, empty <ol class="items-list"> with nothing else) -
+   that empty div still took its own slot in .essence20-sidebar-skill-list's flex column, so its
+   own margin-bottom above PLUS the list's gap on both sides of it stacked into a much bigger gap
+   than any other pair of adjacent skill rows (most visible right before the sidebar's Wealth Die
+   row, which isn't part of this loop and has no such empty body of its own). Dropping it out of
+   the flex layout entirely when it has neither a specialized-row (companion/npc/vehicle/zord)
+   nor any actual specializations restores a normal gap.
+   Scoped to .essence20-sidebar-skill-list specifically - essence-skills.hbs is also used by the
+   main Skills tab (pc-skills.hbs/accordion-skills.hbs), where the empty body's spacing is wanted
+   as-is; a bare .essence20 .skill-body rule would collapse it there too. */
+.essence20-sidebar-skill-list .skill-body:not(:has(.skill-specialized-row, .specializations-list)) {
+  display: none;
+}
+
+.essence20 .skill-body .skill-specialized-row {
+  gap: 5px;
+  justify-content: flex-end;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  align-items: center;
+}
+
+.essence20 .skill-body .specialized-checkbox {
+  margin: 0;
+}
+
+.essence20 .skill-body .specializations-list {
+  margin-bottom: 5px;
+}
+
+.essence20 .skill-body .specializations-list .specializations-item {
+  align-items: center;
+  gap: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.essence20 .skill-body .specializations-list .specializations-item .item-button-container {
+  padding-top: 3px;
+}
+
+.essence20 .skill-body .specializations-header {
+  align-items: center;
+  margin-top: 5px;
+}
+
+.essence20 .skills-label {
+  font-size: 2em;
+  margin-bottom: 0px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  background: var(--theme-panel-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 50px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  width: 100%;
+}
+
+.essence20 .skills-container {
+  list-style: none;
+  overflow-y: auto;
+  color: var(--theme-text-color);
+  transform: rotate(0deg);
+  scrollbar-width: thin;
+  border-radius: 8px;
+  width: 100%;
+  justify-content: left;
+  flex-grow: 0;
+  flex-basis: auto;
+  padding: 20px 8px 8px;
+  box-sizing: border-box;
+}
+
+/* npc-skill-list.hbs's heading row - "Skills" label plus the gear icon that opens the Skill
+   Picker app (module/apps/skill-picker.mjs). Unlike the old accordion-skills.hbs it replaced,
+   this list has no collapse/expand toggle, so the row only needs the label and the one action. */
+.essence20 .npc-skill-list-header {
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+.essence20 .npc-skill-list-header span {
+  font-weight: 700;
+}
+.essence20 .npc-skill-list-header a {
+  color: var(--theme-text-color);
+  opacity: 0.7;
+}
+.essence20 .npc-skill-list-header a:hover {
+  opacity: 1;
+}
+
+.essence20 .npc-skill-list-empty {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.essence20 .npc-skill-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Each chosen skill as a compact "Athletics +d20" rollable pill - reuses the same box shape as
+   the generic .chip class (border-radius, padding, card background) but is a clickable rollable
+   link rather than a static tag, so it gets its own class for the pointer/hover affordance
+   instead of `.chip` (which several non-interactive usages elsewhere rely on staying static). */
+.essence20 .npc-skill-button {
+  display: inline-block;
+  border-radius: 10px;
+  border: 1px solid var(--theme-border-color);
+  padding: 3px 10px;
+  color: var(--theme-text-color);
+  background-color: var(--theme-card-bg);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.essence20 .npc-skill-button:hover {
+  color: var(--theme-accent);
+  border-color: var(--theme-accent);
+}
+
+.essence20 .skillscontainer {
+  list-style: none;
+  overflow-y: auto;
+  color: var(--theme-text-color);
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  padding: 0;
+  align-items: stretch;
+  height: calc(100% - 10px);
+}
+
+.essence20 h1,
+.essence20 h2,
+.essence20 h3,
+.essence20 h4 {
+  color: var(--theme-text-color);
+}
+
+.essence20 .tox .tox-editor-container {
+  background: rgb(255, 255, 255);
+}
+
+.essence20 .tox .tox-edit-area {
+  padding: 0 8px;
+}
+
+.dialog-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dialog-options li ol.dialog-options {
+  margin-left: 1.5em;
+}
+
+.dialog-options input[type=text] {
+  height: 24px;
+  margin: 2px;
+}
+
+.trait-selector {
+  flex-grow: auto;
+  overflow: auto;
+}
+
+.essence20 .powers-section {
+  list-style: none;
+  padding: 4px;
+  overflow-y: auto;
+  color: var(--theme-text-color);
+  display: flex;
+  flex-direction: row;
+  flex-grow: 0;
+  flex-basis: auto;
+  justify-content: center;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 15px;
+  width: 100%;
+}
+
+.essence20 .defense-container {
+  flex-grow: 0;
+  flex-basis: auto;
+}
+
+.essence20 .defense-container table thead {
+  border-bottom: 1px solid var(--theme-border-color);
+  border-color: inherit;
+  background-color: inherit;
+  color: inherit;
+}
+
+.essence20 .defense-container tr:nth-child(even) {
+  border-color: inherit;
+  background-color: inherit;
+}
+
+.essence20 .defense-container .tg {
+  border-color: inherit;
+  border-collapse: collapse;
+  border-spacing: 0;
+  border-style: hidden;
+  margin: 0;
+}
+
+.essence20 .defense-container .tg td {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 15px;
+  font-weight: normal;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.essence20 .defense-container .tg th {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 1px;
+  font-size: 16px;
+  overflow: hidden;
+  padding: 10px 5px;
+  word-break: normal;
+}
+
+.essence20 .defense-container .tg .tg-td {
+  border-color: inherit;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.essence20 .initiative {
+  text-align: center;
+}
+
+.essence20 .initiative-dropdown {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.essence20 .essence-header {
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.essence20 .essence-header.strength {
+  margin-bottom: 0;
+}
+
+.essence20 .essence-header .skill-rank-allocation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.75em;
+  color: var(--theme-muted-text, var(--theme-text-color));
+}
+
+.essence20 .essence-header .skill-rank-defense {
+  font-weight: 600;
+}
+
+/* The gear icon that opens the Skill Picker app (module/apps/skill-picker.mjs) for setting
+   every skill's shift - sits next to the tally it feeds rather than claiming its own row, since
+   .skill-rank-allocation above now shares the row instead of taking the full width alone. */
+.essence20 .essence-header > a[data-action=skillPicker] {
+  flex: 0 0 auto;
+  color: var(--theme-text-color);
+  opacity: 0.7;
+}
+.essence20 .essence-header > a[data-action=skillPicker]:hover {
+  opacity: 1;
+}
+
+.essence20 .essence-header .essence-label {
+  font-size: 1.2em;
+  vertical-align: middle;
+  font-weight: 700;
+  color: var(--theme-text-color);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 2px 8px;
+  min-width: 64px;
+  text-align: center;
+}
+
+.essence20 .essence-column {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  isolation: isolate;
+}
+
+.essence20 .essence-column .skills-container {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.essence20 .essence-header:has(.essence-label) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto -18px;
+  position: relative;
+  z-index: 5;
+  padding: 5px 12px 5px 16px;
+  background-color: var(--e20-system-color, var(--theme-accent));
+  box-sizing: border-box;
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+}
+
+.essence20 .essence-header:has(.essence-label) .essence-label {
+  background: none;
+  border: none;
+  padding: 0;
+  min-width: 0;
+  color: var(--theme-muted-text, var(--theme-text-color));
+  font-weight: 600;
+  font-size: 0.85em;
+  white-space: nowrap;
+}
+
+/* Light theme's --theme-text-color is dark (for its own light panels), which reads as
+   low-contrast to unreadable against a solid, arbitrary system.color fill. Force white with a
+   dark halo so the label stays legible against any color a player picks; dark theme's own text
+   color already contrasts fine and is left alone. */
+.essence20.theme-light .essence-header:has(.essence-label) .essence-label {
+  color: #ffffff;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+.essence20 .essence-header:has(.essence-label) .two-digit-input {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-weight: 700;
+  font-size: 0.85em;
+  max-width: 28px;
+  padding: 2px;
+}
+
+/* Matches the essence-label's own light-mode treatment above (white + dark halo) rather than
+   the light-gray reused from dark mode - the gray read too close to the chip's own dark
+   background (rgba(0,0,0,0.35)) to be legible, and didn't match the now-white label text
+   right next to it. */
+.essence20.theme-light .essence-header:has(.essence-label) .two-digit-input {
+  color: #ffffff;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8), 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+.essence20 .health-container {
+  min-width: fit-content;
+}
+
+.essence20 .notes-title {
+  color: var(--theme-accent);
+  font-size: 16px;
+}
+
+.essence20 .notes-container {
+  list-style: none;
+  margin-right: 3px;
+  padding: 8px;
+  overflow-y: auto;
+  color: var(--theme-text-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 15px;
+  width: 100%;
+  height: 100%;
+}
+
+.essence20 .biography-row {
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+/* Extra clearance above the Pronoun/Gender/Age/etc. row specifically, on top of whatever gap the
+   Origin/Influences/Bonds/Hang Ups item-containers above it already carry (.tab's own gap: 10px,
+   actors/_tabs.scss; each container's own margin-bottom, actors/_leveled-item-lists.scss) - that
+   stacked spacing still read as too tight coming out of Hang Ups, the last of those containers.
+   Targeted via the adjacent-sibling combinator, not :first-of-type - each item-container above
+   (Origin/Influences/Bonds/Hang Ups) is ALSO a <div>, same as .biography-row itself, so
+   :first-of-type (which matches by tag name, not class) never actually matched this row: it's
+   the 5th div sibling, not the 1st. The combinator instead matches whichever .biography-row
+   directly follows a .collapsible-item-container - always the Hang Ups boundary, never the
+   second biography-row (Eye/Hair/Skin), which follows another .biography-row instead. */
+.essence20 .collapsible-item-container + .biography-row {
+  margin-top: 1rem;
+}
+
+.essence20 .biography-row .sliced-border.--col {
+  flex: 1 1 0;
+  min-width: 6.5em;
+}
+
+/* Pronoun/Gender/Age/Height/Weight/Eye Color/Hair Color/Skin Color - same treatment as the
+   sheet header's field labels (assets/_headers.scss). */
+.essence20 .biography-row .sliced-border__label {
+  text-transform: uppercase;
+}
+
+/* Same "invisible input" treatment as the sheet header (assets/_headers.scss) - a plain
+   border:none/background:transparent (no !important) still left native chrome visible, because
+   Foundry core's own input rule sets background/border/outline from a CSS layer declared after
+   essence20's, which beats a normal-weight declaration here regardless of specificity. */
+.essence20 .biography-row .sliced-border.--col input {
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--theme-text-color);
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  appearance: none !important;
+  border: none !important;
+  border-width: 0 !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.essence20 .biography-row .sliced-border.--col input:focus,
+.essence20 .biography-row .sliced-border.--col input:focus-visible {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Age (type="number") - the native spinner buttons aren't covered by appearance:none on the
+   input itself in every browser, since they're a separate pseudo-element the property doesn't
+   always reach. */
+.essence20 .biography-row .sliced-border.--col input[type=number]::-webkit-inner-spin-button,
+.essence20 .biography-row .sliced-border.--col input[type=number]::-webkit-outer-spin-button {
+  appearance: none !important;
+  margin: 0;
+}
+
+.essence20 .biography-editor-field {
+  margin-bottom: 10px;
+}
+
+.essence20 .biography-editor-field > label {
+  display: block;
+  /* Matches the sidebar panel titles' treatment (.sliced-border__label,
+     components/_sliced_border.scss) - these aren't sliced-border labels themselves (a plain
+     block label reads better above a full-width text editor than a floating badge would), but
+     should still look like the same family of section heading. */
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  /* Was var(--theme-accent) - reads as orange in light theme / cyan in dark theme, which read
+     as an unwanted stray accent color on these field labels rather than plain text. */
+  color: var(--theme-text-color);
+  margin-bottom: 4px;
+}
+
+.essence20 .biography-editor-field .editor {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 15px;
+  min-height: 120px;
+  padding: 4px;
+}
+
+/* Foundry's own editor-edit pencil icon (and anything else inside the editor toolbar) defaults
+   to a near-black but not-quite-black tone in light theme - forcing true black keeps it
+   consistently legible rather than relying on that default. */
+.essence20.theme-light .biography-editor-field i {
+  color: #000000;
+}
+
+/* Was flex-direction: row (Essence/morph-transform side by side, then Skills/Items side by
+   side, each capped to a 50-60% column) - now a single stacked column so each section (Essence,
+   Skills, Items, ...) takes the tab's full width in turn, top to bottom. */
+.essence20 .npc-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 6px;
+}
+
+.essence20 .npc-items {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.essence20 .npc-defenses {
+  width: 100%;
+}
+
+.essence20 .npc-essence-scores {
+  width: 100%;
+}
+
+.essence20 .npc-health {
+  width: 100%;
+}
+
+.essence20 .npc-movement {
+  width: 100%;
+}
+
+.essence20 .npc-firepoints {
+  width: 100%;
+}
+
+.essence20 .firepoints-input {
+  border: none;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  resize: none;
+}
+
+.essence20 .stats-container.firepoints {
+  max-height: 60px;
+  overflow: hidden;
+}
+
+.essence20 .npc-skills {
+  width: 100%;
+}
+
+/* Zord/Megaform show their Strength/Speed Essence scores via zord-common.hbs's own markup
+   (a .stats-row > .stats-container, not the npc-essence-scores.hbs partial the other NPC-like
+   types share) - a dedicated class here so this one row can stretch full-width without touching
+   the shared .stats-row/.stats-container classes, which are also used elsewhere (spells.hbs,
+   common-no-vitals.hbs) where that stretch isn't wanted. */
+.essence20 .zord-essence-scores {
+  width: 100%;
+  flex-grow: 1;
+}
+.essence20 .zord-essence-scores .stats-container {
+  width: 100%;
+}
+
+.essence20 .skill-separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.essence20 .skill-separator::before,
+.essence20 .skill-separator::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+
+.essence20 .skill-separator:not(:empty)::before {
+  margin-right: 0.25em;
+}
+
+.essence20 .skill-separator:not(:empty)::after {
+  margin-left: 0.25em;
+}
+
+.essence20 .stats-container {
+  list-style: none;
+  padding: 6px;
+  overflow-y: auto;
+  color: var(--theme-text-color);
+  flex-basis: auto;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  min-height: 72px;
+}
+
+.essence20 .stats-row {
+  gap: 6px;
+  flex-grow: 0;
+  flex-wrap: nowrap;
+}
+
+.essence20 .sheet-tabs {
+  -webkit-box-flex: 0;
+  -ms-flex: 0;
+  flex: 0;
+  gap: 2px;
+  margin-bottom: 8px;
+}
+
+.essence20 .sheet-body .tab,
+.essence20 .sheet-body .tab .editor {
+  height: 100%;
+  gap: 10px;
+}
+
+.essence20 .sheet-body.item-sheet .tab {
+  gap: 0px;
+}
+
+.essence20.actor .window-content > [data-tab] {
+  overflow-y: auto;
+}
+
+/* Chamfered top corners (cut at 8px, matching the depth used before) instead of a plain
+   rounded-rectangle tab, matching the reference tab strip.
+   clip-path clips a box's border along with everything else, but can't draw a stroke ALONG the
+   new diagonal edge it creates - the straight sides keep their border, but the cut corner itself
+   is just a bare edge with the raw background showing through, which is what looked like a gap
+   even with .sheet-tabs' gap set to 0 above. Faked here with two stacked layers instead: this
+   element paints as a solid border-color block in the full chamfered shape, and the ::before
+   below sits 1px in from every edge with its own (very slightly shallower) chamfer and the
+   actual fill color, so a 1px rim of the border color shows all the way around - diagonal edge
+   included - rather than only on the straight edges.
+   Sized down (smaller font, tighter padding) since up to 12 of these can be visible at once
+   (see character-sheet.mjs TABS) - at the previous size, two-word labels like "Alt Mode" had
+   nowhere near enough room and either wrapped or got clipped. */
+.essence20 .tabs .item,
+.essence20 .tabs a[data-tab] {
+  position: relative;
+  /* Black rim (matching the active tab's own border below) around every tab, revealed by
+     ::before's 2px inset - the same "2-layer rim" trick used to fake a border along the
+     clip-path chamfer, since a plain CSS border can't follow that diagonal edge. */
+  background: #000000;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%, 0 8px);
+  border: none;
+  padding: 3px 4px 5px;
+  flex: 1;
+  min-width: 0;
+  /* Plain --theme-text-color reads as low-contrast to unreadable against a solid, arbitrary
+     system.color fill (same issue the Essence Badge label solves in _essence.scss) - a light gray
+     with a dark halo keeps the label legible against any color a player picks, in both themes
+     (light gray rather than pure white so it doesn't compete with the active tab's own, brighter
+     $textcolor1 treatment below). A tight text-stroke hugs the glyph outline itself rather than
+     blurring outward like a text-shadow would, keeping the halo crisp at any label length. */
+  color: #9e9b9b;
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.8);
+  paint-order: stroke fill;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 22px;
+  /* Nudged up from 0.75em - kept small since up to 12 tabs can share this strip at once (see this
+     rule's own comment above) and two-word labels like "Alt Mode" already have little room to
+     spare before wrapping to a second line or overflowing; verified live at this size. */
+  font-size: 1.1em;
+  white-space: nowrap;
+  /* Full strength (not the old 0.85) so the fill reads as the actor's actual system.color
+     instead of a version blended toward whatever's behind the tab strip. */
+  opacity: 1;
+}
+
+.essence20 .tabs .item::before,
+.essence20 .tabs a[data-tab]::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  z-index: 0;
+  pointer-events: none;
+  background: var(--e20-system-color, var(--theme-accent));
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 0 100%, 0 6px);
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+}
+
+.essence20 .tabs .item span,
+.essence20 .tabs a[data-tab] span {
+  position: relative;
+  z-index: 1;
+}
+
+.essence20 .tabs .item .nav-item-label {
+  text-transform: none;
+  font-weight: 600;
+}
+
+/* The active tab's fill (::before below) matches the look of a .stats-container "section" card
+   (actors/_stat-containers.scss) - the same panel gradient plus its faint white wash - rather
+   than system.color, so it reads as one of those cards rather than another colored pill. This
+   element's own background is then free to carry a system.color outline (below) instead of
+   reusing that fill value - the panel gradient is listed twice in ::before's stack (compounding
+   its 0.96 alpha to ~0.9984) specifically so this outline can't bleed through into the fill at
+   a visible strength the way the base rule's opaque #000000 rim used to.
+   The [data-tab] attribute selector on the base rule above outweighs a plain .active class
+   selector, so it's repeated here to win the cascade rather than relying on source order. */
+.essence20 .tabs .item.active,
+.essence20 .tabs a[data-tab].active {
+  /* Left/top/right outline only - ::before's flush-bottom fill (below) covers the bottom edge
+     entirely, same as it already hides the base rule's black rim there. */
+  background: var(--e20-system-color, var(--theme-accent));
+  opacity: 1;
+  /* No colored fill to contrast against anymore - back to the theme's own text color/weight
+     instead of the white-plus-halo treatment the (now solid-colored) non-active tabs use. */
+  color: var(--theme-text-color);
+  -webkit-text-stroke: 0;
+}
+
+/* --theme-text-color in dark mode is $text-color-light (#aaaaaa, _theme_wrapper.scss) - readable
+   against the active tab's solid system.color fill, but muddier than intended. $textcolor1
+   (#c7c4c4, already this palette's "light gray" - it's dark mode's own --theme-muted-text) reads
+   as a cleaner light gray without going all the way to white. */
+.essence20.theme-dark .tabs .item.active,
+.essence20.theme-dark .tabs a[data-tab].active {
+  color: #c7c4c4;
+}
+
+.essence20 .tabs .item.active::before,
+.essence20 .tabs a[data-tab].active::before {
+  background: linear-gradient(rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.035)), linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96)), linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));
+  /* Flush against the bottom (0, instead of the base rule's uniform 2px inset) so the outline
+     doesn't show there - only the active tab opens directly into its content panel below. */
+  inset: 2px 2px 0 2px;
+  box-shadow: none;
+}
+
+.essence20.theme-light .tabs .item.active::before,
+.essence20.theme-light .tabs a[data-tab].active::before {
+  background: linear-gradient(rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.035)), linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98)), linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));
+}
+
+.essence20 a:hover {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+}
+
+.sheet nav.sheet-tabs {
+  border-top: none;
+  border-bottom: none;
+}
+
+/* A plain CSS border cannot draw along a clip-path-cut edge - border only ever follows the
+   box's real (rectangular) edges, and the diagonal chamfer below exists purely as a clip-path
+   cut, not an actual box edge. So the accent line has to be painted separately, as a masked
+   border-image (--theme-border-image, sliced and stretched through mask-border-* below), and
+   this clip-path exists to clip the box's OWN background (per-component: .collapsible-item-
+   container, .stats-container, table cells, etc., each with their own plain rectangular
+   background) to that same trimmed shape, so it doesn't poke out past the mask's visible trim.
+
+   min(22px, 50%) matches both the trim's rendered corner width (22px) AND the point at which
+   the mask-border-width corner scaling below actually kicks in: per the CSS border-image
+   corner-overlap rule, opposing 22px corners on an axis get scaled down together once their sum
+   (44px) exceeds that axis's size, i.e. exactly at 50% of that axis, not 25% - 25% clipped the
+   background's own corner far short of where the trim's diagonal really lands on any short
+   element (collapsed single-line rows, narrow table cells), leaving a background triangle
+   poking out past the visible trim. */
+.essence20 .e20-border-accent:not(.profile-img):not(hr) {
+  position: relative;
+  border-color: transparent;
+  border-radius: 0;
+  clip-path: polygon(min(22px, 50%) 0, 100% 0, 100% calc(100% - min(22px, 50%)), calc(100% - min(22px, 50%)) 100%, 0 100%, 0 min(22px, 50%));
+}
+
+/* default-border.svg's/default-border-thick.svg's chamfer is 15 units deep in their 120-unit
+   viewBox, not 16 - slicing at 16 (matching the SVG's own historical "16" grid unit elsewhere)
+   left a real gap: scaled up by the width/slice ratio (22px / 16 = 1.375x), the mask's own
+   diagonal line only reached ~20.6px from the corner, a good 1.4px short of the clip-path's
+   22px cut. That gap - between where the accent color stopped and where the visible shape kept
+   going - is exactly what showed up as an unpainted top-left/bottom-right corner. Slicing at 15
+   instead makes that same scaling land the mask's diagonal exactly on the clip-path's 22px cut
+   (22 / 15 * 15 = 22), closing the gap. */
+.essence20 .e20-border-accent:not(.profile-img):not(hr)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--e20-system-color, var(--theme-accent));
+  -webkit-mask-box-image-source: var(--theme-border-image);
+  -webkit-mask-box-image-slice: 15;
+  -webkit-mask-box-image-width: 22px;
+  -webkit-mask-box-image-repeat: stretch;
+  mask-border-source: var(--theme-border-image);
+  mask-border-slice: 15;
+  mask-border-width: 22px;
+  mask-border-repeat: stretch;
+}
+
+/* Needs to match the specificity of the `.sheet-header .profile-img` border shorthand
+   in _headers.scss (which sets a hardcoded fallback color) to actually win the cascade. */
+.essence20 .profile-img.e20-border-accent {
+  border-color: var(--e20-system-color, var(--theme-border-color));
+}
+
+.essence20 hr.e20-accent-hr {
+  border-color: var(--e20-system-color, var(--theme-border-color));
+}
+
+.essence20 .zord-combiners {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 15px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: fit-content;
+  width: 100%;
+  flex-grow: 0;
+}
+
+.essence20 .zord-img {
+  -webkit-box-flex: 0;
+  flex: inherit;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.essence20 .zord.stats-container {
+  max-width: fit-content;
+  flex-grow: 0;
+}
+
+.essence20 .pony {
+  /* background: rgb(78, 78, 78); */
+  color: #c7c4c4;
+  border-radius: 15px;
+  background: #212c5f;
+  background-size: cover;
+}
+
+.essence20 .pony-text {
+  color: black;
+}
+
+.essence20 .spelllist {
+  width: 100%;
+}
+
+.essence20 .diamond {
+  color: #b9f2ff;
+}
+
+.essence20 .gold {
+  color: goldenrod;
+}
+
+.essence20 .silver {
+  color: silver;
+}
+
+.essence20 .bronze {
+  color: #CD7F32;
+}
+
+/* Leveled item-list restyle - compact rows (level number, icon, name) under a bold
+   accent-colored section header, closer to a feat-list layout, reusing the existing
+   collapsible-item-container/chip system rather than introducing new components.
+   :not(.collapsible-item-subcontainer) excludes nested weapon-effect/upgrade subcontainers,
+   which already have their own distinct, more compact subcontainer styling.
+
+   Character sheet: scoped by tab (Perks/Spells/Background/Powers/Gear/Alt Mode - the last of
+   which reuses the same weapon/container.hbs the Gear tab does, so it needs this same scoping
+   or its .leveled-item-icon renders at the <img>'s unconstrained natural size instead of a
+   compact 24px icon). NPC/Vehicle/Zord/Megaform all share one generic "main" tab
+   (section.tab.main, also used by Companion), so each of those 4 templates additionally
+   carries its own type class (npc/vehicle/zord/megaform) precisely for this selector -
+   Companion deliberately doesn't, since it wasn't part of this restyle and section.tab.main
+   alone would otherwise catch it too. */
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer) {
+  margin-bottom: 0.5rem;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer) > .flexrow {
+  font-weight: bold;
+  border-bottom: 1px solid var(--theme-border-color);
+  padding-bottom: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > li.item {
+  padding: 2px 0.25rem;
+  border-radius: 5px;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > li.item:nth-of-type(even) {
+  background: var(--theme-panel-bg);
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .collapsible-item-container:not(.collapsible-item-subcontainer) > .items-list > hr {
+  display: none;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .leveled-item-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .leveled-item-badge {
+  flex: 0 0 1.5em;
+  font-weight: bold;
+  text-align: center;
+}
+
+.essence20.theme-light section.tab.perks i {
+  color: #000000 !important;
+}
+
+/* The default perk item icon (perk.svg) is a hardcoded solid-white fill, meant for this
+   system's dark backgrounds - on a light one it's essentially invisible. color doesn't affect
+   an <img>'s rendering, so filter is used instead: brightness(0) maps every non-transparent
+   pixel to black while leaving transparency alone, turning the white glyph solid black.
+   Scoped to img[src$="perk.svg"] specifically (not .leveled-item-icon generally) so any custom
+   artwork a player uploads for their own perks isn't flattened to a black silhouette too. */
+.essence20.theme-light section.tab.perks img[src$="perk.svg"] {
+  filter: brightness(0);
+}
+
+/* Same fix as perk.svg above - Spells default to the shared powers.svg icon (also a hardcoded
+   solid-white fill), invisible on a light background. Scoped to the Spells tab specifically
+   (not img[src$="powers.svg"] generally) so the Powers tab's own use of the same icon is
+   untouched, since that wasn't reported as an issue. */
+.essence20.theme-light section.tab.spells img[src$="powers.svg"] {
+  filter: brightness(0);
+}
+
+/* Same fix as perk.svg/powers.svg above. Origin and Influence (Bio tab) each have their own
+   default icon asset (origin.svg, influence.svg, also hardcoded solid-white); Bond and Hang Up
+   don't - there's no bond.svg/hangUp.svg in assets/icons/items/, so an un-customized Bond/Hang Up
+   item just gets whatever generic icon Foundry core assigns, the same fallback countless
+   unrelated documents across the whole world use. There's no way to scope a fix to only the
+   default there without also flattening any real custom artwork a player uploads (the exact
+   thing scoping to a specific src, rather than .leveled-item-icon generally, is meant to avoid),
+   so Bond/Hang Up are left alone. */
+.essence20.theme-light section.tab.background img[src$="origin.svg"],
+.essence20.theme-light section.tab.background img[src$="influence.svg"] {
+  filter: brightness(0);
+}
+
+/* Same fix, Gear tab. Gear/Armor/Shield/Alteration (the item types with their own dedicated
+   default icon - armor.svg, shield.svg, gear.svg, alteration.svg, all hardcoded solid-white)
+   are covered; Weapon and Magic Bauble aren't, same reasoning as Bond/Hang Up above - neither
+   has a dedicated default asset in assets/icons/items/, so an un-customized item of either type
+   just gets whatever generic icon Foundry core happens to assign. */
+.essence20.theme-light section.tab.gear img[src$="armor.svg"],
+.essence20.theme-light section.tab.gear img[src$="shield.svg"],
+.essence20.theme-light section.tab.gear img[src$="gear.svg"],
+.essence20.theme-light section.tab.gear img[src$="alteration.svg"] {
+  filter: brightness(0);
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .leveled-item-icon {
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  border: none;
+  border-radius: 4px;
+}
+
+.essence20 :is(section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform) .leveled-item-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.essence20 .armor-trait-checkbox-label {
+  flex-grow: 0;
+  margin-left: 5px;
+  white-space: nowrap;
+}
+
+.essence20 .item {
+  color: var(--theme-text-color);
+  gap: 5px;
+}
+
+/* Generic Item Sheet Styling */
+.essence20 .items-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  color: var(--theme-text-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+}
+
+.essence20 .items-list .item-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.essence20 .items-list .item-name {
+  -webkit-box-flex: 2;
+  -ms-flex: 2;
+  flex: initial;
+  margin: 0;
+  overflow: hidden;
+  font-size: 13px;
+  text-align: left;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 35%;
+}
+
+.essence20 .items-list .item-name h3,
+.essence20 .items-list .item-name h4 {
+  margin: 0;
+  white-space: nowrap;
+  overflow-x: hidden;
+}
+
+.essence20 .item-info {
+  display: flex;
+}
+
+.essence20 .items-list .item-controls {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 50px;
+  flex: 0 0 50px;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  justify-content: flex-end;
+}
+
+.essence20 .items-list .item-controls a {
+  font-size: 12px;
+  text-align: center;
+  margin: 0 6px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.essence20 .items-list .item {
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  padding: 4px 6px;
+  border-radius: 6px;
+  color: var(--theme-text-color);
+}
+
+.essence20 .items-list .item:nth-child(odd) {
+  background: var(--theme-card-bg);
+}
+
+.essence20 .items-list hr {
+  margin: 0.25rem 0;
+  width: 100%;
+  border-color: var(--theme-border-color);
+}
+
+.essence20 .collapsible-item-subcontainer .items-list {
+  gap: 0.5rem;
+}
+
+.essence20 .collapsible-item-subcontainer .items-list hr {
+  margin: 0.25rem 0;
+}
+
+.essence20 .items-list hr:last-child {
+  display: none;
+}
+
+.essence20 .collapsible-item-container .items-list hr {
+  border: 1px solid var(--theme-border-color);
+}
+
+.essence20 .items-list .item .item-name {
+  color: var(--theme-text-color);
+}
+
+.essence20 .items-list .item .item-name .item-image {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 30px;
+  flex: 0 0 30px;
+  height: 30px;
+  background-size: 30px;
+  border: none;
+  margin-right: 5px;
+  border-radius: 4px;
+}
+
+.essence20 .items-list .item-prop {
+  text-align: center;
+  border-left: 1px solid var(--theme-border-color);
+  border-right: 1px solid var(--theme-border-color);
+  font-size: 12px;
+}
+
+.essence20 .items-list .items-header {
+  height: 28px;
+  margin: 2px 0;
+  padding: 0 4px;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  font-weight: bold;
+  flex-wrap: nowrap;
+  color: var(--theme-accent);
+}
+
+.essence20 .items-list .items-header > * {
+  font-size: 12px;
+  text-align: center;
+}
+
+.essence20 .items-list .items-header .item-name {
+  padding-left: 5px;
+  text-align: left;
+}
+
+.essence20 .item-label {
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.essence20 .item-formula {
+  -webkit-box-flex: 0;
+  -ms-flex: 0 0 200px;
+  flex: 0 0 200px;
+  padding: 0 8px;
+}
+
+.essence20 .effects .item .effect-source {
+  text-align: center;
+}
+
+.essence20 .effects .item .effect-duration {
+  text-align: center;
+}
+
+.essence20 .effects .item .effect-controls {
+  text-align: center;
+  border-left: 1px solid var(--theme-border-color);
+  border-right: 1px solid var(--theme-border-color);
+  font-size: 12px;
+}
+
+.essence20 .effects .item .effect-controls {
+  border: none;
+}
+
+.essence20 .tab.effects.active {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.essence20 .tab.effects .effect-list-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.essence20 .tab.effects .items-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding-top: 0.5rem;
+}
+
+.essence20 .tab.effects .items-header {
+  height: auto;
+  min-height: 28px;
+  color: var(--theme-text-color);
+}
+
+.essence20 .tab.effects .effect-controls {
+  flex: 0 0 130px;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+}
+
+.essence20 .tab.effects .items-list .items-header > * {
+  font-size: 0.85em;
+}
+
+.essence20 .tab.effects .item.effect > * {
+  font-size: 0.85em;
+}
+
+.essence20 .tab.effects .effect-name h4 {
+  font-size: 1em;
+  font-weight: 600;
+  margin: 0;
+}
+
+.essence20 .item-sheet {
+  background: var(--theme-card-bg);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 15px;
+  color: var(--theme-text-color);
+  padding: 6px;
+  min-height: none;
+}
+
+.essence20 .item-field {
+  padding: 5px 2px;
+  border-bottom: 1px solid var(--theme-border-color);
+}
+
+.essence20 .item-field:last-child {
+  border-bottom: none;
+}
+
+.essence20 .item-field label {
+  flex: 2;
+  color: var(--theme-text-color);
+}
+
+.essence20 .item-field .item-field-inputs {
+  flex: 1.5;
+  justify-content: flex-end;
+}
+
+/* -- Jornal page styling -- */
+.window-content .journal-sheet-container .journal-entry-content {
+  background: none;
+  color: rgb(163, 163, 163);
+  border: 10px #c9c7b8;
+  /*background-color: blue;*/
+}
+
+.window-content .journal-sheet-container {
+  background: radial-gradient(farthest-corner at 90% 10%, #535353, #303538, #000000);
+  background-size: cover;
+  border-radius: 10px white;
+}
+
+/* BEM formatting with scss niceties
+  box__element --modifier
+  seperate the modifiers because they should be unique to a box/box__element. This makes the css/scss MUCH cleaner
+  -Rascal-GL
+
+  Reference:
+  https://codepen.io/glorenz90/pen/wBBVqxG
+*/
+.sliced-border {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  position: relative;
+  padding: 4px 2px;
+}
+.sliced-border:has(> .sliced-border__label) {
+  padding-top: 12px;
+}
+.sliced-border:has(> .sliced-border__label.sliced-border) {
+  padding-top: 25px;
+}
+.sliced-border::after {
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+  content: "";
+  inset: 0;
+  background: var(--theme-panel-bg);
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+}
+.sliced-border::before {
+  pointer-events: none;
+  filter: var(--theme-border-filter);
+  position: absolute;
+  z-index: 0;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  border-style: solid;
+  border-image: var(--theme-border-image);
+  border-image-slice: 16;
+  border-width: 16px;
+}
+.sliced-border.--col {
+  flex-direction: column;
+}
+.sliced-border.--thin::before {
+  border-image: var(--theme-border-image);
+  border-image-slice: 16;
+}
+.sliced-border.--filled {
+  color: var(--theme-bg-color) !important;
+  font-weight: bold;
+}
+.sliced-border.--filled::before {
+  border-image: var(--theme-filled-border-image);
+  border-image-slice: 16 fill;
+}
+.sliced-border.--thick::before {
+  border-image: var(--theme-thick-border-image);
+  border-image-slice: 16 fill;
+}
+.sliced-border.--tab::before {
+  border-image: var(--theme-tab-image);
+  border-image-slice: 16;
+}
+.sliced-border.--tab.--filled::before {
+  border-image: var(--theme-filled-tab-image);
+  border-image-slice: 16 fill;
+}
+.sliced-border .sliced-border__label {
+  z-index: 2;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+  color: var(--theme-text-color);
+  width: max-content;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Matches the sidebar panel titles' own treatment of this same class
+     (.essence20-sidebar-panel > .sliced-border__label, _sidebars.scss) - promoted here so
+     every sliced-border label (header fields, Bio tab fields, ...) looks the same by
+     default instead of only the sidebar opting in. */
+  font-weight: 700;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.sliced-border label.sliced-border__label,
+.sliced-border a.sliced-border__label {
+  padding: 0 8px;
+  line-height: 0.75rem;
+  background: var(--theme-panel-bg);
+  color: var(--theme-text-color);
+  border-radius: 6px;
+  padding: 4px 10px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.4) inset;
+}
+.sliced-border a.sliced-border__label {
+  text-decoration: none;
+  cursor: pointer;
+}
+.sliced-border a.sliced-border__label:hover {
+  color: var(--theme-accent);
+  text-shadow: 0 0 6px var(--theme-accent);
+}
+.sliced-border a.sliced-border__label:hover .sliced-border__label-edit-icon {
+  opacity: 1;
+}
+.sliced-border .sliced-border__label-edit-icon {
+  font-size: 0.75em;
+  opacity: 0.6;
+  transition: opacity 0.15s ease;
+}
+.sliced-border .sliced-border__input-row {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+}
+.sliced-border .sliced-border__input-row *:nth-child(1) {
+  flex-grow: 1;
+}
+
+:root {
+  --theme-border-filter: saturate(0);
+  --theme-border-color: #363636;
+  --theme-bg-color: #cccccc;
+  --theme-text-color: #222222;
+  --theme-input-color: #fafafa;
+  --theme-panel-bg: var(--theme-bg-color);
+  --theme-card-bg: rgba(255,255,255,0.04);
+  --theme-accent: #4dd0e1;
+  --theme-muted-text: #9e9b9b;
+  --theme-border-image: url(../assets/borders/default-border.svg);
+  --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
+  --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
+  --theme-tab-image: url(../assets/borders/default-tab.svg);
+  --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
+  --theme-scrollbar-thumb: #4a4a4a;
+}
+
+.theme-wrapper {
+  /* scrollbar-color is an inherited property, so setting it once here reaches every scrollable
+     region in the sheet (items-list, tab content, biography editor, ...) without needing a rule
+     per scrollable element - the ::-webkit-scrollbar-* pseudo-elements below don't inherit that
+     way and are repeated per-element instead, as a fallback for engines that don't support the
+     standard property yet. */
+  scrollbar-color: var(--theme-scrollbar-thumb) transparent;
+  overflow: visible;
+  border: none;
+}
+.theme-wrapper ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.theme-wrapper ::-webkit-scrollbar-thumb {
+  background: var(--theme-scrollbar-thumb);
+  border-radius: 4px;
+}
+.theme-wrapper ::-webkit-scrollbar-track {
+  background: transparent;
+}
+.theme-wrapper.window-app {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.theme-wrapper .window-content,
+.theme-wrapper .window-header {
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+}
+.theme-wrapper .window-app,
+.theme-wrapper .window-content,
+.theme-wrapper .window-header {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+}
+.theme-wrapper .window-content {
+  background: linear-gradient(180deg, rgba(14, 17, 20, 0.96), rgba(17, 19, 21, 0.96));
+  color: var(--theme-text-color);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+.theme-wrapper.theme-light .window-content {
+  background: linear-gradient(180deg, rgba(223, 223, 223, 0.98), rgba(214, 214, 214, 0.98));
+  border-color: rgba(0, 0, 0, 0.18);
+}
+.theme-wrapper.theme-light {
+  --theme-border-filter: saturate(0);
+  --theme-border-color: #363636;
+  --theme-bg-color: #cccccc;
+  --theme-text-color: #222222;
+  --theme-input-color: #fafafa;
+  --theme-panel-bg: #cccccc;
+  --theme-card-bg: rgba(255,255,255,0.7);
+  --theme-accent: #ff6400;
+  --theme-muted-text: #222222;
+  --theme-scrollbar-thumb: #4a4a4a;
+}
+.theme-wrapper.theme-dark {
+  --theme-border-filter: saturate(0) brightness(175%);
+  --theme-border-color: #5f5f5f;
+  --theme-bg-color: #222222;
+  --theme-text-color: #aaaaaa;
+  --theme-input-color: #333333;
+  --theme-panel-bg: #1f2328;
+  --theme-card-bg: rgba(255,255,255,0.04);
+  --theme-accent: #4dd0e1;
+  --theme-muted-text: #c7c4c4;
+  --theme-scrollbar-thumb: #b5b5b5;
+}
+.theme-wrapper.theme-default {
+  --theme-border-image: url(../assets/borders/default-border.svg);
+  --theme-thick-border-image: url(../assets/borders/default-border-thick.svg);
+  --theme-filled-border-image: url(../assets/borders/default-tab-filled.svg);
+  --theme-tab-image: url(../assets/borders/default-tab.svg);
+  --theme-filled-tab-image: url(../assets/borders/default-tab-filled.svg);
+}
+.theme-wrapper.theme-default.essence20 {
+  border-radius: 25px 0;
+}
+.theme-wrapper.theme-pony {
+  --theme-border-image: url(../assets/borders/pony-border.svg);
+  --theme-thick-border-image: url(../assets/borders/pony-border-thick.svg);
+  --theme-filled-border-image: url(../assets/borders/pony-tab-filled.svg);
+  --theme-tab-image: url(../assets/borders/pony-tab.svg);
+  --theme-filled-tab-image: url(../assets/borders/pony-tab-filled.svg);
+}
+.theme-wrapper.theme-pony.essence20 {
+  border-radius: 15px;
+}
+.theme-wrapper header * {
+  color: var(--theme-text-color) !important;
+}
+
+.story-points {
+  height: auto;
+  width: min-content;
+  box-shadow: 0 0 20px #000000;
+  position: fixed;
+  flex-direction: column;
+  display: flex;
+  background: var(--theme-panel-bg);
+  border-radius: 0;
+  clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+}
+.story-points .loading {
+  display: none;
+}
+.story-points .window-content {
+  padding: 9px;
+}
+.story-points .window-content > div {
+  flex-direction: column;
+  display: flex;
+  gap: 9px;
+}
+.story-points .story-points__top {
+  display: flex;
+  gap: 9px;
+}
+.story-points .story-points__top > .sliced-border {
+  padding: 12px;
+  padding-top: 16px;
+  justify-content: center;
+  flex-grow: 1;
+  gap: 9px;
+}
+.story-points .story-points__input {
+  width: 42px;
+  height: 42px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: var(--theme-input-color);
+  color: var(--theme-text-color);
+  border: 1px solid var(--theme-border-color);
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+.story-points .story-points__input::-webkit-inner-spin-button, .story-points .story-points__input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.story-points .story-points__btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 30px;
+}
+.story-points .story-points__btn {
+  width: min-content;
+  min-width: 30px;
+  min-height: 18px;
+  height: 18px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: var(--theme-input-color);
+  color: var(--theme-text-color);
+  border: 1px solid var(--theme-border-color);
+}
+.story-points .story-points__btn:hover {
+  background: rgb(61.5, 61.5, 61.5);
+}
+.story-points .story-points__btn.--bottom {
+  width: 100%;
+  padding: 11px;
+}
+.story-points .story-points__btn.--decrement {
+  border: 1px solid #ff6400;
+  border-bottom: 1px solid #ff6400;
+  box-shadow: 0 0 10px #ff6400;
+}
+.story-points .story-points__btn.--decrement i {
+  color: #ff6400;
+}
+.story-points .story-points__btn.--increment {
+  border: 1px solid #4dd0e1;
+  box-shadow: 0 0 10px #4dd0e1;
+  box-shadow: 0 0 10px #4dd0e1;
+}
+.story-points .story-points__btn.--increment i {
+  color: #4dd0e1;
+}
+
+.stat-editor .window-content {
+  padding: 1rem;
+}
+
+.stat-editor-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.stat-editor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.stat-editor-row label {
+  color: var(--theme-text-color);
+}
+.stat-editor-row input {
+  width: 70px;
+  text-align: center;
+}
+
+.skill-picker .window-content {
+  padding: 1rem;
+}
+
+/* Foundry's own .window-content is `overflow: hidden` by design (see foundry2.css) - a PART's
+   rendered root is expected to opt itself into scrolling, normally via Foundry's own .scrollable
+   class (overflow: hidden auto). This app has only the one "form" PART and no footer, so its
+   root can just take the full available height and scroll directly - matching the precedent in
+   trait-selector.scss's `.trait-selector { overflow: auto; }` for the same single-part shape.
+   min-height: 0 is required for a flex child (.window-content is `flex-flow: column`) to actually
+   shrink to its container instead of growing to fit content and pushing scrolling out to the
+   window frame, where there's nothing to scroll it. */
+.skill-picker-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.skill-picker-tally {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+.skill-picker-tally .skill-rank-allocation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.25rem;
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  font-size: 0.85em;
+  color: var(--theme-text-color);
+}
+.skill-picker-tally .skill-rank-essence-label {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-bottom: 2px;
+}
+
+/* Strength/Speed on top, Social/Smarts below (see ESSENCE_GRID_ORDER,
+   module/apps/skill-picker.mjs) - a 2-column grid rather than 4 fieldsets stacked full-width,
+   so the picker reads as two rows instead of a long scroll. The any-Essence fieldset
+   (Spellcasting/Weird) stays outside this grid, full-width, below both rows. */
+.skill-picker-essence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.skill-picker-essence-group {
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 0.25rem 0.5rem 0.5rem;
+}
+.skill-picker-essence-group legend {
+  padding: 0 0.25rem;
+  color: var(--theme-text-color);
+  font-weight: 700;
+}
+
+/* The any-Essence group is the one fieldset still outside .skill-picker-essence-grid, so it lost
+   the grid's own gap - restore its top margin directly. */
+.skill-picker-any-group {
+  margin-top: 0.5rem;
+}
+
+.skill-picker-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2px 0;
+  /* Both the checkbox variant (NPC-like actors) and the plain label (PCs, essence-picker.hbs's
+     {{#if @root.isPc}} branch) need to grow and fill the row - without this on the plain-label
+     case, the select just sat right after each row's own label text instead of lining up in a
+     consistent column on the right. */
+}
+.skill-picker-row label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1 1 auto;
+  color: var(--theme-text-color);
+}
+.skill-picker-row select {
+  flex: 0 0 auto;
+  width: 90px;
+  text-align-last: right;
+}
+.skill-picker-row input[type=number] {
+  flex: 0 0 auto;
+  width: 60px;
+  text-align: center;
+}
+
+.skill-picker-conditioning label {
+  flex: 1 1 auto;
+  color: var(--theme-text-color);
+}
+
+.skill-picker-any-row {
+  flex-wrap: wrap;
+}
+
+.skill-picker-attribution {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  width: 100%;
+  padding-left: 22px;
+  box-sizing: border-box;
+}
+
+.skill-picker-attribution-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8em;
+  color: var(--theme-text-color);
+}
+.skill-picker-attribution-input input {
+  width: 40px;
+  text-align: center;
+}
+
+.skill-picker-attribution-status {
+  font-size: 0.85em;
+  color: var(--theme-text-color);
+  margin-left: auto;
+}
+.skill-picker-attribution-status.unbalanced {
+  color: red;
+  font-weight: 700;
+}
+
+select {
+  color: var(--theme-text-color);
+}
+
+/* Foundry core's checkbox/radio duotone checkmark glyph (a Font Awesome icon on ::before/::after,
+   appearance:none having removed the native control entirely) is colored by reading the CSS
+   custom properties --checkbox-checked-color (the filled swatch behind the mark) and
+   --checkbox-checkmark-color (the tick cut out of it) - not by any border-color/outline-color,
+   which are 0-width/style:none here and were never actually rendering (an earlier attempt to
+   override those directly had no visible effect on the real amber). Foundry defines those custom
+   properties, per color scheme, in its own "variables" @layer (foundry2.css); our own stylesheet
+   is imported into a "system" @layer declared after it (see the system.json styles entry), and
+   for normal (non-!important) declarations a later-declared layer always wins regardless of
+   selector specificity - so redefining the same custom properties here reliably overrides
+   Foundry's amber without needing !important or a fight over the actual color-consuming rule. */
+.essence20 input[type=checkbox],
+.essence20 input[type=radio] {
+  --checkbox-checked-color: var(--theme-text-color);
+  --checkbox-checkmark-color: var(--theme-panel-bg);
+}
+
+option {
+  color: var(--theme-text-color);
+  background-color: var(--theme-input-color);
+}
+
+form .form-group span.units {
+  color: var(--theme-muted-text);
+}
+
+form .form-group.slim .form-fields > label {
+  color: var(--theme-muted-text);
+}
+
+form .notes, form .hint {
+  color: var(--theme-muted-text);
+}
+
+.standard-form .form-group > label {
+  color: var(--theme-muted-text);
+}
+
+.filepicker .display-modes a {
+  background: initial;
+}
+
+.filepicker .display-modes a.active {
+  background: initial;
+}
+
+.filepicker .favorites .path {
+  background: initial;
+}
+
+input[type=number], input[type=text], select, textarea {
+  color: var(--theme-text-color);
+  background: var(--theme-input-color);
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: 4px 6px;
+  vertical-align: middle;
+  min-height: 22px;
+}
+
+/* small numeric inputs */
+.essence20 .one-digit-input, .essence20 .two-digit-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--theme-border-color);
+  color: var(--theme-text-color);
+  border-radius: 6px;
+  min-height: 22px;
+  text-align: center;
+  padding: 2px 4px;
+}
+
+.essence20 .centered-input {
+  text-align: center;
+}
+
+.essence20 textarea {
+  color: var(--theme-text-color);
+  border: 1px solid var(--color-border-light-tertiary);
+}
+
+.essence20 .one-digit-input {
+  max-width: 20px;
+  text-align: center;
+}
+
+.essence20 .two-digit-input {
+  max-width: 40px;
+  text-align: center;
+}
+
+.essence20 .min-max-divider {
+  display: flex;
+  flex-grow: 0;
+  flex-basis: auto;
+  width: 20px;
+  justify-content: center;
+  align-items: center;
+}
+
+.essence20 .span {
+  color: var(--theme-text-color);
+}
+
+.essence20 .sheet-body {
+  min-height: fit-content;
+  gap: 10px;
+}
+
+.essence20 table {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.dice-total.critical {
+  color: green;
+}
+
+.dice-total.fumble {
+  color: red;
+}
+
+.dice-total.crumble {
+  color: yellow;
+}
+
+.e20-check-card .e20-check-results {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+
+.e20-check-result.e20-check-success {
+  color: green;
+}
+
+.e20-check-result.e20-check-failure {
+  color: red;
+}
+
+.e20-check-card button[data-action=apply-damage] {
+  margin-left: 6px;
+  background: #333333;
+  color: #aaaaaa;
+  border: 1px solid #5f5f5f;
+}
+
+.e20-check-card button[data-action=apply-damage]:disabled {
+  cursor: default;
+}
+
+.chat-message.theme-light .e20-check-card button[data-action=apply-damage] {
+  background: #fafafa;
+  color: #222222;
+  border: 1px solid #363636;
+}
+
+.e20-check-critical-options {
+  display: block;
+  margin-top: 4px;
+}
+
+.e20-check-critical-label {
+  color: #ff6400;
+  font-weight: bold;
+  margin-right: 4px;
+}
+
+.e20-check-critical-options button[data-action=apply-damage] {
+  margin: 2px 6px 0 0;
+}
+
+.e20-check-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.e20-check-send-to-chat {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.e20-check-send-to-chat:hover {
+  opacity: 1;
+}
+
+.sheet-options {
+  min-width: 400px;
+  min-height: auto;
+}
+
+.sheet-options-morph {
+  min-width: 500px;
+  min-height: auto;
+}
+
+/*# sourceMappingURL=essence20.css.map */

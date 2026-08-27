@@ -33,6 +33,17 @@
   text-overflow: ellipsis;
 }
 
+/* Read-only stand-in for .skill-shift-select once shift-editing moves into the Skill Picker app
+   (essence-skills.hbs's readOnly param) - same box/width as the select it replaces, just
+   centered plain text instead of a dropdown. */
+.essence20 .skill-header .skill-shift-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-text-color);
+  opacity: 0.85;
+}
+
 .essence20 .skill-header .conditioning-input {
   flex: 0 0 auto;
   width: 58px;
@@ -144,6 +155,58 @@
   flex-basis: auto;
   padding: 20px 8px 8px;
   box-sizing: border-box;
+}
+
+/* npc-skill-list.hbs's heading row - "Skills" label plus the gear icon that opens the Skill
+   Picker app (module/apps/skill-picker.mjs). Unlike the old accordion-skills.hbs it replaced,
+   this list has no collapse/expand toggle, so the row only needs the label and the one action. */
+.essence20 .npc-skill-list-header {
+  justify-content: space-between;
+  margin-bottom: v.$gap-sm;
+
+  span {
+    font-weight: 700;
+  }
+
+  a {
+    color: var(--theme-text-color);
+    opacity: 0.7;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+.essence20 .npc-skill-list-empty {
+  opacity: 0.7;
+  font-style: italic;
+}
+
+.essence20 .npc-skill-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+/* Each chosen skill as a compact "Athletics +d20" rollable pill - reuses the same box shape as
+   the generic .chip class (border-radius, padding, card background) but is a clickable rollable
+   link rather than a static tag, so it gets its own class for the pointer/hover affordance
+   instead of `.chip` (which several non-interactive usages elsewhere rely on staying static). */
+.essence20 .npc-skill-button {
+  display: inline-block;
+  border-radius: 10px;
+  border: 1px solid var(--theme-border-color);
+  padding: 3px 10px;
+  color: var(--theme-text-color);
+  background-color: var(--theme-card-bg);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--theme-accent);
+    border-color: var(--theme-accent);
+  }
 }
 
 .essence20 .skillscontainer {

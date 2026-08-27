@@ -1,37 +1,40 @@
 @use "../variables" as v;
 
+/* Was flex-direction: row (Essence/morph-transform side by side, then Skills/Items side by
+   side, each capped to a 50-60% column) - now a single stacked column so each section (Essence,
+   Skills, Items, ...) takes the tab's full width in turn, top to bottom. */
 .essence20 .npc-row {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
   gap: v.$padding;
 }
 
 .essence20 .npc-items {
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: v.$padding;
 }
 
 .essence20 .npc-defenses {
-  width: 60%;
+  width: 100%;
 }
 
 .essence20 .npc-essence-scores {
-  width: 60%;
+  width: 100%;
 }
 
 .essence20 .npc-health {
-  width: 40%;
+  width: 100%;
 }
 
 .essence20 .npc-movement {
-  width: 40%;
+  width: 100%;
 }
 
 .essence20 .npc-firepoints {
-  width: 60%;
+  width: 100%;
 }
 
 .essence20 .firepoints-input {
@@ -51,7 +54,21 @@
 }
 
 .essence20 .npc-skills {
-  width: 50%;
+  width: 100%;
+}
+
+/* Zord/Megaform show their Strength/Speed Essence scores via zord-common.hbs's own markup
+   (a .stats-row > .stats-container, not the npc-essence-scores.hbs partial the other NPC-like
+   types share) - a dedicated class here so this one row can stretch full-width without touching
+   the shared .stats-row/.stats-container classes, which are also used elsewhere (spells.hbs,
+   common-no-vitals.hbs) where that stretch isn't wanted. */
+.essence20 .zord-essence-scores {
+  width: 100%;
+  flex-grow: 1;
+
+  .stats-container {
+    width: 100%;
+  }
 }
 
 .essence20 .skill-separator {

@@ -95,7 +95,13 @@
 }
 
 .essence20 .role-points-name {
-  flex: 1 1 auto;
+  /* Was flex: 1 1 auto (grow to fill the row) - that pushed the bonus indicator (+2, the heart/
+     sword/shield icon, .flex-grow-0.nowrap in container.hbs) far from the name's own text,
+     out at the edge of the name's now-wide box instead of sitting right next to it. 0 1 auto
+     hugs the name to its own text (still shrinking/ellipsizing under space pressure via
+     min-width/overflow below) so the bonus lands immediately after it; the resource value/max
+     inputs get pushed to the row's far end instead via their own margin-left: auto below. */
+  flex: 0 1 auto;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -145,8 +151,20 @@
   /* .two-digit-input's own flex-basis: 0% (from the shared .flex-grow-0 utility class,
      _flex-containers.scss) has no floor of its own - flex-shrink: 0 above stops it shrinking
      BELOW that basis, but 0% was already unreadably small before shrink ever applied. A
-     min-width gives it an actual legible floor to grow from instead. */
-  min-width: 20px;
+     min-width gives it an actual legible floor to grow from instead.
+     32px (not the old 20px) - freeing .role-points-name from growing to fill the row (above)
+     leaves enough spare width in this same cramped row to bring these boxes much closer to
+     Health/Stun's own 40px sibling inputs (sidebars/character.hbs) instead of reading as a much
+     smaller, different control next to them. */
+  min-width: 32px;
+}
+
+/* Pushes the resource value/max pair (and only that pair - the bonus indicator right after the
+   name is meant to stay close to it, per .role-points-name's own comment above) to the row's far
+   end, mirroring Health/Stun's own label-left/value-right layout instead of everything just
+   trailing directly behind the bonus indicator. */
+.essence20 .role-points-item input[data-field="system.resource.value"] {
+  margin-left: auto;
 }
 
 .essence20 .collapsible-item-subcontainer .items-list .item {

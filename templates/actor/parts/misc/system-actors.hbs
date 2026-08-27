@@ -16,10 +16,29 @@
             </a>
           </div>
         </div>
-        {{#if (ne attachedActor.type "npc")}}
-          <div>
-            {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
-          </div>
+        {{!-- Health - every attached actor type (npc included: an NPC/Contact is still a
+             creature() with its own health, per npc.mjs, and a Contact a player fights
+             alongside is exactly where seeing it at a glance is most useful) has this. --}}
+        <div>
+          {{ localize 'E20.ActorHealth' }}: <input class="two-digit-input" type="number" name="attachedActor.system.health" value="{{attachedActor.system.health.value}}" min="0" step="1" />
+          / {{attachedActor.system.health.max}}
+        </div>
+
+        {{#if (eq attachedActor.type "npc")}}
+          {{!-- Role/occupation (system.background.role, character.mjs - a free-text field, not
+               the item-based Role subsystem PCs use) and how the contact was gained
+               (system.gainingTheContact, npc.mjs) are the two fields specific to NPCs that
+               actually say something about who this person is, rather than just their name. --}}
+          {{#if attachedActor.system.background.role}}
+            <div class="nowrap">{{localize 'E20.ActorRole'}}: {{attachedActor.system.background.role}}</div>
+          {{/if}}
+          {{#if attachedActor.system.gainingTheContact}}
+            <div class="nowrap" data-tooltip="{{attachedActor.system.gainingTheContact}}">{{localize 'E20.ContactGainedVia'}}: {{attachedActor.system.gainingTheContact}}</div>
+          {{/if}}
+        {{/if}}
+
+        {{#if (eq attachedActor.type "zord")}}
+          <div>{{localize 'E20.ActorSize'}}: {{lookup @root.config.actorSizes attachedActor.system.size}}</div>
         {{/if}}
         {{#if (eq @root.document.type "megaform")}}
           <div>

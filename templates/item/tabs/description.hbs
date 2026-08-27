@@ -14,10 +14,10 @@
       {{#if editingDescription}}
         <prose-mirror name="system.description" value="{{ system.description }}" document-uuid="{{ document.uuid }}" class="sized" compact></prose-mirror>
       {{else}}
+        {{{system.description}}}
         <button type="button" class="unbutton control-button always-interactive" data-action="editDescription" label="edit" data-target="system.description">
           <i class="fas fa-edit" inert></i>
         </button>
-        {{{system.description}}}
       {{/if}}
     </div>
     {{#if (eq document.type 'equipmentPackage')}}

@@ -472,6 +472,6 @@
     "verified": "13"
   },
   "flags": {
-    "needsMigrationVersion": "5.0.0"
+    "needsMigrationVersion": "5.2.0"
   }
 }

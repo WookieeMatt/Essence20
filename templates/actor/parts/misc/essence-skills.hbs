@@ -7,9 +7,17 @@
   >
     {{lookup @root.config.skills skill}}
   </a>
+  {{!-- readOnly: shift-editing for PCs moved into the Skill Picker app (module/apps/skill-picker.mjs,
+       opened via the gear icon next to each Essence's tally) so it lives in one place instead of
+       scattered across this tab, the sidebar, and the Spells tab - this just displays the
+       current value there instead of an editable dropdown. --}}
+  {{#if readOnly}}
+  <span class="skill-shift-select skill-shift-display">{{fields.shift}}</span>
+  {{else}}
   <select class="skill-shift-select" name="system.skills.{{skill}}.shift">
     {{selectOptions @root.config.skillShifts selected=fields.shift}}
   </select>
+  {{/if}}
   <a class="add-specialization" data-action="itemCreate" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.AddSpecialization' }}">
     <i class="fas fa-plus" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" ></i>
   </a>
@@ -34,7 +42,7 @@
 </div>
 
 <div class="skill-body">
-  {{#inArray '["companion", "npc", "vehicle", "zord"]' @root.actor.type}}
+  {{#inArray '["companion", "npc", "megaform", "vehicle", "zord"]' @root.document.type}}
   <div class="flexrow skill-specialized-row">
     <span class="specialized-label">{{localize 'E20.RollIsSpecialized'}}:</span>
     <input class="specialized-checkbox" type="checkbox" name="system.skills.{{skill}}.isSpecialized" {{checked fields.isSpecialized}} data-dtype="Boolean"/>
@@ -47,7 +55,7 @@
     <li class="item specializations-list" data-item-id="{{specialization._id}}">
       <div class="flexrow specializations-item">
         <span class="item-button-container">
-          {{#inArray '["companion", "npc", "vehicle", "zord"]' @root.actor.type}}
+          {{#inArray '["companion", "npc", "megaform", "vehicle", "zord"]' @root.document.type}}
           {{!-- NPCs can have unspecialized specializations, but PCs are always specialized --}}
           <a
             class="rollable" data-action="rollable" data-roll-type="skill" data-skill="{{../skill}}" data-essence="{{../essence}}"
@@ -72,7 +80,7 @@
           </a>
         </span>
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
-        {{#inArray '["companion", "npc", "vehicle", "zord"]' @root.actor.type}}
+        {{#inArray '["companion", "npc", "megaform", "vehicle", "zord"]' @root.document.type}}
         <select class="inline-edit flex-grow-0" data-field="system.shift" name="system.shift">
           {{selectOptions @root.config.skillShifts selected=specialization.system.shift}}
         </select>

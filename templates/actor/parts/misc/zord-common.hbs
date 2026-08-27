@@ -1,6 +1,6 @@
-<div class="flexrow stats-row">
+<div class="flexrow stats-row zord-essence-scores">
   {{!-- Strength/Speed --}}
-  <div class="stats-container e20-border-accent min-width-fit align-center">
+  <div class="stats-container e20-border-accent align-center">
     <div class="flexrow flex-group-center">
       <span class="essence-label">{{config.essences.strength}}</span>
       <input class="two-digit-input{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.essences.strength.value" value="{{system.essences.strength.value}}" min="0" step="1" />
@@ -15,7 +15,7 @@
 <div class="npc-row">
   {{!-- Skills --}}
   <div class="npc-skills">
-    {{> "systems/essence20/templates/actor/parts/misc/accordion-skills.hbs"}}
+    {{> "systems/essence20/templates/actor/parts/misc/npc-skill-list.hbs"}}
   </div>
 
   <div class="npc-items">

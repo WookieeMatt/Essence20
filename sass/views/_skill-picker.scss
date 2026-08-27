@@ -1,0 +1,150 @@
+@use "../variables" as v;
+
+.skill-picker {
+  .window-content {
+    padding: v.$gap-lg;
+  }
+}
+
+/* Foundry's own .window-content is `overflow: hidden` by design (see foundry2.css) - a PART's
+   rendered root is expected to opt itself into scrolling, normally via Foundry's own .scrollable
+   class (overflow: hidden auto). This app has only the one "form" PART and no footer, so its
+   root can just take the full available height and scroll directly - matching the precedent in
+   trait-selector.scss's `.trait-selector { overflow: auto; }` for the same single-part shape.
+   min-height: 0 is required for a flex child (.window-content is `flex-flow: column`) to actually
+   shrink to its container instead of growing to fit content and pushing scrolling out to the
+   window frame, where there's nothing to scroll it. */
+.skill-picker-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.skill-picker-tally {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$gap-md;
+  margin-bottom: v.$gap-lg;
+
+  .skill-rank-allocation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: v.$gap-sm;
+    border: 1px solid var(--theme-border-color);
+    border-radius: 6px;
+    font-size: 0.85em;
+    color: var(--theme-text-color);
+  }
+
+  .skill-rank-essence-label {
+    font-weight: 700;
+    font-size: 1.1em;
+    margin-bottom: 2px;
+  }
+}
+
+/* Strength/Speed on top, Social/Smarts below (see ESSENCE_GRID_ORDER,
+   module/apps/skill-picker.mjs) - a 2-column grid rather than 4 fieldsets stacked full-width,
+   so the picker reads as two rows instead of a long scroll. The any-Essence fieldset
+   (Spellcasting/Weird) stays outside this grid, full-width, below both rows. */
+.skill-picker-essence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: v.$gap-md;
+  margin-bottom: v.$gap-md;
+}
+
+.skill-picker-essence-group {
+  border: 1px solid var(--theme-border-color);
+  border-radius: 6px;
+  padding: v.$gap-sm v.$gap-md v.$gap-md;
+
+  legend {
+    padding: 0 v.$gap-sm;
+    color: var(--theme-text-color);
+    font-weight: 700;
+  }
+}
+
+/* The any-Essence group is the one fieldset still outside .skill-picker-essence-grid, so it lost
+   the grid's own gap - restore its top margin directly. */
+.skill-picker-any-group {
+  margin-top: v.$gap-md;
+}
+
+.skill-picker-row {
+  display: flex;
+  align-items: center;
+  gap: v.$gap-md;
+  padding: 2px 0;
+
+  /* Both the checkbox variant (NPC-like actors) and the plain label (PCs, essence-picker.hbs's
+     {{#if @root.isPc}} branch) need to grow and fill the row - without this on the plain-label
+     case, the select just sat right after each row's own label text instead of lining up in a
+     consistent column on the right. */
+  label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1 1 auto;
+    color: var(--theme-text-color);
+  }
+
+  select {
+    flex: 0 0 auto;
+    width: 90px;
+    text-align-last: right;
+  }
+
+  input[type="number"] {
+    flex: 0 0 auto;
+    width: 60px;
+    text-align: center;
+  }
+}
+
+.skill-picker-conditioning label {
+  flex: 1 1 auto;
+  color: var(--theme-text-color);
+}
+
+.skill-picker-any-row {
+  flex-wrap: wrap;
+}
+
+.skill-picker-attribution {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: v.$gap-sm;
+  width: 100%;
+  padding-left: 22px;
+  box-sizing: border-box;
+}
+
+.skill-picker-attribution-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8em;
+  color: var(--theme-text-color);
+
+  input {
+    width: 40px;
+    text-align: center;
+  }
+}
+
+.skill-picker-attribution-status {
+  font-size: 0.85em;
+  color: var(--theme-text-color);
+  margin-left: auto;
+
+  &.unbalanced {
+    color: red;
+    font-weight: 700;
+  }
+}

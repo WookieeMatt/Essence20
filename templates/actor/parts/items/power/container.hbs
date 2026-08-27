@@ -17,7 +17,7 @@
       <img class="leveled-item-icon" src="{{item.img}}" alt="{{item.name}}" />
       <strong class="leveled-item-name">
         {{item.name}}
-        {{#if (eq @root.actor.type "npc")}}
+        {{#if (eq @root.document.type "npc")}}
           :
           {{#if system.usesPer}}
             {{system.usesPer}}/{{lookup @root.config.usesInterval system.usesInterval}},

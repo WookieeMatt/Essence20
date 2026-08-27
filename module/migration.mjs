@@ -195,6 +195,29 @@ export const migrateActorData = async function(actor, compendiumActor) {
     updateData[`system.skills.initiative.shift`] = actor.system.initiative.shift;
   }
 
+  /* Seed system.skills.<skill>.isChosen for existing NPC-like actors. The NPC Skill Picker app
+     (module/apps/skill-picker.mjs) replaces the old automatic "does this skill deviate from
+     default" display heuristic (base-actor-sheet.mjs's now-removed _prepareDisplayedNpcSkills)
+     with an explicit GM-controlled isChosen flag - without this one-time seed, every existing
+     NPC-like actor would suddenly show zero skills on its sheet the first time this version
+     loads. Reuses the exact same heuristic the old code used, so the visible skill list doesn't
+     change for anyone on upgrade; the Skill Picker is only needed afterward to change it. */
+  if ((!currentVersion || foundry.utils.isNewerVersion('5.2.0', currentVersion))
+    && ['npc', 'zord', 'megaform', 'vehicle', 'companion'].includes(actor.type)) {
+    const specializedSkills = new Set();
+    for (const item of Array.from(actor.items ?? [])) {
+      if (item.type === 'specialization') {
+        specializedSkills.add(item.system.skill);
+      }
+    }
+
+    for (const [skill, fields] of Object.entries(actor.system.skills)) {
+      if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier || specializedSkills.has(skill)) {
+        updateData[`system.skills.${skill}.isChosen`] = true;
+      }
+    }
+  }
+
   // Migrate Skills
   if (actor.system.skills.strength) {
     const skillsForEssences = actor.system.skills;

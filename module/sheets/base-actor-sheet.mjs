@@ -3,6 +3,7 @@ const { ContextMenu } = foundry.applications.ux;
 const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 
 import SheetOptions from "../apps/sheet-options.mjs";
+import SkillPicker from "../apps/skill-picker.mjs";
 import StatEditor from "../apps/stat-editor.mjs";
 import { applyThemeClass } from "../settings.js";
 import {
@@ -44,11 +45,6 @@ import {
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 
 export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
-  constructor(options) {
-    super(options);
-    this.accordionStates = { skills: '' };
-  }
-
   static DEFAULT_OPTIONS = {
     actions: {
       bonusEdit: this.#onEditMorphToughnessBonus,
@@ -69,6 +65,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
       rest: this.#onRest,
       rollable: this.#onRoll,
       sheetOptions: this.#onSheetOptions,
+      skillPicker: this.#onOpenSkillPicker,
       shieldActivationToggle: this.#onShieldActivationToggle,
       shieldEquipToggle: this.#onShieldEquipToggle,
       sufferForSpellcastingDownshift: this.#onSufferForSpellcastingDownshift,
@@ -116,6 +113,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     this._activateCrewListeners();
     this._activateInlineEditListeners();
     this._activateRolePointsListeners();
+    this._activateImageContextMenu();
   }
 
   /**
@@ -282,6 +280,37 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     });
   }
 
+  /**
+   * Right-click either of the actor's own profile images (the header's, common.hbs, or the
+   * sidebar's, sidebars/*.hbs - both share the .profile-img class, so one rule covers both) to
+   * broadcast it to every connected player, the same "Show Players" action added to item sheets
+   * (item-sheet.mjs) - left-click still opens the file picker to change the image (data-edit="img",
+   * handled by DocumentSheetV2 itself, untouched by this). GM-only, matching core Foundry's own
+   * convention of only showing that control to a GM. Built once (guarded via
+   * this._imageContextMenu, same reasoning as _rolePointsContextMenu above) since ContextMenu
+   * binds one delegated listener to a persistent container (this.element) rather than either
+   * image itself, so rebuilding it on every render would stack duplicate listeners.
+   */
+  _activateImageContextMenu() {
+    if (!game.user.isGM || this._imageContextMenu) {
+      return;
+    }
+
+    this._imageContextMenu = new ContextMenu(this.element, '.profile-img', [
+      {
+        name: 'E20.ShowImageToPlayers',
+        icon: '<i class="fas fa-eye"></i>',
+        callback: () => {
+          game.socket.emit('shareImage', {
+            image: this.actor.img,
+            title: this.actor.name,
+            uuid: this.actor.uuid,
+          });
+          ui.notifications.info(game.i18n.format('JOURNAL.ActionShowSuccess', { mode: 'image', title: this.actor.name, which: 'all' }));
+        },
+      },
+    ], { jQuery: false, fixed: true });
+  }
 
   async _prepareContext(options) {
     const context = await super._prepareContext(options);
@@ -298,11 +327,11 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     // Roll data for TinyMCE/ProseMirror editors so inline rolls in text can resolve.
     context.rollData = this.actor.getRollData();
 
-    if (['npc', 'zord', 'megaform', 'vehicle', 'companion'].includes(actorData.type)) {
-      this._prepareDisplayedNpcSkills(context);
-    }
-
     this._prepareItems(context);
+
+    if (['npc', 'zord', 'megaform', 'vehicle', 'companion'].includes(actorData.type)) {
+      this._prepareChosenNpcSkills(context);
+    }
 
     // Prepare WeaponEffect Skill List
     this._prepareWeaponEffectSkills(actorData, context);
@@ -317,7 +346,6 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
     // Prepare actors that are attached to other actors
     prepareSystemActors(this.document, context);
 
-    context.accordionStates = this.accordionStates;
     context.canMorphOrTransform = context.document.system.canMorph || context.document.system.canTransform;
 
     return context;
@@ -350,26 +378,34 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   /**
-  * Prepare skills that are always displayed for NPCs.
+  * Build the flat list of skills chosen via the Skill Picker app (module/apps/skill-picker.mjs)
+  * for NPC-like actors - replaces the old automatic "does this deviate from default" display
+  * heuristic entirely, so what shows here is exactly and only what a GM picked.
   * @param {Object} context The actor data to prepare.
   * @return {undefined}
   */
-  _prepareDisplayedNpcSkills(context) {
-    let displayedNpcSkills = {};
+  _prepareChosenNpcSkills(context) {
+    const chosenSkills = [];
 
-    // Include any skill that have specializations
-    for (let skill in context.specializations) {
-      displayedNpcSkills[skill] = true;
-    }
-
-    // Include any skills not d20, are specialized, or have a modifier
-    for (let [skill, fields] of Object.entries(context.system.skills)) {
-      if (fields.shift != 'd20' || fields.isSpecialized || fields.modifier) {
-        displayedNpcSkills[skill] = true;
+    for (const [essence, skills] of Object.entries(CONFIG.E20.skillsByEssence)) {
+      for (const skill of skills) {
+        // Not every actor type has every skill in CONFIG.E20.skillsByEssence - Zord/Megaform's
+        // schema (zord-base.mjs), for one, has no `weird` entry at all.
+        const fields = context.system.skills[skill];
+        if (fields?.isChosen) {
+          chosenSkills.push({ skill, essence, fields });
+        }
       }
     }
 
-    context.displayedNpcSkills = displayedNpcSkills;
+    // Grouped by Essence above (any, strength, speed, smarts, social - CONFIG.E20.skillsByEssence's
+    // own key order) rather than by name, so an NPC with e.g. Weird and Athletics both chosen
+    // would otherwise show Weird before Athletics. Sort by the actual displayed label so the
+    // button row (npc-skill-list.hbs) reads alphabetically regardless of Essence.
+    chosenSkills.sort((a, b) => game.i18n.localize(CONFIG.E20.skills[a.skill])
+      .localeCompare(game.i18n.localize(CONFIG.E20.skills[b.skill])));
+
+    context.chosenSkills = chosenSkills;
   }
 
   _prepareWeaponEffectSkills(actorData, context) {
@@ -759,7 +795,7 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   }
 
   static #toggleAccordion(event) {
-    onToggleAccordion(event, this);
+    onToggleAccordion(event);
   }
 
   static #toggleAccordionHeader(event) {
@@ -804,6 +840,10 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static #onEditDefenses() {
     new StatEditor(this.actor, "defense").render(true);
+  }
+
+  static #onOpenSkillPicker() {
+    new SkillPicker(this.actor).render(true);
   }
 
   static #onEditSpeeds() {

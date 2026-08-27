@@ -1,4 +1,5 @@
 ﻿const { DocumentSheetV2, HandlebarsApplicationMixin } = foundry.applications.api;
+const { ContextMenu } = foundry.applications.ux;
 
 import { applyThemeClass } from "../settings.js";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
@@ -95,8 +96,17 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
       submitOnChange: true,
       closeOnSubmit: false,
     },
+    /* width: "auto" (the previous value for every item type) sizes the window to fit its
+       widest natural content, unconstrained - which for the Description tab meant a long,
+       unwrapped run of text (no width to wrap against yet, since auto-sizing measures content
+       BEFORE settling on a width) could stretch the whole sheet arbitrarily wide. A fixed width
+       keeps sheets a stable, predictable size regardless of description length; height stays
+       auto since only width was the complaint. Role's own Details tab is the one exception -
+       it's meant to expand for its own, much larger content (Role Perks, Spectrum Modification
+       choices, ...) - see _onFirstRender below, which restores "auto" for that type specifically
+       before the sheet's first paint. */
     position: {
-      width: "auto",
+      width: 500,
       height: "auto",
     },
     tag: 'form',
@@ -228,6 +238,22 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     }
   }
 
+  /**
+   * Role is the one item type meant to expand beyond the shared fixed width (DEFAULT_OPTIONS
+   * above) - its Details tab shows substantially more content (granted Role Perks, Spectrum
+   * Modification choiceGroup pairs, ...) than any other item type's. _onFirstRender (not
+   * _onRender, which fires on every re-render, including ones a manual drag-resize should
+   * survive) runs once, before the sheet's first paint, so this only ever sets the *initial*
+   * size - it doesn't fight a resize the user made afterward.
+   */
+  async _onFirstRender(context, options) {
+    await super._onFirstRender(context, options);
+
+    if (this.document.type === 'role') {
+      this.setPosition({ width: 'auto' });
+    }
+  }
+
   async _onRender(context, options) {
     await super._onRender(context, options);
 
@@ -247,6 +273,38 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
         this.render();
       }));
     }
+
+    this._activateImageContextMenu();
+  }
+
+  /**
+   * Right-click the item's own image to broadcast it to every connected player (the same
+   * "Share Image" action available from the header of the image's own popout, minus the extra
+   * step of opening that popout first) - GM-only, matching core Foundry's own convention of
+   * only ever showing that control to a GM. Built once (guarded via this._imageContextMenu,
+   * matching base-actor-sheet.mjs's #_activateRolePointsListeners) since ContextMenu binds one
+   * delegated listener to a persistent container (this.element) rather than the image itself,
+   * so rebuilding it on every render would stack duplicate listeners.
+   */
+  _activateImageContextMenu() {
+    if (!game.user.isGM || this._imageContextMenu) {
+      return;
+    }
+
+    this._imageContextMenu = new ContextMenu(this.element, '.item-profile-img', [
+      {
+        name: 'E20.ShowImageToPlayers',
+        icon: '<i class="fas fa-eye"></i>',
+        callback: () => {
+          game.socket.emit('shareImage', {
+            image: this.document.img,
+            title: this.document.name,
+            uuid: this.document.uuid,
+          });
+          ui.notifications.info(game.i18n.format('JOURNAL.ActionShowSuccess', { mode: 'image', title: this.document.name, which: 'all' }));
+        },
+      },
+    ], { jQuery: false, fixed: true });
   }
 
   /* -------------------------------------------- */
