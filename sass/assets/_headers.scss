@@ -212,6 +212,34 @@
   box-shadow: none !important;
 }
 
+/* Size (system.size/system.altModesize) is the only <select> among these "invisible" header
+   fields - Faction/Role/Focus/Origin are read-only .header-item-name text, and Name/Level are
+   plain text/number inputs. appearance:none above strips its native dropdown arrow along with
+   everything else, but a select genuinely needs *some* visual cue it's clickable, unlike a text
+   field. A background-image chevron (rather than restoring appearance:auto, which would bring
+   back the full native box/border too) adds just that back without touching any other field's
+   look.
+   currentColor was tried here first, expecting it to pick up the select's own themed text color
+   for free - it doesn't: a background-image url()'s SVG is rendered as an isolated image
+   resource, not inline content, so currentColor inside it resolves to the SVG spec's own
+   default (black) rather than the referencing element's color (confirmed by sampling the
+   rendered pixels via canvas - solid black regardless of theme). Hardcoding both theme's
+   $text-color values directly, the same way img[src$="perk.svg"]'s brightness(0) filter below
+   is hardcoded per theme rather than color-matched, is the actual working equivalent. */
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select[name="system.size"],
+.essence20 .sheet-header .flexrow.gap-2 .sliced-border select[name="system.altModesize"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23222222' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2.5 4.5l3.5 3.5 3.5-3.5'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right center !important;
+  background-size: 10px !important;
+  padding-right: 14px !important;
+}
+
+.essence20.theme-dark .sheet-header .flexrow.gap-2 .sliced-border select[name="system.size"],
+.essence20.theme-dark .sheet-header .flexrow.gap-2 .sliced-border select[name="system.altModesize"] {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath fill='none' stroke='%23aaaaaa' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' d='M2.5 4.5l3.5 3.5 3.5-3.5'/%3E%3C/svg%3E") !important;
+}
+
 /* Foundry core's own input/select rule also sets a visible outline specifically on :focus (its
    --input-focus-outline-color custom property) - the border/outline reset above only covers the
    resting state, since a browser's own focus-state rule otherwise still wins independently. */
