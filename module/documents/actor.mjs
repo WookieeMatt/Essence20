@@ -41,12 +41,15 @@ export class Essence20Actor extends Actor {
       if (!foundry.utils.hasProperty(data, "prototypeToken.actorLink")) {
         tokenDefaults.actorLink = true;
       }
+
       if (!foundry.utils.hasProperty(data, "prototypeToken.disposition")) {
         tokenDefaults.disposition = CONST.TOKEN_DISPOSITIONS.FRIENDLY;
       }
+
       if (!foundry.utils.hasProperty(data, "prototypeToken.sight.enabled")) {
         tokenDefaults.sight = { enabled: true };
       }
+
       if (!foundry.utils.isEmpty(tokenDefaults)) {
         this.updateSource({ prototypeToken: tokenDefaults });
       }
