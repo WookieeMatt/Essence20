@@ -11,6 +11,13 @@
   {{/if}}
 
   <div class="notes-container e20-border-accent">
-
+    {{!-- The {{editor}} Handlebars helper emits the legacy .editor-edit/.editor-content markup,
+         whose click-to-edit activation is wired up by FormApplication (appv1) only - it's dead
+         weight on an ApplicationV2 sheet like this one, so the pencil button did nothing.
+         <prose-mirror> (used the same way on the Item sheet's own Description tab,
+         item/tabs/description.hbs) is the ApplicationV2-native replacement: a self-contained
+         custom element that activates its own toggle button, editor, and form-value binding
+         with no extra JS required here. --}}
+    <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled></prose-mirror>
   </div>
 </section>

@@ -13,12 +13,14 @@ const ESSENCE_GRID_ORDER = ["strength", "speed", "social", "smarts"];
  * real Essence via essenceAttribution. Shared by two rather different use cases:
  *  - NPC-like actors: also chooses which skills show on the actor sheet at all
  *    (system.skills.<skill>.isChosen, replacing the old automatic "does this deviate from
- *    default" display heuristic - see base-actor-sheet.mjs#_prepareChosenNpcSkills), and offers
- *    a Conditioning input (NPCs have no other editor for it on their sheet).
+ *    default" display heuristic - see base-actor-sheet.mjs#_prepareChosenNpcSkills).
  *  - PCs: always show every skill already (essence-skills.hbs's inline shift-selects on
  *    pc-skills.hbs/the sidebar/the Spells tab become read-only once this app exists - see those
  *    templates' `readOnly` param), so this is purely where shifts + any-skill attribution get
- *    set; no isChosen checkbox, and no Conditioning row since pc-skills.hbs already has its own.
+ *    set; no isChosen checkbox.
+ * Conditioning (a flat Strength value, not a system.skills entry) is editable here for every
+ * actor type - pc-skills.hbs's own Conditioning field is a read-only display once this is the
+ * one place it's edited, same as the skill shifts.
  *
  * Uses submitOnChange/no-close-on-submit (unlike most apps in this folder, which submit once on
  * close) so the essence-spend tally stays live as edits happen, without having to close and

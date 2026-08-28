@@ -107,6 +107,17 @@ $leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, s
   border-radius: 4px;
 }
 
+/* mode-selector.hbs's Alt Mode/Bot Mode/Any dropdown, shown on a Weapon's own row when the actor
+   canTransform - it sits in an unconstrained wrapper div (collapsible-item-container-label-buttons.hbs)
+   with nothing else limiting its size, so Foundry core's own `select { width: 100%; }`
+   (foundry2.css) stretched it to fill the entire row (or wider, in a maximized window) instead of
+   sizing to its own short option text. */
+.essence20 .mode-select {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 110px;
+}
+
 .essence20 :is(#{$leveled-tabs}) .leveled-item-name {
   flex: 1 1 auto;
   min-width: 0;

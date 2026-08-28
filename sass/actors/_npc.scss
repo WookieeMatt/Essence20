@@ -1,5 +1,24 @@
 @use "../variables" as v;
 
+/* NPC/Vehicle/Zord/Megaform/Companion's main tab is built from several sibling top-level blocks
+   (Vehicle's common-no-vitals.hbs, then one .npc-row for the Essence badges, then another
+   .npc-row for Skills+Items) rather than one single wrapper. Each .npc-row already spaces its
+   OWN children evenly via its own `gap` below, but nothing supplied spacing BETWEEN those
+   sibling blocks themselves - section.tab.main.* isn't a flex container, so consecutive blocks
+   sat flush against each other (0px) while everything inside a block used the normal $padding
+   gap, producing exactly the uneven look reported ("spacing on the first tab is all over the
+   place"). Scoped to .active so this never fights core's .tab { display: none } / .tab.active
+   { display: block } tab-switching (this selector's specificity would otherwise beat it). */
+.essence20 section.tab.main.npc.active,
+.essence20 section.tab.main.vehicle.active,
+.essence20 section.tab.main.zord.active,
+.essence20 section.tab.main.megaform.active,
+.essence20 section.tab.main.companion.active {
+  display: flex;
+  flex-direction: column;
+  gap: v.$padding;
+}
+
 /* Was flex-direction: row (Essence/morph-transform side by side, then Skills/Items side by
    side, each capped to a 50-60% column) - now a single stacked column so each section (Essence,
    Skills, Items, ...) takes the tab's full width in turn, top to bottom. */

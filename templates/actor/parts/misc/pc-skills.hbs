@@ -16,8 +16,11 @@
       </div>
       <div class="flexrow skill-header e20-skill-header conditioning-row" data-e20-color="{{system.color}}">
         <span class="skill-name">{{localize 'E20.ActorConditioning'}}</span>
-        <input class="conditioning-input" type="number" name="system.conditioning" value="{{system.conditioning}}" min="0" step="1" />
-        {{!-- Invisible spacer matching add-specialization's exact footprint, so the input above lines up over the skill-shift-select dropdowns in the rows below rather than sitting further left. --}}
+        {{!-- Editing moved into the Skill Picker app (skill-picker.hbs), same as the skill
+             shifts below - a plain read-only display here avoids a second editable copy of
+             the same field. --}}
+        <span class="conditioning-input conditioning-display">{{system.conditioning}}</span>
+        {{!-- Invisible spacer matching add-specialization's exact footprint, so the display above lines up over the skill-shift-select dropdowns in the rows below rather than sitting further left. --}}
         <a class="add-specialization" aria-hidden="true" tabindex="-1" style="visibility: hidden;">
           <i class="fas fa-plus"></i>
         </a>

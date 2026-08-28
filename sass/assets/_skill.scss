@@ -56,6 +56,18 @@
   border-radius: 6px;
 }
 
+/* Read-only stand-in for .conditioning-input once Conditioning-editing moves into the Skill
+   Picker app - same box/width as the input it replaces (.conditioning-input still supplies
+   that), just centered plain text instead of an editable number field. Same pairing as
+   .skill-shift-display above. */
+.essence20 .skill-header .conditioning-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--theme-text-color);
+  opacity: 0.85;
+}
+
 .essence20 .skill-header .add-specialization {
   flex-grow: 0;
   margin-right: 8px;

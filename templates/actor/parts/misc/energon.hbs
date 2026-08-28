@@ -1,26 +1,35 @@
 <div class="stats-container flexrow flex-group-center e20-border-accent">
   {{#if system.canTransform}}
+  {{!-- hideNormal: the PC sheet already shows normal Energon value/max in the always-visible
+       sidebar (sidebars/character.hbs) - including it again here (character-altmode.hbs) gave
+       the form two inputs sharing the same name attribute, which corrupted every submitOnChange
+       save for the whole actor (FormDataExtended collects same-named fields into an array,
+       which then fails schema validation as "must be a number" - silently blocking ALL edits,
+       not just this field). NPCs have no such sidebar duplicate, so npc-altmode.hbs's own
+       include of this partial leaves hideNormal unset and keeps showing it. --}}
+  {{#unless hideNormal}}
   <label>{{localize "E20.Energon"}}</label>
-    <input class="centered-input no-lock" data-field="system.energon.normal.value" type="number"
+    <input class="two-digit-input no-lock" data-field="system.energon.normal.value" type="number"
       name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
     /
-    <input class="centered-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
+    <input class="two-digit-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
       value="{{system.energon.normal.max}}" disabled data-tooltip="{{localize 'E20.EnergonMaxTooltip'}}" />
+  {{/unless}}
 
   <label>{{localize "E20.EnergonDark"}}</label>
-    <input class="centered-input no-lock" data-field="system.energon.dark.value" type="number"
+    <input class="two-digit-input no-lock" data-field="system.energon.dark.value" type="number"
       name="system.energon.dark.value" value="{{system.energon.dark.value}}" min="0" step="1" />
 
   <label>{{localize "E20.EnergonPrimal"}}</label>
-    <input class="centered-input no-lock" data-field="system.energon.primal.value" type="number"
+    <input class="two-digit-input no-lock" data-field="system.energon.primal.value" type="number"
       name="system.energon.primal.value" value="{{system.energon.primal.value}}" min="0" step="1" />
 
   <label>{{localize "E20.EnergonRed"}}</label>
-    <input class="centered-input no-lock" data-field="system.energon.red.value" type="number"
+    <input class="two-digit-input no-lock" data-field="system.energon.red.value" type="number"
       name="system.energon.red.value" value="{{system.energon.red.value}}" min="0" step="1" />
 
   <label>{{localize "E20.EnergonSynthEn"}}</label>
-    <input class="centered-input no-lock" data-field="system.energon.synthEn.value" type="number"
+    <input class="two-digit-input no-lock" data-field="system.energon.synthEn.value" type="number"
       name="system.energon.synthEn.value" value="{{system.energon.synthEn.value}}" min="0" step="1" />
   {{/if}}
 </div>

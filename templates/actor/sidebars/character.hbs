@@ -19,20 +19,20 @@
       {{#if system.canTransform}}
       <div>
         <label>{{localize "E20.Energon"}}</label>
-        <input class="centered-input no-lock" data-field="system.energon.normal.value" type="number"
+        <input class="two-digit-input no-lock" data-field="system.energon.normal.value" type="number"
           name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
         /
-        <input class="centered-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
+        <input class="two-digit-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
           value="{{system.energon.normal.max}}" />
       </div>
       {{/if}}
       {{#if system.canMorph}}
       <div>
         <label>Personal Power</label>
-        <input class="centered-input no-lock" data-field="system.powers.personal.value" type="number"
+        <input class="two-digit-input no-lock" data-field="system.powers.personal.value" type="number"
           name="system.powers.personal.value" value="{{system.powers.personal.value}}" min="0" step="1" />
         /
-        <input class="centered-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
+        <input class="two-digit-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
           value="{{system.powers.personal.max}}" min="0" step="1" />
       </div>
       {{/if}}
@@ -40,10 +40,10 @@
       {{#if system.powers.sorcerous.levelTaken}}
       <div>
         <label>Sorcerous Power</label>
-        <input class="centered-input no-lock" data-field="system.powers.sorcerous.value" type="number"
+        <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.value" type="number"
           name="system.powers.sorcerous.value" value="{{system.powers.sorcerous.value}}" min="0" step="1" />
         /
-        <input class="centered-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
+        <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
           value="{{system.powers.sorcerous.max}}" min="0" step="1" />
       </div>
       {{/if}}

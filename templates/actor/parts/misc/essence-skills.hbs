@@ -15,7 +15,7 @@
   <span class="skill-shift-select skill-shift-display">{{fields.shift}}</span>
   {{else}}
   <select class="skill-shift-select" name="system.skills.{{skill}}.shift">
-    {{selectOptions @root.config.skillShifts selected=fields.shift}}
+    {{selectOptions @root.config.skillChoicesShifts selected=fields.shift}}
   </select>
   {{/if}}
   <a class="add-specialization" data-action="itemCreate" data-type="specialization" data-skill="{{skill}}" data-shift="{{fields.shift}}" data-tooltip="{{ localize 'E20.AddSpecialization' }}">
@@ -82,7 +82,7 @@
         <input class="inline-edit" data-field="name" type="text" name="{{../skill}}.{{specialization.name}}" value="{{specialization.name}}" />
         {{#inArray '["companion", "npc", "megaform", "vehicle", "zord"]' @root.document.type}}
         <select class="inline-edit flex-grow-0" data-field="system.shift" name="system.shift">
-          {{selectOptions @root.config.skillShifts selected=specialization.system.shift}}
+          {{selectOptions @root.config.skillChoicesShifts selected=specialization.system.shift}}
         </select>
         <span class="specialized-label flex-grow-0">{{localize 'E20.RollIsSpecialized'}}:</span>
         <input class="inline-edit specialized-checkbox" type="checkbox" data-field="system.isSpecialized" name="specialization.system.isSpecialized" {{checked specialization.system.isSpecialized}} data-dtype="Boolean"/>

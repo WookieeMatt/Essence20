@@ -757,6 +757,8 @@
     "SptOptionAccess": "Who can access the SPT?",
     "SptOptionGmPointsArePublic": "Display GM Points to Players",
     "SptOptionMessage": "Display chat messages",
+    "SptDecrement": "Spend one",
+    "SptIncrement": "Add one",
     "SptOptionPointsName": "Name for points",
     "SptOptionShow": "Dialog display behavior",
     "SptPoint": "Point",

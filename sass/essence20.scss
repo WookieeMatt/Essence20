@@ -90,6 +90,17 @@ input[type="number"], input[type="text"], select, textarea {
   text-align: center;
 }
 
+/* .centered-input is also used for a plain text field (vehicle-crew.hbs's crew description),
+   where a wide box is correct - only the number variant (Energon, Personal/Sorcerous Power,
+   Vehicle Firepoints/crew counts) needs the same small-numeric-field cap .two-digit-input
+   already has below. Without this, Foundry core's own `input[type=number] { width: 100%; }`
+   (foundry2.css) has nothing to override it, so these boxes stretch to fill whatever space their
+   container allows - which crowded the label next to them down to just a couple of characters
+   ("Per...", "E...") in the sidebar's narrow Resources panel. */
+.essence20 .centered-input[type="number"] {
+  max-width: 40px;
+}
+
 .essence20 textarea {
   color: var(--theme-text-color);
   border: 1px solid var(--color-border-light-tertiary);
