@@ -204,7 +204,7 @@
    the generic .chip class (border-radius, padding, card background) but is a clickable rollable
    link rather than a static tag, so it gets its own class for the pointer/hover affordance
    instead of `.chip` (which several non-interactive usages elsewhere rely on staying static). */
-.essence20 .npc-skill-button {
+.essence20 .npc-skill-buttons .npc-skill-button {
   display: inline-block;
   border-radius: 10px;
   border: 1px solid var(--theme-border-color);
@@ -213,6 +213,11 @@
   background-color: var(--theme-card-bg);
   text-decoration: none;
   white-space: nowrap;
+  /* Also carries .rollable (for the click-to-roll affordance), which bumps font-size to 1.25em
+     globally (_global-windows.scss) - too large for a compact pill next to the "Skills" header.
+     Reset back to the ambient size; the extra .npc-skill-buttons ancestor in this selector
+     out-specifies ".essence20 .rollable" so this wins regardless of source order. */
+  font-size: 1em;
 
   &:hover {
     color: var(--theme-accent);

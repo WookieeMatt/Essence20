@@ -1776,7 +1776,7 @@ body.game .window-app {
    the generic .chip class (border-radius, padding, card background) but is a clickable rollable
    link rather than a static tag, so it gets its own class for the pointer/hover affordance
    instead of `.chip` (which several non-interactive usages elsewhere rely on staying static). */
-.essence20 .npc-skill-button {
+.essence20 .npc-skill-buttons .npc-skill-button {
   display: inline-block;
   border-radius: 10px;
   border: 1px solid var(--theme-border-color);
@@ -1785,8 +1785,13 @@ body.game .window-app {
   background-color: var(--theme-card-bg);
   text-decoration: none;
   white-space: nowrap;
+  /* Also carries .rollable (for the click-to-roll affordance), which bumps font-size to 1.25em
+     globally (_global-windows.scss) - too large for a compact pill next to the "Skills" header.
+     Reset back to the ambient size; the extra .npc-skill-buttons ancestor in this selector
+     out-specifies ".essence20 .rollable" so this wins regardless of source order. */
+  font-size: 1em;
 }
-.essence20 .npc-skill-button:hover {
+.essence20 .npc-skill-buttons .npc-skill-button:hover {
   color: var(--theme-accent);
   border-color: var(--theme-accent);
 }
@@ -1857,6 +1862,18 @@ body.game .window-app {
 .essence20 .defense-container {
   flex-grow: 0;
   flex-basis: auto;
+}
+
+/* training.hbs's role-based table is the Gear tab's first item, immediately followed by the
+   Weapons .collapsible-item-container - which gets its own margin-bottom: $gap-md
+   (_leveled-item-lists.scss) stacked on top of section.tab's own flex gap: 10px (_tabs.scss),
+   making the Weapons->Armor gap noticeably bigger than the Training->Weapons gap above it (10px
+   flex-gap alone, since this table isn't a .collapsible-item-container and had no margin-bottom
+   of its own). Matching that same margin-bottom here evens the two gaps out. Scoped to the Gear
+   tab specifically - .defense-container is also the sidebar Defenses panel (defenses.hbs), whose
+   own spacing wasn't reported as an issue and shouldn't gain this extra margin too. */
+.essence20 section.tab.gear .defense-container {
+  margin-bottom: 0.5rem;
 }
 
 .essence20 .defense-container table thead {
@@ -3953,5 +3970,3 @@ input[type=number], input[type=text], select, textarea {
   min-width: 500px;
   min-height: auto;
 }
-
-/*# sourceMappingURL=essence20.css.map */

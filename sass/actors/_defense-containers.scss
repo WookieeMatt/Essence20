@@ -5,6 +5,18 @@
   flex-basis: auto;
 }
 
+/* training.hbs's role-based table is the Gear tab's first item, immediately followed by the
+   Weapons .collapsible-item-container - which gets its own margin-bottom: $gap-md
+   (_leveled-item-lists.scss) stacked on top of section.tab's own flex gap: 10px (_tabs.scss),
+   making the Weapons->Armor gap noticeably bigger than the Training->Weapons gap above it (10px
+   flex-gap alone, since this table isn't a .collapsible-item-container and had no margin-bottom
+   of its own). Matching that same margin-bottom here evens the two gaps out. Scoped to the Gear
+   tab specifically - .defense-container is also the sidebar Defenses panel (defenses.hbs), whose
+   own spacing wasn't reported as an issue and shouldn't gain this extra margin too. */
+.essence20 section.tab.gear .defense-container {
+  margin-bottom: v.$gap-md;
+}
+
 .essence20 .defense-container table thead {
   border-bottom: 1px solid var(--theme-border-color);
   border-color: inherit;
