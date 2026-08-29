@@ -1,8 +1,8 @@
 {{#itemsContainType items dataType}}
-  <div class="collapsible-item-container collapsible-item-subcontainer">
+  <div class="collapsible-item-container collapsible-item-subcontainer e20-border-accent">
     {{!-- Header with + and v buttons --}}
     {{> "systems/essence20/templates/actor/parts/misc/collapsible-item-container-header.hbs" items=items title=title dataType=dataType parentId=parentItem._id}}
-    <ol class="items-list e20-border-accent">
+    <ol class="items-list">
       {{#each items as |item|}}
       {{#if (eq item.type ../dataType)}}
         <li class="item accordion-wrapper" data-item-key="{{@key}}" data-item-uuid="{{item.uuid}}" data-parent-id="{{../parentItem._id}}">

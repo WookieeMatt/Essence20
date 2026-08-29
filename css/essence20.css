@@ -79,10 +79,23 @@
 }
 
 .essence20 .collapsible-item-subcontainer {
-  border-color: var(--theme-border-color);
+  /* No border-color override anymore - this now carries .e20-border-accent (see
+     collapsible-item-subcontainer.hbs) for the same chamfered accent-colored border every other
+     .e20-border-accent box uses, replacing this plain gray one. */
   box-shadow: none;
   margin: auto;
   width: 90%;
+  /* .e20-border-accent's clip-path (_tabs.scss) chamfers the top-left and bottom-right corners
+     by min(22px, 50%) - harmless on a top-level .collapsible-item-container, whose header title
+     is centered (collapsible-item-container-header.hbs's spacer div only renders when there's no
+     parentId) well clear of that corner. A subcontainer always has a parentId, so it skips that
+     spacer and left-aligns its "Effects +"/"Upgrades +" label right at the inherited 8px padding
+     - only 8px+8px = 16px from the corner, inside the 22px cut, clipping the label. The last
+     row's own right-side controls (edit/delete/chevron) sit the same 8px from the bottom-right
+     corner and get clipped there too. Extra padding pushes both header and row content past the
+     22px diagonal on all 4 corners (only 2 are actually chamfered, but padding all sides keeps
+     the box's content visually balanced rather than lopsided). */
+  padding: 16px;
 }
 
 /* Content toggle open/close. */
