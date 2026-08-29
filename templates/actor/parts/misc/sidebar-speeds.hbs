@@ -7,18 +7,21 @@
   {{#if system.movementNotSet}}
     <div>Set PC movement by adding an Origin</div>
   {{else}}
+    {{!-- Always read-only here - editing happens exclusively through the Speeds gear-icon's
+         Stat Editor dialog (module/apps/stat-editor.mjs), which covers every actor type (a
+         playerCharacter's .bonus add-on, or every other type's .total/.altMode directly). --}}
     {{#each @root.config.movementTypes as |name type|}}
       {{#with (lookup @root.system.movement type) as |moveData|}}
         <div>
           <label>{{name}}</label>
-          {{#if @root.system.movementIsReadOnly}}
-            <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
-          {{else if @root.system.isTransformed}}
+          {{#if @root.system.isTransformed}}
             {{#if (eq @root.document.type "npc")}}
-              <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />
+              <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" disabled />
+            {{else}}
+              <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
             {{/if}}
           {{else}}
-            <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" min="0" step="5" />
+            <input class="two-digit-input no-lock" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
           {{/if}}
         </div>
       {{/with}}
