@@ -1,5 +1,5 @@
 {{#if system.canSpellcast}}
-  {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill='spellcasting' fields=(lookup system.skills 'spellcasting')}}
+  {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill='spellcasting' fields=(lookup system.skills 'spellcasting') readOnly=true}}
 {{/if}}
 
 <div class="flexrow stats-row">

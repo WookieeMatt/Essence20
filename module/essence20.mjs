@@ -259,6 +259,21 @@ Handlebars.registerHelper("inArray", function (array, value, options) {
   return array.includes(value) ? options.fn(this) : options.inverse(this);
 });
 
+// system.items collections (Role/Focus's granted-item lists, among others) are a plain object
+// keyed by short random ids, not an array - {{#each}} over them iterates in insertion order, not
+// level order, so a Role Perk dragged on after a higher-level one already exists would render
+// out of order in the sheet's editable list. This returns them as an array sorted by level
+// instead, with each entry's original dict key folded in as `key` (since {{#each}} over an
+// array doesn't expose {{@key}} the way iterating the raw object does - templates using this
+// need `{{item.key}}` in place of `{{@key}}`). Array#sort is stable (guaranteed since ES2019),
+// so entries that share a level (e.g. a Spectrum Modification choiceGroup pair) keep their
+// original relative order rather than reshuffling.
+Handlebars.registerHelper("sortByLevel", function (items) {
+  return Object.entries(items)
+    .map(([key, item]) => ({ ...item, key }))
+    .sort((a, b) => (a.level ?? 0) - (b.level ?? 0));
+});
+
 Handlebars.registerHelper("itemsContainType", function (items, type, options) {
   for (const key in items) {
     if (items[key].type == type) {

@@ -1,4 +1,5 @@
 import { Essence20BaseActorSheet } from "./base-actor-sheet.mjs";
+import { computeEssenceSpend } from "../helpers/skill-picker.mjs";
 
 export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
   static TABS = {
@@ -78,44 +79,16 @@ export class Essence20CharacterActorSheet extends Essence20BaseActorSheet {
   }
 
   /**
-   * Prepare skill rank allocation calculations for PCs by adding the number of shifts
-   * and Specializations present for each Essence.
+   * Prepare skill rank allocation calculations for PCs by adding the number of shifts,
+   * Specializations, Conditioning, and (for Spellcasting/Weird) essenceAttribution present for
+   * each Essence. Delegates to the same math the Skill Picker app uses for NPC-like actors
+   * (module/helpers/skill-picker.mjs) rather than duplicating it - that function already reads
+   * everything it needs straight off the actor, so this just needs to assign its result into the
+   * shape pc-skills.hbs already expects.
    * @param {Object} context The actor data to prepare.
    */
   _prepareSkillRankAllocation(context) {
-    const unrankedIndex = CONFIG.E20.skillShiftList.indexOf('d20');
-
-    for (const essence in CONFIG.E20.originEssences) {
-      let essenceUpshifts = 0;
-      let numSpecializations = 0;
-      let essenceStrings = [];
-
-      for (const skill of CONFIG.E20.skillsByEssence[essence]) {
-        const skillData = context.system.skills[skill];
-        const skillIndex = Math.max(0, CONFIG.E20.skillShiftList.indexOf(skillData.shift));
-
-        const skillUpshifts = Math.max(0, unrankedIndex - skillIndex);
-        if (skillUpshifts) {
-          essenceStrings.push(`${skillUpshifts} ${CONFIG.E20.skills[skill]}`);
-          essenceUpshifts += skillUpshifts;
-        }
-
-        for (const specialization of context.specializations[skill] || []) {
-          numSpecializations += 1;
-          essenceStrings.push(`1 ${specialization.name}`);
-        }
-      }
-
-      context.system.skillRankAllocation[essence].string = essenceStrings.join(' + ');
-      context.system.skillRankAllocation[essence].value = essenceUpshifts + numSpecializations;
-    }
-
-    context.system.skillRankAllocation['strength'].string = [
-      context.system.skillRankAllocation['strength'].string,
-      `${context.system.conditioning} ${game.i18n.localize('E20.ActorConditioning')}`,
-    ].filter(Boolean).join(' + ');
-    context.system.skillRankAllocation['strength'].value += context.system.conditioning;
-
+    context.system.skillRankAllocation = computeEssenceSpend(this.actor);
   }
 
   _onRender(context, options) {

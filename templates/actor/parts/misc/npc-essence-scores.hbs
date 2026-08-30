@@ -3,9 +3,18 @@
   <div class="flexcol">
     <label>{{lookup @root.config.essences @key}}</label>
     <div class="flexrow flex-group-center">
-      <input class="two-digit-input" type="number" name="system.essences.{{@key}}.value" value="{{essence.value}}" min="0" step="1" />
+      {{!-- Megaform's own Essence values are derived from its component Zords rather than set
+           directly - no-unlock keeps them read-only regardless of the sheet's own lock toggle
+           (see base-actor-sheet.mjs#_applyLockedState). Zords themselves stay editable. --}}
+      <input class="two-digit-input{{#if (eq @root.document.type 'megaform')}} no-unlock{{/if}}" type="number" name="system.essences.{{@key}}.value" value="{{essence.value}}" min="0" step="1" />
+      {{!-- Zord/Megaform's essences (machine.mjs's makeEssencesFields) have no `max` field at
+           all - just a bare value - unlike NPC/Companion's (character.mjs's makeEssenceFields,
+           {value, max}), so this partial is shared between both shapes rather than assuming a
+           max always exists. --}}
+      {{#if (isdefined essence.max)}}
         /
       <input class="two-digit-input" type="number" name="system.essences.{{@key}}.max" value="{{essence.max}}" min="0" step="1" />
+      {{/if}}
     </div>
   </div>
   {{/each}}

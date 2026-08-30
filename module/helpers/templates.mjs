@@ -50,7 +50,7 @@ export const preloadHandlebarsTemplates = async function () {
     "systems/essence20/templates/actor/tabs/notes.hbs",
 
     // Actor partials - Misc
-    "systems/essence20/templates/actor/parts/misc/accordion-skills.hbs",
+    "systems/essence20/templates/actor/parts/misc/npc-skill-list.hbs",
     "systems/essence20/templates/actor/parts/misc/background.hbs",
     "systems/essence20/templates/actor/parts/misc/collapsible-item-container.hbs",
     "systems/essence20/templates/actor/parts/misc/collapsible-item-subcontainer.hbs",

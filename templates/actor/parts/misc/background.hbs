@@ -51,25 +51,40 @@
   </div>
 </div>
 
+{{!-- The {{editor}} Handlebars helper emits the legacy .editor-edit/.editor-content markup,
+     whose click-to-edit activation is wired up by FormApplication (appv1) only - it's dead
+     weight on an ApplicationV2 sheet like this one, so the pencil button did nothing.
+     <prose-mirror> (used the same way on the Item sheet's own Description tab,
+     item/tabs/description.hbs) is the ApplicationV2-native replacement: a self-contained
+     custom element that activates its own toggle button, editor, and form-value binding with
+     no extra JS required here.
+     The toggled-off (read-only) display doesn't come from the value attribute - it reads this
+     element's own innerHTML as its "enriched" content (HTMLProseMirrorElement's constructor:
+     `this.#enriched = enriched || this.innerHTML`). Leaving it empty made `this.#enriched` an
+     empty STRING, and `_refresh()` uses `this.#enriched ?? this._value` - `??` only falls
+     through on null/undefined, not on an empty string, so the display stayed blank until the
+     editor was actually activated (activation reads `value` directly, bypassing this). Putting
+     the current value here too is what HTMLProseMirrorElement's own `.create()` factory does for
+     a toggled editor - the same fix, just written as raw HTML instead of JS. --}}
 <div class="biography-editor-field">
   <label>{{localize 'E20.BiographyDescription'}}</label>
   {{!-- Raw (not TextEditor-enriched) field value - @UUID/content-link enrichment isn't wired up
        for this field yet, but the editor still binds/saves correctly without it. --}}
-  {{editor system.biography.description target="system.biography.description" button=true editable=true engine="prosemirror"}}
+  <prose-mirror name="system.biography.description" value="{{system.biography.description}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.description}}}</prose-mirror>
 </div>
 
 <div class="biography-editor-field">
   <label>{{localize 'E20.BiographyBio'}}</label>
-  {{editor system.biography.bio target="system.biography.bio" button=true editable=true engine="prosemirror"}}
+  <prose-mirror name="system.biography.bio" value="{{system.biography.bio}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.bio}}}</prose-mirror>
 </div>
 
 <div class="biography-editor-field">
   <label>{{localize 'E20.BiographyLanguages'}}</label>
-  {{editor system.biography.languages target="system.biography.languages" button=true editable=true engine="prosemirror"}}
+  <prose-mirror name="system.biography.languages" value="{{system.biography.languages}}" document-uuid="{{document.uuid}}" toggled>{{{system.biography.languages}}}</prose-mirror>
 </div>
 
 {{!-- Notes --}}
 <div class="biography-editor-field">
   <label>{{localize 'E20.ActorNotes'}}</label>
-  {{editor system.notes target="system.notes" button=true editable=true engine="prosemirror"}}
+  <prose-mirror name="system.notes" value="{{system.notes}}" document-uuid="{{document.uuid}}" toggled>{{{system.notes}}}</prose-mirror>
 </div>

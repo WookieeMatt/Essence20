@@ -1,37 +1,79 @@
 @use "../variables" as v;
 
-.essence20 .npc-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: v.$padding;
-}
-
-.essence20 .npc-items {
-  width: 50%;
+/* NPC/Vehicle/Zord/Megaform/Companion's main tab is built from several sibling top-level blocks
+   (Vehicle's common-no-vitals.hbs, then one .npc-row for the Essence badges, then another
+   .npc-row for Skills+Items) rather than one single wrapper. Each .npc-row already spaces its
+   OWN children evenly via its own `gap` below, but nothing supplied spacing BETWEEN those
+   sibling blocks themselves - section.tab.main.* isn't a flex container, so consecutive blocks
+   sat flush against each other (0px) while everything inside a block used the normal $padding
+   gap, producing exactly the uneven look reported ("spacing on the first tab is all over the
+   place"). Scoped to .active so this never fights core's .tab { display: none } / .tab.active
+   { display: block } tab-switching (this selector's specificity would otherwise beat it).
+   gap is $gap-md, not $padding, to match .npc-items below - see its own comment for why. */
+.essence20 section.tab.main.npc.active,
+.essence20 section.tab.main.vehicle.active,
+.essence20 section.tab.main.zord.active,
+.essence20 section.tab.main.megaform.active,
+.essence20 section.tab.main.companion.active {
   display: flex;
   flex-direction: column;
-  gap: v.$padding;
+  gap: v.$gap-md;
+}
+
+/* Was flex-direction: row (Essence/morph-transform side by side, then Skills/Items side by
+   side, each capped to a 50-60% column) - now a single stacked column so each section (Essence,
+   Skills, Items, ...) takes the tab's full width in turn, top to bottom. gap is $gap-md, not
+   $padding, to match .npc-items below - see its own comment for why. */
+.essence20 .npc-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: v.$gap-md;
+}
+
+/* gap here used to be $padding (6px), one tier smaller than $gap-md (8px) - but
+   .collapsible-item-container (Weapons/Zord Features/Megaform Traits/...) ALSO carries its own
+   margin-bottom: $gap-md (_leveled-item-lists.scss, shared with every other tab that uses that
+   component without a flex-gapped parent of its own), so consecutive item-containers here were
+   getting 6px gap + 8px margin = 14px apart, while Skills/the Essence row (which carry no such
+   margin) only got the bare 6px gap next to them - two different gap sizes in the same column,
+   which is what read as "random"/non-uniform spacing. Bumping gap to match $gap-md and
+   cancelling the item-containers' own margin-bottom right below collapses that back to one
+   consistent value everywhere in this tab, reusing the same token .npc-row/section.tab.main.*
+   above now share too, rather than inventing a new one-off spacing value. */
+.essence20 .npc-items {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: v.$gap-md;
+}
+
+/* !important: needed to beat _leveled-item-lists.scss's own margin-bottom rule for this same
+   element, which is more specific (its :is($leveled-tabs) already includes section.tab.main.npc
+   etc., each contributing 3 classes' worth of specificity - more than .npc-items alone does
+   here) despite this rule being the more targeted one. */
+.essence20 .npc-items > .collapsible-item-container {
+  margin-bottom: 0 !important;
 }
 
 .essence20 .npc-defenses {
-  width: 60%;
+  width: 100%;
 }
 
 .essence20 .npc-essence-scores {
-  width: 60%;
+  width: 100%;
 }
 
 .essence20 .npc-health {
-  width: 40%;
+  width: 100%;
 }
 
 .essence20 .npc-movement {
-  width: 40%;
+  width: 100%;
 }
 
 .essence20 .npc-firepoints {
-  width: 60%;
+  width: 100%;
 }
 
 .essence20 .firepoints-input {
@@ -51,7 +93,7 @@
 }
 
 .essence20 .npc-skills {
-  width: 50%;
+  width: 100%;
 }
 
 .essence20 .skill-separator {

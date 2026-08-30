@@ -34,7 +34,7 @@ export function makeMovementFields(init=0) {
 }
 
 export function makeSkillFields(essence, canBeInitiative=false, init='d20') {
-  return new fields.SchemaField({
+  const schema = {
     canBeInitiative: makeBool(canBeInitiative),
     canCritD2: makeBool(false),
     essences: new fields.SchemaField({
@@ -44,13 +44,34 @@ export function makeSkillFields(essence, canBeInitiative=false, init='d20') {
       strength: makeBool(['strength', 'any'].includes(essence)),
     }),
     edge: makeBool(false),
+    // Whether the NPC Skill Picker app (module/apps/skill-picker.mjs) has this skill selected
+    // to show on NPC-like sheets - replaces the old auto-detected "does this deviate from
+    // default" heuristic entirely, see base-actor-sheet.mjs#_prepareChosenNpcSkills. Unused by
+    // PCs (always shown), same as `essences` above being unused by non-Zord/MFZ types.
+    isChosen: makeBool(false),
     isSpecialized: makeBool(false),
     modifier: makeInt(0),
     shift: makeStrWithChoices(Object.keys(E20.skillShifts), init),
     shiftDown: makeInt(0),
     shiftUp: makeInt(0),
     snag: makeBool(false),
-  });
+  };
+
+  // "Any"-essence skills (Spellcasting, Weird) can draw their invested points from more than
+  // one real Essence at once (e.g. a Weird check built from a Strength point and a Speed
+  // point) - the Skill Picker tracks how an NPC's spend on this skill is split across the four
+  // real Essences so it can be added into each Essence's own spent-total, mirroring how
+  // character-sheet.mjs#_prepareSkillRankAllocation already tallies ordinary skills.
+  if (essence === 'any') {
+    schema.essenceAttribution = new fields.SchemaField({
+      smarts: makeInt(0),
+      social: makeInt(0),
+      speed: makeInt(0),
+      strength: makeInt(0),
+    });
+  }
+
+  return new fields.SchemaField(schema);
 }
 
 export const common = () => ({

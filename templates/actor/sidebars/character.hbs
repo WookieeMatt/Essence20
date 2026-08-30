@@ -16,23 +16,23 @@
         <span>/</span>
         <input class="two-digit-input no-unlock" type="number" value="{{system.health.value}}" disabled/>
       </div>
-      {{#if actor.system.canTransform}}
+      {{#if system.canTransform}}
       <div>
         <label>{{localize "E20.Energon"}}</label>
-        <input class="centered-input no-lock" data-field="system.energon.normal.value" type="number"
+        <input class="two-digit-input no-lock" data-field="system.energon.normal.value" type="number"
           name="system.energon.normal.value" value="{{system.energon.normal.value}}" min="0" step="1" />
         /
-        <input class="centered-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
+        <input class="two-digit-input no-lock" data-field="system.energon.normal.max" type="number" name="system.energon.normal.max"
           value="{{system.energon.normal.max}}" />
       </div>
       {{/if}}
-      {{#if actor.system.canMorph}}
+      {{#if system.canMorph}}
       <div>
         <label>Personal Power</label>
-        <input class="centered-input no-lock" data-field="system.powers.personal.value" type="number"
+        <input class="two-digit-input no-lock" data-field="system.powers.personal.value" type="number"
           name="system.powers.personal.value" value="{{system.powers.personal.value}}" min="0" step="1" />
         /
-        <input class="centered-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
+        <input class="two-digit-input no-lock" data-field="system.powers.personal.max" type="number" name="system.powers.personal.max"
           value="{{system.powers.personal.max}}" min="0" step="1" />
       </div>
       {{/if}}
@@ -40,16 +40,31 @@
       {{#if system.powers.sorcerous.levelTaken}}
       <div>
         <label>Sorcerous Power</label>
-        <input class="centered-input no-lock" data-field="system.powers.sorcerous.value" type="number"
+        <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.value" type="number"
           name="system.powers.sorcerous.value" value="{{system.powers.sorcerous.value}}" min="0" step="1" />
         /
-        <input class="centered-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
+        <input class="two-digit-input no-lock" data-field="system.powers.sorcerous.max" type="number" name="system.powers.sorcerous.max"
           value="{{system.powers.sorcerous.max}}" min="0" step="1" />
       </div>
       {{/if}}
 
       {{#if (or rolePointsList.length role.system.skillDie.isUsed)}}
         {{> "systems/essence20/templates/actor/parts/items/rolePoints/container.hbs"}}
+      {{/if}}
+
+      {{!-- Rest/Recharge restores the resources this whole panel tracks (Health, Stun, Energon,
+           Role Points, ...) - it belongs at the bottom of this panel rather than up in Special,
+           which is otherwise about rolls/transformations (Initiative, Transform, Morph). --}}
+      {{#if system.canTransform}}
+        <a class="essence20-sidebar-action-button" data-action="recharge" data-tooltip="{{localize "E20.RechargeButtonTitle"}}">
+          <i class="fas fa-charging-station"></i>
+          {{localize "E20.RechargeButtonTitle"}}
+        </a>
+      {{else}}
+        <a class="essence20-sidebar-action-button" data-action="rest" data-tooltip="{{localize "E20.RestButtonTitle"}}">
+          <i class="fas fa-face-sleeping"></i>
+          {{localize "E20.RestButtonTitle"}}
+        </a>
       {{/if}}
     </div>
     <div class="sliced-border --col essence20-sidebar-panel essence20-sidebar-special">
@@ -66,17 +81,6 @@
           {{localize (lookup @root.config.skillShifts (lookup (lookup system.skills system.initiative.skill) 'shift'))}}
         </span>
       </div>
-      {{#if system.canTransform}}
-        <a class="essence20-sidebar-action-button" data-action="recharge" data-tooltip="{{localize "E20.RechargeButtonTitle"}}">
-          <i class="fas fa-charging-station"></i>
-          {{localize "E20.RechargeButtonTitle"}}
-        </a>
-      {{else}}
-        <a class="essence20-sidebar-action-button" data-action="rest" data-tooltip="{{localize "E20.RestButtonTitle"}}">
-          <i class="fas fa-face-sleeping"></i>
-          {{localize "E20.RestButtonTitle"}}
-        </a>
-      {{/if}}
 
       {{#if system.canTransform}}
         <a class="essence20-sidebar-action-button" data-action="transform">
@@ -102,10 +106,10 @@
                  non-spellcasting characters never see anyway. --}}
           {{else if (eq skill 'weird')}}
             {{#if @root.system.canUseWeird}}
-              {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
+              {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
             {{/if}}
           {{else}}
-            {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill)}}
+            {{> "systems/essence20/templates/actor/parts/misc/essence-skills.hbs" essence='any' skill=skill fields=(lookup @root.system.skills skill) readOnly=true}}
           {{/if}}
         {{/each}}
         {{!-- Wealth Die, styled as a plain skill row rather than the boxed widget used elsewhere.

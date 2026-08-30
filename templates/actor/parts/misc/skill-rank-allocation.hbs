@@ -1,4 +1,7 @@
 <div class="skill-rank-allocation" data-tooltip="{{skillRankString}}">
+  {{#if essenceLabel}}
+  <span class="skill-rank-essence-label">{{localize essenceLabel}}</span>
+  {{/if}}
   <span>{{localize 'E20.SkillRanksAllocated'}}: {{skillRankAllocation}}</span>
   {{#if defenseLabel}}
   <span class="skill-rank-defense">{{defenseLabel}}: {{defenseValue}}</span>

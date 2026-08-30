@@ -450,6 +450,26 @@ E20.skillShiftList = [
   "fumble",
 ];
 
+/* The trainable range a skill's shift can actually be *set* to from the Skill Picker app
+   (module/apps/skill-picker.mjs) - d20 (the untrained default) up through d12 (the best a skill
+   can be trained to). The critical/auto-success and auto-fail/fumble tiers in skillShiftList
+   above are real values a skill's shift can end up at through other game effects (Edges, Snags,
+   downshifts, ...), but aren't something a GM/player should be able to just pick directly here.
+   Must be a {value: label} object, not a plain array - {{selectOptions}} (handlebars.mjs) uses
+   an array's own INDEX as each <option>'s value when given a bare array of strings, so a plain
+   array here saved a skill's shift as "0"-"6" instead of "d20"-"d12", which then failed schema
+   validation entirely ("3 is not a valid choice") since shift is a string field. skillShifts/
+   wealthShifts above use the same {value: value} shape for the same reason. */
+E20.skillChoicesShifts = {
+  "d20": "d20",
+  "d2": "d2",
+  "d4": "d4",
+  "d6": "d6",
+  "d8": "d8",
+  "d10": "d10",
+  "d12": "d12",
+};
+
 // Shifts that are available for rolling wealth tests
 E20.wealthShifts = {
   "d20": "d20",

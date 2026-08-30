@@ -30,10 +30,23 @@
 }
 
 .essence20 .collapsible-item-subcontainer {
-  border-color: var(--theme-border-color);
+  /* No border-color override anymore - this now carries .e20-border-accent (see
+     collapsible-item-subcontainer.hbs) for the same chamfered accent-colored border every other
+     .e20-border-accent box uses, replacing this plain gray one. */
   box-shadow: none;
   margin: auto;
   width: 90%;
+  /* .e20-border-accent's clip-path (_tabs.scss) chamfers the top-left and bottom-right corners
+     by min(22px, 50%) - harmless on a top-level .collapsible-item-container, whose header title
+     is centered (collapsible-item-container-header.hbs's spacer div only renders when there's no
+     parentId) well clear of that corner. A subcontainer always has a parentId, so it skips that
+     spacer and left-aligns its "Effects +"/"Upgrades +" label right at the inherited 8px padding
+     - only 8px+8px = 16px from the corner, inside the 22px cut, clipping the label. The last
+     row's own right-side controls (edit/delete/chevron) sit the same 8px from the bottom-right
+     corner and get clipped there too. Extra padding pushes both header and row content past the
+     22px diagonal on all 4 corners (only 2 are actually chamfered, but padding all sides keeps
+     the box's content visually balanced rather than lopsided). */
+  padding: 16px;
 }
 
 /* Content toggle open/close. */
@@ -95,11 +108,49 @@
 }
 
 .essence20 .role-points-name {
-  flex: 1 1 auto;
+  /* Was flex: 1 1 auto (grow to fill the row) - that pushed the bonus indicator (+2, the heart/
+     sword/shield icon, .flex-grow-0.nowrap in container.hbs) far from the name's own text,
+     out at the edge of the name's now-wide box instead of sitting right next to it. 0 1 auto
+     hugs the name to its own text (still shrinking/ellipsizing under space pressure via
+     min-width/overflow below) so the bonus lands immediately after it; the resource value/max
+     inputs get pushed to the row's far end instead via their own margin-left: auto below. */
+  flex: 0 1 auto;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  /* .role-points-item also carries the shared .align-center utility class, used there for its
+     justify-content:center (flex cross-axis centering) purpose - but that same class also sets
+     text-align: center as a side effect, which inherits down into this label. Restoring left
+     alignment here without touching .align-center itself, since that utility is shared broadly
+     elsewhere for its intended purpose. */
+  text-align: left;
+  /* Left-click toggles Activation (if supported) and right-click opens a menu (Post to Chat /
+     Spend a Point) - see base-actor-sheet.mjs#_activateRolePointsListeners. Every Role Points
+     name is right-clickable, but only ones with data-is-activatable (system.isActivatable) are
+     left-clickable, hence the separate default/activatable cursor rules below. */
+  cursor: default;
+}
+
+.essence20 .role-points-name[data-is-activatable] {
+  cursor: pointer;
+}
+
+.essence20 .role-points-name[data-is-activatable]:hover {
+  text-decoration: underline;
+}
+
+/* Reflects system.isActive back onto the name itself, now that the old checkbox (which showed
+   this state natively via its own checked/unchecked look) is gone. */
+.essence20 .role-points-name.active {
+  color: var(--e20-system-color, var(--theme-accent));
+  font-weight: 700;
+  /* A blurred text-shadow glow would get hard-clipped by this label's own overflow: hidden
+     (needed above for ellipsis truncation) - same bug already diagnosed for the sheet tabs'
+     halo (_tabs.scss). A tight text-stroke hugs the glyph outline instead of blurring outward,
+     so it stays inside the box (and inside the ellipsis's clip) at any label length. */
+  -webkit-text-stroke: 1px var(--e20-system-color, var(--theme-accent));
+  paint-order: stroke fill;
 }
 
 /* This row packs 7 inline items (2 icon links, a checkbox, the name, a bonus indicator, and 2
@@ -113,8 +164,20 @@
   /* .two-digit-input's own flex-basis: 0% (from the shared .flex-grow-0 utility class,
      _flex-containers.scss) has no floor of its own - flex-shrink: 0 above stops it shrinking
      BELOW that basis, but 0% was already unreadably small before shrink ever applied. A
-     min-width gives it an actual legible floor to grow from instead. */
-  min-width: 20px;
+     min-width gives it an actual legible floor to grow from instead.
+     32px (not the old 20px) - freeing .role-points-name from growing to fill the row (above)
+     leaves enough spare width in this same cramped row to bring these boxes much closer to
+     Health/Stun's own 40px sibling inputs (sidebars/character.hbs) instead of reading as a much
+     smaller, different control next to them. */
+  min-width: 32px;
+}
+
+/* Pushes the resource value/max pair (and only that pair - the bonus indicator right after the
+   name is meant to stay close to it, per .role-points-name's own comment above) to the row's far
+   end, mirroring Health/Stun's own label-left/value-right layout instead of everything just
+   trailing directly behind the bonus indicator. */
+.essence20 .role-points-item input[data-field="system.resource.value"] {
+  margin-left: auto;
 }
 
 .essence20 .collapsible-item-subcontainer .items-list .item {

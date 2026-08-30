@@ -5,7 +5,7 @@
       <tr>
         <th></th>
         <th class="tg-td">
-          {{#if @root.actor.system.canTransform}}
+          {{#if @root.system.canTransform}}
             {{ localize "E20.UpgradeTypeArmor" }} {{ localize "E20.UpgradePlural" }}
           {{else}}
             {{ localize "E20.ItemTypeArmorPlural" }}
@@ -16,11 +16,11 @@
           {{ localize "E20.ItemTypeWeaponPlural" }}
         </th>
         {{/if}}
-        {{#if @root.actor.system.poisonTraining}}
+        {{#if @root.system.poisonTraining}}
           <th class="tg-td">
             {{ localize "E20.ItemTypePoisonPlural" }}
           </th>
-          {{#if @root.actor.system.trained.toxins.all}}
+          {{#if @root.system.trained.toxins.all}}
             <th class="tg-td">
               {{ localize "E20.ItemTypeToxinPlural" }}
             </th>
@@ -33,7 +33,7 @@
       <tr>
         <th class="tg-td">{{ localize "E20.Training" }}</th>
         <td class="tg-td">
-          {{#if @root.actor.system.canTransform}}
+          {{#if @root.system.canTransform}}
             {{formatBooleanList system.trained.upgrades.armors @root.config.availabilities 'unit'}}
           {{else}}
             {{formatBooleanList @root.system.trained.armors @root.config.armorTypes 'unit'}}
@@ -44,22 +44,22 @@
           {{formatBooleanList @root.system.trained.weapons @root.config.weaponTypes 'unit'}}
         </td>
         {{/if}}
-        {{#if @root.actor.system.poisonTraining}}
+        {{#if @root.system.poisonTraining}}
           <td class="tg-td">
-            {{#if @root.actor.system.trained.poisons.all}}
+            {{#if @root.system.trained.poisons.all}}
               {{localize "E20.PoisonTrainingAll"}}
             {{else}}
               {{formatBooleanList @root.system.trained.poisons @root.config.poisonTraining 'unit'}}
             {{/if}}
           </td>
         {{/if}}
-        {{#if @root.actor.system.trained.toxins.all}}
+        {{#if @root.system.trained.toxins.all}}
           <td class="tg-td">
             {{localize "E20.PoisonTrainingAll"}}
           </td>
         {{/if}}
       </tr>
-      {{#if @root.actor.system.canQualify}}
+      {{#if @root.system.canQualify}}
       <tr>
         <th class="tg-td">{{ localize "E20.Qualifications" }}</th>
         <td class="tg-td">
@@ -68,9 +68,9 @@
         <td class="tg-td">
           {{formatBooleanList @root.system.qualified.weapons @root.config.weaponTypes 'unit'}}
         </td>
-        {{#if @root.actor.system.poisonTraining}}
+        {{#if @root.system.poisonTraining}}
           <td class="tg-td">
-            {{#if @root.actor.system.qualified.poisons.all}}
+            {{#if @root.system.qualified.poisons.all}}
               {{localize "E20.PoisonTrainingAll"}}
             {{else}}
               {{formatBooleanList @root.system.qualified.poisons @root.config.poisonTraining 'unit'}}

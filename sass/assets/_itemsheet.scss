@@ -17,7 +17,6 @@
   margin: 0;
   padding: 0;
   overflow-y: auto;
-  scrollbar-width: thin;
   color: var(--theme-text-color);
   display: flex;
   flex-direction: column;
@@ -67,6 +66,16 @@
   display: flex;
   flex-direction: column;
   gap: v.$gap-md;
+}
+
+/* The sheet's own width is now fixed for every type except Role (item-sheet.mjs), but that alone
+   doesn't force long text to actually wrap - a single very long word (or the browser measuring
+   this content before the fixed width is in effect) can still overflow. overflow-wrap/word-break
+   let text break mid-word as a last resort once it's the widest thing in the box, rather than
+   pushing past the sheet's own edge. */
+.essence20.item .tab.description .description {
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .essence20.item .tab.description h3 {

@@ -26,6 +26,35 @@ export class Essence20Actor extends Actor {
   /** @override */
   async _preCreate(data, options, user) {
     await super._preCreate(data, options, user);
+
+    /* Foundry's own raw default for a brand-new actor's prototype token is unlinked, hostile,
+       and sightless - fine for a disposable NPC/Vehicle/Zord/Megaform (Foundry's own docs
+       recommend NOT linking "generic creatures"), but wrong for a Player Character or Companion:
+       both are unique, persistently-tracked individuals, so their token should be Linked (Health/
+       Stun/etc. edited on the token or the sheet stay in sync everywhere, matching Foundry's own
+       "linked tokens are recommended for unique or named characters" guidance), friendly, and
+       able to see. hasProperty guards mirror the width/height default further down this file
+       (triggered by a size change, not creation) - never override a value already set explicitly
+       (by an importer, a compendium actor, or a GM who configured this in the create dialog). */
+    if (this.type == 'playerCharacter' || this.type == 'companion') {
+      const tokenDefaults = {};
+      if (!foundry.utils.hasProperty(data, "prototypeToken.actorLink")) {
+        tokenDefaults.actorLink = true;
+      }
+
+      if (!foundry.utils.hasProperty(data, "prototypeToken.disposition")) {
+        tokenDefaults.disposition = CONST.TOKEN_DISPOSITIONS.FRIENDLY;
+      }
+
+      if (!foundry.utils.hasProperty(data, "prototypeToken.sight.enabled")) {
+        tokenDefaults.sight = { enabled: true };
+      }
+
+      if (!foundry.utils.isEmpty(tokenDefaults)) {
+        this.updateSource({ prototypeToken: tokenDefaults });
+      }
+    }
+
     const CALL_TO_ACTION_ID = "Compendium.essence20.pr_crb.Item.yjhd6FRLJOsOQqN4";
     const RECALL_FOR_REPAIRS_ID = "Compendium.essence20.pr_crb.Item.r1S0Sc4oq8axDL6C";
 

@@ -9,12 +9,12 @@
    Character sheet: scoped by tab (Perks/Spells/Background/Powers/Gear/Alt Mode - the last of
    which reuses the same weapon/container.hbs the Gear tab does, so it needs this same scoping
    or its .leveled-item-icon renders at the <img>'s unconstrained natural size instead of a
-   compact 24px icon). NPC/Vehicle/Zord/Megaform all share one generic "main" tab
-   (section.tab.main, also used by Companion), so each of those 4 templates additionally
-   carries its own type class (npc/vehicle/zord/megaform) precisely for this selector -
-   Companion deliberately doesn't, since it wasn't part of this restyle and section.tab.main
-   alone would otherwise catch it too. */
-$leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform';
+   compact 24px icon). NPC/Vehicle/Zord/Megaform/Companion all share one generic "main" tab
+   (section.tab.main), so each of those 5 templates additionally carries its own type class
+   (npc/vehicle/zord/megaform/companion) precisely for this selector - Companion was originally
+   left out here (before it carried that class at all), which is exactly what let its own
+   Weapons list render at unconstrained native image size instead of the compact 24px icon. */
+$leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, section.tab.powers, section.tab.gear, section.tab.altmodes, section.tab.main.npc, section.tab.main.vehicle, section.tab.main.zord, section.tab.main.megaform, section.tab.main.companion';
 
 .essence20 :is(#{$leveled-tabs}) .collapsible-item-container:not(.collapsible-item-subcontainer) {
   margin-bottom: v.$gap-md;
@@ -105,6 +105,17 @@ $leveled-tabs: 'section.tab.perks, section.tab.spells, section.tab.background, s
   object-fit: cover;
   border: none;
   border-radius: 4px;
+}
+
+/* mode-selector.hbs's Alt Mode/Bot Mode/Any dropdown, shown on a Weapon's own row when the actor
+   canTransform - it sits in an unconstrained wrapper div (collapsible-item-container-label-buttons.hbs)
+   with nothing else limiting its size, so Foundry core's own `select { width: 100%; }`
+   (foundry2.css) stretched it to fill the entire row (or wider, in a maximized window) instead of
+   sizing to its own short option text. */
+.essence20 .mode-select {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 110px;
 }
 
 .essence20 :is(#{$leveled-tabs}) .leveled-item-name {

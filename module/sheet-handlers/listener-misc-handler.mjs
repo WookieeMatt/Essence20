@@ -55,43 +55,58 @@ export async function performRoll(event, actor, childRoller=None) {
     if (rollType == 'power') {
       return await powerCost(actor, item);
     } else if (rollType == 'rolePoints') {
-      if (item.system.resource.max != null && item.system.resource.value < 1 && !actor.system.useUnlimitedResource) {
-        ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
-        return;
-      } else {
-        const spentStrings = [];
-
-        // Ensure we have enough Personal Power, if needed
-        if (item.system.powerCost) {
-          if (actor.system.powers.personal.value < item.system.powerCost) {
-            ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
-            return;
-          } else {
-            await actor.update({
-              ['system.powers.personal.value']:
-                actor.system.powers.personal.value - item.system.powerCost,
-            });
-
-            spentStrings.push(`${item.system.powerCost} Power`);
-          }
-        }
-
-        // If Role Points are being used and not unlimited, decrement uses
-        if (!actor.system.useUnlimitedResource) {
-          await item.update({ 'system.resource.value': item.system.resource.value - 1 });
-          spentStrings.push('1 point');
-        }
-
-        if (spentStrings.length) {
-          const spentString = spentStrings.join(', ');
-          ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
-        }
-      }
+      await spendRolePoint(actor, item);
     }
 
     if (item) {
       return item.roll(dataset, childRoller);
     }
+  }
+}
+
+/**
+ * Spends one use of a Role Points item's resource pool (and its Personal Power cost, if it has
+ * one). Shared by performRoll()'s "rolePoints" roll type above and the Role Points row's own
+ * right-click "Spend a Point" context menu entry (rolePoints/container.hbs, wired up in
+ * base-actor-sheet.mjs) - both are "actually use this Role Points ability," just triggered from
+ * different UI (the row's fist icon used to trigger this via performRoll; the row is now driven
+ * entirely by clicking/right-clicking its name instead, so this needed to be callable directly
+ * rather than only reachable through a [data-roll-type] element's dataset).
+ * @param {Actor} actor The Actor spending the Role Points use
+ * @param {Item} item The RolePoints Item being spent
+ */
+export async function spendRolePoint(actor, item) {
+  if (item.system.resource.max != null && item.system.resource.value < 1 && !actor.system.useUnlimitedResource) {
+    ui.notifications.error(game.i18n.localize('E20.RolePointsOverSpent'));
+    return;
+  }
+
+  const spentStrings = [];
+
+  // Ensure we have enough Personal Power, if needed
+  if (item.system.powerCost) {
+    if (actor.system.powers.personal.value < item.system.powerCost) {
+      ui.notifications.error(game.i18n.localize('E20.PowerOverSpent'));
+      return;
+    } else {
+      await actor.update({
+        ['system.powers.personal.value']:
+          actor.system.powers.personal.value - item.system.powerCost,
+      });
+
+      spentStrings.push(`${item.system.powerCost} Power`);
+    }
+  }
+
+  // If Role Points are being used and not unlimited, decrement uses
+  if (!actor.system.useUnlimitedResource) {
+    await item.update({ 'system.resource.value': item.system.resource.value - 1 });
+    spentStrings.push('1 point');
+  }
+
+  if (spentStrings.length) {
+    const spentString = spentStrings.join(', ');
+    ui.notifications.info(game.i18n.format('E20.RolePointsSpent', { spentString, name: item.name }));
   }
 }
 
@@ -239,37 +254,29 @@ export async function onSufferForSpellcastingDownshift(actorSheet) {
 /**
  * Handle toggling accordion containers.
  * @param {Event} event The originating click event
- * @param {ActorSheet} actorSheet The ActorSheet whose accordion button was clicked
  */
-export async function onToggleAccordion(event, actorSheet) {
+export async function onToggleAccordion(event) {
   const el = event.target;
   const parent = $(el).closest('.accordion-wrapper');
 
-  // Avoid collapsing NPC skills container on rerender
-  if (parent.hasClass('skills-container')) {
-    const isOpen = actorSheet.accordionStates.skills;
-    actorSheet.accordionStates.skills = isOpen ? '' : 'open';
-    actorSheet.render();
+  parent.toggleClass('open');
+
+  // Check if the container header toggle should be flipped
+  let oneClosed = false;
+
+  // Look for a closed Item
+  const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
+  for (const accordionLabel of accordionLabels) {
+    oneClosed = !$(accordionLabel).hasClass('open');
+    if (oneClosed) break;
+  }
+
+  // Set header state to open if all Items are open; closed otherwise
+  const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
+  if (oneClosed) {
+    $(container).removeClass('open');
   } else {
-    parent.toggleClass('open');
-
-    // Check if the container header toggle should be flipped
-    let oneClosed = false;
-
-    // Look for a closed Item
-    const accordionLabels = el.closest('.collapsible-item-container').querySelectorAll('.accordion-wrapper');
-    for (const accordionLabel of accordionLabels) {
-      oneClosed = !$(accordionLabel).hasClass('open');
-      if (oneClosed) break;
-    }
-
-    // Set header state to open if all Items are open; closed otherwise
-    const container = el.closest('.collapsible-item-container').querySelector('.header-accordion-wrapper');
-    if (oneClosed) {
-      $(container).removeClass('open');
-    } else {
-      $(container).addClass('open');
-    }
+    $(container).addClass('open');
   }
 }
 

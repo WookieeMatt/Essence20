@@ -17,7 +17,7 @@
       {{/each}}
     </div>
   {{else}}
-    {{#if @root.actor.system.canTransform}}
+    {{#if @root.system.canTransform}}
       <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
       <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.system.prerequisite}}}</div>
       <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.system.benefit}}}</div>
@@ -72,7 +72,7 @@
       {{/each}}
     </div>
   {{else}}
-    {{#if @root.actor.system.canTransform}}
+    {{#if @root.system.canTransform}}
       <div>{{localize 'E20.ItemDescription'}}: {{{item.description}}}</div>
       <div>{{localize 'E20.UpgradePrerequisite'}}: {{{item.prerequisite}}}</div>
       <div>{{localize 'E20.UpgradeBenefit'}}: {{{item.benefit}}}</div>

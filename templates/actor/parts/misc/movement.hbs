@@ -10,7 +10,7 @@
         {{#if @root.system.movementIsReadOnly}}
           <input class="two-digit-input bg-transparent" type="number" name="system.movement.{{type}}.total" value="{{moveData.total}}" disabled />
         {{else if @root.system.isTransformed}}
-          {{#if (eq @root.actor.type "npc")}}
+          {{#if (eq @root.document.type "npc")}}
             <input class="two-digit-input" type="number" name="system.movement.{{type}}.altMode" value="{{moveData.altMode}}" min="0" step="5" />
           {{/if}}
         {{else}}
