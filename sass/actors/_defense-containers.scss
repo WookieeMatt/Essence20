@@ -17,6 +17,16 @@
   margin-bottom: v.$gap-md;
 }
 
+/* Same root cause, same fix, on the Alt Mode tab (character-altmode.hbs/npc-altmode.hbs):
+   energon.hbs's container is the tab's first item, immediately followed by the Alt Mode
+   .collapsible-item-container - only the flex gap separates Energon from Alt Mode, while Alt
+   Mode's own margin-bottom stacks on top of that same flex gap before Weapons/Upgrades, making
+   that gap visibly bigger. .energon-container is only ever used on this tab (energon.hbs has no
+   other includes), so no scoping to a specific tab class is needed here. */
+.essence20 .energon-container {
+  margin-bottom: v.$gap-md;
+}
+
 .essence20 .defense-container table thead {
   border-bottom: 1px solid var(--theme-border-color);
   border-color: inherit;

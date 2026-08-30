@@ -168,11 +168,25 @@
   box-sizing: border-box;
 }
 
+/* Match this "Skills" panel's framing to the collapsible-item-container boxes it sits beside
+   (Weapons, etc., in the same npc-row) - same card background instead of staying transparent,
+   and the label flush at the top instead of floating under the 20px top padding
+   .skills-container gives the PC Skills tab's Essence columns (_essence.scss, the other user of
+   that shared class - scoped to .npc-skill-list specifically so that other use is untouched). */
+.essence20 .skills-container.npc-skill-list {
+  background: var(--theme-card-bg);
+  padding: 8px;
+}
+
 /* npc-skill-list.hbs's heading row - "Skills" label plus the gear icon that opens the Skill
    Picker app (module/apps/skill-picker.mjs). Unlike the old accordion-skills.hbs it replaced,
-   this list has no collapse/expand toggle, so the row only needs the label and the one action. */
+   this list has no collapse/expand toggle, so the row only needs the label and the one action.
+   border-bottom/padding-bottom underline it the same way a collapsible-item-container's own
+   "Weapons +"-style header is underlined (_leveled-item-lists.scss's > .flexrow rule). */
 .essence20 .npc-skill-list-header {
   justify-content: space-between;
+  border-bottom: 1px solid var(--theme-border-color);
+  padding-bottom: v.$gap-sm;
   margin-bottom: v.$gap-sm;
 
   span {
