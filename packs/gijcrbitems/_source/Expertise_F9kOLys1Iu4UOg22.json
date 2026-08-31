@@ -10,8 +10,11 @@
       "page": 72
     },
     "prerequisite": "",
-    "selectionLimit": 1,
-    "type": "role"
+    "selectionLimit": 4,
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "skills",
+    "value": 2
   },
   "effects": [],
   "folder": "4txCmeGYg1JUzKEl",

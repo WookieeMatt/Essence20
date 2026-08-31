@@ -31,7 +31,7 @@
       "type": "damageBonus",
       "value": 0
     },
-    "isActivatable": true,
+    "isActivatable": false,
     "isActive": false,
     "powerCost": null,
     "resource": {

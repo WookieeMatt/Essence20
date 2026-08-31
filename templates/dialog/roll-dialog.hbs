@@ -69,4 +69,27 @@
     Apply {{rolePoints.name}} to gain {{rolePoints.system.bonus.value}}<i class="fas fa-arrow-up flex-grow-0"></i>?
   </div>
   {{/if}}
+
+  {{#if damageRolePoints}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogApplyDamageBonus' name=damageRolePoints.name value=damageRolePoints.value}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyRolePointsDamage" {{checked damageRolePoints.autoEligible}} />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{#if damageRolePoints.autoReason}}
+  <div class="roll-dialog-role-points-reason">{{damageRolePoints.autoReason}}</div>
+  {{/if}}
+
+  {{#if damageRolePoints.canDouble}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogApplyDamageDouble'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyDamageDouble" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+  {{/if}}
 </div>

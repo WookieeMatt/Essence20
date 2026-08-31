@@ -19,7 +19,10 @@ export default class MultiChoiceSelector extends HandlebarsApplicationMixin(Appl
     actions: {
       view: MultiChoiceSelector.view,
     },
-    id: "mutli-choice",
+    // "{id}" - see choices-selector.mjs's own DEFAULT_OPTIONS.id comment for why a static id here
+    // (this used to be a bare "mutli-choice") breaks whenever two of this same dialog type get
+    // triggered back-to-back with no player interaction in between.
+    id: "mutli-choice-{id}",
     classes: [
       "essence20",
       "theme-wrapper",

@@ -1,10 +1,37 @@
 import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { resizeTokens } from "../helpers/actor.mjs";
+import { actorHasPerk, findPerk } from "../helpers/perks.mjs";
 import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransformUuid } from "../sheet-handlers/transformer-handler.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
+
+// GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
+// fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
+// system.defenses.<type>.bonus, which is the player/GM's own manual catch-all via the Stat Editor
+// dialog (module/apps/stat-editor.mjs) AND a legitimate target for a Perk's own compendium Active
+// Effect (31 Perks in this pack already use one) - mutating it here would double-count with either
+// source, or go stale the moment the condition (e.g. armor equipped) stops being true.
+//
+// Iron Heart (Think Tank Focus, 10th level, "+1 to Toughness and Evasion... +1 Health") is
+// deliberately NOT handled here for exactly that double-count reason: its compendium Item
+// (kKPhxxl5NUo7eE8z) already carries an enabled Active Effect adding +1 to
+// system.defenses.toughness.bonus, system.defenses.evasion.bonus, AND system.health.bonus - all
+// three clauses of the Perk, unconditionally, which is the correct shape for a bonus with no
+// fictional trigger to check. An earlier pass here duplicated the Toughness/Evasion half as its
+// own perkDefenseBonus (missing that the Active Effect already existed and covered the Health
+// clause too, which had been wrongly logged elsewhere as an unbuilt gap) - removed once the
+// double-count was found by cross-referencing every automated Perk ID here against the
+// compendium's own Active Effects.
+const GI_JOE_CRB = "Compendium.essence20.gi_joe_crb.Item.";
+const ARMOR_EXPERT_ID = `${GI_JOE_CRB}0a01vmWtbbYYcNvA`;
+const THE_HEAVY_ID = `${GI_JOE_CRB}rlD6YJSr2fgROKHo`;
+// Shared by Infantry and Vanguard - a single compendium Perk both Roles grant, whose chosen
+// Fighting Style lives on its own system.choice field (see sheet-handlers/perk-handler.mjs's
+// 'fightingStyle' choiceType). Only Careful/Defense have a numeric effect built - the other 4
+// options (Akimbo, Close Quarters Battle, Long Shot, Trigger Happy) are recorded but not automated.
+const FIGHTING_STYLE_ID = `${GI_JOE_CRB}2LtDCHxgg9bMvWQK`;
 
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
@@ -308,6 +335,8 @@ export class Essence20Actor extends Actor {
   */
   _prepareDefenses() {
     const system = this.system;
+    const equippedArmor = this.items.documentsByType.armor.filter(a => a.system.equipped);
+    const fightingStyle = findPerk(this, FIGHTING_STYLE_ID)?.system.choice;
 
     for (const defenseType of Object.keys(CONFIG.E20.defenses)) {
       const defense = system.defenses[defenseType];
@@ -317,6 +346,7 @@ export class Essence20Actor extends Actor {
       const morphed = defense.morphed;
       const shield = defense.shield;
       let rolePointsDefense = 0;
+      let perkDefenseBonus = 0;
       const essence = system.essences[defense.essence].max;
       const essenceName = game.i18n.localize(`E20.Essence${defense.essence.capitalize()}`);
       const baseName = game.i18n.localize('E20.DefenseBase');
@@ -324,6 +354,7 @@ export class Essence20Actor extends Actor {
       const bonusName = game.i18n.localize('E20.Bonus');
       const morphedName = game.i18n.localize('E20.DefenseMorphed');
       const shieldName = game.i18n.localize('E20.DefenseShield');
+      const perkName = game.i18n.localize('E20.DefensePerk');
       let rolePointsName = game.i18n.localize('E20.RolePoints');
 
       // Armor from Role Points
@@ -341,7 +372,42 @@ export class Essence20Actor extends Actor {
         }
       }
 
-      defense.total = base + essence + bonus + rolePointsDefense;
+      // GI Joe CRB Vanguard Perks - flat, condition-gated Toughness/Evasion bonuses. Computed
+      // fresh every prepareData pass off live conditions (armor currently equipped, its
+      // classification) rather than written into defense.bonus (the player/GM's own manual
+      // catch-all via the Stat Editor dialog), so removing armor or the Perk immediately drops
+      // the bonus instead of leaving a stale value behind.
+      if (defenseType == 'toughness' && equippedArmor.length) {
+        if (actorHasPerk(this, ARMOR_EXPERT_ID)) {
+          // Armor Expert (Juggernaut Focus, 1st level): "+2 Toughness defense while wearing armor."
+          perkDefenseBonus += 2;
+        }
+
+        if (actorHasPerk(this, THE_HEAVY_ID) && equippedArmor.some(a => ['heavy', 'ultraHeavy'].includes(a.system.classification))) {
+          // The Heavy (base, 2nd level): "gain 2 additional Toughness when wearing heavy or super
+          // heavy armor."
+          perkDefenseBonus += 2;
+        }
+      }
+
+      // Fighting Style (Infantry/Vanguard, shared Perk, p.79/108) - only the 2 options with a
+      // clean numeric effect are automated:
+      if (['toughness', 'evasion'].includes(defenseType)) {
+        if (fightingStyle == 'careful' && this.statuses?.has('cover')) {
+          // Careful: "When taking cover, you gain a +2 bonus to your Toughness and Evasion."
+          // Reads the actor's own 'cover' status (the same one dice.mjs's automatic combat
+          // modifiers already read on a target) - the player/GM toggles it via the token HUD.
+          perkDefenseBonus += 2;
+        }
+
+        if (fightingStyle == 'defense' && equippedArmor.length) {
+          // Defense: "While you are wearing armor, you gain a +1 bonus to your Toughness and
+          // Evasion."
+          perkDefenseBonus += 1;
+        }
+      }
+
+      defense.total = base + essence + bonus + rolePointsDefense + perkDefenseBonus;
       defense.total += system.isMorphed ? morphed : armor;
       defense.total += shield;
 
@@ -349,6 +415,7 @@ export class Essence20Actor extends Actor {
       defense.string += system.isMorphed ? ` + ${morphed} (${morphedName})` : ` + ${armor} (${armorName})`;
       defense.string += ` + ${shield} (${shieldName})`;
       defense.string += ` + ${bonus} (${bonusName}) + ${rolePointsDefense} (${rolePointsName})`;
+      defense.string += ` + ${perkDefenseBonus} (${perkName})`;
     }
   }
 

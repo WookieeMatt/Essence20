@@ -1,3 +1,8 @@
+import { actorHasPerk } from "./perks.mjs";
+import { isPersonalShieldActive } from "./personal-shield.mjs";
+
+const IMPENETRABLE_SHIELD_ID = "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWAk0QD3";
+
 /**
  * Returns the effective numeric value of one of an actor's four Defenses (Toughness, Evasion,
  * Willpower, Cleverness; p.168-169). Player Character/Companion actors compute the final value
@@ -42,6 +47,11 @@ export function computeMultiplier(total, difficulty) {
  * system.stun.value accumulator (shown on the sheet as "Stun / Health" and reset to 0 on a
  * rest), which is how this system tracks stun buildup rather than a depleting pool. Every other
  * damage type subtracts from system.health.value as normal, floored at 0.
+ * Impenetrable Shield (Vanguard base, 18th level, p.109): "immunity to EMP damage" while the
+ * shield is active - unlike the Perk's own Resistance-to-everything-else clause (a Snag on the
+ * attack roll instead, see dice.mjs's own target-status checks), immunity zeroes damage after a
+ * hit, the same as the actor's own permanent system.immunities below, just conditional on the
+ * shield being switched on rather than always-on.
  * @param {Actor} actor
  * @param {Number} damageValue
  * @param {String} damageType
@@ -49,7 +59,9 @@ export function computeMultiplier(total, difficulty) {
  *   Health the actor had left when damageType isn't 'stun'.
  */
 export async function applyDamage(actor, damageValue, damageType) {
-  const amount = actor.system.immunities?.[damageType] ? 0 : damageValue;
+  const isEmpImmuneViaShield = damageType == 'emp' && isPersonalShieldActive(actor)
+    && actorHasPerk(actor, IMPENETRABLE_SHIELD_ID);
+  const amount = (actor.system.immunities?.[damageType] || isEmpImmuneViaShield) ? 0 : damageValue;
 
   if (damageType == 'stun') {
     await actor.update({ 'system.stun.value': actor.system.stun.value + amount });

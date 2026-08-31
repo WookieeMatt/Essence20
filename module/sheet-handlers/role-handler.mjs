@@ -4,6 +4,7 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDelete, onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
+import { actorHasPerk } from "../helpers/perks.mjs";
 
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 
@@ -131,14 +132,14 @@ export async function performSpectrumShift(actor, newRole) {
  *                                    in place of previousLevel, for the same reason.
  */
 export async function setRoleValues(role, actor, newLevel=null, previousLevel=null, essenceLevel=null, perkLevel=null, previousPerkLevel=null) {
-  const currentEssenceLevel = essenceLevel ?? actor.system.level;
+  const currentEssenceLevel = essenceLevel ?? newLevel;
+  console.log(currentEssenceLevel);
   for (const essence in role.system.essenceLevels) {
     const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[essence], previousLevel);
     const essenceMax = actor.system.essences[essence].max + totalChange;
     const essenceMaxString = `system.essences.${essence}.max`;
     const essenceValue = actor.system.essences[essence].value+ totalChange;
     const essenceString = `system.essences.${essence}.value`;
-
     await actor.update({
       [essenceString]: essenceValue,
       [essenceMaxString]: essenceMax,
@@ -543,15 +544,17 @@ export async function onRoleDrop(actor, role, dropFunc) {
 * @param {Number} newLevel The new level that you are changing to
 */
 export async function onLevelChange(actor, newLevel) {
+  console.log(newLevel);
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
+  console.log(previousLevel);
   if (!previousLevel || previousLevel == newLevel) {
     return;
   }
 
-  const roles = actor.items.documentsByType.role;
+  const roles = await actor.items.documentsByType.role;
   const baseRole = roles.find(r => !r.system.isAdditive);
   const additiveRole = roles.find(r => r.system.isAdditive);
-
+  console.log(baseRole);
   if (!baseRole) {
     return;
   }

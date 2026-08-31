@@ -6,19 +6,7 @@
 <div class="sliced-border pr-header-level">
   <label class="sliced-border__label">{{localize 'E20.ActorLevel'}}</label>
   <div class="flexrow align-center gap-2">
-    {{numberInput system.level name="system.level" min=0 step=1 disabled=true class="two-digit-input"}}
-    {{#unless system.isLocked}}
-      {{#if @root.role}}
-        <div class="flexcol pr-header-level-buttons">
-          <a data-action="levelUp" data-tooltip="E20.LevelButtonUp" {{#if (eq system.level 20)}}disabled{{/if}}>
-            <i class="fa{{#if (eq system.level 20)}}-regular{{/if}} fa-up"></i>
-          </a>
-          <a data-action="levelDown" data-tooltip="E20.LevelButtonDown" {{#if (eq system.level 1)}}disabled{{/if}}>
-            <i class="fa{{#if (eq system.level 1)}}-regular{{/if}} fa-down"></i>
-          </a>
-        </div>
-      {{/if}}
-    {{/unless}}
+    {{numberInput system.level name="system.level" min=0 step=1 class="two-digit-input"}}
   </div>
 </div>
 {{/inline}}

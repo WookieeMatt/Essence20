@@ -52,6 +52,24 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
       actor.update({
         [updateString]: updateValue,
       });
+    } else if (selectionType == 'skills') {
+      // e.g. Expertise (GI Joe CRB p.72): "Choose two skills. You're an expert in each, gaining
+      // [2 upshifts] when using them." Corrected from an earlier version of this branch that
+      // wrote perk.system.value into the skill's flat .modifier instead - the PDF's own up-shift
+      // glyph is lost by plain-text extraction (renders as blank space before the "2"), and it
+      // got misread as a "+2" numeric bonus; the user, checking their own actor sheet against the
+      // book, caught both that and the single-choice bug below. system.skills.<skill>.shiftUp is
+      // the field templates/actor/parts/misc/essence-skills.hbs's own roll link already reads
+      // into dataset.shiftUp for every skill roll, so writing here needs no dice.mjs changes.
+      // Each skill choice is its own independent Perk grant (see Expertise's compendium entry,
+      // granted 4 times across Commando's own progression table: twice at 1st level for the
+      // initial 2 skills, twice more at 7th for "2 more skills"), so this only ever needs to
+      // apply the bonus to the one skill chosen this time.
+      updateString = `system.skills.${selection}.shiftUp`;
+      const updateValue = actor.system.skills[selection].shiftUp + perk.system.value;
+      actor.update({
+        [updateString]: updateValue,
+      });
     }
   }
 
@@ -101,10 +119,14 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     newPerk = perkDrop[0];
   }
 
-  if (['environments', 'senses', 'movement'].includes(selectionType)) {
+  if (['environments', 'senses', 'movement', 'skills', 'fightingStyle', 'field'].includes(selectionType)) {
     const localizedSelection = selectionType == 'movement'
       ? game.i18n.localize(E20.movementTypes[selection])
-      : game.i18n.localize(E20[selectionType][selection]);
+      // Field's choices are a restricted subset of the same skill list 'skills' already uses
+      // (see E20.fieldSkills, helpers/config.mjs), not a distinct label set of their own.
+      : selectionType == 'field'
+        ? game.i18n.localize(E20.skills[selection])
+        : game.i18n.localize(E20[selectionType][selection]);
     const newName = `${newPerk.name} (${localizedSelection})`;
     newPerk.update({
       "name": newName,
@@ -176,6 +198,27 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
     let title = game.i18n.localize("E20.PerkSelect");
 
     switch (perk.system.choiceType) {
+    case 'field':
+      // GI Joe CRB p.104 (Technician/Expert Focus, 1st level): "choose a Culture, Science, or
+      // Technology Specialization... This is your Field." Only records which skill was chosen -
+      // the actual Essence Increase and marking that skill Specialized are both already handled
+      // by the generic Essence Increase flow this Perk also grants, same division of labor as
+      // Renegade's own Training (Essence Increase generic, the skill-choice itself Perk-specific).
+      // Eureka/Expert in Your Field both read this choice back via findPerk(actor,
+      // FIELD_ID)?.system.choice (helpers/perks.mjs), same shape Fighting Style already uses.
+      prompt = game.i18n.localize("E20.SelectField");
+      for (const skill of E20.fieldSkills) {
+        const localizedLabel = game.i18n.localize(E20.skills[skill]);
+        choices[skill] = {
+          chosen: false,
+          value: skill,
+          label: localizedLabel,
+          type: perk.system.choiceType,
+        };
+      }
+
+      break;
+
     case 'environments':
       prompt = game.i18n.localize("E20.SelectEnvironment");
       for (const environment of Object.keys(CONFIG.E20.environments)) {
@@ -254,6 +297,45 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
             type: perk.system.choiceType,
           };
         }
+      }
+
+      break;
+
+    case 'skills':
+      // e.g. Expertise (GI Joe CRB p.72). Every skill is offered every time this Perk is granted
+      // (unlike senses/movement above, a skill already boosted by an earlier Expertise grant - or
+      // by anything else - has no single reliable "already chosen" marker to filter on), so the
+      // player is trusted to pick a different skill each time, same as they already are for which
+      // skill to specialize in elsewhere in this system.
+      prompt = game.i18n.localize("E20.SelectSkill");
+      for (const skill of Object.keys(CONFIG.E20.skills)) {
+        const localizedLabel = game.i18n.localize(E20.skills[skill]);
+        choices[skill] = {
+          chosen: false,
+          value: skill,
+          label: localizedLabel,
+          type: perk.system.choiceType,
+        };
+      }
+
+      break;
+
+    case 'fightingStyle':
+      // GI Joe CRB p.79/108 - shared by Infantry and Vanguard's identical "Fighting Style"
+      // Perk. Unlike senses/movement/skills above, none of the 6 options has a single dedicated
+      // numeric field to add into - each one is read directly off this Perk's own system.choice
+      // at the point it actually matters (e.g. Careful/Defense in documents/actor.mjs's
+      // _prepareDefenses), so no extra onPerkDrop consumption branch is needed beyond the
+      // generic rename + system.choice write every choiceType in this switch already gets below.
+      prompt = game.i18n.localize("E20.SelectFightingStyle");
+      for (const style of Object.keys(E20.fightingStyle)) {
+        const localizedLabel = game.i18n.localize(E20.fightingStyle[style]);
+        choices[style] = {
+          chosen: false,
+          value: style,
+          label: localizedLabel,
+          type: perk.system.choiceType,
+        };
       }
 
       break;

@@ -67,7 +67,7 @@
       <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.armorTraits trait)}}</span>
       {{/each}}
     {{else if (eq system.type 'weapon')}}
-      {{#each item.system.traits as |trait|}}
+      {{#each system.traits as |trait|}}
       <span class="chip" name="chip.upgrade.traits.{{trait}}">{{localize (lookup @root.config.weaponTraits trait)}}</span>
       {{/each}}
     {{/if}}
