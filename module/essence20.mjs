@@ -18,7 +18,7 @@ import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 // Import helper/utility classes and constants.
-import { applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
@@ -130,8 +130,9 @@ Hooks.once("init", async function () {
     enricher: enrichCheck,
   });
 
-  // Register System Data Model
+  // Register System Data Models
   CONFIG.Actor.dataModels = data.actor.config;
+  CONFIG.ActiveEffect.dataModels = data.effect.config;
   CONFIG.Item.dataModels = data.item.config;
 
   // Register System Settings
@@ -437,6 +438,7 @@ Hooks.on("renderItemDirectory", addCompendiumBrowserFooterButton);
 
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
+  addRerollButtons(app, html);
   attachCheckCardListeners(app, html);
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);

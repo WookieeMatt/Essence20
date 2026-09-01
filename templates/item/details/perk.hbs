@@ -99,6 +99,49 @@
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     {{/if}}
 
+    {{!-- Reroll Enabled --}}
+    {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollEnabled'}}
+    {{#*inline "item-field-inputs"}}
+      <input type="checkbox" name="system.reroll.enabled" {{checked system.reroll.enabled}} />
+    {{/inline}}
+    {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+    {{#if system.reroll.enabled}}
+      {{!-- Reroll Mode --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollMode'}}
+      {{#*inline "item-field-inputs"}}
+        <select name="system.reroll.mode">
+          {{selectOptions config.rerollModes selected=system.reroll.mode}}
+        </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Target --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollTarget'}}
+      {{#*inline "item-field-inputs"}}
+        <select name="system.reroll.target">
+          {{selectOptions config.rerollTargets selected=system.reroll.target}}
+        </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Reset --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollReset'}}
+      {{#*inline "item-field-inputs"}}
+        <select name="system.reroll.reset">
+          {{selectOptions config.rerollResets selected=system.reroll.reset}}
+        </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Max Uses --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollMaxUses'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="number" name="system.reroll.maxUses" value="{{system.reroll.maxUses}}" min="0" step="1" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+    {{/if}}
+
     {{#if system.hasChoice}}
       {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.PerkChoiceType'}}
       {{#*inline "item-field-inputs"}}

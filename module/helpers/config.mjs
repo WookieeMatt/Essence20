@@ -866,6 +866,28 @@ E20.perkChoiceTypes = {
 };
 preLocalize("perkChoiceTypes");
 
+E20.rerollModes = {
+  all: "E20.RerollModeAll",
+  ones: "E20.RerollModeOnes",
+  onesAndTwos: "E20.RerollModeOnesAndTwos",
+  single: "E20.RerollModeSingle",
+};
+preLocalize("rerollModes");
+
+E20.rerollTargets = {
+  allDice: "E20.RerollTargetAllDice",
+  anyDie: "E20.RerollTargetAnyDie",
+  skillDice: "E20.RerollTargetSkillDice",
+};
+preLocalize("rerollTargets");
+
+E20.rerollResets = {
+  none: "E20.RerollResetNone",
+  scene: "E20.RerollResetScene",
+  day: "E20.RerollResetDay",
+};
+preLocalize("rerollResets");
+
 E20.senses = {
   hearing: "E20.SenseHearing",
   sight: "E20.SenseSight",
