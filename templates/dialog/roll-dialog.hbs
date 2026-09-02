@@ -51,6 +51,17 @@
   </div>
   {{/if}}
 
+  {{#if drivingStrikeAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogDrivingStrike'}} (1 {{localize 'E20.PowerRangerPersonalPower'}})</span>
+    <select name="drivingStrike">
+      <option value="none">{{localize 'E20.None'}}</option>
+      <option value="reroll">{{localize 'E20.DrivingStrikeReroll'}}</option>
+      <option value="ignoreArmor">{{localize 'E20.DrivingStrikeIgnoreArmor'}}</option>
+    </select>
+  </div>
+  {{/if}}
+
   <div>
     {{localize 'E20.RollDialogTimesToRoll'}}
     <input type="number" name="timesToRoll" value=1 min="1" step="1" />

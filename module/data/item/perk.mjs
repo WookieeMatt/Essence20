@@ -2,6 +2,7 @@ import { E20 } from "../../helpers/config.mjs";
 
 import { makeBool, makeInt, makeStr, makeStrWithChoices } from "../generic-makers.mjs";
 
+import { rerollSchema } from '../reroll-schema.mjs';
 import { item } from './templates/item.mjs';
 import { itemDescription } from './templates/item-description.mjs';
 import { parentItem } from './templates/parent-item.mjs';
@@ -29,14 +30,7 @@ export class PerkItemData extends foundry.abstract.TypeDataModel {
       hasMorphedToughnessBonus: makeBool(false),
       numChoices : makeInt(1),
       prerequisite: makeStr(null),
-      reroll: new fields.SchemaField({
-        enabled: makeBool(false),
-        maxUses: makeInt(1),
-        mode: makeStrWithChoices(Object.keys(E20.rerollModes), 'all'),
-        reset: makeStrWithChoices(Object.keys(E20.rerollResets), 'none'),
-        target: makeStrWithChoices(Object.keys(E20.rerollTargets), 'allDice'),
-        values: new fields.ArrayField(new fields.NumberField()),
-      }),
+      ...rerollSchema(),
       selectionLimit: makeInt(1),
       type: makeStrWithChoices(Object.keys(E20.perkTypes), 'general'),
       value: makeInt(0),

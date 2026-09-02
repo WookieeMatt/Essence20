@@ -9,8 +9,18 @@
       "book": "My Little Pony Core Rulebook",
       "page": 123
     },
+    "hasChoice": true,
+    "choiceType": "skills",
     "prerequisite": "",
-    "selectionLimit": 1,
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "maxUses": 0,
+      "reset": "none",
+      "skills": []
+    },
+    "selectionLimit": 3,
     "type": "general"
   },
   "effects": [],

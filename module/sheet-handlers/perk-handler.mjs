@@ -101,15 +101,24 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
     newPerk = perkDrop[0];
   }
 
-  if (['environments', 'senses', 'movement'].includes(selectionType)) {
+  if (['environments', 'senses', 'movement', 'skills'].includes(selectionType)) {
     const localizedSelection = selectionType == 'movement'
       ? game.i18n.localize(E20.movementTypes[selection])
       : game.i18n.localize(E20[selectionType][selection]);
     const newName = `${newPerk.name} (${localizedSelection})`;
-    newPerk.update({
+    const updateData = {
       "name": newName,
       "system.choice": selection,
-    });
+    };
+
+    // Unlike environments/senses/movement (which write to a shared actor-level field), a
+    // skill-scoped reroll grant's scope lives on the granted Perk instance itself - see
+    // helpers/reroll.mjs#canMeetRerollScope, which reads system.reroll.skills off each Perk.
+    if (selectionType == 'skills') {
+      updateData["system.reroll.skills"] = [selection];
+    }
+
+    newPerk.update(updateData);
   } else if (selectionType == 'perks') {
     const chosenPerk = perk.system.items[selection];
     const itemToCreate = await fromUuid(chosenPerk.uuid);
@@ -254,6 +263,27 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
             type: perk.system.choiceType,
           };
         }
+      }
+
+      break;
+
+    case 'skills':
+      // MLP/PR CRB "Expertise", PR CRB "Aptitude Augmenter" - "Choose a Skill for this Perk to
+      // apply to." Unlike senses/environments, there's no shared actor-level "already chosen"
+      // flag to filter against (each choice lives on its own granted Perk instance, not the
+      // actor) - every skill is offered every time; taking the Perk more than once for the same
+      // skill isn't blocked, matching this codebase's existing light-touch prerequisite
+      // enforcement elsewhere (see e.g. dice.mjs's Perk checks, none of which re-validate a
+      // Perk's own prerequisite text at use-time either).
+      prompt = game.i18n.localize("E20.SelectSkill");
+      for (const skill of Object.keys(CONFIG.E20.skills)) {
+        const localizedLabel = game.i18n.localize(E20.skills[skill]);
+        choices[skill] = {
+          chosen: false,
+          value: skill,
+          label: localizedLabel,
+          type: perk.system.choiceType,
+        };
       }
 
       break;

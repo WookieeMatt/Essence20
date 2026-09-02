@@ -15,6 +15,7 @@ import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
+import { handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 // Import helper/utility classes and constants.
@@ -209,9 +210,17 @@ Hooks.once("init", async function () {
 
   registerSettings();
 
-  // Clients (players) listen on the socket to update the UI whenever the GM changes values
+  // Clients (players) listen on the socket to update the UI whenever the GM changes values, and
+  // (GI Joe CRB "In My Sights") a GM's own client listens for a PC's Story Point spend request -
+  // see helpers/story-points.mjs's own doc comment for why that request has to go over the
+  // socket at all. The tracker window being closed (game.StoryPointsTracker is then null) used
+  // to crash this handler outright on an ordinary sync message; that's now handled too.
   game.socket.on("system.essence20", (data) => {
-    game.StoryPointsTracker.handleStoryPointSignal(data);
+    if (data.action === "spendStoryPoints") {
+      handleStoryPointSpendRequest(data);
+    } else {
+      game.StoryPointsTracker?.handleStoryPointSignal(data);
+    }
   });
 
   // Preload Handlebars templates.

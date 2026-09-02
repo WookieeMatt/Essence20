@@ -98,6 +98,14 @@ global.foundry = {
       prepareDerivedData() {}
     },
   },
+  dice: {
+    terms: {
+      // Real behavior isn't needed for unit tests (helpers/reroll.mjs only needs `instanceof`
+      // checks against this) - test fixtures build their own plain {results, rolls} shape and
+      // set this as their prototype.
+      PoolTerm: class PoolTerm {},
+    },
+  },
   data: {
     fields: new Proxy({}, {
       get: () => StubDataField,

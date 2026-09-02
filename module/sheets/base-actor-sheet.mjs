@@ -20,7 +20,7 @@ import { prepareSystemActors,
   onSystemActorsDelete,
   onVehicleRoleUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
-import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
@@ -47,6 +47,7 @@ import { onManageSelectTrait } from "../helpers/traits.mjs";
 export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   static DEFAULT_OPTIONS = {
     actions: {
+      activatePowerInfusion: this.#onActivatePowerInfusion,
       bonusEdit: this.#onEditMorphToughnessBonus,
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
@@ -824,6 +825,10 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static #onMorph() {
     onMorph(this.document);
+  }
+
+  static #onActivatePowerInfusion(event) {
+    onActivatePowerInfusion(event);
   }
 
   static #onTransform() {

@@ -12,6 +12,14 @@
       "page": 92
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "skills": ["animalHandling"],
+      "maxUses": 0,
+      "reset": "none"
+    },
     "selectionLimit": 1,
     "type": "role"
   },

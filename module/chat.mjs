@@ -1,267 +1,94 @@
 import { E20 } from "./helpers/config.mjs";
 import { _isCritIsFumble, applyDamage } from "./helpers/combat.mjs";
 import { computeSystemColorVars } from "./helpers/actor.mjs";
+import {
+  applyReroll,
+  canMeetRerollCondition,
+  canMeetRerollScope,
+  canUseReroll,
+  consumeRerollUsage,
+  getRerollConfigs,
+  hasEligibleRerollTarget,
+  hasRerollCost,
+  payRerollCost,
+  rerollModeLabel,
+} from "./helpers/reroll.mjs";
+import { isGmConnected } from "./helpers/story-points.mjs";
 
-export { _isCritIsFumble };
-
-function normalizeRerollConfig(config) {
-  if (!config) {
-    return null;
-  }
-
-  const normalized = config.enabled !== undefined ? config : { enabled: true, ...config };
-  if (normalized.enabled === false) {
-    return null;
-  }
-
-  const values = Array.isArray(normalized.values)
-    ? normalized.values.filter(value => Number.isFinite(Number(value))).map(value => Number(value))
-    : typeof normalized.values === "string"
-      ? normalized.values.split(",").map(value => Number(value.trim())).filter(value => Number.isFinite(value))
-      : [];
-
+// {skill, essence, snag, isPowerWeaponAttack, rollFailed, canCritD2} stashed on the message by
+// dice.mjs#rollSkill/combat.mjs#buildCheckChatData - see
+// helpers/reroll.mjs#canMeetRerollScope/canMeetRerollCondition's own doc comments.
+function getRerollContext(message) {
   return {
-    enabled: true,
-    mode: normalized.mode ?? "all",
-    target: normalized.target ?? "allDice",
-    reset: normalized.reset ?? "none",
-    maxUses: Number.isFinite(Number(normalized.maxUses)) ? Number(normalized.maxUses) : 1,
-    values,
+    skill: message.flags?.essence20?.skill,
+    essence: message.flags?.essence20?.essence,
+    snag: message.flags?.essence20?.snag,
+    isPowerWeaponAttack: message.flags?.essence20?.isPowerWeaponAttack,
+    rollFailed: message.flags?.essence20?.rollFailed,
+    canCritD2: message.flags?.essence20?.canCritD2,
   };
 }
 
-function getRerollResetBucket(reset) {
-  if (reset === "scene") {
-    return `scene:${game.scenes?.current?.id ?? "default"}`;
-  }
-
-  if (reset === "day") {
-    return `day:${new Date().toISOString().slice(0, 10)}`;
-  }
-
-  return "global";
-}
-
-async function trimExpiredRerollUsage(actor) {
-  const usage = actor.getFlag("essence20", "rerollUsage") ?? {};
-  const nextUsage = {};
-
-  for (const [key, value] of Object.entries(usage)) {
-    const separator = key.lastIndexOf("@");
-    if (separator < 0) {
-      continue;
-    }
-
-    const bucket = key.slice(separator + 1);
-    const bucketType = bucket.split(":")[0];
-    if (bucketType === "scene" && game.scenes?.current?.id && bucket !== `scene:${game.scenes.current.id}`) {
-      continue;
-    }
-
-    if (bucketType === "day" && bucket !== `day:${new Date().toISOString().slice(0, 10)}`) {
-      continue;
-    }
-
-    nextUsage[key] = value;
-  }
-
-  if (Object.keys(nextUsage).length !== Object.keys(usage).length) {
-    await actor.setFlag("essence20", "rerollUsage", nextUsage);
-  }
-}
-
-function getRerollConfigs(actor) {
-  if (!actor) {
-    return [];
-  }
-
-  const configs = [];
-
-  for (const item of actor.items) {
-    let config = normalizeRerollConfig(item.system?.reroll ?? item.system?.rerollConfig);
-    if (!config && item.system?.advances?.type === "rerolls") {
-      const value = Number(item.system.advances.currentValue ?? item.system.advances.baseValue ?? 1);
-      config = normalizeRerollConfig({
-        enabled: true,
-        mode: "all",
-        target: "allDice",
-        reset: "none",
-        maxUses: 1,
-        values: Number.isFinite(value) ? [value] : [1],
-      });
-    }
-
-    if (config) {
-      configs.push({ ...config, source: item.uuid ?? item.name ?? item.type, sourceType: "item" });
-    }
-  }
-
-  for (const effect of actor.effects) {
-    const config = normalizeRerollConfig(
-      effect.system?.reroll
-      ?? effect.flags?.essence20?.reroll
-      ?? effect.flags?.essence20?.rerollConfig,
-    );
-    if (config) {
-      configs.push({ ...config, source: effect.id ?? effect.label ?? "effect", sourceType: "effect" });
-    }
-  }
-
-  return configs;
-}
-
-async function canUseReroll(actor, config, sourceKey) {
-  if (!actor || !config || config.maxUses <= 0) {
-    return false;
-  }
-
-  await trimExpiredRerollUsage(actor);
-  const usage = actor.getFlag("essence20", "rerollUsage") ?? {};
-  const key = `${sourceKey}@${getRerollResetBucket(config.reset)}`;
-  return Number(usage[key] ?? 0) < config.maxUses;
-}
-
-async function consumeRerollUsage(actor, config, sourceKey) {
-  if (!(await canUseReroll(actor, config, sourceKey))) {
-    return false;
-  }
-
-  const usage = actor.getFlag("essence20", "rerollUsage") ?? {};
-  const key = `${sourceKey}@${getRerollResetBucket(config.reset)}`;
-  usage[key] = Number(usage[key] ?? 0) + 1;
-  await actor.setFlag("essence20", "rerollUsage", usage);
-  return true;
-}
-
-function getRerollFilter(config) {
-  const values = new Set(config.values?.length ? config.values : [1]);
-  if (config.mode === "onesAndTwos") {
-    values.add(2);
-  }
-
-  if (config.mode === "all") {
-    return result => {
-      if (!config.values || !config.values.length) {
-        return true;
-      }
-      return values.has(Number(result));
-    };
-  }
-
-  if (config.mode === "ones" || config.mode === "onesAndTwos") {
-    return result => values.has(Number(result));
-  }
-
-  if (config.mode === "single") {
-    return () => true;
-  }
-
-  return () => false;
-}
-
-async function getTargetedDieIndex(roll, target, mode) {
-  if (target === "allDice") {
-    return null;
-  }
-
-  const eligibleDice = target === "skillDice"
-    ? roll.dice.map((die, index) => ({ die, index })).filter(({ die }) => die.faces >= 2 && die.faces <= 20)
-    : roll.dice.map((die, index) => ({ die, index }));
-
-  if (!eligibleDice.length) {
-    return null;
-  }
-
-  if (eligibleDice.length === 1) {
-    return eligibleDice[0].index;
-  }
-
-  const choice = await new Promise(resolve => {
-    const html = `
-      <form>
-        <div class="form-group">
-          <label>${game.i18n.localize("E20.RerollSelectDiePrompt")}</label>
-          <select name="dieIndex">
-            ${eligibleDice.map(({ index, die }) => `<option value="${index}">Die ${index + 1} (d${die.faces})</option>`).join("")}
-          </select>
-        </div>
-      </form>
-    `;
-
-    new Dialog({
-      title: game.i18n.localize("E20.RerollSelectDieTitle"),
-      content: html,
-      buttons: {
-        choose: {
-          label: game.i18n.localize("E20.RerollSelectDieChoose"),
-          callback: (htmlContent) => {
-            const value = Number(htmlContent.find("[name='dieIndex']").val());
-            resolve(Number.isInteger(value) ? value : null);
-          },
-        },
-        cancel: {
-          label: game.i18n.localize("E20.Cancel"),
-          callback: () => resolve(null),
-        },
-      },
-      default: "choose",
-      close: () => resolve(null),
-    }).render(true);
-  });
-
-  return choice;
-}
+export { _isCritIsFumble };
 
 async function rerollMessage(message, config) {
   const actor = ChatMessage.getSpeakerActor(message.speaker);
-  if (!actor || !message.rolls?.length || typeof message.rolls[0]?.reroll !== "function") {
+  if (!actor || !message.rolls?.length) {
     return;
   }
 
+  // Every gate is checked BEFORE anything is consumed, so cancelling the die-picker dialog (or
+  // failing a precondition) never burns a limited-use reroll or spends its resource cost.
+  const context = getRerollContext(message);
   const sourceKey = `${config.sourceType}:${config.source}`;
-  if (!(await consumeRerollUsage(actor, config, sourceKey))) {
+  if (!(await canUseReroll(actor, config, sourceKey))) {
     ui.notifications.warn(game.i18n.localize("E20.RerollMaxUsesReached"));
     return;
   }
 
-  const original = message.rolls[0];
-  const rerolled = original.clone();
-  const mode = config.mode ?? "all";
-  const target = config.target ?? "allDice";
-
-  if (target === "anyDie" || (target === "skillDice" && mode === "single")) {
-    const dieIndex = await getTargetedDieIndex(rerolled, target, mode);
-    if (dieIndex === null) {
-      return;
-    }
-
-    const selectedDie = rerolled.dice[dieIndex];
-    rerolled.reroll({
-      recursive: true,
-      filter: (result, term) => term === selectedDie,
-    });
-  } else if (mode === "all") {
-    rerolled.reroll({ recursive: true, filter: () => true });
-  } else if (mode === "single") {
-    const dieIndex = await getTargetedDieIndex(rerolled, target === "skillDice" ? "skillDice" : "anyDie", mode);
-    if (dieIndex === null) {
-      return;
-    }
-    const selectedDie = rerolled.dice[dieIndex];
-    rerolled.reroll({
-      recursive: true,
-      filter: (result, term) => term === selectedDie,
-    });
-  } else {
-    rerolled.reroll({ recursive: true, filter: getRerollFilter(config) });
+  if (!canMeetRerollScope(config, context)) {
+    ui.notifications.warn(game.i18n.localize("E20.RerollScopeNotMet"));
+    return;
   }
 
-  const label = `${actor.name}: ${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(E20.rerollModes[mode] ?? "E20.RerollModeAll")})`;
+  if (!canMeetRerollCondition(actor, config, context)) {
+    const conditionName = game.i18n.localize(E20.rerollConditions[config.condition] ?? config.condition);
+    ui.notifications.warn(game.i18n.format("E20.RerollConditionNotMet", { condition: conditionName }));
+    return;
+  }
+
+  if (!hasRerollCost(actor, config)) {
+    // A world-level Story Point cost (GI Joe CRB "In My Sights") can fail for a reason more
+    // specific than "insufficient resource" - nobody able to actually spend it is connected at
+    // all, distinct from there not being enough left. See helpers/story-points.mjs.
+    const noGmForStoryPoints = config.cost?.worldStoryPoints > 0 && !isGmConnected();
+    ui.notifications.warn(game.i18n.localize(noGmForStoryPoints ? "E20.RerollNoGmConnected" : "E20.RerollInsufficientResource"));
+    return;
+  }
+
+  // Reconstructed from the original roll's own serialized data (not Roll#clone(), which
+  // discards all dice results and starts a fresh, independently-random, unevaluated roll) so the
+  // reroll starts as an exact copy of what was actually rolled, ready for applyReroll() to
+  // selectively mutate only the targeted dice in place.
+  const rerolled = Roll.fromData(message.rolls[0].toJSON());
+  if (!(await applyReroll(rerolled, config))) {
+    return;
+  }
+
+  await consumeRerollUsage(actor, config, sourceKey);
+  await payRerollCost(actor, config);
+
+  const mode = config.mode ?? "all";
+  const label = `${actor.name}: ${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(rerollModeLabel(mode))})`;
+  // Preserves the original roll's own canCritD2 (e.g. a Perk that auto-set crit-on-d2 on the
+  // attack roll), which otherwise silently vanished on every reroll's own posted message - and
+  // forces it on for a grant that adds it itself (GI Joe CRB "In My Sights").
+  const canCritD2 = !!context.canCritD2 || !!config.grantsCanCritD2;
   rerolled.toMessage({
     speaker: message.speaker,
     flavor: label,
     rollMode: game.settings.get("core", "rollMode"),
-    flags: { essence20: { rerollConfig: config } },
+    flags: { essence20: { canCritD2, rerollConfig: config } },
   });
 }
 
@@ -271,7 +98,16 @@ export const addRerollButtons = function (message, html) {
   }
 
   const actor = ChatMessage.getSpeakerActor(message.speaker);
-  const configs = getRerollConfigs(actor);
+  // Scope (skill/Essence) mismatch and having nothing eligible to reroll (e.g. a "reroll 1s"
+  // grant when nothing on this roll shows a 1) are both permanent, structural facts about this
+  // specific chat message - unlike usage/cost/condition (checked at click-time in
+  // rerollMessage, since those can be transient), showing a button that could never do anything
+  // here would just be confusing, so both are filtered out at render time instead.
+  const context = getRerollContext(message);
+  const roll = message.rolls[0];
+  const configs = getRerollConfigs(actor)
+    .filter(config => canMeetRerollScope(config, context))
+    .filter(config => hasEligibleRerollTarget(roll, config));
   if (!configs.length) {
     return;
   }
@@ -285,7 +121,7 @@ export const addRerollButtons = function (message, html) {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "e20-reroll-button";
-    button.textContent = `${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(E20.rerollModes[config.mode] ?? "E20.RerollModeAll")})`;
+    button.textContent = `${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(rerollModeLabel(config.mode))})`;
     button.title = game.i18n.localize("E20.RerollDiceTitle");
     button.addEventListener("click", () => rerollMessage(message, config));
     target.appendChild(button);

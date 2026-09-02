@@ -1,5 +1,11 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
+{{#if (eq item._stats.compendiumSource "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO")}}
+<button type="button" data-action="activatePowerInfusion" data-uuid="{{item.uuid}}">
+  {{localize 'E20.PowerInfusionActivate'}}
+</button>
+{{/if}}
+
 <div class="chip-section">
   {{#if item.system.prerequisite}}
   <span class="chip" name="chip.perk.prerequisite">{{localize 'E20.PerkPrerequisite'}}: {{item.system.prerequisite}}</span>

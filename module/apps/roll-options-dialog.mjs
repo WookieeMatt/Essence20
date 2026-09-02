@@ -91,6 +91,7 @@ export default class RollOptionsDialog extends HandlebarsApplicationMixin(Applic
       applyRolePointsUpshift: form?.applyRolePointsUpshift?.checked,
       isAiming: form?.isAiming?.checked,
       spendEnergon: form?.spendEnergon?.checked,
+      drivingStrike: form?.drivingStrike?.value,
       defenseType: form.defenseType.value,
     });
   }

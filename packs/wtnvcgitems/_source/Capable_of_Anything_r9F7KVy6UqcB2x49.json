@@ -22,6 +22,14 @@
     "hasMorphedToughnessBonus": false,
     "numChoices": 1,
     "prerequisite": "Tragic Influence",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "allDice",
+      "recursive": false,
+      "maxUses": 1,
+      "reset": "scene"
+    },
     "selectionLimit": 1,
     "source": {
       "book": "Welcome to Night Vale: Citizens' Guide",

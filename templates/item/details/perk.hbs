@@ -140,6 +140,93 @@
         <input type="number" name="system.reroll.maxUses" value="{{system.reroll.maxUses}}" min="0" step="1" />
       {{/inline}}
       {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{#if (eq system.reroll.target 'skillDice')}}
+        {{!-- Reroll Minimum Die Faces --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollMinDieFaces'}}
+        {{#*inline "item-field-inputs"}}
+          <input type="number" name="system.reroll.minDieFaces" value="{{system.reroll.minDieFaces}}" min="0" step="1" placeholder="0" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/if}}
+
+      {{#if (eq system.reroll.mode 'all')}}
+        {{!-- Reroll Values --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollValues'}}
+        {{#*inline "item-field-inputs"}}
+          <input type="text" name="system.reroll.values" value="{{system.reroll.values}}" />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/if}}
+
+      {{#unless (eq system.reroll.mode 'single')}}
+        {{!-- Reroll Recursive --}}
+        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollRecursive'}}
+        {{#*inline "item-field-inputs"}}
+          <input type="checkbox" name="system.reroll.recursive" {{checked system.reroll.recursive}} />
+        {{/inline}}
+        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+      {{/unless}}
+
+      {{!-- Reroll Condition --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollCondition'}}
+      {{#*inline "item-field-inputs"}}
+        <select name="system.reroll.condition">
+          {{selectOptions config.rerollConditions selected=system.reroll.condition}}
+        </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Cost Resource Path --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollCostResourcePath'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.reroll.cost.resourcePath" value="{{system.reroll.cost.resourcePath}}" placeholder="system.powers.personal.value" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Cost Amount --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollCostAmount'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="number" name="system.reroll.cost.amount" value="{{system.reroll.cost.amount}}" min="0" step="1" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Cost: World Story Points --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollCostWorldStoryPoints'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="number" name="system.reroll.cost.worldStoryPoints" value="{{system.reroll.cost.worldStoryPoints}}" min="0" step="1" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Cost: Role Points Item Name --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollCostRolePointsName'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.reroll.cost.rolePointsName" value="{{system.reroll.cost.rolePointsName}}" placeholder="Cheer Points" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Grants Crit on d2 --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollGrantsCanCritD2'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="checkbox" name="system.reroll.grantsCanCritD2" {{checked system.reroll.grantsCanCritD2}} />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Skill Scope --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollSkills'}}
+      {{#*inline "item-field-inputs"}}
+        <input type="text" name="system.reroll.skills" value="{{system.reroll.skills}}" />
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
+      {{!-- Reroll Essence Scope --}}
+      {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollEssence'}}
+      {{#*inline "item-field-inputs"}}
+        <select name="system.reroll.essence">
+          {{selectOptions config.essences selected=system.reroll.essence}}
+        </select>
+      {{/inline}}
+      {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
     {{/if}}
 
     {{#if system.hasChoice}}
@@ -173,4 +260,4 @@
     {{/if}}
 
   {{/if}}
-</section>
+</div>
