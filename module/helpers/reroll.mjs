@@ -199,7 +199,9 @@ export async function consumeRerollUsage(actor, config, sourceKey) {
 // resourcePath. Mirrors documents/actor.mjs#_getBaseRolePoints's own lookup shape (a name match
 // over actor.items.documentsByType.rolePoints) rather than reaching for that private helper
 // directly, since this needs an arbitrary name, not specifically the actor's "base" one.
-function findRolePointsItem(actor, name) {
+// Exported for reuse by other Cheer-Points-spending abilities that aren't reroll grants (e.g.
+// helpers/snortle-at-the-spooky.mjs) - same lookup, no reason to duplicate it.
+export function findRolePointsItem(actor, name) {
   return actor.items.documentsByType.rolePoints?.find(item => item.name === name) ?? null;
 }
 

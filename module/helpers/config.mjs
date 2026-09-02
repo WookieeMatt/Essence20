@@ -1069,6 +1069,23 @@ E20.statusEffects = [
     name: 'E20.StatusBlinded',
   },
   {
+    // MLP CRB "Laughtracting" (p.86): "...they can't use any Free actions on their next turn."
+    // No existing status icon fits this narrowly - reuses status_impaired's art rather than
+    // adding new assets, same as cantTakeMoveActions below.
+    img: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
+    id: 'cantTakeFreeActions',
+    name: 'E20.StatusCantTakeFreeActions',
+  },
+  {
+    // MLP CRB "Distraughter" (p.86): extends Laughtracting - "...can't use a Move action this
+    // round." Bookkeeping-only, like every other status here - this system has no enforced
+    // action economy to gate against, so nothing else reads this status; see the Laughtracting/
+    // Distraughter Perk items themselves (packs/mlpcrbitems/_source) for the ability text.
+    img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
+    id: 'cantTakeMoveActions',
+    name: 'E20.StatusCantTakeMoveActions',
+  },
+  {
     img: 'systems/essence20/assets/icons/status_effects/status_deafened.svg',
     id: 'deafened',
     name: 'E20.StatusDeafened',

@@ -294,6 +294,13 @@ export class Dice {
         snag: skillRollOptions.snag,
         isPowerWeaponAttack: item?.type == 'weaponEffect'
           && !!this._getParentWeapon(actor, item)?.system.itemAndUpgradeTraits?.includes('powerWeapon'),
+        // MLP CRB "Consummate Performer" (Laugh Tactic, p.86) stamps this via a synthetic
+        // {skill: 'performance', dif: <escalating DIF>, consummatePerformer: true} dataset (see
+        // helpers/consummate-performer.mjs#activateConsummatePerformer, same minimal-dataset
+        // shape as the @Check[...] enricher's own onCheckLinkClick) so chat.mjs's
+        // addConsummatePerformerButton can recognize this specific roll and offer to regain 1
+        // Cheer once rollFailed (set below in _rollSkillHelper) comes back false.
+        consummatePerformer: !!dataset.consummatePerformer,
       }, drivingStrikeReroll);
     }
   }
@@ -301,7 +308,11 @@ export class Dice {
   /**
    * Checks whether the actor has a Perk granted from the given compendium source - the flat
    * "do they have it at all" version of _hasExpertiseDownshiftImmunity's own scoped check, for
-   * Perks (e.g. Driving Strike) with no further per-instance choice to match against.
+   * Perks (e.g. Driving Strike) with no further per-instance choice to match against. Checks
+   * both flags.core.sourceId (a copy granted through a Role's own items map - e.g. Driving
+   * Strike via "Path of Flame," how a character normally gets it) and _stats.compendiumSource
+   * (a manually-dropped or choice-picked one) - see perk-handler.mjs's own SORCERY_PERK_ID/
+   * ZORD_PERK_ID checks for the established idiom; this originally only checked the latter.
    * @param {Actor} actor
    * @param {String} perkId   A compendium UUID, e.g. "Compendium.essence20.<pack>.Item.<id>".
    * @returns {Boolean}
@@ -309,7 +320,8 @@ export class Dice {
    */
   _actorHasPerk(actor, perkId) {
     return actor.items.some(actorItem =>
-      actorItem.type == 'perk' && actorItem._stats?.compendiumSource == perkId);
+      actorItem.type == 'perk'
+      && (actorItem.flags.core?.sourceId == perkId || actorItem._stats?.compendiumSource == perkId));
   }
 
   /**

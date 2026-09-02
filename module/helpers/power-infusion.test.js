@@ -9,20 +9,21 @@ import {
 
 const POWER_INFUSION_PERK_ID = "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO";
 
-function makePowerInfusionPerk(currentValue = 1) {
+function makePowerInfusionPerk(currentValue = 1, { viaFlags = false } = {}) {
   return {
     type: 'perk',
-    _stats: { compendiumSource: POWER_INFUSION_PERK_ID },
+    flags: viaFlags ? { core: { sourceId: POWER_INFUSION_PERK_ID } } : {},
+    _stats: viaFlags ? {} : { compendiumSource: POWER_INFUSION_PERK_ID },
     system: { advances: { type: 'rerolls', currentValue } },
   };
 }
 
-function makeActor({ hasPerk = true, isMorphed = true, personalPower = 1, name = 'Blue Ranger' } = {}) {
+function makeActor({ hasPerk = true, isMorphed = true, personalPower = 1, name = 'Blue Ranger', perkViaFlags = false } = {}) {
   const flagStore = {};
   return {
     name,
     type: 'playerCharacter',
-    items: hasPerk ? [makePowerInfusionPerk()] : [],
+    items: hasPerk ? [makePowerInfusionPerk(1, { viaFlags: perkViaFlags })] : [],
     system: { isMorphed, powers: { personal: { value: personalPower } } },
     update: jest.fn(async () => {}),
     getFlag: jest.fn((scope, key) => flagStore[key]),
@@ -35,8 +36,12 @@ function makeActor({ hasPerk = true, isMorphed = true, personalPower = 1, name =
 }
 
 describe("actorHasPowerInfusion", () => {
-  test("true when the actor has a granted Power Infusion Perk", () => {
-    expect(actorHasPowerInfusion(makeActor({ hasPerk: true }))).toBe(true);
+  test("true when the actor has a manually-dropped/choice-picked Power Infusion Perk (_stats.compendiumSource)", () => {
+    expect(actorHasPowerInfusion(makeActor({ hasPerk: true, perkViaFlags: false }))).toBe(true);
+  });
+
+  test("true when the actor has a Role-granted Power Infusion Perk (flags.core.sourceId) - e.g. Blue Ranger's own grant", () => {
+    expect(actorHasPowerInfusion(makeActor({ hasPerk: true, perkViaFlags: true }))).toBe(true);
   });
 
   test("false otherwise", () => {

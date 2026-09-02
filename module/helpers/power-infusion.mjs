@@ -29,9 +29,15 @@ const RANGE_FEET = 60;
 // reactive-button fallback (helpers/reroll.mjs) is scoped to.
 const ALLY_ACTOR_TYPES = ["playerCharacter"];
 
+// Dual-check idiom (flags.core.sourceId for a copy granted through a Role's own items map -
+// e.g. Blue Ranger's own grant of this Perk, which is how a player normally gets it -
+// _stats.compendiumSource for a manually-dropped or choice-picked one). See perk-handler.mjs's
+// own SORCERY_PERK_ID/ZORD_PERK_ID checks for the established idiom; this file originally only
+// checked the latter, which silently never matched the former (more common) path.
 function getPowerInfusionItem(actor) {
   return actor.items.find(item =>
-    item.type == "perk" && item._stats?.compendiumSource == POWER_INFUSION_PERK_ID);
+    item.type == "perk"
+    && (item.flags.core?.sourceId == POWER_INFUSION_PERK_ID || item._stats?.compendiumSource == POWER_INFUSION_PERK_ID));
 }
 
 export function actorHasPowerInfusion(actor) {

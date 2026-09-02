@@ -14,6 +14,7 @@ import {
   rerollModeLabel,
 } from "./helpers/reroll.mjs";
 import { isGmConnected } from "./helpers/story-points.mjs";
+import { claimConsummatePerformer } from "./helpers/consummate-performer.mjs";
 
 // {skill, essence, snag, isPowerWeaponAttack, rollFailed, canCritD2} stashed on the message by
 // dice.mjs#rollSkill/combat.mjs#buildCheckChatData - see
@@ -126,6 +127,47 @@ export const addRerollButtons = function (message, html) {
     button.addEventListener("click", () => rerollMessage(message, config));
     target.appendChild(button);
   }
+};
+
+// MLP CRB "Consummate Performer" (Laugh Tactic, p.86) - offers to regain 1 Cheer once a
+// Consummate Performer attempt (see helpers/consummate-performer.mjs#activateConsummatePerformer)
+// has actually posted and its outcome is known, same "only known once the message exists"
+// reasoning as rollFailed itself. Called on the renderChatMessageHTML hook, alongside
+// addRerollButtons.
+export const addConsummatePerformerButton = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
+    return;
+  }
+
+  if (!message.flags?.essence20?.consummatePerformer || message.flags?.essence20?.rollFailed !== false) {
+    return;
+  }
+
+  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
+  if (!target) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "e20-consummate-performer-button";
+  button.textContent = game.i18n.localize("E20.ConsummatePerformerRegain");
+  if (message.getFlag("essence20", "consummatePerformerClaimed")) {
+    button.disabled = true;
+  } else {
+    button.addEventListener("click", async () => {
+      const actor = ChatMessage.getSpeakerActor(message.speaker);
+      if (!actor) {
+        return;
+      }
+
+      await claimConsummatePerformer(actor);
+      await message.setFlag("essence20", "consummatePerformerClaimed", true);
+      button.disabled = true;
+    });
+  }
+
+  target.appendChild(button);
 };
 
 // Wires up the check-card.hbs "Apply Damage"/critical-effect buttons. Called on the

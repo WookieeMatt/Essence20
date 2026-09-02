@@ -21,6 +21,8 @@ import { prepareSystemActors,
   onVehicleRoleUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
 import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
+import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
@@ -48,6 +50,8 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
   static DEFAULT_OPTIONS = {
     actions: {
       activatePowerInfusion: this.#onActivatePowerInfusion,
+      activateSnortleAtTheSpooky: this.#onActivateSnortleAtTheSpooky,
+      activateConsummatePerformer: this.#onActivateConsummatePerformer,
       bonusEdit: this.#onEditMorphToughnessBonus,
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
@@ -829,6 +833,14 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static #onActivatePowerInfusion(event) {
     onActivatePowerInfusion(event);
+  }
+
+  static #onActivateSnortleAtTheSpooky(event) {
+    onActivateSnortleAtTheSpooky(event);
+  }
+
+  static #onActivateConsummatePerformer(event) {
+    onActivateConsummatePerformer(event);
   }
 
   static #onTransform() {

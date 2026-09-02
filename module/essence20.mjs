@@ -19,7 +19,7 @@ import { handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 // Import helper/utility classes and constants.
-import { addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addConsummatePerformerButton, addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
@@ -448,6 +448,7 @@ Hooks.on("renderItemDirectory", addCompendiumBrowserFooterButton);
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
   addRerollButtons(app, html);
+  addConsummatePerformerButton(app, html);
   attachCheckCardListeners(app, html);
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);
