@@ -50,6 +50,15 @@
   {{/inline}}
   {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
 
+  {{!-- Area of Effect Shape (GitHub #824) --}}
+  {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.WeaponShape'}}
+  {{#*inline "item-field-inputs"}}
+  <select class="item-field-inputs" name="system.shape">
+    {{selectOptions config.weaponEffectShapes selected=system.shape localize=true blank=(localize 'E20.None')}}
+  </select>
+  {{/inline}}
+  {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
+
   {{!-- Shift Down --}}
   {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.ShiftDown'}}
   {{#*inline "item-field-inputs"}}

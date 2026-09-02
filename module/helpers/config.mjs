@@ -21,6 +21,14 @@ preLocalize("gameVersions");
  ***********************************************/
 
 // Essence-based defenses
+// Area of Effect shape (GitHub #824) - see data/item/weapon-effect.mjs's own system.shape field
+// and helpers/aoe-targeting.mjs for what each one actually does.
+E20.weaponEffectShapes = {
+  burst: "E20.WeaponShapeBurst",
+  cone: "E20.WeaponShapeCone",
+};
+preLocalize("weaponEffectShapes");
+
 E20.defenses = {
   cleverness: "E20.DefenseCleverness",
   evasion: "E20.DefenseEvasion",

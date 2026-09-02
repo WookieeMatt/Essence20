@@ -43,8 +43,8 @@ export function hasUsedThisRound(actor, flagKey) {
     return false;
   }
 
-  const lastUsed = actor.getFlag('essence20', flagKey);
-  return lastUsed?.combatId == game.combat.id && lastUsed?.round == game.combat.round;
+  const lastUsed = actor.getFlag?.('essence20', flagKey);
+  return !!lastUsed && lastUsed.combatId == game.combat.id && lastUsed.round == game.combat.round;
 }
 
 /**
@@ -79,10 +79,11 @@ export function hasUsedThisTurn(actor, flagKey) {
     return false;
   }
 
-  const lastUsed = actor.getFlag('essence20', flagKey);
-  return lastUsed?.combatId == game.combat.id
-    && lastUsed?.round == game.combat.round
-    && lastUsed?.turn == game.combat.turn;
+  const lastUsed = actor.getFlag?.('essence20', flagKey);
+  return !!lastUsed
+    && lastUsed.combatId == game.combat.id
+    && lastUsed.round == game.combat.round
+    && lastUsed.turn == game.combat.turn;
 }
 
 /**
@@ -117,8 +118,8 @@ export function hasUsedThisEncounter(actor, flagKey) {
     return false;
   }
 
-  const lastUsed = actor.getFlag('essence20', flagKey);
-  return lastUsed?.combatId == game.combat.id;
+  const lastUsed = actor.getFlag?.('essence20', flagKey);
+  return !!lastUsed && lastUsed.combatId == game.combat.id;
 }
 
 /**

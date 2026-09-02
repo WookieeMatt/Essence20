@@ -132,6 +132,9 @@ describe("prepareInitiativeRoll", () => {
 describe("rollSkill", () => {
   const dataset = {
     aimBonus: null,
+    akimboAvailable: false,
+    alphaStrikeAvailable: false,
+    emptyTheMagAvailable: false,
     canCritD2: false,
     damageRolePoints: null,
     defenseType: "none",
@@ -916,10 +919,11 @@ describe("rollSkill", () => {
     });
   });
 
-  describe("Eureka / Expert in Your Field (Technician/Expert Focus, p.104)", () => {
+  describe("Eureka / Expert in Your Field / Influential (Technician/Expert Focus, p.104)", () => {
     const FIELD_ID = "Compendium.essence20.gi_joe_crb.Item.qHLeKSMin2F19O3C";
     const EUREKA_ID = "Compendium.essence20.gi_joe_crb.Item.I8gudNc8gLD63ziL";
     const EXPERT_IN_YOUR_FIELD_ID = "Compendium.essence20.gi_joe_crb.Item.mnLXHQ2TwR3A42fS";
+    const INFLUENTIAL_ID = "Compendium.essence20.gi_joe_crb.Item.TyQoZb2RTZWUwbpu";
     const scienceDataset = { ...dataset, skill: 'science', essence: 'smarts' };
 
     function makeActor({ perkIds = [], field = 'science', edge = false } = {}) {
@@ -1040,6 +1044,81 @@ describe("rollSkill", () => {
 
       expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(
         expect.objectContaining({ shiftUp: 0 }), expect.objectContaining({ edge: false }), expect.anything(),
+      );
+    });
+
+    function makeToken({ actor, disposition = 1 } = {}) {
+      return { actor, document: { disposition }, center: {} };
+    }
+
+    function makeAllyWithInfluential({ field = 'science', hasPerk = true } = {}) {
+      const items = [];
+      if (hasPerk) {
+        items.push({ type: 'perk', flags: { core: { sourceId: INFLUENTIAL_ID } } });
+      }
+
+      if (field) {
+        items.push({ type: 'perk', flags: { core: { sourceId: FIELD_ID } }, system: { choice: field } });
+      }
+
+      return { id: 'influentialAlly', items };
+    }
+
+    let rollerActor;
+    beforeEach(() => {
+      canvas.tokens.placeables = [];
+      canvas.grid.measurePath.mockReset();
+      canvas.grid.measurePath.mockReturnValue({ distance: 5 });
+      rollerActor = makeActor({ field: null });
+      const rollerToken = makeToken({ actor: rollerActor });
+      rollerActor.getActiveTokens = jest.fn(() => [rollerToken]);
+      canvas.tokens.placeables = [rollerToken];
+    });
+
+    test("Influential grants +1 from a nearby ally whose Field matches the rolled skill", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 1, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      canvas.tokens.placeables.push(makeToken({ actor: makeAllyWithInfluential({ field: 'science' }) }));
+
+      await dice.rollSkill(scienceDataset, rollerActor, null);
+
+      expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftUp: 1 }), expect.anything(), expect.anything(),
+      );
+    });
+
+    test("Influential doesn't apply when the ally's Field doesn't match the rolled skill", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      canvas.tokens.placeables.push(makeToken({ actor: makeAllyWithInfluential({ field: 'technology' }) }));
+
+      await dice.rollSkill(scienceDataset, rollerActor, null);
+
+      expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftUp: 0 }), expect.anything(), expect.anything(),
+      );
+    });
+
+    test("Influential doesn't apply without the Perk, even with a matching Field", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      canvas.tokens.placeables.push(
+        makeToken({ actor: makeAllyWithInfluential({ field: 'science', hasPerk: false }) }),
+      );
+
+      await dice.rollSkill(scienceDataset, rollerActor, null);
+
+      expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(
+        expect.objectContaining({ shiftUp: 0 }), expect.anything(), expect.anything(),
       );
     });
   });
@@ -1215,6 +1294,114 @@ describe("rollSkill", () => {
         expect.anything(), expect.anything(), expect.anything(), expect.anything(),
         expect.objectContaining({
           entries: expect.arrayContaining([expect.objectContaining({ difficulty: 10 })]),
+        }),
+      );
+    });
+  });
+
+  describe("Roll With the Punches (Renegade/Tank Focus, 6th level, p.97)", () => {
+    const targetingDataset = { ...dataset, skill: 'targeting', essence: 'speed' };
+    const weaponEffect = {
+      name: 'Rifle Effect',
+      type: 'weaponEffect',
+      flags: {},
+      system: { classification: { skill: "targeting" }, damageType: "blunt", damageValue: 1 },
+    };
+
+    function makeActor() {
+      return {
+        ...mockActor,
+        items: [],
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20' } } })),
+      };
+    }
+
+    function makeTargetActor({ toughness = 12, pendingDefenseType = null } = {}) {
+      return {
+        name: 'Target',
+        uuid: 'Actor.target1',
+        system: { defenses: { toughness: { total: toughness } }, immunities: {}, size: 'common' },
+        statuses: new Set(),
+        items: [],
+        getFlag: jest.fn((scope, key) => (
+          key == 'pendingRollWithThePunches' && pendingDefenseType
+            ? { defenseType: pendingDefenseType, combatId: null, round: null }
+            : undefined
+        )),
+        unsetFlag: jest.fn(),
+      };
+    }
+
+    function makeTargetsSet(targetActor) {
+      const token = { actor: targetActor, center: { x: 0, y: 0 } };
+      const set = new Set([token]);
+      set.first = () => token;
+
+      return set;
+    }
+
+    let originalTargets;
+    beforeEach(() => {
+      originalTargets = game.user.targets;
+    });
+    afterEach(() => {
+      game.user.targets = originalTargets;
+    });
+
+    test("doubles the Toughness difficulty and clears the flag when the banked Defense matches", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const target = makeTargetActor({ toughness: 12, pendingDefenseType: 'toughness' });
+      game.user.targets = makeTargetsSet(target);
+
+      await dice.rollSkill(targetingDataset, makeActor(), weaponEffect);
+
+      expect(dice._rollSkillHelper).toHaveBeenCalledWith(
+        expect.anything(), expect.anything(), expect.anything(), expect.anything(),
+        expect.objectContaining({
+          entries: expect.arrayContaining([expect.objectContaining({ difficulty: 24 })]),
+        }),
+      );
+      expect(target.unsetFlag).toHaveBeenCalledWith('essence20', 'pendingRollWithThePunches');
+    });
+
+    test("doesn't double, and doesn't clear the flag, when the banked Defense doesn't match", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const target = makeTargetActor({ toughness: 12, pendingDefenseType: 'willpower' });
+      game.user.targets = makeTargetsSet(target);
+
+      await dice.rollSkill(targetingDataset, makeActor(), weaponEffect);
+
+      expect(dice._rollSkillHelper).toHaveBeenCalledWith(
+        expect.anything(), expect.anything(), expect.anything(), expect.anything(),
+        expect.objectContaining({
+          entries: expect.arrayContaining([expect.objectContaining({ difficulty: 12 })]),
+        }),
+      );
+      expect(target.unsetFlag).not.toHaveBeenCalled();
+    });
+
+    test("doesn't double with nothing banked", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      game.user.targets = makeTargetsSet(makeTargetActor({ toughness: 12 }));
+
+      await dice.rollSkill(targetingDataset, makeActor(), weaponEffect);
+
+      expect(dice._rollSkillHelper).toHaveBeenCalledWith(
+        expect.anything(), expect.anything(), expect.anything(), expect.anything(),
+        expect.objectContaining({
+          entries: expect.arrayContaining([expect.objectContaining({ difficulty: 12 })]),
         }),
       );
     });
@@ -1655,6 +1842,517 @@ describe("rollSkill", () => {
 
       const checkContext = dice._rollSkillHelper.mock.calls[0][4];
       expect(checkContext.shockAndAwe).toBe(true);
+    });
+  });
+
+  describe("Akimbo (Fighting Style option, p.79/108)", () => {
+    const FIGHTING_STYLE_ID = "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK";
+    const akimboDataset = { ...dataset, skill: 'targeting' };
+    const rangedWeaponEffect = {
+      name: 'Pistol Effect',
+      type: 'weaponEffect',
+      flags: {},
+      system: { classification: { skill: "targeting", style: "projectile" }, damageType: "ballistic", damageValue: 1 },
+    };
+
+    function makeAkimboActor() {
+      return {
+        ...mockActor,
+        items: [
+          { type: 'perk', flags: { core: { sourceId: FIGHTING_STYLE_ID } }, system: { choice: 'akimbo' } },
+        ],
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: false, snag: false } } })),
+      };
+    }
+
+    test("akimboAvailable is true for a ranged attack with the Fighting Style choice", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(akimboDataset, makeAkimboActor(), rangedWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ akimboAvailable: true });
+    });
+
+    test("akimboAvailable is false without the Fighting Style choice", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const actorWithoutFightingStyle = {
+        ...mockActor,
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: false, snag: false } } })),
+      };
+
+      await dice.rollSkill(akimboDataset, actorWithoutFightingStyle, rangedWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ akimboAvailable: false });
+    });
+
+    test("checking the Akimbo toggle upshifts the roll", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, akimbo: true,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(akimboDataset, makeAkimboActor(), rangedWeaponEffect);
+
+      expect(dice._rollSkillHelper.mock.calls[0][0]).toBe('d20 + d2 + 0');
+    });
+  });
+
+  describe("Trigger Happy (Fighting Style option, p.79/108)", () => {
+    const FIGHTING_STYLE_ID = "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK";
+    const multipleTargetsWeaponEffect = {
+      name: 'LMG Effect',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: { classification: { skill: "targeting", style: "projectile" }, damageType: "ballistic", damageValue: 1 },
+    };
+    const targetingDataset = { ...dataset, defenseType: 'toughness', skill: 'targeting' };
+
+    function makeTriggerHappyActor(weapon) {
+      const items = [
+        { type: 'perk', flags: { core: { sourceId: FIGHTING_STYLE_ID } }, system: { choice: 'triggerHappy' } },
+      ];
+      items.get = jest.fn(() => weapon);
+
+      return {
+        ...mockActor,
+        items,
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: false, snag: false } } })),
+      };
+    }
+
+    function makeTargetsSet(targetActor) {
+      const token = { actor: targetActor, center: { x: 0, y: 0 } };
+      const set = new Set([token]);
+      set.first = () => token;
+
+      return set;
+    }
+
+    function makeTargetActor(willpower = 14) {
+      return {
+        name: 'Target',
+        uuid: 'Actor.target1',
+        system: { defenses: { toughness: { total: 10 }, willpower: { total: willpower } }, immunities: {}, size: 'common' },
+        statuses: new Set(),
+        items: [],
+      };
+    }
+
+    let originalTargets;
+    beforeEach(() => {
+      originalTargets = game.user.targets;
+    });
+    afterEach(() => {
+      game.user.targets = originalTargets;
+    });
+
+    test("flags triggerHappy true and threads a Willpower difficulty per target, with the Perk and a Multiple Targets weapon", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['multipleTargets'] } };
+      game.user.targets = makeTargetsSet(makeTargetActor(14));
+
+      await dice.rollSkill(targetingDataset, makeTriggerHappyActor(weapon), multipleTargetsWeaponEffect);
+
+      const checkContext = dice._rollSkillHelper.mock.calls[0][4];
+      expect(checkContext.triggerHappy).toBe(true);
+      expect(checkContext.entries[0].willpowerDifficulty).toBe(14);
+    });
+
+    test("is false without the Fighting Style choice", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['multipleTargets'] } };
+      game.user.targets = makeTargetsSet(makeTargetActor());
+
+      const actorWithoutFightingStyle = {
+        ...mockActor,
+        items: Object.assign([], { get: () => weapon }),
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: false, snag: false } } })),
+      };
+
+      await dice.rollSkill(targetingDataset, actorWithoutFightingStyle, multipleTargetsWeaponEffect);
+
+      const checkContext = dice._rollSkillHelper.mock.calls[0][4];
+      expect(checkContext.triggerHappy).toBe(false);
+      expect(checkContext.entries[0].willpowerDifficulty).toBe(null);
+    });
+
+    test("is false for a weapon without the Multiple Targets trait, even with the Fighting Style choice", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: [] } };
+      game.user.targets = makeTargetsSet(makeTargetActor());
+
+      await dice.rollSkill(targetingDataset, makeTriggerHappyActor(weapon), multipleTargetsWeaponEffect);
+
+      const checkContext = dice._rollSkillHelper.mock.calls[0][4];
+      expect(checkContext.triggerHappy).toBe(false);
+      expect(checkContext.entries[0].willpowerDifficulty).toBe(null);
+    });
+  });
+
+  describe("Multiple Targets (X, range/area) (p.198)", () => {
+    const multipleTargetsWeaponEffect = {
+      name: 'LMG Effect',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: { classification: { skill: "targeting", style: "projectile" }, damageType: "ballistic", damageValue: 1 },
+    };
+    const targetingDataset = { ...dataset, defenseType: 'toughness', skill: 'targeting' };
+
+    function makeActorWithWeapon(weapon) {
+      const items = Object.assign([], { get: () => weapon });
+      return {
+        ...mockActor,
+        items,
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: false, snag: false } } })),
+      };
+    }
+
+    function makeTargetActor(name, toughness) {
+      return {
+        name,
+        uuid: `Actor.${name}`,
+        system: { defenses: { toughness: { total: toughness } }, immunities: {}, size: 'common' },
+        statuses: new Set(),
+        items: [],
+      };
+    }
+
+    function makeTargetsSet(...targetActors) {
+      const tokens = targetActors.map(targetActor => ({ actor: targetActor, center: { x: 0, y: 0 } }));
+      const set = new Set(tokens);
+      set.first = () => tokens[0];
+
+      return set;
+    }
+
+    let originalTargets;
+    beforeEach(() => {
+      originalTargets = game.user.targets;
+    });
+    afterEach(() => {
+      game.user.targets = originalTargets;
+    });
+
+    test("rolls independently per target - one _rollSkillHelper call per target, each its own single-entry checkContext", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['multipleTargets'] } };
+      game.user.targets = makeTargetsSet(makeTargetActor('Alpha', 10), makeTargetActor('Bravo', 15));
+
+      await dice.rollSkill(targetingDataset, makeActorWithWeapon(weapon), multipleTargetsWeaponEffect);
+
+      expect(dice._rollSkillHelper.mock.calls.length).toBe(2);
+      const [firstContext, secondContext] = dice._rollSkillHelper.mock.calls.map(call => call[4]);
+      expect(firstContext.entries).toEqual([{ name: 'Alpha', targetUuid: 'Actor.Alpha', difficulty: 10, willpowerDifficulty: null }]);
+      expect(secondContext.entries).toEqual([{ name: 'Bravo', targetUuid: 'Actor.Bravo', difficulty: 15, willpowerDifficulty: null }]);
+      // Every other checkContext field (damageValue, damageType, ...) still carries through
+      // unchanged to each per-target call, same as a normal shared roll.
+      expect(firstContext.damageValue).toBe(1);
+      expect(secondContext.damageValue).toBe(1);
+    });
+
+    test("each per-target flavor text is built via the per-target label key (Mocki18n doesn't interpolate {name})", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['multipleTargets'] } };
+      game.user.targets = makeTargetsSet(makeTargetActor('Alpha', 10), makeTargetActor('Bravo', 15));
+
+      await dice.rollSkill(targetingDataset, makeActorWithWeapon(weapon), multipleTargetsWeaponEffect);
+
+      const [firstFlavor, secondFlavor] = dice._rollSkillHelper.mock.calls.map(call => call[2]);
+      expect(firstFlavor).toContain('E20.RollMultipleTargetsText');
+      expect(secondFlavor).toContain('E20.RollMultipleTargetsText');
+    });
+
+    test("stays a single shared roll for a weapon without the Multiple Targets trait, even with 2+ targets", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: [] } };
+      game.user.targets = makeTargetsSet(makeTargetActor('Alpha', 10), makeTargetActor('Bravo', 15));
+
+      await dice.rollSkill(targetingDataset, makeActorWithWeapon(weapon), multipleTargetsWeaponEffect);
+
+      expect(dice._rollSkillHelper.mock.calls.length).toBe(1);
+      expect(dice._rollSkillHelper.mock.calls[0][4].entries.length).toBe(2);
+      // checkContext.isMultipleTargetsWeapon (Nowhere Is Safe/No Need to Aim's own read of this)
+      // is a fact about the weapon itself, not about whether THIS roll actually dispatched
+      // independently.
+      expect(dice._rollSkillHelper.mock.calls[0][4].isMultipleTargetsWeapon).toBe(false);
+    });
+
+    test("stays a single roll with only one target, even with the Multiple Targets trait", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, defenseType: 'toughness',
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['multipleTargets'] } };
+      game.user.targets = makeTargetsSet(makeTargetActor('Alpha', 10));
+
+      await dice.rollSkill(targetingDataset, makeActorWithWeapon(weapon), multipleTargetsWeaponEffect);
+
+      expect(dice._rollSkillHelper.mock.calls.length).toBe(1);
+      expect(dice._rollSkillHelper.mock.calls[0][4].entries.length).toBe(1);
+      // Still true even with just 1 target - the weapon carries the trait regardless of how many
+      // targets this particular roll happens to have (unlike the independent-roll dispatch
+      // itself, which does need 2+ to mean anything).
+      expect(dice._rollSkillHelper.mock.calls[0][4].isMultipleTargetsWeapon).toBe(true);
+    });
+  });
+
+  describe("Alpha Strike (Door-Kicker Focus, 3rd level, p.98)", () => {
+    const ALPHA_STRIKE_ID = "Compendium.essence20.gi_joe_crb.Item.9EWv3qQJgj7WFQ9A";
+    const SHOTGUN_ID = "Compendium.essence20.gi_joe_crb.Item.2qW1YLopvjKyezNQ";
+    const mightMeleeWeaponEffect = {
+      name: 'Fists',
+      type: 'weaponEffect',
+      flags: {},
+      system: { classification: { skill: "might", style: "melee" }, damageType: "blunt", damageValue: 1 },
+    };
+    const shotgunTargetingWeaponEffect = {
+      name: 'Shotgun Effect',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: { classification: { skill: "targeting", style: "projectile" }, damageType: "ballistic", damageValue: 1 },
+    };
+    const rifleTargetingWeaponEffect = {
+      name: 'Rifle Effect',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: { classification: { skill: "targeting", style: "projectile" }, damageType: "ballistic", damageValue: 1 },
+    };
+    const mightDataset = { ...dataset, skill: 'might' };
+    const targetingDataset = { ...dataset, skill: 'targeting' };
+
+    function makeAlphaStrikeActor(weapon = null) {
+      const items = [
+        { type: 'perk', flags: { core: { sourceId: ALPHA_STRIKE_ID } } },
+      ];
+      items.get = jest.fn(() => weapon);
+
+      return {
+        ...mockActor,
+        items,
+        getRollData: jest.fn(() => ({
+          skills: {
+            might: { modifier: '0', shift: 'd20', edge: false, snag: false },
+            targeting: { modifier: '0', shift: 'd20', edge: false, snag: false },
+          },
+        })),
+      };
+    }
+
+    test("alphaStrikeAvailable is true for a Might attack with the Perk", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+
+      await dice.rollSkill(mightDataset, makeAlphaStrikeActor(), mightMeleeWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ alphaStrikeAvailable: true });
+    });
+
+    test("alphaStrikeAvailable is true for a Targeting attack with a shotgun", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { flags: { core: { sourceId: SHOTGUN_ID } }, system: {} };
+
+      await dice.rollSkill(targetingDataset, makeAlphaStrikeActor(weapon), shotgunTargetingWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ alphaStrikeAvailable: true });
+    });
+
+    test("alphaStrikeAvailable is false for a Targeting attack with a non-shotgun/SMG weapon", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { flags: { core: { sourceId: 'some-other-weapon' } }, system: {} };
+
+      await dice.rollSkill(targetingDataset, makeAlphaStrikeActor(weapon), rifleTargetingWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ alphaStrikeAvailable: false });
+    });
+
+    test("alphaStrikeAvailable is false without the Perk", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const actorWithoutPerk = {
+        ...mockActor,
+        getRollData: jest.fn(() => ({ skills: { might: { modifier: '0', shift: 'd20', edge: false, snag: false } } })),
+      };
+
+      await dice.rollSkill(mightDataset, actorWithoutPerk, mightMeleeWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ alphaStrikeAvailable: false });
+    });
+
+    test("checking the Alpha Strike toggle grants Edge and marks the round", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1, alphaStrike: true,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const actor = makeAlphaStrikeActor();
+      actor.setFlag = jest.fn();
+      game.combat = { id: 'combat1', round: 2 };
+
+      await dice.rollSkill(mightDataset, actor, mightMeleeWeaponEffect);
+
+      const formula = dice._rollSkillHelper.mock.calls[0][0];
+      expect(formula).toBe('2d20kh + 0');
+      expect(actor.setFlag).toHaveBeenCalledWith('essence20', 'alphaStrikeLastRound', { combatId: 'combat1', round: 2 });
+
+      game.combat = null;
+    });
+  });
+
+  describe("Empty the Mag (Vanguard base, 7th level, p.109)", () => {
+    const EMPTY_THE_MAG_ID = "Compendium.essence20.gi_joe_crb.Item.zbrr3W30rFTDTayX";
+    const targetingDataset = { ...dataset, skill: 'targeting' };
+    const ballisticRangedWeaponEffect = {
+      name: 'Rifle Effect',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: { classification: { skill: "targeting", style: "projectile" }, damageType: "sharp", damageValue: 1 },
+    };
+    const meleeWeaponEffect = {
+      name: 'Knife Effect',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: { classification: { skill: "targeting", style: "melee" }, damageType: "sharp", damageValue: 1 },
+    };
+
+    function makeActor(weapon) {
+      const items = [
+        { type: 'perk', flags: { core: { sourceId: EMPTY_THE_MAG_ID } } },
+      ];
+      items.get = jest.fn(() => weapon);
+
+      return {
+        ...mockActor,
+        items,
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: false, snag: false } } })),
+      };
+    }
+
+    test("emptyTheMagAvailable is true for a ranged attack with a ballistic weapon and the Perk", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['ballistic'] } };
+
+      await dice.rollSkill(targetingDataset, makeActor(weapon), ballisticRangedWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ emptyTheMagAvailable: true });
+    });
+
+    test("emptyTheMagAvailable is false for a non-ballistic weapon", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: [] } };
+
+      await dice.rollSkill(targetingDataset, makeActor(weapon), ballisticRangedWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ emptyTheMagAvailable: false });
+    });
+
+    test("emptyTheMagAvailable is false for a melee attack, even with a ballistic weapon", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['ballistic'] } };
+
+      await dice.rollSkill(targetingDataset, makeActor(weapon), meleeWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ emptyTheMagAvailable: false });
+    });
+
+    test("emptyTheMagAvailable is false without the Perk", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['ballistic'] } };
+      const actorWithoutPerk = {
+        ...mockActor,
+        items: Object.assign([], { get: () => weapon }),
+        getRollData: jest.fn(() => ({ skills: { targeting: { modifier: '0', shift: 'd20', edge: false, snag: false } } })),
+      };
+
+      await dice.rollSkill(targetingDataset, actorWithoutPerk, ballisticRangedWeaponEffect);
+
+      expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ emptyTheMagAvailable: false });
+    });
+
+    test("checking the toggle threads emptyTheMag through to checkContext", async () => {
+      const rollDialog = createMockRollDialog();
+      rollDialog.getSkillRollOptions.mockReturnValue({
+        canCritD2: false, edge: false, snag: false, shiftUp: 0, shiftDown: 0, timesToRoll: 1,
+        defenseType: 'toughness', emptyTheMag: true,
+      });
+      dice._rollSkillHelper = jest.fn();
+      const weapon = { system: { itemAndUpgradeTraits: ['ballistic'] } };
+      const targetActor = { name: 'Target', uuid: 'Actor.target1', system: { defenses: { toughness: { total: 10 } }, immunities: {}, size: 'common' }, statuses: new Set(), items: [] };
+      const token = { actor: targetActor, center: { x: 0, y: 0 } };
+      const targetsSet = new Set([token]);
+      targetsSet.first = () => token;
+      const originalTargets = game.user.targets;
+      game.user.targets = targetsSet;
+
+      await dice.rollSkill(targetingDataset, makeActor(weapon), ballisticRangedWeaponEffect);
+
+      const checkContext = dice._rollSkillHelper.mock.calls[0][4];
+      expect(checkContext.emptyTheMag).toBe(true);
+
+      game.user.targets = originalTargets;
     });
   });
 
@@ -2531,8 +3229,8 @@ describe("_applyPlatePiercingVehicleDamage (Artillery Focus, 10th level)", () =>
     return { items };
   }
 
-  const explosiveWeaponEffect = { type: 'weaponEffect', system: { classification: { style: 'explosive' } } };
-  const meleeWeaponEffect = { type: 'weaponEffect', system: { classification: { style: 'melee' } } };
+  const explosiveContext = { isExplosiveAttack: true };
+  const meleeContext = { isExplosiveAttack: false };
 
   function makeResult({ targetUuid = 'Actor.target1', damageValue = 5 } = {}) {
     return { targetUuid, damageValue };
@@ -2546,7 +3244,7 @@ describe("_applyPlatePiercingVehicleDamage (Artillery Focus, 10th level)", () =>
     fromUuid.mockResolvedValue({ type: 'vehicle' });
     const results = [makeResult({ damageValue: 5 })];
 
-    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), explosiveWeaponEffect, results);
+    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), results, explosiveContext);
 
     expect(results[0].damageValue).toBe(10);
   });
@@ -2555,7 +3253,7 @@ describe("_applyPlatePiercingVehicleDamage (Artillery Focus, 10th level)", () =>
     fromUuid.mockResolvedValue({ type: 'character' });
     const results = [makeResult({ damageValue: 5 })];
 
-    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), explosiveWeaponEffect, results);
+    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), results, explosiveContext);
 
     expect(results[0].damageValue).toBe(5);
   });
@@ -2564,7 +3262,7 @@ describe("_applyPlatePiercingVehicleDamage (Artillery Focus, 10th level)", () =>
     fromUuid.mockResolvedValue({ type: 'vehicle' });
     const results = [makeResult({ damageValue: 5 })];
 
-    await dice._applyPlatePiercingVehicleDamage(makeActor(), explosiveWeaponEffect, results);
+    await dice._applyPlatePiercingVehicleDamage(makeActor(), results, explosiveContext);
 
     expect(results[0].damageValue).toBe(5);
     expect(fromUuid).not.toHaveBeenCalled();
@@ -2574,7 +3272,7 @@ describe("_applyPlatePiercingVehicleDamage (Artillery Focus, 10th level)", () =>
     fromUuid.mockResolvedValue({ type: 'vehicle' });
     const results = [makeResult({ damageValue: 5 })];
 
-    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), meleeWeaponEffect, results);
+    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), results, meleeContext);
 
     expect(results[0].damageValue).toBe(5);
     expect(fromUuid).not.toHaveBeenCalled();
@@ -2583,7 +3281,7 @@ describe("_applyPlatePiercingVehicleDamage (Artillery Focus, 10th level)", () =>
   test("doesn't look up a target when this result has no damage at all (a miss)", async () => {
     const results = [makeResult({ damageValue: null })];
 
-    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), explosiveWeaponEffect, results);
+    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), results, explosiveContext);
 
     expect(fromUuid).not.toHaveBeenCalled();
   });
@@ -2597,10 +3295,172 @@ describe("_applyPlatePiercingVehicleDamage (Artillery Focus, 10th level)", () =>
       makeResult({ targetUuid: 'Actor.character', damageValue: 5 }),
     ];
 
-    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), explosiveWeaponEffect, results);
+    await dice._applyPlatePiercingVehicleDamage(makeActor([PLATE_PIERCING_ID]), results, explosiveContext);
 
     expect(results[0].damageValue).toBe(10);
     expect(results[1].damageValue).toBe(5);
+  });
+});
+
+/* _applyEmptyTheMag */
+describe("_applyEmptyTheMag (Vanguard base, 7th level)", () => {
+  function makeResult({ damageValue = 5 } = {}) {
+    return { targetUuid: 'Actor.target1', damageValue };
+  }
+
+  test("doubles damage against every hit target when checked", () => {
+    const results = [makeResult({ damageValue: 5 }), makeResult({ damageValue: 8 })];
+
+    dice._applyEmptyTheMag(results, { emptyTheMag: true });
+
+    expect(results[0].damageValue).toBe(10);
+    expect(results[1].damageValue).toBe(16);
+  });
+
+  test("leaves damage alone when not checked", () => {
+    const results = [makeResult({ damageValue: 5 })];
+
+    dice._applyEmptyTheMag(results, { emptyTheMag: false });
+
+    expect(results[0].damageValue).toBe(5);
+  });
+
+  test("doesn't touch a result with no damage at all (a miss)", () => {
+    const results = [makeResult({ damageValue: null })];
+
+    dice._applyEmptyTheMag(results, { emptyTheMag: true });
+
+    expect(results[0].damageValue).toBe(null);
+  });
+});
+
+/* _applyNowhereIsSafe */
+describe("_applyNowhereIsSafe (Vanguard base, 17th level)", () => {
+  const NOWHERE_IS_SAFE_ID = "Compendium.essence20.gi_joe_crb.Item.oUAeJZ7K1P7Fu8Bc";
+
+  function makeActor(perkIds = []) {
+    const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+    return { items };
+  }
+
+  function makeResult({ targetUuid = 'Actor.target1', damageValue = 5, success = true } = {}) {
+    return { targetUuid, damageValue, success };
+  }
+
+  function makeTargetActor(statuses = []) {
+    return {
+      statuses: new Set(statuses),
+      toggleStatusEffect: jest.fn(),
+    };
+  }
+
+  beforeEach(() => {
+    fromUuid.mockReset();
+  });
+
+  test("reduces Total Cover to Cover, with no damage bonus", async () => {
+    const targetActor = makeTargetActor(['totalCover']);
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult({ damageValue: 5 })];
+
+    await dice._applyNowhereIsSafe(
+      makeActor([NOWHERE_IS_SAFE_ID]), results, { isMultipleTargetsWeapon: true },
+    );
+
+    expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('totalCover', { active: false });
+    expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('cover', { active: true });
+    expect(results[0].damageValue).toBe(5);
+  });
+
+  test("reduces Cover to none and adds +1 damage", async () => {
+    const targetActor = makeTargetActor(['cover']);
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult({ damageValue: 5 })];
+
+    await dice._applyNowhereIsSafe(
+      makeActor([NOWHERE_IS_SAFE_ID]), results, { isMultipleTargetsWeapon: true },
+    );
+
+    expect(targetActor.toggleStatusEffect).toHaveBeenCalledWith('cover', { active: false });
+    expect(results[0].damageValue).toBe(6);
+  });
+
+  test("adds +1 damage against a target with no cover at all, with no status to toggle", async () => {
+    const targetActor = makeTargetActor([]);
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult({ damageValue: 5 })];
+
+    await dice._applyNowhereIsSafe(
+      makeActor([NOWHERE_IS_SAFE_ID]), results, { isMultipleTargetsWeapon: true },
+    );
+
+    expect(targetActor.toggleStatusEffect).not.toHaveBeenCalled();
+    expect(results[0].damageValue).toBe(6);
+  });
+
+  test("doesn't apply without the Perk", async () => {
+    const targetActor = makeTargetActor(['cover']);
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult({ damageValue: 5 })];
+
+    await dice._applyNowhereIsSafe(makeActor(), results, { isMultipleTargetsWeapon: true });
+
+    expect(targetActor.toggleStatusEffect).not.toHaveBeenCalled();
+    expect(results[0].damageValue).toBe(5);
+    expect(fromUuid).not.toHaveBeenCalled();
+  });
+
+  test("doesn't apply to a non-Multiple-Targets attack, even with the Perk", async () => {
+    const targetActor = makeTargetActor(['cover']);
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult({ damageValue: 5 })];
+
+    await dice._applyNowhereIsSafe(makeActor([NOWHERE_IS_SAFE_ID]), results, { isMultipleTargetsWeapon: false });
+
+    expect(fromUuid).not.toHaveBeenCalled();
+    expect(results[0].damageValue).toBe(5);
+  });
+
+  test("doesn't apply to a missed result", async () => {
+    const targetActor = makeTargetActor(['cover']);
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult({ damageValue: null, success: false })];
+
+    await dice._applyNowhereIsSafe(
+      makeActor([NOWHERE_IS_SAFE_ID]), results, { isMultipleTargetsWeapon: true },
+    );
+
+    expect(fromUuid).not.toHaveBeenCalled();
+  });
+
+  test("no damage bonus if the result had no damage to begin with", async () => {
+    const targetActor = makeTargetActor([]);
+    fromUuid.mockResolvedValue(targetActor);
+    const results = [makeResult({ damageValue: null })];
+
+    await dice._applyNowhereIsSafe(
+      makeActor([NOWHERE_IS_SAFE_ID]), results, { isMultipleTargetsWeapon: true },
+    );
+
+    expect(results[0].damageValue).toBe(null);
+  });
+
+  test("only reduces the successfully-hit target's own row when multiple targets are compared", async () => {
+    fromUuid.mockImplementation(uuid => Promise.resolve(
+      uuid == 'Actor.hit' ? makeTargetActor(['cover']) : makeTargetActor(['cover']),
+    ));
+    const results = [
+      makeResult({ targetUuid: 'Actor.hit', damageValue: 5, success: true }),
+      makeResult({ targetUuid: 'Actor.miss', damageValue: null, success: false }),
+    ];
+
+    await dice._applyNowhereIsSafe(
+      makeActor([NOWHERE_IS_SAFE_ID]), results, { isMultipleTargetsWeapon: true },
+    );
+
+    expect(results[0].damageValue).toBe(6);
+    expect(results[1].damageValue).toBe(null);
+    expect(fromUuid).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -2960,6 +3820,97 @@ describe("_getAutomaticCombatModifiers", () => {
     });
   });
 
+  describe("Gallantry (Infantry base, 2nd level)", () => {
+    const GALLANTRY_ID = `${GI_JOE_CRB}UIMocxFcGeJUm3D4`;
+    const FIGHTING_STYLE_ID = `${GI_JOE_CRB}2LtDCHxgg9bMvWQK`;
+    const multipleTargetsWeapon = { system: { itemAndUpgradeTraits: ['multipleTargets'] } };
+    const triggerHappyWeaponEffect = {
+      ...meleeWeaponEffect,
+      flags: { essence20: { parentId: 'weapon1' } },
+    };
+
+    function makeTriggerHappyActor(weapon = multipleTargetsWeapon) {
+      const items = [
+        { type: 'perk', flags: { core: { sourceId: FIGHTING_STYLE_ID } }, system: { choice: 'triggerHappy' } },
+      ];
+      items.get = jest.fn(() => weapon);
+
+      return { system: { size: 'common' }, statuses: new Set(), items, getFlag: jest.fn(), unsetFlag: jest.fn() };
+    }
+
+    test("Snags the whole attack roll against a Gallantry target when the attacker has Trigger Happy and a Multiple Targets weapon", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeActor('common', [], { perkIds: [GALLANTRY_ID] }) });
+      const actor = makeTriggerHappyActor();
+
+      expect(dice._getAutomaticCombatModifiers(actor, triggerHappyWeaponEffect))
+        .toEqual({ ...defaultModifiers, snag: true });
+    });
+
+    test("doesn't affect a target without Gallantry", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeActor('common') });
+      const actor = makeTriggerHappyActor();
+
+      expect(dice._getAutomaticCombatModifiers(actor, triggerHappyWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't Snag if the attacker doesn't have Trigger Happy", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeActor('common', [], { perkIds: [GALLANTRY_ID] }) });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, triggerHappyWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't Snag against a non-Multiple-Targets weapon even with Trigger Happy", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeActor('common', [], { perkIds: [GALLANTRY_ID] }) });
+      const actor = makeTriggerHappyActor({ system: { itemAndUpgradeTraits: [] } });
+
+      expect(dice._getAutomaticCombatModifiers(actor, triggerHappyWeaponEffect)).toEqual(defaultModifiers);
+    });
+  });
+
+  describe("Alpha Strike (Door-Kicker Focus, 3rd level) - reciprocal Edge half", () => {
+    function makeAlphaStrikeTarget({ combatId = 'combat1', round = 1 } = {}) {
+      const target = makeActor('common');
+      target.getFlag = jest.fn((scope, key) =>
+        (scope == 'essence20' && key == 'alphaStrikeLastRound' ? { combatId, round } : undefined));
+
+      return target;
+    }
+
+    test("attacks against a target who used Alpha Strike this round gain an Edge", () => {
+      game.combat = { id: 'combat1', round: 1 };
+      game.user.targets.first.mockReturnValue({ actor: makeAlphaStrikeTarget() });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
+        .toEqual({ ...defaultModifiers, edge: true });
+    });
+
+    test("doesn't apply once the round has moved on", () => {
+      game.combat = { id: 'combat1', round: 2 };
+      game.user.targets.first.mockReturnValue({ actor: makeAlphaStrikeTarget({ round: 1 }) });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply outside of combat", () => {
+      game.combat = null;
+      game.user.targets.first.mockReturnValue({ actor: makeAlphaStrikeTarget() });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply to a target who hasn't used Alpha Strike", () => {
+      game.combat = { id: 'combat1', round: 1 };
+      game.user.targets.first.mockReturnValue({ actor: makeActor('common') });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
+    });
+  });
+
   describe("Impenetrable Shield (Vanguard base, 18th level) - resistance-via-Snag half", () => {
     const IMPENETRABLE_SHIELD_ID = `${GI_JOE_CRB}eEUl7OA9yWAk0QD3`;
     const PERSONAL_SHIELD_ROLE_POINTS_ID = `${GI_JOE_CRB}84JYgd6kZgY41wge`;
@@ -3008,6 +3959,73 @@ describe("_getAutomaticCombatModifiers", () => {
       const actor = makeActor('common');
 
       expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect)).toEqual(defaultModifiers);
+    });
+  });
+
+  describe("Shield Modulation (Vanguard base, 13th level, p.109)", () => {
+    const SHIELD_MODULATION_ID = `${GI_JOE_CRB}16ul4Ev6b9gO5CIN`;
+    const PERSONAL_SHIELD_ROLE_POINTS_ID = `${GI_JOE_CRB}84JYgd6kZgY41wge`;
+    const fireWeaponEffect = { ...meleeWeaponEffect, system: { ...meleeWeaponEffect.system, damageType: 'fire' } };
+    const poisonWeaponEffect = { ...meleeWeaponEffect, system: { ...meleeWeaponEffect.system, damageType: 'poison' } };
+
+    function makeShieldedTarget({ perkIds = [], shieldActive = true, modulatedType = null } = {}) {
+      const target = makeActor('common', [], { perkIds });
+      target._getBaseRolePoints = jest.fn(() => ({
+        flags: { core: { sourceId: PERSONAL_SHIELD_ROLE_POINTS_ID } },
+        system: {
+          isActive: shieldActive, isActivatable: true,
+          bonus: { type: 'defenseBonus', defenseBonus: { toughness: true, evasion: true } },
+        },
+      }));
+      target.getFlag = jest.fn((scope, key) => {
+        if (scope != 'essence20') return undefined;
+        if (key == 'shieldModulationDamageType') return modulatedType;
+        return undefined;
+      });
+
+      return target;
+    }
+
+    test("Snags an attack matching the chosen damage type", () => {
+      game.user.targets.first.mockReturnValue({
+        actor: makeShieldedTarget({ perkIds: [SHIELD_MODULATION_ID], modulatedType: 'fire' }),
+      });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect))
+        .toEqual({ ...defaultModifiers, snag: true });
+    });
+
+    test("doesn't apply to a different damage type than the one chosen", () => {
+      game.user.targets.first.mockReturnValue({
+        actor: makeShieldedTarget({ perkIds: [SHIELD_MODULATION_ID], modulatedType: 'poison' }),
+      });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply without the shield active", () => {
+      game.user.targets.first.mockReturnValue({
+        actor: makeShieldedTarget({ perkIds: [SHIELD_MODULATION_ID], modulatedType: 'fire', shieldActive: false }),
+      });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply without the Perk, even with a stored damage type", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeShieldedTarget({ modulatedType: 'fire' }) });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, fireWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply without a damage type ever chosen", () => {
+      game.user.targets.first.mockReturnValue({ actor: makeShieldedTarget({ perkIds: [SHIELD_MODULATION_ID] }) });
+      const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, poisonWeaponEffect)).toEqual(defaultModifiers);
     });
   });
 
@@ -3188,6 +4206,79 @@ describe("_getAutomaticCombatModifiers", () => {
       game.user.targets.first.mockReturnValue({ actor: target });
       game.combat = makeCombat({ turn: 0, combatantIndex: 2 });
       const actor = makeActor('common');
+
+      expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
+    });
+  });
+
+  describe("Heavy Ordnance (Infantry/Mechanized Infantry Focus, 15th level, p.82)", () => {
+    const HEAVY_ORDNANCE_ID = `${GI_JOE_CRB}b2viBBrNk08Kc9ts`;
+
+    function makeDriverActor({ size = 'common', hasPerk = true } = {}) {
+      const items = hasPerk ? [{ type: 'perk', flags: { core: { sourceId: HEAVY_ORDNANCE_ID } } }] : [];
+      return { uuid: 'Actor.driver1', type: 'character', system: { size }, items };
+    }
+
+    function makeVehicleActor({ size = 'huge', crew = { crew1: { vehicleRole: 'driver', uuid: 'Actor.driver1' } } } = {}) {
+      return { type: 'vehicle', system: { size, actors: crew }, statuses: new Set(), getFlag: jest.fn() };
+    }
+
+    afterEach(() => {
+      global.fromUuidSync.mockReset();
+    });
+
+    test("grants an Edge attacking another vehicle, regardless of the driver's own size", () => {
+      global.fromUuidSync.mockReturnValue(makeDriverActor({ size: 'small' }));
+      const target = makeActor('huge');
+      target.type = 'vehicle';
+      game.user.targets.first.mockReturnValue({ actor: target });
+      const vehicle = makeVehicleActor({ size: 'huge' });
+
+      expect(dice._getAutomaticCombatModifiers(vehicle, meleeWeaponEffect))
+        .toEqual({ ...defaultModifiers, edge: true });
+    });
+
+    test("grants an Edge attacking an enemy the driver's size or greater", () => {
+      global.fromUuidSync.mockReturnValue(makeDriverActor({ size: 'common' }));
+      const target = makeActor('huge');
+      game.user.targets.first.mockReturnValue({ actor: target });
+      const vehicle = makeVehicleActor({ size: 'huge' });
+
+      expect(dice._getAutomaticCombatModifiers(vehicle, meleeWeaponEffect))
+        .toEqual({ ...defaultModifiers, edge: true });
+    });
+
+    test("doesn't apply against an enemy smaller than the driver", () => {
+      global.fromUuidSync.mockReturnValue(makeDriverActor({ size: 'large' }));
+      const target = makeActor('common');
+      game.user.targets.first.mockReturnValue({ actor: target });
+      const vehicle = makeVehicleActor({ size: 'common' });
+
+      expect(dice._getAutomaticCombatModifiers(vehicle, meleeWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply without a driver assigned", () => {
+      const target = makeActor('huge');
+      game.user.targets.first.mockReturnValue({ actor: target });
+      const vehicle = makeVehicleActor({ size: 'huge', crew: {} });
+
+      expect(dice._getAutomaticCombatModifiers(vehicle, meleeWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply when the driver doesn't have the Perk", () => {
+      global.fromUuidSync.mockReturnValue(makeDriverActor({ size: 'common', hasPerk: false }));
+      const target = makeActor('huge');
+      game.user.targets.first.mockReturnValue({ actor: target });
+      const vehicle = makeVehicleActor({ size: 'huge' });
+
+      expect(dice._getAutomaticCombatModifiers(vehicle, meleeWeaponEffect)).toEqual(defaultModifiers);
+    });
+
+    test("doesn't apply when the roller isn't a vehicle", () => {
+      global.fromUuidSync.mockReturnValue(makeDriverActor({ size: 'common' }));
+      const target = makeActor('huge');
+      game.user.targets.first.mockReturnValue({ actor: target });
+      const actor = makeActor('huge', [], { perkIds: [HEAVY_ORDNANCE_ID] });
 
       expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect)).toEqual(defaultModifiers);
     });

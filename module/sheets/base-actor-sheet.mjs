@@ -14,6 +14,9 @@ import {
   prepareActiveEffectCategories,
 } from "../helpers/effects.mjs";
 import { applySystemActorsColorCssVariables, applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
+import {
+  needsShieldModulationChoice, pickShieldModulationDamageType, setShieldModulationDamageType,
+} from "../helpers/shield-modulation.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
   onCrewNumberUpdate,
@@ -276,7 +279,21 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
         event.preventDefault();
         const itemId = event.currentTarget.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
-        await item.update({ 'system.isActive': !item.system.isActive });
+        const activating = !item.system.isActive;
+
+        // Shield Modulation (Vanguard base, 13th level) - "when you activate your shield, choose
+        // one damage type." See helpers/shield-modulation.mjs's own doc comment for why this has
+        // to intercept the plain Activate toggle instead of getting its own control.
+        if (activating && needsShieldModulationChoice(this.actor, item)) {
+          const damageType = await pickShieldModulationDamageType();
+          if (!damageType) {
+            return;
+          }
+
+          await setShieldModulationDamageType(this.actor, damageType);
+        }
+
+        await item.update({ 'system.isActive': activating });
       });
     }
 

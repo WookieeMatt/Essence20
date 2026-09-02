@@ -224,7 +224,7 @@ describe("roll", () => {
     expect(roll.formula).toBe("1d20");
   });
 
-  test("weaponEffect items delegate to the Dice helper and decrement the linked class feature's uses", () => {
+  test("weaponEffect items delegate to the Dice helper and decrement the linked class feature's uses", async () => {
     const classFeature = {
       system: { uses: { value: 3 } },
       update: jest.fn(),
@@ -233,7 +233,10 @@ describe("roll", () => {
       system: {
         skills: { strength: { shift: 'd8', shiftUp: 0, shiftDown: 0, isSpecialized: false } },
       },
-      items: { get: jest.fn(() => classFeature) },
+      // A real (empty) array, not a plain object - actorHasPerk (Mighty Strikes/No Need to Aim's
+      // own eligibility check, item.mjs's roll()) needs Array#find, not just the .get() the
+      // class-feature lookup below uses.
+      items: Object.assign([], { get: jest.fn(() => classFeature) }),
     };
     const item = makeItem('weaponEffect', {
       classification: { skill: 'strength' },
@@ -242,7 +245,7 @@ describe("roll", () => {
     }, actor);
     item._dice.handleSkillItemRoll = jest.fn();
 
-    item.roll({ someDataset: true });
+    await item.roll({ someDataset: true });
 
     expect(item._dice.handleSkillItemRoll).toHaveBeenCalledWith(
       expect.objectContaining({ skill: 'strength', shiftDown: 1 }),

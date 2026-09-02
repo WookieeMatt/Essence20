@@ -51,6 +51,36 @@
   </div>
   {{/if}}
 
+  {{#if akimboAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogAkimbo'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="akimbo" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if alphaStrikeAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogAlphaStrike'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="alphaStrike" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if emptyTheMagAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogEmptyTheMag'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="emptyTheMag" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
   <div>
     {{localize 'E20.RollDialogTimesToRoll'}}
     <input type="number" name="timesToRoll" value=1 min="1" step="1" />

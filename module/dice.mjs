@@ -13,9 +13,13 @@ import {
 import {
   actorHasPerk, clearPendingBonus, findPerk, getPendingBonus, hasUsedThisRound, markUsedThisRound,
 } from "./helpers/perks.mjs";
+import { consumeRollWithThePunches } from "./helpers/banked-buffs.mjs";
 import { getShieldUpgradeBonus, isPersonalShieldActive } from "./helpers/personal-shield.mjs";
+import { getShieldModulationDamageType, SHIELD_MODULATION_ID } from "./helpers/shield-modulation.mjs";
 import { getRecklessAbandonStrengthShiftUp } from "./helpers/reckless-abandon.mjs";
 import { checkEnemyNumberOne, markAttackedEnemyNumberOne } from "./helpers/enemy-number-one.mjs";
+import { getInfluentialShiftUp } from "./helpers/influential.mjs";
+import { isMultipleTargetsWeapon } from "./helpers/multiple-targets.mjs";
 
 // Every Commando Perk automated below that isn't specific to Sneak Attack itself (those constants
 // live in helpers/sneak-attack.mjs instead) - all under GI Joe CRB's own compendium pack.
@@ -52,6 +56,16 @@ const PENETRATING_ROUNDS_ID = `${GI_JOE_CRB}JLwbWSlHn5q3rqnH`;
 const IMMOVABLE_OBJECT_ID = `${GI_JOE_CRB}QSHsA1peMncG196r`;
 const IMPENETRABLE_SHIELD_ID = `${GI_JOE_CRB}eEUl7OA9yWAk0QD3`;
 const PLATE_PIERCING_ID = `${GI_JOE_CRB}II5giKn7vCDeB2nk`;
+// Shared by Infantry and Vanguard - a single compendium Perk both Roles grant, whose chosen
+// Fighting Style lives on its own system.choice field (see documents/actor.mjs's own identical
+// constant/comment for the Careful/Defense options this file doesn't need to touch).
+const FIGHTING_STYLE_ID = `${GI_JOE_CRB}2LtDCHxgg9bMvWQK`;
+const GALLANTRY_ID = `${GI_JOE_CRB}UIMocxFcGeJUm3D4`;
+const ALPHA_STRIKE_ID = `${GI_JOE_CRB}9EWv3qQJgj7WFQ9A`;
+const ALPHA_STRIKE_ROUND_FLAG = 'alphaStrikeLastRound';
+const HEAVY_ORDNANCE_ID = `${GI_JOE_CRB}b2viBBrNk08Kc9ts`;
+const EMPTY_THE_MAG_ID = `${GI_JOE_CRB}zbrr3W30rFTDTayX`;
+const NOWHERE_IS_SAFE_ID = `${GI_JOE_CRB}oUAeJZ7K1P7Fu8Bc`;
 
 export class Dice {
   /**
@@ -273,6 +287,12 @@ export class Dice {
       }
     }
 
+    // Influential (Technician/Expert Focus, 3rd level, p.104) - see helpers/influential.mjs's own
+    // doc comment. Unlike Eureka/Expert in Your Field above, this reads a NEARBY ALLY's own Field
+    // (system.choice), not the roller's - any Skill Test using that skill, not just Field Skill
+    // Tests for the roller's own (possibly different, or absent) Field.
+    updatedShiftDataset.shiftUp += getInfluentialShiftUp(actor, rolledSkill);
+
     // Warfighter (Infantry base, 17th level): "you are specialized in all Targeting weapons."
     // Pre-fills the same isSpecialized the dialog's own toggle uses, same "auto-detect, player
     // can still override" shape as canCritD2 above - the +2 damage half is unconditional and
@@ -361,6 +381,21 @@ export class Dice {
     // evaluates to undefined rather than false, leaking a non-boolean into the dataset.
     updatedShiftDataset.energonAvailable = Boolean(actor.system.canTransform && actor.system.energon.normal.value > 0);
 
+    // Akimbo (Fighting Style option, p.79/108): "If you have a pistol or a submachine gun in
+    // each hand, you receive an upshift on your off-hand attack." No dual-wielding/hand-tracking
+    // concept exists anywhere in this system (weapon Items carry no structured type/category
+    // field either - see Coin Toss's own NO-GO note), so - same reasoning as Aiming above - this
+    // is a Roll Options Dialog toggle the player only checks when they're actually attacking
+    // with their off-hand while dual-wielding a qualifying pair, not anything auto-detected.
+    updatedShiftDataset.akimboAvailable = isRangedAttack && this._hasFightingStyle(actor, 'akimbo');
+
+    // Alpha Strike - see _isAlphaStrikeAttack's own doc comment above for why this is only gated
+    // on the attack type, not the Perk's own (unenforced) range condition.
+    updatedShiftDataset.alphaStrikeAvailable = this._isAlphaStrikeAttack(actor, item);
+
+    // Empty the Mag - see _isEmptyTheMagAttack's own doc comment above.
+    updatedShiftDataset.emptyTheMagAvailable = this._isEmptyTheMagAttack(actor, item);
+
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
@@ -374,6 +409,18 @@ export class Dice {
     if (skillRollOptions.spendEnergon) {
       skillRollOptions.shiftUp += 1;
       await actor.update({ 'system.energon.normal.value': actor.system.energon.normal.value - 1 });
+    }
+
+    if (skillRollOptions.akimbo) {
+      skillRollOptions.shiftUp += 1;
+    }
+
+    // Alpha Strike - grants Edge on this qualifying roll directly, and marks the round so the
+    // reciprocal "attacks against you also have an Edge" half (see _getAutomaticCombatModifiers)
+    // applies to incoming attacks for the rest of the round.
+    if (skillRollOptions.alphaStrike) {
+      skillRollOptions.edge = true;
+      await markUsedThisRound(actor, ALPHA_STRIKE_ROUND_FLAG);
     }
 
     let label = '';
@@ -436,22 +483,43 @@ export class Dice {
     // contributes to Toughness, never Evasion.
     const isPenetratingRoundsAttack = this._isPenetratingRoundsAttack(actor, item);
 
+    // Trigger Happy (Fighting Style option, p.79/108) - see _isTriggerHappyAttack's own doc
+    // comment. Threaded onto each entry as a second, independent Willpower difficulty compared
+    // against the exact same roll total as the Toughness/Evasion difficulty below - not a
+    // sequential/dependent check, per the Perk's own "in addition to" phrasing.
+    const isTriggerHappyAttack = this._isTriggerHappyAttack(actor, item);
+
     const targets = Array.from(game.user.targets);
     let checkEntries = null;
     if (skillRollOptions.defenseType && skillRollOptions.defenseType != 'none' && targets.length) {
-      checkEntries = targets.map(token => {
+      checkEntries = await Promise.all(targets.map(async token => {
         const deflectiveReduction = isPenetratingRoundsAttack && skillRollOptions.defenseType == 'toughness'
           ? this._getDeflectiveArmorToughness(token.actor)
           : 0;
 
+        let difficulty = getDefenseValue(token.actor, skillRollOptions.defenseType)
+          + getShieldUpgradeBonus(token.actor, skillRollOptions.defenseType)
+          - deflectiveReduction;
+
+        // Roll With the Punches (Renegade/Tank Focus, 6th level, p.97) - "double your Toughness,
+        // Willpower, or Evasion against one attack or effect." Read (and, if it matches, consumed)
+        // here rather than in _getAutomaticCombatModifiers's self-status section, since this is
+        // the TARGET's own banked effect applying to someone ELSE's roll, not the roller's own
+        // next one - see banked-buffs.mjs#consumeRollWithThePunches's own doc comment. Doubles the
+        // whole combined difficulty (base Defense + Shield Upgrade - deflective reduction) rather
+        // than just the base Defense score, the same "one combined number" precision this method
+        // already treats every other Defense modifier at.
+        if (await consumeRollWithThePunches(token.actor, skillRollOptions.defenseType)) {
+          difficulty *= 2;
+        }
+
         return {
           name: token.actor.name,
           targetUuid: token.actor.uuid,
-          difficulty: getDefenseValue(token.actor, skillRollOptions.defenseType)
-            + getShieldUpgradeBonus(token.actor, skillRollOptions.defenseType)
-            - deflectiveReduction,
+          difficulty,
+          willpowerDifficulty: isTriggerHappyAttack ? getDefenseValue(token.actor, 'willpower') : null,
         };
-      });
+      }));
     } else if (dataset.dif) {
       checkEntries = [{ name: actor.name, targetUuid: null, difficulty: parseInt(dataset.dif) }];
     }
@@ -491,23 +559,44 @@ export class Dice {
       await markUsedThisRound(actor, PREDATOR_SNEAK_ATTACK_ROUND_FLAG);
     }
 
+    // Shared by Shock and Awe below and Plate Piercing (_applyPlatePiercingVehicleDamage) -
+    // both only care whether this is an explosive-style weaponEffect at all, not any Perk of
+    // their own yet.
+    const isExplosiveAttack = item?.type == 'weaponEffect' && item.system.classification?.style == 'explosive';
+
     // Shock and Awe (Artillery Focus, 10th level): "targets of your explosive suffer a Snag on
     // their next attack or Skill Test" - reuses the exact same pending-Snag flag/consumption
     // mechanism as Debilitating Strike below (markDebilitated() / _getAutomaticCombatModifiers's
     // existing 'debilitated' flag check), since both grant an identical unconditional Snag on the
     // target's very next roll. Independent of damageBonusValue/Sneak Attack entirely - any hit
     // with an explosive-style weapon qualifies, not just a Sneak-Attack-boosted one.
-    const shockAndAwe = item?.type == 'weaponEffect'
-      && item.system.classification?.style == 'explosive'
-      && actorHasPerk(actor, SHOCK_AND_AWE_ID);
+    const shockAndAwe = isExplosiveAttack && actorHasPerk(actor, SHOCK_AND_AWE_ID);
+
+    // Nowhere Is Safe (Vanguard base, 17th level) reads this once the roll resolves
+    // (_applyNowhereIsSafe below) - a fact about the WEAPON (does it carry the real
+    // 'multipleTargets' trait at all), not gated on how many targets this particular roll
+    // happens to have, same as Trigger Happy/Gallantry's own use of this check above.
+    const isMultipleTargetsWeaponAttack = isMultipleTargetsWeapon(actor, item);
 
     const checkContext = checkEntries
       ? {
         entries: checkEntries,
         damageValue: item?.type == 'weaponEffect' ? item.system.damageValue + damageBonusValue : null,
         damageType: item?.type == 'weaponEffect' ? item.system.damageType : null,
+        // Plate Piercing (Artillery Focus, 10th level) - read by _applyPlatePiercingVehicleDamage
+        // once the roll resolves, the same "a fact about the attack, threaded through
+        // checkContext rather than re-derived from item" shape as effectName/alternateEffects
+        // below (checkContext, not a raw item reference, is what actually crosses into
+        // _rollSkillHelper - see that function's own doc comment).
+        isExplosiveAttack,
+        isMultipleTargetsWeapon: isMultipleTargetsWeaponAttack,
         debilitatingStrike,
         shockAndAwe,
+        triggerHappy: isTriggerHappyAttack,
+        // Empty the Mag - applied a second time, per hit target, once the roll resolves (see
+        // _applyEmptyTheMag below) - so only the player's own dialog checkbox matters here, not
+        // a re-check of eligibility (already confirmed by emptyTheMagAvailable pre-filling it).
+        emptyTheMag: !!skillRollOptions.emptyTheMag,
         // Sudden Death (Blitzer Focus, 20th level, p.98) - "when you successfully hit with a
         // Might melee attack against a target whose Threat Level is equal to or less than your
         // level, you can choose to defeat them instead of dealing damage." Only the weapon-type
@@ -528,6 +617,12 @@ export class Dice {
       }
       : null;
 
+    // Multiple Targets (X, range/area) (p.198) - see isMultipleTargetsWeapon's own doc comment
+    // for the Blast/AoE distinction. Only kicks in with 2+ actual targets - a single target (or
+    // none) has nothing to roll "independently" against, so it rolls exactly like any other
+    // attack below.
+    const isMultipleTargetsAttack = checkEntries?.length > 1 && isMultipleTargetsWeaponAttack;
+
     // Repeat the roll as many times as specified in the skill roll options dialog
     for (let i = 0; i < skillRollOptions.timesToRoll; i++) {
       let repeatText = '';
@@ -538,7 +633,20 @@ export class Dice {
         }) + '<br>';
       }
 
-      this._rollSkillHelper(formula, actor, repeatText + label, canCritD2, checkContext);
+      if (isMultipleTargetsAttack) {
+        // One independent roll per target, each its own checkContext carrying just that one
+        // target's own entry - _rollSkillHelper's own `new Roll(formula, ...)` gives each call
+        // a fresh, independent dice pool, the same mechanism the timesToRoll loop above already
+        // relies on for repeats, so no other change is needed to get independent totals.
+        for (const entry of checkEntries) {
+          const targetText = this._i18n.format("E20.RollMultipleTargetsText", { name: entry.name }) + '<br>';
+          this._rollSkillHelper(
+            formula, actor, repeatText + targetText + label, canCritD2, { ...checkContext, entries: [entry] },
+          );
+        }
+      } else {
+        this._rollSkillHelper(formula, actor, repeatText + label, canCritD2, checkContext);
+      }
     }
   }
 
@@ -642,13 +750,19 @@ export class Dice {
       shiftUp += this._getSizeShift(actor.system.size, target.system.size);
 
       const targetStatuses = target.statuses;
+      // Alpha Strike (Door-Kicker Focus, 3rd level, p.98) - the reciprocal half: "all attacks
+      // against you also have an Edge until the beginning of your next turn," approximated at
+      // round granularity (see ALPHA_STRIKE_ROUND_FLAG's own doc comment on _isAlphaStrikeAttack
+      // above) via the same hasUsedThisRound-shaped flag Quiet as the Grave/Predator Sneak Attack
+      // already use for round tracking, just read here instead of gating a new use.
       const targetGrantsEdge = targetStatuses.has('blinded')
         || targetStatuses.has('grappled')
         || targetStatuses.has('restrained')
         || targetStatuses.has('stunned')
         || targetStatuses.has('unconscious')
         || targetStatuses.has('actingSmaller')
-        || (isMelee && targetStatuses.has('prone'));
+        || (isMelee && targetStatuses.has('prone'))
+        || hasUsedThisRound(target, ALPHA_STRIKE_ROUND_FLAG);
 
       if (targetGrantsEdge) {
         edge = true;
@@ -741,6 +855,19 @@ export class Dice {
         snag = true;
       }
 
+      // Gallantry (Infantry base, 2nd level, p.79): "any effect that would cause the Frightened
+      // Condition that targets you suffers a Snag." The only thing in this system that can
+      // currently cause Frightened is Trigger Happy's own Willpower compare (see
+      // _isTriggerHappyAttack) - this Snags the WHOLE attack roll rather than just that one
+      // comparison, since there's no way to Snag one comparison independently of another sharing
+      // the same roll total; matches the same "Snag the roll, not the compare" idiom Duck &
+      // Cover/Paranoia/Resistance above all already use for target-side effects. The halved-
+      // duration clause has no hook (nothing in this system tracks a Condition's remaining
+      // duration to halve).
+      if (actorHasPerk(target, GALLANTRY_ID) && this._isTriggerHappyAttack(actor, item)) {
+        snag = true;
+      }
+
       // Impenetrable Shield (Vanguard base, 18th level, p.109): "resistance to all [damage]
       // other [than EMP]" while the shield is active - Resistance (p.170) is already established
       // in this file as "a Snag on the attack roll," same as Duck & Cover's own resistance clause
@@ -750,6 +877,18 @@ export class Dice {
       if (
         item.system.damageType != 'emp' && isPersonalShieldActive(target)
         && actorHasPerk(target, IMPENETRABLE_SHIELD_ID)
+      ) {
+        snag = true;
+      }
+
+      // Shield Modulation (Vanguard base, 13th level, p.109) - same Resistance-is-a-Snag idiom
+      // as Impenetrable Shield right above, keyed on the damage type chosen when the shield was
+      // last activated (helpers/shield-modulation.mjs) instead of unconditional. Same scope as
+      // Impenetrable Shield's own check too - only the shield-holder's own Perk/shield, not
+      // extended to Shield-Upgraded allies (neither check does that).
+      if (
+        isPersonalShieldActive(target) && actorHasPerk(target, SHIELD_MODULATION_ID)
+        && item.system.damageType == getShieldModulationDamageType(target)
       ) {
         snag = true;
       }
@@ -775,6 +914,15 @@ export class Dice {
         if (targetHasNotActedYet) {
           edge = true;
         }
+      }
+
+      // Heavy Ordnance (Infantry/Mechanized Infantry Focus, 15th level, p.82): "attacks made with
+      // the weapons of a vehicle you are piloting gain an Edge when attacking other vehicles or
+      // enemies your size or greater." Unlike every other check in this file, the Perk lives on a
+      // PC, but the roll being made is the VEHICLE's own (see _isHeavyOrdnanceAttack's own doc
+      // comment) - actor here is the vehicle, not the pilot.
+      if (this._isHeavyOrdnanceAttack(actor, target)) {
+        edge = true;
       }
 
       // Seconds Between Click & Boom (9th level): "attacks against your Evasion Defense suffer a
@@ -835,6 +983,61 @@ export class Dice {
   }
 
   /**
+   * Finds the actor currently driving the given vehicle, via its own system.actors crew map
+   * (the same collection/shape prepareSystemActors() and vehicle-handler.mjs's own crew-swap
+   * logic already read - {vehicleRole, uuid, ...} entries, resolved with the same fromUuidSync
+   * idiom vehicle-handler.mjs uses for exactly this crew list).
+   * @param {Actor} vehicleActor
+   * @returns {Actor|null}   The driver, or null if the vehicle has no assigned driver.
+   * @private
+   */
+  _getVehicleDriver(vehicleActor) {
+    for (const crewMember of Object.values(vehicleActor.system?.actors ?? {})) {
+      if (crewMember.vehicleRole == 'driver') {
+        const driver = fromUuidSync(crewMember.uuid);
+        if (driver) {
+          return driver;
+        }
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   * Heavy Ordnance (Infantry/Mechanized Infantry Focus, 15th level, p.82) - see its own doc
+   * comment in _getAutomaticCombatModifiers. Vehicles roll their own weapon attacks as their own
+   * actor (see templates/actor/parts/main/vehicle.hbs's weapon container), so this Perk - held by
+   * the PILOT, not the vehicle - has to be checked by finding the vehicle's current driver rather
+   * than reading the roller's own items directly, unlike every other Perk check in this file.
+   * "Your size" is read as the pilot's own Size Class, matching the Perk's literal wording, even
+   * though a vehicle is usually far larger than its driver.
+   * @param {Actor} actor   The actor performing the roll (the vehicle, not the pilot).
+   * @param {Actor} target   The roll's resolved target.
+   * @returns {Boolean}
+   * @private
+   */
+  _isHeavyOrdnanceAttack(actor, target) {
+    if (actor?.type != 'vehicle' || !target) {
+      return false;
+    }
+
+    const driver = this._getVehicleDriver(actor);
+    if (!driver || !actorHasPerk(driver, HEAVY_ORDNANCE_ID)) {
+      return false;
+    }
+
+    if (target.type == 'vehicle') {
+      return true;
+    }
+
+    const sizeOrder = Object.keys(E20.actorSizes);
+    const driverIndex = sizeOrder.indexOf(driver.system.size);
+    const targetIndex = sizeOrder.indexOf(target.system.size);
+    return driverIndex != -1 && targetIndex != -1 && targetIndex >= driverIndex;
+  }
+
+  /**
    * Finds the weapon a weaponEffect belongs to, via the parentId flag attachment-handler.mjs
    * tags every weaponEffect with when it's copied onto an actor.
    * @param {Actor} actor   The Item's owner.
@@ -865,6 +1068,99 @@ export class Dice {
     const weapon = this._getParentWeapon(actor, item);
     const weaponSourceId = weapon?.flags?.core?.sourceId ?? weapon?._stats?.compendiumSource;
     return weaponSourceId == SHOTGUN_ID || weaponSourceId == SUBMACHINE_GUN_ID;
+  }
+
+  /**
+   * Whether the actor has chosen the given option from the shared Fighting Style Perk
+   * (Infantry/Vanguard, p.79/108) - the option lives on system.choice, same shape as
+   * Field/other hasChoice Perks (see FIGHTING_STYLE_ID's own doc comment).
+   * @param {Actor} actor
+   * @param {String} style   One of E20.fightingStyle's keys, e.g. 'akimbo', 'triggerHappy'.
+   * @returns {Boolean}
+   * @private
+   */
+  _hasFightingStyle(actor, style) {
+    return findPerk(actor, FIGHTING_STYLE_ID)?.system.choice == style;
+  }
+
+  /**
+   * Trigger Happy (Fighting Style option, p.79/108): "When you use a Multiple Targets attack,
+   * compare your Targeting Skill Test total to your target's Willpower in addition to their
+   * Toughness or Evasion. If your roll succeeds against their Willpower, they are frightened of
+   * you until the end of their next turn." Gated on the weapon's own real 'multipleTargets'
+   * trait (helpers/multiple-targets.mjs#isMultipleTargetsWeapon - see its own doc comment for
+   * the Blast/AoE distinction and why X itself is never mechanically capped), plus the Fighting
+   * Style choice.
+   * @param {Actor} actor
+   * @param {Item} item   The weaponEffect being rolled, if any.
+   * @returns {Boolean}
+   * @private
+   */
+  _isTriggerHappyAttack(actor, item) {
+    return this._hasFightingStyle(actor, 'triggerHappy') && isMultipleTargetsWeapon(actor, item);
+  }
+
+  /**
+   * Alpha Strike (Door-Kicker Focus, 3rd level, p.98): "you can Alpha Strike if you are attacking
+   * an enemy within your reach or within 20 feet. When you use Alpha Strike, you gain an Edge on
+   * Might attacks and on Targeting attacks with submachine guns and shotguns until the beginning
+   * of your next turn, but all attacks against you also have an Edge until the beginning of your
+   * next turn." The "within your reach or within 20 feet" activation trigger is a fictional
+   * condition this system has no distance check gating a checkbox's own availability for anywhere
+   * - same "the player simply only checks it when the fiction supports it" reasoning Aiming's own
+   * "haven't moved" clause already relies on - so this only gates on the roll actually being one
+   * of the two attack types the Perk grants an Edge to, same shape as Assault Precision's own
+   * shotgun/submachine-gun check just above. "Until the beginning of your next turn" is
+   * approximated at round granularity (see ALPHA_STRIKE_ROUND_FLAG's use in
+   * _getAutomaticCombatModifiers below), the same unenforced-duration precedent every other
+   * "until X" clause in this codebase already accepts.
+   * @param {Actor} actor
+   * @param {Item} item   The weaponEffect being rolled, if any.
+   * @returns {Boolean}
+   * @private
+   */
+  _isAlphaStrikeAttack(actor, item) {
+    if (item?.type != 'weaponEffect' || !actorHasPerk(actor, ALPHA_STRIKE_ID)) {
+      return false;
+    }
+
+    if (item.system.classification.skill == 'might') {
+      return true;
+    }
+
+    if (item.system.classification.skill != 'targeting') {
+      return false;
+    }
+
+    const weapon = this._getParentWeapon(actor, item);
+    const weaponSourceId = weapon?.flags?.core?.sourceId ?? weapon?._stats?.compendiumSource;
+    return weaponSourceId == SHOTGUN_ID || weaponSourceId == SUBMACHINE_GUN_ID;
+  }
+
+  /**
+   * Empty the Mag (Vanguard base, 7th level, p.109): "when you hit a target with a ranged
+   * ballistic weapon attack, you may empty the magazine into them in a flurry of autofire and
+   * apply damage a second time. After using this ability, you must reload your weapon before you
+   * can use it again." The "must reload" limiter has no hook - this system doesn't track
+   * ammunition/reload state at all (Rapid Reload/Deep Magazines are both NO-GO for the same
+   * reason) - so, like Aiming's own "haven't moved" clause, it's left to the player to only check
+   * the box when the fiction supports it.
+   * @param {Actor} actor
+   * @param {Item} item   The weaponEffect being rolled, if any.
+   * @returns {Boolean}
+   * @private
+   */
+  _isEmptyTheMagAttack(actor, item) {
+    if (item?.type != 'weaponEffect' || item.system.classification.style == 'melee') {
+      return false;
+    }
+
+    if (!actorHasPerk(actor, EMPTY_THE_MAG_ID)) {
+      return false;
+    }
+
+    const weapon = this._getParentWeapon(actor, item);
+    return !!weapon?.system.itemAndUpgradeTraits?.includes('ballistic');
   }
 
   /**
@@ -918,13 +1214,13 @@ export class Dice {
    * known, so it can't be folded into the shared checkContext.damageValue every target's row
    * multiplies from.
    * @param {Actor} actor   The actor performing the roll.
-   * @param {Item} item   The weaponEffect being rolled, if any.
    * @param {Array<Object>} results   The rollSkill()-built per-target result rows (mutated).
+   * @param {Object} checkContext   Its own isExplosiveAttack field, set by rollSkill() - see that
+   *   field's own doc comment for why this reads checkContext rather than taking a raw Item.
    * @private
    */
-  async _applyPlatePiercingVehicleDamage(actor, item, results) {
-    const isExplosiveAttack = item?.type == 'weaponEffect' && item.system.classification?.style == 'explosive';
-    if (!isExplosiveAttack || !actorHasPerk(actor, PLATE_PIERCING_ID)) {
+  async _applyPlatePiercingVehicleDamage(actor, results, checkContext) {
+    if (!checkContext.isExplosiveAttack || !actorHasPerk(actor, PLATE_PIERCING_ID)) {
       return;
     }
 
@@ -934,6 +1230,75 @@ export class Dice {
         if (targetActor?.type == 'vehicle') {
           result.damageValue *= 2;
         }
+      }
+    }
+  }
+
+  /**
+   * Empty the Mag (Vanguard base, 7th level, p.109) - see _isEmptyTheMagAttack's own doc comment.
+   * "Apply damage a second time" against every target this roll actually hit, same per-result
+   * doubling shape as _applyPlatePiercingVehicleDamage above, just unconditional on the target
+   * (not gated on being a vehicle) and gated on the dialog checkbox instead of always-on.
+   * @param {Array<Object>} results   The rollSkill()-built per-target result rows (mutated).
+   * @param {Object} checkContext
+   * @private
+   */
+  _applyEmptyTheMag(results, checkContext) {
+    if (!checkContext.emptyTheMag) {
+      return;
+    }
+
+    for (const result of results) {
+      if (result.damageValue) {
+        result.damageValue *= 2;
+      }
+    }
+  }
+
+  /**
+   * Nowhere Is Safe (Vanguard base, 17th level, p.111): "your Multiple Targets attacks reduce
+   * cover one step: Total cover to cover, and cover to none. If you reduce cover to none or
+   * attack an enemy with no cover, your attacks deal +1 damage." Same per-target post-processing
+   * shape as _applyPlatePiercingVehicleDamage above, gated on a hit (a miss reduces nothing and
+   * earns no bonus) and on checkContext.isMultipleTargetsWeapon instead of isExplosiveAttack.
+   * Uses Actor#toggleStatusEffect, the same core API Frightened's own application already uses
+   * (see markDebilitated's sibling in sneak-attack.mjs) rather than a raw ActiveEffect write.
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {Array<Object>} results   The rollSkill()-built per-target result rows (mutated).
+   * @param {Object} checkContext
+   * @private
+   */
+  async _applyNowhereIsSafe(actor, results, checkContext) {
+    if (!checkContext.isMultipleTargetsWeapon || !actorHasPerk(actor, NOWHERE_IS_SAFE_ID)) {
+      return;
+    }
+
+    for (const result of results) {
+      if (!result.success || !result.targetUuid) {
+        continue;
+      }
+
+      const targetActor = await fromUuid(result.targetUuid);
+      if (!targetActor) {
+        continue;
+      }
+
+      // Total Cover -> Cover doesn't reach "none" yet, so no damage bonus there - only when the
+      // reduction lands on no cover at all (Cover -> none), or the target had no cover to begin
+      // with, does the +1 apply.
+      let coverReducedToNone = false;
+      if (targetActor.statuses.has('totalCover')) {
+        await targetActor.toggleStatusEffect('totalCover', { active: false });
+        await targetActor.toggleStatusEffect('cover', { active: true });
+      } else if (targetActor.statuses.has('cover')) {
+        await targetActor.toggleStatusEffect('cover', { active: false });
+        coverReducedToNone = true;
+      } else {
+        coverReducedToNone = true;
+      }
+
+      if (coverReducedToNone && result.damageValue) {
+        result.damageValue += 1;
       }
     }
   }
@@ -1053,6 +1418,10 @@ export class Dice {
       const success = multiplier > 0;
       // Only a resolved target actor (not a flat @Check[dif=...] entry) can take Health damage.
       const canApplyDamage = success && entry.targetUuid && checkContext.damageValue;
+      // Trigger Happy - an independent compare against the same roll total, not gated on
+      // `success` above (RAW: "...in addition to their Toughness or Evasion").
+      const frightened = checkContext.triggerHappy && entry.targetUuid && entry.willpowerDifficulty != null
+        && computeMultiplier(roll.total, entry.willpowerDifficulty) > 0;
 
       return {
         name: entry.name,
@@ -1066,11 +1435,14 @@ export class Dice {
         damageTypeLabel: checkContext.damageType ? this._localize(E20.damageTypes[checkContext.damageType]) : null,
         criticalOptions: canApplyDamage ? criticalOptions : [],
         isMightMelee: canApplyDamage ? checkContext.isMightMelee : false,
+        frightened,
       };
     });
 
     await this._applyImmovableObjectImmunity(results);
-    await this._applyPlatePiercingVehicleDamage(actor, item, results);
+    await this._applyPlatePiercingVehicleDamage(actor, results, checkContext);
+    this._applyEmptyTheMag(results, checkContext);
+    await this._applyNowhereIsSafe(actor, results, checkContext);
 
     // Debilitating Strike (16th level): "after hitting a target with your sneak attack, they
     // suffer a Snag on their first Skill Test or attack on their next turn" - flagged by
@@ -1084,6 +1456,19 @@ export class Dice {
           const targetActor = await fromUuid(result.targetUuid);
           if (targetActor) {
             await markDebilitated(targetActor);
+          }
+        }
+      }
+    }
+
+    // Trigger Happy - result.frightened is its own independent compare (see the results map
+    // above), not gated on result.success, so this loop checks it separately.
+    if (checkContext.triggerHappy) {
+      for (const result of results) {
+        if (result.frightened && result.targetUuid) {
+          const targetActor = await fromUuid(result.targetUuid);
+          if (targetActor) {
+            await targetActor.toggleStatusEffect('frightened', { active: true });
           }
         }
       }

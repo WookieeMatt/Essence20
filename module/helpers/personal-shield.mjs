@@ -18,11 +18,12 @@ const SHIELD_UPGRADE_ID = `${GI_JOE_CRB}ep0OFsU1QIuRpHeR`;
 
 /**
  * Whether the given Role Points Item is GI Joe's own Personal Shield grant, not just some other
- * Role's defenseBonus Item.
+ * Role's defenseBonus Item. Exported for helpers/shield-modulation.mjs, which needs to recognize
+ * this same Item from the actor sheet's own Activate click - see that file's own doc comment.
  * @param {Item} rolePoints
  * @returns {Boolean}
  */
-function _isPersonalShieldItem(rolePoints) {
+export function isPersonalShieldItem(rolePoints) {
   if (!rolePoints) {
     return false;
   }
@@ -42,7 +43,7 @@ function _isPersonalShieldItem(rolePoints) {
  */
 export function isPersonalShieldActive(actor) {
   const rolePoints = actor._getBaseRolePoints?.();
-  return _isPersonalShieldItem(rolePoints) && !!rolePoints.system.isActive;
+  return isPersonalShieldItem(rolePoints) && !!rolePoints.system.isActive;
 }
 
 /**
@@ -72,7 +73,7 @@ export function getShieldUpgradeBonus(targetActor, defenseType) {
     }
 
     const shieldRolePoints = token.actor._getBaseRolePoints?.();
-    if (!_isPersonalShieldItem(shieldRolePoints) || !shieldRolePoints.system.isActive) {
+    if (!isPersonalShieldItem(shieldRolePoints) || !shieldRolePoints.system.isActive) {
       continue;
     }
 
