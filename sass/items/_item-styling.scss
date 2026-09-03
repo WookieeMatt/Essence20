@@ -280,13 +280,13 @@
 // Perk sheet's Reroll Cost fields, e.g. "system.powers.personal.value") - italic plus a color
 // mixed lighter than --theme-text-color itself (not the separate muted-text token, which isn't
 // necessarily lighter, just a different tone) makes hint text read as a hint without a color
-// swap between themes - blending toward white lightens dark-mode's #aaa text same as it lightens
+// swap between themes - blending toward black darkens dark-mode's #aaa text same as it darkens
 // light-mode's #222, so one rule covers both instead of a per-theme override. font-weight: 300
 // overrides .essence20.application's own sheet-wide bold (_global-windows.scss) - inherited bold
-// placeholder text read as too close to a real, entered value alongside the lighter color alone.
+// placeholder text read as too close to a real, entered value alongside the lighter weight alone.
 .essence20 .item-field input::placeholder,
 .essence20 .item-field textarea::placeholder {
-  color: color-mix(in srgb, var(--theme-text-color) 35%, white 65%);
+  color: color-mix(in srgb, var(--theme-text-color) 65%, black 35%);
   opacity: 1;
   font-style: italic;
   font-weight: 300;
