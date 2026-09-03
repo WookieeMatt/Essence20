@@ -1062,29 +1062,6 @@ export class Dice {
   }
 
   /**
-   * Checks whether the actor has taken Expertise (or its PR-line printing, Aptitude Augmenter's
-   * sibling text - see EXPERTISE_PERK_IDS) scoped to the given skill, granting downshift
-   * immunity on Skill Tests with it. Matches on the granted Perk's own compendium source
-   * (module/sheet-handlers/perk-handler.mjs's own established idiom for "which compendium Perk
-   * is this actor-embedded item an instance of") and its chosen skill (system.choice, stamped by
-   * that same file's onPerkDrop when the 'skills' choiceType selection was made).
-   * @param {Actor} actor   The actor performing the roll.
-   * @param {String} skill   The skill being rolled.
-   * @returns {Boolean}
-   * @private
-   */
-  _hasExpertiseDownshiftImmunity(actor, skill) {
-    if (!skill) {
-      return false;
-    }
-
-    return actor.items.some(actorItem =>
-      actorItem.type == 'perk'
-      && EXPERTISE_PERK_IDS.includes(actorItem._stats?.compendiumSource)
-      && actorItem.system.choice == skill);
-  }
-
-  /**
    * Computes the dice shift bonus from Table 10-2: Size Class Combat Adjustment Matrix.
    * The table's values reduce to a simple rule: the shift equals half the distance
    * (rounded down) between the two Size Classes on the actorSizes ladder, applied as a
