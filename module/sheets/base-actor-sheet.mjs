@@ -5,6 +5,7 @@ const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
 import StatEditor from "../apps/stat-editor.mjs";
+import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
 import { applyThemeClass } from "../settings.js";
 import {
   onCreateActiveEffect,
@@ -20,7 +21,9 @@ import { prepareSystemActors,
   onSystemActorsDelete,
   onVehicleRoleUpdate,
 } from "../sheet-handlers/vehicle-handler.mjs";
-import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { onActivatePowerInfusion, onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
+import { onActivateSnortleAtTheSpooky } from "../helpers/snortle-at-the-spooky.mjs";
+import { onActivateConsummatePerformer } from "../helpers/consummate-performer.mjs";
 import { onTransform } from "../sheet-handlers/transformer-handler.mjs";
 import {
   onEditMorphToughnessBonus,
@@ -44,9 +47,12 @@ import {
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 
-export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     actions: {
+      activatePowerInfusion: this.#onActivatePowerInfusion,
+      activateSnortleAtTheSpooky: this.#onActivateSnortleAtTheSpooky,
+      activateConsummatePerformer: this.#onActivateConsummatePerformer,
       bonusEdit: this.#onEditMorphToughnessBonus,
       createEffect: this.#createActiveEffect,
       deleteEffect: this.#deleteActiveEffect,
@@ -824,6 +830,18 @@ export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorShe
 
   static #onMorph() {
     onMorph(this.document);
+  }
+
+  static #onActivatePowerInfusion(event) {
+    onActivatePowerInfusion(event);
+  }
+
+  static #onActivateSnortleAtTheSpooky(event) {
+    onActivateSnortleAtTheSpooky(event);
+  }
+
+  static #onActivateConsummatePerformer(event) {
+    onActivateConsummatePerformer(event);
   }
 
   static #onTransform() {

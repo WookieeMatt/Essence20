@@ -4,6 +4,12 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDelete, onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
+import {
+  actorHadMagicalBeforeGrant,
+  actorHasPrincessOfLaughter,
+  applySpellcastingUpshift,
+  roleGrantsPrincessOfLaughter,
+} from "../helpers/princess-of-laughter.mjs";
 
 const MORPHIN_TIME_PERK_ID = "Compendium.essence20.pr_crb.Item.UFMTHB90lA9ZEvso";
 
@@ -212,7 +218,18 @@ export async function setRoleValues(role, actor, newLevel=null, previousLevel=nu
   const lastPerkLevel = previousPerkLevel ?? previousLevel;
   if (newLevel && previousLevel && newLevel > previousLevel || (!newLevel && !previousLevel)) {
     // Drop or level up
+    // MLP CRB "Princess of Laughter" (p.86-87): "If you already have Magical, you gain an
+    // ongoing upshift 1 to Spellcasting" - "already have" must be checked BEFORE this exact
+    // grant also hands out a fresh copy of Magical alongside Princess of Laughter itself. See
+    // helpers/princess-of-laughter.mjs's own doc comment.
+    const grantsPrincessOfLaughter = roleGrantsPrincessOfLaughter(role) && !actorHasPrincessOfLaughter(actor);
+    const hadMagicalBeforeGrant = grantsPrincessOfLaughter && actorHadMagicalBeforeGrant(actor);
+
     await createItemCopies(role.system.items, actor, "perk", role, lastPerkLevel, currentPerkLevel);
+
+    if (grantsPrincessOfLaughter && hadMagicalBeforeGrant && actorHasPrincessOfLaughter(actor)) {
+      await applySpellcastingUpshift(actor);
+    }
   } else {
     // Level down
     await deleteAttachmentsForItem(role, actor, lastPerkLevel, currentPerkLevel);

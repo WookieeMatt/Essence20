@@ -15,10 +15,11 @@ import { Essence20ZordActorSheet } from "./sheets/zord-sheet.mjs";
 import { Essence20ItemSheet } from "./sheets/item-sheet.mjs";
 // Import StoryPoints
 import { getPointsName, StoryPoints } from "./apps/story-points.mjs";
+import { handleStoryPointSpendRequest } from "./helpers/story-points.mjs";
 // Import Compendium Browser
 import Essence20CompendiumBrowser from "./apps/compendium-browser.mjs";
 // Import helper/utility classes and constants.
-import { applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
+import { addConsummatePerformerButton, addRerollButtons, applyChatMessageSystemColor, attachCheckCardListeners, hideDifficultyForNonGm, highlightCriticalSuccessFailure } from "./chat.mjs";
 import { syncSourcebookOwnership } from "./helpers/compendium-browser.mjs";
 import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
@@ -130,8 +131,9 @@ Hooks.once("init", async function () {
     enricher: enrichCheck,
   });
 
-  // Register System Data Model
+  // Register System Data Models
   CONFIG.Actor.dataModels = data.actor.config;
+  CONFIG.ActiveEffect.dataModels = data.effect.config;
   CONFIG.Item.dataModels = data.item.config;
 
   // Register System Settings
@@ -208,9 +210,17 @@ Hooks.once("init", async function () {
 
   registerSettings();
 
-  // Clients (players) listen on the socket to update the UI whenever the GM changes values
+  // Clients (players) listen on the socket to update the UI whenever the GM changes values, and
+  // (GI Joe CRB "In My Sights") a GM's own client listens for a PC's Story Point spend request -
+  // see helpers/story-points.mjs's own doc comment for why that request has to go over the
+  // socket at all. The tracker window being closed (game.StoryPointsTracker is then null) used
+  // to crash this handler outright on an ordinary sync message; that's now handled too.
   game.socket.on("system.essence20", (data) => {
-    game.StoryPointsTracker.handleStoryPointSignal(data);
+    if (data.action === "spendStoryPoints") {
+      handleStoryPointSpendRequest(data);
+    } else {
+      game.StoryPointsTracker?.handleStoryPointSignal(data);
+    }
   });
 
   // Preload Handlebars templates.
@@ -437,6 +447,8 @@ Hooks.on("renderItemDirectory", addCompendiumBrowserFooterButton);
 
 Hooks.on("renderChatMessageHTML", (app, html, data) => {
   highlightCriticalSuccessFailure(app, html, data);
+  addRerollButtons(app, html);
+  addConsummatePerformerButton(app, html);
   attachCheckCardListeners(app, html);
   hideDifficultyForNonGm(app, html);
   applyChatMessageSystemColor(app, html);

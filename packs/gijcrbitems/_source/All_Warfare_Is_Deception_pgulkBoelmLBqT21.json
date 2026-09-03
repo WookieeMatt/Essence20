@@ -12,6 +12,14 @@
       "page": 71
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "skillDice",
+      "skills": ["deception", "infiltration"],
+      "maxUses": 1,
+      "reset": "scene"
+    },
     "selectionLimit": 1,
     "type": "role"
   },

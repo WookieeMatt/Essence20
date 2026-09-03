@@ -863,8 +863,79 @@ E20.perkChoiceTypes = {
   movement: "E20.PerkChoiceMovement",
   perks: "E20.PerkChoicePerks",
   senses: "E20.PerkChoiceSenses",
+  // MLP/PR CRB "Expertise", PR CRB "Aptitude Augmenter" (Grid Tech I) - "Choose a Skill... for
+  // this Perk to apply to", takeable multiple times, each time for a different skill. Drives
+  // system.reroll.skills (module/data/reroll-schema.mjs) on the granted Perk instance - see
+  // sheet-handlers/perk-handler.mjs#onPerkDrop.
+  skills: "E20.PerkChoiceSkills",
 };
 preLocalize("perkChoiceTypes");
+
+E20.rerollModes = {
+  all: "E20.RerollModeAll",
+  ones: "E20.RerollModeOnes",
+  onesAndTwos: "E20.RerollModeOnesAndTwos",
+  single: "E20.RerollModeSingle",
+};
+preLocalize("rerollModes");
+
+E20.rerollTargets = {
+  allDice: "E20.RerollTargetAllDice",
+  anyDie: "E20.RerollTargetAnyDie",
+  skillDice: "E20.RerollTargetSkillDice",
+  // GI Joe CRB "Skilled Under Pressure" (Origin Benefit), GI Joe/Transformers CRB "Veteran"
+  // (General Perk): both reroll the base d20 term specifically, never a skill die - there's
+  // always exactly one d20 term in a roll (the Edge/Snag pair is a single 2d20kh/2d20kl term,
+  // not two), so unlike anyDie this never needs a die-picker prompt.
+  d20: "E20.RerollTargetD20",
+};
+preLocalize("rerollTargets");
+
+E20.rerollResets = {
+  none: "E20.RerollResetNone",
+  scene: "E20.RerollResetScene",
+  day: "E20.RerollResetDay",
+  // Transformers CRB p.? "Veteran" (General Perk): "Three times per MISSION, you can reroll a
+  // d20 on a Skill Test" - a mission is this game line's own encounter-spanning session unit,
+  // distinct from a single scene. There's no existing "current mission" concept anywhere else in
+  // this codebase to key off, so this reset bucket falls back to a manual GM-cleared flag - see
+  // helpers/reroll.mjs's own getRerollResetBucket for the "no automatic boundary" caveat.
+  mission: "E20.RerollResetMission",
+  // GI Joe CRB "In My Sights" (Infantry, p.78): "Once per combat..." - bucketed on
+  // game.combat?.id (helpers/reroll.mjs's own getRerollResetBucket), a real, automatically-
+  // bounded unit unlike "mission" above. Used outside an active Combat encounter (game.combat
+  // is then null) shares one bucket rather than being unlimited, since "once per combat" implies
+  // this is meant to apply during one.
+  combat: "E20.RerollResetCombat",
+};
+preLocalize("rerollResets");
+
+// A small, explicit set of conditions a reroll grant can require beyond simple usage-counting -
+// deliberately NOT a generic expression evaluator (this system doesn't have one, and every other
+// Perk-specific check in this codebase is a hardcoded, named condition rather than free-form
+// logic - see dice.mjs's own dozens of Perk checks for the established idiom this follows).
+E20.rerollConditions = {
+  none: "E20.RerollConditionNone",
+  // Power Rangers CRB p.41 "Power Infusion": "...while Morphed..."
+  morphed: "E20.RerollConditionMorphed",
+  // GI Joe/Transformers CRB "Veteran" (General Perk): "...as long as you aren't suffering a
+  // Snag." Checked against the triggering roll's own Snag state (helpers/reroll.mjs's
+  // rollContext, stashed on the chat message by dice.mjs) rather than the actor's current
+  // condition, since a Snag is a property of one specific roll, not standing actor state.
+  notSnagged: "E20.RerollConditionNotSnagged",
+  // PR CRB "Weapon Mastery" (Red Ranger, p.52): "...an attack you make with your Power
+  // Weapon..." Checked against the attacking weaponEffect's own parent weapon having the
+  // existing "powerWeapon" weaponTrait (a GM/player checks it via that weapon's own Traits
+  // selector, same as any other trait - no dedicated field), stashed into the roll's context
+  // the same way as skill/essence/snag.
+  powerWeapon: "E20.RerollConditionPowerWeapon",
+  // MLP CRB p.86 "Cheer" (Role Feature): "...to reroll a FAILED Performance Skill Test."
+  // Checked against the triggering roll's own outcome (rollContext.rollFailed, set only for a
+  // vs-Difficulty check - a plain skill roll with no Difficulty to fail against never sets it,
+  // so this condition reads as unmet rather than assuming success either way).
+  rollFailed: "E20.RerollConditionRollFailed",
+};
+preLocalize("rerollConditions");
 
 E20.senses = {
   hearing: "E20.SenseHearing",
@@ -996,6 +1067,23 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_blinded.svg',
     id: 'blinded',
     name: 'E20.StatusBlinded',
+  },
+  {
+    // MLP CRB "Laughtracting" (p.86): "...they can't use any Free actions on their next turn."
+    // No existing status icon fits this narrowly - reuses status_impaired's art rather than
+    // adding new assets, same as cantTakeMoveActions below.
+    img: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
+    id: 'cantTakeFreeActions',
+    name: 'E20.StatusCantTakeFreeActions',
+  },
+  {
+    // MLP CRB "Distraughter" (p.86): extends Laughtracting - "...can't use a Move action this
+    // round." Bookkeeping-only, like every other status here - this system has no enforced
+    // action economy to gate against, so nothing else reads this status; see the Laughtracting/
+    // Distraughter Perk items themselves (packs/mlpcrbitems/_source) for the ability text.
+    img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
+    id: 'cantTakeMoveActions',
+    name: 'E20.StatusCantTakeMoveActions',
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_deafened.svg',

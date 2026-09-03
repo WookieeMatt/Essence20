@@ -1,9 +1,10 @@
 ﻿import { _powerCountUpdate } from "../sheet-handlers/power-handler.mjs";
 import { getFormData } from "../helpers/application.mjs";
 import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class PowerCostSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class PowerCostSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(actor, power, maxPower, powerType, title){
     super();
     this._actor = actor;

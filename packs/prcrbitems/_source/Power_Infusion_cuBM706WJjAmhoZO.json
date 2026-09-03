@@ -18,6 +18,13 @@
     "advances": {
       "canAdvance": true,
       "type": "rerolls"
+    },
+    "reroll": {
+      "cost": {
+        "resourcePath": "system.powers.personal.value",
+        "amount": 1
+      },
+      "condition": "morphed"
     }
   },
   "effects": [],

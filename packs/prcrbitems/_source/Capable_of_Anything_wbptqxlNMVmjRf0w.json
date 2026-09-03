@@ -10,6 +10,14 @@
       "page": 27
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "allDice",
+      "recursive": false,
+      "maxUses": 1,
+      "reset": "scene"
+    },
     "selectionLimit": 1,
     "type": "origin"
   },

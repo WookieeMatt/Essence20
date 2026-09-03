@@ -1,7 +1,189 @@
+import { E20 } from "./helpers/config.mjs";
 import { _isCritIsFumble, applyDamage } from "./helpers/combat.mjs";
 import { computeSystemColorVars } from "./helpers/actor.mjs";
+import {
+  applyReroll,
+  canMeetRerollCondition,
+  canMeetRerollScope,
+  canUseReroll,
+  consumeRerollUsage,
+  getRerollConfigs,
+  hasEligibleRerollTarget,
+  hasRerollCost,
+  payRerollCost,
+  rerollModeLabel,
+} from "./helpers/reroll.mjs";
+import { isGmConnected } from "./helpers/story-points.mjs";
+import { claimConsummatePerformer } from "./helpers/consummate-performer.mjs";
+
+// {skill, essence, snag, isPowerWeaponAttack, rollFailed, canCritD2} stashed on the message by
+// dice.mjs#rollSkill/combat.mjs#buildCheckChatData - see
+// helpers/reroll.mjs#canMeetRerollScope/canMeetRerollCondition's own doc comments.
+function getRerollContext(message) {
+  return {
+    skill: message.flags?.essence20?.skill,
+    essence: message.flags?.essence20?.essence,
+    snag: message.flags?.essence20?.snag,
+    isPowerWeaponAttack: message.flags?.essence20?.isPowerWeaponAttack,
+    rollFailed: message.flags?.essence20?.rollFailed,
+    canCritD2: message.flags?.essence20?.canCritD2,
+  };
+}
 
 export { _isCritIsFumble };
+
+async function rerollMessage(message, config) {
+  const actor = ChatMessage.getSpeakerActor(message.speaker);
+  if (!actor || !message.rolls?.length) {
+    return;
+  }
+
+  // Every gate is checked BEFORE anything is consumed, so cancelling the die-picker dialog (or
+  // failing a precondition) never burns a limited-use reroll or spends its resource cost.
+  const context = getRerollContext(message);
+  const sourceKey = `${config.sourceType}:${config.source}`;
+  if (!(await canUseReroll(actor, config, sourceKey))) {
+    ui.notifications.warn(game.i18n.localize("E20.RerollMaxUsesReached"));
+    return;
+  }
+
+  if (!canMeetRerollScope(config, context)) {
+    ui.notifications.warn(game.i18n.localize("E20.RerollScopeNotMet"));
+    return;
+  }
+
+  if (!canMeetRerollCondition(actor, config, context)) {
+    const conditionName = game.i18n.localize(E20.rerollConditions[config.condition] ?? config.condition);
+    ui.notifications.warn(game.i18n.format("E20.RerollConditionNotMet", { condition: conditionName }));
+    return;
+  }
+
+  if (!hasRerollCost(actor, config)) {
+    // A world-level Story Point cost (GI Joe CRB "In My Sights") can fail for a reason more
+    // specific than "insufficient resource" - nobody able to actually spend it is connected at
+    // all, distinct from there not being enough left. See helpers/story-points.mjs.
+    const noGmForStoryPoints = config.cost?.worldStoryPoints > 0 && !isGmConnected();
+    ui.notifications.warn(game.i18n.localize(noGmForStoryPoints ? "E20.RerollNoGmConnected" : "E20.RerollInsufficientResource"));
+    return;
+  }
+
+  // Reconstructed from the original roll's own serialized data (not Roll#clone(), which
+  // discards all dice results and starts a fresh, independently-random, unevaluated roll) so the
+  // reroll starts as an exact copy of what was actually rolled, ready for applyReroll() to
+  // selectively mutate only the targeted dice in place.
+  const rerolled = Roll.fromData(message.rolls[0].toJSON());
+  if (!(await applyReroll(rerolled, config))) {
+    return;
+  }
+
+  await consumeRerollUsage(actor, config, sourceKey);
+  await payRerollCost(actor, config);
+
+  const mode = config.mode ?? "all";
+  const label = `${actor.name}: ${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(rerollModeLabel(mode))})`;
+  // Preserves the original roll's own canCritD2 (e.g. a Perk that auto-set crit-on-d2 on the
+  // attack roll), which otherwise silently vanished on every reroll's own posted message - and
+  // forces it on for a grant that adds it itself (GI Joe CRB "In My Sights").
+  const canCritD2 = !!context.canCritD2 || !!config.grantsCanCritD2;
+  rerolled.toMessage({
+    speaker: message.speaker,
+    flavor: label,
+    rollMode: game.settings.get("core", "rollMode"),
+    flags: { essence20: { canCritD2, rerollConfig: config } },
+  });
+}
+
+export const addRerollButtons = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
+    return;
+  }
+
+  const actor = ChatMessage.getSpeakerActor(message.speaker);
+  // Scope (skill/Essence) mismatch and having nothing eligible to reroll (e.g. a "reroll 1s"
+  // grant when nothing on this roll shows a 1) are both permanent, structural facts about this
+  // specific chat message - unlike usage/cost/condition (checked at click-time in
+  // rerollMessage, since those can be transient), showing a button that could never do anything
+  // here would just be confusing, so both are filtered out at render time instead.
+  const context = getRerollContext(message);
+  const roll = message.rolls[0];
+  const configs = getRerollConfigs(actor)
+    .filter(config => canMeetRerollScope(config, context))
+    .filter(config => hasEligibleRerollTarget(roll, config));
+  if (!configs.length) {
+    return;
+  }
+
+  // Placed as a sibling AFTER the whole .dice-roll block (formula + tooltip + total,
+  // templates/dice/roll.hbs in Foundry core) rather than appended INSIDE it - appending inside
+  // put the button ahead of the total in practice, not below the roll the way it reads in the
+  // source. A dedicated .e20-reroll-buttons wrapper holds every eligible config's own button
+  // together, so multiple reroll grants on one roll stack under it instead of each finding its
+  // own spot.
+  const diceRoll = html.querySelector(".dice-roll");
+  const container = document.createElement("div");
+  container.className = "e20-reroll-buttons";
+  if (diceRoll?.parentElement) {
+    diceRoll.parentElement.insertBefore(container, diceRoll.nextSibling);
+  } else {
+    const fallback = html.querySelector(".message-content") ?? html;
+    if (!fallback) {
+      return;
+    }
+
+    fallback.appendChild(container);
+  }
+
+  for (const config of configs) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "e20-reroll-button";
+    button.textContent = `${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(rerollModeLabel(config.mode))})`;
+    button.title = game.i18n.localize("E20.RerollDiceTitle");
+    button.addEventListener("click", () => rerollMessage(message, config));
+    container.appendChild(button);
+  }
+};
+
+// MLP CRB "Consummate Performer" (Laugh Tactic, p.86) - offers to regain 1 Cheer once a
+// Consummate Performer attempt (see helpers/consummate-performer.mjs#activateConsummatePerformer)
+// has actually posted and its outcome is known, same "only known once the message exists"
+// reasoning as rollFailed itself. Called on the renderChatMessageHTML hook, alongside
+// addRerollButtons.
+export const addConsummatePerformerButton = function (message, html) {
+  if (!message.isRoll || !message.isContentVisible || !message.rolls?.length || !message.speaker) {
+    return;
+  }
+
+  if (!message.flags?.essence20?.consummatePerformer || message.flags?.essence20?.rollFailed !== false) {
+    return;
+  }
+
+  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
+  if (!target) {
+    return;
+  }
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "e20-consummate-performer-button";
+  button.textContent = game.i18n.localize("E20.ConsummatePerformerRegain");
+  if (message.getFlag("essence20", "consummatePerformerClaimed")) {
+    button.disabled = true;
+  } else {
+    button.addEventListener("click", async () => {
+      const actor = ChatMessage.getSpeakerActor(message.speaker);
+      if (!actor) {
+        return;
+      }
+
+      await claimConsummatePerformer(actor);
+      await message.setFlag("essence20", "consummatePerformerClaimed", true);
+      button.disabled = true;
+    });
+  }
+
+  target.appendChild(button);
+};
 
 // Wires up the check-card.hbs "Apply Damage"/critical-effect buttons. Called on the
 // renderChatMessageHTML hook. Each button carries its own data-key (e.g. "<uuid>:base" or

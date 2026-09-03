@@ -16,6 +16,22 @@ describe("getDefenseValue", () => {
     const actor = { system: {} };
     expect(getDefenseValue(actor, 'toughness')).toBe(0);
   });
+
+  test("ignoreArmor subtracts the armor component out of .total (PR 'Driving Strike')", () => {
+    const actor = { system: { isMorphed: false, defenses: { toughness: { total: 15, armor: 4 } } } };
+    expect(getDefenseValue(actor, 'toughness', { ignoreArmor: true })).toBe(11);
+    expect(getDefenseValue(actor, 'toughness')).toBe(15); // unaffected without the option
+  });
+
+  test("ignoreArmor subtracts the morphed component instead, while Morphed", () => {
+    const actor = { system: { isMorphed: true, defenses: { toughness: { total: 17, armor: 4, morphed: 6 } } } };
+    expect(getDefenseValue(actor, 'toughness', { ignoreArmor: true })).toBe(11);
+  });
+
+  test("ignoreArmor has no effect on an NPC/Vehicle/Zord's flat .value (no armor breakdown to subtract)", () => {
+    const actor = { system: { defenses: { toughness: { value: 12 } } } };
+    expect(getDefenseValue(actor, 'toughness', { ignoreArmor: true })).toBe(12);
+  });
 });
 
 describe("computeMultiplier", () => {

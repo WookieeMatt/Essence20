@@ -1,0 +1,82 @@
+{
+  "folder": "J2nYaT9wiAB9cSE3",
+  "name": "Comedy is Hard",
+  "type": "perk",
+  "_id": "P1ZrldoPSHbpEjzw",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 86
+    },
+    "prerequisite": "",
+    "selectionLimit": 3,
+    "type": "role"
+  },
+  "effects": [
+    {
+      "name": "Comedy is Hard",
+      "origin": "Compendium.essence20.mlp_crb.Item.P1ZrldoPSHbpEjzw",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "ComedyIsHard1",
+      "changes": [
+        {
+          "key": "system.health.bonus",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!P1ZrldoPSHbpEjzw.ComedyIsHard1"
+    }
+  ],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1788311924100,
+    "modifiedTime": 1788311924100,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!P1ZrldoPSHbpEjzw"
+}

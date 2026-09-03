@@ -2,6 +2,7 @@
 const { ContextMenu } = foundry.applications.ux;
 
 import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
@@ -78,7 +79,7 @@ async function _onObjectDelete(data, item) {
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheetV2) {
+export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicationMixin(DocumentSheetV2)) {
   /** @override */
   static DEFAULT_OPTIONS = {
     actions: {
@@ -236,6 +237,27 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
     } else {
       await setEntryAndAddItem(droppedItem, targetItem);
     }
+  }
+
+  /**
+   * system.reroll.skills (module/data/reroll-schema.mjs) is an ArrayField, but its sheet input
+   * (templates/item/details/perk.hbs) is a single free-text field so a Perk like "Survivalist"
+   * can list several scoped skills (e.g. "alertness, initiative, survival") without a bespoke
+   * multi-select widget. ArrayField#_cast doesn't split strings - passed through unchanged,
+   * "alertness, survival" would be cast to the single-element array ["alertness, survival"] and
+   * fail its own choices validation - so it's parsed into a real array here, before Foundry's own
+   * DocumentSheetV2#_prepareSubmitData validates and submits the form.
+   */
+  _prepareSubmitData(event, form, formData, updateData) {
+    const rawSkills = formData.object["system.reroll.skills"];
+    if (typeof rawSkills === "string") {
+      formData.object["system.reroll.skills"] = rawSkills
+        .split(",")
+        .map(skill => skill.trim())
+        .filter(Boolean);
+    }
+
+    return super._prepareSubmitData(event, form, formData, updateData);
   }
 
   /**

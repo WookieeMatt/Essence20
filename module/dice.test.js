@@ -148,7 +148,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null, { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
   });
 
   test("normal skill roll works with isSpecialized as false string", async () => {
@@ -176,7 +176,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null, { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
   });
 
   test("repeated normal skill roll", async () => {
@@ -200,7 +200,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.SkillAthletics", false, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRepeatText<br>E20.RollRollingFor E20.SkillAthletics", false, null, { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
     expect(dice._rollSkillHelper.mock.calls.length).toBe(2);
   });
 
@@ -229,7 +229,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 3d6 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null, { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
   });
 
   test("specialized skill roll", async () => {
@@ -258,7 +258,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false, null, { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
   });
 
   test("specialized standard skill roll", async () => {
@@ -286,7 +286,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor E20.SkillAthletics", false, null, { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
   });
 
   test("specialized skill roll via weapon effect", async () => {
@@ -332,6 +332,7 @@ describe("rollSkill", () => {
       isSpecialized: true,
       shiftUp: 0,
       shiftDown: 0,
+      drivingStrikeAvailable: false,
     };
     const expectedSkillDataset = {
       edge: false,
@@ -369,7 +370,7 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(datasetCopy, mockActor, null);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "E20.RollRollingFor Foo Specialization", false, null, { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
   });
 
   test("normal weapon effect skill roll", async () => {
@@ -410,7 +411,86 @@ describe("rollSkill", () => {
       "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br><b>E20.ItemDescription</b>:<br>",
       false,
       null,
+      { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: false, consummatePerformer: false },
+      false,
     );
+  });
+
+  test("weapon effect attack with a Power Weapon parent flags isPowerWeaponAttack", async () => {
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    const powerWeapon = { system: { itemAndUpgradeTraits: ['powerWeapon'] } };
+    const weaponEffect = {
+      name: 'Zeo Power Clubs Effect',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: {
+        classification: { skill: "athletics" },
+        damageType: "blunt",
+        damageValue: 1,
+      },
+    };
+    const powerWeaponActor = {
+      ...mockActor,
+      items: { get: id => (id === 'weapon1' ? powerWeapon : undefined), some: () => false },
+      getRollData: jest.fn(() => ({
+        skills: { athletics: { modifier: '0', shift: 'd20' } },
+      })),
+    };
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(dataset, powerWeaponActor, weaponEffect);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith(
+      'd20 + 0',
+      powerWeaponActor,
+      "<b>E20.RollTypeAttack</b> - Zeo Power Clubs Effect (E20.SkillAthletics)<br><b>E20.WeaponEffect</b> - 1 E20.DamageBlunt<br><b>E20.ItemDescription</b>:<br>",
+      false,
+      null,
+      { skill: 'athletics', essence: 'strength', snag: false, isPowerWeaponAttack: true, consummatePerformer: false },
+      false,
+    );
+  });
+
+  test("weapon effect attack with a parent that has other traits, but not Power Weapon, doesn't flag isPowerWeaponAttack", async () => {
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    const mundaneWeapon = { system: { itemAndUpgradeTraits: ['blunt', 'accurate'] } };
+    const weaponEffect = {
+      name: 'Standard Club',
+      type: 'weaponEffect',
+      flags: { essence20: { parentId: 'weapon1' } },
+      system: {
+        classification: { skill: "athletics" },
+        damageType: "blunt",
+        damageValue: 1,
+      },
+    };
+    const actor = {
+      ...mockActor,
+      items: { get: id => (id === 'weapon1' ? mundaneWeapon : undefined), some: () => false },
+      getRollData: jest.fn(() => ({
+        skills: { athletics: { modifier: '0', shift: 'd20' } },
+      })),
+    };
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(dataset, actor, weaponEffect);
+    const rollContext = dice._rollSkillHelper.mock.calls[0][5];
+    expect(rollContext.isPowerWeaponAttack).toBe(false);
   });
 
   test("normal spell skill roll", async () => {
@@ -448,7 +528,178 @@ describe("rollSkill", () => {
     dice._rollSkillHelper = jest.fn();
 
     await dice.rollSkill(dataset, mockActor, spell);
-    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>", false, null);
+    expect(dice._rollSkillHelper).toHaveBeenCalledWith('d20 + 0', mockActor, "<b>E20.RollTypeSpell</b> - Barreling Beam (E20.SkillSpellcasting)<br><b>E20.ItemDescription</b> - Some description<br>", false, null, { skill: 'spellcasting', essence: 'any', snag: false, isPowerWeaponAttack: false, consummatePerformer: false }, false);
+  });
+
+  test("Expertise cancels one point of downshift on its scoped skill", async () => {
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+    });
+    const expertiseActor = {
+      ...mockActor,
+      // Impaired (helpers via _getAutomaticCombatModifiers) applies to any roll and imposes a
+      // downshift regardless of item/target - used here purely as a convenient downshift
+      // source, unrelated to Expertise itself, so essenceShifts (mutated by a later test in
+      // this describe block via a shallow actor copy) doesn't need to be touched.
+      statuses: new Set(['impaired']),
+      items: [{
+        type: 'perk',
+        _stats: { compendiumSource: 'Compendium.essence20.mlp_crb.Item.06cSi4Q1ztUPXWtw' },
+        system: { choice: 'athletics' },
+      }],
+      getRollData: jest.fn(() => ({
+        skills: {
+          athletics: {
+            modifier: '0',
+            shift: 'd20',
+          },
+        },
+      })),
+    };
+    dice._rollSkillHelper = jest.fn();
+
+    const expectedDataset = {
+      ...dataset,
+      isSpecialized: false,
+      shiftUp: 0,
+      shiftDown: 0, // would be 1 from Impaired alone - Expertise cancels it back to 0
+      drivingStrikeAvailable: false,
+    };
+
+    await dice.rollSkill(dataset, expertiseActor, null);
+    expect(rollDialog.getSkillRollOptions).toHaveBeenCalledWith(
+      expectedDataset,
+      expect.any(Object),
+      expertiseActor,
+    );
+  });
+
+  function makeDrivingStrikeWeaponEffect() {
+    return {
+      name: 'Psycho Blade',
+      type: 'weaponEffect',
+      flags: {},
+      system: {
+        classification: { skill: 'athletics', style: 'melee' },
+        damageType: 'blunt',
+        damageValue: 1,
+        defenseType: 'none',
+      },
+    };
+  }
+
+  function makeDrivingStrikeActor({ hasPerk = true, personalPower = 1, perkViaFlags = false } = {}) {
+    return {
+      ...mockActor,
+      items: hasPerk
+        ? [{
+          type: 'perk',
+          flags: perkViaFlags ? { core: { sourceId: 'Compendium.essence20.finster_s_monster_matic_cookbook.Item.bP55ciUhiMJzyTGC' } } : {},
+          _stats: perkViaFlags ? {} : { compendiumSource: 'Compendium.essence20.finster_s_monster_matic_cookbook.Item.bP55ciUhiMJzyTGC' },
+        }]
+        : [],
+      system: { ...mockActor.system, powers: { personal: { value: personalPower } } },
+      update: jest.fn(),
+      getRollData: jest.fn(() => ({
+        skills: { athletics: { modifier: '0', shift: 'd20' } },
+      })),
+    };
+  }
+
+  test("Driving Strike is offered on a melee attack when the actor has it and can afford it", async () => {
+    const rollDialog = createMockRollDialog();
+    const actor = makeDrivingStrikeActor();
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(dataset, actor, makeDrivingStrikeWeaponEffect());
+    expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ drivingStrikeAvailable: true });
+  });
+
+  test("Driving Strike is offered when the Perk was granted via a Role's items map (flags.core.sourceId) - e.g. Path of Flame's own grant, not just a manual drop", async () => {
+    const rollDialog = createMockRollDialog();
+    const actor = makeDrivingStrikeActor({ perkViaFlags: true });
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(dataset, actor, makeDrivingStrikeWeaponEffect());
+    expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ drivingStrikeAvailable: true });
+  });
+
+  test("Driving Strike is not offered without the Perk, without Personal Power, or off a non-melee roll", async () => {
+    const rollDialog = createMockRollDialog();
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(dataset, makeDrivingStrikeActor({ hasPerk: false }), makeDrivingStrikeWeaponEffect());
+    expect(rollDialog.getSkillRollOptions.mock.calls[0][0]).toMatchObject({ drivingStrikeAvailable: false });
+
+    await dice.rollSkill(dataset, makeDrivingStrikeActor({ personalPower: 0 }), makeDrivingStrikeWeaponEffect());
+    expect(rollDialog.getSkillRollOptions.mock.calls[1][0]).toMatchObject({ drivingStrikeAvailable: false });
+
+    await dice.rollSkill(dataset, makeDrivingStrikeActor(), null);
+    expect(rollDialog.getSkillRollOptions.mock.calls[2][0]).toMatchObject({ drivingStrikeAvailable: false });
+  });
+
+  test("choosing Driving Strike's reroll option spends 1 Personal Power and flags the reroll", async () => {
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+      drivingStrike: 'reroll',
+    });
+    const actor = makeDrivingStrikeActor();
+    dice._rollSkillHelper = jest.fn();
+
+    await dice.rollSkill(dataset, actor, makeDrivingStrikeWeaponEffect());
+
+    expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
+    expect(dice._rollSkillHelper.mock.calls[0][6]).toBe(true); // drivingStrikeReroll
+  });
+
+  test("choosing Driving Strike's ignore-armor option reduces the target's Defense by its armor component", async () => {
+    const rollDialog = createMockRollDialog();
+    rollDialog.getSkillRollOptions.mockReturnValue({
+      canCritD2: false,
+      edge: false,
+      snag: false,
+      shiftUp: 0,
+      shiftDown: 0,
+      timesToRoll: 1,
+      drivingStrike: 'ignoreArmor',
+      defenseType: 'toughness',
+    });
+    const actor = makeDrivingStrikeActor();
+    const targetActor = {
+      isMorphed: false,
+      system: {
+        isMorphed: false,
+        defenses: { toughness: { total: 15, armor: 4 } },
+      },
+      name: 'Target',
+      uuid: 'Actor.target1',
+    };
+    const targetsList = [{ actor: targetActor }];
+    targetsList.first = () => undefined; // _getAutomaticCombatModifiers's own unrelated lookup
+    global.game.user.targets = targetsList;
+    dice._rollSkillHelper = jest.fn();
+
+    try {
+      await dice.rollSkill(dataset, actor, makeDrivingStrikeWeaponEffect());
+
+      expect(actor.update).toHaveBeenCalledWith({ 'system.powers.personal.value': 0 });
+      const checkContext = dice._rollSkillHelper.mock.calls[0][4];
+      expect(checkContext.entries[0].difficulty).toBe(11); // 15 total - 4 armor
+    } finally {
+      global.game.user.targets = { first: jest.fn(() => undefined) };
+    }
   });
 
   test("essence-shifted skill roll with edge", async () => {
@@ -484,6 +735,7 @@ describe("rollSkill", () => {
       isSpecialized: false,
       shiftUp: 1,
       shiftDown: 2,
+      drivingStrikeAvailable: false,
     };
     const expectedSkillDataset = {
       edge: true,
@@ -1089,5 +1341,185 @@ describe("_getAutomaticCombatModifiers", () => {
 
     expect(dice._getAutomaticCombatModifiers(actor, meleeWeaponEffect))
       .toEqual({ shiftUp: 0, shiftDown: 0, edge: true, snag: true });
+  });
+});
+
+/* _hasExpertiseDownshiftImmunity */
+describe("_hasExpertiseDownshiftImmunity", () => {
+  function makeExpertisePerk(compendiumSource, choice) {
+    return {
+      type: 'perk',
+      _stats: { compendiumSource },
+      system: { choice },
+    };
+  }
+
+  test("false with no skill to check", () => {
+    const actor = { items: [] };
+    expect(dice._hasExpertiseDownshiftImmunity(actor, null)).toBe(false);
+  });
+
+  test("false for an actor with no Expertise at all", () => {
+    const actor = { items: [] };
+    expect(dice._hasExpertiseDownshiftImmunity(actor, 'athletics')).toBe(false);
+  });
+
+  test("true when the actor has Expertise (either printing) scoped to the rolled skill", () => {
+    const mlpActor = {
+      items: [makeExpertisePerk('Compendium.essence20.mlp_crb.Item.06cSi4Q1ztUPXWtw', 'athletics')],
+    };
+    expect(dice._hasExpertiseDownshiftImmunity(mlpActor, 'athletics')).toBe(true);
+
+    const prActor = {
+      items: [makeExpertisePerk('Compendium.essence20.pr_crb.Item.uoCQgYOCeIQNzF0q', 'targeting')],
+    };
+    expect(dice._hasExpertiseDownshiftImmunity(prActor, 'targeting')).toBe(true);
+  });
+
+  test("false when Expertise is scoped to a different skill", () => {
+    const actor = {
+      items: [makeExpertisePerk('Compendium.essence20.mlp_crb.Item.06cSi4Q1ztUPXWtw', 'athletics')],
+    };
+    expect(dice._hasExpertiseDownshiftImmunity(actor, 'targeting')).toBe(false);
+  });
+
+  test("false for an unrelated perk, even one scoped to the right skill by coincidence", () => {
+    const actor = {
+      items: [makeExpertisePerk('Compendium.essence20.pr_crb.Item.zEXsqbXfA6hADBuh', 'athletics')],
+    };
+    expect(dice._hasExpertiseDownshiftImmunity(actor, 'athletics')).toBe(false);
+  });
+});
+
+/* _rollSkillHelper - Power Infusion banked reroll consumption */
+describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
+  class FakeDie {
+    constructor(faces, results) {
+      this.faces = faces;
+      this.results = results.map(r => ({ ...r }));
+      this.reroll = jest.fn(async () => {});
+    }
+    get values() {
+      return this.results.filter(r => r.active).map(r => r.result);
+    }
+  }
+
+  class FakeRoll {
+    constructor() {
+      this.dice = [new FakeDie(8, [{ result: 1, active: true }])];
+      this._total = FakeRoll.nextTotal ?? 10;
+    }
+    async evaluate() {}
+    get total() {
+      return this._total;
+    }
+    _evaluateTotal() {
+      return this._total;
+    }
+    async render() {
+      return '<div></div>';
+    }
+  }
+
+  let originalRoll;
+  let originalFoundry;
+  let originalGameSettings;
+  // A fresh instance, not the shared `dice` above - many earlier tests in this file do
+  // `dice._rollSkillHelper = jest.fn()`, which permanently shadows the real method on that one
+  // shared instance for the rest of the file's run. These tests need the real implementation.
+  let freshDice;
+
+  beforeAll(() => {
+    originalRoll = global.Roll;
+    originalFoundry = global.foundry;
+    originalGameSettings = global.game.settings;
+    global.foundry = {
+      ...global.foundry,
+      applications: { handlebars: { renderTemplate: jest.fn(async () => '') } },
+    };
+    global.game.settings = { get: jest.fn(() => 'roll') };
+    freshDice = new Dice(chatMessage, createMockRollDialog(), new Mocki18n());
+  });
+
+  afterAll(() => {
+    global.Roll = originalRoll;
+    global.foundry = originalFoundry;
+    global.game.settings = originalGameSettings;
+  });
+
+  function makeBankedActor(hasBankedReroll = true) {
+    const flags = hasBankedReroll ? { bankedReroll: { values: [1], source: 'Power Infusion' } } : {};
+    return {
+      getRollData: () => ({}),
+      getFlag: jest.fn((scope, key) => flags[key]),
+      unsetFlag: jest.fn(async (scope, key) => {
+        delete flags[key];
+      }),
+      _flags: flags,
+    };
+  }
+
+  const attackCheckContext = {
+    entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 15, showDifficulty: true }],
+    damageValue: null,
+    damageType: null,
+    effectName: 'Zeo Power Clubs Effect', // only set for a real weaponEffect attack
+    alternateEffects: [],
+  };
+
+  test("no banked charge: reroll is never touched", async () => {
+    global.Roll = FakeRoll;
+    FakeRoll.nextTotal = 5; // miss
+    const actor = makeBankedActor(false);
+
+    await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, attackCheckContext, {});
+
+    expect(actor.getFlag).toHaveBeenCalledWith('essence20', 'bankedReroll');
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
+  });
+
+  test("banked charge, attack still misses after the reroll: stays banked", async () => {
+    global.Roll = FakeRoll;
+    FakeRoll.nextTotal = 5; // below difficulty 15
+    const actor = makeBankedActor(true);
+
+    await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, attackCheckContext, {});
+
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
+  });
+
+  test("banked charge, attack succeeds: reroll applied and charge consumed", async () => {
+    global.Roll = FakeRoll;
+    FakeRoll.nextTotal = 20; // above difficulty 15
+    const actor = makeBankedActor(true);
+
+    await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, attackCheckContext, {});
+
+    expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'bankedReroll');
+  });
+
+  test("banked charge is ignored on a non-attack (flat Difficulty) check", async () => {
+    global.Roll = FakeRoll;
+    FakeRoll.nextTotal = 20;
+    const actor = makeBankedActor(true);
+    const flatCheckContext = { ...attackCheckContext, effectName: null };
+
+    await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, flatCheckContext, {});
+
+    expect(actor.getFlag).not.toHaveBeenCalled();
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
+  });
+
+  test("stashes rollFailed on the posted message's flags, for MLP 'Cheer' to key off", async () => {
+    global.Roll = FakeRoll;
+    chatMessage.create.mockClear();
+
+    FakeRoll.nextTotal = 20; // succeeds
+    await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, attackCheckContext, {});
+    expect(chatMessage.create.mock.calls[0][0].flags.essence20.rollFailed).toBe(false);
+
+    FakeRoll.nextTotal = 5; // fails (difficulty 15)
+    await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, attackCheckContext, {});
+    expect(chatMessage.create.mock.calls[1][0].flags.essence20.rollFailed).toBe(true);
   });
 });

@@ -10,6 +10,14 @@
       "page": 63
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "d20",
+      "recursive": false,
+      "maxUses": 0,
+      "reset": "none"
+    },
     "selectionLimit": 1,
     "type": "origin"
   },

@@ -12,6 +12,19 @@
       "page": 78
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "skillDice",
+      "skills": ["targeting"],
+      "recursive": false,
+      "reset": "combat",
+      "maxUses": 1,
+      "cost": {
+        "worldStoryPoints": 1
+      },
+      "grantsCanCritD2": true
+    },
     "selectionLimit": 1,
     "type": "role"
   },

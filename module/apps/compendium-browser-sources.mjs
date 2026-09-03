@@ -1,6 +1,7 @@
 import { applyThemeClass } from "../settings.js";
 import { getGroupedItemPacks, syncSourcebookOwnership } from "../helpers/compendium-browser.mjs";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -8,7 +9,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
  * the Compendium Browser. Reachable both from Foundry's Configure Settings menu and
  * from a button inside the Compendium Browser itself.
  */
-export default class CompendiumBrowserSourceConfig extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class CompendiumBrowserSourceConfig extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   static DEFAULT_OPTIONS = {
     id: "compendium-browser-sources",
     classes: ["essence20", "theme-wrapper", "compendium-browser-sources"],

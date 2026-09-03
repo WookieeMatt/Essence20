@@ -1,5 +1,6 @@
 import { applyThemeClass } from "../settings.js";
 import { computeEssenceSpend, getAnySkillAttributionStatus } from "../helpers/skill-picker.mjs";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 // Display order for the 4 real Essences' tally boxes and fieldsets - a 2x2 grid, Strength/Speed
@@ -26,7 +27,7 @@ const ESSENCE_GRID_ORDER = ["strength", "speed", "social", "smarts"];
  * close) so the essence-spend tally stays live as edits happen, without having to close and
  * reopen the window to see the effect.
  */
-export default class SkillPicker extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   /**
    * @param {Actor} actor The actor whose skills are being edited.
    */

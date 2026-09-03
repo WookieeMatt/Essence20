@@ -1,0 +1,37 @@
+{
+  "folder": "J2nYaT9wiAB9cSE3",
+  "name": "Send in the Clown",
+  "type": "perk",
+  "_id": "mQIYsp3Ur1WFpmze",
+  "img": "systems/essence20/assets/icons/items/perk.svg",
+  "system": {
+    "originalId": "",
+    "description": "",
+    "source": {
+      "book": "My Little Pony Core Rulebook",
+      "page": 86
+    },
+    "prerequisite": "",
+    "selectionLimit": 1,
+    "type": "role"
+  },
+  "effects": [],
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "ai0LSR3ikAGU2SmG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "essence20",
+    "systemVersion": "4.6.9",
+    "coreVersion": "13.344",
+    "createdTime": 1788311924100,
+    "modifiedTime": 1788311924100,
+    "lastModifiedBy": "ai0LSR3ikAGU2SmG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!mQIYsp3Ur1WFpmze"
+}

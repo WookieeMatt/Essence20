@@ -10,6 +10,13 @@
       "page": 96
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "single",
+      "target": "anyDie",
+      "maxUses": 1,
+      "reset": "day"
+    },
     "selectionLimit": 1,
     "type": "general"
   },

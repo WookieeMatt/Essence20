@@ -2,9 +2,10 @@
 import { getFormData } from "../helpers/application.mjs";
 import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class RollerSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class RollerSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(actor, choices, event, title){
     super();
     this._actor = actor;

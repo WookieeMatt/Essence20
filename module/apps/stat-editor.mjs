@@ -1,4 +1,5 @@
 import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -9,7 +10,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
  * actor type just stores a flat value/total per entry (no derived computation), so this edits
  * that value directly instead.
  */
-export default class StatEditor extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class StatEditor extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   /**
    * @param {Actor} actor The actor whose defenses/speeds are being edited
    * @param {"defense"|"speed"} statType Which panel this editor was opened from

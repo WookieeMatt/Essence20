@@ -10,6 +10,14 @@
       "page": 122
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "essence": "social",
+      "maxUses": 0,
+      "reset": "none"
+    },
     "selectionLimit": 1,
     "type": "general"
   },
