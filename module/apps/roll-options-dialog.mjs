@@ -1,5 +1,6 @@
 import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
@@ -7,7 +8,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
  * crit-on-2, times to roll). Resolves the Promise passed in by RollDialog.getSkillRollOptions
  * with either the processed form options, or { cancelled: true } if closed/cancelled.
  */
-export default class RollOptionsDialog extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(context, title, resolve) {
     super();
     this._context = context;

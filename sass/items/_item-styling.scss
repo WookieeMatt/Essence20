@@ -249,12 +249,42 @@
   border-bottom: none;
 }
 
-.essence20 .item-field label {
+// item-field-label wraps the <label> itself (plus an optional edit button, see
+// item/parts/sheet-field.hbs) - it's the actual flex ITEM of .item-field's own 2-column split,
+// not the bare <label> inside it. flex: 2 belongs here: a rule on the label alone (as this used
+// to read) has no effect on that outer split at all, since a nested element's own flex value
+// only ever governs its OWN children, never its ancestor's layout - every row's label column
+// was silently sized to its own text's content width instead of a shared column width, which is
+// why labels of different lengths visibly threw inputs out of alignment row to row.
+.essence20 .item-field .item-field-label {
   flex: 2;
+  // Overrides .align-center's own justify-content/text-align: center (item/parts/sheet-field.hbs
+  // carries both classes on this element) - .align-center's centering read fine back when this
+  // wrapper had no flex-basis of its own and just hugged its text, but now that it fills a real
+  // column width, centering left every label floating at a different spot depending on its own
+  // text length. Left-aligned reads as a real column of labels instead.
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.essence20 .item-field label {
   color: var(--theme-text-color);
 }
 
 .essence20 .item-field .item-field-inputs {
   flex: 1.5;
   justify-content: flex-end;
+}
+
+// Foundry core's own placeholder styling reads too close to real input text at a glance (see the
+// Perk sheet's Reroll Cost fields, e.g. "system.powers.personal.value") - italic plus a color
+// mixed lighter than --theme-text-color itself (not the separate muted-text token, which isn't
+// necessarily lighter, just a different tone) makes hint text read as a hint without a color
+// swap between themes - blending toward white lightens dark-mode's #aaa text same as it lightens
+// light-mode's #222, so one rule covers both instead of a per-theme override.
+.essence20 .item-field input::placeholder,
+.essence20 .item-field textarea::placeholder {
+  color: color-mix(in srgb, var(--theme-text-color) 70%, white 30%);
+  opacity: 1;
+  font-style: italic;
 }

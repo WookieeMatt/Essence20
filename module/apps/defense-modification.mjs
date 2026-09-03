@@ -1,7 +1,8 @@
 ﻿import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class DefenseModificationSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class DefenseModificationSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, prompt, title, selected) {
     super();
     this._choices = choices;

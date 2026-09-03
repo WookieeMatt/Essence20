@@ -190,6 +190,34 @@ input[type="number"], input[type="text"], select, textarea {
   border: 1px solid v.$border-color-dark;
 }
 
+// Sits below the whole .dice-roll block (chat.mjs#addRerollButtons inserts this wrapper as its
+// next sibling, not a child of it) so a roll's reroll option(s) read as "what you can do about
+// this result" rather than crowding the formula/total.
+.e20-reroll-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+// Same unreadable-default-button problem as apply-damage above (Foundry core's own near-black-
+// on-near-transparent button styling, built for light UI chrome, disappears against this
+// system's own dark chat-card background) - same fix, same tokens.
+.e20-reroll-button {
+  background: v.$input-color-dark;
+  color: v.$text-color-light;
+  border: 1px solid v.$border-color-light;
+  border-radius: 3px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.chat-message.theme-light .e20-reroll-button {
+  background: v.$input-color-light;
+  color: v.$text-color-dark;
+  border: 1px solid v.$border-color-dark;
+}
+
 .e20-check-critical-options {
   display: block;
   margin-top: 4px;

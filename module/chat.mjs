@@ -113,9 +113,24 @@ export const addRerollButtons = function (message, html) {
     return;
   }
 
-  const target = html.querySelector(".dice-roll") ?? html.querySelector(".message-content") ?? html;
-  if (!target) {
-    return;
+  // Placed as a sibling AFTER the whole .dice-roll block (formula + tooltip + total,
+  // templates/dice/roll.hbs in Foundry core) rather than appended INSIDE it - appending inside
+  // put the button ahead of the total in practice, not below the roll the way it reads in the
+  // source. A dedicated .e20-reroll-buttons wrapper holds every eligible config's own button
+  // together, so multiple reroll grants on one roll stack under it instead of each finding its
+  // own spot.
+  const diceRoll = html.querySelector(".dice-roll");
+  const container = document.createElement("div");
+  container.className = "e20-reroll-buttons";
+  if (diceRoll?.parentElement) {
+    diceRoll.parentElement.insertBefore(container, diceRoll.nextSibling);
+  } else {
+    const fallback = html.querySelector(".message-content") ?? html;
+    if (!fallback) {
+      return;
+    }
+
+    fallback.appendChild(container);
   }
 
   for (const config of configs) {
@@ -125,7 +140,7 @@ export const addRerollButtons = function (message, html) {
     button.textContent = `${game.i18n.localize("E20.RerollDice")} (${game.i18n.localize(rerollModeLabel(config.mode))})`;
     button.title = game.i18n.localize("E20.RerollDiceTitle");
     button.addEventListener("click", () => rerollMessage(message, config));
-    target.appendChild(button);
+    container.appendChild(button);
   }
 };
 

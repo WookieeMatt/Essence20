@@ -1,7 +1,8 @@
 ﻿import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class SheetOptions extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class SheetOptions extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(actor, ev) {
     super();
     this._ev = ev;

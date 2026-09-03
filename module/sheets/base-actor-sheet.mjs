@@ -5,6 +5,7 @@ const ActorSheetV2 = foundry.applications.sheets.ActorSheetV2;
 import SheetOptions from "../apps/sheet-options.mjs";
 import SkillPicker from "../apps/skill-picker.mjs";
 import StatEditor from "../apps/stat-editor.mjs";
+import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
 import { applyThemeClass } from "../settings.js";
 import {
   onCreateActiveEffect,
@@ -46,7 +47,7 @@ import {
 } from "../sheet-handlers/listener-item-handler.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 
-export class Essence20BaseActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsApplicationMixin(ActorSheetV2)) {
   static DEFAULT_OPTIONS = {
     actions: {
       activatePowerInfusion: this.#onActivatePowerInfusion,

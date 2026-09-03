@@ -2,6 +2,7 @@
 const { ContextMenu } = foundry.applications.ux;
 
 import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "../apps/serialize-form-submits.mjs";
 import { onManageSelectTrait } from "../helpers/traits.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
 import { setEntryAndAddItem } from "../sheet-handlers/attachment-handler.mjs";
@@ -78,7 +79,7 @@ async function _onObjectDelete(data, item) {
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheetV2) {
+export class Essence20ItemSheet extends serializeFormSubmits(HandlebarsApplicationMixin(DocumentSheetV2)) {
   /** @override */
   static DEFAULT_OPTIONS = {
     actions: {
@@ -239,24 +240,15 @@ export class Essence20ItemSheet extends HandlebarsApplicationMixin(DocumentSheet
   }
 
   /**
-   * system.reroll.values and system.reroll.skills (module/data/reroll-schema.mjs) are both
-   * ArrayFields, but their sheet inputs (templates/item/details/perk.hbs) are single free-text
-   * fields so a Perk like "Power Infusion" can list an arbitrary, non-contiguous set of die values
-   * (e.g. "1, 2"), or a Perk like "Survivalist" can list several scoped skills (e.g. "alertness,
-   * initiative, survival"), without a bespoke multi-select widget. ArrayField#_cast doesn't split
-   * strings - passed through unchanged, "1, 2" would be cast to the single-element array ["1, 2"]
-   * and fail NumberField validation - so both are parsed into real arrays here, before Foundry's
-   * own DocumentSheetV2#_prepareSubmitData validates and submits the form.
+   * system.reroll.skills (module/data/reroll-schema.mjs) is an ArrayField, but its sheet input
+   * (templates/item/details/perk.hbs) is a single free-text field so a Perk like "Survivalist"
+   * can list several scoped skills (e.g. "alertness, initiative, survival") without a bespoke
+   * multi-select widget. ArrayField#_cast doesn't split strings - passed through unchanged,
+   * "alertness, survival" would be cast to the single-element array ["alertness, survival"] and
+   * fail its own choices validation - so it's parsed into a real array here, before Foundry's own
+   * DocumentSheetV2#_prepareSubmitData validates and submits the form.
    */
   _prepareSubmitData(event, form, formData, updateData) {
-    const rawValues = formData.object["system.reroll.values"];
-    if (typeof rawValues === "string") {
-      formData.object["system.reroll.values"] = rawValues
-        .split(",")
-        .map(value => Number(value.trim()))
-        .filter(value => Number.isFinite(value));
-    }
-
     const rawSkills = formData.object["system.reroll.skills"];
     if (typeof rawSkills === "string") {
       formData.object["system.reroll.skills"] = rawSkills

@@ -565,7 +565,6 @@
     "RerollTargetAnyDie": "Any Die",
     "RerollTargetD20": "d20 Only",
     "RerollTargetSkillDice": "Skill Dice",
-    "RerollValues": "Reroll Values (comma-separated)",
     "PerkAlreadyTaken": "You have already taken this perk the maximum number of times.",
     "PerkCanActivate": "Can Activate",
     "PerkCanAdvance": "Can Advance",

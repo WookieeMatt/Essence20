@@ -150,15 +150,6 @@
         {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
       {{/if}}
 
-      {{#if (eq system.reroll.mode 'all')}}
-        {{!-- Reroll Values --}}
-        {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollValues'}}
-        {{#*inline "item-field-inputs"}}
-          <input type="text" name="system.reroll.values" value="{{system.reroll.values}}" />
-        {{/inline}}
-        {{/"systems/essence20/templates/item/parts/sheet-field.hbs"}}
-      {{/if}}
-
       {{#unless (eq system.reroll.mode 'single')}}
         {{!-- Reroll Recursive --}}
         {{#> "systems/essence20/templates/item/parts/sheet-field.hbs" label='E20.RerollRecursive'}}

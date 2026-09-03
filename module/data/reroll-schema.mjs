@@ -21,11 +21,6 @@ export const rerollSchema = () => ({
     mode: makeStrWithChoices(Object.keys(E20.rerollModes), 'all'),
     reset: makeStrWithChoices(Object.keys(E20.rerollResets), 'none'),
     target: makeStrWithChoices(Object.keys(E20.rerollTargets), 'allDice'),
-    // Which specific die results trigger the reroll (mode 'all' with a non-empty values list,
-    // e.g. Power Infusion's own "reroll 1s" -> [1], "...and 2s" -> [1, 2]). Unused by 'ones'/
-    // 'onesAndTwos' (fixed at 1 and 1-2 respectively, per those modes' own book-accurate meaning)
-    // or 'single' (no value filter - the player picks a specific die regardless of what it shows).
-    values: new fields.ArrayField(new fields.NumberField()),
     // A resource this actor must spend to use the reroll (e.g. Power Infusion's "spending 1
     // Personal Power"). resourcePath is a dot-path into the actor document (e.g.
     // "system.powers.personal.value") - deliberately a path rather than a fixed enum of named
