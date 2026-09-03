@@ -4936,3 +4936,183 @@ describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
     expect(chatMessage.create.mock.calls[1][0].flags.essence20.rollFailed).toBe(true);
   });
 });
+
+/* _hasExpertiseDownshiftImmunity */
+describe("_hasExpertiseDownshiftImmunity", () => {
+  function makeExpertisePerk(compendiumSource, choice) {
+    return {
+      type: 'perk',
+      _stats: { compendiumSource },
+      system: { choice },
+    };
+  }
+
+  test("false with no skill to check", () => {
+    const actor = { items: [] };
+    expect(dice._hasExpertiseDownshiftImmunity(actor, null)).toBe(false);
+  });
+
+  test("false for an actor with no Expertise at all", () => {
+    const actor = { items: [] };
+    expect(dice._hasExpertiseDownshiftImmunity(actor, 'athletics')).toBe(false);
+  });
+
+  test("true when the actor has Expertise (either printing) scoped to the rolled skill", () => {
+    const mlpActor = {
+      items: [makeExpertisePerk('Compendium.essence20.mlp_crb.Item.06cSi4Q1ztUPXWtw', 'athletics')],
+    };
+    expect(dice._hasExpertiseDownshiftImmunity(mlpActor, 'athletics')).toBe(true);
+
+    const prActor = {
+      items: [makeExpertisePerk('Compendium.essence20.pr_crb.Item.uoCQgYOCeIQNzF0q', 'targeting')],
+    };
+    expect(dice._hasExpertiseDownshiftImmunity(prActor, 'targeting')).toBe(true);
+  });
+
+  test("false when Expertise is scoped to a different skill", () => {
+    const actor = {
+      items: [makeExpertisePerk('Compendium.essence20.mlp_crb.Item.06cSi4Q1ztUPXWtw', 'athletics')],
+    };
+    expect(dice._hasExpertiseDownshiftImmunity(actor, 'targeting')).toBe(false);
+  });
+
+  test("false for an unrelated perk, even one scoped to the right skill by coincidence", () => {
+    const actor = {
+      items: [makeExpertisePerk('Compendium.essence20.pr_crb.Item.zEXsqbXfA6hADBuh', 'athletics')],
+    };
+    expect(dice._hasExpertiseDownshiftImmunity(actor, 'athletics')).toBe(false);
+  });
+});
+
+/* _rollSkillHelper - Power Infusion banked reroll consumption */
+describe("_rollSkillHelper banked reroll (Power Infusion)", () => {
+  class FakeDie {
+    constructor(faces, results) {
+      this.faces = faces;
+      this.results = results.map(r => ({ ...r }));
+      this.reroll = jest.fn(async () => {});
+    }
+    get values() {
+      return this.results.filter(r => r.active).map(r => r.result);
+    }
+  }
+
+  class FakeRoll {
+    constructor() {
+      this.dice = [new FakeDie(8, [{ result: 1, active: true }])];
+      this._total = FakeRoll.nextTotal ?? 10;
+    }
+    async evaluate() {}
+    get total() {
+      return this._total;
+    }
+    _evaluateTotal() {
+      return this._total;
+    }
+    async render() {
+      return '<div></div>';
+    }
+  }
+
+  let originalRoll;
+  let originalFoundry;
+  let originalGameSettings;
+  // A fresh instance, not the shared `dice` above - many earlier tests in this file do
+  // `dice._rollSkillHelper = jest.fn()`, which permanently shadows the real method on that one
+  // shared instance for the rest of the file's run. These tests need the real implementation.
+  let freshDice;
+
+  beforeAll(() => {
+    originalRoll = global.Roll;
+    originalFoundry = global.foundry;
+    originalGameSettings = global.game.settings;
+    global.foundry = {
+      ...global.foundry,
+      applications: { handlebars: { renderTemplate: jest.fn(async () => '') } },
+    };
+    global.game.settings = { get: jest.fn(() => 'roll') };
+    freshDice = new Dice(chatMessage, createMockRollDialog(), new Mocki18n());
+  });
+
+  afterAll(() => {
+    global.Roll = originalRoll;
+    global.foundry = originalFoundry;
+    global.game.settings = originalGameSettings;
+  });
+
+  function makeBankedActor(hasBankedReroll = true) {
+    const flags = hasBankedReroll ? { bankedReroll: { values: [1], source: 'Power Infusion' } } : {};
+    return {
+      getRollData: () => ({}),
+      getFlag: jest.fn((scope, key) => flags[key]),
+      unsetFlag: jest.fn(async (scope, key) => {
+        delete flags[key];
+      }),
+      _flags: flags,
+    };
+  }
+
+  const attackCheckContext = {
+    entries: [{ name: 'Target', targetUuid: 'Actor.t1', difficulty: 15, showDifficulty: true }],
+    damageValue: null,
+    damageType: null,
+    effectName: 'Zeo Power Clubs Effect', // only set for a real weaponEffect attack
+    alternateEffects: [],
+  };
+
+  test("no banked charge: reroll is never touched", async () => {
+    global.Roll = FakeRoll;
+    FakeRoll.nextTotal = 5; // miss
+    const actor = makeBankedActor(false);
+
+    await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, attackCheckContext, {});
+
+    expect(actor.getFlag).toHaveBeenCalledWith('essence20', 'bankedReroll');
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
+  });
+
+  test("banked charge, attack still misses after the reroll: stays banked", async () => {
+    global.Roll = FakeRoll;
+    FakeRoll.nextTotal = 5; // below difficulty 15
+    const actor = makeBankedActor(true);
+
+    await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, attackCheckContext, {});
+
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
+  });
+
+  test("banked charge, attack succeeds: reroll applied and charge consumed", async () => {
+    global.Roll = FakeRoll;
+    FakeRoll.nextTotal = 20; // above difficulty 15
+    const actor = makeBankedActor(true);
+
+    await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, attackCheckContext, {});
+
+    expect(actor.unsetFlag).toHaveBeenCalledWith('essence20', 'bankedReroll');
+  });
+
+  test("banked charge is ignored on a non-attack (flat Difficulty) check", async () => {
+    global.Roll = FakeRoll;
+    FakeRoll.nextTotal = 20;
+    const actor = makeBankedActor(true);
+    const flatCheckContext = { ...attackCheckContext, effectName: null };
+
+    await freshDice._rollSkillHelper('d20 + 0', actor, 'flavor', false, flatCheckContext, {});
+
+    expect(actor.getFlag).not.toHaveBeenCalled();
+    expect(actor.unsetFlag).not.toHaveBeenCalled();
+  });
+
+  test("stashes rollFailed on the posted message's flags, for MLP 'Cheer' to key off", async () => {
+    global.Roll = FakeRoll;
+    chatMessage.create.mockClear();
+
+    FakeRoll.nextTotal = 20; // succeeds
+    await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, attackCheckContext, {});
+    expect(chatMessage.create.mock.calls[0][0].flags.essence20.rollFailed).toBe(false);
+
+    FakeRoll.nextTotal = 5; // fails (difficulty 15)
+    await freshDice._rollSkillHelper('d20 + 0', makeBankedActor(false), 'flavor', false, attackCheckContext, {});
+    expect(chatMessage.create.mock.calls[1][0].flags.essence20.rollFailed).toBe(true);
+  });
+});
