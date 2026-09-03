@@ -4,7 +4,6 @@ import { createItemCopies, deleteAttachmentsForItem } from "./attachment-handler
 import MultiEssenceSelector from "../apps/multi-essence-selector.mjs";
 import { onPerkDelete, onPerkDrop, setMorphedToughnessBonus } from "./perk-handler.mjs";
 import { onFactionDrop } from "./faction-handler.mjs";
-import { actorHasPerk } from "../helpers/perks.mjs";
 import {
   actorHadMagicalBeforeGrant,
   actorHasPrincessOfLaughter,
