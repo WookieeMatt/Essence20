@@ -6,9 +6,10 @@ import { onPerkDrop } from "../sheet-handlers/perk-handler.mjs";
 import { _flipDriverAndPassenger } from "../sheet-handlers/vehicle-handler.mjs";
 import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class ChoicesSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class ChoicesSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, prompt, title, item, key, dropFunc, staticValue, previousSelection1, previousSelection2, actionType) {
     super();
     this._choices = choices;

@@ -10,6 +10,14 @@
       "page": 112
     },
     "prerequisite": "Level 8",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "d20",
+      "maxUses": 3,
+      "reset": "mission",
+      "condition": "notSnagged"
+    },
     "selectionLimit": 1,
     "type": "general"
   },

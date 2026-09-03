@@ -44,6 +44,46 @@
         "subtype": "role",
         "level": 2
       },
+      "b043": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xiZ0WPA8yxpht9KE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Laugh Tactics",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "b044": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xiZ0WPA8yxpht9KE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Laugh Tactics",
+        "type": "perk",
+        "subtype": "role",
+        "level": 8
+      },
+      "b045": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xiZ0WPA8yxpht9KE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Laugh Tactics",
+        "type": "perk",
+        "subtype": "role",
+        "level": 11
+      },
+      "b046": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xiZ0WPA8yxpht9KE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Laugh Tactics",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      },
+      "b047": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xiZ0WPA8yxpht9KE",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Laugh Tactics",
+        "type": "perk",
+        "subtype": "role",
+        "level": 17
+      },
       "0b98": {
         "uuid": "Compendium.essence20.mlp_crb.Item.km6HV50h6XWKTIm1",
         "img": "systems/essence20/assets/icons/items/perk.svg",
@@ -114,6 +154,54 @@
         "name": "Princess of Laughter",
         "type": "perk",
         "subtype": "role",
+        "level": 20
+      },
+      "po01": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.tenW0mLLZZTZTDX1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Adaptable",
+        "type": "perk",
+        "subtype": "origin",
+        "level": 20
+      },
+      "po02": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.9YeUcd53fdp6UUnU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Grounded",
+        "type": "perk",
+        "subtype": "origin",
+        "level": 20
+      },
+      "po03": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.ekWiJObUf2BAhevg",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Air Born",
+        "type": "perk",
+        "subtype": "origin",
+        "level": 20
+      },
+      "po04": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.gNfN98cXAC7rEv01",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Lighter Than Air",
+        "type": "perk",
+        "subtype": "origin",
+        "level": 20
+      },
+      "po05": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.WhTlZdUORCDpZwO2",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Magical",
+        "type": "perk",
+        "subtype": "origin",
+        "level": 20
+      },
+      "po06": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.rveQebqn5A4HdkPc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Telekinesis",
+        "type": "perk",
+        "subtype": "origin",
         "level": 20
       },
       "01e3": {

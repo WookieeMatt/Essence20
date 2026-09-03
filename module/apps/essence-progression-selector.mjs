@@ -1,9 +1,10 @@
 ﻿import { _setEssenceProgression } from "../sheet-handlers/role-handler.mjs";
 import { applyThemeClass } from "../settings.js";
 
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class EssenceProgressionSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class EssenceProgressionSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(choices, actor, role, dropFunc, level1Essences, title){
     super();
     this._choices = choices;

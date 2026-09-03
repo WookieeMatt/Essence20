@@ -1,8 +1,9 @@
 ﻿import { _processAlterationMovementCost} from "../sheet-handlers/alteration-handler.mjs";
 import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export default class AlterationMovementSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export default class AlterationMovementSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(actor, alteration, choices, alterationUuid, title, dropFunc){
     super();
     this._actor = actor;

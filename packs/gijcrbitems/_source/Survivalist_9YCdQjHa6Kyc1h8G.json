@@ -12,6 +12,14 @@
       "page": 93
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "ones",
+      "target": "skillDice",
+      "skills": ["alertness", "initiative", "survival"],
+      "maxUses": 0,
+      "reset": "none"
+    },
     "selectionLimit": 1,
     "type": "role"
   },

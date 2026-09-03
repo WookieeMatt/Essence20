@@ -1,5 +1,23 @@
 <div>{{localize 'E20.ItemDescription'}}: {{{item.system.description}}}</div>
 
+{{#if (or (eq item.flags.core.sourceId "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO") (eq item._stats.compendiumSource "Compendium.essence20.pr_crb.Item.cuBM706WJjAmhoZO"))}}
+<button type="button" data-action="activatePowerInfusion" data-uuid="{{item.uuid}}">
+  {{localize 'E20.PowerInfusionActivate'}}
+</button>
+{{/if}}
+
+{{#if (or (eq item.flags.core.sourceId "Compendium.essence20.mlp_crb.Item.4AoqHc1WgMOtKlNO") (eq item._stats.compendiumSource "Compendium.essence20.mlp_crb.Item.4AoqHc1WgMOtKlNO"))}}
+<button type="button" data-action="activateSnortleAtTheSpooky" data-uuid="{{item.uuid}}">
+  {{localize 'E20.SnortleActivate'}}
+</button>
+{{/if}}
+
+{{#if (or (eq item.flags.core.sourceId "Compendium.essence20.mlp_crb.Item.xs94i5KPfQYZWh4B") (eq item._stats.compendiumSource "Compendium.essence20.mlp_crb.Item.xs94i5KPfQYZWh4B"))}}
+<button type="button" data-action="activateConsummatePerformer" data-uuid="{{item.uuid}}">
+  {{localize 'E20.ConsummatePerformerActivate'}}
+</button>
+{{/if}}
+
 <div class="chip-section">
   {{#if item.system.prerequisite}}
   <span class="chip" name="chip.perk.prerequisite">{{localize 'E20.PerkPrerequisite'}}: {{item.system.prerequisite}}</span>

@@ -12,7 +12,96 @@
       "page": 86
     },
     "prerequisite": "",
-    "selectionLimit": 1,
+    "hasChoice": true,
+    "choiceType": "perks",
+    "numChoices": 1,
+    "selectionLimit": 6,
+    "items": {
+      "lt01": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.oA8DrnUOOqc1mrd0",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Acting!",
+        "type": "perk",
+        "role": null
+      },
+      "lt02": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.34WtMHugUN7Wp5bP",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Clever Mind",
+        "type": "perk",
+        "role": null
+      },
+      "lt03": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.P1ZrldoPSHbpEjzw",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Comedy is Hard",
+        "type": "perk",
+        "role": null
+      },
+      "lt04": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.xs94i5KPfQYZWh4B",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Consummate Performer",
+        "type": "perk",
+        "role": null
+      },
+      "lt05": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.6uhfHYeuUkFuGEEN",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Horse Around",
+        "type": "perk",
+        "role": null
+      },
+      "lt06": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.0DcWZaKg0GVFV3ei",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Rotten Tomatoes",
+        "type": "perk",
+        "role": null
+      },
+      "lt07": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.mQIYsp3Ur1WFpmze",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Send in the Clown",
+        "type": "perk",
+        "role": null
+      },
+      "lt08": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.o6h9U6oeWfpXYOA4",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Side Splitter",
+        "type": "perk",
+        "role": null
+      },
+      "lt09": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.wSeQOPecAyUW5Dbh",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "So Funny, It's Scary",
+        "type": "perk",
+        "role": null
+      },
+      "lt10": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.eQPzWZSn2T6DmXFz",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "The Best Medicine",
+        "type": "perk",
+        "role": null
+      },
+      "lt11": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.jKdu6PowM9GQkKW8",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Tough Crowd",
+        "type": "perk",
+        "role": null
+      },
+      "lt12": {
+        "uuid": "Compendium.essence20.mlp_crb.Item.CDUSoP897uzJcmhZ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Universal Language",
+        "type": "perk",
+        "role": null
+      }
+    },
     "type": "role"
   },
   "effects": [],

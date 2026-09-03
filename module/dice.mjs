@@ -20,6 +20,7 @@ import { getRecklessAbandonStrengthShiftUp } from "./helpers/reckless-abandon.mj
 import { checkEnemyNumberOne, markAttackedEnemyNumberOne } from "./helpers/enemy-number-one.mjs";
 import { getInfluentialShiftUp } from "./helpers/influential.mjs";
 import { isMultipleTargetsWeapon } from "./helpers/multiple-targets.mjs";
+import { applyReroll } from "./helpers/reroll.mjs";
 
 // Every Commando Perk automated below that isn't specific to Sneak Attack itself (those constants
 // live in helpers/sneak-attack.mjs instead) - all under GI Joe CRB's own compendium pack.
@@ -66,6 +67,23 @@ const ALPHA_STRIKE_ROUND_FLAG = 'alphaStrikeLastRound';
 const HEAVY_ORDNANCE_ID = `${GI_JOE_CRB}b2viBBrNk08Kc9ts`;
 const EMPTY_THE_MAG_ID = `${GI_JOE_CRB}zbrr3W30rFTDTayX`;
 const NOWHERE_IS_SAFE_ID = `${GI_JOE_CRB}oUAeJZ7K1P7Fu8Bc`;
+
+// MLP CRB p.123 / PR CRB p.95 "Expertise": "Ignore the first ↓1 dice downshift applied to your
+// Skill Tests" - scoped to whichever one skill the player chose for this Perk instance (system
+// .choice, set by sheet-handlers/perk-handler.mjs#onPerkDrop's 'skills' choiceType). Both game
+// lines' printings are mechanically identical, so both compendium copies are checked.
+const EXPERTISE_PERK_IDS = [
+  "Compendium.essence20.mlp_crb.Item.06cSi4Q1ztUPXWtw",
+  "Compendium.essence20.pr_crb.Item.uoCQgYOCeIQNzF0q",
+];
+
+// PR CRB "Driving Strike" (Finster's Monster-Matic Cookbook p.286): "By spending 1 Personal
+// Power before making a melee attack, you can either ignore a target's bonuses from armor to
+// Defense or reroll any skill dice used in the attack; you must choose before rolling..." - a
+// pre-roll declared choice, not a reactive reroll-button grant (see helpers/roll-dialog.mjs's
+// own "drivingStrikeAvailable" toggle), so unlike Weapon Mastery/Expertise/etc. this Perk has no
+// system.reroll data of its own - just a flat "does the actor have it" check.
+const DRIVING_STRIKE_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.bP55ciUhiMJzyTGC";
 
 export class Dice {
   /**
@@ -192,6 +210,12 @@ export class Dice {
 
     calculatedShiftUp += combatModifiers.shiftUp;
     calculatedShiftDown += combatModifiers.shiftDown;
+
+    // Expertise cancels one point of downshift out of the fully-stacked total ("the first"),
+    // not any one particular source of it - see EXPERTISE_PERK_IDS's own doc comment.
+    if (this._hasExpertiseDownshiftImmunity(actor, rolledSkill)) {
+      calculatedShiftDown = Math.max(0, calculatedShiftDown - 1);
+    }
 
     const updatedShiftDataset = {
       ...dataset,
@@ -396,6 +420,13 @@ export class Dice {
     // Empty the Mag - see _isEmptyTheMagAttack's own doc comment above.
     updatedShiftDataset.emptyTheMagAvailable = this._isEmptyTheMagAttack(actor, item);
 
+    // Driving Strike: "before making a melee attack" - only offered on a melee weaponEffect roll,
+    // and only if the actor can actually afford its 1 Personal Power cost.
+    const isMeleeAttack = item?.type == 'weaponEffect' && item.system.classification.style == 'melee';
+    updatedShiftDataset.drivingStrikeAvailable = isMeleeAttack
+      && this._actorHasPerk(actor, DRIVING_STRIKE_PERK_ID)
+      && actor.system.powers?.personal?.value > 0;
+
     const skillRollOptions = await this._rollDialog.getSkillRollOptions(updatedShiftDataset, skillDataset, actor);
 
     if (skillRollOptions.cancelled) {
@@ -421,6 +452,15 @@ export class Dice {
     if (skillRollOptions.alphaStrike) {
       skillRollOptions.edge = true;
       await markUsedThisRound(actor, ALPHA_STRIKE_ROUND_FLAG);
+    }
+
+    // Paid once regardless of "times to roll" (matching Energon's own precedent above) - the
+    // player declared this before rolling at all, so it applies to every repeated roll that
+    // follows from this one dialog confirmation.
+    const drivingStrikeReroll = skillRollOptions.drivingStrike == 'reroll';
+    const drivingStrikeIgnoreArmor = skillRollOptions.drivingStrike == 'ignoreArmor';
+    if (drivingStrikeReroll || drivingStrikeIgnoreArmor) {
+      await actor.update({ 'system.powers.personal.value': actor.system.powers.personal.value - 1 });
     }
 
     let label = '';
@@ -497,7 +537,7 @@ export class Dice {
           ? this._getDeflectiveArmorToughness(token.actor)
           : 0;
 
-        let difficulty = getDefenseValue(token.actor, skillRollOptions.defenseType)
+        let difficulty = getDefenseValue(token.actor, skillRollOptions.defenseType, { ignoreArmor: drivingStrikeIgnoreArmor })
           + getShieldUpgradeBonus(token.actor, skillRollOptions.defenseType)
           - deflectiveReduction;
 
@@ -633,6 +673,24 @@ export class Dice {
         }) + '<br>';
       }
 
+      // Stashed onto the posted message's flags (see _rollSkillHelper below) so chat.mjs can
+      // later match this roll against a reroll grant's own scope/condition (skill/essence) and
+      // recognize a Consummate Performer attempt once its outcome is known.
+      const rollContext = {
+        skill: rolledSkill,
+        essence: rolledEssence,
+        snag: skillRollOptions.snag,
+        isPowerWeaponAttack: item?.type == 'weaponEffect'
+          && !!this._getParentWeapon(actor, item)?.system.itemAndUpgradeTraits?.includes('powerWeapon'),
+        // MLP CRB "Consummate Performer" (Laugh Tactic, p.86) stamps this via a synthetic
+        // {skill: 'performance', dif: <escalating DIF>, consummatePerformer: true} dataset (see
+        // helpers/consummate-performer.mjs#activateConsummatePerformer, same minimal-dataset
+        // shape as the @Check[...] enricher's own onCheckLinkClick) so chat.mjs's
+        // addConsummatePerformerButton can recognize this specific roll and offer to regain 1
+        // Cheer once rollFailed (set below in _rollSkillHelper) comes back false.
+        consummatePerformer: !!dataset.consummatePerformer,
+      };
+
       if (isMultipleTargetsAttack) {
         // One independent roll per target, each its own checkContext carrying just that one
         // target's own entry - _rollSkillHelper's own `new Roll(formula, ...)` gives each call
@@ -642,12 +700,32 @@ export class Dice {
           const targetText = this._i18n.format("E20.RollMultipleTargetsText", { name: entry.name }) + '<br>';
           this._rollSkillHelper(
             formula, actor, repeatText + targetText + label, canCritD2, { ...checkContext, entries: [entry] },
+            rollContext, drivingStrikeReroll,
           );
         }
       } else {
-        this._rollSkillHelper(formula, actor, repeatText + label, canCritD2, checkContext);
+        this._rollSkillHelper(formula, actor, repeatText + label, canCritD2, checkContext, rollContext, drivingStrikeReroll);
       }
     }
+  }
+
+  /**
+   * Checks whether the actor has a Perk granted from the given compendium source - the flat
+   * "do they have it at all" version of _hasExpertiseDownshiftImmunity's own scoped check, for
+   * Perks (e.g. Driving Strike) with no further per-instance choice to match against. Checks
+   * both flags.core.sourceId (a copy granted through a Role's own items map - e.g. Driving
+   * Strike via "Path of Flame," how a character normally gets it) and _stats.compendiumSource
+   * (a manually-dropped or choice-picked one) - see perk-handler.mjs's own SORCERY_PERK_ID/
+   * ZORD_PERK_ID checks for the established idiom; this originally only checked the latter.
+   * @param {Actor} actor
+   * @param {String} perkId   A compendium UUID, e.g. "Compendium.essence20.<pack>.Item.<id>".
+   * @returns {Boolean}
+   * @private
+   */
+  _actorHasPerk(actor, perkId) {
+    return actor.items.some(actorItem =>
+      actorItem.type == 'perk'
+      && (actorItem.flags.core?.sourceId == perkId || actorItem._stats?.compendiumSource == perkId));
   }
 
   /**
@@ -958,6 +1036,29 @@ export class Dice {
       shiftUp, shiftDown, edge, snag, debilitatedConsumed, enemyNumberOneTankId, tooCloseForMinimumRange,
       pendingBonusesToClear,
     };
+  }
+
+  /**
+   * Checks whether the actor has taken Expertise (or its PR-line printing, Aptitude Augmenter's
+   * sibling text - see EXPERTISE_PERK_IDS) scoped to the given skill, granting downshift
+   * immunity on Skill Tests with it. Matches on the granted Perk's own compendium source
+   * (module/sheet-handlers/perk-handler.mjs's own established idiom for "which compendium Perk
+   * is this actor-embedded item an instance of") and its chosen skill (system.choice, stamped by
+   * that same file's onPerkDrop when the 'skills' choiceType selection was made).
+   * @param {Actor} actor   The actor performing the roll.
+   * @param {String} skill   The skill being rolled.
+   * @returns {Boolean}
+   * @private
+   */
+  _hasExpertiseDownshiftImmunity(actor, skill) {
+    if (!skill) {
+      return false;
+    }
+
+    return actor.items.some(actorItem =>
+      actorItem.type == 'perk'
+      && EXPERTISE_PERK_IDS.includes(actorItem._stats?.compendiumSource)
+      && actorItem.system.choice == skill);
   }
 
   /**
@@ -1364,9 +1465,17 @@ export class Dice {
    * @param {Object} checkContext   Optional { defenseType, targets, damageValue, damageType }
    *   built in rollSkill() - when present, the roll is compared against each target's Defense
    *   (p.168-169) instead of posting a plain dice-roll message.
+   * @param {Object} [rollContext]   {skill, essence, snag, isPowerWeaponAttack} describing what
+   *   was rolled - see combat.mjs#buildCheckChatData's own doc comment. On the checkContext
+   *   (attack/vs-Difficulty) path, a rollFailed flag is added once the outcome is known.
+   * @param {Boolean} [drivingStrikeReroll]   PR "Driving Strike" - the player pre-declared a
+   *   reroll of all skill dice before this roll happened, so it's applied unconditionally right
+   *   after evaluation rather than left for a reactive chat-message button. Only meaningful on
+   *   the checkContext (attack) path - Driving Strike only triggers "before making a melee
+   *   attack", which always has a checkContext.
    * @private
    */
-  async _rollSkillHelper(formula, actor, flavor, canCritD2, checkContext=null) {
+  async _rollSkillHelper(formula, actor, flavor, canCritD2, checkContext=null, rollContext={}, drivingStrikeReroll=false) {
     const roll = new Roll(formula, actor.getRollData());
     const speaker = this._chatMessage.getSpeaker({ actor });
 
@@ -1375,6 +1484,7 @@ export class Dice {
         flags: {
           essence20: {
             canCritD2: canCritD2,
+            ...rollContext,
           },
         },
         speaker,
@@ -1385,6 +1495,20 @@ export class Dice {
     }
 
     await roll.evaluate();
+
+    if (drivingStrikeReroll) {
+      await applyReroll(roll, { mode: 'all', target: 'skillDice', values: [] });
+    }
+
+    // PR CRB "Power Infusion": a banked charge (see helpers/power-infusion.mjs) auto-applies to
+    // every attack the actor makes while banked - it's only cleared below, once this attack
+    // actually succeeds, so a miss (even after the reroll) leaves it banked for next time.
+    // effectName is only set for a weaponEffect roll (see checkContext's own construction above)
+    // - Power Infusion only triggers on an attack, never a flat vs-Difficulty Skill Test.
+    const bankedReroll = checkContext.effectName ? actor.getFlag('essence20', 'bankedReroll') : null;
+    if (bankedReroll) {
+      await applyReroll(roll, { mode: 'all', target: 'skillDice', values: bankedReroll.values });
+    }
 
     const [isCrit] = _isCritIsFumble(roll.dice, canCritD2);
 
@@ -1474,7 +1598,18 @@ export class Dice {
       }
     }
 
-    const chatData = await buildCheckChatData(roll, { flavor, results, speaker, canCritD2 });
+    if (bankedReroll && results.some(entry => entry.success)) {
+      await actor.unsetFlag('essence20', 'bankedReroll');
+    }
+
+    // MLP CRB "Cheer": "...reroll a FAILED Performance Skill Test." Only meaningful once there's
+    // an actual Difficulty to have failed against (checkContext always has at least one entry
+    // here) - "failed" means none of the compared entries succeeded, matching how a multi-target
+    // attack's own Critical Success handling already treats "success" per-entry rather than as
+    // one single true/false for the whole roll.
+    const fullRollContext = { ...rollContext, rollFailed: results.every(entry => !entry.success) };
+
+    const chatData = await buildCheckChatData(roll, { flavor, results, speaker, canCritD2, rollContext: fullRollContext });
     this._chatMessage.create(chatData);
   }
 

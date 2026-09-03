@@ -10,11 +10,24 @@ const IMPENETRABLE_SHIELD_ID = "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWA
  * (NPC, Vehicle, Zord, Megaform) stores it directly as system.defenses[type].value.
  * @param {Actor} actor
  * @param {String} defenseType
+ * @param {Object} [options]
+ * @param {Boolean} [options.ignoreArmor]   PR "Driving Strike" (Finster's Monster-Matic Cookbook
+ *   p.286): "...ignore a target's bonuses from armor to Defense..." - subtracts the armor (or,
+ *   while Morphed, morphed-form) component _prepareDefenses() already folded into .total, read
+ *   back out rather than recomputed. Only meaningful for a PC/Companion target, whose .total is
+ *   built from those discrete components (see Essence20Actor#_prepareDefenses); an NPC/Vehicle/
+ *   Zord/Megaform's flat .value has no such breakdown, so this silently has no effect there.
  * @returns {Number}
  */
-export function getDefenseValue(actor, defenseType) {
+export function getDefenseValue(actor, defenseType, { ignoreArmor = false } = {}) {
   const defense = actor.system.defenses?.[defenseType];
-  return defense?.total ?? defense?.value ?? 0;
+  let value = defense?.total ?? defense?.value ?? 0;
+
+  if (ignoreArmor && defense?.total !== undefined) {
+    value -= (actor.system.isMorphed ? defense.morphed : defense.armor) ?? 0;
+  }
+
+  return value;
 }
 
 /**
@@ -119,9 +132,13 @@ export const _isCritIsFumble = function (dice, canCritD2) {
  *   success, multiplier, damageValue, damageTypeLabel, damageType}, ...]
  * @param {Object} options.speaker   ChatMessage speaker data.
  * @param {Boolean} options.canCritD2
+ * @param {Object} [options.rollContext]   {skill, essence, snag} describing what was rolled -
+ *   stashed onto the message's flags so a reroll grant (helpers/reroll.mjs) can later check
+ *   whether it actually applies to this roll (e.g. "Expertise" only rerolls one named skill,
+ *   "Veteran" requires the roll wasn't already Snagged).
  * @returns {Promise<Object>}   The data object to pass to ChatMessage.create().
  */
-export async function buildCheckChatData(roll, { flavor, results, speaker, canCritD2 }) {
+export async function buildCheckChatData(roll, { flavor, results, speaker, canCritD2, rollContext = {} }) {
   const content = await foundry.applications.handlebars.renderTemplate(
     "systems/essence20/templates/chat/check-card.hbs",
     {
@@ -135,7 +152,7 @@ export async function buildCheckChatData(roll, { flavor, results, speaker, canCr
     content,
     rolls: [roll],
     speaker,
-    flags: { essence20: { canCritD2 } },
+    flags: { essence20: { canCritD2, ...rollContext } },
     rollMode: game.settings.get('core', 'rollMode'),
   };
 }

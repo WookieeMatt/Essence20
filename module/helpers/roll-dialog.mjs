@@ -65,6 +65,7 @@ export class RollDialog {
       damageRolePoints: dataset.damageRolePoints,
       aimBonus: dataset.aimBonus,
       energonAvailable: dataset.energonAvailable,
+      drivingStrikeAvailable: dataset.drivingStrikeAvailable,
       defenseType: dataset.defenseType || 'none',
       defenseTypes: { none: 'E20.None', ...E20.defenses },
     };

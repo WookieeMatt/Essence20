@@ -1,7 +1,8 @@
 ﻿import { applyThemeClass } from "../settings.js";
+import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-export class TraitSelector extends HandlebarsApplicationMixin(ApplicationV2) {
+export class TraitSelector extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(owner, data) {
     super();
     this._owner = owner;

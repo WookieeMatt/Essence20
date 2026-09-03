@@ -3,6 +3,7 @@ import MultiChoiceSelector from "../apps/multi-choice-selector.mjs";
 import { E20 } from "../helpers/config.mjs";
 import { deleteAttachmentsForItem } from "./attachment-handler.mjs";
 import { performSpectrumShift } from "./role-handler.mjs";
+import { isPrincessOfLaughterPerk, removeSpellcastingUpshift } from "../helpers/princess-of-laughter.mjs";
 
 const SORCERY_PERK_ID = "Compendium.essence20.finster_s_monster_matic_cookbook.Item.xUBOE1s5pgVyUrwj";
 const ZORD_PERK_ID = "Compendium.essence20.pr_crb.Item.rCpCrfzMYPupoYNI";
@@ -80,7 +81,11 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
       currentRole = actorItem;
     }
 
-    const itemSourceId = await actor.items.get(actorItem._id)._stats.compendiumSource;
+    // Dual-check: a copy granted through a Role's own items map gets flags.core.sourceId
+    // stamped instead of _stats.compendiumSource (see attachment-handler.mjs#grantItemEntry) -
+    // counting only the latter would undercount timesTaken for a Perk obtainable both ways.
+    const ownerItem = actor.items.get(actorItem._id);
+    const itemSourceId = ownerItem.flags.core?.sourceId ?? ownerItem._stats.compendiumSource;
     if (actorItem.type == 'perk' && itemSourceId == perk.uuid) {
       timesTaken++;
       const numberOfAdvances = actorItem.system.advances.currentValue/actorItem.system.advances.increaseValue;
@@ -128,10 +133,19 @@ export async function onPerkDrop(actor, perk, dropFunc=null, selection=null, sel
         ? game.i18n.localize(E20.skills[selection])
         : game.i18n.localize(E20[selectionType][selection]);
     const newName = `${newPerk.name} (${localizedSelection})`;
-    newPerk.update({
+    const updateData = {
       "name": newName,
       "system.choice": selection,
-    });
+    };
+
+    // Unlike environments/senses/movement (which write to a shared actor-level field), a
+    // skill-scoped reroll grant's scope lives on the granted Perk instance itself - see
+    // helpers/reroll.mjs#canMeetRerollScope, which reads system.reroll.skills off each Perk.
+    if (selectionType == 'skills') {
+      updateData["system.reroll.skills"] = [selection];
+    }
+
+    newPerk.update(updateData);
   } else if (selectionType == 'perks') {
     const chosenPerk = perk.system.items[selection];
     const itemToCreate = await fromUuid(chosenPerk.uuid);
@@ -266,7 +280,12 @@ export async function setPerkValues(actor, perk, parentPerk=null, dropFunc=null,
       for (const [key, item] of Object.entries(perk.system.items)) {
         let taken = false;
         for (const attachedItem of actor.items) {
-          if (item.uuid == attachedItem._stats.compendiumSource) {
+          // Dual-check: a candidate also obtainable through a Role's own items map gets
+          // flags.core.sourceId stamped instead of _stats.compendiumSource (see attachment-
+          // handler.mjs#grantItemEntry) - checking only the latter would let a player re-pick
+          // an already-Role-granted candidate from this choice list.
+          const attachedItemSourceId = attachedItem.flags.core?.sourceId ?? attachedItem._stats.compendiumSource;
+          if (item.uuid == attachedItemSourceId) {
             taken = true;
             break;
           }
@@ -437,6 +456,10 @@ export async function onPerkDelete(actor, perk) {
       "system.canSetToughnessBonus": false,
       "system.defenses.toughness.morphed": 0,
     });
+  }
+
+  if (isPrincessOfLaughterPerk(perk)) {
+    await removeSpellcastingUpshift(actor);
   }
 
   let updateString = null;

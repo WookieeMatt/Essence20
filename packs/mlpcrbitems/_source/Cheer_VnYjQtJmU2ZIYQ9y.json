@@ -12,6 +12,18 @@
       "page": 86
     },
     "prerequisite": "",
+    "reroll": {
+      "enabled": true,
+      "mode": "all",
+      "target": "allDice",
+      "skills": ["performance"],
+      "condition": "rollFailed",
+      "cost": {
+        "rolePointsName": "Cheer Points"
+      },
+      "maxUses": 0,
+      "reset": "none"
+    },
     "selectionLimit": 1,
     "type": "role"
   },
