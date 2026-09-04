@@ -51,22 +51,28 @@
 // All toggle rows read as one left-aligned group (switch, then its label) instead of the
 // switch pushed out to the dialog's far right edge - order: -1 on .switch below flips it
 // visually ahead of the label without having to touch every template's own span-then-label
-// markup order. The row itself still spans the dialog's full width (padding + a card
-// background, the same --theme-card-bg token the items-list rows elsewhere already use) so a
-// wider dialog doesn't leave a visibly empty strip trailing off to the right of each switch.
+// markup order.
 .roll-dialog .roll-dialog-toggle {
   display: flex !important;
   justify-content: flex-start !important;
-  // Overrides .align-center's own text-align: center (this row also carries that class, for
-  // its vertical centering) - the label span is flex: 1 (Foundry core's own default for a bare
-  // flexrow child), so without this its own text centered itself within that whole leftover
-  // width instead of sitting right after the switch.
+  // Overrides .align-center's own text-align: center (this row also carries that class) - the
+  // label span is flex: 1 (Foundry core's own default for a bare flexrow child), so without this
+  // its own text centered itself within that whole leftover width instead of staying left-
+  // justified right after the switch.
   text-align: left !important;
   align-items: center;
   gap: 8px;
   padding: 4px 6px;
-  border-radius: 6px;
-  background: var(--theme-card-bg);
+}
+
+// The label's default line-height (~1.25x font-size) box-centers correctly against the switch
+// by the numbers, but a font's ascent/descent isn't symmetric around that box's true middle, so
+// text with few/no descenders (e.g. "Specialized") visually reads as sitting above center next
+// to a geometrically-centered pill. Matching the line-height to the switch's own 16px height
+// tightens that box down to the font's natural single-line height, removing the extra leading
+// that caused the mismatch.
+.roll-dialog .roll-dialog-toggle > span {
+  line-height: 16px;
 }
 
 .roll-dialog .switch {
