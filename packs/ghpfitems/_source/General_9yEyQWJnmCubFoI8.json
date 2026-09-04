@@ -1,23 +1,23 @@
 {
-  "name": "New Origins",
+  "name": "General",
   "sorting": "a",
-  "folder": null,
+  "folder": "Y6TdR9T11q6adfUp",
   "type": "Item",
-  "_id": "tEgelog0moZ3cAY9",
+  "_id": "9yEyQWJnmCubFoI8",
   "description": "",
-  "sort": 0,
+  "sort": 100000,
   "color": null,
   "flags": {},
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null,
-    "coreVersion": "13.344",
+    "coreVersion": "14.364",
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "createdTime": 1787763529613,
-    "modifiedTime": 1787763529613,
-    "lastModifiedBy": null
+    "modifiedTime": 1788529378234,
+    "lastModifiedBy": "eDolxwiWtO0teEJE"
   },
-  "_key": "!folders!tEgelog0moZ3cAY9"
+  "_key": "!folders!9yEyQWJnmCubFoI8"
 }

@@ -17,30 +17,27 @@
   },
   "effects": [
     {
-      "name": "",
       "img": "icons/svg/aura.svg",
       "origin": "Compendium.essence20.general_hawk_s_personel_files.Item.0OTOD93UCMEaaOhD",
       "duration": {
-        "startTime": null,
-        "seconds": null,
-        "combat": null,
-        "rounds": null,
-        "turns": null,
-        "startRound": null,
-        "startTurn": null
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
       },
       "disabled": false,
       "_id": "fqTujU3zubDhEK66",
       "type": "base",
-      "system": {},
-      "changes": [
-        {
-          "key": "system.movement.climb.bonus",
-          "mode": 2,
-          "value": "20",
-          "priority": null
-        }
-      ],
+      "system": {
+        "changes": [
+          {
+            "key": "system.movement.climb.bonus",
+            "value": 20,
+            "priority": null,
+            "type": "add"
+          }
+        ]
+      },
       "description": "",
       "tint": "#ffffff",
       "transfer": true,
@@ -51,13 +48,16 @@
         "compendiumSource": null,
         "duplicateSource": null,
         "exportSource": null,
-        "coreVersion": "13.344",
+        "coreVersion": "14.364",
         "systemId": "essence20",
         "systemVersion": "4.6.9",
         "createdTime": 1787763529613,
         "modifiedTime": 1787763529613,
         "lastModifiedBy": null
       },
+      "start": null,
+      "showIcon": 1,
+      "folder": null,
       "_key": "!items.effects!0OTOD93UCMEaaOhD.fqTujU3zubDhEK66"
     }
   ],
@@ -70,7 +70,7 @@
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null,
-    "coreVersion": "13.344",
+    "coreVersion": "14.364",
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "createdTime": 1787763529613,

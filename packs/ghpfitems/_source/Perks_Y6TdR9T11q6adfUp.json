@@ -1,0 +1,23 @@
+{
+  "type": "Item",
+  "folder": null,
+  "name": "Perks",
+  "color": null,
+  "sorting": "a",
+  "_id": "Y6TdR9T11q6adfUp",
+  "description": "",
+  "sort": 700000,
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.364",
+    "systemId": "essence20",
+    "systemVersion": "This is auto replaced",
+    "createdTime": 1788529370892,
+    "modifiedTime": 1788529374612,
+    "lastModifiedBy": "eDolxwiWtO0teEJE",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!folders!Y6TdR9T11q6adfUp"
+}
