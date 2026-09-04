@@ -560,9 +560,7 @@ export async function onRoleDrop(actor, role, dropFunc) {
 * @param {Number} newLevel The new level that you are changing to
 */
 export async function onLevelChange(actor, newLevel) {
-  console.log(newLevel);
   const previousLevel = actor.getFlag('essence20', 'previousLevel');
-  console.log(previousLevel);
   if (!previousLevel || previousLevel == newLevel) {
     return;
   }
@@ -570,7 +568,6 @@ export async function onLevelChange(actor, newLevel) {
   const roles = await actor.items.documentsByType.role;
   const baseRole = roles.find(r => !r.system.isAdditive);
   const additiveRole = roles.find(r => r.system.isAdditive);
-  console.log(baseRole);
   if (!baseRole) {
     return;
   }

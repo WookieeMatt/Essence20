@@ -1087,16 +1087,19 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_acting_smaller.svg',
     id: 'actingSmaller',
     name: 'E20.StatusActingSmaller',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_asleep.svg',
     id: 'asleep',
     name: 'E20.StatusAsleep',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_blinded.svg',
     id: 'blinded',
     name: 'E20.StatusBlinded',
+    changes: [],
   },
   {
     // MLP CRB "Laughtracting" (p.86): "...they can't use any Free actions on their next turn."
@@ -1105,6 +1108,7 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
     id: 'cantTakeFreeActions',
     name: 'E20.StatusCantTakeFreeActions',
+    changes: [],
   },
   {
     // MLP CRB "Distraughter" (p.86): extends Laughtracting - "...can't use a Move action this
@@ -1114,6 +1118,7 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
     id: 'cantTakeMoveActions',
     name: 'E20.StatusCantTakeMoveActions',
+    changes: [],
   },
   {
     // No custom art yet (p.202) - reuses Foundry's own bundled shield.svg, same "generic core
@@ -1121,66 +1126,79 @@ E20.statusEffects = [
     img: 'icons/svg/shield.svg',
     id: 'cover',
     name: 'E20.StatusCover',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_deafened.svg',
     id: 'deafened',
     name: 'E20.StatusDeafened',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_defeated.svg',
     id: 'defeated',
     name: 'E20.StatusDefeated',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_frightened.svg',
     id: 'frightened',
     name: 'E20.StatusFrightened',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_grappled.svg',
     id: 'grappled',
     name: 'E20.StatusGrappled',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
     id: 'immobilized',
     name: 'E20.StatusImmobilized',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
     id: 'impaired',
     name: 'E20.StatusImpaired',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_invisible.svg',
     id: 'invisible',
     name: 'E20.StatusInvisible',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_mesmerized.svg',
     id: 'mesmerized',
     name: 'E20.StatusMesmerized',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_mode_lock.svg',
     id: 'modeLock',
     name: 'E20.StatusModeLock',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_prone.svg',
     id: 'prone',
     name: 'E20.StatusProne',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_restrained.svg',
     id: 'restrained',
     name: 'E20.StatusRestrained',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_stunned.svg',
     id: 'stunned',
     name: 'E20.StatusStunned',
+    changes: [],
   },
   {
     // "A target completely concealed by an obstacle or much larger creature is considered as
@@ -1194,11 +1212,13 @@ E20.statusEffects = [
     img: 'icons/svg/castle.svg',
     id: 'totalCover',
     name: 'E20.StatusTotalCover',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_unconscious.svg',
     id: 'unconscious',
     name: 'E20.StatusUnconscious',
+    changes: [],
   },
 ];
 

@@ -860,7 +860,18 @@ export class Essence20Actor extends Actor {
    */
   _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
     super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
-    if (collection != "effects") {
+    // This syncs a child Item's data back into its granting parent Item's system.items map
+    // entry (e.g. a weaponEffect/upgrade's name or system fields, mirroring item.mjs's own
+    // _onUpdate) - it only makes sense for "items" collection changes, where change._id is an
+    // Item id looked up via parent.items.get(...) below. A June 2025 refactor (1034cb88) turned
+    // this guard's `if (collection != "effects") { <loop> }` into an early return before the
+    // loop, but kept the same `!=` comparison instead of flipping it to `==` - inverting which
+    // collection the loop actually ran for. That went unnoticed because collection == "effects"
+    // silently no-op'd every time (change._id is an ActiveEffect id, never a real Item id, so
+    // fullItem was always undefined) - until parent stopped always being this Actor (e.g. an
+    // effect embedded directly on an Item), at which point parent.items is undefined and this
+    // throws instead of quietly returning.
+    if (collection == "effects") {
       return;
     }
 

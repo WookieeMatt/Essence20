@@ -9,6 +9,32 @@
   vertical-align: middle;
 }
 
+// Shift Up/Down share one row (see roll-dialog.hbs) - each column splits the row's own already-
+// existing width evenly (flex: 1 on the column, width: 100% on the input inside it) rather than
+// hugging its own small content width. The row itself is never wider than it already was - it's
+// sized by the dialog's widest other row (e.g. the Roll vs. Target Defense dropdown), not by
+// these two fields - so this fills the row without growing the window.
+.roll-dialog .roll-dialog-shift-row {
+  gap: 8px;
+}
+
+.roll-dialog .roll-dialog-shift-row > .flexcol {
+  flex: 1;
+  text-align: center;
+}
+
+.roll-dialog .roll-dialog-shift-input {
+  box-sizing: border-box;
+  width: 100%;
+  text-align: center;
+}
+
+// Same reasoning as the shift row above - three radio options otherwise only claim as much
+// width as their own text, leaving the row's other half empty at a wider dialog size.
+.roll-dialog .roll-dialog-snag-edge-row {
+  justify-content: space-between;
+}
+
 .roll-dialog-app .form-footer {
   display: flex;
   flex-direction: row;
@@ -22,9 +48,25 @@
   border-radius: 0;
 }
 
+// All toggle rows read as one left-aligned group (switch, then its label) instead of the
+// switch pushed out to the dialog's far right edge - order: -1 on .switch below flips it
+// visually ahead of the label without having to touch every template's own span-then-label
+// markup order. The row itself still spans the dialog's full width (padding + a card
+// background, the same --theme-card-bg token the items-list rows elsewhere already use) so a
+// wider dialog doesn't leave a visibly empty strip trailing off to the right of each switch.
 .roll-dialog .roll-dialog-toggle {
   display: flex !important;
-  justify-content: space-between;
+  justify-content: flex-start !important;
+  // Overrides .align-center's own text-align: center (this row also carries that class, for
+  // its vertical centering) - the label span is flex: 1 (Foundry core's own default for a bare
+  // flexrow child), so without this its own text centered itself within that whole leftover
+  // width instead of sitting right after the switch.
+  text-align: left !important;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  background: var(--theme-card-bg);
 }
 
 .roll-dialog .switch {
@@ -34,6 +76,7 @@
   width: 28px;
   height: 16px;
   vertical-align: middle;
+  order: -1;
 }
 
 .roll-dialog .switch input {

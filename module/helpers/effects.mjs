@@ -37,11 +37,14 @@ export function onManageActiveEffect(event, owner) {
  * Create a new Active Effect on an actor or item.
  * @param {MouseEvent} event The click event to create the AE
  * @param {Document} owner The item or actor that the AE is created on.
+ * @param {HTMLElement} target The element carrying data-action (see this function's own doc
+ *   comment on onEditActiveEffect below for why this - not event.target - is what carries the
+ *   dataset this needs).
  * @returns
  */
-export function onCreateActiveEffect(event, owner) {
+export function onCreateActiveEffect(event, owner, target) {
   event.preventDefault();
-  const data = event.target.dataset;
+  const data = target.dataset;
 
   if (checkIsLocked(owner)) {
     return;
@@ -60,11 +63,12 @@ export function onCreateActiveEffect(event, owner) {
  * Delete an Active Effect on an actor or item.
  * @param {MouseEvent} event The click event to delete the AE
  * @param {Document} owner The item or actor that the AE is deleted on.
+ * @param {HTMLElement} target The element carrying data-action (see onEditActiveEffect below).
  * @returns
  */
-export async function onDeleteActiveEffect(event, owner) {
+export async function onDeleteActiveEffect(event, owner, target) {
   event.preventDefault();
-  const data = event.target.dataset;
+  const data = target.dataset;
   if (checkIsLocked(owner)) {
     return;
   }
@@ -93,11 +97,20 @@ export async function onDropActiveEffect(droppedItem, targetItem) {
  * Edit an Active Effect on an actor or item.
  * @param {MouseEvent} event The click event to edit the AE
  * @param {Document} owner The item or actor that the AE is on.
+ * @param {HTMLElement} target The element carrying data-action (effects.hbs's own <a
+ *   data-action="editEffect">, not the decorative <i> icon inside it that data-uuid used to live
+ *   on) - event.target is whichever specific descendant the pointer was actually over, which for
+ *   a click that lands on the <a>'s own padding rather than squarely on its icon is the <a>
+ *   itself, carrying no dataset of its own. ApplicationV2's own action dispatch already resolves
+ *   this correctly for every action handler (see e.g. item-sheet.mjs's #editDescription) - it's
+ *   passed as this second parameter, already `closest("[data-action]")`-walked up from wherever
+ *   was actually clicked, so this stays correct regardless of which sub-pixel of the control the
+ *   click landed on.
  * @returns
  */
-export async function onEditActiveEffect(event, owner) {
+export async function onEditActiveEffect(event, owner, target) {
   event.preventDefault();
-  const data = event.target.dataset;
+  const data = target.dataset;
   if (checkIsLocked(owner)) {
     return;
   }
@@ -111,15 +124,17 @@ export async function onEditActiveEffect(event, owner) {
 /**
  * Toggles an Active Effect on an actor or item from Inactive to Active.
  * @param {MouseEvent} event The click event to toggle the AE
- * @param {Document} owner The item or actor that the AE is on.
+ * @param {HTMLElement} target The element carrying data-action (see onEditActiveEffect above).
  * @returns
  */
-export async function onToggleActiveEffect(event) {
+export async function onToggleActiveEffect(event, target) {
   event.preventDefault();
-  const data = event.target.dataset;
+  const data = target.dataset;
 
   const effect = await fromUuid(data.uuid);
-  return effect.update({disabled: !effect.disabled});
+  if (effect) {
+    return effect.update({disabled: !effect.disabled});
+  }
 }
 
 /**

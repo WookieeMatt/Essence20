@@ -836,20 +836,20 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onToggleHeaderAccordion(event, this.document);
   }
 
-  static #createActiveEffect(event) {
-    onCreateActiveEffect(event, this.document);
+  static #createActiveEffect(event, target) {
+    onCreateActiveEffect(event, this.document, target);
   }
 
-  static #deleteActiveEffect(event){
-    onDeleteActiveEffect(event, this.document);
+  static #deleteActiveEffect(event, target){
+    onDeleteActiveEffect(event, this.document, target);
   }
 
-  static #editActiveEffect(event) {
-    onEditActiveEffect(event, this.document);
+  static #editActiveEffect(event, target) {
+    onEditActiveEffect(event, this.document, target);
   }
 
-  static #toggleActiveEffect(event){
-    onToggleActiveEffect(event);
+  static #toggleActiveEffect(event, target){
+    onToggleActiveEffect(event, target);
   }
 
   static #onSystemActorsDelete(event) {

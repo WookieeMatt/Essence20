@@ -718,7 +718,6 @@
     "RollDialogNormal": "Normal",
     "RollDialogRollButton": "Roll",
     "RollDialogSnag": "Snag",
-    "RollDialogTimesToRoll": "Times to roll",
     "RollDialogTitle": "{actor} {shift} {skill} Skill Roll",
     "RollIsSpecialized": "Specialized",
     "RollMultipleTargetsText": "Target: {name}",
