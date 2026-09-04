@@ -1,5 +1,5 @@
 {
-  "folder": null,
+  "folder": "ZtH5l8qyjZPSTeF3",
   "name": "Old Hand",
   "type": "role",
   "_id": "KjGQyRLheKp8zT8v",
@@ -12,23 +12,125 @@
       "page": 0
     },
     "items": {
-      "d23a": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.4NG56r746V7BLt8W", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Do Or Die", "type": "perk", "subtype": "role", "level": 1 },
-      "6397": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.LGdwtqgyy1EXkKva", "img": "systems/essence20/assets/icons/items/rolePoints.svg", "name": "Moxie", "type": "rolePoints", "level": 1 },
-      "79ce": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.o5O65BE6dtdlxsfM", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Young But Experienced", "type": "perk", "subtype": "role", "level": 1 },
-      "13c3": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.9px5wpituMa36FqQ", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Outstanding in Your Field", "type": "perk", "subtype": "role", "level": 2 },
-      "5bcd": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.0TYq9zWlE0xX6KvT", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Old Reliable", "type": "perk", "subtype": "role", "level": 3 },
-      "aebe": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.MMToVGBAkB79DZEW", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Pressure Cooker", "type": "perk", "subtype": "role", "level": 5 },
-      "8cc6": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.DQFDOrYUZmZZxmi1", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Delegate", "type": "perk", "subtype": "role", "level": 6 },
-      "f8ce": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.CVl4P0zoArmY5mp1", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Wild Idea", "type": "perk", "subtype": "role", "level": 7 },
-      "a55a": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.Li2y6KqFu2OGRkrX", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Squad Guardian", "type": "perk", "subtype": "role", "level": 9 },
-      "1e93": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.1Xy3GpglIFAq3sqc", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Better than the Best", "type": "perk", "subtype": "role", "level": 10 },
-      "72a6": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.3CQeGoaW8uEO3kiL", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Picked Up a Couple of Tricks", "type": "perk", "subtype": "role", "level": 12 },
-      "7dc8": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.Ouw89rVHYKgMnYMi", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Legendary Dependability", "type": "perk", "subtype": "role", "level": 13 },
-      "f6ea": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.gfSR6lyeAjggG4HU", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Your Reputation Precedes You", "type": "perk", "subtype": "role", "level": 14 },
-      "9362": { "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.Uzs2Ms6MgPsxV8uU", "img": "systems/essence20/assets/icons/items/perk.svg", "name": "Peak Performance", "type": "perk", "subtype": "role", "level": 16 }
+      "6397": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.LGdwtqgyy1EXkKva",
+        "img": "systems/essence20/assets/icons/items/rolePoints.svg",
+        "name": "Moxie",
+        "type": "rolePoints",
+        "level": 1
+      },
+      "9362": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.Uzs2Ms6MgPsxV8uU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Peak Performance",
+        "type": "perk",
+        "subtype": "role",
+        "level": 16
+      },
+      "d23a": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.4NG56r746V7BLt8W",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Do Or Die",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "79ce": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.o5O65BE6dtdlxsfM",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Young But Experienced",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "13c3": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.9px5wpituMa36FqQ",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Outstanding in Your Field",
+        "type": "perk",
+        "subtype": "role",
+        "level": 2
+      },
+      "5bcd": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.0TYq9zWlE0xX6KvT",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Old Reliable",
+        "type": "perk",
+        "subtype": "role",
+        "level": 3
+      },
+      "aebe": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.MMToVGBAkB79DZEW",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Pressure Cooker",
+        "type": "perk",
+        "subtype": "role",
+        "level": 5
+      },
+      "8cc6": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.DQFDOrYUZmZZxmi1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Delegate",
+        "type": "perk",
+        "subtype": "role",
+        "level": 6
+      },
+      "f8ce": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.CVl4P0zoArmY5mp1",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Wild Idea",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "a55a": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.Li2y6KqFu2OGRkrX",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Squad Guardian",
+        "type": "perk",
+        "subtype": "role",
+        "level": 9
+      },
+      "1e93": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.1Xy3GpglIFAq3sqc",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Better than the Best",
+        "type": "perk",
+        "subtype": "role",
+        "level": 10
+      },
+      "72a6": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.3CQeGoaW8uEO3kiL",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Picked Up a Couple of Tricks",
+        "type": "perk",
+        "subtype": "role",
+        "level": 12
+      },
+      "7dc8": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.Ouw89rVHYKgMnYMi",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Legendary Dependability",
+        "type": "perk",
+        "subtype": "role",
+        "level": 13
+      },
+      "f6ea": {
+        "uuid": "Compendium.essence20.general_hawk_s_personel_files.Item.gfSR6lyeAjggG4HU",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Your Reputation Precedes You",
+        "type": "perk",
+        "subtype": "role",
+        "level": 14
+      }
     },
-    "adjustments": { "health": [] },
-    "armors": { "qualified": [], "trained": [] },
+    "adjustments": {
+      "health": []
+    },
+    "armors": {
+      "qualified": [],
+      "trained": []
+    },
     "essenceLevels": {
       "smarts": [],
       "social": [],
@@ -41,24 +143,48 @@
     "hasSpectrumShifted": false,
     "isAdditive": true,
     "isAdvanced": false,
-    "perkLevels": { "general": ["level4", "level8", "level11", "level15"] },
-    "powers": { "personal": { "increase": 0, "levels": [], "regeneration": 0, "starting": 0 } },
-    "skillDie": { "isUsed": false, "name": "", "levels": [], "specializedLevels": [] },
+    "perkLevels": {
+      "general": [
+        "level4",
+        "level8",
+        "level11",
+        "level15"
+      ]
+    },
+    "powers": {
+      "personal": {
+        "increase": 0,
+        "levels": [],
+        "regeneration": 0,
+        "starting": 0
+      }
+    },
+    "skillDie": {
+      "isUsed": false,
+      "name": "",
+      "levels": [],
+      "specializedLevels": []
+    },
     "skills": [],
     "version": "giJoe",
-    "weapons": { "qualified": [], "trained": [] }
+    "weapons": {
+      "qualified": [],
+      "trained": []
+    }
   },
   "effects": [],
-  "sort": 0,
-  "ownership": { "default": 0 },
+  "sort": 100000,
+  "ownership": {
+    "default": 0
+  },
   "flags": {},
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.6.5",
-    "coreVersion": "13.344",
+    "coreVersion": "14.364",
     "createdTime": 1787050000000,
-    "modifiedTime": 1787050000000,
-    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "modifiedTime": 1788529501208,
+    "lastModifiedBy": "eDolxwiWtO0teEJE",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

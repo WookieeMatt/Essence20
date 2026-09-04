@@ -15,7 +15,52 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Might Up Shift 2",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.8m5s0JxTNSMU9zcj",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "uoIOujJt1MWm7sLV",
+      "changes": [
+        {
+          "key": "system.skills.might.shiftUp",
+          "mode": 2,
+          "value": "2",
+          "priority": null
+        }
+      ],
+      "description": "",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!8m5s0JxTNSMU9zcj.uoIOujJt1MWm7sLV"
+    }
+  ],
   "sort": 150000,
   "ownership": {
     "default": 0,

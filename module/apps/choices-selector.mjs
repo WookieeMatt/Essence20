@@ -41,7 +41,14 @@ export default class ChoicesSelector extends serializeFormSubmits(HandlebarsAppl
       weaponEffect: ChoicesSelector.attach,
       view: ChoicesSelector.view,
     },
-    id: "choices",
+    // "{id}" - Foundry's own ApplicationV2 substitutes a fresh per-instance uniqueId here (see
+    // application.mjs's this.#id = this.options.id.replace("{id}", this.options.uniqueId)).
+    // Without it (a bare "choices", as this used to be), two ChoicesSelectors created back-to-back
+    // - e.g. a Role granting the same choice-driven Perk twice in one level-up batch, like
+    // Commando's Expertise at 1st level - collide on the same Application registry id/DOM id, and
+    // the second instance's render silently replaces the first before the player ever sees or
+    // resolves it. That's what "only got to pick one of two skills" actually was.
+    id: "choices-{id}",
     classes: [
       "essence20",
       "theme-wrapper",

@@ -15,6 +15,9 @@ import {
   prepareActiveEffectCategories,
 } from "../helpers/effects.mjs";
 import { applySystemActorsColorCssVariables, applySystemColorCssVariables, getNumActions } from "../helpers/actor.mjs";
+import {
+  needsShieldModulationChoice, pickShieldModulationDamageType, setShieldModulationDamageType,
+} from "../helpers/shield-modulation.mjs";
 import { onLevelChange } from "../sheet-handlers/role-handler.mjs";
 import { prepareSystemActors,
   onCrewNumberUpdate,
@@ -42,6 +45,7 @@ import {
   onItemEdit,
   onItemDelete,
   onInlineEdit,
+  onPerkUseClick,
   onShieldActivationToggle,
   onShieldEquipToggle,
 } from "../sheet-handlers/listener-item-handler.mjs";
@@ -63,9 +67,8 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
       itemCreate: this.#onItemCreate,
       itemDelete: this.#onItemDelete,
       itemEdit: this.#onItemEdit,
-      levelDown: this.#onlevelDown,
-      levelUp: this.#onLevelUp,
       morph: this.#onMorph,
+      perkUse: this.#onPerkUse,
       recharge: this.#onRecharge,
       recoverSpellcastingDownshift: this.#onRecoverSpellcastingDownshift,
       rest: this.#onRest,
@@ -120,6 +123,7 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     this._activateInlineEditListeners();
     this._activateRolePointsListeners();
     this._activateImageContextMenu();
+    this._activateInputListeners();
   }
 
   /**
@@ -223,6 +227,44 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
   }
 
   /**
+   * The manual level-input field (system.level) needs its own listener rather than the sheet's
+   * ambient submitOnChange, so a typed level can trigger onLevelChange's advancement/
+   * deadvancement math instead of just silently writing the new number. Bound once and cached
+   * (guarded via this._levelInputListenerActive), same reasoning as _activateImageContextMenu
+   * above - this.element is the same persistent container across re-renders, so binding here
+   * unconditionally on every _onRender would stack a duplicate listener per render, and since
+   * onLevelChange's own actor.update() calls each trigger a re-render, the stack (and the
+   * number of times a single edit re-fired onLevelChange) grew without bound.
+   */
+  _activateInputListeners() {
+    if (this._levelInputListenerActive) {
+      return;
+    }
+
+    this._levelInputListenerActive = true;
+    this.element.addEventListener("change", (event) => this._onLevelInputChange(event));
+  }
+
+  /**
+   * Handles a committed edit (blur/Enter, not every keystroke - see _activateInputListeners
+   * above for why this is a "change" listener, not "input") to the manual level field.
+   * event.target.value is the field's own resulting string value, parsed as the actor's new
+   * level - unlike an "input" event's own event.data, which is only the single character just
+   * typed, never the field's actual resulting number.
+   * @param {Event} event The change event
+   */
+  async _onLevelInputChange(event) {
+    if (event.target?.name != "system.level") {
+      return;
+    }
+
+    const newLevel = parseInt(event.target.value);
+    if (!Number.isNaN(newLevel) && newLevel != this.actor.system.level) {
+      await onLevelChange(this.actor, newLevel);
+    }
+  }
+
+  /**
    * The sidebar's Role Points row used to have a separate icon per action (an info/"post to
    * chat" icon, a fist icon to spend a use, and - only for activatable ones - a checkbox to
    * toggle Activation). All three are now driven from the row's own name instead: a left-click
@@ -243,7 +285,21 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
         event.preventDefault();
         const itemId = event.currentTarget.closest('.item').dataset.itemId;
         const item = this.actor.items.get(itemId);
-        await item.update({ 'system.isActive': !item.system.isActive });
+        const activating = !item.system.isActive;
+
+        // Shield Modulation (Vanguard base, 13th level) - "when you activate your shield, choose
+        // one damage type." See helpers/shield-modulation.mjs's own doc comment for why this has
+        // to intercept the plain Activate toggle instead of getting its own control.
+        if (activating && needsShieldModulationChoice(this.actor, item)) {
+          const damageType = await pickShieldModulationDamageType();
+          if (!damageType) {
+            return;
+          }
+
+          await setShieldModulationDamageType(this.actor, damageType);
+        }
+
+        await item.update({ 'system.isActive': activating });
       });
     }
 
@@ -749,38 +805,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     return onDropActor(data, this);
   }
 
-  /**
-   * Handle changes to an input element, submitting the form if options.submitOnChange is true.
-   * Do not preventDefault in this handler as other interactions on the form may also be occurring.
-   * @param {Event} event The initial change event
-   *
-   * @override
-   */
-  async _onChangeInput(event) {
-    await super._onChangeInput(event);
-
-    // Use this if we can get the manual level input working again
-    // if (event.currentTarget.name == "system.level") {
-    //   return await onLevelChange(this.actor, this.actor.system.level);
-    // }
-  }
-
-  /**
-   * Handle clicking on the leveling buttons, where the up arrow increases the
-   * level by 1 and the down arrow decreases it by 1
-   * @param {Integer} levelChange The change in the level
-   */
-  async _onLevelChangeHelper(levelChange) {
-    const newLevel = this.actor.system.level + levelChange;
-    if (newLevel > 0 && newLevel <= 20) {
-      await this.actor.update({
-        "system.level": this.actor.system.level + levelChange,
-      }).then(this.render(false));
-
-      return await onLevelChange(this.actor, this.actor.system.level);
-    }
-  }
-
   // Add Inventory Item
   static #onItemCreate(event) {
     onItemCreate(event, this.document);
@@ -792,6 +816,10 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onItemEdit(event) {
     onItemEdit(event);
+  }
+
+  static #onPerkUse(event) {
+    onPerkUseClick(event, this);
   }
 
   static #onRoll(event) {
@@ -808,20 +836,20 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
     onToggleHeaderAccordion(event, this.document);
   }
 
-  static #createActiveEffect(event) {
-    onCreateActiveEffect(event, this.document);
+  static #createActiveEffect(event, target) {
+    onCreateActiveEffect(event, this.document, target);
   }
 
-  static #deleteActiveEffect(event){
-    onDeleteActiveEffect(event, this.document);
+  static #deleteActiveEffect(event, target){
+    onDeleteActiveEffect(event, this.document, target);
   }
 
-  static #editActiveEffect(event) {
-    onEditActiveEffect(event, this.document);
+  static #editActiveEffect(event, target) {
+    onEditActiveEffect(event, this.document, target);
   }
 
-  static #toggleActiveEffect(event){
-    onToggleActiveEffect(event);
+  static #toggleActiveEffect(event, target){
+    onToggleActiveEffect(event, target);
   }
 
   static #onSystemActorsDelete(event) {
@@ -894,14 +922,6 @@ export class Essence20BaseActorSheet extends serializeFormSubmits(HandlebarsAppl
 
   static #onShieldEquipToggle(event) {
     onShieldEquipToggle(event, this);
-  }
-
-  static #onLevelUp() {
-    this._onLevelChangeHelper(1);
-  }
-
-  static #onlevelDown() {
-    this._onLevelChangeHelper(-1);
   }
 
   static #onToggleLock() {

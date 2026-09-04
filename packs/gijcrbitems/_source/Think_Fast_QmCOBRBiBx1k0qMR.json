@@ -13,7 +13,58 @@
     "selectionLimit": 1,
     "type": "role"
   },
-  "effects": [],
+  "effects": [
+    {
+      "name": "Think Fast",
+      "origin": "Compendium.essence20.gi_joe_crb.Item.QmCOBRBiBx1k0qMR",
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "disabled": false,
+      "_id": "zhycVsHW6zq1EAQT",
+      "changes": [
+        {
+          "key": "system.skills.deception.canBeInitiative",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        },
+        {
+          "key": "system.skills.infiltration.canBeInitiative",
+          "mode": 5,
+          "value": "true",
+          "priority": null
+        }
+      ],
+      "description": "At 2nd level, you can use Deception or Infiltration in place of Initiative.",
+      "transfer": true,
+      "statuses": [],
+      "flags": {},
+      "tint": "#ffffff",
+      "_stats": {
+        "coreVersion": "13.344",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "system": {},
+      "sort": 0,
+      "_key": "!items.effects!QmCOBRBiBx1k0qMR.zhycVsHW6zq1EAQT"
+    }
+  ],
   "folder": "4txCmeGYg1JUzKEl",
   "ownership": {
     "default": 0,

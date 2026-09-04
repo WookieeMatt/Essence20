@@ -1,18 +1,19 @@
 <div class="roll-dialog">
-  <div>
-    {{localize 'E20.ShiftUp'}}
-    <input type="number" name="shiftUp" value={{shiftUp}} min="0" step="1" />
+  <div class="flexrow roll-dialog-shift-row">
+    <div class="flexcol">
+      {{localize 'E20.ShiftUp'}}
+      <input class="roll-dialog-shift-input" type="number" name="shiftUp" value={{shiftUp}} min="0" max="99" step="1" />
+    </div>
+    <div class="flexcol">
+      {{localize 'E20.ShiftDown'}}
+      <input class="roll-dialog-shift-input" type="number" name="shiftDown" value={{shiftDown}} min="0" max="99" step="1" />
+    </div>
   </div>
 
-  <div>
-    {{localize 'E20.ShiftDown'}}
-    <input type="number" name="shiftDown" value={{shiftDown}} min="0" step="1" />
-  </div>
-
-  <div>
-    <input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize 'E20.RollDialogSnag'}}
-    <input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize 'E20.RollDialogNormal'}}
-    <input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}
+  <div class="flexrow roll-dialog-snag-edge-row">
+    <label><input type="radio" name="snagEdge" value="snag" data-dtype="String" {{checked snag}} /> {{localize 'E20.RollDialogSnag'}}</label>
+    <label><input type="radio" name="snagEdge" value="normal" data-dtype="String" {{checked normal}} /> {{localize 'E20.RollDialogNormal'}}</label>
+    <label><input type="radio" name="snagEdge" value="edge" data-dtype="String" {{checked edge}} /> {{localize 'E20.RollDialogEdge'}}</label>
   </div>
 
   <div class="flexrow align-center roll-dialog-toggle">
@@ -51,6 +52,36 @@
   </div>
   {{/if}}
 
+  {{#if akimboAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogAkimbo'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="akimbo" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if alphaStrikeAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogAlphaStrike'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="alphaStrike" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
+  {{#if emptyTheMagAvailable}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogEmptyTheMag'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="emptyTheMag" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+
   {{#if drivingStrikeAvailable}}
   <div class="flexrow align-center roll-dialog-toggle">
     <span>{{localize 'E20.RollDialogDrivingStrike'}} (1 {{localize 'E20.PowerRangerPersonalPower'}})</span>
@@ -62,10 +93,35 @@
   </div>
   {{/if}}
 
-  <div>
-    {{localize 'E20.RollDialogTimesToRoll'}}
-    <input type="number" name="timesToRoll" value=1 min="1" step="1" />
+  {{#if rolePoints}}
+  <div class="flexrow align-center">
+    <input type="checkbox" name="applyRolePointsUpshift" {{checked applyRolePointsUpshift}} />
+    Apply {{rolePoints.name}} to gain {{rolePoints.system.bonus.value}}<i class="fas fa-arrow-up flex-grow-0"></i>?
   </div>
+  {{/if}}
+
+  {{#if damageRolePoints}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogApplyDamageBonus' name=damageRolePoints.name value=damageRolePoints.value}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyRolePointsDamage" {{checked damageRolePoints.autoEligible}} />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{#if damageRolePoints.autoReason}}
+  <div class="roll-dialog-role-points-reason">{{damageRolePoints.autoReason}}</div>
+  {{/if}}
+
+  {{#if damageRolePoints.canDouble}}
+  <div class="flexrow align-center roll-dialog-toggle">
+    <span>{{localize 'E20.RollDialogApplyDamageDouble'}}</span>
+    <label class="switch">
+      <input type="checkbox" name="applyDamageDouble" />
+      <span class="switch-slider"></span>
+    </label>
+  </div>
+  {{/if}}
+  {{/if}}
 
   <div>
     {{localize 'E20.RollDialogDefenseType'}}
@@ -73,11 +129,4 @@
       {{selectOptions defenseTypes selected=defenseType localize=true}}
     </select>
   </div>
-
-  {{#if rolePoints}}
-  <div class="flexrow align-center">
-    <input type="checkbox" name="applyRolePointsUpshift" {{checked applyRolePointsUpshift}} />
-    Apply {{rolePoints.name}} to gain {{rolePoints.system.bonus.value}}<i class="fas fa-arrow-up flex-grow-0"></i>?
-  </div>
-  {{/if}}
 </div>

@@ -22,6 +22,17 @@ if (!String.prototype.capitalize) {
   });
 }
 
+// Foundry also extends the built-in Math object with radian/degree conversions, used by
+// helpers/aoe-targeting.mjs's own angle math (matching the same conversions Foundry's own
+// MeasuredTemplate/Region shape code uses internally).
+Math.toDegrees ??= function toDegrees(radians) {
+  return radians * (180 / Math.PI);
+};
+
+Math.toRadians ??= function toRadians(degrees) {
+  return degrees * (Math.PI / 180);
+};
+
 global.Actor = class Actor {
   constructor() {}
   getRollData() {

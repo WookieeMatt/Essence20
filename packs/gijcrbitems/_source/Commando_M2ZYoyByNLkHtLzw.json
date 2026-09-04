@@ -36,6 +36,30 @@
         "subtype": "role",
         "level": 1
       },
+      "9bce": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 1
+      },
+      "9bcf": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
+      "9bd0": {
+        "uuid": "Compendium.essence20.gi_joe_crb.Item.F9kOLys1Iu4UOg22",
+        "img": "systems/essence20/assets/icons/items/perk.svg",
+        "name": "Expertise",
+        "type": "perk",
+        "subtype": "role",
+        "level": 7
+      },
       "b65c": {
         "uuid": "Compendium.essence20.gi_joe_crb.Item.QmCOBRBiBx1k0qMR",
         "img": "systems/essence20/assets/icons/items/perk.svg",

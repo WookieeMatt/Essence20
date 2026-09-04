@@ -9,6 +9,16 @@
       {{/roll-button}}
     </div>
   </div>
+  {{#if (canUsePerk item)}}
+    <div class="item-image flex-grow-0">
+      <div class="flexrow nowrap gap-5">
+        <a class="perk-use flex-grow-0" data-action="perkUse" data-id="{{item._id}}"
+          data-tooltip="{{localize 'E20.PerkUse'}}">
+          <i class="fas fa-bolt fa-lg"></i>
+        </a>
+      </div>
+    </div>
+  {{/if}}
   {{#if (eq item.type "shield")}}
     <div class="item-image flex-grow-0">
       <div class="flexrow nowrap gap-5">

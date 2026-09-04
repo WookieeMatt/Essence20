@@ -137,14 +137,14 @@ export async function performSpectrumShift(actor, newRole) {
  *                                    in place of previousLevel, for the same reason.
  */
 export async function setRoleValues(role, actor, newLevel=null, previousLevel=null, essenceLevel=null, perkLevel=null, previousPerkLevel=null) {
-  const currentEssenceLevel = essenceLevel ?? actor.system.level;
+  const currentEssenceLevel = essenceLevel ?? newLevel;
+  console.log(currentEssenceLevel);
   for (const essence in role.system.essenceLevels) {
     const totalChange = roleValueChange(currentEssenceLevel, role.system.essenceLevels[essence], previousLevel);
     const essenceMax = actor.system.essences[essence].max + totalChange;
     const essenceMaxString = `system.essences.${essence}.max`;
     const essenceValue = actor.system.essences[essence].value+ totalChange;
     const essenceString = `system.essences.${essence}.value`;
-
     await actor.update({
       [essenceString]: essenceValue,
       [essenceMaxString]: essenceMax,
@@ -565,10 +565,9 @@ export async function onLevelChange(actor, newLevel) {
     return;
   }
 
-  const roles = actor.items.documentsByType.role;
+  const roles = await actor.items.documentsByType.role;
   const baseRole = roles.find(r => !r.system.isAdditive);
   const additiveRole = roles.find(r => r.system.isAdditive);
-
   if (!baseRole) {
     return;
   }

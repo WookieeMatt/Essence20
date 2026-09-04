@@ -21,6 +21,14 @@ preLocalize("gameVersions");
  ***********************************************/
 
 // Essence-based defenses
+// Area of Effect shape (GitHub #824) - see data/item/weapon-effect.mjs's own system.shape field
+// and helpers/aoe-targeting.mjs for what each one actually does.
+E20.weaponEffectShapes = {
+  burst: "E20.WeaponShapeBurst",
+  cone: "E20.WeaponShapeCone",
+};
+preLocalize("weaponEffectShapes");
+
 E20.defenses = {
   cleverness: "E20.DefenseCleverness",
   evasion: "E20.DefenseEvasion",
@@ -860,6 +868,8 @@ preLocalize("energonTypes");
 E20.perkChoiceTypes = {
   none: "E20.PerkChoiceNone",
   environments: "E20.PerkChoiceEnvironments",
+  field: "E20.PerkChoiceField",
+  fightingStyle: "E20.PerkChoiceFightingStyle",
   movement: "E20.PerkChoiceMovement",
   perks: "E20.PerkChoicePerks",
   senses: "E20.PerkChoiceSenses",
@@ -870,6 +880,26 @@ E20.perkChoiceTypes = {
   skills: "E20.PerkChoiceSkills",
 };
 preLocalize("perkChoiceTypes");
+
+// GI Joe CRB p.104 - the 3 skills Technician/Expert Focus's Field Perk can be chosen from
+// ("choose a Culture, Science, or Technology Specialization... This is your Field" - see
+// perk-handler.mjs's 'field' choiceType). Not a distinct set of options from E20.skills, just a
+// restricted view of it - Eureka/Expert in Your Field (both gated on this same choice) read the
+// stored skill key directly off system.choice, same as Fighting Style already does.
+E20.fieldSkills = ['culture', 'science', 'technology'];
+
+// GI Joe CRB p.79/108 - the 6 Fighting Style options shared by Infantry and Vanguard's identical
+// Perk (a single compendium item, granted by both Roles - see perk-handler.mjs's 'fightingStyle'
+// choiceType).
+E20.fightingStyle = {
+  akimbo: "E20.FightingStyleAkimbo",
+  careful: "E20.FightingStyleCareful",
+  closeQuartersBattle: "E20.FightingStyleCloseQuartersBattle",
+  defense: "E20.FightingStyleDefense",
+  longShot: "E20.FightingStyleLongShot",
+  triggerHappy: "E20.FightingStyleTriggerHappy",
+};
+preLocalize("fightingStyle");
 
 E20.rerollModes = {
   all: "E20.RerollModeAll",
@@ -1057,16 +1087,19 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_acting_smaller.svg',
     id: 'actingSmaller',
     name: 'E20.StatusActingSmaller',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_asleep.svg',
     id: 'asleep',
     name: 'E20.StatusAsleep',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_blinded.svg',
     id: 'blinded',
     name: 'E20.StatusBlinded',
+    changes: [],
   },
   {
     // MLP CRB "Laughtracting" (p.86): "...they can't use any Free actions on their next turn."
@@ -1075,6 +1108,7 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
     id: 'cantTakeFreeActions',
     name: 'E20.StatusCantTakeFreeActions',
+    changes: [],
   },
   {
     // MLP CRB "Distraughter" (p.86): extends Laughtracting - "...can't use a Move action this
@@ -1084,71 +1118,107 @@ E20.statusEffects = [
     img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
     id: 'cantTakeMoveActions',
     name: 'E20.StatusCantTakeMoveActions',
+    changes: [],
+  },
+  {
+    // No custom art yet (p.202) - reuses Foundry's own bundled shield.svg, same "generic core
+    // icon" fallback already used elsewhere in this system rather than hand-authoring new art.
+    img: 'icons/svg/shield.svg',
+    id: 'cover',
+    name: 'E20.StatusCover',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_deafened.svg',
     id: 'deafened',
     name: 'E20.StatusDeafened',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_defeated.svg',
     id: 'defeated',
     name: 'E20.StatusDefeated',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_frightened.svg',
     id: 'frightened',
     name: 'E20.StatusFrightened',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_grappled.svg',
     id: 'grappled',
     name: 'E20.StatusGrappled',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_immobilized.svg',
     id: 'immobilized',
     name: 'E20.StatusImmobilized',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_impaired.svg',
     id: 'impaired',
     name: 'E20.StatusImpaired',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_invisible.svg',
     id: 'invisible',
     name: 'E20.StatusInvisible',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_mesmerized.svg',
     id: 'mesmerized',
     name: 'E20.StatusMesmerized',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_mode_lock.svg',
     id: 'modeLock',
     name: 'E20.StatusModeLock',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_prone.svg',
     id: 'prone',
     name: 'E20.StatusProne',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_restrained.svg',
     id: 'restrained',
     name: 'E20.StatusRestrained',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_stunned.svg',
     id: 'stunned',
     name: 'E20.StatusStunned',
+    changes: [],
+  },
+  {
+    // "A target completely concealed by an obstacle or much larger creature is considered as
+    // having Total Cover. A target with Total Cover can't be targeted directly, although some
+    // special attacks may mitigate or eliminate this protection" (p.202) - the "can't be targeted"
+    // half isn't enforced as a hard block (nothing else in this system's automatic combat
+    // modifiers hard-blocks a roll, and the book itself treats it as overridable), so this status
+    // gets the same automatic -2 as Cover instead - see dice.mjs#_getAutomaticCombatModifiers.
+    // Reuses Foundry's bundled castle.svg (a fully-walled-in visual) to read as stronger than the
+    // plain shield.svg used for Cover.
+    img: 'icons/svg/castle.svg',
+    id: 'totalCover',
+    name: 'E20.StatusTotalCover',
+    changes: [],
   },
   {
     img: 'systems/essence20/assets/icons/status_effects/status_unconscious.svg',
     id: 'unconscious',
     name: 'E20.StatusUnconscious',
+    changes: [],
   },
 ];
 

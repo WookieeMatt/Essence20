@@ -4,9 +4,9 @@ import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 // Display order for the 4 real Essences' tally boxes and fieldsets - a 2x2 grid, Strength/Speed
-// on top and Social/Smarts below, rather than CONFIG.E20.originEssences' own key order
+// on top and Smarts/Social below, rather than CONFIG.E20.originEssences' own key order
 // (strength, speed, smarts, social).
-const ESSENCE_GRID_ORDER = ["strength", "speed", "social", "smarts"];
+const ESSENCE_GRID_ORDER = ["strength", "speed", "smarts", "social"];
 
 /**
  * Sets every skill's shift in one place, with a live per-Essence spend tally, and - for the two

@@ -25,6 +25,8 @@ import { E20 } from "./helpers/config.mjs";
 import { enrichCheck, onCheckLinkClick, onCheckSendToChat } from "./helpers/enrichers.mjs";
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { applyVisionToTokens, getNumActions, syncAutoBlindStatus } from "./helpers/actor.mjs";
+import { canUsePerk } from "./helpers/banked-buffs.mjs";
+import { isImmuneToCondition } from "./helpers/condition-immunity.mjs";
 import { performPreLocalization } from "./helpers/localize.mjs";
 import { migrateWorld } from "./migration.mjs";
 import { applyThemeClass, refreshChatMessageThemes, registerSettings, refreshOpenThemeWrappers, setting } from "./settings.js";
@@ -269,6 +271,12 @@ Handlebars.registerHelper("inArray", function (array, value, options) {
   return array.includes(value) ? options.fn(this) : options.inverse(this);
 });
 
+// Whether the Perks list should show a "Use" control for this item - see
+// helpers/banked-buffs.mjs for the full registry (Think On It, Plan of Action) and what "Use"
+// actually banks for each. A template-level check, the same idiom {{eq item.type "shield"}}
+// already uses for the shield-activate icon right next to where this one renders.
+Handlebars.registerHelper("canUsePerk", canUsePerk);
+
 // system.items collections (Role/Focus's granted-item lists, among others) are a plain object
 // keyed by short random ids, not an array - {{#each}} over them iterates in insertion order, not
 // level order, so a Role Perk dragged on after a higher-level one already exists would render
@@ -512,6 +520,33 @@ for (const hookName of ["createItem", "updateItem", "deleteItem"]) {
     }
   });
 }
+
+/* Condition immunity (e.g. Caution, GI Joe CRB p.110 - see helpers/condition-immunity.mjs for the
+   full Perk-to-Conditions table). Statuses (Frightened, Stunned, etc.) apply to an actor as
+   ActiveEffects, the same mechanism the createActiveEffect/updateActiveEffect/deleteActiveEffect
+   hooks just below already rely on - preCreateActiveEffect fires before that document is actually
+   created, and returning false here cancels it outright, so an immune actor's status never
+   applies in the first place rather than being reactively stripped back off afterward. */
+Hooks.on("preCreateActiveEffect", (effect) => {
+  const actor = effect.parent;
+  if (!(actor instanceof Actor)) {
+    return true;
+  }
+
+  for (const statusId of effect.statuses ?? []) {
+    if (isImmuneToCondition(actor, statusId)) {
+      const statusLabel = CONFIG.statusEffects.find(s => s.id == statusId)?.name ?? statusId;
+      ui.notifications.warn(game.i18n.format("E20.ConditionImmuneWarning", {
+        actor: actor.name,
+        condition: game.i18n.localize(statusLabel),
+      }));
+
+      return false;
+    }
+  }
+
+  return true;
+});
 
 for (const hookName of ["createActiveEffect", "updateActiveEffect", "deleteActiveEffect"]) {
   Hooks.on(hookName, (effect) => {

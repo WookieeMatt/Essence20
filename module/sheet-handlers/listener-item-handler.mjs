@@ -1,5 +1,6 @@
 import ChoicesSelector from "../apps/choices-selector.mjs";
 import { checkIsLocked } from "../helpers/actor.mjs";
+import { onPerkUse } from "../helpers/banked-buffs.mjs";
 import { onAlterationDelete } from "./alteration-handler.mjs";
 import { deleteAttachmentsForItem, setEntryAndAddItem } from "./attachment-handler.mjs";
 import { onOriginDelete } from "./background-handler.mjs";
@@ -88,6 +89,21 @@ export async function onItemEdit(event) {
     } else {
       item.sheet.render(true);
     }
+  }
+}
+
+/**
+ * Handles the sheet's "Use" control on a bankable Perk (Think On It, Plan of Action - see
+ * helpers/banked-buffs.mjs for the full registry and what "Use" actually does for each).
+ * @param {Event} event The originating click event
+ * @param {ActorSheet} actorSheet The ActorSheet the Perk is attached to
+ */
+export async function onPerkUseClick(event, actorSheet) {
+  event.preventDefault();
+  const itemId = event.currentTarget.dataset.id;
+  const item = actorSheet.actor.items.get(itemId);
+  if (item) {
+    await onPerkUse(item);
   }
 }
 

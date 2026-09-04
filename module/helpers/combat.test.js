@@ -80,6 +80,50 @@ describe("applyDamage", () => {
     expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 10 });
     expect(applied).toBe(0);
   });
+
+  describe("Impenetrable Shield (Vanguard base, 18th level) - EMP immunity while active", () => {
+    const IMPENETRABLE_SHIELD_ID = "Compendium.essence20.gi_joe_crb.Item.eEUl7OA9yWAk0QD3";
+    const PERSONAL_SHIELD_ROLE_POINTS_ID = "Compendium.essence20.gi_joe_crb.Item.84JYgd6kZgY41wge";
+
+    function makeActor({ perkIds = [], shieldActive = true } = {}) {
+      const items = perkIds.map(perkId => ({ type: 'perk', flags: { core: { sourceId: perkId } } }));
+
+      return {
+        system: { health: { value: 10 }, immunities: {} },
+        update: jest.fn(),
+        _getBaseRolePoints: jest.fn(() => ({
+          flags: { core: { sourceId: PERSONAL_SHIELD_ROLE_POINTS_ID } },
+          system: { isActive: shieldActive },
+        })),
+        items,
+      };
+    }
+
+    test("zeroes out EMP damage while the shield is active", async () => {
+      const actor = makeActor({ perkIds: [IMPENETRABLE_SHIELD_ID] });
+      const applied = await applyDamage(actor, 8, 'emp');
+      expect(actor.update).toHaveBeenCalledWith({ 'system.health.value': 10 });
+      expect(applied).toBe(0);
+    });
+
+    test("doesn't apply to other damage types (resistance, not immunity - a Snag instead)", async () => {
+      const actor = makeActor({ perkIds: [IMPENETRABLE_SHIELD_ID] });
+      const applied = await applyDamage(actor, 8, 'fire');
+      expect(applied).toBe(8);
+    });
+
+    test("doesn't apply without the shield active", async () => {
+      const actor = makeActor({ perkIds: [IMPENETRABLE_SHIELD_ID], shieldActive: false });
+      const applied = await applyDamage(actor, 8, 'emp');
+      expect(applied).toBe(8);
+    });
+
+    test("doesn't apply without the Perk", async () => {
+      const actor = makeActor();
+      const applied = await applyDamage(actor, 8, 'emp');
+      expect(applied).toBe(8);
+    });
+  });
 });
 
 describe("_isCritIsFumble", () => {

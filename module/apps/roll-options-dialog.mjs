@@ -5,8 +5,8 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
 /**
  * The skill/attack/initiative roll options popup (shift up/down, snag/edge, specialization,
- * crit-on-2, times to roll). Resolves the Promise passed in by RollDialog.getSkillRollOptions
- * with either the processed form options, or { cancelled: true } if closed/cancelled.
+ * crit-on-2). Resolves the Promise passed in by RollDialog.getSkillRollOptions with either the
+ * processed form options, or { cancelled: true } if closed/cancelled.
  */
 export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsApplicationMixin(ApplicationV2)) {
   constructor(context, title, resolve) {
@@ -88,8 +88,14 @@ export default class RollOptionsDialog extends serializeFormSubmits(HandlebarsAp
       shiftUp: parseInt(form.shiftUp.value),
       snag: form.snagEdge.value == 'snag',
       isSpecialized: form.isSpecialized.checked,
-      timesToRoll: parseInt(form.timesToRoll.value),
+      // No longer a player-facing field (removed from roll-dialog.hbs) - always a single roll.
+      timesToRoll: 1,
       applyRolePointsUpshift: form?.applyRolePointsUpshift?.checked,
+      applyRolePointsDamage: form?.applyRolePointsDamage?.checked,
+      applyDamageDouble: form?.applyDamageDouble?.checked,
+      akimbo: form?.akimbo?.checked,
+      alphaStrike: form?.alphaStrike?.checked,
+      emptyTheMag: form?.emptyTheMag?.checked,
       isAiming: form?.isAiming?.checked,
       spendEnergon: form?.spendEnergon?.checked,
       drivingStrike: form?.drivingStrike?.value,

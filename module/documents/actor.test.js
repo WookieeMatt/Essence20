@@ -11,6 +11,7 @@ function makeActor(type, system, documentsByType = {}) {
   actor.system = system;
 
   const byType = {
+    armor: [],
     origin: [],
     rolePoints: [],
     ...documentsByType,
@@ -192,6 +193,139 @@ describe("_prepareDefenses", () => {
     actor._prepareDefenses();
     expect(actor.system.defenses.toughness.total).toBe(17); // 15 + 2
     expect(actor.system.defenses.evasion.total).toBe(14); // unaffected, not the bonus's defense type
+  });
+
+  describe("Vanguard armor-conditional Perk bonuses", () => {
+    const ARMOR_EXPERT_ID = "Compendium.essence20.gi_joe_crb.Item.0a01vmWtbbYYcNvA";
+    const THE_HEAVY_ID = "Compendium.essence20.gi_joe_crb.Item.rlD6YJSr2fgROKHo";
+    // Iron Heart is deliberately absent from this file's own runtime code - see the top-of-file
+    // comment on actor.mjs's ARMOR_EXPERT_ID/THE_HEAVY_ID block. Its compendium Item already
+    // carries an enabled Active Effect for its full +1 Toughness/+1 Evasion/+1 Health, which
+    // Jest's mocked actors never apply (they build system.defenses directly, bypassing Foundry's
+    // real Active Effect pipeline) - so there is nothing for _prepareDefenses() itself to test
+    // here without reintroducing the double-count this same cross-check caught and removed.
+
+    function perk(sourceId) {
+      return { type: 'perk', flags: { core: { sourceId } } };
+    }
+
+    function armorItem({ equipped = true, classification = 'light' } = {}) {
+      return { type: 'armor', system: { equipped, classification } };
+    }
+
+    test("Armor Expert adds +2 Toughness only while any armor is equipped", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem()],
+        perk: [perk(ARMOR_EXPERT_ID)],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(17); // 15 + 2
+      expect(actor.system.defenses.evasion.total).toBe(14); // unaffected, Armor Expert is Toughness-only
+    });
+
+    test("Armor Expert does nothing without any armor equipped", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem({ equipped: false })],
+        perk: [perk(ARMOR_EXPERT_ID)],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
+
+    test("The Heavy adds +2 Toughness only while heavy/super heavy armor is equipped", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem({ classification: 'heavy' })],
+        perk: [perk(THE_HEAVY_ID)],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(17); // 15 + 2
+    });
+
+    test("The Heavy does nothing while only light/medium armor is equipped", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem({ classification: 'light' })],
+        perk: [perk(THE_HEAVY_ID)],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
+
+    test("Armor Expert and The Heavy stack while wearing heavy armor", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem({ classification: 'ultraHeavy' })],
+        perk: [perk(ARMOR_EXPERT_ID), perk(THE_HEAVY_ID)],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(19); // 15 + 2 + 2
+    });
+
+  });
+
+  describe("Fighting Style (Infantry/Vanguard, shared Perk)", () => {
+    const FIGHTING_STYLE_ID = "Compendium.essence20.gi_joe_crb.Item.2LtDCHxgg9bMvWQK";
+
+    function fightingStylePerk(choice) {
+      return { type: 'perk', flags: { core: { sourceId: FIGHTING_STYLE_ID } }, system: { choice } };
+    }
+
+    function armorItem({ equipped = true } = {}) {
+      return { type: 'armor', system: { equipped, classification: 'light' } };
+    }
+
+    test("Careful adds +2 Toughness/Evasion while the actor has the Cover status", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        perk: [fightingStylePerk('careful')],
+      });
+      actor.statuses = new Set(['cover']);
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(17); // 15 + 2
+      expect(actor.system.defenses.evasion.total).toBe(16); // 14 + 2
+    });
+
+    test("Careful does nothing without the Cover status", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        perk: [fightingStylePerk('careful')],
+      });
+      actor.statuses = new Set();
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
+
+    test("Defense adds +1 Toughness/Evasion while any armor is equipped", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem()],
+        perk: [fightingStylePerk('defense')],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(16); // 15 + 1
+      expect(actor.system.defenses.evasion.total).toBe(15); // 14 + 1
+    });
+
+    test("Defense does nothing without any armor equipped", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem({ equipped: false })],
+        perk: [fightingStylePerk('defense')],
+      });
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
+
+    test("an unautomated choice (e.g. Akimbo) has no defense effect", () => {
+      const actor = makeActor('playerCharacter', defensesSystem(), {
+        armor: [armorItem()],
+        perk: [fightingStylePerk('akimbo')],
+      });
+      actor.statuses = new Set(['cover']);
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
+
+    test("no effect when the Perk hasn't been chosen at all", () => {
+      const actor = makeActor('playerCharacter', defensesSystem());
+      actor.statuses = new Set(['cover']);
+      actor._prepareDefenses();
+      expect(actor.system.defenses.toughness.total).toBe(15); // unaffected
+    });
   });
 });
 

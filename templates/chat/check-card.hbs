@@ -19,7 +19,7 @@
       {{/if}}
       {{#if damageValue}}
       <button type="button" data-action="apply-damage" data-key="{{targetUuid}}:base" data-target-uuid="{{targetUuid}}"
-        data-damage="{{damageValue}}" data-damage-type="{{damageType}}">
+        data-damage="{{damageValue}}" data-damage-type="{{damageType}}" data-is-might-melee="{{isMightMelee}}">
         {{localize 'E20.CheckApplyDamage'}} {{damageValue}} {{damageTypeLabel}}
       </button>
       {{/if}}

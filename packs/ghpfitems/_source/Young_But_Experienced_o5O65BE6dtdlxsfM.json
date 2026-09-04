@@ -1,5 +1,5 @@
 {
-  "folder": null,
+  "folder": "aYgV1VMj4QDpmJI5",
   "name": "Young But Experienced",
   "type": "perk",
   "_id": "o5O65BE6dtdlxsfM",
@@ -17,7 +17,7 @@
     "canActivate": false
   },
   "effects": [],
-  "sort": 200000,
+  "sort": 650000,
   "ownership": {
     "default": 0
   },
@@ -25,10 +25,10 @@
   "_stats": {
     "systemId": "essence20",
     "systemVersion": "4.6.5",
-    "coreVersion": "13.344",
+    "coreVersion": "14.364",
     "createdTime": 1787050000000,
-    "modifiedTime": 1787050000000,
-    "lastModifiedBy": "j6WWLUdptyfr6qBb",
+    "modifiedTime": 1788529470492,
+    "lastModifiedBy": "eDolxwiWtO0teEJE",
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null

@@ -2,6 +2,11 @@ import { Dice } from "../dice.mjs";
 import { RollDialog } from "../helpers/roll-dialog.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
 import { updateRoleCache } from "../helpers/utils.mjs";
+import { placeAoeTemplate } from "../helpers/aoe-targeting.mjs";
+import { applyShapedCharges } from "../helpers/shaped-charges.mjs";
+import { applyHorseshoesAndHandgrenades } from "../helpers/horseshoes-and-handgrenades.mjs";
+import { applyMightyStrikes } from "../helpers/mighty-strikes.mjs";
+import { applyNoNeedToAim } from "../helpers/no-need-to-aim.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -362,6 +367,33 @@ export class Essence20Item extends Item {
         content: content,
       });
     } else if (this.type == 'weaponEffect') {
+      // Area of Effect (GitHub #824) - see helpers/aoe-targeting.mjs's own doc comment. Only
+      // Blast/AoE-shaped attacks (system.shape set) trigger this; an ordinary single-target or
+      // Multiple-Targets attack rolls exactly as it always has, targets chosen by hand as usual.
+      if (this.system.shape) {
+        let aoeTokens = await placeAoeTemplate(this.actor, this);
+
+        // Shaped Charges (Artillery Focus, 7th level, p.81) - see its own doc comment. Runs
+        // before Horseshoes and Handgrenades below so an excluded target dodges that flat-damage
+        // tax too, not just the attack roll itself.
+        aoeTokens = await applyShapedCharges(this.actor, this, aoeTokens);
+
+        // Horseshoes and Handgrenades (Artillery Focus, 18th level, p.82) - see its own doc
+        // comment. Reuses whatever's left of the AoE shape's own catch (after Shaped Charges'
+        // exclusions above), applied unconditionally before the attack roll itself even happens.
+        await applyHorseshoesAndHandgrenades(this.actor, this, aoeTokens);
+      }
+
+      // Mighty Strikes (Blitzer Focus, 17th level, p.98) - see its own doc comment. Independent
+      // of system.shape entirely (a Might melee weapon never has one set) - targets everyone
+      // within the attacker's own reach automatically, no click required.
+      await applyMightyStrikes(this.actor, this);
+
+      // No Need to Aim (Vanguard base, 20th level, p.111) - see its own doc comment. Also
+      // independent of system.shape - a Multiple Targets attack targets normally via ordinary
+      // Foundry targeting, not a placed shape.
+      await applyNoNeedToAim(this.actor, this);
+
       let weaponDataset = {};
       const roller = childRoller || this.actor;
       const skill = this.system.classification.skill;

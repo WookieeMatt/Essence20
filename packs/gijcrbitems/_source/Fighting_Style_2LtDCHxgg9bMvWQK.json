@@ -13,7 +13,9 @@
     },
     "prerequisite": "",
     "selectionLimit": 1,
-    "type": "role"
+    "type": "role",
+    "hasChoice": true,
+    "choiceType": "fightingStyle"
   },
   "effects": [],
   "sort": 200000,

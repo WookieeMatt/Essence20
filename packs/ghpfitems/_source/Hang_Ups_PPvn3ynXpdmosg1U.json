@@ -1,23 +1,23 @@
 {
-  "name": "New Influence Perks",
+  "name": "Hang-Ups",
   "sorting": "a",
   "folder": null,
   "type": "Item",
-  "_id": "7yGEmKOeHNfkLL6y",
+  "_id": "PPvn3ynXpdmosg1U",
   "description": "",
-  "sort": 0,
+  "sort": 200000,
   "color": null,
   "flags": {},
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
     "exportSource": null,
-    "coreVersion": "13.344",
+    "coreVersion": "14.364",
     "systemId": "essence20",
     "systemVersion": "4.6.9",
     "createdTime": 1787763529613,
-    "modifiedTime": 1787763529613,
-    "lastModifiedBy": null
+    "modifiedTime": 1788529384842,
+    "lastModifiedBy": "eDolxwiWtO0teEJE"
   },
-  "_key": "!folders!7yGEmKOeHNfkLL6y"
+  "_key": "!folders!PPvn3ynXpdmosg1U"
 }
