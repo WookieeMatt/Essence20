@@ -148,3 +148,87 @@
     font-weight: 700;
   }
 }
+
+/* Existing Specializations (as chip pills) plus the add-one control, under each skill row - see
+   templates/actor/parts/misc/skill-picker-specializations.hbs. A small card of its own (a subtle
+   fill rather than a hard border, since it's a sub-section of the skill row above, not a peer of
+   the bordered .skill-picker-essence-group it sits inside) - reads as one coherent widget rather
+   than a loose row of native form controls. */
+.skill-picker-specializations {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: v.$gap-sm;
+  width: calc(100% - 22px);
+  margin: 2px 0 4px 22px;
+  padding: v.$gap-sm;
+  box-sizing: border-box;
+  background: var(--theme-card-bg);
+  border-radius: 8px;
+}
+
+.skill-picker-specialization-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.8em;
+  color: var(--theme-text-color);
+  white-space: nowrap;
+
+  .fa-lock {
+    font-size: 0.85em;
+    opacity: 0.6;
+  }
+
+  a {
+    display: inline-flex;
+    color: var(--theme-text-color);
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+      color: var(--theme-accent);
+    }
+  }
+}
+
+.skill-picker-add-specialization {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 140px;
+
+  select,
+  input[type="text"] {
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: 0.8em;
+    padding: 2px 6px;
+    border-radius: 6px;
+  }
+
+  input[type="text"][hidden] {
+    display: none;
+  }
+
+  /* A round icon-button to match the "+" affordance used elsewhere on this sheet
+     (.npc-skill-list-header a, item-control links), rather than a bare unstyled anchor. */
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: var(--theme-text-color);
+    background: var(--theme-panel-bg);
+    border: 1px solid var(--theme-border-color);
+
+    &:hover {
+      color: var(--theme-accent);
+      border-color: var(--theme-accent);
+    }
+  }
+}

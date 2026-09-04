@@ -6,6 +6,8 @@ import {
   _randomId,
   getShiftedSkill,
   updateRoleCache,
+  slugifySpecializationName,
+  titleCaseSpecializationName,
 } from "./utils.mjs";
 
 describe("parseId", () => {
@@ -60,6 +62,64 @@ describe("createId", () => {
     expect(Math.random).toHaveBeenCalledTimes(2);
 
     Math.random.mockRestore();
+  });
+});
+
+describe("slugifySpecializationName", () => {
+  test("lowercases a single-word name", () => {
+    expect(slugifySpecializationName("Medicine")).toBe("medicine");
+  });
+
+  test("camelCases a multi-word name", () => {
+    expect(slugifySpecializationName("Specific Subject")).toBe("specificSubject");
+  });
+
+  test("strips punctuation when building the key", () => {
+    expect(slugifySpecializationName("Sleight of Hand")).toBe("sleightOfHand");
+  });
+
+  test("falls back to a generic key when the name has no alphanumeric characters", () => {
+    expect(slugifySpecializationName("***")).toBe("specialization");
+  });
+
+  test("appends a numeric suffix when the slug collides with an existing key", () => {
+    const existing = { medicine: { name: "Medicine" } };
+    expect(slugifySpecializationName("Medicine!", existing)).toBe("medicine2");
+  });
+
+  test("keeps incrementing the suffix past one collision", () => {
+    const existing = { medicine: {}, medicine2: {} };
+    expect(slugifySpecializationName("Medicine", existing)).toBe("medicine3");
+  });
+});
+
+describe("titleCaseSpecializationName", () => {
+  test("capitalizes a lowercase single word", () => {
+    expect(titleCaseSpecializationName("medicine")).toBe("Medicine");
+  });
+
+  test("capitalizes every word of a lowercase multi-word name", () => {
+    expect(titleCaseSpecializationName("sniper rifle")).toBe("Sniper Rifle");
+  });
+
+  test("lowercases the rest of a word that was typed in all caps", () => {
+    expect(titleCaseSpecializationName("SNIPER RIFLE")).toBe("Sniper Rifle");
+  });
+
+  test("normalizes mixed/inconsistent casing", () => {
+    expect(titleCaseSpecializationName("sNiPeR rIFLE")).toBe("Sniper Rifle");
+  });
+
+  test("trims leading/trailing whitespace and collapses internal runs of it", () => {
+    expect(titleCaseSpecializationName("  sniper   rifle  ")).toBe("Sniper Rifle");
+  });
+
+  test("leaves an already Title Cased name unchanged", () => {
+    expect(titleCaseSpecializationName("Sniper Rifle")).toBe("Sniper Rifle");
+  });
+
+  test("keeps a hyphenated word as one word, capitalizing only its own leading letter", () => {
+    expect(titleCaseSpecializationName("xeno-zoology")).toBe("Xeno-zoology");
   });
 });
 

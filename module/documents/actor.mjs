@@ -6,6 +6,7 @@ import { roleValueChange } from "../sheet-handlers/role-handler.mjs";
 import { onMorph } from "../sheet-handlers/power-ranger-handler.mjs";
 import { onTransformUuid } from "../sheet-handlers/transformer-handler.mjs";
 import { createEntry } from "../sheet-handlers/attachment-handler.mjs";
+import { normalizeSpecializations } from "../sheet-handlers/specialization-handler.mjs";
 
 // GI Joe CRB Vanguard Perks that grant a flat, condition-gated Toughness/Evasion bonus - computed
 // fresh in _prepareDefenses() below (like rolePointsDefense already is) rather than written into
@@ -187,6 +188,10 @@ export class Essence20Actor extends Actor {
     this._prepareNpcData();
     this._prepareVision();
     this._prepareEnergon();
+    // Runs after Active Effects have applied (prepareDerivedData is the step after that in
+    // Foundry's own document lifecycle) - fills in any field a Specialization-granting effect's
+    // OVERRIDE changes left unset (see specialization-handler.mjs#normalizeSpecializations).
+    normalizeSpecializations(this);
 
     if (this.type == 'playerCharacter') {
       this._prepareDefenses();

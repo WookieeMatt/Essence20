@@ -1,0 +1,38 @@
+{{!-- Existing + add-new Specializations for one skill row, shared by skill-picker.hbs's two
+     {{#each}} loops (real-Essence skills and "any"-Essence skills). Adding AND removing a
+     Specialization both live here now, not on the actor sheet's own essence-skills.hbs (which is
+     roll-only display) - see essence20-specialization-redesign. Initiative has no
+     Specializations per every sourcebook - skip the whole block rather than render a dead
+     control (Conditioning never reaches here at all - it isn't a system.skills entry). Also
+     skipped for a still-untrained (d20) skill - every sourcebook requires at least a d2 Rank
+     before a Specialization can be assigned ("You choose a skill in which you possess at least a
+     d2 Rank and assign a Specialization to that skill"), so there's nothing valid to add yet. --}}
+{{#unless (or (eq key 'initiative') (eq fields.shift 'd20'))}}
+<div class="skill-picker-specializations">
+  {{#each fields.specializations as |specialization specializationKey|}}
+  <span class="chip skill-picker-specialization-chip">
+    {{specialization.name}}
+    {{#if specialization.granted}}<i class="fas fa-lock" data-tooltip="{{localize 'E20.SpecializationGranted'}}"></i>{{/if}}
+    <a data-action="removeSpecialization" data-skill="{{../key}}" data-specialization-key="{{specializationKey}}" data-tooltip="{{localize 'E20.ItemControlDelete'}}">
+      <i class="fas fa-xmark"></i>
+    </a>
+  </span>
+  {{/each}}
+
+  <div class="skill-picker-add-specialization" data-skill="{{key}}">
+    {{!-- Every sourcebook is explicit its own list is suggestions, not a fixed catalog - the
+         trailing "Custom..." option (which reveals the free-text input beside it) is always
+         available, even for a skill/version with no standard list of its own. --}}
+    <select class="skill-picker-specialization-select">
+      {{#each (lookup @root.standardSpecializations key) as |name|}}
+      <option value="{{name}}">{{name}}</option>
+      {{/each}}
+      <option value="">{{localize 'E20.SpecializationCustomOption'}}</option>
+    </select>
+    <input type="text" class="skill-picker-specialization-custom" placeholder="{{localize 'E20.SpecializationCustomPlaceholder'}}" />
+    <a data-action="addSpecialization" data-skill="{{key}}" data-tooltip="{{localize 'E20.AddSpecialization'}}">
+      <i class="fas fa-plus"></i>
+    </a>
+  </div>
+</div>
+{{/unless}}

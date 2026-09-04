@@ -94,8 +94,11 @@ export async function grantItemEntry(key, item, owner, parentItem) {
     const newKey = await setEntryAndAddItem(newItem, parentItem);
     newItem.setFlag('essence20', 'collectionId', newKey);
 
-    const deleteString = `system.items.-=${key}`;
-    await parentItem.update({[deleteString]: null});
+    // A plain key (no "-=" prefix - that's the old, now-deprecated deletion syntax, which Foundry
+    // v14 logs a compatibility warning for and won't actually apply) paired with ForcedDeletion
+    // as the value is what actually deletes it - see item-sheet.mjs's own _onObjectDelete.
+    const deleteString = `system.items.${key}`;
+    await parentItem.update({[deleteString]: new foundry.data.operators.ForcedDeletion()});
   } else {
     newItem.setFlag('essence20', 'collectionId', key);
   }
