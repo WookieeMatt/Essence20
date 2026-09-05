@@ -104,6 +104,64 @@ export function computeEssenceSpend(actor) {
 }
 
 /**
+ * Which of a PC's 4 Essences currently have more skill points spent (see computeEssenceSpend)
+ * than that Essence's own max score (system.essences.<essence>.max) allows - a plain snapshot
+ * check, with no notion of how the actor GOT there. Used only for the Skill Picker's passive
+ * "you're over budget" display (skill-rank-allocation.hbs's skillRankMax) - see
+ * getNewEssenceOverspend below for the actual save-blocking check, which deliberately does NOT
+ * reuse this directly (a PC who's already over budget from data that predates this feature, or
+ * whose max was later lowered under an existing spend, shouldn't be locked out of saving anything
+ * else on the sheet just because this snapshot alone would flag them). Only PCs have both halves
+ * of this comparison (an essenceSpend tally AND a system.essences score to check it against) -
+ * NPC-like actors pick which skills to show instead of spending points at all, so this is never
+ * called for them.
+ * @param {Actor} actor A PC actor - system.essences must be present.
+ * @returns {Object} One entry per over-budget Essence: { spent, max } - empty when every Essence
+ *   is within its own max.
+ */
+export function getEssenceOverspend(actor) {
+  const spend = computeEssenceSpend(actor);
+  const overspend = {};
+  for (const [essence, { value }] of Object.entries(spend)) {
+    const max = actor.system.essences?.[essence]?.max;
+    if (typeof max === 'number' && value > max) {
+      overspend[essence] = { spent: value, max };
+    }
+  }
+
+  return overspend;
+}
+
+/**
+ * Which Essences a proposed, not-yet-saved change would push newly over (or further over) their
+ * own max - the actual check the Skill Picker (module/apps/skill-picker.mjs) blocks a save on.
+ * Unlike getEssenceOverspend's plain snapshot, this only flags an Essence whose spend both (a)
+ * exceeds its own max in the proposed state AND (b) is HIGHER than it already was before this
+ * change - so a PC who's already over budget on some Essence for an unrelated, historical reason
+ * (data saved before this feature existed, or essences.max lowered by hand under an existing
+ * spend) can still freely save changes to every OTHER Essence, and can even still reduce spend on
+ * the over-budget Essence itself back down - only actively spending MORE on an Essence that's
+ * already at or over its max gets rejected.
+ * @param {Actor} actor The actor's CURRENT (still-saved) state.
+ * @param {Actor} previewActor The same actor with a proposed change already merged in (e.g. via
+ *   Actor#clone(updateData)) - not saved.
+ * @returns {Object} One entry per newly-over-budget Essence: { spent, max }.
+ */
+export function getNewEssenceOverspend(actor, previewActor) {
+  const currentSpend = computeEssenceSpend(actor);
+  const previewSpend = computeEssenceSpend(previewActor);
+  const blocked = {};
+  for (const [essence, { value }] of Object.entries(previewSpend)) {
+    const max = previewActor.system.essences?.[essence]?.max;
+    if (typeof max === 'number' && value > max && value > currentSpend[essence].value) {
+      blocked[essence] = { spent: value, max };
+    }
+  }
+
+  return blocked;
+}
+
+/**
  * For one multi-Essence skill (see getSkillEssences above), compare how many points it's
  * actually upshifted against how many points its essenceAttribution has assigned across its own
  * flagged Essences - a non-blocking hint so the Skill Picker can visually flag a skill whose

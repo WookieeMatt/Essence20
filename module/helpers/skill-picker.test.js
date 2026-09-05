@@ -1,23 +1,25 @@
-import { computeEssenceSpend, getSkillAttributionStatus, getSkillEssences } from "./skill-picker.mjs";
+import {
+  computeEssenceSpend, getEssenceOverspend, getNewEssenceOverspend, getSkillAttributionStatus, getSkillEssences,
+} from "./skill-picker.mjs";
 
 /**
  * Builds a minimal actor-shaped fixture with every skill CONFIG.E20.skillToEssence knows about
  * defaulted to an untrained d20 shift and its normal single home Essence (no spend), so tests
  * only need to override what they care about.
  */
-function makeActor({ skillOverrides = {}, conditioning = 0 } = {}) {
+function makeActor({ skillOverrides = {}, conditioning = 0, essences } = {}) {
   const skills = {};
   for (const [skill, homeEssence] of Object.entries(CONFIG.E20.skillToEssence)) {
-    const essences = { strength: false, speed: false, smarts: false, social: false };
+    const skillEssences = { strength: false, speed: false, smarts: false, social: false };
     if (homeEssence === 'any') {
-      essences.strength = essences.speed = essences.smarts = essences.social = true;
+      skillEssences.strength = skillEssences.speed = skillEssences.smarts = skillEssences.social = true;
     } else {
-      essences[homeEssence] = true;
+      skillEssences[homeEssence] = true;
     }
 
     skills[skill] = {
       shift: 'd20',
-      essences,
+      essences: skillEssences,
       essenceAttribution: { strength: 0, speed: 0, smarts: 0, social: 0 },
     };
   }
@@ -27,7 +29,7 @@ function makeActor({ skillOverrides = {}, conditioning = 0 } = {}) {
   }
 
   return {
-    system: { skills, conditioning },
+    system: { skills, conditioning, essences },
   };
 }
 
@@ -161,6 +163,131 @@ describe("computeEssenceSpend", () => {
     const spend = computeEssenceSpend(actor);
 
     expect(spend.strength.value).toBe(8);
+  });
+});
+
+describe("getEssenceOverspend", () => {
+  test("returns an empty object when every essence is within its own max", () => {
+    const actor = makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength
+      essences: { strength: { max: 4 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } },
+    });
+
+    expect(getEssenceOverspend(actor)).toEqual({});
+  });
+
+  test("flags an essence spent past its own max", () => {
+    const actor = makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength
+      essences: { strength: { max: 3 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } },
+    });
+
+    expect(getEssenceOverspend(actor)).toEqual({ strength: { spent: 4, max: 3 } });
+  });
+
+  test("spending exactly the max is not overspend", () => {
+    const actor = makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength
+      essences: { strength: { max: 4 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } },
+    });
+
+    expect(getEssenceOverspend(actor)).toEqual({});
+  });
+
+  test("flags more than one essence at once", () => {
+    const actor = makeActor({
+      skillOverrides: {
+        athletics: { shift: 'd8' }, // +4 strength
+        acrobatics: { shift: 'd10' }, // +5 speed
+      },
+      essences: { strength: { max: 3 }, speed: { max: 2 }, smarts: { max: 3 }, social: { max: 3 } },
+    });
+
+    expect(getEssenceOverspend(actor)).toEqual({
+      strength: { spent: 4, max: 3 },
+      speed: { spent: 5, max: 2 },
+    });
+  });
+
+  test("never flags anything when the actor has no system.essences at all", () => {
+    // Not every actor type has this field (see character.mjs) - only PCs, which is also the only
+    // actor type the Skill Picker ever calls this for.
+    const actor = makeActor({ skillOverrides: { athletics: { shift: 'd8' } } });
+
+    expect(getEssenceOverspend(actor)).toEqual({});
+  });
+});
+
+describe("getNewEssenceOverspend", () => {
+  test("blocks an increase that pushes an essence's spend past its own max", () => {
+    const actor = makeActor({ essences: { strength: { max: 3 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } } });
+    const previewActor = makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength
+      essences: { strength: { max: 3 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } },
+    });
+
+    expect(getNewEssenceOverspend(actor, previewActor)).toEqual({ strength: { spent: 4, max: 3 } });
+  });
+
+  test("allows an increase that stays within the max", () => {
+    const actor = makeActor({ essences: { strength: { max: 5 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } } });
+    const previewActor = makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength
+      essences: { strength: { max: 5 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } },
+    });
+
+    expect(getNewEssenceOverspend(actor, previewActor)).toEqual({});
+  });
+
+  // Regression case: a PC whose data predates this feature (or whose essences.max was later
+  // lowered) can already be sitting over budget on some Essence. That must never lock them out of
+  // saving unrelated changes - only actively spending MORE on that same already-over Essence
+  // should be rejected.
+  test("does not block a submission that leaves an already-over-budget essence unchanged", () => {
+    const overBudgetEssences = { strength: { max: 1 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } };
+    const actor = makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength, already over the max of 1
+      essences: overBudgetEssences,
+    });
+    // Same actor state, plus an unrelated Speed change that stays within Speed's own max.
+    // (CONFIG.E20.skillShiftList order: d20=0 upshifts, d2=1, d4=2, d6=3, d8=4, d10=5, d12=6.)
+    const previewActor = makeActor({
+      skillOverrides: {
+        athletics: { shift: 'd8' },
+        acrobatics: { shift: 'd4' }, // +2 speed, under speed's max of 3
+      },
+      essences: overBudgetEssences,
+    });
+
+    expect(getNewEssenceOverspend(actor, previewActor)).toEqual({});
+  });
+
+  test("does not block reducing spend on an already-over-budget essence, even if still over afterward", () => {
+    const overBudgetEssences = { strength: { max: 1 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } };
+    const actor = makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength
+      essences: overBudgetEssences,
+    });
+    const previewActor = makeActor({
+      skillOverrides: { athletics: { shift: 'd6' } }, // +3 strength - reduced, but still over max of 1
+      essences: overBudgetEssences,
+    });
+
+    expect(getNewEssenceOverspend(actor, previewActor)).toEqual({});
+  });
+
+  test("blocks further-increasing spend on an essence that's already over its max", () => {
+    const overBudgetEssences = { strength: { max: 1 }, speed: { max: 3 }, smarts: { max: 3 }, social: { max: 3 } };
+    const actor = makeActor({
+      skillOverrides: { athletics: { shift: 'd6' } }, // +3 strength
+      essences: overBudgetEssences,
+    });
+    const previewActor = makeActor({
+      skillOverrides: { athletics: { shift: 'd8' } }, // +4 strength - increased further past max of 1
+      essences: overBudgetEssences,
+    });
+
+    expect(getNewEssenceOverspend(actor, previewActor)).toEqual({ strength: { spent: 4, max: 1 } });
   });
 });
 

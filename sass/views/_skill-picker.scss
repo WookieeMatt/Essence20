@@ -44,6 +44,19 @@
     font-size: 1.1em;
     margin-bottom: 2px;
   }
+
+  // Shown when the Skill Picker (module/apps/skill-picker.mjs) passes a PC's own Essence max
+  // alongside its spend (skill-rank-allocation.hbs) - same treatment as the unrelated
+  // .skill-picker-attribution-status.unbalanced flag below, kept as its own rule since the two
+  // are shown in different places for different reasons, not shared markup. In practice this
+  // should never actually render checked - the Skill Picker itself refuses to save a change that
+  // would cause it (see getEssenceOverspend) - but is still worth flagging rather than silently
+  // trusting that guard is the only path to this number ever being wrong (e.g. essences.max
+  // itself lowered after points were already spent).
+  .skill-rank-over-budget {
+    color: red;
+    font-weight: 700;
+  }
 }
 
 /* Strength/Speed on top, Social/Smarts below (see ESSENCE_GRID_ORDER,

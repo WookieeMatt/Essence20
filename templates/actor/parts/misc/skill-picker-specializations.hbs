@@ -23,11 +23,18 @@
     {{!-- Every sourcebook is explicit its own list is suggestions, not a fixed catalog - the
          trailing "Custom..." option (which reveals the free-text input beside it) is always
          available, even for a skill/version with no standard list of its own. --}}
+    {{!-- The leading placeholder is disabled so it reads as an instruction, not a real choice -
+         the browser won't let the user navigate back to it once something else is picked, and
+         skill-picker.mjs resets the select to it (index 0) after each add rather than leaving a
+         stale real name showing. Its "" value is also how skill-picker.mjs tells "nothing chosen
+         yet" apart from "Custom…" actually chosen - Custom now uses the CUSTOM_SPECIALIZATION_VALUE
+         sentinel instead of "" for exactly that reason (see that file's own comment on it). --}}
     <select class="skill-picker-specialization-select">
+      <option value="" disabled selected>{{localize 'E20.SpecializationChoosePlaceholder'}}</option>
       {{#each (lookup @root.standardSpecializations key) as |name|}}
       <option value="{{name}}">{{name}}</option>
       {{/each}}
-      <option value="">{{localize 'E20.SpecializationCustomOption'}}</option>
+      <option value="__custom__">{{localize 'E20.SpecializationCustomOption'}}</option>
     </select>
     <input type="text" class="skill-picker-specialization-custom" placeholder="{{localize 'E20.SpecializationCustomPlaceholder'}}" />
     <a data-action="addSpecialization" data-skill="{{key}}" data-tooltip="{{localize 'E20.AddSpecialization'}}">

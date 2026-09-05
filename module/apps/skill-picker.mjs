@@ -1,5 +1,7 @@
 import { applyThemeClass } from "../settings.js";
-import { computeEssenceSpend, getSkillAttributionStatus, getSkillEssences } from "../helpers/skill-picker.mjs";
+import {
+  computeEssenceSpend, getNewEssenceOverspend, getSkillAttributionStatus, getSkillEssences,
+} from "../helpers/skill-picker.mjs";
 import { addSpecialization, deleteSpecialization } from "../sheet-handlers/specialization-handler.mjs";
 import { serializeFormSubmits } from "./serialize-form-submits.mjs";
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -8,6 +10,12 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 // on top and Smarts/Social below, rather than CONFIG.E20.originEssences' own key order
 // (strength, speed, smarts, social).
 const ESSENCE_GRID_ORDER = ["strength", "speed", "smarts", "social"];
+
+// Must match the "Custom…" <option>'s own value in skill-picker-specializations.hbs exactly - a
+// dedicated sentinel rather than "" (what it used to be) so "" is free to mean "the leading
+// placeholder is still selected, nothing chosen yet" instead. Both used to share "", which meant
+// the placeholder now added there couldn't be told apart from a deliberate Custom pick.
+const CUSTOM_SPECIALIZATION_VALUE = "__custom__";
 
 /**
  * Sets every skill's shift in one place, with a live per-Essence spend tally, and - for the two
@@ -78,6 +86,10 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     context.isPc = this._isPc;
     context.conditioning = system.conditioning;
     context.essenceSpend = computeEssenceSpend(this._actor);
+    // Only PCs have a per-Essence spend budget to show/enforce at all (see
+    // getEssenceOverspend's own doc comment) - undefined for every other actor type, which the
+    // tally partial (skill-rank-allocation.hbs) takes as "don't show a max at all".
+    context.essenceMax = this._isPc ? system.essences : undefined;
 
     // Not every actor type has every skill CONFIG.E20.skillsByEssence knows about - Zord/
     // Megaform's schema (zord-base.mjs), for one, has no `weird` entry at all. isMultiEssence
@@ -163,14 +175,15 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
       });
     }
 
-    // The free-text name only makes sense once "Custom..." (the select's empty-value option) is
-    // picked - hidden the rest of the time so a standard-catalog skill defaults to a clean single
-    // dropdown instead of an always-visible, usually-irrelevant text box.
+    // The free-text name only makes sense once "Custom..." (CUSTOM_SPECIALIZATION_VALUE) is
+    // picked - hidden the rest of the time (including the initial, nothing-chosen-yet placeholder
+    // state) so a standard-catalog skill defaults to a clean single dropdown instead of an
+    // always-visible, usually-irrelevant text box.
     for (const select of this.element.querySelectorAll('.skill-picker-specialization-select')) {
       const customInput = select.parentElement.querySelector('.skill-picker-specialization-custom');
-      customInput.hidden = !!select.value;
+      customInput.hidden = select.value !== CUSTOM_SPECIALIZATION_VALUE;
       select.addEventListener('change', () => {
-        customInput.hidden = !!select.value;
+        customInput.hidden = select.value !== CUSTOM_SPECIALIZATION_VALUE;
         if (!customInput.hidden) {
           customInput.focus();
         }
@@ -192,6 +205,36 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     // "system.skills.might.shift": "d20") - no expandObject/flattenObject round-trip needed to
     // read it below.
     const updateData = { ...formData.object };
+
+    // PCs can't spend MORE skill points on one Essence than that Essence's own max score allows
+    // (system.essences.<essence>.max) - checked against a throwaway in-memory preview of what
+    // this submission would actually produce (Document#clone merges updateData into a NEW unsaved
+    // instance, same dotted-key merge actor.update() itself would do) rather than the currently-
+    // saved actor, since the whole point is to catch this BEFORE it's saved. getNewEssenceOverspend
+    // (not the plain getEssenceOverspend the passive tally display uses) only blocks an Essence
+    // this specific change actually pushes newly over its max - see that function's own doc
+    // comment for why a PC already over budget for an unrelated, historical reason must still be
+    // able to save everything else. NPC-like actors have no essence-spend budget to check at all,
+    // so this never runs for them.
+    if (this._isPc) {
+      const previewActor = this._actor.clone(updateData);
+      const overspend = getNewEssenceOverspend(this._actor, previewActor);
+      for (const [essence, { spent, max }] of Object.entries(overspend)) {
+        ui.notifications.warn(game.i18n.format('E20.SkillPickerEssenceMaxExceeded', {
+          essence: game.i18n.localize(CONFIG.E20.essences[essence]),
+          spent,
+          max,
+        }));
+      }
+
+      if (Object.keys(overspend).length) {
+        // Nothing was saved - re-render from the actor's own still-unchanged data so the field
+        // that triggered this (a shift <select>, the Conditioning number input, ...) visibly
+        // snaps back instead of continuing to show the rejected value it was just changed to.
+        this.render();
+        return;
+      }
+    }
 
     // Every sourcebook requires at least a d2 Rank to hold a Specialization. This form's own
     // shift <select> is the only path back down to d20 (untrained) - hiding that skill's
@@ -229,11 +272,39 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     const skill = container.dataset.skill;
     const customInput = container.querySelector('.skill-picker-specialization-custom');
     const select = container.querySelector('.skill-picker-specialization-select');
-    const name = customInput.value.trim() || select.value;
+    // Neither the sentinel itself nor the empty placeholder value is ever a real name -
+    // addSpecialization already no-ops on an empty/blank name (e.g. the player clicked + with
+    // nothing chosen and nothing typed), so this only needs to keep those two out of what's
+    // passed to it rather than raise its own warning for the same case.
+    const selectedName = select.value && select.value !== CUSTOM_SPECIALIZATION_VALUE ? select.value : '';
+    const name = customInput.value.trim() || selectedName;
+
+    // A Specialization always costs exactly 1 point (specialization-handler.mjs#addSpecialization
+    // writes a flat, un-scaled entry), credited to the skill's own primary Essence - the same
+    // essence computeEssenceSpend itself would credit it to (see that function's own "Always
+    // credited to the skill's own primary Essence" comment), so this doesn't need
+    // getEssenceOverspend's full actor-clone preview like #onSubmit does for shift changes.
+    if (this._isPc && name) {
+      const skillData = this._actor.system.skills[skill];
+      const essence = getSkillEssences(skillData)[0] || CONFIG.E20.skillToEssence[skill];
+      const max = this._actor.system.essences?.[essence]?.max;
+      const spent = computeEssenceSpend(this._actor)[essence].value + 1;
+      if (typeof max === 'number' && spent > max) {
+        ui.notifications.warn(game.i18n.format('E20.SkillPickerEssenceMaxExceeded', {
+          essence: game.i18n.localize(CONFIG.E20.essences[essence]),
+          spent,
+          max,
+        }));
+        return;
+      }
+    }
 
     await addSpecialization(this._actor, skill, name);
     // Belt-and-suspenders reset (this._updateHook's render already replaces this markup wholesale
     // once the update above resolves) - avoids a flash of stale values if that render is slow.
+    // Index 0 is the "Choose a specialization" placeholder, not a real name - see
+    // skill-picker-specializations.hbs's own comment on why leaving a real name showing here was
+    // misleading (nothing stops it being silently re-added by clicking + again unchanged).
     customInput.value = '';
     select.selectedIndex = 0;
   }

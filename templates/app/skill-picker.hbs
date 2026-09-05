@@ -5,6 +5,7 @@
         essenceLabel=group.label
         skillRankAllocation=(lookup (lookup @root.essenceSpend group.essence) 'value')
         skillRankString=(lookup (lookup @root.essenceSpend group.essence) 'string')
+        skillRankMax=(lookup (lookup @root.essenceMax group.essence) 'max')
       }}
     {{/each}}
   </div>
