@@ -28,6 +28,9 @@
         data-damage="{{damageValue}}" data-damage-type="{{damageType}}" data-is-might-melee="{{isMightMelee}}">
         {{localize 'E20.CheckApplyDamage'}} {{damageValue}} {{damageTypeLabel}}
       </button>
+      {{#if damageBonusLabel}}
+      <div class="e20-check-damage-bonus-note">{{damageBonusLabel}}</div>
+      {{/if}}
       {{/if}}
 
       {{#if criticalOptions.length}}

@@ -93,6 +93,21 @@
   </div>
   {{/if}}
 
+  {{#if availableSkillEffects.length}}
+  <div class="roll-dialog-skill-effects">
+    <span>{{localize 'E20.RollDialogAvailableEffects'}}</span>
+    {{#each availableSkillEffects}}
+    <div class="flexrow align-center roll-dialog-toggle">
+      <span>{{name}}</span>
+      <label class="switch">
+        <input type="checkbox" name="skillEffect-{{id}}" />
+        <span class="switch-slider"></span>
+      </label>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
   {{#if rolePoints}}
   <div class="flexrow align-center">
     <input type="checkbox" name="applyRolePointsUpshift" {{checked applyRolePointsUpshift}} />

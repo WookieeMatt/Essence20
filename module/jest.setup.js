@@ -59,6 +59,30 @@ global.Roll = class Roll {
   toMessage() {}
 };
 
+// Just enough of ActiveEffect.applyChange (client/documents/active-effect.mjs) for
+// helpers/skill-effects.mjs's tests - OVERRIDE (the only mode real compendium Perks in this
+// codebase actually use) coerces the change's value to the current field's type, and ADD does a
+// numeric add or boolean OR. Real Foundry's own mode dispatch is far more elaborate (MULTIPLY,
+// UPGRADE, DOWNGRADE, per-field-type custom handlers); this only needs to be correct for the two
+// modes this system's own content uses.
+global.ActiveEffect = class ActiveEffect {
+  static applyChange(targetDoc, change) {
+    const current = foundry.utils.getProperty(targetDoc, change.key);
+    let value = change.value;
+    if (change.mode === 2) { // CONST.ACTIVE_EFFECT_MODES.ADD
+      value = typeof current === "boolean"
+        ? current || value === "true" || value === true
+        : Number(current || 0) + Number(value);
+    } else if (typeof current === "boolean") {
+      value = value === "true" || value === true;
+    } else if (typeof current === "number") {
+      value = Number(value);
+    }
+
+    return { [change.key]: value };
+  }
+};
+
 global.fromUuid = jest.fn();
 global.fromUuidSync = jest.fn();
 

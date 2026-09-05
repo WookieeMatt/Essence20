@@ -21,6 +21,7 @@ import { checkEnemyNumberOne, markAttackedEnemyNumberOne } from "./helpers/enemy
 import { getInfluentialShiftUp } from "./helpers/influential.mjs";
 import { isMultipleTargetsWeapon } from "./helpers/multiple-targets.mjs";
 import { applyReroll } from "./helpers/reroll.mjs";
+import { applySkillEffectBonus, getToggleableSkillEffects } from "./helpers/skill-effects.mjs";
 
 // Every Commando Perk automated below that isn't specific to Sneak Attack itself (those constants
 // live in helpers/sneak-attack.mjs instead) - all under GI Joe CRB's own compendium pack.
@@ -232,6 +233,12 @@ export class Dice {
       snag: actorSkillData.snag || !!essenceShifts[rolledEssence]?.snag || combatModifiers.snag,
     };
 
+    // Any currently-disabled effect (the actor's own, or a Perk's) that would touch this skill if
+    // it were on - offered in the Roll Options Dialog as an opt-in-for-this-roll toggle instead of
+    // needing to be manually (and persistently) re-enabled on the Effects tab first. See
+    // helpers/skill-effects.mjs's own doc comment.
+    updatedShiftDataset.availableSkillEffects = getToggleableSkillEffects(actor, rolledSkill, rolledEssence);
+
     // Pre-select the Roll Options Dialog's Defense dropdown from the weaponEffect's configured
     // Defense (p.168-169). A plain skill roll defaults to 'none' unless the caller already set
     // dataset.defenseType (e.g. a @Check[defense=...] enricher link, see helpers/enrichers.mjs),
@@ -433,6 +440,12 @@ export class Dice {
       return;
     }
 
+    for (const skillEffect of updatedShiftDataset.availableSkillEffects) {
+      if (skillRollOptions.selectedSkillEffectIds?.includes(skillEffect.id)) {
+        applySkillEffectBonus(actor, skillEffect.changes, skillRollOptions, skillDataset.shift);
+      }
+    }
+
     if (skillRollOptions.isAiming) {
       skillRollOptions.shiftUp += updatedShiftDataset.aimBonus;
     }
@@ -499,7 +512,7 @@ export class Dice {
 
     const canCritD2 = dataset.canCritD2 || skillRollOptions.canCritD2;
     const isSpecialized = dataset.isSpecialized || skillRollOptions.isSpecialized;
-    const modifier = actorSkillData.modifier || 0;
+    const modifier = (actorSkillData.modifier || 0) + (skillRollOptions.skillEffectModifierBonus || 0);
 
     // Silver Tongue (Spy Focus, 6th level): "whenever you roll a Social Essence Skill Test, you
     // treat a d20 roll of 9 or less as a 10" - floors the d20 term(s) at 10 via Foundry's own
@@ -571,13 +584,27 @@ export class Dice {
       && item.system.classification.skill == 'targeting' && actorHasPerk(actor, WARFIGHTER_ID)
       ? 2 : 0;
 
+    // Every Perk/Role Points item actually contributing to damageBonusValue below, so the check
+    // card can tell the player what's granting the bonus damage they're about to apply - same
+    // reasoning as the reroll button's own source label (chat.mjs#addRerollButtons). A Set, not
+    // an array, since Warfighter and a damageBonus Role Points item are independent grants that
+    // could otherwise land the same name twice (in practice they never share one, but nothing
+    // stops it structurally).
+    const damageBonusSources = new Set();
+    if (warfighterDamageBonus) {
+      damageBonusSources.add(findPerk(actor, WARFIGHTER_ID)?.name ?? 'Warfighter');
+    }
+
+    const appliesRolePointsDamage = !!(checkEntries && damageRolePoints && skillRollOptions.applyRolePointsDamage);
+    if (appliesRolePointsDamage) {
+      damageBonusSources.add(damageRolePoints.name);
+    }
+
     // damageBonus Role Points (e.g. Sneak Attack Damage) - a flat add-on to the weaponEffect's own
     // damageValue, folded in only once there's an actual attack (a real checkEntries) to apply it
     // to, so checking the box on a roll that never ends up targeting anyone doesn't needlessly
     // burn Sneak Attack's once-per-round use for no effect.
-    let damageBonusValue = warfighterDamageBonus + (checkEntries && damageRolePoints && skillRollOptions.applyRolePointsDamage
-      ? damageRolePoints.value
-      : 0);
+    let damageBonusValue = warfighterDamageBonus + (appliesRolePointsDamage ? damageRolePoints.value : 0);
     let debilitatingStrike = false;
     // damageRolePoints?. below - damageBonusValue can now be truthy from Warfighter's flat bonus
     // alone, with no damageRolePoints claim active at all (unlike before Warfighter existed, when
@@ -590,6 +617,7 @@ export class Dice {
       if (skillRollOptions.applyDamageDouble && damageRolePoints.canDouble) {
         damageBonusValue *= 2;
         await markUsedThisRound(actor, QUIET_AS_THE_GRAVE_ROUND_FLAG);
+        damageBonusSources.add(findPerk(actor, QUIET_AS_THE_GRAVE_ID)?.name ?? 'Quiet as the Grave');
       }
 
       // Debilitating Strike (16th level) - flagged here, applied per-target once the roll
@@ -622,6 +650,12 @@ export class Dice {
       ? {
         entries: checkEntries,
         damageValue: item?.type == 'weaponEffect' ? item.system.damageValue + damageBonusValue : null,
+        // Read by _rollSkillHelper to build each result's own damageBonusLabel - kept as the raw
+        // bonus amount and its source names rather than a pre-built label here, since the actual
+        // per-target amount still needs scaling by that target's own Degrees of Success
+        // multiplier (see _rollSkillHelper's damageValue: ... * multiplier just below it).
+        damageBonusValue: item?.type == 'weaponEffect' ? damageBonusValue : 0,
+        damageBonusSources: [...damageBonusSources],
         damageType: item?.type == 'weaponEffect' ? item.system.damageType : null,
         // Plate Piercing (Artillery Focus, 10th level) - read by _applyPlatePiercingVehicleDamage
         // once the roll resolves, the same "a fact about the attack, threaded through
@@ -1555,6 +1589,14 @@ export class Dice {
         success,
         multiplier,
         damageValue: canApplyDamage ? checkContext.damageValue * multiplier : null,
+        // Scaled by this target's own multiplier, same as damageValue above, so "+2" here always
+        // means "2 of the number on the button", not the flat pre-Degrees-of-Success amount.
+        damageBonusLabel: canApplyDamage && checkContext.damageBonusValue
+          ? this._localize('E20.CheckDamageBonusFrom', {
+            value: checkContext.damageBonusValue * multiplier,
+            sources: checkContext.damageBonusSources.join(', '),
+          })
+          : null,
         damageType: checkContext.damageType,
         damageTypeLabel: checkContext.damageType ? this._localize(E20.damageTypes[checkContext.damageType]) : null,
         criticalOptions: canApplyDamage ? criticalOptions : [],

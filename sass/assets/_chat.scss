@@ -99,7 +99,7 @@
      itself, proportionally - getting a meaningfully thicker line that way
      would also balloon the trim's inset far past what the 16px clip-path
      chamfer above still lines up with), a drop-shadow stack fattens just the
-     already-masked line by painting 1px-offset copies of it in each
+     already-masked line by painting 2px-offset copies of it in each
      direction - a standard trick for bulking up thin mask/alpha art without
      touching the source image or the chamfer geometry. */
   &::before {
@@ -118,10 +118,10 @@
     mask-border-width: 16px;
     mask-border-repeat: stretch;
     filter:
-      drop-shadow(1px 0 0 var(--e20-system-color, var(--theme-accent)))
-      drop-shadow(-1px 0 0 var(--e20-system-color, var(--theme-accent)))
-      drop-shadow(0 1px 0 var(--e20-system-color, var(--theme-accent)))
-      drop-shadow(0 -1px 0 var(--e20-system-color, var(--theme-accent)));
+      drop-shadow(2px 0 0 var(--e20-system-color, var(--theme-accent)))
+      drop-shadow(-2px 0 0 var(--e20-system-color, var(--theme-accent)))
+      drop-shadow(0 2px 0 var(--e20-system-color, var(--theme-accent)))
+      drop-shadow(0 -2px 0 var(--e20-system-color, var(--theme-accent)));
   }
 }
 
@@ -133,14 +133,14 @@
    background contrast needs the line bulked up further than dark mode does. */
 .chat-message.theme-light::before {
   filter:
-    drop-shadow(1px 0 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(-1px 0 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(0 1px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(0 -1px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(1px 1px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(-1px -1px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(1px -1px 0 var(--e20-system-color, var(--theme-accent)))
-    drop-shadow(-1px 1px 0 var(--e20-system-color, var(--theme-accent)));
+    drop-shadow(2px 0 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(-2px 0 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(0 2px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(0 -2px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(2px 2px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(-2px -2px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(2px -2px 0 var(--e20-system-color, var(--theme-accent)))
+    drop-shadow(-2px 2px 0 var(--e20-system-color, var(--theme-accent)));
 }
 
 .chat-message .flavor-text,
@@ -406,6 +406,18 @@
     cursor: default;
     opacity: 0.7;
   }
+}
+
+// Under the Apply Damage button when part of its number came from a Perk/Role Points bonus
+// (dice.mjs#rollSkill's damageBonusSources) - same "name the grant, don't just show the number"
+// goal as the reroll button's own "Luck: Reroll Dice (Ones)" label, but kept as a caption rather
+// than folded into the button's own text: unlike a reroll (which either applies or doesn't), this
+// number is a base weapon value PLUS the bonus, so rewriting the button label itself would imply
+// the whole amount came from that one source instead of just part of it.
+.e20-check-damage-bonus-note {
+  font-size: 0.8em;
+  color: var(--theme-muted-text);
+  margin-top: 2px;
 }
 
 .e20-check-critical-options {
