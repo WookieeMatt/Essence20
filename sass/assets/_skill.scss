@@ -23,6 +23,12 @@
   font-size: 1em;
   margin-left: 5px;
   flex: 1 1 auto;
+
+  // Same rollable hover affordance .specialization-name below already has, so a skill's own name
+  // reads as just as clickable as the Specializations nested under it.
+  &:hover {
+    color: var(--theme-accent);
+  }
 }
 
 .essence20 .skill-header .skill-shift-select {
@@ -148,7 +154,7 @@
   text-overflow: ellipsis;
   color: var(--theme-text-color);
   text-decoration: none;
-  font-size: 0.9em;
+  font-size: 0.8em;
   opacity: 0.85;
   flex: 1 1 auto;
 

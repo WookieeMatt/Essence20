@@ -817,6 +817,7 @@
     "SkillPickerOpenTooltip": "Set skill shifts and track Essence points spent",
     "SkillPickerTitle": "Skill Ranks: {name}",
     "SkillRanksAllocated": "Skill ranks allocated",
+    "SkillRanksFullySpent": "Every skill point for this Essence has been spent",
     "SkillRollTitle": "Perform Skill Roll",
     "SkillScience": "Science",
     "SkillSelector": "Select Skills",

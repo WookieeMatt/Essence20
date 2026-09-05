@@ -55,24 +55,29 @@
 
   <fieldset class="skill-picker-essence-group skill-picker-any-group">
     <legend>{{localize @root.config.essences.any}}</legend>
-    {{#each anySkills as |entry|}}
-    <div class="skill-picker-row skill-picker-any-row">
-      {{!-- PCs always show every skill already - no picking, just a label. --}}
-      {{#if @root.isPc}}
-      <label>{{localize entry.label}}</label>
-      {{else}}
-      <label class="checkbox">
-        <input type="checkbox" name="system.skills.{{entry.key}}.isChosen" {{checked entry.fields.isChosen}} data-dtype="Boolean" />
-        {{localize entry.label}}
-      </label>
-      {{/if}}
-      <select class="skill-shift-select" name="system.skills.{{entry.key}}.shift">
-        {{selectOptions @root.config.skillChoicesShifts selected=entry.fields.shift}}
-      </select>
+    {{!-- Spellcasting and Weird side by side rather than stacked - a plain wrapper div rather
+         than making the fieldset itself the grid, since a <fieldset> containing a <legend> can
+         behave inconsistently as a flex/grid container in some engines. --}}
+    <div class="skill-picker-any-grid">
+      {{#each anySkills as |entry|}}
+      <div class="skill-picker-row skill-picker-any-row">
+        {{!-- PCs always show every skill already - no picking, just a label. --}}
+        {{#if @root.isPc}}
+        <label>{{localize entry.label}}</label>
+        {{else}}
+        <label class="checkbox">
+          <input type="checkbox" name="system.skills.{{entry.key}}.isChosen" {{checked entry.fields.isChosen}} data-dtype="Boolean" />
+          {{localize entry.label}}
+        </label>
+        {{/if}}
+        <select class="skill-shift-select" name="system.skills.{{entry.key}}.shift">
+          {{selectOptions @root.config.skillChoicesShifts selected=entry.fields.shift}}
+        </select>
 
-      {{> "systems/essence20/templates/actor/parts/misc/skill-picker-attribution.hbs" key=entry.key fields=entry.fields attribution=entry.attribution}}
-      {{> "systems/essence20/templates/actor/parts/misc/skill-picker-specializations.hbs" key=entry.key fields=entry.fields}}
+        {{> "systems/essence20/templates/actor/parts/misc/skill-picker-attribution.hbs" key=entry.key fields=entry.fields attribution=entry.attribution}}
+        {{> "systems/essence20/templates/actor/parts/misc/skill-picker-specializations.hbs" key=entry.key fields=entry.fields alwaysShow=true}}
+      </div>
+      {{/each}}
     </div>
-    {{/each}}
   </fieldset>
 </div>

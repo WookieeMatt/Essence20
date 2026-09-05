@@ -178,8 +178,11 @@ export default class SkillPicker extends serializeFormSubmits(HandlebarsApplicat
     // The free-text name only makes sense once "Custom..." (CUSTOM_SPECIALIZATION_VALUE) is
     // picked - hidden the rest of the time (including the initial, nothing-chosen-yet placeholder
     // state) so a standard-catalog skill defaults to a clean single dropdown instead of an
-    // always-visible, usually-irrelevant text box.
-    for (const select of this.element.querySelectorAll('.skill-picker-specialization-select')) {
+    // always-visible, usually-irrelevant text box. Skips the disabled placeholder select
+    // Spellcasting/Weird's still-untrained side shows to keep both columns the same shape
+    // (skill-picker-specializations.hbs's alwaysShow case) - that one has no custom-name input or
+    // "Custom…" option at all, nothing to wire up.
+    for (const select of this.element.querySelectorAll('.skill-picker-specialization-select:not(:disabled)')) {
       const customInput = select.parentElement.querySelector('.skill-picker-specialization-custom');
       customInput.hidden = select.value !== CUSTOM_SPECIALIZATION_VALUE;
       select.addEventListener('change', () => {
