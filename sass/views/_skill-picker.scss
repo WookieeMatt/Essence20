@@ -22,49 +22,45 @@
   overflow-y: auto;
 }
 
-.skill-picker-tally {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+/* skill-rank-allocation.hbs's own root - a plain label+status row now (used to also be laid out
+   as a small bordered card, back when 4 of these sat together in a shared summary grid above the
+   whole picker; that grid is gone, see .skill-picker-essence-tally below for why). The actor
+   sheet sidebar's own use of this same partial (no essenceLabel/skillRankMax passed there) is
+   plain flow content and never reaches this file at all - this app is the only thing importing
+   _skill-picker.scss. */
+.skill-rank-allocation {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
   gap: v.$gap-md;
-  margin-bottom: v.$gap-lg;
+  font-size: 0.85em;
+  color: var(--theme-text-color);
+}
 
-  .skill-rank-allocation {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: v.$gap-sm;
-    border: 1px solid var(--theme-border-color);
-    border-radius: 6px;
-    font-size: 0.85em;
-    color: var(--theme-text-color);
-  }
+.skill-rank-essence-label {
+  font-weight: 700;
+  font-size: 1.1em;
+  white-space: nowrap;
+}
 
-  .skill-rank-essence-label {
-    font-weight: 700;
-    font-size: 1.1em;
-    margin-bottom: 2px;
-  }
+// Shown when the Skill Picker (module/apps/skill-picker.mjs) passes a PC's own Essence max
+// alongside its spend (skill-rank-allocation.hbs) - a real, if rare, case: the Skill Picker
+// itself refuses to save a change that would newly CAUSE this (see getNewEssenceOverspend), but
+// can't retroactively fix a PC who was already over budget for an unrelated reason (data
+// predating this feature, or essences.max lowered by hand under an existing spend) - still worth
+// flagging rather than silently trusting the save-time guard is the only path to this ever
+// showing wrong.
+.skill-rank-over-budget {
+  color: red;
+  font-weight: 700;
+}
 
-  // Shown when the Skill Picker (module/apps/skill-picker.mjs) passes a PC's own Essence max
-  // alongside its spend (skill-rank-allocation.hbs) - same treatment as the unrelated
-  // .skill-picker-attribution-status.unbalanced flag below, kept as its own rule since the two
-  // are shown in different places for different reasons, not shared markup. In practice this
-  // should never actually render checked - the Skill Picker itself refuses to save a change that
-  // would cause it (see getEssenceOverspend) - but is still worth flagging rather than silently
-  // trusting that guard is the only path to this number ever being wrong (e.g. essences.max
-  // itself lowered after points were already spent).
-  .skill-rank-over-budget {
-    color: red;
-    font-weight: 700;
-  }
-
-  // "Spent all your points for this Essence" - a lighter-weight positive counterpart to
-  // .skill-rank-over-budget above (same idea, opposite direction), so hitting the cap exactly
-  // reads as a deliberate milestone rather than looking identical to still having room left.
-  .skill-rank-fully-spent {
-    color: green;
-    font-weight: 700;
-  }
+// "Spent all your points for this Essence" - a lighter-weight positive counterpart to
+// .skill-rank-over-budget above (same idea, opposite direction), so hitting the cap exactly
+// reads as a deliberate milestone rather than looking identical to still having room left.
+.skill-rank-fully-spent {
+  color: green;
+  font-weight: 700;
 }
 
 /* Strength/Speed on top, Social/Smarts below (see ESSENCE_GRID_ORDER,
@@ -81,13 +77,42 @@
 .skill-picker-essence-group {
   border: 1px solid var(--theme-border-color);
   border-radius: 6px;
-  padding: v.$gap-sm v.$gap-md v.$gap-md;
+  // No top padding of its own - the 4 real-Essence groups' sticky tally header below supplies its
+  // own (so it still looks right once stuck against the fieldset's top border), and the one
+  // fieldset that still uses a plain <legend> (.skill-picker-any-group) gets a normal top gap from
+  // that legend's own layout instead, same as it always did.
+  padding: 0 v.$gap-md v.$gap-md;
 
   legend {
     padding: 0 v.$gap-sm;
     color: var(--theme-text-color);
     font-weight: 700;
   }
+}
+
+/* Each real-Essence fieldset's own name + live spend/max, replacing a plain <legend> there (the
+   Any-Essence fieldset below keeps its own) and sticky-pinned to the top of the scrollable picker
+   body (.skill-picker-body) for as long as its fieldset is still in view - so scrolling down to
+   Smarts/Social's own skills keeps THEIR numbers on screen instead of only whichever Essence's
+   summary happened to be visible before you started scrolling (a single shared grid stacked above
+   the whole 2x2 layout, which is what this replaced, scrolled away with everything else once you
+   moved past it). A <legend> element has enough special-cased rendering of its own (it's drawn
+   punched through the fieldset's top border, not as a normal flow child) that making IT sticky
+   isn't reliable across engines - this is a plain div instead, achieving the same "name for this
+   box" look through padding/border-bottom rather than the legend's own border-punch effect.
+   The negative side margins bleed it out to the fieldset's own outer edge (undoing this element's
+   share of the fieldset's own left/right padding) so the sticky bar's background spans the full
+   width behind it edge-to-edge instead of leaving slivers of whatever's scrolling underneath
+   visible on both sides. */
+.skill-picker-essence-tally {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--theme-panel-bg);
+  margin: 0 -#{v.$gap-md} v.$gap-sm;
+  padding: v.$gap-sm v.$gap-md;
+  border-bottom: 1px solid var(--theme-border-color);
+  border-radius: 6px 6px 0 0;
 }
 
 /* The any-Essence group is the one fieldset still outside .skill-picker-essence-grid, so it lost
@@ -105,7 +130,22 @@
 .skill-picker-any-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: v.$gap-md;
+  // Wider than the plain gap other 2-column grids in this file use (.skill-picker-essence-grid) -
+  // there, each column is its own bordered fieldset already, a clear enough boundary on its own;
+  // here, Spellcasting and Weird are two bare columns with nothing of their own to tell them
+  // apart, so the gap has to do that job by itself, plus room for the divider line below to sit
+  // in without crowding either column's own content.
+  column-gap: v.$gap-lg;
+  row-gap: v.$gap-md;
+}
+
+// A plain gap alone still read as "some space between two vaguely related things" rather than
+// "two distinct skills" - a vertical rule down the middle (border-left on the second column, so
+// it's one shared line rather than two independent ones fighting for the same space) makes that
+// boundary an actual visible line instead of just whitespace.
+.skill-picker-any-row:not(:first-child) {
+  border-left: 1px solid var(--theme-border-color);
+  padding-left: v.$gap-lg;
 }
 
 .skill-picker-row {
@@ -172,9 +212,15 @@
 }
 
 .skill-picker-attribution-status {
+  // flex-basis: 100% forces this onto its own line within the parent's flex-wrap row regardless
+  // of how much horizontal space is left next to the essence-input boxes - without it, this only
+  // wrapped down when the row ran out of room, which left it sitting inline beside the inputs in
+  // the wider Any-section columns (Spellcasting/Weird) while correctly wrapping in the narrower
+  // per-skill rows elsewhere. Forcing it keeps the layout consistent in both places.
+  flex-basis: 100%;
+  margin-top: 2px;
   font-size: 0.85em;
   color: var(--theme-text-color);
-  margin-left: auto;
 
   &.unbalanced {
     color: red;

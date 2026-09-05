@@ -28,6 +28,13 @@
   // reads as just as clickable as the Specializations nested under it.
   &:hover {
     color: var(--theme-accent);
+    // .essence20 a:hover's own global rule (_tabs.scss) glows via a blurred text-shadow, which
+    // this element's own overflow: hidden (needed above for ellipsis truncation) hard-clips into
+    // a visible rectangular edge instead of a soft fade - the same bug already diagnosed for the
+    // sheet tabs' halo and role-points-name (_collapsible.scss). Those fixed it by swapping to a
+    // tight, non-blurring text-stroke instead; the accent color swap above is already a clear
+    // enough hover cue on its own here, so this just drops the glow rather than replacing it.
+    text-shadow: none;
   }
 }
 
@@ -161,6 +168,9 @@
   &:hover {
     opacity: 1;
     color: var(--theme-accent);
+    // See .skill-header .skill-name:hover above - same overflow: hidden truncation, same clipped-
+    // glow bug from the global .essence20 a:hover text-shadow.
+    text-shadow: none;
   }
 }
 

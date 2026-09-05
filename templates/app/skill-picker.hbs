@@ -1,22 +1,23 @@
 <div class="skill-picker-body">
-  <div class="skill-picker-tally">
-    {{#each essenceGroups as |group|}}
-      {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
-        essenceLabel=group.label
-        skillRankAllocation=(lookup (lookup @root.essenceSpend group.essence) 'value')
-        skillRankString=(lookup (lookup @root.essenceSpend group.essence) 'string')
-        skillRankMax=(lookup (lookup @root.essenceMax group.essence) 'max')
-      }}
-    {{/each}}
-  </div>
-
   {{!-- Strength/Speed on top, Social/Smarts below - explicit 2x2 order from
        module/apps/skill-picker.mjs's essenceGroups, not CONFIG.E20.originEssences' own order
        (strength, speed, smarts, social). --}}
   <div class="skill-picker-essence-grid">
     {{#each essenceGroups as |group|}}
     <fieldset class="skill-picker-essence-group">
-      <legend>{{localize group.label}}</legend>
+      {{!-- A sticky header (name + live spend/max) attached to THIS Essence's own fieldset,
+           instead of a <legend> - see _skill-picker.scss's own comment on why a <legend> itself
+           doesn't sticky-position reliably. Used to be one shared summary grid stacked above the
+           whole 2x2 layout, which scrolled away with everything else - once you'd scrolled down
+           to Smarts/Social's own skills, their numbers were already off the top of the window. --}}
+      <div class="skill-picker-essence-tally">
+        {{> "systems/essence20/templates/actor/parts/misc/skill-rank-allocation.hbs"
+          essenceLabel=group.label
+          skillRankAllocation=(lookup (lookup @root.essenceSpend group.essence) 'value')
+          skillRankString=(lookup (lookup @root.essenceSpend group.essence) 'string')
+          skillRankMax=(lookup (lookup @root.essenceMax group.essence) 'max')
+        }}
+      </div>
       {{#each group.skills as |entry|}}
       <div class="skill-picker-row">
         {{!-- PCs always show every skill already - no picking, just a label. --}}
